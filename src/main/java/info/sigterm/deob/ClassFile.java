@@ -1,10 +1,20 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.pool.Class;
+import info.sigterm.deob.pool.UTF8;
+
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ClassFile
 {
+	private ClassGroup group;
+	private DataInputStream is;
+
+	private ClassFile parent; // super class
+	private ArrayList<ClassFile> children = new ArrayList<ClassFile>(); // classes which inherit from this
+
 	private int magic;
 	private short minor_version;
 	private short major_version;
@@ -17,10 +27,9 @@ public class ClassFile
 	private Methods methods;
 	private Attributes attributes;
 
-	private DataInputStream is;
-
-	public ClassFile(DataInputStream is) throws IOException
+	public ClassFile(ClassGroup group, DataInputStream is) throws IOException
 	{
+		this.group = group;
 		this.is = is;
 
 		magic = is.readInt();
@@ -53,5 +62,29 @@ public class ClassFile
 	public ConstantPool getPool()
 	{
 		return pool;
+	}
+
+	public String getName()
+	{
+		Class entry = (Class) pool.getEntry(this_class);
+		UTF8 className = (UTF8) pool.getEntry(entry.getIndex());
+		return className.getValue();
+	}
+
+	public void buildClassGraph()
+	{
+		Class entry = (Class) pool.getEntry(super_class);
+		UTF8 className = (UTF8) pool.getEntry(entry.getIndex());
+		String superName = className.getValue();
+
+		ClassFile other = group.findClass(superName);
+		if (other == null)
+			return; // inherits from a class not in my group
+
+		assert other != null;
+		assert other != this;
+
+		this.parent = other;
+		parent.children.add(this);
 	}
 }

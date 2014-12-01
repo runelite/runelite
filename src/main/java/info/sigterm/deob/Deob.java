@@ -11,6 +11,8 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
+		ClassGroup group = new ClassGroup();
+
 		JarFile jar = new JarFile(args[0]);
 		for (Enumeration<JarEntry> it = jar.entries(); it.hasMoreElements();)
 		{
@@ -20,7 +22,9 @@ public class Deob
 				continue;
 
 			InputStream is = jar.getInputStream(entry);
-			ClassFile c = new ClassFile(new DataInputStream(is));
+			group.addClass(entry.getName(), new DataInputStream(is));
 		}
+
+		group.buildClassGraph();
 	}
 }

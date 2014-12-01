@@ -16,4 +16,9 @@ public class Class extends PoolEntry
 		DataInputStream is = pool.getClassFile().getStream();
 		index = is.readUnsignedShort();
 	}
+
+	public int getIndex()
+	{
+		return index;
+	}
 }
