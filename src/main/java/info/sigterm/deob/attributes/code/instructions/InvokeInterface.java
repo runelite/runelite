@@ -10,6 +10,7 @@ import java.io.IOException;
 public class InvokeInterface extends Instruction
 {
 	private int index;
+	private int count;
 
 	public InvokeInterface(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -17,7 +18,9 @@ public class InvokeInterface extends Instruction
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		index = is.readUnsignedShort();
-		length += 2;
+		count = is.readUnsignedByte();
+		is.skip(1);
+		length += 4;
 	}
 
 }

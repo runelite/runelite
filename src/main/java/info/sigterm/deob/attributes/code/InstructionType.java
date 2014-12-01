@@ -19,6 +19,7 @@ import info.sigterm.deob.attributes.code.instructions.IStore;
 import info.sigterm.deob.attributes.code.instructions.IfNonNull;
 import info.sigterm.deob.attributes.code.instructions.IfNull;
 import info.sigterm.deob.attributes.code.instructions.InstanceOf;
+import info.sigterm.deob.attributes.code.instructions.InvokeDynamic;
 import info.sigterm.deob.attributes.code.instructions.InvokeInterface;
 import info.sigterm.deob.attributes.code.instructions.InvokeSpecial;
 import info.sigterm.deob.attributes.code.instructions.InvokeStatic;
@@ -228,6 +229,7 @@ public enum InstructionType
 	INVOKESPECIAL(0xb7, "invokespecial", InvokeSpecial.class),
 	INVOKESTATIC(0xb8, "invokestatic", InvokeStatic.class),
 	INVOKEINTERFACE(0xb9, "invokeinterface", InvokeInterface.class),
+	INVOKEDYNAMIC(0xba, "invokedynamic", InvokeDynamic.class),
 	NEW(0xbb, "new", New.class),
 	NEWARRAY(0xbc, "newarray", NewArray.class),
 	ANEWARRAY(0xbd, "anewarray", ANewArray.class),
@@ -245,69 +247,6 @@ public enum InstructionType
 	JSR_W(0xc9, "jsr_w", JSR_W.class),
 	BREAKPOINT(0xca, "breakpoint", Instruction.class);
 
-	/*
-
-      {"0xc4", "4", "wide",            Code_wide.class},
-      {"0xc5", "4", "multianewarray",  Code_multianewarray.class},
-      {"0xc6", "3", "ifnull",          Code_Branch.class},
-      {"0xc7", "3", "ifnonnull",       Code_Branch.class},
-      {"0xc8", "5", "goto_w",          Code_BranchInt.class},
-      {"0xc9", "5", "jsr_w",           Code_BranchInt.class},
-      {"0xca", "1", "breakpoint",      null},
-      {"0xcb", "1", "xxxunusedxxx",    null},
-      {"0xcc", "1", "xxxunusedxxx",    null},
-      {"0xcd", "1", "xxxunusedxxx",    null},
-      {"0xce", "1", "xxxunusedxxx",    null},
-      {"0xcf", "1", "xxxunusedxxx",    null},
-      {"0xd0", "1", "xxxunusedxxx",    null},
-      {"0xd1", "1", "xxxunusedxxx",    null},
-      {"0xd2", "1", "xxxunusedxxx",    null},
-      {"0xd3", "1", "xxxunusedxxx",    null},
-      {"0xd4", "1", "xxxunusedxxx",    null},
-      {"0xd5", "1", "xxxunusedxxx",    null},
-      {"0xd6", "1", "xxxunusedxxx",    null},
-      {"0xd7", "1", "xxxunusedxxx",    null},
-      {"0xd8", "1", "xxxunusedxxx",    null},
-      {"0xd9", "1", "xxxunusedxxx",    null},
-      {"0xda", "1", "xxxunusedxxx",    null},
-      {"0xdb", "1", "xxxunusedxxx",    null},
-      {"0xdc", "1", "xxxunusedxxx",    null},
-      {"0xdd", "1", "xxxunusedxxx",    null},
-      {"0xde", "1", "xxxunusedxxx",    null},
-      {"0xdf", "1", "xxxunusedxxx",    null},
-      {"0xe0", "1", "xxxunusedxxx",    null},
-      {"0xe1", "1", "xxxunusedxxx",    null},
-      {"0xe2", "1", "xxxunusedxxx",    null},
-      {"0xe3", "1", "xxxunusedxxx",    null},
-      {"0xe4", "1", "xxxunusedxxx",    null},
-      {"0xe5", "1", "xxxunusedxxx",    null},
-      {"0xe6", "1", "xxxunusedxxx",    null},
-      {"0xe7", "1", "xxxunusedxxx",    null},
-      {"0xe8", "1", "xxxunusedxxx",    null},
-      {"0xe9", "1", "xxxunusedxxx",    null},
-      {"0xea", "1", "xxxunusedxxx",    null},
-      {"0xeb", "1", "xxxunusedxxx",    null},
-      {"0xec", "1", "xxxunusedxxx",    null},
-      {"0xed", "1", "xxxunusedxxx",    null},
-      {"0xee", "1", "xxxunusedxxx",    null},
-      {"0xef", "1", "xxxunusedxxx",    null},
-      {"0xf0", "1", "xxxunusedxxx",    null},
-      {"0xf1", "1", "xxxunusedxxx",    null},
-      {"0xf2", "1", "xxxunusedxxx",    null},
-      {"0xf3", "1", "xxxunusedxxx",    null},
-      {"0xf4", "1", "xxxunusedxxx",    null},
-      {"0xf5", "1", "xxxunusedxxx",    null},
-      {"0xf6", "1", "xxxunusedxxx",    null},
-      {"0xf7", "1", "xxxunusedxxx",    null},
-      {"0xf8", "1", "xxxunusedxxx",    null},
-      {"0xf9", "1", "xxxunusedxxx",    null},
-      {"0xfa", "1", "xxxunusedxxx",    null},
-      {"0xfb", "1", "xxxunusedxxx",    null},
-      {"0xfc", "1", "xxxunusedxxx",    null},
-      {"0xfd", "1", "xxxunusedxxx",    null},
-      {"0xfe", "1", "impdep1",         null},
-      {"0xff", "1", "impdep2",         null}
-	 */
 	private byte code;
 	private String name;
 	private Class<? extends Instruction> clazz;

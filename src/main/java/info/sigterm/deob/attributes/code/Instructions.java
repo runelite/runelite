@@ -19,7 +19,8 @@ public class Instructions
 
 		int length = is.readInt();
 
-		for (int pc = 0; pc < length;)
+		int pc;
+		for (pc = 0; pc < length;)
 		{
 			byte opcode = is.readByte();
 
@@ -40,6 +41,8 @@ public class Instructions
 				throw new IOException(ex);
 			}
 		}
+
+		assert pc == length;
 	}
 
 	public Code getCode()
