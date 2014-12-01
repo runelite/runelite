@@ -5,13 +5,16 @@ import info.sigterm.deob.attributes.Code;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 
 public class Instructions
 {
 	private Code code;
+	private ArrayList<Instruction> instructions = new ArrayList<Instruction>();
 
 	public Instructions(Code code) throws IOException
 	{
+		this.code = code;
 		DataInputStream is = code.getAttributes().getStream();
 
 		int length = is.readInt();
@@ -24,11 +27,17 @@ public class Instructions
 
 			try
 			{
-				Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(new Class[] { Instructions.class, InstructionType.class, Integer.class });
+				Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, int.class);
 				Instruction ins = con.newInstance(this, type, pc);
+
+				instructions.add(ins);
+
+				int len = ins.getLength();
+				pc += len;
 			}
 			catch (java.lang.Exception ex)
 			{
+				System.out.println(type);
 				throw new IOException(ex);
 			}
 		}

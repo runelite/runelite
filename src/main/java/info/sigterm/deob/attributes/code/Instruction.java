@@ -7,7 +7,7 @@ public class Instruction
 	private int pc;
 	protected int length = 1;
 
-	Instruction(Instructions instructions, InstructionType type, int pc)
+	public Instruction(Instructions instructions, InstructionType type, int pc)
 	{
 		this.instructions = instructions;
 		this.type = type;

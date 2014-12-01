@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class FLoad extends Instruction
 {
-	int index;
+	private int index;
 
 	FLoad(Instructions instructions, InstructionType type, int pc) throws IOException
 	{

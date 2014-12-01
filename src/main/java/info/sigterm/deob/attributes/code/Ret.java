@@ -3,11 +3,11 @@ package info.sigterm.deob.attributes.code;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class DLoad extends Instruction
+public class Ret extends Instruction
 {
-	private int index;
+	int index;
 
-	DLoad(Instructions instructions, InstructionType type, int pc) throws IOException
+	Ret(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 

@@ -3,16 +3,16 @@ package info.sigterm.deob.attributes.code;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class DLoad extends Instruction
+public class NewArray extends Instruction
 {
-	private int index;
+	private int type;
 
-	DLoad(Instructions instructions, InstructionType type, int pc) throws IOException
+	NewArray(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readByte();
+		this.type = is.readUnsignedByte();
 		length += 1;
 	}
 
