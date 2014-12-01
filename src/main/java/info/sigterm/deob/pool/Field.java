@@ -19,4 +19,14 @@ public class Field extends PoolEntry
 		classIndex = is.readUnsignedShort();
 		nameAndTypeIndex = is.readUnsignedShort();
 	}
+
+	public Class getClassEntry()
+	{
+		return (Class) this.getPool().getEntry(classIndex);
+	}
+
+	public NameAndType getNameAndType()
+	{
+		return (NameAndType) this.getPool().getEntry(nameAndTypeIndex);
+	}
 }

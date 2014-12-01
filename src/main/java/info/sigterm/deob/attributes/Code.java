@@ -38,4 +38,9 @@ public class Code extends Attribute
 	{
 		return maxLocals;
 	}
+
+	public void buildInstructionGraph()
+	{
+		instructions.buildInstructionGraph();
+	}
 }

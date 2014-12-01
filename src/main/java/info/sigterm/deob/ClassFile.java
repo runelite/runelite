@@ -2,7 +2,7 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.pool.Class;
-import info.sigterm.deob.pool.UTF8;
+import info.sigterm.deob.pool.NameAndType;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -55,6 +55,11 @@ public class ClassFile
 		attributes = new Attributes(this);
 	}
 
+	public ClassGroup getGroup()
+	{
+		return group;
+	}
+
 	public DataInputStream getStream()
 	{
 		return is;
@@ -68,23 +73,43 @@ public class ClassFile
 	public String getName()
 	{
 		Class entry = (Class) pool.getEntry(this_class);
-		UTF8 className = (UTF8) pool.getEntry(entry.getIndex());
-		return className.getValue();
+		return entry.getName();
+	}
+
+	public ClassFile getParent()
+	{
+		Class entry = (Class) pool.getEntry(super_class);
+		String superName = entry.getName();
+		ClassFile other = group.findClass(superName);
+		assert other != this;
+		return other;
+	}
+
+	public Field findField(NameAndType nat)
+	{
+		Field f = fields.findField(nat);
+		if (f != null)
+			return f;
+
+		ClassFile parent = getParent();
+		if (parent != null)
+			return parent.findField(nat);
+
+		return null;
 	}
 
 	public void buildClassGraph()
 	{
-		Class entry = (Class) pool.getEntry(super_class);
-		UTF8 className = (UTF8) pool.getEntry(entry.getIndex());
-		String superName = className.getValue();
-
-		ClassFile other = group.findClass(superName);
+		ClassFile other = getParent();
 		if (other == null)
 			return; // inherits from a class not in my group
 
-		assert other != this;
-
 		this.parent = other;
 		parent.children.add(this);
+	}
+
+	public void buildInstructionGraph()
+	{
+		methods.buildInstructionGraph();
 	}
 }

@@ -13,6 +13,11 @@ public abstract class PoolEntry
 		this.type = type;
 	}
 
+	public ConstantPool getPool()
+	{
+		return pool;
+	}
+
 	public int getSlots()
 	{
 		return 1;

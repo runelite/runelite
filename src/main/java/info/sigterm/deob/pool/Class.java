@@ -17,8 +17,9 @@ public class Class extends PoolEntry
 		index = is.readUnsignedShort();
 	}
 
-	public int getIndex()
+	public java.lang.String getName()
 	{
-		return index;
+		UTF8 u = (UTF8) this.getPool().getEntry(index);
+		return u.getValue();
 	}
 }

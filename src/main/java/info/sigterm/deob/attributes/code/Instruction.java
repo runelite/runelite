@@ -22,6 +22,11 @@ public class Instruction
 		this.pc = pc;
 	}
 
+	public Instructions getInstructions()
+	{
+		return instructions;
+	}
+
 	public int getPc()
 	{
 		return pc;
@@ -43,6 +48,10 @@ public class Instruction
 	}
 
 	public void buildJumpGraph()
+	{
+	}
+
+	public void buildInstructionGraph()
 	{
 	}
 

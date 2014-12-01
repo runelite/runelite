@@ -53,6 +53,12 @@ public class Instructions
 			i.buildJumpGraph();
 	}
 
+	public void buildInstructionGraph()
+	{
+		for (Instruction i : instructions)
+			i.buildInstructionGraph();
+	}
+
 	public Code getCode()
 	{
 		return code;

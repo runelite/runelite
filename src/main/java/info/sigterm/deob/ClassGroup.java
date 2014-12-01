@@ -32,4 +32,10 @@ public class ClassGroup
 		for (ClassFile c : classes)
 			c.buildClassGraph();
 	}
+
+	public void buildInstructionGraph()
+	{
+		for (ClassFile c : classes)
+			c.buildInstructionGraph();
+	}
 }

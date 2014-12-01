@@ -1,5 +1,7 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.pool.NameAndType;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -26,5 +28,13 @@ public class Fields
 	public ClassFile getClassFile()
 	{
 		return classFile;
+	}
+
+	public Field findField(NameAndType nat)
+	{
+		for (Field f : fields)
+			if (f.getName().equals(nat.getName()) && f.getDescriptor().equals(nat.getDescriptor()))
+				return f;
+		return null;
 	}
 }

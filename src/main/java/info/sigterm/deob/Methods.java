@@ -27,4 +27,10 @@ public class Methods
 	{
 		return classFile;
 	}
+
+	public void buildInstructionGraph()
+	{
+		for (Method m : methods)
+			m.buildInstructionGraph();
+	}
 }

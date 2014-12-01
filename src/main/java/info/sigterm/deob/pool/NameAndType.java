@@ -19,4 +19,16 @@ public class NameAndType extends PoolEntry
 		nameIndex = is.readUnsignedShort();
 		descriptorIndex = is.readUnsignedShort();
 	}
+
+	public java.lang.String getName()
+	{
+		UTF8 u = (UTF8) this.getPool().getEntry(nameIndex);
+		return u.getValue();
+	}
+
+	public java.lang.String getDescriptor()
+	{
+		UTF8 u = (UTF8) this.getPool().getEntry(descriptorIndex);
+		return u.getValue();
+	}
 }
