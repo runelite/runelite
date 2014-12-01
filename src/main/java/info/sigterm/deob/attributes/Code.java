@@ -1,6 +1,5 @@
 package info.sigterm.deob.attributes;
 
-import info.sigterm.deob.Attributes;
 import info.sigterm.deob.attributes.code.Exceptions;
 import info.sigterm.deob.attributes.code.Instructions;
 
@@ -28,5 +27,15 @@ public class Code extends Attribute
 
 		exceptions = new Exceptions(this);
 		attributes = new Attributes(this);
+	}
+
+	public int getMaxStack()
+	{
+		return getMaxStack();
+	}
+
+	public int getMaxLocals()
+	{
+		return maxLocals;
 	}
 }

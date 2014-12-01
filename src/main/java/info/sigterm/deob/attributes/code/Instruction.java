@@ -1,5 +1,7 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.execution.Execution;
+
 import java.util.ArrayList;
 
 public class Instruction
@@ -41,6 +43,10 @@ public class Instruction
 	}
 
 	public void buildJumpGraph()
+	{
+	}
+
+	public void execute(Execution e)
 	{
 	}
 }

@@ -1,9 +1,11 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.attributes.Attributes;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class Field
+public class Field
 {
 	private Fields fields;
 

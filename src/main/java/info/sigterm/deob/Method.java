@@ -1,9 +1,13 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.attributes.AttributeType;
+import info.sigterm.deob.attributes.Attributes;
+import info.sigterm.deob.attributes.Code;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class Method
+public class Method
 {
 	private Methods methods;
 
@@ -27,5 +31,10 @@ class Method
 	public Methods getMethods()
 	{
 		return methods;
+	}
+
+	public Code getCode()
+	{
+		return (Code) attributes.findType(AttributeType.CODE);
 	}
 }

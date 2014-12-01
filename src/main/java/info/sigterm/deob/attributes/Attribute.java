@@ -1,7 +1,5 @@
 package info.sigterm.deob.attributes;
 
-import info.sigterm.deob.Attributes;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -23,6 +21,11 @@ public class Attribute
 	public Attributes getAttributes()
 	{
 		return attributes;
+	}
+
+	public AttributeType getType()
+	{
+		return type;
 	}
 
 	public int getLength()

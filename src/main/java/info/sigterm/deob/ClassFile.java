@@ -1,5 +1,6 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.UTF8;
 
@@ -81,7 +82,6 @@ public class ClassFile
 		if (other == null)
 			return; // inherits from a class not in my group
 
-		assert other != null;
 		assert other != this;
 
 		this.parent = other;

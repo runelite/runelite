@@ -1,8 +1,8 @@
-package info.sigterm.deob;
+package info.sigterm.deob.attributes;
 
-import info.sigterm.deob.attributes.Attribute;
-import info.sigterm.deob.attributes.AttributeType;
-import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.ClassFile;
+import info.sigterm.deob.Field;
+import info.sigterm.deob.Method;
 import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
@@ -19,21 +19,21 @@ public class Attributes
 	private int count;
 	private Attribute[] attributes;
 
-	Attributes(ClassFile cf) throws IOException
+	public Attributes(ClassFile cf) throws IOException
 	{
 		classFile = cf;
 
 		load();
 	}
 
-	Attributes(Field f) throws IOException
+	public Attributes(Field f) throws IOException
 	{
 		field = f;
 
 		load();
 	}
 
-	Attributes(Method m) throws IOException
+	public Attributes(Method m) throws IOException
 	{
 		method = m;
 
@@ -45,6 +45,14 @@ public class Attributes
 		code = c;
 
 		load();
+	}
+
+	public Attribute findType(AttributeType type)
+	{
+		for (Attribute a : attributes)
+			if (a.getType() == type)
+				return a;
+		return null;
 	}
 
 	public ClassFile getClassFile()

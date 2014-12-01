@@ -19,5 +19,4 @@ public class InvokeStatic extends Instruction
 		index = is.readUnsignedShort();
 		length += 2;
 	}
-
 }

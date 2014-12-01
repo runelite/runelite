@@ -1,7 +1,5 @@
 package info.sigterm.deob.attributes;
 
-import info.sigterm.deob.Attributes;
-
 import java.io.DataInputStream;
 import java.io.IOException;
 
