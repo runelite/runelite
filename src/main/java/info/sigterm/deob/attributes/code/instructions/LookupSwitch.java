@@ -37,4 +37,12 @@ public class LookupSwitch extends Instruction
 
 		length += tableSkip + 8 + (count * 8);
 	}
+
+	@Override
+	public void buildJumpGraph()
+	{
+		for (int i : branch)
+			this.addJump(i);
+		this.addJump(def);
+	}
 }

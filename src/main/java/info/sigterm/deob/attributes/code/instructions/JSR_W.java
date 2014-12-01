@@ -20,4 +20,9 @@ public class JSR_W extends Instruction
 		length += 4;
 	}
 
+	@Override
+	public void buildJumpGraph()
+	{
+		this.addJump(offset);
+	}
 }

@@ -35,4 +35,12 @@ public class TableSwitch extends Instruction
 
 		length += tableSkip + 12 + (count * 4);
 	}
+
+	@Override
+	public void buildJumpGraph()
+	{
+		for (int i : jumps)
+			this.addJump(i);
+		this.addJump(def);
+	}
 }

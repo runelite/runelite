@@ -20,4 +20,9 @@ public class Branch extends Instruction
 		length += 2;
 	}
 
+	@Override
+	public void buildJumpGraph()
+	{
+		this.addJump(offset);
+	}
 }

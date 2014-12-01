@@ -43,10 +43,26 @@ public class Instructions
 		}
 
 		assert pc == length;
+
+		buildJumpGraph();
+	}
+
+	private void buildJumpGraph()
+	{
+		for (Instruction i : instructions)
+			i.buildJumpGraph();
 	}
 
 	public Code getCode()
 	{
 		return code;
+	}
+
+	public Instruction findInstruction(int pc)
+	{
+		for (Instruction i : instructions)
+			if (i.getPc() == pc)
+				return i;
+		return null;
 	}
 }
