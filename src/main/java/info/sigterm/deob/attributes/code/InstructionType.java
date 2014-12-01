@@ -1,5 +1,45 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.attributes.code.instructions.ALoad;
+import info.sigterm.deob.attributes.code.instructions.ANewArray;
+import info.sigterm.deob.attributes.code.instructions.AStore;
+import info.sigterm.deob.attributes.code.instructions.BiPush;
+import info.sigterm.deob.attributes.code.instructions.Branch;
+import info.sigterm.deob.attributes.code.instructions.CheckCast;
+import info.sigterm.deob.attributes.code.instructions.DLoad;
+import info.sigterm.deob.attributes.code.instructions.DStore;
+import info.sigterm.deob.attributes.code.instructions.FLoad;
+import info.sigterm.deob.attributes.code.instructions.FStore;
+import info.sigterm.deob.attributes.code.instructions.GetField;
+import info.sigterm.deob.attributes.code.instructions.GetStatic;
+import info.sigterm.deob.attributes.code.instructions.GotoW;
+import info.sigterm.deob.attributes.code.instructions.IInc;
+import info.sigterm.deob.attributes.code.instructions.ILoad;
+import info.sigterm.deob.attributes.code.instructions.IStore;
+import info.sigterm.deob.attributes.code.instructions.IfNonNull;
+import info.sigterm.deob.attributes.code.instructions.IfNull;
+import info.sigterm.deob.attributes.code.instructions.InstanceOf;
+import info.sigterm.deob.attributes.code.instructions.InvokeInterface;
+import info.sigterm.deob.attributes.code.instructions.InvokeSpecial;
+import info.sigterm.deob.attributes.code.instructions.InvokeStatic;
+import info.sigterm.deob.attributes.code.instructions.InvokeVirtual;
+import info.sigterm.deob.attributes.code.instructions.JSR_W;
+import info.sigterm.deob.attributes.code.instructions.LDC;
+import info.sigterm.deob.attributes.code.instructions.LDC2_W;
+import info.sigterm.deob.attributes.code.instructions.LDC_W;
+import info.sigterm.deob.attributes.code.instructions.LLoad;
+import info.sigterm.deob.attributes.code.instructions.LStore;
+import info.sigterm.deob.attributes.code.instructions.LookupSwitch;
+import info.sigterm.deob.attributes.code.instructions.MultiANewArray;
+import info.sigterm.deob.attributes.code.instructions.New;
+import info.sigterm.deob.attributes.code.instructions.NewArray;
+import info.sigterm.deob.attributes.code.instructions.PutField;
+import info.sigterm.deob.attributes.code.instructions.PutStatic;
+import info.sigterm.deob.attributes.code.instructions.Ret;
+import info.sigterm.deob.attributes.code.instructions.SiPush;
+import info.sigterm.deob.attributes.code.instructions.TableSwitch;
+import info.sigterm.deob.attributes.code.instructions.Wide;
+
 public enum InstructionType
 {
 	NOP(0x00, "nop", Instruction.class),

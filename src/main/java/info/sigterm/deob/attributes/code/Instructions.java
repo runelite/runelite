@@ -37,7 +37,6 @@ public class Instructions
 			}
 			catch (java.lang.Exception ex)
 			{
-				System.out.println(type);
 				throw new IOException(ex);
 			}
 		}

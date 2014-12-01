@@ -12,7 +12,7 @@ class Exception
 	private int handlerPc;
 	private int catchType;
 
-	Exception(Exceptions exceptions) throws IOException
+	public Exception(Exceptions exceptions) throws IOException
 	{
 		this.exceptions = exceptions;
 
