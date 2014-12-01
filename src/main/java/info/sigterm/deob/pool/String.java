@@ -1,0 +1,20 @@
+package info.sigterm.deob.pool;
+
+import info.sigterm.deob.ConstantPool;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+
+public class String extends PoolEntry
+{
+	private int stringIndex;
+
+	public String(ConstantPool pool) throws IOException
+	{
+		super(pool, ConstantType.STRING);
+
+		DataInputStream is = pool.getClassFile().getStream();
+
+		stringIndex = is.readUnsignedShort();
+	}
+}
