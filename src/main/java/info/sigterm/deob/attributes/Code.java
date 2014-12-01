@@ -2,6 +2,7 @@ package info.sigterm.deob.attributes;
 
 import info.sigterm.deob.Attributes;
 import info.sigterm.deob.attributes.code.Exceptions;
+import info.sigterm.deob.attributes.code.Instructions;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -10,6 +11,7 @@ public class Code extends Attribute
 {
 	private int maxStack;
 	private int maxLocals;
+	private Instructions instructions;
 	private Exceptions exceptions;
 	private Attributes attributes;
 
@@ -22,8 +24,7 @@ public class Code extends Attribute
 		maxStack = is.readUnsignedShort();
 		maxLocals = is.readUnsignedShort();
 
-		int codeLen = is.readInt();
-		is.skip(codeLen);
+		instructions = new Instructions(this);
 
 		exceptions = new Exceptions(this);
 		attributes = new Attributes(this);
