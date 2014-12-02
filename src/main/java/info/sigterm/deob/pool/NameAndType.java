@@ -31,4 +31,30 @@ public class NameAndType extends PoolEntry
 		UTF8 u = (UTF8) this.getPool().getEntry(descriptorIndex);
 		return u.getValue();
 	}
+
+	public Object getStackObject()
+	{
+		java.lang.String desc = getDescriptor();
+		switch (desc)
+		{
+			case "B":
+				return (byte) 0;
+			case "C":
+				return (char) 0;
+			case "I":
+				return 0;
+			case "S":
+				return null;
+			case "Z":
+				return false;
+			case "D":
+				return 0d;
+			case "F":
+				return 0f;
+			case "L":
+				return 0L;
+			default:
+				return null;
+		}
+	}
 }

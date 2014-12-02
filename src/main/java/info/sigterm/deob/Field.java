@@ -10,6 +10,16 @@ import java.util.ArrayList;
 
 public class Field
 {
+	public static int ACC_PUBLIC = 0x0001;
+	public static int ACC_PRIVATE = 0x0002;
+	public static int ACC_PROTECTED = 0x0004;
+	public static int ACC_STATIC = 0x0008;
+	public static int ACC_FINAL = 0x0010;
+	public static int ACC_VOLATILE = 0x0040;
+	public static int ACC_TRANSIENT = 0x0080;
+	public static int ACC_SYNTHETIC = 0x1000;
+	public static int ACC_ENUM = 0x4000;
+
 	private Fields fields;
 
 	private short accessFlags;
@@ -36,6 +46,11 @@ public class Field
 		return fields;
 	}
 
+	public short getAccessFlags()
+	{
+		return accessFlags;
+	}
+
 	public String getName()
 	{
 		UTF8 u = (UTF8) fields.getClassFile().getPool().getEntry(nameIndex);
@@ -46,6 +61,11 @@ public class Field
 	{
 		UTF8 u = (UTF8) fields.getClassFile().getPool().getEntry(descriptorIndex);
 		return u.getValue();
+	}
+
+	public Attributes getAttributes()
+	{
+		return attributes;
 	}
 
 	public void addReference(Instruction ins)

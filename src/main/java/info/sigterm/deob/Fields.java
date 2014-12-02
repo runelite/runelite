@@ -30,6 +30,11 @@ public class Fields
 		return classFile;
 	}
 
+	public Field[] getFields()
+	{
+		return fields;
+	}
+
 	public Field findField(NameAndType nat)
 	{
 		for (Field f : fields)

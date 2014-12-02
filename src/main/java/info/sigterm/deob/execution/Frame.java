@@ -21,6 +21,11 @@ public class Frame
 		variables = new Variables(code.getMaxLocals());
 	}
 
+	public Path getPath()
+	{
+		return path;
+	}
+
 	public Stack getStack()
 	{
 		return stack;

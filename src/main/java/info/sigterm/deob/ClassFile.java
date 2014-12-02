@@ -70,6 +70,11 @@ public class ClassFile
 		return pool;
 	}
 
+	public Fields getFields()
+	{
+		return fields;
+	}
+
 	public String getName()
 	{
 		Class entry = (Class) pool.getEntry(this_class);

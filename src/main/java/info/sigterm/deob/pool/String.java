@@ -17,4 +17,10 @@ public class String extends PoolEntry
 
 		stringIndex = is.readUnsignedShort();
 	}
+
+	@Override
+	public Object getObject()
+	{
+		return stringIndex;
+	}
 }

@@ -17,4 +17,10 @@ public class Integer extends PoolEntry
 
 		value = is.readInt();
 	}
+
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }

@@ -2,12 +2,17 @@ package info.sigterm.deob.attributes.code.instructions;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.attributes.ConstantValue;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.ClassInstance;
+import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.StaticFieldInstance;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.Field;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.pool.PoolEntry;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -23,6 +28,35 @@ public class GetStatic extends Instruction
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		index = is.readUnsignedShort();
 		length += 2;
+	}
+
+	@Override
+	public void execute(Frame frame)
+	{
+		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
+
+		ConstantPool pool = thisClass.getPool();
+		Field entry = (Field) pool.getEntry(index);
+
+		Class clazz = entry.getClassEntry();
+		NameAndType nat = entry.getNameAndType();
+
+		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());
+		if (cf == null)
+		{
+			Object ovalue = nat.getStackObject();
+			frame.getStack().push(ovalue);
+			return;
+		}
+
+		ClassInstance ci = frame.getPath().getClassInstance(cf);
+		StaticFieldInstance fi = ci.findStaticField(nat);
+		ConstantValue value = fi.getValue();
+
+		PoolEntry pe = value.getValue();
+		Object ovalue = pe.getObject();
+
+		frame.getStack().push(ovalue);
 	}
 
 	@Override

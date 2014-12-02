@@ -22,4 +22,9 @@ public abstract class PoolEntry
 	{
 		return 1;
 	}
+
+	public Object getObject()
+	{
+		throw new RuntimeException("No getObject implemented for " + this);
+	}
 }

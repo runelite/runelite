@@ -17,4 +17,10 @@ public class Float extends PoolEntry
 
 		value = is.readFloat();
 	}
+
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }

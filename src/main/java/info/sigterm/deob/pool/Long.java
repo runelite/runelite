@@ -23,4 +23,10 @@ public class Long extends PoolEntry
 	{
 		return 2;
 	}
+
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }
