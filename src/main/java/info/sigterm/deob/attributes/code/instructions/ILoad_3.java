@@ -5,27 +5,20 @@ import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 
-public class IStore extends Instruction
+public class ILoad_3 extends Instruction
 {
-	private int index;
-
-	public IStore(Instructions instructions, InstructionType type, int pc) throws IOException
+	public ILoad_3(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readByte();
-		length += 1;
 	}
 
 	@Override
 	public void execute(Frame frame)
 	{
-		Object obj = frame.getStack().pop();
+		Object obj = frame.getVariables().get(3);
 		assert obj instanceof Integer;
-		frame.getVariables().set(index, obj);
+		frame.getStack().push(obj);
 	}
 }

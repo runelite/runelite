@@ -1,64 +1,25 @@
 package info.sigterm.deob.attributes.code;
 
-import info.sigterm.deob.attributes.code.instructions.ALoad;
-import info.sigterm.deob.attributes.code.instructions.ANewArray;
-import info.sigterm.deob.attributes.code.instructions.AStore;
-import info.sigterm.deob.attributes.code.instructions.BiPush;
-import info.sigterm.deob.attributes.code.instructions.Branch;
-import info.sigterm.deob.attributes.code.instructions.CheckCast;
-import info.sigterm.deob.attributes.code.instructions.DLoad;
-import info.sigterm.deob.attributes.code.instructions.DStore;
-import info.sigterm.deob.attributes.code.instructions.FLoad;
-import info.sigterm.deob.attributes.code.instructions.FStore;
-import info.sigterm.deob.attributes.code.instructions.GetField;
-import info.sigterm.deob.attributes.code.instructions.GetStatic;
-import info.sigterm.deob.attributes.code.instructions.GotoW;
-import info.sigterm.deob.attributes.code.instructions.IInc;
-import info.sigterm.deob.attributes.code.instructions.ILoad;
-import info.sigterm.deob.attributes.code.instructions.IStore;
-import info.sigterm.deob.attributes.code.instructions.IfNonNull;
-import info.sigterm.deob.attributes.code.instructions.IfNull;
-import info.sigterm.deob.attributes.code.instructions.InstanceOf;
-import info.sigterm.deob.attributes.code.instructions.InvokeDynamic;
-import info.sigterm.deob.attributes.code.instructions.InvokeInterface;
-import info.sigterm.deob.attributes.code.instructions.InvokeSpecial;
-import info.sigterm.deob.attributes.code.instructions.InvokeStatic;
-import info.sigterm.deob.attributes.code.instructions.InvokeVirtual;
-import info.sigterm.deob.attributes.code.instructions.JSR_W;
-import info.sigterm.deob.attributes.code.instructions.LDC;
-import info.sigterm.deob.attributes.code.instructions.LDC2_W;
-import info.sigterm.deob.attributes.code.instructions.LDC_W;
-import info.sigterm.deob.attributes.code.instructions.LLoad;
-import info.sigterm.deob.attributes.code.instructions.LStore;
-import info.sigterm.deob.attributes.code.instructions.LookupSwitch;
-import info.sigterm.deob.attributes.code.instructions.MultiANewArray;
-import info.sigterm.deob.attributes.code.instructions.New;
-import info.sigterm.deob.attributes.code.instructions.NewArray;
-import info.sigterm.deob.attributes.code.instructions.PutField;
-import info.sigterm.deob.attributes.code.instructions.PutStatic;
-import info.sigterm.deob.attributes.code.instructions.Ret;
-import info.sigterm.deob.attributes.code.instructions.SiPush;
-import info.sigterm.deob.attributes.code.instructions.TableSwitch;
-import info.sigterm.deob.attributes.code.instructions.Wide;
+import info.sigterm.deob.attributes.code.instructions.*;
 
 public enum InstructionType
 {
-	NOP(0x00, "nop", Instruction.class),
-	ACONST_NULL(0x01, "aconst_null", Instruction.class),
-	ICONST_M1(0x02, "iconst_m1", Instruction.class),
-	ICONST_0(0x03, "iconst_0", Instruction.class),
-	ICONST_1(0x04, "iconst_1", Instruction.class),
-	ICONST_2(0x05, "iconst_2", Instruction.class),
-	ICONST_3(0x06, "iconst_3", Instruction.class),
-	ICONST_4(0x07, "iconst_4", Instruction.class),
-	ICONST_5(0x08, "iconst_5", Instruction.class),
-	LCONST_0(0x09, "lconst_0", Instruction.class),
-	LCONST_1(0x0a, "lconst_1", Instruction.class),
-	FCONST_0(0x0b, "fconst_0", Instruction.class),
-	FCONST_1(0x0c, "fconst_1", Instruction.class),
-	FCONST_2(0x0d, "fconst_2", Instruction.class),
-	DCONST_0(0x0e, "dconst_0", Instruction.class),
-	DCONST_1(0x0f, "dconst_1", Instruction.class),
+	NOP(0x00, "nop", NOP.class),
+	ACONST_NULL(0x01, "aconst_null", AConstNull.class),
+	ICONST_M1(0x02, "iconst_m1", IConst_M1.class),
+	ICONST_0(0x03, "iconst_0", IConst_0.class),
+	ICONST_1(0x04, "iconst_1", IConst_1.class),
+	ICONST_2(0x05, "iconst_2", IConst_2.class),
+	ICONST_3(0x06, "iconst_3", IConst_3.class),
+	ICONST_4(0x07, "iconst_4", IConst_4.class),
+	ICONST_5(0x08, "iconst_5", IConst_5.class),
+	LCONST_0(0x09, "lconst_0", LConst_0.class),
+	LCONST_1(0x0a, "lconst_1", LConst_1.class),
+	FCONST_0(0x0b, "fconst_0", FConst_0.class),
+	FCONST_1(0x0c, "fconst_1", FConst_1.class),
+	FCONST_2(0x0d, "fconst_2", FConst_2.class),
+	DCONST_0(0x0e, "dconst_0", DConst_0.class),
+	DCONST_1(0x0f, "dconst_1", DConst_1.class),
 	BIPUSH(0x10, "bipush", BiPush.class),
 	SIPUSH(0x11, "sipush", SiPush.class),
 	LDC(0x12, "ldc", LDC.class),
@@ -69,26 +30,26 @@ public enum InstructionType
 	FLOAD(0x17, "fload", FLoad.class),
 	DLOAD(0x18, "dload", DLoad.class),
 	ALOAD(0x19, "aload", ALoad.class),
-	ILOAD_0(0x1a, "iload_0", Instruction.class),
-	ILOAD_1(0x1b, "iload_1", Instruction.class),
-	ILOAD_2(0x1c, "iload_2", Instruction.class),
-	ILOAD_3(0x1d, "iload_3", Instruction.class),
-	LLOAD_0(0x1e, "lload_0", Instruction.class),
-	LLOAD_1(0x1f, "lload_1", Instruction.class),
-	LLOAD_2(0x20, "lload_2", Instruction.class),
-	LLOAD_3(0x21, "lload_3", Instruction.class),
-	FLOAD_0(0x22, "fload_0", Instruction.class),
-	FLOAD_1(0x23, "fload_1", Instruction.class),
-	FLOAD_2(0x24, "fload_2", Instruction.class),
-	FLOAD_3(0x25, "fload_3", Instruction.class),
-	DLOAD_0(0x26, "dload_0", Instruction.class),
-	DLOAD_1(0x27, "dload_1", Instruction.class),
-	DLOAD_2(0x28, "dload_2", Instruction.class),
-	DLOAD_3(0x29, "dload_3", Instruction.class),
-	ALOAD_0(0x2a, "aload_0", Instruction.class),
-	ALOAD_1(0x2b, "aload_1", Instruction.class),
-	ALOAD_2(0x2c, "aload_2", Instruction.class),
-	ALOAD_3(0x2d, "aload_3", Instruction.class),
+	ILOAD_0(0x1a, "iload_0", ILoad_0.class),
+	ILOAD_1(0x1b, "iload_1", ILoad_1.class),
+	ILOAD_2(0x1c, "iload_2", ILoad_2.class),
+	ILOAD_3(0x1d, "iload_3", ILoad_3.class),
+	LLOAD_0(0x1e, "lload_0", LLoad_0.class),
+	LLOAD_1(0x1f, "lload_1", LLoad_1.class),
+	LLOAD_2(0x20, "lload_2", LLoad_2.class),
+	LLOAD_3(0x21, "lload_3", LLoad_3.class),
+	FLOAD_0(0x22, "fload_0", FLoad_0.class),
+	FLOAD_1(0x23, "fload_1", FLoad_1.class),
+	FLOAD_2(0x24, "fload_2", FLoad_2.class),
+	FLOAD_3(0x25, "fload_3", FLoad_3.class),
+	DLOAD_0(0x26, "dload_0", DLoad_0.class),
+	DLOAD_1(0x27, "dload_1", DLoad_1.class),
+	DLOAD_2(0x28, "dload_2", DLoad_2.class),
+	DLOAD_3(0x29, "dload_3", DLoad_3.class),
+	ALOAD_0(0x2a, "aload_0", ALoad_0.class),
+	ALOAD_1(0x2b, "aload_1", ALoad_1.class),
+	ALOAD_2(0x2c, "aload_2", ALoad_2.class),
+	ALOAD_3(0x2d, "aload_3", ALoad_3.class),
 	IALOAD(0x2e, "iaload", Instruction.class),
 	LALOAD(0x2f, "laload", Instruction.class),
 	FALOAD(0x30, "faload", Instruction.class),
@@ -102,26 +63,26 @@ public enum InstructionType
 	FSTORE(0x38, "fstore", FStore.class),
 	DSTORE(0x39, "dstore", DStore.class),
 	ASTORE(0x3a, "astore", AStore.class),
-	ISTORE_0(0x3b, "istore_0", Instruction.class),
-	ISTORE_1(0x3c, "istore_1", Instruction.class),
-	ISTORE_2(0x3d, "istore_2", Instruction.class),
-	ISTORE_3(0x3e, "istore_3", Instruction.class),
-	LSTORE_0(0x3f, "lstore_0", Instruction.class),
-	LSTORE_1(0x40, "lstore_1", Instruction.class),
-	LSTORE_2(0x41, "lstore_2", Instruction.class),
-	LSTORE_3(0x42, "lstore_3", Instruction.class),
-	FSTORE_0(0x43, "fstore_0", Instruction.class),
-	FSTORE_1(0x44, "fstore_1", Instruction.class),
-	FSTORE_2(0x45, "fstore_2", Instruction.class),
-	FSTORE_3(0x46, "fstore_3", Instruction.class),
-	DST0RE_0(0x47, "dstore_0", Instruction.class),
-	DSTORE_1(0x48, "dstore_1", Instruction.class),
-	DSTORE_2(0x49, "dstore_2", Instruction.class),
-	DSTORE_3(0x4a, "dstore_3", Instruction.class),
-	ASTORE_0(0x4b, "astore_0", Instruction.class),
-	ASTORE_1(0x4c, "astore_1", Instruction.class),
-	ASTORE_2(0x4d, "astore_2", Instruction.class),
-	ASTORE_3(0x4e, "astore_3", Instruction.class),
+	ISTORE_0(0x3b, "istore_0", IStore_0.class),
+	ISTORE_1(0x3c, "istore_1", IStore_1.class),
+	ISTORE_2(0x3d, "istore_2", IStore_2.class),
+	ISTORE_3(0x3e, "istore_3", IStore_3.class),
+	LSTORE_0(0x3f, "lstore_0", LStore_0.class),
+	LSTORE_1(0x40, "lstore_1", LStore_1.class),
+	LSTORE_2(0x41, "lstore_2", LStore_2.class),
+	LSTORE_3(0x42, "lstore_3", LStore_3.class),
+	FSTORE_0(0x43, "fstore_0", FStore_0.class),
+	FSTORE_1(0x44, "fstore_1", FStore_1.class),
+	FSTORE_2(0x45, "fstore_2", FStore_2.class),
+	FSTORE_3(0x46, "fstore_3", FStore_3.class),
+	DST0RE_0(0x47, "dstore_0", DStore_0.class),
+	DSTORE_1(0x48, "dstore_1", DStore_1.class),
+	DSTORE_2(0x49, "dstore_2", DStore_2.class),
+	DSTORE_3(0x4a, "dstore_3", DStore_3.class),
+	ASTORE_0(0x4b, "astore_0", AStore_0.class),
+	ASTORE_1(0x4c, "astore_1", AStore_1.class),
+	ASTORE_2(0x4d, "astore_2", AStore_2.class),
+	ASTORE_3(0x4e, "astore_3", AStore_3.class),
 	IASTORE(0x4f, "iastore", Instruction.class),
 	LASTORE(0x50, "lastore", Instruction.class),
 	FASTORE(0x51, "fastore", Instruction.class),
@@ -130,8 +91,8 @@ public enum InstructionType
 	BASTORE(0x54, "bastore", Instruction.class),
 	CASTORE(0x55, "castore", Instruction.class),
 	SASTORE(0x56, "sastore", Instruction.class),
-	POP(0x57, "pop", Instruction.class),
-	POP2(0x58, "pop2", Instruction.class),
+	POP(0x57, "pop", Pop.class),
+	POP2(0x58, "pop2", Pop2.class),
 	DUP(0x59, "dup", Instruction.class),
 	DUP_X1(0x5a, "dup_x1", Instruction.class),
 	DUP_X2(0x5b, "dup_x2", Instruction.class),
@@ -147,7 +108,7 @@ public enum InstructionType
 	LSUB(0x65, "lsub", Instruction.class),
 	FSUB(0x66, "fsub", Instruction.class),
 	DSUB(0x67, "dsub", Instruction.class),
-	IMUL(0x68, "imul", Instruction.class),
+	IMUL(0x68, "imul", IMul.class),
 	LMUL(0x69, "lmul", Instruction.class),
 	FMUL(0x6a, "fmul", Instruction.class),
 	DMUL(0x6b, "dmul", Instruction.class),

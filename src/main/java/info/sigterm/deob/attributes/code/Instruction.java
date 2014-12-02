@@ -1,10 +1,10 @@
 package info.sigterm.deob.attributes.code;
 
-import info.sigterm.deob.execution.Execution;
+import info.sigterm.deob.execution.Frame;
 
 import java.util.ArrayList;
 
-public class Instruction
+public abstract class Instruction
 {
 	private Instructions instructions;
 	private InstructionType type;
@@ -55,7 +55,6 @@ public class Instruction
 	{
 	}
 
-	public void execute(Execution e)
-	{
-	}
+	//public abstract void execute(Frame e);
+	public void execute(Frame e) { }
 }

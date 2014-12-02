@@ -1,7 +1,9 @@
 package info.sigterm.deob.attributes;
 
 import info.sigterm.deob.attributes.code.Exceptions;
+import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -42,5 +44,11 @@ public class Code extends Attribute
 	public void buildInstructionGraph()
 	{
 		instructions.buildInstructionGraph();
+	}
+
+	public void execute(Frame frame)
+	{
+		Instruction i = instructions.getFirstInstruction();
+		i.execute(frame);
 	}
 }
