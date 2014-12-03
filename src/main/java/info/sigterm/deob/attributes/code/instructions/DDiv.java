@@ -6,9 +6,9 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.Stack;
 
-public class IMul extends Instruction
+public class DDiv extends Instruction
 {
-	public IMul(Instructions instructions, InstructionType type, int pc)
+	public DDiv(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
@@ -18,9 +18,9 @@ public class IMul extends Instruction
 	{
 		Stack stack = frame.getStack();
 		
-		Integer two = (Integer) stack.pop();
-		Integer one = (Integer) stack.pop();
+		Double two = (Double) stack.pop();
+		Double one = (Double) stack.pop();
 		
-		stack.push(one * two);
+		stack.push(one / two);
 	}
 }
