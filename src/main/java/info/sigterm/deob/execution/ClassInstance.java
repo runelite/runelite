@@ -29,7 +29,7 @@ public class ClassInstance
 				Attributes attributes = field.getAttributes();
 				ConstantValue cv = (ConstantValue) attributes.findType(AttributeType.CONSTANT_VALUE);
 
-				StaticFieldInstance fi = new StaticFieldInstance(field, cv);
+				StaticFieldInstance fi = new StaticFieldInstance(this, field, cv);
 				this.fields.add(fi);
 			}
 	}

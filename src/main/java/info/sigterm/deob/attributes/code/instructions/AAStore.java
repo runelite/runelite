@@ -3,7 +3,9 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.ArrayInstance;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.ObjectInstance;
 import info.sigterm.deob.execution.Stack;
 
 public class AAStore extends Instruction
@@ -18,10 +20,10 @@ public class AAStore extends Instruction
 	{
 		Stack stack = frame.getStack();
 		
-		Object value = stack.pop();
+		ObjectInstance value = (ObjectInstance) stack.pop();
 		int index = (int) stack.pop();
-		Object[] array = (Object[]) stack.pop();
+		ArrayInstance array = (ArrayInstance) stack.pop();
 		
-		array[index] = value;
+		array.put(value, index);
 	}
 }

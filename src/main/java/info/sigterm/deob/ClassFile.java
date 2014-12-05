@@ -117,4 +117,9 @@ public class ClassFile
 	{
 		methods.buildInstructionGraph();
 	}
+	
+	public boolean instanceOf(ClassFile other)
+	{
+		return this == other || interfaces.instanceOf(other) || (getParent() != null && getParent().instanceOf(other));
+	}
 }

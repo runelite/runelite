@@ -1,5 +1,7 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.pool.Class;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -21,5 +23,17 @@ public class Interfaces
 
 		for (int i = 0; i < count; ++i)
 			interfaces[i] = is.readUnsignedShort();
+	}
+	
+	public boolean instanceOf(ClassFile cf)
+	{
+		for (int i : interfaces)
+		{
+			Class clazz = (Class) classFile.getPool().getEntry(i);
+			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
+			if (iface.instanceOf(cf))
+				return true;
+		}
+		return false;
 	}
 }

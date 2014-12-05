@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -20,4 +21,10 @@ public class LStore extends Instruction
 		length += 1;
 	}
 
+	@Override
+	public void execute(Frame frame)
+	{
+		long l = (long) frame.getStack().pop();
+		frame.getVariables().set(index, l);
+	}
 }

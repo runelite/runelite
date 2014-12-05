@@ -9,11 +9,21 @@ public class Path
 {
 	private Execution execution;
 	private ArrayList<ClassInstance> classes = new ArrayList<ClassInstance>();
+	private ArrayList<ObjectInstance> objects = new ArrayList<ObjectInstance>();
 	private java.util.Stack<Frame> frames = new java.util.Stack<Frame>(); // current execution frames
 
 	public Path(Execution execution)
 	{
 		this.execution = execution;
+	}
+	
+	private Path(Path other)
+	{
+		this.execution = other.execution;
+		this.classes = new ArrayList<ClassInstance>(other.classes);
+		this.objects = new ArrayList<ObjectInstance>(other.objects);
+		this.frames = new java.util.Stack<Frame>();
+		this.frames.addAll(other.frames);
 	}
 
 	public Execution getExecution()
@@ -37,11 +47,35 @@ public class Path
 
 		return cl;
 	}
+	
+	public ObjectInstance createObject(ClassInstance type)
+	{
+		ObjectInstance obj = new ObjectInstance(this, type);
+		objects.add(obj);
+		return obj;
+	}
+	
+	public ArrayInstance createArray(ClassInstance type, int len)
+	{
+		return new ArrayInstance(this, type, len);
+	}
+	
+	public Frame getCurrentFrame()
+	{
+		return frames.peek();
+	}
 
 	public void init(Method method, Object[] args)
 	{
 		Frame f = new Frame(this, method);
 		frames.push(f);
-		f.init(method, args);
+		f.init(args);
+	}
+	
+	public Path dup()
+	{
+		Path other = new Path(this);
+		execution.addPath(other);
+		return other;
 	}
 }

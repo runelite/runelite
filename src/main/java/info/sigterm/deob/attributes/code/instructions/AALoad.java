@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.ArrayInstance;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.Stack;
 
@@ -19,8 +20,8 @@ public class AALoad extends Instruction
 		Stack stack = frame.getStack();
 		
 		int index = (int) stack.pop();
-		Object[] array = (Object[]) stack.pop();
+		ArrayInstance array = (ArrayInstance) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(array.get(index));
 	}
 }

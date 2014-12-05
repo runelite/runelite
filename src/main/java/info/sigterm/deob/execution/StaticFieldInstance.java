@@ -5,11 +5,13 @@ import info.sigterm.deob.attributes.ConstantValue;
 
 public class StaticFieldInstance
 {
+	private ClassInstance clazz;
 	private Field field;
 	private ConstantValue value;
 
-	public StaticFieldInstance(Field field, ConstantValue value)
+	public StaticFieldInstance(ClassInstance clazz, Field field, ConstantValue value)
 	{
+		this.clazz = clazz;
 		this.field = field;
 		this.value = value;
 	}

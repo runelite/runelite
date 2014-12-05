@@ -20,4 +20,9 @@ public class Execution
 		Path p = new Path(this);
 		p.init(method, args);
 	}
+	
+	public void addPath(Path p)
+	{
+		paths.add(p);
+	}
 }

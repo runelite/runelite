@@ -63,12 +63,7 @@ public class Instructions
 	{
 		return code;
 	}
-
-	public Instruction getFirstInstruction()
-	{
-		return instructions.get(0);
-	}
-
+	
 	public Instruction findInstruction(int pc)
 	{
 		for (Instruction i : instructions)

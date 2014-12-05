@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -24,5 +25,11 @@ public class GotoW extends Instruction
 	public void buildJumpGraph()
 	{
 		this.addJump(offset);
+	}
+	
+	@Override
+	public void execute(Frame e)
+	{
+		e.jump(offset);
 	}
 }

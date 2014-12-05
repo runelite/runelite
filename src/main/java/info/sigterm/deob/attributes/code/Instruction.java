@@ -55,6 +55,5 @@ public abstract class Instruction
 	{
 	}
 
-	//public abstract void execute(Frame e);
-	public void execute(Frame e) { }
+	public abstract void execute(Frame e);
 }

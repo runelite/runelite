@@ -2,11 +2,15 @@ package info.sigterm.deob.execution;
 
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.attributes.code.Instructions;
 
 public class Frame
 {
 	private Path path;
 	private Method method;
+	private boolean executing = true;
+	private int pc;
 	private Stack stack;
 	private Variables variables;
 
@@ -36,12 +40,38 @@ public class Frame
 		return variables;
 	}
 
-	public void init(Method method, Object[] args)
+	public void init(Object[] args)
 	{
 		for (Object o : args)
 			stack.push(o);
 
-		Code code = method.getCode();
-		code.execute(this);
+		execute();
+	}
+	
+	public void execute()
+	{
+		Instructions ins = method.getCode().getInstructions();
+		while (executing)
+		{
+			int oldPc = pc;
+			
+			Instruction i = ins.findInstruction(pc);
+			i.execute(this);
+			
+			if (oldPc == pc)
+			{
+				pc += i.getLength();
+			}
+			else
+			{
+				/* jump */
+			}
+		}
+	}
+	
+	public void jump(int offset)
+	{
+		assert offset != 0;
+		pc += offset;
 	}
 }
