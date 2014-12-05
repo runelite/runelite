@@ -48,20 +48,4 @@ public class Code extends Attribute
 	{
 		instructions.buildInstructionGraph();
 	}
-
-	/*
-	public void execute(Frame frame)
-	{
-		int pc = 0;
-		
-		while (exeuting)
-		{
-			Instruction i = instructions.findInstruction(pc);
-			i.execute(frame);
-		}
-	}
-	
-	public void jump(int offset)
-	{
-	}*/
 }

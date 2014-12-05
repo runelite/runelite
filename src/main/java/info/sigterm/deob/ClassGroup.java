@@ -21,6 +21,7 @@ public class ClassGroup
 
 	public ClassFile findClass(String name)
 	{
+		// XXX handle arrays
 		for (ClassFile c : classes)
 			if (c.getName().equals(name))
 				return c;
