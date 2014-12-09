@@ -7,13 +7,13 @@ public class StaticFieldInstance
 {
 	private ClassInstance clazz;
 	private Field field;
-	private ConstantValue value;
+	private Object value;
 
 	public StaticFieldInstance(ClassInstance clazz, Field field, ConstantValue value)
 	{
 		this.clazz = clazz;
 		this.field = field;
-		this.value = value;
+		this.value = value.getValue().getObject();
 	}
 
 	public Field getField()
@@ -21,8 +21,13 @@ public class StaticFieldInstance
 		return field;
 	}
 
-	public ConstantValue getValue()
+	public Object getValue()
 	{
 		return value;
+	}
+	
+	public void setField(Object obj)
+	{
+		value = obj;
 	}
 }

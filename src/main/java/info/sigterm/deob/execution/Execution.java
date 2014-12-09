@@ -18,7 +18,7 @@ public class Execution
 	public void run(Method method, Object... args)
 	{
 		Path p = new Path(this);
-		p.init(method, args);
+		p.invoke(method, args);
 	}
 	
 	public void addPath(Path p)

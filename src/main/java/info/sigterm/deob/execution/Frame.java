@@ -39,14 +39,6 @@ public class Frame
 	{
 		return variables;
 	}
-
-	public void init(Object[] args)
-	{
-		for (Object o : args)
-			stack.push(o);
-
-		execute();
-	}
 	
 	public void execute()
 	{

@@ -2,7 +2,6 @@ package info.sigterm.deob.attributes.code.instructions;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ConstantPool;
-import info.sigterm.deob.attributes.ConstantValue;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -12,7 +11,6 @@ import info.sigterm.deob.execution.StaticFieldInstance;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.Field;
 import info.sigterm.deob.pool.NameAndType;
-import info.sigterm.deob.pool.PoolEntry;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -51,10 +49,7 @@ public class GetStatic extends Instruction
 
 		ClassInstance ci = frame.getPath().getClassInstance(cf);
 		StaticFieldInstance fi = ci.findStaticField(nat);
-		ConstantValue value = fi.getValue();
-
-		PoolEntry pe = value.getValue();
-		Object ovalue = pe.getObject();
+		Object ovalue = fi.getValue();
 
 		frame.getStack().push(ovalue);
 	}

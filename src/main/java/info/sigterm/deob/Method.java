@@ -3,6 +3,7 @@ package info.sigterm.deob;
 import info.sigterm.deob.attributes.AttributeType;
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -31,6 +32,18 @@ public class Method
 	public Methods getMethods()
 	{
 		return methods;
+	}
+	
+	public String getName()
+	{
+		UTF8 u = (UTF8) methods.getClassFile().getPool().getEntry(nameIndex);
+		return u.getValue();
+	}
+
+	public String getDescriptor()
+	{
+		UTF8 u = (UTF8) methods.getClassFile().getPool().getEntry(descriptorIndex);
+		return u.getValue();
 	}
 
 	public Code getCode()

@@ -1,5 +1,7 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.pool.NameAndType;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
@@ -26,6 +28,14 @@ public class Methods
 	public ClassFile getClassFile()
 	{
 		return classFile;
+	}
+	
+	public Method findMethod(NameAndType nat)
+	{
+		for (Method m : methods)
+			if (m.getName().equals(nat.getName()) && m.getDescriptor().equals(nat.getDescriptor()))
+				return m;
+		return null;
 	}
 
 	public void buildInstructionGraph()

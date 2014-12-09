@@ -188,7 +188,6 @@ public enum InstructionType
 	INVOKESPECIAL(0xb7, "invokespecial", InvokeSpecial.class),
 	INVOKESTATIC(0xb8, "invokestatic", InvokeStatic.class),
 	INVOKEINTERFACE(0xb9, "invokeinterface", InvokeInterface.class),
-	INVOKEDYNAMIC(0xba, "invokedynamic", InvokeDynamic.class),
 	NEW(0xbb, "new", New.class),
 	NEWARRAY(0xbc, "newarray", NewArray.class),
 	ANEWARRAY(0xbd, "anewarray", ANewArray.class),

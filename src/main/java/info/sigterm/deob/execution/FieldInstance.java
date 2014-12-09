@@ -24,4 +24,9 @@ public class FieldInstance
 	{
 		return value;
 	}
+	
+	public void setValue(Object obj)
+	{
+		value = obj;
+	}
 }

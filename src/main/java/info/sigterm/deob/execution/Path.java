@@ -64,18 +64,21 @@ public class Path
 	{
 		return frames.peek();
 	}
-
-	public void init(Method method, Object[] args)
-	{
-		Frame f = new Frame(this, method);
-		frames.push(f);
-		f.init(args);
-	}
 	
 	public Path dup()
 	{
 		Path other = new Path(this);
 		execution.addPath(other);
 		return other;
+	}
+	
+	public void invoke(Method method, Object[] args)
+	{
+		Frame f = new Frame(this, method);
+		Variables vars = f.getVariables();
+		for (int i = 0; i < args.length; ++i)
+			vars.set(i, args[i]);
+		frames.push(f);
+		f.execute();
 	}
 }

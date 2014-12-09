@@ -102,6 +102,19 @@ public class ClassFile
 
 		return null;
 	}
+	
+	public Method findMethod(NameAndType nat)
+	{
+		Method m = methods.findMethod(nat);
+		if (m != null)
+			return m;
+
+		ClassFile parent = getParent();
+		if (parent != null)
+			return parent.findMethod(nat);
+
+		return null;
+	}
 
 	public void buildClassGraph()
 	{
