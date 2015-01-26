@@ -49,6 +49,10 @@ public class Frame
 			
 			Instruction i = ins.findInstruction(pc);
 			
+			String desc = i.getDesc(this);
+			if (desc != null)
+				System.out.println(desc);
+			
 			try
 			{
 				i.execute(this);

@@ -43,6 +43,12 @@ public class UTF8 extends PoolEntry
 
 	public java.lang.String getValue()
 	{
+		return (java.lang.String) getObject();
+	}
+	
+	@Override
+	public Object getObject()
+	{
 		return sb.toString();
 	}
 }

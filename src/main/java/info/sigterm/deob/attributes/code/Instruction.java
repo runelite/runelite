@@ -36,6 +36,11 @@ public abstract class Instruction
 	{
 		return length;
 	}
+	
+	public String getDesc(Frame frame)
+	{
+		return null;
+	}
 
 	protected void addJump(int offset)
 	{

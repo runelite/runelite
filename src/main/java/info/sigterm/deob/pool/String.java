@@ -21,6 +21,6 @@ public class String extends PoolEntry
 	@Override
 	public Object getObject()
 	{
-		return stringIndex;
+		return this.getPool().getEntry(stringIndex).getObject();
 	}
 }

@@ -40,6 +40,13 @@ public class InvokeStatic extends Instruction
 		for (int i = count - 1; i >= 0; --i)
 			args[i] = e.getStack().pop();
 		
+		if (otherClass == null)
+		{
+			System.out.println("invokestatic for nonexistant class " + clazz.getName());
+			e.getStack().push(this, null);
+			return;
+		}
+		
 		info.sigterm.deob.Method meth = otherClass.findMethod(method.getNameAndType());
 		e.getPath().invoke(meth, args);
 	}

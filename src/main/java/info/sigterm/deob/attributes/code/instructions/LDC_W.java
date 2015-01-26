@@ -30,4 +30,14 @@ public class LDC_W extends Instruction
 		PoolEntry entry = thisClass.getPool().getEntry(index);
 		frame.getStack().push(this, entry.getObject());
 	}
+	
+	
+	@Override
+	public String getDesc(Frame frame)
+	{
+		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
+		PoolEntry entry = thisClass.getPool().getEntry(index);
+		
+		return "ldc_w " + entry.getObject();
+	}
 }
