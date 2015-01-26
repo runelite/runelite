@@ -18,7 +18,6 @@ public class AStore_1 extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getStack().pop();
-		assert obj != null;
 		frame.getVariables().set(1, obj);
 	}
 }

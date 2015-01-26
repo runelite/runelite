@@ -39,7 +39,13 @@ public class GetField extends Instruction
 
 		NameAndType nat = entry.getNameAndType();
 		
+		if (object == null)
+		{
+			frame.getStack().push(this, null);
+			return;
+		}
+		
 		FieldInstance field = object.getField(nat);
-		frame.getStack().push(field.getValue());
+		frame.getStack().push(this, field.getValue());
 	}
 }

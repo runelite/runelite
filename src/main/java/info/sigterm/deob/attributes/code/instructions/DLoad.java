@@ -25,6 +25,6 @@ public class DLoad extends Instruction
 	public void execute(Frame frame)
 	{
 		double d = (double) frame.getVariables().get(index);
-		frame.getStack().push(d);
+		frame.getStack().push(this, d);
 	}
 }

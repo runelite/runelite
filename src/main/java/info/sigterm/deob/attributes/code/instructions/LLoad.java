@@ -25,6 +25,6 @@ public class LLoad extends Instruction
 	public void execute(Frame frame)
 	{
 		long l = (long) frame.getVariables().get(index);
-		frame.getStack().push(l);
+		frame.getStack().push(this, l);
 	}
 }

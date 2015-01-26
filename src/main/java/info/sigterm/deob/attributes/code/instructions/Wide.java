@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -31,6 +32,12 @@ public class Wide extends Instruction
 			value = is.readUnsignedShort();
 			length += 2;
 		}
+	}
+
+	@Override
+	public void execute(Frame e)
+	{
+		throw new UnsupportedOperationException("wide not supported");
 	}
 
 }

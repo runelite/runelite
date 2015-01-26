@@ -20,6 +20,6 @@ public class LUShR extends Instruction
 		
 		Long two = (Long) stack.pop();
 		Long one = (Long) stack.pop();
-		stack.push(one >>> (two & 0x3F));
+		stack.push(this, one >>> (two & 0x3F));
 	}
 }

@@ -21,6 +21,6 @@ public class BALoad extends Instruction
 		int index = (int) stack.pop();
 		boolean[] array = (boolean[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

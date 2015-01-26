@@ -24,6 +24,6 @@ public class L2I extends Instruction
 		assert obj instanceof Long;
 
 		Long l = (Long) obj;
-		stack.push(l.intValue());
+		stack.push(this, l.intValue());
 	}
 }

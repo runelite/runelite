@@ -19,6 +19,6 @@ public class LLoad_1 extends Instruction
 	{
 		Object obj = frame.getVariables().get(1);
 		assert obj instanceof Long;
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
 	}
 }

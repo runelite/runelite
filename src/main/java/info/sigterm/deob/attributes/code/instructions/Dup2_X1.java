@@ -27,13 +27,13 @@ public class Dup2_X1 extends Instruction
 		Object three = stack.pop();
 
 		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(two);
-		stack.push(one);
+			stack.push(this, two);
+		stack.push(this, one);
 
-		stack.push(three);
+		stack.push(this, three);
 
 		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(two);
-		stack.push(one);
+			stack.push(this, two);
+		stack.push(this, one);
 	}
 }

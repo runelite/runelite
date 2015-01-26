@@ -21,6 +21,6 @@ public class IRem extends Instruction
 		Integer two = (Integer) stack.pop();
 		Integer one = (Integer) stack.pop();
 		
-		stack.push(one % two);
+		stack.push(this, one % two);
 	}
 }

@@ -21,6 +21,6 @@ public class SALoad extends Instruction
 		int index = (int) stack.pop();
 		short[] array = (short[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

@@ -25,6 +25,6 @@ public class ALoad extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getVariables().get(index);
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
 	}
 }

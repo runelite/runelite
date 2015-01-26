@@ -30,15 +30,15 @@ public class Dup2_X2 extends Instruction
 			four = stack.pop();
 
 		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(two);
-		stack.push(one);
+			stack.push(this, two);
+		stack.push(this, one);
 
 		if (!(three instanceof Double) && !(three instanceof Long))
-			stack.push(four);
-		stack.push(three);
+			stack.push(this, four);
+		stack.push(this, three);
 
 		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(two);
-		stack.push(one);
+			stack.push(this, two);
+		stack.push(this, one);
 	}
 }

@@ -19,6 +19,6 @@ public class IConst_M1 extends Instruction
 	public void execute(Frame frame)
 	{
 		Stack stack = frame.getStack();
-		stack.push(-1);
+		stack.push(this, -1);
 	}
 }

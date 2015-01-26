@@ -24,6 +24,6 @@ public class SiPush extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
-		frame.getStack().push(s);
+		frame.getStack().push(this, s);
 	}
 }

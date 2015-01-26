@@ -20,6 +20,6 @@ public class IUShR extends Instruction
 		
 		Integer two = (Integer) stack.pop();
 		Integer one = (Integer) stack.pop();
-		stack.push(one >>> (two & 0x1F));
+		stack.push(this, one >>> (two & 0x1F));
 	}
 }

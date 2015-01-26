@@ -43,7 +43,7 @@ public class GetStatic extends Instruction
 		if (cf == null)
 		{
 			Object ovalue = nat.getStackObject();
-			frame.getStack().push(ovalue);
+			frame.getStack().push(this, ovalue);
 			return;
 		}
 
@@ -51,7 +51,7 @@ public class GetStatic extends Instruction
 		StaticFieldInstance fi = ci.findStaticField(nat);
 		Object ovalue = fi.getValue();
 
-		frame.getStack().push(ovalue);
+		frame.getStack().push(this, ovalue);
 	}
 
 	@Override

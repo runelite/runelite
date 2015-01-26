@@ -21,7 +21,7 @@ public class Swap extends Instruction
 		Object one = stack.pop();
 		Object two = stack.pop();
 		
-		stack.push(one);
-		stack.push(two);
+		stack.push(this, one);
+		stack.push(this, two);
 	}
 }

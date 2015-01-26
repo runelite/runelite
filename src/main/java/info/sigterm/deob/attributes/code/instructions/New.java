@@ -33,12 +33,12 @@ public class New extends Instruction
 		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());
 		if (cf == null)
 		{
-			e.getStack().push(null);
+			e.getStack().push(this, null);
 			return;
 		}
 		
 		ClassInstance type = e.getPath().getClassInstance(cf);
 		ObjectInstance obj = e.getPath().createObject(type);
-		e.getStack().push(obj);
+		e.getStack().push(this, obj);
 	}
 }

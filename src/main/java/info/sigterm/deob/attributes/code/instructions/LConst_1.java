@@ -19,6 +19,6 @@ public class LConst_1 extends Instruction
 	public void execute(Frame frame)
 	{
 		Stack stack = frame.getStack();
-		stack.push(1L);
+		stack.push(this, 1L);
 	}
 }

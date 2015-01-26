@@ -21,6 +21,6 @@ public class CALoad extends Instruction
 		int index = (int) stack.pop();
 		char[] array = (char[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

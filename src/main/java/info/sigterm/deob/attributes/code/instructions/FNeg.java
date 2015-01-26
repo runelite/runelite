@@ -19,6 +19,6 @@ public class FNeg extends Instruction
 		Stack stack = frame.getStack();
 		
 		Float value = (Float) stack.pop();
-		stack.push(-value);
+		stack.push(this, -value);
 	}
 }

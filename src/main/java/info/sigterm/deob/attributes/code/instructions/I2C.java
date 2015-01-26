@@ -24,6 +24,6 @@ public class I2C extends Instruction
 		assert obj instanceof Integer;
 
 		Integer i = (Integer) obj;
-		stack.push((char) i.intValue());
+		stack.push(this, (char) i.intValue());
 	}
 }

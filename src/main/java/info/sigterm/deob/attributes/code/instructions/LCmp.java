@@ -24,10 +24,10 @@ public class LCmp extends Instruction
 		Long two = (Long) stack.pop();
 
 		if (one > two)
-			stack.push(1);
+			stack.push(this, 1);
 		else if (one < two)
-			stack.push(-1);
+			stack.push(this, -1);
 		else
-			stack.push(0);
+			stack.push(this, 0);
 	}
 }

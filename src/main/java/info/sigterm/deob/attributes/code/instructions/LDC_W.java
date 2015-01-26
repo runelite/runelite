@@ -28,6 +28,6 @@ public class LDC_W extends Instruction
 	{
 		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
 		PoolEntry entry = thisClass.getPool().getEntry(index);
-		frame.getStack().push(entry.getObject());
+		frame.getStack().push(this, entry.getObject());
 	}
 }

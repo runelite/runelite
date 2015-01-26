@@ -19,6 +19,6 @@ public class ILoad_0 extends Instruction
 	{
 		Object obj = frame.getVariables().get(0);
 		assert obj instanceof Integer;
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
 	}
 }

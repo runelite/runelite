@@ -24,6 +24,6 @@ public class I2S extends Instruction
 		assert obj instanceof Integer;
 
 		Integer i = (Integer) obj;
-		stack.push(i.shortValue());
+		stack.push(this, i.shortValue());
 	}
 }

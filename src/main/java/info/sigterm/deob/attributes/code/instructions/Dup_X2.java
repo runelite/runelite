@@ -26,10 +26,10 @@ public class Dup_X2 extends Instruction
 		if (!(two instanceof Double) && !(two instanceof Long))
 			three = stack.pop();
 
-		stack.push(one);
+		stack.push(this, one);
 		if (!(two instanceof Double) && !(two instanceof Long))
-			stack.push(three);
-		stack.push(two);
-		stack.push(one);
+			stack.push(this, three);
+		stack.push(this, two);
+		stack.push(this, one);
 	}
 }

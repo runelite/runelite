@@ -24,6 +24,6 @@ public class BiPush extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
-		frame.getStack().push((int) b);
+		frame.getStack().push(this, (int) b);
 	}
 }

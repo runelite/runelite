@@ -22,6 +22,6 @@ public class AALoad extends Instruction
 		int index = (int) stack.pop();
 		ArrayInstance array = (ArrayInstance) stack.pop();
 		
-		stack.push(array.get(index));
+		stack.push(this, array.get(index));
 	}
 }

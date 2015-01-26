@@ -36,13 +36,13 @@ public class ANewArray extends Instruction
 		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());
 		if (cf == null)
 		{
-			frame.getStack().push(null);
+			frame.getStack().push(this, null);
 			return;
 		}
 		
 		ClassInstance type = frame.getPath().getClassInstance(cf);
 		ArrayInstance array = frame.getPath().createArray(type, count);
 		
-		frame.getStack().push(array);
+		frame.getStack().push(this, array);
 	}
 }

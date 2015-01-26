@@ -13,7 +13,8 @@ public class StaticFieldInstance
 	{
 		this.clazz = clazz;
 		this.field = field;
-		this.value = value.getValue().getObject();
+		if (value != null)
+			this.value = value.getValue().getObject();
 	}
 
 	public Field getField()

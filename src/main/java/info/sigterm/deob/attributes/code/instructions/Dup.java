@@ -18,7 +18,7 @@ public class Dup extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getStack().pop();
-		frame.getStack().push(obj);
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
+		frame.getStack().push(this, obj);
 	}
 }

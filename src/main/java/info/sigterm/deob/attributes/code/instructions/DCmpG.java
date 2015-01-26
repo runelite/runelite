@@ -24,12 +24,12 @@ public class DCmpG extends Instruction
 		Double two = (Double) stack.pop();
 
 		if (one.isNaN() || two.isNaN())
-			stack.push(1);
+			stack.push(this, 1);
 		else if (one > two)
-			stack.push(1);
+			stack.push(this, 1);
 		else if (one < two)
-			stack.push(-1);
+			stack.push(this, -1);
 		else
-			stack.push(0);
+			stack.push(this, 0);
 	}
 }

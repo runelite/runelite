@@ -24,6 +24,6 @@ public class L2D extends Instruction
 		assert obj instanceof Long;
 
 		Long l = (Long) obj;
-		stack.push(l.doubleValue());
+		stack.push(this, l.doubleValue());
 	}
 }

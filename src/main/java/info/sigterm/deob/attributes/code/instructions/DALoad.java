@@ -21,6 +21,6 @@ public class DALoad extends Instruction
 		int index = (int) stack.pop();
 		double[] array = (double[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

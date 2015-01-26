@@ -37,6 +37,14 @@ public class Methods
 				return m;
 		return null;
 	}
+	
+	public Method findMethod(String name)
+	{
+		for (Method m : methods)
+			if (m.getName().equals(name))
+				return m;
+		return null;
+	}
 
 	public void buildInstructionGraph()
 	{

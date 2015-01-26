@@ -24,6 +24,6 @@ public class D2L extends Instruction
 		assert obj instanceof Double;
 
 		Double d = (Double) obj;
-		stack.push(d.longValue());
+		stack.push(this, d.longValue());
 	}
 }

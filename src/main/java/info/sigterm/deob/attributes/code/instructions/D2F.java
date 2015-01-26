@@ -24,6 +24,6 @@ public class D2F extends Instruction
 		assert obj instanceof Double;
 
 		Double d = (Double) obj;
-		stack.push(d.floatValue());
+		stack.push(this, d.floatValue());
 	}
 }

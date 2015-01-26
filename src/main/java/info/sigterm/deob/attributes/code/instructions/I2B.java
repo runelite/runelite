@@ -24,6 +24,6 @@ public class I2B extends Instruction
 		assert obj instanceof Integer;
 
 		Integer i = (Integer) obj;
-		stack.push(i.byteValue());
+		stack.push(this, i.byteValue());
 	}
 }

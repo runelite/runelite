@@ -19,6 +19,6 @@ public class DLoad_3 extends Instruction
 	{
 		Object obj = frame.getVariables().get(3);
 		assert obj instanceof Double;
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
 	}
 }

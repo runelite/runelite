@@ -9,7 +9,7 @@ public class Frame
 {
 	private Path path;
 	private Method method;
-	private boolean executing = true;
+	boolean executing = true;
 	private int pc;
 	private Stack stack;
 	private Variables variables;
@@ -48,7 +48,16 @@ public class Frame
 			int oldPc = pc;
 			
 			Instruction i = ins.findInstruction(pc);
-			i.execute(this);
+			
+			try
+			{
+				i.execute(this);
+			}
+			catch (Throwable ex)
+			{
+				System.err.println("Error executing instruction in " + method.getName() + " " + method.getDescriptor() + " in class " + method.getMethods().getClassFile().getName() + " at pc " + pc);
+				throw ex;
+			}
 			
 			if (oldPc == pc)
 			{

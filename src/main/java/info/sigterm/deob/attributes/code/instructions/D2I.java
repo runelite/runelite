@@ -24,6 +24,6 @@ public class D2I extends Instruction
 		assert obj instanceof Double;
 
 		Double d = (Double) obj;
-		stack.push(d.intValue());
+		stack.push(this, d.intValue());
 	}
 }

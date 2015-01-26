@@ -25,6 +25,6 @@ public class FLoad extends Instruction
 	public void execute(Frame frame)
 	{
 		float f = (float) frame.getVariables().get(index);
-		frame.getStack().push(f);
+		frame.getStack().push(this, f);
 	}
 }

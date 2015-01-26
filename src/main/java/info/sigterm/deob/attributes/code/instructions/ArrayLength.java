@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.execution.ArrayInstance;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ public class ArrayLength extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
-		Object[] array = (Object[]) frame.getStack().pop();
-		frame.getStack().push(array.length);
+		ArrayInstance array = (ArrayInstance) frame.getStack().pop();
+		frame.getStack().push(this, array.getLength());
 	}
 }

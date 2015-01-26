@@ -24,6 +24,6 @@ public class F2L extends Instruction
 		assert obj instanceof Float;
 
 		Float f = (Float) obj;
-		stack.push(f.longValue());
+		stack.push(this, f.longValue());
 	}
 }

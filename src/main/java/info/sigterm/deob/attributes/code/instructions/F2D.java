@@ -24,6 +24,6 @@ public class F2D extends Instruction
 		assert obj instanceof Float;
 
 		Float f = (Float) obj;
-		stack.push(f.doubleValue());
+		stack.push(this, f.doubleValue());
 	}
 }

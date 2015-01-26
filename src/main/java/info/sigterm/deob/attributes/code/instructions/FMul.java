@@ -21,6 +21,6 @@ public class FMul extends Instruction
 		Float two = (Float) stack.pop();
 		Float one = (Float) stack.pop();
 		
-		stack.push(one * two);
+		stack.push(this, one * two);
 	}
 }

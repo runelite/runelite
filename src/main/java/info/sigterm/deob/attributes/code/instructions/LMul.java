@@ -21,6 +21,6 @@ public class LMul extends Instruction
 		Long two = (Long) stack.pop();
 		Long one = (Long) stack.pop();
 		
-		stack.push(one * two);
+		stack.push(this, one * two);
 	}
 }

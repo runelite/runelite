@@ -19,6 +19,6 @@ public class INeg extends Instruction
 		Stack stack = frame.getStack();
 		
 		Integer value = (Integer) stack.pop();
-		stack.push(-value);
+		stack.push(this, -value);
 	}
 }

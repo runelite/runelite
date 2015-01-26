@@ -2,6 +2,7 @@ package info.sigterm.deob.execution;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.Method;
+import info.sigterm.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class Path
 		return other;
 	}
 	
-	public void invoke(Method method, Object[] args)
+	public void invoke(Method method, Object... args)
 	{
 		Frame f = new Frame(this, method);
 		Variables vars = f.getVariables();
@@ -80,5 +81,25 @@ public class Path
 			vars.set(i, args[i]);
 		frames.push(f);
 		f.execute();
+	}
+	
+	public void returnFrame(Instruction i, Object value)
+	{
+		returnFrame();
+		Frame prevFrame = getCurrentFrame();
+		
+		prevFrame.getStack().push(i, value);
+	}
+	
+	public void returnFrame()
+	{
+		Frame currentFrame = frames.pop();
+		currentFrame.executing = false;
+	}
+	
+	public void throwException(ObjectInstance exception)
+	{
+		System.out.println("throw " + exception);
+		//XXX
 	}
 }

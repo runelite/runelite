@@ -24,6 +24,6 @@ public class I2D extends Instruction
 		assert obj instanceof Integer;
 
 		Integer i = (Integer) obj;
-		stack.push(i.doubleValue());
+		stack.push(this, i.doubleValue());
 	}
 }

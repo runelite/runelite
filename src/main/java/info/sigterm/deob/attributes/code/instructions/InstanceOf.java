@@ -36,13 +36,13 @@ public class InstanceOf extends Instruction
 		ObjectInstanceBase obj = (ObjectInstanceBase) e.getStack().pop();
 		if (obj == null)
 		{
-			e.getStack().push(0);
+			e.getStack().push(this, 0);
 			return;
 			
 		}
 		
 		ClassFile otherClass = thisClass.getGroup().findClass(clazz.getName());
 		boolean instanceOf = obj.getType().getClassFile().instanceOf(otherClass);
-		e.getStack().push(instanceOf ? 1 : 0);
+		e.getStack().push(this, instanceOf ? 1 : 0);
 	}
 }

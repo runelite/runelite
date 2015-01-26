@@ -31,7 +31,7 @@ public class Code extends Attribute
 
 	public int getMaxStack()
 	{
-		return getMaxStack();
+		return maxStack;
 	}
 
 	public int getMaxLocals()

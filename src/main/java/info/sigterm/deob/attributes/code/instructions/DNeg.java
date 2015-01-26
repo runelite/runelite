@@ -19,6 +19,6 @@ public class DNeg extends Instruction
 		Stack stack = frame.getStack();
 		
 		Double value = (Double) stack.pop();
-		stack.push(-value);
+		stack.push(this, -value);
 	}
 }

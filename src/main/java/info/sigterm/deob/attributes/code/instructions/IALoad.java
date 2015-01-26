@@ -21,6 +21,6 @@ public class IALoad extends Instruction
 		int index = (int) stack.pop();
 		int[] array = (int[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

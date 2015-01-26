@@ -19,6 +19,6 @@ public class DConst_0 extends Instruction
 	public void execute(Frame frame)
 	{
 		Stack stack = frame.getStack();
-		stack.push(0d);
+		stack.push(this, 0d);
 	}
 }

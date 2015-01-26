@@ -19,6 +19,6 @@ public class FConst_1 extends Instruction
 	public void execute(Frame frame)
 	{
 		Stack stack = frame.getStack();
-		stack.push(1f);
+		stack.push(this, 1f);
 	}
 }

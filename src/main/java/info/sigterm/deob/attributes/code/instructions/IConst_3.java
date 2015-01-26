@@ -19,6 +19,6 @@ public class IConst_3 extends Instruction
 	public void execute(Frame frame)
 	{
 		Stack stack = frame.getStack();
-		stack.push(3);
+		stack.push(this, 3);
 	}
 }

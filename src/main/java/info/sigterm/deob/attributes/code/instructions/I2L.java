@@ -24,6 +24,6 @@ public class I2L extends Instruction
 		assert obj instanceof Integer;
 
 		Integer i = (Integer) obj;
-		stack.push(i.longValue());
+		stack.push(this, i.longValue());
 	}
 }

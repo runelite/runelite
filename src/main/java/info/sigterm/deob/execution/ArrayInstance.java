@@ -20,4 +20,9 @@ public class ArrayInstance extends ObjectInstanceBase
 	{
 		return array[idx];
 	}
+	
+	public int getLength()
+	{
+		return array.length;
+	}
 }

@@ -26,11 +26,11 @@ public class Dup2 extends Instruction
 			two = stack.pop();
 
 		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(two);
-		stack.push(one);
+			stack.push(this, two);
+		stack.push(this, one);
 
 		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(two);
-		stack.push(one);
+			stack.push(this, two);
+		stack.push(this, one);
 	}
 }

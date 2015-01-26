@@ -21,6 +21,6 @@ public class DAdd extends Instruction
 		Double two = (Double) stack.pop();
 		Double one = (Double) stack.pop();
 		
-		stack.push(one + two);
+		stack.push(this, one + two);
 	}
 }

@@ -19,6 +19,6 @@ public class AConstNull extends Instruction
 	public void execute(Frame frame)
 	{
 		Stack stack = frame.getStack();
-		stack.push(null);
+		stack.push(this, null);
 	}
 }

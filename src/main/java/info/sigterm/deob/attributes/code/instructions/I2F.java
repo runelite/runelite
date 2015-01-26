@@ -24,6 +24,6 @@ public class I2F extends Instruction
 		assert obj instanceof Integer;
 
 		Integer i = (Integer) obj;
-		stack.push(i.floatValue());
+		stack.push(this, i.floatValue());
 	}
 }

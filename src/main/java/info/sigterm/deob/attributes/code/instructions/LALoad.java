@@ -21,6 +21,6 @@ public class LALoad extends Instruction
 		int index = (int) stack.pop();
 		long[] array = (long[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

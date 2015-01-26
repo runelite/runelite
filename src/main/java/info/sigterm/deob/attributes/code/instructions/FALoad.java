@@ -21,6 +21,6 @@ public class FALoad extends Instruction
 		int index = (int) stack.pop();
 		float[] array = (float[]) stack.pop();
 		
-		stack.push(array[index]);
+		stack.push(this, array[index]);
 	}
 }

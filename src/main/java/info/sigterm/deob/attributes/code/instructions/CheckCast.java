@@ -36,7 +36,7 @@ public class CheckCast extends Instruction
 		ObjectInstance obj = (ObjectInstance) e.getStack().pop();
 		if (obj == null)
 		{
-			e.getStack().push(null);
+			e.getStack().push(this, null);
 			return;
 		}
 		
@@ -48,7 +48,7 @@ public class CheckCast extends Instruction
 			// XXX throw
 		}
 		
-		e.getStack().push(obj);
+		e.getStack().push(this, obj);
 	}
 
 }

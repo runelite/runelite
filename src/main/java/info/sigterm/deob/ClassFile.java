@@ -115,6 +115,19 @@ public class ClassFile
 
 		return null;
 	}
+	
+	public Method findMethod(String name)
+	{
+		Method m = methods.findMethod(name);
+		if (m != null)
+			return m;
+		
+		ClassFile parent = getParent();
+		if (parent != null)
+			return parent.findMethod(name);
+
+		return null;
+	}
 
 	public void buildClassGraph()
 	{

@@ -29,28 +29,28 @@ public class NewArray extends Instruction
 		switch (type)
 		{
 			case 4:
-				e.getStack().push(new boolean[count]);
+				e.getStack().push(this, new boolean[count]);
 				break;
 			case 5:
-				e.getStack().push(new char[count]);
+				e.getStack().push(this, new char[count]);
 				break;
 			case 6:
-				e.getStack().push(new float[count]);
+				e.getStack().push(this, new float[count]);
 				break;
 			case 7:
-				e.getStack().push(new double[count]);
+				e.getStack().push(this, new double[count]);
 				break;
 			case 8:
-				e.getStack().push(new byte[count]);
+				e.getStack().push(this, new byte[count]);
 				break;
 			case 9:
-				e.getStack().push(new short[count]);
+				e.getStack().push(this, new short[count]);
 				break;
 			case 10:
-				e.getStack().push(new int[count]);
+				e.getStack().push(this, new int[count]);
 				break;
 			case 11:
-				e.getStack().push(new long[count]);
+				e.getStack().push(this, new long[count]);
 				break;
 		}
 	}

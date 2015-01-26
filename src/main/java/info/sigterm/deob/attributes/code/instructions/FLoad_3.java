@@ -19,6 +19,6 @@ public class FLoad_3 extends Instruction
 	{
 		Object obj = frame.getVariables().get(3);
 		assert obj instanceof Float;
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
 	}
 }

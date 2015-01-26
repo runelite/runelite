@@ -19,6 +19,6 @@ public class FLoad_0 extends Instruction
 	{
 		Object obj = frame.getVariables().get(0);
 		assert obj instanceof Float;
-		frame.getStack().push(obj);
+		frame.getStack().push(this, obj);
 	}
 }

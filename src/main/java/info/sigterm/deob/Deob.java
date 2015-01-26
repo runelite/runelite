@@ -1,5 +1,7 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.execution.Execution;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +26,20 @@ public class Deob
 			InputStream is = jar.getInputStream(entry);
 			group.addClass(entry.getName(), new DataInputStream(is));
 		}
+		jar.close();
 
 		group.buildClassGraph();
 		group.buildInstructionGraph();
+		
+		execute(group);
+	}
+	
+	private static void execute(ClassGroup group) throws IOException
+	{
+		ClassFile cf = group.findClass("client");
+		Method method = cf.findMethod("init");
+		
+		Execution e = new Execution(group);
+		e.run(cf, method);
 	}
 }

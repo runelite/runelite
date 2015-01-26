@@ -4,6 +4,8 @@ import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class NameAndType extends PoolEntry
 {
@@ -56,5 +58,25 @@ public class NameAndType extends PoolEntry
 			default:
 				return null;
 		}
+	}
+	
+	private static Pattern allParamsPattern = Pattern.compile("(\\(.*?\\))");
+	private static Pattern paramsPattern = Pattern.compile("(\\[?)(B|C|Z|S|I|J|F|D|(:?L[^;]+;))");
+	
+	public int getNumberOfArgs()
+	{
+		java.lang.String methodRefType = this.getDescriptor();
+	    Matcher m = allParamsPattern.matcher(methodRefType);
+	    if (!m.find())
+	        throw new IllegalArgumentException("Method signature does not contain parameters");
+
+	    java.lang.String paramsDescriptor = m.group(1);
+	    Matcher mParam = paramsPattern.matcher(paramsDescriptor);
+
+	    int count = 0;
+	    while (mParam.find())
+	        count++;
+
+	    return count;
 	}
 }

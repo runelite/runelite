@@ -24,6 +24,6 @@ public class L2F extends Instruction
 		assert obj instanceof Long;
 
 		Long l = (Long) obj;
-		stack.push(l.floatValue());
+		stack.push(this, l.floatValue());
 	}
 }
