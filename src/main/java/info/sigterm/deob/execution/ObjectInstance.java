@@ -32,11 +32,26 @@ public class ObjectInstance extends ObjectInstanceBase
 		}
 	}
 	
+	private ObjectInstance(ObjectInstance other, Path path, ClassInstance type)
+	{
+		super(path, type);
+		
+		/* copy fields */
+		for (FieldInstance field : other.fields)
+			this.fields.add(new FieldInstance(this, field));
+	}
+	
 	public FieldInstance getField(NameAndType nat)
 	{
 		for (FieldInstance f : fields)
 			if (f.getField().getName().equals(nat.getName()) && f.getField().getDescriptor().equals(nat.getDescriptor()))
 				return f;
 		return null;
+	}
+
+	@Override
+	public ObjectInstanceBase dup(Path path, ClassInstance type)
+	{
+		return new ObjectInstance(this, path, type);
 	}
 }

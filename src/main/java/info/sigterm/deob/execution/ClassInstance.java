@@ -33,6 +33,14 @@ public class ClassInstance
 				this.fields.add(fi);
 			}
 	}
+	
+	protected ClassInstance(Path path, ClassInstance other)
+	{
+		this.path = path;
+		this.clazz = other.clazz;
+		for (StaticFieldInstance f : other.fields)
+			this.fields.add(new StaticFieldInstance(other, f));
+	}
 
 	public Path getPath()
 	{

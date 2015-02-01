@@ -15,6 +15,13 @@ public class FieldInstance
 		this.value = value;
 	}
 	
+	protected FieldInstance(ObjectInstance object, FieldInstance other)
+	{
+		this.object = object;
+		this.field = other.field;
+		this.value = other.value;
+	}
+	
 	public Field getField()
 	{
 		return field;

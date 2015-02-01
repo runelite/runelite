@@ -1,5 +1,7 @@
 package info.sigterm.deob.execution;
 
+import java.util.Arrays;
+
 import info.sigterm.deob.attributes.code.Instruction;
 
 public class Stack
@@ -13,6 +15,13 @@ public class Stack
 		stack = new Object[sz];
 		ins = new Instruction[sz];
 	}
+	
+	protected Stack(Stack other)
+	{
+		this.size = other.size;
+		this.stack = Arrays.copyOf(other.stack, other.stack.length);
+		this.ins = Arrays.copyOf(other.ins, other.ins.length);
+	}
 
 	public void push(Instruction i, Object obj)
 	{
@@ -24,6 +33,14 @@ public class Stack
 		
 		++size;
 	}
+	
+	public Instruction getIns()
+	{
+		if (size <= 0)
+			throw new RuntimeException("Stack underflow");
+		
+		return ins[size - 1];
+	}
 
 	public Object pop()
 	{
@@ -31,5 +48,10 @@ public class Stack
 			throw new RuntimeException("Stack underflow");
 
 		return stack[--size];
+	}
+	
+	public int getSize()
+	{
+		return size;
 	}
 }

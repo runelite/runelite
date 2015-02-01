@@ -5,12 +5,13 @@ import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Path
 {
 	private Execution execution;
 	private ArrayList<ClassInstance> classes = new ArrayList<ClassInstance>();
-	private ArrayList<ObjectInstance> objects = new ArrayList<ObjectInstance>();
+	private ArrayList<ObjectInstanceBase> objects = new ArrayList<ObjectInstanceBase>();
 	private java.util.Stack<Frame> frames = new java.util.Stack<Frame>(); // current execution frames
 
 	public Path(Execution execution)
@@ -20,11 +21,23 @@ public class Path
 	
 	private Path(Path other)
 	{
+		HashMap<ClassInstance, ClassInstance> classmap = new HashMap<ClassInstance, ClassInstance>();
+		
 		this.execution = other.execution;
-		this.classes = new ArrayList<ClassInstance>(other.classes);
-		this.objects = new ArrayList<ObjectInstance>(other.objects);
-		this.frames = new java.util.Stack<Frame>();
-		this.frames.addAll(other.frames);
+		
+		for (ClassInstance c : other.classes)
+		{
+			ClassInstance newclass = new ClassInstance(this, c);
+			classmap.put(c,  newclass);
+			this.classes.add(newclass);
+		}
+		
+		for (ObjectInstanceBase o : other.objects)
+			o.dup(this, classmap.get(o.getType()));
+		
+		/* iteration order of a Stack is in reverse */
+		for (Frame f : other.frames)
+			frames.push(new Frame(this, f));
 	}
 
 	public Execution getExecution()
@@ -58,7 +71,9 @@ public class Path
 	
 	public ArrayInstance createArray(ClassInstance type, int len)
 	{
-		return new ArrayInstance(this, type, len);
+		ArrayInstance arr = new ArrayInstance(this, type, len);
+		objects.add(arr);
+		return arr;
 	}
 	
 	public Frame getCurrentFrame()
@@ -99,7 +114,7 @@ public class Path
 	
 	public void throwException(ObjectInstance exception)
 	{
-		System.out.println("throw " + exception);
+		System.out.println("XXX throw " + exception);
 		//XXX
 	}
 }

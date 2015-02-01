@@ -20,9 +20,12 @@ public class AAStore extends Instruction
 	{
 		Stack stack = frame.getStack();
 		
-		ObjectInstance value = (ObjectInstance) stack.pop(); // Strings are objects too, so this cast fails
+		Object value = stack.pop();
 		int index = (int) stack.pop();
 		ArrayInstance array = (ArrayInstance) stack.pop();
+		
+		if (array == null)
+			return;
 		
 		array.put(value, index);
 	}

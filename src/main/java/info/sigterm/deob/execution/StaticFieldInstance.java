@@ -16,6 +16,13 @@ public class StaticFieldInstance
 		if (value != null)
 			this.value = value.getValue().getObject();
 	}
+	
+	protected StaticFieldInstance(ClassInstance clazz, StaticFieldInstance other)
+	{
+		this.clazz = clazz;
+		this.field = other.field;
+		this.value = other.value;
+	}
 
 	public Field getField()
 	{

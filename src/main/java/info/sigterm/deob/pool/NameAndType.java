@@ -79,4 +79,10 @@ public class NameAndType extends PoolEntry
 
 	    return count;
 	}
+	
+	public boolean isNonVoid()
+	{
+		java.lang.String methodRefType = this.getDescriptor();
+		return !methodRefType.endsWith(")V");
+	}
 }

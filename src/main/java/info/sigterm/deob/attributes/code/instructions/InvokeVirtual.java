@@ -42,7 +42,7 @@ public class InvokeVirtual extends Instruction
 		ObjectInstance object = (ObjectInstance) e.getStack().pop();
 		if (object == null)
 		{
-			System.out.println("Invoke on a null object");
+			System.out.println("invokevirtual on null object for method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName());
 			e.getStack().push(this, null);
 			return;
 		}
@@ -56,7 +56,6 @@ public class InvokeVirtual extends Instruction
 		{
 			System.out.println("Unknown method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " in " + objectType.getClassFile().getName());
 			e.getStack().push(this, null);
-			//meth.getDescriptor()
 			return;
 		}
 		e.getPath().invoke(meth, args);

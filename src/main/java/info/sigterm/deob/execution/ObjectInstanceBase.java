@@ -16,4 +16,6 @@ public abstract class ObjectInstanceBase
 	{
 		return type;
 	}
+	
+	public abstract ObjectInstanceBase dup(Path path, ClassInstance type);
 }

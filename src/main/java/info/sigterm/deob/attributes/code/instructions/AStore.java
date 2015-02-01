@@ -25,7 +25,6 @@ public class AStore extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getStack().pop();
-		assert obj != null;
 		frame.getVariables().set(index, obj);
 	}
 }
