@@ -46,6 +46,11 @@ public class Attributes
 
 		load();
 	}
+	
+	public Method getMethod()
+	{
+		return method;
+	}
 
 	public Attribute findType(AttributeType type)
 	{

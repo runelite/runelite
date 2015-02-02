@@ -39,6 +39,11 @@ public class Code extends Attribute
 		return maxLocals;
 	}
 	
+	public Exceptions getExceptions()
+	{
+		return exceptions;
+	}
+	
 	public Instructions getInstructions()
 	{
 		return instructions;

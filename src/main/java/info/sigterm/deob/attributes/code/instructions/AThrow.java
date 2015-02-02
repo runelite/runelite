@@ -19,6 +19,6 @@ public class AThrow extends Instruction
 	public void execute(Frame e)
 	{
 		ObjectInstance exception = (ObjectInstance) e.getStack().pop();
-		e.getPath().throwException(exception);
+		e.getPath().throwException(this, exception);
 	}
 }

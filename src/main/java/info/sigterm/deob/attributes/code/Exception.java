@@ -1,9 +1,11 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.ConstantPool;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 
-class Exception
+public class Exception
 {
 	private Exceptions exceptions;
 
@@ -22,5 +24,25 @@ class Exception
 		endPc = is.readUnsignedShort();
 		handlerPc = is.readUnsignedShort();
 		catchType = is.readUnsignedShort();
+	}
+	
+	public Exceptions getExceptions()
+	{
+		return exceptions;
+	}
+	
+	public int getStartPc()
+	{
+		return startPc;
+	}
+	
+	public int getEndPc()
+	{
+		return endPc;
+	}
+	
+	public int getHandlerPc()
+	{
+		return handlerPc;
 	}
 }

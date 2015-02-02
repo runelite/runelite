@@ -1,7 +1,10 @@
 package info.sigterm.deob.execution;
 
+import java.util.Collection;
+
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.attributes.code.Exception;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
 
@@ -38,6 +41,11 @@ public class Frame
 	public Path getPath()
 	{
 		return path;
+	}
+	
+	public Method getMethod()
+	{
+		return method;
 	}
 
 	public Stack getStack()
@@ -101,5 +109,15 @@ public class Frame
 	{
 		assert offset != 0;
 		pc += offset;
+	}
+	
+	public void jumpAbsolute(int pc)
+	{
+		this.pc = pc;
+	}
+	
+	public Collection<Exception> getExceptionHandlers()
+	{
+		return method.getCode().getExceptions().getHandlersForPc(this.pc);
 	}
 }

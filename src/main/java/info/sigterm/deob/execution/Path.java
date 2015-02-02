@@ -2,9 +2,11 @@ package info.sigterm.deob.execution;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.Method;
+import info.sigterm.deob.attributes.code.Exception;
 import info.sigterm.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class Path
@@ -112,9 +114,29 @@ public class Path
 		currentFrame.executing = false;
 	}
 	
-	public void throwException(ObjectInstance exception)
+	public void throwException(Instruction ins, ObjectInstance exception)
 	{
-		System.out.println("XXX throw " + exception);
-		//XXX
+		ArrayList<Exception> exceptions = new ArrayList<Exception>();
+		
+		/* collect all existing exception handlers */
+		for (Frame f : frames)
+		{
+			Collection<Exception> handlers = f.getExceptionHandlers();
+			exceptions.addAll(handlers);
+		}
+		
+		for (Exception handler : exceptions)
+		{
+			/* jump to handler */
+			Method handlerMethod = handler.getExceptions().getCode().getAttributes().getMethod();
+			
+			Path other = this.dup();
+			/* walk up the frames until we find the one which holds the exception handler */ 
+			while (handlerMethod != other.getCurrentFrame().getMethod())
+				other.returnFrame();
+			
+			/* handler pc is absolute from the beginning instruction */
+			other.getCurrentFrame().jumpAbsolute(handler.getHandlerPc());
+		}
 	}
 }
