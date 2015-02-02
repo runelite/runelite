@@ -17,7 +17,6 @@ public class Return extends Instruction
 	@Override
 	public void execute(Frame e)
 	{
-		// XXX exceptions?
 		Object ret = e.getStack().pop();
 		e.getPath().returnFrame(this, ret);
 	}

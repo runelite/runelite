@@ -67,17 +67,14 @@ public class Frame
 			
 			Instruction i = ins.findInstruction(pc);
 			
-			String desc = i.getDesc(this);
-			if (desc != null)
-				System.out.println(desc);
-			
 			try
 			{
 				i.execute(this);
+				System.out.println(i.getDesc(this));
 			}
 			catch (Throwable ex)
 			{
-				System.err.println("Error executing instruction in " + method.getName() + " " + method.getDescriptor() + " in class " + method.getMethods().getClassFile().getName() + " at pc " + pc);
+				System.err.println("Error executing instruction " + i.getDesc(this) + " in " + method.getName() + " " + method.getDescriptor() + " in class " + method.getMethods().getClassFile().getName() + " at pc " + pc);
 				System.err.println("Frame stack (grows downward):");
 				while (stack.getSize() > 0)
 				{

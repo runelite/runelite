@@ -23,6 +23,8 @@ public class Execution
 		ObjectInstance object = p.createObject(instance);
 		
 		p.invoke(method, object);
+		
+		//process();
 	}
 	
 	public void addPath(Path p)

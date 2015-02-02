@@ -39,7 +39,7 @@ public abstract class Instruction
 	
 	public String getDesc(Frame frame)
 	{
-		return null;
+		return type.getName();
 	}
 
 	protected void addJump(int offset)

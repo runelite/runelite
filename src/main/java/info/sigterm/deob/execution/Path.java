@@ -97,7 +97,13 @@ public class Path
 		for (int i = 0; i < args.length; ++i)
 			vars.set(i, args[i]);
 		frames.push(f);
-		f.execute();
+		
+		while (!frames.isEmpty())
+		{
+			f = frames.peek();
+			f.execute();
+			frames.pop();
+		}
 	}
 	
 	public void returnFrame(Instruction i, Object value)
