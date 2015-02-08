@@ -42,7 +42,7 @@ public class InvokeVirtual extends Instruction
 		ObjectInstance object = (ObjectInstance) e.getStack().pop();
 		if (object == null)
 		{
-			System.out.println("invokevirtual on null object for method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName());
+			//System.out.println("invokevirtual on null object for method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName());
 			e.getStack().push(this, null);
 			return;
 		}
@@ -54,8 +54,9 @@ public class InvokeVirtual extends Instruction
 		info.sigterm.deob.Method meth = objectType.getClassFile().findMethod(method.getNameAndType());
 		if (meth == null)
 		{
-			System.out.println("Unknown method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " in " + objectType.getClassFile().getName());
-			e.getStack().push(this, null);
+			//System.out.println("Unknown method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " in " + objectType.getClassFile().getName());
+			if (method.getNameAndType().isNonVoid())
+				e.getStack().push(this, null);
 			return;
 		}
 		e.getPath().invoke(meth, args);

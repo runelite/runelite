@@ -27,7 +27,7 @@ public class ObjectInstance extends ObjectInstanceBase
 			Attributes attributes = field.getAttributes();
 			ConstantValue cv = (ConstantValue) attributes.findType(AttributeType.CONSTANT_VALUE);
 
-			FieldInstance fi = new FieldInstance(this, field, cv.getValue().getObject());
+			FieldInstance fi = new FieldInstance(this, field, cv != null ? cv.getValue().getObject() : null);
 			this.fields.add(fi);
 		}
 	}

@@ -42,8 +42,9 @@ public class InvokeStatic extends Instruction
 		
 		if (otherClass == null)
 		{
-			System.out.println("invokestatic for nonexistant class " + clazz.getName());
-			e.getStack().push(this, null);
+			//System.out.println("invokestatic for nonexistant class " + clazz.getName());
+			if (method.getNameAndType().isNonVoid())
+				e.getStack().push(this, null);
 			return;
 		}
 		

@@ -39,7 +39,7 @@ public abstract class Instruction
 	
 	public String getDesc(Frame frame)
 	{
-		return type.getName();
+		return type.getName() + " at pc " + frame.getPc() + " in " + frame.getMethod().getName() + " " + frame.getMethod().getDescriptor() + " class " + frame.getMethod().getCode().getAttributes().getClassFile().getName();
 	}
 
 	protected void addJump(int offset)

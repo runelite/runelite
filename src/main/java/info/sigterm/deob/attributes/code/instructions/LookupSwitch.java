@@ -4,6 +4,7 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.Path;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -51,15 +52,15 @@ public class LookupSwitch extends Instruction
 	@Override
 	public void execute(Frame e)
 	{
-		int key = (int) e.getStack().pop();
+		e.getStack().pop();
 		
-		for (int i = 0; i < count; ++i)
-			if (match[i] == key)
-			{
-				e.jump(branch[i]);
-				return;
-			}
+		for (int i : branch)
+		{
+			Path p = e.getPath().dup();
+			p.getCurrentFrame().jump(i);
+		}
 		
-		e.jump(def);
+		Path p = e.getPath().dup();
+		p.getCurrentFrame().jump(def);
 	}
 }

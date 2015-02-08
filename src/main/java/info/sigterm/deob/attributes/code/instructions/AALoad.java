@@ -22,6 +22,9 @@ public class AALoad extends Instruction
 		int index = (int) stack.pop();
 		ArrayInstance array = (ArrayInstance) stack.pop();
 		
-		stack.push(this, array.get(index));
+		if (index >= 0 && index < array.getLength())
+			stack.push(this, array.get(index));
+		else
+			frame.getPath().throwException(this, null);
 	}
 }

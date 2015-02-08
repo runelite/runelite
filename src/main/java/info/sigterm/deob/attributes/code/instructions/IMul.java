@@ -21,6 +21,9 @@ public class IMul extends Instruction
 		Integer two = (Integer) stack.pop();
 		Integer one = (Integer) stack.pop();
 		
-		stack.push(this, one * two);
+		if (one == null || two == null)
+			stack.push(this, 0);
+		else
+			stack.push(this, one * two);
 	}
 }

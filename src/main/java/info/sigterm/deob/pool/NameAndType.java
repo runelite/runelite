@@ -83,6 +83,8 @@ public class NameAndType extends PoolEntry
 	public boolean isNonVoid()
 	{
 		java.lang.String methodRefType = this.getDescriptor();
+		if (this.getName().equals("<init>"))
+			return true; 
 		return !methodRefType.endsWith(")V");
 	}
 }

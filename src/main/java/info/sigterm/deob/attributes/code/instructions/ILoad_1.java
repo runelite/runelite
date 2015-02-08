@@ -18,7 +18,6 @@ public class ILoad_1 extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getVariables().get(1);
-		assert obj instanceof Integer;
 		frame.getStack().push(this, obj);
 	}
 }

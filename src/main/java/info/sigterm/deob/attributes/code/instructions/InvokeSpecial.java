@@ -45,7 +45,7 @@ public class InvokeSpecial extends Instruction
 		
 		if (object == null)
 		{
-			System.out.println("invokespecial for nonexistant function " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName() + " (void: " + !method.getNameAndType().isNonVoid() + ")");
+			//System.out.println("invokespecial for nonexistant function " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName() + " (void: " + !method.getNameAndType().isNonVoid() + ")");
 			if (method.getNameAndType().isNonVoid())
 				e.getStack().push(this, null);
 			return;

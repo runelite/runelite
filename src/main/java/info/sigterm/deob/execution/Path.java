@@ -90,20 +90,42 @@ public class Path
 		return other;
 	}
 	
+	public void resume()
+	{
+		for (Frame f : frames)
+		{
+			/* top most is at the correct pc */
+			if (f == frames.peek())
+				break;
+			
+			/* move pc past invoke function */
+			f.skip();
+		}
+		
+		/* resume execution */
+		while (!frames.isEmpty())
+		{
+			Frame top = frames.peek();
+			top.resume();
+			if (!frames.isEmpty() && frames.peek() == top)
+				frames.pop(); // XXX throwing doesnt remove
+		}
+	}
+	
 	public void invoke(Method method, Object... args)
 	{
+		if (!this.getExecution().visit(method))
+			return;
+		
 		Frame f = new Frame(this, method);
 		Variables vars = f.getVariables();
 		for (int i = 0; i < args.length; ++i)
 			vars.set(i, args[i]);
 		frames.push(f);
-		
-		while (!frames.isEmpty())
-		{
-			f = frames.peek();
-			f.execute();
-			frames.pop();
-		}
+		System.out.println("Executing frame " + method.getName() + " " + method.getDescriptor());
+		f.execute();
+		if (frames.isEmpty() == false && frames.peek() == f)
+			System.err.println("Unpopped frame post execute");
 	}
 	
 	public void returnFrame(Instruction i, Object value)
@@ -144,5 +166,9 @@ public class Path
 			/* handler pc is absolute from the beginning instruction */
 			other.getCurrentFrame().jumpAbsolute(handler.getHandlerPc());
 		}
+		
+		/* this path stops executing */
+		for (Frame f : frames)
+			f.executing = false;
 	}
 }

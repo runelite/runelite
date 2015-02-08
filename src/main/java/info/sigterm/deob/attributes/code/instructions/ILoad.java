@@ -24,7 +24,7 @@ public class ILoad extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
-		int i = (int) frame.getVariables().get(index);
+		Object i = frame.getVariables().get(index);
 		frame.getStack().push(this, i);
 	}
 }

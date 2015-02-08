@@ -25,7 +25,6 @@ public class IStore extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getStack().pop();
-		assert obj instanceof Integer;
 		frame.getVariables().set(index, obj);
 	}
 }

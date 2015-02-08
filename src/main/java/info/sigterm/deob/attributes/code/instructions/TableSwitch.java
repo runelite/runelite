@@ -4,6 +4,7 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.Path;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -49,11 +50,15 @@ public class TableSwitch extends Instruction
 	@Override
 	public void execute(Frame e)
 	{
-		int index = (int) e.getStack().pop();
+		e.getStack().pop();
 		
-		if (index < low || index > high)
-			e.jump(def);
-		else
-			e.jump(jumps[index - low]);
+		for (int i : jumps)
+		{
+			Path p = e.getPath().dup();
+			p.getCurrentFrame().jump(i);
+		}
+		
+		Path p = e.getPath().dup();
+		p.getCurrentFrame().jump(def);
 	}
 }

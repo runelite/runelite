@@ -18,7 +18,6 @@ public class ALoad_0 extends Instruction
 	public void execute(Frame frame)
 	{
 		Object obj = frame.getVariables().get(0);
-		assert obj != null;
 		frame.getStack().push(this, obj);
 	}
 }

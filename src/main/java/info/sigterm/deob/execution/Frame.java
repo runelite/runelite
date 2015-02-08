@@ -1,6 +1,7 @@
 package info.sigterm.deob.execution;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
@@ -47,6 +48,11 @@ public class Frame
 	{
 		return method;
 	}
+	
+	public int getPc()
+	{
+		return pc;
+	}
 
 	public Stack getStack()
 	{
@@ -67,6 +73,12 @@ public class Frame
 			
 			Instruction i = ins.findInstruction(pc);
 			
+			if (i == null)
+			{
+				System.err.println("Cant find ins at pc " + pc + " in method " + method.getName() + " in " + method.getCode().getAttributes().getClassFile().getName());
+				System.exit(-1);
+			}
+			
 			try
 			{
 				i.execute(this);
@@ -74,7 +86,7 @@ public class Frame
 			}
 			catch (Throwable ex)
 			{
-				System.err.println("Error executing instruction " + i.getDesc(this) + " in " + method.getName() + " " + method.getDescriptor() + " in class " + method.getMethods().getClassFile().getName() + " at pc " + pc);
+				System.err.println("Error executing instruction " + i.getDesc(this));
 				System.err.println("Frame stack (grows downward):");
 				while (stack.getSize() > 0)
 				{
@@ -87,8 +99,8 @@ public class Frame
 				}
 				System.err.println("end of stack");
 				ex.printStackTrace();
-				System.exit(-1);
-				//throw ex;
+				//System.exit(-1);
+				throw ex;
 			}
 			
 			if (oldPc == pc)
@@ -102,15 +114,39 @@ public class Frame
 		}
 	}
 	
+	public void resume()
+	{
+		execute();
+	}
+	
+	public void skip()
+	{
+		/* for resume, skip current ins? */
+		Instructions ins = method.getCode().getInstructions();
+		Instruction i = ins.findInstruction(pc);
+		pc += i.getLength();
+	}
+	
+	private void checkLoop()
+	{
+		if (!this.getPath().getExecution().visit(method, pc))
+		{
+			System.out.println("Ending frame " + this);
+			executing = false;
+		}
+	}
+	
 	public void jump(int offset)
 	{
 		assert offset != 0;
 		pc += offset;
+		checkLoop();
 	}
 	
 	public void jumpAbsolute(int pc)
 	{
 		this.pc = pc;
+		checkLoop();
 	}
 	
 	public Collection<Exception> getExceptionHandlers()

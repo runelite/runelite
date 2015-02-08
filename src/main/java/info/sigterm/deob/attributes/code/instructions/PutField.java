@@ -39,6 +39,11 @@ public class PutField extends Instruction
 		ObjectInstance object = (ObjectInstance) e.getStack().pop();
 		Object value = e.getStack().pop();
 		
+		if (object == null)
+		{
+			return;
+		}
+		
 		FieldInstance field = object.getField(nat);
 		field.setValue(value);
 	}

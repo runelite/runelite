@@ -33,7 +33,7 @@ public class Deob
 		
 		execute(group);
 	}
-	
+
 	private static void execute(ClassGroup group) throws IOException
 	{
 		ClassFile cf = group.findClass("client");
