@@ -36,7 +36,7 @@ public class Methods
 	public void removeMethod(Method m)
 	{
 		m.remove();
-		methods.remove(methods);
+		methods.remove(m);
 	}
 
 	public ClassFile getClassFile()
@@ -53,6 +53,14 @@ public class Methods
 	{
 		for (Method m : methods)
 			if (m.getName().equals(nat.getName()) && m.getDescriptor().equals(nat.getDescriptor()))
+				return m;
+		return null;
+	}
+	
+	public Method findMethod(String name, String type)
+	{
+		for (Method m : methods)
+			if (m.getName().equals(name) && m.getDescriptor().equals(type))
 				return m;
 		return null;
 	}

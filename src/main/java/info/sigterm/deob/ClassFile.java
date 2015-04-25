@@ -92,6 +92,11 @@ public class ClassFile
 	{
 		return pool;
 	}
+	
+	public Interfaces getInterfaces()
+	{
+		return interfaces;
+	}
 
 	public Fields getFields()
 	{

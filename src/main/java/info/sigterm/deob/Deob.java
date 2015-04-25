@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -37,7 +38,7 @@ public class Deob
 		group.buildInstructionGraph();
 		group.buildCallGraph();
 		
-		//checkCallGraph(group);
+		checkCallGraph(group);
 		
 		//execute(group);
 		
@@ -69,15 +70,23 @@ public class Deob
 	
 	private static void checkCallGraph(ClassGroup group)
 	{
+		int i = 0;
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : cf.getMethods().getMethods())
+			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
 			{
-				if (m.callsFrom.isEmpty())
+				/* assume obfuscated names are <= 2 chars */
+				if (m.getName().length() > 2)
+					continue;
+				
+				if (!m.isUsed())
 				{
 					System.out.println(cf.getName() + " " + m.getName());
+					cf.getMethods().removeMethod(m);
+					++i;
 				}
 			}
 		}
+		System.out.println("Removed " + i + " methods");
 	}
 }

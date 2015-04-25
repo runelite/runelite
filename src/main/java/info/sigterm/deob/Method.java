@@ -70,6 +70,28 @@ public class Method
 	{
 		return (Code) attributes.findType(AttributeType.CODE);
 	}
+	
+	public List<Method> getOverriddenMethods()
+	{
+		List<Method> m = new ArrayList<Method>();
+		
+		ClassFile parent = methods.getClassFile().getParent();
+		if (parent != null)
+		{
+			Method other = parent.getMethods().findMethod(getName(), getDescriptor());
+			if (other != null)
+				m.add(other);
+		}
+		
+		for (ClassFile inter : methods.getClassFile().getInterfaces().getInterfaces())
+		{
+			Method other = inter.getMethods().findMethod(getName(), getDescriptor());
+			if (other != null)
+				m.add(other);
+		}
+		
+		return m;
+	}
 
 	public void buildInstructionGraph()
 	{
@@ -85,6 +107,20 @@ public class Method
 
 		if (code != null)
 			code.buildCallGraph();
+	}
+	
+	public boolean isUsed()
+	{
+		if (!callsFrom.isEmpty())
+			return true;
+		
+		for (Method sm : getOverriddenMethods())
+		{
+			if (sm.isUsed())
+				return true;
+		}
+		
+		return false;
 	}
 	
 	public void addCallTo(Instruction ins, Method method)
