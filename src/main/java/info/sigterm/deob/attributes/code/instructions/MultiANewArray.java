@@ -9,6 +9,7 @@ import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class MultiANewArray extends Instruction
@@ -24,6 +25,14 @@ public class MultiANewArray extends Instruction
 		index = is.readUnsignedShort();
 		dimensions = is.readUnsignedByte();
 		length += 3;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeShort(index);
+		out.writeByte(dimensions);
 	}
 	
 	@Override

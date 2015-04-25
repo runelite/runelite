@@ -3,6 +3,7 @@ package info.sigterm.deob.pool;
 import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class String extends PoolEntry
@@ -22,5 +23,11 @@ public class String extends PoolEntry
 	public Object getObject()
 	{
 		return this.getPool().getEntry(stringIndex).getObject();
+	}
+
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(stringIndex);
 	}
 }

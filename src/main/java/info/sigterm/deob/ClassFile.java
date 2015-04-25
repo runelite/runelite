@@ -5,6 +5,7 @@ import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.NameAndType;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -54,6 +55,28 @@ public class ClassFile
 
 		attributes = new Attributes(this);
 	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeInt(0xcafebabe);
+		
+		out.writeShort(minor_version);
+		out.writeShort(major_version);
+		
+		pool.write(out);
+		
+		out.writeShort(access_flags);
+		out.writeShort(this_class);
+		out.writeShort(super_class);
+		
+		interfaces.write(out);
+		
+		fields.write(out);
+		
+		methods.write(out);
+		
+		attributes.write(out);
+	}
 
 	public ClassGroup getGroup()
 	{
@@ -73,6 +96,11 @@ public class ClassFile
 	public Fields getFields()
 	{
 		return fields;
+	}
+	
+	public Methods getMethods()
+	{
+		return methods;
 	}
 
 	public String getName()
@@ -142,6 +170,11 @@ public class ClassFile
 	public void buildInstructionGraph()
 	{
 		methods.buildInstructionGraph();
+	}
+	
+	public void buildCallGraph()
+	{
+		methods.buildCallGraph();
 	}
 	
 	public boolean instanceOf(ClassFile other)

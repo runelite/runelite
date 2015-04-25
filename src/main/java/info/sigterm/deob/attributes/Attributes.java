@@ -6,6 +6,7 @@ import info.sigterm.deob.Method;
 import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
@@ -99,6 +100,7 @@ public class Attributes
 			{
 				Constructor<? extends Attribute> con = type.getAttributeClass().getConstructor(new Class[] { Attributes.class });
 				Attribute attr = con.newInstance(this);
+				attr.nameIndex = nameIndex;
 
 				attributes[i] = attr;
 			}
@@ -106,6 +108,16 @@ public class Attributes
 			{
 				throw new IOException(ex);
 			}
+		}
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(count);
+		for (Attribute a : attributes)
+		{
+			out.writeShort(a.nameIndex);
+			a.write(out);
 		}
 	}
 }

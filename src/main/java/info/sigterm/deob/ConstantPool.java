@@ -1,9 +1,12 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.attributes.code.instructions.Return;
 import info.sigterm.deob.pool.ConstantType;
 import info.sigterm.deob.pool.PoolEntry;
+import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
@@ -35,17 +38,25 @@ public class ConstantPool
 				PoolEntry entry = con.newInstance(this);
 
 				pool[i] = entry;
-
-				for (int j = 1; j < entry.getSlots(); ++j)
-				{
-					pool[i + 1] = entry;
-					++i;
-				}
+				i += entry.getSlots() - 1;
 			}
 			catch (Exception e)
 			{
 				throw new IOException(e);
 			}
+		}
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(count);
+		for (int i = 1; i < count; ++i)
+		{
+			PoolEntry entry = pool[i];
+			if (entry == null)
+				continue;
+			out.writeByte(entry.getType().getType());
+			entry.write(out);
 		}
 	}
 
@@ -57,5 +68,23 @@ public class ConstantPool
 	public PoolEntry getEntry(int index)
 	{
 		return pool[index];
+	}
+	
+	public int findUTF8Index(String s)
+	{
+		for (int i = 1; i < count; ++i)
+		{
+			PoolEntry entry = pool[i];
+			if (entry instanceof UTF8)
+			{
+				UTF8 u = (UTF8) entry;
+				if (s.equals(u.getValue()))
+				{
+					return i;
+				}
+			}
+		}
+		
+		return -1;
 	}
 }

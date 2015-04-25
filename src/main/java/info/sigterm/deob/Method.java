@@ -3,10 +3,15 @@ package info.sigterm.deob;
 import info.sigterm.deob.attributes.AttributeType;
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.callgraph.Node;
 import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Method
 {
@@ -16,6 +21,8 @@ public class Method
 	private int nameIndex;
 	private int descriptorIndex;
 	private Attributes attributes;
+	public List<Node> callsTo = new ArrayList<>(),
+			callsFrom = new ArrayList<>();
 
 	Method(Methods methods) throws IOException
 	{
@@ -27,6 +34,19 @@ public class Method
 		nameIndex = is.readUnsignedShort();
 		descriptorIndex = is.readUnsignedShort();
 		attributes = new Attributes(this);
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(accessFlags);
+		out.writeShort(nameIndex);
+		out.writeShort(descriptorIndex);
+		attributes.write(out);
+	}
+	
+	protected void remove()
+	{
+		assert callsFrom.isEmpty();
 	}
 
 	public Methods getMethods()
@@ -57,5 +77,20 @@ public class Method
 
 		if (code != null)
 			code.buildInstructionGraph();
+	}
+	
+	public void buildCallGraph()
+	{
+		Code code = getCode();
+
+		if (code != null)
+			code.buildCallGraph();
+	}
+	
+	public void addCallTo(Instruction ins, Method method)
+	{
+		Node node = new Node(this, method, ins);
+		callsTo.add(node);
+		method.callsFrom.add(node);
 	}
 }

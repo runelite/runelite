@@ -3,6 +3,7 @@ package info.sigterm.deob.pool;
 import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -86,5 +87,12 @@ public class NameAndType extends PoolEntry
 		if (this.getName().equals("<init>"))
 			return true; 
 		return !methodRefType.endsWith(")V");
+	}
+
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(nameIndex);
+		out.writeShort(descriptorIndex);
 	}
 }

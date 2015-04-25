@@ -9,8 +9,10 @@ import info.sigterm.deob.execution.ClassInstance;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.ObjectInstance;
 import info.sigterm.deob.pool.Method;
+import info.sigterm.deob.pool.NameAndType;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class InvokeVirtual extends Instruction
@@ -24,6 +26,36 @@ public class InvokeVirtual extends Instruction
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		index = is.readUnsignedShort();
 		length += 2;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeShort(index);
+	}
+	
+	@Override
+	public void buildCallGraph()
+	{
+		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
+
+		ConstantPool pool = thisClass.getPool();
+		Method method = (Method) pool.getEntry(index);
+		
+		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
+		NameAndType nat = method.getNameAndType();
+		
+		info.sigterm.deob.Method thisMethod = this.getInstructions().getCode().getAttributes().getMethod();
+		
+		ClassFile otherClass = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		if (otherClass == null)
+			return;
+		info.sigterm.deob.Method other = otherClass.findMethod(nat);
+		if (other == null)
+			return;
+		
+		thisMethod.addCallTo(this, other);
 	}
 
 	@Override

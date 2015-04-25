@@ -4,6 +4,7 @@ import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.execution.ObjectInstance;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +25,13 @@ public class Exceptions
 
 		for (int i = 0; i < count; ++i)
 			exceptions[i] = new Exception(this);
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(exceptions.length);
+		for (Exception e : exceptions)
+			e.write(out);
 	}
 
 	public Code getCode()

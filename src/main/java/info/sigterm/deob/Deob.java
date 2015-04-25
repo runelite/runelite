@@ -2,12 +2,17 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.execution.Execution;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
 
 public class Deob
 {
@@ -30,8 +35,27 @@ public class Deob
 
 		group.buildClassGraph();
 		group.buildInstructionGraph();
+		group.buildCallGraph();
 		
-		execute(group);
+		//checkCallGraph(group);
+		
+		//execute(group);
+		
+		JarOutputStream jout = new JarOutputStream(new FileOutputStream("d:/rs/07/adamout.jar"), new Manifest());
+		
+		for (ClassFile cf : group.getClasses())
+		{
+			JarEntry entry = new JarEntry(cf.getName() + ".class");
+			jout.putNextEntry(entry);
+			
+			ByteArrayOutputStream bout = new ByteArrayOutputStream();
+			cf.write(new DataOutputStream(bout));
+			jout.write(bout.toByteArray());
+			
+			jout.closeEntry();
+		}
+		
+		jout.close();
 	}
 
 	private static void execute(ClassGroup group) throws IOException
@@ -41,5 +65,19 @@ public class Deob
 		
 		Execution e = new Execution(group);
 		e.run(cf, method);
+	}
+	
+	private static void checkCallGraph(ClassGroup group)
+	{
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : cf.getMethods().getMethods())
+			{
+				if (m.callsFrom.isEmpty())
+				{
+					System.out.println(cf.getName() + " " + m.getName());
+				}
+			}
+		}
 	}
 }

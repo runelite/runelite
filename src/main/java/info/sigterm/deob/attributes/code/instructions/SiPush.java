@@ -6,6 +6,7 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class SiPush extends Instruction
@@ -19,6 +20,13 @@ public class SiPush extends Instruction
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		s = is.readShort();
 		length += 2;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeShort(s);
 	}
 
 	@Override

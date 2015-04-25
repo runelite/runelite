@@ -5,6 +5,7 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -39,6 +40,14 @@ public class Field
 		nameIndex = is.readUnsignedShort();
 		descriptorIndex = is.readUnsignedShort();
 		attributes = new Attributes(this);
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(accessFlags);
+		out.writeShort(nameIndex);
+		out.writeShort(descriptorIndex);
+		attributes.write(out);
 	}
 
 	public Fields getFields()

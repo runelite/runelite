@@ -3,6 +3,7 @@ package info.sigterm.deob;
 import info.sigterm.deob.pool.NameAndType;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Fields
@@ -23,6 +24,13 @@ public class Fields
 
 		for (int i = 0; i < count; ++i)
 			fields[i] = new Field(this);
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(count);
+		for (Field f : fields)
+			f.write(out);
 	}
 
 	public ClassFile getClassFile()

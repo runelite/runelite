@@ -6,6 +6,7 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class IInc extends Instruction
@@ -21,6 +22,14 @@ public class IInc extends Instruction
 		index = is.readByte();
 		inc = is.readByte();
 		length += 2;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeByte(index);
+		out.writeByte(inc);
 	}
 
 	@Override

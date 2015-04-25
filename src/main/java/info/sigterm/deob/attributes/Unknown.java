@@ -1,6 +1,7 @@
 package info.sigterm.deob.attributes;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Unknown extends Attribute
@@ -28,5 +29,11 @@ public class Unknown extends Attribute
 		}
 
 		assert read == len;
+	}
+
+	@Override
+	public void writeAttr(DataOutputStream out) throws IOException
+	{
+		out.write(data);
 	}
 }

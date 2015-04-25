@@ -3,6 +3,7 @@ package info.sigterm.deob;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClassGroup
 {
@@ -17,6 +18,11 @@ public class ClassGroup
 		ClassFile cf = new ClassFile(this, is);
 		classes.add(cf);
 		return cf;
+	}
+	
+	public List<ClassFile> getClasses()
+	{
+		return classes;
 	}
 
 	public ClassFile findClass(String name)
@@ -38,5 +44,11 @@ public class ClassGroup
 	{
 		for (ClassFile c : classes)
 			c.buildInstructionGraph();
+	}
+	
+	public void buildCallGraph()
+	{
+		for (ClassFile c : classes)
+			c.buildCallGraph();
 	}
 }

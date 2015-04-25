@@ -8,6 +8,7 @@ import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.pool.PoolEntry;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class LDC_W extends Instruction
@@ -21,6 +22,13 @@ public class LDC_W extends Instruction
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		index = is.readUnsignedShort();
 		length += 2;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeShort(index);
 	}
 
 	@Override

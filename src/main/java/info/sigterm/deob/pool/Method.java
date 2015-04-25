@@ -3,6 +3,7 @@ package info.sigterm.deob.pool;
 import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Method extends PoolEntry
@@ -28,5 +29,12 @@ public class Method extends PoolEntry
 	public NameAndType getNameAndType()
 	{
 		return (NameAndType) this.getPool().getEntry(nameAndTypeIndex);
+	}
+
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(classIndex);
+		out.writeShort(nameAndTypeIndex);
 	}
 }

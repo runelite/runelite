@@ -3,6 +3,7 @@ package info.sigterm.deob.pool;
 import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class UTF8 extends PoolEntry
@@ -50,5 +51,15 @@ public class UTF8 extends PoolEntry
 	public Object getObject()
 	{
 		return sb.toString();
+	}
+
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		java.lang.String s = getValue();
+		byte[] bytes = s.getBytes("UTF-8");
+		
+		out.writeShort(bytes.length);
+		out.write(bytes);
 	}
 }

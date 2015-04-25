@@ -3,6 +3,7 @@ package info.sigterm.deob;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Interfaces
@@ -23,6 +24,13 @@ public class Interfaces
 
 		for (int i = 0; i < count; ++i)
 			interfaces[i] = is.readUnsignedShort();
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(count);
+		for (int i : interfaces)
+			out.writeShort(i);
 	}
 	
 	public boolean instanceOf(ClassFile cf)

@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code;
 import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Exception
@@ -24,6 +25,14 @@ public class Exception
 		endPc = is.readUnsignedShort();
 		handlerPc = is.readUnsignedShort();
 		catchType = is.readUnsignedShort();
+	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeShort(startPc);
+		out.writeShort(endPc);
+		out.writeShort(handlerPc);
+		out.writeShort(catchType);
 	}
 	
 	public Exceptions getExceptions()

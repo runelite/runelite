@@ -4,6 +4,7 @@ import info.sigterm.deob.attributes.code.Exceptions;
 import info.sigterm.deob.attributes.code.Instructions;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Code extends Attribute
@@ -26,7 +27,7 @@ public class Code extends Attribute
 		instructions = new Instructions(this);
 
 		exceptions = new Exceptions(this);
-		attributes = new Attributes(this);
+		this.attributes = new Attributes(this);
 	}
 
 	public int getMaxStack()
@@ -52,5 +53,21 @@ public class Code extends Attribute
 	public void buildInstructionGraph()
 	{
 		instructions.buildInstructionGraph();
+	}
+	
+	public void buildCallGraph()
+	{
+		instructions.buildCallGraph();
+	}
+
+	@Override
+	public void writeAttr(DataOutputStream out) throws IOException
+	{
+		out.writeShort(maxStack);
+		out.writeShort(maxLocals);
+		
+		instructions.write(out);
+		exceptions.write(out);
+		attributes.write(out);
 	}
 }

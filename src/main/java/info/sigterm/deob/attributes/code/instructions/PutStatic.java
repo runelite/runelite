@@ -13,6 +13,7 @@ import info.sigterm.deob.pool.Field;
 import info.sigterm.deob.pool.NameAndType;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class PutStatic extends Instruction
@@ -26,6 +27,13 @@ public class PutStatic extends Instruction
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		index = is.readUnsignedShort();
 		length += 2;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeShort(index);
 	}
 
 	@Override

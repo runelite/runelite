@@ -3,6 +3,7 @@ package info.sigterm.deob.pool;
 import info.sigterm.deob.ConstantPool;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Float extends PoolEntry
@@ -22,5 +23,11 @@ public class Float extends PoolEntry
 	public Object getObject()
 	{
 		return value;
+	}
+
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		out.writeFloat(value);
 	}
 }

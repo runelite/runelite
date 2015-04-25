@@ -2,6 +2,8 @@ package info.sigterm.deob.attributes.code;
 
 import info.sigterm.deob.execution.Frame;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class Instruction
@@ -20,6 +22,11 @@ public abstract class Instruction
 		this.instructions = instructions;
 		this.type = type;
 		this.pc = pc;
+	}
+	
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		out.writeByte(type.getCode());
 	}
 
 	public Instructions getInstructions()
@@ -57,6 +64,10 @@ public abstract class Instruction
 	}
 
 	public void buildInstructionGraph()
+	{
+	}
+	
+	public void buildCallGraph()
 	{
 	}
 

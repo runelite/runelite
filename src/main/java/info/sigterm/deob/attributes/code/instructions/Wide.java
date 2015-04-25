@@ -6,6 +6,7 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class Wide extends Instruction
@@ -31,6 +32,22 @@ public class Wide extends Instruction
 		{
 			value = is.readUnsignedShort();
 			length += 2;
+		}
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		
+		out.writeByte(opcode);
+		out.writeShort(index);
+		
+		InstructionType optype = InstructionType.findInstructionFromCode(opcode);
+		assert optype != null;
+		if (optype == InstructionType.IINC)
+		{
+			out.writeShort(value);
 		}
 	}
 

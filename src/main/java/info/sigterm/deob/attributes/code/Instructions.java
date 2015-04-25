@@ -2,15 +2,18 @@ package info.sigterm.deob.attributes.code;
 
 import info.sigterm.deob.attributes.Code;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Instructions
 {
 	private Code code;
-	private ArrayList<Instruction> instructions = new ArrayList<Instruction>();
+	private List<Instruction> instructions = new ArrayList<>();
 
 	public Instructions(Code code) throws IOException
 	{
@@ -46,6 +49,21 @@ public class Instructions
 
 		buildJumpGraph();
 	}
+	
+	public void write(DataOutputStream out) throws IOException
+	{
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		DataOutputStream o = new DataOutputStream(b);
+		int pc = 0;
+		for (Instruction i : instructions)
+		{
+			i.write(o, pc);
+			pc = o.size();
+		}
+		byte[] ba = b.toByteArray();
+		out.writeInt(ba.length);
+		out.write(ba);
+	}
 
 	private void buildJumpGraph()
 	{
@@ -57,6 +75,12 @@ public class Instructions
 	{
 		for (Instruction i : instructions)
 			i.buildInstructionGraph();
+	}
+	
+	public void buildCallGraph()
+	{
+		for (Instruction i : instructions)
+			i.buildCallGraph();
 	}
 
 	public Code getCode()

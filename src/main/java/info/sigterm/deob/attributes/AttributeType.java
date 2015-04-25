@@ -8,6 +8,7 @@ public enum AttributeType
 
 	private String name;
 	private Class<? extends Attribute> clazz;
+	public int nameIndex;
 
 	AttributeType(String name, Class<? extends Attribute> clazz)
 	{

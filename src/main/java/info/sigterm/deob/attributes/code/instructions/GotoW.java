@@ -6,6 +6,7 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 
 public class GotoW extends Instruction
@@ -19,6 +20,13 @@ public class GotoW extends Instruction
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 		offset = is.readInt();
 		length += 4;
+	}
+	
+	@Override
+	public void write(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeInt(offset);
 	}
 
 	@Override
