@@ -21,7 +21,7 @@ public class Method
 	private int nameIndex;
 	private int descriptorIndex;
 	private Attributes attributes;
-	public List<Node> callsTo = new ArrayList<>(),
+	private List<Node> callsTo = new ArrayList<>(),
 			callsFrom = new ArrayList<>();
 
 	Method(Methods methods) throws IOException

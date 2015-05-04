@@ -3,13 +3,14 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class FStore extends Instruction
+public class FStore extends Instruction implements LVTInstruction
 {
 	private int index;
 
@@ -34,5 +35,17 @@ public class FStore extends Instruction
 	{
 		float f = (float) frame.getStack().pop();
 		frame.getVariables().set(index, f);
+	}
+	
+	@Override
+	public int getVariableIndex()
+	{
+		return index;
+	}
+
+	@Override
+	public boolean store()
+	{
+		return true;
 	}
 }

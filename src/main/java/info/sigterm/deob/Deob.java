@@ -42,7 +42,7 @@ public class Deob
 		
 		//execute(group);
 		
-		JarOutputStream jout = new JarOutputStream(new FileOutputStream("d:/rs/07/adamout.jar"), new Manifest());
+		JarOutputStream jout = new JarOutputStream(new FileOutputStream(args[1]), new Manifest());
 		
 		for (ClassFile cf : group.getClasses())
 		{

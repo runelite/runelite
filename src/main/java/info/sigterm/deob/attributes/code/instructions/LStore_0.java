@@ -3,11 +3,12 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.IOException;
 
-public class LStore_0 extends Instruction
+public class LStore_0 extends Instruction implements LVTInstruction
 {
 	public LStore_0(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -20,5 +21,17 @@ public class LStore_0 extends Instruction
 		Object obj = frame.getStack().pop();
 		assert obj instanceof Long;
 		frame.getVariables().set(0, obj);
+	}
+	
+	@Override
+	public int getVariableIndex()
+	{
+		return 0;
+	}
+
+	@Override
+	public boolean store()
+	{
+		return true;
 	}
 }
