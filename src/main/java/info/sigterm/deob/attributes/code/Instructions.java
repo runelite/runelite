@@ -50,6 +50,11 @@ public class Instructions
 		buildJumpGraph();
 	}
 	
+	public List<Instruction> getInstructions()
+	{
+		return instructions;
+	}
+	
 	public void write(DataOutputStream out) throws IOException
 	{
 		ByteArrayOutputStream b = new ByteArrayOutputStream();

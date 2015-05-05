@@ -22,6 +22,14 @@ public class NameAndType extends PoolEntry
 		nameIndex = is.readUnsignedShort();
 		descriptorIndex = is.readUnsignedShort();
 	}
+	
+	public NameAndType(ConstantPool pool, int name, int type)
+	{
+		super(pool, ConstantType.NAME_AND_TYPE);
+		
+		this.nameIndex = name;
+		this.descriptorIndex = type;
+	}
 
 	public java.lang.String getName()
 	{

@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.AttributeType;
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.callgraph.Node;
+import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
@@ -15,6 +17,8 @@ import java.util.List;
 
 public class Method
 {
+	public static final int ACC_STATIC = 0x8;
+	
 	private Methods methods;
 
 	private short accessFlags;
@@ -64,6 +68,17 @@ public class Method
 	{
 		UTF8 u = (UTF8) methods.getClassFile().getPool().getEntry(descriptorIndex);
 		return u.getValue();
+	}
+	
+	public NameAndType getNameAndType()
+	{
+		// this isn't really from the pool ..
+		return new NameAndType(methods.getClassFile().getPool(), nameIndex, descriptorIndex);
+	}
+	
+	public boolean isStatic()
+	{
+		return (accessFlags & ACC_STATIC) != 0;
 	}
 
 	public Code getCode()
@@ -129,4 +144,26 @@ public class Method
 		callsTo.add(node);
 		method.callsFrom.add(node);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends Instruction & LVTInstruction> List<T> findLVTInstructionsForVariable(int index)
+	{
+		List<T> list = new ArrayList<>();
+		
+		if (getCode() == null)
+			return null;
+		
+		for (Instruction ins : getCode().getInstructions().getInstructions())
+			if (ins instanceof LVTInstruction)
+			{
+				LVTInstruction lv = (LVTInstruction) ins;
+				
+				if (lv.getVariableIndex() != index)
+					continue;
+				
+				list.add((T) ins);
+			}
+		
+		return list;
+	} 
 }

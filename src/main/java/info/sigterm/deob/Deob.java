@@ -1,6 +1,9 @@
 package info.sigterm.deob;
 
 import info.sigterm.deob.execution.Execution;
+import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -10,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -39,6 +43,7 @@ public class Deob
 		group.buildCallGraph();
 		
 		checkCallGraph(group);
+		checkParameters(group);
 		
 		//execute(group);
 		
@@ -88,5 +93,45 @@ public class Deob
 			}
 		}
 		System.out.println("Removed " + i + " methods");
+	}
+	
+	private static boolean parameterUsed(int num, List lv)
+	{
+		if (lv.isEmpty())
+			return false;
+		
+		// these instructions aren't in order so we can't do this
+		//LVTInstruction ins = (LVTInstruction) lv.get(0);
+		//return !ins.store();
+		return true;
+	}
+	
+	private static void checkParameters(ClassGroup group)
+	{
+		int count = 0;
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
+			{
+				int start = m.isStatic() ? 0 : 1;
+				NameAndType nat = m.getNameAndType();
+				int numParams = start + nat.getNumberOfArgs();
+				
+				for (int i = start; i < numParams; ++i)
+				{
+					List lv = m.findLVTInstructionsForVariable(i);
+					
+					if (lv == null)
+						continue;
+					
+					if (!parameterUsed(i, lv))
+					{
+						System.out.println("Not used param " + i + " of " + cf.getName() + " " + m.getName() + " static: " + m.isStatic());
+						++count;
+					}
+				}
+			}
+		}
+		System.out.println("Detected " + count + " unused parameters");
 	}
 }
