@@ -9,6 +9,7 @@ import java.io.IOException;
 public class String extends PoolEntry
 {
 	private int stringIndex;
+	private java.lang.String string;
 
 	public String(ConstantPool pool) throws IOException
 	{
@@ -18,11 +19,40 @@ public class String extends PoolEntry
 
 		stringIndex = is.readUnsignedShort();
 	}
+	
+	public String(ConstantPool pool, java.lang.String str)
+	{
+		super(pool, ConstantType.STRING);
+		
+		string = str;
+	}
+	
+	@Override
+	public void resolve()
+	{
+		string = this.getPool().getUTF8(stringIndex);
+	}
+	
+	@Override
+	public void prime()
+	{
+		stringIndex = this.getPool().makeUTF8(string);
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof String))
+			return false;
+		
+		String s = (String) other;
+		return string.equals(s.string);
+	}
 
 	@Override
 	public Object getObject()
 	{
-		return this.getPool().getEntry(stringIndex).getObject();
+		return string;
 	}
 
 	@Override

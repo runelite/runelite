@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class InvokeInterface extends Instruction
 {
-	private int index;
+	private InterfaceMethod method;
 	private int count;
 
 	public InvokeInterface(Instructions instructions, InstructionType type, int pc) throws IOException
@@ -26,7 +26,7 @@ public class InvokeInterface extends Instruction
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		method = this.getPool().getInterfaceMethod(is.readUnsignedShort());
 		count = is.readUnsignedByte();
 		is.skip(1);
 		length += 4;
@@ -36,19 +36,14 @@ public class InvokeInterface extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(method));
 		out.writeByte(count);
 		out.writeByte(0);
 	}
 	
 	@Override
 	public void buildCallGraph()
-	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		ConstantPool pool = thisClass.getPool();
-		InterfaceMethod method = (InterfaceMethod) pool.getEntry(index);
-		
+	{	
 		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
 		NameAndType nat = method.getNameAndType();
 		
@@ -64,12 +59,7 @@ public class InvokeInterface extends Instruction
 
 	@Override
 	public void execute(Frame e)
-	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		ConstantPool pool = thisClass.getPool();
-		InterfaceMethod method = (InterfaceMethod) pool.getEntry(index);
-		
+	{	
 		ObjectInstance object = (ObjectInstance) e.getStack().pop();
 		ClassInstance objectType = object.getType();
 		

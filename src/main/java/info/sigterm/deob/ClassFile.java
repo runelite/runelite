@@ -4,6 +4,7 @@ import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.NameAndType;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,19 +12,20 @@ import java.util.ArrayList;
 
 public class ClassFile
 {
+	private static final int MAGIC = 0xcafebabe;
+	
 	private ClassGroup group;
 	private DataInputStream is;
 
 	private ClassFile parent; // super class
 	private ArrayList<ClassFile> children = new ArrayList<ClassFile>(); // classes which inherit from this
 
-	private int magic;
 	private short minor_version;
 	private short major_version;
 	private ConstantPool pool;
 	private short access_flags;
-	private int this_class;
-	private int super_class;
+	private Class name;
+	private Class super_class;
 	private Interfaces interfaces;
 	private Fields fields;
 	private Methods methods;
@@ -34,18 +36,18 @@ public class ClassFile
 		this.group = group;
 		this.is = is;
 
-		magic = is.readInt();
-		if (magic != 0xcafebabe)
+		int magic = is.readInt();
+		if (magic != MAGIC)
 			throw new IOException("File is not a java class file.");
 
 		minor_version = is.readShort();
 		major_version = is.readShort();
 
-		pool = new ConstantPool(this);
+		pool = new ConstantPool(this, is);
 
 		access_flags = is.readShort();
-		this_class = is.readUnsignedShort();
-		super_class = is.readUnsignedShort();
+		name = pool.getClass(is.readUnsignedShort());
+		super_class = pool.getClass(is.readUnsignedShort());
 
 		interfaces = new Interfaces(this);
 
@@ -58,24 +60,32 @@ public class ClassFile
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		out.writeInt(0xcafebabe);
+		out.writeInt(MAGIC);
 		
 		out.writeShort(minor_version);
 		out.writeShort(major_version);
 		
+		/* constant pool will be rebuilt now */
+		pool.reset();
+		
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		DataOutputStream rest = new DataOutputStream(bout);
+		rest.writeShort(access_flags);
+		rest.writeShort(pool.make(name));
+		rest.writeShort(pool.make(super_class));
+		
+		interfaces.write(rest);
+		
+		fields.write(rest);
+		
+		methods.write(rest);
+		
+		attributes.write(rest);
+		
+		// Now the pool is created
+		
 		pool.write(out);
-		
-		out.writeShort(access_flags);
-		out.writeShort(this_class);
-		out.writeShort(super_class);
-		
-		interfaces.write(out);
-		
-		fields.write(out);
-		
-		methods.write(out);
-		
-		attributes.write(out);
+		out.write(bout.toByteArray());
 	}
 
 	public ClassGroup getGroup()
@@ -110,14 +120,12 @@ public class ClassFile
 
 	public String getName()
 	{
-		Class entry = (Class) pool.getEntry(this_class);
-		return entry.getName();
+		return name.getName();
 	}
 
 	public ClassFile getParent()
 	{
-		Class entry = (Class) pool.getEntry(super_class);
-		String superName = entry.getName();
+		String superName = super_class.getName();
 		ClassFile other = group.findClass(superName);
 		assert other != this;
 		return other;

@@ -1,6 +1,5 @@
 package info.sigterm.deob.attributes.code.instructions;
 
-import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;

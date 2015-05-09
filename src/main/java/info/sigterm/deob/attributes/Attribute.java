@@ -10,7 +10,6 @@ public abstract class Attribute
 	private Attributes attributes;
 	private AttributeType type;
 	private int length;
-	public int nameIndex;
 
 	Attribute(Attributes attr, AttributeType type) throws IOException
 	{
@@ -21,7 +20,7 @@ public abstract class Attribute
 		this.length = is.readInt();
 	}
 	
-	public void write(DataOutputStream out) throws IOException
+	public final void write(DataOutputStream out) throws IOException
 	{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		writeAttr(new DataOutputStream(bout));

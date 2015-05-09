@@ -5,7 +5,6 @@ import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.ArrayInstance;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
 import info.sigterm.deob.execution.Stack;
 
 public class AAStore extends Instruction

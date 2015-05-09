@@ -1,18 +1,18 @@
 package info.sigterm.deob.attributes.code;
 
 import info.sigterm.deob.attributes.Code;
-import info.sigterm.deob.execution.ObjectInstance;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Exceptions
 {
 	private Code code;
-	private Exception[] exceptions;
+	private List<Exception> exceptions = new ArrayList<Exception>();
 
 	public Exceptions(Code code) throws IOException
 	{
@@ -21,15 +21,14 @@ public class Exceptions
 		DataInputStream is = code.getAttributes().getStream();
 
 		int count = is.readUnsignedShort();
-		exceptions = new Exception[count];
 
 		for (int i = 0; i < count; ++i)
-			exceptions[i] = new Exception(this);
+			exceptions.add(new Exception(this));
 	}
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		out.writeShort(exceptions.length);
+		out.writeShort(exceptions.size());
 		for (Exception e : exceptions)
 			e.write(out);
 	}

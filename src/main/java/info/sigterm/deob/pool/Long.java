@@ -18,6 +18,23 @@ public class Long extends PoolEntry
 
 		value = is.readLong();
 	}
+	
+	public Long(ConstantPool pool, long l)
+	{
+		super(pool, ConstantType.LONG);
+		
+		value = l;
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof Long))
+			return false;
+		
+		Long l = (Long) other;
+		return value == l.value;
+	}
 
 	@Override
 	public int getSlots()

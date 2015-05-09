@@ -5,13 +5,14 @@ import info.sigterm.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Fields
 {
 	private ClassFile classFile;
 
-	private int count;
-	private Field[] fields;
+	private List<Field> fields = new ArrayList<>();
 
 	Fields(ClassFile c) throws IOException
 	{
@@ -19,16 +20,15 @@ public class Fields
 
 		DataInputStream is = c.getStream();
 
-		count = is.readUnsignedShort();
-		fields = new Field[count];
+		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
-			fields[i] = new Field(this);
+			fields.add(new Field(this));
 	}
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		out.writeShort(count);
+		out.writeShort(fields.size());
 		for (Field f : fields)
 			f.write(out);
 	}
@@ -38,7 +38,7 @@ public class Fields
 		return classFile;
 	}
 
-	public Field[] getFields()
+	public List<Field> getFields()
 	{
 		return fields;
 	}

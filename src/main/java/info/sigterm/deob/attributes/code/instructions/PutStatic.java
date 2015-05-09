@@ -18,14 +18,14 @@ import java.io.IOException;
 
 public class PutStatic extends Instruction
 {
-	private int index;
+	private Field field;
 
 	public PutStatic(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		field = this.getPool().getField(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -33,7 +33,7 @@ public class PutStatic extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(field));
 	}
 
 	@Override
@@ -41,10 +41,8 @@ public class PutStatic extends Instruction
 	{
 		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
 
-		ConstantPool pool = thisClass.getPool();
-		Field entry = (Field) pool.getEntry(index);
-		Class clazz = entry.getClassEntry();
-		NameAndType nat = entry.getNameAndType();
+		Class clazz = field.getClassEntry();
+		NameAndType nat = field.getNameAndType();
 		
 		Object value = e.getStack().pop();
 

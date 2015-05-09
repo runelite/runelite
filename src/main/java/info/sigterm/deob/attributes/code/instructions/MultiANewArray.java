@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class MultiANewArray extends Instruction
 {
-	private int index;
+	private Class clazz;
 	private int dimensions;
 
 	public MultiANewArray(Instructions instructions, InstructionType type, int pc) throws IOException
@@ -22,7 +22,7 @@ public class MultiANewArray extends Instruction
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		clazz = this.getPool().getClass(is.readUnsignedShort());
 		dimensions = is.readUnsignedByte();
 		length += 3;
 	}
@@ -31,7 +31,7 @@ public class MultiANewArray extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(clazz));
 		out.writeByte(dimensions);
 	}
 	
@@ -41,7 +41,6 @@ public class MultiANewArray extends Instruction
 		Stack stack = e.getStack();
 		
 		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-		Class clazz = (Class) thisClass.getPool().getEntry(index);
 		
 		// XXX primive type/array type ? [[I [[Lmyclass; etc
 		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());

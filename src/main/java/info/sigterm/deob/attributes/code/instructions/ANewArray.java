@@ -15,14 +15,14 @@ import java.io.IOException;
 
 public class ANewArray extends Instruction
 {
-	private int index;
+	private Class clazz;
 
 	public ANewArray(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		clazz = this.getPool().getClass(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -30,14 +30,14 @@ public class ANewArray extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		
+		out.writeShort(this.getPool().make(clazz));
 	}
 
 	@Override
 	public void execute(Frame frame)
 	{
 		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-		Class clazz = (Class) thisClass.getPool().getEntry(index);
 		
 		int count = (int) frame.getStack().pop();
 		

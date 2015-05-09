@@ -18,6 +18,23 @@ public class Integer extends PoolEntry
 
 		value = is.readInt();
 	}
+	
+	public Integer(ConstantPool pool, int i)
+	{
+		super(pool, ConstantType.INTEGER);
+		
+		value = i;
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof Integer))
+			return false;
+		
+		Integer i = (Integer) other;
+		return value == i.value;
+	}
 
 	@Override
 	public Object getObject()

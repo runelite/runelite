@@ -8,24 +8,24 @@ import java.io.IOException;
 
 public class ConstantValue extends Attribute
 {
-	private int constantValueIndex;
+	private PoolEntry value;
 
 	public ConstantValue(Attributes attributes) throws IOException
 	{
 		super(attributes, AttributeType.CONSTANT_VALUE);
 
 		DataInputStream is = attributes.getStream();
-		constantValueIndex = is.readUnsignedShort();
+		value = this.getAttributes().getClassFile().getPool().getEntry(is.readUnsignedShort());
 	}
 
 	public PoolEntry getValue()
 	{
-		return this.getAttributes().getClassFile().getPool().getEntry(constantValueIndex);
+		return value;
 	}
 
 	@Override
 	public void writeAttr(DataOutputStream out) throws IOException
 	{
-		out.writeShort(constantValueIndex);
+		out.writeShort(this.getAttributes().getClassFile().getPool().make(value));
 	}
 }

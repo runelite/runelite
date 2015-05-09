@@ -29,6 +29,17 @@ public class Code extends Attribute
 		exceptions = new Exceptions(this);
 		this.attributes = new Attributes(this);
 	}
+	
+	@Override
+	public void writeAttr(DataOutputStream out) throws IOException
+	{
+		out.writeShort(maxStack);
+		out.writeShort(maxLocals);
+		
+		instructions.write(out);
+		exceptions.write(out);
+		attributes.write(out);
+	}
 
 	public int getMaxStack()
 	{
@@ -58,16 +69,5 @@ public class Code extends Attribute
 	public void buildCallGraph()
 	{
 		instructions.buildCallGraph();
-	}
-
-	@Override
-	public void writeAttr(DataOutputStream out) throws IOException
-	{
-		out.writeShort(maxStack);
-		out.writeShort(maxLocals);
-		
-		instructions.write(out);
-		exceptions.write(out);
-		attributes.write(out);
 	}
 }

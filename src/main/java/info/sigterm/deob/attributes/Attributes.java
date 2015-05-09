@@ -9,6 +9,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Attributes
 {
@@ -17,8 +19,7 @@ public class Attributes
 	private Method method;
 	private Code code;
 
-	private int count;
-	private Attribute[] attributes;
+	private List<Attribute> attributes = new ArrayList<>();
 
 	public Attributes(ClassFile cf) throws IOException
 	{
@@ -87,22 +88,20 @@ public class Attributes
 	{
 		DataInputStream is = getStream();
 
-		count = is.readUnsignedShort();
-		attributes = new Attribute[count];
+		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
 		{
-			int nameIndex = is.readUnsignedShort();
-			UTF8 name = (UTF8) getClassFile().getPool().getEntry(nameIndex);
+			String name = this.getClassFile().getPool().getUTF8(is.readUnsignedShort());
 
-			AttributeType type = AttributeType.findType(name.getValue());
+			AttributeType type = AttributeType.findType(name);
 			try
 			{
 				Constructor<? extends Attribute> con = type.getAttributeClass().getConstructor(new Class[] { Attributes.class });
 				Attribute attr = con.newInstance(this);
-				attr.nameIndex = nameIndex;
 
-				attributes[i] = attr;
+				if (type != AttributeType.UNKNOWN)
+					attributes.add(attr);
 			}
 			catch (Exception ex)
 			{
@@ -113,10 +112,10 @@ public class Attributes
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		out.writeShort(count);
+		out.writeShort(attributes.size());
 		for (Attribute a : attributes)
 		{
-			out.writeShort(a.nameIndex);
+			out.writeShort(this.getClassFile().getPool().makeUTF8(a.getType().getName()));
 			a.write(out);
 		}
 	}

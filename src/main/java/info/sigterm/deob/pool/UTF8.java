@@ -8,58 +8,48 @@ import java.io.IOException;
 
 public class UTF8 extends PoolEntry
 {
-	private StringBuilder sb = new StringBuilder();
+	private java.lang.String string;
 
 	public UTF8(ConstantPool pool) throws IOException
 	{
 		super(pool, ConstantType.UTF8);
 
 		DataInputStream ios = pool.getClassFile().getStream();
-
-		short length = ios.readShort();
-		for (int i = 0; i < length; i++)
-		{
-			int a = ios.read();
-			if ((a & 0x80) == 0)
-			{
-				sb.append((char)a);
-			}
-			else if ((a & 0x20) == 0)
-			{
-				int b = ios.read();
-				char c = (char)(((a & 0x1f) << 6) + (b & 0x3f));
-				sb.append(c);
-				i++;
-			}
-			else
-			{
-				int b = ios.read();
-				int c = ios.read();
-				char ch = (char)(((a & 0xf) << 12) + ((b & 0x3f) << 6) + (c & 0x3f));
-				sb.append(ch);
-				i += 2;
-			}
-		}
+		string = ios.readUTF();
+	}
+	
+	public UTF8(java.lang.String value)
+	{
+		super(null, ConstantType.UTF8);
+		
+		string = value;
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof UTF8))
+			return false;
+		
+		UTF8 u = (UTF8) other;
+		return string.equals(u.string);
 	}
 
 	public java.lang.String getValue()
 	{
-		return (java.lang.String) getObject();
+		return string;
 	}
 	
 	@Override
 	public Object getObject()
 	{
-		return sb.toString();
+		return getValue();
 	}
 
 	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
 		java.lang.String s = getValue();
-		byte[] bytes = s.getBytes("UTF-8");
-		
-		out.writeShort(bytes.length);
-		out.write(bytes);
+		out.writeUTF(s);
 	}
 }

@@ -12,8 +12,7 @@ public class Interfaces
 {
 	private ClassFile classFile;
 
-	private int count;
-	private int interfaces[];
+	private List<Class> interfaces = new ArrayList<Class>();
 
 	Interfaces(ClassFile c) throws IOException
 	{
@@ -21,19 +20,17 @@ public class Interfaces
 
 		DataInputStream is = c.getStream();
 
-		count = is.readUnsignedShort();
-		interfaces = new int[count];
+		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
-			interfaces[i] = is.readUnsignedShort();
+			interfaces.add(c.getPool().getClass(is.readUnsignedShort()));
 	}
 	
 	public List<ClassFile> getInterfaces()
 	{
 		List<ClassFile> l = new ArrayList<>();
-		for (int i : interfaces)
+		for (Class clazz : interfaces)
 		{
-			Class clazz = (Class) classFile.getPool().getEntry(i);
 			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
 			if (iface != null)
 				l.add(iface);
@@ -43,16 +40,15 @@ public class Interfaces
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		out.writeShort(count);
-		for (int i : interfaces)
-			out.writeShort(i);
+		out.writeShort(interfaces.size());
+		for (Class clazz : interfaces)
+			out.writeShort(classFile.getPool().make(clazz));
 	}
 	
 	public boolean instanceOf(ClassFile cf)
 	{
-		for (int i : interfaces)
+		for (Class clazz : interfaces)
 		{
-			Class clazz = (Class) classFile.getPool().getEntry(i);
 			ClassFile iface = classFile.getGroup().findClass(clazz.getName());
 			if (iface.instanceOf(cf))
 				return true;

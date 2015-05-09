@@ -8,8 +8,9 @@ import java.io.IOException;
 
 public class Method extends PoolEntry
 {
-	private int classIndex;
-	private int nameAndTypeIndex;
+	private int classIndex, natIndex;
+	private Class clazz;
+	private NameAndType nat;
 
 	public Method(ConstantPool pool) throws IOException
 	{
@@ -18,23 +19,47 @@ public class Method extends PoolEntry
 		DataInputStream is = pool.getClassFile().getStream();
 
 		classIndex = is.readUnsignedShort();
-		nameAndTypeIndex = is.readUnsignedShort();
+		natIndex = is.readUnsignedShort();
+	}
+	
+	@Override
+	public void resolve()
+	{
+		clazz = this.getPool().getClass(classIndex);
+		nat = this.getPool().getNameAndType(natIndex);
+	}
+	
+	@Override
+	public void prime()
+	{
+		classIndex = this.getPool().make(clazz);
+		natIndex = this.getPool().make(nat);		
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof Method))
+			return false;
+		
+		Method m = (Method) other;
+		return clazz.equals(m.clazz) && nat.equals(m.nat);
 	}
 	
 	public Class getClassEntry()
 	{
-		return (Class) this.getPool().getEntry(classIndex);
+		return clazz;
 	}
 
 	public NameAndType getNameAndType()
 	{
-		return (NameAndType) this.getPool().getEntry(nameAndTypeIndex);
+		return nat;
 	}
 
 	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
 		out.writeShort(classIndex);
-		out.writeShort(nameAndTypeIndex);
+		out.writeShort(natIndex);
 	}
 }

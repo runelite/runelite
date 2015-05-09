@@ -15,14 +15,14 @@ import java.io.IOException;
 
 public class CheckCast extends Instruction
 {
-	private int index;
+	private Class clazz;
 
 	public CheckCast(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		clazz = this.getPool().getClass(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -30,7 +30,7 @@ public class CheckCast extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(clazz));
 	}
 
 	@Override
@@ -39,7 +39,6 @@ public class CheckCast extends Instruction
 		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
 
 		ConstantPool pool = thisClass.getPool();
-		Class clazz = (Class) pool.getEntry(index);
 		
 		ObjectInstance obj = (ObjectInstance) e.getStack().pop();
 		if (obj == null)

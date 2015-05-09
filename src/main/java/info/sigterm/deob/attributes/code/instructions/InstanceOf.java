@@ -15,14 +15,14 @@ import java.io.IOException;
 
 public class InstanceOf extends Instruction
 {
-	private int index;
+	private Class clazz;
 
 	public InstanceOf(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		clazz = this.getPool().getClass(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -30,16 +30,13 @@ public class InstanceOf extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(clazz));
 	}
 
 	@Override
 	public void execute(Frame e)
 	{
 		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		ConstantPool pool = thisClass.getPool();
-		Class clazz = (Class) pool.getEntry(index);
 		
 		ObjectInstanceBase obj = (ObjectInstanceBase) e.getStack().pop();
 		if (obj == null)

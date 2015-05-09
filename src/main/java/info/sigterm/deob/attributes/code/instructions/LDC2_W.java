@@ -13,14 +13,14 @@ import java.io.IOException;
 
 public class LDC2_W extends Instruction
 {
-	private int index;
+	private Object value;
 
 	public LDC2_W(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		value = this.getPool().get(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -28,14 +28,12 @@ public class LDC2_W extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(value));
 	}
 
 	@Override
 	public void execute(Frame frame)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-		PoolEntry entry = thisClass.getPool().getEntry(index);
-		frame.getStack().push(this, entry.getObject());
+		frame.getStack().push(this, value);
 	}
 }

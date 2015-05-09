@@ -2,7 +2,6 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.code.Instruction;
-import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,8 +23,7 @@ public class Field
 	private Fields fields;
 
 	private short accessFlags;
-	private int nameIndex;
-	private int descriptorIndex;
+	private String name, descriptor;
 	private Attributes attributes;
 
 	private ArrayList<Instruction> instructions = new ArrayList<Instruction>(); // instructions which reference this field
@@ -35,18 +33,21 @@ public class Field
 		this.fields = fields;
 
 		DataInputStream is = fields.getClassFile().getStream();
+		ConstantPool pool = fields.getClassFile().getPool();
 
 		accessFlags = is.readShort();
-		nameIndex = is.readUnsignedShort();
-		descriptorIndex = is.readUnsignedShort();
+		name = pool.getUTF8(is.readUnsignedShort());
+		descriptor = pool.getUTF8(is.readUnsignedShort());
 		attributes = new Attributes(this);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
 	{
+		ConstantPool pool = fields.getClassFile().getPool();
+		
 		out.writeShort(accessFlags);
-		out.writeShort(nameIndex);
-		out.writeShort(descriptorIndex);
+		out.writeShort(pool.makeUTF8(name));
+		out.writeShort(pool.makeUTF8(descriptor));
 		attributes.write(out);
 	}
 
@@ -62,14 +63,12 @@ public class Field
 
 	public String getName()
 	{
-		UTF8 u = (UTF8) fields.getClassFile().getPool().getEntry(nameIndex);
-		return u.getValue();
+		return name;
 	}
 
 	public String getDescriptor()
 	{
-		UTF8 u = (UTF8) fields.getClassFile().getPool().getEntry(descriptorIndex);
-		return u.getValue();
+		return descriptor;
 	}
 
 	public Attributes getAttributes()

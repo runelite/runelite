@@ -7,7 +7,6 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.callgraph.Node;
 import info.sigterm.deob.pool.NameAndType;
-import info.sigterm.deob.pool.UTF8;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,8 +21,8 @@ public class Method
 	private Methods methods;
 
 	private short accessFlags;
-	private int nameIndex;
-	private int descriptorIndex;
+	private String name;
+	private String descriptor;
 	private Attributes attributes;
 	private List<Node> callsTo = new ArrayList<>(),
 			callsFrom = new ArrayList<>();
@@ -33,18 +32,21 @@ public class Method
 		this.methods = methods;
 
 		DataInputStream is = methods.getClassFile().getStream();
+		ConstantPool pool = methods.getClassFile().getPool();
 
 		accessFlags = is.readShort();
-		nameIndex = is.readUnsignedShort();
-		descriptorIndex = is.readUnsignedShort();
+		name = pool.getUTF8(is.readUnsignedShort());
+		descriptor = pool.getUTF8(is.readUnsignedShort());
 		attributes = new Attributes(this);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
 	{
+		ConstantPool pool = methods.getClassFile().getPool();
+		
 		out.writeShort(accessFlags);
-		out.writeShort(nameIndex);
-		out.writeShort(descriptorIndex);
+		out.writeShort(pool.makeUTF8(name));
+		out.writeShort(pool.makeUTF8(descriptor));
 		attributes.write(out);
 	}
 	
@@ -60,20 +62,17 @@ public class Method
 	
 	public String getName()
 	{
-		UTF8 u = (UTF8) methods.getClassFile().getPool().getEntry(nameIndex);
-		return u.getValue();
+		return name;
 	}
 
 	public String getDescriptor()
 	{
-		UTF8 u = (UTF8) methods.getClassFile().getPool().getEntry(descriptorIndex);
-		return u.getValue();
+		return descriptor;
 	}
 	
 	public NameAndType getNameAndType()
 	{
-		// this isn't really from the pool ..
-		return new NameAndType(methods.getClassFile().getPool(), nameIndex, descriptorIndex);
+		return new NameAndType(name, descriptor);
 	}
 	
 	public boolean isStatic()

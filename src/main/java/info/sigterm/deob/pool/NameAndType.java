@@ -10,8 +10,8 @@ import java.util.regex.Pattern;
 
 public class NameAndType extends PoolEntry
 {
-	private int nameIndex;
-	private int descriptorIndex;
+	private int nameIndex, descriptorIndex;
+	private java.lang.String name, descriptor;
 
 	public NameAndType(ConstantPool pool) throws IOException
 	{
@@ -23,24 +23,46 @@ public class NameAndType extends PoolEntry
 		descriptorIndex = is.readUnsignedShort();
 	}
 	
-	public NameAndType(ConstantPool pool, int name, int type)
+	public NameAndType(java.lang.String name, java.lang.String type)
 	{
-		super(pool, ConstantType.NAME_AND_TYPE);
+		super(null, ConstantType.NAME_AND_TYPE);
 		
-		this.nameIndex = name;
-		this.descriptorIndex = type;
+		this.name = name;
+		descriptor = type;
+	}
+	
+	@Override
+	public void resolve()
+	{
+		name = this.getPool().getUTF8(nameIndex);
+		descriptor = this.getPool().getUTF8(descriptorIndex);
+	}
+	
+	@Override
+	public void prime()
+	{
+		nameIndex = this.getPool().makeUTF8(name);
+		descriptorIndex = this.getPool().makeUTF8(descriptor);		
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof NameAndType))
+			return false;
+		
+		NameAndType nat = (NameAndType) other;
+		return name.equals(nat.name) && descriptor.equals(nat.descriptor);
 	}
 
 	public java.lang.String getName()
 	{
-		UTF8 u = (UTF8) this.getPool().getEntry(nameIndex);
-		return u.getValue();
+		return name;
 	}
 
 	public java.lang.String getDescriptor()
 	{
-		UTF8 u = (UTF8) this.getPool().getEntry(descriptorIndex);
-		return u.getValue();
+		return descriptor;
 	}
 
 	public Object getStackObject()

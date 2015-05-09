@@ -17,14 +17,14 @@ import java.io.IOException;
 
 public class InvokeVirtual extends Instruction
 {
-	private int index;
+	private Method method;
 
 	public InvokeVirtual(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		method = this.getPool().getMethod(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -32,17 +32,12 @@ public class InvokeVirtual extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(method));
 	}
 	
 	@Override
 	public void buildCallGraph()
-	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		ConstantPool pool = thisClass.getPool();
-		Method method = (Method) pool.getEntry(index);
-		
+	{		
 		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
 		NameAndType nat = method.getNameAndType();
 		
@@ -61,10 +56,6 @@ public class InvokeVirtual extends Instruction
 	@Override
 	public void execute(Frame e)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		ConstantPool pool = thisClass.getPool();
-		Method method = (Method) pool.getEntry(index);
 		int count = method.getNameAndType().getNumberOfArgs();
 		
 		Object[] args = new Object[count + 1];

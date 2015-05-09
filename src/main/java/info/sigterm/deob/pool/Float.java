@@ -18,6 +18,23 @@ public class Float extends PoolEntry
 
 		value = is.readFloat();
 	}
+	
+	public Float(ConstantPool pool, float f)
+	{
+		super(pool, ConstantType.FLOAT);
+		
+		value = f;
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof Float))
+			return false;
+		
+		Float f = (Float) other;
+		return value == f.value;
+	}
 
 	@Override
 	public Object getObject()

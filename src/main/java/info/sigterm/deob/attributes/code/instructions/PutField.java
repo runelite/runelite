@@ -17,14 +17,14 @@ import java.io.IOException;
 
 public class PutField extends Instruction
 {
-	private int index;
+	private Field field;
 
 	public PutField(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readUnsignedShort();
+		field = this.getPool().getField(is.readUnsignedShort());
 		length += 2;
 	}
 	
@@ -32,17 +32,13 @@ public class PutField extends Instruction
 	public void write(DataOutputStream out, int pc) throws IOException
 	{
 		super.write(out, pc);
-		out.writeShort(index);
+		out.writeShort(this.getPool().make(field));
 	}
 
 	@Override
 	public void execute(Frame e)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-		
-		ConstantPool pool = thisClass.getPool();
-		Field entry = (Field) pool.getEntry(index);
-		NameAndType nat = entry.getNameAndType();
+		NameAndType nat = field.getNameAndType();
 		
 		ObjectInstance object = (ObjectInstance) e.getStack().pop();
 		Object value = e.getStack().pop();

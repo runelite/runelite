@@ -18,6 +18,23 @@ public class Double extends PoolEntry
 
 		value = is.readDouble();
 	}
+	
+	public Double(ConstantPool pool, double d)
+	{
+		super(pool, ConstantType.DOUBLE);
+		
+		value = d;
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof Double))
+			return false;
+		
+		Double d = (Double) other;
+		return value == d.value;
+	}
 
 	@Override
 	public int getSlots()

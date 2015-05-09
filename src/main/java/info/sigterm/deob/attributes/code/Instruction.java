@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataOutputStream;
@@ -32,6 +33,11 @@ public abstract class Instruction
 	public Instructions getInstructions()
 	{
 		return instructions;
+	}
+	
+	public ConstantPool getPool()
+	{
+		return instructions.getCode().getAttributes().getClassFile().getPool();
 	}
 
 	public int getPc()

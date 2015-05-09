@@ -43,7 +43,7 @@ public class Deob
 		group.buildCallGraph();
 		
 		checkCallGraph(group);
-		checkParameters(group);
+		//checkParameters(group);
 		
 		//execute(group);
 		
