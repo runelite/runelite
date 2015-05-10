@@ -117,7 +117,7 @@ public class NameAndType extends PoolEntry
 	
 	public boolean isNonVoid()
 	{
-		if (this.getName().equals("<init>") || this.getName().equals("<cinit>"))
+		if (this.getName().equals("<init>") || this.getName().equals("<clinit>"))
 			return true; 
 		return !signature.getReturnValue().equals("V");
 	}
