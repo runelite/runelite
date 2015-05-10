@@ -20,4 +20,10 @@ public class Return extends Instruction
 		Object ret = e.getStack().pop();
 		e.getPath().returnFrame(this, ret);
 	}
+	
+	@Override
+	public boolean isTerminal()
+	{
+		return true;
+	}
 }

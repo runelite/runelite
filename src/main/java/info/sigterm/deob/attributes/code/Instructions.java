@@ -55,6 +55,12 @@ public class Instructions
 		return instructions;
 	}
 	
+	public void remove(Instruction ins)
+	{
+		ins.remove();
+		instructions.remove(ins);
+	}
+	
 	public void write(DataOutputStream out) throws IOException
 	{
 		ByteArrayOutputStream b = new ByteArrayOutputStream();

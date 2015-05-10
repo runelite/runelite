@@ -79,4 +79,10 @@ public class TableSwitch extends Instruction
 		Path p = e.getPath().dup();
 		p.getCurrentFrame().jump(def);
 	}
+	
+	@Override
+	public boolean isTerminal()
+	{
+		return true;
+	}
 }

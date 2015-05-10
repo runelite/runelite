@@ -55,6 +55,17 @@ public class Method
 	{
 		assert callsFrom.isEmpty();
 	}
+	
+	protected void removeParameter(int i)
+	{
+		// If this is a non static method parameter 0 is this
+		if (!this.isStatic())
+			--i;
+		
+		arguments.remove(i);
+		
+		// XXX now remove from code.
+	}
 
 	public Methods getMethods()
 	{

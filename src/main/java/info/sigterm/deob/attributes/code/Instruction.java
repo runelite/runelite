@@ -6,6 +6,7 @@ import info.sigterm.deob.execution.Frame;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Instruction
 {
@@ -15,14 +16,25 @@ public abstract class Instruction
 	private int pc; // offset into method this instructions resides at
 	protected int length = 1; // length of this instruction
 
-	private ArrayList<Instruction> jump = new ArrayList<Instruction>(); // instructions which this instruction jumps to
-	private ArrayList<Instruction> from = new ArrayList<Instruction>(); // instructions which jump to this instruction
+	public List<Instruction> jump = new ArrayList<>(), // instructions which this instruction jumps to
+								from = new ArrayList<>(); // instructions which jump to this instruction
+	public List<Exception> exce = new ArrayList<>(); // exception handlers which start here
 
 	public Instruction(Instructions instructions, InstructionType type, int pc)
 	{
 		this.instructions = instructions;
 		this.type = type;
 		this.pc = pc;
+	}
+	
+	protected void remove()
+	{
+		for (Instruction i : jump)
+			i.from.remove(this);
+		jump.clear();
+		
+		assert from.isEmpty();
+		assert exce.isEmpty();
 	}
 	
 	public void write(DataOutputStream out, int pc) throws IOException
@@ -78,4 +90,10 @@ public abstract class Instruction
 	}
 
 	public abstract void execute(Frame e);
+	
+	/* does this terminate a block? */
+	public boolean isTerminal()
+	{
+		return false;
+	}
 }

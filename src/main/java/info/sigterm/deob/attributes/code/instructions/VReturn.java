@@ -20,4 +20,10 @@ public class VReturn extends Instruction
 		// XXX exceptions?
 		e.getPath().returnFrame();
 	}
+	
+	@Override
+	public boolean isTerminal()
+	{
+		return true;
+	}
 }

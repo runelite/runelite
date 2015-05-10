@@ -2,6 +2,7 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 
@@ -43,7 +44,9 @@ public class Deob
 		group.buildCallGraph();
 		
 		checkCallGraph(group);
-		checkParameters(group);
+		removeExceptionObfuscation(group);
+		checkBlockGraph(group);
+		//checkParameters(group);
 		
 		//execute(group);
 		
@@ -95,6 +98,68 @@ public class Deob
 		System.out.println("Removed " + i + " methods");
 	}
 	
+	private static void removeExceptionObfuscation(ClassGroup group)
+	{
+		int i = 0;
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
+			{
+				Code c = m.getCode();
+				if (c == null)
+					continue;
+				
+				for (info.sigterm.deob.attributes.code.Exception e : new ArrayList<>(c.getExceptions().getExceptions()))
+				{
+					if (e.getCatchType() != null && e.getCatchType().getName().equals("java/lang/RuntimeException"))
+					{
+						c.getExceptions().remove(e);
+						++i;
+					}
+				}
+			}
+		}
+		System.out.println("Removed " + i + " exception handlers");
+	}
+	
+	private static void checkBlockGraph(ClassGroup group)
+	{
+		int i = 0;
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
+			{
+				if (m.getCode() == null)
+					continue;
+				
+				boolean check = false, remove = false;
+				for (Instruction ins : new ArrayList<>(m.getCode().getInstructions().getInstructions()))
+				{
+					if (remove)
+					{
+						m.getCode().getInstructions().remove(ins);
+					}
+					if (check)
+					{
+						if (ins.from.isEmpty() && ins.exce.isEmpty())
+						{
+							remove = true;
+							m.getCode().getInstructions().remove(ins);
+							++i;
+						}
+						check = false;
+					}
+					if (ins.isTerminal())
+					{
+						check = true;
+						remove = false;
+					}
+				}
+			}
+		}
+		System.out.println("Removed " + i + " unused blocks");
+	}
+	
 	private static boolean parameterUsed(int num, List lv)
 	{
 		if (lv.isEmpty())
@@ -126,6 +191,7 @@ public class Deob
 					
 					if (!parameterUsed(i, lv))
 					{
+						//m.removeParameter(i);
 						System.out.println("Not used param " + i + " of " + cf.getName() + " " + m.getName() + " static: " + m.isStatic());
 						++count;
 					}

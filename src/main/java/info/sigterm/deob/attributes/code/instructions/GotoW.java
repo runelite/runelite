@@ -40,4 +40,10 @@ public class GotoW extends Instruction
 	{
 		e.jump(offset);
 	}
+	
+	@Override
+	public boolean isTerminal()
+	{
+		return true;
+	}
 }

@@ -26,6 +26,12 @@ public class Exceptions
 			exceptions.add(new Exception(this));
 	}
 	
+	public void remove(Exception e)
+	{
+		e.remove();
+		exceptions.remove(e);
+	}
+	
 	public void write(DataOutputStream out) throws IOException
 	{
 		out.writeShort(exceptions.size());
@@ -38,9 +44,14 @@ public class Exceptions
 		return code;
 	}
 	
-	public Collection<Exception> getHandlersForPc(int pc)
+	public List<Exception> getExceptions()
 	{
-		ArrayList<Exception> matches = new ArrayList<Exception>();
+		return exceptions;
+	}
+	
+	public List<Exception> getHandlersForPc(int pc)
+	{
+		List<Exception> matches = new ArrayList<>();
 
 		for (Exception e : exceptions)
 		{

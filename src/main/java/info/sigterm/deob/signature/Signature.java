@@ -59,6 +59,11 @@ public class Signature
 		return arguments.size();
 	}
 	
+	public void remove(int i)
+	{
+		arguments.remove(i);
+	}
+	
 	public Type getReturnValue()
 	{
 		return rv;

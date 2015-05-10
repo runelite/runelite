@@ -14,7 +14,7 @@ public class Exception
 	private int startPc;
 	private int endPc;
 	private int handlerPc;
-	private Class cacheType;
+	private Class catchType;
 
 	public Exception(Exceptions exceptions) throws IOException
 	{
@@ -26,7 +26,16 @@ public class Exception
 		startPc = is.readUnsignedShort();
 		endPc = is.readUnsignedShort();
 		handlerPc = is.readUnsignedShort();
-		cacheType = pool.getClass(is.readUnsignedShort());
+		catchType = pool.getClass(is.readUnsignedShort());
+		
+		Instruction ins = exceptions.getCode().getInstructions().findInstruction(handlerPc);
+		ins.exce.add(this);
+	}
+	
+	protected void remove()
+	{
+		Instruction ins = exceptions.getCode().getInstructions().findInstruction(handlerPc);
+		ins.exce.remove(this);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
@@ -36,7 +45,7 @@ public class Exception
 		out.writeShort(startPc);
 		out.writeShort(endPc);
 		out.writeShort(handlerPc);
-		out.writeShort(cacheType == null ? 0 : pool.make(cacheType));
+		out.writeShort(catchType == null ? 0 : pool.make(catchType));
 	}
 	
 	public Exceptions getExceptions()
@@ -57,5 +66,10 @@ public class Exception
 	public int getHandlerPc()
 	{
 		return handlerPc;
+	}
+	
+	public Class getCatchType()
+	{
+		return catchType;
 	}
 }

@@ -21,4 +21,10 @@ public class AThrow extends Instruction
 		ObjectInstance exception = (ObjectInstance) e.getStack().pop();
 		e.getPath().throwException(this, exception);
 	}
+	
+	@Override
+	public boolean isTerminal()
+	{
+		return true;
+	}
 }
