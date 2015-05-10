@@ -1,6 +1,7 @@
 package info.sigterm.deob;
 
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.signature.Signature;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -57,7 +58,7 @@ public class Methods
 		return null;
 	}
 	
-	public Method findMethod(String name, String type)
+	public Method findMethod(String name, Signature type)
 	{
 		for (Method m : methods)
 			if (m.getName().equals(name) && m.getDescriptor().equals(type))

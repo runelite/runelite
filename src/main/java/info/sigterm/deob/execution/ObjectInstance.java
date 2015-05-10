@@ -44,7 +44,7 @@ public class ObjectInstance extends ObjectInstanceBase
 	public FieldInstance getField(NameAndType nat)
 	{
 		for (FieldInstance f : fields)
-			if (f.getField().getName().equals(nat.getName()) && f.getField().getDescriptor().equals(nat.getDescriptor()))
+			if (f.getField().getName().equals(nat.getName()) && f.getField().getType().equals(nat.getDescriptorType()))
 				return f;
 		return null;
 	}

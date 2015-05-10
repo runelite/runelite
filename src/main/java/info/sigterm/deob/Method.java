@@ -7,6 +7,7 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.callgraph.Node;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.signature.Signature;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,7 +23,7 @@ public class Method
 
 	private short accessFlags;
 	private String name;
-	private String descriptor;
+	private Signature arguments;
 	private Attributes attributes;
 	private List<Node> callsTo = new ArrayList<>(),
 			callsFrom = new ArrayList<>();
@@ -36,7 +37,7 @@ public class Method
 
 		accessFlags = is.readShort();
 		name = pool.getUTF8(is.readUnsignedShort());
-		descriptor = pool.getUTF8(is.readUnsignedShort());
+		arguments = new Signature(pool.getUTF8(is.readUnsignedShort()));
 		attributes = new Attributes(this);
 	}
 	
@@ -46,7 +47,7 @@ public class Method
 		
 		out.writeShort(accessFlags);
 		out.writeShort(pool.makeUTF8(name));
-		out.writeShort(pool.makeUTF8(descriptor));
+		out.writeShort(pool.makeUTF8(arguments.toString()));
 		attributes.write(out);
 	}
 	
@@ -65,14 +66,14 @@ public class Method
 		return name;
 	}
 
-	public String getDescriptor()
+	public Signature getDescriptor()
 	{
-		return descriptor;
+		return arguments;
 	}
 	
 	public NameAndType getNameAndType()
 	{
-		return new NameAndType(name, descriptor);
+		return new NameAndType(name, arguments);
 	}
 	
 	public boolean isStatic()

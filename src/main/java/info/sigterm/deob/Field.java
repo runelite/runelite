@@ -2,6 +2,7 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.signature.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -23,7 +24,8 @@ public class Field
 	private Fields fields;
 
 	private short accessFlags;
-	private String name, descriptor;
+	private String name;
+	private Type type;
 	private Attributes attributes;
 
 	private ArrayList<Instruction> instructions = new ArrayList<Instruction>(); // instructions which reference this field
@@ -37,7 +39,7 @@ public class Field
 
 		accessFlags = is.readShort();
 		name = pool.getUTF8(is.readUnsignedShort());
-		descriptor = pool.getUTF8(is.readUnsignedShort());
+		type = new Type(pool.getUTF8(is.readUnsignedShort()));
 		attributes = new Attributes(this);
 	}
 	
@@ -47,7 +49,7 @@ public class Field
 		
 		out.writeShort(accessFlags);
 		out.writeShort(pool.makeUTF8(name));
-		out.writeShort(pool.makeUTF8(descriptor));
+		out.writeShort(pool.makeUTF8(type.toString()));
 		attributes.write(out);
 	}
 
@@ -66,9 +68,9 @@ public class Field
 		return name;
 	}
 
-	public String getDescriptor()
+	public Type getType()
 	{
-		return descriptor;
+		return type;
 	}
 
 	public Attributes getAttributes()

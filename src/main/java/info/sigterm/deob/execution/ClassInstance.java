@@ -55,7 +55,7 @@ public class ClassInstance
 	public StaticFieldInstance findStaticField(NameAndType nat)
 	{
 		for (StaticFieldInstance f : fields)
-				if (f.getField().getName().equals(nat.getName()) && f.getField().getDescriptor().equals(nat.getDescriptor()))
+				if (f.getField().getName().equals(nat.getName()) && f.getField().getType().equals(nat.getDescriptorType()))
 					return f;
 		return null;
 	}

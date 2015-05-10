@@ -46,7 +46,7 @@ public class Fields
 	public Field findField(NameAndType nat)
 	{
 		for (Field f : fields)
-			if (f.getName().equals(nat.getName()) && f.getDescriptor().equals(nat.getDescriptor()))
+			if (f.getName().equals(nat.getName()) && f.getType().equals(nat.getDescriptorType()))
 				return f;
 		return null;
 	}

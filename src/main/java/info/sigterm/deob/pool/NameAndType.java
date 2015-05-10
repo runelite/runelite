@@ -1,17 +1,24 @@
 package info.sigterm.deob.pool;
 
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.signature.Signature;
+import info.sigterm.deob.signature.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class NameAndType extends PoolEntry
 {
 	private int nameIndex, descriptorIndex;
-	private java.lang.String name, descriptor;
+	private java.lang.String name;
+	/* method signature */
+	private Signature signature;
+	/* type */
+	private Type type;
 
 	public NameAndType(ConstantPool pool) throws IOException
 	{
@@ -23,26 +30,34 @@ public class NameAndType extends PoolEntry
 		descriptorIndex = is.readUnsignedShort();
 	}
 	
-	public NameAndType(java.lang.String name, java.lang.String type)
+	public NameAndType(java.lang.String name, Signature type)
 	{
 		super(null, ConstantType.NAME_AND_TYPE);
 		
 		this.name = name;
-		descriptor = type;
+		signature = type;
 	}
 	
 	@Override
 	public void resolve()
 	{
 		name = this.getPool().getUTF8(nameIndex);
-		descriptor = this.getPool().getUTF8(descriptorIndex);
+		
+		java.lang.String sig = this.getPool().getUTF8(descriptorIndex);
+		if (sig.startsWith("("))
+			signature = new Signature(sig);
+		else
+			type = new Type(sig);
 	}
 	
 	@Override
 	public void prime()
 	{
 		nameIndex = this.getPool().makeUTF8(name);
-		descriptorIndex = this.getPool().makeUTF8(descriptor);		
+		if (signature != null)
+			descriptorIndex = this.getPool().makeUTF8(signature.toString());
+		else
+			descriptorIndex = this.getPool().makeUTF8(type.toString());
 	}
 	
 	@Override
@@ -52,7 +67,7 @@ public class NameAndType extends PoolEntry
 			return false;
 		
 		NameAndType nat = (NameAndType) other;
-		return name.equals(nat.name) && descriptor.equals(nat.descriptor);
+		return name.equals(nat.name) && Objects.equals(signature, nat.signature) && Objects.equals(type, nat.type);
 	}
 
 	public java.lang.String getName()
@@ -60,15 +75,19 @@ public class NameAndType extends PoolEntry
 		return name;
 	}
 
-	public java.lang.String getDescriptor()
+	public Signature getDescriptor()
 	{
-		return descriptor;
+		return signature;
+	}
+	
+	public Type getDescriptorType()
+	{
+		return type;
 	}
 
 	public Object getStackObject()
 	{
-		java.lang.String desc = getDescriptor();
-		switch (desc)
+		switch (type.toString())
 		{
 			case "B":
 				return (byte) 0;
@@ -90,33 +109,17 @@ public class NameAndType extends PoolEntry
 				return null;
 		}
 	}
-	
-	private static Pattern allParamsPattern = Pattern.compile("(\\(.*?\\))");
-	private static Pattern paramsPattern = Pattern.compile("(\\[?)(B|C|Z|S|I|J|F|D|(:?L[^;]+;))");
-	
+
 	public int getNumberOfArgs()
 	{
-		java.lang.String methodRefType = this.getDescriptor();
-	    Matcher m = allParamsPattern.matcher(methodRefType);
-	    if (!m.find())
-	        throw new IllegalArgumentException("Method signature does not contain parameters");
-
-	    java.lang.String paramsDescriptor = m.group(1);
-	    Matcher mParam = paramsPattern.matcher(paramsDescriptor);
-
-	    int count = 0;
-	    while (mParam.find())
-	        count++;
-
-	    return count;
+		return signature.size();
 	}
 	
 	public boolean isNonVoid()
 	{
-		java.lang.String methodRefType = this.getDescriptor();
-		if (this.getName().equals("<init>"))
+		if (this.getName().equals("<init>") || this.getName().equals("<cinit>"))
 			return true; 
-		return !methodRefType.endsWith(")V");
+		return !signature.getReturnValue().equals("V");
 	}
 
 	@Override
