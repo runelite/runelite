@@ -73,7 +73,10 @@ public class Instructions
 		blocks.remove(block);
 		
 		for (Instruction i : block.instructions)
-			instructions.remove(i);
+		{
+			i.block = null;
+			remove(i);
+		}
 	}
 	
 	public void buildBlocks()
