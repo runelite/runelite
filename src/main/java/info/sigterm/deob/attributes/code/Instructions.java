@@ -14,6 +14,7 @@ public class Instructions
 {
 	private Code code;
 	private List<Instruction> instructions = new ArrayList<>();
+	private List<Block> blocks = new ArrayList<>();
 
 	public Instructions(Code code) throws IOException
 	{
@@ -48,6 +49,7 @@ public class Instructions
 		assert pc == length;
 
 		buildJumpGraph();
+		buildBlocks();
 	}
 	
 	public List<Instruction> getInstructions()
@@ -55,10 +57,44 @@ public class Instructions
 		return instructions;
 	}
 	
+	public List<Block> getBlocks()
+	{
+		return blocks;
+	}
+	
 	public void remove(Instruction ins)
 	{
 		ins.remove();
 		instructions.remove(ins);
+	}
+	
+	public void remove(Block block)
+	{
+		blocks.remove(block);
+		
+		for (Instruction i : block.instructions)
+			instructions.remove(i);
+	}
+	
+	public void buildBlocks()
+	{
+		Block current = null;
+		for (Instruction i : instructions)
+		{
+			if (current == null)
+			{
+				current = new Block();
+				current.begin = i;
+			}
+			i.block = current;
+			current.instructions.add(i);
+			if (i.isTerminal())
+			{
+				current.end = i;
+				blocks.add(current);
+				current = null;
+			}
+		}
 	}
 	
 	public void write(DataOutputStream out) throws IOException

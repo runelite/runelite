@@ -3,7 +3,9 @@ package info.sigterm.deob;
 import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.attributes.code.Block;
 import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 
 import java.io.ByteArrayOutputStream;
@@ -132,27 +134,18 @@ public class Deob
 				if (m.getCode() == null)
 					continue;
 				
-				boolean check = false, remove = false;
-				for (Instruction ins : new ArrayList<>(m.getCode().getInstructions().getInstructions()))
+				Instructions ins = m.getCode().getInstructions();
+				int count = 0;
+				for (Block b : new ArrayList<>(ins.getBlocks()))
 				{
-					if (remove)
+					// first block is the entrypoint, so its always used
+					if (count++ == 0)
+						continue;
+					
+					if (b.begin.from.isEmpty() && b.begin.exce.isEmpty())
 					{
-						m.getCode().getInstructions().remove(ins);
-					}
-					if (check)
-					{
-						if (ins.from.isEmpty() && ins.exce.isEmpty())
-						{
-							remove = true;
-							m.getCode().getInstructions().remove(ins);
-							++i;
-						}
-						check = false;
-					}
-					if (ins.isTerminal())
-					{
-						check = true;
-						remove = false;
+						ins.remove(b);
+						++i;
 					}
 				}
 			}

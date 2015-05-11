@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class Instruction
 {
 	private Instructions instructions;
+	public Block block;
 	private InstructionType type;
 
 	private int pc; // offset into method this instructions resides at
@@ -29,6 +30,8 @@ public abstract class Instruction
 	
 	protected void remove()
 	{
+		assert block == null;
+		
 		for (Instruction i : jump)
 			i.from.remove(this);
 		jump.clear();
