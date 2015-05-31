@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 public class LXor extends Instruction
 {
@@ -16,10 +18,17 @@ public class LXor extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		Long two = (Long) stack.pop();
-		Long one = (Long) stack.pop();
-		stack.push(this, one ^ two);
+		StackContext two = stack.pop();
+		StackContext one = stack.pop();
+		
+		ins.pop(two, one);
+		
+		StackContext ctx = new StackContext(ins, long.class);
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

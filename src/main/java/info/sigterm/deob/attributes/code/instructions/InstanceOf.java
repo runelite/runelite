@@ -6,7 +6,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstanceBase;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
@@ -34,20 +36,17 @@ public class InstanceOf extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		ObjectInstanceBase obj = (ObjectInstanceBase) e.getStack().pop();
-		if (obj == null)
-		{
-			e.getStack().push(this, 0);
-			return;
-			
-		}
+		StackContext obj = stack.pop();
+		ins.pop(obj);
 		
-		ClassFile otherClass = thisClass.getGroup().findClass(clazz.getName());
-		boolean instanceOf = obj.getType().getClassFile().instanceOf(otherClass);
-		e.getStack().push(this, instanceOf ? 1 : 0);
+		StackContext ctx = new StackContext(ins, int.class);
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

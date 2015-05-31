@@ -6,7 +6,10 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
@@ -34,28 +37,18 @@ public class CheckCast extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		ConstantPool pool = thisClass.getPool();
+		Frame other = frame.dup();
+		Stack stack = other.getStack();
 		
-		ObjectInstance obj = (ObjectInstance) e.getStack().pop();
-		if (obj == null)
-		{
-			e.getStack().push(this, null);
-			return;
-		}
+		InstructionContext ins = new InstructionContext(this, other);
 		
-		ClassFile otherClass = thisClass.getGroup().findClass(clazz.getName());
-		boolean instanceOf = obj.getType().getClassFile().instanceOf(otherClass);
+		StackContext what = stack.pop();
 		
-		if (!instanceOf)
-		{
-			// XXX throw
-		}
+		ins.pop(what);
 		
-		e.getStack().push(this, obj);
+		other.throwException(new Type("java.lang.ClassCastException"));
 	}
 
 }

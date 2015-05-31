@@ -103,7 +103,7 @@ public class NameAndType extends PoolEntry
 				return 0d;
 			case "F":
 				return 0f;
-			case "L":
+			case "J":
 				return 0L;
 			default:
 				return null;
@@ -115,11 +115,11 @@ public class NameAndType extends PoolEntry
 		return signature.size();
 	}
 	
-	public boolean isNonVoid()
+	public boolean isVoid()
 	{
 		if (this.getName().equals("<init>") || this.getName().equals("<clinit>"))
-			return true; 
-		return !signature.getReturnValue().equals("V");
+			return true;
+		return signature.getReturnValue().getType().equals("V");
 	}
 
 	@Override

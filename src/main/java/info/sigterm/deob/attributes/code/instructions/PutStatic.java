@@ -5,9 +5,10 @@ import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.execution.ClassInstance;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.StaticFieldInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.Field;
 import info.sigterm.deob.pool.NameAndType;
@@ -37,22 +38,15 @@ public class PutStatic extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		Class clazz = field.getClassEntry();
-		NameAndType nat = field.getNameAndType();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		Object value = e.getStack().pop();
-
-		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());
-		if (cf == null)
-			return;
-
-		ClassInstance ci = e.getPath().getClassInstance(cf);
-		StaticFieldInstance fi = ci.findStaticField(nat);
-		fi.setField(value);
+		StackContext object = stack.pop();
+		ins.pop(object);
+		
+		frame.addInstructionContext(ins);
 	}
 
 }

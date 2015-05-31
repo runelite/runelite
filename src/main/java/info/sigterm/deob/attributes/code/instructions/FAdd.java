@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 public class FAdd extends Instruction
 {
@@ -16,11 +18,17 @@ public class FAdd extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		Float one = (Float) stack.pop();
-		Float two = (Float) stack.pop();
+		StackContext two = stack.pop();
+		StackContext one = stack.pop();
 		
-		stack.push(this, one + two);
+		ins.pop(two, one);
+		
+		StackContext ctx = new StackContext(ins, float.class);
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

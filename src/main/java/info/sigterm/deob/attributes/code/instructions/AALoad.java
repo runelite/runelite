@@ -3,9 +3,10 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.execution.ArrayInstance;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 public class AALoad extends Instruction
 {
@@ -17,14 +18,17 @@ public class AALoad extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		int index = (int) stack.pop();
-		ArrayInstance array = (ArrayInstance) stack.pop();
+		StackContext index = stack.pop();
+		StackContext array = stack.pop();
 		
-		if (index >= 0 && index < array.getLength())
-			stack.push(this, array.get(index));
-		else
-			frame.getPath().throwException(this, null);
+		ins.pop(index, array);
+		
+		StackContext ctx = new StackContext(ins, array.getType().getSubtype());
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

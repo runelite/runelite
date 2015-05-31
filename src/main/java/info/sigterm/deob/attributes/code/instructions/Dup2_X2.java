@@ -4,7 +4,10 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 
 import java.io.IOException;
 
@@ -18,27 +21,52 @@ public class Dup2_X2 extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-
-		Object one = stack.pop();
-		Object two = null;
-		if (!(one instanceof Double) && !(one instanceof Long))
+		
+		StackContext one = stack.pop();
+		StackContext two = null;
+		if (!one.getType().equals(new Type(double.class.getCanonicalName())) && !one.getType().equals(new Type(long.class.getCanonicalName())))
 			two = stack.pop();
-		Object three = stack.pop();
-		Object four = null;
-		if (!(three instanceof Double) && !(three instanceof Long))
+		StackContext three = stack.pop();
+		StackContext four = null;
+		if (!three.getType().equals(new Type(double.class.getCanonicalName())) && !three.getType().equals(new Type(long.class.getCanonicalName())))
 			four = stack.pop();
-
-		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(this, two);
-		stack.push(this, one);
-
-		if (!(three instanceof Double) && !(three instanceof Long))
-			stack.push(this, four);
-		stack.push(this, three);
-
-		if (!(one instanceof Double) && !(one instanceof Long))
-			stack.push(this, two);
-		stack.push(this, one);
+		
+		ins.pop(one);
+		if (two != null)
+			ins.pop(two);
+		ins.pop(three);
+		if (four != null)
+			ins.pop(four);
+		
+		if (two != null)
+		{
+			StackContext ctx = new StackContext(ins, two.getType());
+			stack.push(ctx);
+		}
+		
+		StackContext ctx = new StackContext(ins, one.getType());
+		stack.push(one);
+		
+		if (four != null)
+		{
+			ctx = new StackContext(ins, four.getType());
+			stack.push(ctx);
+		}
+		
+		ctx = new StackContext(ins, three.getType());
+		stack.push(one);
+		
+		if (two != null)
+		{
+			ctx = new StackContext(ins, two.getType());
+			stack.push(ctx);
+		}
+		
+		ctx = new StackContext(ins, one.getType());
+		stack.push(one);
+		
+		frame.addInstructionContext(ins);
 	}
 }

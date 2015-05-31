@@ -4,11 +4,11 @@ import java.util.Arrays;
 
 public class Variables
 {
-	private Object[] variables;
+	private VariableContext[] variables;
 
 	public Variables(int sz)
 	{
-		variables = new Object[sz];
+		variables = new VariableContext[sz];
 	}
 	
 	protected Variables(Variables other)
@@ -16,12 +16,12 @@ public class Variables
 		this.variables = Arrays.copyOf(other.variables, other.variables.length);
 	}
 
-	public void set(int index, Object value)
+	public void set(int index, VariableContext value)
 	{
 		variables[index] = value;
 	}
 
-	public Object get(int index)
+	public VariableContext get(int index)
 	{
 		return variables[index];
 	}

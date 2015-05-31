@@ -64,6 +64,11 @@ public class Signature
 		arguments.remove(i);
 	}
 	
+	public Type getTypeOfArg(int i)
+	{
+		return arguments.get(i);
+	}
+	
 	public Type getReturnValue()
 	{
 		return rv;

@@ -4,6 +4,10 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -30,37 +34,47 @@ public class NewArray extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		int count = (int) e.getStack().pop();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
+		StackContext count = stack.pop();
+		ins.pop(count);
+		
+		Class<?> t = null;
 		switch (type)
 		{
 			case 4:
-				e.getStack().push(this, new boolean[count]);
+				t = boolean.class;
 				break;
 			case 5:
-				e.getStack().push(this, new char[count]);
+				t = char.class;
 				break;
 			case 6:
-				e.getStack().push(this, new float[count]);
+				t = float.class;
 				break;
 			case 7:
-				e.getStack().push(this, new double[count]);
+				t = double.class;
 				break;
 			case 8:
-				e.getStack().push(this, new byte[count]);
+				t = byte.class;
 				break;
 			case 9:
-				e.getStack().push(this, new short[count]);
+				t = short.class;
 				break;
 			case 10:
-				e.getStack().push(this, new int[count]);
+				t = int.class;
 				break;
 			case 11:
-				e.getStack().push(this, new long[count]);
+				t = long.class;
 				break;
 		}
+		
+		StackContext ctx = new StackContext(ins, new Type(t.getName()));
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 
 }

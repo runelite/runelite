@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 import java.io.IOException;
 
@@ -16,10 +18,18 @@ public class AThrow extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ObjectInstance exception = (ObjectInstance) e.getStack().pop();
-		e.getPath().throwException(this, exception);
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		
+		// XXX this actually clears the stack and puts only the value on, after jumping to the handler
+		//StackContext value = stack.pop();
+		//ins.pop(value);
+		
+		frame.addInstructionContext(ins);
+		
+		frame.throwException(null);//value.getType());
 	}
 	
 	@Override

@@ -136,12 +136,6 @@ public class ConstantPool
 		return (NameAndType) getEntry(index);
 	}
 	
-	public Object get(int index)
-	{
-		PoolEntry entry = getEntry(index);
-		return entry.getObject();
-	}
-	
 	public int make(PoolEntry entry)
 	{
 		int i = 1;

@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 import java.io.IOException;
 
@@ -18,18 +20,17 @@ public class FCmpL extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-
-		Float one = (Float) stack.pop();
-		Float two = (Float) stack.pop();
-
-		if (one.isNaN() || two.isNaN())
-			stack.push(this, -1);
-		else if (one > two)
-			stack.push(this, 1);
-		else if (one < two)
-			stack.push(this, -1);
-		else
-			stack.push(this, 0);
+		
+		StackContext one = stack.pop();
+		StackContext two = stack.pop();
+		
+		ins.pop(one, two);
+		
+		StackContext ctx = new StackContext(ins, int.class);
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

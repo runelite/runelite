@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.Path;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -37,13 +39,17 @@ public class If extends Instruction
 	}
 	
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		e.getStack().pop();
-		e.getStack().pop();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		Path other = e.getPath().dup();
-		Frame frame = other.getCurrentFrame();
-		frame.jump(offset);
+		StackContext one = stack.pop();
+		StackContext two = stack.pop();
+		
+		ins.pop(one, two);
+		
+		Frame other = frame.dup();
+		other.jump(offset);
 	}
 }

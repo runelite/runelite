@@ -1,6 +1,7 @@
 package info.sigterm.deob.pool;
 
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.execution.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -43,9 +44,9 @@ public class Double extends PoolEntry
 	}
 
 	@Override
-	public Object getObject()
+	public Type getTypeClass()
 	{
-		return value;
+		return new Type(double.class.getCanonicalName());
 	}
 
 	@Override

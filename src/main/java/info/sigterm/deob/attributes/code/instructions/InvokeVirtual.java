@@ -1,13 +1,16 @@
 package info.sigterm.deob.attributes.code.instructions;
 
 import info.sigterm.deob.ClassFile;
+import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.execution.ClassInstance;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
 
@@ -54,35 +57,29 @@ public class InvokeVirtual extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		
 		int count = method.getNameAndType().getNumberOfArgs();
 		
-		Object[] args = new Object[count + 1];
-		for (int i = count; i > 0; --i)
-			args[i] = e.getStack().pop();
-		
-		ObjectInstance object = (ObjectInstance) e.getStack().pop();
-		if (object == null)
+		for (int i = 0; i < count; ++i)
 		{
-			//System.out.println("invokevirtual on null object for method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName());
-			e.getStack().push(this, null);
-			return;
+			StackContext arg = stack.pop();
+			ins.pop(arg);
 		}
 		
-		ClassInstance objectType = object.getType();
+		StackContext object = stack.pop();
+		ins.pop(object);
 		
-		args[0] = object;
-		
-		info.sigterm.deob.Method meth = objectType.getClassFile().findMethod(method.getNameAndType());
-		if (meth == null)
+		if (!method.getNameAndType().isVoid())
 		{
-			//System.out.println("Unknown method " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " in " + objectType.getClassFile().getName());
-			if (method.getNameAndType().isNonVoid())
-				e.getStack().push(this, null);
-			return;
+			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
+			stack.push(ctx);
 		}
-		e.getPath().invoke(meth, args);
+		
+		frame.addInstructionContext(ins);
 	}
 
 }

@@ -39,12 +39,6 @@ public class UTF8 extends PoolEntry
 	{
 		return string;
 	}
-	
-	@Override
-	public Object getObject()
-	{
-		return getValue();
-	}
 
 	@Override
 	public void write(DataOutputStream out) throws IOException

@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 public class LNeg extends Instruction
 {
@@ -16,9 +18,15 @@ public class LNeg extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		Long value = (Long) stack.pop();
-		stack.push(this, -value);
+		StackContext value = stack.pop();
+		ins.pop(value);
+		
+		StackContext ctx = new StackContext(ins, long.class);
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

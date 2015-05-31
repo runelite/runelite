@@ -4,9 +4,11 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.execution.ClassInstance;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
@@ -34,18 +36,14 @@ public class New extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());
-		if (cf == null)
-		{
-			e.getStack().push(this, null);
-			return;
-		}
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		ClassInstance type = e.getPath().getClassInstance(cf);
-		ObjectInstance obj = e.getPath().createObject(type);
-		e.getStack().push(this, obj);
+		StackContext ctx = new StackContext(ins, new Type(clazz.getName()));
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

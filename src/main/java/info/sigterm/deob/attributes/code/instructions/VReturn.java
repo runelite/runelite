@@ -15,10 +15,9 @@ public class VReturn extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		// XXX exceptions?
-		e.getPath().returnFrame();
+		frame.stop();
 	}
 	
 	@Override

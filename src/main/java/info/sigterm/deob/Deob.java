@@ -1,6 +1,9 @@
 package info.sigterm.deob;
 
 import info.sigterm.deob.execution.Execution;
+import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.Type;
+import info.sigterm.deob.execution.VariableContext;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Block;
@@ -50,7 +53,7 @@ public class Deob
 		checkBlockGraph(group);
 		//checkParameters(group);
 		
-		//execute(group);
+		execute(group);
 		
 		JarOutputStream jout = new JarOutputStream(new FileOutputStream(args[1]), new Manifest());
 		
@@ -71,11 +74,21 @@ public class Deob
 
 	private static void execute(ClassGroup group) throws IOException
 	{
-		ClassFile cf = group.findClass("client");
-		Method method = cf.findMethod("init");
-		
 		Execution e = new Execution(group);
-		e.run(cf, method);
+		
+		int count = 0, fcount = 0;
+		for (ClassFile cf : group.getClasses())
+			for (Method method : cf.getMethods().getMethods())
+			{
+				if (method.getCode() == null)
+					continue;
+				Frame f = new Frame(e, method);
+				e.frames.add(f);
+				fcount += e.run();
+				++count;
+			}
+		
+		System.out.println("Processed " + count + " methods and " + fcount + " paths");
 	}
 	
 	private static void checkCallGraph(ClassGroup group)

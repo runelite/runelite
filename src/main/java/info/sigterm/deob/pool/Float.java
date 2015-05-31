@@ -1,6 +1,7 @@
 package info.sigterm.deob.pool;
 
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.execution.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -37,9 +38,9 @@ public class Float extends PoolEntry
 	}
 
 	@Override
-	public Object getObject()
+	public Type getTypeClass()
 	{
-		return value;
+		return new Type(float.class.getCanonicalName());
 	}
 
 	@Override

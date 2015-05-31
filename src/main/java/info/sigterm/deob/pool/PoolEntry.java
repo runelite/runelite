@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.execution.Type;
 
 public abstract class PoolEntry
 {
@@ -40,14 +41,14 @@ public abstract class PoolEntry
 	{
 		return type;
 	}
+	
+	public Type getTypeClass()
+	{
+		throw new UnsupportedOperationException();
+	}
 
 	public int getSlots()
 	{
 		return 1;
-	}
-
-	public Object getObject()
-	{
-		return this;
 	}
 }

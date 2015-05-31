@@ -5,9 +5,11 @@ import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.execution.ClassInstance;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
 
@@ -53,28 +55,29 @@ public class InvokeSpecial extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		
 		int count = method.getNameAndType().getNumberOfArgs();
 		
-		ObjectInstance object = (ObjectInstance) e.getStack().pop();
-		
-		Object[] args = new Object[count + 1];
-		args[0] = object;
-		for (int i = 1; i < count + 1; ++i)
-			args[i] = e.getStack().pop();
-		
-		if (object == null)
+		for (int i = 0; i < count; ++i)
 		{
-			//System.out.println("invokespecial for nonexistant function " + method.getNameAndType().getName() + " " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName() + " (void: " + !method.getNameAndType().isNonVoid() + ")");
-			if (method.getNameAndType().isNonVoid())
-				e.getStack().push(this, null);
-			return;
+			StackContext arg = stack.pop();
+			ins.pop(arg);
 		}
 		
-		ClassInstance objectType = object.getType();
-		info.sigterm.deob.Method meth = objectType.getClassFile().findMethod(method.getNameAndType());
-		e.getPath().invoke(meth, args);
+		StackContext object = stack.pop();
+		ins.pop(object);
+		
+		if (!method.getNameAndType().isVoid())
+		{
+			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
+			stack.push(ctx);
+		}
+		
+		frame.addInstructionContext(ins);
 	}
 
 	@Override

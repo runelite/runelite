@@ -5,9 +5,10 @@ import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.execution.FieldInstance;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.ObjectInstance;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.pool.Field;
 import info.sigterm.deob.pool.NameAndType;
 
@@ -36,20 +37,16 @@ public class PutField extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		NameAndType nat = field.getNameAndType();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		ObjectInstance object = (ObjectInstance) e.getStack().pop();
-		Object value = e.getStack().pop();
+		StackContext object = stack.pop();
+		StackContext value = stack.pop();
+		ins.pop(object, value);
 		
-		if (object == null)
-		{
-			return;
-		}
-		
-		FieldInstance field = object.getField(nat);
-		field.setValue(value);
+		frame.addInstructionContext(ins);
 	}
 
 }

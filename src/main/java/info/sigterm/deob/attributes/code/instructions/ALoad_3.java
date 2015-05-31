@@ -5,6 +5,11 @@ import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.VariableContext;
+import info.sigterm.deob.execution.Variables;
 
 import java.io.IOException;
 
@@ -18,8 +23,17 @@ public class ALoad_3 extends Instruction implements LVTInstruction
 	@Override
 	public void execute(Frame frame)
 	{
-		Object obj = frame.getVariables().get(3);
-		frame.getStack().push(this, obj);
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		Variables var = frame.getVariables();
+		
+		VariableContext vctx = var.get(3);
+		ins.read(vctx);
+		
+		StackContext ctx = new StackContext(ins, vctx.getType());
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	@Override

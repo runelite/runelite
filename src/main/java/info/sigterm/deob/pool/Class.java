@@ -1,6 +1,7 @@
 package info.sigterm.deob.pool;
 
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.execution.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -51,10 +52,10 @@ public class Class extends PoolEntry
 	{
 		out.writeShort(index);
 	}
-
+	
 	@Override
-	public Object getObject()
+	public Type getTypeClass()
 	{
-		return name;
+		return new Type(name);
 	}
 }

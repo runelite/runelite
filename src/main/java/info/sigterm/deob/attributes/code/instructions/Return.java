@@ -4,6 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 import java.io.IOException;
 
@@ -15,10 +18,17 @@ public class Return extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		Object ret = e.getStack().pop();
-		e.getPath().returnFrame(this, ret);
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		
+		StackContext object = stack.pop();
+		ins.pop(object);
+		
+		frame.addInstructionContext(ins);
+		
+		frame.stop();
 	}
 	
 	@Override

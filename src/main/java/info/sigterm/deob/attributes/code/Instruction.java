@@ -50,6 +50,11 @@ public abstract class Instruction
 		return instructions;
 	}
 	
+	public InstructionType getType()
+	{
+		return type;
+	}
+	
 	public ConstantPool getPool()
 	{
 		return instructions.getCode().getAttributes().getClassFile().getPool();

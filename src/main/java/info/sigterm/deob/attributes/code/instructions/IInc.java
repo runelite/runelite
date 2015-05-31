@@ -4,16 +4,21 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.WideInstruction;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Type;
+import info.sigterm.deob.execution.VariableContext;
+import info.sigterm.deob.execution.Variables;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class IInc extends Instruction implements LVTInstruction
+public class IInc extends Instruction implements LVTInstruction, WideInstruction
 {
-	private byte index;
-	private byte inc;
+	private short index;
+	private short inc;
 
 	public IInc(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -23,6 +28,16 @@ public class IInc extends Instruction implements LVTInstruction
 		index = is.readByte();
 		inc = is.readByte();
 		length += 2;
+	}
+	
+	public IInc(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
+	{
+		super(instructions, type, pc);
+		
+		DataInputStream is = instructions.getCode().getAttributes().getStream();
+		index = is.readShort();
+		inc = is.readShort();
+		length += 4;
 	}
 	
 	@Override
@@ -36,9 +51,17 @@ public class IInc extends Instruction implements LVTInstruction
 	@Override
 	public void execute(Frame frame)
 	{
-		int i = (int) frame.getVariables().get(index);
-		i += inc;
-		frame.getVariables().set(index, i);
+		InstructionContext ins = new InstructionContext(this, frame);
+		Variables var = frame.getVariables();
+		
+		VariableContext vctx = var.get(index);
+		assert vctx.getType().equals(new Type(int.class.getCanonicalName()));
+		ins.read(vctx);
+		
+		vctx = new VariableContext(ins, vctx.getType());
+		var.set(index, vctx);
+		
+		frame.addInstructionContext(ins);
 	}
 
 	@Override
@@ -51,5 +74,13 @@ public class IInc extends Instruction implements LVTInstruction
 	public boolean store()
 	{
 		return false; // This is a get first
+	}
+
+	@Override
+	public void writeWide(DataOutputStream out, int pc) throws IOException
+	{
+		super.write(out, pc);
+		out.writeShort(index);
+		out.writeShort(inc);
 	}
 }

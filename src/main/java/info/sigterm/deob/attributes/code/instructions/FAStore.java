@@ -4,7 +4,9 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
 
 public class FAStore extends Instruction
 {
@@ -16,12 +18,15 @@ public class FAStore extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		float value = (float) stack.pop();
-		int index = (int) stack.pop();
-		float[] array = (float[]) stack.pop();
+		StackContext value = stack.pop();
+		StackContext index = stack.pop();
+		StackContext array = stack.pop();
 		
-		array[index] = value;
+		ins.pop(value, index, array);
+		
+		frame.addInstructionContext(ins);
 	}
 }

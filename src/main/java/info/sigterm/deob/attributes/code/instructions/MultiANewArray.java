@@ -5,7 +5,10 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
@@ -36,17 +39,21 @@ public class MultiANewArray extends Instruction
 	}
 	
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		Stack stack = e.getStack();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-		
-		// XXX primive type/array type ? [[I [[Lmyclass; etc
-		ClassFile cf = thisClass.getGroup().findClass(clazz.getName());
-		
-		int[] dims = new int[dimensions];
 		for (int i = 0; i < dimensions; ++i)
-			dims[i] = (int) stack.pop();
+		{
+			StackContext ctx = stack.pop();
+			ins.pop(ctx);
+		}
+		
+		Type t = new Type(new info.sigterm.deob.signature.Type(clazz.getName()));
+		StackContext ctx = new StackContext(ins, t);
+		stack.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 }

@@ -1,6 +1,7 @@
 package info.sigterm.deob.pool;
 
 import info.sigterm.deob.ConstantPool;
+import info.sigterm.deob.execution.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -40,6 +41,12 @@ public class String extends PoolEntry
 	}
 	
 	@Override
+	public Type getTypeClass()
+	{
+		return new Type(java.lang.String.class.getCanonicalName());
+	}
+	
+	@Override
 	public boolean equals(Object other)
 	{
 		if (!(other instanceof String))
@@ -47,12 +54,6 @@ public class String extends PoolEntry
 		
 		String s = (String) other;
 		return string.equals(s.string);
-	}
-
-	@Override
-	public Object getObject()
-	{
-		return string;
 	}
 
 	@Override

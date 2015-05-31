@@ -16,6 +16,26 @@ public class Type
 		type = str;
 	}
 	
+	public String getType()
+	{
+		return type;
+	}
+	
+	public int getArrayDims()
+	{
+		return arrayDimms;
+	}
+	
+	public int getSlots()
+	{
+		if (arrayDimms == 0)
+		{
+			if (type.equals("D") || type.equals("J"))
+				return 2;
+		}
+		return 1;
+	}
+	
 	@Override
 	public boolean equals(Object other)
 	{

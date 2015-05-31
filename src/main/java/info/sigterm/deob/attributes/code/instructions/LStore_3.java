@@ -5,6 +5,12 @@ import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
+import info.sigterm.deob.execution.VariableContext;
+import info.sigterm.deob.execution.Variables;
 
 import java.io.IOException;
 
@@ -18,9 +24,17 @@ public class LStore_3 extends Instruction implements LVTInstruction
 	@Override
 	public void execute(Frame frame)
 	{
-		Object obj = frame.getStack().pop();
-		assert obj instanceof Long;
-		frame.getVariables().set(3, obj);
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		Variables variables = frame.getVariables();
+		
+		StackContext value = stack.pop();
+		assert value.getType().equals(new Type(long.class.getName()));
+		ins.pop(value);
+		
+		variables.set(3, new VariableContext(ins, value.getType()));
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	@Override

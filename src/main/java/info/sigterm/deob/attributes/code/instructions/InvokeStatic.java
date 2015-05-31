@@ -6,6 +6,10 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
+import info.sigterm.deob.execution.Stack;
+import info.sigterm.deob.execution.StackContext;
+import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
 
@@ -51,28 +55,31 @@ public class InvokeStatic extends Instruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ClassFile thisClass = this.getInstructions().getCode().getAttributes().getClassFile();
-
-		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
 		
-		ClassFile otherClass = thisClass.getGroup().findClass(clazz.getName());
 		int count = method.getNameAndType().getNumberOfArgs();
 		
-		Object[] args = new Object[count];
-		for (int i = count - 1; i >= 0; --i)
-			args[i] = e.getStack().pop();
-		
-		if (otherClass == null)
+		for (int i = 0; i < count; ++i)
 		{
-			//System.out.println("invokestatic for nonexistant class " + clazz.getName());
-			if (method.getNameAndType().isNonVoid())
-				e.getStack().push(this, null);
-			return;
+			StackContext arg = stack.pop();
+			ins.pop(arg);
 		}
 		
-		info.sigterm.deob.Method meth = otherClass.findMethod(method.getNameAndType());
-		e.getPath().invoke(meth, args);
+		if (!method.getNameAndType().isVoid())
+		{
+			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
+			stack.push(ctx);
+		}
+		
+		frame.addInstructionContext(ins);
+	}
+	
+	@Override
+	public String getDesc(Frame frame)
+	{	
+		return "invokestatic " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName() + " return value " + method.getNameAndType().getDescriptor().getReturnValue();
 	}
 }

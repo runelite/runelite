@@ -1,47 +1,84 @@
 package info.sigterm.deob.execution;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Exception;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instructions.LookupSwitch;
+import info.sigterm.deob.attributes.code.instructions.TableSwitch;
+import info.sigterm.deob.pool.NameAndType;
 
 public class Frame
 {
-	private Path path;
+	private Execution execution;
 	private Method method;
-	boolean executing = true;
+	private boolean executing = true;
 	private int pc;
 	private Stack stack;
 	private Variables variables;
+	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
+	private Map<Instruction, Instruction> visited; // shared
 
-	public Frame(Path path, Method method)
+	public Frame(Execution execution, Method method)
 	{
-		Code code = method.getCode();
-
-		this.path = path;
+		this.execution = execution;
 		this.method = method;
+		
+		Code code = method.getCode();
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
+		
+		visited = new HashMap<>();
+		
+		// initialize LVT
+		int pos = 0;
+		if (!method.isStatic())
+			variables.set(pos++, new VariableContext(null, new Type(method.getMethods().getClassFile().getName())));
+		
+		NameAndType nat = method.getNameAndType();
+		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
+		{
+			variables.set(pos, new VariableContext(null, new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
+			pos += nat.getDescriptor().getTypeOfArg(i).getSlots();
+		}
 	}
 	
-	protected Frame(Path path, Frame other)
+	protected Frame(Frame other)
 	{
-		this.path = path;
+		this.execution = other.execution;
 		this.method = other.method;
 		this.executing = other.executing;
 		this.pc = other.pc;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
+		this.visited = other.visited;
 	}
-
-	public Path getPath()
+	
+	public Frame dup()
 	{
-		return path;
+		Frame other = new Frame(this);
+		execution.frames.add(other);
+		return other;
+	}
+	
+	public void stop()
+	{
+		executing = false;
+	}
+	
+	public void throwException(Type type)
+	{
+		executing = false; // XXX
 	}
 	
 	public Method getMethod()
@@ -58,10 +95,15 @@ public class Frame
 	{
 		return stack;
 	}
-
+	
 	public Variables getVariables()
 	{
 		return variables;
+	}
+	
+	public void addInstructionContext(InstructionContext i)
+	{
+		instructions.add(i);
 	}
 	
 	public void execute()
@@ -90,16 +132,11 @@ public class Frame
 				System.err.println("Frame stack (grows downward):");
 				while (stack.getSize() > 0)
 				{
-					Instruction stacki = stack.getIns();
-					Object obj = stack.pop();
-					if (obj != null)
-						System.err.println(" " + obj + " (class " + obj.getClass().getName() + ") pushed by instruction " + stacki + " at pc " + stacki.getPc());
-					else
-						System.err.println(" " + obj + " pushed by instruction " + stacki + " at pc " + stacki.getPc());
+					StackContext stacki = stack.pop();
+					System.err.println(stacki);
 				}
 				System.err.println("end of stack");
 				ex.printStackTrace();
-				//System.exit(-1);
 				throw ex;
 			}
 			
@@ -114,39 +151,42 @@ public class Frame
 		}
 	}
 	
-	public void resume()
+	private void doJump(Instruction from, Instruction to)
 	{
-		execute();
+		visited.put(from, to);
 	}
 	
-	public void skip()
+	private boolean hasJumped(Instruction from, Instruction to)
 	{
-		/* for resume, skip current ins? */
-		Instructions ins = method.getCode().getInstructions();
-		Instruction i = ins.findInstruction(pc);
-		pc += i.getLength();
-	}
-	
-	private void checkLoop()
-	{
-		if (!this.getPath().getExecution().visit(method, pc))
-		{
-			System.out.println("Ending frame " + this);
-			executing = false;
-		}
+		Instruction i = visited.get(from);
+		if (from instanceof TableSwitch || from instanceof LookupSwitch) // XXX magic instructions which jump to multiple different places
+			if (i != null)
+				return true;
+		assert i == null || i == to;
+		return i == to;
 	}
 	
 	public void jump(int offset)
 	{
-		assert offset != 0;
-		pc += offset;
-		checkLoop();
+		jumpAbsolute(pc + offset);
 	}
 	
 	public void jumpAbsolute(int pc)
 	{
+		Instruction from = method.getCode().getInstructions().findInstruction(this.pc);
+		Instruction to = method.getCode().getInstructions().findInstruction(pc);
+		
+		assert from != null;
+		assert to != null;
+		
+		if (hasJumped(from, to))
+		{
+			executing = false;
+			return;
+		}
+		
+		doJump(from, to);
 		this.pc = pc;
-		checkLoop();
 	}
 	
 	public Collection<Exception> getExceptionHandlers()

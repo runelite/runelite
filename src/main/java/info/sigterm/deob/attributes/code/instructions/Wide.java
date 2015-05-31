@@ -3,17 +3,17 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.WideInstruction;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 
 public class Wide extends Instruction
 {
-	private byte opcode;
-	private int index;
-	private int value;
+	private Instruction ins;
 
 	public Wide(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -21,17 +21,18 @@ public class Wide extends Instruction
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
 
-		opcode = is.readByte();
-		index = is.readUnsignedShort();
-		length += 3;
-
-		// XXX
-		InstructionType optype = InstructionType.findInstructionFromCode(opcode);
-		assert optype != null;
-		if (optype == InstructionType.IINC)
+		byte opcode = is.readByte(); // this byte is already in the length of the new instruction (length is initialized to 1)
+		InstructionType op = InstructionType.findInstructionFromCode(opcode);
+		
+		try
 		{
-			value = is.readUnsignedShort();
-			length += 2;
+			Constructor<? extends Instruction> con = op.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, Instruction.class, int.class);
+			ins = con.newInstance(instructions, type, this, pc);
+			length += ins.getLength();
+		}
+		catch (Exception ex)
+		{
+			throw new IOException(ex);
 		}
 	}
 	
@@ -40,21 +41,14 @@ public class Wide extends Instruction
 	{
 		super.write(out, pc);
 		
-		out.writeByte(opcode);
-		out.writeShort(index);
-		
-		InstructionType optype = InstructionType.findInstructionFromCode(opcode);
-		assert optype != null;
-		if (optype == InstructionType.IINC)
-		{
-			out.writeShort(value);
-		}
+		WideInstruction w = (WideInstruction) ins;
+		w.writeWide(out, pc);
 	}
 
 	@Override
 	public void execute(Frame e)
 	{
-		throw new UnsupportedOperationException("wide not supported");
+		ins.execute(e);
 	}
 
 }
