@@ -28,6 +28,7 @@ public abstract class PoolEntry
 	{
 	}
 	
+	@Override
 	public abstract boolean equals(Object other);
 	
 	public abstract void write(DataOutputStream out) throws IOException;

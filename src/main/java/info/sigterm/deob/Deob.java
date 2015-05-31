@@ -2,15 +2,10 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.Type;
-import info.sigterm.deob.execution.VariableContext;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Block;
-import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

@@ -1,12 +1,7 @@
 package info.sigterm.deob.execution;
 
-import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
-import info.sigterm.deob.Method;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 public class Execution

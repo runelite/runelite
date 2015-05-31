@@ -3,11 +3,8 @@ package info.sigterm.deob.execution;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Exception;

@@ -3,8 +3,6 @@ package info.sigterm.deob.attributes;
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.Field;
 import info.sigterm.deob.Method;
-import info.sigterm.deob.pool.UTF8;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

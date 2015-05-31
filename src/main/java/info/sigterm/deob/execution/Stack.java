@@ -2,9 +2,6 @@ package info.sigterm.deob.execution;
 
 import java.util.Arrays;
 
-import info.sigterm.deob.attributes.code.Instruction;
-import info.sigterm.deob.pool.Method;
-
 public class Stack
 {
 	private int size;

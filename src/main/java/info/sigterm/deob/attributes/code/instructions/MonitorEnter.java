@@ -7,7 +7,6 @@ import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
-import info.sigterm.deob.execution.Type;
 
 public class MonitorEnter extends Instruction
 {
