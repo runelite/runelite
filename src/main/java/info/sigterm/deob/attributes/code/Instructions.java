@@ -86,6 +86,10 @@ public class Instructions
 	
 	public void buildBlocks()
 	{
+		for (Instruction i : instructions)
+			i.block = null;
+		blocks.clear();
+		
 		Block current = null;
 		for (Instruction i : instructions)
 		{
@@ -132,8 +136,14 @@ public class Instructions
 		out.write(ba);
 	}
 
-	private void buildJumpGraph()
+	public void buildJumpGraph()
 	{
+		for (Instruction i : instructions)
+		{
+			i.jump.clear();
+			i.from.clear();
+		}
+		
 		for (Instruction i : instructions)
 			if (i instanceof JumpingInstruction)
 				((JumpingInstruction) i).buildJumpGraph();
