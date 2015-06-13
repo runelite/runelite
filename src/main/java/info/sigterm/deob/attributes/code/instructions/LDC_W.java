@@ -26,10 +26,18 @@ public class LDC_W extends Instruction
 		length += 2;
 	}
 	
-	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public LDC_W(Instructions instructions, PoolEntry value)
 	{
-		super.write(out, pc);
+		super(instructions, InstructionType.LDC_W, 0);
+		
+		this.value = value;
+		length += 2;
+	}
+	
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		super.write(out);
 		out.writeShort(this.getPool().make(value));
 	}
 

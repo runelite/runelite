@@ -11,6 +11,14 @@ public class Method extends PoolEntry
 	private int classIndex, natIndex;
 	private Class clazz;
 	private NameAndType nat;
+	
+	public Method(ConstantPool pool, Class clazz, NameAndType nat)
+	{
+		super(pool, ConstantType.METHODREF);
+		
+		this.clazz = clazz;
+		this.nat = nat;
+	}
 
 	public Method(ConstantPool pool) throws IOException
 	{

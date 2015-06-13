@@ -28,6 +28,14 @@ public class NameAndType extends PoolEntry
 		descriptorIndex = is.readUnsignedShort();
 	}
 	
+	public NameAndType(ConstantPool pool, java.lang.String name, Signature sig)
+	{
+		super(pool, ConstantType.NAME_AND_TYPE);
+		
+		this.name = name;
+		this.signature = sig;
+	}
+	
 	public NameAndType(java.lang.String name, Signature type)
 	{
 		super(null, ConstantType.NAME_AND_TYPE);

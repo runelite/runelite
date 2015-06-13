@@ -43,6 +43,12 @@ public class DLoad_1 extends Instruction implements LVTInstruction
 	{
 		return 1;
 	}
+	
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		return new DLoad(this.getInstructions(), idx);
+	}
 
 	@Override
 	public boolean store()

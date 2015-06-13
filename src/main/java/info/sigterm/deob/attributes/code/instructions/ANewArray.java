@@ -28,9 +28,9 @@ public class ANewArray extends Instruction
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		
 		out.writeShort(this.getPool().make(clazz));
 	}

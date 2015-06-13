@@ -58,4 +58,10 @@ public class Dup2_X1 extends Instruction
 		
 		frame.addInstructionContext(ins);
 	}
+	
+	@Override
+	public boolean removeStack()
+	{
+		throw new UnsupportedOperationException();
+	}
 }

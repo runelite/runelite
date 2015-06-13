@@ -3,9 +3,12 @@ package info.sigterm.deob;
 import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.signature.Signature;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Block;
+import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -46,9 +49,10 @@ public class Deob
 		checkCallGraph(group);
 		removeExceptionObfuscation(group);
 		checkBlockGraph(group);
-		//checkParameters(group);
 		
-		execute(group);
+		Execution e = execute(group);
+		
+		checkParameters(e, group);
 		
 		JarOutputStream jout = new JarOutputStream(new FileOutputStream(args[1]), new Manifest());
 		
@@ -67,7 +71,7 @@ public class Deob
 		jout.close();
 	}
 
-	private static void execute(ClassGroup group) throws IOException
+	private static Execution execute(ClassGroup group) throws IOException
 	{
 		Execution e = new Execution(group);
 		
@@ -84,6 +88,7 @@ public class Deob
 			}
 		
 		System.out.println("Processed " + count + " methods and " + fcount + " paths");
+		return e;
 	}
 	
 	private static void checkCallGraph(ClassGroup group)
@@ -99,7 +104,6 @@ public class Deob
 				
 				if (!m.isUsed())
 				{
-					System.out.println(cf.getName() + " " + m.getName());
 					cf.getMethods().removeMethod(m);
 					++i;
 				}
@@ -161,44 +165,82 @@ public class Deob
 		System.out.println("Removed " + i + " unused blocks");
 	}
 	
-	private static boolean parameterUsed(int num, List lv)
+	private static int[] checkParametersOnce(Execution execution, ClassGroup group)
 	{
-		if (lv.isEmpty())
-			return false;
+		// removing parameters shifts the others around which is annoying.
+		// if more than one is unused, we'll just remove the one
+		// and do the others on another pass
 		
-		// these instructions aren't in order so we can't do this
-		//LVTInstruction ins = (LVTInstruction) lv.get(0);
-		//return !ins.store();
-		return true;
-	}
-	
-	private static void checkParameters(ClassGroup group)
-	{
 		int count = 0;
+		int collide = 0;
+		int overrides = 0;
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
+			for (Method m : cf.getMethods().getMethods())
 			{
-				int start = m.isStatic() ? 0 : 1;
+				int offset = m.isStatic() ? 0 : 1;
 				NameAndType nat = m.getNameAndType();
-				int numParams = start + nat.getNumberOfArgs();
+				Signature signature = nat.getDescriptor();
 				
-				for (int i = start; i < numParams; ++i)
+				for (int variableIndex = 0, lvtIndex = offset;
+						variableIndex < signature.size();
+						lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots())
 				{
-					List lv = m.findLVTInstructionsForVariable(i);
+					List<? extends Instruction> lv = m.findLVTInstructionsForVariable(lvtIndex);
 					
 					if (lv == null)
 						continue;
+	
+					// XXX instead of checking if the lvt index is never accessed,
+					// check execution frames and see if it is never read prior to being
+					// written to, and if so, then remove the parameter, but don't re index
+					// the lvt table.
+					if (!lv.isEmpty())
+						continue;
 					
-					if (!parameterUsed(i, lv))
+					if (!m.getOverriddenMethods().isEmpty())
 					{
-						//m.removeParameter(i);
-						System.out.println("Not used param " + i + " of " + cf.getName() + " " + m.getName() + " static: " + m.isStatic());
-						++count;
+						++overrides;
+						continue;
 					}
+					
+					Signature newSig = new Signature(m.getDescriptor());
+					newSig.remove(variableIndex);
+						
+					Method otherMethod = cf.getMethods().findMethod(new NameAndType(m.getName(), newSig));
+					if (otherMethod != null)
+					{
+						// sometimes removing an unused parameter will cause a signature collision with another function,
+						// just ignore it atm (there seems to be very few)
+						++collide;
+						continue;
+					}
+						
+					m.removeParameter(execution, variableIndex, lvtIndex);
+					++count;
+					break;
 				}
 			}
 		}
-		System.out.println("Detected " + count + " unused parameters");
+		return new int[] { count, collide, overrides };
+	}
+	
+	private static void checkParameters(Execution execution, ClassGroup group)
+	{
+		int count = 0;
+		int collide = 0;
+		int override = 0;
+		int[] i;
+		do
+		{
+			i = checkParametersOnce(execution, group);
+		
+			count += i[0];
+			collide = i[1]; // the next pass may be able to reduce the collisions
+			override = i[2];
+		}
+		while (i[0] > 0);
+		
+		System.out.println("Removed " + count + " unused parameters, unable to remove " + collide + " because of signature collisions and " + override + " due to overriding");
 	}
 }

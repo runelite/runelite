@@ -39,4 +39,15 @@ public class InstructionContext
 	{
 		return pops;
 	}
+	
+	public void removeStack(int idx)
+	{
+		// idx 0 is top of the stack, 1 is one under
+		// stack contexts are added to 'pops' in the order that they are popped from the stack,
+		// so just remove at index idx
+		StackContext ctx = pops.remove(idx);
+		
+		// start recursively removing
+		ctx.removeStack();
+	}
 }

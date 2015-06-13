@@ -20,6 +20,13 @@ import java.io.IOException;
 public class LLoad extends Instruction implements LVTInstruction, WideInstruction
 {
 	private int index;
+	
+	public LLoad(Instructions instructions, int index)
+	{
+		super(instructions, InstructionType.LLOAD, 0);
+		this.index = index;
+		++length;
+	}
 
 	public LLoad(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -40,9 +47,9 @@ public class LLoad extends Instruction implements LVTInstruction, WideInstructio
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeByte(index);
 	}
 
@@ -76,9 +83,16 @@ public class LLoad extends Instruction implements LVTInstruction, WideInstructio
 	}
 	
 	@Override
-	public void writeWide(DataOutputStream out, int pc) throws IOException
+	public void writeWide(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeShort(index);
+	}
+
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		index = idx;
+		return this;
 	}
 }

@@ -142,7 +142,10 @@ public class ConstantPool
 		for (PoolEntry e : entries)
 		{
 			if (e.equals(entry))
+			{
+				assert e.getClass() == entry.getClass();
 				return i;
+			}
 			
 			i += e.getSlots();
 		}

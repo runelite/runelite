@@ -31,6 +31,12 @@ public class Signature
 		rv = new Type(ret);
 	}
 	
+	public Signature(Signature other)
+	{
+		rv = other.rv;
+		arguments.addAll(other.arguments);
+	}
+	
 	@Override
 	public boolean equals(Object other)
 	{

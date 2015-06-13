@@ -43,6 +43,12 @@ public class LLoad_2 extends Instruction implements LVTInstruction
 	{
 		return 2;
 	}
+	
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		return new LLoad(this.getInstructions(), idx);
+	}
 
 	@Override
 	public boolean store()

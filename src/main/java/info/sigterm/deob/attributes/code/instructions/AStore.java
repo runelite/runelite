@@ -19,6 +19,13 @@ import java.io.IOException;
 public class AStore extends Instruction implements LVTInstruction, WideInstruction
 {
 	private int index;
+	
+	public AStore(Instructions instructions, int index)
+	{
+		super(instructions, InstructionType.ASTORE, 0);
+		this.index = index;
+		++length;
+	}
 
 	public AStore(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -39,9 +46,9 @@ public class AStore extends Instruction implements LVTInstruction, WideInstructi
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeByte(index);
 	}
 
@@ -73,9 +80,16 @@ public class AStore extends Instruction implements LVTInstruction, WideInstructi
 	}
 
 	@Override
-	public void writeWide(DataOutputStream out, int pc) throws IOException
+	public void writeWide(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeShort(index);
+	}
+
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		index = idx;
+		return this;
 	}
 }

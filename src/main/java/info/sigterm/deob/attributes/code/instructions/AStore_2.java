@@ -40,6 +40,12 @@ public class AStore_2 extends Instruction implements LVTInstruction
 	{
 		return 2;
 	}
+	
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		return new AStore(this.getInstructions(), idx);
+	}
 
 	@Override
 	public boolean store()

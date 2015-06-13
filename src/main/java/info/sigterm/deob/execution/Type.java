@@ -13,11 +13,9 @@ public class Type
 	
 	public Type(info.sigterm.deob.signature.Type t)
 	{
-		String before = t.getType();
 		type = asmTypeToClass(t.getType());
 		for (int i = 0; i < t.getArrayDims(); ++i)
 			type = type + "[]";
-		System.out.println(before + " -> " + type);
 	}
 	
 	public Type toStackType()

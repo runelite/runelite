@@ -7,7 +7,8 @@ import java.util.List;
 public class Execution
 {
 	private ClassGroup group;
-	public List<Frame> frames = new ArrayList<>();
+	public List<Frame> frames = new ArrayList<>(),
+			processedFrames = new ArrayList<>();
 
 	public Execution(ClassGroup group)
 	{
@@ -21,9 +22,9 @@ public class Execution
 		while (!frames.isEmpty())
 		{
 			Frame frame = frames.remove(0);
-			System.out.println("Executing frame " + frame);
 			++fcount;
 			frame.execute();
+			processedFrames.add(frame);
 		}
 		
 		return fcount;

@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.WideInstruction;
 import info.sigterm.deob.execution.Frame;
 
@@ -11,7 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 
-public class Wide extends Instruction
+public class Wide extends Instruction implements LVTInstruction
 {
 	private Instruction ins;
 
@@ -27,7 +28,7 @@ public class Wide extends Instruction
 		try
 		{
 			Constructor<? extends Instruction> con = op.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, Instruction.class, int.class);
-			ins = con.newInstance(instructions, type, this, pc);
+			ins = con.newInstance(instructions, op, this, pc);
 			length += ins.getLength();
 		}
 		catch (Exception ex)
@@ -37,12 +38,12 @@ public class Wide extends Instruction
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		
 		WideInstruction w = (WideInstruction) ins;
-		w.writeWide(out, pc);
+		w.writeWide(out);
 	}
 
 	@Override
@@ -51,4 +52,28 @@ public class Wide extends Instruction
 		ins.execute(e);
 	}
 
+	@Override
+	public void replace(Instruction oldi, Instruction newi)
+	{
+		assert oldi != ins;
+	}
+
+	@Override
+	public int getVariableIndex()
+	{
+		return ((LVTInstruction) ins).getVariableIndex();
+	}
+
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		ins = ((LVTInstruction) ins).setVariableIndex(idx);
+		return this;
+	}
+
+	@Override
+	public boolean store()
+	{
+		return ((LVTInstruction) ins).store();
+	}
 }

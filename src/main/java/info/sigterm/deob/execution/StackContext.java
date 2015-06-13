@@ -32,4 +32,18 @@ public class StackContext
 	{
 		return type;
 	}
+	
+	// remove this object from the stack
+	public void removeStack()
+	{
+		// remove the instruction which pushed this
+		if (!ic.getInstruction().removeStack())
+			// dup will return false as the other objects on the stack below this are necessary
+			// for the other branch.
+			return;
+		
+		// remove from the stack things this instruction read
+		for (StackContext ctx : ic.getPops()) 
+			ctx.removeStack();
+	}
 }

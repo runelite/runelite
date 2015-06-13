@@ -34,4 +34,21 @@ public class Dup extends Instruction
 		
 		frame.addInstructionContext(ins);
 	}
+	
+	@Override
+	public boolean removeStack()
+	{
+		// removing something from the stack this pushed at index 'idx'
+		// idx = 0 is top of the stack, goes up.
+		//
+		// the stack is relative to post-execute of this instruction
+		
+		// for dup, to remove one of the things pushed by it you simply
+		// remove the dup instruction
+		super.removeStack();
+		// do not continue as the other branch still uses what we left
+		// usually this is for new dup invokespecial and we end up with
+		// an unused new/invokesepcial
+		return false;
+	}
 }

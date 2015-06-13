@@ -47,20 +47,4 @@ public class Exceptions
 	{
 		return exceptions;
 	}
-	
-	public List<Exception> getHandlersForPc(int pc)
-	{
-		List<Exception> matches = new ArrayList<>();
-
-		for (Exception e : exceptions)
-		{
-			if (pc >= e.getStartPc() && pc < e.getEndPc())
-			{
-				/* possible match */
-				matches.add(e);
-			}
-		}
-		
-		return matches;
-	}
 }

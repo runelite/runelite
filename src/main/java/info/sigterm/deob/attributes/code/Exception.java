@@ -11,9 +11,7 @@ public class Exception
 {
 	private Exceptions exceptions;
 
-	private int startPc;
-	private int endPc;
-	private int handlerPc;
+	private Instruction start, end, handler;
 	private Class catchType;
 
 	public Exception(Exceptions exceptions) throws IOException
@@ -23,28 +21,35 @@ public class Exception
 		DataInputStream is = exceptions.getCode().getAttributes().getStream();
 		ConstantPool pool = exceptions.getCode().getAttributes().getClassFile().getPool();
 
-		startPc = is.readUnsignedShort();
-		endPc = is.readUnsignedShort();
-		handlerPc = is.readUnsignedShort();
+		int startPc = is.readUnsignedShort();
+		int endPc = is.readUnsignedShort();
+		int handlerPc = is.readUnsignedShort();
 		catchType = pool.getClass(is.readUnsignedShort());
 		
-		Instruction ins = exceptions.getCode().getInstructions().findInstruction(handlerPc);
-		ins.exce.add(this);
+		Instructions instructions = exceptions.getCode().getInstructions();
+		start = instructions.findInstruction(startPc);
+		end = instructions.findInstruction(endPc);
+		handler = instructions.findInstruction(handlerPc);
+		
+		assert start != null;
+		assert end != null;
+		assert handler != null;
+		
+		handler.exce.add(this);
 	}
 	
 	protected void remove()
 	{
-		Instruction ins = exceptions.getCode().getInstructions().findInstruction(handlerPc);
-		ins.exce.remove(this);
+		handler.exce.remove(this);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
 	{
 		ConstantPool pool = exceptions.getCode().getAttributes().getClassFile().getPool();
 		
-		out.writeShort(startPc);
-		out.writeShort(endPc);
-		out.writeShort(handlerPc);
+		out.writeShort(start.getPc());
+		out.writeShort(end.getPc());
+		out.writeShort(handler.getPc());
 		out.writeShort(catchType == null ? 0 : pool.make(catchType));
 	}
 	
@@ -53,19 +58,35 @@ public class Exception
 		return exceptions;
 	}
 	
-	public int getStartPc()
+	public Instruction getStart()
 	{
-		return startPc;
+		return start;
 	}
 	
-	public int getEndPc()
+	public Instruction getEnd()
 	{
-		return endPc;
+		return end;
 	}
 	
-	public int getHandlerPc()
+	public Instruction getHandler()
 	{
-		return handlerPc;
+		return handler;
+	}
+	
+	public void replace(Instruction oldi, Instruction newi)
+	{
+		if (start == oldi)
+			start = newi;
+		
+		if (end == oldi)
+			end = newi;
+		
+		if (handler == oldi)
+		{
+			handler.exce.remove(this);
+			handler = newi;
+			handler.exce.add(this);
+		}
 	}
 	
 	public Class getCatchType()

@@ -103,6 +103,11 @@ public class Frame
 		instructions.add(i);
 	}
 	
+	public List<InstructionContext> getInstructions()
+	{
+		return instructions;
+	}
+	
 	public void execute()
 	{
 		Instructions ins = method.getCode().getInstructions();
@@ -121,7 +126,6 @@ public class Frame
 			try
 			{
 				i.execute(this);
-				System.out.println(i.getDesc(this));
 			}
 			catch (Throwable ex)
 			{
@@ -184,10 +188,5 @@ public class Frame
 		
 		doJump(from, to);
 		this.pc = pc;
-	}
-	
-	public Collection<Exception> getExceptionHandlers()
-	{
-		return method.getCode().getExceptions().getHandlersForPc(this.pc);
 	}
 }

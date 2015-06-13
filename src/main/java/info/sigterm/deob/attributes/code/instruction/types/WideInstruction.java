@@ -5,5 +5,5 @@ import java.io.IOException;
 
 public interface WideInstruction
 {
-	public void writeWide(DataOutputStream out, int pc) throws IOException;
+	public void writeWide(DataOutputStream out) throws IOException;
 }

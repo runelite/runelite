@@ -27,10 +27,22 @@ public class LDC extends Instruction
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void prime()
 	{
-		super.write(out, pc);
-		out.writeByte(this.getPool().make(value));
+		int index = this.getPool().make(value);
+		if (index > 0xFF)
+		{
+			// new index might require changing this to an ldc_w
+			this.replace(new LDC_W(this.getInstructions(), value));
+		}
+	}
+	
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		super.write(out);
+		int index = this.getPool().make(value);
+		out.writeByte(index);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
@@ -11,12 +12,13 @@ import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.signature.Signature;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class InvokeStatic extends Instruction
+public class InvokeStatic extends Instruction implements InvokeInstruction
 {
 	private Method method;
 
@@ -30,9 +32,9 @@ public class InvokeStatic extends Instruction
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeShort(this.getPool().make(method));
 	}
 	
@@ -80,5 +82,19 @@ public class InvokeStatic extends Instruction
 	public String getDesc(Frame frame)
 	{	
 		return "invokestatic " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName() + " return value " + method.getNameAndType().getDescriptor().getReturnValue();
+	}
+	
+	@Override
+	public void removeParameter(int idx)
+	{
+		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
+		NameAndType nat = method.getNameAndType();
+		
+		// create new signature
+		Signature sig = new Signature(nat.getDescriptor());
+		sig.remove(idx);
+		
+		// create new method pool object
+		method = new Method(method.getPool(), clazz, new NameAndType(nat.getPool(), nat.getName(), sig));
 	}
 }

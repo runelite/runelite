@@ -40,7 +40,6 @@ public class Stack
 		
 		assert !i.getType().type.equals("V");
 
-		System.out.println("PUSH context " + i.getType().type + " from + " + i.getIns().getInstruction());
 		stack[size] = i;
 		++size;
 	}
@@ -50,9 +49,6 @@ public class Stack
 		if (size <= 0)
 			throw new RuntimeException("Stack underflow");
 
-		System.out.println("POP");
-		if (size == 1)
-			System.out.println("STACK SIZE IS NOW ZERO");
 		return stack[--size];
 	}
 	

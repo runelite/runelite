@@ -1,6 +1,8 @@
 package info.sigterm.deob.attributes.code;
 
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
+import info.sigterm.deob.attributes.code.instructions.LDC;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -47,6 +49,9 @@ public class Instructions
 		}
 
 		assert pc == length;
+		
+		for (Instruction i : instructions)
+			i.resolve();
 
 		buildJumpGraph();
 		buildBlocks();
@@ -102,13 +107,25 @@ public class Instructions
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		DataOutputStream o = new DataOutputStream(b);
+		// generate pool indexes
+		for (Instruction i : new ArrayList<>(instructions))
+			i.prime();
+		
+		// rebuild pc
 		int pc = 0;
 		for (Instruction i : instructions)
 		{
-			i.write(o, pc);
-			pc = o.size();
+			i.setPc(pc);
+			pc += i.getLength();
+		}
+		
+		ByteArrayOutputStream b = new ByteArrayOutputStream();
+		DataOutputStream o = new DataOutputStream(b);
+		for (Instruction i : instructions)
+		{
+			assert o.size() == i.getPc();
+			i.write(o);
+			assert o.size() == i.getPc() + i.getLength();
 		}
 		byte[] ba = b.toByteArray();
 		out.writeInt(ba.length);
@@ -118,7 +135,8 @@ public class Instructions
 	private void buildJumpGraph()
 	{
 		for (Instruction i : instructions)
-			i.buildJumpGraph();
+			if (i instanceof JumpingInstruction)
+				((JumpingInstruction) i).buildJumpGraph();
 	}
 
 	public void buildInstructionGraph()

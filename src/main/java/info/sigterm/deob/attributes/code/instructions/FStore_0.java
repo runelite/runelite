@@ -40,6 +40,12 @@ public class FStore_0 extends Instruction implements LVTInstruction
 	{
 		return 0;
 	}
+	
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		return new FStore(this.getInstructions(), idx);
+	}
 
 	@Override
 	public boolean store()

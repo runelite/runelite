@@ -39,7 +39,13 @@ public class ALoad_3 extends Instruction implements LVTInstruction
 	@Override
 	public int getVariableIndex()
 	{
-		return 0;
+		return 3;
+	}
+	
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		return new ALoad(this.getInstructions(), idx);
 	}
 
 	@Override

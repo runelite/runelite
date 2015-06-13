@@ -41,9 +41,9 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeByte(index);
 		out.writeByte(inc);
 	}
@@ -77,10 +77,17 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 	}
 
 	@Override
-	public void writeWide(DataOutputStream out, int pc) throws IOException
+	public void writeWide(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeShort(index);
 		out.writeShort(inc);
+	}
+
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		index = (short) idx;
+		return this;
 	}
 }

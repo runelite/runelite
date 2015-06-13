@@ -43,6 +43,12 @@ public class FLoad_0 extends Instruction implements LVTInstruction
 	{
 		return 0;
 	}
+	
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		return new FLoad(this.getInstructions(), idx);
+	}
 
 	@Override
 	public boolean store()

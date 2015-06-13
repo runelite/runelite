@@ -11,6 +11,14 @@ public class InterfaceMethod extends PoolEntry
 	private int classIndex, natIndex;
 	private Class clazz;
 	private NameAndType nat;
+	
+	public InterfaceMethod(ConstantPool pool, Class clazz, NameAndType nat)
+	{
+		super(pool, ConstantType.INTERFACE_METHOD_REF);
+		
+		this.clazz = clazz;
+		this.nat = nat;
+	}
 
 	public InterfaceMethod(ConstantPool pool) throws IOException
 	{

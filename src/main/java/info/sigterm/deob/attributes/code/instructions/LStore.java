@@ -21,6 +21,13 @@ public class LStore extends Instruction implements LVTInstruction, WideInstructi
 {
 	private int index;
 
+	public LStore(Instructions instructions, int index)
+	{
+		super(instructions, InstructionType.LSTORE, 0);
+		this.index = index;
+		++length;
+	}
+	
 	public LStore(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
@@ -40,9 +47,9 @@ public class LStore extends Instruction implements LVTInstruction, WideInstructi
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeByte(index);
 	}
 
@@ -75,9 +82,16 @@ public class LStore extends Instruction implements LVTInstruction, WideInstructi
 	}
 
 	@Override
-	public void writeWide(DataOutputStream out, int pc) throws IOException
+	public void writeWide(DataOutputStream out) throws IOException
 	{
-		super.write(out, pc);
+		super.write(out);
 		out.writeShort(index);
+	}
+
+	@Override
+	public Instruction setVariableIndex(int idx)
+	{
+		index = idx;
+		return this;
 	}
 }

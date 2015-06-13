@@ -4,8 +4,12 @@ import info.sigterm.deob.attributes.AttributeType;
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
+import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.callgraph.Node;
+import info.sigterm.deob.execution.Execution;
+import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.signature.Signature;
 
@@ -13,7 +17,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Method
 {
@@ -56,15 +62,55 @@ public class Method
 		assert callsFrom.isEmpty();
 	}
 	
-	protected void removeParameter(int i)
+	protected void removeParameter(Execution execution, int paramIndex, int lvtIndex)
 	{
-		// If this is a non static method parameter 0 is this
-		if (!this.isStatic())
-			--i;
+		Set<Instruction> done = new HashSet<>();
+		for (Node n : callsFrom)
+		{
+			// find everywhere that calls this
+			// remove parameter from stack
+			Method caller = n.from;
+			
+			// find frames on the caller
+			for (Frame f : execution.processedFrames)
+				if (f.getMethod() == caller)
+					for (InstructionContext ins : f.getInstructions())
+						if (ins.getInstruction() == n.ins) // this instruction invokes the function we're removing a parameter from
+						{
+							if (done.contains(ins.getInstruction()))
+									continue;
+							
+							int pops = arguments.size() - paramIndex - 1; // index from top of stack of parameter
+							ins.removeStack(pops); // remove parameter from stack
+							
+							InvokeInstruction iins = (InvokeInstruction) ins.getInstruction();
+							iins.removeParameter(paramIndex); // remove parameter from instruction
+							
+							done.add(ins.getInstruction());
+						}
+		}
 		
-		arguments.remove(i);
+		// adjust lvt indexes to get rid of idx in the method
+		for (Instruction ins : new ArrayList<>(getCode().getInstructions().getInstructions()))
+		{
+			if (ins instanceof LVTInstruction)
+			{
+				LVTInstruction lins = (LVTInstruction) ins;
+				
+				int i = lins.getVariableIndex();
+				assert i != lvtIndex; // current unused variable detection just looks for no accesses
+				
+				// reassign
+				if (i > lvtIndex)
+				{
+					Instruction newIns = lins.setVariableIndex(--i);
+					if (newIns != ins)
+						ins.replace(newIns);
+				}
+			}
+		}
 		
-		// XXX now remove from code.
+		arguments.remove(paramIndex);
 	}
 
 	public Methods getMethods()

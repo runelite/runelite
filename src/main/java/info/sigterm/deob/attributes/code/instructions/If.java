@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
@@ -12,8 +13,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class If extends Instruction
+public class If extends Instruction implements JumpingInstruction
 {
+	private Instruction to;
 	private short offset;
 
 	public If(Instructions instructions, InstructionType type, int pc) throws IOException
@@ -26,16 +28,22 @@ public class If extends Instruction
 	}
 	
 	@Override
-	public void write(DataOutputStream out, int pc) throws IOException
+	public void resolve()
 	{
-		super.write(out, pc);
-		out.writeShort(offset);
+		to = this.getInstructions().findInstruction(this.getPc() + offset);
+	}
+	
+	@Override
+	public void write(DataOutputStream out) throws IOException
+	{
+		super.write(out);
+		out.writeShort(to.getPc() - this.getPc());
 	}
 
 	@Override
 	public void buildJumpGraph()
 	{
-		this.addJump(offset);
+		this.addJump(to);
 	}
 	
 	@Override
@@ -51,5 +59,12 @@ public class If extends Instruction
 		
 		Frame other = frame.dup();
 		other.jump(offset);
+	}
+	
+	@Override
+	public void replace(Instruction oldi, Instruction newi)
+	{
+		if (to == oldi)
+			to = newi;
 	}
 }
