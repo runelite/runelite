@@ -31,8 +31,8 @@ public class Method
 	private String name;
 	private Signature arguments;
 	private Attributes attributes;
-	private List<Node> callsTo = new ArrayList<>(),
-			callsFrom = new ArrayList<>();
+	List<Node> callsTo = new ArrayList<>();
+	List<Node> callsFrom = new ArrayList<>();
 
 	Method(Methods methods) throws IOException
 	{
@@ -62,7 +62,7 @@ public class Method
 		assert callsFrom.isEmpty();
 	}
 	
-	protected void removeParameter(Execution execution, int paramIndex, int lvtIndex)
+	public void removeParameter(Execution execution, int paramIndex, int lvtIndex)
 	{
 		Set<Instruction> done = new HashSet<>();
 		for (Node n : callsFrom)
@@ -197,6 +197,7 @@ public class Method
 	
 	public void addCallTo(Instruction ins, Method method)
 	{
+		assert method != null;
 		Node node = new Node(this, method, ins);
 		callsTo.add(node);
 		method.callsFrom.add(node);

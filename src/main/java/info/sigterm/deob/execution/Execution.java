@@ -1,6 +1,9 @@
 package info.sigterm.deob.execution;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Method;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +18,24 @@ public class Execution
 		this.group = group;
 	}
 	
-	public int run()
+	public void run()
+	{
+		int count = 0, fcount = 0;
+		for (ClassFile cf : group.getClasses())
+			for (Method method : cf.getMethods().getMethods())
+			{
+				if (method.getCode() == null)
+					continue;
+				Frame f = new Frame(this, method);
+				frames.add(f);
+				fcount += this.runFrames();
+				++count;
+			}
+		
+		System.out.println("Processed " + count + " methods and " + fcount + " paths");
+	}
+	
+	private int runFrames()
 	{
 		int fcount = 0;
 		

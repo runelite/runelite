@@ -27,7 +27,7 @@ public class ClassGroup
 
 	public ClassFile findClass(String name)
 	{
-		// XXX handle arrays
+		// XXX handle arrays?
 		for (ClassFile c : classes)
 			if (c.getName().equals(name))
 				return c;
@@ -48,6 +48,12 @@ public class ClassGroup
 	
 	public void buildCallGraph()
 	{
+		for (ClassFile c : classes)
+			for (Method m : c.getMethods().getMethods())
+			{
+				m.callsTo.clear();
+				m.callsFrom.clear();
+			}
 		for (ClassFile c : classes)
 			c.buildCallGraph();
 	}
