@@ -52,10 +52,6 @@ public class Deob
 		// remove jump obfuscation
 		new Jumps().run(group);
 
-		//group.buildClassGraph();
-		//group.buildInstructionGraph();
-		//group.buildCallGraph();
-
 		saveJar(group, args[1]);
 	}
 	

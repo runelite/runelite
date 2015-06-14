@@ -11,6 +11,7 @@ import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.pool.PoolEntry;
 import info.sigterm.deob.signature.Signature;
 
 import java.io.DataInputStream;
@@ -72,11 +73,13 @@ public class Method
 			Method caller = n.from;
 			
 			// find frames on the caller
+			boolean found = false;
 			for (Frame f : execution.processedFrames)
 				if (f.getMethod() == caller)
 					for (InstructionContext ins : f.getInstructions())
 						if (ins.getInstruction() == n.ins) // this instruction invokes the function we're removing a parameter from
 						{
+							found = true;
 							if (done.contains(ins.getInstruction()))
 									continue;
 							
@@ -88,7 +91,53 @@ public class Method
 							
 							done.add(ins.getInstruction());
 						}
+			if (found == false)
+			{
+				System.err.println("Method " + caller.getName() + " in " + caller.getMethods().getClassFile().getName() + " calls " + this.getName() + " in " + this.getMethods().getClassFile().getName() + ", but was unable to find any execution frame doing this");
+				assert false;
+			}
 		}
+		
+		// this double checks that all calls to this have been located
+		for (ClassFile cf : methods.getClassFile().getGroup().getClasses())
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Code c = m.getCode();
+				if (c == null)
+					continue;
+				
+				for (Instruction i : c.getInstructions().getInstructions())
+				{
+					if (i instanceof InvokeInstruction)
+					{
+						InvokeInstruction ii = (InvokeInstruction) i;
+						PoolEntry pool = ii.getMethod();
+						
+						if (pool instanceof info.sigterm.deob.pool.Method)
+						{
+							info.sigterm.deob.pool.Method pm = (info.sigterm.deob.pool.Method) pool;
+							
+							if (pm.getClassEntry().getName().equals(this.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(this.getNameAndType()) && !done.contains(i))
+							{
+								// for some reason this wasn't removed above?
+								System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
+								//assert false;
+							}
+						}
+						else if (pool instanceof info.sigterm.deob.pool.InterfaceMethod)
+						{
+							info.sigterm.deob.pool.InterfaceMethod pm = (info.sigterm.deob.pool.InterfaceMethod) pool;
+							
+							if (pm.getClassEntry().getName().equals(this.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(this.getNameAndType()) && !done.contains(i))
+							{
+								// for some reason this wasn't removed above?
+								System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
+								//assert false;
+							}
+						}
+					}
+				}
+			}
 		
 		// adjust lvt indexes to get rid of idx in the method
 		for (Instruction ins : new ArrayList<>(getCode().getInstructions().getInstructions()))

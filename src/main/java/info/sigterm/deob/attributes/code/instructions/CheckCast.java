@@ -36,17 +36,35 @@ public class CheckCast extends Instruction
 
 	@Override
 	public void execute(Frame frame)
-	{
-		Frame other = frame.dup();
-		Stack stack = other.getStack();
-		
-		InstructionContext ins = new InstructionContext(this, other);
-		
-		StackContext what = stack.pop();
-		
-		ins.pop(what);
-		
-		other.throwException(new Type("java.lang.ClassCastException"));
+	{			
+		// jump to instruction handlers that can catch exceptions here
+		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
+		{
+			Instruction start = e.getStart(),
+					end = e.getEnd();
+			
+			// [start, end)
+			if (this.getPc() >= start.getPc() && this.getPc() < end.getPc())
+			{
+				Frame f = frame.dup();
+				Stack stack = f.getStack();
+				
+				InstructionContext ins = new InstructionContext(this, f);
+				
+				while (stack.getSize() > 0)
+				{
+					StackContext what = stack.pop();
+					ins.pop(what);
+				}
+				
+				// push exception back
+				StackContext exception = new StackContext(ins, new Type("java/lang/Exception"));
+				stack.push(exception);
+				
+				f.addInstructionContext(ins);
+				
+				f.jumpAbsolute(e.getHandler().getPc());
+			}
+		}
 	}
-
 }

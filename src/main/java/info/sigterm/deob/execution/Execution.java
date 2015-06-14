@@ -3,6 +3,7 @@ package info.sigterm.deob.execution;
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.Method;
+import info.sigterm.deob.attributes.code.Exceptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,10 @@ public class Execution
 			{
 				if (method.getCode() == null)
 					continue;
+				
 				Frame f = new Frame(this, method);
 				frames.add(f);
+				
 				fcount += this.runFrames();
 				++count;
 			}

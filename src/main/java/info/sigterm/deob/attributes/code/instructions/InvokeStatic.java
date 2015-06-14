@@ -12,6 +12,7 @@ import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
+import info.sigterm.deob.pool.PoolEntry;
 import info.sigterm.deob.signature.Signature;
 
 import java.io.DataInputStream;
@@ -69,6 +70,8 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			ins.pop(arg);
 		}
 		
+		handleExceptions(frame);
+		
 		if (!method.getNameAndType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
@@ -76,6 +79,32 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		}
 		
 		frame.addInstructionContext(ins);
+	}
+	
+	private void handleExceptions(Frame frame)
+	{
+		// jump to instruction handlers that can catch exceptions here
+		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
+		{
+			Instruction start = e.getStart(),
+					end = e.getEnd();
+			
+			// [start, end)
+			if (this.getPc() >= start.getPc() && this.getPc() < end.getPc())
+			{
+				Frame f = frame.dup();
+				Stack stack = f.getStack();
+				
+				while (stack.getSize() > 0)
+					stack.pop();
+				
+				InstructionContext ins = new InstructionContext(this, f);
+				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"));
+				stack.push(ctx);
+				
+				f.jumpAbsolute(e.getHandler().getPc());
+			}
+		}
 	}
 	
 	@Override
@@ -96,5 +125,11 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		
 		// create new method pool object
 		method = new Method(method.getPool(), clazz, new NameAndType(nat.getPool(), nat.getName(), sig));
+	}
+	
+	@Override
+	public PoolEntry getMethod()
+	{
+		return method;
 	}
 }

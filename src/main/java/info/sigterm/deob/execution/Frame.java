@@ -23,7 +23,7 @@ public class Frame
 	private Stack stack;
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
-	private Map<Instruction, Instruction> visited; // shared
+	private Map<Instruction, List<Instruction>> visited; // shared
 
 	public Frame(Execution execution, Method method)
 	{
@@ -71,11 +71,6 @@ public class Frame
 	public void stop()
 	{
 		executing = false;
-	}
-	
-	public void throwException(Type type)
-	{
-		executing = false; // XXX
 	}
 	
 	public Method getMethod()
@@ -154,17 +149,33 @@ public class Frame
 	
 	private void doJump(Instruction from, Instruction to)
 	{
-		visited.put(from, to);
+		List<Instruction> l = visited.get(from);
+		if (l == null)
+		{
+			List<Instruction> l2 = new ArrayList<>();
+			l2.add(to);
+			visited.put(from, l2);
+		}
+		else
+		{
+			l.add(to);
+		}
 	}
 	
 	private boolean hasJumped(Instruction from, Instruction to)
 	{
-		Instruction i = visited.get(from);
-		if (from instanceof TableSwitch || from instanceof LookupSwitch) // XXX magic instructions which jump to multiple different places
-			if (i != null)
-				return true;
-		assert i == null || i == to;
-		return i == to;
+		List<Instruction> i = visited.get(from);
+		if (i != null && i.contains(to))
+			return true;
+		
+		if (i == null)
+		{
+			i = new ArrayList<>();
+			visited.put(from, i);
+		}
+		
+		i.add(to);
+		return false;
 	}
 	
 	public void jump(int offset)
