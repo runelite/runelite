@@ -28,6 +28,9 @@ public class Code extends Attribute
 
 		exceptions = new Exceptions(this);
 		this.attributes = new Attributes(this);
+		
+		instructions.buildBlocks();
+		instructions.buildJumpGraph();
 	}
 	
 	@Override

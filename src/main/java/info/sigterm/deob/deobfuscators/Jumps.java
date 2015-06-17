@@ -33,9 +33,12 @@ public class Jumps
 					Block block = blocks.get(i);
 					Block prev = i > 0 ? blocks.get(i - 1) : null;
 					
-					// only one thing jumps here
 					if (block.begin.from.size() == 1 && prev != null && prev.end.isTerminal())
 					{
+						// not sure if this is right, just don't mess with blocks in exception ranges or directly handling them
+						if (block.exceptions.isEmpty() == false || block.handlers.isEmpty() == false || prev.exceptions.isEmpty() == false || prev.handlers.isEmpty() == false)
+							continue;
+						
 						Instruction from = block.begin.from.get(0); // this instruction jumps to block
 						
 						if (from.block == block)

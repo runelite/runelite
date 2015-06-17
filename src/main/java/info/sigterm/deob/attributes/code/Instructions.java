@@ -52,9 +52,6 @@ public class Instructions
 		
 		for (Instruction i : instructions)
 			i.resolve();
-
-		buildJumpGraph();
-		buildBlocks();
 	}
 	
 	public List<Instruction> getInstructions()
@@ -84,6 +81,21 @@ public class Instructions
 		}
 	}
 	
+	private void findExceptionInfo(Block block, Instruction i)
+	{
+		for (Exception e : code.getExceptions().getExceptions())
+		{
+			if (i.getPc() >= e.getStart().getPc() && i.getPc() < e.getEnd().getPc())
+			{
+				block.exceptions.add(e);
+			}
+			if (e.getHandler() == i)
+			{
+				block.handlers.add(e);
+			}
+		}
+	}
+	
 	public void buildBlocks()
 	{
 		for (Instruction i : instructions)
@@ -97,6 +109,7 @@ public class Instructions
 			{
 				current = new Block();
 				current.begin = i;
+				findExceptionInfo(current, i);
 			}
 			i.block = current;
 			current.instructions.add(i);
