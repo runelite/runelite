@@ -19,6 +19,7 @@ public class Jumps
 		int count = 0;
 		for (ClassFile cf : group.getClasses())
 		{
+		 methods:
 			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
 			{
 				if (m.getCode() == null)
@@ -50,40 +51,30 @@ public class Jumps
 							
 							List<Instruction> ilist = ins.getInstructions();
 							
-							// remove instructions
-							for (Instruction in : block.instructions)
-								ilist.remove(in);
+							// clear jump graph
+							//ins.clearBlocks();
+							ins.clearJumpGraph();
 							
-							int index = ilist.indexOf(from);
-							
-							assert from.block != block;
-							from.block = null;
-							
-							// move instructions which jump here to jump to block.begin
-							for (Instruction in : from.from)
-							{
-								assert in.jump.contains(from);
-								assert !in.jump.contains(block.begin);
-								
-								in.jump.remove(from);
-								
-								in.jump.add(block.begin);
-								block.begin.from.add(in);
-							}
-							from.from.clear();
-							
-							// .replace ins
+							// 'from' goes away and is replaced with block.begin
 							for (Instruction in : ilist)
 								in.replace(from, block.begin);
 							
-							for (info.sigterm.deob.attributes.code.Exception e : m.getCode().getExceptions().getExceptions())
-								e.replace(from, block.begin);
+							// remove instructions
+							for (Instruction in : block.instructions)
+							{
+								boolean b = ilist.remove(in);
+								assert b;
+							}
 							
-							ins.remove(from); // remove jump
+							// store pos of from
+							int index = ilist.indexOf(from);
+							ilist.remove(from);
 							
-							// insert instructions from block where jump was
+							// insert instructions where 'from' was
 							for (Instruction in : block.instructions)
 								ilist.add(index++, in);
+							
+							continue methods;
 						}
 					}
 				}

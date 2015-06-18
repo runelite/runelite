@@ -148,14 +148,19 @@ public class Instructions
 		out.writeInt(ba.length);
 		out.write(ba);
 	}
-
-	public void buildJumpGraph()
+	
+	public void clearJumpGraph()
 	{
 		for (Instruction i : instructions)
 		{
 			i.jump.clear();
 			i.from.clear();
 		}
+	}
+
+	public void buildJumpGraph()
+	{
+		clearJumpGraph();
 		
 		for (Instruction i : instructions)
 			if (i instanceof JumpingInstruction)
