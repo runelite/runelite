@@ -102,7 +102,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"));
 				stack.push(ctx);
 				
-				f.jumpAbsolute(e.getHandler().getPc());
+				f.jump(e.getHandler());
 			}
 		}
 	}

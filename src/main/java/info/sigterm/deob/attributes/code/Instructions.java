@@ -99,12 +99,19 @@ public class Instructions
 	public void buildBlocks()
 	{
 		clearBlockGraph();
+		buildJumpGraph();
 		
 		Block current = null;
 		for (Instruction i : instructions)
 		{
-			if (current == null)
+			if (current == null || !i.from.isEmpty())
 			{
+				// this caused exception errors?
+				if (current != null)
+				{
+					current.end = current.instructions.get(current.instructions.size() - 1);
+					blocks.add(current);
+				}
 				current = new Block();
 				current.begin = i;
 				findExceptionInfo(current, i);

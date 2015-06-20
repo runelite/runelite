@@ -21,6 +21,8 @@ public class Execution
 	
 	public void run()
 	{
+		// XXX update pc? some instructiosn rely on it still.
+		
 		int count = 0, fcount = 0;
 		for (ClassFile cf : group.getClasses())
 			for (Method method : cf.getMethods().getMethods())

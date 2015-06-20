@@ -104,13 +104,13 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		
 		frame.addInstructionContext(ins);
 		
-		for (int i : jumps)
+		for (Instruction i : branchi)
 		{
 			Frame other = frame.dup();
 			other.jump(i);
 		}
 		
-		frame.jump(def);
+		frame.jump(defi);
 	}
 	
 	@Override

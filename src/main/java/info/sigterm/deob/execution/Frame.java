@@ -20,6 +20,7 @@ public class Frame
 	private Method method;
 	private boolean executing = true;
 	private int pc;
+	private Instruction cur; // current instruction
 	private Stack stack;
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
@@ -48,6 +49,8 @@ public class Frame
 			variables.set(pos, new VariableContext(null, new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
 			pos += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
+		
+		cur = code.getInstructions().getInstructions().get(0);
 	}
 	
 	protected Frame(Frame other)
@@ -56,6 +59,7 @@ public class Frame
 		this.method = other.method;
 		this.executing = other.executing;
 		this.pc = other.pc;
+		this.cur = other.cur;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.visited = other.visited;
@@ -106,25 +110,19 @@ public class Frame
 	public void execute()
 	{
 		Instructions ins = method.getCode().getInstructions();
+		List<Instruction> instructions = ins.getInstructions();
+		
 		while (executing)
 		{
-			int oldPc = pc;
-			
-			Instruction i = ins.findInstruction(pc);
-			
-			if (i == null)
-			{
-				System.err.println("Cant find ins at pc " + pc + " in method " + method.getName() + " in " + method.getCode().getAttributes().getClassFile().getName());
-				System.exit(-1);
-			}
+			Instruction oldCur = cur;
 			
 			try
 			{
-				i.execute(this);
+				cur.execute(this);
 			}
 			catch (Throwable ex)
 			{
-				System.err.println("Error executing instruction " + i.getDesc(this));
+				System.err.println("Error executing instruction " + cur.getDesc(this));
 				System.err.println("Frame stack (grows downward):");
 				while (stack.getSize() > 0)
 				{
@@ -136,9 +134,14 @@ public class Frame
 				throw ex;
 			}
 			
-			if (oldPc == pc)
+			if (!executing)
+				break;
+			
+			if (oldCur == cur)
 			{
-				pc += i.getLength();
+				int idx = instructions.indexOf(cur);
+				assert idx != -1;
+				cur = instructions.get(idx + 1);
 			}
 			else
 			{
@@ -178,26 +181,17 @@ public class Frame
 		return false;
 	}
 	
-	public void jump(int offset)
+	public void jump(Instruction to)
 	{
-		jumpAbsolute(pc + offset);
-	}
-	
-	public void jumpAbsolute(int pc)
-	{
-		Instruction from = method.getCode().getInstructions().findInstruction(this.pc);
-		Instruction to = method.getCode().getInstructions().findInstruction(pc);
-		
-		assert from != null;
 		assert to != null;
 		
-		if (hasJumped(from, to))
+		if (hasJumped(cur, to))
 		{
 			executing = false;
 			return;
 		}
 		
-		doJump(from, to);
-		this.pc = pc;
+		doJump(cur, to);
+		cur = to;
 	}
 }

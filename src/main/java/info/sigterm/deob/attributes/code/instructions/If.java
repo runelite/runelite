@@ -57,8 +57,10 @@ public class If extends Instruction implements JumpingInstruction
 		
 		ins.pop(one, two);
 		
+		frame.addInstructionContext(ins);
+		
 		Frame other = frame.dup();
-		other.jump(offset);
+		other.jump(to);
 	}
 	
 	@Override

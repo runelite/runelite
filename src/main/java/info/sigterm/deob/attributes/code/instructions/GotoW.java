@@ -46,7 +46,7 @@ public class GotoW extends Instruction implements JumpingInstruction
 	@Override
 	public void execute(Frame e)
 	{
-		e.jump(offset);
+		e.jump(to);
 	}
 	
 	@Override

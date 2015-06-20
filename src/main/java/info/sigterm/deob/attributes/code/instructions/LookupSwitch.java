@@ -107,13 +107,13 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 		
 		frame.addInstructionContext(ins);
 		
-		for (int i : branch)
+		for (Instruction i : branchi)
 		{
 			Frame other = frame.dup();
 			other.jump(i);
 		}
 		
-		frame.jump(def);
+		frame.jump(defi);
 	}
 	
 	@Override

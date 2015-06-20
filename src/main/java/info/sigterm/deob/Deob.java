@@ -1,5 +1,6 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
 import info.sigterm.deob.deobfuscators.Jumps;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnusedBlocks;
@@ -35,10 +36,15 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
+		long start = System.currentTimeMillis();
+		
 		ClassGroup group = loadJar(args[0]);
 		
 		// remove except RuntimeException
 		new RuntimeExceptions().run(group);
+		
+		// remove illegal state exceptions, frees up some parameters
+		new IllegalStateExceptions().run(group);
 		
 		// remove code blocks that used to be the runtime exception handlers
 		new UnusedBlocks().run(group);
@@ -53,6 +59,9 @@ public class Deob
 		new Jumps().run(group);
 
 		saveJar(group, args[1]);
+		
+		long end = System.currentTimeMillis();
+		System.out.println("Done in " + ((end - start) / 1000L) + "s");
 	}
 	
 	private static ClassGroup loadJar(String jarfile) throws IOException

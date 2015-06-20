@@ -50,7 +50,7 @@ public class AThrow extends Instruction
 			if (this.getPc() >= start.getPc() && this.getPc() < end.getPc())
 			{
 				Frame f = frame.dup();
-				f.jumpAbsolute(e.getHandler().getPc());
+				f.jump(e.getHandler());
 			}
 		}
 

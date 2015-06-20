@@ -63,7 +63,7 @@ public class CheckCast extends Instruction
 				
 				f.addInstructionContext(ins);
 				
-				f.jumpAbsolute(e.getHandler().getPc());
+				f.jump(e.getHandler());
 			}
 		}
 	}

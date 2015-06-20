@@ -59,7 +59,7 @@ public class If0 extends Instruction implements JumpingInstruction
 		frame.addInstructionContext(ins);
 		
 		Frame other = frame.dup();
-		other.jump(offset);
+		other.jump(to);
 	}
 	
 	@Override
