@@ -106,7 +106,6 @@ public class Instructions
 		{
 			if (current == null || !i.from.isEmpty())
 			{
-				// this caused exception errors?
 				if (current != null)
 				{
 					current.end = current.instructions.get(current.instructions.size() - 1);

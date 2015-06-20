@@ -34,7 +34,7 @@ public class Jumps
 					Block block = blocks.get(i);
 					Block prev = i > 0 ? blocks.get(i - 1) : null;
 					
-					if (block.begin.from.size() == 1 && prev != null && prev.end.isTerminal())
+					if (block.begin.from.size() == 1 && block.end.isTerminal() && prev != null && prev.end.isTerminal())
 					{
 						// not sure if this is right, just don't mess with blocks in exception ranges or directly handling them
 						if (block.exceptions.isEmpty() == false || block.handlers.isEmpty() == false || prev.exceptions.isEmpty() == false || prev.handlers.isEmpty() == false)
