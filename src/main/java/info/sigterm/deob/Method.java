@@ -230,6 +230,12 @@ public class Method
 			code.buildCallGraph();
 	}
 	
+	public void clearCallGraph()
+	{
+		callsTo.clear();
+		callsFrom.clear();
+	}
+	
 	public boolean isUsed()
 	{
 		if (!callsFrom.isEmpty())

@@ -68,4 +68,9 @@ public class If0 extends Instruction implements JumpingInstruction
 		if (to == oldi)
 			to = newi;
 	}
+	
+	public Instruction getTo()
+	{
+		return to;
+	}
 }

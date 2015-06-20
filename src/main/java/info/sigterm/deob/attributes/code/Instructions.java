@@ -98,9 +98,7 @@ public class Instructions
 	
 	public void buildBlocks()
 	{
-		for (Instruction i : instructions)
-			i.block = null;
-		blocks.clear();
+		clearBlockGraph();
 		
 		Block current = null;
 		for (Instruction i : instructions)
@@ -120,6 +118,13 @@ public class Instructions
 				current = null;
 			}
 		}
+	}
+	
+	public void clearBlockGraph()
+	{
+		for (Instruction i : instructions)
+			i.block = null;
+		blocks.clear();
 	}
 	
 	public void write(DataOutputStream out) throws IOException

@@ -45,4 +45,9 @@ public class New extends Instruction
 		
 		frame.addInstructionContext(ins);
 	}
+	
+	public Class getNewClass()
+	{
+		return clazz;
+	}
 }

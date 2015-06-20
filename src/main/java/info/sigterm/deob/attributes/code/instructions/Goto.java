@@ -24,6 +24,13 @@ public class Goto extends Instruction implements JumpingInstruction
 		length += 2;
 	}
 	
+	public Goto(Instructions instructions, Instruction to)
+	{
+		super(instructions, InstructionType.GOTO, 0);
+		this.to = to;
+		length += 2;
+	}
+	
 	@Override
 	public void resolve()
 	{
