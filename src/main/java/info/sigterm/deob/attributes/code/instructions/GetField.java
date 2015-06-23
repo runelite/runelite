@@ -3,17 +3,19 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Field;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class GetField extends Instruction
+public class GetField extends Instruction implements GetFieldInstruction
 {
 	private Field field;
 
@@ -46,5 +48,11 @@ public class GetField extends Instruction
 		stack.push(ctx);
 		
 		frame.addInstructionContext(ins);
+	}
+	
+	@Override
+	public Field getField()
+	{
+		return field;
 	}
 }

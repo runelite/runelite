@@ -45,6 +45,12 @@ public class Field extends PoolEntry
 		Field f = (Field) other;
 		return clazz.equals(f.clazz) && nat.equals(f.nat);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return clazz.hashCode() ^ nat.hashCode();
+	}
 
 	public Class getClassEntry()
 	{

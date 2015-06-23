@@ -2,6 +2,7 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
 import info.sigterm.deob.deobfuscators.Jumps;
+import info.sigterm.deob.deobfuscators.ModularArithmeticDeobfuscation;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnusedBlocks;
 import info.sigterm.deob.deobfuscators.UnusedMethods;
@@ -57,6 +58,8 @@ public class Deob
 		
 		// remove jump obfuscation
 		new Jumps().run(group);
+		
+		new ModularArithmeticDeobfuscation().run(group);
 
 		saveJar(group, args[1]);
 		

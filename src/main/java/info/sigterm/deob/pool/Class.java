@@ -41,6 +41,12 @@ public class Class extends PoolEntry
 		Class c = (Class) other;
 		return name.equals(c.name);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
 
 	public java.lang.String getName()
 	{

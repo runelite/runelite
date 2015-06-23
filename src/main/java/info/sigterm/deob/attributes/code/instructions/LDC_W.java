@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.PushConstantInstruction;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
@@ -13,7 +14,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class LDC_W extends Instruction
+public class LDC_W extends Instruction implements PushConstantInstruction
 {
 	private PoolEntry value;
 
@@ -58,5 +59,11 @@ public class LDC_W extends Instruction
 	public String getDesc(Frame frame)
 	{
 		return "ldc_w " + value;
+	}
+
+	@Override
+	public PoolEntry getConstant()
+	{
+		return value;
 	}
 }

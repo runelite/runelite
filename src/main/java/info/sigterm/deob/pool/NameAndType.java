@@ -75,6 +75,12 @@ public class NameAndType extends PoolEntry
 		NameAndType nat = (NameAndType) other;
 		return name.equals(nat.name) && Objects.equals(signature, nat.signature) && Objects.equals(type, nat.type);
 	}
+	
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
+	}
 
 	public java.lang.String getName()
 	{

@@ -4,6 +4,7 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
@@ -17,7 +18,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class GetStatic extends Instruction
+public class GetStatic extends Instruction implements GetFieldInstruction
 {
 	private Field field;
 
@@ -63,6 +64,12 @@ public class GetStatic extends Instruction
 		assert f != null;
 
 		f.addReference(this);
+	}
+
+	@Override
+	public Field getField()
+	{
+		return field;
 	}
 
 }

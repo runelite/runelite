@@ -36,6 +36,12 @@ public class Integer extends PoolEntry
 		Integer i = (Integer) other;
 		return value == i.value;
 	}
+	
+	@Override
+	public java.lang.String toString()
+	{
+		return "" + value;
+	}
 
 	@Override
 	public Type getTypeClass()
