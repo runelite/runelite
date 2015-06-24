@@ -26,6 +26,8 @@ public class FConst_1 extends Instruction
 		StackContext ctx = new StackContext(ins, float.class);
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

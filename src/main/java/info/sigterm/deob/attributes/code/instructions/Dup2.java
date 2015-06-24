@@ -37,19 +37,27 @@ public class Dup2 extends Instruction
 		{
 			StackContext ctx = new StackContext(ins, two.getType());
 			stack.push(ctx);
+			
+			ins.push(ctx);
 		}
 		
 		StackContext ctx = new StackContext(ins, one.getType());
 		stack.push(one);
+		
+		ins.push(ctx);
 
 		if (two != null)
 		{
 			ctx = new StackContext(ins, two.getType());
 			stack.push(ctx);
+			
+			ins.push(ctx);
 		}
 		
 		ctx = new StackContext(ins, one.getType());
 		stack.push(one);
+		
+		ins.push(ctx);
 		
 		frame.addInstructionContext(ins);
 	}

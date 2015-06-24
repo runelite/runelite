@@ -41,6 +41,8 @@ public class BiPush extends Instruction
 		StackContext ctx = new StackContext(ins, int.class); // bipush sign extends the value to an int
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

@@ -29,6 +29,8 @@ public class AALoad extends Instruction
 		StackContext ctx = new StackContext(ins, array.getType().getSubtype());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

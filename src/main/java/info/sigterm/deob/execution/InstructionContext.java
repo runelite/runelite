@@ -9,7 +9,8 @@ public class InstructionContext
 {
 	private Instruction ins;
 	private Frame frame;
-	private List<StackContext> pops = new ArrayList<>();
+	private List<StackContext> pops = new ArrayList<>(); // stack contexts popped by instruction execution
+	private List<StackContext> pushes = new ArrayList<>(); // stack contexts pushed by instruction execution
 	private List<VariableContext> reads = new ArrayList<>(); // lvt reads
 	
 	public InstructionContext(Instruction i, Frame f)
@@ -22,6 +23,12 @@ public class InstructionContext
 	{
 		for (StackContext c : ctx)
 			pops.add(c);
+	}
+	
+	public void push(StackContext... ctx)
+	{
+		for (StackContext c : ctx)
+			pushes.add(c);
 	}
 	
 	public void read(VariableContext... ctx)

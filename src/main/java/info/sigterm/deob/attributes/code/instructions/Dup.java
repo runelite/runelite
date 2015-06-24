@@ -29,8 +29,12 @@ public class Dup extends Instruction
 		StackContext ctx = new StackContext(ins, obj.getType());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		ctx = new StackContext(ins, obj.getType());
 		stack.push(ctx);
+		
+		ins.push(ctx);
 		
 		frame.addInstructionContext(ins);
 	}

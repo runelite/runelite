@@ -79,6 +79,8 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		{
 			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
 			stack.push(ctx);
+			
+			ins.push(ctx);
 		}
 		
 		frame.addInstructionContext(ins);
@@ -104,6 +106,8 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 				InstructionContext ins = new InstructionContext(this, f);
 				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"));
 				stack.push(ctx);
+				
+				ins.push(ctx);
 				
 				f.jump(e.getHandler());
 			}

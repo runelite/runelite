@@ -29,6 +29,8 @@ public class DDiv extends Instruction
 		StackContext ctx = new StackContext(ins, double.class);
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

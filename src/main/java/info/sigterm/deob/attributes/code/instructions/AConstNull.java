@@ -26,6 +26,8 @@ public class AConstNull extends Instruction
 		StackContext ctx = new StackContext(ins, Object.class);
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

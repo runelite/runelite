@@ -29,9 +29,19 @@ public class Swap extends Instruction
 		StackContext ctx = new StackContext(ins, one.getType());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		ctx = new StackContext(ins, two.getType());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
+	}
+	
+	@Override
+	public boolean removeStack()
+	{
+		throw new UnsupportedOperationException();
 	}
 }

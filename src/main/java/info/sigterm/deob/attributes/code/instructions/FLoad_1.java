@@ -35,6 +35,8 @@ public class FLoad_1 extends Instruction implements LVTInstruction
 		StackContext ctx = new StackContext(ins, vctx.getType());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 	

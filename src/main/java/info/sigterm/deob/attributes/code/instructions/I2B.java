@@ -29,6 +29,8 @@ public class I2B extends Instruction
 		StackContext ctx = new StackContext(ins, int.class); // sign extneded
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

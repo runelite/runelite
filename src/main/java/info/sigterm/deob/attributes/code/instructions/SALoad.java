@@ -29,6 +29,8 @@ public class SALoad extends Instruction
 		StackContext ctx = new StackContext(ins, int.class); // sign extend
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

@@ -61,6 +61,8 @@ public class CheckCast extends Instruction
 				StackContext exception = new StackContext(ins, new Type("java/lang/Exception"));
 				stack.push(exception);
 				
+				ins.push(exception);
+				
 				f.addInstructionContext(ins);
 				
 				f.jump(e.getHandler());

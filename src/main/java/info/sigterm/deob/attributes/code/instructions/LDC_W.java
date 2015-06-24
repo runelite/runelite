@@ -51,6 +51,8 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 		StackContext ctx = new StackContext(ins, value.getTypeClass());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 	

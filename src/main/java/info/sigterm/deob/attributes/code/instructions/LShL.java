@@ -29,6 +29,8 @@ public class LShL extends Instruction
 		StackContext ctx = new StackContext(ins, long.class);
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

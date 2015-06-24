@@ -29,6 +29,8 @@ public class I2S extends Instruction
 		StackContext ctx = new StackContext(ins, int.class); // sign extended
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

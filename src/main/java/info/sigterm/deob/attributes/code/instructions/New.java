@@ -43,6 +43,8 @@ public class New extends Instruction
 		StackContext ctx = new StackContext(ins, new Type(clazz.getName()));
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 	

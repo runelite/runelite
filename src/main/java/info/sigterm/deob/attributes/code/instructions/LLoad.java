@@ -67,6 +67,8 @@ public class LLoad extends Instruction implements LVTInstruction, WideInstructio
 		StackContext ctx = new StackContext(ins, vctx.getType());
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 	

@@ -74,6 +74,8 @@ public class NewArray extends Instruction
 		StackContext ctx = new StackContext(ins, new Type(t.getName()));
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 

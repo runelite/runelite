@@ -26,6 +26,8 @@ public class IConst_4 extends Instruction
 		StackContext ctx = new StackContext(ins, int.class);
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }

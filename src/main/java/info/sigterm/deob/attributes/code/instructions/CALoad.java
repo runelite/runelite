@@ -29,6 +29,8 @@ public class CALoad extends Instruction
 		StackContext ctx = new StackContext(ins, int.class); // zero extended to int
 		stack.push(ctx);
 		
+		ins.push(ctx);
+		
 		frame.addInstructionContext(ins);
 	}
 }
