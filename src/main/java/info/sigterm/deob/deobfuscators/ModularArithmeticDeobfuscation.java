@@ -12,7 +12,9 @@ import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.PushConstantInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.SetFieldInstruction;
 import info.sigterm.deob.attributes.code.instructions.IMul;
 import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.execution.Frame;
@@ -67,8 +69,8 @@ public class ModularArithmeticDeobfuscation
 					continue;
 				
 				// check for push constant and for get field instruction
-				Instruction one = ctx.getPops().get(0).getIns().getInstruction();
-				Instruction two = ctx.getPops().get(1).getIns().getInstruction();
+				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
 				
 				PushConstantInstruction pc = null;
 				GetFieldInstruction gf = null;
@@ -86,14 +88,35 @@ public class ModularArithmeticDeobfuscation
 				if (pc == null)
 					continue;
 				
+				int constant = Integer.parseInt(pc.getConstant().toString());
+				
+				StackContext push = ctx.getPushes().get(0); // result of imul operation
+				InstructionContext popCtx = push.getPopped(); // instruction which popped the result
+				
+				if (popCtx == null)
+				{
+					continue;
+					//System.err.println("Stack ctx never popped! Pushed by " + push.getPushed().getInstruction());
+					//int i = frame.getInstructions().indexOf(push.getPushed().getInstruction());
+					//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
+				}
+				
+				// XXX look only for setting to lvt.
+				if (!(popCtx.getInstruction() instanceof LVTInstruction))
+					continue;
+				
+				LVTInstruction lvti = (LVTInstruction) popCtx.getInstruction();
+				if (!lvti.store())
+					continue;
+				
 				try
 				{
-					int constant = Integer.parseInt(pc.getConstant().toString());
 					modInverse(constant);
 				}
 				catch (ArithmeticException ex)
 				{
-					continue;
+					System.err.println("Constant " + constant + " passed getter logic tests but is not inversable");
+					continue; // if the constant isn't inversable then it can't be the right one
 				}
 				
 				Integer old = constants.get(gf.getField());
@@ -103,10 +126,9 @@ public class ModularArithmeticDeobfuscation
 					System.out.println("For " + gf.getField().getNameAndType().getName() + " in " + gf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
 				
 				constants.put(gf.getField(), newi);
-				
-				// see what the result is used for? 
 			}
 		}
+		System.out.println("Found " + constants.size() + " constants");
 	}
 	
 	private static BigInteger modInverse(BigInteger val, int bits)

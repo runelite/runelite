@@ -3,16 +3,18 @@ package info.sigterm.deob.attributes.code.instructions;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.SetFieldInstruction;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.pool.Field;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PutField extends Instruction
+public class PutField extends Instruction implements SetFieldInstruction
 {
 	private Field field;
 
@@ -43,6 +45,12 @@ public class PutField extends Instruction
 		ins.pop(object, value);
 		
 		frame.addInstructionContext(ins);
+	}
+
+	@Override
+	public Field getField()
+	{
+		return field;
 	}
 
 }

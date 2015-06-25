@@ -2,32 +2,43 @@ package info.sigterm.deob.execution;
 
 public class StackContext
 {
-	private InstructionContext ic; // instruction which pushed this
+	private InstructionContext pushed; // instruction which pushed this
+	private InstructionContext popped; // instruction which popped this
 	private Type type; // type of this
 	
-	public StackContext(InstructionContext i, Type t)
+	public StackContext(InstructionContext pushed, Type type)
 	{
-		ic = i;
-		type = t;
+		this.pushed = pushed;
+		this.type = type;
 	}
 	
-	public StackContext(InstructionContext i, Class<?> c)
+	public StackContext(InstructionContext pushed, Class<?> clazz)
 	{
-		ic = i;
-		type = new Type(c.getCanonicalName());
+		this.pushed = pushed;
+		type = new Type(clazz.getCanonicalName());
 	}
 	
-	public StackContext(InstructionContext i, info.sigterm.deob.pool.Class c)
+	public StackContext(InstructionContext pushed, info.sigterm.deob.pool.Class c)
 	{
-		ic = i;
+		this.pushed = pushed;
 		type = new Type(c.getName());
 	}
 	
-	public InstructionContext getIns()
+	public InstructionContext getPushed()
 	{
-		return ic;
+		return pushed;
 	}
-	
+
+	public InstructionContext getPopped()
+	{
+		return popped;
+	}
+
+	public void setPopped(InstructionContext popped)
+	{
+		this.popped = popped;
+	}
+
 	public Type getType()
 	{
 		return type;
@@ -37,13 +48,13 @@ public class StackContext
 	public void removeStack()
 	{
 		// remove the instruction which pushed this
-		if (!ic.getInstruction().removeStack())
+		if (!pushed.getInstruction().removeStack())
 			// dup will return false as the other objects on the stack below this are necessary
 			// for the other branch.
 			return;
 		
 		// remove from the stack things this instruction read
-		for (StackContext ctx : ic.getPops()) 
+		for (StackContext ctx : pushed.getPops()) 
 			ctx.removeStack();
 	}
 }

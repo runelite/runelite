@@ -22,7 +22,10 @@ public class InstructionContext
 	public void pop(StackContext... ctx)
 	{
 		for (StackContext c : ctx)
+		{
+			c.setPopped(this); // now we know which instruction popped this, record it
 			pops.add(c);
+		}
 	}
 	
 	public void push(StackContext... ctx)
@@ -45,6 +48,11 @@ public class InstructionContext
 	public List<StackContext> getPops()
 	{
 		return pops;
+	}
+	
+	public List<StackContext> getPushes()
+	{
+		return pushes;
 	}
 	
 	public void removeStack(int idx)
