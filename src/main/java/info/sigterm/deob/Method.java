@@ -222,14 +222,6 @@ public class Method
 			code.buildInstructionGraph();
 	}
 	
-	public void buildCallGraph()
-	{
-		Code code = getCode();
-
-		if (code != null)
-			code.buildCallGraph();
-	}
-	
 	public void clearCallGraph()
 	{
 		callsTo.clear();

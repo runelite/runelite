@@ -1,6 +1,7 @@
 package info.sigterm.deob.attributes.code.instructions;
 
 import info.sigterm.deob.ClassFile;
+import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -74,6 +75,9 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
+		// the method being invoked, looked up dynamically based on the type
+		//info.sigterm.deob.Method executedMethod = findVirtualMethod(object.getType());
+		
 		handleExceptions(frame);
 		
 		if (!method.getNameAndType().isVoid())
@@ -87,6 +91,31 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		frame.addInstructionContext(ins);
 	}
 	
+	private info.sigterm.deob.Method findVirtualMethod(Type type)
+	{
+		// invokevirtual 'method' on 'type', see if we can find the actual method that would be invoked based on the type of the object
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		
+		ClassFile otherClass = group.findClass(type.type);
+		if (otherClass == null)
+			return null; // not our class
+		
+		// now find the method with the same signature as 'method' on this class, or subclass
+		return findMethodFromClass(otherClass);
+	}
+	
+	private info.sigterm.deob.Method findMethodFromClass(ClassFile clazz)
+	{
+		if (clazz == null)
+			return null;
+		
+		info.sigterm.deob.Method m = clazz.findMethod(method.getNameAndType());
+		if (m != null)
+			return m;
+		
+		return findMethodFromClass(clazz.getParent());
+	}
+	
 	private void handleExceptions(Frame frame)
 	{
 		// jump to instruction handlers that can catch exceptions here
@@ -95,6 +124,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			Instruction start = e.getStart(),
 					end = e.getEnd();
 			
+			// XXX this relies on pc?
 			// [start, end)
 			if (this.getPc() >= start.getPc() && this.getPc() < end.getPc())
 			{

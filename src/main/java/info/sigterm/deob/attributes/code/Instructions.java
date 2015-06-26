@@ -183,12 +183,6 @@ public class Instructions
 		for (Instruction i : instructions)
 			i.buildInstructionGraph();
 	}
-	
-	public void buildCallGraph()
-	{
-		for (Instruction i : instructions)
-			i.buildCallGraph();
-	}
 
 	public Code getCode()
 	{

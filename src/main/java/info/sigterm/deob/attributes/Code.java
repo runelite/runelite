@@ -68,9 +68,4 @@ public class Code extends Attribute
 	{
 		instructions.buildInstructionGraph();
 	}
-	
-	public void buildCallGraph()
-	{
-		instructions.buildCallGraph();
-	}
 }

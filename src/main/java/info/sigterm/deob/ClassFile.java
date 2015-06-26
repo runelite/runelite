@@ -185,11 +185,6 @@ public class ClassFile
 		methods.buildInstructionGraph();
 	}
 	
-	public void buildCallGraph()
-	{
-		methods.buildCallGraph();
-	}
-	
 	public boolean instanceOf(ClassFile other)
 	{
 		return this == other || interfaces.instanceOf(other) || (getParent() != null && getParent().instanceOf(other));

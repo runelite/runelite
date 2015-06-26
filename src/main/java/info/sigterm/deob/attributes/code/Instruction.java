@@ -195,10 +195,6 @@ public abstract class Instruction
 	{
 	}
 	
-	public void buildCallGraph()
-	{
-	}
-
 	public abstract void execute(Frame e);
 	
 	/* does this terminate a block? */

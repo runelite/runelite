@@ -79,10 +79,4 @@ public class Methods
 		for (Method m : methods)
 			m.buildInstructionGraph();
 	}
-	
-	public void buildCallGraph()
-	{
-		for (Method m : methods)
-			m.buildCallGraph();
-	}
 }
