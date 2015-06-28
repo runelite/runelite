@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ClassGroup
 {
-	private ArrayList<ClassFile> classes = new ArrayList<ClassFile>();
+	private List<ClassFile> classes = new ArrayList<>();
 
 	public ClassGroup()
 	{
@@ -44,17 +44,5 @@ public class ClassGroup
 	{
 		for (ClassFile c : classes)
 			c.buildInstructionGraph();
-	}
-	
-	public void buildCallGraph()
-	{
-		for (ClassFile c : classes)
-			for (Method m : c.getMethods().getMethods())
-			{
-				m.callsTo.clear();
-				m.callsFrom.clear();
-			}
-		for (ClassFile c : classes)
-			c.buildCallGraph();
 	}
 }

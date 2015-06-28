@@ -77,6 +77,11 @@ public class Frame
 		executing = false;
 	}
 	
+	public Execution getExecution()
+	{
+		return execution;
+	}
+	
 	public Method getMethod()
 	{
 		return method;

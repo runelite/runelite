@@ -9,6 +9,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClassFile
 {
@@ -18,7 +19,7 @@ public class ClassFile
 	private DataInputStream is;
 
 	private ClassFile parent; // super class
-	private ArrayList<ClassFile> children = new ArrayList<ClassFile>(); // classes which inherit from this
+	private List<ClassFile> children = new ArrayList<>(); // classes which inherit from this
 
 	private short minor_version;
 	private short major_version;
@@ -125,10 +126,12 @@ public class ClassFile
 
 	public ClassFile getParent()
 	{
-		String superName = super_class.getName();
-		ClassFile other = group.findClass(superName);
-		assert other != this;
-		return other;
+		return parent;
+	}
+	
+	public List<ClassFile> getChildren()
+	{
+		return children;
 	}
 
 	public Field findField(NameAndType nat)

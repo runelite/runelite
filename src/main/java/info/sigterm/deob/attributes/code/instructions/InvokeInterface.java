@@ -1,6 +1,7 @@
 package info.sigterm.deob.attributes.code.instructions;
 
 import info.sigterm.deob.ClassFile;
+import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -11,7 +12,6 @@ import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.InterfaceMethod;
-import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.pool.PoolEntry;
 import info.sigterm.deob.signature.Signature;
@@ -19,6 +19,8 @@ import info.sigterm.deob.signature.Signature;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InvokeInterface extends Instruction implements InvokeInstruction
 {
@@ -45,20 +47,28 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		out.writeByte(0);
 	}
 	
-	@Override
-	public void buildCallGraph()
-	{	
-		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
-		NameAndType nat = method.getNameAndType();
+	private List<info.sigterm.deob.Method> getMethods()
+	{
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
-		info.sigterm.deob.Method thisMethod = this.getInstructions().getCode().getAttributes().getMethod();
-		
-		ClassFile otherClass = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
-			return;
-		info.sigterm.deob.Method other = otherClass.findMethod(nat);
+			return new ArrayList<>(); // not our class
 		
-		thisMethod.addCallTo(this, other);
+		// look up this method in this class and anything that inherits from it
+		List<info.sigterm.deob.Method> list = new ArrayList<>();
+		findMethodFromClass(list, otherClass);
+		return list;
+	}
+	
+	private void findMethodFromClass(List<info.sigterm.deob.Method> list, ClassFile clazz)
+	{
+		info.sigterm.deob.Method m = clazz.findMethod(method.getNameAndType());
+		if (m != null)
+			list.add(m);
+	
+		for (ClassFile cf : clazz.getChildren())
+			findMethodFromClass(list, cf);
 	}
 
 	@Override
@@ -89,6 +99,12 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		}
 		
 		frame.addInstructionContext(ins);
+		
+		for (info.sigterm.deob.Method method : getMethods())
+		{
+			// add possible method call to execution
+			frame.getExecution().addMethod(method);
+		}
 	}
 	
 	private void handleExceptions(Frame frame)

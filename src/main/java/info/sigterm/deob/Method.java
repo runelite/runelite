@@ -32,8 +32,6 @@ public class Method
 	private String name;
 	private Signature arguments;
 	private Attributes attributes;
-	List<Node> callsTo = new ArrayList<>();
-	List<Node> callsFrom = new ArrayList<>();
 
 	Method(Methods methods) throws IOException
 	{
@@ -60,11 +58,12 @@ public class Method
 	
 	protected void remove()
 	{
-		assert callsFrom.isEmpty();
+		//assert callsFrom.isEmpty();
 	}
 	
 	public void removeParameter(Execution execution, int paramIndex, int lvtIndex)
 	{
+		/*
 		Set<Instruction> done = new HashSet<>();
 		for (Node n : callsFrom)
 		{
@@ -160,6 +159,7 @@ public class Method
 		}
 		
 		arguments.remove(paramIndex);
+		*/
 	}
 
 	public Methods getMethods()
@@ -222,13 +222,13 @@ public class Method
 			code.buildInstructionGraph();
 	}
 	
-	public void clearCallGraph()
+	/*public void clearCallGraph()
 	{
 		callsTo.clear();
 		callsFrom.clear();
-	}
+	}*/
 	
-	public boolean isUsed()
+	/*public boolean isUsed()
 	{
 		if (!callsFrom.isEmpty())
 			return true;
@@ -240,8 +240,9 @@ public class Method
 		}
 		
 		return false;
-	}
+	}*/
 	
+	/*
 	public void addCallTo(Instruction ins, Method method)
 	{
 		assert method != null;
@@ -249,6 +250,7 @@ public class Method
 		callsTo.add(node);
 		method.callsFrom.add(node);
 	}
+	*/
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Instruction & LVTInstruction> List<T> findLVTInstructionsForVariable(int index)

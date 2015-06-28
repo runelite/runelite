@@ -22,7 +22,7 @@ public class UnusedParameters
 		int collide = 0;
 		int overrides = 0;
 		
-		group.buildCallGraph(); // method.removeParameter uses the callgraph
+		//group.buildCallGraph(); // method.removeParameter uses the callgraph
 		
 		for (ClassFile cf : group.getClasses())
 		{

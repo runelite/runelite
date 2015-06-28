@@ -41,6 +41,7 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
+		/*
 		// remove except RuntimeException
 		new RuntimeExceptions().run(group);
 		
@@ -48,18 +49,19 @@ public class Deob
 		new IllegalStateExceptions().run(group);
 		
 		// remove code blocks that used to be the runtime exception handlers
-		new UnusedBlocks().run(group);
+		new UnusedBlocks().run(group);*/
 		
 		// remove unused methods
 		new UnusedMethods().run(group);
 		
+		/*
 		// remove unused parameters
 		new UnusedParameters().run(group);
 		
 		// remove jump obfuscation
 		new Jumps().run(group);
 		
-		new ModularArithmeticDeobfuscation().run(group);
+		new ModularArithmeticDeobfuscation().run(group);*/
 
 		saveJar(group, args[1]);
 		

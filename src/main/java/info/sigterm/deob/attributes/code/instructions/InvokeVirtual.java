@@ -19,6 +19,8 @@ import info.sigterm.deob.signature.Signature;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
@@ -39,24 +41,6 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		super.write(out);
 		out.writeShort(this.getPool().make(method));
 	}
-	
-	@Override
-	public void buildCallGraph()
-	{		
-		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
-		NameAndType nat = method.getNameAndType();
-		
-		info.sigterm.deob.Method thisMethod = this.getInstructions().getCode().getAttributes().getMethod();
-		
-		ClassFile otherClass = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
-		if (otherClass == null)
-			return;
-		info.sigterm.deob.Method other = otherClass.findMethod(nat);
-		if (other == null)
-			return;
-		
-		thisMethod.addCallTo(this, other);
-	}
 
 	@Override
 	public void execute(Frame frame)
@@ -75,9 +59,6 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		// the method being invoked, looked up dynamically based on the type
-		//info.sigterm.deob.Method executedMethod = findVirtualMethod(object.getType());
-		
 		handleExceptions(frame);
 		
 		if (!method.getNameAndType().isVoid())
@@ -89,31 +70,39 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		}
 		
 		frame.addInstructionContext(ins);
+		
+		for (info.sigterm.deob.Method method : getMethods())
+		{
+			// add possible method call to execution
+			frame.getExecution().addMethod(method);
+		}
 	}
 	
-	private info.sigterm.deob.Method findVirtualMethod(Type type)
+	// find the possible methods this instruction might be invoking. we can't know for sure
+	// which method is being invoked without tracking the types of objects in fields and when
+	// passed in parameters/return values.
+	private List<info.sigterm.deob.Method> getMethods()
 	{
-		// invokevirtual 'method' on 'type', see if we can find the actual method that would be invoked based on the type of the object
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
-		ClassFile otherClass = group.findClass(type.type);
+		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
-			return null; // not our class
+			return new ArrayList<>(); // not our class
 		
-		// now find the method with the same signature as 'method' on this class, or subclass
-		return findMethodFromClass(otherClass);
+		// look up this method in this class and anything that inherits from it
+		List<info.sigterm.deob.Method> list = new ArrayList<>();
+		findMethodFromClass(list, otherClass);
+		return list;
 	}
 	
-	private info.sigterm.deob.Method findMethodFromClass(ClassFile clazz)
+	private void findMethodFromClass(List<info.sigterm.deob.Method> list, ClassFile clazz)
 	{
-		if (clazz == null)
-			return null;
-		
 		info.sigterm.deob.Method m = clazz.findMethod(method.getNameAndType());
 		if (m != null)
-			return m;
-		
-		return findMethodFromClass(clazz.getParent());
+			list.add(m);
+	
+		for (ClassFile cf : clazz.getChildren())
+			findMethodFromClass(list, cf);
 	}
 	
 	private void handleExceptions(Frame frame)

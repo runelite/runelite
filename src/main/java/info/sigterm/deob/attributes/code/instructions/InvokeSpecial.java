@@ -1,6 +1,7 @@
 package info.sigterm.deob.attributes.code.instructions;
 
 import info.sigterm.deob.ClassFile;
+import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -18,6 +19,8 @@ import info.sigterm.deob.signature.Signature;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InvokeSpecial extends Instruction implements InvokeInstruction
 {
@@ -39,21 +42,19 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		out.writeShort(this.getPool().make(method));
 	}
 	
-	@Override
-	public void buildCallGraph()
+	private List<info.sigterm.deob.Method> getMethods()
 	{
-		info.sigterm.deob.pool.Class clazz = method.getClassEntry();
-		NameAndType nat = method.getNameAndType();
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
-		info.sigterm.deob.Method thisMethod = this.getInstructions().getCode().getAttributes().getMethod();
-		
-		ClassFile otherClass = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
-			return;
+			return new ArrayList<>(); // not our class
 		
-		info.sigterm.deob.Method other = otherClass.findMethod(nat);
+		info.sigterm.deob.Method other = otherClass.findMethod(method.getNameAndType());
 		
-		thisMethod.addCallTo(this, other);
+		List<info.sigterm.deob.Method> list = new ArrayList<>();
+		list.add(other);
+		return list;
 	}
 
 	@Override
@@ -84,6 +85,12 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		}
 		
 		frame.addInstructionContext(ins);
+		
+		for (info.sigterm.deob.Method method : getMethods())
+		{
+			// add possible method call to execution
+			frame.getExecution().addMethod(method);
+		}
 	}
 	
 	private void handleExceptions(Frame frame)
