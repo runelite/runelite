@@ -78,6 +78,7 @@ public class UnusedParameters
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);
+		execution.populateInitialMethods();
 		execution.run();
 		
 		int count = 0;

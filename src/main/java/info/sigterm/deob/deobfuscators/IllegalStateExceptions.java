@@ -29,11 +29,13 @@ public class IllegalStateExceptions
 		
 		for (ClassFile cf : group.getClasses())
 		{
-			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
+			for (Method m : cf.getMethods().getMethods())
 			{
 				Code c = m.getCode();
 				if (c == null)
 					continue;
+				
+				assert execution.methods.contains(m);
 				
 				Instructions instructions = c.getInstructions();
 				instructions.clearBlockGraph();
@@ -63,8 +65,11 @@ public class IllegalStateExceptions
 					
 					// remove stack of if.
 					boolean found = false;
+					boolean foundMethod = false;
 					for (Frame f : execution.processedFrames)
 						if (f.getMethod() == m)
+						{
+							foundMethod = true;
 							for (InstructionContext ic : f.getInstructions())
 								if (ic.getInstruction() == ins) // this is the if
 								{
@@ -74,6 +79,8 @@ public class IllegalStateExceptions
 										ic.removeStack(1);
 									ic.removeStack(0);
 								}
+						}
+					assert foundMethod;
 					assert found;
 					
 					// instruction is no longer at 'i' because we've just removed stuff...
@@ -116,6 +123,7 @@ public class IllegalStateExceptions
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);
+		execution.populateInitialMethods();
 		execution.run();
 		
 		int count = 0;

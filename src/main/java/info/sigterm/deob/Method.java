@@ -63,39 +63,22 @@ public class Method
 	
 	public void removeParameter(Execution execution, int paramIndex, int lvtIndex)
 	{
-		/*
 		Set<Instruction> done = new HashSet<>();
-		for (Node n : callsFrom)
-		{
-			// find everywhere that calls this
-			// remove parameter from stack
-			Method caller = n.from;
-			
-			// find frames on the caller
-			boolean found = false;
-			for (Frame f : execution.processedFrames)
-				if (f.getMethod() == caller)
-					for (InstructionContext ins : f.getInstructions())
-						if (ins.getInstruction() == n.ins) // this instruction invokes the function we're removing a parameter from
-						{
-							found = true;
-							if (done.contains(ins.getInstruction()))
-									continue;
-							
-							int pops = arguments.size() - paramIndex - 1; // index from top of stack of parameter
-							ins.removeStack(pops); // remove parameter from stack
-							
-							InvokeInstruction iins = (InvokeInstruction) ins.getInstruction();
-							iins.removeParameter(paramIndex); // remove parameter from instruction
-							
-							done.add(ins.getInstruction());
-						}
-			if (found == false)
-			{
-				System.err.println("Method " + caller.getName() + " in " + caller.getMethods().getClassFile().getName() + " calls " + this.getName() + " in " + this.getMethods().getClassFile().getName() + ", but was unable to find any execution frame doing this");
-				assert false;
-			}
-		}
+		for (Frame f : execution.processedFrames)
+			for (InstructionContext ins : f.getInstructions())
+				if (ins.getInvokes().contains(this))
+				{
+					int pops = arguments.size() - paramIndex - 1; // index from top of stack of parameter
+					ins.removeStack(pops); // remove parameter from stack
+					
+					if (done.contains(ins.getInstruction()))
+						continue;
+					
+					InvokeInstruction iins = (InvokeInstruction) ins.getInstruction();
+					iins.removeParameter(paramIndex); // remove parameter from instruction
+					
+					done.add(ins.getInstruction());
+				}
 		
 		// this double checks that all calls to this have been located
 		for (ClassFile cf : methods.getClassFile().getGroup().getClasses())
@@ -159,7 +142,6 @@ public class Method
 		}
 		
 		arguments.remove(paramIndex);
-		*/
 	}
 
 	public Methods getMethods()

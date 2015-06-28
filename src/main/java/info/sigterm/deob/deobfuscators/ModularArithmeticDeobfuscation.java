@@ -150,6 +150,7 @@ public class ModularArithmeticDeobfuscation
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);
+		execution.populateInitialMethods();
 		execution.run();
 		
 		run(execution, group);

@@ -3,6 +3,7 @@ package info.sigterm.deob.execution;
 import java.util.ArrayList;
 import java.util.List;
 
+import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Instruction;
 
 public class InstructionContext
@@ -12,6 +13,7 @@ public class InstructionContext
 	private List<StackContext> pops = new ArrayList<>(); // stack contexts popped by instruction execution
 	private List<StackContext> pushes = new ArrayList<>(); // stack contexts pushed by instruction execution
 	private List<VariableContext> reads = new ArrayList<>(); // lvt reads
+	private List<Method> invokes = new ArrayList<>(); // invokes
 	
 	public InstructionContext(Instruction i, Frame f)
 	{
@@ -40,6 +42,11 @@ public class InstructionContext
 			reads.add(c);
 	}
 	
+	public void invoke(Method method)
+	{
+		invokes.add(method);
+	}
+	
 	public Instruction getInstruction()
 	{
 		return ins;
@@ -53,6 +60,11 @@ public class InstructionContext
 	public List<StackContext> getPushes()
 	{
 		return pushes;
+	}
+	
+	public List<Method> getInvokes()
+	{
+		return invokes;
 	}
 	
 	public void removeStack(int idx)

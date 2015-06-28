@@ -81,13 +81,14 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			ins.push(ctx);
 		}
 		
-		frame.addInstructionContext(ins);
-		
 		for (info.sigterm.deob.Method method : getMethods())
 		{
+			ins.invoke(method);
 			// add possible method call to execution
 			frame.getExecution().addMethod(method);
 		}
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	private void handleExceptions(Frame frame)
