@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
@@ -129,6 +130,12 @@ public class ModularArithmeticDeobfuscation
 			}
 		}
 		System.out.println("Found " + constants.size() + " constants");
+		for (Entry<Field, Integer> entry : constants.entrySet())
+		{
+			Field f = entry.getKey();
+			Integer v = entry.getValue();
+			System.out.println(f.getClassEntry().getName() + "." + f.getNameAndType().getName() + " -> " + v);
+		}
 	}
 	
 	private static BigInteger modInverse(BigInteger val, int bits)

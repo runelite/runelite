@@ -153,6 +153,7 @@ public class ClassFile
 		if (m != null)
 			return m;
 
+		// XXX is this necessary?
 		ClassFile parent = getParent();
 		if (parent != null)
 			return parent.findMethod(nat);
@@ -172,15 +173,26 @@ public class ClassFile
 
 		return null;
 	}
+	
+	public void clearClassGraph()
+	{
+		parent = null;
+		children.clear();
+	}
 
 	public void buildClassGraph()
 	{
-		ClassFile other = getParent();
-		if (other == null)
-			return; // inherits from a class not in my group
-
-		this.parent = other;
-		parent.children.add(this);
+		ClassFile other = group.findClass(super_class.getName());
+		if (other != null)
+		{
+			this.parent = other;
+			parent.children.add(this);
+		}
+		
+		for (ClassFile i : interfaces.getInterfaces())
+		{
+			i.children.add(this);
+		}
 	}
 
 	public void buildInstructionGraph()

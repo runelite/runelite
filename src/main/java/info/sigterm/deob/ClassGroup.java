@@ -37,6 +37,9 @@ public class ClassGroup
 	public void buildClassGraph()
 	{
 		for (ClassFile c : classes)
+			c.clearClassGraph();
+		
+		for (ClassFile c : classes)
 			c.buildClassGraph();
 	}
 

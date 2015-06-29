@@ -68,7 +68,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			
 			ins.push(ctx);
 		}
-		
+
 		for (info.sigterm.deob.Method method : getMethods())
 		{
 			ins.invoke(method);
