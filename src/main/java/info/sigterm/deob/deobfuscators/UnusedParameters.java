@@ -8,10 +8,46 @@ import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.signature.Signature;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UnusedParameters
 {
+	private static List<Method> findDependentMethods(NameAndType nat, Set<ClassFile> visited, ClassGroup group, ClassFile cf)
+	{
+		List<Method> list = new ArrayList<>();
+		
+		if (cf == null || visited.contains(cf))
+			return list;
+		
+		visited.add(cf);
+		
+		Method method = cf.findMethod(nat);
+		if (method != null)
+			list.add(method);
+		
+		// search parent
+		list.addAll(findDependentMethods(nat, visited, group, cf.getParent()));
+		
+		// search interfaces
+		for (ClassFile inter : cf.getInterfaces().getInterfaces())
+			list.addAll(findDependentMethods(nat, visited, group, inter));
+		
+		// search children
+		for (ClassFile child : cf.getChildren())
+			list.addAll(findDependentMethods(nat, visited, group, child));
+		
+		return list;
+	}
+	
+	private static List<Method> findDependentMethods(Method m)
+	{
+		ClassFile cf = m.getMethods().getClassFile();
+		return findDependentMethods(m.getNameAndType(), new HashSet<ClassFile>(), cf.getGroup(), cf);
+	}
+	
 	private int[] checkParametersOnce(Execution execution, ClassGroup group)
 	{
 		// removing parameters shifts the others around which is annoying.
@@ -29,16 +65,36 @@ public class UnusedParameters
 			for (Method m : cf.getMethods().getMethods())
 			{
 				int offset = m.isStatic() ? 0 : 1;
-				NameAndType nat = m.getNameAndType();
-				Signature signature = nat.getDescriptor();
+				Signature signature = m.getNameAndType().getDescriptor();
 				
+				// for a parameter to be unused it must be unused on all methods that override it
+				
+				List<Method> methods = findDependentMethods(m); // these are all of the methods the param must be unused in
+				assert methods.contains(m);
+				
+				if (methods.size() > 1)
+					continue; // don't mess with this now
+				
+				if (m.getCode() == null)
+					continue;
+				
+			 outer:
 				for (int variableIndex = 0, lvtIndex = offset;
 						variableIndex < signature.size();
 						lvtIndex += signature.getTypeOfArg(variableIndex++).getSlots())
 				{
-					List<? extends Instruction> lv = m.findLVTInstructionsForVariable(lvtIndex);
+					for (Method method : methods)
+					{
+						// XXX instead of checking if the lvt index is never accessed,
+						// check execution frames and see if it is never read prior to being
+						// written to, and if so, then remove the parameter, but don't re index
+						// the lvt table.
+						List<? extends Instruction> lv = method.findLVTInstructionsForVariable(lvtIndex);
+						if (lv != null && !lv.isEmpty())
+							continue outer; // used, try next parameter
+					}
 					
-					if (lv == null)
+					/*if (lv == null)
 						continue;
 	
 					// XXX instead of checking if the lvt index is never accessed,
@@ -52,7 +108,7 @@ public class UnusedParameters
 					{
 						++overrides;
 						continue;
-					}
+					}*/
 					
 					Signature newSig = new Signature(m.getDescriptor());
 					newSig.remove(variableIndex);

@@ -174,6 +174,7 @@ public class Method
 		return (Code) attributes.findType(AttributeType.CODE);
 	}
 	
+	/*
 	public List<Method> getOverriddenMethods()
 	{
 		List<Method> m = new ArrayList<Method>();
@@ -194,7 +195,7 @@ public class Method
 		}
 		
 		return m;
-	}
+	}*/
 
 	public void buildInstructionGraph()
 	{
