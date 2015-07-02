@@ -59,7 +59,7 @@ public class Deob
 		// remove jump obfuscation
 		new Jumps().run(group);
 		
-		//new ModularArithmeticDeobfuscation().run(group);
+		new ModularArithmeticDeobfuscation().run(group);
 
 		saveJar(group, args[1]);
 		

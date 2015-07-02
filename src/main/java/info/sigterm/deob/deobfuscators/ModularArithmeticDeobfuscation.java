@@ -8,11 +8,13 @@ import java.util.Map.Entry;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Field;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.PushConstantInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.SetFieldInstruction;
@@ -21,10 +23,59 @@ import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.StackContext;
-import info.sigterm.deob.pool.Field;
  
 public class ModularArithmeticDeobfuscation
 {
+	private static String getMethodDesc(Method m)
+	{
+		return m.getMethods().getClassFile().getName() + "." + m.getName() + m.getNameAndType().getDescriptor().toString();
+	}
+	
+	private static void printWhatCalls(Execution execution, Method method, int level)
+	{
+		for (Frame frame : execution.processedFrames)
+		{
+			for (InstructionContext ctx : frame.getInstructions())
+			{
+				if (ctx.getInvokes().contains(method))
+				{
+					for (int i = 0; i < level; ++i)
+						System.out.print(" ");
+					System.out.println(getMethodDesc(method) + " called by " + getMethodDesc(frame.getMethod()) + ", " + ctx.getInvokes().size() + " methods total");
+					printWhatCalls(execution, frame.getMethod(), level + 1);
+				}
+			}
+		}
+	}
+	
+	// check for popping instruction to be a LVT get
+	private static boolean checkLVTGet(InstructionContext popCtx)
+	{
+		if (!(popCtx.getInstruction() instanceof LVTInstruction))
+			return false;
+		
+		LVTInstruction lvti = (LVTInstruction) popCtx.getInstruction();
+		if (!lvti.store())
+			return false;
+		
+		return true;
+	}
+	
+	// func(field * constant)
+	private static boolean checkInvoke(InstructionContext popCtx)
+	{
+		if (!(popCtx.getInstruction() instanceof InvokeInstruction))
+			return false;
+		
+		return true;
+	}
+	
+	private static boolean checkRules(InstructionContext popCtx)
+	{
+		return checkLVTGet(popCtx)
+				|| checkInvoke(popCtx);
+	}
+	
 	/* try to identify:
 	 * 
 	   lvt = field * constant
@@ -102,14 +153,9 @@ public class ModularArithmeticDeobfuscation
 					//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
 				}
 				
-				// XXX look only for setting to lvt.
-				if (!(popCtx.getInstruction() instanceof LVTInstruction))
+				if (!checkRules(popCtx))
 					continue;
-				
-				LVTInstruction lvti = (LVTInstruction) popCtx.getInstruction();
-				if (!lvti.store())
-					continue;
-				
+
 				try
 				{
 					modInverse(constant);
@@ -117,16 +163,21 @@ public class ModularArithmeticDeobfuscation
 				catch (ArithmeticException ex)
 				{
 					System.err.println("Constant " + constant + " passed getter logic tests but is not inversable");
+					//printWhatCalls(execution, frame.getMethod(), 0);
 					continue; // if the constant isn't inversable then it can't be the right one
 				}
 				
-				Integer old = constants.get(gf.getField());
+				// get Field from pool Field
+				info.sigterm.deob.pool.Field field = gf.getField();
+				Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());				
+				
+				Integer old = constants.get(f);
 				int newi = Integer.parseInt(pc.getConstant().toString());
 				
 				if (old != null && (int) old != newi)
 					System.out.println("For " + gf.getField().getNameAndType().getName() + " in " + gf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
 				
-				constants.put(gf.getField(), newi);
+				constants.put(f, newi);
 			}
 		}
 		System.out.println("Found " + constants.size() + " constants");
@@ -134,8 +185,23 @@ public class ModularArithmeticDeobfuscation
 		{
 			Field f = entry.getKey();
 			Integer v = entry.getValue();
-			System.out.println(f.getClassEntry().getName() + "." + f.getNameAndType().getName() + " -> " + v);
+			System.out.println(f.getFields().getClassFile().getName() + "." + f.getName() + " -> " + v);
 		}
+		System.out.println("Did not find for:");
+		int count = 0;
+		for (ClassFile cf : group.getClasses())
+			for (Field f : cf.getFields().getFields())
+			{
+				if (f.getType().toString().equals("I"))
+				{
+					if (!constants.containsKey(f))
+					{
+						System.out.println(f.getFields().getClassFile().getName() + "." + f.getName());
+						++count;
+					}
+				}
+			}
+		System.out.println("Did not find for " + count);
 	}
 	
 	private static BigInteger modInverse(BigInteger val, int bits)
