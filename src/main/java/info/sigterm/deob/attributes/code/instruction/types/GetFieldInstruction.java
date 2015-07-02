@@ -1,8 +1,5 @@
 package info.sigterm.deob.attributes.code.instruction.types;
 
-import info.sigterm.deob.pool.Field;
-
-public interface GetFieldInstruction
+public interface GetFieldInstruction extends FieldInstruction
 {
-	public Field getField();
 }

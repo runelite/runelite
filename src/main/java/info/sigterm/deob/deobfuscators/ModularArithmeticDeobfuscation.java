@@ -13,6 +13,7 @@ import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.ComparisonInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
@@ -48,7 +49,7 @@ public class ModularArithmeticDeobfuscation
 		}
 	}
 	
-	// check for popping instruction to be a LVT get
+	// lvt = field * constant
 	private static boolean checkLVTGet(InstructionContext popCtx)
 	{
 		if (!(popCtx.getInstruction() instanceof LVTInstruction))
@@ -70,10 +71,32 @@ public class ModularArithmeticDeobfuscation
 		return true;
 	}
 	
+	// lvt comparison field * constant
+	private static boolean checkCompare(InstructionContext popCtx)
+	{
+		if (!(popCtx.getInstruction() instanceof ComparisonInstruction))
+			return false;
+		
+		// make sure comparison is against lvt
+		List<StackContext> pops = popCtx.getPops(); // things popCtx popped
+		for (StackContext ctx : pops) // one of these is the imul
+		{
+			InstructionContext pushCtx = ctx.getPushed(); // instruction which pushed this here
+			if (pushCtx.getInstruction() instanceof LVTInstruction)
+			{
+				LVTInstruction lvt = (LVTInstruction) pushCtx.getInstruction();
+				return !lvt.store(); // check its a get
+			}
+		}
+		
+		return false;
+	}
+	
 	private static boolean checkRules(InstructionContext popCtx)
 	{
 		return checkLVTGet(popCtx)
-				|| checkInvoke(popCtx);
+				|| checkInvoke(popCtx)
+				|| checkCompare(popCtx);
 	}
 	
 	/* try to identify:

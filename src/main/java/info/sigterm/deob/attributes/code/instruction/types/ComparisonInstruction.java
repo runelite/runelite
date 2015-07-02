@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code.instruction.types;
 
-public interface SetFieldInstruction extends FieldInstruction
+public interface ComparisonInstruction
 {
+
 }
