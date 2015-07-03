@@ -16,6 +16,7 @@ import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.ComparisonInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.FieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
@@ -51,97 +52,54 @@ public class ModularArithmeticDeobfuscation
 		}
 	}
 	
-	// lvt = field * constant
-	private static boolean checkLVTGet(InstructionContext popCtx)
+	private static int checkDown(InstructionContext context)
 	{
-		if (!(popCtx.getInstruction() instanceof LVTInstruction))
-			return false;
+		int total = 0;
 		
-		LVTInstruction lvti = (LVTInstruction) popCtx.getInstruction();
-		if (!lvti.store())
-			return false;
+		if (context.getInstruction() instanceof FieldInstruction)
+			++total;
 		
-		return true;
-	}
-	
-	// func(field * constant)
-	private static boolean checkInvoke(InstructionContext popCtx)
-	{
-		if (!(popCtx.getInstruction() instanceof InvokeInstruction))
-			return false;
-		
-		return true;
-	}
-	
-	/*
-	// lvt comparison field * constant
-	private static boolean checkCompare(InstructionContext popCtx)
-	{
-		if (!(popCtx.getInstruction() instanceof ComparisonInstruction))
-			return false;
-		
-		// make sure comparison is against lvt
-		List<StackContext> pops = popCtx.getPops(); // things popCtx popped
-		for (StackContext ctx : pops) // one of these is the imul
+		for (StackContext ctx : context.getPops())
 		{
-			InstructionContext pushCtx = ctx.getPushed(); // instruction which pushed this here
-			if (pushCtx.getInstruction() instanceof LVTInstruction)
-			{
-				LVTInstruction lvt = (LVTInstruction) pushCtx.getInstruction();
-				return !lvt.store(); // check its a get
-			}
+			InstructionContext i = ctx.getPushed();
+			
+			total += checkDown(i);
 		}
 		
-		return false;
+		return total;
 	}
 	
-	// constant comparison field * constant
-	private static boolean checkCompareConstant(InstructionContext popCtx)
+	private static int checkUp(InstructionContext context)
 	{
-		if (!(popCtx.getInstruction() instanceof ComparisonInstruction))
-			return false;
+		int total = 0;
 		
-		// make sure comparison is against lvt
-		List<StackContext> pops = popCtx.getPops(); // things popCtx popped
-		for (StackContext ctx : pops) // one of these is the imul
+		if (context.getInstruction() instanceof FieldInstruction)
+			++total;
+		
+		for (StackContext ctx : context.getPushes())
 		{
-			InstructionContext pushCtx = ctx.getPushed(); // instruction which pushed this here
-			if (pushCtx.getInstruction() instanceof PushConstantInstruction)
-			{
-				//PushConstantInstruction ci = (PushConstantInstruction) pushCtx.getInstruction();
-				return true; // maybe should check this isn't an obd constant?
-			}
-		}
-		
-		return false;
-	}*/
-	
-	// <something not a field> comparison field * constant
-	private static boolean checkCompare(InstructionContext popCtx)
-	{
-		if (!(popCtx.getInstruction() instanceof ComparisonInstruction))
-			return false;
-		
-		// make sure comparison is against lvt
-		List<StackContext> pops = popCtx.getPops(); // things popCtx popped
-		for (StackContext ctx : pops) // one of these is the imul
-		{
-			InstructionContext pushCtx = ctx.getPushed(); // instruction which pushed this here
-			if (pushCtx.getInstruction() instanceof IMul)
+			InstructionContext i = ctx.getPopped();
+			
+			if (i == null)
 				continue;
 			
-			// recursively check that theres no fields
+			total += checkUp(i);
 		}
 		
-		return false;
+		return total;
+	}
+	
+	/* check there are no other fields */
+	private static boolean checkFields(InstructionContext context)
+	{
+		int total = checkUp(context) + checkDown(context);
+		assert total > 0;
+		return total == 1;
 	}
 	
 	private static boolean checkRules(InstructionContext popCtx)
 	{
-		return checkLVTGet(popCtx)
-				|| checkInvoke(popCtx)
-				|| checkCompare(popCtx)
-				|| checkCompareConstant(popCtx);
+		return checkFields(popCtx);
 	}
 	
 	private static Set<Field> getObfuscatedFields(Execution execution, ClassGroup group)
@@ -187,38 +145,6 @@ public class ModularArithmeticDeobfuscation
 		return fields;
 	}
 	
-	/* try to identify:
-	 * 
-	   lvt = field * constant
-	   getfield              dy/e I
-	   ldc                   1512989863
-	   imul
-	   istore_1
-	      
-	   or
-	   
-	   field * constant compare+conditional jump
-	   getstatic             client/c I
-	   ldc                   -2061786953
-	   imul
-	   bipush                30
-	   if_icmpeq             LABEL0x86
-	   
-	   or
-	   
-	   (constant * field) - lvt
-	   ldc                   1512989863
-	   getstatic             client/cq Ldy;
-	   getfield              dy/e I
-	   imul
-	   iload_1
-	   isub
-	   
-	   field * constant where result is:
-	   stored in lvt
-	   compared with something
-	   any other operation with lvt
-    */
 	private void run(Execution execution, ClassGroup group)
 	{
 		Set<Field> obfuscatedFields = getObfuscatedFields(execution, group);
@@ -253,10 +179,15 @@ public class ModularArithmeticDeobfuscation
 				if (pc == null)
 					continue;
 				
+				if (gf.getField().getClassEntry().getName().equals("ba") && gf.getField().getNameAndType().getName().equals("p"))
+				{
+					int i =5;
+				}
+				
 				int constant = Integer.parseInt(pc.getConstant().toString());
 				
 				StackContext push = ctx.getPushes().get(0); // result of imul operation
-				InstructionContext popCtx = push.getPopped(); // instruction which popped the result
+				InstructionContext popCtx = push.getPopped(); // instruction which popped the result of mul
 				
 				if (popCtx == null)
 				{
@@ -266,7 +197,7 @@ public class ModularArithmeticDeobfuscation
 					//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
 				}
 				
-				if (!checkRules(popCtx))
+				if (!checkRules(ctx))
 					continue;
 
 				try
