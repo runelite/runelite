@@ -31,6 +31,7 @@ import info.sigterm.deob.execution.StackContext;
  
 public class ModularArithmeticDeobfuscation
 {
+	/*
 	private static String getMethodDesc(Method m)
 	{
 		return m.getMethods().getClassFile().getName() + "." + m.getName() + m.getNameAndType().getDescriptor().toString();
@@ -51,14 +52,18 @@ public class ModularArithmeticDeobfuscation
 				}
 			}
 		}
-	}
+	}*/
 	
-	private static Field convertFieldFromPool(ClassGroup group, info.sigterm.deob.pool.Field field)
+	private Set<Field> obfuscatedFields;
+	private Map<Field, Integer> constants = new HashMap<>(); // getters
+	private Map<Field, Integer> setterConstants = new HashMap<>();
+	
+	private Field convertFieldFromPool(ClassGroup group, info.sigterm.deob.pool.Field field)
 	{
 		return group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
 	}
 	
-	private static List<info.sigterm.deob.pool.Field> checkDown(InstructionContext context)
+	private List<info.sigterm.deob.pool.Field> checkDown(InstructionContext context)
 	{
 		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
 		
@@ -78,7 +83,7 @@ public class ModularArithmeticDeobfuscation
 		return fields;
 	}
 	
-	private static List<info.sigterm.deob.pool.Field> checkUp(InstructionContext context)
+	private List<info.sigterm.deob.pool.Field> checkUp(InstructionContext context)
 	{
 		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
 		
@@ -102,7 +107,7 @@ public class ModularArithmeticDeobfuscation
 	}
 	
 	/* check there are no other fields */
-	private static boolean checkFields(ClassGroup group, Set<Field> obFields, info.sigterm.deob.pool.Field imulField, InstructionContext context)
+	private boolean checkFields(ClassGroup group, Set<Field> obFields, info.sigterm.deob.pool.Field imulField, InstructionContext context)
 	{
 		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
 		fields.addAll(checkUp(context));
@@ -127,7 +132,7 @@ public class ModularArithmeticDeobfuscation
 		return true;
 	}
 	
-	private static Set<Field> getObfuscatedFields(Execution execution, ClassGroup group)
+	private Set<Field> getObfuscatedFields(Execution execution, ClassGroup group)
 	{
 		Set<Field> fields = new HashSet<>();
 		
@@ -135,45 +140,42 @@ public class ModularArithmeticDeobfuscation
 		{
 			for (InstructionContext ctx : frame.getInstructions())
 			{
-				if (!(ctx.getInstruction() instanceof IMul))
-					continue;
-				
-				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
-				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
-				
-				PushConstantInstruction pc = null;
-				GetFieldInstruction gf = null;
-				if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
-				{
-					pc = (PushConstantInstruction) one;
-					gf = (GetFieldInstruction) two;
+				if (ctx.getInstruction() instanceof IMul)
+				{		
+					Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+					Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+					
+					PushConstantInstruction pc = null;
+					GetFieldInstruction gf = null;
+					if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+					{
+						pc = (PushConstantInstruction) one;
+						gf = (GetFieldInstruction) two;
+					}
+					else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+					{
+						pc = (PushConstantInstruction) two;
+						gf = (GetFieldInstruction) one;
+					}
+					
+					if (pc == null)
+						continue;
+					
+					// get Field from pool Field
+					info.sigterm.deob.pool.Field field = gf.getField();
+					Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
+					
+					assert f != null;
+					
+					fields.add(f);
 				}
-				else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
-				{
-					pc = (PushConstantInstruction) two;
-					gf = (GetFieldInstruction) one;
-				}
-				
-				if (pc == null)
-					continue;
-				
-				// get Field from pool Field
-				info.sigterm.deob.pool.Field field = gf.getField();
-				Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
-				
-				assert f != null;
-				
-				fields.add(f);
 			}
 		}
 		
 		return fields;
 	}
 	
-	private static Set<Field> obfuscatedFields;
-	private static Map<Field, Integer> constants = new HashMap<>(); // getters
-	
-	private static void detectSetters(Execution execution, ClassGroup group, InstructionContext ctx)
+	private void detectSetters(Execution execution, ClassGroup group, InstructionContext ctx)
 	{
 		if (!(ctx.getInstruction() instanceof SetFieldInstruction))
 			return;
@@ -206,10 +208,32 @@ public class ModularArithmeticDeobfuscation
 		if (!checkFields(group, obfuscatedFields, sf.getField(), value.getPushed()))
 			return;
 		
-		System.out.println("Setter " + sf.getField().getClassEntry().getName() + "." + sf.getField().getNameAndType().getName() + " -> " + pc.getConstant().toString());
+		//System.out.println("Setter " + sf.getField().getClassEntry().getName() + "." + sf.getField().getNameAndType().getName() + " -> " + pc.getConstant().toString());
+		
+		int constant = Integer.parseInt(pc.getConstant().toString());
+		try
+		{
+			modInverse(constant);
+		}
+		catch (ArithmeticException ex)
+		{
+			System.err.println("Constant " + constant + " passed setter logic tests but is not inversable");
+			//printWhatCalls(execution, frame.getMethod(), 0);
+			return; // if the constant isn't inversable then it can't be the right one
+		}
+		
+		Field field = convertFieldFromPool(group, sf.getField());
+		
+		Integer old = setterConstants.get(field);
+		int newi = constant;
+		
+		if (old != null && (int) old != newi)
+			System.err.println("Setter For " + sf.getField().getNameAndType().getName() + " in " + sf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
+		
+		setterConstants.put(field, newi);
 	}
 	
-	private static void detectGetters(Execution execution, ClassGroup group, InstructionContext ctx)
+	private void detectGetters(Execution execution, ClassGroup group, InstructionContext ctx)
 	{
 		if (!(ctx.getInstruction() instanceof IMul))
 			return;
@@ -286,6 +310,7 @@ public class ModularArithmeticDeobfuscation
 				detectSetters(execution, group, ctx);
 			}
 		}
+		
 		System.out.println("Found " + constants.size() + " constants");
 		for (Entry<Field, Integer> entry : constants.entrySet())
 		{
@@ -324,7 +349,7 @@ public class ModularArithmeticDeobfuscation
 	
 	private static long modInverse(long val)
 	{
-		return modInverse(BigInteger.valueOf(val), 64).intValue();
+		return modInverse(BigInteger.valueOf(val), 64).longValue();
 	}
 	
 	public void run(ClassGroup group)
