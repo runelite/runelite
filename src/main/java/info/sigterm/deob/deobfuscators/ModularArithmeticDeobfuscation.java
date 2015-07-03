@@ -1,6 +1,7 @@
 package info.sigterm.deob.deobfuscators;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -52,29 +53,40 @@ public class ModularArithmeticDeobfuscation
 		}
 	}
 	
-	private static int checkDown(InstructionContext context)
+	private static Field convertFieldFromPool(ClassGroup group, info.sigterm.deob.pool.Field field)
 	{
-		int total = 0;
+		return group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
+	}
+	
+	private static List<info.sigterm.deob.pool.Field> checkDown(InstructionContext context)
+	{
+		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
 		
 		if (context.getInstruction() instanceof FieldInstruction)
-			++total;
+		{
+			FieldInstruction fi = (FieldInstruction) context.getInstruction();
+			fields.add(fi.getField());
+		}
 		
 		for (StackContext ctx : context.getPops())
 		{
 			InstructionContext i = ctx.getPushed();
 			
-			total += checkDown(i);
+			fields.addAll(checkDown(i));
 		}
 		
-		return total;
+		return fields;
 	}
 	
-	private static int checkUp(InstructionContext context)
+	private static List<info.sigterm.deob.pool.Field> checkUp(InstructionContext context)
 	{
-		int total = 0;
+		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
 		
 		if (context.getInstruction() instanceof FieldInstruction)
-			++total;
+		{
+			FieldInstruction fi = (FieldInstruction) context.getInstruction();
+			fields.add(fi.getField());
+		}
 		
 		for (StackContext ctx : context.getPushes())
 		{
@@ -83,23 +95,36 @@ public class ModularArithmeticDeobfuscation
 			if (i == null)
 				continue;
 			
-			total += checkUp(i);
+			fields.addAll(checkUp(i));
 		}
 		
-		return total;
+		return fields;
 	}
 	
 	/* check there are no other fields */
-	private static boolean checkFields(InstructionContext context)
+	private static boolean checkFields(ClassGroup group, Set<Field> obFields, info.sigterm.deob.pool.Field imulField, InstructionContext context)
 	{
-		int total = checkUp(context) + checkDown(context);
-		assert total > 0;
-		return total == 1;
-	}
-	
-	private static boolean checkRules(InstructionContext popCtx)
-	{
-		return checkFields(popCtx);
+		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
+		fields.addAll(checkUp(context));
+		fields.addAll(checkDown(context));
+		
+		assert !fields.isEmpty();
+		
+		for (info.sigterm.deob.pool.Field f : fields)
+		{
+			if (f.equals(imulField))
+				continue;
+			
+			Field field = convertFieldFromPool(group, f);
+			assert field != null;
+			
+			if (!obFields.contains(field))
+				continue;
+			
+			return false;
+		}
+		
+		return true;
 	}
 	
 	private static Set<Field> getObfuscatedFields(Execution execution, ClassGroup group)
@@ -197,7 +222,7 @@ public class ModularArithmeticDeobfuscation
 					//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
 				}
 				
-				if (!checkRules(ctx))
+				if (!checkFields(group, obfuscatedFields, gf.getField(), ctx))
 					continue;
 
 				try
