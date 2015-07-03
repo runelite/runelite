@@ -26,15 +26,18 @@ public class UnusedFields
 					if (ins instanceof FieldInstruction)
 					{
 						FieldInstruction fi = (FieldInstruction) ins;
-						
 						info.sigterm.deob.pool.Field ff = fi.getField();
 						
-						if (ff.getClassEntry().getName().equals(field.getFields().getClassFile().getName()))
+						// pool to Field
+						ClassFile clazz = group.findClass(ff.getClassEntry().getName());
+						if (clazz == null)
+							continue;
+						
+						Field f = clazz.findField(ff.getNameAndType());
+						
+						if (field == f)
 						{
-							if (ff.getNameAndType().getName().equals(field.getName()))
-							{
-								return false;
-							}
+							return false;
 						}
 					}
 				}

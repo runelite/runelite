@@ -2,9 +2,11 @@ package info.sigterm.deob.deobfuscators;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
@@ -71,6 +73,7 @@ public class ModularArithmeticDeobfuscation
 		return true;
 	}
 	
+	/*
 	// lvt comparison field * constant
 	private static boolean checkCompare(InstructionContext popCtx)
 	{
@@ -92,11 +95,96 @@ public class ModularArithmeticDeobfuscation
 		return false;
 	}
 	
+	// constant comparison field * constant
+	private static boolean checkCompareConstant(InstructionContext popCtx)
+	{
+		if (!(popCtx.getInstruction() instanceof ComparisonInstruction))
+			return false;
+		
+		// make sure comparison is against lvt
+		List<StackContext> pops = popCtx.getPops(); // things popCtx popped
+		for (StackContext ctx : pops) // one of these is the imul
+		{
+			InstructionContext pushCtx = ctx.getPushed(); // instruction which pushed this here
+			if (pushCtx.getInstruction() instanceof PushConstantInstruction)
+			{
+				//PushConstantInstruction ci = (PushConstantInstruction) pushCtx.getInstruction();
+				return true; // maybe should check this isn't an obd constant?
+			}
+		}
+		
+		return false;
+	}*/
+	
+	// <something not a field> comparison field * constant
+	private static boolean checkCompare(InstructionContext popCtx)
+	{
+		if (!(popCtx.getInstruction() instanceof ComparisonInstruction))
+			return false;
+		
+		// make sure comparison is against lvt
+		List<StackContext> pops = popCtx.getPops(); // things popCtx popped
+		for (StackContext ctx : pops) // one of these is the imul
+		{
+			InstructionContext pushCtx = ctx.getPushed(); // instruction which pushed this here
+			if (pushCtx.getInstruction() instanceof IMul)
+				continue;
+			
+			// recursively check that theres no fields
+		}
+		
+		return false;
+	}
+	
 	private static boolean checkRules(InstructionContext popCtx)
 	{
 		return checkLVTGet(popCtx)
 				|| checkInvoke(popCtx)
-				|| checkCompare(popCtx);
+				|| checkCompare(popCtx)
+				|| checkCompareConstant(popCtx);
+	}
+	
+	private static Set<Field> getObfuscatedFields(Execution execution, ClassGroup group)
+	{
+		Set<Field> fields = new HashSet<>();
+		
+		for (Frame frame : execution.processedFrames)
+		{
+			for (InstructionContext ctx : frame.getInstructions())
+			{
+				if (!(ctx.getInstruction() instanceof IMul))
+					continue;
+				
+				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+				
+				PushConstantInstruction pc = null;
+				GetFieldInstruction gf = null;
+				if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+				{
+					pc = (PushConstantInstruction) one;
+					gf = (GetFieldInstruction) two;
+				}
+				else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+				{
+					pc = (PushConstantInstruction) two;
+					gf = (GetFieldInstruction) one;
+				}
+				
+				if (pc == null)
+					continue;
+				
+				// get Field from pool Field
+				info.sigterm.deob.pool.Field field = gf.getField();
+				Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
+				
+				assert f != null;
+				
+				fields.add(f);
+			}
+		}
+		
+		return fields;
 	}
 	
 	/* try to identify:
@@ -133,6 +221,8 @@ public class ModularArithmeticDeobfuscation
     */
 	private void run(Execution execution, ClassGroup group)
 	{
+		Set<Field> obfuscatedFields = getObfuscatedFields(execution, group);
+		
 		Map<Field, Integer> constants = new HashMap<>();
 		for (Frame frame : execution.processedFrames)
 		{
@@ -212,8 +302,9 @@ public class ModularArithmeticDeobfuscation
 		}
 		System.out.println("Did not find for:");
 		int count = 0;
-		for (ClassFile cf : group.getClasses())
-			for (Field f : cf.getFields().getFields())
+		for (Field f : obfuscatedFields)
+		//for (ClassFile cf : group.getClasses())
+			//for (Field f : cf.getFields().getFields())
 			{
 				if (f.getType().toString().equals("I"))
 				{

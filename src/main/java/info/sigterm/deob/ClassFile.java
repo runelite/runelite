@@ -153,7 +153,6 @@ public class ClassFile
 		if (m != null)
 			return m;
 
-		// XXX is this necessary?
 		ClassFile parent = getParent();
 		if (parent != null)
 			return parent.findMethod(nat);
