@@ -170,83 +170,120 @@ public class ModularArithmeticDeobfuscation
 		return fields;
 	}
 	
+	private static Set<Field> obfuscatedFields;
+	private static Map<Field, Integer> constants = new HashMap<>(); // getters
+	
+	private static void detectSetters(Execution execution, ClassGroup group, InstructionContext ctx)
+	{
+		if (!(ctx.getInstruction() instanceof SetFieldInstruction))
+			return;
+		
+		SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
+		
+		StackContext value = ctx.getPops().get(0); // what setfield pops as value
+		if (!(value.getPushed().getInstruction() instanceof IMul))
+			return;
+		
+		Instruction one = value.getPushed().getPops().get(0).getPushed().getInstruction();
+		Instruction two = value.getPushed().getPops().get(1).getPushed().getInstruction();
+		
+		PushConstantInstruction pc = null;
+		Instruction other = null;
+		if (one instanceof PushConstantInstruction)
+		{
+			pc = (PushConstantInstruction) one;
+			other  = two;
+		}
+		else if (two instanceof PushConstantInstruction)
+		{
+			pc = (PushConstantInstruction) two;
+			other = one;
+		}
+		
+		if (pc == null)
+			return;
+		
+		if (!checkFields(group, obfuscatedFields, sf.getField(), value.getPushed()))
+			return;
+		
+		System.out.println("Setter " + sf.getField().getClassEntry().getName() + "." + sf.getField().getNameAndType().getName() + " -> " + pc.getConstant().toString());
+	}
+	
+	private static void detectGetters(Execution execution, ClassGroup group, InstructionContext ctx)
+	{
+		if (!(ctx.getInstruction() instanceof IMul))
+			return;
+		
+		// check for push constant and for get field instruction
+		Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+		Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+		
+		PushConstantInstruction pc = null;
+		GetFieldInstruction gf = null;
+		if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+		{
+			pc = (PushConstantInstruction) one;
+			gf = (GetFieldInstruction) two;
+		}
+		else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+		{
+			pc = (PushConstantInstruction) two;
+			gf = (GetFieldInstruction) one;
+		}
+		
+		if (pc == null)
+			return;
+		
+		int constant = Integer.parseInt(pc.getConstant().toString());
+		
+		StackContext push = ctx.getPushes().get(0); // result of imul operation
+		InstructionContext popCtx = push.getPopped(); // instruction which popped the result of mul
+		
+		if (popCtx == null)
+		{
+			return;
+			//System.err.println("Stack ctx never popped! Pushed by " + push.getPushed().getInstruction());
+			//int i = frame.getInstructions().indexOf(push.getPushed().getInstruction());
+			//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
+		}
+		
+		if (!checkFields(group, obfuscatedFields, gf.getField(), ctx))
+			return;
+
+		try
+		{
+			modInverse(constant);
+		}
+		catch (ArithmeticException ex)
+		{
+			System.err.println("Constant " + constant + " passed getter logic tests but is not inversable");
+			//printWhatCalls(execution, frame.getMethod(), 0);
+			return; // if the constant isn't inversable then it can't be the right one
+		}
+		
+		// get Field from pool Field
+		info.sigterm.deob.pool.Field field = gf.getField();
+		Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());				
+		
+		Integer old = constants.get(f);
+		int newi = Integer.parseInt(pc.getConstant().toString());
+		
+		if (old != null && (int) old != newi)
+			System.err.println("For " + gf.getField().getNameAndType().getName() + " in " + gf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
+		
+		constants.put(f, newi);
+	}
+	
 	private void run(Execution execution, ClassGroup group)
 	{
-		Set<Field> obfuscatedFields = getObfuscatedFields(execution, group);
+		obfuscatedFields = getObfuscatedFields(execution, group);
 		
-		Map<Field, Integer> constants = new HashMap<>();
 		for (Frame frame : execution.processedFrames)
 		{
 			for (InstructionContext ctx : frame.getInstructions())
 			{
-				// I think it is easier to detect the getters instead of the setters,
-				// and then calculate the setters.
-				if (!(ctx.getInstruction() instanceof IMul))
-					continue;
-				
-				// check for push constant and for get field instruction
-				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
-				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
-				
-				PushConstantInstruction pc = null;
-				GetFieldInstruction gf = null;
-				if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
-				{
-					pc = (PushConstantInstruction) one;
-					gf = (GetFieldInstruction) two;
-				}
-				else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
-				{
-					pc = (PushConstantInstruction) two;
-					gf = (GetFieldInstruction) one;
-				}
-				
-				if (pc == null)
-					continue;
-				
-				if (gf.getField().getClassEntry().getName().equals("ba") && gf.getField().getNameAndType().getName().equals("p"))
-				{
-					int i =5;
-				}
-				
-				int constant = Integer.parseInt(pc.getConstant().toString());
-				
-				StackContext push = ctx.getPushes().get(0); // result of imul operation
-				InstructionContext popCtx = push.getPopped(); // instruction which popped the result of mul
-				
-				if (popCtx == null)
-				{
-					continue;
-					//System.err.println("Stack ctx never popped! Pushed by " + push.getPushed().getInstruction());
-					//int i = frame.getInstructions().indexOf(push.getPushed().getInstruction());
-					//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
-				}
-				
-				if (!checkFields(group, obfuscatedFields, gf.getField(), ctx))
-					continue;
-
-				try
-				{
-					modInverse(constant);
-				}
-				catch (ArithmeticException ex)
-				{
-					System.err.println("Constant " + constant + " passed getter logic tests but is not inversable");
-					//printWhatCalls(execution, frame.getMethod(), 0);
-					continue; // if the constant isn't inversable then it can't be the right one
-				}
-				
-				// get Field from pool Field
-				info.sigterm.deob.pool.Field field = gf.getField();
-				Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());				
-				
-				Integer old = constants.get(f);
-				int newi = Integer.parseInt(pc.getConstant().toString());
-				
-				if (old != null && (int) old != newi)
-					System.out.println("For " + gf.getField().getNameAndType().getName() + " in " + gf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
-				
-				constants.put(f, newi);
+				detectGetters(execution, group, ctx);
+				detectSetters(execution, group, ctx);
 			}
 		}
 		System.out.println("Found " + constants.size() + " constants");

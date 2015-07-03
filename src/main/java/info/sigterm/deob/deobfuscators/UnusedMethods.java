@@ -27,7 +27,6 @@ public class UnusedMethods
 					continue;
 				
 				if (!execution.methods.contains(m))
-				//if (!m.isUsed())
 				{
 					cf.getMethods().removeMethod(m);
 					++i;

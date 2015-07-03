@@ -9,11 +9,14 @@ import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.instruction.types.FieldInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.SetFieldInstruction;
 
 public class UnusedFields
 {
 	private static boolean isUnused(ClassGroup group, Field field)
 	{
+		int get = 0, set = 0;
 		for (ClassFile cf : group.getClasses())
 			for (Method m : cf.getMethods().getMethods())
 			{
@@ -37,12 +40,25 @@ public class UnusedFields
 						
 						if (field == f)
 						{
-							return false;
+							if (ins instanceof GetFieldInstruction)
+								++get;
+							if (ins instanceof SetFieldInstruction)
+								++set;
 						}
 					}
 				}
 			}
-		return true;
+		
+		if (get == 0 && set == 0)
+			return true;
+		
+		if (get == 0)
+		{
+			System.out.println("Field " + field.getFields().getClassFile().getName() + "." + field.getName() + " is set but not get");
+			return false;
+		}
+		
+		return false;
 	}
 	
 	public void run(ClassGroup group)
