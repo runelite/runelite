@@ -55,9 +55,6 @@ public class ModularArithmeticDeobfuscation
 	}*/
 	
 	private Set<Field> obfuscatedFields;
-	private Map<Field, Magic> magic = new HashMap<>();
-	//private Map<Field, Integer> constants = new HashMap<>(); // getters
-	//private Map<Field, Integer> setterConstants = new HashMap<>();
 	
 	static class Magic
 	{
@@ -66,16 +63,40 @@ public class ModularArithmeticDeobfuscation
 		boolean unknownGetter, unknownSetter;
 	}
 	
-	private Magic getMagic(Field field)
+	static class Magics
 	{
-		Magic m = magic.get(field);
-		if (m != null)
-			return m;
+		Map<Field, Magic> magic = new HashMap<>();
 		
-		m = new Magic();
-		m.field = field;
-		magic.put(field, m);
-		return m;
+		Magic getMagic(Field field)
+		{
+			Magic m = magic.get(field);
+			if (m != null)
+				return m;
+			
+			m = new Magic();
+			m.field = field;
+			magic.put(field, m);
+			return m;
+		}
+		
+		void pass1()
+		{
+			/* remove fields we aren't 100% sure are correct */
+			int bad = 0, good = 0;
+			for (Magic m : new ArrayList<>(magic.values()))
+			{
+				if (m.getter == 0 || m.setter == 0 || m.getter != modInverse(m.setter) || m.setter != modInverse(m.getter))
+				{
+					magic.remove(m.field);
+					++bad;
+				}
+				else
+				{
+					++good;
+				}
+			}
+			System.out.println("Pass 1: Bad: " + bad + ", good: " + good); 
+		}
 	}
 	
 	private Field convertFieldFromPool(ClassGroup group, info.sigterm.deob.pool.Field field)
@@ -127,7 +148,7 @@ public class ModularArithmeticDeobfuscation
 	}
 	
 	/* check there are no other fields */
-	private boolean checkFields(ClassGroup group, Set<Field> obFields, info.sigterm.deob.pool.Field imulField, InstructionContext context)
+	private boolean checkFields(Magics goodMagics, ClassGroup group, Set<Field> obFields, info.sigterm.deob.pool.Field imulField, InstructionContext context)
 	{
 		List<info.sigterm.deob.pool.Field> fields = new ArrayList<>();
 		fields.addAll(checkUp(context));
@@ -161,7 +182,7 @@ public class ModularArithmeticDeobfuscation
 			for (InstructionContext ctx : frame.getInstructions())
 			{
 				if (ctx.getInstruction() instanceof IMul)
-				{		
+				{
 					Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
 					Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
 					
@@ -230,7 +251,7 @@ public class ModularArithmeticDeobfuscation
 		return fields;
 	}
 	
-	private void detectSetters(Execution execution, ClassGroup group, InstructionContext ctx)
+	private void detectSetters(Magics goodMagics, Magics workMagics, Execution execution, ClassGroup group, InstructionContext ctx)
 	{
 		if (!(ctx.getInstruction() instanceof SetFieldInstruction))
 			return;
@@ -260,7 +281,7 @@ public class ModularArithmeticDeobfuscation
 		if (pc == null)
 			return;
 		
-		if (!checkFields(group, obfuscatedFields, sf.getField(), value.getPushed()))
+		if (!checkFields(goodMagics, group, obfuscatedFields, sf.getField(), value.getPushed()))
 			return;
 		
 		//System.out.println("Setter " + sf.getField().getClassEntry().getName() + "." + sf.getField().getNameAndType().getName() + " -> " + pc.getConstant().toString());
@@ -278,7 +299,7 @@ public class ModularArithmeticDeobfuscation
 		}
 		
 		Field field = convertFieldFromPool(group, sf.getField());
-		Magic magic = getMagic(field);
+		Magic magic = workMagics.getMagic(field);
 		
 		if (!magic.unknownSetter)
 		{
@@ -292,7 +313,7 @@ public class ModularArithmeticDeobfuscation
 		}
 	}
 	
-	private void detectGetters(Execution execution, ClassGroup group, InstructionContext ctx)
+	private void detectGetters(Magics goodMagics, Magics workMagics, Execution execution, ClassGroup group, InstructionContext ctx)
 	{
 		if (!(ctx.getInstruction() instanceof IMul))
 			return;
@@ -330,7 +351,7 @@ public class ModularArithmeticDeobfuscation
 			//System.err.println("next ins is " + frame.getInstructions().get(i + 1).getInstruction());
 		}
 		
-		if (!checkFields(group, obfuscatedFields, gf.getField(), ctx))
+		if (!checkFields(goodMagics, group, obfuscatedFields, gf.getField(), ctx))
 			return;
 
 		try
@@ -348,7 +369,7 @@ public class ModularArithmeticDeobfuscation
 		info.sigterm.deob.pool.Field field = gf.getField();
 		Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());
 		
-		Magic magic = getMagic(f);
+		Magic magic = workMagics.getMagic(f);
 		
 		if (!magic.unknownGetter)
 		{
@@ -362,11 +383,11 @@ public class ModularArithmeticDeobfuscation
 		}
 	}
 	
-	private void check()
+	private void check(Magics magics)
 	{
 		for (Field f : obfuscatedFields)
 		{
-			Magic magic = this.magic.get(f);
+			Magic magic = magics.magic.get(f);
 			
 			if (magic == null)
 			{
@@ -384,7 +405,7 @@ public class ModularArithmeticDeobfuscation
 		}
 	}
 	
-	private void run(Execution execution, ClassGroup group)
+	private void run(Magics magics /* known good */, Magics work, Execution execution, ClassGroup group)
 	{
 		obfuscatedFields = getObfuscatedFields(execution, group);
 		
@@ -392,36 +413,12 @@ public class ModularArithmeticDeobfuscation
 		{
 			for (InstructionContext ctx : frame.getInstructions())
 			{
-				detectGetters(execution, group, ctx);
-				detectSetters(execution, group, ctx);
+				detectGetters(magics, work, execution, group, ctx);
+				detectSetters(magics, work, execution, group, ctx);
 			}
 		}
 		
-		/*System.out.println("Found " + constants.size() + " constants");
-		for (Entry<Field, Integer> entry : constants.entrySet())
-		{
-			Field f = entry.getKey();
-			Integer v = entry.getValue();
-			System.out.println(f.getFields().getClassFile().getName() + "." + f.getName() + " -> " + v);
-		}
-		System.out.println("Did not find for:");
-		int count = 0;
-		for (Field f : obfuscatedFields)
-		//for (ClassFile cf : group.getClasses())
-			//for (Field f : cf.getFields().getFields())
-			{
-				if (f.getType().toString().equals("I"))
-				{
-					if (!constants.containsKey(f))
-					{
-						System.out.println(f.getFields().getClassFile().getName() + "." + f.getName());
-						++count;
-					}
-				}
-			}
-		System.out.println("Did not find for " + count);
-		*/
-		check();
+		check(work);
 	}
 	
 	private static BigInteger modInverse(BigInteger val, int bits)
@@ -446,6 +443,11 @@ public class ModularArithmeticDeobfuscation
 		execution.populateInitialMethods();
 		execution.run();
 		
-		run(execution, group);
+		Magics work = new Magics();
+		run(null, work, execution, group);
+		
+		Magics magics = work;
+		work = new Magics();
+		//run(magics, work, execution, group);
 	}
 }
