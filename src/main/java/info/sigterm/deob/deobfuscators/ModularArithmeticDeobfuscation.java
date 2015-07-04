@@ -55,8 +55,28 @@ public class ModularArithmeticDeobfuscation
 	}*/
 	
 	private Set<Field> obfuscatedFields;
-	private Map<Field, Integer> constants = new HashMap<>(); // getters
-	private Map<Field, Integer> setterConstants = new HashMap<>();
+	private Map<Field, Magic> magic = new HashMap<>();
+	//private Map<Field, Integer> constants = new HashMap<>(); // getters
+	//private Map<Field, Integer> setterConstants = new HashMap<>();
+	
+	static class Magic
+	{
+		Field field;
+		int getter, setter;
+		boolean unknownGetter, unknownSetter;
+	}
+	
+	private Magic getMagic(Field field)
+	{
+		Magic m = magic.get(field);
+		if (m != null)
+			return m;
+		
+		m = new Magic();
+		m.field = field;
+		magic.put(field, m);
+		return m;
+	}
 	
 	private Field convertFieldFromPool(ClassGroup group, info.sigterm.deob.pool.Field field)
 	{
@@ -169,6 +189,41 @@ public class ModularArithmeticDeobfuscation
 					
 					fields.add(f);
 				}
+				else if (ctx.getInstruction() instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
+					
+					StackContext value = ctx.getPops().get(0); // what setfield pops as value
+					if (!(value.getPushed().getInstruction() instanceof IMul))
+						continue;
+					
+					Instruction one = value.getPushed().getPops().get(0).getPushed().getInstruction();
+					Instruction two = value.getPushed().getPops().get(1).getPushed().getInstruction();
+					
+					PushConstantInstruction pc = null;
+					Instruction other = null;
+					if (one instanceof PushConstantInstruction)
+					{
+						pc = (PushConstantInstruction) one;
+						other  = two;
+					}
+					else if (two instanceof PushConstantInstruction)
+					{
+						pc = (PushConstantInstruction) two;
+						other = one;
+					}
+					
+					if (pc == null)
+						continue;
+					
+					// get Field from pool Field
+					info.sigterm.deob.pool.Field field = sf.getField();
+					Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
+					
+					assert f != null;
+					
+					fields.add(f);
+				}
 			}
 		}
 		
@@ -217,20 +272,24 @@ public class ModularArithmeticDeobfuscation
 		}
 		catch (ArithmeticException ex)
 		{
-			System.err.println("Constant " + constant + " passed setter logic tests but is not inversable");
+			//System.err.println("Constant " + constant + " passed setter logic tests but is not inversable");
 			//printWhatCalls(execution, frame.getMethod(), 0);
 			return; // if the constant isn't inversable then it can't be the right one
 		}
 		
 		Field field = convertFieldFromPool(group, sf.getField());
+		Magic magic = getMagic(field);
 		
-		Integer old = setterConstants.get(field);
-		int newi = constant;
-		
-		if (old != null && (int) old != newi)
-			System.err.println("Setter For " + sf.getField().getNameAndType().getName() + " in " + sf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
-		
-		setterConstants.put(field, newi);
+		if (!magic.unknownSetter)
+		{
+			if (magic.setter == 0)
+				magic.setter = constant;
+			else if (magic.setter != constant)
+			{
+				magic.setter = 0;
+				magic.unknownSetter = true;
+			}
+		}
 	}
 	
 	private void detectGetters(Execution execution, ClassGroup group, InstructionContext ctx)
@@ -280,22 +339,49 @@ public class ModularArithmeticDeobfuscation
 		}
 		catch (ArithmeticException ex)
 		{
-			System.err.println("Constant " + constant + " passed getter logic tests but is not inversable");
+			//System.err.println("Constant " + constant + " passed getter logic tests but is not inversable");
 			//printWhatCalls(execution, frame.getMethod(), 0);
 			return; // if the constant isn't inversable then it can't be the right one
 		}
 		
 		// get Field from pool Field
 		info.sigterm.deob.pool.Field field = gf.getField();
-		Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());				
+		Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());
 		
-		Integer old = constants.get(f);
-		int newi = Integer.parseInt(pc.getConstant().toString());
+		Magic magic = getMagic(f);
 		
-		if (old != null && (int) old != newi)
-			System.err.println("For " + gf.getField().getNameAndType().getName() + " in " + gf.getField().getClassEntry().getName() + " constant " + pc.getConstant().toString() + " mismatch on " + old);
-		
-		constants.put(f, newi);
+		if (!magic.unknownGetter)
+		{
+			if (magic.getter == 0)
+				magic.getter = constant;
+			else if (magic.getter != constant)
+			{
+				magic.getter = 0;
+				magic.unknownGetter = true;
+			}
+		}
+	}
+	
+	private void check()
+	{
+		for (Field f : obfuscatedFields)
+		{
+			Magic magic = this.magic.get(f);
+			
+			if (magic == null)
+			{
+				System.err.println(f.getFields().getClassFile().getName() + "." + f.getName() + " is obfuscated, but no magic found");
+				continue;
+			}
+			
+			if (magic.getter != 0 && magic.setter != 0)
+			{
+				if (magic.getter != modInverse(magic.setter) || magic.setter != modInverse(magic.getter))
+				{
+					System.err.println(f.getFields().getClassFile().getName() + "." + f.getName() + " has mismatch, get " + magic.getter + ", set " + magic.setter + ", modInverse(get) " + modInverse(magic.getter) + ", modInverse(set) " + modInverse(magic.setter));
+				}
+			}
+		}
 	}
 	
 	private void run(Execution execution, ClassGroup group)
@@ -311,7 +397,7 @@ public class ModularArithmeticDeobfuscation
 			}
 		}
 		
-		System.out.println("Found " + constants.size() + " constants");
+		/*System.out.println("Found " + constants.size() + " constants");
 		for (Entry<Field, Integer> entry : constants.entrySet())
 		{
 			Field f = entry.getKey();
@@ -334,6 +420,8 @@ public class ModularArithmeticDeobfuscation
 				}
 			}
 		System.out.println("Did not find for " + count);
+		*/
+		check();
 	}
 	
 	private static BigInteger modInverse(BigInteger val, int bits)
