@@ -53,4 +53,10 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 	{
 		return value;
 	}
+	
+	@Override
+	public void setConstant(PoolEntry entry)
+	{
+		value = entry;
+	}
 }
