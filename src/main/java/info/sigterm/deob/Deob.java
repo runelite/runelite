@@ -62,7 +62,7 @@ public class Deob
 		
 		new UnusedFields().run(group);
 		
-		new ModularArithmeticDeobfuscation().run(group);
+		//new ModularArithmeticDeobfuscation().run(group);
 
 		saveJar(group, args[1]);
 		

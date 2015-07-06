@@ -3,4 +3,11 @@
   <groupId>info.sigterm</groupId>
   <artifactId>deob</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.apache.commons</groupId>
+  		<artifactId>commons-collections4</artifactId>
+  		<version>4.0</version>
+  	</dependency>
+  </dependencies>
 </project>

@@ -30,7 +30,7 @@ public class Method
 
 	private short accessFlags;
 	private String name;
-	private Signature arguments;
+	public Signature arguments;
 	private Attributes attributes;
 
 	Method(Methods methods) throws IOException
@@ -59,89 +59,6 @@ public class Method
 	protected void remove()
 	{
 		//assert callsFrom.isEmpty();
-	}
-	
-	public void removeParameter(Execution execution, int paramIndex, int lvtIndex)
-	{
-		Set<Instruction> done = new HashSet<>();
-		for (Frame f : execution.processedFrames)
-			for (InstructionContext ins : f.getInstructions())
-				if (ins.getInvokes().contains(this))
-				{
-					int pops = arguments.size() - paramIndex - 1; // index from top of stack of parameter
-					ins.removeStack(pops); // remove parameter from stack
-					
-					if (done.contains(ins.getInstruction()))
-						continue;
-					
-					InvokeInstruction iins = (InvokeInstruction) ins.getInstruction();
-					iins.removeParameter(paramIndex); // remove parameter from instruction
-					
-					done.add(ins.getInstruction());
-				}
-		
-		// this double checks that all calls to this have been located
-		for (ClassFile cf : methods.getClassFile().getGroup().getClasses())
-			for (Method m : cf.getMethods().getMethods())
-			{
-				Code c = m.getCode();
-				if (c == null)
-					continue;
-				
-				for (Instruction i : c.getInstructions().getInstructions())
-				{
-					if (i instanceof InvokeInstruction)
-					{
-						InvokeInstruction ii = (InvokeInstruction) i;
-						PoolEntry pool = ii.getMethod();
-						
-						if (pool instanceof info.sigterm.deob.pool.Method)
-						{
-							info.sigterm.deob.pool.Method pm = (info.sigterm.deob.pool.Method) pool;
-							
-							if (pm.getClassEntry().getName().equals(this.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(this.getNameAndType()) && !done.contains(i))
-							{
-								// for some reason this wasn't removed above?
-								System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
-								//assert false;
-							}
-						}
-						else if (pool instanceof info.sigterm.deob.pool.InterfaceMethod)
-						{
-							info.sigterm.deob.pool.InterfaceMethod pm = (info.sigterm.deob.pool.InterfaceMethod) pool;
-							
-							if (pm.getClassEntry().getName().equals(this.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(this.getNameAndType()) && !done.contains(i))
-							{
-								// for some reason this wasn't removed above?
-								System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
-								//assert false;
-							}
-						}
-					}
-				}
-			}
-		
-		// adjust lvt indexes to get rid of idx in the method
-		for (Instruction ins : new ArrayList<>(getCode().getInstructions().getInstructions()))
-		{
-			if (ins instanceof LVTInstruction)
-			{
-				LVTInstruction lins = (LVTInstruction) ins;
-				
-				int i = lins.getVariableIndex();
-				assert i != lvtIndex; // current unused variable detection just looks for no accesses
-				
-				// reassign
-				if (i > lvtIndex)
-				{
-					Instruction newIns = lins.setVariableIndex(--i);
-					if (newIns != ins)
-						ins.replace(newIns);
-				}
-			}
-		}
-		
-		arguments.remove(paramIndex);
 	}
 
 	public Methods getMethods()
