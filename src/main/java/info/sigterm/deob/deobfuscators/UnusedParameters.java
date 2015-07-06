@@ -115,7 +115,6 @@ public class UnusedParameters
 			for (InstructionContext ins : f.getInstructions())
 				if (!ins.getInvokes().isEmpty() && methods.containsAll(ins.getInvokes()))
 				{
-					System.out.println("Removing from " + ins);
 					int pops = signature.size() - paramIndex - 1; // index from top of stack of parameter
 					ins.removeStack(pops); // remove parameter from stack
 					
@@ -128,48 +127,47 @@ public class UnusedParameters
 					done.add(ins.getInstruction());
 				}
 		
-		/*
-		// this double checks that all calls to this have been located
-		for (ClassFile cf : method.getMethods().getClassFile().getGroup().getClasses())
-			for (Method m : cf.getMethods().getMethods())
-			{
-				Code c = m.getCode();
-				if (c == null)
-					continue;
-				
-				for (Instruction i : c.getInstructions().getInstructions())
+		for (Method method : methods)
+			// this double checks that all calls to this have been located
+			for (ClassFile cf : method.getMethods().getClassFile().getGroup().getClasses())
+				for (Method m : cf.getMethods().getMethods())
 				{
-					if (i instanceof InvokeInstruction)
+					Code c = m.getCode();
+					if (c == null)
+						continue;
+					
+					for (Instruction i : c.getInstructions().getInstructions())
 					{
-						InvokeInstruction ii = (InvokeInstruction) i;
-						PoolEntry pool = ii.getMethod();
-						
-						if (pool instanceof info.sigterm.deob.pool.Method)
+						if (i instanceof InvokeInstruction)
 						{
-							info.sigterm.deob.pool.Method pm = (info.sigterm.deob.pool.Method) pool;
+							InvokeInstruction ii = (InvokeInstruction) i;
+							PoolEntry pool = ii.getMethod();
 							
-							if (pm.getClassEntry().getName().equals(method.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(method.getNameAndType()) && !done.contains(i))
+							if (pool instanceof info.sigterm.deob.pool.Method)
 							{
-								// for some reason this wasn't removed above?
-								System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
-								//assert false;
+								info.sigterm.deob.pool.Method pm = (info.sigterm.deob.pool.Method) pool;
+								
+								if (pm.getClassEntry().getName().equals(method.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(method.getNameAndType()) && !done.contains(i))
+								{
+									// for some reason this wasn't removed above?
+									System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
+									//assert false;
+								}
 							}
-						}
-						else if (pool instanceof info.sigterm.deob.pool.InterfaceMethod)
-						{
-							info.sigterm.deob.pool.InterfaceMethod pm = (info.sigterm.deob.pool.InterfaceMethod) pool;
-							
-							if (pm.getClassEntry().getName().equals(method.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(method.getNameAndType()) && !done.contains(i))
+							else if (pool instanceof info.sigterm.deob.pool.InterfaceMethod)
 							{
-								// for some reason this wasn't removed above?
-								System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
-								//assert false;
+								info.sigterm.deob.pool.InterfaceMethod pm = (info.sigterm.deob.pool.InterfaceMethod) pool;
+								
+								if (pm.getClassEntry().getName().equals(method.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(method.getNameAndType()) && !done.contains(i))
+								{
+									// for some reason this wasn't removed above?
+									System.err.println("Method " + m.getName() + " in " + cf.getName() + " calls " + pm.getNameAndType().getName() + " in " + pm.getClassEntry().getName() + " at " + i.getPc() + ", but this instruction was not found during execution");
+									//assert false;
+								}
 							}
 						}
 					}
 				}
-			}
-			*/
 		
 		for (Method method : methods)
 			if (method.getCode() != null)
@@ -243,7 +241,6 @@ public class UnusedParameters
 				/* removing the parameter can cause collision of overriden methods,
 				 * we should first rename all methods to be unique?
 				 */
-				System.out.println("Removing " + m.getName() + " on " + m.getMethods().getClassFile().getName());
 				removeParameter(methods, signature, execution, unusedParameter, lvtIndexes[unusedParameter]);
 				
 				++count;
