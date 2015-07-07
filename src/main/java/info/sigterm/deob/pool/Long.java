@@ -13,16 +13,16 @@ public class Long extends PoolEntry
 
 	public Long(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.LONG);
+		super(ConstantType.LONG);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readLong();
 	}
 	
-	public Long(ConstantPool pool, long l)
+	public Long(long l)
 	{
-		super(pool, ConstantType.LONG);
+		super(ConstantType.LONG);
 		
 		value = l;
 	}

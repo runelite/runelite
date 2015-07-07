@@ -13,16 +13,16 @@ public class Float extends PoolEntry
 
 	public Float(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.FLOAT);
+		super(ConstantType.FLOAT);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readFloat();
 	}
 	
-	public Float(ConstantPool pool, float f)
+	public Float(float f)
 	{
-		super(pool, ConstantType.FLOAT);
+		super(ConstantType.FLOAT);
 		
 		value = f;
 	}

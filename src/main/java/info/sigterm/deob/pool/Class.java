@@ -14,22 +14,22 @@ public class Class extends PoolEntry
 
 	public Class(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.CLASS);
+		super(ConstantType.CLASS);
 
 		DataInputStream is = pool.getClassFile().getStream();
 		index = is.readUnsignedShort();
 	}
 	
 	@Override
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
-		name = this.getPool().getUTF8(index);
+		name = pool.getUTF8(index);
 	}
 	
 	@Override
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
-		index = this.getPool().makeUTF8(name);
+		index = pool.makeUTF8(name);
 	}
 	
 	@Override

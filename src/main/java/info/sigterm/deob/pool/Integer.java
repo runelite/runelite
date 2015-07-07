@@ -13,16 +13,16 @@ public class Integer extends PoolEntry
 
 	public Integer(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.INTEGER);
+		super(ConstantType.INTEGER);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readInt();
 	}
 	
-	public Integer(ConstantPool pool, int i)
+	public Integer(int i)
 	{
-		super(pool, ConstantType.INTEGER);
+		super(ConstantType.INTEGER);
 		
 		value = i;
 	}

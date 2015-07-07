@@ -12,9 +12,9 @@ public class InterfaceMethod extends PoolEntry
 	private Class clazz;
 	private NameAndType nat;
 	
-	public InterfaceMethod(ConstantPool pool, Class clazz, NameAndType nat)
+	public InterfaceMethod(Class clazz, NameAndType nat)
 	{
-		super(pool, ConstantType.INTERFACE_METHOD_REF);
+		super(ConstantType.INTERFACE_METHOD_REF);
 		
 		this.clazz = clazz;
 		this.nat = nat;
@@ -22,7 +22,7 @@ public class InterfaceMethod extends PoolEntry
 
 	public InterfaceMethod(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.INTERFACE_METHOD_REF);
+		super(ConstantType.INTERFACE_METHOD_REF);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
@@ -31,17 +31,17 @@ public class InterfaceMethod extends PoolEntry
 	}
 	
 	@Override
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
-		clazz = this.getPool().getClass(classIndex);
-		nat = this.getPool().getNameAndType(natIndex);
+		clazz = pool.getClass(classIndex);
+		nat = pool.getNameAndType(natIndex);
 	}
 	
 	@Override
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
-		classIndex = this.getPool().make(clazz);
-		natIndex = this.getPool().make(nat);		
+		classIndex = pool.make(clazz);
+		natIndex = pool.make(nat);		
 	}
 	
 	@Override

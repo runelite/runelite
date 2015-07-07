@@ -14,30 +14,30 @@ public class String extends PoolEntry
 
 	public String(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.STRING);
+		super(ConstantType.STRING);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
 		stringIndex = is.readUnsignedShort();
 	}
 	
-	public String(ConstantPool pool, java.lang.String str)
+	public String(java.lang.String str)
 	{
-		super(pool, ConstantType.STRING);
+		super(ConstantType.STRING);
 		
 		string = str;
 	}
 	
 	@Override
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
-		string = this.getPool().getUTF8(stringIndex);
+		string = pool.getUTF8(stringIndex);
 	}
 	
 	@Override
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
-		stringIndex = this.getPool().makeUTF8(string);
+		stringIndex = pool.makeUTF8(string);
 	}
 	
 	@Override

@@ -52,7 +52,7 @@ public class ConstantPool
 		}
 		
 		for (PoolEntry entry : entries)
-			entry.resolve();
+			entry.resolve(this);
 	}
 	
 	public void reset()
@@ -71,7 +71,7 @@ public class ConstantPool
 		for (int i = 0; i < entries.size(); ++i)
 		{
 			PoolEntry entry = entries.get(i);
-			entry.prime();
+			entry.prime(this);
 		}
 		
 		int size = 0;
@@ -152,7 +152,6 @@ public class ConstantPool
 		
 		entries.add(entry);
 		entry.id = i;
-		entry.pool = this;
 		return i;
 	}
 	
@@ -164,19 +163,19 @@ public class ConstantPool
 	public int make(Object object)
 	{
 		if (object instanceof String)
-			return make(new info.sigterm.deob.pool.String(this, (String) object));
+			return make(new info.sigterm.deob.pool.String((String) object));
 		
 		if (object instanceof Integer)
-			return make(new info.sigterm.deob.pool.Integer(this, (int) object));
+			return make(new info.sigterm.deob.pool.Integer((int) object));
 		
 		if (object instanceof Float)
-			return make(new info.sigterm.deob.pool.Float(this, (float) object));
+			return make(new info.sigterm.deob.pool.Float((float) object));
 		
 		if (object instanceof Long)
-			return make(new info.sigterm.deob.pool.Long(this, (long) object));
+			return make(new info.sigterm.deob.pool.Long((long) object));
 		
 		if (object instanceof Double)
-			return make(new info.sigterm.deob.pool.Double(this, (double) object));
+			return make(new info.sigterm.deob.pool.Double((double) object));
 		
 		System.err.println("Constant pool make with unknown object " + object + " type " + object.getClass());
 		

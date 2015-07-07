@@ -13,16 +13,16 @@ public class Double extends PoolEntry
 
 	public Double(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.DOUBLE);
+		super(ConstantType.DOUBLE);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readDouble();
 	}
 	
-	public Double(ConstantPool pool, double d)
+	public Double(double d)
 	{
-		super(pool, ConstantType.DOUBLE);
+		super(ConstantType.DOUBLE);
 		
 		value = d;
 	}

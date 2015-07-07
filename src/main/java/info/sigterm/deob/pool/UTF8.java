@@ -12,7 +12,7 @@ public class UTF8 extends PoolEntry
 
 	public UTF8(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.UTF8);
+		super(ConstantType.UTF8);
 
 		DataInputStream ios = pool.getClassFile().getStream();
 		string = ios.readUTF();
@@ -20,7 +20,7 @@ public class UTF8 extends PoolEntry
 	
 	public UTF8(java.lang.String value)
 	{
-		super(null, ConstantType.UTF8);
+		super(ConstantType.UTF8);
 		
 		string = value;
 	}

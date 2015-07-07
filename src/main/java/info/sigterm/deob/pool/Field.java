@@ -14,7 +14,7 @@ public class Field extends PoolEntry
 
 	public Field(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.FIELDREF);
+		super(ConstantType.FIELDREF);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
@@ -23,17 +23,17 @@ public class Field extends PoolEntry
 	}
 	
 	@Override
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
-		clazz = this.getPool().getClass(classIndex);
-		nat = this.getPool().getNameAndType(natIndex);		
+		clazz = pool.getClass(classIndex);
+		nat = pool.getNameAndType(natIndex);		
 	}
 	
 	@Override
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
-		classIndex = this.getPool().make(clazz);
-		natIndex = this.getPool().make(nat);
+		classIndex = pool.make(clazz);
+		natIndex = pool.make(nat);
 	}
 	
 	@Override

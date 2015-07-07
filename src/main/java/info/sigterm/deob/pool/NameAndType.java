@@ -20,7 +20,7 @@ public class NameAndType extends PoolEntry
 
 	public NameAndType(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.NAME_AND_TYPE);
+		super(ConstantType.NAME_AND_TYPE);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
@@ -28,28 +28,20 @@ public class NameAndType extends PoolEntry
 		descriptorIndex = is.readUnsignedShort();
 	}
 	
-	public NameAndType(ConstantPool pool, java.lang.String name, Signature sig)
+	public NameAndType(java.lang.String name, Signature sig)
 	{
-		super(pool, ConstantType.NAME_AND_TYPE);
+		super(ConstantType.NAME_AND_TYPE);
 		
 		this.name = name;
 		this.signature = sig;
 	}
 	
-	public NameAndType(java.lang.String name, Signature type)
-	{
-		super(null, ConstantType.NAME_AND_TYPE);
-		
-		this.name = name;
-		signature = type;
-	}
-	
 	@Override
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
-		name = this.getPool().getUTF8(nameIndex);
+		name = pool.getUTF8(nameIndex);
 		
-		java.lang.String sig = this.getPool().getUTF8(descriptorIndex);
+		java.lang.String sig = pool.getUTF8(descriptorIndex);
 		if (sig.startsWith("("))
 			signature = new Signature(sig);
 		else
@@ -57,13 +49,13 @@ public class NameAndType extends PoolEntry
 	}
 	
 	@Override
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
-		nameIndex = this.getPool().makeUTF8(name);
+		nameIndex = pool.makeUTF8(name);
 		if (signature != null)
-			descriptorIndex = this.getPool().makeUTF8(signature.toString());
+			descriptorIndex = pool.makeUTF8(signature.toString());
 		else
-			descriptorIndex = this.getPool().makeUTF8(type.toString());
+			descriptorIndex = pool.makeUTF8(type.toString());
 	}
 	
 	@Override

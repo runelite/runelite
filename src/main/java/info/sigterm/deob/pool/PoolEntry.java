@@ -8,23 +8,21 @@ import info.sigterm.deob.execution.Type;
 
 public abstract class PoolEntry
 {
-	public ConstantPool pool;
 	private ConstantType type;
 	public int id;
 
-	protected PoolEntry(ConstantPool pool, ConstantType type)
+	protected PoolEntry(ConstantType type)
 	{
-		this.pool = pool;
 		this.type = type;
 	}
 	
 	// read objects from indexes
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
 	}
 	
 	// make objects and prime indexes
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
 	}
 	
@@ -32,11 +30,6 @@ public abstract class PoolEntry
 	public abstract boolean equals(Object other);
 	
 	public abstract void write(DataOutputStream out) throws IOException;
-
-	public ConstantPool getPool()
-	{
-		return pool;
-	}
 	
 	public ConstantType getType()
 	{

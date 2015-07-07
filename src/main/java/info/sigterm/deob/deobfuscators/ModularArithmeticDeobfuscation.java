@@ -749,7 +749,7 @@ public class ModularArithmeticDeobfuscation
 					//assert m.setter == modInverse(m.getter);
 					int newConstant = constant * m.setter;
 					
-					pc.setConstant(new info.sigterm.deob.pool.Integer(pc.getConstant().getPool(), newConstant));
+					pc.setConstant(new info.sigterm.deob.pool.Integer(newConstant));
 					if (newConstant != 1)
 						System.out.println("new constant: " + newConstant);
 					else
@@ -777,7 +777,7 @@ public class ModularArithmeticDeobfuscation
 						
 						// field = setter * value, solve for value by * modInverse(setter)
 						int newConstant = constant * m.getter;
-						pi.setConstant(new info.sigterm.deob.pool.Integer(pi.getConstant().getPool(), newConstant));
+						pi.setConstant(new info.sigterm.deob.pool.Integer(newConstant));
 						++replaced;
 					}
 					else if (value.getPushed().getInstruction() instanceof IMul)
@@ -812,7 +812,7 @@ public class ModularArithmeticDeobfuscation
 						
 						// field = expression * constant
 						int newConstant = constant * m.getter;
-						pc.setConstant(new info.sigterm.deob.pool.Integer(pc.getConstant().getPool(), newConstant));
+						pc.setConstant(new info.sigterm.deob.pool.Integer(newConstant));
 						++replaced;
 					}
 				}

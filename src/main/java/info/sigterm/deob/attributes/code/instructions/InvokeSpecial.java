@@ -139,7 +139,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		sig.remove(idx);
 		
 		// create new method pool object
-		method = new Method(method.getPool(), clazz, new NameAndType(nat.getPool(), nat.getName(), sig));
+		method = new Method(clazz, new NameAndType(nat.getName(), sig));
 	}
 	
 	@Override

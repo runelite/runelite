@@ -12,9 +12,9 @@ public class Method extends PoolEntry
 	private Class clazz;
 	private NameAndType nat;
 	
-	public Method(ConstantPool pool, Class clazz, NameAndType nat)
+	public Method(Class clazz, NameAndType nat)
 	{
-		super(pool, ConstantType.METHODREF);
+		super(ConstantType.METHODREF);
 		
 		this.clazz = clazz;
 		this.nat = nat;
@@ -22,7 +22,7 @@ public class Method extends PoolEntry
 
 	public Method(ConstantPool pool) throws IOException
 	{
-		super(pool, ConstantType.METHODREF);
+		super(ConstantType.METHODREF);
 
 		DataInputStream is = pool.getClassFile().getStream();
 
@@ -31,17 +31,17 @@ public class Method extends PoolEntry
 	}
 	
 	@Override
-	public void resolve()
+	public void resolve(ConstantPool pool)
 	{
-		clazz = this.getPool().getClass(classIndex);
-		nat = this.getPool().getNameAndType(natIndex);
+		clazz = pool.getClass(classIndex);
+		nat = pool.getNameAndType(natIndex);
 	}
 	
 	@Override
-	public void prime()
+	public void prime(ConstantPool pool)
 	{
-		classIndex = this.getPool().make(clazz);
-		natIndex = this.getPool().make(nat);		
+		classIndex = pool.make(clazz);
+		natIndex = pool.make(nat);		
 	}
 	
 	@Override
