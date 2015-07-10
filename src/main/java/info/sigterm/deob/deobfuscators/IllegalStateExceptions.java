@@ -1,7 +1,10 @@
 package info.sigterm.deob.deobfuscators;
 
+import java.util.List;
+
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
@@ -15,12 +18,7 @@ import info.sigterm.deob.execution.Execution;
 import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-public class IllegalStateExceptions
+public class IllegalStateExceptions implements Deobfuscator
 {
 	/* find if, new, ..., athrow, replace with goto */
 	private int checkOnce(Execution execution, ClassGroup group)
@@ -120,6 +118,7 @@ public class IllegalStateExceptions
 		return count;
 	}
 	
+	@Override
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);

@@ -2,13 +2,15 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 
 import java.util.ArrayList;
 
-public class RuntimeExceptions
+public class RuntimeExceptions implements Deobfuscator
 {
+	@Override
 	public void run(ClassGroup group)
 	{
 		int i = 0;

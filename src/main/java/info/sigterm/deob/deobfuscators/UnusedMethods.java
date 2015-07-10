@@ -2,16 +2,18 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.execution.Execution;
 
 import java.util.ArrayList;
 
-public class UnusedMethods
+public class UnusedMethods implements Deobfuscator
 {
+	@Override
 	public void run(ClassGroup group)
 	{
-		group.buildClassGraph();
+		group.buildClassGraph(); // does this use this?
 		
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();

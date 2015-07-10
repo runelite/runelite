@@ -2,14 +2,16 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Block;
 import info.sigterm.deob.attributes.code.Instructions;
 
 import java.util.ArrayList;
 
-public class UnusedBlocks
+public class UnusedBlocks implements Deobfuscator
 {
+	@Override
 	public void run(ClassGroup group)
 	{
 		int i = 0;

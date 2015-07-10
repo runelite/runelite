@@ -4,6 +4,7 @@ import java.util.List;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Field;
 import info.sigterm.deob.Interfaces;
 import info.sigterm.deob.Method;
@@ -13,7 +14,7 @@ import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.signature.Signature;
 import info.sigterm.deob.signature.Type;
 
-public class RenameUnique
+public class RenameUnique implements Deobfuscator
 {
 	private void renameClass(ClassFile on, ClassFile old, String name)
 	{
@@ -93,6 +94,7 @@ public class RenameUnique
 		field.setName(name);
 	}
 
+	@Override
 	public void run(ClassGroup group)
 	{
 		int i = 0;

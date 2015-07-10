@@ -6,21 +6,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Field;
-import info.sigterm.deob.Method;
-import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
-import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.attributes.code.instruction.types.ComparisonInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.FieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
-import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.PushConstantInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.SetFieldInstruction;
 import info.sigterm.deob.attributes.code.instructions.IMul;
@@ -29,7 +24,7 @@ import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.StackContext;
  
-public class ModularArithmeticDeobfuscation
+public class ModularArithmeticDeobfuscation implements Deobfuscator
 {
 	private Set<Field> obfuscatedFields; // reliability of these sucks
 	
@@ -676,6 +671,7 @@ public class ModularArithmeticDeobfuscation
 		return modInverse(BigInteger.valueOf(val), 64).longValue();
 	}
 	
+	@Override
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);

@@ -2,6 +2,7 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
@@ -22,7 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-public class UnusedParameters
+public class UnusedParameters implements Deobfuscator
 {
 	private static List<Method> findDependentMethods(NameAndType nat, Set<ClassFile> visited, ClassGroup group, ClassFile cf)
 	{
@@ -238,8 +239,8 @@ public class UnusedParameters
 				for (Method m2 : methods)
 					done.add(m2);
 				
-				/* removing the parameter can cause collision of overriden methods,
-				 * we should first rename all methods to be unique?
+				/* removing the parameter can't cause collisions on other (overloaded) methods because prior to this we rename
+				 * all classes/fields/methods to have unique names.
 				 */
 				removeParameter(methods, signature, execution, unusedParameter, lvtIndexes[unusedParameter]);
 				
@@ -251,6 +252,7 @@ public class UnusedParameters
 		return new int[] { count };
 	}
 	
+	@Override
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);

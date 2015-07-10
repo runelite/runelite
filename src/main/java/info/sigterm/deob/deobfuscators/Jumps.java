@@ -2,6 +2,7 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Block;
 import info.sigterm.deob.attributes.code.Instruction;
@@ -12,7 +13,7 @@ import info.sigterm.deob.attributes.code.instructions.GotoW;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Jumps
+public class Jumps implements Deobfuscator
 {
 	private int checkBlockGraphOnce(ClassGroup group)
 	{
@@ -83,6 +84,7 @@ public class Jumps
 		return count;
 	}
 	
+	@Override
 	public void run(ClassGroup g)
 	{
 		int count = 0;

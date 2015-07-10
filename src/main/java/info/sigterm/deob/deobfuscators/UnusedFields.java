@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Field;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
@@ -12,7 +13,7 @@ import info.sigterm.deob.attributes.code.instruction.types.FieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.GetFieldInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.SetFieldInstruction;
 
-public class UnusedFields
+public class UnusedFields implements Deobfuscator
 {
 	private static boolean isUnused(ClassGroup group, Field field)
 	{
@@ -61,6 +62,7 @@ public class UnusedFields
 		return false;
 	}
 	
+	@Override
 	public void run(ClassGroup group)
 	{
 		int count = 0;
