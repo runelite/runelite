@@ -80,4 +80,17 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		if (field.getClassEntry().getName().equals(cf.getName()))
 			field = new Field(new Class(name), field.getNameAndType());
 	}
+	
+	@Override
+	public void renameField(info.sigterm.deob.Field f, String name)
+	{
+		if (field.getNameAndType().getName().equals(f.getName()) && field.getClassEntry().getName().equals(f.getFields().getClassFile().getName()))
+		{
+			Class clazz = field.getClassEntry();
+			NameAndType nat = field.getNameAndType();
+			
+			NameAndType newNat = new NameAndType(name, nat.getDescriptorType());
+			field = new Field(clazz, newNat);
+		}
+	}
 }

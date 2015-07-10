@@ -36,6 +36,14 @@ public class NameAndType extends PoolEntry
 		this.signature = sig;
 	}
 	
+	public NameAndType(java.lang.String name, Type type)
+	{
+		super(ConstantType.NAME_AND_TYPE);
+		
+		this.name = name;
+		this.type = type;
+	}
+	
 	@Override
 	public void resolve(ConstantPool pool)
 	{

@@ -4,6 +4,7 @@ import java.util.List;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Field;
 import info.sigterm.deob.Interfaces;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Exceptions;
@@ -74,21 +75,51 @@ public class RenameUnique
 		cf.setName(name);
 	}
 	
+	private void renameField(ClassGroup group, Field field, String name)
+	{
+		for (ClassFile c : group.getClasses())
+		{
+			for (Method method : c.getMethods().getMethods())
+			{
+				// rename on instructions
+				if (method.getCode() != null)
+				{
+					Instructions instructions = method.getCode().getInstructions();
+					instructions.renameField(field, name);
+				}
+			}
+		}
+		
+		field.setName(name);
+	}
+
 	public void run(ClassGroup group)
 	{
-		group.buildClassGraph();
-		
 		int i = 0;
+		int classes = 0, fields = 0, methods = 0;
+		
 		for (ClassFile cf : group.getClasses())
 		{
 			if (cf.getName().length() > 2)
 				continue;
 			
 			renameClass(group, cf, "class" + i++);
-			
-			// rename method
-			
-			// rename fields
+			++classes;
 		}
+		
+		// rename fields
+		for (ClassFile cf : group.getClasses())
+			for (Field field : cf.getFields().getFields())
+			{
+				if (field.getName().length() > 2)
+					continue;
+				
+				renameField(group, field, "field" + i++);
+				++fields;
+			}
+		
+		// rename methods
+		
+		System.out.println("Uniquely renamed " + classes + " classes, " + fields + " fields, and " + methods + " methods");
 	}
 }

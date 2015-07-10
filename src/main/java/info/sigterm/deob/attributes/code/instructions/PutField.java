@@ -11,6 +11,7 @@ import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.Field;
+import info.sigterm.deob.pool.NameAndType;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -60,5 +61,18 @@ public class PutField extends Instruction implements SetFieldInstruction
 	{
 		if (field.getClassEntry().getName().equals(cf.getName()))
 			field = new Field(new Class(name), field.getNameAndType());
+	}
+	
+	@Override
+	public void renameField(info.sigterm.deob.Field f, String name)
+	{
+		if (field.getNameAndType().getName().equals(f.getName()) && field.getClassEntry().getName().equals(f.getFields().getClassFile().getName()))
+		{
+			Class clazz = field.getClassEntry();
+			NameAndType nat = field.getNameAndType();
+			
+			NameAndType newNat = new NameAndType(name, nat.getDescriptorType());
+			field = new Field(clazz, newNat);
+		}
 	}
 }
