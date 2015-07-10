@@ -41,7 +41,7 @@ public class UnusedParameters
 		list.addAll(findDependentMethods(nat, visited, group, cf.getParent()));
 		
 		// search interfaces
-		for (ClassFile inter : cf.getInterfaces().getInterfaces())
+		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
 			list.addAll(findDependentMethods(nat, visited, group, inter));
 		
 		// search children

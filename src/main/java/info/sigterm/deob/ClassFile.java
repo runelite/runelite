@@ -123,6 +123,21 @@ public class ClassFile
 	{
 		return name.getName();
 	}
+	
+	public void setName(String name)
+	{
+		this.name = new Class(name);
+	}
+	
+	public Class getParentClass()
+	{
+		return this.super_class;
+	}
+	
+	public void setParentClass(Class c)
+	{
+		super_class = c;
+	}
 
 	public ClassFile getParent()
 	{
@@ -188,7 +203,7 @@ public class ClassFile
 			parent.children.add(this);
 		}
 		
-		for (ClassFile i : interfaces.getInterfaces())
+		for (ClassFile i : interfaces.getMyInterfaces())
 		{
 			i.children.add(this);
 		}

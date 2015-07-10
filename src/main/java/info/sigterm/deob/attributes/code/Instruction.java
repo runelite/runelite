@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.execution.Frame;
 
@@ -204,6 +205,10 @@ public abstract class Instruction
 	}
 	
 	public void replace(Instruction oldi, Instruction newi)
+	{
+	}
+	
+	public void renameClass(ClassFile cf, String name)
 	{
 	}
 }

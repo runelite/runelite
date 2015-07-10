@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.pool.Class;
 
 import java.io.DataInputStream;
@@ -32,5 +33,18 @@ public class Exceptions extends Attribute
 		out.writeShort(classes.size());
 		for (Class c : classes)
 			out.writeShort(this.getAttributes().getClassFile().getPool().make(c));
+	}
+	
+	public void renameClass(ClassFile cf, String name)
+	{
+		for (Class c : classes)
+		{
+			if (c.getName().equals(cf.getName()))
+			{
+				int idx = classes.indexOf(c);
+				classes.remove(idx);
+				classes.add(idx, new Class(name));
+			}
+		}
 	}
 }

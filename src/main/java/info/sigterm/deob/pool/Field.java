@@ -22,6 +22,14 @@ public class Field extends PoolEntry
 		natIndex = is.readUnsignedShort();
 	}
 	
+	public Field(Class clazz, NameAndType nat)
+	{
+		super(ConstantType.FIELDREF);
+		
+		this.clazz = clazz;
+		this.nat = nat;
+	}
+	
 	@Override
 	public void resolve(ConstantPool pool)
 	{

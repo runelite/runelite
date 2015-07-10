@@ -3,6 +3,7 @@ package info.sigterm.deob;
 import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
 import info.sigterm.deob.deobfuscators.Jumps;
 import info.sigterm.deob.deobfuscators.ModularArithmeticDeobfuscation;
+import info.sigterm.deob.deobfuscators.RenameUnique;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnusedBlocks;
 import info.sigterm.deob.deobfuscators.UnusedFields;
@@ -42,6 +43,9 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
+		new RenameUnique().run(group);
+		
+		/*
 		// remove except RuntimeException
 		new RuntimeExceptions().run(group);
 		
@@ -60,9 +64,11 @@ public class Deob
 		// remove jump obfuscation
 		new Jumps().run(group);
 		
+		// remove unused fields
 		new UnusedFields().run(group);
 		
 		//new ModularArithmeticDeobfuscation().run(group);
+		 */
 
 		saveJar(group, args[1]);
 		

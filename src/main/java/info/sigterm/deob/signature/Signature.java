@@ -74,8 +74,18 @@ public class Signature
 		return arguments.get(i);
 	}
 	
+	public void setTypeOfArg(int i, Type type)
+	{
+		arguments.set(i, type);
+	}
+	
 	public Type getReturnValue()
 	{
 		return rv;
+	}
+	
+	public void setTypeOfReturnValue(Type type)
+	{
+		rv = type;
 	}
 }

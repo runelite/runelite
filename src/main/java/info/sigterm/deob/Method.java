@@ -3,24 +3,17 @@ package info.sigterm.deob;
 import info.sigterm.deob.attributes.AttributeType;
 import info.sigterm.deob.attributes.Attributes;
 import info.sigterm.deob.attributes.Code;
+import info.sigterm.deob.attributes.Exceptions;
 import info.sigterm.deob.attributes.code.Instruction;
-import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
-import info.sigterm.deob.callgraph.Node;
-import info.sigterm.deob.execution.Execution;
-import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.pool.NameAndType;
-import info.sigterm.deob.pool.PoolEntry;
 import info.sigterm.deob.signature.Signature;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Method
 {
@@ -55,11 +48,6 @@ public class Method
 		out.writeShort(pool.makeUTF8(arguments.toString()));
 		attributes.write(out);
 	}
-	
-	protected void remove()
-	{
-		//assert callsFrom.isEmpty();
-	}
 
 	public Methods getMethods()
 	{
@@ -85,34 +73,16 @@ public class Method
 	{
 		return (accessFlags & ACC_STATIC) != 0;
 	}
+	
+	public Exceptions getExceptions()
+	{
+		return (Exceptions) attributes.findType(AttributeType.EXCEPTIONS);
+	}
 
 	public Code getCode()
 	{
 		return (Code) attributes.findType(AttributeType.CODE);
 	}
-	
-	/*
-	public List<Method> getOverriddenMethods()
-	{
-		List<Method> m = new ArrayList<Method>();
-		
-		ClassFile parent = methods.getClassFile().getParent();
-		if (parent != null)
-		{
-			Method other = parent.getMethods().findMethod(getName(), getDescriptor());
-			if (other != null)
-				m.add(other);
-		}
-		
-		for (ClassFile inter : methods.getClassFile().getInterfaces().getInterfaces())
-		{
-			Method other = inter.getMethods().findMethod(getName(), getDescriptor());
-			if (other != null)
-				m.add(other);
-		}
-		
-		return m;
-	}*/
 
 	public void buildInstructionGraph()
 	{
@@ -121,36 +91,6 @@ public class Method
 		if (code != null)
 			code.buildInstructionGraph();
 	}
-	
-	/*public void clearCallGraph()
-	{
-		callsTo.clear();
-		callsFrom.clear();
-	}*/
-	
-	/*public boolean isUsed()
-	{
-		if (!callsFrom.isEmpty())
-			return true;
-		
-		for (Method sm : getOverriddenMethods())
-		{
-			if (sm.isUsed())
-				return true;
-		}
-		
-		return false;
-	}*/
-	
-	/*
-	public void addCallTo(Instruction ins, Method method)
-	{
-		assert method != null;
-		Node node = new Node(this, method, ins);
-		callsTo.add(node);
-		method.callsFrom.add(node);
-	}
-	*/
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Instruction & LVTInstruction> List<T> findLVTInstructionsForVariable(int index)

@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
 import info.sigterm.deob.attributes.code.instructions.LDC;
@@ -195,5 +196,11 @@ public class Instructions
 			if (i.getPc() == pc)
 				return i;
 		return null;
+	}
+	
+	public void renameClass(ClassFile cf, String name)
+	{
+		for (Instruction i : instructions)
+			i.renameClass(cf, name);
 	}
 }

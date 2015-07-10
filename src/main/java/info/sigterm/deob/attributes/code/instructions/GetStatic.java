@@ -74,4 +74,10 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		return field;
 	}
 
+	@Override
+	public void renameClass(ClassFile cf, String name)
+	{
+		if (field.getClassEntry().getName().equals(cf.getName()))
+			field = new Field(new Class(name), field.getNameAndType());
+	}
 }

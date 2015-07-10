@@ -36,7 +36,6 @@ public class Methods
 	
 	public void removeMethod(Method m)
 	{
-		m.remove();
 		methods.remove(m);
 	}
 

@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.pool.Class;
 
@@ -92,5 +93,11 @@ public class Exception
 	public Class getCatchType()
 	{
 		return catchType;
+	}
+	
+	public void renameClass(ClassFile cf, String name)
+	{
+		if (catchType != null && cf.getName().equals(catchType.getName()))
+			catchType = new Class(name);
 	}
 }

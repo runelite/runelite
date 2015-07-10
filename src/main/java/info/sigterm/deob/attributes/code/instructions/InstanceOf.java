@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code.instructions;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -48,5 +49,12 @@ public class InstanceOf extends Instruction
 		ins.push(ctx);
 		
 		frame.addInstructionContext(ins);
+	}
+	
+	@Override
+	public void renameClass(ClassFile cf, String name)
+	{
+		if (clazz.getName().equals(cf.getName()))
+			clazz = new Class(name);
 	}
 }

@@ -26,7 +26,17 @@ public class Interfaces
 			interfaces.add(c.getPool().getClass(is.readUnsignedShort()));
 	}
 	
-	public List<ClassFile> getInterfaces()
+	public List<Class> getInterfaces()
+	{
+		return interfaces;
+	}
+	
+	public void setInterfaces(List<Class> interfaces)
+	{
+		this.interfaces = interfaces;
+	}
+	
+	public List<ClassFile> getMyInterfaces()
 	{
 		List<ClassFile> l = new ArrayList<>();
 		for (Class clazz : interfaces)

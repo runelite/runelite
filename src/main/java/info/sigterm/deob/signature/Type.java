@@ -16,9 +16,24 @@ public class Type
 		type = str;
 	}
 	
+	public Type(String type, int dimms)
+	{
+		this.type = type;
+		this.arrayDimms = dimms;
+	}
+	
 	public String getType()
 	{
 		return type;
+	}
+	
+	public String getFullType()
+	{
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < arrayDimms; ++i)
+			sb.append('[');
+		sb.append(type);
+		return sb.toString();
 	}
 	
 	public int getArrayDims()
@@ -49,10 +64,6 @@ public class Type
 	@Override
 	public String toString()
 	{
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < arrayDimms; ++i)
-			sb.append('[');
-		sb.append(type);
-		return sb.toString();
+		return getFullType();
 	}
 }

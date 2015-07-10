@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code.instructions;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -68,5 +69,12 @@ public class CheckCast extends Instruction
 				f.jump(e.getHandler());
 			}
 		}
+	}
+	
+	@Override
+	public void renameClass(ClassFile cf, String name)
+	{
+		if (clazz.getName().equals(cf.getName()))
+			clazz = new Class(name);
 	}
 }

@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code.instructions;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
@@ -9,6 +10,7 @@ import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
+import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.Field;
 
 import java.io.DataInputStream;
@@ -56,5 +58,12 @@ public class GetField extends Instruction implements GetFieldInstruction
 	public Field getField()
 	{
 		return field;
+	}
+	
+	@Override
+	public void renameClass(ClassFile cf, String name)
+	{
+		if (field.getClassEntry().getName().equals(cf.getName()))
+			field = new Field(new Class(name), field.getNameAndType());
 	}
 }

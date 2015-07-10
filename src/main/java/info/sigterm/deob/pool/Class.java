@@ -20,6 +20,13 @@ public class Class extends PoolEntry
 		index = is.readUnsignedShort();
 	}
 	
+	public Class(java.lang.String name)
+	{
+		super(ConstantType.CLASS);
+		
+		this.name = name;
+	}
+	
 	@Override
 	public void resolve(ConstantPool pool)
 	{

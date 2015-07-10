@@ -11,6 +11,7 @@ import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.Stack;
 import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
+import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.pool.PoolEntry;
@@ -153,5 +154,12 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	public PoolEntry getMethod()
 	{
 		return method;
+	}
+	
+	@Override
+	public void renameClass(ClassFile cf, String name)
+	{
+		if (method.getClassEntry().getName().equals(cf.getName()))
+			method = new Method(new Class(name), method.getNameAndType());
 	}
 }

@@ -1,5 +1,6 @@
 package info.sigterm.deob.attributes.code;
 
+import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.attributes.Code;
 
 import java.io.DataInputStream;
@@ -46,5 +47,11 @@ public class Exceptions
 	public List<Exception> getExceptions()
 	{
 		return exceptions;
+	}
+	
+	public void renameClass(ClassFile cf, String name)
+	{
+		for (Exception e : exceptions)
+			e.renameClass(cf, name);
 	}
 }
