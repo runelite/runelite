@@ -42,10 +42,7 @@ public class Deob
 		long start = System.currentTimeMillis();
 		
 		ClassGroup group = loadJar(args[0]);
-		
-		new RenameUnique().run(group);
-		
-		/*
+
 		// remove except RuntimeException
 		new RuntimeExceptions().run(group);
 		
@@ -68,7 +65,8 @@ public class Deob
 		new UnusedFields().run(group);
 		
 		//new ModularArithmeticDeobfuscation().run(group);
-		 */
+		
+		new RenameUnique().run(group);
 
 		saveJar(group, args[1]);
 		

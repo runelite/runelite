@@ -3,7 +3,6 @@ package info.sigterm.deob.execution;
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.Method;
-import info.sigterm.deob.attributes.code.Exceptions;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,6 +39,8 @@ public class Execution
 	
 	public void addMethod(Method method)
 	{
+		assert method != null;
+		
 		if (methods.contains(method))
 			return; // already processed
 		

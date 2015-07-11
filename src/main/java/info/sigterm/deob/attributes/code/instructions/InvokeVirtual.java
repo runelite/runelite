@@ -179,7 +179,8 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	@Override
 	public void renameMethod(info.sigterm.deob.Method m, String name)
 	{
-		if (method.getNameAndType().equals(m.getNameAndType()) && method.getClassEntry().getName().equals(m.getMethods().getClassFile().getName()))
-			method = new Method(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
+		for (info.sigterm.deob.Method m2 : getMethods())
+			if (m2.equals(m))
+				method = new Method(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
 	}
 }

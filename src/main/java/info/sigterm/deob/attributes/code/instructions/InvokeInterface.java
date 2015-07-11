@@ -180,7 +180,8 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	@Override
 	public void renameMethod(info.sigterm.deob.Method m, String name)
 	{
-		if (method.getNameAndType().equals(m.getNameAndType()) && method.getClassEntry().getName().equals(m.getMethods().getClassFile().getName()))
-			method = new InterfaceMethod(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
+		for (info.sigterm.deob.Method m2 : getMethods())
+			if (m2.equals(m))
+				method = new InterfaceMethod(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
 	}
 }

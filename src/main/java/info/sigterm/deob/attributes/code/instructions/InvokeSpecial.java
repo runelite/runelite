@@ -52,6 +52,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 			return new ArrayList<>(); // not our class
 		
 		info.sigterm.deob.Method other = otherClass.findMethodDeep(method.getNameAndType());
+		assert other != null;
 		
 		List<info.sigterm.deob.Method> list = new ArrayList<>();
 		list.add(other);
@@ -172,7 +173,8 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	@Override
 	public void renameMethod(info.sigterm.deob.Method m, String name)
 	{
-		if (method.getNameAndType().equals(m.getNameAndType()) && method.getClassEntry().getName().equals(m.getMethods().getClassFile().getName()))
-			method = new Method(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
+		for (info.sigterm.deob.Method m2 : getMethods())
+			if (m2.equals(m))
+				method = new Method(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
 	}
 }
