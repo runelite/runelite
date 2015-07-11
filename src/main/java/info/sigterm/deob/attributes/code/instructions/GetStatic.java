@@ -62,7 +62,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		if (cf == null)
 			return;
 
-		info.sigterm.deob.Field f = cf.findField(nat);
+		info.sigterm.deob.Field f = cf.findFieldDeep(nat);
 		assert f != null;
 
 		f.addReference(this);

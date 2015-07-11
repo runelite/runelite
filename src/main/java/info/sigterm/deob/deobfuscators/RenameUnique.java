@@ -1,5 +1,6 @@
 package info.sigterm.deob.deobfuscators;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.sigterm.deob.ClassFile;
@@ -93,6 +94,70 @@ public class RenameUnique implements Deobfuscator
 		
 		field.setName(name);
 	}
+	
+	private void findMethodDown(List<Method> list, ClassFile cf, Method method)
+	{
+		if (cf == null)
+			return;
+		
+		Method m = cf.findMethod(method.getNameAndType());
+		if (m != null && !m.isStatic())
+			list.add(m);
+		
+		findMethodDown(list, cf.getParent(), method);
+		
+		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
+			findMethodDown(list, inter, method);
+	}
+	
+	private void findMethodUp(List<Method> list, ClassFile cf, Method method)
+	{
+		Method m = cf.findMethod(method.getNameAndType());
+		if (m != null && !m.isStatic())
+			list.add(m);
+		
+		for (ClassFile child : cf.getChildren())
+			findMethodUp(list, child, method);
+	}
+	
+	private List<Method> getVirutalMethods(Method method)
+	{
+		List<Method> list = new ArrayList<>();
+		
+		list.add(method);
+		
+		if (method.isStatic())
+			return list;
+		
+		ClassFile classOfMethod = method.getMethods().getClassFile();
+		findMethodDown(list, classOfMethod.getParent(), method);
+		
+		for (ClassFile inter : classOfMethod.getInterfaces().getMyInterfaces())
+			findMethodDown(list, inter, method);
+		
+		for (ClassFile child : classOfMethod.getChildren())
+			findMethodUp(list, child, method);
+		
+		return list;
+	}
+	
+	private void renameMethod(ClassGroup group, Method m, String name)
+	{
+		for (ClassFile c : group.getClasses())
+		{
+			for (Method method : c.getMethods().getMethods())
+			{
+				// rename on instructions
+				if (method.getCode() != null)
+				{
+					Instructions instructions = method.getCode().getInstructions();
+					instructions.renameMethod(m, name);
+				}
+			}
+		}
+		
+		m.setName(name);
+	}
 
 	@Override
 	public void run(ClassGroup group)
@@ -120,7 +185,23 @@ public class RenameUnique implements Deobfuscator
 				++fields;
 			}
 		
+		group.buildClassGraph();
+		
 		// rename methods
+		for (ClassFile cf : group.getClasses())
+			for (Method method : cf.getMethods().getMethods())
+			{
+				if (method.getName().length() > 2)
+					continue;
+				
+				List<Method> virtualMethods = getVirutalMethods(method);
+				assert !virtualMethods.isEmpty();
+				if (virtualMethods.size() != 1)
+					continue; // do next
+				
+				renameMethod(group, method, "method" + i++);
+				++methods;
+			}
 		
 		System.out.println("Uniquely renamed " + classes + " classes, " + fields + " fields, and " + methods + " methods");
 	}

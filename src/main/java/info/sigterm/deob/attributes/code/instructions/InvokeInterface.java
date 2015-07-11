@@ -64,7 +64,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	
 	private void findMethodFromClass(List<info.sigterm.deob.Method> list, ClassFile clazz)
 	{
-		info.sigterm.deob.Method m = clazz.findMethod(method.getNameAndType());
+		info.sigterm.deob.Method m = clazz.findMethodDeep(method.getNameAndType());
 		if (m != null)
 			list.add(m);
 	
@@ -162,5 +162,12 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	{
 		if (method.getClassEntry().getName().equals(cf.getName()))
 			method = new InterfaceMethod(new Class(name), method.getNameAndType());
+	}
+	
+	@Override
+	public void renameMethod(info.sigterm.deob.Method m, String name)
+	{
+		if (method.getNameAndType().equals(m.getNameAndType()) && method.getClassEntry().getName().equals(m.getMethods().getClassFile().getName()))
+			method = new InterfaceMethod(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
 	}
 }

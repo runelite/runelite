@@ -2,6 +2,7 @@ package info.sigterm.deob.attributes.code;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.Field;
+import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
 
@@ -208,5 +209,11 @@ public class Instructions
 	{
 		for (Instruction i : instructions)
 			i.renameField(f, name);
+	}
+	
+	public void renameMethod(Method m, String name)
+	{
+		for (Instruction i : instructions)
+			i.renameMethod(m, name);
 	}
 }

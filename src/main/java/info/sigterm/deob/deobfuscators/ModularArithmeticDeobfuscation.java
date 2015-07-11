@@ -123,7 +123,7 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 		ClassFile cf = group.findClass(field.getClassEntry().getName());
 		if (cf == null)
 			return null;
-		return cf.findField(field.getNameAndType());		
+		return cf.findFieldDeep(field.getNameAndType());		
 	}
 	
 	private List<info.sigterm.deob.pool.Field> checkDown(InstructionContext context)
@@ -261,7 +261,7 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 					
 					// get Field from pool Field
 					info.sigterm.deob.pool.Field field = gf.getField();
-					Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
+					Field f = group.findClass(field.getClassEntry().getName()).findFieldDeep(field.getNameAndType());		
 					
 					assert f != null;
 					
@@ -296,7 +296,7 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 					
 					// get Field from pool Field
 					info.sigterm.deob.pool.Field field = sf.getField();
-					Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());		
+					Field f = group.findClass(field.getClassEntry().getName()).findFieldDeep(field.getNameAndType());		
 					
 					assert f != null;
 					
@@ -424,7 +424,7 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 		
 		// get Field from pool Field
 		info.sigterm.deob.pool.Field field = gf.getField();
-		Field f = group.findClass(field.getClassEntry().getName()).findField(field.getNameAndType());
+		Field f = group.findClass(field.getClassEntry().getName()).findFieldDeep(field.getNameAndType());
 		
 		Magic magic = workMagics.getMagic(f);
 		

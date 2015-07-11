@@ -149,7 +149,7 @@ public class ClassFile
 		return children;
 	}
 
-	public Field findField(NameAndType nat)
+	public Field findFieldDeep(NameAndType nat)
 	{
 		Field f = fields.findField(nat);
 		if (f != null)
@@ -157,12 +157,12 @@ public class ClassFile
 
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findField(nat);
+			return parent.findFieldDeep(nat);
 
 		return null;
 	}
 	
-	public Method findMethod(NameAndType nat)
+	public Method findMethodDeep(NameAndType nat)
 	{
 		Method m = methods.findMethod(nat);
 		if (m != null)
@@ -170,12 +170,17 @@ public class ClassFile
 
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findMethod(nat);
+			return parent.findMethodDeep(nat);
 
 		return null;
 	}
 	
-	public Method findMethod(String name)
+	public Method findMethod(NameAndType nat)
+	{
+		return methods.findMethod(nat);
+	}
+	
+	public Method findMethodDeep(String name)
 	{
 		Method m = methods.findMethod(name);
 		if (m != null)
@@ -183,7 +188,7 @@ public class ClassFile
 		
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findMethod(name);
+			return parent.findMethodDeep(name);
 
 		return null;
 	}

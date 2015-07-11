@@ -3,6 +3,7 @@ package info.sigterm.deob.attributes.code;
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.Field;
+import info.sigterm.deob.Method;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataOutputStream;
@@ -214,6 +215,10 @@ public abstract class Instruction
 	}
 	
 	public void renameField(Field f, String name)
+	{
+	}
+	
+	public void renameMethod(Method m, String name)
 	{
 	}
 }

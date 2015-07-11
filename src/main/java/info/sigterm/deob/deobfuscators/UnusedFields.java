@@ -37,7 +37,7 @@ public class UnusedFields implements Deobfuscator
 						if (clazz == null)
 							continue;
 						
-						Field f = clazz.findField(ff.getNameAndType());
+						Field f = clazz.findFieldDeep(ff.getNameAndType());
 						
 						if (field == f)
 						{

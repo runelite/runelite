@@ -34,7 +34,7 @@ public class UnusedParameters implements Deobfuscator
 		
 		visited.add(cf);
 		
-		Method method = cf.findMethod(nat); // XXX this searches down
+		Method method = cf.findMethodDeep(nat); // XXX this searches down
 		if (method != null && !method.isStatic())
 			list.add(method);
 		
