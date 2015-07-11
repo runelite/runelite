@@ -141,7 +141,7 @@ public class RenameUnique implements Deobfuscator
 		return list;
 	}
 	
-	private void renameMethod(ClassGroup group, Method m, String name)
+	private void renameMethod(ClassGroup group, List<Method> methods, String name)
 	{
 		for (ClassFile c : group.getClasses())
 		{
@@ -151,12 +151,14 @@ public class RenameUnique implements Deobfuscator
 				if (method.getCode() != null)
 				{
 					Instructions instructions = method.getCode().getInstructions();
-					instructions.renameMethod(m, name);
+					for (Method m : methods)
+						instructions.renameMethod(m, name);
 				}
 			}
 		}
 		
-		m.setName(name);
+		for (Method m : methods)
+			m.setName(name);
 	}
 
 	@Override
@@ -196,11 +198,15 @@ public class RenameUnique implements Deobfuscator
 				
 				List<Method> virtualMethods = getVirutalMethods(method);
 				assert !virtualMethods.isEmpty();
-				if (virtualMethods.size() != 1)
-					continue; // do next
 				
-				renameMethod(group, method, "method" + i++);
-				++methods;
+				String name;
+				if (virtualMethods.size() == 1)
+					name = "method" + i++;
+				else
+					name = "vmethod" + i++;
+				
+				renameMethod(group, virtualMethods, name);
+				methods += virtualMethods.size();
 			}
 		
 		System.out.println("Uniquely renamed " + classes + " classes, " + fields + " fields, and " + methods + " methods");

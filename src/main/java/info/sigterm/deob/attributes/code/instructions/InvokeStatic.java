@@ -151,6 +151,19 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	{
 		if (method.getClassEntry().getName().equals(cf.getName()))
 			method = new Method(new Class(name), method.getNameAndType());
+		
+		Signature signature = method.getNameAndType().getDescriptor();
+		for (int i = 0; i < signature.size(); ++i)
+		{
+			info.sigterm.deob.signature.Type type = signature.getTypeOfArg(i);
+			
+			if (type.getType().equals("L" + cf.getName() + ";"))
+				signature.setTypeOfArg(i, new info.sigterm.deob.signature.Type("L" + name + ";", type.getArrayDims())); 
+		}
+		
+		// rename return type
+		if (signature.getReturnValue().getType().equals("L" + cf.getName() + ";"))
+			signature.setTypeOfReturnValue(new info.sigterm.deob.signature.Type("L" + name + ";", signature.getReturnValue().getArrayDims()));
 	}
 	
 	@Override
