@@ -45,28 +45,31 @@ public class Deob
 
 		// remove except RuntimeException
 		new RuntimeExceptions().run(group);
+		// the blocks of runtime exceptions may contain interesting things like other obfuscations we identify later, but now that
+		// it can't be reached by the execution phase, those things become confused. so remove blocks here.
+		//new UnusedBlocks().run(group);
 		
 		// remove unused methods
-		new UnusedMethods().run(group);
+		//new UnusedMethods().run(group);
 		
 		// remove illegal state exceptions, frees up some parameters
-		new IllegalStateExceptions().run(group);
+		//new IllegalStateExceptions().run(group);
 		
-		// remove code blocks that used to be the runtime exception handlers
-		new UnusedBlocks().run(group);
+		// remove unhit blocks
+		//new UnusedBlocks().run(group);
 		
 		// remove unused parameters
-		new UnusedParameters().run(group);
+		//new UnusedParameters().run(group);
 		
 		// remove jump obfuscation
 		new Jumps().run(group);
 		
 		// remove unused fields
-		new UnusedFields().run(group);
+		//new UnusedFields().run(group);
 		
 		//new ModularArithmeticDeobfuscation().run(group);
 		
-		new RenameUnique().run(group);
+		//new RenameUnique().run(group);
 
 		saveJar(group, args[1]);
 		

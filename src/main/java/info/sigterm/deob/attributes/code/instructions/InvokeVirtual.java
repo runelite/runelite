@@ -112,12 +112,16 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		// jump to instruction handlers that can catch exceptions here
 		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
 		{
-			Instruction start = e.getStart(),
-					end = e.getEnd();
+			int startIdx = this.getInstructions().getInstructions().indexOf(e.getStart()),
+					endIdx = this.getInstructions().getInstructions().indexOf(e.getEnd()),
+					thisIdx = this.getInstructions().getInstructions().indexOf(this);
 			
-			// XXX this relies on pc?
+			assert startIdx != -1;
+			assert endIdx != -1;
+			assert thisIdx != -1;
+			
 			// [start, end)
-			if (this.getPc() >= start.getPc() && this.getPc() < end.getPc())
+			if (thisIdx >= startIdx && thisIdx < endIdx)
 			{
 				Frame f = frame.dup();
 				Stack stack = f.getStack();

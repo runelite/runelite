@@ -53,12 +53,6 @@ public class UnusedFields implements Deobfuscator
 		if (get == 0 && set == 0)
 			return true;
 		
-		if (get == 0)
-		{
-			System.out.println("Field " + field.getFields().getClassFile().getName() + "." + field.getName() + " is set but not get");
-			return false;
-		}
-		
 		return false;
 	}
 	

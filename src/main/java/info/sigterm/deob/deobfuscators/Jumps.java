@@ -56,10 +56,6 @@ public class Jumps implements Deobfuscator
 							//ins.clearBlocks();
 							ins.clearJumpGraph();
 							
-							// 'from' goes away and is replaced with block.begin
-							for (Instruction in : ilist)
-								in.replace(from, block.begin);
-							
 							// remove instructions
 							for (Instruction in : block.instructions)
 							{
@@ -67,13 +63,19 @@ public class Jumps implements Deobfuscator
 								assert b;
 							}
 							
-							// store pos of from
-							int index = ilist.indexOf(from);
-							ilist.remove(from);
+							int idx = ilist.indexOf(from);
+							boolean b = ilist.remove(from);
+							assert b;
 							
-							// insert instructions where 'from' was
-							for (Instruction in : block.instructions)
-								ilist.add(index++, in);
+							b = ilist.addAll(idx, block.instructions);
+							assert b;
+							
+							// replace from with block.begin
+							for (Instruction ins2 : ilist)
+								ins2.replace(from, block.begin);
+							
+							for (info.sigterm.deob.attributes.code.Exception e : m.getCode().getExceptions().getExceptions())
+								e.replace(from, block.begin);
 							
 							continue methods;
 						}
@@ -93,6 +95,7 @@ public class Jumps implements Deobfuscator
 		do
 		{
 			i = checkBlockGraphOnce(g);
+			System.out.println("pass " + i);
 			count += i;
 			++passes;
 		}

@@ -87,9 +87,20 @@ public class Instructions
 	{
 		for (Exception e : code.getExceptions().getExceptions())
 		{
-			if (i.getPc() >= e.getStart().getPc() && i.getPc() < e.getEnd().getPc())
+			int startIdx = instructions.indexOf(e.getStart()),
+					endIdx = instructions.indexOf(e.getEnd()),
+					thisIdx = instructions.indexOf(i);
+			
+			assert startIdx != -1;
+			assert endIdx != -1;
+			assert thisIdx != -1;
+			
+			assert endIdx > startIdx;
+			
+			if (thisIdx >= startIdx && thisIdx < endIdx)
 			{
-				block.exceptions.add(e);
+				if (!block.exceptions.contains(e))
+					block.exceptions.add(e);
 			}
 			if (e.getHandler() == i)
 			{
@@ -98,28 +109,43 @@ public class Instructions
 		}
 	}
 	
+	private boolean isException(Instruction i)
+	{
+		for (Exception e : code.getExceptions().getExceptions())
+			if (e.getHandler() == i || e.getStart() == i)
+				return true;
+		return false;
+	}
+	
+	private boolean isExceptionEnd(Instruction i)
+	{
+		for (Exception e : code.getExceptions().getExceptions())
+			if (e.getEnd() ==  i)
+				return true;
+		return false;
+	}
+	
 	public void buildBlocks()
 	{
 		clearBlockGraph();
 		buildJumpGraph();
 		
 		Block current = null;
-		for (Instruction i : instructions)
+		for (int j = 0; j < instructions.size(); ++j)
 		{
-			if (current == null || !i.from.isEmpty())
+			Instruction i = instructions.get(j),
+					next = j + 1 < instructions.size() ? instructions.get(j + 1) : null;
+
+			if (current == null)
 			{
-				if (current != null)
-				{
-					current.end = current.instructions.get(current.instructions.size() - 1);
-					blocks.add(current);
-				}
 				current = new Block();
 				current.begin = i;
-				findExceptionInfo(current, i);
 			}
-			i.block = current;
+			
 			current.instructions.add(i);
-			if (i.isTerminal())
+			findExceptionInfo(current, i);
+			
+			if (i.isTerminal() || next == null || isException(next) || isExceptionEnd(i) || !next.from.isEmpty())
 			{
 				current.end = i;
 				blocks.add(current);
