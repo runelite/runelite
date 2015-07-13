@@ -35,13 +35,6 @@ public class Exception
 		assert start != null;
 		assert end != null;
 		assert handler != null;
-		
-		handler.exce.add(this);
-	}
-	
-	protected void remove()
-	{
-		handler.exce.remove(this);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
@@ -83,11 +76,7 @@ public class Exception
 			end = newi;
 		
 		if (handler == oldi)
-		{
-			handler.exce.remove(this);
 			handler = newi;
-			handler.exce.add(this);
-		}
 	}
 	
 	public Class getCatchType()

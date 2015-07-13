@@ -4,17 +4,16 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
-import info.sigterm.deob.attributes.code.Block;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.block.Block;
 
 import java.util.ArrayList;
 
 public class UnusedBlocks implements Deobfuscator
 {
-	@Override
-	public void run(ClassGroup group)
+	public int pass(ClassGroup group)
 	{
-		int i = 0;
+		int removed = 0;
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
@@ -25,21 +24,33 @@ public class UnusedBlocks implements Deobfuscator
 				Instructions ins = m.getCode().getInstructions();
 				ins.buildBlocks();
 				
-				int count = 0;
-				for (Block b : new ArrayList<>(ins.getBlocks()))
+				for (int i = 0; i < ins.getBlocks().size(); ++i)
 				{
+					Block block = ins.getBlocks().get(i);
+							
 					// first block is the entrypoint, so its always used
-					if (count++ == 0)
+					if (i == 0)
 						continue;
 					
-					if (b.begin.from.isEmpty() && b.begin.exce.isEmpty())
+					Block prev = ins.getBlocks().get(i - 1);
+					
+					if (prev.end.isTerminal() && block.begin.from.isEmpty() && block.handlers.isEmpty())
 					{
-						ins.remove(b);
-						++i;
+						ins.remove(block);
+						++removed;
+						break;
 					}
 				}
 			}
 		}
-		System.out.println("Removed " + i + " unused blocks");
+		
+		System.out.println("Removed " + removed + " unused blocks");
+		return removed;
+	}
+	
+	@Override
+	public void run(ClassGroup group)
+	{
+		while (pass(group) > 0);
 	}
 }

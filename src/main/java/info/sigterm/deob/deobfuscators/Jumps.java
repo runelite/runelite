@@ -4,11 +4,11 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
-import info.sigterm.deob.attributes.code.Block;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instructions.Goto;
 import info.sigterm.deob.attributes.code.instructions.GotoW;
+import info.sigterm.deob.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;

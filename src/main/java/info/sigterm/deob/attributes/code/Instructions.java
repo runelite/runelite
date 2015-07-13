@@ -5,6 +5,7 @@ import info.sigterm.deob.Field;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
+import info.sigterm.deob.block.Block;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

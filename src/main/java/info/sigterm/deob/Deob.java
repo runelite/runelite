@@ -14,12 +14,12 @@ import info.sigterm.deob.execution.Frame;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.signature.Signature;
 import info.sigterm.deob.attributes.Code;
-import info.sigterm.deob.attributes.code.Block;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instructions.Goto;
 import info.sigterm.deob.attributes.code.instructions.GotoW;
 import info.sigterm.deob.attributes.code.instructions.Return;
+import info.sigterm.deob.block.Block;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -47,29 +47,29 @@ public class Deob
 		new RuntimeExceptions().run(group);
 		// the blocks of runtime exceptions may contain interesting things like other obfuscations we identify later, but now that
 		// it can't be reached by the execution phase, those things become confused. so remove blocks here.
-		//new UnusedBlocks().run(group);
+		new UnusedBlocks().run(group);
 		
 		// remove unused methods
-		//new UnusedMethods().run(group);
+		new UnusedMethods().run(group);
 		
 		// remove illegal state exceptions, frees up some parameters
-		//new IllegalStateExceptions().run(group);
+		new IllegalStateExceptions().run(group);
 		
 		// remove unhit blocks
-		//new UnusedBlocks().run(group);
+		new UnusedBlocks().run(group);
 		
 		// remove unused parameters
-		//new UnusedParameters().run(group);
+		new UnusedParameters().run(group);
 		
 		// remove jump obfuscation
 		new Jumps().run(group);
 		
 		// remove unused fields
-		//new UnusedFields().run(group);
+		new UnusedFields().run(group);
 		
 		//new ModularArithmeticDeobfuscation().run(group);
 		
-		//new RenameUnique().run(group);
+		new RenameUnique().run(group);
 
 		saveJar(group, args[1]);
 		

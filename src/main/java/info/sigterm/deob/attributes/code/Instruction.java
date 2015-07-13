@@ -4,6 +4,7 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ConstantPool;
 import info.sigterm.deob.Field;
 import info.sigterm.deob.Method;
+import info.sigterm.deob.block.Block;
 import info.sigterm.deob.execution.Frame;
 
 import java.io.DataOutputStream;
@@ -22,7 +23,6 @@ public abstract class Instruction
 
 	public List<Instruction> jump = new ArrayList<>(), // instructions which this instruction jumps to
 								from = new ArrayList<>(); // instructions which jump to this instruction
-	public List<Exception> exce = new ArrayList<>(); // exception handlers which start here
 
 	public Instruction(Instructions instructions, InstructionType type, int pc)
 	{
@@ -48,7 +48,6 @@ public abstract class Instruction
 		}
 		
 		assert from.isEmpty(); // because this is empty no jumping instructions point here
-		assert exce.isEmpty();
 	}
 	
 	public void replace(Instruction other)
@@ -97,7 +96,6 @@ public abstract class Instruction
 		{
 			e.replace(this, other);
 		}
-		assert exce.isEmpty();
 		
 		// replace ins
 		int index = ins.indexOf(this);

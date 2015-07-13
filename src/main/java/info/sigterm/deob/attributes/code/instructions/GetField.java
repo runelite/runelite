@@ -66,16 +66,25 @@ public class GetField extends Instruction implements GetFieldInstruction
 	{
 		if (field.getClassEntry().getName().equals(cf.getName()))
 			field = new Field(new Class(name), field.getNameAndType());
+		
+		if (field.getNameAndType().getDescriptorType().getType().equals("L" + cf.getName() + ";"))
+			field = new Field(field.getClassEntry(), new NameAndType(field.getNameAndType().getName(), new info.sigterm.deob.signature.Type("L" + name + ";", field.getNameAndType().getDescriptorType().getArrayDims())));
 	}
 	
 	@Override
 	public void renameField(info.sigterm.deob.Field f, String name)
 	{
-		if (field.getNameAndType().getName().equals(f.getName()) && field.getClassEntry().getName().equals(f.getFields().getClassFile().getName()))
+		Class clazz = field.getClassEntry();
+		NameAndType nat = field.getNameAndType();
+
+		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		if (cf == null)
+			return;
+
+		info.sigterm.deob.Field f2 = cf.findFieldDeep(nat);
+		
+		if (f2 == f)
 		{
-			Class clazz = field.getClassEntry();
-			NameAndType nat = field.getNameAndType();
-			
 			NameAndType newNat = new NameAndType(name, nat.getDescriptorType());
 			field = new Field(clazz, newNat);
 		}

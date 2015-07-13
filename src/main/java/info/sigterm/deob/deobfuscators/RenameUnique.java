@@ -72,6 +72,11 @@ public class RenameUnique implements Deobfuscator
 				if (method.getExceptions() != null)
 					method.getExceptions().renameClass(cf, name);
 			}
+			
+			// rename on fields
+			for (Field field : c.getFields().getFields())
+				if (field.getType().getType().equals("L" + cf.getName() + ";"))
+					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
 		}
 		
 		cf.setName(name);

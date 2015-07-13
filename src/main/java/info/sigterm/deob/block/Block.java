@@ -1,4 +1,7 @@
-package info.sigterm.deob.attributes.code;
+package info.sigterm.deob.block;
+
+import info.sigterm.deob.attributes.code.Exception;
+import info.sigterm.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;

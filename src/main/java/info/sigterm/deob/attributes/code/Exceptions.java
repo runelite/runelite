@@ -28,7 +28,6 @@ public class Exceptions
 	
 	public void remove(Exception e)
 	{
-		e.remove();
 		exceptions.remove(e);
 	}
 	

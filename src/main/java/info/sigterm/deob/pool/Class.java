@@ -27,6 +27,16 @@ public class Class extends PoolEntry
 		this.name = name;
 	}
 	
+	public Class(java.lang.String name, int dimms)
+	{
+		super(ConstantType.CLASS);
+		
+		while (dimms-- > 0)
+			name = "[" + name;
+		
+		this.name = name;
+	}
+	
 	@Override
 	public void resolve(ConstantPool pool)
 	{

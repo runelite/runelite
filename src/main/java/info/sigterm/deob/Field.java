@@ -77,6 +77,11 @@ public class Field
 	{
 		return type;
 	}
+	
+	public void setType(Type type)
+	{
+		this.type = type;
+	}
 
 	public Attributes getAttributes()
 	{
