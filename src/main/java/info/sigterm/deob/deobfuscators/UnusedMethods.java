@@ -24,8 +24,9 @@ public class UnusedMethods implements Deobfuscator
 		{
 			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
 			{
-				/* assume obfuscated names are <= 2 chars */
-				if (m.getName().length() > 2)
+				// assume obfuscated names are <= 2 chars
+				// constructors can be unused, too
+				if (m.getName().length() > 2 && !m.getName().equals("<init>"))
 					continue;
 				
 				if (!execution.methods.contains(m))
