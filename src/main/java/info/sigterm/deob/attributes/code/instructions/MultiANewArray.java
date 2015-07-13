@@ -63,8 +63,8 @@ public class MultiANewArray extends Instruction
 	public void renameClass(ClassFile cf, String name)
 	{
 		// class is an array type, ugh.
-		info.sigterm.deob.signature.Type t = new info.sigterm.deob.signature.Type(cf.getName());
-		if (t.getType().equals(cf.getName()))
+		info.sigterm.deob.signature.Type t = new info.sigterm.deob.signature.Type(clazz.getName());
+		if (t.getType().equals("L" + cf.getName() + ";"))
 			clazz = new Class(name, t.getArrayDims());
 	}
 }
