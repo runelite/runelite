@@ -59,7 +59,7 @@ public class Deob
 		new UnusedBlocks().run(group);
 		
 		// remove unused parameters
-		//new UnusedParameters().run(group);
+		new UnusedParameters().run(group);
 		
 		// remove jump obfuscation
 		//new Jumps().run(group);

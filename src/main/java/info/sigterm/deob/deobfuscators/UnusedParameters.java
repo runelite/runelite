@@ -209,7 +209,7 @@ public class UnusedParameters implements Deobfuscator
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
-				if (done.contains(m))
+				if (done.contains(m) || m.getName().length() > 2) // ctors not uniquely renamed. overriding jre methods can't just remove a parameter
 					continue;
 
 				int offset = m.isStatic() ? 0 : 1;
