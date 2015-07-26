@@ -58,7 +58,8 @@ public class ANewArray extends Instruction
 	@Override
 	public void renameClass(ClassFile cf, String name)
 	{
-		if (clazz.getName().equals(cf.getName()))
-			clazz = new Class(name);
+		info.sigterm.deob.signature.Type t = new info.sigterm.deob.signature.Type(clazz.getName());
+		if (t.getType().equals("L" + cf.getName() + ";") || t.getType().equals(cf.getName()))
+			clazz = new Class(name, t.getArrayDims());
 	}
 }

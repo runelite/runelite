@@ -14,6 +14,8 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.signature.Signature;
 import info.sigterm.deob.signature.Type;
+import java.util.HashSet;
+import java.util.Set;
 
 public class RenameUnique implements Deobfuscator
 {
@@ -100,49 +102,38 @@ public class RenameUnique implements Deobfuscator
 		field.setName(name);
 	}
 	
-	private void findMethodDown(List<Method> list, ClassFile cf, Method method)
+	private void findMethod(List<Method> list, Set<ClassFile> visited, ClassFile cf, Method method)
 	{
-		if (cf == null)
+		if (cf == null || visited.contains(cf))
 			return;
 		
+		visited.add(cf);
+		
 		Method m = cf.findMethod(method.getNameAndType());
 		if (m != null && !m.isStatic())
 			list.add(m);
 		
-		findMethodDown(list, cf.getParent(), method);
+		findMethod(list, visited, cf.getParent(), method);
 		
 		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
-			findMethodDown(list, inter, method);
-	}
-	
-	private void findMethodUp(List<Method> list, ClassFile cf, Method method)
-	{
-		Method m = cf.findMethod(method.getNameAndType());
-		if (m != null && !m.isStatic())
-			list.add(m);
-		
+			findMethod(list, visited, inter, method);
+
 		for (ClassFile child : cf.getChildren())
-			findMethodUp(list, child, method);
+			findMethod(list, visited, child, method);
 	}
 	
 	private List<Method> getVirutalMethods(Method method)
 	{
 		List<Method> list = new ArrayList<>();
 		
-		list.add(method);
-		
 		if (method.isStatic())
+		{
+			list.add(method);
 			return list;
+		}
 		
-		ClassFile classOfMethod = method.getMethods().getClassFile();
-		findMethodDown(list, classOfMethod.getParent(), method);
-		
-		for (ClassFile inter : classOfMethod.getInterfaces().getMyInterfaces())
-			findMethodDown(list, inter, method);
-		
-		for (ClassFile child : classOfMethod.getChildren())
-			findMethodUp(list, child, method);
-		
+		findMethod(list, new HashSet<ClassFile>(), method.getMethods().getClassFile(), method);
+
 		return list;
 	}
 	
