@@ -175,6 +175,19 @@ public class ClassFile
 		return null;
 	}
 	
+	public Method findMethodDeepStatic(NameAndType nat)
+	{
+		Method m = methods.findMethod(nat);
+		if (m != null && m.isStatic())
+			return m;
+
+		ClassFile parent = getParent();
+		if (parent != null)
+			return parent.findMethodDeep(nat);
+
+		return null;
+	}
+	
 	public Method findMethod(NameAndType nat)
 	{
 		return methods.findMethod(nat);

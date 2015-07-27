@@ -34,7 +34,7 @@ public class UnusedParameters implements Deobfuscator
 		
 		visited.add(cf);
 		
-		Method method = cf.findMethodDeep(nat); // XXX this searches down
+		Method method = cf.findMethod(nat);
 		if (method != null && !method.isStatic())
 			list.add(method);
 		
@@ -55,10 +55,7 @@ public class UnusedParameters implements Deobfuscator
 	private static List<Method> findDependentMethods(Method m)
 	{
 		ClassFile cf = m.getMethods().getClassFile();
-		List<Method> methods = findDependentMethods(m.getNameAndType(), new HashSet<ClassFile>(), cf.getGroup(), cf);
-		
-		Set s = new HashSet<>(methods); // XXX
-		return new ArrayList<>(s);
+		return findDependentMethods(m.getNameAndType(), new HashSet<ClassFile>(), cf.getGroup(), cf);
 	}
 	
 	private List<Integer> findUnusedParameters(Method method)
