@@ -2,6 +2,7 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deob;
 import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.execution.Execution;
@@ -24,9 +25,7 @@ public class UnusedMethods implements Deobfuscator
 		{
 			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
 			{
-				// assume obfuscated names are <= 2 chars
-				// constructors can be unused, too
-				if (m.getName().length() > 2 && !m.getName().equals("<init>"))
+				if (!Deob.isObfuscated(m.getName()))
 					continue;
 				
 				if (!execution.methods.contains(m))

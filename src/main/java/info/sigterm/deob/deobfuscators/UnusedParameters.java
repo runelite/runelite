@@ -2,6 +2,7 @@ package info.sigterm.deob.deobfuscators;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deob;
 import info.sigterm.deob.Deobfuscator;
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
@@ -206,7 +207,7 @@ public class UnusedParameters implements Deobfuscator
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
-				if (done.contains(m) || m.getName().length() > 2) // ctors not uniquely renamed. overriding jre methods can't just remove a parameter
+				if (done.contains(m) || !Deob.isObfuscated(m.getName()))
 					continue;
 
 				int offset = m.isStatic() ? 0 : 1;

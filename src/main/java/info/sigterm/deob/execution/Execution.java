@@ -2,6 +2,7 @@ package info.sigterm.deob.execution;
 
 import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
+import info.sigterm.deob.Deob;
 import info.sigterm.deob.Method;
 
 import java.util.ArrayList;
@@ -28,8 +29,7 @@ public class Execution
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
-				// ob'd names seem to be <= 2
-				if (m.getName().length() > 2)
+				if (!Deob.isObfuscated(m.getName()))
 				{
 					addMethod(m); // I guess this method name is overriding a jre interface (init, run, ?).
 				}

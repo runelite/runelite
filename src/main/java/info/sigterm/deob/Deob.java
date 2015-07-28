@@ -42,6 +42,8 @@ public class Deob
 		long start = System.currentTimeMillis();
 		
 		ClassGroup group = loadJar(args[0]);
+		
+		new RenameUnique().run(group);
 
 		// remove except RuntimeException
 		new RuntimeExceptions().run(group);
@@ -68,13 +70,16 @@ public class Deob
 		new UnusedFields().run(group);
 		
 		//new ModularArithmeticDeobfuscation().run(group);
-		
-		new RenameUnique().run(group);
 
 		saveJar(group, args[1]);
 		
 		long end = System.currentTimeMillis();
 		System.out.println("Done in " + ((end - start) / 1000L) + "s");
+	}
+	
+	public static boolean isObfuscated(String name)
+	{
+		return name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
 	}
 	
 	private static ClassGroup loadJar(String jarfile) throws IOException
