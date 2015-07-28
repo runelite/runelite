@@ -62,6 +62,11 @@ public class Field
 	{
 		return accessFlags;
 	}
+	
+	public boolean isStatic()
+	{
+		return (accessFlags & ACC_STATIC) != 0;
+	}
 
 	public String getName()
 	{

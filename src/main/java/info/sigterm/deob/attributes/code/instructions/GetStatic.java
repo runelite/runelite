@@ -95,6 +95,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 			return;
 
 		info.sigterm.deob.Field f2 = cf.findFieldDeep(nat);
+		assert f2 != null;
 		
 		if (f2 == f)
 		{

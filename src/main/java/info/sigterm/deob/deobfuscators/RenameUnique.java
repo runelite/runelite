@@ -163,6 +163,8 @@ public class RenameUnique implements Deobfuscator
 		int i = 0;
 		int classes = 0, fields = 0, methods = 0;
 		
+		group.buildClassGraph();
+		
 		for (ClassFile cf : group.getClasses())
 		{
 			if (cf.getName().length() > 2)
@@ -182,8 +184,6 @@ public class RenameUnique implements Deobfuscator
 				renameField(group, field, "field" + i++);
 				++fields;
 			}
-		
-		group.buildClassGraph();
 		
 		// rename methods
 		for (ClassFile cf : group.getClasses())
