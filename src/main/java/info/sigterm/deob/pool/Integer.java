@@ -54,4 +54,10 @@ public class Integer extends PoolEntry
 	{
 		out.writeInt(value);
 	}
+	
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }

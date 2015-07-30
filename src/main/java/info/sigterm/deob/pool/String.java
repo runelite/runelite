@@ -61,4 +61,10 @@ public class String extends PoolEntry
 	{
 		out.writeShort(stringIndex);
 	}
+
+	@Override
+	public Object getObject()
+	{
+		return string;
+	}
 }

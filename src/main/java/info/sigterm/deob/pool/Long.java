@@ -54,4 +54,10 @@ public class Long extends PoolEntry
 	{
 		out.writeLong(value);
 	}
+	
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }

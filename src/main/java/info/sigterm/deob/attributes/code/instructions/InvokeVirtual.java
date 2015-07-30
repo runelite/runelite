@@ -83,7 +83,8 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	// find the possible methods this instruction might be invoking. we can't know for sure
 	// which method is being invoked without tracking the types of objects in fields and when
 	// passed in parameters/return values.
-	private List<info.sigterm.deob.Method> getMethods()
+	@Override
+	public List<info.sigterm.deob.Method> getMethods()
 	{
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		

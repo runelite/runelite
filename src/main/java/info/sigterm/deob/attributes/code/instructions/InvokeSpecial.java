@@ -43,7 +43,8 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		out.writeShort(this.getPool().make(method));
 	}
 	
-	private List<info.sigterm.deob.Method> getMethods()
+	@Override
+	public List<info.sigterm.deob.Method> getMethods()
 	{
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		

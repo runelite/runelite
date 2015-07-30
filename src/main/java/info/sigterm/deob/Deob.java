@@ -20,6 +20,7 @@ import info.sigterm.deob.attributes.code.instructions.Goto;
 import info.sigterm.deob.attributes.code.instructions.GotoW;
 import info.sigterm.deob.attributes.code.instructions.Return;
 import info.sigterm.deob.block.Block;
+import info.sigterm.deob.deobfuscators.ConstantParameter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -43,31 +44,54 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
-		new RenameUnique().run(group);
-
-		// remove except RuntimeException
-		new RuntimeExceptions().run(group);
-		// the blocks of runtime exceptions may contain interesting things like other obfuscations we identify later, but now that
-		// it can't be reached by the execution phase, those things become confused. so remove blocks here.
-		new UnusedBlocks().run(group);
+		new ConstantParameter().run(group);
 		
-		// remove unused methods
-		new UnusedMethods().run(group);
-		
-		// remove illegal state exceptions, frees up some parameters
-		new IllegalStateExceptions().run(group);
-		
-		// remove unhit blocks
-		new UnusedBlocks().run(group);
-		
-		// remove unused parameters
-		new UnusedParameters().run(group);
+//		long bstart = System.currentTimeMillis();
+//		new RenameUnique().run(group);
+//		long bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("rename unique took " + bdur/1000L + " seconds");
+//
+//		// remove except RuntimeException
+//		bstart = System.currentTimeMillis();
+//		new RuntimeExceptions().run(group);
+//		// the blocks of runtime exceptions may contain interesting things like other obfuscations we identify later, but now that
+//		// it can't be reached by the execution phase, those things become confused. so remove blocks here.
+//		new UnusedBlocks().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("runtime exception took " + bdur/1000L + " seconds");
+//		
+//		// remove unused methods
+//		bstart = System.currentTimeMillis();
+//		new UnusedMethods().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("unused methods took " + bdur/1000L + " seconds");
+//		
+//		// remove illegal state exceptions, frees up some parameters
+//		bstart = System.currentTimeMillis();
+//		new IllegalStateExceptions().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("illegal state exception took " + bdur/1000L + " seconds");
+//		
+//		// remove unhit blocks
+//		bstart = System.currentTimeMillis();
+//		new UnusedBlocks().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("unused blocks took " + bdur/1000L + " seconds");
+//		
+//		// remove unused parameters
+//		bstart = System.currentTimeMillis();
+//		new UnusedParameters().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("unused blocks took " + bdur/1000L + " seconds");
 		
 		// remove jump obfuscation
 		//new Jumps().run(group);
 		
 		// remove unused fields
-		new UnusedFields().run(group);
+//		bstart = System.currentTimeMillis();
+//		new UnusedFields().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("unused fields took " + bdur/1000L + " seconds");
 		
 		//new ModularArithmeticDeobfuscation().run(group);
 

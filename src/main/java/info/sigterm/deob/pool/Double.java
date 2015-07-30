@@ -54,4 +54,10 @@ public class Double extends PoolEntry
 	{
 		out.writeDouble(value);
 	}
+	
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }

@@ -10,4 +10,6 @@ public interface InvokeInstruction
 	public void removeParameter(int idx);
 	
 	public PoolEntry getMethod();
+	
+	public List<Method> getMethods();
 }

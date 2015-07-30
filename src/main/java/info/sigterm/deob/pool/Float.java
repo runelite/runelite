@@ -48,4 +48,10 @@ public class Float extends PoolEntry
 	{
 		out.writeFloat(value);
 	}
+	
+	@Override
+	public Object getObject()
+	{
+		return value;
+	}
 }

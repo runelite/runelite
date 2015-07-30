@@ -45,4 +45,9 @@ public abstract class PoolEntry
 	{
 		return 1;
 	}
+	
+	public Object getObject()
+	{
+		return this;
+	}
 }
