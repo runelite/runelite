@@ -27,6 +27,15 @@ class MethodGroup
 	public List<Method> methods; // methods that can be invoked
 	public Collection<Integer> constantParameters; // parameters which are always constant for all invocations
 	public List<ConstantMethodParameter> cmps = new ArrayList<>(); // cmps for all methods in the group, which hold the values.
+	
+	public List<ConstantMethodParameter> getConstantParametersFor(Method m, int parameter)
+	{
+		List<ConstantMethodParameter> out = new ArrayList<>();
+		for (ConstantMethodParameter c : cmps)
+			if (c.method == m && c.paramNum == parameter)
+				out.add(c);
+		return out;
+	}
 }
 
 public class ConstantParameter implements Deobfuscator
@@ -114,6 +123,24 @@ public class ConstantParameter implements Deobfuscator
 				for (Method m : methods)
 					methodGroups.put(m, group);
 			}
+	}
+	
+	private void findLogicallyDeadOperations()
+	{
+		for (Object ogroup : methodGroups.values())
+		{
+			MethodGroup group = (MethodGroup) ogroup;
+			for (Method m : group.methods)
+				for (int parameterIndex : group.constantParameters)
+				{
+					// constants used in this parameter index when calling this method
+					List<ConstantMethodParameter> cmps = group.getConstantParametersFor(m, parameterIndex);
+					
+					// iterate instructions of method and find comparisons to parameter
+					// remove if all are logically dead. rely on unused parameter deob to remove
+					// the parameter.
+				}
+		}
 	}
 	
 	@Override
