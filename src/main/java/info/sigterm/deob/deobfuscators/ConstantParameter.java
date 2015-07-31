@@ -11,7 +11,9 @@ import info.sigterm.deob.execution.InstructionContext;
 import info.sigterm.deob.execution.StackContext;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -20,6 +22,7 @@ class ConstantMethodParameter
 	public Method method;
 	public int paramNum;
 	public Object value;
+	public InstructionContext invoke; // invoking instruction
 }
 
 class MethodGroup
@@ -42,7 +45,8 @@ public class ConstantParameter implements Deobfuscator
 {
 	private MultiValueMap<Method, ConstantMethodParameter> parameters = new MultiValueMap<>();
 	// methods can be in more than one group because of multiple inheritance with interfaces
-	private MultiValueMap<Method, MethodGroup> methodGroups = new MultiValueMap<>();
+	//private MultiValueMap<Method, MethodGroup> methodGroups = new MultiValueMap<>();
+	private List<MethodGroup> methodGroups = new ArrayList<>();
 	
 	private void findConstantParameter(Execution execution, Method method, InstructionContext invokeCtx)
 	{
@@ -65,6 +69,7 @@ public class ConstantParameter implements Deobfuscator
 				cmp.method = method;
 				cmp.paramNum = i;
 				cmp.value = pc.getConstant().getObject();
+				cmp.invoke = invokeCtx;
 				
 				parameters.put(method, cmp);
 			}
@@ -78,7 +83,8 @@ public class ConstantParameter implements Deobfuscator
 		
 		if (params != null)
 			for (ConstantMethodParameter p : params)
-				out.add(p.paramNum);
+				if (!out.contains(p.paramNum))
+					out.add(p.paramNum);
 		
 		return out;
 	}
@@ -116,20 +122,24 @@ public class ConstantParameter implements Deobfuscator
 				{
 					Collection<ConstantMethodParameter> params = parameters.getCollection(m);
 					if (params != null)
-						group.cmps.addAll(params);
+						for (ConstantMethodParameter c : params)
+							if (parameterIndexes.contains(c.paramNum))
+								group.cmps.add(c);
 				}
 				
 				// insert
-				for (Method m : methods)
-					methodGroups.put(m, group);
+				methodGroups.add(group);
+				//for (Method m : methods)
+				//	methodGroups.put(m, group);
 			}
 	}
 	
 	private void findLogicallyDeadOperations()
 	{
-		for (Object ogroup : methodGroups.values())
+		for (MethodGroup group : methodGroups)
+		//for (Object ogroup : methodGroups.values())
 		{
-			MethodGroup group = (MethodGroup) ogroup;
+	//		MethodGroup group = (MethodGroup) ogroup;
 			for (Method m : group.methods)
 				for (int parameterIndex : group.constantParameters)
 				{
@@ -139,6 +149,7 @@ public class ConstantParameter implements Deobfuscator
 					// iterate instructions of method and find comparisons to parameter
 					// remove if all are logically dead. rely on unused parameter deob to remove
 					// the parameter.
+					System.out.println(cmps.size() + " calls to " + m.getMethods().getClassFile().getName() + "." + m.getName() + " with index " + parameterIndex);
 				}
 		}
 	}
@@ -146,15 +157,14 @@ public class ConstantParameter implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
-		group.buildClassGraph(); // required for getMethods in the invoke stuff
+		group.buildClassGraph(); // required for getMethods in the invoke stuff by execution...
 		
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
 		
 		findParameters(execution);
-		
-		System.out.println("finished with " + methodGroups.size() + " groups");
+		findLogicallyDeadOperations();
 	}
 	
 }
