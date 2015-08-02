@@ -129,4 +129,14 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 			if (branchi.get(i) == oldi)
 				branchi.set(i, newi);
 	}
+	
+	@Override
+	public List<Instruction> getJumps()
+	{
+		List<Instruction> list = new ArrayList<>();
+		for (Instruction i : branchi)
+			list.add(i);
+		list.add(defi);
+		return list;
+	}
 }

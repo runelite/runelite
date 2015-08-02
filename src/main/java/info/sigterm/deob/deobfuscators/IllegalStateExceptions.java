@@ -9,6 +9,8 @@ import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.Code;
 import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.ComparisonInstruction;
+import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
 import info.sigterm.deob.attributes.code.instructions.AThrow;
 import info.sigterm.deob.attributes.code.instructions.Goto;
 import info.sigterm.deob.attributes.code.instructions.If;
@@ -43,7 +45,7 @@ public class IllegalStateExceptions implements Deobfuscator
 				{
 					Instruction ins = ilist.get(i);
 					
-					if (!(ins instanceof If) && !(ins instanceof If0))
+					if (!(ins instanceof ComparisonInstruction))
 						continue;
 					
 					Instruction ins2 = ilist.get(i + 1);
@@ -55,11 +57,9 @@ public class IllegalStateExceptions implements Deobfuscator
 					if (!clazz.getName().equals("java/lang/IllegalStateException"))
 						continue;
 					
-					Instruction to = null;
-					if (ins instanceof If)
-						to = ((If) ins).getTo();
-					else if (ins instanceof If0)
-						to = ((If0) ins).getTo();
+					JumpingInstruction jumpIns = (JumpingInstruction) ins;
+					assert jumpIns.getJumps().size() == 1;
+					Instruction to = jumpIns.getJumps().get(0);
 					
 					// remove stack of if.
 					boolean found = false;

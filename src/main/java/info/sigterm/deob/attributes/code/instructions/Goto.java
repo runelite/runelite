@@ -9,6 +9,8 @@ import info.sigterm.deob.execution.Frame;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Goto extends Instruction implements JumpingInstruction
 {
@@ -70,5 +72,11 @@ public class Goto extends Instruction implements JumpingInstruction
 	{
 		if (to == oldi)
 			to = newi;
+	}
+
+	@Override
+	public List<Instruction> getJumps()
+	{
+		return Arrays.asList(to);
 	}
 }

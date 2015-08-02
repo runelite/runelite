@@ -13,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LookupSwitch extends Instruction implements JumpingInstruction
@@ -131,5 +132,15 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 		for (int i = 0; i < branchi.size(); ++i)
 			if (branchi.get(i) == oldi)
 				branchi.set(i, newi);
+	}
+	
+	@Override
+	public List<Instruction> getJumps()
+	{
+		List<Instruction> list = new ArrayList<>();
+		for (Instruction i : branchi)
+			list.add(i);
+		list.add(defi);
+		return list;
 	}
 }
