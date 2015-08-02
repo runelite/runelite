@@ -134,7 +134,12 @@ public class ConstantParameter implements Deobfuscator
 			{
 				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();
 				
-				if (!(pc.getConstant().getObject() instanceof Integer))
+				if (method.getMethods().getClassFile().getName().equals("client") && method.getName().equals("i"))
+				{
+					int i = 5;
+				}				
+				
+				if (!(pc.getConstant().getObject() instanceof Integer) && (!(pc.getConstant().getObject() instanceof Byte)))
 					continue;
 				
 				ConstantMethodParameter cmp = new ConstantMethodParameter();
@@ -149,11 +154,6 @@ public class ConstantParameter implements Deobfuscator
 					if (c.equals(cmp))
 						continue outer;
 				
-				if (method.getMethods().getClassFile().getName().equals("gy") && method.getName().equals("y"))
-				{
-					int i = 5;
-				}
-				
 				parameters.add(cmp);
 			}
 			else
@@ -167,7 +167,7 @@ public class ConstantParameter implements Deobfuscator
 					
 					if (c.methods.equals(methods) && c.lvtIndex == lvtOffset)
 					{
-						it.remove();;
+						it.remove();
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class ConstantParameter implements Deobfuscator
 		Instruction ins = (Instruction) comparison;
 		
 		assert (comparison instanceof If0) == (otherValue == null);
-		assert otherValue == null || otherValue instanceof Integer;
+		assert otherValue == null || otherValue instanceof Integer || otherValue instanceof Byte;
 
 		switch (ins.getType())
 		{
@@ -514,26 +514,36 @@ public class ConstantParameter implements Deobfuscator
 			for (LogicallyDeadOp op : ops)
 			{
 				InstructionContext ctx = op.compCtx; // comparison
+				Instruction ins = ctx.getInstruction();
 				boolean branch = op.branch;
+				assert branch;
 				
-				Instructions instructions = ctx.getInstruction().getInstructions();
+				Instructions instructions = ins.getInstructions();
 				
 				// remove the if
 				if (ctx.getInstruction() instanceof If)
 					ctx.removeStack(1);
 				ctx.removeStack(0);
 				
-				int idx = instructions.getInstructions().indexOf(ctx.getInstruction());
+				int idx = instructions.getInstructions().indexOf(ins);
 				if (idx == -1)
 					continue; // already removed?
 
-				JumpingInstruction jumpIns = (JumpingInstruction) ctx.getInstruction();
+				JumpingInstruction jumpIns = (JumpingInstruction) ins;
 				assert jumpIns.getJumps().size() == 1;
 				Instruction to = jumpIns.getJumps().get(0);
 				
+				// move things that jump here to instead jump to 'to'
+				for (Instruction fromI : ins.from)
+				{
+					
+				}
+				
 				instructions.remove(ctx.getInstruction());
 				
-				if (branch)
+				//assert branch;
+				
+				//if (branch)
 				{
 					// insert goto
 					instructions.getInstructions().add(idx, new Goto(instructions, to));

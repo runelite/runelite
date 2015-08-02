@@ -43,14 +43,13 @@ public class Deob
 		long start = System.currentTimeMillis();
 		
 		ClassGroup group = loadJar(args[0]);
+		long bstart, bdur;
 		
-		new ConstantParameter().run(group);
-		
-//		long bstart = System.currentTimeMillis();
+//		bstart = System.currentTimeMillis();
 //		new RenameUnique().run(group);
-//		long bdur = System.currentTimeMillis() - bstart;
+//		bdur = System.currentTimeMillis() - bstart;
 //		System.out.println("rename unique took " + bdur/1000L + " seconds");
-//
+
 //		// remove except RuntimeException
 //		bstart = System.currentTimeMillis();
 //		new RuntimeExceptions().run(group);
@@ -59,18 +58,21 @@ public class Deob
 //		new UnusedBlocks().run(group);
 //		bdur = System.currentTimeMillis() - bstart;
 //		System.out.println("runtime exception took " + bdur/1000L + " seconds");
-//		
-//		// remove unused methods
-//		bstart = System.currentTimeMillis();
-//		new UnusedMethods().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused methods took " + bdur/1000L + " seconds");
-//		
+		
+		// remove unused methods
+		bstart = System.currentTimeMillis();
+		new UnusedMethods().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused methods took " + bdur/1000L + " seconds");
+		
 //		// remove illegal state exceptions, frees up some parameters
 //		bstart = System.currentTimeMillis();
 //		new IllegalStateExceptions().run(group);
 //		bdur = System.currentTimeMillis() - bstart;
 //		System.out.println("illegal state exception took " + bdur/1000L + " seconds");
+		
+		// remove constant logically dead parameters
+		new ConstantParameter().run(group);
 //		
 //		// remove unhit blocks
 //		bstart = System.currentTimeMillis();
@@ -103,7 +105,7 @@ public class Deob
 	
 	public static boolean isObfuscated(String name)
 	{
-		return name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
+		return name.length() <= 2 || name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
 	}
 	
 	private static ClassGroup loadJar(String jarfile) throws IOException
