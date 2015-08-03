@@ -516,7 +516,6 @@ public class ConstantParameter implements Deobfuscator
 				InstructionContext ctx = op.compCtx; // comparison
 				Instruction ins = ctx.getInstruction();
 				boolean branch = op.branch;
-				assert branch;
 				
 				Instructions instructions = ins.getInstructions();
 				
@@ -528,23 +527,34 @@ public class ConstantParameter implements Deobfuscator
 				int idx = instructions.getInstructions().indexOf(ins);
 				if (idx == -1)
 					continue; // already removed?
-
-				JumpingInstruction jumpIns = (JumpingInstruction) ins;
-				assert jumpIns.getJumps().size() == 1;
-				Instruction to = jumpIns.getJumps().get(0);
+				
+				Instruction to;
+				if (branch)
+				{
+					JumpingInstruction jumpIns = (JumpingInstruction) ins;
+					assert jumpIns.getJumps().size() == 1;
+					to = jumpIns.getJumps().get(0);
+				}
+				else
+				{
+					// just go to next instruction
+					to = instructions.getInstructions().get(idx + 1);
+				}
 				
 				// move things that jump here to instead jump to 'to'
 				for (Instruction fromI : ins.from)
 				{
-					
+					assert fromI.jump.contains(ins);
+
+					fromI.jump.remove(ins);
+					fromI.replace(ins, to);
 				}
+				ins.from.clear();
 				
-				instructions.remove(ctx.getInstruction());
+				instructions.remove(ins);
 				
-				//assert branch;
-				
-				//if (branch)
-				{
+				if (branch)
+				{				
 					// insert goto
 					instructions.getInstructions().add(idx, new Goto(instructions, to));
 				}
