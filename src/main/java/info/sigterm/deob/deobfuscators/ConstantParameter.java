@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 class ConstantMethodParameter
@@ -35,7 +34,6 @@ class ConstantMethodParameter
 	public int paramIndex;
 	public int lvtIndex;
 	public Object value;
-	//public InstructionContext invoke; // invoking instruction
 
 	@Override
 	public int hashCode()
@@ -50,20 +48,25 @@ class ConstantMethodParameter
 	@Override
 	public boolean equals(Object obj)
 	{
-		if (obj == null) {
+		if (obj == null)
+		{
 			return false;
 		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
+		{
 			return false;
 		}
 		final ConstantMethodParameter other = (ConstantMethodParameter) obj;
-		if (!Objects.equals(this.methods, other.methods)) {
+		if (!Objects.equals(this.methods, other.methods))
+		{
 			return false;
 		}
-		if (this.paramIndex != other.paramIndex) {
+		if (this.paramIndex != other.paramIndex)
+		{
 			return false;
 		}
-		if (!Objects.equals(this.value, other.value)) {
+		if (!Objects.equals(this.value, other.value))
+		{
 			return false;
 		}
 		return true;
@@ -77,24 +80,12 @@ class MethodGroup
 	public List<Method> methods; // methods that can be invoked
 	public Collection<Integer> constantParameters; // parameters which are always constant for all invocations
 	public List<ConstantMethodParameter> cmps = new ArrayList<>(); // cmps for all methods in the group, which hold the values.
-	
-//	public List<ConstantMethodParameter> getConstantParametersFor(Method m, int parameter)
-//	{
-//		List<ConstantMethodParameter> out = new ArrayList<>();
-//		for (ConstantMethodParameter c : cmps)
-//			if (c.method == m && c.paramNum == parameter)
-//				out.add(c);
-//		return out;
-//	}
 }
 
 public class ConstantParameter implements Deobfuscator
 {
 	private List<ConstantMethodParameter> parameters = new ArrayList<>();
 	private MultiValueMap<Method, Integer> nonconst = new MultiValueMap<>(); // methods with non const parameters
-	//private MultiValueMap<Method, ConstantMethodParameter> parameters = new MultiValueMap<>();
-	// methods can be in more than one group because of multiple inheritance with interfaces
-	//private MultiValueMap<Method, MethodGroup> methodGroups = new MultiValueMap<>();
 	private List<MethodGroup> methodGroups = new ArrayList<>();
 	
 	private void checkMethodsAreConsistent(List<Method> methods)
@@ -132,12 +123,7 @@ public class ConstantParameter implements Deobfuscator
 			
 			if (ctx.getPushed().getInstruction() instanceof PushConstantInstruction)
 			{
-				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();
-				
-				if (method.getMethods().getClassFile().getName().equals("client") && method.getName().equals("i"))
-				{
-					int i = 5;
-				}				
+				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();				
 				
 				if (!(pc.getConstant().getObject() instanceof Integer) && (!(pc.getConstant().getObject() instanceof Byte)))
 					continue;
@@ -147,7 +133,6 @@ public class ConstantParameter implements Deobfuscator
 				cmp.paramIndex = parameterIndex;
 				cmp.lvtIndex = lvtOffset;
 				cmp.value = pc.getConstant().getObject();
-				//cmp.invoke = invokeCtx;
 				
 				// already exists?
 				for (ConstantMethodParameter c : parameters)
@@ -174,19 +159,6 @@ public class ConstantParameter implements Deobfuscator
 		}
 	}
 	
-//	private Collection<Integer> getParametersFor(Method method)
-//	{
-//		Collection<ConstantMethodParameter> params = parameters.getCollection(method);
-//		Collection<Integer> out = new ArrayList<>();
-//		
-//		if (params != null)
-//			for (ConstantMethodParameter p : params)
-//				if (!out.contains(p.paramNum))
-//					out.add(p.paramNum);
-//		
-//		return out;
-//	}
-//	
 	private void findParameters(Execution execution)
 	{
 		for (Frame frame : execution.processedFrames)
@@ -200,39 +172,6 @@ public class ConstantParameter implements Deobfuscator
 					continue;
 				
 				findConstantParameter(execution, methods, ins);
-				
-				/*
-				// get common constant indexes from all methods that can possibly be called
-				Collection<Integer> parameterIndexes = null;
-				for (Method m : methods)
-				{
-					Collection<Integer> idxs = getParametersFor(m);
-					
-					if (parameterIndexes == null)
-						parameterIndexes = idxs;
-					else
-						parameterIndexes = CollectionUtils.intersection(parameterIndexes, idxs);
-				}
-				
-				MethodGroup group = new MethodGroup();
-				group.methods = methods;
-				group.constantParameters = parameterIndexes;
-				
-				// build constant method parameters
-				for (Method m : methods)
-				{
-					Collection<ConstantMethodParameter> params = parameters.getCollection(m);
-					if (params != null)
-						for (ConstantMethodParameter c : params)
-							if (parameterIndexes.contains(c.paramNum))
-								group.cmps.add(c);
-				}
-				
-				// insert
-				methodGroups.add(group);
-				//for (Method m : methods)
-				//	methodGroups.put(m, group);
-					*/
 			}
 	}
 	
@@ -282,34 +221,31 @@ public class ConstantParameter implements Deobfuscator
 		@Override
 		public boolean equals(Object obj)
 		{
-			if (obj == null) {
+			if (obj == null)
+			{
 				return false;
 			}
-			if (getClass() != obj.getClass()) {
+			if (getClass() != obj.getClass())
+			{
 				return false;
 			}
 			final LogicallyDeadOp other = (LogicallyDeadOp) obj;
-			if (!Objects.equals(this.compCtx.getInstruction(), other.compCtx.getInstruction())) {
+			if (!Objects.equals(this.compCtx.getInstruction(), other.compCtx.getInstruction()))
+			{
 				return false;
 			}
-			if (this.branch != other.branch) {
+			if (this.branch != other.branch)
+			{
 				return false;
 			}
 			return true;
 		}
-		
-
 	}
 	
+	// find all comparisons of lvtIndex in method and record branch taken
 	private List<LogicallyDeadOp> isLogicallyDead(Execution execution, Method method, int lvtIndex, Object value)
 	{
-		Boolean branch = null;
 		List<LogicallyDeadOp> ops = new ArrayList<>();
-		// find if instruction
-		// one side must be constant, other must be parameterIndex
-		
-		//int offset = method.isStatic() ? 0 : 1;
-		//int variableIndex = paramIndex + offset;		
 		
 		for (Frame frame : execution.processedFrames)
 		{
@@ -318,15 +254,6 @@ public class ConstantParameter implements Deobfuscator
 			
 			for (InstructionContext ins : frame.getInstructions())
 			{
-				// XXX this should look for field accesses and see hwats done with it.
-//				if (ins.getInstruction() instanceof LVTInstruction)
-//				{
-//					LVTInstruction lvtins = (LVTInstruction) ins.getInstruction();
-//					
-//					if (lvtins.getVariableIndex() != variableIndex)
-//						continue;
-//				}
-				
 				if (!(ins.getInstruction() instanceof ComparisonInstruction))
 					continue;
 				
@@ -383,43 +310,26 @@ public class ConstantParameter implements Deobfuscator
 				
 				// the result of the comparison doesn't matter, only that it always goes the same direction for every invocation
 				boolean result = doLogicalComparison(value, comp, otherValue);
-				/*if (branch == null)
-					branch = result;
-				else if (branch != result)
-					return null;*/
 				
 				LogicallyDeadOp deadOp = new LogicallyDeadOp();
 				deadOp.compCtx = ins;
 				deadOp.branch = result;
 				ops.add(deadOp);
-				//if (!logicallyDead)
-				//	return false; // if one frame finds it not logically dead, then stop
 			}
 		}
 		
 		return ops;
-		//return branch != null ? true /* always logically taking the same branch */ : false /* totally unused XXX */;
-		//return true;
-	}
-	
-	private void removeLogicallyDead(Execution execution, Method method, int lvtIndex)
-	{
-		
 	}
 	
 	private Map<Method, List<LogicallyDeadOp> > deadops = new HashMap<>();
 	private Set<Method> invalidDeadops = new HashSet<>();
 	
+	// check every method parameter that we've identified as being passed constants to see if it's logically dead
 	private void findLogicallyDeadOperations(Execution execution)
 	{
 	 outer:
 		for (ConstantMethodParameter cmp : parameters)
 		{
-//			Method method2 = cmp.methods.get(0);
-//				if (method2.getMethods().getClassFile().getName().equals("gy") && method2.getName().equals("y"))
-//				{
-//					int i = 5;
-//				}
 			for (Method method : cmp.methods)
 			{
 				if (invalidDeadops.contains(method))
@@ -432,6 +342,7 @@ public class ConstantParameter implements Deobfuscator
 				if (existing != null)
 					if (!existing.equals(deadOps))
 					{
+						// one of the branches taken differs because of the value, skip it
 						deadops.remove(method);
 						invalidDeadops.add(method);
 						continue;
@@ -442,71 +353,14 @@ public class ConstantParameter implements Deobfuscator
 					}
 				
 				deadops.put(method, deadOps);
-				//if (deadOps == null)
-					//continue;
-				//if (isDead == null || !isDead)
-				//	continue outer;
-			}
-			
-			// param is logically dead for all possible methods
-			//Method method = cmp.methods.get(0);
-			//System.out.println(method.getMethods().getClassFile().getName() + "." + method.getName() + " has dead param " + cmp.paramIndex);
-			
-			for (Method method : cmp.methods)
-			{
-				// remove dead parameter.
-				
-				// I already have an unused parameter deob which detects them and removes them, so don't have to clean up those.
-				// Additionally there is an unused block deob which can remove unused blocks of code, so
-				
-				// remove conditional jump, insert goto?
-				//removeLogicallyDead(execution, method, cmp.lvtIndex);
 			}
 		}
-//		for (MethodGroup group : methodGroups)
-//		//for (Object ogroup : methodGroups.values())
-//		{
-//			System.out.println("Iterating group " + group);
-//	//		MethodGroup group = (MethodGroup) ogroup;
-//			for (Method m : group.methods)
-//			{
-//				System.out.println("Iterating method " + m);
-//				for (int parameterIndex : group.constantParameters)
-//				{
-//					// constants used in this parameter index when calling this method
-//					List<ConstantMethodParameter> cmps = group.getConstantParametersFor(m, parameterIndex);
-//					
-//					// iterate instructions of method and find comparisons to parameter
-//					// remove if all are logically dead. rely on unused parameter deob to remove
-//					// the parameter.
-//					System.out.println(cmps.size() + " calls to " + m.getMethods().getClassFile().getName() + "." + m.getName() + " with index " + parameterIndex);
-//				}
-//			}
-//		}
-//		for (MethodGroup group : methodGroups)
-//		//for (Object ogroup : methodGroups.values())
-//		{
-//			System.out.println("Iterating group " + group);
-//	//		MethodGroup group = (MethodGroup) ogroup;
-//			for (Method m : group.methods)
-//			{
-//				System.out.println("Iterating method " + m);
-//				for (int parameterIndex : group.constantParameters)
-//				{
-//					// constants used in this parameter index when calling this method
-//					List<ConstantMethodParameter> cmps = group.getConstantParametersFor(m, parameterIndex);
-//					
-//					// iterate instructions of method and find comparisons to parameter
-//					// remove if all are logically dead. rely on unused parameter deob to remove
-//					// the parameter.
-//					System.out.println(cmps.size() + " calls to " + m.getMethods().getClassFile().getName() + "." + m.getName() + " with index " + parameterIndex);
-//				}
-//			}
-//		}
 	}
 	
-	private void removeDeadOperations()
+	// remove logically dead comparisons
+	private int removeDeadOperations()
 	{
+		int count = 0;
 		for (Method method : deadops.keySet())
 		{
 			List<LogicallyDeadOp> ops = deadops.get(method);
@@ -515,7 +369,7 @@ public class ConstantParameter implements Deobfuscator
 			{
 				InstructionContext ctx = op.compCtx; // comparison
 				Instruction ins = ctx.getInstruction();
-				boolean branch = op.branch;
+				boolean branch = op.branch; // branch that is always taken
 				
 				Instructions instructions = ins.getInstructions();
 				
@@ -527,6 +381,8 @@ public class ConstantParameter implements Deobfuscator
 				int idx = instructions.getInstructions().indexOf(ins);
 				if (idx == -1)
 					continue; // already removed?
+				
+				++count;
 				
 				Instruction to;
 				if (branch)
@@ -560,6 +416,7 @@ public class ConstantParameter implements Deobfuscator
 				}
 			}
 		}
+		return count;
 	}
 	
 	@Override
@@ -573,15 +430,9 @@ public class ConstantParameter implements Deobfuscator
 		
 		findParameters(execution);
 		findLogicallyDeadOperations(execution);
-		removeDeadOperations();
+		int count = removeDeadOperations();
 		
-		//System.out.println(deadops.size() + " deadops");
-		
-//		System.out.println(parameters.size() +  " params");
-//		for (ConstantMethodParameter p : parameters)
-//		{
-//			//System.out.println
-//		}
+		System.out.println("Removed " + count + " logically dead conditional jumps");
 	}
 	
 }

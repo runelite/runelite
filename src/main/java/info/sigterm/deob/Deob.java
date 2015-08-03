@@ -1,25 +1,12 @@
 package info.sigterm.deob;
 
 import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
-import info.sigterm.deob.deobfuscators.Jumps;
-import info.sigterm.deob.deobfuscators.ModularArithmeticDeobfuscation;
 import info.sigterm.deob.deobfuscators.RenameUnique;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnusedBlocks;
 import info.sigterm.deob.deobfuscators.UnusedFields;
 import info.sigterm.deob.deobfuscators.UnusedMethods;
 import info.sigterm.deob.deobfuscators.UnusedParameters;
-import info.sigterm.deob.execution.Execution;
-import info.sigterm.deob.execution.Frame;
-import info.sigterm.deob.pool.NameAndType;
-import info.sigterm.deob.signature.Signature;
-import info.sigterm.deob.attributes.Code;
-import info.sigterm.deob.attributes.code.Instruction;
-import info.sigterm.deob.attributes.code.Instructions;
-import info.sigterm.deob.attributes.code.instructions.Goto;
-import info.sigterm.deob.attributes.code.instructions.GotoW;
-import info.sigterm.deob.attributes.code.instructions.Return;
-import info.sigterm.deob.block.Block;
 import info.sigterm.deob.deobfuscators.ConstantParameter;
 
 import java.io.ByteArrayOutputStream;
@@ -28,9 +15,7 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -76,8 +61,8 @@ public class Deob
 		new ConstantParameter().run(group);
 		bdur = System.currentTimeMillis() - bstart;
 		System.out.println("constant param took " + bdur/1000L + " seconds");
-//		
-//		// remove unhit blocks
+		
+		// remove unhit blocks
 		bstart = System.currentTimeMillis();
 		new UnusedBlocks().run(group);
 		bdur = System.currentTimeMillis() - bstart;
