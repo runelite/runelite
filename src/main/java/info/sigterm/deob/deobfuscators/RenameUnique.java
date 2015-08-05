@@ -12,6 +12,7 @@ import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Exceptions;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.pool.Class;
+import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.signature.Signature;
 import info.sigterm.deob.signature.Type;
 import java.util.HashSet;
@@ -102,24 +103,44 @@ public class RenameUnique implements Deobfuscator
 		field.setName(name);
 	}
 	
-	private void findMethod(List<Method> list, Set<ClassFile> visited, ClassFile cf, Method method)
+	// find the base methods for a method. search goes up from there to see if two
+	// different methods can be invoked with the same instruction.
+	private List<Method> findBaseMethods(List<Method> methods, ClassFile cf, NameAndType method)
+	{
+		if (cf == null)
+			return methods;
+		
+		Method m = cf.findMethod(method);
+		if (m != null && !m.isStatic())
+			methods.add(m);
+		
+		List<Method> parentMethods = findBaseMethods(new ArrayList<Method>(), cf.getParent(), method);
+		
+		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
+			findBaseMethods(parentMethods, inter, method);
+		
+		// parentMethods take precedence over our methods
+		return parentMethods.isEmpty() ? methods : parentMethods;
+	}
+	
+	private List<Method> findBaseMethods(Method method)
+	{
+		return findBaseMethods(new ArrayList<Method>(), method.getMethods().getClassFile(), method.getNameAndType());
+	}
+	
+	private void findMethodUp(List<Method> methods, Set<ClassFile> visited, ClassFile cf, NameAndType method)
 	{
 		if (cf == null || visited.contains(cf))
 			return;
 		
-		visited.add(cf);
+		visited.add(cf); // can do diamond inheritance with interfaces
 		
-		Method m = cf.findMethod(method.getNameAndType());
+		Method m = cf.findMethod(method);
 		if (m != null && !m.isStatic())
-			list.add(m);
+			methods.add(m);
 		
-		findMethod(list, visited, cf.getParent(), method);
-		
-		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
-			findMethod(list, visited, inter, method);
-
 		for (ClassFile child : cf.getChildren())
-			findMethod(list, visited, child, method);
+			findMethodUp(methods, visited, child, method);
 	}
 	
 	private List<Method> getVirutalMethods(Method method)
@@ -132,7 +153,12 @@ public class RenameUnique implements Deobfuscator
 			return list;
 		}
 		
-		findMethod(list, new HashSet<ClassFile>(), method.getMethods().getClassFile(), method);
+		List<Method> bases = findBaseMethods(method); // base methods method overrides
+		assert !bases.isEmpty(); // must contain at least a method
+		
+		// now search up from bases, appending to list.
+		for (Method m : bases)
+			findMethodUp(list, new HashSet<ClassFile>(), m.getMethods().getClassFile(), m.getNameAndType());
 
 		return list;
 	}

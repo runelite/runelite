@@ -72,7 +72,7 @@ public class Deob
 		bstart = System.currentTimeMillis();
 		new UnusedParameters().run(group);
 		bdur = System.currentTimeMillis() - bstart;
-		System.out.println("unused blocks took " + bdur/1000L + " seconds");
+		System.out.println("unused params took " + bdur/1000L + " seconds");
 		
 		// remove jump obfuscation
 		//new Jumps().run(group);
