@@ -121,6 +121,12 @@ public class ConstantParameter implements Deobfuscator
 			// get(descriptor.size() - 1) == first parameter
 			StackContext ctx = pops.get(method.getDescriptor().size() - 1 - parameterIndex);
 			
+			Collection<Integer> nonIdx = nonconst.getCollection(method);
+			boolean non = nonIdx != null && nonIdx.contains(parameterIndex);
+			
+			if (non)
+				continue;
+			
 			if (ctx.getPushed().getInstruction() instanceof PushConstantInstruction)
 			{
 				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();				
@@ -321,8 +327,50 @@ public class ConstantParameter implements Deobfuscator
 		return ops;
 	}
 	
-	private Map<Method, List<LogicallyDeadOp> > deadops = new HashMap<>();
-	private Set<Method> invalidDeadops = new HashSet<>();
+	private static class MethodLvtPair
+	{
+		Method method;
+		int lvtIndex;
+
+		public MethodLvtPair(Method method, int lvtIndex)
+		{
+			this.method = method;
+			this.lvtIndex = lvtIndex;
+		}
+
+		@Override
+		public int hashCode()
+		{
+			int hash = 7;
+			hash = 41 * hash + Objects.hashCode(this.method);
+			hash = 41 * hash + this.lvtIndex;
+			return hash;
+		}
+
+		@Override
+		public boolean equals(Object obj)
+		{
+			if (obj == null) {
+				return false;
+			}
+			if (getClass() != obj.getClass()) {
+				return false;
+			}
+			final MethodLvtPair other = (MethodLvtPair) obj;
+			if (!Objects.equals(this.method, other.method)) {
+				return false;
+			}
+			if (this.lvtIndex != other.lvtIndex) {
+				return false;
+			}
+			return true;
+		}
+		
+		
+	}
+	
+	private Map<MethodLvtPair, List<LogicallyDeadOp> > deadops = new HashMap<>();
+	private Set<MethodLvtPair> invalidDeadops = new HashSet<>();
 	
 	// check every method parameter that we've identified as being passed constants to see if it's logically dead
 	private void findLogicallyDeadOperations(Execution execution)
@@ -332,19 +380,22 @@ public class ConstantParameter implements Deobfuscator
 		{
 			for (Method method : cmp.methods)
 			{
-				if (invalidDeadops.contains(method))
+				MethodLvtPair pair = new MethodLvtPair(method, cmp.lvtIndex);
+				
+				if (invalidDeadops.contains(pair))
 					continue;
 				
 				// the dead comparisons must be the same and branch the same way for every call to this method.
 				List<LogicallyDeadOp> deadOps = isLogicallyDead(execution, method, cmp.lvtIndex, cmp.value);
 				
-				List<LogicallyDeadOp> existing = deadops.get(method);
+				// this must be per method,lvtindex
+				List<LogicallyDeadOp> existing = deadops.get(pair);
 				if (existing != null)
 					if (!existing.equals(deadOps))
 					{
 						// one of the branches taken differs because of the value, skip it
-						deadops.remove(method);
-						invalidDeadops.add(method);
+						deadops.remove(pair);
+						invalidDeadops.add(pair);
 						continue;
 					}
 					else
@@ -352,7 +403,7 @@ public class ConstantParameter implements Deobfuscator
 						continue;
 					}
 				
-				deadops.put(method, deadOps);
+				deadops.put(pair, deadOps);
 			}
 		}
 	}
@@ -361,9 +412,10 @@ public class ConstantParameter implements Deobfuscator
 	private int removeDeadOperations()
 	{
 		int count = 0;
-		for (Method method : deadops.keySet())
+		for (MethodLvtPair mvp : deadops.keySet())
 		{
-			List<LogicallyDeadOp> ops = deadops.get(method);
+			Method method = mvp.method;
+			List<LogicallyDeadOp> ops = deadops.get(mvp);
 			
 			for (LogicallyDeadOp op : ops)
 			{
@@ -396,6 +448,8 @@ public class ConstantParameter implements Deobfuscator
 					// just go to next instruction
 					to = instructions.getInstructions().get(idx + 1);
 				}
+				assert to.getInstructions() == instructions;
+				assert ins != to;
 				
 				// move things that jump here to instead jump to 'to'
 				for (Instruction fromI : ins.from)
