@@ -30,10 +30,10 @@ public class Deob
 		ClassGroup group = loadJar(args[0]);
 		long bstart, bdur;
 		
-		bstart = System.currentTimeMillis();
-		new RenameUnique().run(group);
-		bdur = System.currentTimeMillis() - bstart;
-		System.out.println("rename unique took " + bdur/1000L + " seconds");
+//		bstart = System.currentTimeMillis();
+//		new RenameUnique().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("rename unique took " + bdur/1000L + " seconds");
 
 		// remove except RuntimeException
 		bstart = System.currentTimeMillis();
@@ -63,10 +63,10 @@ public class Deob
 		System.out.println("constant param took " + bdur/1000L + " seconds");
 		
 		// remove unhit blocks
-		bstart = System.currentTimeMillis();
-		new UnusedBlocks().run(group);
-		bdur = System.currentTimeMillis() - bstart;
-		System.out.println("unused blocks took " + bdur/1000L + " seconds");
+//		bstart = System.currentTimeMillis();
+//		new UnusedBlocks().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("unused blocks took " + bdur/1000L + " seconds");
 
 		// remove unused parameters
 		bstart = System.currentTimeMillis();
@@ -78,10 +78,10 @@ public class Deob
 		//new Jumps().run(group);
 		
 		// remove unused fields
-		bstart = System.currentTimeMillis();
-		new UnusedFields().run(group);
-		bdur = System.currentTimeMillis() - bstart;
-		System.out.println("unused fields took " + bdur/1000L + " seconds");
+//		bstart = System.currentTimeMillis();
+//		new UnusedFields().run(group);
+//		bdur = System.currentTimeMillis() - bstart;
+//		System.out.println("unused fields took " + bdur/1000L + " seconds");
 		
 		//new ModularArithmeticDeobfuscation().run(group);
 

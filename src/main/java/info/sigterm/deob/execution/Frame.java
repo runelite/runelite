@@ -189,6 +189,8 @@ public class Frame
 	public void jump(Instruction to)
 	{
 		assert to != null;
+		assert to.getInstructions() == method.getCode().getInstructions();
+		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
 		if (hasJumped(cur, to))
 		{

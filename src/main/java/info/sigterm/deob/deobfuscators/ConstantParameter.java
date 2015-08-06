@@ -424,6 +424,7 @@ public class ConstantParameter implements Deobfuscator
 				boolean branch = op.branch; // branch that is always taken
 				
 				Instructions instructions = ins.getInstructions();
+				instructions.buildJumpGraph();
 				
 				// remove the if
 				if (ctx.getInstruction() instanceof If)
@@ -450,6 +451,7 @@ public class ConstantParameter implements Deobfuscator
 				}
 				assert to.getInstructions() == instructions;
 				assert ins != to;
+				assert instructions.getInstructions().contains(to);
 				
 				// move things that jump here to instead jump to 'to'
 				for (Instruction fromI : ins.from)
@@ -463,10 +465,16 @@ public class ConstantParameter implements Deobfuscator
 				
 				instructions.remove(ins);
 				
+				assert instructions.getInstructions().contains(to);
+				
 				if (branch)
-				{				
+				{
+					Goto gotoins = new Goto(instructions, to);
+					to.from.add(gotoins);
+					gotoins.jump.add(to);
+					
 					// insert goto
-					instructions.getInstructions().add(idx, new Goto(instructions, to));
+					instructions.getInstructions().add(idx, gotoins);
 				}
 			}
 		}
