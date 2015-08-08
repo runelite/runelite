@@ -40,6 +40,8 @@ public class If0 extends Instruction implements JumpingInstruction, ComparisonIn
 	public void write(DataOutputStream out) throws IOException
 	{
 		super.write(out);
+		assert to.getInstructions() == this.getInstructions();
+		assert to.getInstructions().getInstructions().contains(to);
 		out.writeShort(to.getPc() - this.getPc());
 	}
 

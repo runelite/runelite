@@ -77,7 +77,6 @@ public class MethodInliner implements Deobfuscator
 				continue; // only inline methods called once
 			
 			// XXX do this later
-			System.out.println(invokedMethod.getDescriptor().getReturnValue().getType() + " " + invokedMethod.getDescriptor().size());
 			if (!invokedMethod.getDescriptor().getReturnValue().getType().equals("V")
 				|| invokedMethod.getDescriptor().size() != 0)
 				continue;
@@ -116,6 +115,9 @@ public class MethodInliner implements Deobfuscator
 
 			fromI.jump.remove(invokeIns);
 			fromI.replace(invokeIns, nop);
+			
+			fromI.jump.add(nop);
+			nop.from.add(fromI);
 		}
 		invokeIns.from.clear();
 		
@@ -132,7 +134,16 @@ public class MethodInliner implements Deobfuscator
 				// XXX I am assuming that this function leaves the stack in a clean state?
 				
 				// instead of return, jump to next instruction after the invoke
+				Instruction oldI = i;
 				i = new Goto(methodInstructions, nextInstruction);
+				
+				i.jump.addAll(oldI.jump);
+				i.from.addAll(oldI.from);
+				
+				for (Instruction i2 : oldI.from)
+					i2.replace(oldI, i);
+				
+				oldI.from.clear();
 			}
 			
 			if (i instanceof LVTInstruction)
@@ -144,10 +155,11 @@ public class MethodInliner implements Deobfuscator
 			}
 			
 			methodInstructions.getInstructions().add(idx++, i);
+			i.setInstructions(methodInstructions);
 		}
 		
-		// old instructions go away
-		invokeMethodInstructions.getInstructions().clear();
+		// old method goes away
+		invokeMethod.getMethods().removeMethod(invokeMethod);
 	}
 	
 	@Override
