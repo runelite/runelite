@@ -10,17 +10,26 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.InvokeInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.ReturnInstruction;
+import info.sigterm.deob.attributes.code.instructions.AStore;
+import info.sigterm.deob.attributes.code.instructions.DStore;
+import info.sigterm.deob.attributes.code.instructions.FStore;
 import info.sigterm.deob.attributes.code.instructions.Goto;
+import info.sigterm.deob.attributes.code.instructions.IStore;
 import info.sigterm.deob.attributes.code.instructions.InvokeStatic;
+import info.sigterm.deob.attributes.code.instructions.LStore;
 import info.sigterm.deob.attributes.code.instructions.NOP;
-import info.sigterm.deob.attributes.code.instructions.VReturn;
+import info.sigterm.deob.signature.Signature;
+import info.sigterm.deob.signature.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class MethodInliner implements Deobfuscator
 {
 	private Map<Method, Integer> calls = new HashMap<>();
+	private Set<Method> removeMethods = new HashSet<>();
 	
 	private void countCalls(Method m)
 	{
@@ -76,12 +85,67 @@ public class MethodInliner implements Deobfuscator
 			if (count == null || count != 1)
 				continue; // only inline methods called once
 			
-			// XXX do this later
-			if (!invokedMethod.getDescriptor().getReturnValue().getType().equals("V")
-				|| invokedMethod.getDescriptor().size() != 0)
-				continue;
+			assert m != invokedMethod;
 			
-			inline(m, i, invokedMethod);
+			// XXX do this later
+//			if (!invokedMethod.getDescriptor().getReturnValue().getType().equals("V")
+//				|| invokedMethod.getDescriptor().size() != 0)
+//			{
+//				System.out.println(invokedMethod.getName());
+//				continue;
+//			}
+			int invokeIdx = ins.getInstructions().indexOf(i);
+			assert invokeIdx != -1;
+			
+			int lvtIndex = code.getMaxLocals(), startLvtIndex = lvtIndex;
+			// assign variables on stack to lvt
+			Signature descriptor = invokedMethod.getDescriptor();
+			for (int j = 0; j < descriptor.size(); ++j)
+			{
+				Type type = descriptor.getTypeOfArg(j);
+				
+				// insert instruction to store top of stack in lvt
+				
+				Instruction storeIns = null;
+				if (type.getArrayDims() == 0)
+				{
+					switch (type.getType())
+					{
+						case "Z":
+						case "C":
+						case "S":
+						case "I":
+							storeIns = new IStore(ins, lvtIndex);
+							lvtIndex += type.getSlots();
+							break;
+						case "J":
+							storeIns = new LStore(ins, lvtIndex);
+							lvtIndex += type.getSlots();
+							break;
+						case "F":
+							storeIns = new FStore(ins, lvtIndex);
+							lvtIndex += type.getSlots();
+							break;
+						case "D":
+							storeIns = new DStore(ins, lvtIndex);
+							lvtIndex += type.getSlots();
+							break;
+					}
+				}
+					
+				if (type.getArrayDims() != 0 || type.getType().startsWith("L"))
+				{
+					assert storeIns == null;
+					storeIns = new AStore(ins, lvtIndex);
+					lvtIndex += type.getSlots();
+				}
+				assert storeIns != null;
+				
+				// insert storeIns before invoke instruction
+				ins.getInstructions().add(invokeIdx++, storeIns);
+			}
+			
+			inline(m, i, invokedMethod, startLvtIndex);
 			++inlineCount;
 			break;
 		}
@@ -89,14 +153,12 @@ public class MethodInliner implements Deobfuscator
 		return inlineCount;
 	}
 	
-	private void inline(Method method, Instruction invokeIns, Method invokeMethod)
+	private void inline(Method method, Instruction invokeIns, Method invokeMethod, int lvtBase)
 	{
 		Code methodCode = method.getCode(),
 			invokeMethodCode = invokeMethod.getCode();
 		Instructions methodInstructions = methodCode.getInstructions(),
 			invokeMethodInstructions = invokeMethodCode.getInstructions();
-		
-		int maxLocals = methodCode.getMaxLocals(); // max locals currently
 		
 		int idx = methodInstructions.getInstructions().indexOf(invokeIns); // index of invoke ins, before removal
 		assert idx != -1;
@@ -128,9 +190,7 @@ public class MethodInliner implements Deobfuscator
 			// move instructions over.
 			
 			if (i instanceof ReturnInstruction)
-			{
-				assert i instanceof VReturn; // only support void atm
-				
+			{	
 				// XXX I am assuming that this function leaves the stack in a clean state?
 				
 				// instead of return, jump to next instruction after the invoke
@@ -150,8 +210,18 @@ public class MethodInliner implements Deobfuscator
 			{
 				LVTInstruction lvt = (LVTInstruction) i;
 				// offset lvt index
-				int newIndex = maxLocals + lvt.getVariableIndex();
+				int newIndex = lvtBase + lvt.getVariableIndex();
+				
+				Instruction oldI = i;
 				i = lvt.setVariableIndex(newIndex);
+				
+				i.jump.addAll(oldI.jump);
+				i.from.addAll(oldI.from);
+				
+				for (Instruction i2 : oldI.from)
+					i2.replace(oldI, i);
+				
+				oldI.from.clear();
 			}
 			
 			methodInstructions.getInstructions().add(idx++, i);
@@ -159,14 +229,23 @@ public class MethodInliner implements Deobfuscator
 		}
 		
 		// old method goes away
-		invokeMethod.getMethods().removeMethod(invokeMethod);
+		invokeMethodInstructions.getInstructions().clear();
+		removeMethods.add(invokeMethod);
 	}
 	
 	@Override
 	public void run(ClassGroup group)
 	{
+		while (pass(group) > 0);
+	}
+	
+	private int pass(ClassGroup group)
+	{
 		group.buildClassGraph();
 		int count = 0;
+		
+		calls.clear();
+		removeMethods.clear();
 		
 		for (ClassFile cf : group.getClasses())
 		{
@@ -184,7 +263,11 @@ public class MethodInliner implements Deobfuscator
 			}
 		}
 		
+		for (Method m : removeMethods)
+			m.getMethods().removeMethod(m);
+		
 		System.out.println("Inlined " + count + " methods");
+		return count;
 	}
 	
 }

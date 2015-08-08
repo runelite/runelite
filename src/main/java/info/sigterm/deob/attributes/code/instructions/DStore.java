@@ -36,15 +36,6 @@ public class DStore extends Instruction implements LVTInstruction, WideInstructi
 		length += 1;
 	}
 	
-	public DStore(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
-	{
-		super(instructions, type, pc);
-		
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readShort();
-		length += 2;
-	}
-	
 	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
