@@ -13,6 +13,11 @@ public class NOP extends Instruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public NOP(Instructions instructions)
+	{
+		super(instructions, InstructionType.NOP, 0);
+	}
 
 	@Override
 	public void execute(Frame frame)

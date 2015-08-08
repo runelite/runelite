@@ -23,8 +23,18 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 		super(instructions, type, pc);
 
 		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		value = this.getPool().getEntry(is.readUnsignedShort());
-		length += 2;
+		assert type == InstructionType.LDC_W || type == InstructionType.LDC;
+		
+		if (type == InstructionType.LDC_W)
+		{
+			value = this.getPool().getEntry(is.readUnsignedShort());
+			length += 2;
+		}
+		else if (type == InstructionType.LDC)
+		{
+			value = this.getPool().getEntry(is.readUnsignedByte());
+			length += 1;
+		}
 	}
 	
 	public LDC_W(Instructions instructions, PoolEntry value)
@@ -36,10 +46,35 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	}
 	
 	@Override
+	public void prime()
+	{
+		int index = this.getPool().make(value);
+		assert index >= 0 && index <= 0xFFFF;
+		if (index > 0xFF && this.getType() == InstructionType.LDC)
+		{
+			this.setType(InstructionType.LDC_W);
+			++length;
+		}
+	}
+	
+	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
 		super.write(out);
-		out.writeShort(this.getPool().make(value));
+		
+		int index = this.getPool().make(value);
+		
+		assert this.getType() == InstructionType.LDC || this.getType() == InstructionType.LDC_W;
+		if (this.getType() == InstructionType.LDC)
+		{
+			assert index >= 0 && index <= 0xFF;
+			out.writeByte(index);
+		}
+		else if (this.getType() == InstructionType.LDC_W)
+		{
+			assert index >= 0 && index <= 0xFFFF;
+			out.writeShort(index);
+		}
 	}
 
 	@Override

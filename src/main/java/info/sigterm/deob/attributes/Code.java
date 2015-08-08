@@ -1,7 +1,10 @@
 package info.sigterm.deob.attributes;
 
+import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Exceptions;
+import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.Instructions;
+import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,7 +13,6 @@ import java.io.IOException;
 public class Code extends Attribute
 {
 	private int maxStack;
-	private int maxLocals;
 	private Instructions instructions;
 	private Exceptions exceptions;
 	private Attributes attributes;
@@ -22,7 +24,7 @@ public class Code extends Attribute
 		DataInputStream is = attributes.getStream();
 
 		maxStack = is.readUnsignedShort();
-		maxLocals = is.readUnsignedShort();
+		is.skip(2); // max locals
 
 		instructions = new Instructions(this);
 
@@ -37,7 +39,7 @@ public class Code extends Attribute
 	public void writeAttr(DataOutputStream out) throws IOException
 	{
 		out.writeShort(maxStack);
-		out.writeShort(maxLocals);
+		out.writeShort(getMaxLocals());
 		
 		instructions.write(out);
 		exceptions.write(out);
@@ -48,10 +50,35 @@ public class Code extends Attribute
 	{
 		return maxStack;
 	}
+	
+	private int getMaxLocalsFromSig()
+	{
+		Method m = super.getAttributes().getMethod();
+		int num = m.isStatic() ? 0 : 1;
+		num += m.getDescriptor().size();
+		return num;
+	}
 
 	public int getMaxLocals()
 	{
-		return maxLocals;
+		int max = -1;
+		
+		for (Instruction ins : instructions.getInstructions())
+		{
+			if (ins instanceof LVTInstruction)
+			{
+				LVTInstruction lvt = (LVTInstruction) ins;
+				
+				if (lvt.getVariableIndex() > max)
+					max = lvt.getVariableIndex();
+			}
+		}
+		
+		int fromSig = getMaxLocalsFromSig();
+		if (fromSig > max)
+			max = fromSig;
+		
+		return max + 1;
 	}
 	
 	public Exceptions getExceptions()

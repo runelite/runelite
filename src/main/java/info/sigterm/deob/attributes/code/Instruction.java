@@ -153,9 +153,19 @@ public abstract class Instruction
 		return instructions;
 	}
 	
+	public void setInstructions(Instructions instructions)
+	{
+		this.instructions = instructions;
+	}
+	
 	public InstructionType getType()
 	{
 		return type;
+	}
+	
+	protected void setType(InstructionType type)
+	{
+		this.type = type;
 	}
 	
 	public ConstantPool getPool()
