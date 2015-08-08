@@ -63,11 +63,9 @@ public class IllegalStateExceptions implements Deobfuscator
 					
 					// remove stack of if.
 					boolean found = false;
-					boolean foundMethod = false;
 					for (Frame f : execution.processedFrames)
 						if (f.getMethod() == m)
 						{
-							foundMethod = true;
 							for (InstructionContext ic : f.getInstructions())
 								if (ic.getInstruction() == ins) // this is the if
 								{
@@ -78,8 +76,11 @@ public class IllegalStateExceptions implements Deobfuscator
 									ic.removeStack(0);
 								}
 						}
-					assert foundMethod;
-					assert found;
+					if (!found)
+					{
+						System.out.println("Unable to locate instruction ctx to remove stack for illegalstateexception " + ins + " in " + m);
+						continue;
+					}
 					
 					// instruction is no longer at 'i' because we've just removed stuff...
 					i = ilist.indexOf(ins);
