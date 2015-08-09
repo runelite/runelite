@@ -95,7 +95,7 @@ public class Deob
 		
 		//new ModularArithmeticDeobfuscation().run(group);
 		
-		//new MethodInliner().run(group);
+		new MethodInliner().run(group);
 
 		saveJar(group, args[1]);
 		

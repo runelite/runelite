@@ -200,6 +200,9 @@ public class MethodInliner implements Deobfuscator
 		
 		methodInstructions.remove(invokeIns);
 		
+		methodInstructions.buildJumpGraph();
+		invokeMethodInstructions.buildJumpGraph();
+		
 		for (Instruction i : invokeMethodInstructions.getInstructions())
 		{
 			// move instructions over.

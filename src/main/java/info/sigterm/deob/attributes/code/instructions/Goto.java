@@ -43,9 +43,15 @@ public class Goto extends Instruction implements JumpingInstruction
 	public void write(DataOutputStream out) throws IOException
 	{
 		super.write(out);
+		
 		int offset = to.getPc() - this.getPc();
+		
 		assert offset <= Short.MAX_VALUE;
 		assert offset >= Short.MIN_VALUE;
+		
+		assert to.getInstructions() == this.getInstructions();
+		assert to.getInstructions().getInstructions().contains(to);
+		
 		out.writeShort(offset);
 	}
 
