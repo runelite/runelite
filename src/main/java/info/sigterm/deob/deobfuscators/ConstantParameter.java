@@ -201,7 +201,7 @@ public class ConstantParameter implements Deobfuscator
 			case IFGT:
 				return (int) value > 0;
 			case IFLE:
-				return (int) value < 0;
+				return (int) value <= 0;
 			case IF_ICMPEQ:
 				return value.equals(otherValue);
 			case IF_ICMPNE:
