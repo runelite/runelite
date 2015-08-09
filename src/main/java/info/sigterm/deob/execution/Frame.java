@@ -139,6 +139,8 @@ public class Frame
 				throw ex;
 			}
 			
+			execution.executed.add(oldCur);
+			
 			if (!executing)
 				break;
 			

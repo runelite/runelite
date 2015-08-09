@@ -18,6 +18,7 @@ import java.util.List;
 public class Method
 {
 	public static final int ACC_STATIC = 0x8;
+	public static final int ACC_SYNCHRONIZED = 0x20;
 	
 	private Methods methods;
 
@@ -77,6 +78,11 @@ public class Method
 	public boolean isStatic()
 	{
 		return (accessFlags & ACC_STATIC) != 0;
+	}
+	
+	public boolean isSynchronized()
+	{
+		return (accessFlags & ACC_SYNCHRONIZED) != 0;
 	}
 	
 	public Exceptions getExceptions()

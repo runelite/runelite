@@ -78,7 +78,7 @@ public class IllegalStateExceptions implements Deobfuscator
 						}
 					if (!found)
 					{
-						System.out.println("Unable to locate instruction ctx to remove stack for illegalstateexception " + ins + " in " + m);
+						System.out.println("Unable to locate instruction ctx to remove stack for illegalstateexception " + ins.getType().getName() + " in method " + m.getName() + " class " + m.getMethods().getClassFile().getName());
 						continue;
 					}
 					

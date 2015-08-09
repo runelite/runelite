@@ -57,6 +57,11 @@ public class Exception
 		return start;
 	}
 	
+	public void setStart(Instruction ins)
+	{
+		start = ins;
+	}
+	
 	public Instruction getEnd()
 	{
 		return end;

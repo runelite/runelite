@@ -4,6 +4,7 @@ import info.sigterm.deob.ClassFile;
 import info.sigterm.deob.ClassGroup;
 import info.sigterm.deob.Deob;
 import info.sigterm.deob.Method;
+import info.sigterm.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class Execution
 			processedFrames = new ArrayList<>();
 	private List<Method> pendingMethods = new ArrayList<>(); // pending methods
 	public Set<Method> methods = new HashSet<>(); // all methods
+	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 
 	public Execution(ClassGroup group)
 	{

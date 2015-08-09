@@ -87,22 +87,36 @@ public class MethodInliner implements Deobfuscator
 			
 			assert m != invokedMethod;
 			
-			// XXX do this later
-//			if (!invokedMethod.getDescriptor().getReturnValue().getType().equals("V")
-//				|| invokedMethod.getDescriptor().size() != 0)
-//			{
-//				System.out.println(invokedMethod.getName());
-//				continue;
-//			}
 			int invokeIdx = ins.getInstructions().indexOf(i);
 			assert invokeIdx != -1;
 			
-			int lvtIndex = code.getMaxLocals(), startLvtIndex = lvtIndex;
+			int lvtIndex = code.getMaxLocals(),
+				//startLvtIndex = lvtIndex,
+				theirLocals = invokedMethod.getCode().getMaxLocals();
+			
+			if (lvtIndex + theirLocals > 127)
+				continue;
+			
+			if (invokedMethod.isSynchronized())
+				continue;
+			
+			if (!invokedMethod.getCode().getExceptions().getExceptions().isEmpty())
+				continue;
+			
 			// assign variables on stack to lvt
 			Signature descriptor = invokedMethod.getDescriptor();
-			for (int j = 0; j < descriptor.size(); ++j)
+			
+			Map<Integer, Integer> lvtIndexes = new HashMap<>();
+			for (int j = 0, idx = 0; j < descriptor.size(); ++j)
+			{
+				lvtIndexes.put(j, idx);
+				idx += descriptor.getTypeOfArg(j).getSlots();
+			}
+				
+			for (int j = descriptor.size() - 1; j >= 0; --j)
 			{
 				Type type = descriptor.getTypeOfArg(j);
+				int paramLvtIndex = lvtIndexes.get(j);
 				
 				// insert instruction to store top of stack in lvt
 				
@@ -111,24 +125,25 @@ public class MethodInliner implements Deobfuscator
 				{
 					switch (type.getType())
 					{
+						case "B":
 						case "Z":
 						case "C":
 						case "S":
 						case "I":
-							storeIns = new IStore(ins, lvtIndex);
-							lvtIndex += type.getSlots();
+							storeIns = new IStore(ins, lvtIndex + paramLvtIndex);
+							//lvtIndex += type.getSlots();
 							break;
 						case "J":
-							storeIns = new LStore(ins, lvtIndex);
-							lvtIndex += type.getSlots();
+							storeIns = new LStore(ins, lvtIndex + paramLvtIndex);
+							//lvtIndex += type.getSlots();
 							break;
 						case "F":
-							storeIns = new FStore(ins, lvtIndex);
-							lvtIndex += type.getSlots();
+							storeIns = new FStore(ins, lvtIndex + paramLvtIndex);
+							//lvtIndex += type.getSlots();
 							break;
 						case "D":
-							storeIns = new DStore(ins, lvtIndex);
-							lvtIndex += type.getSlots();
+							storeIns = new DStore(ins, lvtIndex + paramLvtIndex);
+							//lvtIndex += type.getSlots();
 							break;
 					}
 				}
@@ -136,8 +151,8 @@ public class MethodInliner implements Deobfuscator
 				if (type.getArrayDims() != 0 || type.getType().startsWith("L"))
 				{
 					assert storeIns == null;
-					storeIns = new AStore(ins, lvtIndex);
-					lvtIndex += type.getSlots();
+					storeIns = new AStore(ins, lvtIndex + paramLvtIndex);
+					//lvtIndex += type.getSlots();
 				}
 				assert storeIns != null;
 				
@@ -145,7 +160,7 @@ public class MethodInliner implements Deobfuscator
 				ins.getInstructions().add(invokeIdx++, storeIns);
 			}
 			
-			inline(m, i, invokedMethod, startLvtIndex);
+			inline(m, i, invokedMethod, /*start*/lvtIndex);
 			++inlineCount;
 			break;
 		}
@@ -236,7 +251,16 @@ public class MethodInliner implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
-		while (pass(group) > 0);
+		int total = 0;
+		int i;
+		do
+		{
+			i = pass(group);
+			total += i;
+		}
+		while (i > 0);
+		
+		System.out.println("[TOTAL] Inlined " + total + " methods");
 	}
 	
 	private int pass(ClassGroup group)

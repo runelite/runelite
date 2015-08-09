@@ -21,7 +21,10 @@ public class UnusedBlocks implements Deobfuscator
 		for (Method m : new ArrayList<>(methods))
 		{
 			if (m.getCode() == null)
+			{
+				methods.remove(m);
 				continue;
+			}
 
 			Instructions ins = m.getCode().getInstructions();
 			ins.buildBlocks();
