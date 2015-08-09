@@ -2,7 +2,6 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
-import info.sigterm.deob.deobfuscators.UnusedBlocks;
 import info.sigterm.deob.deobfuscators.UnusedFields;
 import info.sigterm.deob.deobfuscators.UnusedMethods;
 import info.sigterm.deob.deobfuscators.UnusedParameters;
