@@ -65,6 +65,6 @@ public class MultiANewArray extends Instruction
 		// class is an array type, ugh.
 		info.sigterm.deob.signature.Type t = new info.sigterm.deob.signature.Type(clazz.getName());
 		if (t.getType().equals("L" + cf.getName() + ";"))
-			clazz = new Class(name, t.getArrayDims());
+			clazz = new Class("L" + name + ";", t.getArrayDims());
 	}
 }
