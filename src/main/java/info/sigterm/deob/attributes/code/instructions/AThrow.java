@@ -29,37 +29,37 @@ public class AThrow extends Instruction
 		StackContext exception = stack.pop();
 		ins.pop(exception);
 		
-		// Clear stack
-		while (stack.getSize() > 0)
-		{
-			StackContext value = stack.pop();
-			ins.pop(value);
-		}
-		
-		// push exception back
-		exception = new StackContext(ins, exception.getType());
-		stack.push(exception);
-		
-		// jump to instruction handlers that can catch exceptions here
-		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
-		{
-			int startIdx = this.getInstructions().getInstructions().indexOf(e.getStart()),
-					endIdx = this.getInstructions().getInstructions().indexOf(e.getEnd()),
-					thisIdx = this.getInstructions().getInstructions().indexOf(this);
-			
-			assert startIdx != -1;
-			assert endIdx != -1;
-			assert thisIdx != -1;
-			
-			// [start, end)
-			if (thisIdx >= startIdx && thisIdx < endIdx)
-			{
-				Frame f = frame.dup();
-				f.jump(e.getHandler());
-			}
-		}
-
-		frame.addInstructionContext(ins);
+//		// Clear stack
+//		while (stack.getSize() > 0)
+//		{
+//			StackContext value = stack.pop();
+//			ins.pop(value);
+//		}
+//		
+//		// push exception back
+//		exception = new StackContext(ins, exception.getType());
+//		stack.push(exception);
+//		
+//		// jump to instruction handlers that can catch exceptions here
+//		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
+//		{
+//			int startIdx = this.getInstructions().getInstructions().indexOf(e.getStart()),
+//					endIdx = this.getInstructions().getInstructions().indexOf(e.getEnd()),
+//					thisIdx = this.getInstructions().getInstructions().indexOf(this);
+//			
+//			assert startIdx != -1;
+//			assert endIdx != -1;
+//			assert thisIdx != -1;
+//			
+//			// [start, end)
+//			if (thisIdx >= startIdx && thisIdx < endIdx)
+//			{
+//				Frame f = frame.dup();
+//				f.jump(e.getHandler());
+//			}
+//		}
+//
+//		frame.addInstructionContext(ins);
 		
 		frame.stop();
 	}

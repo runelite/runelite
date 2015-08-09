@@ -186,7 +186,7 @@ public class ConstantParameter implements Deobfuscator
 		Instruction ins = (Instruction) comparison;
 		
 		assert (comparison instanceof If0) == (otherValue == null);
-		assert otherValue == null || otherValue instanceof Integer || otherValue instanceof Byte;
+		assert otherValue == null || otherValue instanceof Integer;
 
 		switch (ins.getType())
 		{

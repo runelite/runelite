@@ -19,7 +19,6 @@ public class Frame
 	private Execution execution;
 	private Method method;
 	private boolean executing = true;
-	private int pc;
 	private Instruction cur; // current instruction
 	private Stack stack;
 	private Variables variables;
@@ -58,7 +57,6 @@ public class Frame
 		this.execution = other.execution;
 		this.method = other.method;
 		this.executing = other.executing;
-		this.pc = other.pc;
 		this.cur = other.cur;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
@@ -89,7 +87,7 @@ public class Frame
 	
 	public int getPc()
 	{
-		return pc;
+		return cur.getPc();
 	}
 
 	public Stack getStack()
@@ -141,6 +139,8 @@ public class Frame
 			
 			execution.executed.add(oldCur);
 			
+			processExceptions(oldCur);
+			
 			if (!executing)
 				break;
 			
@@ -153,6 +153,38 @@ public class Frame
 			else
 			{
 				/* jump */
+			}
+		}
+	}
+	
+	private void processExceptions(Instruction i)
+	{
+		Code code = method.getCode();
+		
+		for (Exception e : code.getExceptions().getExceptions())
+		{
+			if (e.getStart() == i)
+			{				
+				if (hasJumped(i, e.getHandler()))
+					continue;
+				
+				doJump(i, e.getHandler());
+				
+				Frame f = dup();
+				Stack stack = f.getStack();
+				
+				while (stack.getSize() > 0)
+					stack.pop();
+				
+				InstructionContext ins = new InstructionContext(i, f);
+				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"));
+				stack.push(ctx);
+				
+				ins.push(ctx);
+			
+				// at this point maybe cur != i, and f.jump() uses cur, so
+				f.cur = e.getHandler();
+				assert f.executing;
 			}
 		}
 	}

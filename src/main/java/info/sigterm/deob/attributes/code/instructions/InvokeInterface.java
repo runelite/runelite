@@ -90,8 +90,6 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		handleExceptions(frame);
-		
 		if (!method.getNameAndType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
@@ -108,39 +106,6 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		}
 		
 		frame.addInstructionContext(ins);
-	}
-	
-	private void handleExceptions(Frame frame)
-	{
-		// jump to instruction handlers that can catch exceptions here
-		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
-		{
-			int startIdx = this.getInstructions().getInstructions().indexOf(e.getStart()),
-					endIdx = this.getInstructions().getInstructions().indexOf(e.getEnd()),
-					thisIdx = this.getInstructions().getInstructions().indexOf(this);
-			
-			assert startIdx != -1;
-			assert endIdx != -1;
-			assert thisIdx != -1;
-			
-			// [start, end)
-			if (thisIdx >= startIdx && thisIdx < endIdx)
-			{
-				Frame f = frame.dup();
-				Stack stack = f.getStack();
-				
-				while (stack.getSize() > 0)
-					stack.pop();
-				
-				InstructionContext ins = new InstructionContext(this, f);
-				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"));
-				stack.push(ctx);
-				
-				ins.push(ctx);
-				
-				f.jump(e.getHandler());
-			}
-		}
 	}
 
 	@Override
