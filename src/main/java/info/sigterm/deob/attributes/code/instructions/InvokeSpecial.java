@@ -52,7 +52,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		if (otherClass == null)
 			return new ArrayList<>(); // not our class
 		
-		info.sigterm.deob.Method other = otherClass.findMethodDeep(method.getNameAndType());
+		info.sigterm.deob.Method other = otherClass.findMethod(method.getNameAndType());
 		assert other != null;
 		
 		List<info.sigterm.deob.Method> list = new ArrayList<>();
