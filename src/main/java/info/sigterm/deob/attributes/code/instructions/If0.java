@@ -64,7 +64,7 @@ public class If0 extends Instruction implements JumpingInstruction, ComparisonIn
 		frame.addInstructionContext(ins);
 		
 		Frame other = frame.dup();
-		other.jump(to);
+		other.jump(ins, to);
 	}
 	
 	@Override

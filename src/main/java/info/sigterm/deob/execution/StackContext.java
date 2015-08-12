@@ -2,9 +2,9 @@ package info.sigterm.deob.execution;
 
 public class StackContext
 {
-	private InstructionContext pushed; // instruction which pushed this
-	private InstructionContext popped; // instruction which popped this
-	private Type type; // type of this
+	public InstructionContext pushed; // instruction which pushed this
+	public InstructionContext popped; // instruction which popped this
+	public Type type; // type of this
 	
 	public StackContext(InstructionContext pushed, Type type)
 	{
@@ -23,7 +23,7 @@ public class StackContext
 		this.pushed = pushed;
 		type = new Type(c.getName());
 	}
-	
+
 	public InstructionContext getPushed()
 	{
 		return pushed;

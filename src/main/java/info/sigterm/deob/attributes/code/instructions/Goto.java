@@ -5,6 +5,7 @@ import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.JumpingInstruction;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -62,9 +63,12 @@ public class Goto extends Instruction implements JumpingInstruction
 	}
 	
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		e.jump(to);
+		InstructionContext ctx = new InstructionContext(this, frame);
+		frame.addInstructionContext(ctx);
+		
+		frame.jump(ctx, to);
 	}
 	
 	@Override

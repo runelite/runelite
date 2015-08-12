@@ -6,6 +6,7 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instruction.types.LVTInstruction;
 import info.sigterm.deob.attributes.code.instruction.types.WideInstruction;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -47,9 +48,13 @@ public class Wide extends Instruction implements LVTInstruction
 	}
 
 	@Override
-	public void execute(Frame e)
+	public void execute(Frame frame)
 	{
-		ins.execute(e);
+		InstructionContext ctx = new InstructionContext(this, frame);
+		
+		ins.execute(frame);
+		
+		frame.addInstructionContext(ctx);
 	}
 
 	@Override

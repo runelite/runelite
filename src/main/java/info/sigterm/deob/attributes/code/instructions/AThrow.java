@@ -29,6 +29,8 @@ public class AThrow extends Instruction
 		StackContext exception = stack.pop();
 		ins.pop(exception);
 		
+		frame.addInstructionContext(ins);
+		
 		frame.stop();
 	}
 	

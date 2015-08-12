@@ -13,6 +13,8 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instructions.LookupSwitch;
 import info.sigterm.deob.attributes.code.instructions.TableSwitch;
 import info.sigterm.deob.pool.NameAndType;
+import org.apache.commons.collections4.MultiMap;
+import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Frame
 {
@@ -23,7 +25,7 @@ public class Frame
 	private Stack stack;
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
-	private Map<Instruction, List<Instruction>> visited; // shared
+	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>(); // shared
 
 	public Frame(Execution execution, Method method)
 	{
@@ -34,8 +36,6 @@ public class Frame
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
-		
-		visited = new HashMap<>();
 		
 		// initialize LVT
 		int pos = 0;
@@ -60,7 +60,11 @@ public class Frame
 		this.cur = other.cur;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
+		//this.instructions = new ArrayList<>(other.instructions); // deep?
 		this.visited = other.visited;
+		
+//		for (InstructionContext ctx : other.instructions)
+//			instructions.add(new InstructionContext(other, ctx));
 	}
 	
 	public Frame dup()
@@ -160,16 +164,14 @@ public class Frame
 	private void processExceptions(Instruction i)
 	{
 		Code code = method.getCode();
+		InstructionContext ictx = instructions.get(instructions.size() - 1);
+		
+		assert ictx.getInstruction() == i;
 		
 		for (Exception e : code.getExceptions().getExceptions())
 		{
 			if (e.getStart() == i)
 			{				
-				if (hasJumped(i, e.getHandler()))
-					continue;
-				
-				doJump(i, e.getHandler());
-				
 				Frame f = dup();
 				Stack stack = f.getStack();
 				
@@ -182,57 +184,33 @@ public class Frame
 				
 				ins.push(ctx);
 			
-				// at this point maybe cur != i, and f.jump() uses cur, so
-				f.cur = e.getHandler();
-				assert f.executing;
+				f.jump(ictx, e.getHandler());
 			}
 		}
 	}
 	
-	private void doJump(Instruction from, Instruction to)
+	private boolean hasJumped(InstructionContext from, Instruction to)
 	{
-		List<Instruction> l = visited.get(from);
-		if (l == null)
-		{
-			List<Instruction> l2 = new ArrayList<>();
-			l2.add(to);
-			visited.put(from, l2);
-		}
-		else
-		{
-			l.add(to);
-		}
-	}
-	
-	private boolean hasJumped(Instruction from, Instruction to)
-	{
-		List<Instruction> i = visited.get(from);
+		Collection<Instruction> i = visited.getCollection(from);
 		if (i != null && i.contains(to))
 			return true;
 		
-		if (i == null)
-		{
-			i = new ArrayList<>();
-			visited.put(from, i);
-		}
-		
-		i.add(to);
+		visited.put(from, to);
 		return false;
 	}
 	
-	public void jump(Instruction to)
+	public void jump(InstructionContext from, Instruction to)
 	{
 		assert to != null;
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
-		if (hasJumped(cur, to))
+		if (hasJumped(from, to))
 		{
 			executing = false;
 			return;
 		}
 		
-		doJump(cur, to);
 		cur = to;
 	}
 }

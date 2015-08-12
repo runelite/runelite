@@ -37,43 +37,20 @@ public class CheckCast extends Instruction
 
 	@Override
 	public void execute(Frame frame)
-	{			
-		// jump to instruction handlers that can catch exceptions here
-		for (info.sigterm.deob.attributes.code.Exception e : this.getInstructions().getCode().getExceptions().getExceptions())
-		{
-			int startIdx = this.getInstructions().getInstructions().indexOf(e.getStart()),
-					endIdx = this.getInstructions().getInstructions().indexOf(e.getEnd()),
-					thisIdx = this.getInstructions().getInstructions().indexOf(this);
-			
-			assert startIdx != -1;
-			assert endIdx != -1;
-			assert thisIdx != -1;
-			
-			// [start, end)
-			if (thisIdx >= startIdx && thisIdx < endIdx)
-			{
-				Frame f = frame.dup();
-				Stack stack = f.getStack();
-				
-				InstructionContext ins = new InstructionContext(this, f);
-				
-				while (stack.getSize() > 0)
-				{
-					StackContext what = stack.pop();
-					ins.pop(what);
-				}
-				
-				// push exception back
-				StackContext exception = new StackContext(ins, new Type("java/lang/Exception"));
-				stack.push(exception);
-				
-				ins.push(exception);
-				
-				f.addInstructionContext(ins);
-				
-				f.jump(e.getHandler());
-			}
-		}
+	{
+		InstructionContext ins = new InstructionContext(this, frame);
+		Stack stack = frame.getStack();
+		
+		StackContext value = stack.pop();
+		
+		ins.pop(value);
+		
+		StackContext ctx = new StackContext(ins, value.getType());
+		stack.push(ctx);
+		
+		ins.push(ctx);
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	@Override

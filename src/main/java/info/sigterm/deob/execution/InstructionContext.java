@@ -5,6 +5,7 @@ import java.util.List;
 
 import info.sigterm.deob.Method;
 import info.sigterm.deob.attributes.code.Instruction;
+import java.util.Objects;
 
 public class InstructionContext
 {
@@ -76,5 +77,39 @@ public class InstructionContext
 		
 		// start recursively removing
 		ctx.removeStack();
+	}
+	
+	@Override
+	public boolean equals(Object other)
+	{
+		if (!(other instanceof InstructionContext))
+			return false;
+		
+		InstructionContext ic = (InstructionContext) other;
+		
+		if (ins != ic.ins)
+			return false;
+		
+		if (getPops().size() != ic.getPops().size())
+			return false;
+		
+		for (int i = 0; i < getPops().size(); ++i)
+		{
+			StackContext ours = getPops().get(i),
+				theirs = ic.getPops().get(i);
+			
+			if (!ours.getPushed().equals(theirs.getPushed()))
+				return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 73 * hash + Objects.hashCode(this.ins);
+		return hash;
 	}
 }
