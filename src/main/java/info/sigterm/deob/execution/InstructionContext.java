@@ -11,6 +11,7 @@ public class InstructionContext
 {
 	private Instruction ins;
 	private Frame frame;
+	private Stack stack; // stack at time ins was executed
 	private List<StackContext> pops = new ArrayList<>(); // stack contexts popped by instruction execution
 	private List<StackContext> pushes = new ArrayList<>(); // stack contexts pushed by instruction execution
 	private List<VariableContext> reads = new ArrayList<>(); // lvt reads
@@ -20,6 +21,7 @@ public class InstructionContext
 	{
 		ins = i;
 		frame = f;
+		stack = new Stack(frame.getStack());
 	}
 	
 	public void pop(StackContext... ctx)
@@ -51,6 +53,11 @@ public class InstructionContext
 	public Instruction getInstruction()
 	{
 		return ins;
+	}
+	
+	public Stack getStack()
+	{
+		return stack;
 	}
 	
 	public List<StackContext> getPops()
@@ -90,15 +97,18 @@ public class InstructionContext
 		if (ins != ic.ins)
 			return false;
 		
-		if (getPops().size() != ic.getPops().size())
+		// check if stack at time of execution is equal
+		Stack ours = new Stack(this.getStack()), // copy stacks since we destroy them
+			theirs = new Stack(ic.getStack());
+		
+		if (ours.getSize() != theirs.getSize())
 			return false;
 		
-		for (int i = 0; i < getPops().size(); ++i)
+		while (ours.getSize() > 0)
 		{
-			StackContext ours = getPops().get(i),
-				theirs = ic.getPops().get(i);
+			StackContext s1 = ours.pop(), s2 = theirs.pop();
 			
-			if (!ours.getPushed().equals(theirs.getPushed()))
+			if (s1.getPushed().getInstruction() != s2.getPushed().getInstruction())
 				return false;
 		}
 		

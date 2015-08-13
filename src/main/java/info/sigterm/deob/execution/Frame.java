@@ -13,6 +13,8 @@ import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.attributes.code.instructions.LookupSwitch;
 import info.sigterm.deob.attributes.code.instructions.TableSwitch;
 import info.sigterm.deob.pool.NameAndType;
+import java.util.HashSet;
+import java.util.Set;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -60,11 +62,7 @@ public class Frame
 		this.cur = other.cur;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
-		//this.instructions = new ArrayList<>(other.instructions); // deep?
 		this.visited = other.visited;
-		
-//		for (InstructionContext ctx : other.instructions)
-//			instructions.add(new InstructionContext(other, ctx));
 	}
 	
 	public Frame dup()

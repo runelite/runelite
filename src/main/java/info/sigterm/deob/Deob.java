@@ -1,14 +1,11 @@
 package info.sigterm.deob;
 
-import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
-import info.sigterm.deob.deobfuscators.RuntimeExceptions;
-import info.sigterm.deob.deobfuscators.UnusedFields;
-import info.sigterm.deob.deobfuscators.UnusedMethods;
-import info.sigterm.deob.deobfuscators.UnusedParameters;
 import info.sigterm.deob.deobfuscators.ConstantParameter;
-import info.sigterm.deob.deobfuscators.MethodInliner;
+import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
 import info.sigterm.deob.deobfuscators.RenameUnique;
+import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnreachedCode;
+import info.sigterm.deob.deobfuscators.UnusedMethods;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

@@ -129,7 +129,7 @@ public class ConstantParameter implements Deobfuscator
 			
 			if (ctx.getPushed().getInstruction() instanceof PushConstantInstruction)
 			{
-				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();				
+				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();
 				
 				if (!(pc.getConstant().getObject() instanceof Number))
 					continue;
