@@ -2,10 +2,12 @@ package info.sigterm.deob;
 
 import info.sigterm.deob.deobfuscators.ConstantParameter;
 import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
-import info.sigterm.deob.deobfuscators.RenameUnique;
+import info.sigterm.deob.deobfuscators.MethodInliner;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnreachedCode;
+import info.sigterm.deob.deobfuscators.UnusedFields;
 import info.sigterm.deob.deobfuscators.UnusedMethods;
+import info.sigterm.deob.deobfuscators.UnusedParameters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -62,37 +64,37 @@ public class Deob
 		bdur = System.currentTimeMillis() - bstart;
 		System.out.println("constant param took " + bdur/1000L + " seconds");
 		
-//		// remove unhit blocks
-//		bstart = System.currentTimeMillis();
-//		new UnreachedCode().run(group);
-//		//new UnusedBlocks().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused blocks took " + bdur/1000L + " seconds");
+		// remove unhit blocks
+		bstart = System.currentTimeMillis();
+		new UnreachedCode().run(group);
+		//new UnusedBlocks().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused blocks took " + bdur/1000L + " seconds");
 
 		// remove unused parameters
-//		bstart = System.currentTimeMillis();
-//		new UnusedParameters().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused params took " + bdur/1000L + " seconds");
+		bstart = System.currentTimeMillis();
+		new UnusedParameters().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused params took " + bdur/1000L + " seconds");
 		
 		// remove jump obfuscation
 		//new Jumps().run(group);
 		
 		// remove unused fields
-//		bstart = System.currentTimeMillis();
-//		new UnusedFields().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused fields took " + bdur/1000L + " seconds");
-//		
-//		// remove unused methods, again?
-//		bstart = System.currentTimeMillis();
-//		new UnusedMethods().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused methods took " + bdur/1000L + " seconds");
+		bstart = System.currentTimeMillis();
+		new UnusedFields().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused fields took " + bdur/1000L + " seconds");
+		
+		// remove unused methods, again?
+		bstart = System.currentTimeMillis();
+		new UnusedMethods().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused methods took " + bdur/1000L + " seconds");
 		
 		//new ModularArithmeticDeobfuscation().run(group);
 		
-		//new MethodInliner().run(group);
+		new MethodInliner().run(group);
 
 		saveJar(group, args[1]);
 		

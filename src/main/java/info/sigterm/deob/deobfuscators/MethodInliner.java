@@ -186,6 +186,9 @@ public class MethodInliner implements Deobfuscator
 		methodInstructions.getInstructions().add(idx + 1, nop);
 		++idx;
 		
+		methodInstructions.buildJumpGraph();
+		invokeMethodInstructions.buildJumpGraph();
+		
 		for (Instruction fromI : invokeIns.from)
 		{
 			assert fromI.jump.contains(invokeIns);
@@ -199,9 +202,6 @@ public class MethodInliner implements Deobfuscator
 		invokeIns.from.clear();
 		
 		methodInstructions.remove(invokeIns);
-		
-		methodInstructions.buildJumpGraph();
-		invokeMethodInstructions.buildJumpGraph();
 		
 		for (Instruction i : invokeMethodInstructions.getInstructions())
 		{
@@ -233,13 +233,16 @@ public class MethodInliner implements Deobfuscator
 				Instruction oldI = i;
 				i = lvt.setVariableIndex(newIndex);
 				
-				i.jump.addAll(oldI.jump);
-				i.from.addAll(oldI.from);
-				
-				for (Instruction i2 : oldI.from)
-					i2.replace(oldI, i);
-				
-				oldI.from.clear();
+				if (oldI != i)
+				{
+					i.jump.addAll(oldI.jump);
+					i.from.addAll(oldI.from);
+
+					for (Instruction i2 : oldI.from)
+						i2.replace(oldI, i);
+
+					oldI.from.clear();
+				}
 			}
 			
 			methodInstructions.getInstructions().add(idx++, i);
