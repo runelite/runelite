@@ -260,6 +260,16 @@ public class ConstantParameter implements Deobfuscator
 			
 			for (InstructionContext ins : frame.getInstructions())
 			{
+				if (ins.getInstruction() instanceof LVTInstruction)
+				{
+					LVTInstruction lvt = (LVTInstruction) ins.getInstruction();
+					
+					if (lvt.getVariableIndex() == lvtIndex && lvt.store())
+					{
+						return null;
+					}
+				}
+				
 				if (!(ins.getInstruction() instanceof ComparisonInstruction))
 					continue;
 				
@@ -331,19 +341,22 @@ public class ConstantParameter implements Deobfuscator
 	{
 		Method method;
 		int lvtIndex;
+		int paramIndex;
 
-		public MethodLvtPair(Method method, int lvtIndex)
+		public MethodLvtPair(Method method, int lvtIndex, int paramIndex)
 		{
 			this.method = method;
 			this.lvtIndex = lvtIndex;
+			this.paramIndex = paramIndex;
 		}
 
 		@Override
 		public int hashCode()
 		{
-			int hash = 7;
-			hash = 41 * hash + Objects.hashCode(this.method);
-			hash = 41 * hash + this.lvtIndex;
+			int hash = 5;
+			hash = 31 * hash + Objects.hashCode(this.method);
+			hash = 31 * hash + this.lvtIndex;
+			hash = 31 * hash + this.paramIndex;
 			return hash;
 		}
 
@@ -363,6 +376,9 @@ public class ConstantParameter implements Deobfuscator
 			if (this.lvtIndex != other.lvtIndex) {
 				return false;
 			}
+			if (this.paramIndex != other.paramIndex) {
+				return false;
+			}
 			return true;
 		}
 		
@@ -380,13 +396,23 @@ public class ConstantParameter implements Deobfuscator
 		{
 			for (Method method : cmp.methods)
 			{
-				MethodLvtPair pair = new MethodLvtPair(method, cmp.lvtIndex);
+				MethodLvtPair pair = new MethodLvtPair(method, cmp.lvtIndex, cmp.paramIndex);
 				
 				if (invalidDeadops.contains(pair))
 					continue;
 				
 				// the dead comparisons must be the same and branch the same way for every call to this method.
 				List<LogicallyDeadOp> deadOps = isLogicallyDead(execution, method, cmp.lvtIndex, cmp.value);
+				
+				if (deadOps == null)
+				{
+					deadops.remove(pair);
+					invalidDeadops.add(pair);
+					continue; // lvt store
+				}
+				
+				if (deadOps.isEmpty())
+					continue; // no ops to compare
 				
 				// this must be per method,lvtindex
 				List<LogicallyDeadOp> existing = deadops.get(pair);
