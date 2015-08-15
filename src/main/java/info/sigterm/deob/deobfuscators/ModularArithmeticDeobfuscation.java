@@ -674,6 +674,8 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
+		group.buildClassGraph();
+		
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();

@@ -4,6 +4,7 @@ import info.sigterm.deob.attributes.code.Instruction;
 import info.sigterm.deob.attributes.code.InstructionType;
 import info.sigterm.deob.attributes.code.Instructions;
 import info.sigterm.deob.execution.Frame;
+import info.sigterm.deob.execution.InstructionContext;
 
 import java.io.IOException;
 
@@ -22,5 +23,7 @@ public class NOP extends Instruction
 	@Override
 	public void execute(Frame frame)
 	{
+		InstructionContext ctx = new InstructionContext(this, frame);
+		frame.addInstructionContext(ctx);
 	}
 }

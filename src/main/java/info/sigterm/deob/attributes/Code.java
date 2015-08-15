@@ -51,6 +51,11 @@ public class Code extends Attribute
 		return maxStack;
 	}
 	
+	public void setMaxStack(int maxStack)
+	{
+		this.maxStack = maxStack;
+	}
+	
 	private int getMaxLocalsFromSig()
 	{
 		Method m = super.getAttributes().getMethod();

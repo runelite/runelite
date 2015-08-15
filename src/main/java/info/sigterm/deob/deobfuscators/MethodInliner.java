@@ -160,7 +160,10 @@ public class MethodInliner implements Deobfuscator
 				ins.getInstructions().add(invokeIdx++, storeIns);
 			}
 			
-			inline(m, i, invokedMethod, /*start*/lvtIndex);
+			int maxStack = code.getMaxStack() + invokedMethod.getCode().getMaxStack(); // not really right but ok
+			code.setMaxStack(maxStack);
+			
+			inline(m, i, invokedMethod, lvtIndex);
 			++inlineCount;
 			break;
 		}
