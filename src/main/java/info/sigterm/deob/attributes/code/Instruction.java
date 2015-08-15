@@ -222,7 +222,7 @@ public abstract class Instruction
 	{
 	}
 	
-	public void renameField(Field f, String name)
+	public void renameField(Field f, info.sigterm.deob.pool.Field name)
 	{
 	}
 	

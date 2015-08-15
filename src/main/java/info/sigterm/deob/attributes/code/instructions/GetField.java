@@ -62,6 +62,20 @@ public class GetField extends Instruction implements GetFieldInstruction
 	}
 	
 	@Override
+	public info.sigterm.deob.Field getMyField()
+	{
+		Class clazz = field.getClassEntry();
+		NameAndType nat = field.getNameAndType();
+
+		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		if (cf == null)
+			return null;
+
+		info.sigterm.deob.Field f2 = cf.findFieldDeep(nat);
+		return f2;
+	}
+	
+	@Override
 	public void renameClass(ClassFile cf, String name)
 	{
 		if (field.getClassEntry().getName().equals(cf.getName()))
@@ -72,7 +86,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 	}
 	
 	@Override
-	public void renameField(info.sigterm.deob.Field f, String name)
+	public void renameField(info.sigterm.deob.Field f, Field newField)
 	{
 		Class clazz = field.getClassEntry();
 		NameAndType nat = field.getNameAndType();
@@ -85,9 +99,6 @@ public class GetField extends Instruction implements GetFieldInstruction
 		assert f2 != null;
 		
 		if (f2 == f)
-		{
-			NameAndType newNat = new NameAndType(name, nat.getDescriptorType());
-			field = new Field(clazz, newNat);
-		}
+			field = newField;
 	}
 }

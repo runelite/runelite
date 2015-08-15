@@ -232,10 +232,10 @@ public class Instructions
 			i.renameClass(cf, name);
 	}
 	
-	public void renameField(Field f, String name)
+	public void renameField(Field f, info.sigterm.deob.pool.Field newField)
 	{
 		for (Instruction i : instructions)
-			i.renameField(f, name);
+			i.renameField(f, newField);
 	}
 	
 	public void renameMethod(Method oldMethod, info.sigterm.deob.pool.Method newMethod)

@@ -57,6 +57,11 @@ public class Field
 	{
 		return fields;
 	}
+	
+	public void setFields(Fields fields)
+	{
+		this.fields = fields;
+	}
 
 	public short getAccessFlags()
 	{

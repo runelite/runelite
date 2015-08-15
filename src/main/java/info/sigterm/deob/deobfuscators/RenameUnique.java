@@ -95,7 +95,11 @@ public class RenameUnique implements Deobfuscator
 				if (method.getCode() != null)
 				{
 					Instructions instructions = method.getCode().getInstructions();
-					instructions.renameField(field, name);
+					info.sigterm.deob.pool.Field newField = new info.sigterm.deob.pool.Field(
+						new info.sigterm.deob.pool.Class(c.getName()),
+						new NameAndType(name, field.getType())
+					);
+					instructions.renameField(field, newField);
 				}
 			}
 		}
