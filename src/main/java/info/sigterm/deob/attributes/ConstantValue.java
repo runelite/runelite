@@ -17,6 +17,13 @@ public class ConstantValue extends Attribute
 		DataInputStream is = attributes.getStream();
 		value = this.getAttributes().getClassFile().getPool().getEntry(is.readUnsignedShort());
 	}
+	
+	public ConstantValue(Attributes attributes, PoolEntry value)
+	{
+		super(attributes, AttributeType.CONSTANT_VALUE, -1);
+		
+		this.value = value;
+	}
 
 	public PoolEntry getValue()
 	{

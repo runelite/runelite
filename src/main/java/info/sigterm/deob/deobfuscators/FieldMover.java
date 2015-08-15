@@ -118,7 +118,9 @@ public class FieldMover implements Deobfuscator
 		group.buildClassGraph();
 		this.group = group;
 		findUses();
-		moveFields();
+		int count = moveFields();
+		
+		System.out.println("Moved " + count + " fields");
 	}
 	
 }

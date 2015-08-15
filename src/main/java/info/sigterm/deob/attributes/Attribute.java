@@ -20,6 +20,13 @@ public abstract class Attribute
 		this.length = is.readInt();
 	}
 	
+	Attribute(Attributes attr, AttributeType type, int length)
+	{
+		this.attributes = attr;
+		this.type = type;
+		this.length = length;
+	}
+	
 	public final void write(DataOutputStream out) throws IOException
 	{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -28,6 +35,8 @@ public abstract class Attribute
 		byte[] b = bout.toByteArray();
 		out.writeInt(b.length);
 		out.write(b);
+		
+		length = b.length;
 	}
 	
 	public abstract void writeAttr(DataOutputStream out) throws IOException;

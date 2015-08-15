@@ -117,4 +117,10 @@ public class Attributes
 			a.write(out);
 		}
 	}
+	
+	public void addAttribute(Attribute a)
+	{
+		assert a.getAttributes() == this;
+		attributes.add(a);
+	}
 }

@@ -1,6 +1,8 @@
 package info.sigterm.deob;
 
+import info.sigterm.deob.deobfuscators.FieldInliner;
 import info.sigterm.deob.deobfuscators.FieldMover;
+import info.sigterm.deob.deobfuscators.MethodMover;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -94,9 +96,11 @@ public class Deob
 		
 //		new ModularArithmeticDeobfuscation().run(group);
 		
-		//new MethodMover().run(group);
+//		new MethodMover().run(group);
+//		
+//		new FieldMover().run(group);
 		
-		new FieldMover().run(group);
+		new FieldInliner().run(group);
 
 		saveJar(group, args[1]);
 		
