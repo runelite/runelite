@@ -226,7 +226,7 @@ public abstract class Instruction
 	{
 	}
 	
-	public void renameMethod(Method m, String name)
+	public void renameMethod(Method oldMethod, info.sigterm.deob.pool.Method newMethod)
 	{
 	}
 }

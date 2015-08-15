@@ -42,6 +42,8 @@ public class Method
 	
 	public void write(DataOutputStream out) throws IOException
 	{
+		assert methods.getMethods().contains(this);
+		
 		ConstantPool pool = methods.getClassFile().getPool();
 		
 		out.writeShort(accessFlags);
@@ -53,6 +55,11 @@ public class Method
 	public Methods getMethods()
 	{
 		return methods;
+	}
+	
+	public void setMethods(Methods methods)
+	{
+		this.methods = methods;
 	}
 	
 	public String getName()

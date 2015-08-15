@@ -13,6 +13,7 @@ import info.sigterm.deob.execution.StackContext;
 import info.sigterm.deob.execution.Type;
 import info.sigterm.deob.pool.Class;
 import info.sigterm.deob.pool.InterfaceMethod;
+import info.sigterm.deob.pool.Method;
 import info.sigterm.deob.pool.NameAndType;
 import info.sigterm.deob.pool.PoolEntry;
 import info.sigterm.deob.signature.Signature;
@@ -149,10 +150,10 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	}
 	
 	@Override
-	public void renameMethod(info.sigterm.deob.Method m, String name)
+	public void renameMethod(info.sigterm.deob.Method m, Method newMethod)
 	{
 		for (info.sigterm.deob.Method m2 : getMethods())
 			if (m2.equals(m))
-				method = new InterfaceMethod(method.getClassEntry(), new NameAndType(name, method.getNameAndType().getDescriptor()));
+				method = new InterfaceMethod(newMethod.getClassEntry(), newMethod.getNameAndType());
 	}
 }

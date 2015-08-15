@@ -174,7 +174,13 @@ public class RenameUnique implements Deobfuscator
 				{
 					Instructions instructions = method.getCode().getInstructions();
 					for (Method m : methods)
-						instructions.renameMethod(m, name);
+					{
+						info.sigterm.deob.pool.Method newMethod = new info.sigterm.deob.pool.Method(
+							new info.sigterm.deob.pool.Class(m.getMethods().getClassFile().getName()),
+							new NameAndType(name, m.getNameAndType().getDescriptor())
+						);
+						instructions.renameMethod(m, newMethod);
+					}
 				}
 			}
 		}

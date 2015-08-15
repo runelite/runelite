@@ -238,9 +238,9 @@ public class Instructions
 			i.renameField(f, name);
 	}
 	
-	public void renameMethod(Method m, String name)
+	public void renameMethod(Method oldMethod, info.sigterm.deob.pool.Method newMethod)
 	{
 		for (Instruction i : instructions)
-			i.renameMethod(m, name);
+			i.renameMethod(oldMethod, newMethod);
 	}
 }

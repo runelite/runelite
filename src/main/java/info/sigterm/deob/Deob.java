@@ -3,6 +3,9 @@ package info.sigterm.deob;
 import info.sigterm.deob.deobfuscators.ConstantParameter;
 import info.sigterm.deob.deobfuscators.IllegalStateExceptions;
 import info.sigterm.deob.deobfuscators.MethodInliner;
+import info.sigterm.deob.deobfuscators.MethodMover;
+import info.sigterm.deob.deobfuscators.ModularArithmeticDeobfuscation;
+import info.sigterm.deob.deobfuscators.RenameUnique;
 import info.sigterm.deob.deobfuscators.RuntimeExceptions;
 import info.sigterm.deob.deobfuscators.UnreachedCode;
 import info.sigterm.deob.deobfuscators.UnusedFields;
@@ -21,6 +24,13 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 
+//move static methods
+//move static fields
+//math deob
+//remove dead classes
+//inline constant fields
+//compare old and new
+
 public class Deob
 {
 	public static void main(String[] args) throws IOException
@@ -38,9 +48,6 @@ public class Deob
 		// remove except RuntimeException
 		bstart = System.currentTimeMillis();
 		new RuntimeExceptions().run(group);
-		// the blocks of runtime exceptions may contain interesting things like other obfuscations we identify later, but now that
-		// it can't be reached by the execution phase, those things become confused. so remove blocks here.
-		//new UnusedBlocks().run(group);
 		bdur = System.currentTimeMillis() - bstart;
 		System.out.println("runtime exception took " + bdur/1000L + " seconds");
 		
@@ -92,9 +99,12 @@ public class Deob
 		bdur = System.currentTimeMillis() - bstart;
 		System.out.println("unused methods took " + bdur/1000L + " seconds");
 		
-		//new ModularArithmeticDeobfuscation().run(group);
 		
 		new MethodInliner().run(group);
+		
+//		new ModularArithmeticDeobfuscation().run(group);
+		
+		new MethodMover().run(group);
 
 		saveJar(group, args[1]);
 		
