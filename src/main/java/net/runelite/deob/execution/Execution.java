@@ -31,7 +31,7 @@ public class Execution
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
-				if (!Deob.isObfuscated(m.getName()))
+				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
 				{
 					addMethod(m); // I guess this method name is overriding a jre interface (init, run, ?).
 				}

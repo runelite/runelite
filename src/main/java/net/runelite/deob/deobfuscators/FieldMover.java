@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -10,10 +11,13 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.pool.NameAndType;
 import java.util.Collection;
+import java.util.List;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class FieldMover implements Deobfuscator
 {
+	private static final String mainClass = "client";
+	
 	private ClassGroup group;
 	private MultiValueMap<Field, ClassFile> fields = new MultiValueMap<>();
 	
@@ -57,6 +61,46 @@ public class FieldMover implements Deobfuscator
 		}
 	}
 	
+	private boolean isDowncastable(ClassFile from, ClassFile to)
+	{
+		while (from != null && from != to)
+		{
+			from = from.getParent();
+		}
+		
+		return from != null;
+	}
+	
+	private ClassFile getBase(ClassFile one, ClassFile two)
+	{
+		if (one == two)
+			return one;
+		
+		if (isDowncastable(one, two))
+			return two;
+		
+		if (isDowncastable(two, one))
+			return one;
+		
+		return null;
+	}
+	
+	private ClassFile findCommonBase(Collection<ClassFile> classes)
+	{
+		List<ClassFile> list = new ArrayList<>(classes);
+		
+		if (list.size() == 1)
+			return list.get(0);
+		
+//		ClassFile cf = getBase(list.get(0), list.get(1));
+//		
+//		for (int i = 2; i < list.size(); ++i)
+//			cf = getBase(cf, list.get(i));
+//		
+//		return cf;
+		return null; // to do this, would have to move static initializer
+	}
+	
 	private int moveFields()
 	{
 		int count = 0;
@@ -65,18 +109,18 @@ public class FieldMover implements Deobfuscator
 		{
 			Collection<ClassFile> cfs = fields.getCollection(field);
 			
-			if (cfs.size() != 1)
-			{
-				// XXX clinit
+			ClassFile to = findCommonBase(cfs);
+			if (to == null)
 				continue;
-			}
+				// no common base, move to entry class
+				//to = group.findClass(mainClass);
 			
-			ClassFile cf = cfs.iterator().next();
+			assert to != null;
 			
-			if (field.getFields().getClassFile() == cf)
+			if (field.getFields().getClassFile() == to)
 				continue;
 			
-			moveField(field, cf);
+			moveField(field, to);
 			++count;
 		}
 		

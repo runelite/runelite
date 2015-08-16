@@ -20,6 +20,11 @@ public class ClassGroup
 		return cf;
 	}
 	
+	public void removeClass(ClassFile cf)
+	{
+		classes.remove(cf);
+	}
+	
 	public List<ClassFile> getClasses()
 	{
 		return classes;

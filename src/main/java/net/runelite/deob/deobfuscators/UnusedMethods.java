@@ -14,7 +14,7 @@ public class UnusedMethods implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
-		group.buildClassGraph(); // does this use this?
+		group.buildClassGraph();
 		
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
@@ -25,7 +25,7 @@ public class UnusedMethods implements Deobfuscator
 		{
 			for (Method m : new ArrayList<>(cf.getMethods().getMethods()))
 			{
-				if (!Deob.isObfuscated(m.getName()))
+				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
 					continue;
 				
 				if (!execution.methods.contains(m))

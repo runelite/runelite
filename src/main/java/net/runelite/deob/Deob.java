@@ -15,6 +15,15 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
+import net.runelite.deob.deobfuscators.ConstantParameter;
+import net.runelite.deob.deobfuscators.IllegalStateExceptions;
+import net.runelite.deob.deobfuscators.MethodInliner;
+import net.runelite.deob.deobfuscators.RuntimeExceptions;
+import net.runelite.deob.deobfuscators.UnreachedCode;
+import net.runelite.deob.deobfuscators.UnusedClass;
+import net.runelite.deob.deobfuscators.UnusedFields;
+import net.runelite.deob.deobfuscators.UnusedMethods;
+import net.runelite.deob.deobfuscators.UnusedParameters;
 
 //move static methods
 //move static fields
@@ -37,70 +46,72 @@ public class Deob
 //		bdur = System.currentTimeMillis() - bstart;
 //		System.out.println("rename unique took " + bdur/1000L + " seconds");
 
-//		// remove except RuntimeException
-//		bstart = System.currentTimeMillis();
-//		new RuntimeExceptions().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("runtime exception took " + bdur/1000L + " seconds");
-//		
-//		// remove unused methods
-//		bstart = System.currentTimeMillis();
-//		new UnusedMethods().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused methods took " + bdur/1000L + " seconds");
-//		
-//		new UnreachedCode().run(group);
-//		
-//		// remove illegal state exceptions, frees up some parameters
-//		bstart = System.currentTimeMillis();
-//		new IllegalStateExceptions().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("illegal state exception took " + bdur/1000L + " seconds");
-//		
-//		// remove constant logically dead parameters
-//		bstart = System.currentTimeMillis();
-//		new ConstantParameter().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("constant param took " + bdur/1000L + " seconds");
-//		
-//		// remove unhit blocks
-//		bstart = System.currentTimeMillis();
-//		new UnreachedCode().run(group);
-//		//new UnusedBlocks().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused blocks took " + bdur/1000L + " seconds");
-//
-//		// remove unused parameters
-//		bstart = System.currentTimeMillis();
-//		new UnusedParameters().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused params took " + bdur/1000L + " seconds");
-//		
-//		// remove jump obfuscation
-//		//new Jumps().run(group);
-//		
-//		// remove unused fields
-//		bstart = System.currentTimeMillis();
-//		new UnusedFields().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused fields took " + bdur/1000L + " seconds");
-//		
-//		// remove unused methods, again?
-//		bstart = System.currentTimeMillis();
-//		new UnusedMethods().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused methods took " + bdur/1000L + " seconds");
-//		
-//		
-//		new MethodInliner().run(group);
+		// remove except RuntimeException
+		bstart = System.currentTimeMillis();
+		new RuntimeExceptions().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("runtime exception took " + bdur/1000L + " seconds");
+		
+		// remove unused methods
+		bstart = System.currentTimeMillis();
+		new UnusedMethods().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused methods took " + bdur/1000L + " seconds");
+		
+		new UnreachedCode().run(group);
+		
+		// remove illegal state exceptions, frees up some parameters
+		bstart = System.currentTimeMillis();
+		new IllegalStateExceptions().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("illegal state exception took " + bdur/1000L + " seconds");
+		
+		// remove constant logically dead parameters
+		bstart = System.currentTimeMillis();
+		new ConstantParameter().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("constant param took " + bdur/1000L + " seconds");
+		
+		// remove unhit blocks
+		bstart = System.currentTimeMillis();
+		new UnreachedCode().run(group);
+		//new UnusedBlocks().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused blocks took " + bdur/1000L + " seconds");
+
+		// remove unused parameters
+		bstart = System.currentTimeMillis();
+		new UnusedParameters().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused params took " + bdur/1000L + " seconds");
+		
+		// remove jump obfuscation
+		//new Jumps().run(group);
+		
+		// remove unused fields
+		bstart = System.currentTimeMillis();
+		new UnusedFields().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused fields took " + bdur/1000L + " seconds");
+		
+		// remove unused methods, again?
+		bstart = System.currentTimeMillis();
+		new UnusedMethods().run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		System.out.println("unused methods took " + bdur/1000L + " seconds");
+		
+		
+		new MethodInliner().run(group);
 		
 //		new ModularArithmeticDeobfuscation().run(group);
 		
-//		new MethodMover().run(group);
-//		
-//		new FieldMover().run(group);
+		new MethodMover().run(group);
+		
+		new FieldMover().run(group);
 		
 		new FieldInliner().run(group);
+		
+		new UnusedClass().run(group);
 
 		saveJar(group, args[1]);
 		
