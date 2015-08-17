@@ -96,7 +96,7 @@ public class RenameUnique implements Deobfuscator
 				{
 					Instructions instructions = method.getCode().getInstructions();
 					net.runelite.deob.pool.Field newField = new net.runelite.deob.pool.Field(
-						new net.runelite.deob.pool.Class(c.getName()),
+						new net.runelite.deob.pool.Class(field.getFields().getClassFile().getName()),
 						new NameAndType(name, field.getType())
 					);
 					instructions.renameField(field, newField);
