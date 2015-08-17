@@ -17,16 +17,23 @@ public class Code extends Attribute
 	private Exceptions exceptions;
 	private Attributes attributes;
 
-	public Code(Attributes attributes) throws IOException
+	public Code(Attributes attributes)
 	{
 		super(attributes, AttributeType.CODE);
-
-		DataInputStream is = attributes.getStream();
+	}
+	
+	@Override
+	public void load() throws IOException
+	{
+		super.load();
+		
+		DataInputStream is = this.getAttributes().getStream();
 
 		maxStack = is.readUnsignedShort();
 		is.skip(2); // max locals
 
 		instructions = new Instructions(this);
+		instructions.load();
 
 		exceptions = new Exceptions(this);
 		this.attributes = new Attributes(this);
@@ -94,6 +101,11 @@ public class Code extends Attribute
 	public Instructions getInstructions()
 	{
 		return instructions;
+	}
+	
+	public void setInstructions(Instructions instructions)
+	{
+		this.instructions = instructions;
 	}
 
 	public void buildInstructionGraph()

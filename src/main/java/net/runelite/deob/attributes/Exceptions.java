@@ -13,16 +13,22 @@ public class Exceptions extends Attribute
 {
 	private List<Class> classes = new ArrayList<>();
 	
-	public Exceptions(Attributes attributes) throws IOException
+	public Exceptions(Attributes attributes)
 	{
 		super(attributes, AttributeType.EXCEPTIONS);
+	}
+	
+	@Override
+	public void load() throws IOException
+	{
+		super.load();
 		
-		DataInputStream is = attributes.getStream();
+		DataInputStream is = this.getAttributes().getStream();
 		
 		int count = is.readUnsignedShort();
 		for (int i = 0; i < count; ++i)
 		{
-			Class clazz = attributes.getClassFile().getPool().getClass(is.readUnsignedShort());
+			Class clazz = this.getAttributes().getClassFile().getPool().getClass(is.readUnsignedShort());
 			classes.add(clazz);
 		}
 	}

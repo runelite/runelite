@@ -10,19 +10,25 @@ public class ConstantValue extends Attribute
 {
 	private PoolEntry value;
 
-	public ConstantValue(Attributes attributes) throws IOException
+	public ConstantValue(Attributes attributes)
 	{
 		super(attributes, AttributeType.CONSTANT_VALUE);
-
-		DataInputStream is = attributes.getStream();
-		value = this.getAttributes().getClassFile().getPool().getEntry(is.readUnsignedShort());
 	}
 	
 	public ConstantValue(Attributes attributes, PoolEntry value)
 	{
-		super(attributes, AttributeType.CONSTANT_VALUE, -1);
+		super(attributes, AttributeType.CONSTANT_VALUE);
 		
 		this.value = value;
+	}
+	
+	@Override
+	public void load() throws IOException
+	{
+		super.load();
+		
+		DataInputStream is = this.getAttributes().getStream();
+		value = this.getAttributes().getClassFile().getPool().getEntry(is.readUnsignedShort());
 	}
 
 	public PoolEntry getValue()

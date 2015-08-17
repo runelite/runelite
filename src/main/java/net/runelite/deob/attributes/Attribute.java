@@ -11,20 +11,16 @@ public abstract class Attribute
 	private AttributeType type;
 	private int length;
 
-	Attribute(Attributes attr, AttributeType type) throws IOException
+	Attribute(Attributes attr, AttributeType type)
 	{
 		this.attributes = attr;
 		this.type = type;
-
-		DataInputStream is = attr.getStream();
-		this.length = is.readInt();
 	}
 	
-	Attribute(Attributes attr, AttributeType type, int length)
+	public void load() throws IOException
 	{
-		this.attributes = attr;
-		this.type = type;
-		this.length = length;
+		DataInputStream is = attributes.getStream();
+		this.length = is.readInt();
 	}
 	
 	public final void write(DataOutputStream out) throws IOException

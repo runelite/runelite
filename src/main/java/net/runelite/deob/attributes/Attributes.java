@@ -33,11 +33,9 @@ public class Attributes
 		load();
 	}
 
-	public Attributes(Method m) throws IOException
+	public Attributes(Method m)
 	{
 		method = m;
-
-		load();
 	}
 
 	public Attributes(Code c) throws IOException
@@ -82,7 +80,7 @@ public class Attributes
 		return getClassFile().getStream();
 	}
 
-	private void load() throws IOException
+	public void load() throws IOException
 	{
 		DataInputStream is = getStream();
 
@@ -97,6 +95,7 @@ public class Attributes
 			{
 				Constructor<? extends Attribute> con = type.getAttributeClass().getConstructor(new Class[] { Attributes.class });
 				Attribute attr = con.newInstance(this);
+				attr.load();
 
 				if (type != AttributeType.UNKNOWN)
 					attributes.add(attr);

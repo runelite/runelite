@@ -38,6 +38,15 @@ public class Method
 		name = pool.getUTF8(is.readUnsignedShort());
 		arguments = new Signature(pool.getUTF8(is.readUnsignedShort()));
 		attributes = new Attributes(this);
+		attributes.load();
+	}
+	
+	public Method(Methods methods, String name, Signature signature)
+	{
+		this.methods = methods;
+		this.name = name;
+		this.arguments = signature;
+		attributes = new Attributes(this);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
@@ -60,6 +69,11 @@ public class Method
 	public void setMethods(Methods methods)
 	{
 		this.methods = methods;
+	}
+	
+	public Attributes getAttributes()
+	{
+		return attributes;
 	}
 	
 	public String getName()

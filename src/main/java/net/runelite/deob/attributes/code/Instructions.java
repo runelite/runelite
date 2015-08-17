@@ -21,9 +21,13 @@ public class Instructions
 	private List<Instruction> instructions = new ArrayList<>();
 	private List<Block> blocks = new ArrayList<>();
 
-	public Instructions(Code code) throws IOException
+	public Instructions(Code code)
 	{
 		this.code = code;
+	}
+	
+	public void load() throws IOException
+	{
 		DataInputStream is = code.getAttributes().getStream();
 
 		int length = is.readInt();

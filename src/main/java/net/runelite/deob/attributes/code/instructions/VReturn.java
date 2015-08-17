@@ -7,11 +7,10 @@ import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 
-import java.io.IOException;
 
 public class VReturn extends Instruction implements ReturnInstruction
 {
-	public VReturn(Instructions instructions, InstructionType type, int pc) throws IOException
+	public VReturn(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}

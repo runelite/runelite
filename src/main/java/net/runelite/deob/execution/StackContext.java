@@ -1,5 +1,8 @@
 package net.runelite.deob.execution;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StackContext
 {
 	public InstructionContext pushed; // instruction which pushed this
@@ -45,16 +48,22 @@ public class StackContext
 	}
 	
 	// remove this object from the stack
-	public void removeStack()
+	public List<StackContext> removeStack()
 	{
+		List<StackContext> list = new ArrayList<>();
+		
+		list.add(this);
+		
 		// remove the instruction which pushed this
 		if (!pushed.getInstruction().removeStack())
 			// dup will return false as the other objects on the stack below this are necessary
 			// for the other branch.
-			return;
+			return list;
 		
 		// remove from the stack things this instruction read
 		for (StackContext ctx : pushed.getPops()) 
-			ctx.removeStack();
+			list.addAll(ctx.removeStack());
+		
+		return list;
 	}
 }

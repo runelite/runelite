@@ -193,6 +193,11 @@ public class ClassFile
 		return methods.findMethod(nat);
 	}
 	
+	public Method findMethod(String name)
+	{
+		return methods.findMethod(name);
+	}
+	
 	public Method findMethodDeep(String name)
 	{
 		Method m = methods.findMethod(name);

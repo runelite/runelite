@@ -8,12 +8,18 @@ public class Unknown extends Attribute
 {
 	private byte[] data;
 
-	public Unknown(Attributes attributes) throws IOException
+	public Unknown(Attributes attributes)
 	{
 		super(attributes, AttributeType.UNKNOWN);
+	}
+	
+	@Override
+	public void load() throws IOException
+	{
+		super.load();
 
 		int len = this.getLength();
-		DataInputStream is = attributes.getStream();
+		DataInputStream is = this.getAttributes().getStream();
 
 		data = new byte[len];
 

@@ -75,15 +75,14 @@ public class InstructionContext
 		return invokes;
 	}
 	
-	public void removeStack(int idx)
+	public List<StackContext> removeStack(int idx)
 	{
 		// idx 0 is top of the stack, 1 is one under
 		// stack contexts are added to 'pops' in the order that they are popped from the stack,
-		// so just remove at index idx
-		StackContext ctx = pops.remove(idx);
+		StackContext ctx = pops.get(idx);
 		
 		// start recursively removing
-		ctx.removeStack();
+		return ctx.removeStack();
 	}
 	
 	@Override
