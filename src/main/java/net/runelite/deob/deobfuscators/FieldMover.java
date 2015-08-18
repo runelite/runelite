@@ -14,9 +14,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import net.runelite.deob.attributes.Attributes;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instructions.Goto;
 import net.runelite.deob.attributes.code.instructions.PutStatic;
 import net.runelite.deob.attributes.code.instructions.VReturn;
 import net.runelite.deob.execution.Execution;
@@ -207,9 +209,10 @@ public class FieldMover implements Deobfuscator
 	{
 		// find instruction in execution and remove it
 		InstructionContext setCtx = null;
+		Frame frame = null;
 		List<StackContext> ctxs = null;
-		for (Frame frame : execution.processedFrames)
-			for (InstructionContext ctx : frame.getInstructions())
+		for (Frame f : execution.processedFrames)
+			for (InstructionContext ctx : f.getInstructions())
 			{
 				if (ctx.getInstruction() != setInstruction)
 					continue;
@@ -220,6 +223,7 @@ public class FieldMover implements Deobfuscator
 				//List<Instruction> oldIns = new ArrayList<>(frame.getMethod().getCode().getInstructions().getInstructions());
 				
 				ctxs = ctx.removeStack(0); //remove
+				frame = f;
 				
 				//List<Instruction> newIns = new ArrayList<>(frame.getMethod().getCode().getInstructions().getInstructions());
 				
@@ -234,6 +238,83 @@ public class FieldMover implements Deobfuscator
 		}
 		
 		// insert instructions into method
+		
+		// convert stack info to instruction ctx
+		List<InstructionContext> ictxs = getContexts(setCtx);
+		
+		// order instructions based on the order they execute in the frame
+		Map<Integer, Instruction> orderedIns = new TreeMap<>();
+		for (InstructionContext i : ictxs)
+		{
+			assert frame.getInstructions().indexOf(i) != -1;
+			orderedIns.put(frame.getInstructions().indexOf(i), i.getInstruction());
+		}
+		
+		to.getCode().getInstructions().buildJumpGraph();
+		frame.getMethod().getCode().getInstructions().buildInstructionGraph();
+		
+		for (Instruction i : orderedIns.values())
+		{
+			moveJumps(i);
+			i.getInstructions().remove(i);
+			
+			i.setInstructions(to.getCode().getInstructions());
+		}
+		
+		// insert instructions into method
+		to.getCode().getInstructions().getInstructions().addAll(0, orderedIns.values());
+	}
+	
+	private void moveJumps(Instruction i)
+	{
+		List<Instruction> list = i.getInstructions().getInstructions();
+		
+		int idx = list.indexOf(i);
+		
+		Instruction next = list.get(idx + 1);
+		
+		for (Instruction i2 : i.from)
+		{
+			i2.jump.remove(i);
+			
+			i2.replace(i, next);
+			
+			next.from.add(i2);
+			i2.jump.add(next);
+		}
+		i.from.clear();
+	}
+	
+	private void getContexts(List<InstructionContext> list, InstructionContext ctx)
+	{
+		assert !(ctx.getInstruction() instanceof Goto);
+		
+		if (list.contains(ctx))
+			return;
+		
+		list.add(ctx);
+		
+		for (StackContext s : ctx.getPops())
+		{
+			assert s.getPopped() == ctx;
+			
+			getContexts(list, s.getPushed());
+		}
+		
+		for (StackContext s : ctx.getPushes())
+		{
+			assert s.getPushed() == ctx;
+			
+			getContexts(list, s.getPopped());
+		}
+	}
+
+	// get instruction contexts for stack contexts
+	private List<InstructionContext> getContexts(InstructionContext ctx)
+	{
+		List<InstructionContext> list = new ArrayList<>();
+		getContexts(list, ctx);
+		return list;
 	}
 
 	@Override
