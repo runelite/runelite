@@ -8,6 +8,7 @@ public class StackContext
 	public InstructionContext pushed; // instruction which pushed this
 	public InstructionContext popped; // instruction which popped this
 	public Type type; // type of this
+	public boolean removed;
 	
 	public StackContext(InstructionContext pushed, Type type)
 	{

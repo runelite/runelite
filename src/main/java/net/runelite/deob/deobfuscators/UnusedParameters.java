@@ -114,7 +114,7 @@ public class UnusedParameters implements Deobfuscator
 			for (InstructionContext ins : f.getInstructions())
 				if (!ins.getInvokes().isEmpty() && methods.containsAll(ins.getInvokes()))
 				{
-					int pops = signature.size() - paramIndex - 1; // index from top of stack of parameter
+					int pops = signature.size() - paramIndex - 1; // index from top of stack of parameter. 0 is the last parameter
 					ins.removeStack(pops); // remove parameter from stack
 					
 					if (done.contains(ins.getInstruction()))
@@ -235,7 +235,10 @@ public class UnusedParameters implements Deobfuscator
 				int[] lvtIndexes = getLvtIndexes(signature, offset);
 				
 				for (Method m2 : methods)
+				{
+					assert !done.contains(m2);
 					done.add(m2);
+				}
 				
 				/* removing the parameter can't cause collisions on other (overloaded) methods because prior to this we rename
 				 * all classes/fields/methods to have unique names.

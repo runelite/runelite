@@ -80,6 +80,8 @@ public class InstructionContext
 		// idx 0 is top of the stack, 1 is one under
 		// stack contexts are added to 'pops' in the order that they are popped from the stack,
 		StackContext ctx = pops.get(idx);
+		assert !ctx.removed;
+		ctx.removed = true;
 		
 		// start recursively removing
 		return ctx.removeStack();

@@ -23,10 +23,8 @@ public class ConstantValue extends Attribute
 	}
 	
 	@Override
-	public void load() throws IOException
+	public void loadAttribute() throws IOException
 	{
-		super.load();
-		
 		DataInputStream is = this.getAttributes().getStream();
 		value = this.getAttributes().getClassFile().getPool().getEntry(is.readUnsignedShort());
 	}
