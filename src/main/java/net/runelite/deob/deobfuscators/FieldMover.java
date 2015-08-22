@@ -69,7 +69,7 @@ public class FieldMover implements Deobfuscator
 						if (fi instanceof PutStatic)
 							clinits.put(field, (PutStatic) fi);
 					}
-					else
+					else if (!m.isStatic()) // I think non static methods are always right?
 					{
 						if (fields.containsKey(field))
 						{

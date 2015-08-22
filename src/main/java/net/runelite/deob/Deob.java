@@ -18,6 +18,7 @@ import java.util.jar.Manifest;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.MethodInliner;
+import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
 import net.runelite.deob.deobfuscators.UnusedClass;
@@ -107,7 +108,9 @@ public class Deob
 //		
 //		new FieldInliner().run(group);
 		
-		new FieldMover().run(group);
+		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+		// (like multianewarray)
+		//new FieldMover().run(group);
 		
 		//new UnusedClass().run(group);
 		
