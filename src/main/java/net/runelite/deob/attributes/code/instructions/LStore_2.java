@@ -32,7 +32,7 @@ public class LStore_2 extends Instruction implements LVTInstruction
 		assert value.getType().equals(new Type(long.class.getName()));
 		ins.pop(value);
 		
-		variables.set(2, new VariableContext(ins, value.getType()));
+		variables.set(2, new VariableContext(ins, value));
 		
 		frame.addInstructionContext(ins);
 	}

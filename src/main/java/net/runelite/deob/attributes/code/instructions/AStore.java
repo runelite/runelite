@@ -1,6 +1,5 @@
 package net.runelite.deob.attributes.code.instructions;
 
-import net.runelite.deob.ClassFile;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -12,7 +11,6 @@ import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.VariableContext;
 import net.runelite.deob.execution.Variables;
-import net.runelite.deob.pool.Class;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -55,7 +53,7 @@ public class AStore extends Instruction implements LVTInstruction, WideInstructi
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		variables.set(index, new VariableContext(ins, object.getType()));
+		variables.set(index, new VariableContext(ins, object));
 		
 		frame.addInstructionContext(ins);
 	}

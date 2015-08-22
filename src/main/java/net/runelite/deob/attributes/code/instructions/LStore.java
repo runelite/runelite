@@ -55,7 +55,7 @@ public class LStore extends Instruction implements LVTInstruction, WideInstructi
 		assert value.getType().equals(new Type(long.class.getName()));
 		ins.pop(value);
 		
-		variables.set(index, new VariableContext(ins, value.getType()));
+		variables.set(index, new VariableContext(ins, value));
 		
 		frame.addInstructionContext(ins);
 	}

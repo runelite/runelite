@@ -30,7 +30,7 @@ public class AStore_3 extends Instruction implements LVTInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		variables.set(3, new VariableContext(ins, object.getType()));
+		variables.set(3, new VariableContext(ins, object));
 		
 		frame.addInstructionContext(ins);
 	}

@@ -1,5 +1,6 @@
 package net.runelite.deob.execution;
 
+import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import net.runelite.deob.attributes.code.instructions.TableSwitch;
 import net.runelite.deob.pool.NameAndType;
 import java.util.HashSet;
 import java.util.Set;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import org.apache.commons.collections4.MultiMap;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -38,19 +40,52 @@ public class Frame
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
-		
+	}
+	
+	public void initialize()
+	{	
 		// initialize LVT
 		int pos = 0;
 		if (!method.isStatic())
-			variables.set(pos++, new VariableContext(null, new Type(method.getMethods().getClassFile().getName())));
+			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())));
 		
 		NameAndType nat = method.getNameAndType();
 		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
 		{
-			variables.set(pos, new VariableContext(null, new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
+			variables.set(pos, new VariableContext(new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
 			pos += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		
+		Code code = method.getCode();
+		cur = code.getInstructions().getInstructions().get(0);
+	}
+	
+	public void initialize(InstructionContext ctx)
+	{
+		// initialize frame from invoking context
+		assert ctx.getInstruction() instanceof InvokeInstruction;
+		
+		// initialize LVT. the last argument is popped first, and is at arguments[0]
+		List<StackContext> pops = ctx.getPops();
+		pops = Lists.reverse(new ArrayList<>(pops)); // reverse the list so first argument is at index 0
+		
+		int lvtOffset = 0;
+		if (!method.isStatic())
+			variables.set(lvtOffset++, new VariableContext(ctx, pops.remove(0)));
+
+		NameAndType nat = method.getNameAndType();
+		
+		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
+		{
+			StackContext argument = pops.remove(0);
+			
+			variables.set(lvtOffset, new VariableContext(ctx, argument));//new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
+			lvtOffset += nat.getDescriptor().getTypeOfArg(i).getSlots();
+		}
+		
+		assert pops.isEmpty();
+		
+		Code code = method.getCode();
 		cur = code.getInstructions().getInstructions().get(0);
 	}
 	

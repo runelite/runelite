@@ -102,7 +102,7 @@ public class InstructionContext
 		Stack ours = new Stack(this.getStack()), // copy stacks since we destroy them
 			theirs = new Stack(ic.getStack());
 		
-		if (ours.getSize() != theirs.getSize())
+		if (ours.getSize() != theirs.getSize()) // is this possible?
 			return false;
 		
 		while (ours.getSize() > 0)

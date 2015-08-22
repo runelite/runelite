@@ -22,6 +22,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.execution.Execution;
 
 public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
@@ -71,8 +72,16 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		for (net.runelite.deob.Method method : getMethods())
 		{
 			ins.invoke(method);
+			
+			if (method.getCode() == null)
+			{
+				frame.getExecution().methods.add(method);
+				continue;
+			}
+			
 			// add possible method call to execution
-			frame.getExecution().addMethod(method);
+			Execution execution = frame.getExecution();
+			execution.invoke(ins, method);
 		}
 		
 		frame.addInstructionContext(ins);
