@@ -32,7 +32,7 @@ public class Execution
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : cf.getMethods().getMethods())
-			{		
+			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().equals("<init>"))
 				{
 					if (m.getCode() == null)
