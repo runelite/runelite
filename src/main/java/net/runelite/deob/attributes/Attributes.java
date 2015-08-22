@@ -38,11 +38,9 @@ public class Attributes
 		method = m;
 	}
 
-	public Attributes(Code c) throws IOException
+	public Attributes(Code c)
 	{
 		code = c;
-
-		load();
 	}
 	
 	public Method getMethod()

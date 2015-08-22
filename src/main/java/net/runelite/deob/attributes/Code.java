@@ -20,6 +20,9 @@ public class Code extends Attribute
 	public Code(Attributes attributes)
 	{
 		super(attributes, AttributeType.CODE);
+		
+		exceptions = new Exceptions(this);
+		this.attributes = new Attributes(this);
 	}
 	
 	@Override
@@ -34,7 +37,10 @@ public class Code extends Attribute
 		instructions.load();
 
 		exceptions = new Exceptions(this);
+		exceptions.load();
+		
 		this.attributes = new Attributes(this);
+		this.attributes.load();
 		
 		instructions.buildBlocks();
 		instructions.buildJumpGraph();

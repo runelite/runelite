@@ -14,10 +14,13 @@ public class Exceptions
 	private Code code;
 	private List<Exception> exceptions = new ArrayList<Exception>();
 
-	public Exceptions(Code code) throws IOException
+	public Exceptions(Code code)
 	{
 		this.code = code;
-
+	}
+	
+	public void load() throws IOException
+	{
 		DataInputStream is = code.getAttributes().getStream();
 
 		int count = is.readUnsignedShort();

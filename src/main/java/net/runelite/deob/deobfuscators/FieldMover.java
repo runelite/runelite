@@ -200,6 +200,8 @@ public class FieldMover implements Deobfuscator
 			code.setInstructions(instructions);
 			
 			instructions.getInstructions().add(new VReturn(instructions, InstructionType.RETURN, 0)); // add return
+			
+			to.getMethods().getMethods().add(toClinit);
 		}
 		
 		moveInitializer(setField, toClinit);

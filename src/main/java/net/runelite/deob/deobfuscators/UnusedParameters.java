@@ -255,15 +255,15 @@ public class UnusedParameters implements Deobfuscator
 	
 	@Override
 	public void run(ClassGroup group)
-	{
-		Execution execution = new Execution(group);
-		execution.populateInitialMethods();
-		execution.run();
-		
+	{		
 		int count = 0;
 		int[] i;
 		do
 		{
+			Execution execution = new Execution(group);
+			execution.populateInitialMethods();
+			execution.run();
+			
 			i = checkParametersOnce(execution, group);
 		
 			count += i[0];
