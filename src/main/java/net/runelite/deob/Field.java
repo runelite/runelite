@@ -28,8 +28,6 @@ public class Field
 	private Type type;
 	private Attributes attributes;
 
-	private ArrayList<Instruction> instructions = new ArrayList<Instruction>(); // instructions which reference this field
-
 	Field(Fields fields) throws IOException
 	{
 		this.fields = fields;
@@ -96,10 +94,5 @@ public class Field
 	public Attributes getAttributes()
 	{
 		return attributes;
-	}
-
-	public void addReference(Instruction ins)
-	{
-		instructions.add(ins);
 	}
 }

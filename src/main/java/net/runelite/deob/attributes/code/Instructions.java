@@ -210,13 +210,7 @@ public class Instructions
 			if (i instanceof JumpingInstruction)
 				((JumpingInstruction) i).buildJumpGraph();
 	}
-
-	public void buildInstructionGraph()
-	{
-		for (Instruction i : instructions)
-			i.buildInstructionGraph();
-	}
-
+	
 	public Code getCode()
 	{
 		return code;

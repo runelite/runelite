@@ -115,14 +115,6 @@ public class Method
 	{
 		return (Code) attributes.findType(AttributeType.CODE);
 	}
-
-	public void buildInstructionGraph()
-	{
-		Code code = getCode();
-
-		if (code != null)
-			code.buildInstructionGraph();
-	}
 	
 	@SuppressWarnings("unchecked")
 	public <T extends Instruction & LVTInstruction> List<T> findLVTInstructionsForVariable(int index)

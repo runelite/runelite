@@ -231,11 +231,6 @@ public class ClassFile
 			i.children.add(this);
 		}
 	}
-
-	public void buildInstructionGraph()
-	{
-		methods.buildInstructionGraph();
-	}
 	
 	public boolean instanceOf(ClassFile other)
 	{

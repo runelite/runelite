@@ -53,22 +53,6 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	}
 
 	@Override
-	public void buildInstructionGraph()
-	{
-		Class clazz = field.getClassEntry();
-		NameAndType nat = field.getNameAndType();
-
-		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
-		if (cf == null)
-			return;
-
-		net.runelite.deob.Field f = cf.findFieldDeep(nat);
-		assert f != null;
-
-		f.addReference(this);
-	}
-
-	@Override
 	public Field getField()
 	{
 		return field;

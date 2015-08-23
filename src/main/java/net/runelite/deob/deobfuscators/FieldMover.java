@@ -253,7 +253,7 @@ public class FieldMover implements Deobfuscator
 		}
 		
 		to.getCode().getInstructions().buildJumpGraph();
-		frame.getMethod().getCode().getInstructions().buildInstructionGraph();
+		frame.getMethod().getCode().getInstructions().buildJumpGraph();
 		
 		for (Instruction i : orderedIns.values())
 		{
