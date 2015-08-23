@@ -202,10 +202,6 @@ public abstract class Instruction
 		to.from.add(this);
 	}
 
-	public void buildInstructionGraph()
-	{
-	}
-	
 	public abstract void execute(Frame e);
 	
 	/* does this terminate a block? */

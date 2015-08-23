@@ -67,14 +67,6 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	}
 
 	@Override
-	public void buildInstructionGraph()
-	{
-		net.runelite.deob.Field f = getMyField();
-		if (f != null)
-			f.addReference(this);
-	}
-
-	@Override
 	public Field getField()
 	{
 		return field;

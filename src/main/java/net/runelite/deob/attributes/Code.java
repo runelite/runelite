@@ -111,9 +111,4 @@ public class Code extends Attribute
 	{
 		this.instructions = instructions;
 	}
-
-	public void buildInstructionGraph()
-	{
-		instructions.buildInstructionGraph();
-	}
 }

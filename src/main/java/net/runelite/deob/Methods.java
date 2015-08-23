@@ -72,10 +72,4 @@ public class Methods
 				return m;
 		return null;
 	}
-
-	public void buildInstructionGraph()
-	{
-		for (Method m : methods)
-			m.buildInstructionGraph();
-	}
 }
