@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.runelite.deob.attributes.code.Exceptions;
 
 public class MethodInliner implements Deobfuscator
 {
@@ -100,9 +101,6 @@ public class MethodInliner implements Deobfuscator
 			if (invokedMethod.isSynchronized())
 				continue;
 			
-			if (!invokedMethod.getCode().getExceptions().getExceptions().isEmpty())
-				continue;
-			
 			// assign variables on stack to lvt
 			Signature descriptor = invokedMethod.getDescriptor();
 			
@@ -112,7 +110,7 @@ public class MethodInliner implements Deobfuscator
 				lvtIndexes.put(j, idx);
 				idx += descriptor.getTypeOfArg(j).getSlots();
 			}
-				
+			
 			for (int j = descriptor.size() - 1; j >= 0; --j)
 			{
 				Type type = descriptor.getTypeOfArg(j);
@@ -131,19 +129,15 @@ public class MethodInliner implements Deobfuscator
 						case "S":
 						case "I":
 							storeIns = new IStore(ins, lvtIndex + paramLvtIndex);
-							//lvtIndex += type.getSlots();
 							break;
 						case "J":
 							storeIns = new LStore(ins, lvtIndex + paramLvtIndex);
-							//lvtIndex += type.getSlots();
 							break;
 						case "F":
 							storeIns = new FStore(ins, lvtIndex + paramLvtIndex);
-							//lvtIndex += type.getSlots();
 							break;
 						case "D":
 							storeIns = new DStore(ins, lvtIndex + paramLvtIndex);
-							//lvtIndex += type.getSlots();
 							break;
 					}
 				}
@@ -152,7 +146,6 @@ public class MethodInliner implements Deobfuscator
 				{
 					assert storeIns == null;
 					storeIns = new AStore(ins, lvtIndex + paramLvtIndex);
-					//lvtIndex += type.getSlots();
 				}
 				assert storeIns != null;
 				
@@ -164,6 +157,7 @@ public class MethodInliner implements Deobfuscator
 			code.setMaxStack(maxStack);
 			
 			inline(m, i, invokedMethod, lvtIndex);
+			moveExceptions(m, invokedMethod);
 			++inlineCount;
 			break;
 		}
@@ -204,6 +198,9 @@ public class MethodInliner implements Deobfuscator
 		}
 		invokeIns.from.clear();
 		
+		for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
+			e.replace(invokeIns, nop);
+		
 		methodInstructions.remove(invokeIns);
 		
 		for (Instruction i : invokeMethodInstructions.getInstructions())
@@ -225,6 +222,9 @@ public class MethodInliner implements Deobfuscator
 					i2.replace(oldI, i);
 				
 				oldI.from.clear();
+				
+				for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
+					e.replace(oldI, i);
 			}
 			
 			if (i instanceof LVTInstruction)
@@ -245,6 +245,9 @@ public class MethodInliner implements Deobfuscator
 						i2.replace(oldI, i);
 
 					oldI.from.clear();
+					
+					for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
+						e.replace(oldI, i);
 				}
 			}
 			
@@ -255,6 +258,19 @@ public class MethodInliner implements Deobfuscator
 		// old method goes away
 		invokeMethodInstructions.getInstructions().clear();
 		removeMethods.add(invokeMethod);
+	}
+	
+	private void moveExceptions(Method to, Method from)
+	{
+		Exceptions exceptions = from.getCode().getExceptions();
+		Exceptions toExceptions = to.getCode().getExceptions();
+		
+		for (net.runelite.deob.attributes.code.Exception e : exceptions.getExceptions())
+		{
+			e.setExceptions(toExceptions);
+			toExceptions.add(e);
+		}
+		exceptions.getExceptions().clear();
 	}
 	
 	@Override

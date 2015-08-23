@@ -29,6 +29,11 @@ public class Exceptions
 			exceptions.add(new Exception(this));
 	}
 	
+	public void add(Exception e)
+	{
+		exceptions.add(e);
+	}
+	
 	public void remove(Exception e)
 	{
 		exceptions.remove(e);
@@ -38,7 +43,10 @@ public class Exceptions
 	{
 		out.writeShort(exceptions.size());
 		for (Exception e : exceptions)
+		{
+			assert e.getExceptions() == this;
 			e.write(out);
+		}
 	}
 
 	public Code getCode()

@@ -41,6 +41,14 @@ public class Exception
 	{
 		ConstantPool pool = exceptions.getCode().getAttributes().getClassFile().getPool();
 		
+		assert start.getInstructions() == exceptions.getCode().getInstructions();
+		assert end.getInstructions() == exceptions.getCode().getInstructions();
+		assert handler.getInstructions() == exceptions.getCode().getInstructions();
+		
+		assert start.getInstructions().getInstructions().contains(start);
+		assert end.getInstructions().getInstructions().contains(end);
+		assert handler.getInstructions().getInstructions().contains(handler);
+		
 		out.writeShort(start.getPc());
 		out.writeShort(end.getPc());
 		out.writeShort(handler.getPc());
@@ -50,6 +58,11 @@ public class Exception
 	public Exceptions getExceptions()
 	{
 		return exceptions;
+	}
+	
+	public void setExceptions(Exceptions exceptions)
+	{
+		this.exceptions = exceptions;
 	}
 	
 	public Instruction getStart()
