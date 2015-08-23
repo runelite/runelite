@@ -179,7 +179,18 @@ public class ModArith implements Deobfuscator
 		execution = new Execution(group);
 		execution.populateInitialMethods();
 		
-		Encryption encr = new Encryption();
+		Encryption encr = new Encryption(0);
+		execution.setEncryption(encr);
+		
+		execution.run();
+		
+		encr.doChange();
+		
+		
+		execution = new Execution(group);
+		execution.populateInitialMethods();
+		
+		encr = new Encryption(1);
 		execution.setEncryption(encr);
 		
 		execution.run();

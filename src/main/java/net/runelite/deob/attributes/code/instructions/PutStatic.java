@@ -56,6 +56,18 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		{
 			Pair pair = encryption.getField(myField);
 			InstructionContext ctx = object.getPushed();
+			if (ctx.getInstruction() instanceof PushConstantInstruction && pair != null)
+			{
+				// field = encryptedvalue
+				// decrypt value by * getter
+				
+				PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
+				int value = (int) pci.getConstant().getObject();
+				
+				value = value * pair.getter;
+				
+				encryption.change(pci, value);
+			}
 			if (ctx.getInstruction() instanceof ISub)
 			{
 				List<StackContext> stackCtx = ctx.getPops();

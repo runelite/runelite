@@ -10,16 +10,32 @@ public class Encryption
 {
 	private Map<Field, Pair> fields = new HashMap<>();
 	private Map<PushConstantInstruction, Integer> changes = new HashMap<>();
+	int i;
+	private Pair p;
+	
+	public Encryption(int i)
+	{
+		this.i = i;
+	}
 	
 	public Pair getField(Field field)
 	{
-		if (field.getName().equals("field1170"))
+		if (i == 0 && field.getName().equals("field1170"))
 		{
 			Pair p = new Pair();
 			p.field = field;
 			p.getter = -1570098313;
 			p.setter = DMath.modInverse(p.getter);
 			assert p.setter == 1237096007;
+			return p;
+		}
+		if (i == 1 && field.getName().equals("field700"))
+		{
+			Pair p = new Pair();
+			p.field = field;
+			p.getter = -478315765;
+			p.setter = DMath.modInverse(p.getter);
+			//assert p.setter == 
 			return p;
 		}
 		return null;
