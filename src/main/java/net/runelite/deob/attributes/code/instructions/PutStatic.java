@@ -16,6 +16,10 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.List;
+import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.deobfuscators.arithmetic.Encryption;
+import net.runelite.deob.deobfuscators.arithmetic.Pair;
 
 public class PutStatic extends Instruction implements SetFieldInstruction
 {
@@ -45,6 +49,63 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		
 		StackContext object = stack.pop();
 		ins.pop(object);
+		
+		Encryption encryption = frame.getExecution().getEncryption();
+		net.runelite.deob.Field myField = getMyField();
+		if (encryption != null && myField != null)
+		{
+			Pair pair = encryption.getField(myField);
+			InstructionContext ctx = object.getPushed();
+			if (ctx.getInstruction() instanceof ISub)
+			{
+				List<StackContext> stackCtx = ctx.getPops();
+				
+				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
+				
+				if (one.getPushed().getInstruction() instanceof IMul)
+				{
+					ctx = one.getPushed();
+				}
+				else if (two.getPushed().getInstruction() instanceof IMul)
+				{
+					ctx = two.getPushed();
+				}
+			}
+			if (ctx.getInstruction() instanceof IMul && pair != null)
+			{
+				List<StackContext> stackCtx = ctx.getPops();
+				
+				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
+				
+				if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
+				{
+					PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
+					int value = (int) pci.getConstant().getObject();
+					
+					// field is encrypted with pair
+					// divide value by setter
+					
+					value = value * pair.getter;
+					
+					encryption.change(pci, value);
+					
+				}
+				else if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
+				{
+					PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
+					int value = (int) pci.getConstant().getObject();
+					
+					// field is encrypted with pair
+					// divide value by setter
+					
+					value = value * pair.getter;
+					
+					encryption.change(pci, value);
+				}
+				else
+					assert false;
+			}
+		}
 		
 		frame.addInstructionContext(ins);
 	}

@@ -178,12 +178,18 @@ public class ModArith implements Deobfuscator
 		
 		execution = new Execution(group);
 		execution.populateInitialMethods();
+		
+		Encryption encr = new Encryption();
+		execution.setEncryption(encr);
+		
 		execution.run();
 		
-		findUses();
+		encr.doChange();
 		
-		Field f = group.findClass("class41").findField("field1170");
-		calculate(f);
+//		findUses();
+//		
+//		Field f = group.findClass("class41").findField("field1170");
+//		calculate(f);
 	}
 	
 }

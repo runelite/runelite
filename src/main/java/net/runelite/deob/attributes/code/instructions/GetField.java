@@ -53,7 +53,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 		
 		Encryption encryption = frame.getExecution().getEncryption();
 		net.runelite.deob.Field f = getMyField();
-		if (f != null)
+		if (encryption != null && f != null)
 		{
 			Pair pair = encryption.getField(f);
 			if (pair != null)

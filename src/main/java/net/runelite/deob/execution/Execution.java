@@ -34,6 +34,11 @@ public class Execution
 		return encryption;
 	}
 	
+	public void setEncryption(Encryption encryption)
+	{
+		this.encryption = encryption;
+	}
+	
 	public void populateInitialMethods()
 	{
 		for (ClassFile cf : group.getClasses())
