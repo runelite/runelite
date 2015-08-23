@@ -148,6 +148,11 @@ public class ClassFile
 	{
 		return children;
 	}
+	
+	public Field findField(String name)
+	{
+		return fields.findField(name);
+	}
 
 	public Field findFieldDeep(NameAndType nat)
 	{

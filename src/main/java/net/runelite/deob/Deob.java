@@ -25,6 +25,7 @@ import net.runelite.deob.deobfuscators.UnusedClass;
 import net.runelite.deob.deobfuscators.UnusedFields;
 import net.runelite.deob.deobfuscators.UnusedMethods;
 import net.runelite.deob.deobfuscators.UnusedParameters;
+import net.runelite.deob.deobfuscators.arithmetic.ModArith;
 
 //move static methods
 //move static fields
@@ -102,7 +103,7 @@ public class Deob
 //		System.out.println("unused methods took " + bdur/1000L + " seconds");
 		
 		
-		new MethodInliner().run(group);
+		//new MethodInliner().run(group);
 //
 //		new MethodMover().run(group);
 //		
@@ -115,6 +116,8 @@ public class Deob
 		//new UnusedClass().run(group);
 		
 //		new ModularArithmeticDeobfuscation().run(group);
+		
+		new ModArith().run(group);
 
 		saveJar(group, args[1]);
 		

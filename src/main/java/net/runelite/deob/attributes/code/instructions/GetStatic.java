@@ -17,6 +17,8 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.deobfuscators.arithmetic.Encryption;
+import net.runelite.deob.deobfuscators.arithmetic.Pair;
 
 public class GetStatic extends Instruction implements GetFieldInstruction
 {
@@ -45,6 +47,18 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		Stack stack = frame.getStack();
 		
 		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType());
+		
+		Encryption encryption = frame.getExecution().getEncryption();
+		net.runelite.deob.Field f = getMyField();
+		if (f != null)
+		{
+			Pair pair = encryption.getField(f);
+			if (pair != null)
+			{
+				ctx.encryption = pair.getter;
+			}
+		}
+		
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -55,17 +69,9 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	@Override
 	public void buildInstructionGraph()
 	{
-		Class clazz = field.getClassEntry();
-		NameAndType nat = field.getNameAndType();
-
-		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
-		if (cf == null)
-			return;
-
-		net.runelite.deob.Field f = cf.findFieldDeep(nat);
-		assert f != null;
-
-		f.addReference(this);
+		net.runelite.deob.Field f = getMyField();
+		if (f != null)
+			f.addReference(this);
 	}
 
 	@Override

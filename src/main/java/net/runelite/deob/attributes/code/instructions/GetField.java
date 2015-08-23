@@ -17,6 +17,8 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.deobfuscators.arithmetic.Encryption;
+import net.runelite.deob.deobfuscators.arithmetic.Pair;
 
 public class GetField extends Instruction implements GetFieldInstruction
 {
@@ -48,6 +50,18 @@ public class GetField extends Instruction implements GetFieldInstruction
 		ins.pop(object);
 		
 		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType());
+		
+		Encryption encryption = frame.getExecution().getEncryption();
+		net.runelite.deob.Field f = getMyField();
+		if (f != null)
+		{
+			Pair pair = encryption.getField(f);
+			if (pair != null)
+			{
+				ctx.encryption = pair.getter;
+			}
+		}
+		
 		stack.push(ctx);
 		
 		ins.push(ctx);

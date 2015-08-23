@@ -50,4 +50,12 @@ public class Fields
 				return f;
 		return null;
 	}
+	
+	public Field findField(String name)
+	{
+		for (Field f : fields)
+			if (f.getName().equals(name))
+				return f;
+		return null;
+	}
 }
