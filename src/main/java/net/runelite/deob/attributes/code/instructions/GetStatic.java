@@ -50,7 +50,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		
 		Encryption encryption = frame.getExecution().getEncryption();
 		net.runelite.deob.Field f = getMyField();
-		if (f != null)
+		if (f != null && encryption != null)
 		{
 			Pair pair = encryption.getField(f);
 			if (pair != null)

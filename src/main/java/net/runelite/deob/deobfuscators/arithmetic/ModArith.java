@@ -15,6 +15,8 @@ import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -30,12 +32,15 @@ public class ModArith implements Deobfuscator
 {
 	private ClassGroup group;
 	private Execution execution;
-	private MultiValueMap<Field, InstructionContext> fieldIns = new MultiValueMap<>();
+	private MultiValueMap<Field, Integer> constants = new MultiValueMap<>();
+	//private MultiValueMap<Field, InstructionContext> fieldIns = new MultiValueMap<>();
 	
-	private void findGetField(InstructionContext ctx)
-	{
-		
-	}
+
+	
+//	private void findGetField(InstructionContext ctx)
+//	{
+//		
+//	}
 	
 	private void findUses()
 	{
@@ -44,64 +49,121 @@ public class ModArith implements Deobfuscator
 		for (Frame f : execution.processedFrames)
 			for (InstructionContext ctx : f.getInstructions())
 			{
-				Instruction i = ctx.getInstruction();
-				
-				if (!(i instanceof FieldInstruction))
-					continue;
-				
-				FieldInstruction fi = (FieldInstruction) i;
-				
-				Field fifield = fi.getMyField();
-	
-				if (fifield == null)
-					continue;
-				
-				fieldIns.put(fifield, ctx);
-//				if (i instanceof GetFieldInstruction)
-//				{
-//					findGetField(ctx);
-//				}
+				if (ctx.getInstruction() instanceof IMul)
+				{
+					Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+					Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+					
+					PushConstantInstruction pc = null;
+					GetFieldInstruction gf = null;
+					if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+					{
+						pc = (PushConstantInstruction) one;
+						gf = (GetFieldInstruction) two;
+					}
+					else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+					{
+						pc = (PushConstantInstruction) two;
+						gf = (GetFieldInstruction) one;
+					}
+					
+					if (pc == null)
+						continue;
+					
+					Field field = gf.getMyField();
+					int value = (int) pc.getConstant().getObject();
+					
+					constants.put(field, value);
+				}
+				else if (ctx.getInstruction() instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
+					
+					StackContext value = ctx.getPops().get(0); // what setfield pops as value
+					if (!(value.getPushed().getInstruction() instanceof IMul))
+						continue;
+					
+					Instruction one = value.getPushed().getPops().get(0).getPushed().getInstruction();
+					Instruction two = value.getPushed().getPops().get(1).getPushed().getInstruction();
+					
+					PushConstantInstruction pc = null;
+					Instruction other = null;
+					if (one instanceof PushConstantInstruction)
+					{
+						pc = (PushConstantInstruction) one;
+						other  = two;
+					}
+					else if (two instanceof PushConstantInstruction)
+					{
+						pc = (PushConstantInstruction) two;
+						other = one;
+					}
+					
+					if (pc == null)
+						continue;
+					
+					Field field = sf.getMyField();
+					int value2 = (int) pc.getConstant().getObject();
+					
+					constants.put(field, value2);
+				}
 			}
-		
-		//return list;
-//		for (ClassFile cf : group.getClasses())
-//			for (Field f : cf.getFields().getFields())
-//			{
-//				
-//			}
 	}
 	
-	public void calculate(Field field)
+	private void reduce()
 	{
-		Collection<InstructionContext> c = fieldIns.getCollection(field);
-		if (c == null)
-			return;
+		MultiValueMap<Field, Integer> values = constants;
+		constants = new MultiValueMap<>();
 		
-		List<Integer> constants = new ArrayList<>();
-		for (InstructionContext ctx : c)
+		for (Field field : values.keySet())
 		{
-			if (ctx.getInstruction() instanceof GetFieldInstruction)
-			{
-				List<Field> fields = getFieldsInExpression(ctx, constants);
-				if (fields.size() == 1)
-				{
+			Collection<Integer> col = values.getCollection(field);
+			
+			Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(col);
+			int max = Collections.max(map.values());
+
+			for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
+				if (max == entry.getValue()) {
+					int constant = entry.getKey();
+					
+					constants.put(field, constant);
+					break;
 				}
 			}
 		}
-		
-		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(constants);
-		int max = Collections.max(map.values());
-
-		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
-			if (max == entry.getValue()) {
-				int constant = entry.getKey();
-
-				System.out.println(constant);
-				assert DMath.isInversable(constant);
-				break;
-			}
-		}
 	}
+	
+//	public void calculate(Field field)
+//	{
+//		Collection<InstructionContext> c = fieldIns.getCollection(field);
+//		if (c == null)
+//			return;
+//		
+//		List<Integer> constants = new ArrayList<>();
+//		for (InstructionContext ctx : c)
+//		{
+//			if (ctx.getInstruction() instanceof GetFieldInstruction)
+//			{
+//				List<Field> fields = getFieldsInExpression(ctx, constants);
+//				if (fields.size() == 1)
+//				{
+//				}
+//			}
+//		}
+//		
+//		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(constants);
+//		int max = Collections.max(map.values());
+//
+//		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
+//			if (max == entry.getValue()) {
+//				int constant = entry.getKey();
+//
+//				System.out.println(constant);
+//				assert DMath.isInversable(constant);
+//				break;
+//			}
+//		}
+//	}
 	
 	private List<Field> getFieldsInExpression(InstructionContext ctx, List<Integer> constants)
 	{
@@ -166,24 +228,60 @@ public class ModArith implements Deobfuscator
 		
 		execution = new Execution(group);
 		execution.populateInitialMethods();
-		
-		Encryption encr = new Encryption(0);
-		execution.setEncryption(encr);
-		
 		execution.run();
 		
-		encr.doChange();
+		findUses();
+		reduce();
 		
+		int i = 0;
+		for (Field field : constants.keySet())
+		{
+			System.out.println("Processing " + field.getName());
+			int getter = constants.getCollection(field).iterator().next();
+			
+			if (i > 5)
+				break;
+			
+			Pair pair = new Pair();
+			pair.field = field;
+			pair.getter = getter;
+			pair.setter = DMath.modInverse(getter);
+			
+			Encryption encr = new Encryption();
+			encr.addPair(pair);
+			
+			execution = new Execution(group);
+			execution.populateInitialMethods();
+			execution.setEncryption(encr);
+			execution.run();
+			
+			encr.doChange();
+			System.out.println("Changed" + ++i);
+		}
 		
-		execution = new Execution(group);
-		execution.populateInitialMethods();
+		Encryption encr = new Encryption();
+		System.out.println(constants);
 		
-		encr = new Encryption(1);
-		execution.setEncryption(encr);
-		
-		execution.run();
-		
-		encr.doChange();
+//		execution = new Execution(group);
+//		execution.populateInitialMethods();
+//		
+//		Encryption encr = new Encryption(0);
+//		execution.setEncryption(encr);
+//		
+//		execution.run();
+//		
+//		encr.doChange();
+//		
+//		
+//		execution = new Execution(group);
+//		execution.populateInitialMethods();
+//		
+//		encr = new Encryption(1);
+//		execution.setEncryption(encr);
+//		
+//		execution.run();
+//		
+//		encr.doChange();
 		
 //		findUses();
 //		

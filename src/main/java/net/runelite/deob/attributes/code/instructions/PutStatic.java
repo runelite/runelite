@@ -64,9 +64,12 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 				PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
 				int value = (int) pci.getConstant().getObject();
 				
-				value = value * pair.getter;
-				
-				encryption.change(pci, value);
+				if (value != 0 && value != 1)
+				{
+					value = value * pair.getter;
+
+					encryption.change(pci, value);
+				}
 			}
 			if (ctx.getInstruction() instanceof ISub)
 			{
@@ -97,9 +100,12 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 					// field is encrypted with pair
 					// divide value by setter
 					
-					value = value * pair.getter;
-					
-					encryption.change(pci, value);
+					if (value != 0 && value != 1)
+					{
+						value = value * pair.getter;
+
+						encryption.change(pci, value);
+					}
 					
 				}
 				else if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
@@ -110,9 +116,12 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 					// field is encrypted with pair
 					// divide value by setter
 					
-					value = value * pair.getter;
-					
-					encryption.change(pci, value);
+					if (value != 0 && value != 1)
+					{
+						value = value * pair.getter;
+
+						encryption.change(pci, value);
+					}
 				}
 				else
 					assert false;
