@@ -102,15 +102,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 	@Override
 	public void renameField(net.runelite.deob.Field f, Field newField)
 	{
-		Class clazz = field.getClassEntry();
-		NameAndType nat = field.getNameAndType();
-
-		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
-		if (cf == null)
-			return;
-
-		net.runelite.deob.Field f2 = cf.findFieldDeep(nat);
-		assert f2 != null;
+		net.runelite.deob.Field f2 = getMyField();
 		
 		if (f2 == f)
 			field = newField;

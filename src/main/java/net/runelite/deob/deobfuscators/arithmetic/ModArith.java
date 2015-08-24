@@ -157,18 +157,6 @@ public class ModArith implements Deobfuscator
 		
 		return fields;
 	}
-	
-//	private void replace(Pair pair)
-//	{
-//		// do replacements with pair
-//		
-//		for (Frame frame : execution.processedFrames)
-//		{
-//			for (InstructionContext ctx : frame.getInstructions())
-//			{
-//			}
-//		}
-//	}
 
 	@Override
 	public void run(ClassGroup group)
