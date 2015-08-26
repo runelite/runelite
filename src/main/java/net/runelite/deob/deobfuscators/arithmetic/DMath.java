@@ -32,4 +32,9 @@ public class DMath
 			return false;
 		}
 	}
+	
+	public static boolean isBig(int val)
+	{
+		return (val & 0xFFF00000) != 0;
+	}
 }

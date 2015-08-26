@@ -239,7 +239,7 @@ public class ModArith implements Deobfuscator
 			System.out.println("Processing " + field.getName());
 			int getter = constants.getCollection(field).iterator().next();
 			
-			if (i > 5)
+			if (i > 50)
 				break;
 			
 			Pair pair = new Pair();

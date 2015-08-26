@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Field
 {
@@ -94,5 +95,11 @@ public class Field
 	public Attributes getAttributes()
 	{
 		return attributes;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return name.hashCode();
 	}
 }

@@ -18,6 +18,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import net.runelite.deob.deobfuscators.arithmetic.Pair;
 
@@ -39,6 +40,33 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	{
 		super.write(out);
 		out.writeShort(this.getPool().make(field));
+	}
+	
+	private static StackContext findMagic(StackContext one, StackContext two)
+	{
+		if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
+		{
+			PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
+			int value1 = (int) pci.getConstant().getObject();
+			
+			if (DMath.isBig(value1))
+			{
+				return one;
+			}
+		}
+		
+		if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
+		{
+			PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
+			int value2 = (int) pci.getConstant().getObject();
+			
+			if (DMath.isBig(value2))
+			{
+				return two;
+			}
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -92,25 +120,11 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 				
 				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
 				
-				if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
+				StackContext magicStack = findMagic(one, two);
+				
+				if (magicStack != null)
 				{
-					PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
-					int value = (int) pci.getConstant().getObject();
-					
-					// field is encrypted with pair
-					// divide value by setter
-					
-					if (value != 0 && value != 1)
-					{
-						value = value * pair.getter;
-
-						encryption.change(pci, value);
-					}
-					
-				}
-				else if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
-				{
-					PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
+					PushConstantInstruction pci = (PushConstantInstruction) magicStack.getPushed().getInstruction();
 					int value = (int) pci.getConstant().getObject();
 					
 					// field is encrypted with pair
@@ -123,8 +137,40 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 						encryption.change(pci, value);
 					}
 				}
-				else
-					assert false;
+				
+//				if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
+//				{
+//					PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
+//					int value = (int) pci.getConstant().getObject();
+//					
+//					// field is encrypted with pair
+//					// divide value by setter
+//					
+//					if (value != 0 && value != 1)
+//					{
+//						value = value * pair.getter;
+//
+//						encryption.change(pci, value);
+//					}
+//					
+//				}
+//				else if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
+//				{
+//					PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
+//					int value = (int) pci.getConstant().getObject();
+//					
+//					// field is encrypted with pair
+//					// divide value by setter
+//					
+//					if (value != 0 && value != 1)
+//					{
+//						value = value * pair.getter;
+//
+//						encryption.change(pci, value);
+//					}
+//				}
+//				else
+//					assert false;
 			}
 		}
 		

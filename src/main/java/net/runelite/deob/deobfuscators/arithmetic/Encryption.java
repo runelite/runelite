@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.attributes.code.instructions.SiPush;
 
 public class Encryption
 {
@@ -42,6 +43,10 @@ public class Encryption
 	
 	public void change(PushConstantInstruction pci, int value)
 	{
+		if (pci instanceof SiPush)
+		{
+			int i =5;
+		}
 		assert !changes.containsKey(pci) || changes.get(pci) == value;
 		changes.put(pci, value);
 	}
