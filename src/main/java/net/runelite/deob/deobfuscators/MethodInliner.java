@@ -111,6 +111,8 @@ public class MethodInliner implements Deobfuscator
 				idx += descriptor.getTypeOfArg(j).getSlots();
 			}
 			
+			Instruction firstParamStore = null;
+			
 			for (int j = descriptor.size() - 1; j >= 0; --j)
 			{
 				Type type = descriptor.getTypeOfArg(j);
@@ -151,12 +153,15 @@ public class MethodInliner implements Deobfuscator
 				
 				// insert storeIns before invoke instruction
 				ins.getInstructions().add(invokeIdx++, storeIns);
+				
+				if (firstParamStore == null)
+					firstParamStore = storeIns;
 			}
 			
 			int maxStack = code.getMaxStack() + invokedMethod.getCode().getMaxStack(); // not really right but ok
 			code.setMaxStack(maxStack);
 			
-			inline(m, i, invokedMethod, lvtIndex);
+			inline(m, i, invokedMethod, lvtIndex, firstParamStore);
 			moveExceptions(m, invokedMethod);
 			++inlineCount;
 			break;
@@ -165,7 +170,7 @@ public class MethodInliner implements Deobfuscator
 		return inlineCount;
 	}
 	
-	private void inline(Method method, Instruction invokeIns, Method invokeMethod, int lvtBase)
+	private void inline(Method method, Instruction invokeIns, Method invokeMethod, int lvtBase, Instruction firstParamStore)
 	{
 		Code methodCode = method.getCode(),
 			invokeMethodCode = invokeMethod.getCode();
@@ -177,11 +182,17 @@ public class MethodInliner implements Deobfuscator
 		
 		Instruction nextInstruction = methodInstructions.getInstructions().get(idx + 1);
 		
-		// move stuff which jumps to invokeIns to nop
+		// move stuff which jumps to invokeIns to firstParamStore. If there are no arguments that are stored,
+		// firstParamStore is null, and so create a nop instruction.
 		
-		Instruction nop = new NOP(methodInstructions);
-		methodInstructions.getInstructions().add(idx + 1, nop);
-		++idx;
+		if (firstParamStore == null)
+		{
+			Instruction nop = new NOP(methodInstructions);
+			methodInstructions.getInstructions().add(idx + 1, nop);
+			++idx;
+			
+			firstParamStore = nop;
+		}
 		
 		methodInstructions.buildJumpGraph();
 		invokeMethodInstructions.buildJumpGraph();
@@ -191,15 +202,15 @@ public class MethodInliner implements Deobfuscator
 			assert fromI.jump.contains(invokeIns);
 
 			fromI.jump.remove(invokeIns);
-			fromI.replace(invokeIns, nop);
+			fromI.replace(invokeIns, firstParamStore);
 			
-			fromI.jump.add(nop);
-			nop.from.add(fromI);
+			fromI.jump.add(firstParamStore);
+			firstParamStore.from.add(fromI);
 		}
 		invokeIns.from.clear();
 		
 		for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
-			e.replace(invokeIns, nop);
+			e.replace(invokeIns, firstParamStore);
 		
 		methodInstructions.remove(invokeIns);
 		
