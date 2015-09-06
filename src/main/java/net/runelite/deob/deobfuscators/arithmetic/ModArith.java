@@ -2,11 +2,10 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.Field;
@@ -21,7 +20,6 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 /*
@@ -32,20 +30,12 @@ public class ModArith implements Deobfuscator
 {
 	private ClassGroup group;
 	private Execution execution;
-	private MultiValueMap<Field, Integer> constants = new MultiValueMap<>();
-	//private MultiValueMap<Field, InstructionContext> fieldIns = new MultiValueMap<>();
-	
+	private MultiValueMap<Field, Integer> constantGetters = new MultiValueMap<>(),
+		constantSetters = new MultiValueMap<>();
+	private List<Pair> pairs = new ArrayList<>();
 
-	
-//	private void findGetField(InstructionContext ctx)
-//	{
-//		
-//	}
-	
 	private void findUses()
-	{
-		//List<InstructionContext> list = new ArrayList<>();
-		
+	{		
 		for (Frame f : execution.processedFrames)
 			for (InstructionContext ctx : f.getInstructions())
 			{
@@ -71,9 +61,12 @@ public class ModArith implements Deobfuscator
 						continue;
 					
 					Field field = gf.getMyField();
+					if (field == null)
+						continue;
+					
 					int value = (int) pc.getConstant().getObject();
 					
-					constants.put(field, value);
+					constantGetters.put(field, value);
 				}
 				else if (ctx.getInstruction() instanceof SetFieldInstruction)
 				{
@@ -103,67 +96,113 @@ public class ModArith implements Deobfuscator
 						continue;
 					
 					Field field = sf.getMyField();
+					if (field == null)
+						continue;
+					
 					int value2 = (int) pc.getConstant().getObject();
 					
-					constants.put(field, value2);
+					constantSetters.put(field, value2);
 				}
 			}
+	}
+	
+	private Pair reduce(Collection<Integer> getters, Collection<Integer> setters)
+	{
+		Pair p = null;
+		
+		for (Integer i : getters)
+		{
+			Integer inverse;
+			try
+			{
+				inverse = DMath.modInverse(i);
+			}
+			catch (ArithmeticException ex)
+			{
+				continue;
+			}
+			
+			if (setters.contains(inverse))
+			{
+				if (p != null && p.getter != i)
+					return null;
+				
+				if (p == null)
+				{
+					p = new Pair();
+					p.getter = i;
+					p.setter = inverse;
+				}
+			}
+		}
+		
+		for (Integer i : setters)
+		{
+			Integer inverse;
+			try
+			{
+				inverse = DMath.modInverse(i);
+			}
+			catch (ArithmeticException ex)
+			{
+				continue;
+			}
+			
+			if (getters.contains(inverse))
+			{
+				if (p != null && p.setter != i)
+					return null;
+				
+				if (p == null)
+				{
+					p = new Pair();
+					p.setter = i;
+					p.getter = inverse;
+				}
+			}
+		}
+		
+		return p;
 	}
 	
 	private void reduce()
 	{
-		MultiValueMap<Field, Integer> values = constants;
-		constants = new MultiValueMap<>();
-		
-		for (Field field : values.keySet())
-		{
-			Collection<Integer> col = values.getCollection(field);
-			
-			Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(col);
-			int max = Collections.max(map.values());
-
-			for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
-				if (max == entry.getValue()) {
-					int constant = entry.getKey();
-					
-					constants.put(field, constant);
-					break;
-				}
+		for (ClassFile cf : group.getClasses())
+			for (Field f : cf.getFields().getFields())
+			{
+				Collection<Integer> getters = constantGetters.getCollection(f),
+					setters = constantSetters.getCollection(f);
+				
+				if (getters == null || setters == null)
+					continue;
+				
+				Pair answer = reduce(getters, setters);
+				if (answer == null)
+					continue;
+				
+				answer.field = f;
+				pairs.add(answer);
 			}
-		}
-	}
-	
-//	public void calculate(Field field)
-//	{
-//		Collection<InstructionContext> c = fieldIns.getCollection(field);
-//		if (c == null)
-//			return;
+//		MultiValueMap<Field, Integer> values = constants;
+//		constants = new MultiValueMap<>();
 //		
-//		List<Integer> constants = new ArrayList<>();
-//		for (InstructionContext ctx : c)
+//		for (Field field : values.keySet())
 //		{
-//			if (ctx.getInstruction() instanceof GetFieldInstruction)
-//			{
-//				List<Field> fields = getFieldsInExpression(ctx, constants);
-//				if (fields.size() == 1)
-//				{
+//			Collection<Integer> col = values.getCollection(field);
+//			
+//			Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(col);
+//			int max = Collections.max(map.values());
+//
+//			for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
+//				if (max == entry.getValue()) {
+//					int constant = entry.getKey();
+//					
+//					constants.put(field, constant);
+//					break;
 //				}
 //			}
 //		}
-//		
-//		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(constants);
-//		int max = Collections.max(map.values());
-//
-//		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
-//			if (max == entry.getValue()) {
-//				int constant = entry.getKey();
-//
-//				System.out.println(constant);
-//				assert DMath.isInversable(constant);
-//				break;
-//			}
-//		}
-//	}
+	}
 	
 	private List<Field> getFieldsInExpression(InstructionContext ctx, List<Integer> constants)
 	{
@@ -234,18 +273,13 @@ public class ModArith implements Deobfuscator
 		reduce();
 		
 		int i = 0;
-		for (Field field : constants.keySet())
+		for (Pair pair : pairs)
 		{
-			System.out.println("Processing " + field.getName());
-			int getter = constants.getCollection(field).iterator().next();
+			Field field = pair.field;
+			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
 			
-			if (i > 50)
+			if (i > 10) // 25
 				break;
-			
-			Pair pair = new Pair();
-			pair.field = field;
-			pair.getter = getter;
-			pair.setter = DMath.modInverse(getter);
 			
 			Encryption encr = new Encryption();
 			encr.addPair(pair);
@@ -256,11 +290,11 @@ public class ModArith implements Deobfuscator
 			execution.run();
 			
 			encr.doChange();
-			System.out.println("Changed" + ++i);
+			System.out.println("Changed " + ++i);
 		}
 		
 		Encryption encr = new Encryption();
-		System.out.println(constants);
+		System.out.println(pairs);
 		
 //		execution = new Execution(group);
 //		execution.populateInitialMethods();

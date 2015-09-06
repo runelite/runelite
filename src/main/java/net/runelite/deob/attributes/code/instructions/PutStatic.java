@@ -42,7 +42,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		out.writeShort(this.getPool().make(field));
 	}
 	
-	private static StackContext findMagic(StackContext one, StackContext two)
+	protected static StackContext findMagic(StackContext one, StackContext two)
 	{
 		if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
 		{
@@ -68,6 +68,44 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		
 		return null;
 	}
+	
+	private static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx)
+	{
+		if (ctx.getInstruction() instanceof LDC_W)
+		{
+			LDC_W pci = (LDC_W) ctx.getInstruction();
+			int value = (int) pci.getConstant().getObject();
+			
+			if (encryption.hasChange(pci))
+				return true;
+
+			if (value != 0 && value != 1)
+			{
+				value = value * pair.getter;
+
+				encryption.change(pci, value);
+			}
+			
+			return true;
+		}
+		
+		boolean multipleBranches = ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub;
+		boolean retVal = false;
+		
+		for (StackContext sctx : ctx.getPops())
+		{
+			InstructionContext i = sctx.getPushed();
+			
+			if (translate(encryption, pair, i))
+			{
+				retVal = true;
+				if (!multipleBranches)
+					break;
+			}
+		}
+		
+		return retVal;
+	}
 
 	@Override
 	public void execute(Frame frame)
@@ -83,80 +121,67 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		if (encryption != null && myField != null)
 		{
 			Pair pair = encryption.getField(myField);
-			InstructionContext ctx = object.getPushed();
-			if (ctx.getInstruction() instanceof PushConstantInstruction && pair != null)
-			{
-				// field = encryptedvalue
-				// decrypt value by * getter
-				
-				PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
-				int value = (int) pci.getConstant().getObject();
-				
-				if (value != 0 && value != 1)
-				{
-					value = value * pair.getter;
-
-					encryption.change(pci, value);
-				}
-			}
-			if (ctx.getInstruction() instanceof ISub)
-			{
-				List<StackContext> stackCtx = ctx.getPops();
-				
-				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
-				
-				if (one.getPushed().getInstruction() instanceof IMul)
-				{
-					ctx = one.getPushed();
-				}
-				else if (two.getPushed().getInstruction() instanceof IMul)
-				{
-					ctx = two.getPushed();
-				}
-			}
-			if (ctx.getInstruction() instanceof IMul && pair != null)
-			{
-				List<StackContext> stackCtx = ctx.getPops();
-				
-				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
-				
-				StackContext magicStack = findMagic(one, two);
-				
-				if (magicStack != null)
-				{
-					PushConstantInstruction pci = (PushConstantInstruction) magicStack.getPushed().getInstruction();
-					int value = (int) pci.getConstant().getObject();
-					
-					// field is encrypted with pair
-					// divide value by setter
-					
-					if (value != 0 && value != 1)
-					{
-						value = value * pair.getter;
-
-						encryption.change(pci, value);
-					}
-				}
-				
-//				if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
+			if (pair != null)
+				translate(encryption, pair, ins);
+//			InstructionContext ctx = object.getPushed();
+//			if (ctx.getInstruction() instanceof IAdd && pair != null)
+//			{
+//				// field += constant * crap;
+//				// in bytecode is really
+//				// field = field + constant * crap
+//				
+//				List<StackContext> pops = ctx.getPops();
+//				
+//				if (pops.get(0).getPushed().getInstruction() instanceof IMul)
 //				{
-//					PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
-//					int value = (int) pci.getConstant().getObject();
-//					
-//					// field is encrypted with pair
-//					// divide value by setter
-//					
-//					if (value != 0 && value != 1)
-//					{
-//						value = value * pair.getter;
-//
-//						encryption.change(pci, value);
-//					}
-//					
+//					ctx = pops.get(0).getPushed();
 //				}
-//				else if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
+//				else if (pops.get(1).getPushed().getInstruction() instanceof IMul)
 //				{
-//					PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
+//					ctx = pops.get(1).getPushed();
+//				}
+//			}
+//			if (ctx.getInstruction() instanceof PushConstantInstruction && pair != null)
+//			{
+//				// field = encryptedvalue
+//				// decrypt value by * getter
+//				
+//				PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
+//				int value = (int) pci.getConstant().getObject();
+//				
+//				if (value != 0 && value != 1)
+//				{
+//					value = value * pair.getter;
+//
+//					encryption.change(pci, value);
+//				}
+//			}
+//			if (ctx.getInstruction() instanceof ISub)
+//			{
+//				List<StackContext> stackCtx = ctx.getPops();
+//				
+//				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
+//				
+//				if (one.getPushed().getInstruction() instanceof IMul)
+//				{
+//					ctx = one.getPushed();
+//				}
+//				else if (two.getPushed().getInstruction() instanceof IMul)
+//				{
+//					ctx = two.getPushed();
+//				}
+//			}
+//			if (ctx.getInstruction() instanceof IMul && pair != null)
+//			{
+//				List<StackContext> stackCtx = ctx.getPops();
+//				
+//				StackContext one = stackCtx.get(0), two = stackCtx.get(1);
+//				
+//				StackContext magicStack = findMagic(one, two);
+//				
+//				if (magicStack != null)
+//				{
+//					PushConstantInstruction pci = (PushConstantInstruction) magicStack.getPushed().getInstruction();
 //					int value = (int) pci.getConstant().getObject();
 //					
 //					// field is encrypted with pair
@@ -169,9 +194,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 //						encryption.change(pci, value);
 //					}
 //				}
-//				else
-//					assert false;
-			}
+//			}
 		}
 		
 		frame.addInstructionContext(ins);

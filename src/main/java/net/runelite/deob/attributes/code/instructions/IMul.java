@@ -45,8 +45,6 @@ public class IMul extends Instruction
 				{
 					int o = other * DMath.modInverse(one.encryption);
 
-					System.out.println(other + " -> " + o);
-
 					encryption.change(pci, o);
 				}
 				
@@ -63,8 +61,6 @@ public class IMul extends Instruction
 				if (other != 1 && other != 0)
 				{
 					int o = other * DMath.modInverse(two.encryption);
-
-					System.out.println(other + " -> " + o);
 
 					encryption.change(pci, o);
 				}
