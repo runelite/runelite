@@ -273,13 +273,14 @@ public class ModArith implements Deobfuscator
 		reduce();
 		
 		int i = 0;
-		for (Pair pair : pairs)
+		int start = 0, end = 32; // 24 32 ok
+		for (int j = start; j < end; ++j)
+		//for (Pair pair : pairs)
 		{
+			Pair pair = pairs.get(j);
 			Field field = pair.field;
-			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
 			
-			if (i > 0) // 2
-				break;
+			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
 			
 			Encryption encr = new Encryption();
 			encr.addPair(pair);

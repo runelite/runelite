@@ -90,7 +90,18 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			return true;
 		}
 		
-		if (ctx.getInstruction() instanceof InvokeInstruction)
+//		if (ctx.getInstruction() instanceof InvokeInstruction)
+//			return false;
+//		
+//		if (ctx.getInstruction() instanceof IDiv)
+//			return false;
+		
+		boolean ok = ctx.getInstruction() instanceof IAdd ||
+				ctx.getInstruction() instanceof ISub ||
+				ctx.getInstruction() instanceof IMul ||
+				ctx.getInstruction() instanceof SetFieldInstruction;
+		
+		if (!ok)
 			return false;
 		
 		boolean multipleBranches = ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub;
