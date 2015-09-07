@@ -17,6 +17,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
@@ -69,7 +70,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		return null;
 	}
 	
-	private static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx)
+	protected static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx)
 	{
 		if (ctx.getInstruction() instanceof LDC_W)
 		{
@@ -89,8 +90,13 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			return true;
 		}
 		
+		if (ctx.getInstruction() instanceof InvokeInstruction)
+			return false;
+		
 		boolean multipleBranches = ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub;
 		boolean retVal = false;
+		
+		encryption.begin();
 		
 		for (StackContext sctx : ctx.getPops())
 		{
@@ -99,10 +105,24 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			if (translate(encryption, pair, i))
 			{
 				retVal = true;
-				if (!multipleBranches)
+				
+				if (!multipleBranches) // only need to translate the one branch, which we have, return.
 					break;
 			}
+			else
+			{
+				if (multipleBranches)
+				{
+					// we can't translate both branches so rollback
+					encryption.rollback();
+					retVal = false;
+					break;
+				}
+				// else this is okay, we can try another
+			}
 		}
+		
+		encryption.end();
 		
 		return retVal;
 	}

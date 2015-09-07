@@ -278,7 +278,7 @@ public class ModArith implements Deobfuscator
 			Field field = pair.field;
 			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
 			
-			if (i > 10) // 25
+			if (i > 0) // 2
 				break;
 			
 			Encryption encr = new Encryption();
