@@ -50,7 +50,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		
 		StackContext value = stack.pop();
 		StackContext object = stack.pop();
-		ins.pop(object, value);
+		ins.pop(value, object);
 		
 		Encryption encryption = frame.getExecution().getEncryption();
 		net.runelite.deob.Field myField = getMyField();

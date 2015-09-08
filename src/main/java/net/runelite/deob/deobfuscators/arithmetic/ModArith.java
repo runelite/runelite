@@ -66,13 +66,16 @@ public class ModArith implements Deobfuscator
 					
 					int value = (int) pc.getConstant().getObject();
 					
+					if (value == 1 || value == 0)
+						continue;
+					
 					constantGetters.put(field, value);
 				}
 				else if (ctx.getInstruction() instanceof SetFieldInstruction)
 				{
 					SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
 					
-					StackContext value = ctx.getPops().get(0); // what setfield pops as value
+					StackContext value = ctx.getPops().get(0); // the first thing poppe from both putfield and putstatic is the value
 					if (!(value.getPushed().getInstruction() instanceof IMul))
 						continue;
 					
@@ -100,6 +103,9 @@ public class ModArith implements Deobfuscator
 						continue;
 					
 					int value2 = (int) pc.getConstant().getObject();
+					
+					if (value2 == 1 || value2 == 0)
+						continue;
 					
 					constantSetters.put(field, value2);
 				}
@@ -263,7 +269,16 @@ public class ModArith implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		this.group = group;
+		while (runOnce() > 0);
+	}
+	
+	private int runOnce()
+	{
 		group.buildClassGraph();
+		
+		pairs.clear();
+		constantGetters.clear();;
+		constantSetters.clear();
 		
 		execution = new Execution(group);
 		execution.populateInitialMethods();
@@ -273,7 +288,7 @@ public class ModArith implements Deobfuscator
 		reduce();
 		
 		int i = 0;
-		int start = 0, end = 32; // 24 32 ok
+		int start = 0, end = pairs.size(); // 0-64 ok
 		for (int j = start; j < end; ++j)
 		//for (Pair pair : pairs)
 		{
@@ -322,6 +337,7 @@ public class ModArith implements Deobfuscator
 //		
 //		Field f = group.findClass("class41").findField("field1170");
 //		calculate(f);
+		return i;
 	}
 	
 }
