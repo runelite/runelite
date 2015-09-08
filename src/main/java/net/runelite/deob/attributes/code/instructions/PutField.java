@@ -43,9 +43,9 @@ public class PutField extends Instruction implements SetFieldInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext object = stack.pop();
 		StackContext value = stack.pop();
-		ins.pop(object, value);
+		StackContext object = stack.pop();
+		ins.pop(value, object);
 		
 		frame.addInstructionContext(ins);
 	}
