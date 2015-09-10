@@ -210,60 +210,60 @@ public class ModArith implements Deobfuscator
 //		}
 	}
 	
-	private List<Field> getFieldsInExpression(InstructionContext ctx, List<Integer> constants)
-	{
-		return check(ctx, new HashSet<InstructionContext>(), constants);
-	}
-	
-	private List<Field> check(InstructionContext context, Set<InstructionContext> visited, List<Integer> constants)
-	{
-		List<Field> fields = new ArrayList<>();
-		
-		if (visited.contains(context))
-			return fields;
-		
-		visited.add(context);
-		
-		if (context.getInstruction() instanceof InvokeInstruction)
-		{
-			// field = func(field * constant), the output of the function isn't directly related to the result of field * constant
-			return fields;
-		}
-		
-		if (context.getInstruction() instanceof FieldInstruction)
-		{
-			FieldInstruction fi = (FieldInstruction) context.getInstruction();
-			Field myf = fi.getMyField();
-			if (myf != null)
-				fields.add(myf);
-		}
-		
-		if (context.getInstruction() instanceof PushConstantInstruction)
-		{
-			PushConstantInstruction pci = (PushConstantInstruction) context.getInstruction();
-			int i = (int) pci.getConstant().getObject();
-			constants.add(i);
-		}
-		
-		for (StackContext ctx : context.getPops())
-		{
-			InstructionContext i = ctx.getPushed();
-			
-			fields.addAll(check(i, visited, constants));
-		}
-		
-		for (StackContext ctx : context.getPushes())
-		{
-			InstructionContext i = ctx.getPopped();
-			
-			if (i == null)
-				continue;
-			
-			fields.addAll(check(i, visited, constants));
-		}
-		
-		return fields;
-	}
+//	private List<Field> getFieldsInExpression(InstructionContext ctx, List<Integer> constants)
+//	{
+//		return check(ctx, new HashSet<InstructionContext>(), constants);
+//	}
+//	
+//	private List<Field> check(InstructionContext context, Set<InstructionContext> visited, List<Integer> constants)
+//	{
+//		List<Field> fields = new ArrayList<>();
+//		
+//		if (visited.contains(context))
+//			return fields;
+//		
+//		visited.add(context);
+//		
+//		if (context.getInstruction() instanceof InvokeInstruction)
+//		{
+//			// field = func(field * constant), the output of the function isn't directly related to the result of field * constant
+//			return fields;
+//		}
+//		
+//		if (context.getInstruction() instanceof FieldInstruction)
+//		{
+//			FieldInstruction fi = (FieldInstruction) context.getInstruction();
+//			Field myf = fi.getMyField();
+//			if (myf != null)
+//				fields.add(myf);
+//		}
+//		
+//		if (context.getInstruction() instanceof PushConstantInstruction)
+//		{
+//			PushConstantInstruction pci = (PushConstantInstruction) context.getInstruction();
+//			int i = (int) pci.getConstant().getObject();
+//			constants.add(i);
+//		}
+//		
+//		for (StackContext ctx : context.getPops())
+//		{
+//			InstructionContext i = ctx.getPushed();
+//			
+//			fields.addAll(check(i, visited, constants));
+//		}
+//		
+//		for (StackContext ctx : context.getPushes())
+//		{
+//			InstructionContext i = ctx.getPopped();
+//			
+//			if (i == null)
+//				continue;
+//			
+//			fields.addAll(check(i, visited, constants));
+//		}
+//		
+//		return fields;
+//	}
 
 	@Override
 	public void run(ClassGroup group)

@@ -31,6 +31,7 @@ public class IMul extends Instruction
 		ins.pop(one, two);
 		
 		Encryption encryption = frame.getExecution().getEncryption();
+		int encKey = 0;
 		if (encryption != null)
 		{
 			if (one.encryption != 0)
@@ -52,9 +53,12 @@ public class IMul extends Instruction
 //				{
 //					System.out.println("decrr");
 //				}
+				encKey = one.encryption;
 			}
 			else if (two.encryption != 0)
 			{
+				assert one.encryption == 0;
+				
 				PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
 				int other = (int) pci.getConstant().getObject();
 				
@@ -64,10 +68,12 @@ public class IMul extends Instruction
 
 					encryption.change(pci, o);
 				}
+				encKey = two.encryption;
 			}
 		}
 		
 		StackContext ctx = new StackContext(ins, int.class);
+		ctx.encryption = encKey;
 		stack.push(ctx);
 		
 		ins.push(ctx);
