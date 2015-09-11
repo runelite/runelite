@@ -43,10 +43,7 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
-//		bstart = System.currentTimeMillis();
-//		new RenameUnique().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("rename unique took " + bdur/1000L + " seconds");
+//		run(group, new RenameUnique());
 
 //		// remove except RuntimeException
 //		run(group, new RuntimeExceptions());
@@ -88,8 +85,6 @@ public class Deob
 //		//new FieldMover().run(group);
 //		
 //		run(group, new UnusedClass());
-		
-//		new ModularArithmeticDeobfuscation().run(group);
 		
 		new ModArith().run(group);
 
