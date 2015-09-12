@@ -48,7 +48,6 @@ public class IMul extends Instruction
 
 					encryption.change(pci, o);
 				}
-				else	encKey = one.encryption;
 			}
 			else if (two.encryption != 0)
 			{
@@ -63,7 +62,6 @@ public class IMul extends Instruction
 
 					encryption.change(pci, o);
 				}
-				else encKey = two.encryption;
 			}
 		}
 		
