@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import java.io.IOException;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -7,10 +8,9 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 
-import java.io.IOException;
-
-public class Dup_X1 extends Instruction
+public class Dup_X1 extends Instruction implements DupInstruction
 {
 	public Dup_X1(Instructions instructions, InstructionType type, int pc) throws IOException
 	{

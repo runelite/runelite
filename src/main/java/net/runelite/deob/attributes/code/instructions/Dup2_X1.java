@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import java.io.IOException;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -8,10 +9,9 @@ import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.Type;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 
-import java.io.IOException;
-
-public class Dup2_X1 extends Instruction
+public class Dup2_X1 extends Instruction implements DupInstruction
 {
 	public Dup2_X1(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -38,17 +38,20 @@ public class Dup2_X1 extends Instruction
 		if (two != null)
 		{
 			StackContext ctx = new StackContext(ins, two.getType());
+			ctx.encryption = two.encryption;
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
 		StackContext ctx = new StackContext(ins, one.getType());
+		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		ctx = new StackContext(ins, three.getType());
+		ctx.encryption = three.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -56,12 +59,14 @@ public class Dup2_X1 extends Instruction
 		if (two != null)
 		{
 			ctx = new StackContext(ins, two.getType());
+			ctx.encryption = two.encryption;
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
 		ctx = new StackContext(ins, one.getType());
+		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
