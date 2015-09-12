@@ -2,8 +2,10 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
@@ -16,10 +18,12 @@ import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 /*
@@ -33,6 +37,35 @@ public class ModArith implements Deobfuscator
 	private MultiValueMap<Field, Integer> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
+	
+	private List<Integer> findAssocConstants(Field field, InstructionContext ctx) throws OtherFieldException
+	{
+		// starts with ctx = setfield
+		
+		List<Integer> list = new ArrayList<>();
+		
+		if (ctx.getInstruction() instanceof LDC_W)
+		{
+			LDC_W pci = (LDC_W) ctx.getInstruction();
+			if (pci.getConstant().getObject() instanceof Integer)
+				list.add((int) pci.getConstant().getObject());
+		}
+		
+		if (ctx.getInstruction() instanceof FieldInstruction)
+		{
+			FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
+			
+			if (fi.getMyField() != field)
+				throw new OtherFieldException();
+		}
+		
+		for (StackContext sctx : ctx.getPops())
+		{
+			list.addAll(findAssocConstants(field, sctx.getPushed()));
+		}
+		
+		return list;
+	}
 
 	private void findUses()
 	{		
@@ -75,6 +108,21 @@ public class ModArith implements Deobfuscator
 				{
 					SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
 					
+					Field field = sf.getMyField();
+					if (field == null)
+						continue;
+					
+					List<Integer> constants = null;
+//					try
+//					{
+//						constants = findAssocConstants(field, ctx);
+//						System.out.println(field.getName() + " " + constants);
+//						for (int i : constants)
+//							if (i != 1 && i != 0)
+//								constantSetters.put(field, i);
+//					}
+//					catch (OtherFieldException ex) { }
+					
 					StackContext value = ctx.getPops().get(0); // the first thing poppe from both putfield and putstatic is the value
 					if (!(value.getPushed().getInstruction() instanceof IMul))
 						continue;
@@ -96,10 +144,6 @@ public class ModArith implements Deobfuscator
 					}
 					
 					if (pc == null)
-						continue;
-					
-					Field field = sf.getMyField();
-					if (field == null)
 						continue;
 					
 					int value2 = (int) pc.getConstant().getObject();
@@ -171,6 +215,33 @@ public class ModArith implements Deobfuscator
 		return p;
 	}
 	
+	private Pair guess(Collection<Integer> getters)
+	{
+		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(getters);
+		int max = Collections.max(map.values());
+		int size = getters.size();
+		
+		if (size < 50)
+			return null;
+		
+		if (((float) max / (float) size) < 0.9)
+			return null;
+
+		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
+			if (max == entry.getValue()) {
+				int constant = entry.getKey();
+
+				Pair pair = new Pair();
+				pair.getter = constant;
+				pair.setter = DMath.modInverse(constant);
+				return pair;
+			}
+		}
+		
+		assert false;
+		return null;
+	}
+	
 	private void reduce()
 	{
 		for (ClassFile cf : group.getClasses())
@@ -179,35 +250,27 @@ public class ModArith implements Deobfuscator
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
 				
+				if (f.getName().equals("field605"))
+				{
+					int i =4;
+				}
+				
 				if (getters == null || setters == null)
 					continue;
 				
 				Pair answer = reduce(getters, setters);
 				if (answer == null)
-					continue;
+				{
+				//	answer = guess(getters);
+					if (answer == null)
+						continue;
+					
+					System.out.println("Guessing getter for " + f.getName() + " is " + answer.getter + " setter " + answer.setter);
+				}
 				
 				answer.field = f;
 				pairs.add(answer);
 			}
-//		MultiValueMap<Field, Integer> values = constants;
-//		constants = new MultiValueMap<>();
-//		
-//		for (Field field : values.keySet())
-//		{
-//			Collection<Integer> col = values.getCollection(field);
-//			
-//			Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(col);
-//			int max = Collections.max(map.values());
-//
-//			for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
-//				if (max == entry.getValue()) {
-//					int constant = entry.getKey();
-//					
-//					constants.put(field, constant);
-//					break;
-//				}
-//			}
-//		}
 	}
 	
 //	private List<Field> getFieldsInExpression(InstructionContext ctx, List<Integer> constants)
@@ -295,6 +358,11 @@ public class ModArith implements Deobfuscator
 			Pair pair = pairs.get(j);
 			Field field = pair.field;
 			
+			if (!field.getName().equals("field2982") && !field.getName().equals("field2963"))
+			{
+			//	continue;
+			}
+			
 			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
 			
 			Encryption encr = new Encryption();
@@ -312,31 +380,6 @@ public class ModArith implements Deobfuscator
 		Encryption encr = new Encryption();
 		System.out.println(pairs);
 		
-//		execution = new Execution(group);
-//		execution.populateInitialMethods();
-//		
-//		Encryption encr = new Encryption(0);
-//		execution.setEncryption(encr);
-//		
-//		execution.run();
-//		
-//		encr.doChange();
-//		
-//		
-//		execution = new Execution(group);
-//		execution.populateInitialMethods();
-//		
-//		encr = new Encryption(1);
-//		execution.setEncryption(encr);
-//		
-//		execution.run();
-//		
-//		encr.doChange();
-		
-//		findUses();
-//		
-//		Field f = group.findClass("class41").findField("field1170");
-//		calculate(f);
 		return i;
 	}
 	
