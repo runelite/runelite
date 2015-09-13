@@ -37,6 +37,7 @@ public class ModArith implements Deobfuscator
 	private MultiValueMap<Field, Integer> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
+	private Set<Field> deobfuscatedFields = new HashSet<>();
 	
 	private List<Integer> findAssocConstants(Field field, InstructionContext ctx) throws OtherFieldException
 	{
@@ -54,8 +55,9 @@ public class ModArith implements Deobfuscator
 		if (ctx.getInstruction() instanceof FieldInstruction)
 		{
 			FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
-			
-			if (fi.getMyField() != field)
+
+			// if the field is already deobbed, constants here don't include it
+			if (fi.getMyField() != field && !deobfuscatedFields.contains(fi.getMyField()))
 				throw new OtherFieldException();
 		}
 		
@@ -214,30 +216,58 @@ public class ModArith implements Deobfuscator
 		return p;
 	}
 	
-	private Pair guess(Collection<Integer> getters)
+	private Pair guess(Field field, Collection<Integer> values, boolean getter)
 	{
-		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(getters);
-		int max = Collections.max(map.values());
-		int size = getters.size();
+		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(values); // value -> how many times it occurs
+		int max = Collections.max(map.values()); // largest occurance #
+		int size = values.size();
 		
-		if (size < 50)
-			return null;
+//		if (max == size)
+//		{
+//			// all getters are the same value
+//			int constant = getters.iterator().next();
+//			Pair pair = new Pair();
+//			pair.getter = constant;
+//			System.out.println("Guessing " + field.getName() + " getter " + constant + " setter ");
+//			pair.setter = DMath.modInverse(constant);
+//			return pair;
+//		}
+//		
+//		if (size < 50)
+//			return null;
 		
-		if (((float) max / (float) size) < 0.9)
-			return null;
+//		if (((float) max / (float) size) < 0.9)
+//			return null;
 
 		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
 			if (max == entry.getValue()) {
 				int constant = entry.getKey();
+				int inverse;
+				try
+				{
+					inverse = DMath.modInverse(constant);
+				}
+				catch (ArithmeticException ex)
+				{
+					break;
+				}
 
 				Pair pair = new Pair();
-				pair.getter = constant;
-				pair.setter = DMath.modInverse(constant);
+				if (getter)
+				{
+					pair.getter = constant;
+					pair.setter = inverse;
+				}
+				else
+				{
+					pair.getter = inverse;
+					pair.setter = constant;
+				}
+				
 				return pair;
 			}
 		}
 		
-		assert false;
 		return null;
 	}
 	
@@ -249,16 +279,24 @@ public class ModArith implements Deobfuscator
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
 				
+				if (f.getName().equals("field542"))
+				{
+					int i =5;
+				}
+				
 				if (getters == null || setters == null)
 					continue;
 				
 				Pair answer = reduce(getters, setters);
+				
 				if (answer == null)
-				{
-					answer = guess(getters);
-					if (answer == null)
-						continue;
-				}
+					answer = guess(f, getters, true);
+				
+				if (answer == null)
+					answer = guess(f, setters, false);
+					
+				if (answer == null)
+					continue;
 				
 				answer.field = f;
 				pairs.add(answer);
@@ -269,7 +307,13 @@ public class ModArith implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		this.group = group;
-		while (runOnce() > 0);
+		int passes = 0, total = 0, i;
+		while ((i = runOnce()) > 0)
+		{
+			++passes;
+			total += i;
+		}
+		System.out.println("Finished arith deob on " + total + " fields in " + passes + " passes");
 	}
 	
 	private int runOnce()
@@ -288,16 +332,13 @@ public class ModArith implements Deobfuscator
 		reduce();
 		
 		int i = 0;
-		int start = 0, end = pairs.size();
-		for (int j = start; j < end; ++j)
-		//for (Pair pair : pairs)
+		for (Pair pair : pairs)
 		{
-			Pair pair = pairs.get(j);
 			Field field = pair.field;
 
-			if (!field.getName().equals("field1980") && !field.getName().equals("field1961"))
+			if (!field.getName().equals("field933") && !field.getName().equals("field743"))
 			{
-//				continue;
+			//	continue;
 			}
 			
 			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
@@ -311,7 +352,10 @@ public class ModArith implements Deobfuscator
 			execution.run();
 			
 			encr.doChange();
+			
 			System.out.println("Changed " + ++i);
+			//assert !deobfuscatedFields.contains(field);
+			deobfuscatedFields.add(field);
 		}
 		
 		Encryption encr = new Encryption();
