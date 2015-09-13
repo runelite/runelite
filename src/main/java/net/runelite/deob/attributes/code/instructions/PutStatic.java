@@ -16,8 +16,9 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.List;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import java.util.HashSet;
+import java.util.Set;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
@@ -70,8 +71,13 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		return null;
 	}
 	
-	protected static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx)
+	protected static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx, Set<Instruction> visited)
 	{
+		if (visited.contains(ctx.getInstruction()))
+			return true;
+		
+		visited.add(ctx.getInstruction());
+		
 		if (ctx.getInstruction() instanceof LDC_W)
 		{
 			LDC_W pci = (LDC_W) ctx.getInstruction();
@@ -90,21 +96,17 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			return true;
 		}
 		
-//		if (ctx.getInstruction() instanceof InvokeInstruction)
-//			return false;
-//		
-//		if (ctx.getInstruction() instanceof IDiv)
-//			return false;
-		
 		boolean ok = ctx.getInstruction() instanceof IAdd ||
 				ctx.getInstruction() instanceof ISub ||
 				ctx.getInstruction() instanceof IMul ||
-				ctx.getInstruction() instanceof SetFieldInstruction;
+				ctx.getInstruction() instanceof SetFieldInstruction ||
+				ctx.getInstruction() instanceof DupInstruction;
 		
 		if (!ok)
 			return false;
 		
-		boolean multipleBranches = ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub;
+		boolean multipleBranches = ctx.getInstruction() instanceof IAdd ||
+			ctx.getInstruction() instanceof ISub;
 		boolean retVal = false;
 		
 		encryption.begin();
@@ -113,7 +115,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		{
 			InstructionContext i = sctx.getPushed();
 			
-			if (translate(encryption, pair, i))
+			if (translate(encryption, pair, i, visited))
 			{
 				retVal = true;
 				
@@ -135,6 +137,18 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		
 		encryption.end();
 		
+		for (StackContext sctx : ctx.getPushes())
+		{
+			InstructionContext i = sctx.getPopped();
+			
+			if (i != null)
+				translate(encryption, pair, i, visited); // XXX?
+			else
+				// this hasn't been popped yet, so it hasn't been executed yet,
+				// so mark it as encrypted so that when it is executed, we will decrypt it
+				sctx.encryption = pair.getter;
+		}
+		
 		return retVal;
 	}
 
@@ -153,7 +167,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		{
 			Pair pair = encryption.getField(myField);
 			if (pair != null)
-				translate(encryption, pair, ins);
+				translate(encryption, pair, ins, new HashSet());
 //			InstructionContext ctx = object.getPushed();
 //			if (ctx.getInstruction() instanceof IAdd && pair != null)
 //			{

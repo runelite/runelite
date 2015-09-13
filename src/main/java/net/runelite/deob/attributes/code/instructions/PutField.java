@@ -16,6 +16,7 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import static net.runelite.deob.attributes.code.instructions.PutStatic.translate;
@@ -58,7 +59,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		{
 			Pair pair = encryption.getField(myField);
 			if (pair != null)
-				translate(encryption, pair, ins);
+				translate(encryption, pair, ins, new HashSet());
 //			XXX move translate() here
 //			InstructionContext ctx = value.getPushed();
 //			if (ctx.getInstruction() instanceof IAdd && pair != null)

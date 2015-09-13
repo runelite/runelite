@@ -113,15 +113,14 @@ public class ModArith implements Deobfuscator
 						continue;
 					
 					List<Integer> constants = null;
-//					try
-//					{
-//						constants = findAssocConstants(field, ctx);
-//						System.out.println(field.getName() + " " + constants);
-//						for (int i : constants)
-//							if (i != 1 && i != 0)
-//								constantSetters.put(field, i);
-//					}
-//					catch (OtherFieldException ex) { }
+					try
+					{
+						constants = findAssocConstants(field, ctx);
+						for (int i : constants)
+							if (i != 1 && i != 0)
+								constantSetters.put(field, i);
+					}
+					catch (OtherFieldException ex) { }
 					
 					StackContext value = ctx.getPops().get(0); // the first thing poppe from both putfield and putstatic is the value
 					if (!(value.getPushed().getInstruction() instanceof IMul))
@@ -250,83 +249,21 @@ public class ModArith implements Deobfuscator
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
 				
-				if (f.getName().equals("field605"))
-				{
-					int i =4;
-				}
-				
 				if (getters == null || setters == null)
 					continue;
 				
 				Pair answer = reduce(getters, setters);
 				if (answer == null)
 				{
-				//	answer = guess(getters);
+					answer = guess(getters);
 					if (answer == null)
 						continue;
-					
-					System.out.println("Guessing getter for " + f.getName() + " is " + answer.getter + " setter " + answer.setter);
 				}
 				
 				answer.field = f;
 				pairs.add(answer);
 			}
 	}
-	
-//	private List<Field> getFieldsInExpression(InstructionContext ctx, List<Integer> constants)
-//	{
-//		return check(ctx, new HashSet<InstructionContext>(), constants);
-//	}
-//	
-//	private List<Field> check(InstructionContext context, Set<InstructionContext> visited, List<Integer> constants)
-//	{
-//		List<Field> fields = new ArrayList<>();
-//		
-//		if (visited.contains(context))
-//			return fields;
-//		
-//		visited.add(context);
-//		
-//		if (context.getInstruction() instanceof InvokeInstruction)
-//		{
-//			// field = func(field * constant), the output of the function isn't directly related to the result of field * constant
-//			return fields;
-//		}
-//		
-//		if (context.getInstruction() instanceof FieldInstruction)
-//		{
-//			FieldInstruction fi = (FieldInstruction) context.getInstruction();
-//			Field myf = fi.getMyField();
-//			if (myf != null)
-//				fields.add(myf);
-//		}
-//		
-//		if (context.getInstruction() instanceof PushConstantInstruction)
-//		{
-//			PushConstantInstruction pci = (PushConstantInstruction) context.getInstruction();
-//			int i = (int) pci.getConstant().getObject();
-//			constants.add(i);
-//		}
-//		
-//		for (StackContext ctx : context.getPops())
-//		{
-//			InstructionContext i = ctx.getPushed();
-//			
-//			fields.addAll(check(i, visited, constants));
-//		}
-//		
-//		for (StackContext ctx : context.getPushes())
-//		{
-//			InstructionContext i = ctx.getPopped();
-//			
-//			if (i == null)
-//				continue;
-//			
-//			fields.addAll(check(i, visited, constants));
-//		}
-//		
-//		return fields;
-//	}
 
 	@Override
 	public void run(ClassGroup group)
@@ -351,16 +288,16 @@ public class ModArith implements Deobfuscator
 		reduce();
 		
 		int i = 0;
-		int start = 0, end = pairs.size(); // 0-64 ok
+		int start = 0, end = pairs.size();
 		for (int j = start; j < end; ++j)
 		//for (Pair pair : pairs)
 		{
 			Pair pair = pairs.get(j);
 			Field field = pair.field;
-			
-			if (!field.getName().equals("field2982") && !field.getName().equals("field2963"))
+
+			if (!field.getName().equals("field1980") && !field.getName().equals("field1961"))
 			{
-			//	continue;
+//				continue;
 			}
 			
 			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
