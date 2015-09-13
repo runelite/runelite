@@ -241,4 +241,33 @@ public class Instructions
 		for (Instruction i : instructions)
 			i.renameMethod(oldMethod, newMethod);
 	}
+	
+	public void replace(Instruction oldi, Instruction newi)
+	{
+		assert oldi != newi;
+		
+		assert oldi.getInstructions() == this;
+		assert newi.getInstructions() == this;
+		
+		assert instructions.contains(oldi);
+		assert !instructions.contains(newi);
+		
+		int i = instructions.indexOf(oldi);
+		instructions.remove(oldi);
+		instructions.add(i, newi);
+		
+		for (Instruction ins : oldi.from)
+		{
+			assert ins.jump.contains(oldi);
+			
+			ins.jump.remove(oldi);
+			ins.jump.add(newi);
+			
+			ins.replace(oldi, newi);
+		}
+		oldi.from.clear();
+		
+		for (net.runelite.deob.attributes.code.Exception e : code.getExceptions().getExceptions())
+			e.replace(oldi, newi);
+	}
 }
