@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import net.runelite.deob.Field;
+import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 
 public class Encryption
@@ -52,7 +53,11 @@ public class Encryption
 			PushConstantInstruction pci = e.getKey();
 			int value = e.getValue();
 			
-			pci.setConstant(new net.runelite.deob.pool.Integer(value));
+			Instruction oldi = (Instruction) pci;
+			Instruction newi = pci.setConstant(new net.runelite.deob.pool.Integer(value));
+			
+			if (oldi != newi)
+				oldi.getInstructions().replace(oldi, newi);
 		}
 	}
 	
