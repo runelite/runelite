@@ -42,7 +42,7 @@ public class IMul extends Instruction
 				
 				// 'one' is encrypted and we want to decrypt it by dividing by one.encryption
 				
-				if (other != 1 && other != 0)
+				//if (other != 1 && other != 0)
 				{
 					int o = other * DMath.modInverse(one.encryption);
 
@@ -56,7 +56,7 @@ public class IMul extends Instruction
 				PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
 				int other = (int) pci.getConstant().getObject();
 				
-				if (other != 1 && other != 0)
+				//if (other != 1 && other != 0)
 				{
 					int o = other * DMath.modInverse(two.encryption);
 

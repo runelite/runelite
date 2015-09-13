@@ -86,7 +86,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			if (encryption.hasChange(pci))
 				return true;
 
-			if (value != 0 && value != 1)
+			//if (value != 0 && value != 1)
 			{
 				value = value * pair.getter;
 
