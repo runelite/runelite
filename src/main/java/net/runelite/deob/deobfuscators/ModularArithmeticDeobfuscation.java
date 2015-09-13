@@ -747,7 +747,8 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 					//assert m.setter == modInverse(m.getter);
 					int newConstant = constant * m.setter;
 					
-					pc.setConstant(new net.runelite.deob.pool.Integer(newConstant));
+					Instruction i2 = pc.setConstant(new net.runelite.deob.pool.Integer(newConstant));
+					assert i2 == (Instruction) pc;
 					if (newConstant != 1)
 						System.out.println("new constant: " + newConstant);
 					else
@@ -775,7 +776,8 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 						
 						// field = setter * value, solve for value by * modInverse(setter)
 						int newConstant = constant * m.getter;
-						pi.setConstant(new net.runelite.deob.pool.Integer(newConstant));
+						Instruction i2 = pi.setConstant(new net.runelite.deob.pool.Integer(newConstant));
+						assert i2 == (Instruction) pi;
 						++replaced;
 					}
 					else if (value.getPushed().getInstruction() instanceof IMul)
@@ -810,7 +812,8 @@ public class ModularArithmeticDeobfuscation implements Deobfuscator
 						
 						// field = expression * constant
 						int newConstant = constant * m.getter;
-						pc.setConstant(new net.runelite.deob.pool.Integer(newConstant));
+						Instruction i2 = pc.setConstant(new net.runelite.deob.pool.Integer(newConstant));
+						assert i2 == (Instruction) pc;
 						++replaced;
 					}
 				}

@@ -40,8 +40,8 @@ public class IConst_1 extends Instruction implements PushConstantInstruction
 	}
 
 	@Override
-	public void setConstant(PoolEntry entry)
+	public Instruction setConstant(PoolEntry entry)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		return new LDC_W(this.getInstructions(), entry);
 	}
 }
