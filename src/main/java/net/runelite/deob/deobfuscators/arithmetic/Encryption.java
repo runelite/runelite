@@ -36,10 +36,18 @@ public class Encryption
 		return changes.containsKey(pci);
 	}
 	
-	public void change(PushConstantInstruction pci, int value)
+	public void change(PushConstantInstruction pci, int value, boolean mul)
 	{
+		//Integer i = changes.get(pci);
 		assert !changes.containsKey(pci) || changes.get(pci) == value;
-		changes.put(pci, value);
+//		if (i == null)
+//			changes.put(pci, value);
+//		else if (mul)
+//			changes.put(pci, value * i);
+//		else
+			changes.put(pci, value);
+		//	assert i == value;
+		
 		if (stack.isEmpty())
 			return;
 		PendingStack ps = stack.peek();

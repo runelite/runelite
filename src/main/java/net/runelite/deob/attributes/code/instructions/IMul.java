@@ -18,6 +18,11 @@ public class IMul extends Instruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public IMul(Instructions instructions)
+	{
+		super(instructions, InstructionType.IMUL, 0);
+	}
 
 	@Override
 	public void execute(Frame frame)
@@ -42,12 +47,14 @@ public class IMul extends Instruction
 				
 				// 'one' is encrypted and we want to decrypt it by dividing by one.encryption
 				
-				//if (other != 1 && other != 0)
+				if (other != 0)
 				{
 					int o = other * DMath.modInverse(one.encryption);
 
-					encryption.change(pci, o);
+					encryption.change(pci, o, false);
 				}
+				
+				encKey = 1;
 			}
 			else if (two.encryption != 0)
 			{
@@ -56,12 +63,14 @@ public class IMul extends Instruction
 				PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
 				int other = (int) pci.getConstant().getObject();
 				
-				//if (other != 1 && other != 0)
+				if (other != 0)
 				{
 					int o = other * DMath.modInverse(two.encryption);
 
-					encryption.change(pci, o);
+					encryption.change(pci, o, false);
 				}
+				
+				encKey = 1;
 			}
 		}
 		

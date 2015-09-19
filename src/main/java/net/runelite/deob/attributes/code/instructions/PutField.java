@@ -58,8 +58,8 @@ public class PutField extends Instruction implements SetFieldInstruction
 		if (encryption != null && myField != null)
 		{
 			Pair pair = encryption.getField(myField);
-			if (pair != null)
-				translate(encryption, pair, ins, new HashSet());
+			//if (pair != null)
+			//	translate(encryption, pair, ins, new HashSet());
 //			XXX move translate() here
 //			InstructionContext ctx = value.getPushed();
 //			if (ctx.getInstruction() instanceof IAdd && pair != null)

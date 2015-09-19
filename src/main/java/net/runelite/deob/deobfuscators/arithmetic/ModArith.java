@@ -11,14 +11,17 @@ import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.Field;
+import net.runelite.deob.Method;
+import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
+import net.runelite.deob.attributes.code.instructions.PutStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -289,11 +292,11 @@ public class ModArith implements Deobfuscator
 				
 				Pair answer = reduce(getters, setters);
 				
-				if (answer == null)
-					answer = guess(f, getters, true);
+				//if (answer == null)
+				//	answer = guess(f, getters, true);
 				
-				if (answer == null)
-					answer = guess(f, setters, false);
+				//if (answer == null)
+				//	answer = guess(f, setters, false);
 					
 				if (answer == null)
 					continue;
@@ -307,6 +310,9 @@ public class ModArith implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		this.group = group;
+		runOnce();
+		if (true) return;
+		
 		int passes = 0, total = 0, i;
 		while ((i = runOnce()) > 0)
 		{
@@ -314,6 +320,79 @@ public class ModArith implements Deobfuscator
 			total += i;
 		}
 		System.out.println("Finished arith deob on " + total + " fields in " + passes + " passes");
+	}
+	
+	private void translateSetFields(Execution e)
+	{
+		//Set<Instruction> visited = new HashSet<>();
+		for (Frame f : e.processedFrames)
+			for (InstructionContext ins : f.getInstructions())
+				if (ins.getInstruction() instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction sfi = (SetFieldInstruction) ins.getInstruction();
+					Pair pair = e.getEncryption().getField(sfi.getMyField());
+					
+					if (pair != null)
+						PutStatic.translate(e.getEncryption(), pair, ins, new HashSet());
+					//
+				}
+	}
+	
+	private void insertGetterSetterMuls(Encryption encr)
+	{
+		// after getfield insert imul * setter
+		// before setfield insert inul * getter
+		for (ClassFile cf : group.getClasses())
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Code code = m.getCode();
+				if (code == null)
+					continue;
+				
+				Instructions ins = code.getInstructions();
+				List<Instruction> ilist = ins.getInstructions();
+				
+				for (int i = 0; i < ilist.size(); ++i)
+				{
+					Instruction in = ilist.get(i);
+					
+					if (in instanceof SetFieldInstruction)
+					{
+						SetFieldInstruction sfi = (SetFieldInstruction) in;
+						Field f = sfi.getMyField();
+
+						if (f == null)
+							continue;
+
+						Pair p = encr.getField(f);
+						if (p == null)
+							continue;
+
+						// insert push getter
+						// insert imul
+
+						ilist.add(i++, new LDC_W(ins, new net.runelite.deob.pool.Integer(p.getter)));
+						ilist.add(i++, new IMul(ins));
+					}
+					else if (in instanceof GetFieldInstruction)
+					{
+						GetFieldInstruction sfi = (GetFieldInstruction) in;
+						Field f = sfi.getMyField();
+
+						if (f == null)
+							continue;
+
+						Pair p = encr.getField(f);
+						if (p == null)
+							continue;
+
+						// add after: push setter
+						// imul
+						ilist.add(++i, new LDC_W(ins, new net.runelite.deob.pool.Integer(p.setter)));
+						ilist.add(++i, new IMul(ins));
+					}
+				}
+			}
 	}
 	
 	private int runOnce()
@@ -336,7 +415,10 @@ public class ModArith implements Deobfuscator
 		{
 			Field field = pair.field;
 
-			if (!field.getName().equals("field933") && !field.getName().equals("field743"))
+			//field933 = -193434591 * field743;
+			// var143.field3014 = (var143.field2960 = 1 * var92.field2960) * 1496783801;
+			//if (!field.getName().equals("field3014") && !field.getName().equals("field2960"))
+			if (!field.getName().equals("field2201"))
 			{
 			//	continue;
 			}
@@ -346,19 +428,33 @@ public class ModArith implements Deobfuscator
 			Encryption encr = new Encryption();
 			encr.addPair(pair);
 			
-			execution = new Execution(group);
-			execution.populateInitialMethods();
-			execution.setEncryption(encr);
-			execution.run();
+			insertGetterSetterMuls(encr);
+//			
+//			execution = new Execution(group);
+//			execution.populateInitialMethods();
+//			execution.setEncryption(encr);
+//			execution.run();
+//			
+//			encr.doChange();
+//			
+//			insertSetterMuls(encr);
 			
-			encr.doChange();
+//			execution = new Execution(group);
+//			execution.populateInitialMethods();
+//			execution.run();
+//			
+//			encr = new Encryption();
+//			encr.addPair(pair);
+//			execution.setEncryption(encr);
+//			translateSetFields(execution);
+//			
+//			encr.doChange();
 			
 			System.out.println("Changed " + ++i);
 			//assert !deobfuscatedFields.contains(field);
 			deobfuscatedFields.add(field);
 		}
 		
-		Encryption encr = new Encryption();
 		System.out.println(pairs);
 		
 		return i;

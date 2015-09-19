@@ -42,15 +42,17 @@ public class IAdd extends Instruction
 					PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
 					int value = (int) pci.getConstant().getObject();
 
-					if (value != 0 && value != 1)
+					//if (value != 0 && value != 1)
 					{
 						int o = value * one.encryption;
 
-						encryption.change(pci, o);
+						encryption.change(pci, o, false);
 					}
+					// field is no longer encrypted
+					encKey = 1;
 				}
-				
-				encKey = one.encryption;
+				//else
+				//	encKey = one.encryption;
 			}
 			else if (two.encryption != 0)
 			{
@@ -61,15 +63,16 @@ public class IAdd extends Instruction
 					PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
 					int value = (int) pci.getConstant().getObject();
 
-					if (value != 0 && value != 1)
+					//if (value != 0 && value != 1)
 					{
 						int o = value * two.encryption;
 
-						encryption.change(pci, o);
+						encryption.change(pci, o, false);
 					}
+					encKey = 1;
 				}
 				
-				encKey = two.encryption;
+				//encKey = two.encryption;
 			}
 		}
 		

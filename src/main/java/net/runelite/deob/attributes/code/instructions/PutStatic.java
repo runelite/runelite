@@ -71,29 +71,33 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		return null;
 	}
 	
-	protected static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx, Set<Instruction> visited)
+	public static boolean translate(Encryption encryption, Pair pair, InstructionContext ctx, Set<Instruction> visited)
 	{
 		if (visited.contains(ctx.getInstruction()))
 			return true;
 		
 		visited.add(ctx.getInstruction());
 		
-		if (ctx.getInstruction() instanceof LDC_W)
+		if (ctx.getInstruction() instanceof PushConstantInstruction)
 		{
-			LDC_W pci = (LDC_W) ctx.getInstruction();
-			int value = (int) pci.getConstant().getObject();
+			PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
 			
-			if (encryption.hasChange(pci))
-				return true;
-
-			//if (value != 0 && value != 1)
+			if (pci.getConstant().getObject() instanceof Integer)
 			{
-				value = value * pair.getter;
+				int value = (int) pci.getConstant().getObject();
 
-				encryption.change(pci, value);
+				if (encryption.hasChange(pci))
+					return true;
+
+				if (value != 0)
+				{
+					value = value * pair.getter;
+
+					encryption.change(pci, value, true);
+				}
+
+				return true;
 			}
-			
-			return true;
 		}
 		
 		boolean ok = ctx.getInstruction() instanceof IAdd ||
@@ -137,17 +141,21 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		
 		encryption.end();
 		
-		for (StackContext sctx : ctx.getPushes())
-		{
-			InstructionContext i = sctx.getPopped();
-			
-			if (i != null)
-				translate(encryption, pair, i, visited); // XXX?
-			else
-				// this hasn't been popped yet, so it hasn't been executed yet,
-				// so mark it as encrypted so that when it is executed, we will decrypt it
-				sctx.encryption = pair.getter;
-		}
+//		for (StackContext sctx : ctx.getPushes())
+//		{
+//			InstructionContext i = sctx.getPopped();
+//			
+//			if (i != null)
+//			{
+//				boolean b = translate(encryption, pair, i, visited); // XXX?
+//				//System.out.println("up translate res " + b);
+//			}
+//			else
+//				assert false;
+//				// this hasn't been popped yet, so it hasn't been executed yet,
+//				// so mark it as encrypted so that when it is executed, we will decrypt it
+//				//sctx.encryption = pair.getter;
+//		}
 		
 		return retVal;
 	}
@@ -166,8 +174,8 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		if (encryption != null && myField != null)
 		{
 			Pair pair = encryption.getField(myField);
-			if (pair != null)
-				translate(encryption, pair, ins, new HashSet());
+			//if (pair != null)
+			//	translate(encryption, pair, ins, new HashSet());
 //			InstructionContext ctx = object.getPushed();
 //			if (ctx.getInstruction() instanceof IAdd && pair != null)
 //			{
