@@ -26,6 +26,7 @@ import net.runelite.deob.deobfuscators.UnusedFields;
 import net.runelite.deob.deobfuscators.UnusedMethods;
 import net.runelite.deob.deobfuscators.UnusedParameters;
 import net.runelite.deob.deobfuscators.arithmetic.ModArith;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.execution.Execution;
 
 //move static methods
@@ -86,7 +87,9 @@ public class Deob
 //		
 //		run(group, new UnusedClass());
 		
-		new ModArith().run(group);
+		//new ModArith().run(group);
+		
+		new MultiplicationDeobfuscator().run(group);
 
 		saveJar(group, args[1]);
 		

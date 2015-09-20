@@ -128,6 +128,9 @@ public abstract class Instruction
 		}
 		from.clear();
 		
+		for (Exception e : instructions.getCode().getExceptions().getExceptions())
+			e.replace(this, next);
+		
 		this.getInstructions().remove(this); // calls remove()
 		
 		return true;
