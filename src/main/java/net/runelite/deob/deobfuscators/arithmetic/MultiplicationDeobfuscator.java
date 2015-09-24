@@ -1,14 +1,15 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
-import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -27,17 +28,33 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		int i;
 		while ((i = runOnce()) > 0)
-			System.out.println("Simplified " + i + " multiplication");
+			System.out.println("Replaced " + i + " constants");
 	}
 	
 	private List<InstructionContext> getConstants(InstructionContext ctx)
 	{
 		List<InstructionContext> l = new ArrayList<>();
 		
+		assert ctx.getInstruction() instanceof IMul;
+		
 		for (StackContext sctx : ctx.getPops())
 		{
 			InstructionContext i = sctx.getPushed();
+			
+			if (i.getInstruction() instanceof IMul)
+			{
+				l.addAll(getConstants(i));
+			}
+			else if (i.getInstruction() instanceof PushConstantInstruction)
+			{
+				PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
+				int value = (int) pci.getConstant().getObject();
+				if (value != 1) // already been touched, otherwise we keep multiplying the same ins over and over
+					l.add(i);
+			}
 		}
+		
+		return l;
 	}
 	
 	private int runOnce()
@@ -46,13 +63,58 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		e.populateInitialMethods();
 		e.run();
 		
+		Set<Instruction> done = new HashSet<>();
 		int count = 0;
 		
 		for (Frame frame : e.processedFrames)
+			outer:
 			for (InstructionContext ictx : frame.getInstructions())
 			{
-				if (!(ictx.getInstruction() instanceof IMul))
+				Instruction instruction = ictx.getInstruction();
+				Instructions instructions = instruction.getInstructions();
+				
+				if (!(instruction instanceof IMul))
 					continue;
+			
+				List<InstructionContext> ins = getConstants(ictx);
+				
+				if (ins.size() == 1)
+					continue;
+				
+				for (InstructionContext i : ins)
+				{
+					if (done.contains(i.getInstruction()))
+					{
+						continue outer;
+					}
+				}
+				
+				int result = 1;
+				
+				// calculate result
+				for (InstructionContext i : ins)
+				{
+					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
+					int value = (int) pci.getConstant().getObject();
+					
+					result *= value;
+				}
+				
+				// set result on ins
+				for (InstructionContext i : ins)
+				{
+					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
+					Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
+					++count;
+					if (newIns != pci)
+					{
+						instructions.replace((Instruction) pci, newIns);
+					}
+					result = 1; // rest of the results go to 1
+				}
+				
+				for (InstructionContext i : ins)
+					done.add(i.getInstruction());
 					
 //				Instructions ins = ictx.getInstruction().getInstructions();
 //				List<Instruction> ilist = ins.getInstructions();
