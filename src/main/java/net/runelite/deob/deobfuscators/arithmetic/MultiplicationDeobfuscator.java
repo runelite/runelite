@@ -10,6 +10,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -57,6 +58,21 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		return l;
 	}
 	
+	private boolean isOnlyPath(Execution execution, Frame frame, InstructionContext ctx)
+	{
+		for (Frame f : execution.processedFrames)
+			if (f.getMethod() == frame.getMethod())
+				for (InstructionContext i : f.getInstructions())
+					if (i.getInstruction() == ctx.getInstruction())
+					{
+						if (!i.equals(ctx))
+						{
+							return false;
+						}
+					}
+		return true;
+	}
+	
 	private int runOnce()
 	{
 		group.buildClassGraph();
@@ -77,7 +93,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				
 				if (!(instruction instanceof IMul))
 					continue;
-			
+				
 				List<InstructionContext> ins = getConstants(ictx);
 				
 				if (ins.size() == 1)
@@ -90,6 +106,10 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						continue outer;
 					}
 				}
+				
+				// there can only be one path to here, or else combinging would change code logic
+				if (!isOnlyPath(e, frame, ictx))
+					continue;
 				
 				int result = 1;
 				

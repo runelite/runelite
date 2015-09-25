@@ -7,6 +7,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -58,7 +59,8 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 					continue;
 				
 				ictx.removeStack(removeIdx);
-				ins.remove(ictx.getInstruction());
+				ins.replace(ictx.getInstruction(), new NOP(ins));
+				//ins.remove(ictx.getInstruction());
 				
 				++count;
 			}

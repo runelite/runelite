@@ -84,9 +84,9 @@ public class Deob
 		
 		//new ModArith().run(group);
 		
-		//new MultiplicationDeobfuscator().run(group);
+		//new MultiplicationDeobfuscator().run(group); // this causes spinning?
 		
-		//new MultiplyOneDeobfuscator().run(group);
+		new MultiplyOneDeobfuscator().run(group);
 		
 		new MultiplyZeroDeobfuscator().run(group);
 

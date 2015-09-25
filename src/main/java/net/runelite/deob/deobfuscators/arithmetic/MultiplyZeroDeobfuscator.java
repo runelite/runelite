@@ -32,12 +32,6 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 				Instruction instruction = ictx.getInstruction();
 				Instructions ins = instruction.getInstructions();
 				
-				if (frame.getMethod().getName().equals("method3678"))
-				//if (ins.getCode().getAttributes().getMethod().getName().equals("method3678"))
-				{
-					int i = 5;
-				}
-				
 				if (!(instruction instanceof IMul))
 					continue;
 				
@@ -57,10 +51,6 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 					
 					if (value == 0)
 						remove = true;
-					if (value == -1408052237)
-					{
-						int i = 5;
-					}
 				}
 				if (itwo instanceof PushConstantInstruction)
 				{
@@ -69,10 +59,6 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 					
 					if (value == 0)
 						remove = true;
-					if (value == -1408052237)
-					{
-						int i = 5;
-					}
 				}
 				
 				if (remove == false)
