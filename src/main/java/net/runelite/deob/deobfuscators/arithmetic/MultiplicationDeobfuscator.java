@@ -59,6 +59,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 	
 	private int runOnce()
 	{
+		group.buildClassGraph();
+		
 		Execution e = new Execution(group);
 		e.populateInitialMethods();
 		e.run();

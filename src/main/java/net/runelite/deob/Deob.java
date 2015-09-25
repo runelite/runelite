@@ -28,6 +28,7 @@ import net.runelite.deob.deobfuscators.UnusedParameters;
 import net.runelite.deob.deobfuscators.arithmetic.ModArith;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.execution.Execution;
 
 public class Deob
@@ -85,7 +86,9 @@ public class Deob
 		
 		//new MultiplicationDeobfuscator().run(group);
 		
-		new MultiplyOneDeobfuscator().run(group);
+		//new MultiplyOneDeobfuscator().run(group);
+		
+		new MultiplyZeroDeobfuscator().run(group);
 
 		saveJar(group, args[1]);
 		

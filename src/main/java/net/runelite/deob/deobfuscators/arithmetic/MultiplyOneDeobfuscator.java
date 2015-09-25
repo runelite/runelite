@@ -17,6 +17,8 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
+		group.buildClassGraph();
+		
 		Execution e = new Execution(group);
 		e.populateInitialMethods();
 		e.run();
@@ -61,7 +63,7 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 				++count;
 			}
 		
-		System.out.println("Removed " + count + " multiplications");
+		System.out.println("Removed " + count + " 1 multiplications");
 	}
 
 }
