@@ -115,33 +115,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				
 				for (InstructionContext i : ins)
 					done.add(i.getInstruction());
-					
-//				Instructions ins = ictx.getInstruction().getInstructions();
-//				List<Instruction> ilist = ins.getInstructions();
-//
-//				if (!ilist.contains(ictx.getInstruction()))
-//					continue; // already done
-//				
-//				StackContext one = ictx.getPops().get(0);
-//				StackContext two = ictx.getPops().get(1);
-//				
-//				if (one.getPushed().getInstruction() instanceof PushConstantInstruction
-//					&& two.getPushed().getInstruction() instanceof PushConstantInstruction)
-//				{
-//					PushConstantInstruction pci1 = (PushConstantInstruction) one.getPushed().getInstruction(),
-//						pci2 = (PushConstantInstruction) two.getPushed().getInstruction();
-//					
-//					int i1 = (int) pci1.getConstant().getObject(),
-//						i2 = (int) pci2.getConstant().getObject();
-//					
-//					int result = i1 * i2;
-//					
-//					ictx.removeStack(1);
-//					ictx.removeStack(0);
-//					
-//					ins.replace(ictx.getInstruction(), new LDC_W(ins, new net.runelite.deob.pool.Integer(result)));
-//					++count;
-//				}
 			}
 		
 		return count;
