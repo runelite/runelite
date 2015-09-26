@@ -174,6 +174,10 @@ public class Frame
 				throw ex;
 			}
 			
+			InstructionContext ictx = this.instructions.get(this.instructions.size() - 1);
+			assert ictx.getInstruction() == oldCur;
+			execution.contexts.put(oldCur, ictx);
+			
 			execution.executed.add(oldCur);
 			
 			processExceptions(oldCur);

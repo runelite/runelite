@@ -1,15 +1,18 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.attributes.code.instructions.BiPush;
+import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.ISub;
 import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
@@ -28,42 +31,141 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		this.group = group;
 		
 		int i;
+		int count = 0;
 		while ((i = runOnce()) > 0)
+		{
 			System.out.println("Replaced " + i + " constants");
+			count += i;
+		}
+		System.out.println("Total changed " + count);
 	}
 	
-	private List<InstructionContext> getConstants(InstructionContext ctx)
+	private MultiplicationExpression parseExpression(InstructionContext ctx)
+	//private List<InstructionContext> getConstants(InstructionContext ctx)
 	{
-		List<InstructionContext> l = new ArrayList<>();
+		MultiplicationExpression me = new MultiplicationExpression();
 		
-		assert ctx.getInstruction() instanceof IMul;
+		//assert ctx.getInstruction() instanceof IMul;
+		
+		//
+		if (ctx.getInstruction() instanceof PushConstantInstruction)
+		{
+			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush)
+			{
+				throw new IllegalStateException();
+			}
+			
+//			PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
+//			int value = (int) pci.getConstant().getObject();
+//			
+//			if (value == 1)
+//				return null
+
+			me.instructions.add(ctx);
+			return me;
+		}
 		
 		for (StackContext sctx : ctx.getPops())
 		{
 			InstructionContext i = sctx.getPushed();
 			
-			if (i.getInstruction() instanceof IMul)
+			// if this instruction is imul, look at pops
+			if (ctx.getInstruction() instanceof IMul)
 			{
-				l.addAll(getConstants(i));
+				if (i.getInstruction() instanceof PushConstantInstruction)
+				{
+					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush)
+						throw new IllegalStateException();
+					
+					// a constant of imul
+					me.instructions.add(i);
+				}
+				else if (i.getInstruction() instanceof IMul)
+				{
+					// chained imul, append to me
+					try
+					{
+						MultiplicationExpression other = parseExpression(i);
+
+						me.instructions.addAll(other.instructions);
+						me.subexpressions.addAll(other.subexpressions);
+					}
+					catch (IllegalStateException ex)
+					{
+						// this is ok? just don't include it?
+					}
+				}
+				else if (i.getInstruction() instanceof IAdd || i.getInstruction() instanceof ISub)
+				{
+					// imul using result of iadd or isub. evaluate expression
+					try
+					{
+						MultiplicationExpression other = parseExpression(i);
+
+						// subexpr
+						//if (other != null)
+							me.subexpressions.add(other);
+					}
+					catch (IllegalStateException ex)
+					{
+						assert me.subexpressions.isEmpty();
+						// subexpression is too complex. we can still simplify the top level though
+					}
+				}
+				else if (i.getInstruction() instanceof GetFieldInstruction)
+				{
+					// non constant, ignore
+				}
+				else
+				{
+					//throw new IllegalStateException();
+					//System.out.println("imul pops something I don't know " + i.getInstruction());
+				}
 			}
-			else if (i.getInstruction() instanceof PushConstantInstruction)
+			// this is an iadd/sub
+			else if (ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub)
 			{
-				PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-				int value = (int) pci.getConstant().getObject();
-				if (value != 1) // already been touched, otherwise we keep multiplying the same ins over and over
-					l.add(i);
+				MultiplicationExpression other = parseExpression(i); // parse this side of the add/sub
+				
+				//if (other != null)
+					me.subexpressions.add(other);
 			}
+			else
+			{
+				//throw new IllegalStateException();
+				//System.out.println(ctx.getInstruction() + " pops something I dont know " + i.getInstruction());
+			}
+//			else if (i.getInstruction() instanceof PushConstantInstruction)
+//			{
+//				me.instructions.add(i);
+//				//PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
+//				//int value = (int) pci.getConstant().getObject();
+//				//if (value != 1) // already been touched, otherwise we keep multiplying the same ins over and over
+//				//	l.add(i);
+//			}
+//			else if (i.getInstruction() instanceof IAdd || i.getInstruction() instanceof ISub)
+//			{
+//				MultiplicationExpression other = parseExpression(i);
+//				
+//				me.subexpressions.add(other);
+//			}
 		}
 		
-		return l;
+		if (me.instructions.isEmpty() && me.subexpressions.isEmpty())
+			throw new IllegalStateException();
+			//return null;
+		
+		return me;
 	}
 	
-	private boolean isOnlyPath(Execution execution, Frame frame, InstructionContext ctx)
+	private boolean isOnlyPath(Execution execution, InstructionContext ctx)
 	{
-		for (Frame f : execution.processedFrames)
-			if (f.getMethod() == frame.getMethod())
-				for (InstructionContext i : f.getInstructions())
-					if (i.getInstruction() == ctx.getInstruction())
+		Collection<InstructionContext> ins = execution.getInstructonContexts(ctx.getInstruction());
+		for (InstructionContext i : ins)
+		//for (Frame f : execution.processedFrames)
+		//	if (f.getMethod() == frame.getMethod())
+		//		for (InstructionContext i : f.getInstructions())
+					//if (i.getInstruction() == ctx.getInstruction())
 					{
 						if (!i.equals(ctx))
 						{
@@ -73,6 +175,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		return true;
 	}
 	
+	Set<Instruction> done = new HashSet<>();
 	private int runOnce()
 	{
 		group.buildClassGraph();
@@ -81,7 +184,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		e.populateInitialMethods();
 		e.run();
 		
-		Set<Instruction> done = new HashSet<>();
+		
 		int count = 0;
 		
 		for (Frame frame : e.processedFrames)
@@ -91,52 +194,87 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				Instruction instruction = ictx.getInstruction();
 				Instructions instructions = instruction.getInstructions();
 				
+//				if (!frame.getMethod().getMethods().getClassFile().getName().equals("class114"))
+//					continue;
+				
 				if (!(instruction instanceof IMul))
 					continue;
 				
-				List<InstructionContext> ins = getConstants(ictx);
+				MultiplicationExpression expression;
+				try
+				{
+					 expression = parseExpression(ictx);
+				}
+				catch (IllegalStateException ex)
+				{
+					continue;
+				}
 				
-				if (ins.size() == 1)
+				if (expression == null)
 					continue;
 				
-				for (InstructionContext i : ins)
-				{
-					if (done.contains(i.getInstruction()))
-					{
-						continue outer;
-					}
-				}
+				//if (expression.subexpressions.isEmpty())
+				//	continue;
 				
 				// there can only be one path to here, or else combinging would change code logic
-				if (!isOnlyPath(e, frame, ictx))
+				if (!isOnlyPath(e, ictx))
 					continue;
 				
-				int result = 1;
+								
+				if (done.contains(instruction))
+					continue;
+				done.add(instruction);
 				
-				// calculate result
-				for (InstructionContext i : ins)
+				count += expression.simplify(1);
+				if (MultiplicationExpression.replace)
 				{
-					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-					int value = (int) pci.getConstant().getObject();
-					
-					result *= value;
+					MultiplicationExpression.replace = false;
+					return count;
 				}
-				
-				// set result on ins
-				for (InstructionContext i : ins)
-				{
-					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-					Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
-					++count;
-					if (newIns != pci)
-					{
-						instructions.replace((Instruction) pci, newIns);
-					}
-					result = 1; // rest of the results go to 1
-				}
-				
-				for (InstructionContext i : ins)
-					done.add(i.getInstruction());
+				//break;
+//				List<InstructionContext> ins = getConstants(ictx);
+//				
+//				if (ins.size() == 1)
+//					continue;
+//				
+//				for (InstructionContext i : ins)
+//				{
+//					if (done.contains(i.getInstruction()))
+//					{
+//						continue outer;
+//					}
+//				}
+//				
+//				// there can only be one path to here, or else combinging would change code logic
+//				if (!isOnlyPath(e, frame, ictx))
+//					continue;
+//				
+//				int result = 1;
+//				
+//				// calculate result
+//				for (InstructionContext i : ins)
+//				{
+//					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
+//					int value = (int) pci.getConstant().getObject();
+//					
+//					result *= value;
+//				}
+//				
+//				// set result on ins
+//				for (InstructionContext i : ins)
+//				{
+//					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
+//					Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
+//					++count;
+//					if (newIns != pci)
+//					{
+//						instructions.replace((Instruction) pci, newIns);
+//					}
+//					result = 1; // rest of the results go to 1
+//				}
+//				
+//				for (InstructionContext i : ins)
+//					done.add(i.getInstruction());
 			}
 		
 		return count;

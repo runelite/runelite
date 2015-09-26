@@ -23,6 +23,7 @@ public class Execution
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
 	private Encryption encryption;
+	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 
 	public Execution(ClassGroup group)
 	{
@@ -101,5 +102,10 @@ public class Execution
 		}
 		
 		System.out.println("Processed " + fcount + " frames");
+	}
+	
+	public Collection<InstructionContext> getInstructonContexts(Instruction i)
+	{
+		return contexts.getCollection(i);
 	}
 }
