@@ -18,6 +18,11 @@ public class IConst_M1 extends Instruction implements PushConstantInstruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public IConst_M1(Instructions instructions)
+	{
+		super(instructions, InstructionType.ICONST_M1, 0);
+	}
 
 	@Override
 	public void execute(Frame frame)

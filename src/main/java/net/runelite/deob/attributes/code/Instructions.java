@@ -43,8 +43,14 @@ public class Instructions
 			{
 				Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, int.class);
 				Instruction ins = con.newInstance(this, type, pc);
+				Instruction genericIns = ins.makeGeneric();
+				
+				if (genericIns != ins)
+				{
+					genericIns.setPc(ins.getPc());
+				}
 
-				instructions.add(ins);
+				instructions.add(genericIns);
 
 				int len = ins.getLength();
 				pc += len;
@@ -168,6 +174,16 @@ public class Instructions
 	
 	public void write(DataOutputStream out) throws IOException
 	{
+		// trnaslate instructions to specific
+		for (Instruction i : new ArrayList<>(instructions))
+		{
+			Instruction specific = i.makeSpecific();
+			if (i != specific)
+			{
+				replace(i, specific);
+			}
+		}
+		
 		// generate pool indexes
 		for (Instruction i : new ArrayList<>(instructions))
 			i.prime();

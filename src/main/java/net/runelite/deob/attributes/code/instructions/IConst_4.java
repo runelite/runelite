@@ -18,6 +18,11 @@ public class IConst_4 extends Instruction implements PushConstantInstruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public IConst_4(Instructions instructions)
+	{
+		super(instructions, InstructionType.ICONST_4, 0);
+	}
 
 	@Override
 	public void execute(Frame frame)
@@ -43,5 +48,11 @@ public class IConst_4 extends Instruction implements PushConstantInstruction
 	public Instruction setConstant(PoolEntry entry)
 	{
 		return new LDC_W(this.getInstructions(), entry);
+	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new LDC_W(this.getInstructions(), getConstant());
 	}
 }

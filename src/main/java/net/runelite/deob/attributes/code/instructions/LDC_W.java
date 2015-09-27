@@ -110,4 +110,35 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 		value = entry;
 		return this;
 	}
+	
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (value.getType())
+		{
+			case INTEGER:
+			{
+				int i = (int) value.getObject();
+				switch (i)
+				{
+					case -1:
+						return new IConst_M1(this.getInstructions());
+					case 0:
+						return new IConst_0(this.getInstructions());
+					case 1:
+						return new IConst_1(this.getInstructions());
+					case 2:
+						return new IConst_2(this.getInstructions());
+					case 3:
+						return new IConst_3(this.getInstructions());
+					case 4:
+						return new IConst_4(this.getInstructions());
+					case 5:
+						return new IConst_5(this.getInstructions());
+				}
+			}
+		}
+		
+		return super.makeSpecific();
+	}
 }

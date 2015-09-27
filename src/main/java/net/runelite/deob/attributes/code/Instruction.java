@@ -228,4 +228,14 @@ public abstract class Instruction
 	public void renameMethod(Method oldMethod, net.runelite.deob.pool.Method newMethod)
 	{
 	}
+	
+	public Instruction makeGeneric()
+	{
+		return this;
+	}
+	
+	public Instruction makeSpecific()
+	{
+		return this;
+	}
 }
