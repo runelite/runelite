@@ -292,11 +292,11 @@ public class ModArith implements Deobfuscator
 				
 				Pair answer = reduce(getters, setters);
 				
-				//if (answer == null)
-				//	answer = guess(f, getters, true);
-				
-				//if (answer == null)
-				//	answer = guess(f, setters, false);
+//				if (answer == null)
+//					answer = guess(f, getters, true);
+//				
+//				if (answer == null)
+//					answer = guess(f, setters, false);
 					
 				if (answer == null)
 					continue;

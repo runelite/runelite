@@ -1,6 +1,7 @@
 package net.runelite.deob.attributes.code.instructions;
 
 import java.io.IOException;
+import java.util.List;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -56,5 +57,29 @@ public class Dup extends Instruction implements DupInstruction
 		// usually this is for new dup invokespecial and we end up with
 		// an unused new/invokesepcial
 		return false;
+	}
+
+	@Override
+	public StackContext resolve(StackContext sctx)
+	{
+		// ctx = stack pushed by this instruction, return stack popped by this instruction
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		return ctx.getPops().get(0);
+	}
+
+	@Override
+	public StackContext getOtherBranch(StackContext sctx)
+	{
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		List<StackContext> pushes = ctx.getPushes();
+		assert pushes.contains(sctx);
+		
+		int idx = pushes.indexOf(sctx);
+		assert idx == 0 || idx == 1;
+		
+		return pushes.get(~idx & 1);
 	}
 }

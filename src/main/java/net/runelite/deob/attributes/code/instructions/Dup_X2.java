@@ -69,4 +69,16 @@ public class Dup_X2 extends Instruction implements DupInstruction
 	{
 		throw new UnsupportedOperationException();
 	}
+
+	@Override
+	public StackContext resolve(StackContext ctx)
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public StackContext getOtherBranch(StackContext sctx)
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 }

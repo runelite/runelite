@@ -10,6 +10,7 @@ public class MultiplicationExpression
 {
 	List<InstructionContext> instructions = new ArrayList<>(); // push constant instructions that are being multiplied
 	List<MultiplicationExpression> subexpressions = new ArrayList<>(); // for distributing, each subexpr is * by this
+	InstructionContext dupmagic; // inverse of what is distributed to subexpressions gets set here
 	static boolean replace;
 	
 	int simplify(int start)
@@ -32,6 +33,16 @@ public class MultiplicationExpression
 			for (MultiplicationExpression me : subexpressions)
 			{
 				count += me.simplify(result);
+			}
+			
+			if (dupmagic != null)
+			{
+				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
+				int value = (int) pci.getConstant().getObject();
+				
+				value *= DMath.modInverse(result);
+				
+				pci.setConstant(new net.runelite.deob.pool.Integer(value));
 			}
 			
 			result = 1; // constant has been distributed, outer numbers all go to 1

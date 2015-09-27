@@ -7,12 +7,16 @@ import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.BiPush;
+import net.runelite.deob.attributes.code.instructions.Dup;
+import net.runelite.deob.attributes.code.instructions.Dup_X1;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.ISub;
+import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
@@ -22,8 +26,6 @@ import net.runelite.deob.execution.StackContext;
 public class MultiplicationDeobfuscator implements Deobfuscator
 {
 	private ClassGroup group;
-	
-	// find a chain of multiplication instructions, evaluate and set one to the constant and the others to 1
 	
 	@Override
 	public void run(ClassGroup group)
@@ -41,25 +43,17 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 	}
 	
 	private MultiplicationExpression parseExpression(InstructionContext ctx)
-	//private List<InstructionContext> getConstants(InstructionContext ctx)
 	{
 		MultiplicationExpression me = new MultiplicationExpression();
 		
-		//assert ctx.getInstruction() instanceof IMul;
+		assert !(ctx.getInstruction() instanceof DupInstruction);
 		
-		//
 		if (ctx.getInstruction() instanceof PushConstantInstruction)
 		{
 			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush)
 			{
 				throw new IllegalStateException();
 			}
-			
-//			PushConstantInstruction pci = (PushConstantInstruction) ctx.getInstruction();
-//			int value = (int) pci.getConstant().getObject();
-//			
-//			if (value == 1)
-//				return null
 
 			me.instructions.add(ctx);
 			return me;
@@ -68,6 +62,18 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		for (StackContext sctx : ctx.getPops())
 		{
 			InstructionContext i = sctx.getPushed();
+			
+//			int count2 = 0;
+//			while (i.getInstruction() instanceof DupInstruction)
+//			{
+//				DupInstruction dup = (DupInstruction) i.getInstruction();
+//				sctx = dup.resolve(sctx);
+//				i = sctx.getPushed();
+//				
+//				++count2;
+//				assert count2 < 10;
+//				//assert !(i.getInstruction() instanceof DupInstruction);
+//			}
 			
 			// if this instruction is imul, look at pops
 			if (ctx.getInstruction() instanceof IMul)
@@ -110,6 +116,44 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					{
 						assert me.subexpressions.isEmpty();
 						// subexpression is too complex. we can still simplify the top level though
+					}
+				}
+				else if (i.getInstruction() instanceof DupInstruction)
+				{
+					DupInstruction dup = (DupInstruction) i.getInstruction();
+					
+					if (dup instanceof Dup || dup instanceof Dup_X1)
+					{
+					
+						// find other branch of the dup instruction
+						// sctx = what dup pushed, find other
+						StackContext otherCtx = dup.getOtherBranch(sctx); // other side of dup
+						InstructionContext otherCtxI = otherCtx.getPopped(); // would insert imul here?
+
+						if (otherCtxI.getInstruction() instanceof IMul)
+						{
+							//assert otherCtxI.getInstruction() instanceof IMul;
+
+							InstructionContext pushConstant = otherCtxI.getPops().get(0).getPushed();
+							assert pushConstant.getInstruction() instanceof LDC_W;
+
+							me.dupmagic = pushConstant;
+
+							StackContext orig = dup.resolve(sctx); // original
+							try
+							{
+								MultiplicationExpression other = parseExpression(orig.getPushed());
+								me.subexpressions.add(other);
+							}
+							catch (IllegalStateException ex)
+							{
+								assert me.subexpressions.isEmpty();
+							}
+						}
+						else
+						{
+							System.out.println("dup ins " + i);
+						}
 					}
 				}
 				else if (i.getInstruction() instanceof GetFieldInstruction)
@@ -175,7 +219,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		return true;
 	}
 	
-	Set<Instruction> done = new HashSet<>();
+	private Set<Instruction> done = new HashSet<>();
+	
 	private int runOnce()
 	{
 		group.buildClassGraph();
@@ -194,7 +239,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				Instruction instruction = ictx.getInstruction();
 				Instructions instructions = instruction.getInstructions();
 				
-//				if (!frame.getMethod().getMethods().getClassFile().getName().equals("class114"))
+//				if (!frame.getMethod().getMethods().getClassFile().getName().equals("class118"))
 //					continue;
 				
 				if (!(instruction instanceof IMul))
@@ -228,6 +273,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				count += expression.simplify(1);
 				if (MultiplicationExpression.replace)
 				{
+					assert false;
 					MultiplicationExpression.replace = false;
 					return count;
 				}
