@@ -120,9 +120,10 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				}
 				else if (i.getInstruction() instanceof DupInstruction)
 				{
+					if(true) throw new IllegalStateException();
 					DupInstruction dup = (DupInstruction) i.getInstruction();
 					
-					if (dup instanceof Dup || dup instanceof Dup_X1)
+					//if (dup instanceof Dup || dup instanceof Dup_X1)
 					{
 					
 						// find other branch of the dup instruction
@@ -139,7 +140,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 
 							me.dupmagic = pushConstant;
 
-							StackContext orig = dup.resolve(sctx); // original
+							StackContext orig = dup.getOriginal(sctx); // original
 							try
 							{
 								MultiplicationExpression other = parseExpression(orig.getPushed());
@@ -152,7 +153,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						}
 						else
 						{
-							System.out.println("dup ins " + i);
+							System.out.println("dup ins " + otherCtxI.getInstruction());
+							throw new IllegalStateException();
 						}
 					}
 				}

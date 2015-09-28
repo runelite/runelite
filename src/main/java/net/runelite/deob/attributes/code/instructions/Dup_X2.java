@@ -71,14 +71,51 @@ public class Dup_X2 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public StackContext resolve(StackContext ctx)
+	public StackContext getOriginal(StackContext sctx)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		// 3 2 1 -> 1 3 2 1
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		assert ctx.getPushes().contains(sctx);
+		int pushedIndex = ctx.getPushes().indexOf(sctx);
+		int poppedIndex;
+		
+		switch (pushedIndex)
+		{
+			case 0:
+			case 3:
+				poppedIndex = 0;
+				break;
+			case 1:
+				poppedIndex = 2;
+				break;
+			case 2:
+				poppedIndex = 1;
+			default:
+				throw new IllegalStateException();
+		}
+		
+		return ctx.getPops().get(poppedIndex);
 	}
 
 	@Override
 	public StackContext getOtherBranch(StackContext sctx)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		// sctx = stack pushed by this instruction, return the other branch
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		assert ctx.getPushes().contains(sctx);
+		int pushedIndex = ctx.getPushes().indexOf(sctx);
+		
+		// 3 2 1 -> 1 3 2 1
+		
+		if (pushedIndex == 0)
+			return ctx.getPushes().get(3);
+		else if (pushedIndex == 3)
+			return ctx.getPushes().get(0);
+		
+		return null;
 	}
 }

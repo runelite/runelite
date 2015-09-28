@@ -73,7 +73,7 @@ public class Dup2 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public StackContext resolve(StackContext ctx)
+	public StackContext getOriginal(StackContext ctx)
 	{
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}

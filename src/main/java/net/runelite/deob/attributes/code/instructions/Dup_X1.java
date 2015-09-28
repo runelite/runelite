@@ -56,7 +56,7 @@ public class Dup_X1 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public StackContext resolve(StackContext sctx)
+	public StackContext getOriginal(StackContext sctx)
 	{
 		// ctx = stack pushed by this instruction, return stack popped by this instruction
 		InstructionContext ctx = sctx.getPushed();
