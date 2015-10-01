@@ -8,7 +8,8 @@ import net.runelite.deob.execution.InstructionContext;
 
 public class MultiplicationExpression
 {
-	List<InstructionContext> instructions = new ArrayList<>(); // push constant instructions that are being multiplied
+	List<InstructionContext> instructions = new ArrayList<>(), // push constant instructions that are being multiplied
+		dupedInstructions = new ArrayList<>();
 	List<MultiplicationExpression> subexpressions = new ArrayList<>(); // for distributing, each subexpr is * by this
 	InstructionContext dupmagic; // inverse of what is distributed to subexpressions gets set here
 	static boolean replace;
@@ -27,23 +28,49 @@ public class MultiplicationExpression
 			result *= value;
 		}
 		
+	//	assert (dupmagic != null) == !dupedInstructions.isEmpty();
+		if (dupmagic != null)
+		{
+			// mul dupmagic by result of dup ins?
+			
+			PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
+			int value = (int) pci.getConstant().getObject();
+			
+			for (InstructionContext ic : dupedInstructions)
+			{
+				PushConstantInstruction pci2 = (PushConstantInstruction) ic.getInstruction();
+				int value2 = (int) pci2.getConstant().getObject();
+				
+				value *= value2;
+			}
+			
+			Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(value));
+			System.out.println("dupmagic");
+			assert newIns == (Instruction) pci;
+		}
+		
 		// multiply subexpressions by result
 		if (!subexpressions.isEmpty())
 		{
 			for (MultiplicationExpression me : subexpressions)
 			{
+//				if (me.instructions.isEmpty() && this.dupmagic != null)
+//				{
+//					assert me.dupmagic == null;
+//					me.dupmagic = this.dupmagic;
+//				}
 				count += me.simplify(result);
 			}
 			
-			if (dupmagic != null)
-			{
-				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
-				int value = (int) pci.getConstant().getObject();
-				
-				value *= DMath.modInverse(result);
-				
-				pci.setConstant(new net.runelite.deob.pool.Integer(value));
-			}
+//			if (dupmagic != null)
+//			{
+//				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
+//				int value = (int) pci.getConstant().getObject();
+//				
+//				value *= DMath.modInverse(result);
+//				
+//				pci.setConstant(new net.runelite.deob.pool.Integer(value));
+//			}
 			
 			result = 1; // constant has been distributed, outer numbers all go to 1
 		}

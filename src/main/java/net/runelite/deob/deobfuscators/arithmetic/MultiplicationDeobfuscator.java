@@ -120,7 +120,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				}
 				else if (i.getInstruction() instanceof DupInstruction)
 				{
-					if(true) throw new IllegalStateException();
+					//if(true) throw new IllegalStateException();
 					DupInstruction dup = (DupInstruction) i.getInstruction();
 					
 					//if (dup instanceof Dup || dup instanceof Dup_X1)
@@ -144,7 +144,12 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 							try
 							{
 								MultiplicationExpression other = parseExpression(orig.getPushed());
-								me.subexpressions.add(other);
+								// this expression is used elsewhere like 'pushConstant' so any changes
+								// done to it affect that, too. so multiply it by existing values?
+								me.instructions.addAll(other.instructions);
+								me.dupedInstructions.addAll(other.instructions);
+								me.subexpressions.addAll(other.subexpressions);
+								//me.subexpressions.add(other);
 							}
 							catch (IllegalStateException ex)
 							{

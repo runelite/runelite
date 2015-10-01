@@ -65,6 +65,7 @@ public class Dup extends Instruction implements DupInstruction
 		// ctx = stack pushed by this instruction, return stack popped by this instruction
 		InstructionContext ctx = sctx.getPushed();
 		assert ctx.getInstruction() == this;
+		assert ctx.getPushes().contains(sctx);
 		return ctx.getPops().get(0);
 	}
 
