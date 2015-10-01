@@ -62,15 +62,15 @@ public class MultiplicationExpression
 				count += me.simplify(result);
 			}
 			
-//			if (dupmagic != null)
-//			{
-//				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
-//				int value = (int) pci.getConstant().getObject();
-//				
-//				value *= DMath.modInverse(result);
-//				
-//				pci.setConstant(new net.runelite.deob.pool.Integer(value));
-//			}
+			if (dupmagic != null)
+			{
+				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
+				int value = (int) pci.getConstant().getObject();
+				
+				value *= DMath.modInverse(result);
+				
+				pci.setConstant(new net.runelite.deob.pool.Integer(value));
+			}
 			
 			result = 1; // constant has been distributed, outer numbers all go to 1
 		}

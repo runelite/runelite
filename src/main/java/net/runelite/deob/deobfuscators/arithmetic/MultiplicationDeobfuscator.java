@@ -146,10 +146,16 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 								MultiplicationExpression other = parseExpression(orig.getPushed());
 								// this expression is used elsewhere like 'pushConstant' so any changes
 								// done to it affect that, too. so multiply it by existing values?
-								me.instructions.addAll(other.instructions);
-								me.dupedInstructions.addAll(other.instructions);
-								me.subexpressions.addAll(other.subexpressions);
-								//me.subexpressions.add(other);
+								if (orig.getPushed().getInstruction() instanceof IAdd || orig.getPushed().getInstruction() instanceof ISub)
+								{
+									me.subexpressions.add(other);
+								}
+								else
+								{
+									me.instructions.addAll(other.instructions);
+									me.dupedInstructions.addAll(other.instructions);
+									me.subexpressions.addAll(other.subexpressions);
+								}
 							}
 							catch (IllegalStateException ex)
 							{
