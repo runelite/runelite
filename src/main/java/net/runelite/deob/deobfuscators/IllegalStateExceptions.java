@@ -39,6 +39,7 @@ public class IllegalStateExceptions implements Deobfuscator
 				
 				Instructions instructions = c.getInstructions();
 				instructions.clearBlockGraph();
+				instructions.buildJumpGraph();
 				
 				List<Instruction> ilist = instructions.getInstructions();
 				for (int i = 0; i < ilist.size(); ++i)
@@ -109,7 +110,11 @@ public class IllegalStateExceptions implements Deobfuscator
 					instructions.remove(ins);
 					
 					// insert goto
-					ilist.add(i, new Goto(instructions, to));
+					assert ilist.contains(to);
+					Goto g = new Goto(instructions, to);
+					g.jump.add(to);
+					to.from.add(g);
+					ilist.add(i, g);
 					
 					++count;
 					break;
@@ -121,17 +126,20 @@ public class IllegalStateExceptions implements Deobfuscator
 	
 	@Override
 	public void run(ClassGroup group)
-	{
+	{	
+		group.buildClassGraph();
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
-		
+			
 		int count = 0;
 		int passes = 0;
 		int i;
 		do
 		{
 			i = checkOnce(execution, group);
+			
+			System.out.println("ise removal pass " + passes + " removed " + i);
 		
 			count += i;
 			++passes;
