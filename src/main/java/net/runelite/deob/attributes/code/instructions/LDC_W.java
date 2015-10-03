@@ -33,6 +33,11 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 		length += 2;
 	}
 	
+	public LDC_W(Instructions instructions, int value)
+	{
+		this(instructions, new net.runelite.deob.pool.Integer(value));
+	}
+	
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{
@@ -147,5 +152,10 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 		}
 		
 		return super.makeSpecific();
+	}
+	
+	public int getConstantAsInt()
+	{
+		return (int) value.getObject();
 	}
 }

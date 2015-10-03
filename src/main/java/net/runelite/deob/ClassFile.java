@@ -61,6 +61,7 @@ public class ClassFile
 	{
 		this.group = group;
 		
+		interfaces = new Interfaces(this);
 		fields = new Fields(this);
 		methods = new Methods(this);
 		attributes = new Attributes(this);
@@ -129,6 +130,16 @@ public class ClassFile
 	public void setName(String name)
 	{
 		this.name = new Class(name);
+	}
+	
+	public String getSuperName()
+	{
+		return super_class.getName();
+	}
+	
+	public void setSuperName(String name)
+	{
+		super_class = new Class(name);
 	}
 	
 	public Class getParentClass()

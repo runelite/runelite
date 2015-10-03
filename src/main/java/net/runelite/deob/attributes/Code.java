@@ -23,6 +23,7 @@ public class Code extends Attribute
 		
 		exceptions = new Exceptions(this);
 		this.attributes = new Attributes(this);
+		instructions = new Instructions(this);
 	}
 	
 	@Override

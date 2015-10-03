@@ -37,6 +37,11 @@ public class Methods
 			m.write(out);
 	}
 	
+	public void addMethod(Method m)
+	{
+		methods.add(m);
+	}
+	
 	public void removeMethod(Method m)
 	{
 		methods.remove(m);

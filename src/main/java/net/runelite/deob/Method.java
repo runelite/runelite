@@ -75,6 +75,11 @@ public class Method
 		return attributes;
 	}
 	
+	public void setAttributes(Attributes a)
+	{
+		this.attributes = a;
+	}
+	
 	public String getName()
 	{
 		return name;
@@ -98,6 +103,11 @@ public class Method
 	public boolean isStatic()
 	{
 		return (accessFlags & ACC_STATIC) != 0;
+	}
+	
+	public void setStatic()
+	{
+		accessFlags |= ACC_STATIC;
 	}
 	
 	public boolean isSynchronized()

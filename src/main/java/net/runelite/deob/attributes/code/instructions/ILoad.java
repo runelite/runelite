@@ -24,7 +24,7 @@ public class ILoad extends Instruction implements LVTInstruction, WideInstructio
 	
 	public ILoad(Instructions instructions, int index)
 	{
-		super(instructions, InstructionType.ILOAD, 0);
+		super(instructions, InstructionType.ILOAD, -1);
 		this.index = index;
 		++length;
 	}

@@ -71,6 +71,11 @@ public class Instructions
 		return instructions;
 	}
 	
+	public void addInstruction(Instruction i)
+	{
+		instructions.add(i);
+	}
+	
 	public List<Block> getBlocks()
 	{
 		return blocks;

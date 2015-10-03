@@ -24,6 +24,11 @@ public class Interfaces
 			interfaces.add(c.getPool().getClass(is.readUnsignedShort()));
 	}
 	
+	Interfaces(ClassFile c)
+	{
+		classFile = c;
+	}
+	
 	public List<Class> getInterfaces()
 	{
 		return interfaces;

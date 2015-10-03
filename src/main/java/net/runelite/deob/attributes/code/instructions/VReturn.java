@@ -14,6 +14,11 @@ public class VReturn extends Instruction implements ReturnInstruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public VReturn(Instructions instructions)
+	{
+		super(instructions, InstructionType.RETURN, -1);
+	}
 
 	@Override
 	public void execute(Frame frame)
