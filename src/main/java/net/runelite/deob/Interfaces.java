@@ -14,11 +14,9 @@ public class Interfaces
 
 	private List<Class> interfaces = new ArrayList<Class>();
 
-	Interfaces(ClassFile c) throws IOException
+	Interfaces(ClassFile c, DataInputStream is) throws IOException
 	{
 		classFile = c;
-
-		DataInputStream is = c.getStream();
 
 		int count = is.readUnsignedShort();
 

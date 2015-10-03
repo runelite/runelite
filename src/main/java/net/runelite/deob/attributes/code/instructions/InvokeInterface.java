@@ -30,11 +30,14 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	private InterfaceMethod method;
 	private int count;
 
-	public InvokeInterface(Instructions instructions, InstructionType type, int pc) throws IOException
+	public InvokeInterface(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		method = this.getPool().getInterfaceMethod(is.readUnsignedShort());
 		count = is.readUnsignedByte();
 		is.skip(1);

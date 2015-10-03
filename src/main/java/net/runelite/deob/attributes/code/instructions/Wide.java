@@ -17,19 +17,22 @@ public class Wide extends Instruction implements LVTInstruction
 {
 	private Instruction ins;
 
-	public Wide(Instructions instructions, InstructionType type, int pc) throws IOException
+	public Wide(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		byte opcode = is.readByte(); // this byte is already in the length of the new instruction (length is initialized to 1)
 		InstructionType op = InstructionType.findInstructionFromCode(opcode);
 		
 		try
 		{
 			Constructor<? extends Instruction> con = op.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, Instruction.class, int.class);
-			ins = con.newInstance(instructions, op, this, pc);
+			ins = con.newInstance(this.getInstructions(), op, this, this.getPc());
+			ins.load(is);
 			length += ins.getLength();
 		}
 		catch (Exception ex)

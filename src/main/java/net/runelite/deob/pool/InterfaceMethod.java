@@ -20,11 +20,9 @@ public class InterfaceMethod extends PoolEntry
 		this.nat = nat;
 	}
 
-	public InterfaceMethod(ConstantPool pool) throws IOException
+	public InterfaceMethod(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.INTERFACE_METHOD_REF);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		classIndex = is.readUnsignedShort();
 		natIndex = is.readUnsignedShort();

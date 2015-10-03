@@ -17,14 +17,13 @@ public abstract class Attribute
 		this.type = type;
 	}
 	
-	public final void load() throws IOException
+	public final void load(DataInputStream is) throws IOException
 	{
-		DataInputStream is = attributes.getStream();
 		this.length = is.readInt();
-		this.loadAttribute();
+		this.loadAttribute(is);
 	}
 	
-	public abstract void loadAttribute() throws IOException;
+	public abstract void loadAttribute(DataInputStream is) throws IOException;
 	
 	public final void write(DataOutputStream out) throws IOException
 	{

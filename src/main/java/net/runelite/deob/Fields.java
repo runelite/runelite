@@ -14,16 +14,19 @@ public class Fields
 
 	private List<Field> fields = new ArrayList<>();
 
-	Fields(ClassFile c) throws IOException
+	Fields(ClassFile c, DataInputStream is) throws IOException
 	{
 		classFile = c;
-
-		DataInputStream is = c.getStream();
 
 		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
-			fields.add(new Field(this));
+			fields.add(new Field(this, is));
+	}
+	
+	Fields(ClassFile c)
+	{
+		classFile = c;
 	}
 	
 	public void write(DataOutputStream out) throws IOException

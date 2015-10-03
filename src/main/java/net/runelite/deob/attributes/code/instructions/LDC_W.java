@@ -18,11 +18,26 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 {
 	private PoolEntry value;
 
-	public LDC_W(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LDC_W(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+		
+		assert type == InstructionType.LDC_W || type == InstructionType.LDC;
+	}
+	
+	public LDC_W(Instructions instructions, PoolEntry value)
+	{
+		super(instructions, InstructionType.LDC_W, 0);
+		
+		this.value = value;
+		length += 2;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		InstructionType type = this.getType();
+		
 		assert type == InstructionType.LDC_W || type == InstructionType.LDC;
 		
 		if (type == InstructionType.LDC_W)
@@ -35,14 +50,6 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 			value = this.getPool().getEntry(is.readUnsignedByte());
 			length += 1;
 		}
-	}
-	
-	public LDC_W(Instructions instructions, PoolEntry value)
-	{
-		super(instructions, InstructionType.LDC_W, 0);
-		
-		this.value = value;
-		length += 2;
 	}
 	
 	@Override

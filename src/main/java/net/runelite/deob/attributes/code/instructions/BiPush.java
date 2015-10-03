@@ -18,11 +18,14 @@ public class BiPush extends Instruction implements PushConstantInstruction
 {
 	private byte b;
 
-	public BiPush(Instructions instructions, InstructionType type, int pc) throws IOException
+	public BiPush(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		b = is.readByte();
 		length += 1;
 	}

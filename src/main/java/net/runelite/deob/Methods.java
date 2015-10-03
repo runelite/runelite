@@ -15,16 +15,19 @@ public class Methods
 
 	private List<Method> methods = new ArrayList<>();
 
-	Methods(ClassFile cf) throws IOException
+	Methods(ClassFile cf, DataInputStream is) throws IOException
 	{
 		classFile = cf;
-
-		DataInputStream is = cf.getStream();
 
 		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
-			methods.add(new Method(this));
+			methods.add(new Method(this, is));
+	}
+	
+	Methods(ClassFile cf)
+	{
+		classFile = cf;
 	}
 	
 	public void write(DataOutputStream out) throws IOException

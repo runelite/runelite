@@ -27,18 +27,17 @@ public class Method
 	public Signature arguments;
 	private Attributes attributes;
 
-	Method(Methods methods) throws IOException
+	Method(Methods methods, DataInputStream is) throws IOException
 	{
 		this.methods = methods;
 
-		DataInputStream is = methods.getClassFile().getStream();
 		ConstantPool pool = methods.getClassFile().getPool();
 
 		accessFlags = is.readShort();
 		name = pool.getUTF8(is.readUnsignedShort());
 		arguments = new Signature(pool.getUTF8(is.readUnsignedShort()));
 		attributes = new Attributes(this);
-		attributes.load();
+		attributes.load(is);
 	}
 	
 	public Method(Methods methods, String name, Signature signature)

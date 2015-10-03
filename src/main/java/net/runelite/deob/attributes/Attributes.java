@@ -19,18 +19,23 @@ public class Attributes
 
 	private List<Attribute> attributes = new ArrayList<>();
 
-	public Attributes(ClassFile cf) throws IOException
+	public Attributes(ClassFile cf, DataInputStream is) throws IOException
 	{
 		classFile = cf;
 
-		load();
+		load(is);
+	}
+	
+	public Attributes(ClassFile cf)
+	{
+		classFile = cf;
 	}
 
-	public Attributes(Field f) throws IOException
+	public Attributes(Field f, DataInputStream is) throws IOException
 	{
 		field = f;
 
-		load();
+		load(is);
 	}
 
 	public Attributes(Method m)
@@ -73,15 +78,8 @@ public class Attributes
 		return null;
 	}
 
-	public DataInputStream getStream()
+	public void load(DataInputStream is) throws IOException
 	{
-		return getClassFile().getStream();
-	}
-
-	public void load() throws IOException
-	{
-		DataInputStream is = getStream();
-
 		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
@@ -93,7 +91,7 @@ public class Attributes
 			{
 				Constructor<? extends Attribute> con = type.getAttributeClass().getConstructor(new Class[] { Attributes.class });
 				Attribute attr = con.newInstance(this);
-				attr.load();
+				attr.load(is);
 
 				if (type != AttributeType.UNKNOWN)
 					attributes.add(attr);

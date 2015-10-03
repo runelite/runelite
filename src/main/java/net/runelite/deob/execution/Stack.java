@@ -9,7 +9,7 @@ public class Stack
 
 	public Stack(int sz)
 	{
-		stack = new StackContext[sz*2]; // XXX
+		stack = new StackContext[sz*2]; // XXX FIXME
 	}
 	
 	protected Stack(Stack other)

@@ -14,10 +14,9 @@ public class Unknown extends Attribute
 	}
 	
 	@Override
-	public void loadAttribute() throws IOException
+	public void loadAttribute(DataInputStream is) throws IOException
 	{
 		int len = this.getLength();
-		DataInputStream is = this.getAttributes().getStream();
 
 		data = new byte[len];
 

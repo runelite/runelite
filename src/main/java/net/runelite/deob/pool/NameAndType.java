@@ -18,11 +18,9 @@ public class NameAndType extends PoolEntry
 	/* type */
 	private Type type;
 
-	public NameAndType(ConstantPool pool) throws IOException
+	public NameAndType(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.NAME_AND_TYPE);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		nameIndex = is.readUnsignedShort();
 		descriptorIndex = is.readUnsignedShort();

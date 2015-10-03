@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code;
 
+import java.io.DataInputStream;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ConstantPool;
 import net.runelite.deob.Field;
@@ -29,6 +30,10 @@ public abstract class Instruction
 		this.instructions = instructions;
 		this.type = type;
 		this.pc = pc;
+	}
+	
+	public void load(DataInputStream is) throws IOException
+	{
 	}
 	
 	protected void remove()

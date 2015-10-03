@@ -39,52 +39,52 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
-//		run(group, new RenameUnique());
+		//run(group, new RenameUnique());
 
-//		// remove except RuntimeException
-//		run(group, new RuntimeExceptions());
-//		
-//		// remove unused methods
-//		run(group, new UnusedMethods());
-//		
-//		run(group, new UnreachedCode());
-//		
-//		// remove illegal state exceptions, frees up some parameters
-//		run(group, new IllegalStateExceptions());
-//		
-//		// remove constant logically dead parameters
-//		run(group, new ConstantParameter());
-//		
-//		// remove unhit blocks
-//		run(group, new UnreachedCode());
-//
-//		// remove unused parameters
-//		run(group, new UnusedParameters());
-//		
-//		// remove jump obfuscation
-//		//new Jumps().run(group);
-//		
-//		// remove unused fields
-//		run(group, new UnusedFields());
-//		
-//		// remove unused methods, again?
-//		run(group, new UnusedMethods());
-//		
-//		run(group, new MethodInliner());
-//
-//		run(group, new MethodMover());
-//		
-//		run(group, new FieldInliner());
-//		
-//		// XXX this is broken because when moving clinit around, some fields can depend on other fields
-//		// (like multianewarray)
-//		//new FieldMover().run(group);
-//		
-//		run(group, new UnusedClass());
+		// remove except RuntimeException
+		run(group, new RuntimeExceptions());
 		
-		//new ModArith().run(group);
+		// remove unused methods
+		run(group, new UnusedMethods());
 		
-		new MultiplicationDeobfuscator().run(group);
+		run(group, new UnreachedCode());
+		
+		// remove illegal state exceptions, frees up some parameters
+		run(group, new IllegalStateExceptions());
+		
+		// remove constant logically dead parameters
+		run(group, new ConstantParameter());
+		
+		// remove unhit blocks
+		run(group, new UnreachedCode());
+
+		// remove unused parameters
+		run(group, new UnusedParameters());
+		
+		// remove jump obfuscation
+		//new Jumps().run(group);
+		
+		// remove unused fields
+		run(group, new UnusedFields());
+		
+		// remove unused methods, again?
+		run(group, new UnusedMethods());
+
+		run(group, new MethodInliner());
+
+		run(group, new MethodMover());
+		
+		run(group, new FieldInliner());
+		
+		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+		// (like multianewarray)
+		//new FieldMover().run(group);
+		
+		run(group, new UnusedClass());
+		
+		new ModArith().run(group);
+		
+//		new MultiplicationDeobfuscator().run(group);
 		
 //		new MultiplyOneDeobfuscator().run(group);
 //		

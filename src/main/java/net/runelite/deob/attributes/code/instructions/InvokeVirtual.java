@@ -28,11 +28,14 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
 	private Method method;
 
-	public InvokeVirtual(Instructions instructions, InstructionType type, int pc) throws IOException
+	public InvokeVirtual(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		method = this.getPool().getMethod(is.readUnsignedShort());
 		length += 2;
 	}

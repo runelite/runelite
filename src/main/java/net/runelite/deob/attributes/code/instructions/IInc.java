@@ -19,25 +19,34 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 {
 	private short index;
 	private short inc;
+	private boolean wide;
 
-	public IInc(Instructions instructions, InstructionType type, int pc) throws IOException
+	public IInc(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readByte();
-		inc = is.readByte();
-		length += 2;
 	}
 	
-	public IInc(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
+	public IInc(Instructions instructions, InstructionType type, Instruction instruction, int pc)
 	{
 		super(instructions, type, pc);
-		
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readShort();
-		inc = is.readShort();
-		length += 4;
+		wide = true;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		if (wide)
+		{
+			index = is.readShort();
+			inc = is.readShort();
+			length += 4;
+		}
+		else
+		{
+			index = is.readByte();
+			inc = is.readByte();
+			length += 2;
+		}
 	}
 	
 	@Override

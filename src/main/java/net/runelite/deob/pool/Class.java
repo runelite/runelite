@@ -12,11 +12,10 @@ public class Class extends PoolEntry
 	private int index;
 	private java.lang.String name;
 
-	public Class(ConstantPool pool) throws IOException
+	public Class(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.CLASS);
 
-		DataInputStream is = pool.getClassFile().getStream();
 		index = is.readUnsignedShort();
 	}
 	

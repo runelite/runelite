@@ -18,11 +18,14 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 {
 	private PoolEntry value;
 
-	public LDC2_W(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LDC2_W(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		value = this.getPool().getEntry(is.readUnsignedShort());
 		length += 2;
 	}

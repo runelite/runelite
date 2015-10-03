@@ -26,12 +26,15 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 	private int[] match;
 	private int[] branch;
 
-	public LookupSwitch(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LookupSwitch(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		int pc = this.getPc();
 		int tableSkip = 4 - (pc + 1) % 4;
 		if (tableSkip == 4) tableSkip = 0;
 		if (tableSkip > 0) is.skip(tableSkip);

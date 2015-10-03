@@ -29,17 +29,16 @@ public class Field
 	private Type type;
 	private Attributes attributes;
 
-	Field(Fields fields) throws IOException
+	Field(Fields fields, DataInputStream is) throws IOException
 	{
 		this.fields = fields;
 
-		DataInputStream is = fields.getClassFile().getStream();
 		ConstantPool pool = fields.getClassFile().getPool();
 
 		accessFlags = is.readShort();
 		name = pool.getUTF8(is.readUnsignedShort());
 		type = new Type(pool.getUTF8(is.readUnsignedShort()));
-		attributes = new Attributes(this);
+		attributes = new Attributes(this, is);
 	}
 	
 	public void write(DataOutputStream out) throws IOException

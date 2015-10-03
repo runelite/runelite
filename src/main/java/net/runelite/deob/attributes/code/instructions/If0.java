@@ -21,11 +21,14 @@ public class If0 extends Instruction implements JumpingInstruction, ComparisonIn
 	private Instruction to;
 	private short offset;
 
-	public If0(Instructions instructions, InstructionType type, int pc) throws IOException
+	public If0(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		offset = is.readShort();
 		length += 2;
 	}

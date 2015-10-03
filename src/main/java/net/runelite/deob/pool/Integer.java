@@ -11,11 +11,9 @@ public class Integer extends PoolEntry
 {
 	private int value;
 
-	public Integer(ConstantPool pool) throws IOException
+	public Integer(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.INTEGER);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readInt();
 	}

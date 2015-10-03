@@ -11,11 +11,9 @@ public class Float extends PoolEntry
 {
 	private float value;
 
-	public Float(ConstantPool pool) throws IOException
+	public Float(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.FLOAT);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readFloat();
 	}

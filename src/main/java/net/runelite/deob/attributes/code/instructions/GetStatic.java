@@ -24,11 +24,14 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 {
 	private Field field;
 
-	public GetStatic(Instructions instructions, InstructionType type, int pc) throws IOException
+	public GetStatic(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		field = this.getPool().getField(is.readUnsignedShort());
 		length += 2;
 	}

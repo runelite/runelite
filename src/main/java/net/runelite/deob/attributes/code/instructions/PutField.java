@@ -16,10 +16,6 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import static net.runelite.deob.attributes.code.instructions.PutStatic.translate;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import net.runelite.deob.deobfuscators.arithmetic.Pair;
 
@@ -30,8 +26,11 @@ public class PutField extends Instruction implements SetFieldInstruction
 	public PutField(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		field = this.getPool().getField(is.readUnsignedShort());
 		length += 2;
 	}

@@ -16,7 +16,6 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
@@ -31,8 +30,11 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	public PutStatic(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		field = this.getPool().getField(is.readUnsignedShort());
 		length += 2;
 	}
