@@ -17,6 +17,11 @@ public class IAdd extends Instruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public IAdd(Instructions instructions)
+	{
+		super(instructions, InstructionType.IADD, -1);
+	}
 
 	@Override
 	public void execute(Frame frame)

@@ -1,15 +1,13 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.ClassGroupFactory;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.Methods;
-import net.runelite.deob.attributes.Attributes;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.Dup_X1;
+import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_0;
 import net.runelite.deob.attributes.code.instructions.IConst_3;
 import net.runelite.deob.attributes.code.instructions.ILoad;
@@ -19,40 +17,11 @@ import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.attributes.code.instructions.Pop;
 import net.runelite.deob.attributes.code.instructions.VReturn;
 import net.runelite.deob.execution.Execution;
-import net.runelite.deob.signature.Signature;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 public class MultiplicationDeobfuscatorTest
 {
-	private ClassGroup group;
-	private Code code;
-	private Instructions ins;
-	
-	@Before
-	public void init()
-	{
-		group = new ClassGroup();
-		
-		ClassFile cf = new ClassFile(group);
-		cf.setName("test");
-		cf.setSuperName("java/lang/Object");
-		group.addClass(cf);
-		
-		Methods methods = cf.getMethods();
-		Method method = new Method(methods, "func", new Signature("()V"));
-		method.setStatic();
-		methods.addMethod(method);
-		
-		Attributes methodAttributes = method.getAttributes();
-		
-		code = new Code(methodAttributes);
-		methodAttributes.addAttribute(code);
-		
-		ins = code.getInstructions();
-	}
-	
 	//   aload                 2
 	//   ldc_w                 1587543155
 	//   iload                 4
@@ -65,8 +34,12 @@ public class MultiplicationDeobfuscatorTest
 	//   imul
 	//   putstatic             class29/field949 I
 	@Test
-	public void testDupX1()
+	public void testDupX1_1()
 	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
 		code.setMaxStack(5);
 
 		// vars[0] = 3
@@ -115,5 +88,77 @@ public class MultiplicationDeobfuscatorTest
 		Assert.assertEquals(1, constant1.getConstantAsInt());
 		Assert.assertEquals(1, constant2.getConstantAsInt());
 		Assert.assertEquals(-1_095_175_765, constant3.getConstantAsInt());
+	}
+	
+	//   aload_0
+	//   dup
+	//   getfield              class118/field2201 I
+	//   ldc_w                 -2079217519
+	//   imul
+	//   ldc                   -2079217519
+	//   iadd
+	//   dup_x1
+	//   ldc_w                 561453169
+	//   imul
+	//   putfield              class118/field2201 I
+	//   ldc                   561453169
+	//   imul
+	@Test
+	public void testDupX1_2()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(4);
+		
+		// vars[0] = 3
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+
+		LDC_W constant1 = new LDC_W(ins, -2079217519),
+		      constant2 = new LDC_W(ins, -2079217519),
+		      constant3 = new LDC_W(ins,  561453169),
+		      constant4 = new LDC_W(ins,  561453169);
+		
+		Instruction body[] = {
+			new IConst_0(ins), // for dup_x1 to place before this
+			new ILoad(ins, 0),
+			constant1,
+			new IMul(ins),
+			constant2,
+			new IAdd(ins),
+			new Dup_X1(ins), // result, 0, result
+			constant3,
+			new IMul(ins),
+			new Pop(ins),
+			new Pop(ins),
+			constant4,
+			new IMul(ins),
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		assert constant1.getConstantAsInt() * constant3.getConstantAsInt() == 1;
+		assert constant2.getConstantAsInt() * constant4.getConstantAsInt() == 1;
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
+		Assert.assertEquals(1, constant3.getConstantAsInt());
+		Assert.assertEquals(1, constant4.getConstantAsInt());
 	}
 }
