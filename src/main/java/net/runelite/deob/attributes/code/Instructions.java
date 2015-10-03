@@ -79,14 +79,14 @@ public class Instructions
 	
 	public void remove(Instruction ins)
 	{
-		for (Instruction i : instructions)
-		{
-			if (i instanceof JumpingInstruction)
-			{
-				JumpingInstruction j = (JumpingInstruction) i;
-				assert !j.getJumps().contains(ins);
-			}
-		}
+//		for (Instruction i : instructions)
+//		{
+//			if (i instanceof JumpingInstruction)
+//			{
+//				JumpingInstruction j = (JumpingInstruction) i;
+//				assert !j.getJumps().contains(ins);
+//			}
+//		}
 		
 		ins.remove();
 		instructions.remove(ins);

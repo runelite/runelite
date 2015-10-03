@@ -203,8 +203,8 @@ public class MethodInliner implements Deobfuscator
 
 			fromI.jump.remove(invokeIns);
 			fromI.replace(invokeIns, firstParamStore);
-			
 			fromI.jump.add(firstParamStore);
+			
 			firstParamStore.from.add(fromI);
 		}
 		invokeIns.from.clear();
@@ -225,8 +225,14 @@ public class MethodInliner implements Deobfuscator
 				// instead of return, jump to next instruction after the invoke
 				Instruction oldI = i;
 				i = new Goto(methodInstructions, nextInstruction);
+				assert methodInstructions.getInstructions().contains(nextInstruction);
 				
-				i.jump.addAll(oldI.jump);
+				assert oldI != nextInstruction;
+				i.jump.add(nextInstruction);
+				nextInstruction.from.add(i);
+				
+				assert oldI.jump.isEmpty();
+				//i.jump.addAll(oldI.jump);
 				i.from.addAll(oldI.from);
 				
 				for (Instruction i2 : oldI.from)
@@ -249,7 +255,8 @@ public class MethodInliner implements Deobfuscator
 				
 				if (oldI != i)
 				{
-					i.jump.addAll(oldI.jump);
+					assert oldI.jump.isEmpty();
+					//i.jump.addAll(oldI.jump);
 					i.from.addAll(oldI.from);
 
 					for (Instruction i2 : oldI.from)
