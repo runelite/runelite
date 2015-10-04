@@ -7,13 +7,23 @@ import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.Dup_X1;
+import net.runelite.deob.attributes.code.instructions.Goto;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_0;
+import net.runelite.deob.attributes.code.instructions.IConst_1;
+import net.runelite.deob.attributes.code.instructions.IConst_2;
 import net.runelite.deob.attributes.code.instructions.IConst_3;
+import net.runelite.deob.attributes.code.instructions.IDiv;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.IStore;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
+import net.runelite.deob.attributes.code.instructions.IStore_1;
+import net.runelite.deob.attributes.code.instructions.IStore_2;
+import net.runelite.deob.attributes.code.instructions.If;
+import net.runelite.deob.attributes.code.instructions.If0;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
+import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.attributes.code.instructions.Pop;
 import net.runelite.deob.attributes.code.instructions.VReturn;
 import net.runelite.deob.execution.Execution;
@@ -160,5 +170,135 @@ public class MultiplicationDeobfuscatorTest
 		Assert.assertEquals(1, constant2.getConstantAsInt());
 		Assert.assertEquals(1, constant3.getConstantAsInt());
 		Assert.assertEquals(1, constant4.getConstantAsInt());
+	}
+	
+	//@Test
+//	public void testDupX1_3()
+//	{
+//		ClassGroup group = ClassGroupFactory.generateGroup();
+//		Code code = group.findClass("test").findMethod("func").getCode();
+//		Instructions ins = code.getInstructions();
+//		
+//		code.setMaxStack(2);
+//		
+//		Instruction[] prepareVariables = {
+//			new IConst_3(ins),
+//			new IStore_0(ins),
+//			new IConst_3(ins),
+//			new IStore_1(ins),
+//			new IConst_3(ins),
+//			new IStore_2(ins),
+//		};
+//		
+//		for (Instruction i : prepareVariables)
+//			ins.addInstruction(i);
+//		
+//		LDC_W constant1 = new LDC_W(ins, 1381104939),
+//		      constant2 = new LDC_W(ins, 1381104939),
+//		      constant3 = new LDC_W(ins, 981643079),
+//		      constant4 = new LDC_W(ins, 1807370871),
+//		      constant5 = new LDC_W(ins, 1807370871),
+//		      constant6 = new LDC_W(ins, 981643079);
+//		
+//		NOP label1 = new NOP(ins),
+//		    label2 = new NOP(ins);
+//		
+//		Instruction body[] = {
+//			new IConst_1(ins),
+//			new ILoad(ins, 0),
+//			new If(ins, label1),
+//			constant1,
+//			new ILoad(ins, 1),
+//			new IMul(ins),
+//			new Goto(ins, label2),
+//			label1,
+//			new ILoad(ins, 1),
+//			constant2,
+//			new IMul(ins),
+//			constant3,
+//			new ILoad(ins, 2),
+//			constant4,
+//			new IMul(ins),
+//			new IMul(ins),
+//			new IAdd(ins),
+//			new IConst_2(ins),
+//			new IDiv(ins),
+//			label2,
+//			constant5,
+//			new IMul(ins),
+//			constant6,
+//			new IMul(ins),
+//			new IStore(ins, 3),
+//			new VReturn(ins)
+//		};
+//		
+//		for (Instruction i : body)
+//			ins.addInstruction(i);
+//		
+//		Execution e = new Execution(group);
+//		e.populateInitialMethods();
+//		e.run();
+//		
+//		Deobfuscator d = new MultiplicationDeobfuscator();
+//		d.run(group);
+//		
+//		Assert.assertEquals(1381104939, constant1.getConstantAsInt());
+//		Assert.assertEquals(1381104939, constant2.getConstantAsInt());
+//		Assert.assertEquals(981643079, constant3.getConstantAsInt());
+//		Assert.assertEquals(1807370871, constant4.getConstantAsInt());
+//		Assert.assertEquals(1807370871, constant5.getConstantAsInt());
+//		Assert.assertEquals(981643079, constant6.getConstantAsInt());
+//	}
+	
+	@Test
+	public void testDupX1_3()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(2);
+		
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins),
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		LDC_W constant1 = new LDC_W(ins, 1381104939),
+		      constant2 = new LDC_W(ins, 1381104939),
+		      constant3 = new LDC_W(ins, 981643079);
+		
+		NOP label1 = new NOP(ins);
+		
+		Instruction body[] = {
+			constant1,
+			new ILoad(ins, 0),
+			new IMul(ins),
+			new IConst_0(ins),
+			new If0(ins, label1),
+			constant2,
+			new IMul(ins),
+			label1,
+			constant3,
+			new IMul(ins),
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1381104939, constant1.getConstantAsInt());
+		Assert.assertEquals(1381104939, constant2.getConstantAsInt());
+		Assert.assertEquals(981643079, constant3.getConstantAsInt());
 	}
 }

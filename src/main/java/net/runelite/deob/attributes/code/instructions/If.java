@@ -26,6 +26,16 @@ public class If extends Instruction implements JumpingInstruction, ComparisonIns
 		super(instructions, type, pc);
 	}
 	
+	public If(Instructions instructions, Instruction to)
+	{
+		super(instructions, InstructionType.IF_ICMPNE, -1);
+		
+		assert this != to;
+		assert to.getInstructions() == this.getInstructions();
+		
+		this.to = to;
+	}
+	
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{

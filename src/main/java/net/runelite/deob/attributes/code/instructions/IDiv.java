@@ -14,6 +14,11 @@ public class IDiv extends Instruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public IDiv(Instructions instructions)
+	{
+		super(instructions, InstructionType.IDIV, -1);
+	}
 
 	@Override
 	public void execute(Frame frame)

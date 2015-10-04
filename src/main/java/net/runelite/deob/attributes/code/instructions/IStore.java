@@ -23,7 +23,7 @@ public class IStore extends Instruction implements LVTInstruction, WideInstructi
 	
 	public IStore(Instructions instructions, int index)
 	{
-		super(instructions, InstructionType.ISTORE, 0);
+		super(instructions, InstructionType.ISTORE, -1);
 		this.index = index;
 		++length;
 	}

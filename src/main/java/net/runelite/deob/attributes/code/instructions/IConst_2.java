@@ -21,7 +21,7 @@ public class IConst_2 extends Instruction implements PushConstantInstruction
 	
 	public IConst_2(Instructions instructions)
 	{
-		super(instructions, InstructionType.ICONST_2, 0);
+		super(instructions, InstructionType.ICONST_2, -1);
 	}
 
 	@Override
