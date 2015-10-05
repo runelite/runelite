@@ -244,6 +244,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		
 		int count = 0;
+		int mcount = 0;
 		
 		for (Frame frame : e.processedFrames)
 			outer:
@@ -252,11 +253,34 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				Instruction instruction = ictx.getInstruction();
 				Instructions instructions = instruction.getInstructions();
 				
-//				if (!frame.getMethod().getMethods().getClassFile().getName().equals("class118"))
-//					continue;
+				String cname = frame.getMethod().getMethods().getClassFile().getName();
 				
 				if (!(instruction instanceof IMul))
 					continue;
+				
+//				if (cname.equals("client"))
+//				{
+//					// 7500 works ok
+//					// 8250 doesnt work
+//					//if (mcount++ > 8250)
+//					++mcount;
+//					if (!(mcount >= 7500 && mcount <= 8250))
+//						continue;
+//				}
+//				else
+//				{
+//					continue;
+//				}
+//field721 = (-1 != var5 && 1 != var5 ?
+//	(class139.field2363 * 1381104939 + 981643079 * field721 * 1807370871) / 2 :
+//	1381104939 * class139.field2363)
+//	* 1807370871 * 981643079;
+//	
+//field721 = (-1 != var5 && 1 != var5 ? 
+//	(class139.field2363 * 1381104939 + 981643079 * field721 * 1807370871) / 2 :
+//	1 * class139.field2363)
+//	* 1 * 1381104939;
+
 				
 				MultiplicationExpression expression;
 				try
