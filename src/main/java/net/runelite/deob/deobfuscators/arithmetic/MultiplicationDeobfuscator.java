@@ -1,7 +1,9 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -11,8 +13,6 @@ import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.BiPush;
-import net.runelite.deob.attributes.code.instructions.Dup;
-import net.runelite.deob.attributes.code.instructions.Dup_X1;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.ISub;
@@ -215,6 +215,26 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		return me;
 	}
 	
+	// for each instruction ctx in ths expression, see if it !equals any other for each ins?
+	
+	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
+	{
+		List<InstructionContext> l = new ArrayList<>();
+		
+		if (ctx == null || set.contains(ctx.getInstruction()))
+			return l;
+		
+		set.add(ctx.getInstruction());
+		
+		l.add(ctx);
+		for (StackContext s : ctx.getPops())
+			l.addAll(getInsInExpr(s.getPushed(), set));
+		for (StackContext s : ctx.getPushes())
+			l.addAll(getInsInExpr(s.getPopped(), set));
+		
+		return l;
+	}
+	
 	private boolean isOnlyPath(Execution execution, InstructionContext ctx)
 	{
 		Collection<InstructionContext> ins = execution.getInstructonContexts(ctx.getInstruction());
@@ -299,8 +319,11 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				//	continue;
 				
 				// there can only be one path to here, or else combinging would change code logic
-				if (!isOnlyPath(e, ictx))
-					continue;
+				List<InstructionContext> ilist = this.getInsInExpr(ictx, new HashSet());
+				for (InstructionContext i2 : ilist)
+					if (i2.getInstruction() instanceof IMul)
+						if (!isOnlyPath(e, i2))
+							continue outer;
 				
 								
 				if (done.contains(instruction))
