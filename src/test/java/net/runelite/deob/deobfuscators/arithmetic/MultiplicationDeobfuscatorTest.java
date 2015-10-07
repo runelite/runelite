@@ -269,11 +269,14 @@ public class MultiplicationDeobfuscatorTest
 		
 		LDC_W constant1 = new LDC_W(ins, 1381104939),
 		      constant2 = new LDC_W(ins, 1381104939),
-		      constant3 = new LDC_W(ins, 981643079);
+		      constant3 = new LDC_W(ins, 981643079),
+		      constant4 = new LDC_W(ins, 1807370871),
+		      constant5 = new LDC_W(ins, 981643079);
 		
 		NOP label1 = new NOP(ins);
 		
 		Instruction body[] = {
+			constant4,
 			constant1,
 			new ILoad(ins, 0),
 			new IMul(ins),
@@ -284,6 +287,10 @@ public class MultiplicationDeobfuscatorTest
 			label1,
 			constant3,
 			new IMul(ins),
+			new IMul(ins), // constant4
+			constant5,
+			new IMul(ins),
+			new Pop(ins),
 			new VReturn(ins)
 		};
 		
@@ -294,11 +301,15 @@ public class MultiplicationDeobfuscatorTest
 		e.populateInitialMethods();
 		e.run();
 		
+		assert constant4.getConstantAsInt() * constant5.getConstantAsInt() == 1;
+		
 		Deobfuscator d = new MultiplicationDeobfuscator();
 		d.run(group);
 		
 		Assert.assertEquals(1381104939, constant1.getConstantAsInt());
 		Assert.assertEquals(1381104939, constant2.getConstantAsInt());
 		Assert.assertEquals(981643079, constant3.getConstantAsInt());
+		Assert.assertEquals(1, constant4.getConstantAsInt());
+		Assert.assertEquals(1, constant5.getConstantAsInt());
 	}
 }
