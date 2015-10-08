@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -42,7 +43,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		System.out.println("Total changed " + count);
 	}
 	
-	private MultiplicationExpression parseExpression(InstructionContext ctx)
+	private MultiplicationExpression parseExpression(Execution e, InstructionContext ctx)
 	{
 		MultiplicationExpression me = new MultiplicationExpression();
 		
@@ -57,6 +58,12 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 
 			me.instructions.add(ctx);
 			return me;
+		}
+		
+		if (ctx.getInstruction() instanceof IMul)
+		{
+			if (!this.isOnlyPath(e, ctx))
+				throw new IllegalStateException();
 		}
 		
 		for (StackContext sctx : ctx.getPops())
@@ -91,7 +98,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					// chained imul, append to me
 					try
 					{
-						MultiplicationExpression other = parseExpression(i);
+						MultiplicationExpression other = parseExpression(e, i);
 
 						me.instructions.addAll(other.instructions);
 						me.subexpressions.addAll(other.subexpressions);
@@ -106,7 +113,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					// imul using result of iadd or isub. evaluate expression
 					try
 					{
-						MultiplicationExpression other = parseExpression(i);
+						MultiplicationExpression other = parseExpression(e, i);
 
 						// subexpr
 						//if (other != null)
@@ -129,7 +136,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						// find other branch of the dup instruction
 						// sctx = what dup pushed, find other
 						StackContext otherCtx = dup.getOtherBranch(sctx); // other side of dup
-						InstructionContext otherCtxI = otherCtx.getPopped(); // would insert imul here?
+						//InstructionContext otherCtxI = otherCtx.getPopped(); // would insert imul here?
+						InstructionContext otherCtxI = otherCtx.getPopped().get(0); // is this irght?
 
 						if (otherCtxI.getInstruction() instanceof IMul)
 						{
@@ -143,7 +151,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 							StackContext orig = dup.getOriginal(sctx); // original
 							try
 							{
-								MultiplicationExpression other = parseExpression(orig.getPushed());
+								MultiplicationExpression other = parseExpression(e, orig.getPushed());
 								// this expression is used elsewhere like 'pushConstant' so any changes
 								// done to it affect that, too. so multiply it by existing values?
 								if (orig.getPushed().getInstruction() instanceof IAdd || orig.getPushed().getInstruction() instanceof ISub)
@@ -182,7 +190,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			// this is an iadd/sub
 			else if (ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub)
 			{
-				MultiplicationExpression other = parseExpression(i); // parse this side of the add/sub
+				MultiplicationExpression other = parseExpression(e, i); // parse this side of the add/sub
 				
 				//if (other != null)
 					me.subexpressions.add(other);
@@ -216,39 +224,46 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 	}
 	
 	// for each instruction ctx in ths expression, see if it !equals any other for each ins?
+//	
+//	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
+//	{
+//		List<InstructionContext> l = new ArrayList<>();
+//		
+//		if (ctx == null || set.contains(ctx.getInstruction()))
+//			return l;
+//		
+//		set.add(ctx.getInstruction());
+//		
+//		l.add(ctx);
+//		for (StackContext s : ctx.getPops())
+//			l.addAll(getInsInExpr(s.getPushed(), set));
+//		for (StackContext s : ctx.getPushes())
+//			l.addAll(getInsInExpr(s.getPopped(), set));
+//		
+//		return l;
+//	}
 	
-	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
+	public static boolean isOnlyPath(Execution execution, InstructionContext ctx)
 	{
-		List<InstructionContext> l = new ArrayList<>();
-		
-		if (ctx == null || set.contains(ctx.getInstruction()))
-			return l;
-		
-		set.add(ctx.getInstruction());
-		
-		l.add(ctx);
-		for (StackContext s : ctx.getPops())
-			l.addAll(getInsInExpr(s.getPushed(), set));
-		for (StackContext s : ctx.getPushes())
-			l.addAll(getInsInExpr(s.getPopped(), set));
-		
-		return l;
-	}
-	
-	private boolean isOnlyPath(Execution execution, InstructionContext ctx)
-	{
+		assert ctx.getInstruction() instanceof IMul;
 		Collection<InstructionContext> ins = execution.getInstructonContexts(ctx.getInstruction());
 		for (InstructionContext i : ins)
-		//for (Frame f : execution.processedFrames)
-		//	if (f.getMethod() == frame.getMethod())
-		//		for (InstructionContext i : f.getInstructions())
-					//if (i.getInstruction() == ctx.getInstruction())
-					{
-						if (!i.equals(ctx))
-						{
-							return false;
-						}
-					}
+		{
+			if (!i.equals(ctx))
+			{
+				return false;
+			}
+
+			for (StackContext sctx : i.getPushes())
+				if (sctx.getPopped().size() > 1)
+					return false;
+			///if (i.getPushes().size() > 1)
+			//	return false;
+//			if (!Objects.equals(i.getPushes().get(0).getPopped(), ctx.getPushes().get(0).getPopped()))
+//			{
+//				return false;
+//			}
+		}
 		return true;
 	}
 	
@@ -267,7 +282,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		int mcount = 0;
 		
 		for (Frame frame : e.processedFrames)
-			outer:
+			//outer:
 			for (InstructionContext ictx : frame.getInstructions())
 			{
 				Instruction instruction = ictx.getInstruction();
@@ -305,7 +320,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				MultiplicationExpression expression;
 				try
 				{
-					 expression = parseExpression(ictx);
+					 expression = parseExpression(e, ictx);
 				}
 				catch (IllegalStateException ex)
 				{
@@ -319,11 +334,11 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				//	continue;
 				
 				// there can only be one path to here, or else combinging would change code logic
-				List<InstructionContext> ilist = this.getInsInExpr(ictx, new HashSet());
-				for (InstructionContext i2 : ilist)
-					if (i2.getInstruction() instanceof IMul)
-						if (!isOnlyPath(e, i2))
-							continue outer;
+//				List<InstructionContext> ilist = this.getInsInExpr(ictx, new HashSet());
+//				for (InstructionContext i2 : ilist)
+//					if (i2.getInstruction() instanceof IMul)
+//						if (!isOnlyPath(e, i2))
+//							continue outer;
 				
 								
 				if (done.contains(instruction))

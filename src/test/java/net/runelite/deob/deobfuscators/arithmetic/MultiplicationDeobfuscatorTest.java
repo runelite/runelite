@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
+import java.util.Collection;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.ClassGroupFactory;
 import net.runelite.deob.Deobfuscator;
@@ -7,26 +8,19 @@ import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.Dup_X1;
-import net.runelite.deob.attributes.code.instructions.Goto;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_0;
-import net.runelite.deob.attributes.code.instructions.IConst_1;
-import net.runelite.deob.attributes.code.instructions.IConst_2;
 import net.runelite.deob.attributes.code.instructions.IConst_3;
-import net.runelite.deob.attributes.code.instructions.IDiv;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
-import net.runelite.deob.attributes.code.instructions.IStore;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
-import net.runelite.deob.attributes.code.instructions.IStore_1;
-import net.runelite.deob.attributes.code.instructions.IStore_2;
-import net.runelite.deob.attributes.code.instructions.If;
 import net.runelite.deob.attributes.code.instructions.If0;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.attributes.code.instructions.Pop;
 import net.runelite.deob.attributes.code.instructions.VReturn;
 import net.runelite.deob.execution.Execution;
+import net.runelite.deob.execution.InstructionContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -302,6 +296,15 @@ public class MultiplicationDeobfuscatorTest
 		e.run();
 		
 		assert constant4.getConstantAsInt() * constant5.getConstantAsInt() == 1;
+		
+		{
+			Collection<InstructionContext> ctxs = e.getInstructonContexts(body[3]);
+			assert ctxs.size() == 1;
+			
+			InstructionContext ictx = ctxs.iterator().next();
+			boolean onlyPath = MultiplicationDeobfuscator.isOnlyPath(e, ictx);
+			Assert.assertFalse(onlyPath);
+		}
 		
 		Deobfuscator d = new MultiplicationDeobfuscator();
 		d.run(group);

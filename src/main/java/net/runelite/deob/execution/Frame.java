@@ -30,6 +30,8 @@ public class Frame
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>(); // shared
+	
+	public static long num;
 
 	public Frame(Execution execution, Method method)
 	{
