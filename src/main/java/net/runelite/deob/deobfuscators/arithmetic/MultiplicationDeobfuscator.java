@@ -22,6 +22,7 @@ import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
+import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
 public class MultiplicationDeobfuscator implements Deobfuscator
@@ -60,14 +61,21 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			return me;
 		}
 		
-		if (ctx.getInstruction() instanceof IMul)
-		{
-			if (!this.isOnlyPath(e, ctx))
-				throw new IllegalStateException();
-		}
+//		if (ctx.getInstruction() instanceof IMul)
+//		{
+//			if (!isOnlyPath(e, ctx))
+//				throw new IllegalStateException();
+//		}
 		
 		for (StackContext sctx : ctx.getPops())
 		{
+			if (ctx.getInstruction() instanceof IMul)
+			{
+				if (!isOnlyPath(e, ctx, sctx))
+					continue;
+					//throw new IllegalStateException();
+			}
+			
 			InstructionContext i = sctx.getPushed();
 			
 //			int count2 = 0;
@@ -257,12 +265,50 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			for (StackContext sctx : i.getPushes())
 				if (sctx.getPopped().size() > 1)
 					return false;
-			///if (i.getPushes().size() > 1)
-			//	return false;
-//			if (!Objects.equals(i.getPushes().get(0).getPopped(), ctx.getPushes().get(0).getPopped()))
-//			{
-//				return false;
-//			}
+		}
+		return true;
+	}
+	
+	private static boolean ictxEqualsDir(InstructionContext one, InstructionContext two, StackContext sctx)
+	{
+		if (one.getInstruction() != two.getInstruction())
+			return false;
+		
+		// check if stack at time of execution is equal
+		List<StackContext> ours = one.getStack().getStack(), theirs = two.getStack().getStack();
+		//Stack ours = new Stack(one.getStack()), // copy stacks since we destroy them
+//			theirs = new Stack(two.getStack());
+		
+		if (ours.size() != theirs.size()) // is this possible?
+			return false;
+		
+		assert ours.contains(sctx);
+		int i = ours.indexOf(sctx);
+		
+		StackContext theirsctx = theirs.get(i);
+		
+		if (sctx.getPushed().getInstruction() != theirsctx.getPushed().getInstruction())
+			return false;
+		
+		return true;
+	}
+	
+	public static boolean isOnlyPath(Execution execution, InstructionContext ctx, StackContext sctx)
+	{
+		// 
+		assert ctx.getInstruction() instanceof IMul;
+		Collection<InstructionContext> ins = execution.getInstructonContexts(ctx.getInstruction());
+		for (InstructionContext i : ins)
+		{
+			if (!ictxEqualsDir(ctx, i, sctx))
+///			if (!i.equals(ctx))
+			{
+				return false;
+			}
+
+			for (StackContext s : i.getPushes())
+				if (s.getPopped().size() > 1)
+					return false;
 		}
 		return true;
 	}

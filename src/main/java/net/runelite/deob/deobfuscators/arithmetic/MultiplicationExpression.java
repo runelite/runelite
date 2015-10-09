@@ -81,11 +81,12 @@ public class MultiplicationExpression
 			PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
 			Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
 			++count;
-			if (newIns != pci)
-			{
-				newIns.getInstructions().replace((Instruction) pci, newIns);
-				replace = true;
-			}
+			assert newIns == pci;
+//			if (newIns != pci)
+//			{
+//				newIns.getInstructions().replace((Instruction) pci, newIns);
+//				replace = true;
+//			}
 			result = 1; // rest of the results go to 1
 		}
 		

@@ -41,11 +41,8 @@ public class StackContext
 
 	public void addPopped(InstructionContext popped)
 	{
-		//assert !this.poppeds.contains(popped);
 		if (!this.poppeds.contains(popped))
 			this.poppeds.add(popped);
-		//assert this.popped == null;
-		//this.popped = popped;
 	}
 
 	public Type getType()
