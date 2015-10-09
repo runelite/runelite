@@ -307,7 +307,8 @@ public class FieldMover implements Deobfuscator
 		{
 			assert s.getPushed() == ctx;
 			
-			getContexts(list, s.getPopped());
+			for (InstructionContext i : s.getPopped())
+				getContexts(list, i);
 		}
 	}
 
