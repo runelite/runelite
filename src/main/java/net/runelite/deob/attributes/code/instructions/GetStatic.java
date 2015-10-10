@@ -49,19 +49,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType());
-		
-		Encryption encryption = frame.getExecution().getEncryption();
-		net.runelite.deob.Field f = getMyField();
-		if (f != null && encryption != null)
-		{
-			Pair pair = encryption.getField(f);
-			if (pair != null)
-			{
-				ctx.encryption = pair.getter;
-			}
-		}
-		
+		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType());		
 		stack.push(ctx);
 		
 		ins.push(ctx);

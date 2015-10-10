@@ -1,10 +1,8 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -22,7 +20,6 @@ import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
 public class MultiplicationDeobfuscator implements Deobfuscator
@@ -392,56 +389,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				done.add(instruction);
 				
 				count += expression.simplify(1);
-				if (MultiplicationExpression.replace)
-				{
-					assert false;
-					MultiplicationExpression.replace = false;
-					return count;
-				}
-				//break;
-//				List<InstructionContext> ins = getConstants(ictx);
-//				
-//				if (ins.size() == 1)
-//					continue;
-//				
-//				for (InstructionContext i : ins)
-//				{
-//					if (done.contains(i.getInstruction()))
-//					{
-//						continue outer;
-//					}
-//				}
-//				
-//				// there can only be one path to here, or else combinging would change code logic
-//				if (!isOnlyPath(e, frame, ictx))
-//					continue;
-//				
-//				int result = 1;
-//				
-//				// calculate result
-//				for (InstructionContext i : ins)
-//				{
-//					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-//					int value = (int) pci.getConstant().getObject();
-//					
-//					result *= value;
-//				}
-//				
-//				// set result on ins
-//				for (InstructionContext i : ins)
-//				{
-//					PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-//					Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
-//					++count;
-//					if (newIns != pci)
-//					{
-//						instructions.replace((Instruction) pci, newIns);
-//					}
-//					result = 1; // rest of the results go to 1
-//				}
-//				
-//				for (InstructionContext i : ins)
-//					done.add(i.getInstruction());
 			}
 		
 		return count;

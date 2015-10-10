@@ -38,20 +38,17 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 		if (two != null)
 		{
 			StackContext ctx = new StackContext(ins, two.getType());
-			ctx.encryption = two.encryption;
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
 		StackContext ctx = new StackContext(ins, one.getType());
-		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		ctx = new StackContext(ins, three.getType());
-		ctx.encryption = three.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -59,14 +56,12 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 		if (two != null)
 		{
 			ctx = new StackContext(ins, two.getType());
-			ctx.encryption = two.encryption;
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
 		ctx = new StackContext(ins, one.getType());
-		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);

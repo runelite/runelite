@@ -12,7 +12,6 @@ public class MultiplicationExpression
 		dupedInstructions = new ArrayList<>();
 	List<MultiplicationExpression> subexpressions = new ArrayList<>(); // for distributing, each subexpr is * by this
 	InstructionContext dupmagic; // inverse of what is distributed to subexpressions gets set here
-	static boolean replace;
 	
 	int simplify(int start)
 	{
@@ -54,11 +53,6 @@ public class MultiplicationExpression
 		{
 			for (MultiplicationExpression me : subexpressions)
 			{
-//				if (me.instructions.isEmpty() && this.dupmagic != null)
-//				{
-//					assert me.dupmagic == null;
-//					me.dupmagic = this.dupmagic;
-//				}
 				count += me.simplify(result);
 			}
 			
@@ -82,11 +76,6 @@ public class MultiplicationExpression
 			Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
 			++count;
 			assert newIns == pci;
-//			if (newIns != pci)
-//			{
-//				newIns.getInstructions().replace((Instruction) pci, newIns);
-//				replace = true;
-//			}
 			result = 1; // rest of the results go to 1
 		}
 		

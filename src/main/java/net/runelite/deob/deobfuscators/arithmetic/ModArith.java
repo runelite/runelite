@@ -21,17 +21,12 @@ import net.runelite.deob.attributes.code.instruction.types.PushConstantInstructi
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
-import net.runelite.deob.attributes.code.instructions.PutStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
-
-/*
-store an encryption context on stack context that shows the value the ctx is encrypted with
-*/
 
 public class ModArith implements Deobfuscator
 {
@@ -321,22 +316,22 @@ public class ModArith implements Deobfuscator
 		}
 		System.out.println("Finished arith deob on " + total + " fields in " + passes + " passes");
 	}
-	
-	private void translateSetFields(Execution e)
-	{
-		//Set<Instruction> visited = new HashSet<>();
-		for (Frame f : e.processedFrames)
-			for (InstructionContext ins : f.getInstructions())
-				if (ins.getInstruction() instanceof SetFieldInstruction)
-				{
-					SetFieldInstruction sfi = (SetFieldInstruction) ins.getInstruction();
-					Pair pair = e.getEncryption().getField(sfi.getMyField());
-					
-					if (pair != null)
-						PutStatic.translate(e.getEncryption(), pair, ins, new HashSet());
-					//
-				}
-	}
+//	
+//	private void translateSetFields(Execution e)
+//	{
+//		//Set<Instruction> visited = new HashSet<>();
+//		for (Frame f : e.processedFrames)
+//			for (InstructionContext ins : f.getInstructions())
+//				if (ins.getInstruction() instanceof SetFieldInstruction)
+//				{
+//					SetFieldInstruction sfi = (SetFieldInstruction) ins.getInstruction();
+//					Pair pair = e.getEncryption().getField(sfi.getMyField());
+//					
+//					if (pair != null)
+//						PutStatic.translate(e.getEncryption(), pair, ins, new HashSet());
+//					//
+//				}
+//	}
 	
 	private void insertGetterSetterMuls(Encryption encr)
 	{
@@ -410,6 +405,12 @@ public class ModArith implements Deobfuscator
 		findUses();
 		reduce();
 		
+//		Encryption encr = new Encryption();
+//		for (Pair pair : pairs)
+//			encr.addPair(pair);
+//		
+//		insertGetterSetterMuls(encr);
+		
 		int i = 0;
 		for (Pair pair : pairs)
 		{
@@ -429,26 +430,6 @@ public class ModArith implements Deobfuscator
 			encr.addPair(pair);
 			
 			insertGetterSetterMuls(encr);
-//			
-//			execution = new Execution(group);
-//			execution.populateInitialMethods();
-//			execution.setEncryption(encr);
-//			execution.run();
-//			
-//			encr.doChange();
-//			
-//			insertSetterMuls(encr);
-			
-//			execution = new Execution(group);
-//			execution.populateInitialMethods();
-//			execution.run();
-//			
-//			encr = new Encryption();
-//			encr.addPair(pair);
-//			execution.setEncryption(encr);
-//			translateSetFields(execution);
-//			
-//			encr.doChange();
 			
 			System.out.println("Changed " + ++i);
 			//assert !deobfuscatedFields.contains(field);

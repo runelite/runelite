@@ -16,7 +16,6 @@ public class InstructionContext
 	private List<StackContext> pushes = new ArrayList<>(); // stack contexts pushed by instruction execution
 	private List<VariableContext> reads = new ArrayList<>(); // lvt reads
 	private List<Method> invokes = new ArrayList<>(); // invokes
-	public long frameNum;
 	
 	public InstructionContext(Instruction i, Frame f)
 	{

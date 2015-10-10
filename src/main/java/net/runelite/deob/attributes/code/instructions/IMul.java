@@ -35,47 +35,7 @@ public class IMul extends Instruction
 		
 		ins.pop(one, two);
 		
-		Encryption encryption = frame.getExecution().getEncryption();
-		int encKey = 0;
-		if (encryption != null)
-		{
-			if (one.encryption != 0)
-			{
-				assert two.encryption == 0;
-				PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
-				int other = (int) pci.getConstant().getObject();
-				
-				// 'one' is encrypted and we want to decrypt it by dividing by one.encryption
-				
-				if (other != 0)
-				{
-					int o = other * DMath.modInverse(one.encryption);
-
-					encryption.change(pci, o, false);
-				}
-				
-				encKey = 1;
-			}
-			else if (two.encryption != 0)
-			{
-				assert one.encryption == 0;
-				
-				PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
-				int other = (int) pci.getConstant().getObject();
-				
-				if (other != 0)
-				{
-					int o = other * DMath.modInverse(two.encryption);
-
-					encryption.change(pci, o, false);
-				}
-				
-				encKey = 1;
-			}
-		}
-		
 		StackContext ctx = new StackContext(ins, int.class);
-		ctx.encryption = encKey;
 		stack.push(ctx);
 		
 		ins.push(ctx);

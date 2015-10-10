@@ -53,18 +53,6 @@ public class GetField extends Instruction implements GetFieldInstruction
 		ins.pop(object);
 		
 		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType());
-		
-		Encryption encryption = frame.getExecution().getEncryption();
-		net.runelite.deob.Field f = getMyField();
-		if (encryption != null && f != null)
-		{
-			Pair pair = encryption.getField(f);
-			if (pair != null)
-			{
-				ctx.encryption = pair.getter;
-			}
-		}
-		
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -35,7 +35,6 @@ public class Dup_X2 extends Instruction implements DupInstruction
 			ins.pop(three);
 		
 		StackContext ctx = new StackContext(ins, one.getType());
-		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -43,20 +42,17 @@ public class Dup_X2 extends Instruction implements DupInstruction
 		if (three != null)
 		{
 			ctx = new StackContext(ins, three.getType());
-			ctx.encryption = three.encryption;
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
 		ctx = new StackContext(ins, two.getType());
-		ctx.encryption = two.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		ctx = new StackContext(ins, one.getType());
-		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);

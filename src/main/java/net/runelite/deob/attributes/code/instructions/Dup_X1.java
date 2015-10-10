@@ -34,19 +34,16 @@ public class Dup_X1 extends Instruction implements DupInstruction
 		ins.pop(one, two);
 		
 		StackContext ctx = new StackContext(ins, one.getType());
-		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		ctx = new StackContext(ins, two.getType());
-		ctx.encryption = two.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		ctx = new StackContext(ins, one.getType());
-		ctx.encryption = one.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);

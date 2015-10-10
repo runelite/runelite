@@ -9,7 +9,6 @@ public class StackContext
 	public List<InstructionContext> poppeds = new ArrayList<>(); // instructions which popped this
 	public Type type; // type of this
 	public boolean removed;
-	public int encryption; // if this value is encrypted, this is the key to get the real value
 	
 	public StackContext(InstructionContext pushed, Type type)
 	{

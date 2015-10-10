@@ -28,13 +28,11 @@ public class Dup extends Instruction implements DupInstruction
 		ins.pop(obj);
 		
 		StackContext ctx = new StackContext(ins, obj.getType());
-		ctx.encryption = obj.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		ctx = new StackContext(ins, obj.getType());
-		ctx.encryption = obj.encryption;
 		stack.push(ctx);
 		
 		ins.push(ctx);

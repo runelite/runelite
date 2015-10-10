@@ -28,54 +28,7 @@ public class ISub extends Instruction
 		
 		ins.pop(two, one);
 		
-		Encryption encryption = frame.getExecution().getEncryption();
-		int encKey = 0;
-		if (encryption != null)
-		{
-			if (one.encryption != 0)
-			{
-				assert two.encryption == 0;
-				
-				if (two.getPushed().getInstruction() instanceof PushConstantInstruction)
-				{
-					PushConstantInstruction pci = (PushConstantInstruction) two.getPushed().getInstruction();
-					int value = (int) pci.getConstant().getObject();
-
-					//if (value != 0 && value != 1)
-					{
-						int o = value * one.encryption;
-
-						encryption.change(pci, o, false);
-					}
-					encKey = 1;
-				}
-				
-			//	encKey = one.encryption;
-			}
-			else if (two.encryption != 0)
-			{
-				assert one.encryption == 0;
-				
-				if (one.getPushed().getInstruction() instanceof PushConstantInstruction)
-				{
-					PushConstantInstruction pci = (PushConstantInstruction) one.getPushed().getInstruction();
-					int value = (int) pci.getConstant().getObject();
-
-					//if (value != 0 && value != 1)
-					{
-						int o = value * two.encryption;
-
-						encryption.change(pci, o, false);
-					}
-					encKey = 1;
-				}
-				
-				//encKey = two.encryption;
-			}
-		}
-		
 		StackContext ctx = new StackContext(ins, int.class);
-		ctx.encryption = encKey;
 		stack.push(ctx);
 		
 		ins.push(ctx);
