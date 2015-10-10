@@ -2,7 +2,6 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -10,6 +9,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.BiPush;
 import net.runelite.deob.attributes.code.instructions.IAdd;
@@ -22,6 +22,8 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.execution.VariableContext;
+import net.runelite.deob.execution.Variables;
 
 public class MultiplicationDeobfuscator implements Deobfuscator
 {
@@ -48,6 +50,36 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		assert !(ctx.getInstruction() instanceof DupInstruction);
 		
+		if (ctx.getInstruction() instanceof LVTInstruction)
+		{
+			LVTInstruction lvt = (LVTInstruction) ctx.getInstruction();
+			
+			// loading a variable
+			if (!lvt.store())
+			{
+				int idx = lvt.getVariableIndex(); // var index
+				Variables vars = ctx.getVariables(); // variables at time of execution
+				
+				VariableContext vctx = vars.get(idx); // get the variable
+				
+				if (vctx.getRead().size() == 1) // ?
+				{
+					InstructionContext storeCtx = vctx.getInstructionWhichStored(); // this is an istore
+					if (storeCtx.getInstruction() instanceof LVTInstruction)
+					{
+						// invoking funcs can put stuff in lvt
+						
+						LVTInstruction storelvt = (LVTInstruction) storeCtx.getInstruction();
+
+						assert storelvt.store();
+
+						InstructionContext pushed = storeCtx.getPops().get(0).getPushed();
+						return parseExpression(e, pushed);
+					}
+				}
+			}
+		}
+		
 		if (ctx.getInstruction() instanceof PushConstantInstruction)
 		{
 			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush
@@ -60,34 +92,15 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			return me;
 		}
 		
-//		if (ctx.getInstruction() instanceof IMul)
-//		{
-//			if (!isOnlyPath(e, ctx))
-//				throw new IllegalStateException();
-//		}
-		
 		for (StackContext sctx : ctx.getPops())
 		{
 			if (ctx.getInstruction() instanceof IMul)
 			{
 				if (!isOnlyPath(e, ctx, sctx))
 					continue;
-					//throw new IllegalStateException();
 			}
 			
 			InstructionContext i = sctx.getPushed();
-			
-//			int count2 = 0;
-//			while (i.getInstruction() instanceof DupInstruction)
-//			{
-//				DupInstruction dup = (DupInstruction) i.getInstruction();
-//				sctx = dup.resolve(sctx);
-//				i = sctx.getPushed();
-//				
-//				++count2;
-//				assert count2 < 10;
-//				//assert !(i.getInstruction() instanceof DupInstruction);
-//			}
 			
 			// if this instruction is imul, look at pops
 			if (ctx.getInstruction() instanceof IMul)

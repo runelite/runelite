@@ -16,6 +16,7 @@ import net.runelite.deob.attributes.code.instructions.IConst_3;
 import net.runelite.deob.attributes.code.instructions.IDiv;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.IStore;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
 import net.runelite.deob.attributes.code.instructions.If0;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
@@ -296,5 +297,65 @@ public class MultiplicationDeobfuscatorTest
 		
 		Assert.assertEquals(1, constant1.getConstantAsInt());
 		Assert.assertEquals(1, constant2.getConstantAsInt());
+	}
+	
+	@Test
+	public void testDupX1_5()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(2);
+		
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins),
+			new IConst_2(ins),
+			new IStore(ins, 1)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		LDC_W constant1 = new LDC_W(ins, -2079217519),
+		      constant2 = new LDC_W(ins, -2079217519),
+		      constant3 = new LDC_W(ins, 561453169);
+		
+		Instruction body[] = {
+			new ILoad(ins, 0),
+			constant1,
+			new IMul(ins),
+			new IStore(ins, 2),
+			
+			new ILoad(ins, 2),
+			
+			new ILoad(ins, 1),
+			constant2,
+			new IMul(ins),
+			
+			new IAdd(ins),
+			
+			constant3,
+			new IMul(ins),
+
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		assert constant1.getConstantAsInt() * constant3.getConstantAsInt() == 1;
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
+		Assert.assertEquals(1, constant3.getConstantAsInt());
 	}
 }

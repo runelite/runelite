@@ -12,6 +12,7 @@ public class InstructionContext
 	private Instruction ins;
 	private Frame frame;
 	private Stack stack; // stack at time ins was executed
+	private Variables variables; // variables at time ins was executed
 	private List<StackContext> pops = new ArrayList<>(); // stack contexts popped by instruction execution
 	private List<StackContext> pushes = new ArrayList<>(); // stack contexts pushed by instruction execution
 	private List<VariableContext> reads = new ArrayList<>(); // lvt reads
@@ -22,6 +23,7 @@ public class InstructionContext
 		ins = i;
 		frame = f;
 		stack = new Stack(frame.getStack());
+		variables = new Variables(frame.getVariables());
 	}
 	
 	public void pop(StackContext... ctx)
@@ -42,7 +44,10 @@ public class InstructionContext
 	public void read(VariableContext... ctx)
 	{
 		for (VariableContext c : ctx)
+		{
+			c.addRead(this);
 			reads.add(c);
+		}
 	}
 	
 	public void invoke(Method method)
@@ -58,6 +63,11 @@ public class InstructionContext
 	public Stack getStack()
 	{
 		return stack;
+	}
+	
+	public Variables getVariables()
+	{
+		return variables;
 	}
 	
 	public List<StackContext> getPops()
