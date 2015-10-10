@@ -13,6 +13,7 @@ import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.BiPush;
 import net.runelite.deob.attributes.code.instructions.IAdd;
+import net.runelite.deob.attributes.code.instructions.IConst_M1;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.ISub;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
@@ -49,7 +50,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		if (ctx.getInstruction() instanceof PushConstantInstruction)
 		{
-			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush)
+			if (ctx.getInstruction() instanceof BiPush || ctx.getInstruction() instanceof SiPush
+				|| ctx.getInstruction() instanceof IConst_M1)
 			{
 				throw new IllegalStateException();
 			}
@@ -92,7 +94,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			{
 				if (i.getInstruction() instanceof PushConstantInstruction)
 				{
-					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush)
+					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush
+						|| i.getInstruction() instanceof IConst_M1)
 						throw new IllegalStateException();
 					
 					// a constant of imul
@@ -271,19 +274,23 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		if (one.getInstruction() != two.getInstruction())
 			return false;
 		
-		// check if stack at time of execution is equal
-		List<StackContext> ours = one.getStack().getStack(), theirs = two.getStack().getStack();
-		//Stack ours = new Stack(one.getStack()), // copy stacks since we destroy them
-//			theirs = new Stack(two.getStack());
+		assert one.getPops().contains(sctx);
+		int i = one.getPops().indexOf(sctx);
 		
-		if (ours.size() != theirs.size()) // is this possible?
-			return false;
-		
-		assert ours.contains(sctx);
-		int i = ours.indexOf(sctx);
-		
-		StackContext theirsctx = theirs.get(i);
-		
+		StackContext theirsctx = two.getPops().get(i);
+//		// check if stack at time of execution is equal
+//		List<StackContext> ours = one.getStack().getStack(), theirs = two.getStack().getStack();
+//		//Stack ours = new Stack(one.getStack()), // copy stacks since we destroy them
+////			theirs = new Stack(two.getStack());
+//		
+//		if (ours.size() != theirs.size()) // is this possible?
+//			return false;
+//		
+//		assert ours.contains(sctx);
+//		int i = ours.indexOf(sctx);
+//		
+//		StackContext theirsctx = theirs.get(i);
+//		
 		if (sctx.getPushed().getInstruction() != theirsctx.getPushed().getInstruction())
 			return false;
 		

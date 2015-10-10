@@ -97,6 +97,11 @@ public class ModArith implements Deobfuscator
 					if (field == null)
 						continue;
 					
+					if (field.getName().equals("field2201"))
+					{
+						int k=7;
+					}
+					
 					int value = (int) pc.getConstant().getObject();
 					
 					if (value == 1 || value == 0)
@@ -112,17 +117,17 @@ public class ModArith implements Deobfuscator
 					if (field == null)
 						continue;
 					
-					List<Integer> constants = null;
-					try
-					{
-						constants = findAssocConstants(field, ctx);
-						for (int i : constants)
-							if (i != 1 && i != 0)
-								constantSetters.put(field, i);
-					}
-					catch (OtherFieldException ex) { }
+//					List<Integer> constants = null;
+//					try
+//					{
+//						constants = findAssocConstants(field, ctx);
+//						for (int i : constants)
+//							if (i != 1 && i != 0)
+//								constantSetters.put(field, i);
+//					}
+//					catch (OtherFieldException ex) { }
 					
-					StackContext value = ctx.getPops().get(0); // the first thing poppe from both putfield and putstatic is the value
+					StackContext value = ctx.getPops().get(0); // the first thing popped from both putfield and putstatic is the value
 					if (!(value.getPushed().getInstruction() instanceof IMul))
 						continue;
 					
@@ -149,6 +154,11 @@ public class ModArith implements Deobfuscator
 					
 					if (value2 == 1 || value2 == 0)
 						continue;
+					
+					if (field.getName().equals("field2201"))
+					{
+						int k=7;
+					}
 					
 					constantSetters.put(field, value2);
 				}
@@ -214,60 +224,60 @@ public class ModArith implements Deobfuscator
 		return p;
 	}
 	
-	private Pair guess(Field field, Collection<Integer> values, boolean getter)
-	{
-		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(values); // value -> how many times it occurs
-		int max = Collections.max(map.values()); // largest occurance #
-		int size = values.size();
-		
-//		if (max == size)
-//		{
-//			// all getters are the same value
-//			int constant = getters.iterator().next();
-//			Pair pair = new Pair();
-//			pair.getter = constant;
-//			System.out.println("Guessing " + field.getName() + " getter " + constant + " setter ");
-//			pair.setter = DMath.modInverse(constant);
-//			return pair;
+//	private Pair guess(Field field, Collection<Integer> values, boolean getter)
+//	{
+//		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(values); // value -> how many times it occurs
+//		int max = Collections.max(map.values()); // largest occurance #
+//		int size = values.size();
+//		
+////		if (max == size)
+////		{
+////			// all getters are the same value
+////			int constant = getters.iterator().next();
+////			Pair pair = new Pair();
+////			pair.getter = constant;
+////			System.out.println("Guessing " + field.getName() + " getter " + constant + " setter ");
+////			pair.setter = DMath.modInverse(constant);
+////			return pair;
+////		}
+////		
+////		if (size < 50)
+////			return null;
+//		
+////		if (((float) max / (float) size) < 0.9)
+////			return null;
+//
+//		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
+//			if (max == entry.getValue()) {
+//				int constant = entry.getKey();
+//				int inverse;
+//				try
+//				{
+//					inverse = DMath.modInverse(constant);
+//				}
+//				catch (ArithmeticException ex)
+//				{
+//					break;
+//				}
+//
+//				Pair pair = new Pair();
+//				if (getter)
+//				{
+//					pair.getter = constant;
+//					pair.setter = inverse;
+//				}
+//				else
+//				{
+//					pair.getter = inverse;
+//					pair.setter = constant;
+//				}
+//				
+//				return pair;
+//			}
 //		}
 //		
-//		if (size < 50)
-//			return null;
-		
-//		if (((float) max / (float) size) < 0.9)
-//			return null;
-
-		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
-			if (max == entry.getValue()) {
-				int constant = entry.getKey();
-				int inverse;
-				try
-				{
-					inverse = DMath.modInverse(constant);
-				}
-				catch (ArithmeticException ex)
-				{
-					break;
-				}
-
-				Pair pair = new Pair();
-				if (getter)
-				{
-					pair.getter = constant;
-					pair.setter = inverse;
-				}
-				else
-				{
-					pair.getter = inverse;
-					pair.setter = constant;
-				}
-				
-				return pair;
-			}
-		}
-		
-		return null;
-	}
+//		return null;
+//	}
 	
 	private void reduce()
 	{
@@ -276,11 +286,6 @@ public class ModArith implements Deobfuscator
 			{
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
-				
-				if (f.getName().equals("field542"))
-				{
-					int i =5;
-				}
 				
 				if (getters == null || setters == null)
 					continue;
@@ -421,6 +426,7 @@ public class ModArith implements Deobfuscator
 			//if (!field.getName().equals("field3014") && !field.getName().equals("field2960"))
 			if (!field.getName().equals("field2201"))
 			{
+				int j =5;
 			//	continue;
 			}
 			
