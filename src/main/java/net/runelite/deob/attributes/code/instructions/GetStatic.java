@@ -29,6 +29,13 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		super(instructions, type, pc);
 	}
 	
+	public GetStatic(Instructions instructions, Field field)
+	{
+		super(instructions, InstructionType.GETSTATIC, -1);
+		
+		this.field = field;
+	}
+	
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{

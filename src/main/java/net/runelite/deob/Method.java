@@ -145,5 +145,13 @@ public class Method
 			}
 		
 		return list;
-	} 
+	}
+	
+	public net.runelite.deob.pool.Method getPoolMethod()
+	{
+		return new net.runelite.deob.pool.Method(
+			new net.runelite.deob.pool.Class(this.getMethods().getClassFile().getName()),
+			new NameAndType(this.getName(), this.getDescriptor())
+		);
+	}
 }

@@ -35,6 +35,9 @@ public class DMath
 	
 	public static boolean isBig(int val)
 	{
-		return (val & 0xFFF00000) != 0;
+		if ((val & 0x80000000) != 0)
+			val = ~val + 1;
+		
+		return (val & 0x7FF00000) != 0;
 	}
 }

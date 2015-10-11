@@ -33,6 +33,13 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		super(instructions, type, pc);
 	}
 	
+	public InvokeStatic(Instructions instructions, Method method)
+	{
+		super(instructions, InstructionType.INVOKESTATIC, -1);
+		
+		this.method = method;
+	}
+	
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{

@@ -37,6 +37,76 @@ public class ModArith implements Deobfuscator
 	private List<Pair> pairs = new ArrayList<>();
 	private Set<Field> deobfuscatedFields = new HashSet<>();
 	
+	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
+	{
+		List<InstructionContext> l = new ArrayList<>();
+		
+		if (ctx == null || set.contains(ctx.getInstruction()))
+			return l;
+		
+		set.add(ctx.getInstruction());
+		
+		l.add(ctx);
+		
+		for (StackContext s : ctx.getPops())
+			l.addAll(getInsInExpr(s.getPushed(), set));
+		for (StackContext s : ctx.getPushes())
+			for (InstructionContext i : s.getPopped())
+				l.addAll(getInsInExpr(i, set));
+		
+		return l;
+	}
+	
+	private boolean isFieldObfuscated(Execution e, Field field)
+	{
+		// field isn't obfuscated if there are no usages with big constants and no other fields
+		
+		for (Frame f : execution.processedFrames)
+			outer:
+			for (InstructionContext ctx : f.getInstructions())
+			{
+				if (!(ctx.getInstruction() instanceof FieldInstruction))
+					continue;
+				
+				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
+				
+				if (fi.getMyField() != field)
+					continue;
+				
+				List<InstructionContext> ins = getInsInExpr(ctx, new HashSet());
+				
+				// continue if expr contains another ins
+				for (InstructionContext i : ins)
+				{
+					if (i.getInstruction() instanceof FieldInstruction)
+					{
+						FieldInstruction ifi = (FieldInstruction) i.getInstruction();
+						
+						if (ifi.getMyField() != field)
+							continue outer; 
+					}
+				}
+				
+				// find big constant
+				for (InstructionContext i : ins)
+				{
+					if (i.getInstruction() instanceof LDC_W)
+					{
+						LDC_W ldc = (LDC_W) i.getInstruction();
+						if (ldc.getConstant().getObject() instanceof Integer)
+						{
+							int value = ldc.getConstantAsInt();
+
+							if (DMath.isBig(value))
+								return true;
+						}
+					}
+				}
+			}
+		
+		return false;
+	}
+	
 	private List<Integer> findAssocConstants(Field field, InstructionContext ctx) throws OtherFieldException
 	{
 		// starts with ctx = setfield
@@ -96,11 +166,6 @@ public class ModArith implements Deobfuscator
 					Field field = gf.getMyField();
 					if (field == null)
 						continue;
-					
-					if (field.getName().equals("field2201"))
-					{
-						int k=7;
-					}
 					
 					int value = (int) pc.getConstant().getObject();
 					
@@ -302,7 +367,7 @@ public class ModArith implements Deobfuscator
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
 				
-				if (f.getName().equals("field551"))
+				if (f.getName().equals("field2976"))
 				{
 					int k=5;
 				}
@@ -321,6 +386,12 @@ public class ModArith implements Deobfuscator
 					
 				if (answer == null)
 					continue;
+				
+				if (!this.isFieldObfuscated(execution, f))
+				{
+					System.out.println("Skipping field " + f.getName() + " which isnt obfuscated");
+					continue;
+				}
 				
 				answer.field = f;
 				pairs.add(answer);

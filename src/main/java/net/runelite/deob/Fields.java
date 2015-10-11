@@ -40,6 +40,11 @@ public class Fields
 	{
 		return classFile;
 	}
+	
+	public void addField(Field field)
+	{
+		fields.add(field);
+	}
 
 	public List<Field> getFields()
 	{

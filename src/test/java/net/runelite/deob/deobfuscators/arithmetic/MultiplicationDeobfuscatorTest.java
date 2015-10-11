@@ -4,10 +4,13 @@ import java.util.Collection;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.ClassGroupFactory;
 import net.runelite.deob.Deobfuscator;
+import net.runelite.deob.Field;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.Dup_X1;
+import net.runelite.deob.attributes.code.instructions.GetStatic;
+import net.runelite.deob.attributes.code.instructions.Goto;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_0;
 import net.runelite.deob.attributes.code.instructions.IConst_1;
@@ -20,6 +23,7 @@ import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.IStore;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
 import net.runelite.deob.attributes.code.instructions.If0;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.attributes.code.instructions.Pop;
@@ -43,7 +47,7 @@ public class MultiplicationDeobfuscatorTest
 	//   imul
 	//   putstatic             class29/field949 I
 	@Test
-	public void testDupX1_1()
+	public void test1()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -113,7 +117,7 @@ public class MultiplicationDeobfuscatorTest
 	//   ldc                   561453169
 	//   imul
 	@Test
-	public void testDupX1_2()
+	public void test2()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -172,7 +176,7 @@ public class MultiplicationDeobfuscatorTest
 	}
 	
 	@Test
-	public void testDupX1_3()
+	public void test3()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -244,7 +248,7 @@ public class MultiplicationDeobfuscatorTest
 	}
 	
 	@Test
-	public void testDupX1_4()
+	public void test4()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -301,7 +305,7 @@ public class MultiplicationDeobfuscatorTest
 	}
 	
 	@Test
-	public void testDupX1_5()
+	public void test5()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -361,7 +365,7 @@ public class MultiplicationDeobfuscatorTest
 	}
 	
 	@Test
-	public void testDupX1_6()
+	public void test6()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -413,7 +417,7 @@ public class MultiplicationDeobfuscatorTest
 	}
 	
 	@Test
-	public void testDupX1_7()
+	public void test7()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -460,5 +464,74 @@ public class MultiplicationDeobfuscatorTest
 		Assert.assertEquals(1, constant1.getConstantAsInt());
 		Assert.assertEquals(-1, constant2.getConstantAsInt());
 		Assert.assertEquals(1, constant3.getConstantAsInt());
+	}
+	
+	@Test
+	public void test8()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Code code2 = group.findClass("test").findMethod("func2").getCode();
+		Field field = group.findClass("test").findField("field");
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(2);
+		
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		LDC_W constant1 = new LDC_W(ins, -1616202347),
+		      constant2 = new LDC_W(ins, 2747837);
+		
+		NOP label1 = new NOP(ins),
+		    label2 = new NOP(ins),
+		    label3 = new NOP(ins);
+		
+		Instruction body[] = {
+			new GetStatic(ins, field.getPoolField()),
+			constant1,
+			new IMul(ins),
+			constant2,
+			new IMul(ins),
+			
+			new ILoad(ins, 0),
+			
+			new LDC_W(ins, 42),
+			new If0(ins, label1),
+			new Goto(ins, label2),
+			
+			label1,
+			new IConst_M1(ins),
+			new Goto(ins, label3),
+			
+			label2,
+			new IConst_0(ins),
+			new Goto(ins, label3),
+			
+			label3,
+			new InvokeStatic(ins, group.findClass("test").findMethod("func2").getPoolMethod()),
+			
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
 	}
 }

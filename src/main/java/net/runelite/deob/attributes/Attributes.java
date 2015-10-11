@@ -37,6 +37,11 @@ public class Attributes
 
 		load(is);
 	}
+	
+	public Attributes(Field f)
+	{
+		field = f;
+	}
 
 	public Attributes(Method m)
 	{

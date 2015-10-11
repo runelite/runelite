@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import net.runelite.deob.pool.NameAndType;
 
 public class Field
 {
@@ -41,6 +42,15 @@ public class Field
 		attributes = new Attributes(this, is);
 	}
 	
+	public Field(Fields fields, String name, Type type)
+	{
+		this.fields = fields;
+		this.name = name;
+		this.type = type;
+		
+		attributes = new Attributes(this);
+	}
+	
 	public void write(DataOutputStream out) throws IOException
 	{
 		ConstantPool pool = fields.getClassFile().getPool();
@@ -70,6 +80,11 @@ public class Field
 	{
 		return (accessFlags & ACC_STATIC) != 0;
 	}
+	
+	public void setStatic()
+	{
+		accessFlags |= ACC_STATIC;
+	}
 
 	public String getName()
 	{
@@ -94,6 +109,14 @@ public class Field
 	public Attributes getAttributes()
 	{
 		return attributes;
+	}
+	
+	public net.runelite.deob.pool.Field getPoolField()
+	{
+		return new net.runelite.deob.pool.Field(
+			new net.runelite.deob.pool.Class(this.getFields().getClassFile().getName()),
+			new NameAndType(this.getName(), this.getType())
+		);
 	}
 
 	@Override
