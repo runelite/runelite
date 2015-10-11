@@ -81,14 +81,27 @@ public class Deob
 //		//new FieldMover().run(group);
 //		
 //		run(group, new UnusedClass());
-//		
-//		run(group, new ModArith());
+	
+		ModArith mod = new ModArith();
+		mod.run(group);
 		
-		new MultiplicationDeobfuscator().run(group);
-		
-//		new MultiplyOneDeobfuscator().run(group);
-//		
-//		new MultiplyZeroDeobfuscator().run(group);
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{	
+			new MultiplicationDeobfuscator().run(group);
+
+			new MultiplyOneDeobfuscator().run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+			
+			if (last == cur)
+			{
+				System.out.println("break");
+				break;
+			}
+			
+			last = cur;
+		}
 
 		saveJar(group, args[1]);
 		
