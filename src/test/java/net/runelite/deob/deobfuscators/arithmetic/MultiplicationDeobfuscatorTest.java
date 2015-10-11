@@ -13,6 +13,7 @@ import net.runelite.deob.attributes.code.instructions.IConst_0;
 import net.runelite.deob.attributes.code.instructions.IConst_1;
 import net.runelite.deob.attributes.code.instructions.IConst_2;
 import net.runelite.deob.attributes.code.instructions.IConst_3;
+import net.runelite.deob.attributes.code.instructions.IConst_M1;
 import net.runelite.deob.attributes.code.instructions.IDiv;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
@@ -356,6 +357,108 @@ public class MultiplicationDeobfuscatorTest
 		
 		Assert.assertEquals(1, constant1.getConstantAsInt());
 		Assert.assertEquals(1, constant2.getConstantAsInt());
+		Assert.assertEquals(1, constant3.getConstantAsInt());
+	}
+	
+	@Test
+	public void testDupX1_6()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(2);
+		
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins),
+			new IConst_2(ins),
+			new IStore(ins, 1)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		LDC_W constant1 = new LDC_W(ins, 575391417),
+		      constant2 = new LDC_W(ins, -497786999);
+		
+		Instruction body[] = {
+			new ILoad(ins, 0),
+			new ILoad(ins, 1),
+			new Dup_X1(ins),
+			new Pop(ins),
+			new Pop(ins),
+			constant1,
+			new IMul(ins),
+			constant2,
+			new IMul(ins),
+			new Pop(ins),
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
+	}
+	
+	@Test
+	public void testDupX1_7()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(2);
+		
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins),
+			new IConst_2(ins),
+			new IStore(ins, 1)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		LDC_W constant1 = new LDC_W(ins, 2131037801),
+		      constant2 = new LDC_W(ins, -1306959399),
+		      constant3 = new LDC_W(ins, -1);
+		
+		Instruction body[] = {
+			constant3,
+			constant1,
+			new IMul(ins),
+			constant2,
+			new IMul(ins),
+			new Pop(ins),
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(-1, constant2.getConstantAsInt());
 		Assert.assertEquals(1, constant3.getConstantAsInt());
 	}
 }

@@ -107,8 +107,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			{
 				if (i.getInstruction() instanceof PushConstantInstruction)
 				{
-					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush
-						|| i.getInstruction() instanceof IConst_M1)
+					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush)
 						throw new IllegalStateException();
 					
 					// a constant of imul
@@ -194,7 +193,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						else
 						{
 							System.out.println("dup ins " + otherCtxI.getInstruction());
-							throw new IllegalStateException();
+							//throw new IllegalStateException();
 						}
 					}
 				}

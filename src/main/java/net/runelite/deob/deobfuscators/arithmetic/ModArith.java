@@ -310,16 +310,16 @@ public class ModArith implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		this.group = group;
-		runOnce();
-		if (true) return;
-		
-		int passes = 0, total = 0, i;
-		while ((i = runOnce()) > 0)
-		{
-			++passes;
-			total += i;
-		}
-		System.out.println("Finished arith deob on " + total + " fields in " + passes + " passes");
+		//return runOnce();
+//		if (true) return;
+//		
+//		int passes = 0, total = 0, i;
+//		while ((i = runOnce()) > 0)
+//		{
+//			++passes;
+//			total += i;
+//		}
+//		System.out.println("Finished arith deob on " + total + " fields in " + passes + " passes");
 	}
 //	
 //	private void translateSetFields(Execution e)
@@ -395,7 +395,7 @@ public class ModArith implements Deobfuscator
 			}
 	}
 	
-	private int runOnce()
+	public int runOnce()
 	{
 		group.buildClassGraph();
 		

@@ -49,4 +49,10 @@ public class IConst_M1 extends Instruction implements PushConstantInstruction
 	{
 		return new LDC_W(this.getInstructions(), entry);
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new LDC_W(this.getInstructions(), getConstant());
+	}
 }
