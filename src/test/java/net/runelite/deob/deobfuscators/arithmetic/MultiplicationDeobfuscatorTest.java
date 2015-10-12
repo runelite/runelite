@@ -466,7 +466,7 @@ public class MultiplicationDeobfuscatorTest
 		Assert.assertEquals(1, constant3.getConstantAsInt());
 	}
 	
-	@Test
+	//@Test
 	public void test8()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
