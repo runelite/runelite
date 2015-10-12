@@ -10,12 +10,11 @@ public class UTF8 extends PoolEntry
 {
 	private java.lang.String string;
 
-	public UTF8(ConstantPool pool) throws IOException
+	public UTF8(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.UTF8);
 
-		DataInputStream ios = pool.getClassFile().getStream();
-		string = ios.readUTF();
+		string = is.readUTF();
 	}
 	
 	public UTF8(java.lang.String value)

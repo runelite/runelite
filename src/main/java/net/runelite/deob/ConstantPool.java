@@ -38,8 +38,8 @@ public class ConstantPool
 
 			try
 			{
-				Constructor<? extends PoolEntry> con = type.getPoolClass().getConstructor(new Class[] { ConstantPool.class });
-				PoolEntry entry = con.newInstance(this);
+				Constructor<? extends PoolEntry> con = type.getPoolClass().getConstructor(new Class[] { ConstantPool.class, DataInputStream.class });
+				PoolEntry entry = con.newInstance(this, is);
 				entry.id = i;
 
 				entries.add(entry);

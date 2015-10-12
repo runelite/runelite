@@ -27,11 +27,14 @@ public class FStore extends Instruction implements LVTInstruction, WideInstructi
 		++length;
 	}
 
-	public FStore(Instructions instructions, InstructionType type, int pc) throws IOException
+	public FStore(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		index = is.readByte();
 		length += 1;
 	}

@@ -11,11 +11,9 @@ public class Long extends PoolEntry
 {
 	private long value;
 
-	public Long(ConstantPool pool) throws IOException
+	public Long(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.LONG);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readLong();
 	}

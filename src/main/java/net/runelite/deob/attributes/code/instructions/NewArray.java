@@ -17,11 +17,14 @@ public class NewArray extends Instruction
 {
 	private int type;
 
-	public NewArray(Instructions instructions, InstructionType type, int pc) throws IOException
+	public NewArray(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		this.type = is.readUnsignedByte();
 		length += 1;
 	}

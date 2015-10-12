@@ -19,14 +19,12 @@ public class Exceptions
 		this.code = code;
 	}
 	
-	public void load() throws IOException
+	public void load(DataInputStream is) throws IOException
 	{
-		DataInputStream is = code.getAttributes().getStream();
-
 		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
-			exceptions.add(new Exception(this));
+			exceptions.add(new Exception(this, is));
 	}
 	
 	public void add(Exception e)

@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import java.io.IOException;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -8,10 +9,9 @@ import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.Type;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 
-import java.io.IOException;
-
-public class Dup_X2 extends Instruction
+public class Dup_X2 extends Instruction implements DupInstruction
 {
 	public Dup_X2(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -64,5 +64,54 @@ public class Dup_X2 extends Instruction
 	public boolean removeStack()
 	{
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public StackContext getOriginal(StackContext sctx)
+	{
+		// 3 2 1 -> 1 3 2 1
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		assert ctx.getPushes().contains(sctx);
+		int pushedIndex = ctx.getPushes().indexOf(sctx);
+		int poppedIndex;
+		
+		switch (pushedIndex)
+		{
+			case 0:
+			case 3:
+				poppedIndex = 0;
+				break;
+			case 1:
+				poppedIndex = 2;
+				break;
+			case 2:
+				poppedIndex = 1;
+			default:
+				throw new IllegalStateException();
+		}
+		
+		return ctx.getPops().get(poppedIndex);
+	}
+
+	@Override
+	public StackContext getOtherBranch(StackContext sctx)
+	{
+		// sctx = stack pushed by this instruction, return the other branch
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		assert ctx.getPushes().contains(sctx);
+		int pushedIndex = ctx.getPushes().indexOf(sctx);
+		
+		// 3 2 1 -> 1 3 2 1
+		
+		if (pushedIndex == 0)
+			return ctx.getPushes().get(3);
+		else if (pushedIndex == 3)
+			return ctx.getPushes().get(0);
+		
+		return null;
 	}
 }

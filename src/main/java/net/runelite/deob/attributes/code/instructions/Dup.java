@@ -1,5 +1,7 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import java.io.IOException;
+import java.util.List;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -7,10 +9,9 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 
-import java.io.IOException;
-
-public class Dup extends Instruction
+public class Dup extends Instruction implements DupInstruction
 {
 	public Dup(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -54,5 +55,30 @@ public class Dup extends Instruction
 		// usually this is for new dup invokespecial and we end up with
 		// an unused new/invokesepcial
 		return false;
+	}
+
+	@Override
+	public StackContext getOriginal(StackContext sctx)
+	{
+		// ctx = stack pushed by this instruction, return stack popped by this instruction
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		assert ctx.getPushes().contains(sctx);
+		return ctx.getPops().get(0);
+	}
+
+	@Override
+	public StackContext getOtherBranch(StackContext sctx)
+	{
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		List<StackContext> pushes = ctx.getPushes();
+		assert pushes.contains(sctx);
+		
+		int idx = pushes.indexOf(sctx);
+		assert idx == 0 || idx == 1;
+		
+		return pushes.get(~idx & 1);
 	}
 }

@@ -18,11 +18,31 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 {
 	private PoolEntry value;
 
-	public LDC_W(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LDC_W(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+		
+		assert type == InstructionType.LDC_W || type == InstructionType.LDC;
+	}
+	
+	public LDC_W(Instructions instructions, PoolEntry value)
+	{
+		super(instructions, InstructionType.LDC_W, 0);
+		
+		this.value = value;
+		length += 2;
+	}
+	
+	public LDC_W(Instructions instructions, int value)
+	{
+		this(instructions, new net.runelite.deob.pool.Integer(value));
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		InstructionType type = this.getType();
+		
 		assert type == InstructionType.LDC_W || type == InstructionType.LDC;
 		
 		if (type == InstructionType.LDC_W)
@@ -35,14 +55,6 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 			value = this.getPool().getEntry(is.readUnsignedByte());
 			length += 1;
 		}
-	}
-	
-	public LDC_W(Instructions instructions, PoolEntry value)
-	{
-		super(instructions, InstructionType.LDC_W, 0);
-		
-		this.value = value;
-		length += 2;
 	}
 	
 	@Override
@@ -105,8 +117,45 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	}
 
 	@Override
-	public void setConstant(PoolEntry entry)
+	public Instruction setConstant(PoolEntry entry)
 	{
 		value = entry;
+		return this;
+	}
+	
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (value.getType())
+		{
+			case INTEGER:
+			{
+				int i = (int) value.getObject();
+				switch (i)
+				{
+					case -1:
+						return new IConst_M1(this.getInstructions());
+					case 0:
+						return new IConst_0(this.getInstructions());
+					case 1:
+						return new IConst_1(this.getInstructions());
+					case 2:
+						return new IConst_2(this.getInstructions());
+					case 3:
+						return new IConst_3(this.getInstructions());
+					case 4:
+						return new IConst_4(this.getInstructions());
+					case 5:
+						return new IConst_5(this.getInstructions());
+				}
+			}
+		}
+		
+		return super.makeSpecific();
+	}
+	
+	public int getConstantAsInt()
+	{
+		return (int) value.getObject();
 	}
 }

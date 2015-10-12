@@ -20,6 +20,11 @@ public class ClassGroup
 		return cf;
 	}
 	
+	public void addClass(ClassFile cf)
+	{
+		classes.add(cf);
+	}
+	
 	public void removeClass(ClassFile cf)
 	{
 		classes.remove(cf);

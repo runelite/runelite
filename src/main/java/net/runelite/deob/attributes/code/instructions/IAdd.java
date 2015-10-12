@@ -3,6 +3,9 @@ package net.runelite.deob.attributes.code.instructions;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.deobfuscators.arithmetic.DMath;
+import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
@@ -13,6 +16,11 @@ public class IAdd extends Instruction
 	public IAdd(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public IAdd(Instructions instructions)
+	{
+		super(instructions, InstructionType.IADD, -1);
 	}
 
 	@Override

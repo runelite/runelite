@@ -22,7 +22,6 @@ public class UnreachedCode implements Deobfuscator
 		List<Instruction> insCopy = new ArrayList<>(ins.getInstructions());
 		
 		for (int j = 0; j < insCopy.size(); ++j)
-		//for (Instruction i : new ArrayList<>(ins.getInstructions()))
 		{
 			Instruction i = insCopy.get(j);
 			

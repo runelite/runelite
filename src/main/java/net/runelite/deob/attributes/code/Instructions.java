@@ -26,10 +26,8 @@ public class Instructions
 		this.code = code;
 	}
 	
-	public void load() throws IOException
+	public void load(DataInputStream is) throws IOException
 	{
-		DataInputStream is = code.getAttributes().getStream();
-
 		int length = is.readInt();
 
 		int pc;
@@ -43,8 +41,15 @@ public class Instructions
 			{
 				Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, int.class);
 				Instruction ins = con.newInstance(this, type, pc);
+				ins.load(is);
+				
+				Instruction genericIns = ins.makeGeneric();
+				if (genericIns != ins)
+				{
+					genericIns.setPc(ins.getPc());
+				}
 
-				instructions.add(ins);
+				instructions.add(genericIns);
 
 				int len = ins.getLength();
 				pc += len;
@@ -66,6 +71,11 @@ public class Instructions
 		return instructions;
 	}
 	
+	public void addInstruction(Instruction i)
+	{
+		instructions.add(i);
+	}
+	
 	public List<Block> getBlocks()
 	{
 		return blocks;
@@ -73,6 +83,15 @@ public class Instructions
 	
 	public void remove(Instruction ins)
 	{
+//		for (Instruction i : instructions)
+//		{
+//			if (i instanceof JumpingInstruction)
+//			{
+//				JumpingInstruction j = (JumpingInstruction) i;
+//				assert !j.getJumps().contains(ins);
+//			}
+//		}
+		
 		ins.remove();
 		instructions.remove(ins);
 	}
@@ -168,6 +187,16 @@ public class Instructions
 	
 	public void write(DataOutputStream out) throws IOException
 	{
+		// trnaslate instructions to specific
+		for (Instruction i : new ArrayList<>(instructions))
+		{
+			Instruction specific = i.makeSpecific();
+			if (i != specific)
+			{
+				replace(i, specific);
+			}
+		}
+		
 		// generate pool indexes
 		for (Instruction i : new ArrayList<>(instructions))
 			i.prime();
@@ -240,5 +269,34 @@ public class Instructions
 	{
 		for (Instruction i : instructions)
 			i.renameMethod(oldMethod, newMethod);
+	}
+	
+	public void replace(Instruction oldi, Instruction newi)
+	{
+		assert oldi != newi;
+		
+		assert oldi.getInstructions() == this;
+		assert newi.getInstructions() == this;
+		
+		assert instructions.contains(oldi);
+		assert !instructions.contains(newi);
+		
+		int i = instructions.indexOf(oldi);
+		instructions.remove(oldi);
+		instructions.add(i, newi);
+		
+		for (Instruction ins : oldi.from)
+		{
+			assert ins.jump.contains(oldi);
+			
+			ins.jump.remove(oldi);
+			ins.jump.add(newi);
+			
+			ins.replace(oldi, newi);
+		}
+		oldi.from.clear();
+		
+		for (net.runelite.deob.attributes.code.Exception e : code.getExceptions().getExceptions())
+			e.replace(oldi, newi);
 	}
 }

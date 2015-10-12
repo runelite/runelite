@@ -28,11 +28,21 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 {
 	private Method method;
 
-	public InvokeStatic(Instructions instructions, InstructionType type, int pc) throws IOException
+	public InvokeStatic(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	public InvokeStatic(Instructions instructions, Method method)
+	{
+		super(instructions, InstructionType.INVOKESTATIC, -1);
+		
+		this.method = method;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		method = this.getPool().getMethod(is.readUnsignedShort());
 		length += 2;
 	}

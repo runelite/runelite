@@ -20,30 +20,39 @@ import java.io.IOException;
 public class ILoad extends Instruction implements LVTInstruction, WideInstruction
 {
 	private int index;
+	private boolean wide;
 	
 	public ILoad(Instructions instructions, int index)
 	{
-		super(instructions, InstructionType.ILOAD, 0);
+		super(instructions, InstructionType.ILOAD, -1);
 		this.index = index;
 		++length;
 	}
 
-	public ILoad(Instructions instructions, InstructionType type, int pc) throws IOException
+	public ILoad(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readByte();
-		length += 1;
 	}
 	
-	public ILoad(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
+	public ILoad(Instructions instructions, InstructionType type, Instruction instruction, int pc)
 	{
 		super(instructions, type, pc);
-		
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readShort();
-		length += 2;
+		wide = true;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		if (wide)
+		{
+			index = is.readShort();
+			length += 2;
+		}
+		else
+		{
+			index = is.readByte();
+			length += 1;
+		}
 	}
 	
 	@Override

@@ -23,28 +23,22 @@ public class IStore extends Instruction implements LVTInstruction, WideInstructi
 	
 	public IStore(Instructions instructions, int index)
 	{
-		super(instructions, InstructionType.ISTORE, 0);
+		super(instructions, InstructionType.ISTORE, -1);
 		this.index = index;
 		++length;
 	}
 
-	public IStore(Instructions instructions, InstructionType type, int pc) throws IOException
+	public IStore(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		index = is.readByte();
 		length += 1;
 	}
-	
-//	public IStore(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
-//	{
-//		super(instructions, type, pc);
-//		
-//		DataInputStream is = instructions.getCode().getAttributes().getStream();
-//		index = is.readShort();
-//		length += 2;
-//	}
 	
 	@Override
 	public void write(DataOutputStream out) throws IOException

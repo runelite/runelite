@@ -20,11 +20,9 @@ public class Method extends PoolEntry
 		this.nat = nat;
 	}
 
-	public Method(ConstantPool pool) throws IOException
+	public Method(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.METHODREF);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		classIndex = is.readUnsignedShort();
 		natIndex = is.readUnsignedShort();

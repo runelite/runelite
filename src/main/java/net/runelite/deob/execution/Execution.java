@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Execution
@@ -21,10 +22,22 @@ public class Execution
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
+	private Encryption encryption;
+	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 
 	public Execution(ClassGroup group)
 	{
 		this.group = group;
+	}
+
+	public Encryption getEncryption()
+	{
+		return encryption;
+	}
+	
+	public void setEncryption(Encryption encryption)
+	{
+		this.encryption = encryption;
 	}
 	
 	public void populateInitialMethods()
@@ -89,5 +102,10 @@ public class Execution
 		}
 		
 		System.out.println("Processed " + fcount + " frames");
+	}
+	
+	public Collection<InstructionContext> getInstructonContexts(Instruction i)
+	{
+		return contexts.getCollection(i);
 	}
 }

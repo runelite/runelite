@@ -30,6 +30,8 @@ public class Frame
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>(); // shared
+	
+	public static long num;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -173,6 +175,10 @@ public class Frame
 				ex.printStackTrace();
 				throw ex;
 			}
+			
+			InstructionContext ictx = this.instructions.get(this.instructions.size() - 1);
+			assert ictx.getInstruction() == oldCur;
+			execution.contexts.put(oldCur, ictx);
 			
 			execution.executed.add(oldCur);
 			

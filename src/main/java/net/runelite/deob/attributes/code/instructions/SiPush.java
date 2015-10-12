@@ -18,11 +18,14 @@ public class SiPush extends Instruction implements PushConstantInstruction
 {
 	private short s;
 
-	public SiPush(Instructions instructions, InstructionType type, int pc) throws IOException
+	public SiPush(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		s = is.readShort();
 		length += 2;
 	}
@@ -55,7 +58,7 @@ public class SiPush extends Instruction implements PushConstantInstruction
 	}
 
 	@Override
-	public void setConstant(PoolEntry entry)
+	public Instruction setConstant(PoolEntry entry)
 	{
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}

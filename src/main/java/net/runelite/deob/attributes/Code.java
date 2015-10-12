@@ -23,24 +23,23 @@ public class Code extends Attribute
 		
 		exceptions = new Exceptions(this);
 		this.attributes = new Attributes(this);
+		instructions = new Instructions(this);
 	}
 	
 	@Override
-	public void loadAttribute() throws IOException
+	public void loadAttribute(DataInputStream is) throws IOException
 	{
-		DataInputStream is = this.getAttributes().getStream();
-
 		maxStack = is.readUnsignedShort();
 		is.skip(2); // max locals
 
 		instructions = new Instructions(this);
-		instructions.load();
+		instructions.load(is);
 
 		exceptions = new Exceptions(this);
-		exceptions.load();
+		exceptions.load(is);
 		
 		this.attributes = new Attributes(this);
-		this.attributes.load();
+		this.attributes.load(is);
 		
 		instructions.buildBlocks();
 		instructions.buildJumpGraph();

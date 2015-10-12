@@ -21,11 +21,24 @@ public class If extends Instruction implements JumpingInstruction, ComparisonIns
 	private Instruction to;
 	private short offset;
 
-	public If(Instructions instructions, InstructionType type, int pc) throws IOException
+	public If(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	public If(Instructions instructions, Instruction to)
+	{
+		super(instructions, InstructionType.IF_ICMPNE, -1);
+		
+		assert this != to;
+		assert to.getInstructions() == this.getInstructions();
+		
+		this.to = to;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		offset = is.readShort();
 		length += 2;
 	}

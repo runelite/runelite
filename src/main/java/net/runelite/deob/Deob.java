@@ -25,13 +25,11 @@ import net.runelite.deob.deobfuscators.UnusedClass;
 import net.runelite.deob.deobfuscators.UnusedFields;
 import net.runelite.deob.deobfuscators.UnusedMethods;
 import net.runelite.deob.deobfuscators.UnusedParameters;
-
-//move static methods
-//move static fields
-//math deob
-//remove dead classes
-//inline constant fields
-//compare old and new
+import net.runelite.deob.deobfuscators.arithmetic.ModArith;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
+import net.runelite.deob.execution.Execution;
 
 public class Deob
 {
@@ -40,81 +38,70 @@ public class Deob
 		long start = System.currentTimeMillis();
 		
 		ClassGroup group = loadJar(args[0]);
-		long bstart, bdur;
 		
-//		bstart = System.currentTimeMillis();
-//		new RenameUnique().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("rename unique took " + bdur/1000L + " seconds");
+		//run(group, new RenameUnique());
 
 //		// remove except RuntimeException
-//		bstart = System.currentTimeMillis();
-//		new RuntimeExceptions().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("runtime exception took " + bdur/1000L + " seconds");
+//		run(group, new RuntimeExceptions());
 //		
 //		// remove unused methods
-//		bstart = System.currentTimeMillis();
-//		new UnusedMethods().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused methods took " + bdur/1000L + " seconds");
+//		run(group, new UnusedMethods());
 //		
-//		new UnreachedCode().run(group);
+//		run(group, new UnreachedCode());
 //		
 //		// remove illegal state exceptions, frees up some parameters
-//		bstart = System.currentTimeMillis();
-//		new IllegalStateExceptions().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("illegal state exception took " + bdur/1000L + " seconds");
+//		run(group, new IllegalStateExceptions());
 //		
 //		// remove constant logically dead parameters
-//		bstart = System.currentTimeMillis();
-//		new ConstantParameter().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("constant param took " + bdur/1000L + " seconds");
+//		run(group, new ConstantParameter());
 //		
 //		// remove unhit blocks
-//		bstart = System.currentTimeMillis();
-//		new UnreachedCode().run(group);
-//		//new UnusedBlocks().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused blocks took " + bdur/1000L + " seconds");
+//		run(group, new UnreachedCode());
 //
 //		// remove unused parameters
-//		bstart = System.currentTimeMillis();
-//		new UnusedParameters().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused params took " + bdur/1000L + " seconds");
+//		run(group, new UnusedParameters());
 //		
 //		// remove jump obfuscation
 //		//new Jumps().run(group);
 //		
 //		// remove unused fields
-//		bstart = System.currentTimeMillis();
-//		new UnusedFields().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused fields took " + bdur/1000L + " seconds");
+//		run(group, new UnusedFields());
 //		
 //		// remove unused methods, again?
-//		bstart = System.currentTimeMillis();
-//		new UnusedMethods().run(group);
-//		bdur = System.currentTimeMillis() - bstart;
-//		System.out.println("unused methods took " + bdur/1000L + " seconds");
-		
-		
-		new MethodInliner().run(group);
+//		run(group, new UnusedMethods());
 //
-//		new MethodMover().run(group);
+//		run(group, new MethodInliner());
+//
+//		run(group, new MethodMover());
 //		
-//		new FieldInliner().run(group);
+//		run(group, new FieldInliner());
+//		
+//		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+//		// (like multianewarray)
+//		//new FieldMover().run(group);
+//		
+//		run(group, new UnusedClass());
+	
+		ModArith mod = new ModArith();
+		mod.run(group);
 		
-		// XXX this is broken because when moving clinit around, some fields can depend on other fields
-		// (like multianewarray)
-		//new FieldMover().run(group);
-		
-		//new UnusedClass().run(group);
-		
-//		new ModularArithmeticDeobfuscation().run(group);
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{	
+			new MultiplicationDeobfuscator().run(group);
+
+			new MultiplyOneDeobfuscator().run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+			
+			if (last == cur)
+			{
+				System.out.println("break");
+				break;
+			}
+			
+			last = cur;
+		}
 
 		saveJar(group, args[1]);
 		
@@ -164,5 +151,21 @@ public class Deob
 		}
 		
 		jout.close();
+	}
+	
+	private static void run(ClassGroup group, Deobfuscator deob)
+	{
+		long bstart, bdur;
+		
+		bstart = System.currentTimeMillis();
+		deob.run(group);
+		bdur = System.currentTimeMillis() - bstart;
+		
+		System.out.println(deob.getClass().getName() + " took " + (bdur / 1000L) + " seconds");
+		
+		// check code is still correct
+		Execution execution = new Execution(group);
+		execution.populateInitialMethods();
+		execution.run();
 	}
 }

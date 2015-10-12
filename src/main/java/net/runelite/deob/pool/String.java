@@ -12,11 +12,9 @@ public class String extends PoolEntry
 	private int stringIndex;
 	private java.lang.String string;
 
-	public String(ConstantPool pool) throws IOException
+	public String(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.STRING);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		stringIndex = is.readUnsignedShort();
 	}

@@ -20,6 +20,7 @@ import java.io.IOException;
 public class LLoad extends Instruction implements LVTInstruction, WideInstruction
 {
 	private int index;
+	private boolean wide;
 	
 	public LLoad(Instructions instructions, int index)
 	{
@@ -28,22 +29,30 @@ public class LLoad extends Instruction implements LVTInstruction, WideInstructio
 		++length;
 	}
 
-	public LLoad(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LLoad(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readByte();
-		length += 1;
 	}
 	
-	public LLoad(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
+	public LLoad(Instructions instructions, InstructionType type, Instruction instruction, int pc)
 	{
 		super(instructions, type, pc);
-		
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readShort();
-		length += 2;
+		wide = true;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		if (wide)
+		{
+			index = is.readShort();
+			length += 2;
+		}
+		else
+		{
+			index = is.readByte();
+			length += 1;
+		}
 	}
 	
 	@Override

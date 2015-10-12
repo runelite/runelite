@@ -27,18 +27,17 @@ public class Method
 	public Signature arguments;
 	private Attributes attributes;
 
-	Method(Methods methods) throws IOException
+	Method(Methods methods, DataInputStream is) throws IOException
 	{
 		this.methods = methods;
 
-		DataInputStream is = methods.getClassFile().getStream();
 		ConstantPool pool = methods.getClassFile().getPool();
 
 		accessFlags = is.readShort();
 		name = pool.getUTF8(is.readUnsignedShort());
 		arguments = new Signature(pool.getUTF8(is.readUnsignedShort()));
 		attributes = new Attributes(this);
-		attributes.load();
+		attributes.load(is);
 	}
 	
 	public Method(Methods methods, String name, Signature signature)
@@ -76,6 +75,11 @@ public class Method
 		return attributes;
 	}
 	
+	public void setAttributes(Attributes a)
+	{
+		this.attributes = a;
+	}
+	
 	public String getName()
 	{
 		return name;
@@ -99,6 +103,11 @@ public class Method
 	public boolean isStatic()
 	{
 		return (accessFlags & ACC_STATIC) != 0;
+	}
+	
+	public void setStatic()
+	{
+		accessFlags |= ACC_STATIC;
 	}
 	
 	public boolean isSynchronized()
@@ -136,5 +145,13 @@ public class Method
 			}
 		
 		return list;
-	} 
+	}
+	
+	public net.runelite.deob.pool.Method getPoolMethod()
+	{
+		return new net.runelite.deob.pool.Method(
+			new net.runelite.deob.pool.Class(this.getMethods().getClassFile().getName()),
+			new NameAndType(this.getName(), this.getDescriptor())
+		);
+	}
 }

@@ -11,11 +11,9 @@ public class Double extends PoolEntry
 {
 	private double value;
 
-	public Double(ConstantPool pool) throws IOException
+	public Double(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.DOUBLE);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		value = is.readDouble();
 	}

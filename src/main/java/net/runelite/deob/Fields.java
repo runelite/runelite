@@ -14,16 +14,19 @@ public class Fields
 
 	private List<Field> fields = new ArrayList<>();
 
-	Fields(ClassFile c) throws IOException
+	Fields(ClassFile c, DataInputStream is) throws IOException
 	{
 		classFile = c;
-
-		DataInputStream is = c.getStream();
 
 		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
-			fields.add(new Field(this));
+			fields.add(new Field(this, is));
+	}
+	
+	Fields(ClassFile c)
+	{
+		classFile = c;
 	}
 	
 	public void write(DataOutputStream out) throws IOException
@@ -37,6 +40,11 @@ public class Fields
 	{
 		return classFile;
 	}
+	
+	public void addField(Field field)
+	{
+		fields.add(field);
+	}
 
 	public List<Field> getFields()
 	{
@@ -47,6 +55,14 @@ public class Fields
 	{
 		for (Field f : fields)
 			if (f.getName().equals(nat.getName()) && f.getType().equals(nat.getDescriptorType()))
+				return f;
+		return null;
+	}
+	
+	public Field findField(String name)
+	{
+		for (Field f : fields)
+			if (f.getName().equals(name))
 				return f;
 		return null;
 	}

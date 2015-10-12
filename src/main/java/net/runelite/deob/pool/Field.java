@@ -12,11 +12,9 @@ public class Field extends PoolEntry
 	private Class clazz;
 	private NameAndType nat;
 
-	public Field(ConstantPool pool) throws IOException
+	public Field(ConstantPool pool, DataInputStream is) throws IOException
 	{
 		super(ConstantType.FIELDREF);
-
-		DataInputStream is = pool.getClassFile().getStream();
 
 		classIndex = is.readUnsignedShort();
 		natIndex = is.readUnsignedShort();

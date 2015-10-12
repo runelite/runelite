@@ -16,7 +16,6 @@ public class ClassFile
 	private static final int MAGIC = 0xcafebabe;
 	
 	private ClassGroup group;
-	private DataInputStream is;
 
 	private ClassFile parent; // super class
 	private List<ClassFile> children = new ArrayList<>(); // classes which inherit from this
@@ -35,7 +34,6 @@ public class ClassFile
 	public ClassFile(ClassGroup group, DataInputStream is) throws IOException
 	{
 		this.group = group;
-		this.is = is;
 
 		int magic = is.readInt();
 		if (magic != MAGIC)
@@ -50,12 +48,22 @@ public class ClassFile
 		name = pool.getClass(is.readUnsignedShort());
 		super_class = pool.getClass(is.readUnsignedShort());
 
+		interfaces = new Interfaces(this, is);
+
+		fields = new Fields(this, is);
+
+		methods = new Methods(this, is);
+
+		attributes = new Attributes(this, is);
+	}
+	
+	public ClassFile(ClassGroup group)
+	{
+		this.group = group;
+		
 		interfaces = new Interfaces(this);
-
 		fields = new Fields(this);
-
 		methods = new Methods(this);
-
 		attributes = new Attributes(this);
 	}
 	
@@ -93,12 +101,7 @@ public class ClassFile
 	{
 		return group;
 	}
-
-	public DataInputStream getStream()
-	{
-		return is;
-	}
-
+	
 	public ConstantPool getPool()
 	{
 		return pool;
@@ -129,6 +132,16 @@ public class ClassFile
 		this.name = new Class(name);
 	}
 	
+	public String getSuperName()
+	{
+		return super_class.getName();
+	}
+	
+	public void setSuperName(String name)
+	{
+		super_class = new Class(name);
+	}
+	
 	public Class getParentClass()
 	{
 		return this.super_class;
@@ -147,6 +160,11 @@ public class ClassFile
 	public List<ClassFile> getChildren()
 	{
 		return children;
+	}
+	
+	public Field findField(String name)
+	{
+		return fields.findField(name);
 	}
 
 	public Field findFieldDeep(NameAndType nat)

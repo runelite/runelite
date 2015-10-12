@@ -7,13 +7,17 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
 
-import java.io.IOException;
 
 public class Pop extends Instruction
 {
-	public Pop(Instructions instructions, InstructionType type, int pc) throws IOException
+	public Pop(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public Pop(Instructions instructions)
+	{
+		super(instructions, InstructionType.POP, -1);
 	}
 
 	@Override

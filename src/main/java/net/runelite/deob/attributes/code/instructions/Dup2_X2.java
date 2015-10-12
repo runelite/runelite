@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import java.io.IOException;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
@@ -8,10 +9,9 @@ import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.Type;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 
-import java.io.IOException;
-
-public class Dup2_X2 extends Instruction
+public class Dup2_X2 extends Instruction implements DupInstruction
 {
 	public Dup2_X2(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
@@ -86,5 +86,17 @@ public class Dup2_X2 extends Instruction
 	public boolean removeStack()
 	{
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public StackContext getOriginal(StackContext ctx)
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public StackContext getOtherBranch(StackContext sctx)
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 }

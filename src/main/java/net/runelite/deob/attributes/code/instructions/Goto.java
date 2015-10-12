@@ -18,19 +18,22 @@ public class Goto extends Instruction implements JumpingInstruction
 	private Instruction to;
 	private short offset;
 
-	public Goto(Instructions instructions, InstructionType type, int pc) throws IOException
+	public Goto(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		offset = is.readShort();
-		length += 2;
 	}
 	
 	public Goto(Instructions instructions, Instruction to)
 	{
 		super(instructions, InstructionType.GOTO, 0);
 		this.to = to;
+		length += 2;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		offset = is.readShort();
 		length += 2;
 	}
 	

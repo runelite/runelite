@@ -15,11 +15,10 @@ public class Exception
 	private Instruction start, end, handler;
 	private Class catchType;
 
-	public Exception(Exceptions exceptions) throws IOException
+	public Exception(Exceptions exceptions, DataInputStream is) throws IOException
 	{
 		this.exceptions = exceptions;
 
-		DataInputStream is = exceptions.getCode().getAttributes().getStream();
 		ConstantPool pool = exceptions.getCode().getAttributes().getClassFile().getPool();
 
 		int startPc = is.readUnsignedShort();

@@ -14,16 +14,19 @@ public class Interfaces
 
 	private List<Class> interfaces = new ArrayList<Class>();
 
-	Interfaces(ClassFile c) throws IOException
+	Interfaces(ClassFile c, DataInputStream is) throws IOException
 	{
 		classFile = c;
-
-		DataInputStream is = c.getStream();
 
 		int count = is.readUnsignedShort();
 
 		for (int i = 0; i < count; ++i)
 			interfaces.add(c.getPool().getClass(is.readUnsignedShort()));
+	}
+	
+	Interfaces(ClassFile c)
+	{
+		classFile = c;
 	}
 	
 	public List<Class> getInterfaces()

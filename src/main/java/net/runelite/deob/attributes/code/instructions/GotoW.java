@@ -18,11 +18,14 @@ public class GotoW extends Instruction implements JumpingInstruction
 	private Instruction to;
 	private int offset;
 
-	public GotoW(Instructions instructions, InstructionType type, int pc) throws IOException
+	public GotoW(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
 		offset = is.readInt();
 		length += 4;
 	}

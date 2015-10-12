@@ -16,9 +16,14 @@ import java.io.IOException;
 
 public class IStore_1 extends Instruction implements LVTInstruction
 {
-	public IStore_1(Instructions instructions, InstructionType type, int pc) throws IOException
+	public IStore_1(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public IStore_1(Instructions instructions)
+	{
+		super(instructions, InstructionType.ISTORE_1, -1);
 	}
 
 	@Override

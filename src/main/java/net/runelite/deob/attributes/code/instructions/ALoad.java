@@ -19,6 +19,7 @@ import java.io.IOException;
 public class ALoad extends Instruction implements LVTInstruction, WideInstruction
 {
 	private int index;
+	private boolean wide;
 	
 	public ALoad(Instructions instructions, int index)
 	{
@@ -30,19 +31,27 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 	public ALoad(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
-
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readByte();
-		length += 1;
 	}
 	
 	public ALoad(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
 	{
 		super(instructions, type, pc);
-		
-		DataInputStream is = instructions.getCode().getAttributes().getStream();
-		index = is.readShort();
-		length += 2;
+		wide = true;
+	}
+	
+	@Override
+	public void load(DataInputStream is) throws IOException
+	{
+		if (wide)
+		{
+			index = is.readShort();
+			length += 2;
+		}
+		else
+		{
+			index = is.readByte();
+			length += 1;
+		}
 	}
 	
 	@Override

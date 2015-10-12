@@ -1,6 +1,7 @@
 package net.runelite.deob.execution;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Stack
 {
@@ -9,10 +10,10 @@ public class Stack
 
 	public Stack(int sz)
 	{
-		stack = new StackContext[sz];
+		stack = new StackContext[sz*2]; // XXX FIXME
 	}
 	
-	protected Stack(Stack other)
+	public Stack(Stack other)
 	{
 		this.size = other.size;
 		this.stack = Arrays.copyOf(other.stack, other.stack.length);
@@ -55,5 +56,10 @@ public class Stack
 	public int getSize()
 	{
 		return size;
+	}
+	
+	public List<StackContext> getStack()
+	{
+		return Arrays.asList(stack);
 	}
 }

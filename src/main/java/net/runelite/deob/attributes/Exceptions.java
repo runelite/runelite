@@ -19,10 +19,8 @@ public class Exceptions extends Attribute
 	}
 	
 	@Override
-	public void loadAttribute() throws IOException
+	public void loadAttribute(DataInputStream is) throws IOException
 	{
-		DataInputStream is = this.getAttributes().getStream();
-		
 		int count = is.readUnsignedShort();
 		for (int i = 0; i < count; ++i)
 		{

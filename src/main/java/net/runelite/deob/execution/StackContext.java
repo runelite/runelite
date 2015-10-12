@@ -6,7 +6,7 @@ import java.util.List;
 public class StackContext
 {
 	public InstructionContext pushed; // instruction which pushed this
-	public InstructionContext popped; // instruction which popped this
+	public List<InstructionContext> poppeds = new ArrayList<>(); // instructions which popped this
 	public Type type; // type of this
 	public boolean removed;
 	
@@ -33,14 +33,15 @@ public class StackContext
 		return pushed;
 	}
 
-	public InstructionContext getPopped()
+	public List<InstructionContext> getPopped()
 	{
-		return popped;
+		return poppeds;
 	}
 
-	public void setPopped(InstructionContext popped)
+	public void addPopped(InstructionContext popped)
 	{
-		this.popped = popped;
+		if (!this.poppeds.contains(popped))
+			this.poppeds.add(popped);
 	}
 
 	public Type getType()
