@@ -20,8 +20,8 @@ public class DataFileTest
 		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, file);
 		int sector = df.write(42, 3, ByteBuffer.wrap("test".getBytes()));
-		ByteBuffer buf = df.read(42, 3, sector, 4);
-		String str = new String(buf.array());
+		byte[] buf = df.read(42, 3, sector, 4);
+		String str = new String(buf);
 		Assert.assertEquals("test", str);
 		file.delete();
 	}
@@ -36,8 +36,8 @@ public class DataFileTest
 		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, file);
 		int sector = df.write(42, 0x1FFFF, ByteBuffer.wrap(b));
-		ByteBuffer buf = df.read(42, 0x1FFFF, sector, b.length);
-		Assert.assertArrayEquals(b, buf.array());
+		byte[] buf = df.read(42, 0x1FFFF, sector, b.length);
+		Assert.assertArrayEquals(b, buf);
 		file.delete();
 	}
 }

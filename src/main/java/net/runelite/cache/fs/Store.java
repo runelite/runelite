@@ -33,4 +33,14 @@ public class Store implements Closeable
 		for (IndexFile i : indexFiles)
 			i.close();
 	}
+
+	public DataFile getData()
+	{
+		return data;
+	}
+
+	public IndexFile getIndex255()
+	{
+		return index255;
+	}
 }

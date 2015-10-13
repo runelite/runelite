@@ -30,6 +30,16 @@ public class IndexFile implements Closeable
 	{
 		idx.close();
 	}
+
+	public Store getStore()
+	{
+		return store;
+	}
+
+	public int getIndexFileId()
+	{
+		return indexFileId;
+	}
 	
 	public synchronized void write(IndexEntry entry) throws IOException
 	{

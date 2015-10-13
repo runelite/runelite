@@ -33,13 +33,14 @@ public class DataFile implements Closeable
 	
 	/**
 	 * 
+	 * @param indexId
 	 * @param archiveId
 	 * @param sector sector to start reading at
 	 * @param size expected size of file
 	 * @return
 	 * @throws IOException 
 	 */
-	public synchronized ByteBuffer read(int indexId, int archiveId, int sector, int size) throws IOException
+	public synchronized byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / 520L < (long) sector)
 		{
@@ -122,11 +123,13 @@ public class DataFile implements Closeable
 			++part;
 		}
 
-		return buffer;
+		buffer.flip();
+		return buffer.array();
 	}
 	
 	/**
 	 * 
+	 * @param indexId
 	 * @param archiveId archive to write to
 	 * @param data data to write
 	 * @return the sector the data starts at
