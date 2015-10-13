@@ -139,7 +139,7 @@ public class DataFile implements Closeable
 		int sector;
 		int startSector;
 		
-		sector = (int) ((this.dat.length() + 519L) / 520L);
+		sector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
 		if (sector == 0)
 		{
 			sector = 1;
@@ -153,7 +153,7 @@ public class DataFile implements Closeable
 
 			if (nextSector == 0)
 			{
-				nextSector = (int) ((dat.length() + 519L) / 520L);
+				nextSector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
 				if (nextSector == 0)
 				{
 					++nextSector;
@@ -165,13 +165,14 @@ public class DataFile implements Closeable
 				}
 			}
 
-			if (data.remaining() <= 512)
-			{
-				nextSector = 0;
-			}
 
 			if (0xFFFF < archiveId)
 			{
+				if (data.remaining() <= 510)
+				{
+					nextSector = 0;
+				}
+			
 				this.readCachedBuffer[0] = (byte) (archiveId >> 24);
 				this.readCachedBuffer[1] = (byte) (archiveId >> 16);
 				this.readCachedBuffer[2] = (byte) (archiveId >> 8);
@@ -193,6 +194,11 @@ public class DataFile implements Closeable
 			}
 			else
 			{
+				if (data.remaining() <= 512)
+				{
+					nextSector = 0;
+				}
+			
 				this.readCachedBuffer[0] = (byte) (archiveId >> 8);
 				this.readCachedBuffer[1] = (byte) archiveId;
 				this.readCachedBuffer[2] = (byte) (part >> 8);

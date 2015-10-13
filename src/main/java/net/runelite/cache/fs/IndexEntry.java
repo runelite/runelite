@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class IndexEntry
 {
-	private IndexFile indexFile;
-	private int id, sector, length;
+	private final IndexFile indexFile;
+	private final int id, sector, length;
 
 	public IndexEntry(IndexFile indexFile, int id, int sector, int length)
 	{
