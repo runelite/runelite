@@ -4,14 +4,19 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class DataFileTest
 {
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+  
 	@Test
 	public void test1() throws IOException
 	{
-		File file = new File("d:/rs/07/test/test.dat");
+		File file = folder.newFile();
 		Store store = new Store();
 		DataFile df = new DataFile(store, 42, file);
 		int sector = df.write(3, ByteBuffer.wrap("test".getBytes()));
@@ -27,7 +32,7 @@ public class DataFileTest
 		byte[] b = new byte[1024];
 		for (int i = 0; i < 1024; ++i) b[i] = (byte) i;
 		
-		File file = new File("d:/rs/07/test/test.dat");
+		File file = folder.newFile();
 		Store store = new Store();
 		DataFile df = new DataFile(store, 42, file);
 		int sector = df.write(0x1FFFF, ByteBuffer.wrap(b));
