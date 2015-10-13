@@ -1,5 +1,6 @@
 package net.runelite.cache.fs;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.io.RandomAccessFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IndexFile
+public class IndexFile implements Closeable
 {
 	private static final Logger logger = LoggerFactory.getLogger(IndexFile.class);
 	private static final int INDEX_ENTRY_LEN = 6;
@@ -22,6 +23,12 @@ public class IndexFile
 		this.store = store;
 		this.indexFileId = indexFileId;
 		this.idx = new RandomAccessFile(file, "rw");
+	}
+	
+	@Override
+	public void close() throws IOException
+	{
+		idx.close();
 	}
 	
 	public synchronized void write(IndexEntry entry) throws IOException
