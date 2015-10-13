@@ -11,7 +11,8 @@ public class IndexFileTest
 	public void test1() throws IOException
 	{
 		File file = new File("d:/rs/07/test/test.dat");
-		IndexFile index = new IndexFile(5, file);
+		Store store = new Store();
+		IndexFile index = new IndexFile(store, 5, file);
 		IndexEntry entry = new IndexEntry(index, 7, 8, 9);
 		index.write(entry);
 		IndexEntry entry2 = index.read(7);

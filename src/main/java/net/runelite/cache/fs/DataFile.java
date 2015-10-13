@@ -15,12 +15,14 @@ public class DataFile implements Closeable
 	
 	private static final int SECTOR_SIZE = 520;
 	
+	private final Store store;
 	private final int datafileId;
 	private final RandomAccessFile dat;
 	private final byte[] readCachedBuffer = new byte[SECTOR_SIZE];
 	
-	public DataFile(int id, File file) throws FileNotFoundException
+	public DataFile(Store store, int id, File file) throws FileNotFoundException
 	{
+		this.store = store;
 		this.datafileId = id;
 		dat = new RandomAccessFile(file, "rw");
 	}

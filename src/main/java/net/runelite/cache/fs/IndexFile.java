@@ -12,12 +12,14 @@ public class IndexFile
 	private static final Logger logger = LoggerFactory.getLogger(IndexFile.class);
 	private static final int INDEX_ENTRY_LEN = 6;
 	
-	private int indexFileId;
-	private RandomAccessFile idx;
+	private final Store store;
+	private final int indexFileId;
+	private final RandomAccessFile idx;
 	private final byte[] buffer = new byte[6];
 	
-	public IndexFile(int indexFileId, File file) throws FileNotFoundException
+	public IndexFile(Store store, int indexFileId, File file) throws FileNotFoundException
 	{
+		this.store = store;
 		this.indexFileId = indexFileId;
 		this.idx = new RandomAccessFile(file, "rw");
 	}
