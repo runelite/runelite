@@ -17,7 +17,7 @@ public class DataFileTest
 	public void test1() throws IOException
 	{
 		File file = folder.newFile();
-		Store store = new Store();
+		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, 42, file);
 		int sector = df.write(3, ByteBuffer.wrap("test".getBytes()));
 		ByteBuffer buf = df.read(3, sector, 4);
@@ -33,7 +33,7 @@ public class DataFileTest
 		for (int i = 0; i < 1024; ++i) b[i] = (byte) i;
 		
 		File file = folder.newFile();
-		Store store = new Store();
+		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, 42, file);
 		int sector = df.write(0x1FFFF, ByteBuffer.wrap(b));
 		ByteBuffer buf = df.read(0x1FFFF, sector, b.length);

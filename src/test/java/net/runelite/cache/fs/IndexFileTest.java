@@ -16,7 +16,7 @@ public class IndexFileTest
 	public void test1() throws IOException
 	{
 		File file = folder.newFile();
-		Store store = new Store();
+		Store store = new Store(folder.getRoot());
 		IndexFile index = new IndexFile(store, 5, file);
 		IndexEntry entry = new IndexEntry(index, 7, 8, 9);
 		index.write(entry);
