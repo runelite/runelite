@@ -18,7 +18,7 @@ public class Store implements Closeable
 	
 	public Store(File folder) throws IOException
 	{
-		data = new DataFile(this, -1/*wtfisthis*/, new File(folder, MAIN_FILE_CACHE_DAT));
+		data = new DataFile(this, new File(folder, MAIN_FILE_CACHE_DAT));
 		index255 = new IndexFile(this, 255, new File(folder, MAIN_FILE_CACHE_IDX + "255"));
 		
 		for (int i = 0; i < index255.getIndexCount(); ++i)

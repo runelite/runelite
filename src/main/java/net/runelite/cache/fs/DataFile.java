@@ -16,14 +16,12 @@ public class DataFile implements Closeable
 	private static final int SECTOR_SIZE = 520;
 	
 	private final Store store;
-	private final int datafileId;
 	private final RandomAccessFile dat;
 	private final byte[] readCachedBuffer = new byte[SECTOR_SIZE];
 	
-	public DataFile(Store store, int id, File file) throws FileNotFoundException
+	public DataFile(Store store, File file) throws FileNotFoundException
 	{
 		this.store = store;
-		this.datafileId = id;
 		dat = new RandomAccessFile(file, "rw");
 	}
 	
@@ -41,7 +39,7 @@ public class DataFile implements Closeable
 	 * @return
 	 * @throws IOException 
 	 */
-	public synchronized ByteBuffer read(int archiveId, int sector, int size) throws IOException
+	public synchronized ByteBuffer read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / 520L < (long) sector)
 		{
@@ -108,7 +106,7 @@ public class DataFile implements Closeable
 				currentIndex = this.readCachedBuffer[7] & 255;
 			}
 
-			if (archiveId != currentArchive || currentPart != part || this.datafileId != currentIndex)
+			if (archiveId != currentArchive || currentPart != part || indexId != currentIndex)
 			{
 				return null;
 			}
@@ -134,7 +132,7 @@ public class DataFile implements Closeable
 	 * @return the sector the data starts at
 	 * @throws IOException 
 	 */
-	public synchronized int write(int archiveId, ByteBuffer data) throws IOException
+	public synchronized int write(int indexId, int archiveId, ByteBuffer data) throws IOException
 	{
 		int sector;
 		int startSector;
@@ -182,7 +180,7 @@ public class DataFile implements Closeable
 				this.readCachedBuffer[6] = (byte) (nextSector >> 16);
 				this.readCachedBuffer[7] = (byte) (nextSector >> 8);
 				this.readCachedBuffer[8] = (byte) nextSector;
-				this.readCachedBuffer[9] = (byte) this.datafileId;
+				this.readCachedBuffer[9] = (byte) indexId;
 				dat.seek(SECTOR_SIZE * sector);
 				dat.write(this.readCachedBuffer, 0, 10);
 				
@@ -206,7 +204,7 @@ public class DataFile implements Closeable
 				this.readCachedBuffer[4] = (byte) (nextSector >> 16);
 				this.readCachedBuffer[5] = (byte) (nextSector >> 8);
 				this.readCachedBuffer[6] = (byte) nextSector;
-				this.readCachedBuffer[7] = (byte) this.datafileId;
+				this.readCachedBuffer[7] = (byte) indexId;
 				dat.seek(SECTOR_SIZE * sector);
 				dat.write(this.readCachedBuffer, 0, 8);
 				
