@@ -13,11 +13,11 @@ public class DataFile implements Closeable
 {
 	private static final Logger logger = LoggerFactory.getLogger(DataFile.class);
 	
-	private static final long SECTOR_SIZE = 520L;
+	private static final int SECTOR_SIZE = 520;
 	
 	private final int datafileId;
 	private final RandomAccessFile dat;
-	private final byte[] readCachedBuffer = new byte[520];
+	private final byte[] readCachedBuffer = new byte[SECTOR_SIZE];
 	
 	public DataFile(int id, File file) throws FileNotFoundException
 	{
@@ -31,6 +31,14 @@ public class DataFile implements Closeable
 		dat.close();
 	}
 	
+	/**
+	 * 
+	 * @param archiveId
+	 * @param sector sector to start reading at
+	 * @param size expected size of file
+	 * @return
+	 * @throws IOException 
+	 */
 	public synchronized ByteBuffer read(int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / 520L < (long) sector)
@@ -40,8 +48,6 @@ public class DataFile implements Closeable
 		}
 		
 		ByteBuffer buffer = ByteBuffer.allocate(size);
-		
-		dat.seek(SECTOR_SIZE * (long) sector);
 		
 		for (int part = 0, readBytesCount = 0, nextSector;
 			size > readBytesCount;
@@ -53,6 +59,7 @@ public class DataFile implements Closeable
 			}
 
 			dat.seek(SECTOR_SIZE * sector);
+			
 			int dataBlockSize = size - readBytesCount;
 			byte headerSize;
 			int currentIndex;
@@ -72,6 +79,7 @@ public class DataFile implements Closeable
 					logger.warn("short read");
 					return null;
 				}
+				
 				currentArchive = ((this.readCachedBuffer[1] & 255) << 16) + ((this.readCachedBuffer[0] & 255) << 24) + (('\uff00' & this.readCachedBuffer[2] << 8) - -(this.readCachedBuffer[3] & 255));
 				currentPart = ((this.readCachedBuffer[4] & 255) << 8) + (255 & this.readCachedBuffer[5]);
 				nextSector = (this.readCachedBuffer[8] & 255) + ('\uff00' & this.readCachedBuffer[7] << 8) + ((255 & this.readCachedBuffer[6]) << 16);
@@ -91,6 +99,7 @@ public class DataFile implements Closeable
 					logger.warn("short read");
 					return null;
 				}
+				
 				currentArchive = (255 & this.readCachedBuffer[1]) + ('\uff00' & this.readCachedBuffer[0] << 8);
 				currentPart = ((this.readCachedBuffer[2] & 255) << 8) + (255 & this.readCachedBuffer[3]);
 				nextSector = (this.readCachedBuffer[6] & 255) + ('\uff00' & this.readCachedBuffer[5] << 8) + ((255 & this.readCachedBuffer[4]) << 16);
@@ -116,17 +125,24 @@ public class DataFile implements Closeable
 		return buffer;
 	}
 	
+	/**
+	 * 
+	 * @param archiveId archive to write to
+	 * @param data data to write
+	 * @return the sector the data starts at
+	 * @throws IOException 
+	 */
 	public synchronized int write(int archiveId, ByteBuffer data) throws IOException
 	{
-		int e;
+		int sector;
 		int startSector;
 		
-		e = (int) ((this.dat.length() + 519L) / 520L);
-		if (e == 0)
+		sector = (int) ((this.dat.length() + 519L) / 520L);
+		if (sector == 0)
 		{
-			e = 1;
+			sector = 1;
 		}
-		startSector = e;
+		startSector = sector;
 
 		for (int part = 0; data.hasRemaining(); ++part)
 		{
@@ -141,7 +157,7 @@ public class DataFile implements Closeable
 					++nextSector;
 				}
 
-				if (nextSector == e)
+				if (nextSector == sector)
 				{
 					++nextSector;
 				}
@@ -164,7 +180,7 @@ public class DataFile implements Closeable
 				this.readCachedBuffer[7] = (byte) (nextSector >> 8);
 				this.readCachedBuffer[8] = (byte) nextSector;
 				this.readCachedBuffer[9] = (byte) this.datafileId;
-				dat.seek(SECTOR_SIZE * (long) e);
+				dat.seek(SECTOR_SIZE * sector);
 				dat.write(this.readCachedBuffer, 0, 10);
 				
 				dataToWrite = data.remaining();
@@ -183,7 +199,7 @@ public class DataFile implements Closeable
 				this.readCachedBuffer[5] = (byte) (nextSector >> 8);
 				this.readCachedBuffer[6] = (byte) nextSector;
 				this.readCachedBuffer[7] = (byte) this.datafileId;
-				dat.seek(SECTOR_SIZE * (long) e);
+				dat.seek(SECTOR_SIZE * sector);
 				dat.write(this.readCachedBuffer, 0, 8);
 				
 				dataToWrite = data.remaining();
@@ -195,7 +211,7 @@ public class DataFile implements Closeable
 
 			data.get(readCachedBuffer, 0, dataToWrite);
 			dat.write(readCachedBuffer, 0, dataToWrite);
-			e = nextSector;
+			sector = nextSector;
 		}
 		
 		return startSector;
