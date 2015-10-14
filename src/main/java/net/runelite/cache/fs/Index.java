@@ -35,6 +35,11 @@ public class Index implements Closeable
 		index.close();
 	//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
+
+	public IndexFile getIndex()
+	{
+		return index;
+	}
 	
 	public void load() throws IOException
 	{	
@@ -243,7 +248,7 @@ public class Index implements Closeable
 			assert this.index.getIndexFileId() == this.id;
 			byte[] b = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
 			
-			if (b == null) continue;
+			//if (b == null) continue;
 			
 			InputStream stream = new InputStream(b);
 
@@ -273,11 +278,11 @@ public class Index implements Closeable
 				default:
 				{
 					int length = stream.readInt();
-					if(length > 0 && length <= 1000000000) {
+//					if(length > 0 && length <= 1000000000) {
 						data = new byte[length];
 						this.checkRevision(stream, compressedLength);
 						GZipDecompressor.decompress(stream, data);
-					} else continue;//data = null;
+//					} else continue;//data = null;
 				}
 			}
 			
