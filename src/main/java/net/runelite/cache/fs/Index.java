@@ -44,7 +44,7 @@ public class Index implements Closeable
 		IndexFile index255 = store.getIndex255();
 		
 		IndexEntry entry = index255.read(id);
-		byte[] b = dataFile.read(id, entry.getId(), entry.getSector(), entry.getLength());
+		byte[] b = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
 		
 		InputStream stream = new InputStream(b);
 		
@@ -239,12 +239,53 @@ public class Index implements Closeable
 		for (Archive a : archives)
 		{
 			IndexEntry entry = this.index.read(a.getArchiveId());
-			byte[] data = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength());
+			//is this id supposed to be this.index.id? are those the same?
+			assert this.index.getIndexFileId() == this.id;
+			byte[] b = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
 			
-//			if (a.getFiles().size() == 1)
-//			{
-//				//
-//			}
+			if (b == null) continue;
+			
+			InputStream stream = new InputStream(b);
+
+			this.compression = stream.readUnsignedByte();
+			int compressedLength = stream.readInt();
+			if (compressedLength < 0 || compressedLength > 1000000)
+			{
+				throw new RuntimeException("Invalid archive header");
+			}
+
+			byte[] data;
+			switch (compression)
+			{
+				case 0:
+					data = new byte[compressedLength];
+					this.checkRevision(stream, compressedLength);
+					stream.readBytes(data, 0, compressedLength);
+					break;
+				case 1:
+				{
+					int length = stream.readInt();
+					data = new byte[length];
+					this.checkRevision(stream, compressedLength);
+					BZip2Decompressor.decompress(data, b, compressedLength, 9);
+					break;
+				}
+				default:
+				{
+					int length = stream.readInt();
+					if(length > 0 && length <= 1000000000) {
+						data = new byte[length];
+						this.checkRevision(stream, compressedLength);
+						GZipDecompressor.decompress(stream, data);
+					} else continue;//data = null;
+				}
+			}
+			
+			if (a.getFiles().size() == 1)
+			{
+				a.getFiles().get(0).setContents(data);
+				continue;
+			}
 			
 			final int filesCount = a.getFiles().size();
 			
@@ -252,7 +293,7 @@ public class Index implements Closeable
 			--readPosition;
 			int amtOfLoops = data[readPosition] & 255;
 			readPosition -= amtOfLoops * filesCount * 4;
-			InputStream stream = new InputStream(data);
+			stream = new InputStream(data);
 			stream.setOffset(readPosition);
 			int[] filesSize = new int[filesCount];
 
