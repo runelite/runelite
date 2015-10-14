@@ -63,6 +63,11 @@ public class Archive
 		}
 	}
 
+	public int getArchiveId()
+	{
+		return archiveId;
+	}
+
 	public int getNameHash()
 	{
 		return nameHash;
@@ -101,5 +106,10 @@ public class Archive
 	public void setRevision(int revision)
 	{
 		this.revision = revision;
+	}
+
+	public List<File> getFiles()
+	{
+		return files;
 	}
 }

@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.fs.io.InputStream;
+import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
 import net.runelite.cache.fs.util.gzip.GZipDecompressor;
 
@@ -207,5 +208,156 @@ public class Index
 				}
 			}
 		}
+	}
+	
+	public void save()
+	{
+		OutputStream stream = new OutputStream();
+		int protocol = 7;//this.getProtocol();
+		stream.writeByte(protocol);
+		if (protocol >= 6)
+		{
+			stream.writeInt(this.revision);
+		}
+
+		stream.writeByte((this.named ? 1 : 0) | (this.usesWhirpool ? 2 : 0));
+		if (protocol >= 7)
+		{
+			stream.writeBigSmart(this.archives.size());
+		}
+		else
+		{
+			stream.writeShort(this.archives.size());
+		}
+
+		int data;
+//		int archive;
+		for (data = 0; data < this.archives.size(); ++data)
+		//for (data = 0; data < this.validArchiveIds.length; ++data)
+		{
+			Archive a = this.archives.get(data);
+			int archive = a.getArchiveId();
+			//archive = this.validArchiveIds[data];
+			if (data != 0)
+			{
+				Archive prev = this.archives.get(data - 1);
+				archive -= prev.getArchiveId();
+				//archive -= this.validArchiveIds[data - 1];
+			}
+
+			if (protocol >= 7)
+			{
+				stream.writeBigSmart(archive);
+			}
+			else
+			{
+				stream.writeShort(archive);
+			}
+		}
+
+		if (this.named)
+		{
+			for (data = 0; data < this.archives.size(); ++data)
+			//for (data = 0; data < this.validArchiveIds.length; ++data)
+			{
+				Archive a = this.archives.get(data);
+				stream.writeInt(a.getNameHash());
+				//stream.writeInt(this.archives[this.validArchiveIds[data]].getNameHash());
+			}
+		}
+
+		if (this.usesWhirpool)
+		{
+			for (data = 0; data < this.archives.size(); ++data)
+			{
+				Archive a = this.archives.get(data);
+				stream.writeBytes(a.getWhirlpool());
+				//stream.writeBytes(this.archives[this.validArchiveIds[data]].getWhirpool());
+			}
+		}
+
+		for (data = 0; data < this.archives.size(); ++data)
+		{
+			Archive a = this.archives.get(data);
+			stream.writeInt(a.getCrc());
+			//stream.writeInt(this.archives[this.validArchiveIds[data]].getCRC());
+		}
+
+		for (data = 0; data < this.archives.size(); ++data)
+		{
+			Archive a = this.archives.get(data);
+			stream.writeInt(a.getRevision());
+			//stream.writeInt(this.archives[this.validArchiveIds[data]].getRevision());
+		}
+
+		for (data = 0; data < this.archives.size(); ++data)
+		{
+			Archive a = this.archives.get(data);
+			
+			int len = a.getFiles().size();
+			//archive = this.archives[this.validArchiveIds[data]].getValidFileIds().length;
+			if (protocol >= 7)
+			{
+				stream.writeBigSmart(len);
+			}
+			else
+			{
+				stream.writeShort(len);
+			}
+		}
+
+		int index2;
+		//ArchiveReference var8;
+		for (data = 0; data < this.archives.size(); ++data)
+		{
+			Archive a = this.archives.get(data);
+			//var8 = this.archives[this.validArchiveIds[data]];
+
+			for (index2 = 0; index2 < a.getFiles().size(); ++index2)
+			//for (index2 = 0; index2 < var8.getValidFileIds().length; ++index2)
+			{
+				File file = a.getFiles().get(index2);
+				int offset = file.getFileId();
+				//int offset = var8.getValidFileIds()[index2];
+				if (index2 != 0)
+				{
+					File prev = a.getFiles().get(index2 - 1);
+					offset -= prev.getFileId();
+					//offset -= var8.getValidFileIds()[index2 - 1];
+				}
+
+				if (protocol >= 7)
+				{
+					stream.writeBigSmart(offset);
+				}
+				else
+				{
+					stream.writeShort(offset);
+				}
+			}
+		}
+
+		if (this.named)
+		{
+			for (data = 0; data < this.archives.size(); ++data)
+			//for (data = 0; data < this.validArchiveIds.length; ++data)
+			{
+				Archive a = this.archives.get(data);
+				//var8 = this.archives[this.validArchiveIds[data]];
+
+				for (index2 = 0; index2 < a.getFiles().size(); ++index2)
+//				for (index2 = 0; index2 < var8.getValidFileIds().length; ++index2)
+				{
+					File file = a.getFiles().get(index2);
+					stream.writeInt(file.getNameHash());
+					//stream.writeInt(var8.getFiles()[var8.getValidFileIds()[index2]].getNameHash());
+				}
+			}
+		}
+
+//		byte[] var9 = new byte[stream.getOffset()];
+//		stream.setOffset(0);
+//		stream.getBytes(var9, 0, var9.length);
+//		return this.archive.editNoRevision(var9, mainFile);
 	}
 }
