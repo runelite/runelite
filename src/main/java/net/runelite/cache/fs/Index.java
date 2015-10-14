@@ -1,5 +1,6 @@
 package net.runelite.cache.fs;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -9,8 +10,9 @@ import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
 import net.runelite.cache.fs.util.gzip.GZipDecompressor;
 
-public class Index
+public class Index implements Closeable
 {
+	private final Store store;
 	private final IndexFile index;
 	private final int id;
 	private int compression;
@@ -20,16 +22,24 @@ public class Index
 	private byte[] whirlpool;
 	private List<Archive> archives = new ArrayList<>();
 	
-	public Index(IndexFile index, int id)
+	public Index(Store store, IndexFile index, int id)
 	{
+		this.store = store;
 		this.index = index;
 		this.id = id;
+	}
+	
+	@Override
+	public void close() throws IOException
+	{
+		index.close();
+	//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 	
 	public void load() throws IOException
 	{	
 		// read data from index255
-		Store store = index.getStore();
+		//Store store = index.getStore();
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
 		
