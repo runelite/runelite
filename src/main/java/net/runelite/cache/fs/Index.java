@@ -19,11 +19,14 @@ public class Index
 	private byte[] whirlpool;
 	private List<Archive> archives = new ArrayList<>();
 	
-	public Index(IndexFile index, int id) throws IOException
+	public Index(IndexFile index, int id)
 	{
 		this.index = index;
 		this.id = id;
-		
+	}
+	
+	public void load() throws IOException
+	{	
 		// read data from index255
 		Store store = index.getStore();
 		DataFile dataFile = store.getData();
@@ -89,8 +92,7 @@ public class Index
 		int protocol = stream.readUnsignedByte();
 		if (protocol >= 5 && protocol <= 7) {
 			if (protocol >= 6) {
-				not the right rev
-				this.revision = stream.readInt();
+				int revision = stream.readInt(); // what is this and why is it different from checkRevision?
 			}
 
 			int hash = stream.readUnsignedByte();
@@ -98,7 +100,7 @@ public class Index
 			this.usesWhirpool = (2 & hash) != 0;
 			int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 //			this.validArchiveIds = new int[validArchivesCount];
-//			int lastArchiveId = 0;
+			int lastArchiveId = 0;
 //			int biggestArchiveId = 0;
 
 			int index;
@@ -168,32 +170,40 @@ public class Index
 			for (index = 0; index < validArchivesCount; ++index) {
 				archive = 0;
 				index2 = 0;
-				ArchiveReference archive1 = this.archives[this.validArchiveIds[index]];
+				
+				Archive a = this.archives.get(index);
+				a.load(stream, numberOfFiles[index], protocol);
+				//ArchiveReference archive1 = this.archives[this.validArchiveIds[index]];
 
-				int index21;
-				for (index21 = 0; index21 < archive1.getValidFileIds().length; ++index21) {
-					int fileId = archive += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-					if (fileId > index2) {
-						index2 = fileId;
-					}
-
-					archive1.getValidFileIds()[index21] = fileId;
-				}
-
-				archive1.setFiles(new FileReference[index2 + 1]);
-
-				for (index21 = 0; index21 < archive1.getValidFileIds().length; ++index21) {
-					archive1.getFiles()[archive1.getValidFileIds()[index21]] = new FileReference();
-				}
+//				int index21;
+//				for (index21 = 0; index21 < archive1.getValidFileIds().length; ++index21) {
+//					int fileId = archive += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
+//					if (fileId > index2) {
+//						index2 = fileId;
+//					}
+//
+//					archive1.getValidFileIds()[index21] = fileId;
+//				}
+//
+//				archive1.setFiles(new FileReference[index2 + 1]);
+//
+//				for (index21 = 0; index21 < archive1.getValidFileIds().length; ++index21) {
+//					archive1.getFiles()[archive1.getValidFileIds()[index21]] = new FileReference();
+//				}
 			}
 
-			if (this.named) {
-				for (index = 0; index < validArchivesCount; ++index) {
-					ArchiveReference var14 = this.archives[this.validArchiveIds[index]];
+			if (this.named)
+			{
+				for (index = 0; index < validArchivesCount; ++index)
+				{
+					Archive a = this.archives.get(index);
+					a.loadNames(stream, numberOfFiles[index]);
+					//ArchiveReference var14 = this.archives[this.validArchiveIds[index]];
 
-					for (index2 = 0; index2 < var14.getValidFileIds().length; ++index2) {
-						var14.getFiles()[var14.getValidFileIds()[index2]].setNameHash(stream.readInt());
-					}
+//					for (index2 = 0; index2 < var14.getValidFileIds().length; ++index2)
+//					{
+//						var14.getFiles()[var14.getValidFileIds()[index2]].setNameHash(stream.readInt());
+//					}
 				}
 			}
 		}
