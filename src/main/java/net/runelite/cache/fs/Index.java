@@ -81,6 +81,8 @@ public class Index implements Closeable
 		}
 		
 		readIndexData(data);
+		
+		this.loadFiles();
 	}
 	
 	private void checkRevision(InputStream stream, int compressedLength)
@@ -101,8 +103,10 @@ public class Index implements Closeable
 	{
 		InputStream stream = new InputStream(data);
 		int protocol = stream.readUnsignedByte();
-		if (protocol >= 5 && protocol <= 7) {
-			if (protocol >= 6) {
+		if (protocol >= 5 && protocol <= 7)
+		{
+			if (protocol >= 6)
+			{
 				int revision = stream.readInt(); // what is this and why is it different from checkRevision?
 			}
 
@@ -116,7 +120,8 @@ public class Index implements Closeable
 
 			int index;
 			int archive;
-			for (index = 0; index < validArchivesCount; ++index) {
+			for (index = 0; index < validArchivesCount; ++index)
+			{
 				archive = lastArchiveId += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 				Archive a = new Archive(this, archive);
 				this.archives.add(a);
@@ -128,14 +133,16 @@ public class Index implements Closeable
 			}
 
 			//this.archives = new ArchiveReference[biggestArchiveId + 1];
-
-			for (index = 0; index < validArchivesCount; ++index) {
+			for (index = 0; index < validArchivesCount; ++index)
+			{
 				Archive a = this.archives.get(index);
 				//this.archives[this.validArchiveIds[index]] = new ArchiveReference();
 			}
 
-			if (this.named) {
-				for (index = 0; index < validArchivesCount; ++index) {
+			if (this.named)
+			{
+				for (index = 0; index < validArchivesCount; ++index)
+				{
 					int nameHash = stream.readInt();
 					Archive a = this.archives.get(index);
 					a.setNameHash(nameHash);
@@ -143,45 +150,51 @@ public class Index implements Closeable
 				}
 			}
 
-			if (this.usesWhirpool) {
-				for (index = 0; index < validArchivesCount; ++index) {
+			if (this.usesWhirpool)
+			{
+				for (index = 0; index < validArchivesCount; ++index)
+				{
 					byte[] var13 = new byte[64];
 					stream.getBytes(var13, 0, 64);
-					
+
 					Archive a = this.archives.get(index);
 					a.setWhirlpool(var13);
 					//this.archives[this.validArchiveIds[index]].setWhirpool(var13);
 				}
 			}
 
-			for (index = 0; index < validArchivesCount; ++index) {
+			for (index = 0; index < validArchivesCount; ++index)
+			{
 				int crc = stream.readInt();
-				
+
 				Archive a = this.archives.get(index);
 				a.setCrc(crc);
 				//this.archives[this.validArchiveIds[index]].setCrc(stream.readInt());
 			}
 
-			for (index = 0; index < validArchivesCount; ++index) {
+			for (index = 0; index < validArchivesCount; ++index)
+			{
 				int revision = stream.readInt();
-				
+
 				Archive a = this.archives.get(index);
 				a.setRevision(revision);
 				//this.archives[this.validArchiveIds[index]].setRevision(stream.readInt());
 			}
 
 			int[] numberOfFiles = new int[validArchivesCount];
-			for (index = 0; index < validArchivesCount; ++index) {
+			for (index = 0; index < validArchivesCount; ++index)
+			{
 				int num = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 				numberOfFiles[index] = num;
 				//this.archives[this.validArchiveIds[index]].setValidFileIds(new int[protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort()]);
 			}
 
 			int index2;
-			for (index = 0; index < validArchivesCount; ++index) {
+			for (index = 0; index < validArchivesCount; ++index)
+			{
 				archive = 0;
 				index2 = 0;
-				
+
 				Archive a = this.archives.get(index);
 				a.load(stream, numberOfFiles[index], protocol);
 				//ArchiveReference archive1 = this.archives[this.validArchiveIds[index]];
@@ -217,6 +230,86 @@ public class Index implements Closeable
 //					}
 				}
 			}
+		}
+	}
+	
+	private void loadFiles() throws IOException
+	{
+		// get data from index file
+		for (Archive a : archives)
+		{
+			IndexEntry entry = this.index.read(a.getArchiveId());
+			byte[] data = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength());
+			
+//			if (a.getFiles().size() == 1)
+//			{
+//				//
+//			}
+			
+			final int filesCount = a.getFiles().size();
+			
+			int readPosition = data.length;
+			--readPosition;
+			int amtOfLoops = data[readPosition] & 255;
+			readPosition -= amtOfLoops * filesCount * 4;
+			InputStream stream = new InputStream(data);
+			stream.setOffset(readPosition);
+			int[] filesSize = new int[filesCount];
+
+			int sourceOffset;
+			int count;
+			for (int filesData = 0; filesData < amtOfLoops; ++filesData)
+			{
+				sourceOffset = 0;
+
+				for (count = 0; count < filesCount; ++count)
+				{
+					filesSize[count] += sourceOffset += stream.readInt();
+				}
+			}
+
+			byte[][] var18 = new byte[filesCount][];
+
+			for (sourceOffset = 0; sourceOffset < filesCount; ++sourceOffset)
+			{
+				var18[sourceOffset] = new byte[filesSize[sourceOffset]];
+				filesSize[sourceOffset] = 0;
+			}
+
+			stream.setOffset(readPosition);
+			sourceOffset = 0;
+
+			int fileId;
+			int i;
+			for (count = 0; count < amtOfLoops; ++count)
+			{
+				fileId = 0;
+
+				for (i = 0; i < filesCount; ++i)
+				{
+					fileId += stream.readInt();
+					System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
+					sourceOffset += fileId;
+					filesSize[i] += fileId;
+				}
+			}
+			
+			for (i = 0; i < filesCount; ++i)
+			{
+				File f = a.getFiles().get(i);
+				f.setContents(var18[i]);
+			}
+
+//			count = 0;
+//			int[] var17;
+//			int var16 = (var17 = this.table.getArchives()[archiveId].getValidFileIds()).length;
+//
+//			for (i = 0; i < var16; ++i)
+//			{
+//				fileId = var17[i];
+//				this.cachedFiles[archiveId][fileId] = var18[count++];
+//			}
+
 		}
 	}
 	
