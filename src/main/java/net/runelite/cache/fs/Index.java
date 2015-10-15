@@ -8,6 +8,7 @@ import java.util.List;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
+import net.runelite.cache.fs.util.gzip.GZipCompressor;
 import net.runelite.cache.fs.util.gzip.GZipDecompressor;
 
 public class Index implements Closeable
@@ -39,6 +40,13 @@ public class Index implements Closeable
 	public IndexFile getIndex()
 	{
 		return index;
+	}
+	
+	public Archive addArchive(int id)
+	{
+		Archive archive = new Archive(this, id);
+		this.archives.add(archive);
+		return archive;
 	}
 	
 	public void load() throws IOException
@@ -88,6 +96,51 @@ public class Index implements Closeable
 		readIndexData(data);
 		
 		this.loadFiles();
+	}
+	
+	public void save() throws IOException
+	{
+		saveFiles();
+		
+		byte[] data = this.writeIndexData();
+		
+		OutputStream stream = new OutputStream();
+		stream.writeByte(this.compression);
+		byte[] compressedData;
+		switch (this.compression)
+		{
+			case 0:
+				compressedData = data;
+				stream.writeInt(data.length);
+				break;
+			default:
+				throw new RuntimeException();
+//			case 1:
+//				compressedData = (byte[]) null;
+//				break;
+//			default:
+//				compressedData = GZipCompressor.compress(data);
+//				stream.writeInt(compressedData.length);
+//				stream.writeInt(data.length);
+		}
+
+		stream.writeBytes(compressedData);
+		stream.writeShort(this.revision);
+		
+		byte[] compressed = new byte[stream.getOffset()];
+		stream.setOffset(0);
+		stream.getBytes(compressed, 0, compressed.length);
+		
+		//XTEA encrypt here
+
+
+		DataFile dataFile = store.getData();
+		IndexFile index255 = store.getIndex255();
+		
+		//IndexEntry entry = index255.read(id);
+		//byte[] b = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
+		int sector = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(compressed));
+		index255.write(new IndexEntry(index255, id, sector, compressed.length));
 	}
 	
 	private void checkRevision(InputStream stream, int compressedLength)
@@ -246,6 +299,7 @@ public class Index implements Closeable
 			IndexEntry entry = this.index.read(a.getArchiveId());
 			//is this id supposed to be this.index.id? are those the same?
 			assert this.index.getIndexFileId() == this.id;
+			assert entry.getId() == a.getArchiveId();
 			byte[] b = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
 			
 			//if (b == null) continue;
@@ -359,7 +413,80 @@ public class Index implements Closeable
 		}
 	}
 	
-	public void save()
+	public void saveFiles() throws IOException
+	{
+		for (Archive a : archives)
+		{
+			OutputStream stream = new OutputStream();
+			
+			int sourceOffset = 0;
+			final int filesCount = a.getFiles().size();
+			
+			if (filesCount == 1)
+			{
+				File file = a.getFiles().get(0);
+				stream.writeBytes(file.getContents());
+				continue;
+			}
+
+			for (int count = 0; count < filesCount; ++count)
+			{
+				File file = a.getFiles().get(count);
+				//filesSize[count] += sourceOffset += stream.readInt();
+				int sz = file.getSize() - sourceOffset;
+				sourceOffset = file.getSize();
+				stream.writeInt(sz);
+			}
+			
+			int prevLen = 0;
+
+			for (int i = 0; i < filesCount; ++i)
+			{
+				File file = a.getFiles().get(i);
+				
+				int len = file.getSize() - prevLen;
+				//int fid = file.getFileId() - fileId;
+				//fileId = file.getFileId();
+				stream.writeInt(len);
+				prevLen = file.getSize();
+				
+				stream.writeBytes(file.getContents());
+				
+//				fileId += stream.readInt();
+//				System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
+//				sourceOffset += fileId;
+//				filesSize[i] += fileId;
+			}
+			
+			stream.writeByte(1); // number of loops
+			
+			byte[] fileData = new byte[stream.getOffset()];
+			stream.setOffset(0);
+			stream.getBytes(fileData, 0, fileData.length);
+
+			stream = new OutputStream();
+		//return var9;
+			
+			stream.writeByte(0); // compression
+			stream.writeInt(fileData.length);
+			
+			stream.writeBytes(fileData);
+			stream.writeShort(this.revision);
+			
+			byte[] finalFileData = new byte[stream.getOffset()];
+			stream.setOffset(0);
+			stream.getBytes(finalFileData, 0, finalFileData.length);
+			
+			assert this.index.getIndexFileId() == this.id;
+			DataFile data = store.getData();
+			
+			// XXX old data is just left there in the file?
+			int sector = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(finalFileData));
+			this.index.write(new IndexEntry(this.index, a.getArchiveId(), sector, finalFileData.length));
+		}
+	}
+	
+	public byte[] writeIndexData()
 	{
 		OutputStream stream = new OutputStream();
 		int protocol = 7;//this.getProtocol();
@@ -504,9 +631,10 @@ public class Index implements Closeable
 			}
 		}
 
-//		byte[] var9 = new byte[stream.getOffset()];
-//		stream.setOffset(0);
-//		stream.getBytes(var9, 0, var9.length);
+		byte[] var9 = new byte[stream.getOffset()];
+		stream.setOffset(0);
+		stream.getBytes(var9, 0, var9.length);
+		return var9;
 //		return this.archive.editNoRevision(var9, mainFile);
 	}
 }

@@ -20,6 +20,13 @@ public class Archive
 		this.archiveId = id;
 	}
 	
+	public File addFile(int id)
+	{
+		File file = new File(this, id);
+		this.files.add(file);
+		return file;
+	}
+	
 	public void load(InputStream stream, int numberOfFiles, int protocol)
 	{
 		int archive = 0;

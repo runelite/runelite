@@ -42,4 +42,9 @@ public class File
 	{
 		this.contents = contents;
 	}
+	
+	public int getSize()
+	{
+		return contents.length;
+	}
 }
