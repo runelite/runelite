@@ -16,7 +16,7 @@ public class StoreTest
 	@BeforeClass
 	public static void before()
 	{
-		System.setProperty("java.io.tmpdir", "c:/rs/temp");
+		System.setProperty("java.io.tmpdir", "d:/rs/07/temp/");
 	}
 	
 	@Test

@@ -488,6 +488,12 @@ public class Index implements Closeable
 			}
 			else
 			{
+				for (int i = 0; i < filesCount; ++i)
+				{
+					File file = a.getFiles().get(i);
+					stream.writeBytes(file.getContents());
+				}
+			
 				for (int count = 0; count < filesCount; ++count)
 				{
 					File file = a.getFiles().get(count);
@@ -498,24 +504,22 @@ public class Index implements Closeable
 				}
 
 				int prevLen = 0;
-
-				for (int i = 0; i < filesCount; ++i)
-				{
-					File file = a.getFiles().get(i);
-
-					int len = file.getSize() - prevLen;
-					//int fid = file.getFileId() - fileId;
-					//fileId = file.getFileId();
-					stream.writeInt(len);
-					prevLen = file.getSize();
-
-					stream.writeBytes(file.getContents());
-
-	//				fileId += stream.readInt();
-	//				System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
-	//				sourceOffset += fileId;
-	//				filesSize[i] += fileId;
-				}
+				
+//				for (int i = 0; i < filesCount; ++i)
+//				{
+//					File file = a.getFiles().get(i);
+//
+//					int len = file.getSize() - prevLen;
+//					//int fid = file.getFileId() - fileId;
+//					//fileId = file.getFileId();
+//					stream.writeInt(len);
+//					prevLen = file.getSize();
+//
+//	//				fileId += stream.readInt();
+//	//				System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
+//	//				sourceOffset += fileId;
+//	//				filesSize[i] += fileId;
+//				}
 
 				stream.writeByte(1); // number of loops
 			}
