@@ -4,7 +4,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
@@ -35,6 +37,58 @@ public class Index implements Closeable
 	{
 		index.close();
 	//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 97 * hash + Objects.hashCode(this.index);
+		hash = 97 * hash + this.id;
+		hash = 97 * hash + this.revision;
+		hash = 97 * hash + this.crc;
+		hash = 97 * hash + Arrays.hashCode(this.whirlpool);
+		hash = 97 * hash + Objects.hashCode(this.archives);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Index other = (Index) obj;
+		if (!Objects.equals(this.index, other.index))
+		{
+			return false;
+		}
+		if (this.id != other.id)
+		{
+			return false;
+		}
+		if (this.revision != other.revision)
+		{
+			return false;
+		}
+		if (this.crc != other.crc)
+		{
+			return false;
+		}
+		if (!Arrays.equals(this.whirlpool, other.whirlpool))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.archives, other.archives))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public IndexFile getIndex()

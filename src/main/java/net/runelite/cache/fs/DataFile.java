@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,11 +17,13 @@ public class DataFile implements Closeable
 	private static final int SECTOR_SIZE = 520;
 	
 	private final Store store;
+	private final File file;
 	private final RandomAccessFile dat;
 	private final byte[] readCachedBuffer = new byte[SECTOR_SIZE];
 	
 	public DataFile(Store store, File file) throws FileNotFoundException
 	{
+		this.file = file;
 		this.store = store;
 		dat = new RandomAccessFile(file, "rw");
 	}
@@ -29,6 +32,33 @@ public class DataFile implements Closeable
 	public void close() throws IOException
 	{
 		dat.close();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 71 * hash + Objects.hashCode(this.file);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final DataFile other = (DataFile) obj;
+		if (!Objects.equals(this.file, other.file))
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	/**

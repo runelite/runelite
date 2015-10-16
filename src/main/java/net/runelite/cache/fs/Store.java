@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Store implements Closeable
 {
@@ -42,6 +43,48 @@ public class Store implements Closeable
 		for (Index i : indexes)
 		//for (IndexFile i : indexFiles)
 			i.close();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 79 * hash + Objects.hashCode(this.folder);
+		hash = 79 * hash + Objects.hashCode(this.data);
+		hash = 79 * hash + Objects.hashCode(this.index255);
+		hash = 79 * hash + Objects.hashCode(this.indexes);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Store other = (Store) obj;
+		if (!Objects.equals(this.folder, other.folder))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.data, other.data))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.index255, other.index255))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.indexes, other.indexes))
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	public Index addIndex(int id) throws FileNotFoundException

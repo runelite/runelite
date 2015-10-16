@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +16,7 @@ public class IndexFile implements Closeable
 	
 	private final Store store;
 	private final int indexFileId;
+	private final File file;
 	private final RandomAccessFile idx;
 	private final byte[] buffer = new byte[6];
 	
@@ -22,6 +24,7 @@ public class IndexFile implements Closeable
 	{
 		this.store = store;
 		this.indexFileId = indexFileId;
+		this.file = file;
 		this.idx = new RandomAccessFile(file, "rw");
 	}
 	
@@ -29,6 +32,33 @@ public class IndexFile implements Closeable
 	public void close() throws IOException
 	{
 		idx.close();
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 41 * hash + Objects.hashCode(this.file);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final IndexFile other = (IndexFile) obj;
+		if (!Objects.equals(this.file, other.file))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public Store getStore()
