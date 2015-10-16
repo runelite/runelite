@@ -40,6 +40,8 @@ public class StoreTest
 		}
 	}
 	
+	private static final int NUMBER_OF_FILES = 1024;
+	
 	@Test
 	public void testManyFiles() throws IOException
 	{
@@ -49,7 +51,7 @@ public class StoreTest
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
-			for (int i = 0; i < 2; ++i)
+			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive.addFile(i);
 			//	file.setNameHash(random.nextInt());
