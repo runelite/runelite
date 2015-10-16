@@ -560,6 +560,7 @@ public class Index implements Closeable
 			stream.writeInt(this.revision);
 		}
 
+		this.named = true;
 		stream.writeByte((this.named ? 1 : 0) | (this.usesWhirpool ? 2 : 0));
 		if (protocol >= 7)
 		{

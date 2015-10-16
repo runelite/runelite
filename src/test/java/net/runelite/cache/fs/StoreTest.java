@@ -27,6 +27,7 @@ public class StoreTest
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
 			File file = archive.addFile(0);
+			file.setNameHash(7);
 			file.setContents("test".getBytes());
 
 			store.save();
@@ -54,7 +55,7 @@ public class StoreTest
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive.addFile(i);
-			//	file.setNameHash(random.nextInt());
+				file.setNameHash(random.nextInt());
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
