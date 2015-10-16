@@ -63,7 +63,7 @@ public class Store implements Closeable
 		for (Index i : indexes)
 		{
 			int id = i.getIndex().getIndexFileId();
-			if (id == 3 || id == 7) // XXXXXXXXXXXXX
+			//if (id == 3 || id == 7) // XXXXXXXXXXXXX
 				i.load();
 		}
 	}
@@ -82,5 +82,10 @@ public class Store implements Closeable
 	public IndexFile getIndex255()
 	{
 		return index255;
+	}
+
+	public List<Index> getIndexes()
+	{
+		return indexes;
 	}
 }

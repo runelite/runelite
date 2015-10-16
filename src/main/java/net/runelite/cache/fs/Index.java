@@ -41,6 +41,11 @@ public class Index implements Closeable
 	{
 		return index;
 	}
+
+	public List<Archive> getArchives()
+	{
+		return archives;
+	}
 	
 	public Archive addArchive(int id)
 	{
@@ -426,39 +431,40 @@ public class Index implements Closeable
 			{
 				File file = a.getFiles().get(0);
 				stream.writeBytes(file.getContents());
-				continue;
 			}
-
-			for (int count = 0; count < filesCount; ++count)
+			else
 			{
-				File file = a.getFiles().get(count);
-				//filesSize[count] += sourceOffset += stream.readInt();
-				int sz = file.getSize() - sourceOffset;
-				sourceOffset = file.getSize();
-				stream.writeInt(sz);
-			}
-			
-			int prevLen = 0;
+				for (int count = 0; count < filesCount; ++count)
+				{
+					File file = a.getFiles().get(count);
+					//filesSize[count] += sourceOffset += stream.readInt();
+					int sz = file.getSize() - sourceOffset;
+					sourceOffset = file.getSize();
+					stream.writeInt(sz);
+				}
 
-			for (int i = 0; i < filesCount; ++i)
-			{
-				File file = a.getFiles().get(i);
-				
-				int len = file.getSize() - prevLen;
-				//int fid = file.getFileId() - fileId;
-				//fileId = file.getFileId();
-				stream.writeInt(len);
-				prevLen = file.getSize();
-				
-				stream.writeBytes(file.getContents());
-				
-//				fileId += stream.readInt();
-//				System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
-//				sourceOffset += fileId;
-//				filesSize[i] += fileId;
+				int prevLen = 0;
+
+				for (int i = 0; i < filesCount; ++i)
+				{
+					File file = a.getFiles().get(i);
+
+					int len = file.getSize() - prevLen;
+					//int fid = file.getFileId() - fileId;
+					//fileId = file.getFileId();
+					stream.writeInt(len);
+					prevLen = file.getSize();
+
+					stream.writeBytes(file.getContents());
+
+	//				fileId += stream.readInt();
+	//				System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
+	//				sourceOffset += fileId;
+	//				filesSize[i] += fileId;
+				}
+
+				stream.writeByte(1); // number of loops
 			}
-			
-			stream.writeByte(1); // number of loops
 			
 			byte[] fileData = new byte[stream.getOffset()];
 			stream.setOffset(0);
