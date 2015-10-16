@@ -20,37 +20,38 @@ public class StoreTest
 	}
 	
 	@Test
-	public void test() throws IOException
+	public void testOneFile() throws IOException
 	{
-		Store store = new Store(folder.getRoot());
-		Index index = store.addIndex(0);
-		Archive archive = index.addArchive(0);
-		File file = archive.addFile(0);
-		file.setContents("test".getBytes());
+		File file;
+		try (Store store = new Store(folder.getRoot()))
+		{
+			Index index = store.addIndex(0);
+			Archive archive = index.addArchive(0);
+			file = archive.addFile(0);
+			file.setContents("test".getBytes());
+
+			store.save();
+		}
 		
-		store.save();
-		
-		store.close();
-		
-		store = new Store(folder.getRoot());
-		store.load();
-		
-		List<Index> indexes = store.getIndexes();
-		Assert.assertEquals(1, indexes.size());
-		
-		index = indexes.get(0);
-		List<Archive> archives = index.getArchives();
-		Assert.assertEquals(1, archives.size());
-		
-		archive = archives.get(0);
-		List<File> files = archive.getFiles();
-		// XXX just use equals methods on store duh
-		//archive.
-		
-		File file2 = files.get(0);
-		
-		Assert.assertArrayEquals(file.getContents(), file2.getContents());
-		
-		System.out.println(store);
+		try (Store store = new Store(folder.getRoot()))
+		{
+			store.load();
+
+			List<Index> indexes = store.getIndexes();
+			Assert.assertEquals(1, indexes.size());
+
+			Index index = indexes.get(0);
+			List<Archive> archives = index.getArchives();
+			Assert.assertEquals(1, archives.size());
+
+			Archive archive = archives.get(0);
+			List<File> files = archive.getFiles();
+			// XXX just use equals methods on store duh
+			//archive.
+
+			File file2 = files.get(0);
+
+			Assert.assertArrayEquals(file.getContents(), file2.getContents());
+		}
 	}
 }
