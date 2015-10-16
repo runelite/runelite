@@ -52,9 +52,66 @@ public class StoreTest
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
+			archive.setNameHash(random.nextInt());
+			
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive.addFile(i);
+				file.setNameHash(random.nextInt());
+				byte[] data = new byte[random.nextInt(1024)];
+				random.nextBytes(data);
+				file.setContents(data);
+			}
+			
+			store.save();
+			
+			try (Store store2 = new Store(folder.getRoot()))
+			{
+				store2.load();
+				
+				Assert.assertEquals(store, store2);
+			}
+		}
+	}
+	
+	@Test
+	public void testMultipleArchives() throws IOException
+	{
+		Random random = new Random(43L);
+
+		try (Store store = new Store(folder.getRoot()))
+		{
+			Index index = store.addIndex(0);
+			Index index2 = store.addIndex(1);
+			
+			Archive archive = index.addArchive(0);
+			archive.setNameHash(random.nextInt());
+			
+			Archive archive2 = index.addArchive(1);
+			
+			Archive archive3 = index2.addArchive(0);
+			
+			for (int i = 0; i < NUMBER_OF_FILES; ++i)
+			{
+				File file = archive.addFile(i);
+				file.setNameHash(random.nextInt());
+				byte[] data = new byte[random.nextInt(1024)];
+				random.nextBytes(data);
+				file.setContents(data);
+			}
+			
+			for (int i = 0; i < NUMBER_OF_FILES; ++i)
+			{
+				File file = archive2.addFile(i);
+				file.setNameHash(random.nextInt());
+				byte[] data = new byte[random.nextInt(1024)];
+				random.nextBytes(data);
+				file.setContents(data);
+			}
+			
+			for (int i = 0; i < NUMBER_OF_FILES; ++i)
+			{
+				File file = archive3.addFile(i);
 				file.setNameHash(random.nextInt());
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
