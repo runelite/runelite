@@ -180,6 +180,8 @@ public class DataFile implements Closeable
 		data = ByteBuffer.wrap(this.compress(data.array(), compression, revision));
 		int dataLen = data.remaining();
 		
+		//XTEA encrypt here?
+		
 		sector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
 		if (sector == 0)
 		{
