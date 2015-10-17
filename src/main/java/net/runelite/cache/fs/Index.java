@@ -23,7 +23,7 @@ public class Index implements Closeable
 	private int revision;
 	private int crc;
 	private byte[] whirlpool;
-	private List<Archive> archives = new ArrayList<>();
+	private final List<Archive> archives = new ArrayList<>();
 	
 	public Index(Store store, IndexFile index, int id)
 	{
@@ -36,7 +36,6 @@ public class Index implements Closeable
 	public void close() throws IOException
 	{
 		index.close();
-	//	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
 
 	@Override
@@ -110,8 +109,6 @@ public class Index implements Closeable
 	
 	public void load() throws IOException
 	{	
-		// read data from index255
-		//Store store = index.getStore();
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
 		
@@ -192,12 +189,9 @@ public class Index implements Closeable
 		
 		//XTEA encrypt here
 
-
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
 		
-		//IndexEntry entry = index255.read(id);
-		//byte[] b = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
 		int sector = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(compressed));
 		index255.write(new IndexEntry(index255, id, sector, compressed.length));
 	}
@@ -231,9 +225,7 @@ public class Index implements Closeable
 			this.named = (1 & hash) != 0;
 			this.usesWhirpool = (2 & hash) != 0;
 			int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-//			this.validArchiveIds = new int[validArchivesCount];
 			int lastArchiveId = 0;
-//			int biggestArchiveId = 0;
 
 			int index;
 			int archive;
@@ -242,18 +234,6 @@ public class Index implements Closeable
 				archive = lastArchiveId += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 				Archive a = new Archive(this, archive);
 				this.archives.add(a);
-//				if (archive > biggestArchiveId) {
-//					biggestArchiveId = archive;
-//				}
-//
-//				this.validArchiveIds[index] = archive;
-			}
-
-			//this.archives = new ArchiveReference[biggestArchiveId + 1];
-			for (index = 0; index < validArchivesCount; ++index)
-			{
-				Archive a = this.archives.get(index);
-				//this.archives[this.validArchiveIds[index]] = new ArchiveReference();
 			}
 
 			if (this.named)
@@ -263,7 +243,6 @@ public class Index implements Closeable
 					int nameHash = stream.readInt();
 					Archive a = this.archives.get(index);
 					a.setNameHash(nameHash);
-					//this.archives[this.validArchiveIds[index]].setNameHash(stream.readInt());
 				}
 			}
 
@@ -276,7 +255,6 @@ public class Index implements Closeable
 
 					Archive a = this.archives.get(index);
 					a.setWhirlpool(var13);
-					//this.archives[this.validArchiveIds[index]].setWhirpool(var13);
 				}
 			}
 
@@ -286,7 +264,6 @@ public class Index implements Closeable
 
 				Archive a = this.archives.get(index);
 				a.setCrc(crc);
-				//this.archives[this.validArchiveIds[index]].setCrc(stream.readInt());
 			}
 
 			for (index = 0; index < validArchivesCount; ++index)
@@ -295,7 +272,6 @@ public class Index implements Closeable
 
 				Archive a = this.archives.get(index);
 				a.setRevision(revision);
-				//this.archives[this.validArchiveIds[index]].setRevision(stream.readInt());
 			}
 
 			int[] numberOfFiles = new int[validArchivesCount];
@@ -303,34 +279,14 @@ public class Index implements Closeable
 			{
 				int num = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 				numberOfFiles[index] = num;
-				//this.archives[this.validArchiveIds[index]].setValidFileIds(new int[protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort()]);
 			}
 
-			int index2;
 			for (index = 0; index < validArchivesCount; ++index)
 			{
 				archive = 0;
-				index2 = 0;
 
 				Archive a = this.archives.get(index);
 				a.load(stream, numberOfFiles[index], protocol);
-				//ArchiveReference archive1 = this.archives[this.validArchiveIds[index]];
-
-//				int index21;
-//				for (index21 = 0; index21 < archive1.getValidFileIds().length; ++index21) {
-//					int fileId = archive += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
-//					if (fileId > index2) {
-//						index2 = fileId;
-//					}
-//
-//					archive1.getValidFileIds()[index21] = fileId;
-//				}
-//
-//				archive1.setFiles(new FileReference[index2 + 1]);
-//
-//				for (index21 = 0; index21 < archive1.getValidFileIds().length; ++index21) {
-//					archive1.getFiles()[archive1.getValidFileIds()[index21]] = new FileReference();
-//				}
 			}
 
 			if (this.named)
@@ -339,12 +295,6 @@ public class Index implements Closeable
 				{
 					Archive a = this.archives.get(index);
 					a.loadNames(stream, numberOfFiles[index]);
-					//ArchiveReference var14 = this.archives[this.validArchiveIds[index]];
-
-//					for (index2 = 0; index2 < var14.getValidFileIds().length; ++index2)
-//					{
-//						var14.getFiles()[var14.getValidFileIds()[index2]].setNameHash(stream.readInt());
-//					}
 				}
 			}
 		}
@@ -356,12 +306,9 @@ public class Index implements Closeable
 		for (Archive a : archives)
 		{
 			IndexEntry entry = this.index.read(a.getArchiveId());
-			//is this id supposed to be this.index.id? are those the same?
 			assert this.index.getIndexFileId() == this.id;
 			assert entry.getId() == a.getArchiveId();
 			byte[] b = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
-			
-			//if (b == null) continue;
 			
 			InputStream stream = new InputStream(b);
 
@@ -391,11 +338,9 @@ public class Index implements Closeable
 				default:
 				{
 					int length = stream.readInt();
-//					if(length > 0 && length <= 1000000000) {
-						data = new byte[length];
-						this.checkRevision(stream, compressedLength);
-						GZipDecompressor.decompress(stream, data);
-//					} else continue;//data = null;
+					data = new byte[length];
+					this.checkRevision(stream, compressedLength);
+					GZipDecompressor.decompress(stream, data);
 				}
 			}
 			
@@ -458,17 +403,6 @@ public class Index implements Closeable
 				File f = a.getFiles().get(i);
 				f.setContents(var18[i]);
 			}
-
-//			count = 0;
-//			int[] var17;
-//			int var16 = (var17 = this.table.getArchives()[archiveId].getValidFileIds()).length;
-//
-//			for (i = 0; i < var16; ++i)
-//			{
-//				fileId = var17[i];
-//				this.cachedFiles[archiveId][fileId] = var18[count++];
-//			}
-
 		}
 	}
 	
@@ -497,29 +431,11 @@ public class Index implements Closeable
 				for (int count = 0; count < filesCount; ++count)
 				{
 					File file = a.getFiles().get(count);
-					//filesSize[count] += sourceOffset += stream.readInt();
+
 					int sz = file.getSize() - sourceOffset;
 					sourceOffset = file.getSize();
 					stream.writeInt(sz);
 				}
-
-				int prevLen = 0;
-				
-//				for (int i = 0; i < filesCount; ++i)
-//				{
-//					File file = a.getFiles().get(i);
-//
-//					int len = file.getSize() - prevLen;
-//					//int fid = file.getFileId() - fileId;
-//					//fileId = file.getFileId();
-//					stream.writeInt(len);
-//					prevLen = file.getSize();
-//
-//	//				fileId += stream.readInt();
-//	//				System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
-//	//				sourceOffset += fileId;
-//	//				filesSize[i] += fileId;
-//				}
 
 				stream.writeByte(1); // number of loops
 			}
@@ -529,7 +445,6 @@ public class Index implements Closeable
 			stream.getBytes(fileData, 0, fileData.length);
 
 			stream = new OutputStream();
-		//return var9;
 			
 			stream.writeByte(0); // compression
 			stream.writeInt(fileData.length);
@@ -572,18 +487,15 @@ public class Index implements Closeable
 		}
 
 		int data;
-//		int archive;
 		for (data = 0; data < this.archives.size(); ++data)
-		//for (data = 0; data < this.validArchiveIds.length; ++data)
 		{
 			Archive a = this.archives.get(data);
 			int archive = a.getArchiveId();
-			//archive = this.validArchiveIds[data];
+
 			if (data != 0)
 			{
 				Archive prev = this.archives.get(data - 1);
 				archive -= prev.getArchiveId();
-				//archive -= this.validArchiveIds[data - 1];
 			}
 
 			if (protocol >= 7)
@@ -599,11 +511,9 @@ public class Index implements Closeable
 		if (this.named)
 		{
 			for (data = 0; data < this.archives.size(); ++data)
-			//for (data = 0; data < this.validArchiveIds.length; ++data)
 			{
 				Archive a = this.archives.get(data);
 				stream.writeInt(a.getNameHash());
-				//stream.writeInt(this.archives[this.validArchiveIds[data]].getNameHash());
 			}
 		}
 
@@ -613,7 +523,6 @@ public class Index implements Closeable
 			{
 				Archive a = this.archives.get(data);
 				stream.writeBytes(a.getWhirlpool());
-				//stream.writeBytes(this.archives[this.validArchiveIds[data]].getWhirpool());
 			}
 		}
 
@@ -621,14 +530,12 @@ public class Index implements Closeable
 		{
 			Archive a = this.archives.get(data);
 			stream.writeInt(a.getCrc());
-			//stream.writeInt(this.archives[this.validArchiveIds[data]].getCRC());
 		}
 
 		for (data = 0; data < this.archives.size(); ++data)
 		{
 			Archive a = this.archives.get(data);
 			stream.writeInt(a.getRevision());
-			//stream.writeInt(this.archives[this.validArchiveIds[data]].getRevision());
 		}
 
 		for (data = 0; data < this.archives.size(); ++data)
@@ -636,7 +543,7 @@ public class Index implements Closeable
 			Archive a = this.archives.get(data);
 			
 			int len = a.getFiles().size();
-			//archive = this.archives[this.validArchiveIds[data]].getValidFileIds().length;
+
 			if (protocol >= 7)
 			{
 				stream.writeBigSmart(len);
@@ -648,23 +555,19 @@ public class Index implements Closeable
 		}
 
 		int index2;
-		//ArchiveReference var8;
 		for (data = 0; data < this.archives.size(); ++data)
 		{
 			Archive a = this.archives.get(data);
-			//var8 = this.archives[this.validArchiveIds[data]];
 
 			for (index2 = 0; index2 < a.getFiles().size(); ++index2)
-			//for (index2 = 0; index2 < var8.getValidFileIds().length; ++index2)
 			{
 				File file = a.getFiles().get(index2);
 				int offset = file.getFileId();
-				//int offset = var8.getValidFileIds()[index2];
+
 				if (index2 != 0)
 				{
 					File prev = a.getFiles().get(index2 - 1);
 					offset -= prev.getFileId();
-					//offset -= var8.getValidFileIds()[index2 - 1];
 				}
 
 				if (protocol >= 7)
@@ -681,25 +584,20 @@ public class Index implements Closeable
 		if (this.named)
 		{
 			for (data = 0; data < this.archives.size(); ++data)
-			//for (data = 0; data < this.validArchiveIds.length; ++data)
 			{
 				Archive a = this.archives.get(data);
-				//var8 = this.archives[this.validArchiveIds[data]];
 
 				for (index2 = 0; index2 < a.getFiles().size(); ++index2)
-//				for (index2 = 0; index2 < var8.getValidFileIds().length; ++index2)
 				{
 					File file = a.getFiles().get(index2);
 					stream.writeInt(file.getNameHash());
-					//stream.writeInt(var8.getFiles()[var8.getValidFileIds()[index2]].getNameHash());
 				}
 			}
 		}
 
-		byte[] var9 = new byte[stream.getOffset()];
+		byte[] indexData = new byte[stream.getOffset()];
 		stream.setOffset(0);
-		stream.getBytes(var9, 0, var9.length);
-		return var9;
-//		return this.archive.editNoRevision(var9, mainFile);
+		stream.getBytes(indexData, 0, indexData.length);
+		return indexData;
 	}
 }
