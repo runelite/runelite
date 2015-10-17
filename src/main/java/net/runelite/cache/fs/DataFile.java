@@ -323,15 +323,13 @@ public class DataFile implements Closeable
 				compressedData = data;
 				stream.writeInt(data.length);
 				break;
+			case 1:
+				compressedData = (byte[]) null;
+				break;
 			default:
-				throw new RuntimeException();
-//			case 1:
-//				compressedData = (byte[]) null;
-//				break;
-//			default:
-//				compressedData = GZipCompressor.compress(data);
-//				stream.writeInt(compressedData.length);
-//				stream.writeInt(data.length);
+				compressedData = GZip.compress(data);
+				stream.writeInt(compressedData.length);
+				stream.writeInt(data.length);
 		}
 
 		stream.writeBytes(compressedData);
