@@ -91,27 +91,7 @@ public class Archive
 
 			File file = new File(this, fileId);
 			this.files.add(file);
-			//archive1.getValidFileIds()[index21] = fileId;
 		}
-
-		//archive1.setFiles(new FileReference[index2 + 1]);
-
-//		for (int i = 0; i < archive1.getValidFileIds().length; ++i) {
-//			archive1.getFiles()[archive1.getValidFileIds()[ki]] = new FileReference();
-//		}
-		
-//		if (this.named)
-//		{
-//			for (index = 0; index < validArchivesCount; ++index)
-//			{
-//				ArchiveReference var14 = this.archives[this.validArchiveIds[index]];
-//
-//				for (index2 = 0; index2 < var14.getValidFileIds().length; ++index2)
-//				{
-//					var14.getFiles()[var14.getValidFileIds()[index2]].setNameHash(stream.readInt());
-//				}
-//			}
-//		}
 	}
 	
 	public void loadNames(InputStream stream, int numberOfFiles)

@@ -28,10 +28,6 @@ public class Store implements Closeable
 		for (int i = 0; i < index255.getIndexCount(); ++i)
 		{
 			this.addIndex(i);
-//			IndexFile ifile = new IndexFile(this, i, new File(folder, MAIN_FILE_CACHE_IDX + i));
-//			Index index = new Index(this, ifile, i);
-//			
-//			indexes.add(index);
 		}
 	}
 
@@ -41,7 +37,6 @@ public class Store implements Closeable
 		data.close();
 		index255.close();
 		for (Index i : indexes)
-		//for (IndexFile i : indexFiles)
 			i.close();
 	}
 
@@ -87,7 +82,7 @@ public class Store implements Closeable
 		return true;
 	}
 	
-	public Index addIndex(int id) throws FileNotFoundException
+	public final Index addIndex(int id) throws FileNotFoundException
 	{
 		for (Index i : indexes)
 			if (i.getIndex().getIndexFileId() == id)

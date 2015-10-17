@@ -99,9 +99,9 @@ public class DataFile implements Closeable
 			if (0xFFFF < archiveId)
 			{
 				headerSize = 10;
-				if (dataBlockSize > 510)
+				if (dataBlockSize > SECTOR_SIZE - headerSize)
 				{
-					dataBlockSize = 510;
+					dataBlockSize = SECTOR_SIZE - headerSize;
 				}
 
 				int i = dat.read(this.readCachedBuffer, 0, headerSize + dataBlockSize);
@@ -119,9 +119,9 @@ public class DataFile implements Closeable
 			else
 			{
 				headerSize = 8;
-				if (dataBlockSize > 512)
+				if (dataBlockSize > SECTOR_SIZE - headerSize)
 				{
-					dataBlockSize = 512;
+					dataBlockSize = SECTOR_SIZE - headerSize;
 				}
 
 				int i = dat.read(this.readCachedBuffer, 0, headerSize + dataBlockSize);
@@ -142,7 +142,7 @@ public class DataFile implements Closeable
 				return null;
 			}
 
-			if (nextSector < 0 || dat.length() / 520L < (long) nextSector)
+			if (nextSector < 0 || dat.length() / SECTOR_SIZE < (long) nextSector)
 			{
 				return null;
 			}
