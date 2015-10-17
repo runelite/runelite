@@ -1,6 +1,6 @@
 package net.runelite.cache.fs.util;
 
-public class BZip2BlockEntry {
+public class BZipBlockEntry {
    boolean[] aBooleanArray2205 = new boolean[16];
    boolean[] aBooleanArray2213 = new boolean[256];
    byte aByte2201;

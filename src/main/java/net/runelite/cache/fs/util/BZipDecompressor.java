@@ -1,13 +1,13 @@
 package net.runelite.cache.fs.util;
 
-import net.runelite.cache.fs.util.BZip2BlockEntry;
+import net.runelite.cache.fs.util.BZipBlockEntry;
 
-public class BZip2Decompressor {
+public class BZipDecompressor {
    private static int[] anIntArray257;
-   private static BZip2BlockEntry entryInstance = new BZip2BlockEntry();
+   private static BZipBlockEntry entryInstance = new BZipBlockEntry();
 
    public static final void decompress(byte[] decompressedData, byte[] packedData, int containerSize, int blockSize) {
-      BZip2BlockEntry var4 = entryInstance;
+      BZipBlockEntry var4 = entryInstance;
       synchronized(entryInstance) {
          entryInstance.aByteArray2224 = packedData;
          entryInstance.anInt2209 = blockSize;
@@ -24,7 +24,7 @@ public class BZip2Decompressor {
       }
    }
 
-   private static final void method1785(BZip2BlockEntry entry) {
+   private static final void method1785(BZipBlockEntry entry) {
       entry.anInt2215 = 0;
 
       for(int i = 0; i < 256; ++i) {
@@ -80,7 +80,7 @@ public class BZip2Decompressor {
 
    }
 
-   private static final void method1787(BZip2BlockEntry entry) {
+   private static final void method1787(BZipBlockEntry entry) {
       byte byte4 = entry.aByte2201;
       int i = entry.anInt2222;
       int j = entry.anInt2227;
@@ -203,15 +203,15 @@ public class BZip2Decompressor {
       entry.anInt2206 = j1;
    }
 
-   private static final byte method1788(BZip2BlockEntry entry) {
+   private static final byte method1788(BZipBlockEntry entry) {
       return (byte)method1790(1, entry);
    }
 
-   private static final byte method1789(BZip2BlockEntry entry) {
+   private static final byte method1789(BZipBlockEntry entry) {
       return (byte)method1790(8, entry);
    }
 
-   private static final int method1790(int i, BZip2BlockEntry entry) {
+   private static final int method1790(int i, BZipBlockEntry entry) {
       while(entry.anInt2232 < i) {
          entry.anInt2207 = entry.anInt2207 << 8 | entry.aByteArray2224[entry.anInt2209] & 255;
          entry.anInt2232 += 8;
@@ -228,7 +228,7 @@ public class BZip2Decompressor {
       entryInstance = null;
    }
 
-   private static final void method1793(BZip2BlockEntry entry) {
+   private static final void method1793(BZipBlockEntry entry) {
       int j8 = 0;
       int[] ai = (int[])null;
       int[] ai1 = (int[])null;

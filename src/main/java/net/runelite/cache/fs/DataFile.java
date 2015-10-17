@@ -294,7 +294,7 @@ public class DataFile implements Closeable
 				int length = stream.readInt();
 				data = new byte[length];
 				revision = this.checkRevision(stream, compressedLength);
-				BZip2Decompressor.decompress(data, b, compressedLength, 9);
+				BZipDecompressor.decompress(data, b, compressedLength, 9);
 				break;
 			}
 			default:
