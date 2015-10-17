@@ -9,9 +9,13 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Index implements Closeable
 {
+	private static final Logger logger = LoggerFactory.getLogger(Index.class);
+	
 	private final Store store;
 	private final IndexFile index;
 	private final int id;
@@ -227,6 +231,12 @@ public class Index implements Closeable
 		for (Archive a : archives)
 		{
 			IndexEntry entry = this.index.read(a.getArchiveId());
+			if (entry == null)
+			{
+				logger.warn("can't read archive " + a.getArchiveId() + " from index " + this.id);
+				continue;
+			}
+			
 			assert this.index.getIndexFileId() == this.id;
 			assert entry.getId() == a.getArchiveId();
 			DataFileReadResult res = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...

@@ -91,10 +91,19 @@ public class IndexFile implements Closeable
 		idx.seek(id * INDEX_ENTRY_LEN);
 		int i = idx.read(buffer);
 		if (i != INDEX_ENTRY_LEN)
-			logger.warn("short read");
+		{
+			logger.warn("short read for id {}: {}", id, i);
+			return null;
+		}
 		
 		int length = ((buffer[0] & 0xFF) << 16) | ((buffer[1] & 0xFF) << 8) | (buffer[2] & 0xFF);
 		int sector = ((buffer[3] & 0xFF) << 16) | ((buffer[4] & 0xFF) << 8) | (buffer[5] & 0xFF);
+		
+		if (length <= 0 || sector <= 0)
+		{
+			logger.warn("invalid length or sector {}/{}", length, sector);
+			return null;
+		}
 		
 		return new IndexEntry(this, id, sector, length);
 	}

@@ -102,7 +102,7 @@ public class Store implements Closeable
 		{
 			int id = i.getIndex().getIndexFileId();
 			if (id == 5)
-				break;
+				continue;
 			i.load();
 		}
 	}
