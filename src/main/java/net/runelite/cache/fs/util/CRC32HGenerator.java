@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.util.crc32;
+package net.runelite.cache.fs.util;
 
 import java.util.zip.CRC32;
 

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
-import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
-import net.runelite.cache.fs.util.gzip.GZipDecompressor;
+import net.runelite.cache.fs.util.BZip2Decompressor;
+import net.runelite.cache.fs.util.GZipDecompressor;
 
 public class Index implements Closeable
 {
@@ -131,22 +131,6 @@ public class Index implements Closeable
 		
 		DataFileWriteResult res = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(data), 0, this.revision);
 		index255.write(new IndexEntry(index255, id, res.sector, res.compressedLength));
-	}
-	
-	private void checkRevision(InputStream stream, int compressedLength)
-	{
-		int offset = stream.getOffset();
-		if (stream.getLength() - (compressedLength + stream.getOffset()) >= 2)
-		{
-			stream.setOffset(stream.getLength() - 2);
-			this.revision = stream.readUnsignedShort();
-			stream.setOffset(offset);
-		}
-		else
-		{
-			this.revision = -1;
-		}
-
 	}
 	
 	private void readIndexData(byte[] data)

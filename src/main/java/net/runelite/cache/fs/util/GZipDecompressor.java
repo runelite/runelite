@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.util.gzip;
+package net.runelite.cache.fs.util;
 
 import net.runelite.cache.fs.io.Stream;
 import java.util.zip.Inflater;

@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.util.gzip;
+package net.runelite.cache.fs.util;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

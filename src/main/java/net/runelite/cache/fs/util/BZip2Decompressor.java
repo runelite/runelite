@@ -1,6 +1,6 @@
-package net.runelite.cache.fs.util.bzip2;
+package net.runelite.cache.fs.util;
 
-import net.runelite.cache.fs.util.bzip2.BZip2BlockEntry;
+import net.runelite.cache.fs.util.BZip2BlockEntry;
 
 public class BZip2Decompressor {
    private static int[] anIntArray257;

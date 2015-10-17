@@ -9,8 +9,8 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
-import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
-import net.runelite.cache.fs.util.gzip.GZipDecompressor;
+import net.runelite.cache.fs.util.BZip2Decompressor;
+import net.runelite.cache.fs.util.GZipDecompressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

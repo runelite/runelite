@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.util.bzip2;
+package net.runelite.cache.fs.util;
 
 public class BZip2BlockEntry {
    boolean[] aBooleanArray2205 = new boolean[16];
