@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class StoreLoadTest
 {
-	//@Test
+	@Test
 	public void test() throws IOException
 	{
 		Store store = new Store(new java.io.File("d:/rs/07/cache"));//c:/rs/cache"));

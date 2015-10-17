@@ -101,8 +101,9 @@ public class Store implements Closeable
 		for (Index i : indexes)
 		{
 			int id = i.getIndex().getIndexFileId();
-			//if (id == 3 || id == 7) // XXXXXXXXXXXXX
-				i.load();
+			if (id == 5)
+				break;
+			i.load();
 		}
 	}
 	

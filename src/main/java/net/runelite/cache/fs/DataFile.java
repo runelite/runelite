@@ -1,16 +1,19 @@
 package net.runelite.cache.fs;
 
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
-import net.runelite.cache.fs.util.BZip2Decompressor;
+import net.runelite.cache.fs.util.BZipDecompressor;
 import net.runelite.cache.fs.util.GZip;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +81,7 @@ public class DataFile implements Closeable
 	{
 		if (sector <= 0L || dat.length() / 520L < (long) sector)
 		{
-			logger.warn("bad read, dat length {}", dat.length());
+			logger.warn("bad read, dat length {}, requested sector {}", dat.length(), sector);
 			return null;
 		}
 		
@@ -90,6 +93,7 @@ public class DataFile implements Closeable
 		{
 			if (sector == 0)
 			{
+				logger.warn("sector == 0");
 				return null;
 			}
 
@@ -143,11 +147,16 @@ public class DataFile implements Closeable
 
 			if (archiveId != currentArchive || currentPart != part || indexId != currentIndex)
 			{
+				logger.warn("data mismatch {} != {}, {} != {}, {} != {}",
+					archiveId, currentArchive,
+					part, currentPart,
+					indexId, currentIndex);
 				return null;
 			}
 
 			if (nextSector < 0 || dat.length() / SECTOR_SIZE < (long) nextSector)
 			{
+				logger.warn("Invalid next sector");
 				return null;
 			}
 
@@ -164,14 +173,6 @@ public class DataFile implements Closeable
 		return this.decompress(buffer.array());
 	}
 	
-	/**
-	 * 
-	 * @param indexId
-	 * @param archiveId archive to write to
-	 * @param data data to write
-	 * @return the sector the data starts at
-	 * @throws IOException 
-	 */
 	public synchronized DataFileWriteResult write(int indexId, int archiveId, ByteBuffer data, int compression, int revision) throws IOException
 	{
 		int sector;
@@ -312,7 +313,7 @@ public class DataFile implements Closeable
 		return res;
 	}
 	
-	private byte[] compress(byte[] data, int compression, int revision)
+	private byte[] compress(byte[] data, int compression, int revision) throws IOException
 	{
 		OutputStream stream = new OutputStream();
 		stream.writeByte(compression);
@@ -324,10 +325,21 @@ public class DataFile implements Closeable
 				stream.writeInt(data.length);
 				break;
 			case 1:
-				compressedData = (byte[]) null;
-				break;
+				// bzip1?
+				throw new UnsupportedOperationException();
 			default:
-				compressedData = GZip.compress(data);
+				ByteArrayOutputStream bout = new ByteArrayOutputStream();
+				try (GzipCompressorOutputStream out = new GzipCompressorOutputStream(bout))
+				{
+					out.write(data);
+				}
+				compressedData = bout.toByteArray();
+				
+				// check it with the old compressor
+				byte[] data2 = new byte[data.length];
+				GZip.decompress(new InputStream(compressedData), data2);
+				assert Arrays.equals(data, data2);
+				
 				stream.writeInt(compressedData.length);
 				stream.writeInt(data.length);
 		}

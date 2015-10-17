@@ -64,4 +64,18 @@ public class DataFileTest
 			Assert.assertEquals("test", str);
 		}
 	}
+	
+//	@Test
+//	public void testBZip2Compression() throws IOException
+//	{
+//		try (Store store = new Store(folder.getRoot()))
+//		{
+//			DataFile df = new DataFile(store, folder.newFile());
+//			DataFileWriteResult res = df.write(41, 4, ByteBuffer.wrap("test".getBytes()), 1, 0);
+//			DataFileReadResult res2 = df.read(41, 4, res.sector, res.compressedLength);
+//			byte[] buf = res2.data;
+//			String str = new String(buf);
+//			Assert.assertEquals("test", str);
+//		}
+//	}
 }

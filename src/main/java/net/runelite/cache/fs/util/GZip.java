@@ -9,24 +9,24 @@ import net.runelite.cache.fs.io.Stream;
 public class GZip {
 	private static final Inflater inflaterInstance = new Inflater(true);
 
-	public static final byte[] compress(byte[] data)
-	{
-		ByteArrayOutputStream compressedBytes = new ByteArrayOutputStream();
-
-		try
-		{
-			GZIPOutputStream e = new GZIPOutputStream(compressedBytes);
-			e.write(data);
-			e.finish();
-			e.close();
-			return compressedBytes.toByteArray();
-		}
-		catch (IOException var3)
-		{
-			var3.printStackTrace();
-			return null;
-		}
-	}
+//	public static final byte[] compress(byte[] data)
+//	{
+//		ByteArrayOutputStream compressedBytes = new ByteArrayOutputStream();
+//
+//		try
+//		{
+//			GZIPOutputStream e = new GZIPOutputStream(compressedBytes);
+//			e.write(data);
+//			e.finish();
+//			e.close();
+//			return compressedBytes.toByteArray();
+//		}
+//		catch (IOException var3)
+//		{
+//			var3.printStackTrace();
+//			return null;
+//		}
+//	}
 
 	public static final void decompress(Stream stream, byte[] data)
 	{
