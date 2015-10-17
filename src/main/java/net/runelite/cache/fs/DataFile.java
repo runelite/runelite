@@ -10,7 +10,7 @@ import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.BZip2Decompressor;
-import net.runelite.cache.fs.util.GZipDecompressor;
+import net.runelite.cache.fs.util.GZip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -302,7 +302,7 @@ public class DataFile implements Closeable
 				int length = stream.readInt();
 				data = new byte[length];
 				revision = this.checkRevision(stream, compressedLength);
-				GZipDecompressor.decompress(stream, data);
+				GZip.decompress(stream, data);
 			}
 		}
 		

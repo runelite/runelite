@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
-import net.runelite.cache.fs.util.BZip2Decompressor;
-import net.runelite.cache.fs.util.GZipDecompressor;
 
 public class Index implements Closeable
 {
