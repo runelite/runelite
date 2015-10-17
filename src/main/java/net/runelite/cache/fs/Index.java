@@ -10,7 +10,6 @@ import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
-import net.runelite.cache.fs.util.gzip.GZipCompressor;
 import net.runelite.cache.fs.util.gzip.GZipDecompressor;
 
 public class Index implements Closeable
@@ -113,41 +112,43 @@ public class Index implements Closeable
 		IndexFile index255 = store.getIndex255();
 		
 		IndexEntry entry = index255.read(id);
-		byte[] b = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
-		
-		InputStream stream = new InputStream(b);
-		
-		//XTEA decrypt here
-		
-		this.compression = stream.readUnsignedByte();
-		int compressedLength = stream.readInt();
-		if (compressedLength < 0 || compressedLength > 1000000)
-			throw new RuntimeException("Invalid archive header");
-		
-		byte[] data;
-		switch (compression)
-		{
-			case 0:
-				data = new byte[compressedLength];
-				this.checkRevision(stream, compressedLength);
-				stream.readBytes(data, 0, compressedLength);
-				break;
-			case 1:
-			{
-				int length = stream.readInt();
-				data = new byte[length];
-				this.checkRevision(stream, compressedLength);
-				BZip2Decompressor.decompress(data, b, compressedLength, 9);
-				break;
-			}
-			default:
-			{
-				int length = stream.readInt();
-				data = new byte[length];
-				this.checkRevision(stream, compressedLength);
-				GZipDecompressor.decompress(stream, data);
-			}
-		}
+		DataFileReadResult res = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
+		byte[] data = res.data;
+//		byte[] b = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
+//		
+//		InputStream stream = new InputStream(b);
+//		
+//		//XTEA decrypt here
+//		
+//		this.compression = stream.readUnsignedByte();
+//		int compressedLength = stream.readInt();
+//		if (compressedLength < 0 || compressedLength > 1000000)
+//			throw new RuntimeException("Invalid archive header");
+//		
+//		byte[] data;
+//		switch (compression)
+//		{
+//			case 0:
+//				data = new byte[compressedLength];
+//				this.checkRevision(stream, compressedLength);
+//				stream.readBytes(data, 0, compressedLength);
+//				break;
+//			case 1:
+//			{
+//				int length = stream.readInt();
+//				data = new byte[length];
+//				this.checkRevision(stream, compressedLength);
+//				BZip2Decompressor.decompress(data, b, compressedLength, 9);
+//				break;
+//			}
+//			default:
+//			{
+//				int length = stream.readInt();
+//				data = new byte[length];
+//				this.checkRevision(stream, compressedLength);
+//				GZipDecompressor.decompress(stream, data);
+//			}
+//		}
 		
 		readIndexData(data);
 		
@@ -160,51 +161,53 @@ public class Index implements Closeable
 		
 		byte[] data = this.writeIndexData();
 		
-		OutputStream stream = new OutputStream();
-		stream.writeByte(this.compression);
-		byte[] compressedData;
-		switch (this.compression)
-		{
-			case 0:
-				compressedData = data;
-				stream.writeInt(data.length);
-				break;
-			default:
-				throw new RuntimeException();
-//			case 1:
-//				compressedData = (byte[]) null;
+//		OutputStream stream = new OutputStream();
+//		stream.writeByte(this.compression);
+//		byte[] compressedData;
+//		switch (this.compression)
+//		{
+//			case 0:
+//				compressedData = data;
+//				stream.writeInt(data.length);
 //				break;
 //			default:
-//				compressedData = GZipCompressor.compress(data);
-//				stream.writeInt(compressedData.length);
-//				stream.writeInt(data.length);
-		}
-
-		stream.writeBytes(compressedData);
-		stream.writeShort(this.revision);
-		
-		byte[] compressed = new byte[stream.getOffset()];
-		stream.setOffset(0);
-		stream.getBytes(compressed, 0, compressed.length);
-		
-		//XTEA encrypt here
+//				throw new RuntimeException();
+////			case 1:
+////				compressedData = (byte[]) null;
+////				break;
+////			default:
+////				compressedData = GZipCompressor.compress(data);
+////				stream.writeInt(compressedData.length);
+////				stream.writeInt(data.length);
+//		}
+//
+//		stream.writeBytes(compressedData);
+//		stream.writeShort(this.revision);
+//		
+//		byte[] compressed = new byte[stream.getOffset()];
+//		stream.setOffset(0);
+//		stream.getBytes(compressed, 0, compressed.length);
+//		
+//		//XTEA encrypt here
 
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
 		
-		int sector = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(compressed));
-		index255.write(new IndexEntry(index255, id, sector, compressed.length));
+		DataFileWriteResult res = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(data), 0, this.revision);
+		index255.write(new IndexEntry(index255, id, res.sector, res.compressedLength));
 	}
 	
 	private void checkRevision(InputStream stream, int compressedLength)
 	{
 		int offset = stream.getOffset();
-		if (stream.getLength() - (compressedLength + stream.getOffset()) >= 2) {
+		if (stream.getLength() - (compressedLength + stream.getOffset()) >= 2)
+		{
 			stream.setOffset(stream.getLength() - 2);
 			this.revision = stream.readUnsignedShort();
 			stream.setOffset(offset);
 		}
-		else {
+		else
+		{
 			this.revision = -1;
 		}
 
@@ -308,41 +311,42 @@ public class Index implements Closeable
 			IndexEntry entry = this.index.read(a.getArchiveId());
 			assert this.index.getIndexFileId() == this.id;
 			assert entry.getId() == a.getArchiveId();
-			byte[] b = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
-			
-			InputStream stream = new InputStream(b);
-
-			this.compression = stream.readUnsignedByte();
-			int compressedLength = stream.readInt();
-			if (compressedLength < 0 || compressedLength > 1000000)
-			{
-				throw new RuntimeException("Invalid archive header");
-			}
-
-			byte[] data;
-			switch (compression)
-			{
-				case 0:
-					data = new byte[compressedLength];
-					this.checkRevision(stream, compressedLength);
-					stream.readBytes(data, 0, compressedLength);
-					break;
-				case 1:
-				{
-					int length = stream.readInt();
-					data = new byte[length];
-					this.checkRevision(stream, compressedLength);
-					BZip2Decompressor.decompress(data, b, compressedLength, 9);
-					break;
-				}
-				default:
-				{
-					int length = stream.readInt();
-					data = new byte[length];
-					this.checkRevision(stream, compressedLength);
-					GZipDecompressor.decompress(stream, data);
-				}
-			}
+			DataFileReadResult res = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
+			byte[] data = res.data;
+//			
+//			InputStream stream = new InputStream(b);
+//
+//			this.compression = stream.readUnsignedByte();
+//			int compressedLength = stream.readInt();
+//			if (compressedLength < 0 || compressedLength > 1000000)
+//			{
+//				throw new RuntimeException("Invalid archive header");
+//			}
+//
+//			byte[] data;
+//			switch (compression)
+//			{
+//				case 0:
+//					data = new byte[compressedLength];
+//					this.checkRevision(stream, compressedLength);
+//					stream.readBytes(data, 0, compressedLength);
+//					break;
+//				case 1:
+//				{
+//					int length = stream.readInt();
+//					data = new byte[length];
+//					this.checkRevision(stream, compressedLength);
+//					BZip2Decompressor.decompress(data, b, compressedLength, 9);
+//					break;
+//				}
+//				default:
+//				{
+//					int length = stream.readInt();
+//					data = new byte[length];
+//					this.checkRevision(stream, compressedLength);
+//					GZipDecompressor.decompress(stream, data);
+//				}
+//			}
 			
 			if (a.getFiles().size() == 1)
 			{
@@ -356,7 +360,7 @@ public class Index implements Closeable
 			--readPosition;
 			int amtOfLoops = data[readPosition] & 255;
 			readPosition -= amtOfLoops * filesCount * 4;
-			stream = new InputStream(data);
+			InputStream stream = new InputStream(data);
 			stream.setOffset(readPosition);
 			int[] filesSize = new int[filesCount];
 
@@ -444,24 +448,24 @@ public class Index implements Closeable
 			stream.setOffset(0);
 			stream.getBytes(fileData, 0, fileData.length);
 
-			stream = new OutputStream();
-			
-			stream.writeByte(0); // compression
-			stream.writeInt(fileData.length);
-			
-			stream.writeBytes(fileData);
-			stream.writeShort(this.revision);
-			
-			byte[] finalFileData = new byte[stream.getOffset()];
-			stream.setOffset(0);
-			stream.getBytes(finalFileData, 0, finalFileData.length);
+//			stream = new OutputStream();
+//			
+//			stream.writeByte(0); // compression
+//			stream.writeInt(fileData.length);
+//			
+//			stream.writeBytes(fileData);
+//			stream.writeShort(this.revision);
+//			
+//			byte[] finalFileData = new byte[stream.getOffset()];
+//			stream.setOffset(0);
+//			stream.getBytes(finalFileData, 0, finalFileData.length);
 			
 			assert this.index.getIndexFileId() == this.id;
 			DataFile data = store.getData();
 			
 			// XXX old data is just left there in the file?
-			int sector = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(finalFileData));
-			this.index.write(new IndexEntry(this.index, a.getArchiveId(), sector, finalFileData.length));
+			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(fileData), 0, this.revision);
+			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
 		}
 	}
 	

@@ -26,8 +26,9 @@ public class DataFileTest
 		File file = folder.newFile();
 		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, file);
-		int sector = df.write(42, 3, ByteBuffer.wrap("test".getBytes()));
-		byte[] buf = df.read(42, 3, sector, 4);
+		DataFileWriteResult res = df.write(42, 3, ByteBuffer.wrap("test".getBytes()), 0, 0);
+		DataFileReadResult res2 = df.read(42, 3, res.sector, res.compressedLength);
+		byte[] buf = res2.data;
 		String str = new String(buf);
 		Assert.assertEquals("test", str);
 		file.delete();
@@ -37,13 +38,15 @@ public class DataFileTest
 	public void test2() throws IOException
 	{
 		byte[] b = new byte[1024];
-		for (int i = 0; i < 1024; ++i) b[i] = (byte) i;
+		for (int i = 0; i < 1024; ++i)
+			b[i] = (byte) i;
 		
 		File file = folder.newFile();
 		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, file);
-		int sector = df.write(42, 0x1FFFF, ByteBuffer.wrap(b));
-		byte[] buf = df.read(42, 0x1FFFF, sector, b.length);
+		DataFileWriteResult res = df.write(42, 0x1FFFF, ByteBuffer.wrap(b), 0, 0);
+		DataFileReadResult res2 = df.read(42, 0x1FFFF, res.sector, res.compressedLength);
+		byte[] buf = res2.data;
 		Assert.assertArrayEquals(b, buf);
 		file.delete();
 	}

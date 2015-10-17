@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import net.runelite.cache.fs.io.InputStream;
+import net.runelite.cache.fs.io.OutputStream;
+import net.runelite.cache.fs.util.bzip2.BZip2Decompressor;
+import net.runelite.cache.fs.util.gzip.GZipDecompressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,7 +74,7 @@ public class DataFile implements Closeable
 	 * @return
 	 * @throws IOException 
 	 */
-	public synchronized byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
+	public synchronized DataFileReadResult read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / 520L < (long) sector)
 		{
@@ -154,7 +158,10 @@ public class DataFile implements Closeable
 		}
 
 		buffer.flip();
-		return buffer.array();
+				
+		//XTEA decrypt here?
+		
+		return this.decompress(buffer.array());
 	}
 	
 	/**
@@ -165,10 +172,13 @@ public class DataFile implements Closeable
 	 * @return the sector the data starts at
 	 * @throws IOException 
 	 */
-	public synchronized int write(int indexId, int archiveId, ByteBuffer data) throws IOException
+	public synchronized DataFileWriteResult write(int indexId, int archiveId, ByteBuffer data, int compression, int revision) throws IOException
 	{
 		int sector;
 		int startSector;
+		
+		data = ByteBuffer.wrap(this.compress(data.array(), compression, revision));
+		int dataLen = data.remaining();
 		
 		sector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
 		if (sector == 0)
@@ -253,6 +263,98 @@ public class DataFile implements Closeable
 			sector = nextSector;
 		}
 		
-		return startSector;
+		DataFileWriteResult res = new DataFileWriteResult();
+		res.sector = startSector;
+		res.compressedLength = dataLen;
+		return res;
+	}
+	
+	private DataFileReadResult decompress(byte[] b)
+	{
+		InputStream stream = new InputStream(b);
+		
+		int compression = stream.readUnsignedByte();
+		int compressedLength = stream.readInt();
+		if (compressedLength < 0 || compressedLength > 1000000)
+			throw new RuntimeException("Invalid data");
+		
+		byte[] data;
+		int revision;
+		switch (compression)
+		{
+			case 0:
+				data = new byte[compressedLength];
+				revision = this.checkRevision(stream, compressedLength);
+				stream.readBytes(data, 0, compressedLength);
+				break;
+			case 1:
+			{
+				int length = stream.readInt();
+				data = new byte[length];
+				revision = this.checkRevision(stream, compressedLength);
+				BZip2Decompressor.decompress(data, b, compressedLength, 9);
+				break;
+			}
+			default:
+			{
+				int length = stream.readInt();
+				data = new byte[length];
+				revision = this.checkRevision(stream, compressedLength);
+				GZipDecompressor.decompress(stream, data);
+			}
+		}
+		
+		DataFileReadResult res = new DataFileReadResult();
+		res.data = data;
+		res.revision = revision;
+		return res;
+	}
+	
+	private byte[] compress(byte[] data, int compression, int revision)
+	{
+		OutputStream stream = new OutputStream();
+		stream.writeByte(compression);
+		byte[] compressedData;
+		switch (compression)
+		{
+			case 0:
+				compressedData = data;
+				stream.writeInt(data.length);
+				break;
+			default:
+				throw new RuntimeException();
+//			case 1:
+//				compressedData = (byte[]) null;
+//				break;
+//			default:
+//				compressedData = GZipCompressor.compress(data);
+//				stream.writeInt(compressedData.length);
+//				stream.writeInt(data.length);
+		}
+
+		stream.writeBytes(compressedData);
+		stream.writeShort(revision);
+		
+		byte[] compressed = new byte[stream.getOffset()];
+		stream.setOffset(0);
+		stream.getBytes(compressed, 0, compressed.length);
+		return compressed;
+	}
+	
+	private int checkRevision(InputStream stream, int compressedLength)
+	{
+		int offset = stream.getOffset();
+		int revision;
+		if (stream.getLength() - (compressedLength + stream.getOffset()) >= 2)
+		{
+			stream.setOffset(stream.getLength() - 2);
+			revision = stream.readUnsignedShort();
+			stream.setOffset(offset);
+		}
+		else
+		{
+			revision = -1;
+		}
+		return revision;
 	}
 }
