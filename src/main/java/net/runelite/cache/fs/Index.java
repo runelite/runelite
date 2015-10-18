@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
-import net.runelite.cache.fs.util.CRC32HGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +19,6 @@ public class Index implements Closeable
 	private final Store store;
 	private final IndexFile index;
 	private final int id;
-	private boolean named, usesWhirpool;
 	private int revision;
 	private final List<Archive> archives = new ArrayList<>();
 	
@@ -140,8 +138,8 @@ public class Index implements Closeable
 			}
 
 			int hash = stream.readUnsignedByte();
-			this.named = (1 & hash) != 0;
-			this.usesWhirpool = (2 & hash) != 0;
+			boolean named = (1 & hash) != 0;
+			boolean usesWhirpool = (2 & hash) != 0;
 			int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 			int lastArchiveId = 0;
 
@@ -154,7 +152,7 @@ public class Index implements Closeable
 				this.archives.add(a);
 			}
 
-			if (this.named)
+			if (named)
 			{
 				for (index = 0; index < validArchivesCount; ++index)
 				{
@@ -164,7 +162,7 @@ public class Index implements Closeable
 				}
 			}
 
-			if (this.usesWhirpool)
+			if (usesWhirpool)
 			{
 				for (index = 0; index < validArchivesCount; ++index)
 				{
@@ -207,7 +205,7 @@ public class Index implements Closeable
 				a.load(stream, numberOfFiles[index], protocol);
 			}
 
-			if (this.named)
+			if (named)
 			{
 				for (index = 0; index < validArchivesCount; ++index)
 				{
@@ -367,8 +365,8 @@ public class Index implements Closeable
 			stream.writeInt(this.revision);
 		}
 
-		this.named = true;
-		stream.writeByte((this.named ? 1 : 0) | (this.usesWhirpool ? 2 : 0));
+		boolean named = true, usesWhirpool = false;
+		stream.writeByte((named ? 1 : 0) | (usesWhirpool ? 2 : 0));
 		if (protocol >= 7)
 		{
 			stream.writeBigSmart(this.archives.size());
@@ -400,7 +398,7 @@ public class Index implements Closeable
 			}
 		}
 
-		if (this.named)
+		if (named)
 		{
 			for (data = 0; data < this.archives.size(); ++data)
 			{
@@ -409,7 +407,7 @@ public class Index implements Closeable
 			}
 		}
 
-		if (this.usesWhirpool)
+		if (usesWhirpool)
 		{
 			for (data = 0; data < this.archives.size(); ++data)
 			{
@@ -473,7 +471,7 @@ public class Index implements Closeable
 			}
 		}
 
-		if (this.named)
+		if (named)
 		{
 			for (data = 0; data < this.archives.size(); ++data)
 			{
