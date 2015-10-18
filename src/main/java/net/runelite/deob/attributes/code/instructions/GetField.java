@@ -17,10 +17,6 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.deobfuscators.arithmetic.Encryption;
-import net.runelite.deob.deobfuscators.arithmetic.Pair;
-import net.runelite.deob.util.NameMappings;
 
 public class GetField extends Instruction implements GetFieldInstruction
 {
@@ -84,7 +80,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 	}
 	
 	@Override
-	public void lookup2()
+	public void lookup()
 	{
 		myField = getMyField();
 	}

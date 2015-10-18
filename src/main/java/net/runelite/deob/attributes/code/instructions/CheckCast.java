@@ -8,14 +8,12 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.execution.Type;
 import net.runelite.deob.pool.Class;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
-import net.runelite.deob.util.NameMappings;
 
 public class CheckCast extends Instruction
 {
@@ -60,7 +58,7 @@ public class CheckCast extends Instruction
 	}
 	
 	@Override
-	public void lookup2()
+	public void lookup()
 	{
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		myClass = group.findClass(clazz.getName());

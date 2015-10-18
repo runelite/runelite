@@ -257,7 +257,7 @@ public class Instructions
 	public void lookup()
 	{
 		for (Instruction i : instructions)
-			i.lookup2();
+			i.lookup();
 	}
 	
 	public void regeneratePool()

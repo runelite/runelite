@@ -15,7 +15,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
-import net.runelite.deob.util.NameMappings;
 
 public class MultiANewArray extends Instruction
 {
@@ -66,7 +65,7 @@ public class MultiANewArray extends Instruction
 	}
 	
 	@Override
-	public void lookup2()
+	public void lookup()
 	{
 		net.runelite.deob.signature.Type t = new net.runelite.deob.signature.Type(clazz.getName());
 		String name = t.getType();

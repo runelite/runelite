@@ -221,7 +221,7 @@ public abstract class Instruction
 	}
 	
 	// look up symbols from pool
-	public void lookup2()
+	public void lookup()
 	{
 	}
 	

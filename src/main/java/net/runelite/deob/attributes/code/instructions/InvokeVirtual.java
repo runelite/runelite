@@ -11,7 +11,6 @@ import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.Type;
-import net.runelite.deob.pool.Class;
 import net.runelite.deob.pool.Method;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.pool.PoolEntry;
@@ -23,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.deob.execution.Execution;
-import net.runelite.deob.util.NameMappings;
 
 public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
@@ -141,7 +139,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	}
 	
 	@Override
-	public void lookup2()
+	public void lookup()
 	{
 		myMethods = this.getMethods();
 	}
