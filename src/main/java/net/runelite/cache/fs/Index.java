@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
+import net.runelite.cache.fs.util.CRC32HGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +20,8 @@ public class Index implements Closeable
 	private final Store store;
 	private final IndexFile index;
 	private final int id;
-	private int compression;
 	private boolean named, usesWhirpool;
 	private int revision;
-	private int crc;
-	private byte[] whirlpool;
 	private final List<Archive> archives = new ArrayList<>();
 	
 	public Index(Store store, IndexFile index, int id)
@@ -46,8 +44,6 @@ public class Index implements Closeable
 		hash = 97 * hash + Objects.hashCode(this.index);
 		hash = 97 * hash + this.id;
 		hash = 97 * hash + this.revision;
-		hash = 97 * hash + this.crc;
-		hash = 97 * hash + Arrays.hashCode(this.whirlpool);
 		hash = 97 * hash + Objects.hashCode(this.archives);
 		return hash;
 	}
@@ -76,19 +72,16 @@ public class Index implements Closeable
 		{
 			return false;
 		}
-		if (this.crc != other.crc)
-		{
-			return false;
-		}
-		if (!Arrays.equals(this.whirlpool, other.whirlpool))
-		{
-			return false;
-		}
 		if (!Objects.equals(this.archives, other.archives))
 		{
 			return false;
 		}
 		return true;
+	}
+
+	public int getId()
+	{
+		return id;
 	}
 
 	public IndexFile getIndex()
@@ -143,7 +136,7 @@ public class Index implements Closeable
 		{
 			if (protocol >= 6)
 			{
-				int revision = stream.readInt(); // what is this and why is it different from checkRevision?
+				this.revision = stream.readInt();
 			}
 
 			int hash = stream.readUnsignedByte();
@@ -241,6 +234,16 @@ public class Index implements Closeable
 			assert entry.getId() == a.getArchiveId();
 			DataFileReadResult res = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
 			byte[] data = res.data;
+			
+			if (a.getCrc() != res.crc)
+			{
+				logger.warn("crc mismatch for archive {}", a);
+			}
+			
+			if (a.getWhirlpool() != null && !Arrays.equals(a.getWhirlpool(), res.whirlpool))
+			{
+				logger.warn("whirlpool mismatch for archive {}", a);
+			}
 
 			if (a.getFiles().size() == 1)
 			{

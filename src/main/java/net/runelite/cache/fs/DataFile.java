@@ -12,7 +12,9 @@ import java.util.Objects;
 import net.runelite.cache.fs.io.InputStream;
 import net.runelite.cache.fs.io.OutputStream;
 import net.runelite.cache.fs.util.BZipDecompressor;
+import net.runelite.cache.fs.util.CRC32HGenerator;
 import net.runelite.cache.fs.util.GZip;
+import net.runelite.cache.fs.util.Whirlpool;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -310,6 +312,8 @@ public class DataFile implements Closeable
 		DataFileReadResult res = new DataFileReadResult();
 		res.data = data;
 		res.revision = revision;
+		res.crc = CRC32HGenerator.getHash(b, b.length - 2);
+		res.whirlpool = Whirlpool.getHash(b, 0, b.length - 2);
 		return res;
 	}
 	

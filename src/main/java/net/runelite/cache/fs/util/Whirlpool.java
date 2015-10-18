@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.util.whirlpool;
+package net.runelite.cache.fs.util;
 
 import java.util.Arrays;
 
