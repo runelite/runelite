@@ -466,7 +466,7 @@ public class MultiplicationDeobfuscatorTest
 		Assert.assertEquals(1, constant3.getConstantAsInt());
 	}
 	
-	//@Test
+	@Test
 	public void test8()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
@@ -493,9 +493,9 @@ public class MultiplicationDeobfuscatorTest
 		    label3 = new NOP(ins);
 		
 		Instruction body[] = {
-			new GetStatic(ins, field.getPoolField()),
+			//new GetStatic(ins, field.getPoolField()),
 			constant1,
-			new IMul(ins),
+			//new IMul(ins),
 			constant2,
 			new IMul(ins),
 			
@@ -515,6 +515,7 @@ public class MultiplicationDeobfuscatorTest
 			
 			label3,
 			new InvokeStatic(ins, group.findClass("test").findMethod("func2").getPoolMethod()),
+			//new Pop(ins), new Pop(ins), new Pop(ins),
 			
 			new VReturn(ins)
 		};

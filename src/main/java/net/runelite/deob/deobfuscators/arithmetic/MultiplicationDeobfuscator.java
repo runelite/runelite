@@ -322,9 +322,17 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				return false;
 			}
 
+			Instruction poppedIns = null;
 			for (StackContext s : i.getPushes())
-				if (s.getPopped().size() > 1)
-					return false;
+				for (InstructionContext i2 : s.getPopped())
+				{
+					if (poppedIns == null)
+						poppedIns = i2.getInstruction();
+					else if (poppedIns != i2.getInstruction())
+						return false;
+				}
+				//if (s.getPopped().size() > 1)
+				//	return false;
 		}
 		return true;
 	}
