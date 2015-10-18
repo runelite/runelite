@@ -5,6 +5,7 @@ import net.runelite.deob.ConstantPool;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Method extends PoolEntry
 {
@@ -50,6 +51,15 @@ public class Method extends PoolEntry
 		
 		Method m = (Method) other;
 		return clazz.equals(m.clazz) && nat.equals(m.nat);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 67 * hash + Objects.hashCode(this.clazz);
+		hash = 67 * hash + Objects.hashCode(this.nat);
+		return hash;
 	}
 	
 	public Class getClassEntry()

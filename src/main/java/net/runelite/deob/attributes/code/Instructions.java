@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.util.NameMappings;
 
 public class Instructions
 {
@@ -253,24 +254,18 @@ public class Instructions
 		return null;
 	}
 	
-	public void renameClass(ClassFile cf, String name)
+	public void lookup()
 	{
 		for (Instruction i : instructions)
-			i.renameClass(cf, name);
+			i.lookup2();
 	}
 	
-	public void renameField(Field f, net.runelite.deob.pool.Field newField)
+	public void regeneratePool()
 	{
 		for (Instruction i : instructions)
-			i.renameField(f, newField);
+			i.regeneratePool();
 	}
-	
-	public void renameMethod(Method oldMethod, net.runelite.deob.pool.Method newMethod)
-	{
-		for (Instruction i : instructions)
-			i.renameMethod(oldMethod, newMethod);
-	}
-	
+
 	public void replace(Instruction oldi, Instruction newi)
 	{
 		assert oldi != newi;

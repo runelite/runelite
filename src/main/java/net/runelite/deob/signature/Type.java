@@ -22,6 +22,12 @@ public class Type
 		this.arrayDimms = dimms;
 	}
 	
+	public Type(Type other)
+	{
+		type = other.type;
+		arrayDimms = other.arrayDimms;
+	}
+	
 	public String getType()
 	{
 		return type;

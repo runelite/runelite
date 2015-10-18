@@ -1,10 +1,7 @@
 package net.runelite.deob.attributes.code;
 
 import java.io.DataInputStream;
-import net.runelite.deob.ClassFile;
 import net.runelite.deob.ConstantPool;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
 import net.runelite.deob.block.Block;
 import net.runelite.deob.execution.Frame;
 
@@ -12,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.util.NameMappings;
 
 public abstract class Instruction
 {
@@ -222,15 +220,12 @@ public abstract class Instruction
 	{
 	}
 	
-	public void renameClass(ClassFile cf, String name)
+	// look up symbols from pool
+	public void lookup2()
 	{
 	}
 	
-	public void renameField(Field f, net.runelite.deob.pool.Field name)
-	{
-	}
-	
-	public void renameMethod(Method oldMethod, net.runelite.deob.pool.Method newMethod)
+	public void regeneratePool()
 	{
 	}
 	

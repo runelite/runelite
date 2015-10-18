@@ -166,6 +166,11 @@ public class ClassFile
 	{
 		return fields.findField(name);
 	}
+	
+	public Class getPoolClass()
+	{
+		return name;
+	}
 
 	public Field findFieldDeep(NameAndType nat)
 	{
@@ -201,7 +206,7 @@ public class ClassFile
 
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findMethodDeep(nat);
+			return parent.findMethodDeepStatic(nat);
 
 		return null;
 	}

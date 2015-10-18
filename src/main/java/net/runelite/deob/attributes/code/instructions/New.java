@@ -14,10 +14,13 @@ import net.runelite.deob.pool.Class;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.ClassGroup;
+import net.runelite.deob.util.NameMappings;
 
 public class New extends Instruction
 {
 	private Class clazz;
+	private ClassFile myClass;
 
 	public New(Instructions instructions, InstructionType type, int pc)
 	{
@@ -58,9 +61,16 @@ public class New extends Instruction
 	}
 	
 	@Override
-	public void renameClass(ClassFile cf, String name)
+	public void lookup2()
 	{
-		if (clazz.getName().equals(cf.getName()))
-			clazz = new Class(name);
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		myClass = group.findClass(clazz.getName());
+	}
+	
+	@Override
+	public void regeneratePool()
+	{
+		if (myClass != null)
+			clazz = myClass.getPoolClass();
 	}
 }

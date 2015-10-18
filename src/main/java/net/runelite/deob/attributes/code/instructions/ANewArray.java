@@ -14,10 +14,14 @@ import net.runelite.deob.pool.Class;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.ClassGroup;
+import net.runelite.deob.util.NameMappings;
 
 public class ANewArray extends Instruction
 {
 	private Class clazz;
+	private ClassFile myClass;
+	private int dimensions;
 
 	public ANewArray(Instructions instructions, InstructionType type, int pc)
 	{
@@ -59,10 +63,27 @@ public class ANewArray extends Instruction
 	}
 	
 	@Override
-	public void renameClass(ClassFile cf, String name)
+	public void lookup2()
 	{
 		net.runelite.deob.signature.Type t = new net.runelite.deob.signature.Type(clazz.getName());
-		if (t.getType().equals("L" + cf.getName() + ";") || t.getType().equals(cf.getName()))
-			clazz = new Class(name, t.getArrayDims());
+		String name = t.getType();
+		if (name.startsWith("L") && name.endsWith(";"))
+			name = name.substring(1, name.length() - 1);
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		myClass = group.findClass(name);
+		dimensions = t.getArrayDims();
+	}
+	
+	@Override
+	public void regeneratePool()
+	{
+		if (myClass != null)
+		{
+			StringBuffer sb = new StringBuffer();
+			for (int i = 0; i < this.dimensions; ++i)
+				sb.append('[');
+			sb.append("L" + myClass.getName() + ";");
+			clazz = new Class(sb.toString());
+		}
 	}
 }

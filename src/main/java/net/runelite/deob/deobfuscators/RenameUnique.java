@@ -17,6 +17,8 @@ import net.runelite.deob.signature.Signature;
 import net.runelite.deob.signature.Type;
 import java.util.HashSet;
 import java.util.Set;
+import net.runelite.deob.attributes.Code;
+import net.runelite.deob.util.NameMappings;
 
 public class RenameUnique implements Deobfuscator
 {
@@ -49,8 +51,8 @@ public class RenameUnique implements Deobfuscator
 				// rename on instructions. this includes method calls and field accesses.
 				if (method.getCode() != null)
 				{
-					Instructions instructions = method.getCode().getInstructions();
-					instructions.renameClass(cf, name);
+//					Instructions instructions = method.getCode().getInstructions();
+//					instructions.renameClass(cf, name);
 					
 					// rename on exception handlers
 					Exceptions exceptions = method.getCode().getExceptions();
@@ -99,7 +101,7 @@ public class RenameUnique implements Deobfuscator
 						new net.runelite.deob.pool.Class(field.getFields().getClassFile().getName()),
 						new NameAndType(name, field.getType())
 					);
-					instructions.renameField(field, newField);
+					//instructions.renameField(field, newField);
 				}
 			}
 		}
@@ -183,7 +185,7 @@ public class RenameUnique implements Deobfuscator
 							new net.runelite.deob.pool.Class(m.getMethods().getClassFile().getName()),
 							new NameAndType(name, m.getNameAndType().getDescriptor())
 						);
-						instructions.renameMethod(m, newMethod);
+						//instructions.renameMethod(m, newMethod);
 					}
 				}
 			}
@@ -192,36 +194,45 @@ public class RenameUnique implements Deobfuscator
 		for (Method m : methods)
 			m.setName(name);
 	}
-
-	@Override
-	public void run(ClassGroup group)
+	
+	private NameMappings generateClassNames(ClassGroup group)
 	{
+		NameMappings map = new NameMappings();
 		int i = 0;
-		int classes = 0, fields = 0, methods = 0;
-		
-		group.buildClassGraph();
 		
 		for (ClassFile cf : group.getClasses())
 		{
 			if (cf.getName().length() > 2)
 				continue;
 			
-			renameClass(group, cf, "class" + i++);
-			++classes;
+			map.map(cf.getPoolClass(), "class" + i++);
 		}
 		
-		// rename fields
+		return map;
+	}
+		
+	private NameMappings generatFieldNames(ClassGroup group)
+	{
+		NameMappings map = new NameMappings();
+		int i = 0;
+		
 		for (ClassFile cf : group.getClasses())
 			for (Field field : cf.getFields().getFields())
 			{
 				if (field.getName().length() > 2)
 					continue;
 				
-				renameField(group, field, "field" + i++);
-				++fields;
+				map.map(field.getPoolField(), "field" + i++);
 			}
 		
-		// rename methods
+		return map;
+	}
+
+	private NameMappings generateMethodNames(ClassGroup group)
+	{
+		NameMappings map = new NameMappings();
+		int i = 0;
+		
 		for (ClassFile cf : group.getClasses())
 			for (Method method : cf.getMethods().getMethods())
 			{
@@ -237,9 +248,98 @@ public class RenameUnique implements Deobfuscator
 				else
 					name = "vmethod" + i++;
 				
-				renameMethod(group, virtualMethods, name);
+				for (Method m : virtualMethods)
+					map.map(m.getPoolMethod(), name);
+			}
+		
+		return map;
+	}
+	
+	private void lookup(ClassGroup group)
+	{
+		for (ClassFile cf : group.getClasses())
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Code c = m.getCode();
+				if (c == null)
+					continue;
+				
+				c.getInstructions().lookup();
+			}	
+	}
+	
+	private void regeneratePool(ClassGroup group)
+	{
+		for (ClassFile cf : group.getClasses())
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Code c = m.getCode();
+				if (c == null)
+					continue;
+				
+				c.getInstructions().regeneratePool();
+			}
+	}
+
+	@Override
+	public void run(ClassGroup group)
+	{
+		group.buildClassGraph();
+		lookup(group);
+		
+		NameMappings mappings = this.generateClassNames(group);
+		
+		//renameIns(group, mappings);
+		
+		int i = 0;
+		int classes = 0, fields = 0, methods = 0;
+		
+		for (ClassFile cf : group.getClasses())
+		{
+			String newName = mappings.get(cf.getPoolClass());
+			if (newName == null)
+				continue;
+			
+			renameClass(group, cf, newName);
+			++classes;
+		}
+		
+		mappings = this.generatFieldNames(group);
+		
+		//renameIns(group, mappings);
+		
+		// rename fields
+		for (ClassFile cf : group.getClasses())
+			for (Field field : cf.getFields().getFields())
+			{
+				String newName = mappings.get(field.getPoolField());
+				if (newName == null)
+					continue;
+				
+				renameField(group, field, newName);
+				++fields;
+			}
+		
+		mappings = this.generateMethodNames(group);
+		
+		//renameIns(group, mappings);
+		
+		// rename methods
+		for (ClassFile cf : group.getClasses())
+			for (Method method : cf.getMethods().getMethods())
+			{
+				String newName = mappings.get(method.getPoolMethod());
+				if (newName == null)
+					continue;
+				
+				List<Method> virtualMethods = getVirutalMethods(method);
+				assert !virtualMethods.isEmpty();
+				
+				renameMethod(group, virtualMethods, newName);
 				methods += virtualMethods.size();
 			}
+		
+		this.regeneratePool(group);
 		
 		System.out.println("Uniquely renamed " + classes + " classes, " + fields + " fields, and " + methods + " methods");
 	}

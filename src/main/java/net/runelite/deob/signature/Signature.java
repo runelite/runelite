@@ -33,8 +33,9 @@ public class Signature
 	
 	public Signature(Signature other)
 	{
-		rv = other.rv;
-		arguments.addAll(other.arguments);
+		rv = new Type(other.rv);
+		for (Type t : other.arguments)
+			arguments.add(new Type(t));
 	}
 	
 	@Override

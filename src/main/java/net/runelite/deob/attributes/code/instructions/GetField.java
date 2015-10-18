@@ -17,12 +17,15 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.ClassGroup;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import net.runelite.deob.deobfuscators.arithmetic.Pair;
+import net.runelite.deob.util.NameMappings;
 
 public class GetField extends Instruction implements GetFieldInstruction
 {
 	private Field field;
+	private net.runelite.deob.Field myField;
 
 	public GetField(Instructions instructions, InstructionType type, int pc)
 	{
@@ -81,21 +84,15 @@ public class GetField extends Instruction implements GetFieldInstruction
 	}
 	
 	@Override
-	public void renameClass(ClassFile cf, String name)
+	public void lookup2()
 	{
-		if (field.getClassEntry().getName().equals(cf.getName()))
-			field = new Field(new Class(name), field.getNameAndType());
-		
-		if (field.getNameAndType().getDescriptorType().getType().equals("L" + cf.getName() + ";"))
-			field = new Field(field.getClassEntry(), new NameAndType(field.getNameAndType().getName(), new net.runelite.deob.signature.Type("L" + name + ";", field.getNameAndType().getDescriptorType().getArrayDims())));
+		myField = getMyField();
 	}
 	
 	@Override
-	public void renameField(net.runelite.deob.Field f, Field newField)
+	public void regeneratePool()
 	{
-		net.runelite.deob.Field f2 = getMyField();
-		
-		if (f2 == f)
-			field = newField;
+		if (myField != null)
+			field = myField.getPoolField();
 	}
 }

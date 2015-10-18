@@ -151,7 +151,15 @@ public class Method
 	{
 		return new net.runelite.deob.pool.Method(
 			new net.runelite.deob.pool.Class(this.getMethods().getClassFile().getName()),
-			new NameAndType(this.getName(), this.getDescriptor())
+			new NameAndType(this.getName(), new Signature(this.getDescriptor()))
+		);
+	}
+	
+	public net.runelite.deob.pool.InterfaceMethod getPoolInterfaceMethod()
+	{
+		return new net.runelite.deob.pool.InterfaceMethod(
+			new net.runelite.deob.pool.Class(this.getMethods().getClassFile().getName()),
+			new NameAndType(this.getName(), new Signature(this.getDescriptor()))
 		);
 	}
 }

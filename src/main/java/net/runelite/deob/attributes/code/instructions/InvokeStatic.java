@@ -23,10 +23,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.deob.execution.Execution;
+import net.runelite.deob.util.NameMappings;
 
 public class InvokeStatic extends Instruction implements InvokeInstruction
 {
 	private Method method;
+	private List<net.runelite.deob.Method> myMethods;
 
 	public InvokeStatic(Instructions instructions, InstructionType type, int pc)
 	{
@@ -138,37 +140,15 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	}
 	
 	@Override
-	public void renameClass(ClassFile cf, String name)
+	public void lookup2()
 	{
-		if (method.getClassEntry().getName().equals(cf.getName()))
-			method = new Method(new Class(name), method.getNameAndType());
-		
-		Signature signature = method.getNameAndType().getDescriptor();
-		for (int i = 0; i < signature.size(); ++i)
-		{
-			net.runelite.deob.signature.Type type = signature.getTypeOfArg(i);
-			
-			if (type.getType().equals("L" + cf.getName() + ";"))
-				signature.setTypeOfArg(i, new net.runelite.deob.signature.Type("L" + name + ";", type.getArrayDims())); 
-		}
-		
-		// rename return type
-		if (signature.getReturnValue().getType().equals("L" + cf.getName() + ";"))
-			signature.setTypeOfReturnValue(new net.runelite.deob.signature.Type("L" + name + ";", signature.getReturnValue().getArrayDims()));
+		myMethods = this.getMethods();
 	}
 	
 	@Override
-	public void renameMethod(net.runelite.deob.Method m, Method newMethod)
+	public void regeneratePool()
 	{
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
-		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
-		if (otherClass == null)
-			return; // not our class
-		
-		net.runelite.deob.Method other = otherClass.findMethodDeepStatic(method.getNameAndType());
-		assert other.isStatic();
-		
-		if (other.equals(m))
-			method = newMethod;
+		if (!myMethods.isEmpty())
+			method = myMethods.get(0).getPoolMethod();
 	}
 }
