@@ -55,7 +55,7 @@ public class Archive
 		{
 			return false;
 		}
-		if (!Arrays.equals(this.whirlpool, other.whirlpool))
+		if (this.whirlpool != null && other.whirlpool != null && !Arrays.equals(this.whirlpool, other.whirlpool))
 		{
 			return false;
 		}

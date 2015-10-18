@@ -180,8 +180,8 @@ public class DataFile implements Closeable
 		int sector;
 		int startSector;
 		
-		data = ByteBuffer.wrap(this.compress(data.array(), compression, revision));
-		int dataLen = data.remaining();
+		byte[] compressedData = this.compress(data.array(), compression, revision);
+		data = ByteBuffer.wrap(compressedData);
 		
 		//XTEA encrypt here?
 		
@@ -270,7 +270,9 @@ public class DataFile implements Closeable
 		
 		DataFileWriteResult res = new DataFileWriteResult();
 		res.sector = startSector;
-		res.compressedLength = dataLen;
+		res.compressedLength = compressedData.length;
+		res.crc = CRC32HGenerator.getHash(compressedData, compressedData.length - 2);
+		res.whirlpool = Whirlpool.getHash(compressedData, 0, compressedData.length - 2);
 		return res;
 	}
 	

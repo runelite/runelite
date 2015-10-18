@@ -351,6 +351,9 @@ public class Index implements Closeable
 			// XXX old data is just left there in the file?
 			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(fileData), 0, this.revision);
 			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
+			
+			a.setCrc(res.crc);
+			a.setWhirlpool(res.whirlpool);
 		}
 	}
 	
