@@ -52,4 +52,10 @@ public class FStore_2 extends Instruction implements LVTInstruction
 	{
 		return true;
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new FStore(this.getInstructions(), 2);
+	}
 }

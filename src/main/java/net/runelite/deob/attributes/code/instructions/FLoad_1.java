@@ -57,4 +57,10 @@ public class FLoad_1 extends Instruction implements LVTInstruction
 	{
 		return false;
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new FLoad(this.getInstructions(), 1);
+	}
 }

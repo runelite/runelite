@@ -170,10 +170,6 @@ public class UnusedParameters implements Deobfuscator
 					}
 				}
 		
-		int numArgs = signature.size();
-		if (methods.size() > 1 || !methods.get(0).isStatic())
-			++numArgs;
-		
 		for (Method method : methods)
 			if (method.getCode() != null)
 				// adjust lvt indexes to get rid of idx in the method
@@ -186,15 +182,16 @@ public class UnusedParameters implements Deobfuscator
 						int i = lins.getVariableIndex();
 						assert i != lvtIndex; // current unused variable detection just looks for no accesses
 						
-						//if (i >= numArgs)
-						//	continue;
-						
 						// reassign
 						if (i > lvtIndex)
 						{
+							assert i > 0;
+							
 							Instruction newIns = lins.setVariableIndex(--i);
-							if (newIns != ins)
-								ins.replace(newIns);
+							assert ins == newIns;
+							// this doesn't work because we'd have to reexecute or the above Frames would be messing with these instructions
+							//if (newIns != ins)
+							//	ins.replace(newIns);
 						}
 					}
 				}
@@ -256,8 +253,6 @@ public class UnusedParameters implements Deobfuscator
 				removeParameter(methods, signature, execution, unusedParameter, lvtIndexes[unusedParameter]);
 				
 				++count;
-				
-				break;
 			}
 		}
 		return new int[] { count };
@@ -279,7 +274,7 @@ public class UnusedParameters implements Deobfuscator
 			i = checkParametersOnce(execution, group);
 		
 			count += i[0];
-			break;
+			//break;
 		}
 		while (i[0] > 0);
 		

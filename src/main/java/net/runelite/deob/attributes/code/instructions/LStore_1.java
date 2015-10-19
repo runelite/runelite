@@ -54,4 +54,10 @@ public class LStore_1 extends Instruction implements LVTInstruction
 	{
 		return true;
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new LStore(this.getInstructions(), 1);
+	}
 }

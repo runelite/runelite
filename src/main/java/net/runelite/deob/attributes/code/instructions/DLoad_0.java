@@ -57,4 +57,10 @@ public class DLoad_0 extends Instruction implements LVTInstruction
 	{
 		return false;
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new DLoad(this.getInstructions(), 0);
+	}
 }

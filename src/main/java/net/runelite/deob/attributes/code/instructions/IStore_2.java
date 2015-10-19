@@ -59,4 +59,10 @@ public class IStore_2 extends Instruction implements LVTInstruction
 	{
 		return true;
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new IStore(this.getInstructions(), 2);
+	}
 }

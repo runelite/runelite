@@ -104,6 +104,9 @@ public abstract class Instruction
 		int index = ins.indexOf(this);
 		ins.remove(this);
 		ins.add(index, other);
+		
+		assert other.getInstructions() == this.instructions;
+		this.instructions = null;
 	}
 	
 	public boolean removeStack()

@@ -55,4 +55,10 @@ public class ALoad_1 extends Instruction implements LVTInstruction
 	{
 		return new ALoad(this.getInstructions(), idx);
 	}
+	
+	@Override
+	public Instruction makeGeneric()
+	{
+		return new ALoad(this.getInstructions(), 1);
+	}
 }
