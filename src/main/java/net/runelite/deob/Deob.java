@@ -54,9 +54,10 @@ public class Deob
 //		
 //		// remove constant logically dead parameters
 //		run(group, new ConstantParameter());
-//		
-//		// remove unhit blocks
+		
+		// remove unhit blocks
 //		run(group, new UnreachedCode());
+//		run(group, new UnusedMethods());
 
 		// remove unused parameters
 		run(group, new UnusedParameters());

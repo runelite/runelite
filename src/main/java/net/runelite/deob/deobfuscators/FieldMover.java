@@ -168,7 +168,7 @@ public class FieldMover implements Deobfuscator
 				if (code == null)
 					continue;
 				
-				code.getInstructions().renameField(field, newField);
+				//code.getInstructions().renameField(field, newField);
 			}
 		}
 		

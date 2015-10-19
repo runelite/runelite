@@ -113,7 +113,7 @@ public class MethodMover implements Deobfuscator
 				if (code == null)
 					continue;
 				
-				code.getInstructions().renameMethod(method, newMethod);
+				//code.getInstructions().renameMethod(method, newMethod);
 			}
 		}
 		

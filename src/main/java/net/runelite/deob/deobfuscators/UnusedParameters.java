@@ -110,6 +110,8 @@ public class UnusedParameters implements Deobfuscator
 	{
 		Set<Instruction> done = new HashSet<>();
 		
+		assert signature.getTypeOfArg(paramIndex).getSlots() == 1;
+		
 		for (Frame f : execution.processedFrames)
 			for (InstructionContext ins : f.getInstructions())
 				if (!ins.getInvokes().isEmpty() && methods.containsAll(ins.getInvokes()))
@@ -168,6 +170,10 @@ public class UnusedParameters implements Deobfuscator
 					}
 				}
 		
+		int numArgs = signature.size();
+		if (methods.size() > 1 || !methods.get(0).isStatic())
+			++numArgs;
+		
 		for (Method method : methods)
 			if (method.getCode() != null)
 				// adjust lvt indexes to get rid of idx in the method
@@ -179,6 +185,9 @@ public class UnusedParameters implements Deobfuscator
 						
 						int i = lins.getVariableIndex();
 						assert i != lvtIndex; // current unused variable detection just looks for no accesses
+						
+						//if (i >= numArgs)
+						//	continue;
 						
 						// reassign
 						if (i > lvtIndex)
@@ -243,6 +252,7 @@ public class UnusedParameters implements Deobfuscator
 				/* removing the parameter can't cause collisions on other (overloaded) methods because prior to this we rename
 				 * all classes/fields/methods to have unique names.
 				 */
+				System.out.println("Removing parameter " + unusedParameter + " from " + methods.get(0).getName());
 				removeParameter(methods, signature, execution, unusedParameter, lvtIndexes[unusedParameter]);
 				
 				++count;
@@ -269,6 +279,7 @@ public class UnusedParameters implements Deobfuscator
 			i = checkParametersOnce(execution, group);
 		
 			count += i[0];
+			break;
 		}
 		while (i[0] > 0);
 		

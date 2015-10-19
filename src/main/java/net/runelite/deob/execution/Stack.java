@@ -33,7 +33,7 @@ public class Stack
 		if (size == stack.length)
 		{
 			net.runelite.deob.Method m = i.getPushed().getInstruction().getInstructions().getCode().getAttributes().getMethod();
-			System.err.println("in " + m.getMethods().getClassFile().getName() + " method " + m.getNameAndType().getName());
+			System.err.println("stack overflow in " + m.getMethods().getClassFile().getName() + " method " + m.getNameAndType().getName());
 			for (int c = 0; c < stack.length; ++c)
 				printStack(stack[c], 0);
 			throw new RuntimeException("Stack overflow");
