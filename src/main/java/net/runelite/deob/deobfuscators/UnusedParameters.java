@@ -253,6 +253,8 @@ public class UnusedParameters implements Deobfuscator
 				removeParameter(methods, signature, execution, unusedParameter, lvtIndexes[unusedParameter]);
 				
 				++count;
+				
+				break;
 			}
 		}
 		return new int[] { count };
@@ -274,7 +276,6 @@ public class UnusedParameters implements Deobfuscator
 			i = checkParametersOnce(execution, group);
 		
 			count += i[0];
-			//break;
 		}
 		while (i[0] > 0);
 		
