@@ -260,6 +260,8 @@ public class UnusedParameters implements Deobfuscator
 		int[] i;
 		do
 		{
+			group.buildClassGraph();
+			
 			Execution execution = new Execution(group);
 			execution.populateInitialMethods();
 			execution.run();

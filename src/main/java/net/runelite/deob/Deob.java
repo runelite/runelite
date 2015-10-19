@@ -39,36 +39,36 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
-		run(group, new RenameUnique());
-
-		// remove except RuntimeException
-		run(group, new RuntimeExceptions());
-		
-		// remove unused methods
-		run(group, new UnusedMethods());
-		
-		run(group, new UnreachedCode());
-		
-		// remove illegal state exceptions, frees up some parameters
-		run(group, new IllegalStateExceptions());
-		
-		// remove constant logically dead parameters
-		run(group, new ConstantParameter());
-		
-		// remove unhit blocks
-		run(group, new UnreachedCode());
-
-//		// remove unused parameters
-//		run(group, new UnusedParameters());
+//		run(group, new RenameUnique());
+//
+//		// remove except RuntimeException
+//		run(group, new RuntimeExceptions());
 //		
-//		// remove jump obfuscation
-//		//new Jumps().run(group);
+//		// remove unused methods
+//		run(group, new UnusedMethods());
 //		
+//		run(group, new UnreachedCode());
+//		
+//		// remove illegal state exceptions, frees up some parameters
+//		run(group, new IllegalStateExceptions());
+//		
+//		// remove constant logically dead parameters
+//		run(group, new ConstantParameter());
+//		
+//		// remove unhit blocks
+//		run(group, new UnreachedCode());
+
+		// remove unused parameters
+		run(group, new UnusedParameters());
+		
+		// remove jump obfuscation
+		//new Jumps().run(group);
+		
 		// remove unused fields
-		run(group, new UnusedFields());
+		//run(group, new UnusedFields());
 		
 		// remove unused methods, again?
-		run(group, new UnusedMethods());
+		//run(group, new UnusedMethods());
 //
 //		run(group, new MethodInliner());
 //

@@ -169,7 +169,10 @@ public class Frame
 				while (stack.getSize() > 0)
 				{
 					StackContext stacki = stack.pop();
-					System.err.println(stacki);
+					InstructionContext pushed = stacki.getPushed();
+					Frame frame = pushed.getFrame();
+					
+					System.err.println(pushed.getInstruction().getDesc(frame));
 				}
 				System.err.println("end of stack");
 				ex.printStackTrace();

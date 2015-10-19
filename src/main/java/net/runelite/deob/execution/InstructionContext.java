@@ -59,6 +59,11 @@ public class InstructionContext
 	{
 		return ins;
 	}
+
+	public Frame getFrame()
+	{
+		return frame;
+	}
 	
 	public Stack getStack()
 	{
