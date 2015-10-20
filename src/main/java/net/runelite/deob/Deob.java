@@ -54,25 +54,26 @@ public class Deob
 //		
 //		// remove constant logically dead parameters
 //		run(group, new ConstantParameter());
-		
-		// remove unhit blocks
+//		
+//		// remove unhit blocks
 //		run(group, new UnreachedCode());
 //		run(group, new UnusedMethods());
-
-		// remove unused parameters
-		run(group, new UnusedParameters());
-		
-		// remove jump obfuscation
-		//new Jumps().run(group);
-		
-		// remove unused fields
-		//run(group, new UnusedFields());
-		
-		// remove unused methods, again?
-		//run(group, new UnusedMethods());
+//
+//		// remove unused parameters
+//		run(group, new UnusedParameters());
+//		
+//		// remove jump obfuscation
+//		//new Jumps().run(group);
+//		
+//		// remove unused fields
+//		run(group, new UnusedFields());
+//		
+//		// remove unused methods, again?
+//		run(group, new UnusedMethods());
 //
 //		run(group, new MethodInliner());
 //
+//		// broken because rename was removed
 //		//run(group, new MethodMover());
 //		
 //		run(group, new FieldInliner());
@@ -83,27 +84,27 @@ public class Deob
 //		
 //		run(group, new UnusedClass());
 	
-//		ModArith mod = new ModArith();
-//		mod.run(group);
-//		
-//		int last = -1, cur;
-//		while ((cur = mod.runOnce()) > 0)
-//		{	
-//			new MultiplicationDeobfuscator().run(group);
-//
-//			new MultiplyOneDeobfuscator().run(group);
-//
-//			new MultiplyZeroDeobfuscator().run(group);
-//			
-//			if (last == cur)
-//			{
-//				System.out.println("break");
-//				break;
-//			}
-//			
-//			last = cur;
-//			//break;
-//		}
+		ModArith mod = new ModArith();
+		mod.run(group);
+		
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{	
+			new MultiplicationDeobfuscator().run(group);
+
+			new MultiplyOneDeobfuscator().run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+			
+			if (last == cur)
+			{
+				System.out.println("break");
+				break;
+			}
+			
+			last = cur;
+			break;
+		}
 
 		saveJar(group, args[1]);
 		

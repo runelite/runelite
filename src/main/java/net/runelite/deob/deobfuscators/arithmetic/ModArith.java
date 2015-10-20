@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -17,6 +18,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
@@ -88,6 +90,7 @@ public class ModArith implements Deobfuscator
 				}
 				
 				// find big constant
+				boolean big = false;
 				for (InstructionContext i : ins)
 				{
 					if (i.getInstruction() instanceof LDC_W)
@@ -98,10 +101,25 @@ public class ModArith implements Deobfuscator
 							int value = ldc.getConstantAsInt();
 
 							if (DMath.isBig(value))
-								return true;
+								big = true;
 						}
 					}
 				}
+				
+//				for (InstructionContext i : ins)
+//				{
+//					if (i.getInstruction() instanceof InvokeInstruction)
+//					{
+//						if (!big)
+//						{
+//							// if no ob is detected and its passed to an invoke, it must be deobbed
+//							return false;
+//						}
+//					}
+//				}
+				
+				if (big)
+					return true;
 			}
 		
 		return false;
@@ -367,7 +385,20 @@ public class ModArith implements Deobfuscator
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
 				
-				if (f.getName().equals("field2976"))
+				if (getters != null)
+				{
+					getters = getters.stream().filter(c -> DMath.isBig(c)).collect(Collectors.toList());
+					if (getters.isEmpty())
+						getters = null;
+				}
+				if (setters != null)
+				{
+					setters = setters.stream().filter(c -> DMath.isBig(c)).collect(Collectors.toList());
+					if (setters.isEmpty())
+						setters = null;
+				}
+				
+				if (f.getName().equals("field347"))
 				{
 					int k=5;
 				}
