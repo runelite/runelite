@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +19,6 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
@@ -72,8 +72,8 @@ public class ModArith implements Deobfuscator
 				
 				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
 				
-				if (fi.getMyField() != field)
-					continue;
+				//if (fi.getMyField() != field)
+				//	continue;
 				
 				List<InstructionContext> ins = getInsInExpr(ctx, new HashSet());
 				
@@ -84,8 +84,8 @@ public class ModArith implements Deobfuscator
 					{
 						FieldInstruction ifi = (FieldInstruction) i.getInstruction();
 						
-						if (ifi.getMyField() != field)
-							continue outer; 
+						//if (ifi.getMyField() != field)
+						//	continue outer; 
 					}
 				}
 				
@@ -153,6 +153,40 @@ public class ModArith implements Deobfuscator
 		}
 		
 		return list;
+	}
+	
+	private MultiValueMap<Field, Integer> values2 = new MultiValueMap();
+	
+	private void findUses2()
+	{
+		for (Frame f : execution.processedFrames)
+			for (InstructionContext ctx : f.getInstructions())
+			{
+				if (ctx.getInstruction() instanceof FieldInstruction)
+				{
+					FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
+					
+					if (fi.getMyField() == null)
+						continue;
+					
+					if (!fi.getField().getNameAndType().getDescriptorType().getType().equals("I")
+						|| fi.getField().getNameAndType().getDescriptorType().getArrayDims() != 0)
+						continue;
+					
+					List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
+					for (InstructionContext i : l)
+					{
+						if (i.getInstruction() instanceof LDC_W)
+						{
+							LDC_W w = (LDC_W) i.getInstruction();
+							if (w.getConstant().getObject() instanceof Integer)
+							{
+								values2.put(fi.getMyField(), (int) w.getConstant().getObject());
+							}
+						}
+					}
+				}
+			}
 	}
 
 	private void findUses()
@@ -307,6 +341,101 @@ public class ModArith implements Deobfuscator
 		return p;
 	}
 	
+	private Pair guess2(Field field, Collection<Integer> constants)
+	{
+		// multiply each by each,
+		// lowest number wins
+		int s1 = 0, s2 = 0;
+		int smallest = 0;
+		for (Integer i : constants)
+		{
+			for (Integer i2 : constants)
+			{
+				if (i == 0 || i2 == 0)
+					continue;
+				
+				int result = i * i2;
+				
+				if (result == 0)
+					continue;
+				
+				if (smallest == 0 || result == 1 || Math.abs(result) < Math.abs(smallest))
+				{
+					s1 = i;
+					s2 = i2;
+					smallest = result;
+				}
+			}
+		}
+		
+		if (smallest != 1)
+		{
+			if (DMath.isInversable(smallest))
+			{
+				// x*y=z*1
+				// divide x or y by z
+
+				if (DMath.isInversable(s1))
+				{
+					s2 = s2 * DMath.modInverse(smallest);
+					smallest = 1;
+					assert s1 * s2 == 1;
+				}
+				else if (DMath.isInversable(s2))
+				{
+					s1 = s1 * DMath.modInverse(smallest);
+					smallest = 1;
+					assert s1 * s2 == 1;
+				}
+				else
+				{
+					System.out.println("cant guess " + field.getName());
+					return null;
+					// I dont know what one to pick, maybe it doesnt matter
+					//assert false;
+				}
+			}
+			else
+			{
+				if (DMath.isInversable(s1))
+				{
+					int newTwo = DMath.modInverse(s1);
+					if (newTwo * smallest == s2)
+					{
+						s2 = newTwo;
+						smallest = 1;
+						assert s1 * s2 == 1;
+					}
+				}
+				else if (DMath.isInversable(s2))
+				{
+					int newTwo = DMath.modInverse(s2);
+					if (newTwo * smallest == s1)
+					{
+						s1 = newTwo;
+						smallest = 1;
+						assert s1 * s2 == 1;
+					}
+				}
+				else
+				{
+					System.out.println("cant guess " + field.getName());
+					return null;
+					//assert false;
+				}
+			}
+			
+//			// pick the one that isn't inversible
+//			
+//			// set it to inverse(other)
+//			
+//			// check that inverse(other) * result == s2
+		}
+		
+		//System.out.println(field.getName() + " " + s1 + " * " + s2 + " = " + smallest);
+		return null;
+	}
+	
 	private Pair guess(Field field, Collection<Integer> values, boolean getter)
 	{
 		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(values); // value -> how many times it occurs
@@ -377,6 +506,27 @@ public class ModArith implements Deobfuscator
 		return null;
 	}
 	
+	private void reduce2()
+	{
+		for (ClassFile cf : group.getClasses())
+			for (Field f : cf.getFields().getFields())
+			{
+				Collection<Integer> col = values2.getCollection(f);
+				if (col == null)
+					continue;
+				
+				col = col.stream().filter(i -> DMath.isBig(i)).collect(Collectors.toList());
+				
+				Set<Integer> set = new HashSet<>();
+				set.addAll(col);
+				
+				//if (f.getName().equals("field297"))
+				{
+					this.guess2(f, set);
+				}
+			}
+	}
+	
 	private void reduce()
 	{
 		for (ClassFile cf : group.getClasses())
@@ -385,47 +535,52 @@ public class ModArith implements Deobfuscator
 				Collection<Integer> getters = constantGetters.getCollection(f),
 					setters = constantSetters.getCollection(f);
 				
+				List<Integer> all = new LinkedList();
+				
 				if (getters != null)
 				{
+					all.addAll(getters);
 					getters = getters.stream().filter(c -> DMath.isBig(c)).collect(Collectors.toList());
 					if (getters.isEmpty())
 						getters = null;
 				}
 				if (setters != null)
 				{
+					all.addAll(setters);
 					setters = setters.stream().filter(c -> DMath.isBig(c)).collect(Collectors.toList());
 					if (setters.isEmpty())
 						setters = null;
 				}
 				
-				if (f.getName().equals("field347"))
+				this.guess2(f, all);
+				if (f.getName().equals("field33"))
 				{
-					int k=5;
+					this.guess2(f, all);
 				}
 				
 			
-				Pair answer = null;
-				
-				if (getters != null && setters != null)
-					answer = reduce(getters, setters);
-				
-				if (answer == null && getters != null)
-					answer = guess(f, getters, true);
-				
-				if (answer == null && setters != null)
-					answer = guess(f, setters, false);
-					
-				if (answer == null)
-					continue;
-				
-				if (!this.isFieldObfuscated(execution, f))
-				{
-					System.out.println("Skipping field " + f.getName() + " which isnt obfuscated");
-					continue;
-				}
-				
-				answer.field = f;
-				pairs.add(answer);
+//				Pair answer = null;
+//				
+//				if (getters != null && setters != null)
+//					answer = reduce(getters, setters);
+//				
+//				if (answer == null && getters != null)
+//					answer = guess(f, getters, true);
+//				
+//				if (answer == null && setters != null)
+//					answer = guess(f, setters, false);
+//					
+//				if (answer == null)
+//					continue;
+//				
+//				if (!this.isFieldObfuscated(execution, f))
+//				{
+//					System.out.println("Skipping field " + f.getName() + " which isnt obfuscated");
+//					continue;
+//				}
+//				
+//				answer.field = f;
+//				pairs.add(answer);
 			}
 	}
 
@@ -525,13 +680,14 @@ public class ModArith implements Deobfuscator
 		pairs.clear();
 		constantGetters.clear();;
 		constantSetters.clear();
+		values2.clear();
 		
 		execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
 		
-		findUses();
-		reduce();
+		findUses2();
+		reduce2();
 		
 //		Encryption encr = new Encryption();
 //		for (Pair pair : pairs)
