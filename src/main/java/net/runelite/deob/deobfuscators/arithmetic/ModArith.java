@@ -46,6 +46,9 @@ public class ModArith implements Deobfuscator
 		if (ctx == null || set.contains(ctx.getInstruction()))
 			return l;
 		
+//		if (ctx.getInstruction() instanceof FieldInstruction)
+//			return l; // well do this one later?
+		
 		set.add(ctx.getInstruction());
 		
 		l.add(ctx);
@@ -59,103 +62,77 @@ public class ModArith implements Deobfuscator
 		return l;
 	}
 	
-	private boolean isFieldObfuscated(Execution e, Field field)
-	{
-		// field isn't obfuscated if there are no usages with big constants and no other fields
-		
-		for (Frame f : execution.processedFrames)
-			outer:
-			for (InstructionContext ctx : f.getInstructions())
-			{
-				if (!(ctx.getInstruction() instanceof FieldInstruction))
-					continue;
-				
-				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
-				
-				//if (fi.getMyField() != field)
-				//	continue;
-				
-				List<InstructionContext> ins = getInsInExpr(ctx, new HashSet());
-				
-				// continue if expr contains another ins
-				for (InstructionContext i : ins)
-				{
-					if (i.getInstruction() instanceof FieldInstruction)
-					{
-						FieldInstruction ifi = (FieldInstruction) i.getInstruction();
-						
-						//if (ifi.getMyField() != field)
-						//	continue outer; 
-					}
-				}
-				
-				// find big constant
-				boolean big = false;
-				for (InstructionContext i : ins)
-				{
-					if (i.getInstruction() instanceof LDC_W)
-					{
-						LDC_W ldc = (LDC_W) i.getInstruction();
-						if (ldc.getConstant().getObject() instanceof Integer)
-						{
-							int value = ldc.getConstantAsInt();
-
-							if (DMath.isBig(value))
-								big = true;
-						}
-					}
-				}
-				
+//	private boolean isFieldObfuscated(Execution e, Field field)
+//	{
+//		// field isn't obfuscated if there are no usages with big constants and no other fields
+//		
+//		for (Frame f : execution.processedFrames)
+//			outer:
+//			for (InstructionContext ctx : f.getInstructions())
+//			{
+//				if (!(ctx.getInstruction() instanceof FieldInstruction))
+//					continue;
+//				
+//				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
+//				
+//				//if (fi.getMyField() != field)
+//				//	continue;
+//				
+//				List<InstructionContext> ins = getInsInExpr(ctx, new HashSet());
+//				
+//				// continue if expr contains another ins
 //				for (InstructionContext i : ins)
 //				{
-//					if (i.getInstruction() instanceof InvokeInstruction)
+//					if (i.getInstruction() instanceof FieldInstruction)
 //					{
-//						if (!big)
+//						FieldInstruction ifi = (FieldInstruction) i.getInstruction();
+//						
+//						//if (ifi.getMyField() != field)
+//						//	continue outer; 
+//					}
+//				}
+//				
+//				// find big constant
+//				boolean big = false;
+//				for (InstructionContext i : ins)
+//				{
+//					if (i.getInstruction() instanceof LDC_W)
+//					{
+//						LDC_W ldc = (LDC_W) i.getInstruction();
+//						if (ldc.getConstant().getObject() instanceof Integer)
 //						{
-//							// if no ob is detected and its passed to an invoke, it must be deobbed
-//							return false;
+//							int value = ldc.getConstantAsInt();
+//
+//							if (DMath.isBig(value))
+//								big = true;
 //						}
 //					}
 //				}
-				
-				if (big)
-					return true;
-			}
-		
-		return false;
-	}
+//				
+////				for (InstructionContext i : ins)
+////				{
+////					if (i.getInstruction() instanceof InvokeInstruction)
+////					{
+////						if (!big)
+////						{
+////							// if no ob is detected and its passed to an invoke, it must be deobbed
+////							return false;
+////						}
+////					}
+////				}
+//				
+//				if (big)
+//					return true;
+//			}
+//		
+//		return false;
+//	}
 	
-	private List<Integer> findAssocConstants(Field field, InstructionContext ctx) throws OtherFieldException
-	{
-		// starts with ctx = setfield
-		
-		List<Integer> list = new ArrayList<>();
-		
-		if (ctx.getInstruction() instanceof LDC_W)
-		{
-			LDC_W pci = (LDC_W) ctx.getInstruction();
-			if (pci.getConstant().getObject() instanceof Integer)
-				list.add((int) pci.getConstant().getObject());
-		}
-		
-		if (ctx.getInstruction() instanceof FieldInstruction)
-		{
-			FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
-
-			// if the field is already deobbed, constants here don't include it
-			if (fi.getMyField() != field && !deobfuscatedFields.contains(fi.getMyField()))
-				throw new OtherFieldException();
-		}
-		
-		for (StackContext sctx : ctx.getPops())
-		{
-			list.addAll(findAssocConstants(field, sctx.getPushed()));
-		}
-		
-		return list;
+	static class numgs {
+		int value;
+		boolean getter;
 	}
-	
-	private MultiValueMap<Field, Integer> values2 = new MultiValueMap();
+	private MultiValueMap<Field, numgs> values2 = new MultiValueMap();
 	
 	private void findUses2()
 	{
@@ -181,7 +158,11 @@ public class ModArith implements Deobfuscator
 							LDC_W w = (LDC_W) i.getInstruction();
 							if (w.getConstant().getObject() instanceof Integer)
 							{
-								values2.put(fi.getMyField(), (int) w.getConstant().getObject());
+								//boolean getter = fi instanceof GetFieldInstruction;
+								numgs n = new numgs();
+								n.value = w.getConstantAsInt();
+								//n.getter = getter;
+								values2.put(fi.getMyField(), n);
 							}
 						}
 					}
@@ -282,66 +263,66 @@ public class ModArith implements Deobfuscator
 			}
 	}
 	
-	private Pair reduce(Collection<Integer> getters, Collection<Integer> setters)
-	{
-		Pair p = null;
-		
-		for (Integer i : getters)
-		{
-			Integer inverse;
-			try
-			{
-				inverse = DMath.modInverse(i);
-			}
-			catch (ArithmeticException ex)
-			{
-				continue;
-			}
-			
-			if (setters.contains(inverse))
-			{
-				if (p != null && p.getter != i)
-					return null;
-				
-				if (p == null)
-				{
-					p = new Pair();
-					p.getter = i;
-					p.setter = inverse;
-				}
-			}
-		}
-		
-		for (Integer i : setters)
-		{
-			Integer inverse;
-			try
-			{
-				inverse = DMath.modInverse(i);
-			}
-			catch (ArithmeticException ex)
-			{
-				continue;
-			}
-			
-			if (getters.contains(inverse))
-			{
-				if (p != null && p.setter != i)
-					return null;
-				
-				if (p == null)
-				{
-					p = new Pair();
-					p.setter = i;
-					p.getter = inverse;
-				}
-			}
-		}
-		
-		return p;
-	}
+//	private Pair reduce(Collection<Integer> getters, Collection<Integer> setters)
+//	{
+//		Pair p = null;
+//		
+//		for (Integer i : getters)
+//		{
+//			Integer inverse;
+//			try
+//			{
+//				inverse = DMath.modInverse(i);
+//			}
+//			catch (ArithmeticException ex)
+//			{
+//				continue;
+//			}
+//			
+//			if (setters.contains(inverse))
+//			{
+//				if (p != null && p.getter != i)
+//					return null;
+//				
+//				if (p == null)
+//				{
+//					p = new Pair();
+//					p.getter = i;
+//					p.setter = inverse;
+//				}
+//			}
+//		}
+//		
+//		for (Integer i : setters)
+//		{
+//			Integer inverse;
+//			try
+//			{
+//				inverse = DMath.modInverse(i);
+//			}
+//			catch (ArithmeticException ex)
+//			{
+//				continue;
+//			}
+//			
+//			if (getters.contains(inverse))
+//			{
+//				if (p != null && p.setter != i)
+//					return null;
+//				
+//				if (p == null)
+//				{
+//					p = new Pair();
+//					p.setter = i;
+//					p.getter = inverse;
+//				}
+//			}
+//		}
+//		
+//		return p;
+//	}
 	
-	private Pair guess2(Field field, Collection<Integer> constants)
+	private Pair guess2(Field field, Collection col, Collection<Integer> constants)
 	{
 		// multiply each by each,
 		// lowest number wins
@@ -424,163 +405,52 @@ public class ModArith implements Deobfuscator
 					//assert false;
 				}
 			}
-			
-//			// pick the one that isn't inversible
-//			
-//			// set it to inverse(other)
-//			
-//			// check that inverse(other) * result == s2
 		}
 		
-		//System.out.println(field.getName() + " " + s1 + " * " + s2 + " = " + smallest);
+		Boolean g = isGetter(field, col, s1),
+			g2 = isGetter(field, col, s2);
+		
+		if (g == null || g2 == null || g == g2)
+			System.out.println(field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
 		return null;
 	}
 	
-	private Pair guess(Field field, Collection<Integer> values, boolean getter)
+	private Boolean isGetter(Field field, Collection<numgs> col, int value)
 	{
-		Map<Integer, Integer> map = CollectionUtils.getCardinalityMap(values); // value -> how many times it occurs
-		int max = Collections.max(map.values()); // largest occurance #
-		int size = values.size();
-		
-		try
-		{
-			if (max == size)
-			{
-				// all getters are the same value
-				int constant = values.iterator().next();
-				if (DMath.isBig(constant))
-				{
-					Pair pair = new Pair();
-					if (getter)
-					{
-						pair.getter = constant;
-					//System.out.println("Guessing " + field.getName() + " getter " + constant + " setter ");
-						pair.setter = DMath.modInverse(constant);
-					}
-					else
-					{
-						pair.setter = constant;
-						pair.getter = DMath.modInverse(constant);
-					}
-					return pair;
-				}
-			}
-		}
-		catch (ArithmeticException ex) { }
-		
-//		if (size < 50)
-//			return null;
-		
-		if (((float) max / (float) size) < 0.9)
-			return null;
-
-		for (final Map.Entry<Integer, Integer> entry : map.entrySet()) {
-			if (max == entry.getValue()) {
-				int constant = entry.getKey();
-				int inverse;
-				try
-				{
-					inverse = DMath.modInverse(constant);
-				}
-				catch (ArithmeticException ex)
-				{
-					break;
-				}
-
-				Pair pair = new Pair();
-				if (getter)
-				{
-					pair.getter = constant;
-					pair.setter = inverse;
-				}
-				else
-				{
-					pair.getter = inverse;
-					pair.setter = constant;
-				}
-				
-				return pair;
-			}
-		}
-		
-		return null;
+		Collection<Integer> c = this.constantGetters.getCollection(field);
+		return c != null && c.contains(value);
+//		Boolean b = null;
+//		for (numgs n : col)
+//		{
+//			if (n.value == value)
+//			{
+//				if (b == null)
+//					b = n.getter;
+//				else if (b != n.getter)
+//					return null;
+//			}
+//		}
+//		return b;
 	}
-	
+
 	private void reduce2()
 	{
 		for (ClassFile cf : group.getClasses())
 			for (Field f : cf.getFields().getFields())
 			{
-				Collection<Integer> col = values2.getCollection(f);
+				Collection<numgs> col = values2.getCollection(f);
 				if (col == null)
 					continue;
 				
-				col = col.stream().filter(i -> DMath.isBig(i)).collect(Collectors.toList());
-				
-				Set<Integer> set = new HashSet<>();
-				set.addAll(col);
-				
-				//if (f.getName().equals("field297"))
+				if (f.getName().equals("field3045"))
 				{
-					this.guess2(f, set);
-				}
-			}
-	}
-	
-	private void reduce()
-	{
-		for (ClassFile cf : group.getClasses())
-			for (Field f : cf.getFields().getFields())
-			{
-				Collection<Integer> getters = constantGetters.getCollection(f),
-					setters = constantSetters.getCollection(f);
+					col = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
 				
-				List<Integer> all = new LinkedList();
+					Set set = col.stream().map(i -> i.value).collect(Collectors.toSet());
+				//
 				
-				if (getters != null)
-				{
-					all.addAll(getters);
-					getters = getters.stream().filter(c -> DMath.isBig(c)).collect(Collectors.toList());
-					if (getters.isEmpty())
-						getters = null;
+					this.guess2(f, col, set);
 				}
-				if (setters != null)
-				{
-					all.addAll(setters);
-					setters = setters.stream().filter(c -> DMath.isBig(c)).collect(Collectors.toList());
-					if (setters.isEmpty())
-						setters = null;
-				}
-				
-				this.guess2(f, all);
-				if (f.getName().equals("field33"))
-				{
-					this.guess2(f, all);
-				}
-				
-			
-//				Pair answer = null;
-//				
-//				if (getters != null && setters != null)
-//					answer = reduce(getters, setters);
-//				
-//				if (answer == null && getters != null)
-//					answer = guess(f, getters, true);
-//				
-//				if (answer == null && setters != null)
-//					answer = guess(f, setters, false);
-//					
-//				if (answer == null)
-//					continue;
-//				
-//				if (!this.isFieldObfuscated(execution, f))
-//				{
-//					System.out.println("Skipping field " + f.getName() + " which isnt obfuscated");
-//					continue;
-//				}
-//				
-//				answer.field = f;
-//				pairs.add(answer);
 			}
 	}
 
@@ -588,33 +458,7 @@ public class ModArith implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		this.group = group;
-		//return runOnce();
-//		if (true) return;
-//		
-//		int passes = 0, total = 0, i;
-//		while ((i = runOnce()) > 0)
-//		{
-//			++passes;
-//			total += i;
-//		}
-//		System.out.println("Finished arith deob on " + total + " fields in " + passes + " passes");
 	}
-//	
-//	private void translateSetFields(Execution e)
-//	{
-//		//Set<Instruction> visited = new HashSet<>();
-//		for (Frame f : e.processedFrames)
-//			for (InstructionContext ins : f.getInstructions())
-//				if (ins.getInstruction() instanceof SetFieldInstruction)
-//				{
-//					SetFieldInstruction sfi = (SetFieldInstruction) ins.getInstruction();
-//					Pair pair = e.getEncryption().getField(sfi.getMyField());
-//					
-//					if (pair != null)
-//						PutStatic.translate(e.getEncryption(), pair, ins, new HashSet());
-//					//
-//				}
-//	}
 	
 	private void insertGetterSetterMuls(Encryption encr)
 	{
@@ -686,6 +530,7 @@ public class ModArith implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 		
+		findUses();
 		findUses2();
 		reduce2();
 		
