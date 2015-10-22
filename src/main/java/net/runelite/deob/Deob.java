@@ -103,7 +103,7 @@ public class Deob
 			}
 			
 			last = cur;
-			break;
+			//break;
 		}
 
 		saveJar(group, args[1]);

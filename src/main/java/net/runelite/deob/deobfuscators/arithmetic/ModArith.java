@@ -19,6 +19,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
@@ -46,6 +47,9 @@ public class ModArith implements Deobfuscator
 		if (ctx == null || set.contains(ctx.getInstruction()))
 			return l;
 		
+		if (ctx.getInstruction() instanceof InvokeInstruction)
+			return l;
+		
 //		if (ctx.getInstruction() instanceof FieldInstruction)
 //			return l; // well do this one later?
 		
@@ -62,11 +66,71 @@ public class ModArith implements Deobfuscator
 		return l;
 	}
 	
+	private boolean isFieldObfuscated(Execution e, Field field)
+	{
+		// find a direct big*field with no other fields involved
+		
+		for (Frame f : e.processedFrames)
+		{
+			outer:
+			for (InstructionContext ctx : f.getInstructions())
+			{
+				if (!(ctx.getInstruction() instanceof IMul))
+					continue;
+				
+				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+				
+				PushConstantInstruction pc = null;
+				GetFieldInstruction other = null;
+				if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+				{
+					pc = (PushConstantInstruction) one;
+					other = (GetFieldInstruction) two;
+				}
+				else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+				{
+					pc = (PushConstantInstruction) two;
+					other = (GetFieldInstruction) one;
+				}
+
+				if (pc == null || other == null)
+				{
+					continue;
+				}
+				
+				if (other.getMyField() != null && other.getMyField() != field)
+					continue;
+					//return false;
+				
+				for (InstructionContext i : this.getInsInExpr(ctx, new HashSet<>()))
+				{
+					if (i.getInstruction() instanceof FieldInstruction)
+					{
+						FieldInstruction fi = (FieldInstruction) i.getInstruction();
+						
+						if (fi.getMyField() != null)
+						{
+							if (fi.getMyField() != field)
+							{
+								continue outer;
+								//return false;
+							}
+						}
+					}
+				}
+				
+				return true;
+			}
+		}
+		
+		return false;
+	}
 //	private boolean isFieldObfuscated(Execution e, Field field)
 //	{
 //		// field isn't obfuscated if there are no usages with big constants and no other fields
 //		
-//		for (Frame f : execution.processedFrames)
+//		for (Frame f : .processedFrames)
 //			outer:
 //			for (InstructionContext ctx : f.getInstructions())
 //			{
@@ -75,8 +139,8 @@ public class ModArith implements Deobfuscator
 //				
 //				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
 //				
-//				//if (fi.getMyField() != field)
-//				//	continue;
+//				if (fi.getMyField() != field)
+//					continue;
 //				
 //				List<InstructionContext> ins = getInsInExpr(ctx, new HashSet());
 //				
@@ -87,8 +151,8 @@ public class ModArith implements Deobfuscator
 //					{
 //						FieldInstruction ifi = (FieldInstruction) i.getInstruction();
 //						
-//						//if (ifi.getMyField() != field)
-//						//	continue outer; 
+//						if (ifi.getMyField() != field)
+//							continue outer; 
 //					}
 //				}
 //				
@@ -463,7 +527,7 @@ public class ModArith implements Deobfuscator
 				if (col == null)
 					continue;
 				
-				//if (f.getName().equals("field2865"))
+				if (f.getName().equals("field396"))
 				{
 					//Collection<Integer> col3 = col.stream().map(i -> i.value).collect(Collectors.toSet());
 					
@@ -476,12 +540,14 @@ public class ModArith implements Deobfuscator
 					if (p != null)
 					{
 				
-						if (this.deobfuscatedFields.contains(f))
+						if (!isFieldObfuscated(execution, f))
 							continue;
+						//if (this.deobfuscatedFields.contains(f))
+						//	continue;
 						
 						pairs.add(p);
 						
-						this.deobfuscatedFields.add(f);
+						//this.deobfuscatedFields.add(f);
 					}
 				}
 			}
