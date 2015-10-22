@@ -84,17 +84,10 @@ public class Instructions
 	
 	public void remove(Instruction ins)
 	{
-//		for (Instruction i : instructions)
-//		{
-//			if (i instanceof JumpingInstruction)
-//			{
-//				JumpingInstruction j = (JumpingInstruction) i;
-//				assert !j.getJumps().contains(ins);
-//			}
-//		}
-		
+		assert ins.getInstructions() == this;
 		ins.remove();
 		instructions.remove(ins);
+		ins.setInstructions(null);
 	}
 	
 	public void remove(Block block)
@@ -293,5 +286,7 @@ public class Instructions
 		
 		for (net.runelite.deob.attributes.code.Exception e : code.getExceptions().getExceptions())
 			e.replace(oldi, newi);
+		
+		oldi.setInstructions(null);
 	}
 }

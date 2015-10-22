@@ -23,6 +23,12 @@ public class SiPush extends Instruction implements PushConstantInstruction
 		super(instructions, type, pc);
 	}
 	
+	public SiPush(Instructions instructions, short value)
+	{
+		super(instructions, InstructionType.SIPUSH, -1);
+		s = value;
+	}
+	
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{

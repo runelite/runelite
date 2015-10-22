@@ -474,7 +474,15 @@ public class ModArith implements Deobfuscator
 				
 					Pair p = this.guess2(f, col2, set);
 					if (p != null)
+					{
+				
+						if (this.deobfuscatedFields.contains(f))
+							continue;
+						
 						pairs.add(p);
+						
+						this.deobfuscatedFields.add(f);
+					}
 				}
 			}
 	}

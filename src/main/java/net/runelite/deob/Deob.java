@@ -92,9 +92,9 @@ public class Deob
 		{	
 			new MultiplicationDeobfuscator().run(group);
 
-			new MultiplyOneDeobfuscator().run(group);
+			//new MultiplyOneDeobfuscator().run(group);
 
-			new MultiplyZeroDeobfuscator().run(group);
+			//new MultiplyZeroDeobfuscator().run(group);
 			
 			if (last == cur)
 			{
