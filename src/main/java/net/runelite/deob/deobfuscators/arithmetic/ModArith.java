@@ -150,6 +150,8 @@ public class ModArith implements Deobfuscator
 						|| fi.getField().getNameAndType().getDescriptorType().getArrayDims() != 0)
 						continue;
 					
+					//if (!fi.getMyField().getName().equals("field2865")) continue;
+					
 					List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
 					for (InstructionContext i : l)
 					{
@@ -333,6 +335,8 @@ public class ModArith implements Deobfuscator
 			for (Integer i2 : constants)
 			{
 				if (i == 0 || i2 == 0)
+					//|| i == -1 || i2 == -1
+					//|| i == 1 || i2 == 1)
 					continue;
 				
 				int result = i * i2;
@@ -411,7 +415,24 @@ public class ModArith implements Deobfuscator
 			g2 = isGetter(field, col, s2);
 		
 		if (g == null || g2 == null || g == g2)
-			System.out.println(field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
+			System.out.println("BAD  " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
+		else
+		{
+			System.out.println("GOOD " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
+			Pair p = new Pair();
+			p.field = field;
+			if (g)
+			{
+				p.getter = s1;
+				p.setter = s2;
+			}
+			else
+			{
+				p.getter = s2;
+				p.setter = s1;
+			}
+			return p;
+		}
 		return null;
 	}
 	
@@ -442,14 +463,18 @@ public class ModArith implements Deobfuscator
 				if (col == null)
 					continue;
 				
-				if (f.getName().equals("field3045"))
+				//if (f.getName().equals("field2865"))
 				{
-					col = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
+					//Collection<Integer> col3 = col.stream().map(i -> i.value).collect(Collectors.toSet());
+					
+					Collection<numgs> col2 = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
 				
-					Set set = col.stream().map(i -> i.value).collect(Collectors.toSet());
+					Set set = col2.stream().map(i -> i.value).collect(Collectors.toSet());
 				//
 				
-					this.guess2(f, col, set);
+					Pair p = this.guess2(f, col2, set);
+					if (p != null)
+						pairs.add(p);
 				}
 			}
 	}
