@@ -31,6 +31,8 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 			{
 				Instruction instruction = ictx.getInstruction();
 				Instructions ins = instruction.getInstructions();
+				if (ins == null)
+					continue;
 				
 				if (!(instruction instanceof IMul))
 					continue;
@@ -68,6 +70,9 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 				
 				if (!ilist.contains(instruction))
 					continue; // already done
+				
+				if (!MultiplicationDeobfuscator.isOnlyPath(e, ictx))
+					continue;
 				
 				// remove both, remove imul, push 0
 				

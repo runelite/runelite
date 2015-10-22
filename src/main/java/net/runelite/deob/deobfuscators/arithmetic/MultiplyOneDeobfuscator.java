@@ -1,6 +1,9 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.attributes.code.Instruction;
@@ -35,6 +38,9 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 					continue;
 				
 				Instructions ins = ictx.getInstruction().getInstructions();
+				if (ins == null)
+					continue;
+				
 				List<Instruction> ilist = ins.getInstructions();
 
 				if (!ilist.contains(ictx.getInstruction()))
@@ -56,6 +62,9 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 				}
 				
 				if (removeIdx == -1)
+					continue;
+				
+				if (!MultiplicationDeobfuscator.isOnlyPath(e, ictx))
 					continue;
 				
 				ictx.removeStack(removeIdx);

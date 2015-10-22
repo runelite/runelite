@@ -24,7 +24,7 @@ import org.junit.Test;
 public class MultiplyOneDeobfuscatorTest
 {
 	@Test
-	public void test()
+	public void testDir()
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
@@ -76,5 +76,59 @@ public class MultiplyOneDeobfuscatorTest
 		d.run(group);
 		
 		Assert.assertTrue(one.getInstructions() != null);
+	}
+	
+	@Test
+	public void test()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(2);
+		
+		// vars[0] = 3
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		NOP label = new NOP(ins),
+		    label2 = new NOP(ins);
+		
+		IConst_1 one = new IConst_1(ins);
+		IMul mul = new IMul(ins);
+		
+		Instruction body[] = {
+			new SiPush(ins, (short) 256),
+			
+			new ILoad(ins, 0),
+			new If0(ins, label),
+			
+			label,
+			one,
+			
+			label2,
+			mul,
+			
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		// check execution runs ok
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		Deobfuscator d = new MultiplyOneDeobfuscator();
+		d.run(group);
+		
+		Assert.assertTrue(one.getInstructions() == null);
+		Assert.assertTrue(mul.getInstructions() == null);
 	}
 }
