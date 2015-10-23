@@ -252,7 +252,8 @@ public class ModArith implements Deobfuscator
 	}
 
 	private void findUses()
-	{		
+	{
+		// XXX Here needs to be able pick up setters like ield489 -= -2129182073, and also constant setters
 		for (Frame f : execution.processedFrames)
 			for (InstructionContext ctx : f.getInstructions())
 			{
@@ -308,7 +309,21 @@ public class ModArith implements Deobfuscator
 					
 					StackContext value = ctx.getPops().get(0); // the first thing popped from both putfield and putstatic is the value
 					if (!(value.getPushed().getInstruction() instanceof IMul))
+					{
+						if (value.getPushed().getInstruction() instanceof LDC_W)
+						{
+							LDC_W ldc = (LDC_W) value.getPushed().getInstruction();
+							
+							if (ldc.getConstant().getObject() instanceof Integer)
+							{
+								int i = ldc.getConstantAsInt();
+								
+								if (DMath.isBig(i))
+									constantSetters.put(field, i);
+							}
+						}
 						continue;
+					}
 					
 					Instruction one = value.getPushed().getPops().get(0).getPushed().getInstruction();
 					Instruction two = value.getPushed().getPops().get(1).getPushed().getInstruction();
@@ -431,8 +446,14 @@ public class ModArith implements Deobfuscator
 			}
 		}
 		
-		Boolean g = isGetter(field, col, s1),
-			g2 = isGetter(field, col, s2);
+		Boolean g = isGetterOrSetter(field, true, col, s1),
+			g2 = isGetterOrSetter(field, true, col, s2);
+		
+		if (g == null || g2 == null || g == g2)
+		{
+			g = isGetterOrSetter(field, false, col, s1);
+			g2 = isGetterOrSetter(field, false, col, s2);
+		}
 		
 		if (g == null || g2 == null || g == g2)
 			System.out.println("BAD  " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
@@ -456,9 +477,13 @@ public class ModArith implements Deobfuscator
 		return null;
 	}
 	
-	private Boolean isGetter(Field field, Collection<numgs> col, int value)
+	private Boolean isGetterOrSetter(Field field, boolean getter, Collection<numgs> col, int value)
 	{
-		Collection<Integer> c = this.constantGetters.getCollection(field);
+		Collection<Integer> c;
+		if (getter)
+			c = this.constantGetters.getCollection(field);
+		else
+			c = this.constantSetters.getCollection(field);
 		if (c == null)
 			return false;
 		
@@ -477,18 +502,6 @@ public class ModArith implements Deobfuscator
 		}
 		
 		return false;
-//		Boolean b = null;
-//		for (numgs n : col)
-//		{
-//			if (n.value == value)
-//			{
-//				if (b == null)
-//					b = n.getter;
-//				else if (b != n.getter)
-//					return null;
-//			}
-//		}
-//		return b;
 	}
 
 	private void reduce2()
@@ -500,7 +513,9 @@ public class ModArith implements Deobfuscator
 				if (col == null)
 					continue;
 				
-				//if (f.getName().equals("field489"))
+				//getter -442113225
+				//setter -2129182073
+				if (f.getName().equals("field606"))
 				{
 					//Collection<Integer> col3 = col.stream().map(i -> i.value).collect(Collectors.toSet());
 					
