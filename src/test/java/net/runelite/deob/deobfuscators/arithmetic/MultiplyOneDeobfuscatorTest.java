@@ -11,6 +11,7 @@ import net.runelite.deob.attributes.code.instructions.IConst_1;
 import net.runelite.deob.attributes.code.instructions.IConst_2;
 import net.runelite.deob.attributes.code.instructions.IConst_3;
 import net.runelite.deob.attributes.code.instructions.IConst_M1;
+import net.runelite.deob.attributes.code.instructions.IDiv;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
@@ -195,25 +196,22 @@ public class MultiplyOneDeobfuscatorTest
 			new IConst_M1(ins),
 			new ILoad(ins, 0),
 			new If(ins, label),
-			
-			new ILoad(ins, 0),
-			new IConst_1(ins),
-			new If(ins, label2),
+
+			new Goto(ins, label2),
 			
 			label,
 			new ILoad(ins, 1),
 			new LDC_W(ins, -1440517609),
-			new IMul(ins),
+			new IDiv(ins),
 			new Goto(ins, label3),
 			
 			label2,
 			new ILoad(ins, 1),
 			new LDC_W(ins, -1440517609),
-			new IMul(ins),
+			new IDiv(ins),
 			
 			label3,
 			mul,
-			
 			
 			new VReturn(ins)
 		};

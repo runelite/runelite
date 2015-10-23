@@ -64,7 +64,7 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 				if (removeIdx == -1)
 					continue;
 				
-				if (!MultiplicationDeobfuscator.isOnlyPath(e, ictx))
+				if (!MultiplicationDeobfuscator.isOnlyPath(e, ictx, removeIdx == 0 ? one : two))
 					continue;
 				
 				ictx.removeStack(removeIdx);
