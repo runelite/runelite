@@ -75,6 +75,27 @@ public class ModArith implements Deobfuscator
 			outer:
 			for (InstructionContext ctx : f.getInstructions())
 			{
+				// detect field = constant
+				if (ctx.getInstruction() instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction sfi = (SetFieldInstruction) ctx.getInstruction();
+					
+					if (sfi.getMyField() == field)
+					{
+						InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
+						if (pushedsfi.getInstruction() instanceof LDC_W)
+						{
+							LDC_W ldc = (LDC_W) pushedsfi.getInstruction();
+							if (ldc.getConstant().getObject() instanceof Integer)
+							{
+								int it = ldc.getConstantAsInt();
+								if (DMath.isBig(it))
+									return true;
+							}
+						}
+					}
+				}
+				// field * imul
 				if (!(ctx.getInstruction() instanceof IMul))
 					continue;
 				
@@ -103,21 +124,15 @@ public class ModArith implements Deobfuscator
 					continue;
 					//return false;
 				
-				for (InstructionContext i : this.getInsInExpr(ctx, new HashSet<>()))
+				try
 				{
-					if (i.getInstruction() instanceof FieldInstruction)
-					{
-						FieldInstruction fi = (FieldInstruction) i.getInstruction();
-						
-						if (fi.getMyField() != null)
-						{
-							if (fi.getMyField() != field)
-							{
-								continue outer;
-								//return false;
-							}
-						}
-					}
+					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(e, ctx);
+					if (expr.hasFieldOtherThan(field))
+						continue;
+				}
+				catch (IllegalStateException ex)
+				{
+					continue;
 				}
 				
 				return true;
@@ -329,65 +344,6 @@ public class ModArith implements Deobfuscator
 			}
 	}
 	
-//	private Pair reduce(Collection<Integer> getters, Collection<Integer> setters)
-//	{
-//		Pair p = null;
-//		
-//		for (Integer i : getters)
-//		{
-//			Integer inverse;
-//			try
-//			{
-//				inverse = DMath.modInverse(i);
-//			}
-//			catch (ArithmeticException ex)
-//			{
-//				continue;
-//			}
-//			
-//			if (setters.contains(inverse))
-//			{
-//				if (p != null && p.getter != i)
-//					return null;
-//				
-//				if (p == null)
-//				{
-//					p = new Pair();
-//					p.getter = i;
-//					p.setter = inverse;
-//				}
-//			}
-//		}
-//		
-//		for (Integer i : setters)
-//		{
-//			Integer inverse;
-//			try
-//			{
-//				inverse = DMath.modInverse(i);
-//			}
-//			catch (ArithmeticException ex)
-//			{
-//				continue;
-//			}
-//			
-//			if (getters.contains(inverse))
-//			{
-//				if (p != null && p.setter != i)
-//					return null;
-//				
-//				if (p == null)
-//				{
-//					p = new Pair();
-//					p.setter = i;
-//					p.getter = inverse;
-//				}
-//			}
-//		}
-//		
-//		return p;
-//	}
-	
 	private Pair guess2(Field field, Collection col, Collection<Integer> constants)
 	{
 		// multiply each by each,
@@ -503,7 +459,24 @@ public class ModArith implements Deobfuscator
 	private Boolean isGetter(Field field, Collection<numgs> col, int value)
 	{
 		Collection<Integer> c = this.constantGetters.getCollection(field);
-		return c != null && c.contains(value);
+		if (c == null)
+			return false;
+		
+		if (c.contains(value))
+			return true;
+		
+		for (int i : c)
+		{
+			// i = value * constant
+			// find constant = i * modInverse(value)
+			
+			int constant = i * DMath.modInverse(value);
+			
+			if (!DMath.isBig(constant))
+				return true;
+		}
+		
+		return false;
 //		Boolean b = null;
 //		for (numgs n : col)
 //		{
@@ -527,7 +500,7 @@ public class ModArith implements Deobfuscator
 				if (col == null)
 					continue;
 				
-				if (f.getName().equals("field396"))
+				//if (f.getName().equals("field489"))
 				{
 					//Collection<Integer> col3 = col.stream().map(i -> i.value).collect(Collectors.toSet());
 					
@@ -535,13 +508,13 @@ public class ModArith implements Deobfuscator
 				
 					Set set = col2.stream().map(i -> i.value).collect(Collectors.toSet());
 				//
+					
+					if (!isFieldObfuscated(execution, f))
+						continue;
 				
 					Pair p = this.guess2(f, col2, set);
 					if (p != null)
 					{
-				
-						if (!isFieldObfuscated(execution, f))
-							continue;
 						//if (this.deobfuscatedFields.contains(f))
 						//	continue;
 						

@@ -2,14 +2,17 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.execution.InstructionContext;
 
 public class MultiplicationExpression
 {
 	List<InstructionContext> instructions = new ArrayList<>(), // push constant instructions that are being multiplied
-		dupedInstructions = new ArrayList<>();
+		dupedInstructions = new ArrayList<>(),
+		fieldInstructions = new ArrayList<>();
 	List<MultiplicationExpression> subexpressions = new ArrayList<>(); // for distributing, each subexpr is * by this
 	InstructionContext dupmagic; // inverse of what is distributed to subexpressions gets set here
 	
@@ -80,5 +83,21 @@ public class MultiplicationExpression
 		}
 		
 		return count;
+	}
+	
+	public boolean hasFieldOtherThan(Field field)
+	{
+		for (InstructionContext i : this.fieldInstructions)
+		{
+			FieldInstruction fi = (FieldInstruction) i.getInstruction();
+			if (fi.getMyField() != null && fi.getMyField() != field)
+				return true;
+		}
+		
+		for (MultiplicationExpression ex : this.subexpressions)
+			if (ex.hasFieldOtherThan(field))
+				return true;
+		
+		return false;
 	}
 }

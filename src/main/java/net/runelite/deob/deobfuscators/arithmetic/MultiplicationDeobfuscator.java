@@ -44,7 +44,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		System.out.println("Total changed " + count);
 	}
 	
-	private MultiplicationExpression parseExpression(Execution e, InstructionContext ctx)
+	public static MultiplicationExpression parseExpression(Execution e, InstructionContext ctx)
 	{
 		MultiplicationExpression me = new MultiplicationExpression();
 		
@@ -199,6 +199,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				}
 				else if (i.getInstruction() instanceof GetFieldInstruction)
 				{
+					me.fieldInstructions.add(i);
 					// non constant, ignore
 				}
 				else
