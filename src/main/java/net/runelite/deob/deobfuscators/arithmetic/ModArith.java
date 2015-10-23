@@ -2,11 +2,9 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
@@ -28,7 +26,6 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class ModArith implements Deobfuscator
@@ -131,16 +128,16 @@ public class ModArith implements Deobfuscator
 				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
 				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
 				
-				PushConstantInstruction pc = null;
+				LDC_W pc = null;
 				GetFieldInstruction other = null;
-				if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+				if (one instanceof LDC_W && two instanceof GetFieldInstruction)
 				{
-					pc = (PushConstantInstruction) one;
+					pc = (LDC_W) one;
 					other = (GetFieldInstruction) two;
 				}
-				else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+				else if (two instanceof LDC_W && one instanceof GetFieldInstruction)
 				{
-					pc = (PushConstantInstruction) two;
+					pc = (LDC_W) two;
 					other = (GetFieldInstruction) one;
 				}
 
@@ -153,6 +150,13 @@ public class ModArith implements Deobfuscator
 					continue;
 					//return false;
 				
+				if (!(pc.getConstant().getObject() instanceof Integer))
+					continue;
+				
+				int ivalue = pc.getConstantAsInt();
+				if (!DMath.isBig(ivalue))
+					continue;
+				
 				try
 				{
 					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(e, ctx);
@@ -164,81 +168,26 @@ public class ModArith implements Deobfuscator
 					continue;
 				}
 				
+				InstructionContext popped = ctx.getPushes().get(0).getPopped().get(0);
+				if (popped.getInstruction() instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction sfi = (SetFieldInstruction) popped.getInstruction();
+					
+					if (sfi.getMyField() != null && sfi.getMyField() != field)
+						continue;
+				}
+				
 				return true;
 			}
 		}
 		
 		return false;
 	}
-//	private boolean isFieldObfuscated(Execution e, Field field)
-//	{
-//		// field isn't obfuscated if there are no usages with big constants and no other fields
-//		
-//		for (Frame f : .processedFrames)
-//			outer:
-//			for (InstructionContext ctx : f.getInstructions())
-//			{
-//				if (!(ctx.getInstruction() instanceof FieldInstruction))
-//					continue;
-//				
-//				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
-//				
-//				if (fi.getMyField() != field)
-//					continue;
-//				
-//				List<InstructionContext> ins = getInsInExpr(ctx, new HashSet());
-//				
-//				// continue if expr contains another ins
-//				for (InstructionContext i : ins)
-//				{
-//					if (i.getInstruction() instanceof FieldInstruction)
-//					{
-//						FieldInstruction ifi = (FieldInstruction) i.getInstruction();
-//						
-//						if (ifi.getMyField() != field)
-//							continue outer; 
-//					}
-//				}
-//				
-//				// find big constant
-//				boolean big = false;
-//				for (InstructionContext i : ins)
-//				{
-//					if (i.getInstruction() instanceof LDC_W)
-//					{
-//						LDC_W ldc = (LDC_W) i.getInstruction();
-//						if (ldc.getConstant().getObject() instanceof Integer)
-//						{
-//							int value = ldc.getConstantAsInt();
-//
-//							if (DMath.isBig(value))
-//								big = true;
-//						}
-//					}
-//				}
-//				
-////				for (InstructionContext i : ins)
-////				{
-////					if (i.getInstruction() instanceof InvokeInstruction)
-////					{
-////						if (!big)
-////						{
-////							// if no ob is detected and its passed to an invoke, it must be deobbed
-////							return false;
-////						}
-////					}
-////				}
-//				
-//				if (big)
-//					return true;
-//			}
-//		
-//		return false;
-//	}
 	
 	static class numgs {
 		int value;
-		boolean getter;
+		//boolean getter;
+		boolean other;
 	}
 	private MultiValueMap<Field, numgs> values2 = new MultiValueMap();
 	
@@ -261,6 +210,22 @@ public class ModArith implements Deobfuscator
 					//if (!fi.getMyField().getName().equals("field2865")) continue;
 					
 					List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
+					boolean other = false;
+					for (InstructionContext i : l)
+					{
+						if (i.getInstruction() instanceof InvokeInstruction)
+							continue;
+						
+						if (i.getInstruction() instanceof FieldInstruction)
+						{
+							FieldInstruction fi2 = (FieldInstruction) i.getInstruction();
+							Field myField = fi2.getMyField();
+							
+							if (myField != null && myField != fi.getMyField())
+								other = true;
+						}
+					}
+					
 					for (InstructionContext i : l)
 					{
 						if (i.getInstruction() instanceof LDC_W)
@@ -271,6 +236,7 @@ public class ModArith implements Deobfuscator
 								//boolean getter = fi instanceof GetFieldInstruction;
 								numgs n = new numgs();
 								n.value = w.getConstantAsInt();
+								n.other = other;
 								//n.getter = getter;
 								values2.put(fi.getMyField(), n);
 							}
@@ -532,6 +498,23 @@ public class ModArith implements Deobfuscator
 		
 		return false;
 	}
+	
+	private void removeDupes(Collection<Integer> in)
+	{
+		Set set = new HashSet();
+		for (Iterator<Integer> it = in.iterator(); it.hasNext();)
+		{
+			int i = it.next();
+
+			if (set.contains(i))
+			{
+				it.remove();
+				continue;
+			}
+
+			set.add(i);
+		}
+	}
 
 	private void reduce2()
 	{
@@ -544,19 +527,28 @@ public class ModArith implements Deobfuscator
 				
 				//getter -442113225
 				//setter -2129182073
-				if (f.getName().equals("field2130"))
-				{
-					//Collection<Integer> col3 = col.stream().map(i -> i.value).collect(Collectors.toSet());
-					
+				//if (f.getName().equals("field564"))
+				{	
 					Collection<numgs> col2 = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
+					
+					Collection<Integer> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());
+					Collection<Integer> other = col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList());
+					other.addAll(noOther);
+//					sorted.addAll(
+//						col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList())
+//					);
 				
-					Set set = col2.stream().map(i -> i.value).collect(Collectors.toSet());
-				//
+					//Set set = col2.stream().map(i -> i.value).collect(Collectors.toSet());
+					removeDupes(noOther);
+					removeDupes(other);
 					
 					if (!isFieldObfuscated(execution, f))
 						continue;
 				
-					Pair p = this.guess2(f, col2, set);
+					Pair p = this.guess2(f, null, noOther);
+					if (p == null)
+						p = this.guess2(f, null, other);
+					
 					if (p != null)
 					{
 						//if (this.deobfuscatedFields.contains(f))
