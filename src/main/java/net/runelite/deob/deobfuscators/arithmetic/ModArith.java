@@ -93,6 +93,35 @@ public class ModArith implements Deobfuscator
 									return true;
 							}
 						}
+						else if (pushedsfi.getInstruction() instanceof IMul)
+						{
+							Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
+							Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
+							
+							LDC_W pci = null;
+							Instruction other = null;
+							if (one instanceof LDC_W)
+							{
+								pci = (LDC_W) one;
+								other = two;
+							}
+							else if (two instanceof LDC_W)
+							{
+								pci = (LDC_W) two;
+								other = one;
+							}
+							
+							if (pci != null
+								&& !(other instanceof GetFieldInstruction))
+							{
+								if (pci.getConstant().getObject() instanceof Integer)
+								{
+									int i = pci.getConstantAsInt();
+									if (DMath.isBig(i))
+										return true;
+								}
+							}
+						}
 					}
 				}
 				// field * imul
@@ -515,7 +544,7 @@ public class ModArith implements Deobfuscator
 				
 				//getter -442113225
 				//setter -2129182073
-				if (f.getName().equals("field606"))
+				if (f.getName().equals("field2130"))
 				{
 					//Collection<Integer> col3 = col.stream().map(i -> i.value).collect(Collectors.toSet());
 					
