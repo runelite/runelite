@@ -19,11 +19,13 @@ class TestClass
 	private static int dummy(Object... args) { return 0; }
 	private static final int var = 42;
 
-	private static int field1051 = -1611704481;
+	private int field1051 = -1611704481;
 	private int field2701;
 
 	public void test()
 	{
+		new TestClass(); // to trick executor to call the constructor
+		
 		if (-1 != this.field1051 * 1928543073)
 		{
 			dummy(this.field1051 * 1928543073);
