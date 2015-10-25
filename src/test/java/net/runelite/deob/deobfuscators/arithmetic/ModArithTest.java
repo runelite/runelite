@@ -6,6 +6,7 @@ import java.io.InputStream;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deobfuscator;
+import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
@@ -15,22 +16,43 @@ import org.junit.Test;
 
 class TestClass
 {
-        private static int dummy(Object... args) { return 0; }
-	
-        public int field1051 = -1611704481;
+	private static int dummy(Object... args) { return 0; }
+	private static final int var = 42;
 
-        public void test()
-        {
-                if(-1 != this.field1051 * 1928543073)
+	private static int field1051 = -1611704481;
+	private int field2701;
+
+	public void test()
+	{
+		if (-1 != this.field1051 * 1928543073)
 		{
-                        dummy(this.field1051 * 1928543073);
-                        this.field1051 = dummy() * 1611704481;
-                }
-        }
+			dummy(this.field1051 * 1928543073);
+			this.field1051 = dummy() * 1611704481;
+		}
+
+		if (field2701 * 1550405721 > 30000)
+		{
+			field2701 += -1868498967 * var;
+		}
+	}
 }
 
 public class ModArithTest
 {
+	private void checkConstants(ClassFile cf)
+	{
+		for (Method m : cf.getMethods().getMethods())
+		{
+			Code code = m.getCode();
+			Instructions instructions = code.getInstructions();
+			for (Instruction i : instructions.getInstructions())
+				if (i instanceof LDC_W)
+				{
+					LDC_W ldc = (LDC_W) i;
+					Assert.assertFalse(DMath.isBig(ldc.getConstantAsInt()));
+				}
+		}
+	}
 	@Test
 	public void test() throws IOException
 	{
@@ -49,13 +71,6 @@ public class ModArithTest
 		Deobfuscator d2 = new MultiplicationDeobfuscator();
 		d2.run(group);
 		
-		Code code = cf.findMethod("test").getCode();
-		Instructions instructions = code.getInstructions();
-		for (Instruction i : instructions.getInstructions())
-			if (i instanceof LDC_W)
-			{
-				LDC_W ldc = (LDC_W) i;
-				Assert.assertFalse(DMath.isBig(ldc.getConstantAsInt()));
-			}
+		this.checkConstants(cf);
 	}
 }
