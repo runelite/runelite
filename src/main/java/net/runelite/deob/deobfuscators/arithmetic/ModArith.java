@@ -68,7 +68,6 @@ public class ModArith implements Deobfuscator
 			outer:
 			for (InstructionContext ctx : f.getInstructions())
 			{
-				// detect field = constant
 				if (ctx.getInstruction() instanceof SetFieldInstruction)
 				{
 					SetFieldInstruction sfi = (SetFieldInstruction) ctx.getInstruction();
@@ -83,6 +82,7 @@ public class ModArith implements Deobfuscator
 							{
 								int it = ldc.getConstantAsInt();
 								if (DMath.isBig(it))
+									// field = constant
 									return true;
 							}
 						}
@@ -111,12 +111,14 @@ public class ModArith implements Deobfuscator
 								{
 									int i = pci.getConstantAsInt();
 									if (DMath.isBig(i))
+										// field = constant * not other field
 										return true;
 								}
 							}
 						}
 					}
 				}
+				
 				// field * imul
 				if (!(ctx.getInstruction() instanceof IMul))
 					continue;
@@ -179,11 +181,12 @@ public class ModArith implements Deobfuscator
 		return false;
 	}
 	
-	static class numgs {
+	static class AssociatedConstant
+	{
 		int value;
 		boolean other;
 	}
-	private MultiValueMap<Field, numgs> values2 = new MultiValueMap();
+	private MultiValueMap<Field, AssociatedConstant> constants = new MultiValueMap();
 	
 	private void findUses2()
 	{
@@ -202,7 +205,7 @@ public class ModArith implements Deobfuscator
 						continue;
 					
 					List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
-					boolean other = false;
+					boolean other = false; // check if this contains another field
 					for (InstructionContext i : l)
 					{
 						if (i.getInstruction() instanceof InvokeInstruction)
@@ -225,10 +228,10 @@ public class ModArith implements Deobfuscator
 							LDC_W w = (LDC_W) i.getInstruction();
 							if (w.getConstant().getObject() instanceof Integer)
 							{
-								numgs n = new numgs();
+								AssociatedConstant n = new AssociatedConstant();
 								n.value = w.getConstantAsInt();
 								n.other = other;
-								values2.put(fi.getMyField(), n);
+								constants.put(fi.getMyField(), n);
 							}
 						}
 					}
@@ -238,7 +241,6 @@ public class ModArith implements Deobfuscator
 
 	private void findUses()
 	{
-		// XXX Here needs to be able pick up setters like ield489 -= -2129182073, and also constant setters
 		for (Frame f : execution.processedFrames)
 			for (InstructionContext ctx : f.getInstructions())
 			{
@@ -272,6 +274,7 @@ public class ModArith implements Deobfuscator
 					if (value == 1 || value == 0)
 						continue;
 					
+					// field * constant
 					constantGetters.put(field, value);
 				}
 				else if (ctx.getInstruction() instanceof SetFieldInstruction)
@@ -294,6 +297,7 @@ public class ModArith implements Deobfuscator
 								int i = ldc.getConstantAsInt();
 								
 								if (DMath.isBig(i))
+									// field = constant
 									constantSetters.put(field, i);
 							}
 						}
@@ -324,12 +328,13 @@ public class ModArith implements Deobfuscator
 					if (value2 == 1 || value2 == 0)
 						continue;
 					
+					// field = something * constant
 					constantSetters.put(field, value2);
 				}
 			}
 	}
 	
-	private Pair guess2(Field field, Collection col, Collection<Integer> constants)
+	private Pair guess(Field field, Collection<Integer> constants)
 	{
 		// multiply each by each,
 		// lowest number wins
@@ -411,16 +416,16 @@ public class ModArith implements Deobfuscator
 			}
 		}
 		
-		Boolean g = isGetterOrSetter(field, true, col, s1),
-			g2 = isGetterOrSetter(field, true, col, s2);
+		boolean g = isGetterOrSetter(field, true, s1),
+			g2 = isGetterOrSetter(field, true, s2);
 		
-		if (g == null || g2 == null || g == g2)
+		if (g == g2)
 		{
-			g = isGetterOrSetter(field, false, col, s1);
-			g2 = isGetterOrSetter(field, false, col, s2);
+			g = isGetterOrSetter(field, false, s1);
+			g2 = isGetterOrSetter(field, false, s2);
 		}
 		
-		if (g == null || g2 == null || g == g2)
+		if (g == g2)
 			System.out.println("BAD  " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
 		else
 		{
@@ -442,7 +447,8 @@ public class ModArith implements Deobfuscator
 		return null;
 	}
 	
-	private Boolean isGetterOrSetter(Field field, boolean getter, Collection<numgs> col, int value)
+	// figure out if value is a getter or setter
+	private boolean isGetterOrSetter(Field field, boolean getter, int value)
 	{
 		Collection<Integer> c;
 		if (getter)
@@ -469,6 +475,7 @@ public class ModArith implements Deobfuscator
 		return false;
 	}
 	
+	// remove duplicates from a collection
 	private void removeDupes(Collection<Integer> in)
 	{
 		Set set = new HashSet();
@@ -491,31 +498,32 @@ public class ModArith implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 			for (Field f : cf.getFields().getFields())
 			{
-				Collection<numgs> col = values2.getCollection(f);
+				Collection<AssociatedConstant> col = constants.getCollection(f); // all constants in instructions associated with the field
 				if (col == null)
 					continue;
 				
-				{	
-					Collection<numgs> col2 = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
-					
-					Collection<Integer> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());
-					Collection<Integer> other = col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList());
-					other.addAll(noOther);
+				// filter out non big ones
+				Collection<AssociatedConstant> col2 = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
 
-					removeDupes(noOther);
-					removeDupes(other);
-					
-					if (!isFieldObfuscated(execution, f))
-						continue;
-				
-					Pair p = this.guess2(f, null, noOther);
-					if (p == null)
-						p = this.guess2(f, null, other);
-					
-					if (p != null)
-					{
-						pairs.add(p);
-					}
+				// filer out ones that have another field in the expression
+				Collection<Integer> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());
+				Collection<Integer> other = col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList());
+				other.addAll(noOther);
+
+				removeDupes(noOther);
+				removeDupes(other);
+
+				if (!isFieldObfuscated(execution, f))
+					continue;
+
+				// guess with constants not associated with other fields
+				Pair p = this.guess(f, noOther);
+				if (p == null)
+					p = this.guess(f, other); // fall back to all constants
+
+				if (p != null)
+				{
+					pairs.add(p);
 				}
 			}
 	}
@@ -590,7 +598,7 @@ public class ModArith implements Deobfuscator
 		pairs.clear();
 		constantGetters.clear();;
 		constantSetters.clear();
-		values2.clear();
+		constants.clear();
 		
 		execution = new Execution(group);
 		execution.populateInitialMethods();
