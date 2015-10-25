@@ -112,6 +112,7 @@ public abstract class Instruction
 	public boolean removeStack()
 	{
 		block = null;
+		assert instructions != null;
 		
 		// update instructions which jump here to jump to the next instruction
 		List<Instruction> ins = instructions.getInstructions();

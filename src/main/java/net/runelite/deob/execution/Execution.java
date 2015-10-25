@@ -42,6 +42,8 @@ public class Execution
 	
 	public void populateInitialMethods()
 	{
+		group.buildClassGraph(); // required when looking up methods
+		
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : cf.getMethods().getMethods())

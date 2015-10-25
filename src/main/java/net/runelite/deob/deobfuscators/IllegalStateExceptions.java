@@ -64,6 +64,7 @@ public class IllegalStateExceptions implements Deobfuscator
 					
 					// remove stack of if.
 					boolean found = false;
+					outer:
 					for (Frame f : execution.processedFrames)
 						if (f.getMethod() == m)
 						{
@@ -75,6 +76,7 @@ public class IllegalStateExceptions implements Deobfuscator
 									if (ins instanceof If)
 										ic.removeStack(1);
 									ic.removeStack(0);
+									break outer;
 								}
 						}
 					if (!found)
@@ -128,6 +130,7 @@ public class IllegalStateExceptions implements Deobfuscator
 	public void run(ClassGroup group)
 	{	
 		group.buildClassGraph();
+		
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
@@ -136,7 +139,7 @@ public class IllegalStateExceptions implements Deobfuscator
 		int passes = 0;
 		int i;
 		do
-		{
+		{		
 			i = checkOnce(execution, group);
 			
 			System.out.println("ise removal pass " + passes + " removed " + i);

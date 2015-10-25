@@ -449,6 +449,9 @@ public class ConstantParameter implements Deobfuscator
 				Instruction ins = ctx.getInstruction();
 				boolean branch = op.branch; // branch that is always taken
 				
+				if (ins.getInstructions() == null)
+					continue; // ins already removed?
+				
 				Instructions instructions = ins.getInstructions();
 				instructions.buildJumpGraph();
 				

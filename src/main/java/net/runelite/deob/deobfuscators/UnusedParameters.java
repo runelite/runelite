@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import net.runelite.deob.execution.StackContext;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -117,6 +118,11 @@ public class UnusedParameters implements Deobfuscator
 				if (!ins.getInvokes().isEmpty() && methods.containsAll(ins.getInvokes()))
 				{
 					int pops = signature.size() - paramIndex - 1; // index from top of stack of parameter. 0 is the last parameter
+					
+					StackContext sctx = ins.getPops().get(pops);
+					if (sctx.getPushed().getInstruction().getInstructions() == null)
+						continue;
+					
 					ins.removeStack(pops); // remove parameter from stack
 					
 					if (done.contains(ins.getInstruction()))

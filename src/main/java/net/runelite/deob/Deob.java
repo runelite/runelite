@@ -39,72 +39,76 @@ public class Deob
 		
 		ClassGroup group = loadJar(args[0]);
 		
-//		run(group, new RenameUnique());
-//
-//		// remove except RuntimeException
-//		run(group, new RuntimeExceptions());
-//		
-//		// remove unused methods
-//		run(group, new UnusedMethods());
-//		
-//		run(group, new UnreachedCode());
-//		
-//		// remove illegal state exceptions, frees up some parameters
-//		run(group, new IllegalStateExceptions());
-//		
-//		// remove constant logically dead parameters
-//		run(group, new ConstantParameter());
-//		
-//		// remove unhit blocks
-//		run(group, new UnreachedCode());
-//		run(group, new UnusedMethods());
-//
-//		// remove unused parameters
-//		run(group, new UnusedParameters());
-//		
-//		// remove jump obfuscation
-//		//new Jumps().run(group);
-//		
-//		// remove unused fields
-//		run(group, new UnusedFields());
-//		
-//		// remove unused methods, again?
-//		run(group, new UnusedMethods());
-//
-//		run(group, new MethodInliner());
-//
-//		// broken because rename was removed
-//		//run(group, new MethodMover());
-//		
-//		run(group, new FieldInliner());
-//		
-//		// XXX this is broken because when moving clinit around, some fields can depend on other fields
-//		// (like multianewarray)
-//		//new FieldMover().run(group);
-//		
-//		run(group, new UnusedClass());
-	
-		ModArith mod = new ModArith();
-		mod.run(group);
+		run(group, new RenameUnique());
+
+		// remove except RuntimeException
+		run(group, new RuntimeExceptions());
 		
-		int last = -1, cur;
-		while ((cur = mod.runOnce()) > 0)
-		{	
-			new MultiplicationDeobfuscator().run(group);
+		// remove unused methods
+		run(group, new UnusedMethods());
+		
+		run(group, new UnreachedCode());
+		
+		// remove illegal state exceptions, frees up some parameters
+		run(group, new IllegalStateExceptions());
+		
+		// remove constant logically dead parameters
+		run(group, new ConstantParameter());
+		
+		// remove unhit blocks
+		run(group, new UnreachedCode());
+		run(group, new UnusedMethods());
 
-			new MultiplyOneDeobfuscator().run(group);
+		// remove unused parameters
+		run(group, new UnusedParameters());
+		
+		// remove jump obfuscation
+		//new Jumps().run(group);
+		
+		// remove unused fields
+		run(group, new UnusedFields());
+		
+		// remove unused methods, again?
+		run(group, new UnusedMethods());
 
-			new MultiplyZeroDeobfuscator().run(group);
-			
-			if (last == cur)
-			{
-				System.out.println("break");
-				break;
-			}
-			
-			last = cur;
-			//break;
-		}
+		run(group, new MethodInliner());
+
+		// broken because rename was removed
+		//run(group, new MethodMover());
+		
+		run(group, new FieldInliner());
+		
+		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+		// (like multianewarray)
+		//new FieldMover().run(group);
+		
+		run(group, new UnusedClass());
+	
+//		ModArith mod = new ModArith();
+//		mod.run(group);
+//		
+//		int last = -1, cur;
+//		while ((cur = mod.runOnce()) > 0)
+//		{	
+//			new MultiplicationDeobfuscator().run(group);
+//
+//			new MultiplyOneDeobfuscator().run(group);
+//
+//			new MultiplyZeroDeobfuscator().run(group);
+//			
+//			if (last == cur)
+//			{
+//				System.out.println("break");
+//				break;
+//			}
+//			
+//			last = cur;
+//			//break;
+//		}
+		
+		// eval constant fields (only set once to a constant in ctor) maybe just inline them
+		
+		// make fields private
 
 		saveJar(group, args[1]);
 		
