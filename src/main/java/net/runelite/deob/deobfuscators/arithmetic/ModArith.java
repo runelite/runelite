@@ -419,8 +419,10 @@ public class ModArith implements Deobfuscator
 		boolean g = isGetterOrSetter(field, true, s1),
 			g2 = isGetterOrSetter(field, true, s2);
 		
+		boolean inverse = false;
 		if (g == g2)
 		{
+			inverse = true;
 			g = isGetterOrSetter(field, false, s1);
 			g2 = isGetterOrSetter(field, false, s2);
 		}
@@ -432,7 +434,7 @@ public class ModArith implements Deobfuscator
 			System.out.println("GOOD " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
 			Pair p = new Pair();
 			p.field = field;
-			if (g)
+			if (g != inverse)
 			{
 				p.getter = s1;
 				p.setter = s2;
