@@ -158,4 +158,9 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	{
 		return (int) value.getObject();
 	}
+	
+	public Number getNumber()
+	{
+		return (Number) value.getObject();
+	}
 }

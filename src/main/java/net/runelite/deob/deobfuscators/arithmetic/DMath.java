@@ -40,4 +40,22 @@ public class DMath
 		
 		return (val & 0x7FF00000) != 0;
 	}
+	
+	private static boolean isBig(long val)
+	{
+		if ((val & 0x8000000000000000L) != 0L)
+			val = ~val + 1L;
+		
+		return (val & 0x7FF0000000000000L) != 0L;
+	}
+	
+	public static boolean isBig(Number value)
+	{
+		if (value instanceof Integer)
+			return isBig((int) value);
+		else if (value instanceof Long)
+			return isBig((long) value);
+		else
+			throw new IllegalArgumentException();
+	}
 }

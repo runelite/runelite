@@ -22,6 +22,7 @@ import net.runelite.deob.attributes.code.instruction.types.PushConstantInstructi
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
+import net.runelite.deob.attributes.code.instructions.LMul;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -32,7 +33,7 @@ public class ModArith implements Deobfuscator
 {
 	private ClassGroup group;
 	private Execution execution;
-	private MultiValueMap<Field, Integer> constantGetters = new MultiValueMap<>(),
+	private MultiValueMap<Field, Number> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
 	
@@ -78,15 +79,15 @@ public class ModArith implements Deobfuscator
 						if (pushedsfi.getInstruction() instanceof LDC_W)
 						{
 							LDC_W ldc = (LDC_W) pushedsfi.getInstruction();
-							if (ldc.getConstant().getObject() instanceof Integer)
+							if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
 							{
-								int it = ldc.getConstantAsInt();
+								Number it = ldc.getNumber();
 								if (DMath.isBig(it))
 									// field = constant
 									return true;
 							}
 						}
-						else if (pushedsfi.getInstruction() instanceof IMul)
+						else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul)
 						{
 							Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
 							Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
@@ -107,9 +108,9 @@ public class ModArith implements Deobfuscator
 							if (pci != null
 								&& !(other instanceof GetFieldInstruction))
 							{
-								if (pci.getConstant().getObject() instanceof Integer)
+								if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
 								{
-									int i = pci.getConstantAsInt();
+									Number i = pci.getNumber();
 									if (DMath.isBig(i))
 										// field = constant * not other field
 										return true;
@@ -120,7 +121,7 @@ public class ModArith implements Deobfuscator
 				}
 				
 				// field * imul
-				if (!(ctx.getInstruction() instanceof IMul))
+				if (!(ctx.getInstruction() instanceof IMul) && !(ctx.getInstruction() instanceof LMul))
 					continue;
 				
 				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
@@ -147,10 +148,10 @@ public class ModArith implements Deobfuscator
 				if (other.getMyField() != null && other.getMyField() != field)
 					continue;
 				
-				if (!(pc.getConstant().getObject() instanceof Integer))
+				if (!(pc.getConstant().getObject() instanceof Integer) && !(pc.getConstant().getObject() instanceof Long))
 					continue;
 				
-				int ivalue = pc.getConstantAsInt();
+				Number ivalue = pc.getNumber();
 				if (!DMath.isBig(ivalue))
 					continue;
 				
@@ -183,7 +184,7 @@ public class ModArith implements Deobfuscator
 	
 	static class AssociatedConstant
 	{
-		int value;
+		Number value;
 		boolean other;
 	}
 	private MultiValueMap<Field, AssociatedConstant> constants = new MultiValueMap();
@@ -200,7 +201,8 @@ public class ModArith implements Deobfuscator
 					if (fi.getMyField() == null)
 						continue;
 					
-					if (!fi.getField().getNameAndType().getDescriptorType().getType().equals("I")
+					if ((!fi.getField().getNameAndType().getDescriptorType().getType().equals("I")
+						&& !fi.getField().getNameAndType().getDescriptorType().getType().equals("J"))
 						|| fi.getField().getNameAndType().getDescriptorType().getArrayDims() != 0)
 						continue;
 					
@@ -226,10 +228,10 @@ public class ModArith implements Deobfuscator
 						if (i.getInstruction() instanceof LDC_W)
 						{
 							LDC_W w = (LDC_W) i.getInstruction();
-							if (w.getConstant().getObject() instanceof Integer)
+							if (w.getConstant().getObject() instanceof Integer || w.getConstant().getObject() instanceof Long)
 							{
 								AssociatedConstant n = new AssociatedConstant();
-								n.value = w.getConstantAsInt();
+								n.value = w.getNumber();
 								n.other = other;
 								constants.put(fi.getMyField(), n);
 							}
@@ -244,7 +246,7 @@ public class ModArith implements Deobfuscator
 		for (Frame f : execution.processedFrames)
 			for (InstructionContext ctx : f.getInstructions())
 			{
-				if (ctx.getInstruction() instanceof IMul)
+				if (ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul)
 				{
 					Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
 					Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
@@ -269,9 +271,9 @@ public class ModArith implements Deobfuscator
 					if (field == null)
 						continue;
 					
-					int value = (int) pc.getConstant().getObject();
+					Number value = (Number) pc.getConstant().getObject();
 					
-					if (value == 1 || value == 0)
+					if ((int) value == 1 || (int) value == 0)
 						continue;
 					
 					// field * constant
@@ -286,15 +288,15 @@ public class ModArith implements Deobfuscator
 						continue;
 					
 					StackContext value = ctx.getPops().get(0); // the first thing popped from both putfield and putstatic is the value
-					if (!(value.getPushed().getInstruction() instanceof IMul))
+					if (!(value.getPushed().getInstruction() instanceof IMul) && !(value.getPushed().getInstruction() instanceof LMul))
 					{
 						if (value.getPushed().getInstruction() instanceof LDC_W)
 						{
 							LDC_W ldc = (LDC_W) value.getPushed().getInstruction();
 							
-							if (ldc.getConstant().getObject() instanceof Integer)
+							if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
 							{
-								int i = ldc.getConstantAsInt();
+								Number i = ldc.getNumber();
 								
 								if (DMath.isBig(i))
 									// field = constant
@@ -323,9 +325,9 @@ public class ModArith implements Deobfuscator
 					if (pc == null)
 						continue;
 					
-					int value2 = (int) pc.getConstant().getObject();
+					Number value2 = (Number) pc.getConstant().getObject();
 					
-					if (value2 == 1 || value2 == 0)
+					if ((int) value2 == 1 || (int) value2 == 0)
 						continue;
 					
 					// field = something * constant
@@ -334,7 +336,7 @@ public class ModArith implements Deobfuscator
 			}
 	}
 	
-	private Pair guess(Field field, Collection<Integer> constants)
+	private Pair guess(Field field, Collection<Number> constants)
 	{
 		// multiply each by each,
 		// lowest number wins
@@ -478,12 +480,12 @@ public class ModArith implements Deobfuscator
 	}
 	
 	// remove duplicates from a collection
-	private void removeDupes(Collection<Integer> in)
+	private <T> void removeDupes(Collection<T> in)
 	{
 		Set set = new HashSet();
-		for (Iterator<Integer> it = in.iterator(); it.hasNext();)
+		for (Iterator<T> it = in.iterator(); it.hasNext();)
 		{
-			int i = it.next();
+			T i = it.next();
 
 			if (set.contains(i))
 			{
@@ -508,8 +510,8 @@ public class ModArith implements Deobfuscator
 				Collection<AssociatedConstant> col2 = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
 
 				// filer out ones that have another field in the expression
-				Collection<Integer> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());
-				Collection<Integer> other = col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList());
+				Collection<Number> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());
+				Collection<Number> other = col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList());
 				other.addAll(noOther);
 
 				removeDupes(noOther);
