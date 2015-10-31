@@ -14,6 +14,12 @@ public class LMul extends Instruction
 	{
 		super(instructions, type, pc);
 	}
+	
+	public LMul(Instructions instructions)
+	{
+		super(instructions, InstructionType.LMUL, -1);
+	}
+
 
 	@Override
 	public void execute(Frame frame)
