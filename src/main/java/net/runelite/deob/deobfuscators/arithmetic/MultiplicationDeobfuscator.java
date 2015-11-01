@@ -16,9 +16,11 @@ import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_M1;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.ISub;
+import net.runelite.deob.attributes.code.instructions.LAdd;
 import net.runelite.deob.attributes.code.instructions.LDC2_W;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.attributes.code.instructions.LMul;
+import net.runelite.deob.attributes.code.instructions.LSub;
 import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
@@ -130,7 +132,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						// this is ok? just don't include it?
 					}
 				}
-				else if (i.getInstruction().getClass() == want)
+				else if (i.getInstruction() instanceof IAdd || i.getInstruction() instanceof ISub
+					|| i.getInstruction() instanceof LAdd || i.getInstruction() instanceof LSub)
 				{
 					// imul using result of iadd or isub. evaluate expression
 					try
@@ -170,7 +173,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 							MultiplicationExpression other = parseExpression(e, orig.getPushed(), want);
 							// this expression is used elsewhere like 'pushConstant' so any changes
 							// done to it affect that, too. so multiply it by existing values?
-							if (orig.getPushed().getInstruction() instanceof IAdd || orig.getPushed().getInstruction() instanceof ISub)
+							if (orig.getPushed().getInstruction() instanceof IAdd || orig.getPushed().getInstruction() instanceof ISub
+								|| orig.getPushed().getInstruction() instanceof LAdd || orig.getPushed().getInstruction() instanceof LSub)
 							{
 								me.subexpressions.add(other);
 							}
@@ -202,7 +206,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 				}
 			}
 			// this is an iadd/sub
-			else if (ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub)
+			else if (ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub
+				|| ctx.getInstruction() instanceof LAdd || ctx.getInstruction() instanceof LSub)
 			{
 				MultiplicationExpression other = parseExpression(e, i, want); // parse this side of the add/sub
 				
