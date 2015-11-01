@@ -158,7 +158,7 @@ public class ModArith implements Deobfuscator
 				
 				try
 				{
-					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(e, ctx);
+					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(e, ctx, ctx.getInstruction().getClass());
 					if (expr.hasFieldOtherThan(field))
 						continue;
 				}
@@ -515,8 +515,16 @@ public class ModArith implements Deobfuscator
 				if (col == null)
 					continue;
 				
+				String typeStr = f.getType().getType();
+				assert typeStr.equals("I") || typeStr.equals("J");
+				
+				Class typeOfField = f.getType().getType().equals("I") ? Integer.class : Long.class;
+				
 				// filter out non big ones
-				Collection<AssociatedConstant> col2 = col.stream().filter(i -> DMath.isBig(i.value)).collect(Collectors.toList());
+				Collection<AssociatedConstant> col2 = col.stream()
+					.filter(i -> DMath.isBig(i.value))
+					.filter(i -> i.value.getClass() == typeOfField)
+					.collect(Collectors.toList());
 
 				// filer out ones that have another field in the expression
 				Collection<Number> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());

@@ -16,38 +16,36 @@ public class MultiplicationExpression
 	List<MultiplicationExpression> subexpressions = new ArrayList<>(); // for distributing, each subexpr is * by this
 	InstructionContext dupmagic; // inverse of what is distributed to subexpressions gets set here
 	
-	int simplify(int start)
+	int simplify(Number start)
 	{
 		int count = 0;
-		int result = start;
+		Number result = start;
 
 		// calculate result
 		for (InstructionContext i : instructions)
 		{
 			PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-			int value = (int) pci.getConstant().getObject();
+			Number value = (Number) pci.getConstant().getObject();
 
-			result *= value;
+			result = DMath.multiply(result, value);
 		}
 		
-	//	assert (dupmagic != null) == !dupedInstructions.isEmpty();
 		if (dupmagic != null)
 		{
 			// mul dupmagic by result of dup ins?
 			
 			PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
-			int value = (int) pci.getConstant().getObject();
+			Number value = (Number) pci.getConstant().getObject();
 			
 			for (InstructionContext ic : dupedInstructions)
 			{
 				PushConstantInstruction pci2 = (PushConstantInstruction) ic.getInstruction();
-				int value2 = (int) pci2.getConstant().getObject();
+				Number value2 = (Number) pci2.getConstant().getObject();
 				
-				value *= value2;
+				value = DMath.multiply(value, value2);
 			}
 			
-			Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(value));
-			System.out.println("dupmagic");
+			Instruction newIns = pci.setConstant(DMath.toPool(value));
 			assert newIns == (Instruction) pci;
 		}
 		
@@ -62,24 +60,32 @@ public class MultiplicationExpression
 			if (dupmagic != null)
 			{
 				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
-				int value = (int) pci.getConstant().getObject();
+				Number value = (Number) pci.getConstant().getObject();
 				
-				value *= DMath.modInverse(result);
+				value = DMath.multiply(value, DMath.modInverse(result));
 				
-				pci.setConstant(new net.runelite.deob.pool.Integer(value));
+				pci.setConstant(DMath.toPool(value));
 			}
 			
-			result = 1; // constant has been distributed, outer numbers all go to 1
+			// constant has been distributed, outer numbers all go to 1
+			if (result instanceof Long)
+				result = 1L;
+			else
+				result = 1;
 		}
 		
 		// set result on ins
 		for (InstructionContext i : instructions)
 		{
 			PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-			Instruction newIns = pci.setConstant(new net.runelite.deob.pool.Integer(result));
+			Instruction newIns = pci.setConstant(DMath.toPool(result));
 			++count;
 			assert newIns == pci;
-			result = 1; // rest of the results go to 1
+			// rest of the results go to 1
+			if (result instanceof Long)
+				result = 1L;
+			else
+				result = 1;
 		}
 		
 		return count;

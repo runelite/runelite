@@ -7,7 +7,9 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.LDC2_W;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
+import net.runelite.deob.attributes.code.instructions.LMul;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -34,7 +36,7 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 				if (ins == null)
 					continue;
 				
-				if (!(instruction instanceof IMul))
+				if (!(instruction instanceof IMul) && !(instruction instanceof LMul))
 					continue;
 				
 				List<Instruction> ilist = ins.getInstructions();
@@ -49,17 +51,17 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 				if (ione instanceof PushConstantInstruction)
 				{
 					PushConstantInstruction pci = (PushConstantInstruction) ione;
-					int value = (int) pci.getConstant().getObject();
+					Number value = (Number) pci.getConstant().getObject();
 					
-					if (value == 0)
+					if (DMath.equals(value, 0))
 						remove = true;
 				}
 				if (itwo instanceof PushConstantInstruction)
 				{
 					PushConstantInstruction pci = (PushConstantInstruction) itwo;
-					int value = (int) pci.getConstant().getObject();
+					Number value = (Number) pci.getConstant().getObject();
 					
-					if (value == 0)
+					if (DMath.equals(value, 0))
 						remove = true;
 				}
 				
@@ -79,7 +81,12 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 				ictx.removeStack(1);
 				ictx.removeStack(0);
 				
-				ins.replace(instruction, new LDC_W(ins, new net.runelite.deob.pool.Integer(0)));
+				if (instruction instanceof IMul)
+					ins.replace(instruction, new LDC_W(ins, new net.runelite.deob.pool.Integer(0)));
+				else if (instruction instanceof LMul)
+					ins.replace(instruction, new LDC2_W(ins, 0L));
+				else
+					throw new IllegalStateException();
 				
 				++count;
 			}

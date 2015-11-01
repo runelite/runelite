@@ -13,6 +13,7 @@ import net.runelite.deob.pool.PoolEntry;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.pool.ConstantType;
 
 public class LDC_W extends Instruction implements PushConstantInstruction
 {
@@ -28,6 +29,8 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	public LDC_W(Instructions instructions, PoolEntry value)
 	{
 		super(instructions, InstructionType.LDC_W, 0);
+		
+		assert value.getType() != ConstantType.LONG;
 		
 		this.value = value;
 		length += 2;
@@ -55,6 +58,8 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 			value = this.getPool().getEntry(is.readUnsignedByte());
 			length += 1;
 		}
+		
+		assert value.getType() != ConstantType.LONG;
 	}
 	
 	@Override
@@ -120,6 +125,7 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	public Instruction setConstant(PoolEntry entry)
 	{
 		value = entry;
+		assert value.getType() != ConstantType.LONG;
 		return this;
 	}
 	

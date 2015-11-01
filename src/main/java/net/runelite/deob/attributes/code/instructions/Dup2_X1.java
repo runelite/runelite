@@ -76,14 +76,116 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public StackContext getOriginal(StackContext ctx)
+	public StackContext getOriginal(StackContext sctx)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		InstructionContext ctx = sctx.getPushed();
+		
+		assert ctx.getInstruction() == this;
+		assert ctx.getPushes().contains(sctx);
+		int idx = ctx.getPushes().indexOf(sctx);
+		
+		// 2 1 0 -> 1 0 2 1 0 OR 1 0 -> 0 1 0
+		
+		assert ctx.getPushes().size() == 5 || ctx.getPushes().size() == 3;
+		
+		int orig;
+		
+		if (ctx.getPushes().size() == 5)
+		{
+			switch (idx)
+			{
+				case 0:
+					orig = 1;
+					break;
+				case 1:
+					orig = 0;
+					break;
+				case 2:
+					orig = 2;
+					break;
+				case 3:
+					orig = 1;
+					break;
+				case 4:
+					orig = 0;
+					break;
+				default:
+					throw new IllegalStateException();
+			}
+		}
+		else if (ctx.getPushes().size() == 3)
+		{
+			switch (idx)
+			{
+				case 0:
+					orig = 0;
+					break;
+				case 1:
+					orig = 1;
+					break;
+				case 2:
+					orig = 0;
+					break;
+				default:
+					throw new IllegalStateException();
+			}
+		}
+		else
+			throw new IllegalStateException();
+				
+		return ctx.getPushes().get(orig);
 	}
 
 	@Override
 	public StackContext getOtherBranch(StackContext sctx)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getInstruction() == this;
+		
+		assert ctx.getPushes().contains(sctx);
+		int idx = ctx.getPushes().indexOf(sctx);
+		
+		// 2 1 0 -> 1 0 2 1 0 OR 1 0 -> 0 1 0
+		
+		int other;
+		
+		if (ctx.getPushes().size() == 5)
+		{
+			switch (idx)
+			{
+				case 0:
+					other = 3;
+					break;
+				case 1:
+					other = 4;
+					break;
+				case 3:
+					other = 0;
+					break;
+				case 4:
+					other = 1;
+					break;
+				default:
+					return null;
+			}
+		}
+		else if (ctx.getPushes().size() == 3)
+		{
+			switch (idx)
+			{
+				case 0:
+					other = 2;
+					break;
+				case 2:
+					other = 0;
+					break;
+				default:
+					return null;
+			}
+		}
+		else
+			throw new IllegalStateException();
+				
+		return ctx.getPushes().get(other);
 	}
 }

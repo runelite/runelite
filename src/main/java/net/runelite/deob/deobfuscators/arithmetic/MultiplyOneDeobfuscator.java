@@ -10,6 +10,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.LMul;
 import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
@@ -34,7 +35,7 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 			{
 				Instruction instruction = ictx.getInstruction();
 				
-				if (!(instruction instanceof IMul))
+				if (!(instruction instanceof IMul) && !(instruction instanceof LMul))
 					continue;
 				
 				Instructions ins = ictx.getInstruction().getInstructions();
@@ -51,12 +52,12 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 				
 				int removeIdx = -1;
 				if (one.getPushed().getInstruction() instanceof PushConstantInstruction
-					&& (int) ((PushConstantInstruction) one.getPushed().getInstruction()).getConstant().getObject() == 1)
+					&& DMath.equals((Number) ((PushConstantInstruction) one.getPushed().getInstruction()).getConstant().getObject(), 1))
 				{
 					removeIdx = 0;
 				}
 				else if (two.getPushed().getInstruction() instanceof PushConstantInstruction
-					&& (int) ((PushConstantInstruction) two.getPushed().getInstruction()).getConstant().getObject() == 1)
+					&& DMath.equals((Number) ((PushConstantInstruction) two.getPushed().getInstruction()).getConstant().getObject(), 1))
 				{
 					removeIdx = 1;
 				}
@@ -69,7 +70,6 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 				
 				ictx.removeStack(removeIdx);
 				ins.replace(ictx.getInstruction(), new NOP(ins));
-				//ins.remove(ictx.getInstruction());
 				
 				++count;
 			}
