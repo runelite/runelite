@@ -609,7 +609,7 @@ public class MultiplicationDeobfuscatorTest
 		d.run(group);
 		
 		Assert.assertEquals(1L, constant1.getConstantAsLong());
-//		Assert.assertEquals(1L, constant2.getConstantAsLong());
-//		Assert.assertEquals(1L, constant3.getConstantAsLong());
+		Assert.assertEquals(1L, constant2.getConstantAsLong());
+		Assert.assertEquals(1L, constant3.getConstantAsLong());
 	}
 }

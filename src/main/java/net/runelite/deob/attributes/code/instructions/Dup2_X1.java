@@ -138,7 +138,7 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 		else
 			throw new IllegalStateException();
 				
-		return ctx.getPushes().get(orig);
+		return ctx.getPops().get(orig);
 	}
 
 	@Override
