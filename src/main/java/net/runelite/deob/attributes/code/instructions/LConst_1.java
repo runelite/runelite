@@ -14,9 +14,14 @@ import java.io.IOException;
 
 public class LConst_1 extends Instruction implements PushConstantInstruction
 {
-	public LConst_1(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LConst_1(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public LConst_1(Instructions instructions)
+	{
+		super(instructions, InstructionType.LCONST_1, -1);
 	}
 
 	@Override

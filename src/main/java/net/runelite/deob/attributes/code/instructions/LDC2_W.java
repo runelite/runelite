@@ -83,4 +83,9 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 		value = entry;
 		return this;
 	}
+	
+	public long getConstantAsLong()
+	{
+		return (long) value.getObject();
+	}
 }

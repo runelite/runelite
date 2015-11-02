@@ -13,9 +13,14 @@ import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 
 public class Dup2_X1 extends Instruction implements DupInstruction
 {
-	public Dup2_X1(Instructions instructions, InstructionType type, int pc) throws IOException
+	public Dup2_X1(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public Dup2_X1(Instructions instructions)
+	{
+		super(instructions, InstructionType.DUP2_X1, -1);
 	}
 
 	@Override

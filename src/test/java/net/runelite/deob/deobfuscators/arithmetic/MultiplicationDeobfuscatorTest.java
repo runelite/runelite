@@ -8,6 +8,7 @@ import net.runelite.deob.Field;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instructions.Dup2_X1;
 import net.runelite.deob.attributes.code.instructions.Dup_X1;
 import net.runelite.deob.attributes.code.instructions.GetStatic;
 import net.runelite.deob.attributes.code.instructions.Goto;
@@ -24,7 +25,12 @@ import net.runelite.deob.attributes.code.instructions.IStore;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
 import net.runelite.deob.attributes.code.instructions.If0;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+import net.runelite.deob.attributes.code.instructions.LConst_1;
+import net.runelite.deob.attributes.code.instructions.LDC2_W;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
+import net.runelite.deob.attributes.code.instructions.LLoad;
+import net.runelite.deob.attributes.code.instructions.LMul;
+import net.runelite.deob.attributes.code.instructions.LStore_0;
 import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.attributes.code.instructions.Pop;
 import net.runelite.deob.attributes.code.instructions.VReturn;
@@ -493,9 +499,7 @@ public class MultiplicationDeobfuscatorTest
 		    label3 = new NOP(ins);
 		
 		Instruction body[] = {
-			//new GetStatic(ins, field.getPoolField()),
 			constant1,
-			//new IMul(ins),
 			constant2,
 			new IMul(ins),
 			
@@ -515,7 +519,6 @@ public class MultiplicationDeobfuscatorTest
 			
 			label3,
 			new InvokeStatic(ins, group.findClass("test").findMethod("func2").getPoolMethod()),
-			//new Pop(ins), new Pop(ins), new Pop(ins),
 			
 			new VReturn(ins)
 		};
@@ -534,5 +537,79 @@ public class MultiplicationDeobfuscatorTest
 		
 		Assert.assertEquals(1, constant1.getConstantAsInt());
 		Assert.assertEquals(1, constant2.getConstantAsInt());
+	}
+	
+	//   aload                 0
+	//   aload                 0
+	//   aload                 1
+	//   invokevirtual         class226/method4078()J
+	//   ldc2_w                -81013729583719545
+	//   lmul
+	//   dup2_x1
+	//   ldc2_w                -6236978337732675017
+	//   lmul
+	//   putfield              class227/field3204 J
+	//   ldc2_w                -6236978337732675017
+	//   lmul
+	//   putfield              class227/field3196 J
+	@Test
+	public void test9()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+		
+		code.setMaxStack(3);
+		
+		Instruction[] prepareVariables = {
+			new LConst_1(ins),
+			new LStore_0(ins)
+		};
+		
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+		
+		LDC2_W constant1 = new LDC2_W(ins, -81013729583719545L),
+		       constant2 = new LDC2_W(ins, -6236978337732675017L),
+		       constant3 = new LDC2_W(ins, -6236978337732675017L);
+		
+		Instruction body[] = {
+			new IConst_0(ins),
+			
+			new LLoad(ins, 0),
+			constant1,
+			new LMul(ins),
+			
+			new Dup2_X1(ins), // lmul, 0, lmul
+			
+			constant2,
+			new LMul(ins),
+			
+			new Pop(ins),
+			new Pop(ins),
+			
+			constant3,
+			new LMul(ins),
+			
+			new Pop(ins),
+			
+			new VReturn(ins)
+		};
+		
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+		
+		assert constant1.getConstantAsLong() * constant2.getConstantAsLong() == 1L;
+		
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+		
+		Assert.assertEquals(1L, constant1.getConstantAsLong());
+//		Assert.assertEquals(1L, constant2.getConstantAsLong());
+//		Assert.assertEquals(1L, constant3.getConstantAsLong());
 	}
 }
