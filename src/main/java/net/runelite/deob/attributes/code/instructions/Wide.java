@@ -23,6 +23,14 @@ public class Wide extends Instruction implements LVTInstruction
 	}
 	
 	@Override
+	public Instruction clone()
+	{
+		Wide wide = (Wide) super.clone();
+		wide.ins = ins.clone();
+		return wide;
+	}
+	
+	@Override
 	public void load(DataInputStream is) throws IOException
 	{
 		byte opcode = is.readByte(); // this byte is already in the length of the new instruction (length is initialized to 1)

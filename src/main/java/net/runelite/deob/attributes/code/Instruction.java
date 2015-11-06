@@ -9,9 +9,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.util.NameMappings;
 
-public abstract class Instruction
+public abstract class Instruction implements Cloneable
 {
 	private Instructions instructions;
 	public Block block;
@@ -28,6 +27,19 @@ public abstract class Instruction
 		this.instructions = instructions;
 		this.type = type;
 		this.pc = pc;
+	}
+	
+	@Override
+	public Instruction clone()
+	{
+		try
+		{
+			return (Instruction) super.clone();
+		}
+		catch (CloneNotSupportedException ex)
+		{
+			throw new RuntimeException();
+		}
 	}
 	
 	public void load(DataInputStream is) throws IOException

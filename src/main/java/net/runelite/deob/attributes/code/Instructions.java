@@ -1,8 +1,5 @@
 package net.runelite.deob.attributes.code;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.deob.block.Block;
@@ -14,7 +11,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.util.NameMappings;
+import net.runelite.deob.attributes.code.instructions.Goto;
 
 public class Instructions
 {
@@ -182,6 +179,8 @@ public class Instructions
 	public void write(DataOutputStream out) throws IOException
 	{
 		// trnaslate instructions to specific
+		this.buildJumpGraph();
+		
 		for (Instruction i : new ArrayList<>(instructions))
 		{
 			Instruction specific = i.makeSpecific();
@@ -271,10 +270,13 @@ public class Instructions
 		
 		int i = instructions.indexOf(oldi);
 		instructions.remove(oldi);
+		oldi.setInstructions(null);
 		instructions.add(i, newi);
 		
 		for (Instruction ins : oldi.from)
 		{
+			assert ins.getInstructions() == this;
+			assert this.getInstructions().contains(ins);
 			assert ins.jump.contains(oldi);
 			
 			ins.jump.remove(oldi);
@@ -286,7 +288,5 @@ public class Instructions
 		
 		for (net.runelite.deob.attributes.code.Exception e : code.getExceptions().getExceptions())
 			e.replace(oldi, newi);
-		
-		oldi.setInstructions(null);
 	}
 }

@@ -21,10 +21,9 @@ import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.signature.Signature;
 import net.runelite.deob.signature.Type;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.Map.Entry;
 import net.runelite.deob.attributes.code.Exceptions;
 
 public class MethodInliner implements Deobfuscator
@@ -84,7 +83,10 @@ public class MethodInliner implements Deobfuscator
 			Method invokedMethod = invokedMethods.get(0);
 			Integer count = calls.get(invokedMethod);
 
-			if (count == null || invokedMethod.getCode().getInstructions().getInstructions().size() > 30)
+			// this can't inline functions with exception handlers because throwing exceptions clears the stack
+			if (count == null
+				|| !invokedMethod.getCode().getExceptions().getExceptions().isEmpty()
+				|| invokedMethod.getCode().getInstructions().getInstructions().size() > 30) // XXX magic
 				continue;
 //			if (count == null || count != 1)
 //				continue; // only inline methods called once
@@ -94,7 +96,7 @@ public class MethodInliner implements Deobfuscator
 			
 			int invokeIdx = ins.getInstructions().indexOf(i);
 			assert invokeIdx != -1;
-			assert ins.getInstructions().get(invokeIdx).getInstructions() == ins.getInstructions();
+			assert ins.getInstructions().get(invokeIdx).getInstructions() == ins;
 			
 			int lvtIndex = code.getMaxLocals(),
 				//startLvtIndex = lvtIndex,
@@ -167,7 +169,6 @@ public class MethodInliner implements Deobfuscator
 			code.setMaxStack(maxStack);
 			
 			inline(m, i, invokedMethod, lvtIndex, firstParamStore);
-			moveExceptions(m, invokedMethod);
 			++inlineCount;
 			break;
 		}
@@ -220,9 +221,43 @@ public class MethodInliner implements Deobfuscator
 		
 		methodInstructions.remove(invokeIns);
 		
+		Map<Instruction, Instruction> insMap = new HashMap<>();
 		for (Instruction i : invokeMethodInstructions.getInstructions())
 		{
-			// move instructions over.
+			Instruction i2 = i.clone();
+			i2.setInstructions(null);
+			insMap.put(i, i2);
+		}
+		
+		for (Instruction i : insMap.values())
+		{
+			for (Entry<Instruction, Instruction> e : insMap.entrySet())
+			{
+				i.replace(e.getKey(), e.getValue());
+			}
+		}
+		
+		Exceptions fromExceptions = invokeMethod.getCode().getExceptions();
+		Exceptions toExceptions = method.getCode().getExceptions();
+		
+		for (net.runelite.deob.attributes.code.Exception e : fromExceptions.getExceptions())
+		{
+			e = e.clone();
+			e.setExceptions(toExceptions);
+			
+			for (Entry<Instruction, Instruction> en : insMap.entrySet())
+			{
+				e.replace(en.getKey(), en.getValue());
+			}
+			
+			toExceptions.add(e);
+		}
+		
+		for (Instruction i : invokeMethodInstructions.getInstructions())
+		{
+			Instruction orig = i;
+			i = insMap.get(i);
+			// copy instructions over.
 			
 			if (i instanceof ReturnInstruction)
 			{	
@@ -231,23 +266,16 @@ public class MethodInliner implements Deobfuscator
 				// instead of return, jump to next instruction after the invoke
 				Instruction oldI = i;
 				i = new Goto(methodInstructions, nextInstruction);
+				assert nextInstruction.getInstructions() == methodInstructions;
 				assert methodInstructions.getInstructions().contains(nextInstruction);
 				
-				assert oldI != nextInstruction;
-				i.jump.add(nextInstruction);
-				nextInstruction.from.add(i);
-				
-				assert oldI.jump.isEmpty();
-				//i.jump.addAll(oldI.jump);
-				i.from.addAll(oldI.from);
-				
-				for (Instruction i2 : oldI.from)
+				for (Instruction i2 : insMap.values())
 					i2.replace(oldI, i);
 				
-				oldI.from.clear();
-				
-				for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
+				for (net.runelite.deob.attributes.code.Exception e : toExceptions.getExceptions())
 					e.replace(oldI, i);
+				
+				insMap.put(orig, i);
 			}
 			
 			if (i instanceof LVTInstruction)
@@ -261,40 +289,20 @@ public class MethodInliner implements Deobfuscator
 				
 				if (oldI != i)
 				{
-					assert oldI.jump.isEmpty();
-					//i.jump.addAll(oldI.jump);
-					i.from.addAll(oldI.from);
-
-					for (Instruction i2 : oldI.from)
+					for (Instruction i2 : insMap.values())
 						i2.replace(oldI, i);
-
-					oldI.from.clear();
 					
-					for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
+					for (net.runelite.deob.attributes.code.Exception e : toExceptions.getExceptions())
 						e.replace(oldI, i);
+					
+					insMap.put(orig, i);
 				}
 			}
 			
-			methodInstructions.getInstructions().add(idx++, i);
+			assert !methodInstructions.getInstructions().contains(i);
 			i.setInstructions(methodInstructions);
+			methodInstructions.getInstructions().add(idx++, i);
 		}
-		
-		// old method goes away
-		//invokeMethodInstructions.getInstructions().clear();
-		//removeMethods.add(invokeMethod);
-	}
-	
-	private void moveExceptions(Method to, Method from)
-	{
-		Exceptions exceptions = from.getCode().getExceptions();
-		Exceptions toExceptions = to.getCode().getExceptions();
-		
-		for (net.runelite.deob.attributes.code.Exception e : exceptions.getExceptions())
-		{
-			e.setExceptions(toExceptions);
-			toExceptions.add(e);
-		}
-		exceptions.getExceptions().clear();
 	}
 	
 	@Override

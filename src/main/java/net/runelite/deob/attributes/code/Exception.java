@@ -8,7 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Exception
+public class Exception implements Cloneable
 {
 	private Exceptions exceptions;
 
@@ -34,6 +34,19 @@ public class Exception
 		assert start != null;
 		assert end != null;
 		assert handler != null;
+	}
+	
+	@Override
+	public Exception clone()
+	{
+		try
+		{
+			return (Exception) super.clone();
+		}
+		catch (CloneNotSupportedException ex)
+		{
+			throw new RuntimeException();
+		}
 	}
 	
 	public void write(DataOutputStream out) throws IOException

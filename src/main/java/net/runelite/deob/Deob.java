@@ -30,6 +30,8 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.execution.Execution;
 
+// XXX something to detect final fields and evaluate them
+
 public class Deob
 {
 	public static void main(String[] args) throws IOException
@@ -73,7 +75,7 @@ public class Deob
 //		run(group, new UnusedMethods());
 
 		run(group, new MethodInliner());
-		// now remove unused methods?
+		run(group, new UnusedMethods()); // inliner might leave unused methods
 
 //		// broken because rename was removed
 //		//run(group, new MethodMover());
