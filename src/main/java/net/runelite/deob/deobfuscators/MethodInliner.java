@@ -30,7 +30,7 @@ import net.runelite.deob.attributes.code.Exceptions;
 public class MethodInliner implements Deobfuscator
 {
 	private Map<Method, Integer> calls = new HashMap<>();
-	private Set<Method> removeMethods = new HashSet<>();
+	//private Set<Method> removeMethods = new HashSet<>();
 	
 	private void countCalls(Method m)
 	{
@@ -72,6 +72,7 @@ public class MethodInliner implements Deobfuscator
 		
 		for (Instruction i : ins.getInstructions())
 		{
+			assert i.getInstructions() == ins;
 			// can only inline static method calls
 			if (!(i instanceof InvokeStatic))
 				continue;
@@ -82,14 +83,18 @@ public class MethodInliner implements Deobfuscator
 			
 			Method invokedMethod = invokedMethods.get(0);
 			Integer count = calls.get(invokedMethod);
+
+			if (count == null || invokedMethod.getCode().getInstructions().getInstructions().size() > 30)
+				continue;
+//			if (count == null || count != 1)
+//				continue; // only inline methods called once
 			
-			if (count == null || count != 1)
-				continue; // only inline methods called once
-			
-			assert m != invokedMethod;
+			if (m == invokedMethod)
+				continue; // recursive method
 			
 			int invokeIdx = ins.getInstructions().indexOf(i);
 			assert invokeIdx != -1;
+			assert ins.getInstructions().get(invokeIdx).getInstructions() == ins.getInstructions();
 			
 			int lvtIndex = code.getMaxLocals(),
 				//startLvtIndex = lvtIndex,
@@ -178,6 +183,7 @@ public class MethodInliner implements Deobfuscator
 			invokeMethodInstructions = invokeMethodCode.getInstructions();
 		
 		int idx = methodInstructions.getInstructions().indexOf(invokeIns); // index of invoke ins, before removal
+		assert invokeIns.getInstructions() == methodInstructions;
 		assert idx != -1;
 		
 		Instruction nextInstruction = methodInstructions.getInstructions().get(idx + 1);
@@ -274,8 +280,8 @@ public class MethodInliner implements Deobfuscator
 		}
 		
 		// old method goes away
-		invokeMethodInstructions.getInstructions().clear();
-		removeMethods.add(invokeMethod);
+		//invokeMethodInstructions.getInstructions().clear();
+		//removeMethods.add(invokeMethod);
 	}
 	
 	private void moveExceptions(Method to, Method from)
@@ -312,7 +318,7 @@ public class MethodInliner implements Deobfuscator
 		int count = 0;
 		
 		calls.clear();
-		removeMethods.clear();
+		//removeMethods.clear();
 		
 		for (ClassFile cf : group.getClasses())
 		{
@@ -329,9 +335,9 @@ public class MethodInliner implements Deobfuscator
 				count += processMethod(m);
 			}
 		}
-		
-		for (Method m : removeMethods)
-			m.getMethods().removeMethod(m);
+//		
+//		for (Method m : removeMethods)
+//			m.getMethods().removeMethod(m);
 		
 		System.out.println("Inlined " + count + " methods");
 		return count;

@@ -1,8 +1,6 @@
 package net.runelite.deob;
 
 import net.runelite.deob.deobfuscators.FieldInliner;
-import net.runelite.deob.deobfuscators.FieldMover;
-import net.runelite.deob.deobfuscators.MethodMover;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -18,6 +16,7 @@ import java.util.jar.Manifest;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.MethodInliner;
+import net.runelite.deob.deobfuscators.Rename;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -35,6 +34,8 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
+		//merge(); if(true) return;
+		
 		long start = System.currentTimeMillis();
 		
 		ClassGroup group = loadJar(args[0]);
@@ -70,9 +71,10 @@ public class Deob
 //		
 //		// remove unused methods, again?
 //		run(group, new UnusedMethods());
-//
-//		run(group, new MethodInliner());
-//
+
+		run(group, new MethodInliner());
+		// now remove unused methods?
+
 //		// broken because rename was removed
 //		//run(group, new MethodMover());
 //		
@@ -83,28 +85,28 @@ public class Deob
 //		//new FieldMover().run(group);
 //		
 //		run(group, new UnusedClass());
-	
-		ModArith mod = new ModArith();
-		mod.run(group);
-		
-		int last = -1, cur;
-		while ((cur = mod.runOnce()) > 0)
-		{	
-			new MultiplicationDeobfuscator().run(group);
-
-			new MultiplyOneDeobfuscator().run(group);
-
-			new MultiplyZeroDeobfuscator().run(group);
-			
-			if (last == cur)
-			{
-				System.out.println("break");
-				break;
-			}
-			
-			last = cur;
-			//break;
-		}
+//	
+//		ModArith mod = new ModArith();
+//		mod.run(group);
+//		
+//		int last = -1, cur;
+//		while ((cur = mod.runOnce()) > 0)
+//		{	
+//			new MultiplicationDeobfuscator().run(group);
+//
+//			new MultiplyOneDeobfuscator().run(group);
+//
+//			new MultiplyZeroDeobfuscator().run(group);
+//			
+//			if (last == cur)
+//			{
+//				System.out.println("break");
+//				break;
+//			}
+//			
+//			last = cur;
+//			//break;
+//		}
 		
 		// eval constant fields (only set once to a constant in ctor) maybe just inline them
 		
@@ -114,6 +116,15 @@ public class Deob
 		
 		long end = System.currentTimeMillis();
 		System.out.println("Done in " + ((end - start) / 1000L) + "s");
+	}
+	
+	private static void merge() throws IOException
+	{
+		ClassGroup group1 = loadJar("d:/rs/07/adamin1.jar"),
+			group2 = loadJar("d:/rs/07/adamin2.jar");
+		
+		Rename rename = new Rename();
+		rename.run(group1, group2);
 	}
 	
 	public static boolean isObfuscated(String name)
