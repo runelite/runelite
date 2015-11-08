@@ -16,31 +16,23 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 
 public class Rename
-{	
-	public void run(ClassGroup one, ClassGroup two)
+{
+	// respective executions
+	private Execution eone, etwo;
+	
+	// old -> new object mapping
+	private Map<Object, Object> objMap = new HashMap<>();
+	
+	private boolean compare(Frame f1, Frame f2)
 	{
-		Execution eone = new Execution(one);
-		eone.populateInitialMethods();
-		eone.run();
-		
-		Execution etwo = new Execution(two);
-		etwo.populateInitialMethods();
-		etwo.run();
-		
-		List<Frame> f1 = eone.processedFrames.stream().filter(f -> f.getMethod() == one.findClass("client").findMethod("init")).collect(Collectors.toList());
-		List<Frame> f2 = etwo.processedFrames.stream().filter(f -> f.getMethod() == two.findClass("client").findMethod("init")).collect(Collectors.toList());
-		
-		Frame ff1 = f1.get(0), ff2 = f2.get(0);
-		
-		Graph g1 = ff1.getGraph(), g2 = ff2.getGraph();
+		Graph g1 = f1.getGraph(), g2 = f2.getGraph();
 		
 		IsomorphismTester isoTest = new TypedVF2IsomorphismTester();
-		System.out.println(isoTest.areIsomorphic(g1, g2));
+		if (!isoTest.areIsomorphic(g1, g2))
+			return false;
 		
 		Map<Integer, Integer> mapping = isoTest.findIsomorphism(g1, g2);
-		Map<Integer, Instruction> map1 = ff1.getIdMap(), map2 = ff2.getIdMap();
-		
-		Map<Object, Object> objMap = new HashMap<>();
+		Map<Integer, Instruction> map1 = f1.getIdMap(), map2 = f2.getIdMap();
 		
 		for (Entry<Integer, Integer> e : mapping.entrySet())
 		{
@@ -67,11 +59,38 @@ public class Rename
 				objMap.put(m1, m2);
 			}
 			
-			//ii1.getMethods().
-			
 			System.out.println("MATCH " + ii1.getMethods().get(0).getName() + " -> " + ii2.getMethods().get(0).getName());
 		}
 		
+		return true;
+	}
+	
+	private void process(Method one, Method two)
+	{
+		// get frames for respective methods
+		List<Frame> f1 = eone.processedFrames.stream().filter(f -> f.getMethod() == one).collect(Collectors.toList());
+		List<Frame> f2 = etwo.processedFrames.stream().filter(f -> f.getMethod() == two).collect(Collectors.toList());
+		
+		for (Frame fr1 : f1)
+			for (Frame fr2 : f2)
+				if (compare(fr1, fr2))
+					return;
+	}
+	public void run(ClassGroup one, ClassGroup two)
+	{
+		eone = new Execution(one);
+		eone.populateInitialMethods();
+		eone.run();
+		
+		etwo = new Execution(two);
+		etwo.populateInitialMethods();
+		etwo.run();
+		
+		process(
+			one.findClass("client").findMethod("init"),
+			two.findClass("client").findMethod("init")
+		);
+
 		System.out.println("done");
 	}
 }
