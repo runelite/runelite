@@ -16,7 +16,7 @@ import java.util.jar.Manifest;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.MethodInliner;
-import net.runelite.deob.deobfuscators.Rename;
+import net.runelite.deob.deobfuscators.rename.Rename;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -31,12 +31,13 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.execution.Execution;
 
 // XXX something to detect final fields and evaluate them
+// XXX ORDER IN WHICH FIELDS ARE ACCESSED
 
 public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
-		//merge(); if(true) return;
+		merge(); if(true) return;
 		
 		long start = System.currentTimeMillis();
 		

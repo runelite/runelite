@@ -1,6 +1,10 @@
 package net.runelite.deob.execution;
 
 import com.google.common.collect.Lists;
+import edu.ucla.sspace.graph.DirectedEdge;
+import edu.ucla.sspace.graph.Graph;
+import edu.ucla.sspace.graph.SimpleDirectedEdge;
+import edu.ucla.sspace.graph.SparseDirectedGraph;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,13 +15,9 @@ import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Exception;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instructions.LookupSwitch;
-import net.runelite.deob.attributes.code.instructions.TableSwitch;
 import net.runelite.deob.pool.NameAndType;
-import java.util.HashSet;
-import java.util.Set;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import org.apache.commons.collections4.MultiMap;
+import net.runelite.deob.util.IdGen;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Frame
@@ -30,6 +30,11 @@ public class Frame
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>(); // shared
+	
+	private IdGen ids = new IdGen();
+	private Map<Integer, Instruction> idMap = new HashMap<>();
+	private Graph graph = new SparseDirectedGraph(); // shared.
+	private int prevVertex = -1;
 	
 	public static long num;
 
@@ -100,6 +105,11 @@ public class Frame
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.visited = other.visited;
+		
+		this.ids = other.ids;
+		this.idMap = other.idMap;
+		this.graph = other.graph;
+		this.prevVertex = other.prevVertex;
 	}
 	
 	public Frame dup()
@@ -190,6 +200,8 @@ public class Frame
 			if (!executing)
 				break;
 			
+			buildGraph(oldCur);
+			
 			if (oldCur == cur)
 			{
 				int idx = instructions.indexOf(cur);
@@ -254,5 +266,56 @@ public class Frame
 		}
 		
 		cur = to;
+	}
+
+	public Graph getGraph()
+	{
+		return graph;
+	}
+
+	public Map<Integer, Instruction> getIdMap()
+	{
+		return idMap;
+	}
+	
+	private void buildGraph(Instruction i)
+	{
+		if (i instanceof InvokeInstruction)
+		{
+			InvokeInstruction ii = (InvokeInstruction) i;
+			
+			List<Method> methods = ii.getMethods();
+			if (methods.isEmpty())
+				return;
+		}
+//		else if (i instanceof FieldInstruction)
+//		{
+//			FieldInstruction fi = (FieldInstruction) i;
+//			
+//			if (fi.getMyField() == null)
+//				return;
+//		}
+		else
+		{
+			return;
+		}
+		
+		if (prevVertex == -1)
+		{
+			int id = ids.get();
+			graph.add(id);
+			prevVertex = id;
+			this.idMap.put(id, i);
+			return;
+		}
+		
+		int id = ids.get();
+		graph.add(id);
+		idMap.put(id, i);
+		
+		DirectedEdge edge = new SimpleDirectedEdge(prevVertex, id);
+		graph.add(edge);
+		
+		prevVertex = id;
 	}
 }

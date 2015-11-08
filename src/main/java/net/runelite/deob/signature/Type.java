@@ -1,5 +1,7 @@
 package net.runelite.deob.signature;
 
+import java.util.Objects;
+
 public class Type
 {
 	private String type;
@@ -57,6 +59,17 @@ public class Type
 		return 1;
 	}
 	
+	public boolean isPrimitive()
+	{
+		assert type.startsWith("L") == type.endsWith(";");
+		return !type.startsWith("L");
+	}
+	
+	public boolean isObfuscatedType()
+	{
+		return type.startsWith("Lclass");
+	}
+	
 	@Override
 	public boolean equals(Object other)
 	{
@@ -65,6 +78,15 @@ public class Type
 		
 		Type a = (Type) other;
 		return type.equals(a.type) && arrayDimms == a.arrayDimms;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 23 * hash + Objects.hashCode(this.type);
+		hash = 23 * hash + this.arrayDimms;
+		return hash;
 	}
 	
 	@Override

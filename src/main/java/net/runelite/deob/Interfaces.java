@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Interfaces
 {
@@ -49,6 +50,11 @@ public class Interfaces
 				l.add(iface);
 		}
 		return l;
+	}
+	
+	public List<Class> getNonMyInterfaces()
+	{
+		return interfaces.stream().filter(clazz -> classFile.getGroup().findClass(clazz.getName()) == null).collect(Collectors.toList());
 	}
 	
 	public void write(DataOutputStream out) throws IOException
