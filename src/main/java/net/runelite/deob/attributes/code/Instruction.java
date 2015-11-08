@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.util.IdGen;
 
 public abstract class Instruction implements Cloneable
 {
@@ -241,6 +242,7 @@ public abstract class Instruction implements Cloneable
 	{
 	}
 	
+	// instructions keep resolved method/field/class names, this updates the pool value (if the underlying resolved object changes)
 	public void regeneratePool()
 	{
 	}
