@@ -33,6 +33,7 @@ public class Frame
 	
 	private IdGen ids = new IdGen();
 	private Map<Integer, Instruction> idMap = new HashMap<>();
+	private Map<Instruction, Integer> insMap = new HashMap<>();
 	private Graph graph = new SparseDirectedGraph(); // shared.
 	private int prevVertex = -1;
 	
@@ -278,6 +279,21 @@ public class Frame
 		return idMap;
 	}
 	
+	private int getIdFor(Instruction i)
+	{
+		if (insMap.containsKey(i))
+			return insMap.get(i);
+		
+		int id = ids.get();
+		
+		graph.add(id);
+		
+		this.idMap.put(id, i);
+		this.insMap.put(i, id);
+		
+		return id;
+	}
+	
 	private void buildGraph(Instruction i)
 	{
 		if (i instanceof InvokeInstruction)
@@ -302,16 +318,18 @@ public class Frame
 		
 		if (prevVertex == -1)
 		{
-			int id = ids.get();
-			graph.add(id);
+			int id = getIdFor(i);
+			//int id = ids.get();
+			//graph.add(id);
 			prevVertex = id;
-			this.idMap.put(id, i);
+			//this.idMap.put(id, i);
 			return;
 		}
 		
-		int id = ids.get();
-		graph.add(id);
-		idMap.put(id, i);
+		int id = getIdFor(i);
+		//int id = ids.get();
+		//graph.add(id);
+		//idMap.put(id, i);
 		
 		DirectedEdge edge = new SimpleDirectedEdge(prevVertex, id);
 		graph.add(edge);

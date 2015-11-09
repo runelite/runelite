@@ -40,8 +40,10 @@ public class Execution
 		this.encryption = encryption;
 	}
 	
-	public void populateInitialMethods()
+	public List<Method> getInitialMethods()
 	{
+		List<Method> methods = new ArrayList<>();
+		
 		group.buildClassGraph(); // required when looking up methods
 		
 		for (ClassFile cf : group.getClasses())
@@ -56,11 +58,27 @@ public class Execution
 						continue;
 					}
 					
-					Frame frame = new Frame(this, m);
-					frame.initialize();
-					addFrame(frame); // I guess this method name is overriding a jre interface (init, run, ?).
+					methods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
 				}
 			}
+		}
+		
+		return methods;
+	}
+	
+	public void populateInitialMethods()
+	{
+		for (Method m : this.getInitialMethods())
+		{
+			if (m.getCode() == null)
+			{
+				methods.add(m);
+				continue;
+			}
+
+			Frame frame = new Frame(this, m);
+			frame.initialize();
+			addFrame(frame); // I guess this method name is overriding a jre interface (init, run, ?).
 		}
 	}
 	
