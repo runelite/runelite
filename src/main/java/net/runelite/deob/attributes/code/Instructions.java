@@ -280,7 +280,9 @@ public class Instructions
 			assert ins.jump.contains(oldi);
 			
 			ins.jump.remove(oldi);
+			
 			ins.jump.add(newi);
+			newi.from.add(ins);
 			
 			ins.replace(oldi, newi);
 		}

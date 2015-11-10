@@ -36,7 +36,10 @@ public class Rename
 		
 		IsomorphismTester isoTest = new TypedVF2IsomorphismTester();
 		if (!isoTest.areIsomorphic(g1, g2))
+		{
+			System.out.println("Not isomorphic " + g1.size() + " " + g2.size());
 			return false;
+		}
 		
 		Map<Integer, Integer> mapping = isoTest.findIsomorphism(g1, g2);
 		Map<Integer, Instruction> map1 = f1.getMethodCtx().getIdMap(), map2 = f2.getMethodCtx().getIdMap();
@@ -93,7 +96,12 @@ public class Rename
 		for (Frame fr1 : f1)
 			for (Frame fr2 : f2)
 			{
-				compare(fr1, fr2);
+				boolean b = compare(fr1, fr2);
+				if (!b)
+				{
+					System.out.println("Mismatch " + p1.getMethod().getMethods().getClassFile().getName() + "." +  p1.getMethod().getName() + " <-> " + p2.getMethod().getMethods().getClassFile().getName() + "." + p2.getMethod().getName());
+					int i =7;
+				}
 				break;
 			}
 		

@@ -265,7 +265,12 @@ public class MethodInliner implements Deobfuscator
 				
 				// instead of return, jump to next instruction after the invoke
 				Instruction oldI = i;
+				
 				i = new Goto(methodInstructions, nextInstruction);
+				
+				i.jump.add(nextInstruction);
+				nextInstruction.from.add(i);
+				
 				assert nextInstruction.getInstructions() == methodInstructions;
 				assert methodInstructions.getInstructions().contains(nextInstruction);
 				
@@ -287,16 +292,17 @@ public class MethodInliner implements Deobfuscator
 				Instruction oldI = i;
 				i = lvt.setVariableIndex(newIndex);
 				
-				if (oldI != i)
-				{
-					for (Instruction i2 : insMap.values())
-						i2.replace(oldI, i);
-					
-					for (net.runelite.deob.attributes.code.Exception e : toExceptions.getExceptions())
-						e.replace(oldI, i);
-					
-					insMap.put(orig, i);
-				}
+				assert oldI == i;
+//				if (oldI != i)
+//				{
+//					for (Instruction i2 : insMap.values())
+//						i2.replace(oldI, i);
+//					
+//					for (net.runelite.deob.attributes.code.Exception e : toExceptions.getExceptions())
+//						e.replace(oldI, i);
+//					
+//					insMap.put(orig, i);
+//				}
 			}
 			
 			assert !methodInstructions.getInstructions().contains(i);
