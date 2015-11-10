@@ -8,8 +8,10 @@ import net.runelite.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -24,6 +26,7 @@ public class Execution
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
 	private Encryption encryption;
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
+	private Map<Method, MethodContext> methodContexts = new HashMap<>();
 
 	public Execution(ClassGroup group)
 	{
@@ -127,5 +130,16 @@ public class Execution
 	public Collection<InstructionContext> getInstructonContexts(Instruction i)
 	{
 		return contexts.getCollection(i);
+	}
+	
+	public MethodContext getMethodContext(Method m)
+	{
+		MethodContext c = methodContexts.get(m);
+		if (c != null)
+			return c;
+		
+		c = new MethodContext(m);
+		methodContexts.put(m, c);
+		return c;
 	}
 }

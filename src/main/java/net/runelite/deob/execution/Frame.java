@@ -29,15 +29,7 @@ public class Frame
 	private Stack stack;
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
-	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>(); // shared
-	
-	private IdGen ids = new IdGen();
-	private Map<Integer, Instruction> idMap = new HashMap<>();
-	private Map<Instruction, Integer> insMap = new HashMap<>();
-	private Graph graph = new SparseDirectedGraph(); // shared.
-	private int prevVertex = -1;
-	
-	public static long num;
+	private MethodContext ctx;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -48,6 +40,7 @@ public class Frame
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
+		ctx = execution.getMethodContext(method);
 	}
 	
 	public void initialize()
@@ -87,7 +80,7 @@ public class Frame
 		{
 			StackContext argument = pops.remove(0);
 			
-			variables.set(lvtOffset, new VariableContext(ctx, argument));//new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
+			variables.set(lvtOffset, new VariableContext(ctx, argument));
 			lvtOffset += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		
@@ -105,12 +98,7 @@ public class Frame
 		this.cur = other.cur;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
-		this.visited = other.visited;
-		
-		this.ids = other.ids;
-		this.idMap = other.idMap;
-		this.graph = other.graph;
-		this.prevVertex = other.prevVertex;
+		this.ctx = other.ctx;
 	}
 	
 	public Frame dup()
@@ -148,6 +136,11 @@ public class Frame
 	public Variables getVariables()
 	{
 		return variables;
+	}
+
+	public MethodContext getMethodCtx()
+	{
+		return ctx;
 	}
 	
 	public void addInstructionContext(InstructionContext i)
@@ -201,7 +194,7 @@ public class Frame
 			if (!executing)
 				break;
 			
-			buildGraph(oldCur);
+			ctx.buildGraph(oldCur);
 			
 			if (oldCur == cur)
 			{
@@ -244,96 +237,18 @@ public class Frame
 		}
 	}
 	
-	private boolean hasJumped(InstructionContext from, Instruction to)
-	{
-		Collection<Instruction> i = visited.getCollection(from);
-		if (i != null && i.contains(to))
-			return true;
-		
-		visited.put(from, to);
-		return false;
-	}
-	
 	public void jump(InstructionContext from, Instruction to)
 	{
 		assert to != null;
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
-		if (hasJumped(from, to))
+		if (ctx.hasJumped(from, to))
 		{
 			executing = false;
 			return;
 		}
 		
 		cur = to;
-	}
-
-	public Graph getGraph()
-	{
-		return graph;
-	}
-
-	public Map<Integer, Instruction> getIdMap()
-	{
-		return idMap;
-	}
-	
-	private int getIdFor(Instruction i)
-	{
-		if (insMap.containsKey(i))
-			return insMap.get(i);
-		
-		int id = ids.get();
-		
-		graph.add(id);
-		
-		this.idMap.put(id, i);
-		this.insMap.put(i, id);
-		
-		return id;
-	}
-	
-	private void buildGraph(Instruction i)
-	{
-		if (i instanceof InvokeInstruction)
-		{
-			InvokeInstruction ii = (InvokeInstruction) i;
-			
-			List<Method> methods = ii.getMethods();
-			if (methods.isEmpty())
-				return;
-		}
-//		else if (i instanceof FieldInstruction)
-//		{
-//			FieldInstruction fi = (FieldInstruction) i;
-//			
-//			if (fi.getMyField() == null)
-//				return;
-//		}
-		else
-		{
-			return;
-		}
-		
-		if (prevVertex == -1)
-		{
-			int id = getIdFor(i);
-			//int id = ids.get();
-			//graph.add(id);
-			prevVertex = id;
-			//this.idMap.put(id, i);
-			return;
-		}
-		
-		int id = getIdFor(i);
-		//int id = ids.get();
-		//graph.add(id);
-		//idMap.put(id, i);
-		
-		DirectedEdge edge = new SimpleDirectedEdge(prevVertex, id);
-		graph.add(edge);
-		
-		prevVertex = id;
 	}
 }

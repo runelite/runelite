@@ -32,14 +32,14 @@ public class Rename
 	
 	private boolean compare(Frame f1, Frame f2)
 	{
-		Graph g1 = f1.getGraph(), g2 = f2.getGraph();
+		Graph g1 = f1.getMethodCtx().getGraph(), g2 = f2.getMethodCtx().getGraph();
 		
 		IsomorphismTester isoTest = new TypedVF2IsomorphismTester();
 		if (!isoTest.areIsomorphic(g1, g2))
 			return false;
 		
 		Map<Integer, Integer> mapping = isoTest.findIsomorphism(g1, g2);
-		Map<Integer, Instruction> map1 = f1.getIdMap(), map2 = f2.getIdMap();
+		Map<Integer, Instruction> map1 = f1.getMethodCtx().getIdMap(), map2 = f2.getMethodCtx().getIdMap();
 		
 		for (Entry<Integer, Integer> e : mapping.entrySet())
 		{
@@ -78,17 +78,26 @@ public class Rename
 		List<Frame> f1 = eone.processedFrames.stream().filter(f -> f.getMethod() == one).collect(Collectors.toList());
 		List<Frame> f2 = etwo.processedFrames.stream().filter(f -> f.getMethod() == two).collect(Collectors.toList());
 		
+		Frame p1 = null, p2 = null;
 		outer:
 		for (Frame fr1 : f1)
 			for (Frame fr2 : f2)
 			{
+				if (p1 == null) p1 = fr1;
+				if (p2 == null) p2 = fr2;
+				
+				assert fr1.getMethodCtx() == p1.getMethodCtx();
+				assert fr2.getMethodCtx() == p2.getMethodCtx();
+			}
+		
+		for (Frame fr1 : f1)
+			for (Frame fr2 : f2)
+			{
 				compare(fr1, fr2);
-				//if (compare(fr1, fr2))
-				//	break outer;
+				break;
 			}
 		
 		System.out.println("end");
-					//return;
 	}
 	public void run(ClassGroup one, ClassGroup two)
 	{
@@ -108,6 +117,8 @@ public class Rename
 		{
 			Method m1 = initial1.get(i), m2 = initial2.get(i);
 			
+			assert m1.getName().equals(m2.getName());
+			
 			objMap.put(m1, m2);
 		}
 
@@ -116,27 +127,27 @@ public class Rename
 //			initial2.get(0).getMethod()
 //		);
 //		processed.add(initial1.get(0).getMethod());
-		process(
-			one.findClass("class143").findMethod("run"),
-			two.findClass("class143").findMethod("run")
-		);
+//		process(
+//			one.findClass("class143").findMethod("run"),
+//			two.findClass("class143").findMethod("run")
+//		);
 //		processed.add(one.findClass("client").findMethod("init"));
 		
-//		for (;;)
-//		{
-//			Optional next = objMap.keySet().stream()
-//				.filter(m -> !processed.contains(m))
-//				.findAny();
-//			if (!next.isPresent())
-//				break;
-//			
-//			Method m = (Method) next.get();
-//			Method m2 = (Method) objMap.get(m);
-//			
-//			System.out.println("Scanning " + m.getName() + " -> " + m2.getName());
-//			process(m, m2);
-//			processed.add(m);
-//		}
+		for (;;)
+		{
+			Optional next = objMap.keySet().stream()
+				.filter(m -> !processed.contains(m))
+				.findAny();
+			if (!next.isPresent())
+				break;
+			
+			Method m = (Method) next.get();
+			Method m2 = (Method) objMap.get(m);
+			
+			System.out.println("Scanning " + m.getName() + " -> " + m2.getName());
+			process(m, m2);
+			processed.add(m);
+		}
 		
 		for (Entry<Object, Object> e : objMap.entrySet())
 		{
@@ -146,6 +157,6 @@ public class Rename
 			System.out.println("FINAL " + m1.getMethods().getClassFile().getName() + "." + m1.getName() + " -> " + m2.getMethods().getClassFile().getName() + "." + m2.getName());
 		}
 
-		System.out.println("done");
+		System.out.println("done count " + objMap.size());
 	}
 }
