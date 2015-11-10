@@ -220,6 +220,10 @@ public abstract class Instruction implements Cloneable
 	{
 		assert to != null;
 		assert to != this;
+		
+		assert this.jump.contains(to) == to.from.contains(this);
+		if (this.jump.contains(to))
+			return; // switch statements can jump to the same place multiple times
 
 		this.jump.add(to);
 		to.from.add(this);
