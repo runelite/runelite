@@ -3,6 +3,7 @@ package net.runelite.deob.deobfuscators.rename;
 import edu.ucla.sspace.graph.Graph;
 import edu.ucla.sspace.graph.isomorphism.IsomorphismTester;
 import edu.ucla.sspace.graph.isomorphism.TypedVF2IsomorphismTester;
+import edu.ucla.sspace.graph.isomorphism.VF2IsomorphismTester;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,7 +35,7 @@ public class Rename
 	{
 		Graph g1 = f1.getMethodCtx().getGraph(), g2 = f2.getMethodCtx().getGraph();
 		
-		IsomorphismTester isoTest = new TypedVF2IsomorphismTester();
+		IsomorphismTester isoTest = new /*Typed*/VF2IsomorphismTester();
 		if (!isoTest.areIsomorphic(g1, g2))
 		{
 			System.out.println("Not isomorphic " + g1.size() + " " + g2.size());
@@ -152,7 +153,7 @@ public class Rename
 			Method m = (Method) next.get();
 			Method m2 = (Method) objMap.get(m);
 			
-			System.out.println("Scanning " + m.getName() + " -> " + m2.getName());
+			System.out.println("Scanning " + m.getMethods().getClassFile().getName() + "." + m.getName() + " -> " + m2.getMethods().getClassFile().getName() + "." + m2.getName());
 			process(m, m2);
 			processed.add(m);
 		}

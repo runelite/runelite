@@ -30,6 +30,7 @@ public class Frame
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MethodContext ctx;
+	protected int prevVertex = -1;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -99,6 +100,7 @@ public class Frame
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
+		this.prevVertex = other.prevVertex;
 	}
 	
 	public Frame dup()
@@ -194,7 +196,7 @@ public class Frame
 			if (!executing)
 				break;
 			
-			ctx.buildGraph(oldCur);
+			ctx.buildGraph(this, oldCur);
 			
 			if (oldCur == cur)
 			{

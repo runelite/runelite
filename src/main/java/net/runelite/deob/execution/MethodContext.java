@@ -16,20 +16,12 @@ import org.apache.commons.collections4.map.MultiValueMap;
 
 public class MethodContext
 {
-	private Method method;
-	
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
 	private IdGen ids = new IdGen();
 	private Map<Integer, Instruction> idMap = new HashMap<>();
 	private Map<Instruction, Integer> insMap = new HashMap<>();
 	private Graph graph = new SparseDirectedGraph();
-	private int prevVertex = -1;
 	
-	public MethodContext(Method method)
-	{
-		this.method = method;
-	}
-
 	public Map<Integer, Instruction> getIdMap()
 	{
 		return idMap;
@@ -57,7 +49,7 @@ public class MethodContext
 		
 		int id = ids.get();
 		
-		graph.add(id);
+		//graph.add(id);
 		
 		this.idMap.put(id, i);
 		this.insMap.put(i, id);
@@ -65,7 +57,7 @@ public class MethodContext
 		return id;
 	}
 	
-	protected void buildGraph(Instruction i)
+	protected void buildGraph(Frame frame, Instruction i)
 	{
 		if (i instanceof InvokeInstruction)
 		{
@@ -87,12 +79,12 @@ public class MethodContext
 			return;
 		}
 		
-		if (prevVertex == -1)
+		if (frame.prevVertex == -1)
 		{
 			int id = getIdFor(i);
 			//int id = ids.get();
 			//graph.add(id);
-			prevVertex = id;
+			frame.prevVertex = id;
 			//this.idMap.put(id, i);
 			return;
 		}
@@ -102,12 +94,12 @@ public class MethodContext
 		//graph.add(id);
 		//idMap.put(id, i);
 		
-		if (id == prevVertex)
+		if (id == frame.prevVertex)
 			return;
 		
-		DirectedEdge edge = new SimpleDirectedEdge(prevVertex, id);
+		DirectedEdge edge = new SimpleDirectedEdge(frame.prevVertex, id);
 		graph.add(edge);
 		
-		prevVertex = id;
+		frame.prevVertex = id;
 	}
 }

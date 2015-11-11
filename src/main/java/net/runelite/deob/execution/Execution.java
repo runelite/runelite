@@ -138,7 +138,7 @@ public class Execution
 		if (c != null)
 			return c;
 		
-		c = new MethodContext(m);
+		c = new MethodContext();
 		methodContexts.put(m, c);
 		return c;
 	}
