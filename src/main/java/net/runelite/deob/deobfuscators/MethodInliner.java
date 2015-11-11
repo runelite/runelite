@@ -21,10 +21,13 @@ import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.signature.Signature;
 import net.runelite.deob.signature.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import net.runelite.deob.attributes.code.Exceptions;
+import net.runelite.deob.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.deob.attributes.code.instructions.If;
 
 public class MethodInliner implements Deobfuscator
 {
@@ -236,6 +239,19 @@ public class MethodInliner implements Deobfuscator
 			}
 		}
 		
+		for (Instruction i : insMap.values())
+		{
+			if (i instanceof JumpingInstruction)
+			{
+				JumpingInstruction j = (JumpingInstruction) i;
+				for (Instruction i2 : j.getJumps())
+				{
+					assert insMap.values().contains(i2);
+					assert i2.getInstructions() == null;
+				}
+			}
+		}
+		
 		Exceptions fromExceptions = invokeMethod.getCode().getExceptions();
 		Exceptions toExceptions = method.getCode().getExceptions();
 		
@@ -264,11 +280,9 @@ public class MethodInliner implements Deobfuscator
 				
 				// instead of return, jump to next instruction after the invoke
 				Instruction oldI = i;
+				assert oldI.getInstructions() == null;
 				
 				i = new Goto(methodInstructions, nextInstruction);
-				
-				i.jump.add(nextInstruction);
-				nextInstruction.from.add(i);
 				
 				assert nextInstruction.getInstructions() == methodInstructions;
 				assert methodInstructions.getInstructions().contains(nextInstruction);
@@ -304,9 +318,44 @@ public class MethodInliner implements Deobfuscator
 //				}
 			}
 			
-			assert !methodInstructions.getInstructions().contains(i);
+			
 			i.setInstructions(methodInstructions);
+			assert !methodInstructions.getInstructions().contains(i);
 			methodInstructions.getInstructions().add(idx++, i);
+		}
+		
+		this.checkJumpGraph(methodInstructions);
+	}
+	
+	private void checkJumpGraph(Instructions ins)
+	{
+		ins.buildJumpGraph();
+		
+		assert new HashSet<>(ins.getInstructions()).size() == ins.getInstructions().size();
+		
+		for (Instruction i : ins.getInstructions())
+		{
+			for (Instruction i2 : i.jump)
+			{
+				assert i2.getInstructions() == ins;
+				assert ins.getInstructions().contains(i2);
+				
+				assert i2.from.contains(i);
+			}
+			
+			for (Instruction i2 : i.from)
+			{
+				assert i2.getInstructions() == ins;
+				assert ins.getInstructions().contains(i2);
+				
+				assert i2.jump.contains(i);
+			}
+			
+			if (i instanceof JumpingInstruction)
+			{
+				JumpingInstruction j = (JumpingInstruction) i;
+				assert j.getJumps().size() == i.jump.size();
+			}
 		}
 	}
 	
@@ -331,7 +380,6 @@ public class MethodInliner implements Deobfuscator
 		int count = 0;
 		
 		calls.clear();
-		//removeMethods.clear();
 		
 		for (ClassFile cf : group.getClasses())
 		{
@@ -348,9 +396,6 @@ public class MethodInliner implements Deobfuscator
 				count += processMethod(m);
 			}
 		}
-//		
-//		for (Method m : removeMethods)
-//			m.getMethods().removeMethod(m);
 		
 		System.out.println("Inlined " + count + " methods");
 		return count;

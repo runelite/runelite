@@ -10,8 +10,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import net.runelite.deob.attributes.code.instructions.Goto;
+import net.runelite.deob.attributes.code.instructions.If;
 
 public class Instructions
 {
@@ -227,6 +229,8 @@ public class Instructions
 	public void buildJumpGraph()
 	{
 		clearJumpGraph();
+		
+		assert new HashSet<>(instructions).size() == instructions.size();
 		
 		for (Instruction i : instructions)
 			if (i instanceof JumpingInstruction)
