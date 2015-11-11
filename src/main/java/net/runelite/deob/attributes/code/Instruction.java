@@ -33,14 +33,21 @@ public abstract class Instruction implements Cloneable
 	@Override
 	public Instruction clone()
 	{
+		Instruction i;
 		try
 		{
-			return (Instruction) super.clone();
+			i = (Instruction) super.clone();
 		}
 		catch (CloneNotSupportedException ex)
 		{
 			throw new RuntimeException();
 		}
+		
+		i.block = null;
+		i.from = new ArrayList<>();
+		i.jump = new ArrayList<>();
+		
+		return i;
 	}
 	
 	public void load(DataInputStream is) throws IOException

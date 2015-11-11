@@ -14,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TableSwitch extends Instruction implements JumpingInstruction
 {
@@ -140,6 +141,6 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		for (Instruction i : branchi)
 			list.add(i);
 		list.add(defi);
-		return list;
+		return list.stream().distinct().collect(Collectors.toList());
 	}
 }

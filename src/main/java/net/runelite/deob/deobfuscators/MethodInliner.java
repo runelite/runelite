@@ -99,7 +99,6 @@ public class MethodInliner implements Deobfuscator
 			assert ins.getInstructions().get(invokeIdx).getInstructions() == ins;
 			
 			int lvtIndex = code.getMaxLocals(),
-				//startLvtIndex = lvtIndex,
 				theirLocals = invokedMethod.getCode().getMaxLocals();
 			
 			if (lvtIndex + theirLocals > 127)
