@@ -2,22 +2,23 @@ package net.runelite.cache.fs;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import net.runelite.cache.StoreLocation;
 import org.junit.Test;
 
 public class StoreLoadTest
 {
-	@Test
+	//@Test
 	public void test() throws IOException
 	{
-		Store store = new Store(new java.io.File("d:/rs/07/cache"));//c:/rs/cache"));
+		Store store = new Store(StoreLocation.LOCATION);
 		store.load();
 		System.out.println(store);
 	}
 
-	//@Test
+	@Test
 	public void unpackStore() throws IOException
 	{
-		java.io.File base = new java.io.File("d:/rs/07/cache");
+		java.io.File base = StoreLocation.LOCATION;
 		try (Store store = new Store(base))
 		{
 			store.load();

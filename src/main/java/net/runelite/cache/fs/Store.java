@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import net.runelite.cache.IndexType;
 
 public class Store implements Closeable
 {
@@ -126,5 +127,10 @@ public class Store implements Closeable
 	public List<Index> getIndexes()
 	{
 		return indexes;
+	}
+	
+	public Index getIndex(IndexType type)
+	{
+		return indexes.get(type.getNumber());
 	}
 }

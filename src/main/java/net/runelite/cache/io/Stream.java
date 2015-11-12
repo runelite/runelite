@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.io;
+package net.runelite.cache.io;
 
 public abstract class Stream {
    protected int offset;

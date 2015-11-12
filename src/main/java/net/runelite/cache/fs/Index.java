@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import net.runelite.cache.fs.io.InputStream;
-import net.runelite.cache.fs.io.OutputStream;
+import net.runelite.cache.io.InputStream;
+import net.runelite.cache.io.OutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

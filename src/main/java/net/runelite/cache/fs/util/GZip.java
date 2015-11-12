@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.Inflater;
-import net.runelite.cache.fs.io.Stream;
+import net.runelite.cache.io.Stream;
 
 public class GZip {
 	private static final Inflater inflaterInstance = new Inflater(true);

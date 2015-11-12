@@ -1,6 +1,6 @@
-package net.runelite.cache.fs.io;
+package net.runelite.cache.io;
 
-import net.runelite.cache.fs.io.Stream;
+import net.runelite.cache.io.Stream;
 import java.math.BigInteger;
 
 public final class OutputStream extends Stream {
