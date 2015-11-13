@@ -33,13 +33,6 @@ public class ItemLoaderTest
 			{
 				loader.load(f.getFileId(), new InputStream(f.getContents()));
 			}
-			
-			//for (Archive a : index.getArchives())
-			//{
-			//	List<File> files = a.getFiles();
-				
-			//	Assert.assertEquals(1, files.size());
-			//}
 		}
 		
 		new java.io.File(base, "items").mkdir();
