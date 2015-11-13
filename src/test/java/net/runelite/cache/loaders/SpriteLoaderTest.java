@@ -42,23 +42,20 @@ public class SpriteLoaderTest
 				loader.decode(new InputStream(contents));
 				
 				SpriteDefinition[] defs = loader.getSprites();
-//				Assert.assertEquals(1, defs.length);
-				//SpriteDefinition def = new SpriteDefinition(42);
-				//def.decode(new InputStream(contents));
 				
-				RGBSprite sp = RGBSprite.fromSpriteDefinition(defs[0]);
-				
-				// I don't know why this happens
-				if (sp.spriteHeight <= 0 || sp.spriteWidth <= 0)
-					continue;
-				
-				BufferedImage image = sp.getBufferedImage();
-				java.io.File targ = new java.io.File(base, "sprites/" + a.getArchiveId() + ".png");
-				targ.mkdirs();
-				ImageIO.write(image, "png", targ);
-				//SpriteDefinition spr[] = SpriteDefinition.loadPaletteSpriteSet();
-				int i =5;
-				//break;
+				for (int i = 0; i < defs.length; ++i)
+				{
+					RGBSprite sp = RGBSprite.fromSpriteDefinition(defs[i]);
+
+					// I don't know why this happens
+					if (sp.getSpriteHeight() <= 0 || sp.getSpriteWidth() <= 0)
+						continue;
+
+					BufferedImage image = sp.getBufferedImage();
+					java.io.File targ = new java.io.File(base, "sprites/" + a.getArchiveId() + "-" + i + ".png");
+					targ.mkdirs();
+					ImageIO.write(image, "png", targ);
+				}
 			}
 		}
 	}
