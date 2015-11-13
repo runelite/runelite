@@ -1,15 +1,15 @@
-package com.osrs.suite.cache.renderable;
+package net.runelite.cache.renderable;
 
-import com.alex.store.Store;
-import com.osrs.suite.cache.definitions.SpriteDefinition;
 
 import java.awt.*;
 import java.awt.image.*;
+import net.runelite.cache.definitions.SpriteDefinition;
+import net.runelite.cache.fs.Store;
 
 /**
  * Created by Allen Kinzalow on 3/14/2015.
  */
-public class RGBSprite extends Rasterizer2D {
+public class RGBSprite /*extends Rasterizer2D*/ {
 
     public int offsetY;
     public int spriteWidth;
@@ -19,29 +19,29 @@ public class RGBSprite extends Rasterizer2D {
     public int maxWidth;
     public int[] pixels;
 
-    public static RGBSprite getRGBSprite(Store store, int archiveId, int fileId, byte var3) {
-        if(!SpriteDefinition.loadPaletteSprite(store, archiveId, fileId, -1593817854)) {
-            return null;
-        } else {
-            RGBSprite sprite = new RGBSprite();
-            sprite.maxWidth = SpriteDefinition.loadedSpriteMaxWidth;
-            sprite.maxHeight = SpriteDefinition.loadedSpriteMaxHeight;
-            sprite.offsetX = SpriteDefinition.loadedSpriteOffsetX[0];
-            sprite.offsetY = SpriteDefinition.loadedSpriteOffsetY[0];
-            sprite.spriteWidth = SpriteDefinition.loadedSpriteWidth[0];
-            sprite.spriteHeight = SpriteDefinition.loadedSpriteHeight[0];
-            int dimmension = sprite.spriteWidth * sprite.spriteHeight;
-            byte[] var6 = SpriteDefinition.loadedSpritePixels[0];
-            sprite.pixels = new int[dimmension];
-
-            for(int pos = 0; pos < dimmension; ++pos) {
-                sprite.pixels[pos] = SpriteDefinition.loadedPalette[var6[pos] & 255];
-            }
-
-            SpriteDefinition.resetLastPaletteValues();
-            return sprite;
-        }
-    }
+//    public static RGBSprite getRGBSprite(Store store, int archiveId, int fileId, byte var3) {
+//        if(!SpriteDefinition.loadPaletteSprite(store, archiveId, fileId, -1593817854)) {
+//            return null;
+//        } else {
+//            RGBSprite sprite = new RGBSprite();
+//            sprite.maxWidth = SpriteDefinition.loadedSpriteMaxWidth;
+//            sprite.maxHeight = SpriteDefinition.loadedSpriteMaxHeight;
+//            sprite.offsetX = SpriteDefinition.loadedSpriteOffsetX[0];
+//            sprite.offsetY = SpriteDefinition.loadedSpriteOffsetY[0];
+//            sprite.spriteWidth = SpriteDefinition.loadedSpriteWidth[0];
+//            sprite.spriteHeight = SpriteDefinition.loadedSpriteHeight[0];
+//            int dimmension = sprite.spriteWidth * sprite.spriteHeight;
+//            byte[] var6 = SpriteDefinition.loadedSpritePixels[0];
+//            sprite.pixels = new int[dimmension];
+//
+//            for(int pos = 0; pos < dimmension; ++pos) {
+//                sprite.pixels[pos] = SpriteDefinition.loadedPalette[var6[pos] & 255];
+//            }
+//
+//            SpriteDefinition.resetLastPaletteValues();
+//            return sprite;
+//        }
+//    }
 
     public static RGBSprite getRGBSprite(int index) {
         RGBSprite sprite = new RGBSprite();
@@ -94,6 +94,7 @@ public class RGBSprite extends Rasterizer2D {
         return bufferedImage;
     }
 
+    /*
     void method2741(int var1, int var2, int var3, int var4, int var5, int var6) {
         if(var6 != 0) {
             var1 -= this.offsetX << 4;
@@ -569,6 +570,7 @@ public class RGBSprite extends Rasterizer2D {
             }
         }
     }
+    */
 
     public RGBSprite(int var1, int var2) {
         this.pixels = new int[var1 * var2];
@@ -578,6 +580,7 @@ public class RGBSprite extends Rasterizer2D {
         this.offsetX = 0;
     }
 
+    /*
     public RGBSprite method2743() {
         RGBSprite var1 = new RGBSprite(this.spriteWidth, this.spriteHeight);
         var1.maxWidth = this.maxWidth;
@@ -1193,7 +1196,9 @@ public class RGBSprite extends Rasterizer2D {
 
     }
 
+    */
     RGBSprite() {}
+    /*
 
     static void method2770(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
         int var9 = -(var5 >> 2);
@@ -1244,7 +1249,7 @@ public class RGBSprite extends Rasterizer2D {
             var3 += var8;
         }
 
-    }
+    }*/
 
     /*public void method2778(PaletteSprite var1, int var2, int var3) {
         if(bottomX - topX == var1.paletteSpriteWidth && bottomY - topY == var1.paletteSpriteHeight) {
@@ -1298,6 +1303,7 @@ public class RGBSprite extends Rasterizer2D {
         }
     }*/
 
+    /*
     public void method2782(int var1) {
         if(this.spriteWidth != this.maxWidth || this.spriteHeight != this.maxHeight) {
             int var3 = var1;
@@ -1428,6 +1434,7 @@ public class RGBSprite extends Rasterizer2D {
         this.pixels = var1;
         this.offsetX = this.maxWidth - this.spriteWidth - this.offsetX;
     }
+    */
 
     public RGBSprite(byte[] var1, Component var2) {
         try {
