@@ -4,20 +4,16 @@ package net.runelite.cache.renderable;
 import java.awt.*;
 import java.awt.image.*;
 import net.runelite.cache.definitions.SpriteDefinition;
-import net.runelite.cache.fs.Store;
 
-/**
- * Created by Allen Kinzalow on 3/14/2015.
- */
-public class RGBSprite /*extends Rasterizer2D*/ {
-
-    public int offsetY;
-    public int spriteWidth;
-    public int spriteHeight;
-    public int offsetX;
-    public int maxHeight;
-    public int maxWidth;
-    public int[] pixels;
+public class RGBSprite
+{
+	public int offsetY;
+	public int spriteWidth;
+	public int spriteHeight;
+	public int offsetX;
+	public int maxHeight;
+	public int maxWidth;
+	public int[] pixels;
 
 //    public static RGBSprite getRGBSprite(Store store, int archiveId, int fileId, byte var3) {
 //        if(!SpriteDefinition.loadPaletteSprite(store, archiveId, fileId, -1593817854)) {
@@ -42,26 +38,51 @@ public class RGBSprite /*extends Rasterizer2D*/ {
 //            return sprite;
 //        }
 //    }
+    
+	public static RGBSprite fromSpriteDefinition(SpriteDefinition def)
+	{
+		RGBSprite sprite = new RGBSprite();
+		
+		sprite.maxWidth = def.getMaxWidth();
+		sprite.maxHeight = def.getMaxHeight();
+		sprite.offsetX = def.getOffsetX();
+		sprite.offsetY = def.getOffsetY();
+		sprite.spriteWidth = def.getWidth();
+		sprite.spriteHeight = def.getHeight();
+		
+		int dimmension = sprite.spriteWidth * sprite.spriteHeight;
+		byte[] pixels = def.getPixels();
+		int[] palette = def.getLoader().loadedPalette;
+		
+		sprite.pixels = new int[dimmension];
 
-    public static RGBSprite getRGBSprite(int index) {
-        RGBSprite sprite = new RGBSprite();
-        sprite.maxWidth = SpriteDefinition.loadedSpriteMaxWidth;
-        sprite.maxHeight = SpriteDefinition.loadedSpriteMaxHeight;
-        sprite.offsetX = SpriteDefinition.loadedSpriteOffsetX[index];
-        sprite.offsetY = SpriteDefinition.loadedSpriteOffsetY[index];
-        sprite.spriteWidth = SpriteDefinition.loadedSpriteWidth[index];
-        sprite.spriteHeight = SpriteDefinition.loadedSpriteHeight[index];
-        int dimmension = sprite.spriteWidth * sprite.spriteHeight;
-        byte[] var6 = SpriteDefinition.loadedSpritePixels[index];
-        sprite.pixels = new int[dimmension];
+		for (int pos = 0; pos < dimmension; ++pos)
+		{
+			sprite.pixels[pos] = palette[pixels[pos] & 255];
+		}
 
-        for(int pos = 0; pos < dimmension; ++pos) {
-            sprite.pixels[pos] = SpriteDefinition.loadedPalette[var6[pos] & 255];
-        }
-
-        //SpriteDefinition.resetLastPaletteValues();
-        return sprite;
-    }
+		return sprite;
+	}
+//
+//    public static RGBSprite getRGBSprite(int index) {
+//        RGBSprite sprite = new RGBSprite();
+//        sprite.maxWidth = SpriteDefinition.loadedSpriteMaxWidth;
+//        sprite.maxHeight = SpriteDefinition.loadedSpriteMaxHeight;
+//        sprite.offsetX = SpriteDefinition.loadedSpriteOffsetX[index];
+//        sprite.offsetY = SpriteDefinition.loadedSpriteOffsetY[index];
+//        sprite.spriteWidth = SpriteDefinition.loadedSpriteWidth[index];
+//        sprite.spriteHeight = SpriteDefinition.loadedSpriteHeight[index];
+//        int dimmension = sprite.spriteWidth * sprite.spriteHeight;
+//        byte[] var6 = SpriteDefinition.loadedSpritePixels[index];
+//        sprite.pixels = new int[dimmension];
+//
+//        for(int pos = 0; pos < dimmension; ++pos) {
+//            sprite.pixels[pos] = SpriteDefinition.loadedPalette[var6[pos] & 255];
+//        }
+//
+//        //SpriteDefinition.resetLastPaletteValues();
+//        return sprite;
+//    }
 
     public BufferedImage getBufferedImage() {
         BufferedImage bi = new BufferedImage(spriteWidth, spriteHeight, BufferedImage.TYPE_INT_RGB);
@@ -1435,25 +1456,25 @@ public class RGBSprite /*extends Rasterizer2D*/ {
         this.offsetX = this.maxWidth - this.spriteWidth - this.offsetX;
     }
     */
-
-    public RGBSprite(byte[] var1, Component var2) {
-        try {
-            Image var3 = Toolkit.getDefaultToolkit().createImage(var1);
-            MediaTracker var4 = new MediaTracker(var2);
-            var4.addImage(var3, 0);
-            var4.waitForAll();
-            this.spriteWidth = var3.getWidth(var2);
-            this.spriteHeight = var3.getHeight(var2);
-            this.maxWidth = this.spriteWidth;
-            this.maxHeight = this.spriteHeight;
-            this.offsetX = 0;
-            this.offsetY = 0;
-            this.pixels = new int[this.spriteWidth * this.spriteHeight];
-            PixelGrabber var5 = new PixelGrabber(var3, 0, 0, this.spriteWidth, this.spriteHeight, this.pixels, 0, this.spriteWidth);
-            var5.grabPixels();
-        } catch (InterruptedException var6) {
-            ;
-        }
-    }
+//
+//    public RGBSprite(byte[] var1, Component var2) {
+//        try {
+//            Image var3 = Toolkit.getDefaultToolkit().createImage(var1);
+//            MediaTracker var4 = new MediaTracker(var2);
+//            var4.addImage(var3, 0);
+//            var4.waitForAll();
+//            this.spriteWidth = var3.getWidth(var2);
+//            this.spriteHeight = var3.getHeight(var2);
+//            this.maxWidth = this.spriteWidth;
+//            this.maxHeight = this.spriteHeight;
+//            this.offsetX = 0;
+//            this.offsetY = 0;
+//            this.pixels = new int[this.spriteWidth * this.spriteHeight];
+//            PixelGrabber var5 = new PixelGrabber(var3, 0, 0, this.spriteWidth, this.spriteHeight, this.pixels, 0, this.spriteWidth);
+//            var5.grabPixels();
+//        } catch (InterruptedException var6) {
+//            ;
+//        }
+//    }
 
 }

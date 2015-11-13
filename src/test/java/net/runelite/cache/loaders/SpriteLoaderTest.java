@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.StoreLocation;
 import net.runelite.cache.definitions.SpriteDefinition;
+import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;
@@ -37,12 +38,20 @@ public class SpriteLoaderTest
 				File file = files.get(0);
 				byte[] contents = file.getContents();
 				
-				SpriteDefinition def = new SpriteDefinition(42);
-				def.decode(new InputStream(contents));
+				SpriteLoader loader = new SpriteLoader();
+				loader.decode(new InputStream(contents));
 				
-				RGBSprite sp = RGBSprite.getRGBSprite(0);
+				SpriteDefinition[] defs = loader.getSprites();
+//				Assert.assertEquals(1, defs.length);
+				//SpriteDefinition def = new SpriteDefinition(42);
+				//def.decode(new InputStream(contents));
+				
+				RGBSprite sp = RGBSprite.fromSpriteDefinition(defs[0]);
+				
+				// I don't know why this happens
 				if (sp.spriteHeight <= 0 || sp.spriteWidth <= 0)
 					continue;
+				
 				BufferedImage image = sp.getBufferedImage();
 				java.io.File targ = new java.io.File(base, "sprites/" + a.getArchiveId() + ".png");
 				targ.mkdirs();
