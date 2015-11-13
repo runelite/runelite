@@ -11,7 +11,7 @@ public class SpriteLoader
 	private int loadedSpriteMaxWidth;
 	private int loadedSpriteMaxHeight;
 
-	public void decode(InputStream stream)
+	public void load(InputStream stream)
 	{
 		stream.setOffset(stream.getLength() - 2);
 		int paletteChildCount = stream.readUnsignedShort();

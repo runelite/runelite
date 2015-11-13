@@ -99,6 +99,14 @@ public class Index implements Closeable
 		return archive;
 	}
 	
+	public Archive getArchive(int id)
+	{
+		for (Archive a : archives)
+			if (a.getArchiveId() == id)
+				return a;
+		return null;
+	}
+	
 	public void load() throws IOException
 	{	
 		DataFile dataFile = store.getData();

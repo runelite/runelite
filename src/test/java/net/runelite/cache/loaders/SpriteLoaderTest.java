@@ -39,7 +39,7 @@ public class SpriteLoaderTest
 				byte[] contents = file.getContents();
 				
 				SpriteLoader loader = new SpriteLoader();
-				loader.decode(new InputStream(contents));
+				loader.load(new InputStream(contents));
 				
 				SpriteDefinition[] defs = loader.getSprites();
 				

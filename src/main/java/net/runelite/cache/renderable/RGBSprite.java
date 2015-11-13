@@ -89,7 +89,7 @@ public class RGBSprite
 
 	private static Image makeColorTransparent(BufferedImage im, final Color color)
 	{
-		int markerRGB = color.getRGB() | 0xFF000000;
+		final int markerRGB = color.getRGB() | 0xFF000000;
 
 		RGBImageFilter filter = new RGBImageFilter()
 		{
