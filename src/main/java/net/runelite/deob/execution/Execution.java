@@ -27,6 +27,7 @@ public class Execution
 	private Encryption encryption;
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 	private Map<Method, MethodContext> methodContexts = new HashMap<>();
+	private boolean buildGraph;
 
 	public Execution(ClassGroup group)
 	{
@@ -139,8 +140,18 @@ public class Execution
 		if (c != null)
 			return c;
 		
-		c = new MethodContext();
+		c = new MethodContext(this);
 		methodContexts.put(m, c);
 		return c;
+	}
+
+	public boolean isBuildGraph()
+	{
+		return buildGraph;
+	}
+
+	public void setBuildGraph(boolean buildGraph)
+	{
+		this.buildGraph = buildGraph;
 	}
 }

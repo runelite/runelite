@@ -70,6 +70,7 @@ public class FrameTest
 			ins.addInstruction(i);
 		
 		Execution e = new Execution(group);
+		e.setBuildGraph(true);
 		e.populateInitialMethods();
 		e.run();
 		
@@ -123,6 +124,7 @@ public class FrameTest
 			ins.addInstruction(i);
 		
 		Execution e = new Execution(group);
+		e.setBuildGraph(true);
 		e.populateInitialMethods();
 		e.run();
 		

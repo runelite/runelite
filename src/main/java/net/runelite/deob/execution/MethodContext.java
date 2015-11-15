@@ -12,6 +12,7 @@ import java.util.Objects;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.util.IdGen;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -67,11 +68,17 @@ class MIKey
 
 public class MethodContext
 {
+	private Execution execution;
 	private MultiValueMap<MIKey, Instruction> visited = new MultiValueMap<>();
 	private IdGen ids = new IdGen();
 	private Map<Integer, Instruction> idMap = new HashMap<>();
 	private Map<Instruction, Integer> insMap = new HashMap<>();
 	private Graph graph = new SparseDirectedGraph();
+
+	public MethodContext(Execution execution)
+	{
+		this.execution = execution;
+	}
 	
 	public Map<Integer, Instruction> getIdMap()
 	{
@@ -85,11 +92,13 @@ public class MethodContext
 	
 	protected boolean hasJumped(List<Method> fromm, InstructionContext from, Instruction to)
 	{
-		Collection<Instruction> i = visited.getCollection(new MIKey(fromm, from));
+		// with this true, there are so many frames I can't run a full execution without oom.
+		MIKey key = execution.isBuildGraph() ? new MIKey(fromm, from) : new MIKey(null, from);
+		Collection<Instruction> i = visited.getCollection(key);
 		if (i != null && i.contains(to))
 			return true;
 		
-		visited.put(new MIKey(fromm, from), to);
+		visited.put(key, to);
 		return false;
 	}
 	
@@ -110,8 +119,14 @@ public class MethodContext
 	
 	protected void buildGraph(Frame frame, Instruction i)
 	{
+		if (!execution.isBuildGraph())
+			return;
+		
 		if (i instanceof InvokeInstruction)
 		{
+//			if (i instanceof InvokeStatic)
+//				return;
+			
 			InvokeInstruction ii = (InvokeInstruction) i;
 			
 			List<Method> methods = ii.getMethods();
