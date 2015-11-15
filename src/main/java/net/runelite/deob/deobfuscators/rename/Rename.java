@@ -22,8 +22,10 @@ import net.runelite.deob.execution.Frame;
 
 public class Rename
 {
+	private ClassGroup groupOne, groupTwo;
+	
 	// respective executions
-	private Execution eone, etwo;
+	//private Execution eone, etwo;
 	
 	// old -> new object mapping
 	private Map<Object, Object> objMap = new HashMap<>();
@@ -78,9 +80,22 @@ public class Rename
 	
 	private void process(Method one, Method two)
 	{
+		Execution eone = new Execution(groupOne);
+		eone.setBuildGraph(true);
+		eone.setFollowInvokes(false);
+		eone.addMethod(one);
+		eone.run();
+		
+		Execution etwo = new Execution(groupTwo);
+		etwo.setBuildGraph(true);
+		etwo.setFollowInvokes(false);
+		etwo.addMethod(two);
+		etwo.run();
+		
 		// get frames for respective methods
-		List<Frame> f1 = eone.processedFrames.stream().filter(f -> f.getMethod() == one).collect(Collectors.toList());
-		List<Frame> f2 = etwo.processedFrames.stream().filter(f -> f.getMethod() == two).collect(Collectors.toList());
+		List<Frame> f1 = eone.processedFrames, f2 = etwo.processedFrames;
+		//List<Frame> f1 = eone.processedFrames.stream().filter(f -> f.getMethod() == one).collect(Collectors.toList());
+		//List<Frame> f2 = etwo.processedFrames.stream().filter(f -> f.getMethod() == two).collect(Collectors.toList());
 		
 		Frame p1 = null, p2 = null;
 		outer:
@@ -110,12 +125,19 @@ public class Rename
 	}
 	public void run(ClassGroup one, ClassGroup two)
 	{
-		eone = new Execution(one);
+		groupOne = one;
+		groupTwo = two;
+		
+		Execution eone = new Execution(one);
+		eone.setBuildGraph(true);
+		eone.setFollowInvokes(false);
 		eone.populateInitialMethods();
 		List<Method> initial1 = eone.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
 		eone.run();
 		
-		etwo = new Execution(two);
+		Execution etwo = new Execution(two);
+		etwo.setBuildGraph(true);
+		etwo.setFollowInvokes(false);
 		etwo.populateInitialMethods();
 		List<Method> initial2 = etwo.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
 		etwo.run();
@@ -152,6 +174,12 @@ public class Rename
 			
 			Method m = (Method) next.get();
 			Method m2 = (Method) objMap.get(m);
+			
+			if (m.getCode() == null || m2.getCode() == null)
+			{
+				processed.add(m);
+				continue;
+			}
 			
 			System.out.println("Scanning " + m.getMethods().getClassFile().getName() + "." + m.getName() + " -> " + m2.getMethods().getClassFile().getName() + "." + m2.getName());
 			process(m, m2);

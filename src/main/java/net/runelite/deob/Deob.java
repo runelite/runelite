@@ -9,7 +9,6 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.util.JarUtil;
 
 // XXX something to detect final fields and evaluate them
-// XXX ORDER IN WHICH FIELDS ARE ACCESSED
 
 public class Deob
 {

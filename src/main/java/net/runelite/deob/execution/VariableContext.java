@@ -22,6 +22,13 @@ public class VariableContext
 		this.type = type;
 	}
 	
+	public VariableContext(InstructionContext i, VariableContext other)
+	{
+		ic = i;
+		ctx = other.ctx;
+		type = other.type;
+	}
+	
 	public StackContext getStackContext()
 	{
 		return ctx;

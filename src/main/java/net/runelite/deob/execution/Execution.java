@@ -27,7 +27,8 @@ public class Execution
 	private Encryption encryption;
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 	private Map<Method, MethodContext> methodContexts = new HashMap<>();
-	private boolean buildGraph;
+	private boolean buildGraph; // if true the frame graph is built and execution hasJumped also compares previous instructions
+	private boolean followInvokes = true;
 
 	public Execution(ClassGroup group)
 	{
@@ -42,6 +43,16 @@ public class Execution
 	public void setEncryption(Encryption encryption)
 	{
 		this.encryption = encryption;
+	}
+
+	public boolean isFollowInvokes()
+	{
+		return followInvokes;
+	}
+
+	public void setFollowInvokes(boolean followInvokes)
+	{
+		this.followInvokes = followInvokes;
 	}
 	
 	public List<Method> getInitialMethods()
@@ -104,11 +115,21 @@ public class Execution
 	
 	public void invoke(InstructionContext from, Method to)
 	{
+		if (!this.isFollowInvokes())
+			return;
+		
 		if (hasInvoked(from, to))
 			return;
 		
 		Frame f = new Frame(this, to);
 		f.initialize(from);
+		this.addFrame(f);
+	}
+	
+	public void addMethod(Method to)
+	{
+		Frame f = new Frame(this, to);
+		f.initialize();
 		this.addFrame(f);
 	}
 	

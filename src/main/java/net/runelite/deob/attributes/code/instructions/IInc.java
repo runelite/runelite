@@ -67,7 +67,7 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 		assert vctx.getType().equals(new Type(int.class.getCanonicalName()));
 		ins.read(vctx);
 		
-		vctx = new VariableContext(ins, vctx.getStackContext()); // XXX this is probably not right.
+		vctx = new VariableContext(ins, vctx);
 		var.set(index, vctx);
 		
 		frame.addInstructionContext(ins);
