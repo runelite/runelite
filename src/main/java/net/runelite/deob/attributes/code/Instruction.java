@@ -120,7 +120,7 @@ public abstract class Instruction implements Cloneable
 	}
 	
 	public boolean removeStack()
-	{		
+	{
 		assert instructions != null;
 		
 		// update instructions which jump here to jump to the next instruction
