@@ -32,6 +32,14 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	}
 	
 	@Override
+	public Instruction clone()
+	{
+		TableSwitch i = (TableSwitch) super.clone();
+		i.branchi = new ArrayList<>(branchi);
+		return i;
+	}
+	
+	@Override
 	public void load(DataInputStream is) throws IOException
 	{
 		int pc = this.getPc();
