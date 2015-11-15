@@ -48,6 +48,7 @@ public class Execution
 		List<Method> methods = new ArrayList<>();
 		
 		group.buildClassGraph(); // required when looking up methods
+		group.lookup(); // lookup methods
 		
 		for (ClassFile cf : group.getClasses())
 		{

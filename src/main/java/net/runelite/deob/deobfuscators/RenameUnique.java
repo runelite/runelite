@@ -255,19 +255,6 @@ public class RenameUnique implements Deobfuscator
 		return map;
 	}
 	
-	private void lookup(ClassGroup group)
-	{
-		for (ClassFile cf : group.getClasses())
-			for (Method m : cf.getMethods().getMethods())
-			{
-				Code c = m.getCode();
-				if (c == null)
-					continue;
-				
-				c.getInstructions().lookup();
-			}	
-	}
-	
 	private void regeneratePool(ClassGroup group)
 	{
 		for (ClassFile cf : group.getClasses())
@@ -285,7 +272,6 @@ public class RenameUnique implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		group.buildClassGraph();
-		lookup(group);
 		
 		NameMappings mappings = this.generateClassNames(group);
 		

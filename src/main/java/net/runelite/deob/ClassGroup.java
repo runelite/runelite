@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.attributes.Code;
 
 public class ClassGroup
 {
@@ -51,5 +52,20 @@ public class ClassGroup
 		
 		for (ClassFile c : classes)
 			c.buildClassGraph();
+	}
+	
+	public void lookup()
+	{
+		for (ClassFile cf : this.getClasses())
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Code code = m.getCode();
+				
+				if (code == null)
+					continue;
+				
+				code.getInstructions().lookup();
+			}
+		
 	}
 }

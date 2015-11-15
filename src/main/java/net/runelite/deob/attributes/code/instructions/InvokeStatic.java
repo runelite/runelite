@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.execution.Execution;
 
@@ -57,18 +58,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public List<net.runelite.deob.Method> getMethods()
 	{
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
-		
-		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
-		if (otherClass == null)
-			return new ArrayList<>(); // not our class
-		
-		net.runelite.deob.Method other = otherClass.findMethodDeepStatic(method.getNameAndType());
-		assert other != null;
-		
-		List<net.runelite.deob.Method> list = new ArrayList<>();
-		list.add(other);
-		return list;
+		return myMethods != null ? myMethods : Arrays.asList();
 	}
 
 	@Override
@@ -140,7 +130,18 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public void lookup()
 	{
-		myMethods = this.getMethods();
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		
+		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
+		if (otherClass == null)
+			return; // not our class
+		
+		net.runelite.deob.Method other = otherClass.findMethodDeepStatic(method.getNameAndType());
+		assert other != null;
+		
+		List<net.runelite.deob.Method> list = new ArrayList<>();
+		list.add(other);
+		myMethods = list;
 	}
 	
 	@Override

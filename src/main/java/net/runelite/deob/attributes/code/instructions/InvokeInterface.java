@@ -20,6 +20,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.execution.Execution;
 
@@ -55,16 +56,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	@Override
 	public List<net.runelite.deob.Method> getMethods()
 	{
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
-		
-		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
-		if (otherClass == null)
-			return new ArrayList<>(); // not our class
-		
-		// look up this method in this class and anything that inherits from it
-		List<net.runelite.deob.Method> list = new ArrayList<>();
-		findMethodFromClass(list, otherClass);
-		return list;
+		return myMethods != null ? myMethods : Arrays.asList();
 	}
 	
 	private void findMethodFromClass(List<net.runelite.deob.Method> list, ClassFile clazz)
@@ -143,7 +135,16 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	@Override
 	public void lookup()
 	{
-		myMethods = this.getMethods();
+		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		
+		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
+		if (otherClass == null)
+			return; // not our class
+		
+		// look up this method in this class and anything that inherits from it
+		List<net.runelite.deob.Method> list = new ArrayList<>();
+		findMethodFromClass(list, otherClass);
+		myMethods = list;
 	}
 	
 	@Override
