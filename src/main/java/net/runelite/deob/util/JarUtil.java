@@ -35,6 +35,8 @@ public class JarUtil
 			}
 		}
 		
+		group.initialize();
+		
 		return group;
 	}
 	

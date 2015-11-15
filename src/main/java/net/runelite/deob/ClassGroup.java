@@ -44,6 +44,12 @@ public class ClassGroup
 				return c;
 		return null;
 	}
+	
+	public void initialize()
+	{
+		buildClassGraph();
+		lookup();
+	}
 
 	public void buildClassGraph()
 	{
