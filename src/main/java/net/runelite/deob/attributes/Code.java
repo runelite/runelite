@@ -41,7 +41,6 @@ public class Code extends Attribute
 		this.attributes = new Attributes(this);
 		this.attributes.load(is);
 		
-		instructions.buildBlocks();
 		instructions.buildJumpGraph();
 	}
 	

@@ -38,7 +38,6 @@ public class IllegalStateExceptions implements Deobfuscator
 				assert execution.methods.contains(m);
 				
 				Instructions instructions = c.getInstructions();
-				instructions.clearBlockGraph();
 				instructions.buildJumpGraph();
 				
 				List<Instruction> ilist = instructions.getInstructions();

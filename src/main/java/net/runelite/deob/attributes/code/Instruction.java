@@ -2,19 +2,16 @@ package net.runelite.deob.attributes.code;
 
 import java.io.DataInputStream;
 import net.runelite.deob.ConstantPool;
-import net.runelite.deob.block.Block;
 import net.runelite.deob.execution.Frame;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.util.IdGen;
 
 public abstract class Instruction implements Cloneable
 {
 	private Instructions instructions;
-	public Block block;
 	private InstructionType type;
 
 	private int pc; // offset into method this instructions resides at
@@ -43,7 +40,6 @@ public abstract class Instruction implements Cloneable
 			throw new RuntimeException();
 		}
 		
-		i.block = null;
 		i.from = new ArrayList<>();
 		i.jump = new ArrayList<>();
 		
@@ -56,8 +52,6 @@ public abstract class Instruction implements Cloneable
 	
 	protected void remove()
 	{
-		assert block == null;
-		
 		for (Instruction i : jump)
 			i.from.remove(this);
 		jump.clear();
@@ -80,10 +74,6 @@ public abstract class Instruction implements Cloneable
 		assert this != other;
 		assert ins.contains(this);
 		assert !ins.contains(other);
-		
-		// XXX this corrupts the block graph. we shouldn't keep it around once we are done using it,
-		// too much stuff to keep updated.
-		this.block = null;
 		
 		// XXX instructions which hold references to instructions !
 		for (Instruction i : ins)
@@ -130,8 +120,7 @@ public abstract class Instruction implements Cloneable
 	}
 	
 	public boolean removeStack()
-	{
-		block = null;
+	{		
 		assert instructions != null;
 		
 		// update instructions which jump here to jump to the next instruction
