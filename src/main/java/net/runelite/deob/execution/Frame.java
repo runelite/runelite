@@ -31,6 +31,7 @@ public class Frame
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MethodContext ctx;
 	protected int prevVertex = -1;
+	private List<Method> prevInvokes;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -101,6 +102,7 @@ public class Frame
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
 		this.prevVertex = other.prevVertex;
+		this.prevInvokes = other.prevInvokes;
 	}
 	
 	public Frame dup()
@@ -193,6 +195,12 @@ public class Frame
 			
 			processExceptions(oldCur);
 			
+			if (oldCur instanceof InvokeInstruction)
+			{
+				InvokeInstruction ii = (InvokeInstruction) oldCur;
+				this.prevInvokes = ii.getMethods();
+			}
+			
 			if (!executing)
 				break;
 			
@@ -245,7 +253,7 @@ public class Frame
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
-		if (ctx.hasJumped(from, to))
+		if (ctx.hasJumped(this.prevInvokes, from, to))
 		{
 			executing = false;
 			return;

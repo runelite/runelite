@@ -8,15 +8,66 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.util.IdGen;
 import org.apache.commons.collections4.map.MultiValueMap;
 
+class MIKey
+{
+	private List<Method> method;
+	private InstructionContext ictx;
+
+	public MIKey(List<Method> method, InstructionContext ictx)
+	{
+		this.method = method;
+		this.ictx = ictx;
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 61 * hash + Objects.hashCode(this.method);
+		hash = 61 * hash + Objects.hashCode(this.ictx);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final MIKey other = (MIKey) obj;
+		if (!Objects.equals(this.method, other.method))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.ictx, other.ictx))
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	
+}
+
 public class MethodContext
 {
-	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
+	private MultiValueMap<MIKey, Instruction> visited = new MultiValueMap<>();
 	private IdGen ids = new IdGen();
 	private Map<Integer, Instruction> idMap = new HashMap<>();
 	private Map<Instruction, Integer> insMap = new HashMap<>();
@@ -32,13 +83,13 @@ public class MethodContext
 		return graph;
 	}
 	
-	protected boolean hasJumped(InstructionContext from, Instruction to)
+	protected boolean hasJumped(List<Method> fromm, InstructionContext from, Instruction to)
 	{
-		Collection<Instruction> i = visited.getCollection(from);
+		Collection<Instruction> i = visited.getCollection(new MIKey(fromm, from));
 		if (i != null && i.contains(to))
 			return true;
 		
-		visited.put(from, to);
+		visited.put(new MIKey(fromm, from), to);
 		return false;
 	}
 	
