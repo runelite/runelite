@@ -109,6 +109,7 @@ public class Rename
 				assert fr2.getMethodCtx() == p2.getMethodCtx();
 			}
 		
+		outer2:
 		for (Frame fr1 : f1)
 			for (Frame fr2 : f2)
 			{
@@ -118,7 +119,7 @@ public class Rename
 					System.out.println("Mismatch " + p1.getMethod().getMethods().getClassFile().getName() + "." +  p1.getMethod().getName() + " <-> " + p2.getMethod().getMethods().getClassFile().getName() + "." + p2.getMethod().getName());
 					int i =7;
 				}
-				break;
+				break outer2;
 			}
 		
 		System.out.println("end");
