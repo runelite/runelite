@@ -129,6 +129,11 @@ public class Frame
 	{
 		return execution;
 	}
+
+	public boolean isExecuting()
+	{
+		return executing;
+	}
 	
 	public Method getMethod()
 	{
@@ -201,16 +206,7 @@ public class Frame
 			
 			execution.executed.add(oldCur);
 			
-			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
-				break;
-			
 			processExceptions(oldCur);
-			
-			if (oldCur instanceof InvokeInstruction)
-			{
-				InvokeInstruction ii = (InvokeInstruction) oldCur;
-			//	this.prevInvokes = ii.getMethods();
-			}
 			
 			if (!executing)
 				break;
@@ -227,6 +223,9 @@ public class Frame
 			{
 				/* jump */
 			}
+			
+			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
+				break;
 		}
 	}
 	

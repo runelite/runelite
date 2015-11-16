@@ -129,35 +129,35 @@ public class Rename
 		groupOne = one;
 		groupTwo = two;
 		
-//		Execution eone = new Execution(one);
-//		eone.setBuildGraph(true);
-//		eone.setFollowInvokes(false);
-//		eone.populateInitialMethods();
-//		List<Method> initial1 = eone.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
-//		eone.run();
-//		
-//		Execution etwo = new Execution(two);
-//		etwo.setBuildGraph(true);
-//		etwo.setFollowInvokes(false);
-//		etwo.populateInitialMethods();
-//		List<Method> initial2 = etwo.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
-//		etwo.run();
-//		
-//		assert initial1.size() == initial2.size();
-//		
-//		for (int i = 0; i < initial1.size(); ++i)
-//		{
-//			Method m1 = initial1.get(i), m2 = initial2.get(i);
-//			
-//			assert m1.getName().equals(m2.getName());
-//			
-//			objMap.put(m1, m2);
-//		}
+		Execution eone = new Execution(one);
+		eone.setBuildGraph(true);
+		eone.setFollowInvokes(false);
+		eone.populateInitialMethods();
+		List<Method> initial1 = eone.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
+		eone.run();
+		
+		Execution etwo = new Execution(two);
+		etwo.setBuildGraph(true);
+		etwo.setFollowInvokes(false);
+		etwo.populateInitialMethods();
+		List<Method> initial2 = etwo.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
+		etwo.run();
+		
+		assert initial1.size() == initial2.size();
+		
+		for (int i = 0; i < initial1.size(); ++i)
+		{
+			Method m1 = initial1.get(i), m2 = initial2.get(i);
+			
+			assert m1.getName().equals(m2.getName());
+			
+			objMap.put(m1, m2);
+		}
 
-		process(
-			one.findClass("class143").findMethod("method3014"),
-			two.findClass("class143").findMethod("method2966")
-		);
+//		process(
+//			one.findClass("class143").findMethod("method3014"),
+//			two.findClass("class143").findMethod("method2966")
+//		);
 		
 		for (;;)
 		{

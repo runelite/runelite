@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -19,8 +20,8 @@ import org.apache.commons.collections4.map.MultiValueMap;
 public class Execution
 {
 	private ClassGroup group;
-	public List<Frame> frames = new ArrayList<>(),
-			processedFrames = new ArrayList<>();
+	public List<Frame> frames = new LinkedList<>(),
+			processedFrames = new LinkedList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
@@ -110,7 +111,7 @@ public class Execution
 
 	private void addFrame(Frame frame)
 	{
-		frames.add(frame);
+		frames.add(0, frame);
 	}
 	
 	public void invoke(InstructionContext from, Method to)
@@ -123,8 +124,7 @@ public class Execution
 		
 		Frame f = new Frame(this, to);
 		f.initialize(from);
-		frames.add(0, f);
-		//this.addFrame(f);
+		this.addFrame(f);
 	}
 	
 	public void addMethod(Method to)
@@ -139,13 +139,25 @@ public class Execution
 		int fcount = 0;
 		while (!frames.isEmpty())
 		{
-			Frame frame = frames.remove(0);
+			Frame frame = frames.get(0);
 			
 			methods.add(frame.getMethod());
 			
 			++fcount;
 			frame.execute();
-			processedFrames.add(frame);
+			
+			if (!frame.isExecuting())
+			{
+				assert frames.get(0) == frame;
+				frames.remove(0);
+				processedFrames.add(frame);
+				System.out.println(fcount + "/" + frames.size());
+			}
+			else
+			{
+				System.out.println("deferring");
+				// another frame takes priority
+			}
 		}
 		
 		System.out.println("Processed " + fcount + " frames");
