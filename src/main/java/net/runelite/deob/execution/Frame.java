@@ -19,6 +19,7 @@ import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.util.IdGen;
 import org.apache.commons.collections4.map.MultiValueMap;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 public class Frame
 {
@@ -30,8 +31,9 @@ public class Frame
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MethodContext ctx;
-	protected int prevVertex = -1;
-	private List<Method> prevInvokes;
+	protected MutableInt prevVertex = new MutableInt(-1);
+	//protected int prevVertex = -1;
+	//private List<Method> prevInvokes;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -68,6 +70,12 @@ public class Frame
 		// initialize frame from invoking context
 		assert ctx.getInstruction() instanceof InvokeInstruction;
 		
+		if (this.getMethod().isStatic())
+		{
+			this.ctx = ctx.getFrame().ctx; // share ctx if this method is static
+			this.prevVertex = ctx.getFrame().prevVertex;
+		}
+		
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
 		List<StackContext> pops = ctx.getPops();
 		pops = Lists.reverse(new ArrayList<>(pops)); // reverse the list so first argument is at index 0
@@ -101,8 +109,8 @@ public class Frame
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
-		this.prevVertex = other.prevVertex;
-		this.prevInvokes = other.prevInvokes;
+		this.prevVertex = new MutableInt(other.prevVertex);
+		//this.prevInvokes = other.prevInvokes;
 	}
 	
 	public Frame dup()
@@ -193,12 +201,15 @@ public class Frame
 			
 			execution.executed.add(oldCur);
 			
+			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
+				break;
+			
 			processExceptions(oldCur);
 			
 			if (oldCur instanceof InvokeInstruction)
 			{
 				InvokeInstruction ii = (InvokeInstruction) oldCur;
-				this.prevInvokes = ii.getMethods();
+			//	this.prevInvokes = ii.getMethods();
 			}
 			
 			if (!executing)
@@ -253,7 +264,7 @@ public class Frame
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
-		if (ctx.hasJumped(this.prevInvokes, from, to))
+		if (ctx.hasJumped(prevVertex, from, to))
 		{
 			executing = false;
 			return;

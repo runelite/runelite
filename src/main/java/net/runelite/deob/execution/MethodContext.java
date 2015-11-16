@@ -15,24 +15,25 @@ import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.util.IdGen;
 import org.apache.commons.collections4.map.MultiValueMap;
+import org.apache.commons.lang3.mutable.MutableInt;
 
 class MIKey
 {
-	private List<Method> method;
+	private int prevVertex;
 	private InstructionContext ictx;
 
-	public MIKey(List<Method> method, InstructionContext ictx)
+	public MIKey(int prevVertex, InstructionContext ictx)
 	{
-		this.method = method;
+		this.prevVertex = prevVertex;
 		this.ictx = ictx;
 	}
 
 	@Override
 	public int hashCode()
 	{
-		int hash = 5;
-		hash = 61 * hash + Objects.hashCode(this.method);
-		hash = 61 * hash + Objects.hashCode(this.ictx);
+		int hash = 7;
+		hash = 97 * hash + this.prevVertex;
+		hash = 97 * hash + Objects.hashCode(this.ictx);
 		return hash;
 	}
 
@@ -52,7 +53,7 @@ class MIKey
 			return false;
 		}
 		final MIKey other = (MIKey) obj;
-		if (!Objects.equals(this.method, other.method))
+		if (this.prevVertex != other.prevVertex)
 		{
 			return false;
 		}
@@ -62,8 +63,6 @@ class MIKey
 		}
 		return true;
 	}
-	
-	
 }
 
 public class MethodContext
@@ -90,10 +89,10 @@ public class MethodContext
 		return graph;
 	}
 	
-	protected boolean hasJumped(List<Method> fromm, InstructionContext from, Instruction to)
+	protected boolean hasJumped(MutableInt prevVertex, InstructionContext from, Instruction to)
 	{
 		// with this true, there are so many frames I can't run a full execution without oom.
-		MIKey key = execution.isBuildGraph() ? new MIKey(fromm, from) : new MIKey(null, from);
+		MIKey key = execution.isBuildGraph() ? new MIKey(prevVertex.intValue(), from) : new MIKey(-1, from);
 		Collection<Instruction> i = visited.getCollection(key);
 		if (i != null && i.contains(to))
 			return true;
@@ -124,8 +123,8 @@ public class MethodContext
 		
 		if (i instanceof InvokeInstruction)
 		{
-//			if (i instanceof InvokeStatic)
-//				return;
+			if (i instanceof InvokeStatic)
+				return;
 			
 			InvokeInstruction ii = (InvokeInstruction) i;
 			
@@ -145,12 +144,12 @@ public class MethodContext
 			return;
 		}
 		
-		if (frame.prevVertex == -1)
+		if (frame.prevVertex.intValue() == -1)
 		{
 			int id = getIdFor(i);
 			//int id = ids.get();
 			//graph.add(id);
-			frame.prevVertex = id;
+			frame.prevVertex.setValue(id);
 			//this.idMap.put(id, i);
 			return;
 		}
@@ -160,12 +159,16 @@ public class MethodContext
 		//graph.add(id);
 		//idMap.put(id, i);
 		
-		if (id == frame.prevVertex)
+		if (frame.prevVertex.intValue() == id)
 			return;
 		
-		DirectedEdge edge = new SimpleDirectedEdge(frame.prevVertex, id);
+		InvokeInstruction from = (InvokeInstruction) this.idMap.get(frame.prevVertex.intValue()), to = (InvokeInstruction) this.idMap.get(id);
+		System.out.println("Added edge " + from.getMethods().get(0).getMethods().getClassFile().getName() + "." + from.getMethods().get(0).getName() + 
+			" to " + to.getMethods().get(0).getMethods().getClassFile().getName() + "." + to.getMethods().get(0).getName());
+		
+		DirectedEdge edge = new SimpleDirectedEdge(frame.prevVertex.intValue(), id);
 		graph.add(edge);
 		
-		frame.prevVertex = id;
+		frame.prevVertex.setValue(id);
 	}
 }

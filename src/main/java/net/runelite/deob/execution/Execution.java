@@ -115,15 +115,16 @@ public class Execution
 	
 	public void invoke(InstructionContext from, Method to)
 	{
-		if (!this.isFollowInvokes())
+		if (!this.isFollowInvokes() && !to.isStatic())
 			return;
 		
-		if (hasInvoked(from, to))
-			return;
+//		if (hasInvoked(from, to))
+//			return;
 		
 		Frame f = new Frame(this, to);
 		f.initialize(from);
-		this.addFrame(f);
+		frames.add(0, f);
+		//this.addFrame(f);
 	}
 	
 	public void addMethod(Method to)
