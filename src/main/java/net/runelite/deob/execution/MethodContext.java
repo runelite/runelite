@@ -17,61 +17,13 @@ import net.runelite.deob.util.IdGen;
 import org.apache.commons.collections4.map.MultiValueMap;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-class MIKey
-{
-	private int prevVertex;
-	private InstructionContext ictx;
-
-	public MIKey(int prevVertex, InstructionContext ictx)
-	{
-		this.prevVertex = prevVertex;
-		this.ictx = ictx;
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 97 * hash + this.prevVertex;
-		hash = 97 * hash + Objects.hashCode(this.ictx);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final MIKey other = (MIKey) obj;
-		if (this.prevVertex != other.prevVertex)
-		{
-			return false;
-		}
-		if (!Objects.equals(this.ictx, other.ictx))
-		{
-			return false;
-		}
-		return true;
-	}
-}
-
 public class MethodContext
 {
 	private Execution execution;
 	private MultiValueMap<MIKey, Instruction> visited = new MultiValueMap<>();
 	private IdGen ids = new IdGen();
-	private Map<Integer, Instruction> idMap = new HashMap<>();
-	private Map<Instruction, Integer> insMap = new HashMap<>();
+	private Map<Integer, List<Method>> idMap = new HashMap<>();
+	private Map<List<Method>, Integer> insMap = new HashMap<>();
 	private Graph graph = new SparseDirectedGraph();
 
 	public MethodContext(Execution execution)
@@ -79,7 +31,7 @@ public class MethodContext
 		this.execution = execution;
 	}
 	
-	public Map<Integer, Instruction> getIdMap()
+	public Map<Integer, List<Method>> getIdMap()
 	{
 		return idMap;
 	}
@@ -101,10 +53,12 @@ public class MethodContext
 		return false;
 	}
 	
-	private int getIdFor(Instruction i)
+	private int getIdFor(List<Method> i)
 	{
 		if (insMap.containsKey(i))
 			return insMap.get(i);
+		
+		assert idMap.values().contains(i) == false;
 		
 		int id = ids.get();
 		
@@ -121,6 +75,7 @@ public class MethodContext
 		if (!execution.isBuildGraph())
 			return;
 		
+		List<Method> methods;
 		if (i instanceof InvokeInstruction)
 		{
 			if (i instanceof InvokeStatic)
@@ -128,7 +83,7 @@ public class MethodContext
 			
 			InvokeInstruction ii = (InvokeInstruction) i;
 			
-			List<Method> methods = ii.getMethods();
+			methods = ii.getMethods();
 			if (methods.isEmpty())
 				return;
 		}
@@ -146,7 +101,7 @@ public class MethodContext
 		
 		if (frame.prevVertex.intValue() == -1)
 		{
-			int id = getIdFor(i);
+			int id = getIdFor(methods);
 			//int id = ids.get();
 			//graph.add(id);
 			frame.prevVertex.setValue(id);
@@ -154,7 +109,7 @@ public class MethodContext
 			return;
 		}
 		
-		int id = getIdFor(i);
+		int id = getIdFor(methods);
 		//int id = ids.get();
 		//graph.add(id);
 		//idMap.put(id, i);
@@ -162,9 +117,10 @@ public class MethodContext
 		if (frame.prevVertex.intValue() == id)
 			return;
 		
-		InvokeInstruction from = (InvokeInstruction) this.idMap.get(frame.prevVertex.intValue()), to = (InvokeInstruction) this.idMap.get(id);
-		System.out.println("Added edge " + from.getMethods().get(0).getMethods().getClassFile().getName() + "." + from.getMethods().get(0).getName() + 
-			" to " + to.getMethods().get(0).getMethods().getClassFile().getName() + "." + to.getMethods().get(0).getName());
+		List<Method> from = this.idMap.get(frame.prevVertex.intValue()), to = this.idMap.get(id);
+		System.out.println("Added edge " + from.get(0).getMethods().getClassFile().getName() + "." + from.get(0).getName() + 
+			" to " + to.get(0).getMethods().getClassFile().getName() + "." + to.get(0).getName() +
+			" (" + frame.prevVertex.intValue() + " -> " + id + ")");
 		
 		DirectedEdge edge = new SimpleDirectedEdge(frame.prevVertex.intValue(), id);
 		graph.add(edge);

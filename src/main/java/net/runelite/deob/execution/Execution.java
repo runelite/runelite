@@ -24,7 +24,7 @@ public class Execution
 			processedFrames = new LinkedList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
-	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
+	private MultiValueMap<MIKey, Method> invokes = new MultiValueMap<>();
 	private Encryption encryption;
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 	private Map<Method, MethodContext> methodContexts = new HashMap<>();
@@ -101,11 +101,13 @@ public class Execution
 	
 	private boolean hasInvoked(InstructionContext from, Method to)
 	{
-		Collection<Method> methods = invokes.getCollection(from);
+		Frame frame = from.getFrame();
+		MIKey key = new MIKey(frame.prevVertex.intValue(), from);
+		Collection<Method> methods = invokes.getCollection(key);
 		if (methods != null && methods.contains(to))
 			return true;
 		
-		invokes.put(from, to);
+		invokes.put(key, to);
 		return false;
 	}
 
@@ -119,8 +121,8 @@ public class Execution
 		if (!this.isFollowInvokes() && !to.isStatic())
 			return;
 		
-//		if (hasInvoked(from, to))
-//			return;
+		if (hasInvoked(from, to))
+			return;
 		
 		Frame f = new Frame(this, to);
 		f.initialize(from);
@@ -151,11 +153,9 @@ public class Execution
 				assert frames.get(0) == frame;
 				frames.remove(0);
 				processedFrames.add(frame);
-				System.out.println(fcount + "/" + frames.size());
 			}
 			else
 			{
-				System.out.println("deferring");
 				// another frame takes priority
 			}
 		}

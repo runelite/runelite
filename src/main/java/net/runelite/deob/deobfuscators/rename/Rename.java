@@ -45,7 +45,7 @@ public class Rename
 		}
 		
 		Map<Integer, Integer> mapping = isoTest.findIsomorphism(g1, g2);
-		Map<Integer, Instruction> map1 = f1.getMethodCtx().getIdMap(), map2 = f2.getMethodCtx().getIdMap();
+		Map<Integer, List<Method>> map1 = f1.getMethodCtx().getIdMap(), map2 = f2.getMethodCtx().getIdMap();
 		
 		for (Entry<Integer, Integer> e : mapping.entrySet())
 		{
@@ -55,24 +55,26 @@ public class Rename
 //				continue;
 //			}
 			
-			Instruction i1 = map1.get(e.getKey());
-			Instruction i2 = map2.get(e.getValue());
+			List<Method> i1 = map1.get(e.getKey());
+			List<Method> i2 = map2.get(e.getValue());
 			
-			assert i1.getClass() == i2.getClass();
+			//assert i1.getClass() == i2.getClass();
 			
-			InvokeInstruction ii1 = (InvokeInstruction) i1, ii2 = (InvokeInstruction) i2;
+			//InvokeInstruction ii1 = (InvokeInstruction) i1, ii2 = (InvokeInstruction) i2;
 			
-			assert ii1.getMethods().size() == ii2.getMethods().size();
+			//assert ii1.getMethods().size() == ii2.getMethods().size();
 			
-			for (int i = 0; i < ii1.getMethods().size(); ++i)
+			assert i1.size() == i2.size();
+			
+			for (int i = 0; i < i1.size(); ++i)
 			{
-				Method m1 = ii1.getMethods().get(i), m2 = ii2.getMethods().get(i);
+				Method m1 = i1.get(i), m2 = i2.get(i);
 				
 //				assert objMap.containsKey(m1) == false || objMap.get(m1) == m2;
 				objMap.put(m1, m2);
 			}
 			
-			System.out.println("MATCH " + ii1.getMethods().get(0).getName() + " -> " + ii2.getMethods().get(0).getName());
+			System.out.println("MATCH " + i1.get(0).getName() + " -> " + i2.get(0).getName());
 		}
 		
 		return true;
