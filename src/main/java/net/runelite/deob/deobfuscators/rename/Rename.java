@@ -96,6 +96,10 @@ public class Rename
 		
 		// get frames for respective methods
 		List<Frame> f1 = eone.processedFrames, f2 = etwo.processedFrames;
+		
+		f1 = f1.stream().filter(f -> f.getMethod() == one).collect(Collectors.toList());
+		f2 = f2.stream().filter(f -> f.getMethod() == two).collect(Collectors.toList());
+		
 		//List<Frame> f1 = eone.processedFrames.stream().filter(f -> f.getMethod() == one).collect(Collectors.toList());
 		//List<Frame> f2 = etwo.processedFrames.stream().filter(f -> f.getMethod() == two).collect(Collectors.toList());
 		
@@ -107,9 +111,15 @@ public class Rename
 				if (p1 == null) p1 = fr1;
 				if (p2 == null) p2 = fr2;
 				
+				assert fr1.getMethod() == one;
+				assert fr2.getMethod() == two;
+				
 				assert fr1.getMethodCtx() == p1.getMethodCtx();
 				assert fr2.getMethodCtx() == p2.getMethodCtx();
 			}
+		
+		assert p1.getMethod() == one;
+		assert p2.getMethod() == two;
 		
 		outer2:
 		for (Frame fr1 : f1)
