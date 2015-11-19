@@ -24,14 +24,14 @@ public class Graph
 		return v;
 	}
 	
-	public void addEdge(Object from, Object to)
+	public void addEdge(Object from, Object to, EdgeType type)
 	{
 		assert from != null;
 		assert to != null;
 		
 		Vertex v1 = getVertexFor(from), v2 = getVertexFor(to);
 		
-		Edge e = new Edge(v1, v2);
+		Edge e = new Edge(v1, v2, type);
 		if (v1.addEdge(e))
 			++edgeCount;
 	}

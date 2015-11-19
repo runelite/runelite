@@ -101,14 +101,15 @@ public class Rename2
 			Vertex other = s.getOther();
 			
 			s.getEdges().stream()
-				.map(e -> e.getTo()) // e.from is always s
-				.filter(v -> v.getOther() == null) // only get vertexes that aren't solved yet
-				.forEach(v ->
-					v.merge(
+				//.map(e -> e.getTo()) // e.from is always s
+				.filter(e -> e.getTo().getOther() == null) // only get vertexes that aren't solved yet
+				.forEach(e ->
+					e.getTo().merge(
 						other.getEdges().stream()
-							.map(e -> e.getTo())
-							.filter(v2 -> v2.getOther() == null)
-							.filter(v2 -> v.couldBeEqual(v2))
+							.filter(e2 -> e2.getTo().getOther() == null)
+							.filter(e2 -> e.getTo().couldBeEqual(e2.getTo()))
+							.filter(e2 -> e.getType() == e2.getType())
+							.map(e2 -> e2.getTo())
 							.collect(Collectors.toList())
 					)
 				);

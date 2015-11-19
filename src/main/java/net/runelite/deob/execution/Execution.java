@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
+import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -213,7 +215,7 @@ public class Execution
 				return;
 			
 			for (Method m : methods)
-				graph.addEdge(frame.nonStatic, m);
+				graph.addEdge(frame.nonStatic, m, EdgeType.INVOKE);
 		}
 		else if (i instanceof FieldInstruction)
 		{
@@ -222,7 +224,8 @@ public class Execution
 			if (fi.getMyField() == null)
 				return;
 			
-			graph.addEdge(frame.nonStatic, fi.getMyField());
+			EdgeType type = fi instanceof GetFieldInstruction ? EdgeType.GETFIELD : EdgeType.SETFIELD;
+			graph.addEdge(frame.nonStatic, fi.getMyField(), type);
 		}
 	}
 	
