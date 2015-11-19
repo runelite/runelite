@@ -1,10 +1,9 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import edu.ucla.sspace.graph.Edge;
 import edu.ucla.sspace.graph.Graph;
 import edu.ucla.sspace.graph.isomorphism.IsomorphismTester;
-import edu.ucla.sspace.graph.isomorphism.TypedVF2IsomorphismTester;
 import edu.ucla.sspace.graph.isomorphism.VF2IsomorphismTester;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,10 +14,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
+import net.runelite.deob.execution.MethodContext;
 
 public class Rename
 {
@@ -33,13 +31,54 @@ public class Rename
 	// methods which have been processed in the original
 	private Set<Method> processed = new HashSet<>();
 	
+	private static String cname(Method m) { return m.getMethods().getClassFile().getName(); }
+	private static String mname(Method m) { return cname(m) + "." + m.getName(); }
+	
+	private void compare(MethodContext m1, Graph g1, MethodContext m2, Graph g2)
+	{
+		Set<Edge> edges = new HashSet<>(g1.edges()); // edges in g1 not in g2
+		for (Edge e : (Set<Edge>) g2.edges())
+		{
+			edges.remove(e);
+		}
+		
+		for (Edge e : edges)
+		{
+			Method me1 = m1.getIdMap().get(e.from()).get(0);
+			Method me2 = m1.getIdMap().get(e.to()).get(0);
+			
+			System.out.println("EDGE IN 1 NOT IN 2: " + mname(me1) + " -> " + mname(me2));
+			
+			Method om1 = m2.getIdMap().get(e.from()).get(0);
+			Method om2 = m2.getIdMap().get(e.to()).get(0);
+			
+			System.out.println("  OTHER SIDE: " + mname(om1) + " -> " + mname(om2));
+		}
+		//System.out.println(edges);
+		
+		if (g2.order() == g1.order())
+		{
+			int[] v1 = g1.vertices().toPrimitiveArray(),
+				v2 = g2.vertices().toPrimitiveArray();
+			for (int i = 0; i < g1.order(); ++i)
+			{
+				Method me1 = m1.getIdMap().get(v1[i]).get(0);
+				Method me2 = m2.getIdMap().get(v2[i]).get(0);
+				
+				System.out.println("VMATCH " + mname(me1) + " -> " + mname(me2));
+			}
+		}
+	}
+	
 	private boolean compare(Frame f1, Frame f2)
 	{
 		Graph g1 = f1.getMethodCtx().getGraph(), g2 = f2.getMethodCtx().getGraph();
 		
 		IsomorphismTester isoTest = new /*Typed*/VF2IsomorphismTester();
-		if (!isoTest.areIsomorphic(g1, g2))
+		if (g1.size() != g2.size() || g1.order() != g2.order() || !isoTest.areIsomorphic(g1, g2))
 		{
+			System.out.println("IN " + mname(f1.getMethod()) + " -> " + mname(f2.getMethod()));
+			compare(f1.getMethodCtx(), g1, f2.getMethodCtx(), g2);
 			System.out.println("Not isomorphic " + g1.size() + " " + g2.size());
 			return false;
 		}
@@ -129,6 +168,7 @@ public class Rename
 				if (!b)
 				{
 					System.out.println("Mismatch " + p1.getMethod().getMethods().getClassFile().getName() + "." +  p1.getMethod().getName() + " <-> " + p2.getMethod().getMethods().getClassFile().getName() + "." + p2.getMethod().getName());
+					System.out.println(one.getMethods().getClassFile().getName() + "." + one.getName() + " and " + two.getMethods().getClassFile().getName() + "." + two.getName());
 					int i =7;
 				}
 				break outer2;
@@ -141,35 +181,35 @@ public class Rename
 		groupOne = one;
 		groupTwo = two;
 		
-		Execution eone = new Execution(one);
-		eone.setBuildGraph(true);
-		eone.setFollowInvokes(false);
-		eone.populateInitialMethods();
-		List<Method> initial1 = eone.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
-		eone.run();
-		
-		Execution etwo = new Execution(two);
-		etwo.setBuildGraph(true);
-		etwo.setFollowInvokes(false);
-		etwo.populateInitialMethods();
-		List<Method> initial2 = etwo.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
-		etwo.run();
-		
-		assert initial1.size() == initial2.size();
-		
-		for (int i = 0; i < initial1.size(); ++i)
-		{
-			Method m1 = initial1.get(i), m2 = initial2.get(i);
-			
-			assert m1.getName().equals(m2.getName());
-			
-			objMap.put(m1, m2);
-		}
+//		Execution eone = new Execution(one);
+//		eone.setBuildGraph(true);
+//		eone.setFollowInvokes(false);
+//		eone.populateInitialMethods();
+//		List<Method> initial1 = eone.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
+//		eone.run();
+//		
+//		Execution etwo = new Execution(two);
+//		etwo.setBuildGraph(true);
+//		etwo.setFollowInvokes(false);
+//		etwo.populateInitialMethods();
+//		List<Method> initial2 = etwo.getInitialMethods().stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
+//		etwo.run();
+//		
+//		assert initial1.size() == initial2.size();
+//		
+//		for (int i = 0; i < initial1.size(); ++i)
+//		{
+//			Method m1 = initial1.get(i), m2 = initial2.get(i);
+//			
+//			assert m1.getName().equals(m2.getName());
+//			
+//			objMap.put(m1, m2);
+//		}
 
-//		process(
-//			one.findClass("class143").findMethod("method3014"),
-//			two.findClass("class143").findMethod("method2966")
-//		);
+		process(
+			one.findClass("client").findMethod("vmethod2999"),
+			two.findClass("client").findMethod("vmethod2978")
+		);
 		
 		for (;;)
 		{

@@ -1,15 +1,8 @@
 package net.runelite.deob.execution;
 
 import com.google.common.collect.Lists;
-import edu.ucla.sspace.graph.DirectedEdge;
-import edu.ucla.sspace.graph.Graph;
-import edu.ucla.sspace.graph.SimpleDirectedEdge;
-import edu.ucla.sspace.graph.SparseDirectedGraph;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Exception;
@@ -17,8 +10,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.util.IdGen;
-import org.apache.commons.collections4.map.MultiValueMap;
+import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import org.apache.commons.lang3.mutable.MutableInt;
 
 public class Frame
@@ -34,6 +26,7 @@ public class Frame
 	protected MutableInt prevVertex = new MutableInt(-1);
 	//protected int prevVertex = -1;
 	//private List<Method> prevInvokes;
+	private Frame from;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -70,8 +63,10 @@ public class Frame
 		// initialize frame from invoking context
 		assert ctx.getInstruction() instanceof InvokeInstruction;
 		
-		if (this.getMethod().isStatic())
+		if (!this.getExecution().isFollowInvokes() && this.getMethod().isStatic())
 		{
+			assert from == null;
+			from = ctx.getFrame();
 			this.ctx = ctx.getFrame().ctx; // share ctx if this method is static
 			this.prevVertex = ctx.getFrame().prevVertex;
 		}
@@ -111,6 +106,7 @@ public class Frame
 		this.ctx = other.ctx;
 		this.prevVertex = new MutableInt(other.prevVertex);
 		//this.prevInvokes = other.prevInvokes;
+		from = other.from;
 	}
 	
 	public Frame dup()
@@ -179,6 +175,10 @@ public class Frame
 		{
 			Instruction oldCur = cur;
 			
+			if (cur instanceof ReturnInstruction)
+				if (processReturn())
+					break;
+			
 			try
 			{
 				cur.execute(this);
@@ -225,7 +225,11 @@ public class Frame
 			}
 			
 			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
+			{
+				stop(); // the prev frame must be an invokestatic?
+				assert execution.frames.get(0).getMethod().isStatic();
 				break;
+			}
 		}
 	}
 	
@@ -270,5 +274,26 @@ public class Frame
 		}
 		
 		cur = to;
+	}
+	
+	private boolean processReturn()
+	{
+		if (this.getExecution().isFollowInvokes() || !this.getMethod().isStatic())
+			return false;
+		
+		if (from == null)
+			return false;
+		
+		assert !from.isExecuting();
+		
+		// update method, cur, stack, variables, from outermost method
+		this.method = from.method;
+		//this.executing = from.executing;
+		this.cur = from.cur;
+		this.stack = new Stack(from.stack);
+		this.variables = new Variables(from.variables);
+		
+		//stop(); // now that weve switched this should still be running
+		return true; // this stops frame execution
 	}
 }

@@ -118,6 +118,8 @@ public class Execution
 	
 	public void invoke(InstructionContext from, Method to)
 	{
+		Frame frame = from.getFrame();
+		
 		if (!this.isFollowInvokes() && !to.isStatic())
 			return;
 		
@@ -127,6 +129,9 @@ public class Execution
 		Frame f = new Frame(this, to);
 		f.initialize(from);
 		this.addFrame(f);
+		
+	//	if (!this.followInvokes && to.isStatic())
+	//		frame.stop(); // frames continue from the method
 	}
 	
 	public void addMethod(Method to)
@@ -145,13 +150,21 @@ public class Execution
 			
 			methods.add(frame.getMethod());
 			
+			if (!frame.isExecuting())
+			{
+				frames.remove(0);
+				processedFrames.add(frame);
+				continue;
+			}
+			
 			++fcount;
+			assert frame.isExecuting();
 			frame.execute();
 			
 			if (!frame.isExecuting())
 			{
-				assert frames.get(0) == frame;
-				frames.remove(0);
+				//assert frames.get(0) == frame;
+				frames.remove(frame);
 				processedFrames.add(frame);
 			}
 			else
