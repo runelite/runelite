@@ -17,8 +17,13 @@ import java.util.List;
 
 public class Method
 {
+	public static final int ACC_PUBLIC = 0x1;
+	public static final int ACC_PRIVATE = 0x2;
+	public static final int ACC_PROTECTED = 0x4;
 	public static final int ACC_STATIC = 0x8;
+	public static final int ACC_FINAL = 0x10;
 	public static final int ACC_SYNCHRONIZED = 0x20;
+	public static final int ACC_ABSTRACT = 0x400;
 	
 	private Methods methods;
 
@@ -78,6 +83,11 @@ public class Method
 	public void setAttributes(Attributes a)
 	{
 		this.attributes = a;
+	}
+
+	public short getAccessFlags()
+	{
+		return accessFlags;
 	}
 	
 	public String getName()

@@ -3,12 +3,14 @@ package net.runelite.deob;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.deob.deobfuscators.MethodInliner;
-import net.runelite.deob.deobfuscators.rename.Rename;
 import net.runelite.deob.deobfuscators.UnusedMethods;
+import net.runelite.deob.deobfuscators.rename.Rename2;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.util.JarUtil;
 
 // XXX something to detect final fields and evaluate them
+// the problem is static functions which dup,
+// graph of method/field (not include static) relationships
 
 public class Deob
 {
@@ -103,7 +105,7 @@ public class Deob
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar")),
 			group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Rename rename = new Rename();
+		Rename2 rename = new Rename2();
 		rename.run(group1, group2);
 	}
 	

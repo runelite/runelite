@@ -11,7 +11,6 @@ import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
-import org.apache.commons.lang3.mutable.MutableInt;
 
 public class Frame
 {
@@ -23,10 +22,7 @@ public class Frame
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MethodContext ctx;
-	protected MutableInt prevVertex = new MutableInt(-1);
-	//protected int prevVertex = -1;
-	//private List<Method> prevInvokes;
-	private Frame from;
+	protected Method nonStatic; // next non static method up the stack
 
 	public Frame(Execution execution, Method method)
 	{
@@ -38,6 +34,7 @@ public class Frame
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
 		ctx = execution.getMethodContext(method);
+		nonStatic = method;
 	}
 	
 	public void initialize()
@@ -63,12 +60,15 @@ public class Frame
 		// initialize frame from invoking context
 		assert ctx.getInstruction() instanceof InvokeInstruction;
 		
-		if (!this.getExecution().isFollowInvokes() && this.getMethod().isStatic())
+		//if (!this.getExecution().isFollowInvokes() && this.getMethod().isStatic())
+		if (this.getMethod().isStatic())
 		{
-			assert from == null;
-			from = ctx.getFrame();
-			this.ctx = ctx.getFrame().ctx; // share ctx if this method is static
-			this.prevVertex = ctx.getFrame().prevVertex;
+			//assert this.nonStatic == null;
+			this.nonStatic = ctx.getFrame().nonStatic;
+			//assert from == null;
+			//from = ctx.getFrame();
+			//this.ctx = ctx.getFrame().ctx; // share ctx if this method is static
+			//this.prevVertex = ctx.getFrame().prevVertex;
 		}
 		
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
@@ -104,9 +104,10 @@ public class Frame
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
-		this.prevVertex = new MutableInt(other.prevVertex);
+		//this.prevVertex = new MutableInt(other.prevVertex);
 		//this.prevInvokes = other.prevInvokes;
-		from = other.from;
+		nonStatic = other.nonStatic;
+//		from = other.from;
 	}
 	
 	public Frame dup()
@@ -175,10 +176,6 @@ public class Frame
 		{
 			Instruction oldCur = cur;
 			
-			if (cur instanceof ReturnInstruction)
-				if (processReturn())
-					break;
-			
 			try
 			{
 				cur.execute(this);
@@ -211,7 +208,7 @@ public class Frame
 			if (!executing)
 				break;
 			
-			ctx.buildGraph(this, oldCur);
+			execution.buildGraph(this, oldCur);
 			
 			if (oldCur == cur)
 			{
@@ -224,12 +221,12 @@ public class Frame
 				/* jump */
 			}
 			
-			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
-			{
-				stop(); // the prev frame must be an invokestatic?
-				assert execution.frames.get(0).getMethod().isStatic();
-				break;
-			}
+//			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
+//			{
+//				stop(); // the prev frame must be an invokestatic?
+//				assert execution.frames.get(0).getMethod().isStatic();
+//				break;
+//			}
 		}
 	}
 	
@@ -267,7 +264,7 @@ public class Frame
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
-		if (ctx.hasJumped(prevVertex, from, to))
+		if (ctx.hasJumped(from, to))
 		{
 			executing = false;
 			return;
@@ -276,24 +273,24 @@ public class Frame
 		cur = to;
 	}
 	
-	private boolean processReturn()
-	{
-		if (this.getExecution().isFollowInvokes() || !this.getMethod().isStatic())
-			return false;
-		
-		if (from == null)
-			return false;
-		
-		assert !from.isExecuting();
-		
-		// update method, cur, stack, variables, from outermost method
-		this.method = from.method;
-		//this.executing = from.executing;
-		this.cur = from.cur;
-		this.stack = new Stack(from.stack);
-		this.variables = new Variables(from.variables);
-		
-		//stop(); // now that weve switched this should still be running
-		return true; // this stops frame execution
-	}
+//	private boolean processReturn()
+//	{
+//		if (this.getExecution().isFollowInvokes() || !this.getMethod().isStatic())
+//			return false;
+//		
+//		if (from == null)
+//			return false;
+//		
+//		assert !from.isExecuting();
+//		
+//		// update method, cur, stack, variables, from outermost method
+//		this.method = from.method;
+//		//this.executing = from.executing;
+//		this.cur = from.cur;
+//		this.stack = new Stack(from.stack);
+//		this.variables = new Variables(from.variables);
+//		
+//		//stop(); // now that weve switched this should still be running
+//		return true; // this stops frame execution
+//	}
 }

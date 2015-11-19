@@ -7,6 +7,7 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,7 +15,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
+import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Execution
@@ -24,12 +29,12 @@ public class Execution
 			processedFrames = new LinkedList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
-	private MultiValueMap<MIKey, Method> invokes = new MultiValueMap<>();
+	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
 	private Encryption encryption;
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 	private Map<Method, MethodContext> methodContexts = new HashMap<>();
 	private boolean buildGraph; // if true the frame graph is built and execution hasJumped also compares previous instructions
-	private boolean followInvokes = true;
+	private Graph graph = new Graph();
 
 	public Execution(ClassGroup group)
 	{
@@ -44,16 +49,6 @@ public class Execution
 	public void setEncryption(Encryption encryption)
 	{
 		this.encryption = encryption;
-	}
-
-	public boolean isFollowInvokes()
-	{
-		return followInvokes;
-	}
-
-	public void setFollowInvokes(boolean followInvokes)
-	{
-		this.followInvokes = followInvokes;
 	}
 	
 	public List<Method> getInitialMethods()
@@ -101,27 +96,26 @@ public class Execution
 	
 	private boolean hasInvoked(InstructionContext from, Method to)
 	{
-		Frame frame = from.getFrame();
-		MIKey key = new MIKey(frame.prevVertex.intValue(), from);
-		Collection<Method> methods = invokes.getCollection(key);
+		Collection<Method> methods = invokes.getCollection(from);
 		if (methods != null && methods.contains(to))
 			return true;
 		
-		invokes.put(key, to);
+		invokes.put(from, to);
 		return false;
 	}
 
 	private void addFrame(Frame frame)
 	{
-		frames.add(0, frame);
+		frames.add(frame);
+		//frames.add(0, frame);
 	}
 	
 	public void invoke(InstructionContext from, Method to)
 	{
 		Frame frame = from.getFrame();
 		
-		if (!this.isFollowInvokes() && !to.isStatic())
-			return;
+//		if (!this.isFollowInvokes() && !to.isStatic())
+//			return;
 		
 		if (hasInvoked(from, to))
 			return;
@@ -161,16 +155,16 @@ public class Execution
 			assert frame.isExecuting();
 			frame.execute();
 			
-			if (!frame.isExecuting())
-			{
-				//assert frames.get(0) == frame;
+//			if (!frame.isExecuting())
+//			{
+				assert frames.get(0) == frame;
 				frames.remove(frame);
 				processedFrames.add(frame);
-			}
-			else
-			{
-				// another frame takes priority
-			}
+//			}
+//			else
+//			{
+//				// another frame takes priority
+//			}
 		}
 		
 		System.out.println("Processed " + fcount + " frames");
@@ -200,5 +194,40 @@ public class Execution
 	public void setBuildGraph(boolean buildGraph)
 	{
 		this.buildGraph = buildGraph;
+	}
+	
+	protected void buildGraph(Frame frame, Instruction i)
+	{
+		if (!isBuildGraph())
+			return;
+		
+		if (i instanceof InvokeInstruction)
+		{
+			if (i instanceof InvokeStatic)
+				return;
+			
+			InvokeInstruction ii = (InvokeInstruction) i;
+			
+			List<Method> methods = ii.getMethods();
+			if (methods.isEmpty())
+				return;
+			
+			for (Method m : methods)
+				graph.addEdge(frame.nonStatic, m);
+		}
+		else if (i instanceof FieldInstruction)
+		{
+			FieldInstruction fi = (FieldInstruction) i;
+			
+			if (fi.getMyField() == null)
+				return;
+			
+			graph.addEdge(frame.nonStatic, fi.getMyField());
+		}
+	}
+	
+	public Graph getGraph()
+	{
+		return graph;
 	}
 }

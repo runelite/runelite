@@ -2,6 +2,7 @@ package net.runelite.deob.signature;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,6 +47,15 @@ public class Signature
 		
 		Signature a = (Signature) other;
 		return arguments.equals(a.arguments) && rv.equals(a.rv);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 97 * hash + Objects.hashCode(this.arguments);
+		hash = 97 * hash + Objects.hashCode(this.rv);
+		return hash;
 	}
 	
 	@Override
