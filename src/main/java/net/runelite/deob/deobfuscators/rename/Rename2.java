@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
@@ -15,6 +16,7 @@ import net.runelite.deob.deobfuscators.rename.graph.Vertex;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.signature.Signature;
+import net.runelite.deob.util.NameMappings;
 
 public class Rename2
 {
@@ -154,9 +156,68 @@ public class Rename2
 				break;
 		}
 		
-		g1.check();g2.check();
+		g1.check();
+		g2.check();
 		
 		System.out.println("methods " +g1.solved(VertexType.METHOD));
 		System.out.println("f " +g1.solved(VertexType.FIELD));
+		
+		NameMappings mappings = rename(one, two); // two -> one
+		
+	//	show(mappings);
+	}
+	
+	private void show(NameMappings mappings)
+	{
+		for (Entry<Object, String> e : mappings.getMap().entrySet())
+		{
+			Object o = e.getKey();
+			String n = e.getValue();
+			
+			if (o instanceof net.runelite.deob.pool.Method)
+			{
+				net.runelite.deob.pool.Method m = (net.runelite.deob.pool.Method) o;
+				System.out.println("FINAL " + n + " -> " + m.getNameAndType().getName());
+			}
+			else if (o instanceof net.runelite.deob.pool.Field)
+			{
+				net.runelite.deob.pool.Field f = (net.runelite.deob.pool.Field) o;
+				System.out.println("FINAL " + n + " -> " + f.getNameAndType().getName());
+			}
+		}
+	}
+	
+	private NameMappings rename(ClassGroup one, ClassGroup two)
+	{
+		NameMappings mappings = new NameMappings();
+		
+		for (ClassFile cf : two.getClasses())
+		{
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Vertex v = g2.getVertexFor(m);
+				Vertex other = v.getOther();
+				
+				if (other == null)
+					continue;
+				
+				Method m2 = (Method) other.getObject();
+				mappings.map(m.getPoolMethod(), m2.getName());
+			}
+			
+			for (Field f : cf.getFields().getFields())
+			{
+				Vertex v = g2.getVertexFor(f);
+				Vertex other = v.getOther();
+				
+				if (other == null)
+					continue;
+				
+				Field f2 = (Field) other.getObject();
+				mappings.map(f.getPoolField(), f2.getName());
+			}
+		}
+		
+		return mappings;
 	}
 }

@@ -29,4 +29,9 @@ public class NameMappings
 	{
 		return map.get(object);
 	}
+
+	public Map<Object, String> getMap()
+	{
+		return map;
+	}
 }
