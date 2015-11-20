@@ -36,6 +36,14 @@ public class Double extends PoolEntry
 	}
 
 	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 79 * hash + (int) (java.lang.Double.doubleToLongBits(this.value) ^ (java.lang.Double.doubleToLongBits(this.value) >>> 32));
+		return hash;
+	}
+
+	@Override
 	public int getSlots()
 	{
 		return 2;

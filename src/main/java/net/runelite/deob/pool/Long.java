@@ -36,6 +36,14 @@ public class Long extends PoolEntry
 	}
 
 	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 37 * hash + (int) (this.value ^ (this.value >>> 32));
+		return hash;
+	}
+
+	@Override
 	public int getSlots()
 	{
 		return 2;

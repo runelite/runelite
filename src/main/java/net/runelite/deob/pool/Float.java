@@ -36,6 +36,14 @@ public class Float extends PoolEntry
 	}
 
 	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 37 * hash + java.lang.Float.floatToIntBits(this.value);
+		return hash;
+	}
+
+	@Override
 	public Type getTypeClass()
 	{
 		return new Type(float.class.getCanonicalName());

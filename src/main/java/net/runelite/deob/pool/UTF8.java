@@ -5,6 +5,7 @@ import net.runelite.deob.ConstantPool;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class UTF8 extends PoolEntry
 {
@@ -32,6 +33,14 @@ public class UTF8 extends PoolEntry
 		
 		UTF8 u = (UTF8) other;
 		return string.equals(u.string);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 29 * hash + Objects.hashCode(this.string);
+		return hash;
 	}
 
 	public java.lang.String getValue()

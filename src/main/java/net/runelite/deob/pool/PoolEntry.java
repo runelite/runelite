@@ -29,6 +29,9 @@ public abstract class PoolEntry
 	@Override
 	public abstract boolean equals(Object other);
 	
+	@Override
+	public abstract int hashCode();
+	
 	public abstract void write(DataOutputStream out) throws IOException;
 	
 	public ConstantType getType()

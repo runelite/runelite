@@ -34,6 +34,14 @@ public class Integer extends PoolEntry
 		Integer i = (Integer) other;
 		return value == i.value;
 	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 97 * hash + this.value;
+		return hash;
+	}
 	
 	@Override
 	public java.lang.String toString()

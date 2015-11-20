@@ -6,6 +6,7 @@ import net.runelite.deob.execution.Type;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class String extends PoolEntry
 {
@@ -52,6 +53,14 @@ public class String extends PoolEntry
 		
 		String s = (String) other;
 		return string.equals(s.string);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 83 * hash + Objects.hashCode(this.string);
+		return hash;
 	}
 
 	@Override
