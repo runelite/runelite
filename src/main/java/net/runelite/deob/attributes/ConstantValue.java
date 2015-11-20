@@ -5,6 +5,7 @@ import net.runelite.deob.pool.PoolEntry;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ConstantValue extends Attribute
 {
@@ -37,5 +38,36 @@ public class ConstantValue extends Attribute
 	public void writeAttr(DataOutputStream out) throws IOException
 	{
 		out.writeShort(this.getAttributes().getClassFile().getPool().make(value));
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 3;
+		hash = 79 * hash + Objects.hashCode(this.value);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final ConstantValue other = (ConstantValue) obj;
+		if (!Objects.equals(this.value, other.value))
+		{
+			return false;
+		}
+		return true;
 	}
 }

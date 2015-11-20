@@ -6,6 +6,7 @@ public class Edge
 {
 	private final Vertex from, to;
 	private final EdgeType type;
+	private int weight;
 
 	public Edge(Vertex from, Vertex to, EdgeType type)
 	{
@@ -29,7 +30,17 @@ public class Edge
 	public EdgeType getType()
 	{
 		return type;
-	}	
+	}
+	
+	public void increase()
+	{
+		++weight;
+	}
+	
+	public int getWeight()
+	{
+		return weight;
+	}
 
 	@Override
 	public int hashCode()
@@ -69,6 +80,17 @@ public class Edge
 		{
 			return false;
 		}
+		return true;
+	}
+	
+	public boolean couldBeEqual(Edge other)
+	{	
+		if (this.type != other.type)
+			return false;
+		
+//		if (this.weight != other.weight)
+//			return false;
+		
 		return true;
 	}
 }

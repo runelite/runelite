@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -11,10 +12,13 @@ import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import net.runelite.deob.deobfuscators.rename.graph.Vertex;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
 import net.runelite.deob.execution.Execution;
+import net.runelite.deob.execution.Frame;
+import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.signature.Signature;
 import net.runelite.deob.util.NameMappings;
 
@@ -23,7 +27,7 @@ public class Rename2
 	private Graph g1, g2;
 	
 	private static String cname(Method m) { return m.getMethods().getClassFile().getName(); }
-	private static String mname(Method m) { return cname(m) + "." + m.getName(); }
+	public static String mname(Method m) { return cname(m) + "." + m.getName(); }
 	private static String fname(Field f) { return f.getFields().getClassFile().getName() + "." + f.getName(); }
 	
 	public static void collide(Object o0, Object o1, Object o2)
@@ -92,6 +96,27 @@ public class Rename2
 		}
 	}
 	
+	private List<Field> getClientFields(ClassGroup group, Execution e)
+	{
+		Method clinit = group.findClass("client").findMethod("<clinit>");
+		Frame frame = e.processedFrames.stream().filter(f -> f.getMethod() == clinit).findFirst().get();
+		
+		List<Field> fields = new ArrayList<>();
+		for (InstructionContext i : frame.getInstructions())
+		{
+			if (i.getInstruction() instanceof SetFieldInstruction)
+			{
+				SetFieldInstruction sfi = (SetFieldInstruction) i.getInstruction();
+				Field f = sfi.getMyField();
+				
+				if (f != null)
+					fields.add(f);
+			}
+		}
+		
+		return fields;
+	}
+	
 	private void solve()
 	{
 		List<Vertex> solved = g1.getVerticies().stream().filter(v -> v.getOther() != null).collect(Collectors.toList());
@@ -101,14 +126,13 @@ public class Rename2
 			Vertex other = s.getOther();
 			
 			s.getEdges().stream()
-				//.map(e -> e.getTo()) // e.from is always s
 				.filter(e -> e.getTo().getOther() == null) // only get vertexes that aren't solved yet
 				.forEach(e ->
 					e.getTo().merge(
 						other.getEdges().stream()
 							.filter(e2 -> e2.getTo().getOther() == null)
 							.filter(e2 -> e.getTo().couldBeEqual(e2.getTo()))
-							.filter(e2 -> e.getType() == e2.getType())
+							.filter(e2 -> e.couldBeEqual(e2))
 							.map(e2 -> e2.getTo())
 							.collect(Collectors.toList())
 					)
@@ -142,6 +166,22 @@ public class Rename2
 			Map m2 = this.find(two.getClasses().get(i));
 			
 			mapClassMethods(m1, m2);
+		}
+		
+		List<Field> fl1 = getClientFields(one, eone);
+		List<Field> fl2 = getClientFields(two, etwo);
+		
+		for (int i = 0; i < Math.min(fl1.size(), fl2.size()); ++i)
+		{
+			Field f1 = fl1.get(i), f2 = fl2.get(i);
+			
+			Vertex v1 = g1.getVertexFor(f1);
+			Vertex v2 = g2.getVertexFor(f2);
+			
+			v1.is(v2);
+			v2.is(v1);
+			
+			System.out.println(fname(f1) + " is " + fname(f2));
 		}
 		
 		for (;;)

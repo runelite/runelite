@@ -10,7 +10,6 @@ public class Graph
 	private List<Vertex> verticies = new ArrayList<>();
 	
 	private Map<Object, Vertex> o2v = new HashMap<>();
-	private int edgeCount;
 	
 	public Vertex getVertexFor(Object o)
 	{
@@ -32,8 +31,7 @@ public class Graph
 		Vertex v1 = getVertexFor(from), v2 = getVertexFor(to);
 		
 		Edge e = new Edge(v1, v2, type);
-		if (v1.addEdge(e))
-			++edgeCount;
+		v1.addEdge(e);
 	}
 
 	public List<Vertex> getVerticies()
@@ -45,16 +43,11 @@ public class Graph
 	{
 		return verticies.size();
 	}
-	
-	public int edgeCount()
-	{
-		return edgeCount;
-	}
 
 	@Override
 	public String toString()
 	{
-		return "Graph{" + "verticies=" + verticies.size() + ", edgeCount=" + edgeCount + '}';
+		return "Graph{" + "verticies=" + verticies.size() + "}";
 	}
 	
 	public void check()

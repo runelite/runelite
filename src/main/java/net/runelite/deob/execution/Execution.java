@@ -20,6 +20,7 @@ import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
+import net.runelite.deob.deobfuscators.rename.Rename2;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -202,6 +203,8 @@ public class Execution
 	{
 		if (!isBuildGraph())
 			return;
+		
+		assert frame.getMethod() == frame.nonStatic || frame.nonStatic.isStatic() == false;
 		
 		if (i instanceof InvokeInstruction)
 		{
