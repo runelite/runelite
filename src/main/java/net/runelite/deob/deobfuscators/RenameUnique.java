@@ -143,9 +143,8 @@ public class RenameUnique implements Deobfuscator
 		return list;
 	}
 	
-	private NameMappings generateClassNames(ClassGroup group)
+	private void generateClassNames(NameMappings map, ClassGroup group)
 	{
-		NameMappings map = new NameMappings();
 		int i = 0;
 		
 		for (ClassFile cf : group.getClasses())
@@ -155,13 +154,10 @@ public class RenameUnique implements Deobfuscator
 			
 			map.map(cf.getPoolClass(), "class" + i++);
 		}
-		
-		return map;
 	}
 		
-	private NameMappings generatFieldNames(ClassGroup group)
+	private void generatFieldNames(NameMappings map, ClassGroup group)
 	{
-		NameMappings map = new NameMappings();
 		int i = 0;
 		
 		for (ClassFile cf : group.getClasses())
@@ -172,13 +168,10 @@ public class RenameUnique implements Deobfuscator
 				
 				map.map(field.getPoolField(), "field" + i++);
 			}
-		
-		return map;
 	}
 
-	private NameMappings generateMethodNames(ClassGroup group)
+	private void generateMethodNames(NameMappings map, ClassGroup group)
 	{
-		NameMappings map = new NameMappings();
 		int i = 0;
 		
 		for (ClassFile cf : group.getClasses())
@@ -199,8 +192,6 @@ public class RenameUnique implements Deobfuscator
 				for (Method m : virtualMethods)
 					map.map(m.getPoolMethod(), name);
 			}
-		
-		return map;
 	}
 	
 	private void regeneratePool(ClassGroup group)
@@ -222,21 +213,13 @@ public class RenameUnique implements Deobfuscator
 		group.buildClassGraph();
 		group.lookup();
 		
-		NameMappings mappings = this.generateClassNames(group);
+		NameMappings mappings = new NameMappings();
+		
+		this.generateClassNames(mappings, group);
+		this.generatFieldNames(mappings, group);
+		this.generateMethodNames(mappings, group);
 		
 		int classes = 0, fields = 0, methods = 0;
-		
-		for (ClassFile cf : group.getClasses())
-		{
-			String newName = mappings.get(cf.getPoolClass());
-			if (newName == null)
-				continue;
-			
-			renameClass(group, cf, newName);
-			++classes;
-		}
-		
-		mappings = this.generatFieldNames(group);
 		
 		// rename fields
 		for (ClassFile cf : group.getClasses())
@@ -249,8 +232,6 @@ public class RenameUnique implements Deobfuscator
 				field.setName(newName);
 				++fields;
 			}
-		
-		mappings = this.generateMethodNames(group);
 		
 		// rename methods
 		for (ClassFile cf : group.getClasses())
@@ -267,6 +248,16 @@ public class RenameUnique implements Deobfuscator
 					m.setName(newName);
 				methods += virtualMethods.size();
 			}
+		
+		for (ClassFile cf : group.getClasses())
+		{
+			String newName = mappings.get(cf.getPoolClass());
+			if (newName == null)
+				continue;
+			
+			renameClass(group, cf, newName);
+			++classes;
+		}
 		
 		this.regeneratePool(group);
 		
