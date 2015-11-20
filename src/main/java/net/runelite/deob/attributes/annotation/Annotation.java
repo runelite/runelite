@@ -24,6 +24,16 @@ public class Annotation
 	{
 		return annotations;
 	}
+
+	public Type getType()
+	{
+		return type;
+	}
+
+	public List<Element> getElements()
+	{
+		return elements;
+	}
 	
 	public void load(DataInputStream is) throws IOException
 	{

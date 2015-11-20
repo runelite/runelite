@@ -16,6 +16,21 @@ public class Element
 	{
 		this.annotation = annotation;
 	}
+
+	public Annotation getAnnotation()
+	{
+		return annotation;
+	}
+
+	public Type getType()
+	{
+		return type;
+	}
+
+	public String getValue()
+	{
+		return value;
+	}
 	
 	public void load(DataInputStream is) throws IOException
 	{

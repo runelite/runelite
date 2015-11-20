@@ -15,6 +15,11 @@ public class Annotations extends Attribute
 	{
 		super(attributes, AttributeType.RUNTIMEVISIBLEANNOTATIONS);
 	}
+
+	public List<Annotation> getAnnotations()
+	{
+		return annotations;
+	}
 	
 	@Override
 	public void loadAttribute(DataInputStream is) throws IOException
