@@ -7,7 +7,6 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +19,6 @@ import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.arithmetic.Encryption;
-import net.runelite.deob.deobfuscators.rename.Rename2;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -110,25 +108,16 @@ public class Execution
 	private void addFrame(Frame frame)
 	{
 		frames.add(frame);
-		//frames.add(0, frame);
 	}
 	
 	public void invoke(InstructionContext from, Method to)
 	{
-		Frame frame = from.getFrame();
-		
-//		if (!this.isFollowInvokes() && !to.isStatic())
-//			return;
-		
 		if (hasInvoked(from, to))
 			return;
 		
 		Frame f = new Frame(this, to);
 		f.initialize(from);
 		this.addFrame(f);
-		
-	//	if (!this.followInvokes && to.isStatic())
-	//		frame.stop(); // frames continue from the method
 	}
 	
 	public void addMethod(Method to)
@@ -158,16 +147,9 @@ public class Execution
 			assert frame.isExecuting();
 			frame.execute();
 			
-//			if (!frame.isExecuting())
-//			{
-				assert frames.get(0) == frame;
-				frames.remove(frame);
-				processedFrames.add(frame);
-//			}
-//			else
-//			{
-//				// another frame takes priority
-//			}
+			assert frames.get(0) == frame;
+			frames.remove(0);
+			processedFrames.add(frame);
 		}
 		
 		System.out.println("Processed " + fcount + " frames");

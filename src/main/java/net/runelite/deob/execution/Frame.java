@@ -60,15 +60,9 @@ public class Frame
 		// initialize frame from invoking context
 		assert ctx.getInstruction() instanceof InvokeInstruction;
 		
-		//if (!this.getExecution().isFollowInvokes() && this.getMethod().isStatic())
 		if (this.getMethod().isStatic())
 		{
-			//assert this.nonStatic == null;
 			this.nonStatic = ctx.getFrame().nonStatic;
-			//assert from == null;
-			//from = ctx.getFrame();
-			//this.ctx = ctx.getFrame().ctx; // share ctx if this method is static
-			//this.prevVertex = ctx.getFrame().prevVertex;
 		}
 		
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
@@ -104,10 +98,7 @@ public class Frame
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
-		//this.prevVertex = new MutableInt(other.prevVertex);
-		//this.prevInvokes = other.prevInvokes;
-		nonStatic = other.nonStatic;
-//		from = other.from;
+		this.nonStatic = other.nonStatic;
 	}
 	
 	public Frame dup()
@@ -220,13 +211,6 @@ public class Frame
 			{
 				/* jump */
 			}
-			
-//			if (!execution.frames.isEmpty() && execution.frames.get(0) != this)
-//			{
-//				stop(); // the prev frame must be an invokestatic?
-//				assert execution.frames.get(0).getMethod().isStatic();
-//				break;
-//			}
 		}
 	}
 	
@@ -272,25 +256,4 @@ public class Frame
 		
 		cur = to;
 	}
-	
-//	private boolean processReturn()
-//	{
-//		if (this.getExecution().isFollowInvokes() || !this.getMethod().isStatic())
-//			return false;
-//		
-//		if (from == null)
-//			return false;
-//		
-//		assert !from.isExecuting();
-//		
-//		// update method, cur, stack, variables, from outermost method
-//		this.method = from.method;
-//		//this.executing = from.executing;
-//		this.cur = from.cur;
-//		this.stack = new Stack(from.stack);
-//		this.variables = new Variables(from.variables);
-//		
-//		//stop(); // now that weve switched this should still be running
-//		return true; // this stops frame execution
-//	}
 }
