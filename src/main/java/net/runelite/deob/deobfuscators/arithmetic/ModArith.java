@@ -37,6 +37,7 @@ public class ModArith implements Deobfuscator
 	private MultiValueMap<Field, Number> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
+	private Encryption encryption = new Encryption();
 	
 	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
 	{
@@ -637,7 +638,7 @@ public class ModArith implements Deobfuscator
 		group.buildClassGraph();
 		
 		pairs.clear();
-		constantGetters.clear();;
+		constantGetters.clear();
 		constantSetters.clear();
 		constants.clear();
 		
@@ -658,6 +659,7 @@ public class ModArith implements Deobfuscator
 			
 			Encryption encr = new Encryption();
 			encr.addPair(pair);
+			encryption.addPair(pair); // sum total
 			
 			insertGetterSetterMuls(encr);
 			
@@ -668,5 +670,9 @@ public class ModArith implements Deobfuscator
 		
 		return i;
 	}
-	
+
+	public Encryption getEncryption()
+	{
+		return encryption;
+	}
 }

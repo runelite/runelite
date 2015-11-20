@@ -18,7 +18,6 @@ import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
-import net.runelite.deob.deobfuscators.arithmetic.Encryption;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import org.apache.commons.collections4.map.MultiValueMap;
@@ -31,7 +30,6 @@ public class Execution
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
-	private Encryption encryption;
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 	private Map<Method, MethodContext> methodContexts = new HashMap<>();
 	private boolean buildGraph; // if true the frame graph is built and execution hasJumped also compares previous instructions
@@ -40,16 +38,6 @@ public class Execution
 	public Execution(ClassGroup group)
 	{
 		this.group = group;
-	}
-
-	public Encryption getEncryption()
-	{
-		return encryption;
-	}
-	
-	public void setEncryption(Encryption encryption)
-	{
-		this.encryption = encryption;
 	}
 	
 	public List<Method> getInitialMethods()

@@ -10,7 +10,15 @@ public class Encryption
 	
 	public void addPair(Pair pair)
 	{
-		fields.put(pair.field, pair);
+		Pair existing = fields.get(pair.field);
+		if (existing != null)
+		{
+			fields.put(pair.field, new Pair(pair, existing));
+		}
+		else
+		{
+			fields.put(pair.field, pair);
+		}
 	}
 	
 	public Pair getField(Field field)
