@@ -5,6 +5,7 @@ public enum AttributeType
 	CONSTANT_VALUE("ConstantValue", ConstantValue.class),
 	CODE("Code", Code.class),
 	EXCEPTIONS("Exceptions", Exceptions.class),
+	RUNTIMEVISIBLEANNOTATIONS("RuntimeVisibleAnnotations", Annotations.class),
 	UNKNOWN(null, Unknown.class);
 
 	private String name;
