@@ -78,7 +78,7 @@ public class Deob
 		
 		int last = -1, cur;
 		while ((cur = mod.runOnce()) > 0)
-		{	
+		{
 			new MultiplicationDeobfuscator().run(group);
 
 			new MultiplyOneDeobfuscator().run(group);

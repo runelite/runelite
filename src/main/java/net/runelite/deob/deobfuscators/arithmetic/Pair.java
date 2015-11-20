@@ -1,6 +1,6 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import net.runelite.deob.Field;
+import net.runelite.deob.pool.Field;
 
 public class Pair
 {
@@ -14,10 +14,13 @@ public class Pair
 	public Pair(Pair one, Pair two)
 	{
 		assert one.getType() == two.getType();
-		assert one.field == two.field;
+		assert one.field != null;
+		assert two.field != null;
+		assert one.field.equals(two.field);
 		
 		getter = DMath.multiply(one.getter, two.getter);
 		setter = DMath.multiply(one.setter, two.setter);
+		field = one.field;
 	}
 	
 	public Class getType()

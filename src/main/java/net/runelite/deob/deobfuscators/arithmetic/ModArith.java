@@ -1,11 +1,15 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
@@ -445,7 +449,7 @@ public class ModArith implements Deobfuscator
 		{
 			System.out.println("GOOD " + field.getName() + " " + s1 + " * " + s2 + " = " + smallest + " " + g + " " + g2);
 			Pair p = new Pair();
-			p.field = field;
+			p.field = field.getPoolField();
 			if (g != inverse)
 			{
 				p.getter = s1;
@@ -582,7 +586,7 @@ public class ModArith implements Deobfuscator
 						if (f == null)
 							continue;
 
-						Pair p = encr.getField(f);
+						Pair p = encr.getField(f.getPoolField());
 						if (p == null)
 							continue;
 
@@ -610,7 +614,7 @@ public class ModArith implements Deobfuscator
 						if (f == null)
 							continue;
 
-						Pair p = encr.getField(f);
+						Pair p = encr.getField(f.getPoolField());
 						if (p == null)
 							continue;
 
@@ -653,9 +657,7 @@ public class ModArith implements Deobfuscator
 		int i = 0;
 		for (Pair pair : pairs)
 		{
-			Field field = pair.field;
-			
-			System.out.println("Processing " + field.getName() + " getter " + pair.getter + " setter " + pair.setter);
+			System.out.println("Processing " + pair.field.getNameAndType().getName() + " getter " + pair.getter + " setter " + pair.setter);
 			
 			Encryption encr = new Encryption();
 			encr.addPair(pair);
@@ -667,6 +669,15 @@ public class ModArith implements Deobfuscator
 		}
 		
 		System.out.println(pairs);
+		
+		try
+		{
+			encryption.save(new File("d:/rs/07/encryption.json"));
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger(ModArith.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		
 		return i;
 	}

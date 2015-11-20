@@ -1,6 +1,10 @@
 package net.runelite.deob.deobfuscators;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
@@ -75,6 +79,15 @@ public class RenameUnique implements Deobfuscator
 		this.generateClassNames(mappings, group);
 		this.generatFieldNames(mappings, group);
 		this.generateMethodNames(mappings, group);
+		
+		try
+		{
+			mappings.save(new File("d:/rs/07/uniquemappings.json"));
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger(RenameUnique.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		
 		renamer = new Renamer(mappings);
 		renamer.run(group);
