@@ -10,7 +10,6 @@ import net.runelite.deob.Field;
 import net.runelite.deob.Interfaces;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Exceptions;
-import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.pool.Class;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.signature.Signature;
@@ -51,9 +50,6 @@ public class RenameUnique implements Deobfuscator
 				// rename on instructions. this includes method calls and field accesses.
 				if (method.getCode() != null)
 				{
-//					Instructions instructions = method.getCode().getInstructions();
-//					instructions.renameClass(cf, name);
-					
 					// rename on exception handlers
 					Exceptions exceptions = method.getCode().getExceptions();
 					exceptions.renameClass(cf, name);
@@ -87,28 +83,6 @@ public class RenameUnique implements Deobfuscator
 		cf.setName(name);
 	}
 	
-	private void renameField(ClassGroup group, Field field, String name)
-	{
-		for (ClassFile c : group.getClasses())
-		{
-			for (Method method : c.getMethods().getMethods())
-			{
-				// rename on instructions
-				if (method.getCode() != null)
-				{
-					Instructions instructions = method.getCode().getInstructions();
-					net.runelite.deob.pool.Field newField = new net.runelite.deob.pool.Field(
-						new net.runelite.deob.pool.Class(field.getFields().getClassFile().getName()),
-						new NameAndType(name, field.getType())
-					);
-					//instructions.renameField(field, newField);
-				}
-			}
-		}
-		
-		field.setName(name);
-	}
-	
 	// find the base methods for a method. search goes up from there to see if two
 	// different methods can be invoked with the same instruction.
 	private List<Method> findBaseMethods(List<Method> methods, ClassFile cf, NameAndType method)
@@ -131,7 +105,7 @@ public class RenameUnique implements Deobfuscator
 	
 	private List<Method> findBaseMethods(Method method)
 	{
-		return findBaseMethods(new ArrayList<Method>(), method.getMethods().getClassFile(), method.getNameAndType());
+		return findBaseMethods(new ArrayList<>(), method.getMethods().getClassFile(), method.getNameAndType());
 	}
 	
 	private void findMethodUp(List<Method> methods, Set<ClassFile> visited, ClassFile cf, NameAndType method)
@@ -164,35 +138,9 @@ public class RenameUnique implements Deobfuscator
 		
 		// now search up from bases, appending to list.
 		for (Method m : bases)
-			findMethodUp(list, new HashSet<ClassFile>(), m.getMethods().getClassFile(), m.getNameAndType());
+			findMethodUp(list, new HashSet<>(), m.getMethods().getClassFile(), m.getNameAndType());
 
 		return list;
-	}
-	
-	private void renameMethod(ClassGroup group, List<Method> methods, String name)
-	{
-		for (ClassFile c : group.getClasses())
-		{
-			for (Method method : c.getMethods().getMethods())
-			{
-				// rename on instructions
-				if (method.getCode() != null)
-				{
-					Instructions instructions = method.getCode().getInstructions();
-					for (Method m : methods)
-					{
-						net.runelite.deob.pool.Method newMethod = new net.runelite.deob.pool.Method(
-							new net.runelite.deob.pool.Class(m.getMethods().getClassFile().getName()),
-							new NameAndType(name, m.getNameAndType().getDescriptor())
-						);
-						//instructions.renameMethod(m, newMethod);
-					}
-				}
-			}
-		}
-		
-		for (Method m : methods)
-			m.setName(name);
 	}
 	
 	private NameMappings generateClassNames(ClassGroup group)
@@ -272,12 +220,10 @@ public class RenameUnique implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		group.buildClassGraph();
+		group.lookup();
 		
 		NameMappings mappings = this.generateClassNames(group);
 		
-		//renameIns(group, mappings);
-		
-		int i = 0;
 		int classes = 0, fields = 0, methods = 0;
 		
 		for (ClassFile cf : group.getClasses())
@@ -292,8 +238,6 @@ public class RenameUnique implements Deobfuscator
 		
 		mappings = this.generatFieldNames(group);
 		
-		//renameIns(group, mappings);
-		
 		// rename fields
 		for (ClassFile cf : group.getClasses())
 			for (Field field : cf.getFields().getFields())
@@ -302,13 +246,11 @@ public class RenameUnique implements Deobfuscator
 				if (newName == null)
 					continue;
 				
-				renameField(group, field, newName);
+				field.setName(newName);
 				++fields;
 			}
 		
 		mappings = this.generateMethodNames(group);
-		
-		//renameIns(group, mappings);
 		
 		// rename methods
 		for (ClassFile cf : group.getClasses())
@@ -321,7 +263,8 @@ public class RenameUnique implements Deobfuscator
 				List<Method> virtualMethods = getVirutalMethods(method);
 				assert !virtualMethods.isEmpty();
 				
-				renameMethod(group, virtualMethods, newName);
+				for (Method m : virtualMethods)
+					m.setName(newName);
 				methods += virtualMethods.size();
 			}
 		

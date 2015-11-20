@@ -143,7 +143,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	@Override
 	public void regeneratePool()
 	{
-		if (!myMethods.isEmpty())
+		if (myMethods != null && !myMethods.isEmpty())
 			method = myMethods.get(0).getPoolMethod();
 	}
 }
