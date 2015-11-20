@@ -122,6 +122,11 @@ public class ClassFile
 		return methods;
 	}
 
+	public Attributes getAttributes()
+	{
+		return attributes;
+	}
+
 	public String getName()
 	{
 		return name.getName();

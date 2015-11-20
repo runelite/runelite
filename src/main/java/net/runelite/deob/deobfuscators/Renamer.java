@@ -10,7 +10,12 @@ import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.Field;
 import net.runelite.deob.Interfaces;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.Annotations;
+import net.runelite.deob.attributes.AttributeType;
+import net.runelite.deob.attributes.Attributes;
 import net.runelite.deob.attributes.Code;
+import net.runelite.deob.attributes.annotation.Annotation;
+import net.runelite.deob.attributes.annotation.Element;
 import net.runelite.deob.attributes.code.Exceptions;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.signature.Signature;
@@ -85,6 +90,7 @@ public class Renamer implements Deobfuscator
 					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
 		}
 		
+		createOriginalNameAnnotation(cf.getAttributes(), cf.getName());
 		cf.setName(name);
 	}
 	
@@ -160,6 +166,27 @@ public class Renamer implements Deobfuscator
 				c.getInstructions().regeneratePool();
 			}
 	}
+	
+	private static final Type OBFUSCATED_NAME_TYPE = new Type("Lnet/runelite/mapping/ObfuscatedName");
+	
+	private void createOriginalNameAnnotation(Attributes attr, String name)
+	{
+		Annotations an = (Annotations) attr.findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+		if (an == null)
+		{
+			an = new Annotations(attr);
+			attr.addAttribute(an);
+		}
+		
+		Annotation annotation = new Annotation(an);
+		annotation.setType(OBFUSCATED_NAME_TYPE);
+		an.addAnnotation(annotation);
+		
+		Element element = new Element(annotation);
+		element.setType(new Type("value"));
+		element.setValue(name);
+		annotation.addElement(element);
+	}
 
 	@Override
 	public void run(ClassGroup group)
@@ -177,6 +204,7 @@ public class Renamer implements Deobfuscator
 				if (newName == null)
 					continue;
 				
+				createOriginalNameAnnotation(field.getAttributes(), field.getName());
 				field.setName(newName);
 				++fields;
 			}
@@ -193,7 +221,10 @@ public class Renamer implements Deobfuscator
 				assert !virtualMethods.isEmpty();
 				
 				for (Method m : virtualMethods)
+				{
+					createOriginalNameAnnotation(m.getAttributes(), m.getName());
 					m.setName(newName);
+				}
 				methods += virtualMethods.size();
 			}
 		

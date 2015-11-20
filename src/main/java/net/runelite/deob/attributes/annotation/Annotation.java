@@ -25,6 +25,11 @@ public class Annotation
 		return annotations;
 	}
 
+	public void setType(Type type)
+	{
+		this.type = type;
+	}
+
 	public Type getType()
 	{
 		return type;
@@ -33,6 +38,11 @@ public class Annotation
 	public List<Element> getElements()
 	{
 		return elements;
+	}
+	
+	public void addElement(Element element)
+	{
+		elements.add(element);
 	}
 	
 	public void load(DataInputStream is) throws IOException

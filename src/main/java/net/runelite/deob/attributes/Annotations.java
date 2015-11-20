@@ -21,6 +21,11 @@ public class Annotations extends Attribute
 		return annotations;
 	}
 	
+	public void addAnnotation(Annotation annotation)
+	{
+		annotations.add(annotation);
+	}
+	
 	@Override
 	public void loadAttribute(DataInputStream is) throws IOException
 	{
