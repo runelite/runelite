@@ -2,21 +2,30 @@ package net.runelite.deob;
 
 import java.io.File;
 import java.io.IOException;
+import net.runelite.deob.deobfuscators.ConstantParameter;
+import net.runelite.deob.deobfuscators.FieldInliner;
+import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.MethodInliner;
+import net.runelite.deob.deobfuscators.RenameUnique;
+import net.runelite.deob.deobfuscators.RuntimeExceptions;
+import net.runelite.deob.deobfuscators.UnreachedCode;
+import net.runelite.deob.deobfuscators.UnusedClass;
+import net.runelite.deob.deobfuscators.UnusedFields;
 import net.runelite.deob.deobfuscators.UnusedMethods;
+import net.runelite.deob.deobfuscators.UnusedParameters;
+import net.runelite.deob.deobfuscators.arithmetic.ModArith;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
+import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.deobfuscators.rename.Rename2;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.util.JarUtil;
-
-// XXX something to detect final fields and evaluate them
-// the problem is static functions which dup,
-// graph of method/field (not include static) relationships
 
 public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
-		merge(); if(true) return;
+		//merge(); if(true) return;
 		
 		long start = System.currentTimeMillis();
 		
@@ -28,9 +37,8 @@ public class Deob
 //		run(group, new RuntimeExceptions());
 //		
 //		// remove unused methods
-//		run(group, new UnusedMethods());
-//		
 //		run(group, new UnreachedCode());
+//		run(group, new UnusedMethods());
 //		
 //		// remove illegal state exceptions, frees up some parameters
 //		run(group, new IllegalStateExceptions());
@@ -45,50 +53,43 @@ public class Deob
 //		// remove unused parameters
 //		run(group, new UnusedParameters());
 //		
-//		// remove jump obfuscation
-//		//new Jumps().run(group);
-//		
 //		// remove unused fields
 //		run(group, new UnusedFields());
 //		
 //		// remove unused methods, again?
 //		run(group, new UnusedMethods());
-
-		run(group, new MethodInliner());
-		run(group, new UnusedMethods()); // inliner might leave unused methods
-
-//		// broken because rename was removed
-//		//run(group, new MethodMover());
+//
+////		run(group, new MethodInliner());
+////		run(group, new UnusedMethods()); // inliner might leave unused methods
+//
+////		// broken because rename was removed
+////		//run(group, new MethodMover());
 //		
 //		run(group, new FieldInliner());
 //		
-//		// XXX this is broken because when moving clinit around, some fields can depend on other fields
-//		// (like multianewarray)
-//		//new FieldMover().run(group);
+////		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+////		// (like multianewarray)
+////		//new FieldMover().run(group);
 //		
 //		run(group, new UnusedClass());
-//	
-//		ModArith mod = new ModArith();
-//		mod.run(group);
-//		
-//		int last = -1, cur;
-//		while ((cur = mod.runOnce()) > 0)
-//		{	
-//			new MultiplicationDeobfuscator().run(group);
-//
-//			new MultiplyOneDeobfuscator().run(group);
-//
-//			new MultiplyZeroDeobfuscator().run(group);
-//			
-//			if (last == cur)
-//			{
-//				System.out.println("break");
-//				break;
-//			}
-//			
-//			last = cur;
-//			//break;
-//		}
+	
+		ModArith mod = new ModArith();
+		mod.run(group);
+		
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{	
+			new MultiplicationDeobfuscator().run(group);
+
+			new MultiplyOneDeobfuscator().run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+			
+			if (last == cur)
+				break;
+			
+			last = cur;
+		}
 		
 		// eval constant fields (only set once to a constant in ctor) maybe just inline them
 		

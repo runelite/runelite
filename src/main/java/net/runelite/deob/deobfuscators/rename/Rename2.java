@@ -1,5 +1,7 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,12 +9,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import net.runelite.deob.deobfuscators.rename.graph.Vertex;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
@@ -20,6 +25,7 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.signature.Signature;
+import net.runelite.deob.util.JarUtil;
 import net.runelite.deob.util.NameMappings;
 
 public class Rename2
@@ -144,13 +150,11 @@ public class Rename2
 	{
 		Execution eone = new Execution(one);
 		eone.setBuildGraph(true);
-		//eone.setFollowInvokes(false);
 		eone.populateInitialMethods();
 		eone.run();
 		
 		Execution etwo = new Execution(two);
 		etwo.setBuildGraph(true);
-		//etwo.setFollowInvokes(false);
 		etwo.populateInitialMethods();
 		etwo.run();
 		
@@ -203,9 +207,20 @@ public class Rename2
 		System.out.println("methods " +g1.solved(VertexType.METHOD));
 		System.out.println("f " +g1.solved(VertexType.FIELD));
 		
-		NameMappings mappings = rename(one, two); // two -> one
+		NameMappings mappings = buildMappings(one, two); // two -> one
 		
-	//	show(mappings);
+		show(mappings);
+		
+		rename(mappings, two);
+		
+		try
+		{
+			JarUtil.saveJar(two, new File("d:/rs/07/adamout.jar"));
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger(Rename2.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 	
 	private void show(NameMappings mappings)
@@ -228,7 +243,7 @@ public class Rename2
 		}
 	}
 	
-	private NameMappings rename(ClassGroup one, ClassGroup two)
+	private NameMappings buildMappings(ClassGroup one, ClassGroup two)
 	{
 		NameMappings mappings = new NameMappings();
 		
@@ -260,5 +275,11 @@ public class Rename2
 		}
 		
 		return mappings;
+	}
+	
+	private void rename(NameMappings mappings, ClassGroup group)
+	{
+		Renamer renamer = new Renamer(mappings);
+		renamer.run(group);
 	}
 }
