@@ -25,7 +25,7 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
-		//merge(); if(true) return;
+		merge(); if(true) return;
 		
 		long start = System.currentTimeMillis();
 		

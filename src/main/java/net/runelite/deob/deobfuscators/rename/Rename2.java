@@ -207,6 +207,9 @@ public class Rename2
 		System.out.println("methods " +g1.solved(VertexType.METHOD));
 		System.out.println("f " +g1.solved(VertexType.FIELD));
 		
+		NameMappings col = buildCollisionMap(one, two);
+		rename(col, two);
+		
 		NameMappings mappings = buildMappings(one, two); // two -> one
 		
 		show(mappings);
@@ -243,6 +246,50 @@ public class Rename2
 		}
 	}
 	
+	private NameMappings buildCollisionMap(ClassGroup one, ClassGroup two)
+	{
+		NameMappings mappings = new NameMappings();
+		int count = 0;
+		
+		for (ClassFile cf : two.getClasses())
+		{
+			for (Method m : cf.getMethods().getMethods())
+			{
+				Vertex v = g2.getVertexFor(m);
+				Vertex other = v.getOther();
+				
+				if (m.getName().equals("<init>") || m.getName().equals("<clinit>"))
+					continue;
+				
+				if (other == null)
+					continue;
+				
+				Method m2 = (Method) other.getObject();
+				
+				Method existingMethod = cf.findMethod(m2.getName());
+				if (existingMethod != null)
+					mappings.map(existingMethod.getPoolMethod(), "collidedMethod" + count++);
+			}
+			
+			for (Field f : cf.getFields().getFields())
+			{
+				Vertex v = g2.getVertexFor(f);
+				Vertex other = v.getOther();
+				
+				if (other == null)
+					continue;
+				
+				Field f2 = (Field) other.getObject();
+				
+				Field existingField = cf.findField(f2.getName());
+				if (existingField != null)
+					mappings.map(existingField.getPoolField(), "collidedField" + count++);
+			}
+		}
+		
+		return mappings;
+	}
+	
 	private NameMappings buildMappings(ClassGroup one, ClassGroup two)
 	{
 		NameMappings mappings = new NameMappings();
@@ -254,10 +301,17 @@ public class Rename2
 				Vertex v = g2.getVertexFor(m);
 				Vertex other = v.getOther();
 				
+				if (m.getName().equals("<init>") || m.getName().equals("<clinit>"))
+					continue;
+				
 				if (other == null)
 					continue;
 				
 				Method m2 = (Method) other.getObject();
+				
+				Method existingMethod = cf.findMethod(m2.getName());
+				assert existingMethod == null;
+				
 				mappings.map(m.getPoolMethod(), m2.getName());
 			}
 			
@@ -270,6 +324,10 @@ public class Rename2
 					continue;
 				
 				Field f2 = (Field) other.getObject();
+				
+				Field existingField = cf.findField(f2.getName());
+				assert existingField == null;
+				
 				mappings.map(f.getPoolField(), f2.getName());
 			}
 		}
