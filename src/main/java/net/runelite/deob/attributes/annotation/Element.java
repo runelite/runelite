@@ -4,13 +4,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ConstantPool;
+import net.runelite.deob.pool.PoolEntry;
 import net.runelite.deob.signature.Type;
 
 public class Element
 {
 	private final Annotation annotation;
 	private Type type;
-	private String value;
+	private PoolEntry value;
 	
 	public Element(Annotation annotation)
 	{
@@ -32,12 +33,12 @@ public class Element
 		this.type = type;
 	}
 
-	public String getValue()
+	public PoolEntry getValue()
 	{
 		return value;
 	}
 
-	public void setValue(String value)
+	public void setValue(PoolEntry value)
 	{
 		this.value = value;
 	}
@@ -51,12 +52,12 @@ public class Element
 		
 		byte type = is.readByte();
 		
-		if (type != 's')
-			throw new RuntimeException("can't parse non string annotation element");
+		if (type != 's' && type != 'I' && type != 'J')
+			throw new RuntimeException("can't parse annotation element type " + type);
 		
 		int index = is.readShort(); // pool index to String
 		
-		value = pool.getUTF8(index);
+		value = pool.getEntry(index);
 	}
 	
 	public void write(DataOutputStream out) throws IOException
@@ -64,7 +65,22 @@ public class Element
 		ConstantPool pool = annotation.getAnnotations().getAttributes().getClassFile().getPool();
 
 		out.writeShort(pool.makeUTF8(type.toString()));
-		out.write('s');
-		out.writeShort(pool.makeUTF8(value));
+		byte type;
+		switch (value.getType())
+		{
+			case UTF8:
+				type = 's';
+				break;
+			case INTEGER:
+				type = 'I';
+				break;
+			case LONG:
+				type = 'J';
+				break;
+			default:
+				throw new RuntimeException("can't write annotation type " + value);
+		}
+		out.write(type);
+		out.writeShort(pool.make(value));
 	}
 }

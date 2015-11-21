@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.attributes.annotation.Annotation;
+import net.runelite.deob.attributes.annotation.Element;
+import net.runelite.deob.pool.PoolEntry;
+import net.runelite.deob.signature.Type;
 
 public class Attributes
 {
@@ -122,5 +126,24 @@ public class Attributes
 	{
 		assert a.getAttributes() == this;
 		attributes.add(a);
+	}
+	
+	public void addAnnotation(Type type, PoolEntry value)
+	{
+		Annotations an = (Annotations) findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+		if (an == null)
+		{
+			an = new Annotations(this);
+			this.addAttribute(an);
+		}
+		
+		Annotation annotation = new Annotation(an);
+		annotation.setType(type);
+		an.addAnnotation(annotation);
+		
+		Element element = new Element(annotation);
+		element.setType(new Type("value"));
+		element.setValue(value);
+		annotation.addElement(element);
 	}
 }

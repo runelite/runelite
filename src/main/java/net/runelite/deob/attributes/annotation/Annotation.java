@@ -13,7 +13,7 @@ public class Annotation
 {
 	private final Annotations annotations;
 	private Type type;
-	private List<Element> elements = new ArrayList<>();
+	private final List<Element> elements = new ArrayList<>();
 
 	public Annotation(Annotations annotations)
 	{

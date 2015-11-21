@@ -32,6 +32,8 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.pool.PoolEntry;
+import net.runelite.deob.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class ModArith implements Deobfuscator
@@ -41,7 +43,6 @@ public class ModArith implements Deobfuscator
 	private MultiValueMap<Field, Number> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
-	private Encryption encryption = new Encryption();
 	
 	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
 	{
@@ -650,6 +651,8 @@ public class ModArith implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 		
+		Encryption encryption = new Encryption();
+		
 		findUses();
 		findUses2();
 		reduce2();
@@ -668,7 +671,7 @@ public class ModArith implements Deobfuscator
 			System.out.println("Changed " + ++i);
 		}
 		
-		System.out.println(pairs);
+		annotateEncryption(encryption);
 		
 		try
 		{
@@ -681,9 +684,24 @@ public class ModArith implements Deobfuscator
 		
 		return i;
 	}
-
-	public Encryption getEncryption()
+	
+	private static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
+	
+	private void annotateEncryption(Encryption encryption)
 	{
-		return encryption;
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Field f : cf.getFields().getFields())
+			{
+				Pair pair = encryption.getField(f.getPoolField());
+				if (pair == null)
+					continue;
+				
+				PoolEntry value = pair.getType() == Long.class ?
+					new net.runelite.deob.pool.Long((long) pair.getter) :
+					new net.runelite.deob.pool.Integer((int) pair.getter);
+				f.getAttributes().addAnnotation(OBFUSCATED_GETTER, value);
+			}
+		}
 	}
 }
