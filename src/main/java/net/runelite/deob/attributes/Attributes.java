@@ -128,7 +128,7 @@ public class Attributes
 		attributes.add(a);
 	}
 	
-	public void addAnnotation(Type type, PoolEntry value)
+	public void addAnnotation(Type type, String etype, PoolEntry value)
 	{
 		Annotations an = (Annotations) findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
 		if (an == null)
@@ -142,7 +142,7 @@ public class Attributes
 		an.addAnnotation(annotation);
 		
 		Element element = new Element(annotation);
-		element.setType(new Type("value"));
+		element.setType(new Type(etype));
 		element.setValue(value);
 		annotation.addElement(element);
 	}

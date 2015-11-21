@@ -80,15 +80,6 @@ public class RenameUnique implements Deobfuscator
 		this.generatFieldNames(mappings, group);
 		this.generateMethodNames(mappings, group);
 		
-		try
-		{
-			mappings.save(new File("d:/rs/07/uniquemappings.json"));
-		}
-		catch (IOException ex)
-		{
-			Logger.getLogger(RenameUnique.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
 		renamer = new Renamer(mappings);
 		renamer.run(group);
 	}

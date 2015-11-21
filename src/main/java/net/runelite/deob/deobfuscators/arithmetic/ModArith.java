@@ -43,6 +43,7 @@ public class ModArith implements Deobfuscator
 	private MultiValueMap<Field, Number> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
+	private Encryption encryption = new Encryption();
 	
 	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
 	{
@@ -651,8 +652,6 @@ public class ModArith implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 		
-		Encryption encryption = new Encryption();
-		
 		findUses();
 		findUses2();
 		reduce2();
@@ -671,23 +670,12 @@ public class ModArith implements Deobfuscator
 			System.out.println("Changed " + ++i);
 		}
 		
-		annotateEncryption(encryption);
-		
-		try
-		{
-			encryption.save(new File("d:/rs/07/encryption.json"));
-		}
-		catch (IOException ex)
-		{
-			Logger.getLogger(ModArith.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		
 		return i;
 	}
 	
 	private static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
 	
-	private void annotateEncryption(Encryption encryption)
+	public void annotateEncryption()
 	{
 		for (ClassFile cf : group.getClasses())
 		{
@@ -700,7 +688,10 @@ public class ModArith implements Deobfuscator
 				PoolEntry value = pair.getType() == Long.class ?
 					new net.runelite.deob.pool.Long((long) pair.getter) :
 					new net.runelite.deob.pool.Integer((int) pair.getter);
-				f.getAttributes().addAnnotation(OBFUSCATED_GETTER, value);
+				String ename = pair.getType() == Long.class ?
+					"longValue" :
+					"intValue";
+				f.getAttributes().addAnnotation(OBFUSCATED_GETTER, ename, value);
 			}
 		}
 	}

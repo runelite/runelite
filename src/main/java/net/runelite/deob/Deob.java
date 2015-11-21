@@ -25,53 +25,53 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
-		merge(); if(true) return;
+		//merge(); if(true) return;
 		
 		long start = System.currentTimeMillis();
 		
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
 		
-//		run(group, new RenameUnique());
-//
-//		// remove except RuntimeException
-//		run(group, new RuntimeExceptions());
-//		
-//		// remove unused methods
-//		run(group, new UnreachedCode());
-//		run(group, new UnusedMethods());
-//		
-//		// remove illegal state exceptions, frees up some parameters
-//		run(group, new IllegalStateExceptions());
-//		
-//		// remove constant logically dead parameters
-//		run(group, new ConstantParameter());
-//		
-//		// remove unhit blocks
-//		run(group, new UnreachedCode());
-//		run(group, new UnusedMethods());
-//
-//		// remove unused parameters
-//		run(group, new UnusedParameters());
-//		
-//		// remove unused fields
-//		run(group, new UnusedFields());
-//		
-//		// remove unused methods, again?
-//		run(group, new UnusedMethods());
-//
-////		run(group, new MethodInliner());
-////		run(group, new UnusedMethods()); // inliner might leave unused methods
-//
-////		// broken because rename was removed
-////		//run(group, new MethodMover());
-//		
-//		run(group, new FieldInliner());
-//		
-////		// XXX this is broken because when moving clinit around, some fields can depend on other fields
-////		// (like multianewarray)
-////		//new FieldMover().run(group);
-//		
-//		run(group, new UnusedClass());
+		run(group, new RenameUnique());
+
+		// remove except RuntimeException
+		run(group, new RuntimeExceptions());
+		
+		// remove unused methods
+		run(group, new UnreachedCode());
+		run(group, new UnusedMethods());
+		
+		// remove illegal state exceptions, frees up some parameters
+		run(group, new IllegalStateExceptions());
+		
+		// remove constant logically dead parameters
+		run(group, new ConstantParameter());
+		
+		// remove unhit blocks
+		run(group, new UnreachedCode());
+		run(group, new UnusedMethods());
+
+		// remove unused parameters
+		run(group, new UnusedParameters());
+		
+		// remove unused fields
+		run(group, new UnusedFields());
+		
+		// remove unused methods, again?
+		run(group, new UnusedMethods());
+
+//		run(group, new MethodInliner());
+//		run(group, new UnusedMethods()); // inliner might leave unused methods
+
+//		// broken because rename was removed
+//		//run(group, new MethodMover());
+		
+		run(group, new FieldInliner());
+		
+//		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+//		// (like multianewarray)
+//		//new FieldMover().run(group);
+		
+		run(group, new UnusedClass());
 	
 		ModArith mod = new ModArith();
 		mod.run(group);
@@ -90,6 +90,8 @@ public class Deob
 			
 			last = cur;
 		}
+		
+		mod.annotateEncryption();
 		
 		// eval constant fields (only set once to a constant in ctor) maybe just inline them
 		

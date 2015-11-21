@@ -88,7 +88,7 @@ public class Renamer implements Deobfuscator
 					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
 		}
 		
-		cf.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, new UTF8(cf.getName()));
+		cf.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, "value", new UTF8(cf.getName()));
 		cf.setName(name);
 	}
 	
@@ -181,7 +181,7 @@ public class Renamer implements Deobfuscator
 				if (newName == null)
 					continue;
 				
-				field.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, new UTF8(field.getName()));
+				field.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, "value", new UTF8(field.getName()));
 				field.setName(newName);
 				++fields;
 			}
@@ -199,7 +199,7 @@ public class Renamer implements Deobfuscator
 				
 				for (Method m : virtualMethods)
 				{
-					m.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, new UTF8(m.getName()));
+					m.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, "value", new UTF8(m.getName()));
 					m.setName(newName);
 				}
 				methods += virtualMethods.size();
