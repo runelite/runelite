@@ -159,28 +159,32 @@ public final class class133 {
 
             while(true) {
                if(var7 < var3) {
-                  label143: {
+                  label136: {
                      int var9 = 0;
                      int var10;
                      if(var4) {
-                        this.field2055.method4188((long)(520 * var6));
+                        label155: {
+                           this.field2055.method4188((long)(520 * var6));
 
-                        try {
-                           this.field2055.method4193(field2059, 0, 8);
-                        } catch (EOFException var14) {
-                           break label143;
-                        }
+                           try {
+                              this.field2055.method4193(field2059, 0, 8);
+                           } catch (EOFException var14) {
+                              break label136;
+                           }
 
-                        var10 = ((field2059[0] & 255) << 8) + (field2059[1] & 255);
-                        int var11 = (field2059[3] & 255) + ((field2059[2] & 255) << 8);
-                        var9 = ((field2059[4] & 255) << 16) + ((field2059[5] & 255) << 8) + (field2059[6] & 255);
-                        int var12 = field2059[7] & 255;
-                        if(var1 != var10 || var11 != var8 || this.field2057 != var12) {
-                           var10000 = false;
-                           return var10000;
-                        }
+                           var10 = ((field2059[0] & 255) << 8) + (field2059[1] & 255);
+                           int var11 = (field2059[3] & 255) + ((field2059[2] & 255) << 8);
+                           var9 = ((field2059[4] & 255) << 16) + ((field2059[5] & 255) << 8) + (field2059[6] & 255);
+                           int var12 = field2059[7] & 255;
+                           if(var1 == var10 && var11 == var8 && this.field2057 == var12) {
+                              if(var9 >= 0 && (long)var9 <= this.field2055.method4191() / 520L) {
+                                 break label155;
+                              }
 
-                        if(var9 < 0 || (long)var9 > this.field2055.method4191() / 520L) {
+                              var10000 = false;
+                              return var10000;
+                           }
+
                            var10000 = false;
                            return var10000;
                         }

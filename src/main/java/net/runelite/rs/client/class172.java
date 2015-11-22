@@ -486,9 +486,9 @@ public class class172 extends class207 {
    public int field2862 = 0;
    @ObfuscatedName("ey")
    @ObfuscatedGetter(
-      intValue = -378529589
+      intValue = 378529589
    )
-   public int field2863 = 1;
+   public int field2863 = -1;
    @ObfuscatedName("ca")
    @ObfuscatedGetter(
       intValue = 2115432573

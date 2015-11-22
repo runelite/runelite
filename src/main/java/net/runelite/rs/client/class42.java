@@ -293,7 +293,7 @@ public class class42 extends class203 {
    @ObfuscatedName("ck")
    static void method942(class172 var0) {
       if(client.field478 == var0.field2833 * -1) {
-         client.field370[var0.field2863 * -1] = true;
+         client.field370[var0.field2863] = true;
       }
 
    }

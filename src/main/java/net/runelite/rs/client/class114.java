@@ -35,7 +35,7 @@ public class class114 {
                var11 = var8;
             }
 
-            var10.field2863 = var11 * -1;
+            var10.field2863 = var11;
             var10.field2833 = client.field286 * -1;
             if(!var10.field2733 || !class153.method3195(var10)) {
                if(var10.field2738 > 0) {
@@ -469,7 +469,7 @@ public class class114 {
                            class40.method880("Loading - please wait.", false);
                         }
 
-                        client.field370[var10.field2863 * -1] = true;
+                        client.field370[var10.field2863] = true;
                         class79.method1816(var2, var3, var4, var5);
                         continue;
                      }

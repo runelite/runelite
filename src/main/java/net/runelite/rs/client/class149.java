@@ -1625,10 +1625,10 @@ public final class class149 {
                                        if(var50 != null) {
                                           var54 = var50;
                                        } else {
-                                          byte[] var72 = class48.field1069.method3352(8, var53);
+                                          byte[] var71 = class48.field1069.method3352(8, var53);
                                           var50 = new class48();
-                                          if(null != var72) {
-                                             var50.method1028(new class118(var72));
+                                          if(null != var71) {
+                                             var50.method1028(new class118(var71));
                                           }
 
                                           class48.field1068.method3805(var50, (long)var53);
@@ -2905,9 +2905,9 @@ public final class class149 {
                                                 break;
                                              }
 
-                                             class129 var71 = var96[var19];
-                                             if(var71.field2046 == var16) {
-                                                var109 = var71;
+                                             class129 var72 = var96[var19];
+                                             if(var72.field2046 == var16) {
+                                                var109 = var72;
                                                 break;
                                              }
 

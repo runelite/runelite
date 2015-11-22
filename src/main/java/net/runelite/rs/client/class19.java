@@ -162,7 +162,7 @@ public class class19 {
    void method230() {
       class226 var1 = this.method262(false);
 
-      label191: {
+      label192: {
          try {
             byte[] var2 = new byte[(int)var1.method4176()];
 
@@ -175,12 +175,12 @@ public class class19 {
             }
 
             class118 var23 = new class118(var2);
-            if(var23.field1980.length - var23.field1981 < 1) {
-               return;
-            }
+            if(var23.field1980.length - var23.field1981 >= 1) {
+               int var5 = var23.method2536();
+               if(var5 < 0 || var5 > 1) {
+                  return;
+               }
 
-            int var5 = var23.method2536();
-            if(var5 >= 0 && var5 <= 1) {
                int var6 = var23.method2538();
 
                int var7;
@@ -199,7 +199,7 @@ public class class19 {
 
                while(true) {
                   if(var8 >= var7) {
-                     break label191;
+                     break label192;
                   }
 
                   var9 = var23.method2538();
@@ -212,7 +212,7 @@ public class class19 {
                }
             }
          } catch (Exception var21) {
-            break label191;
+            break label192;
          } finally {
             try {
                var1.method4183();

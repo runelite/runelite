@@ -2106,7 +2106,7 @@ public final class client extends class143 {
                   int var59;
                   int var61;
                   int var70;
-                  boolean var89;
+                  boolean var88;
                   boolean var92;
                   long var104;
                   for(var25 = 0; var25 < 100; ++var25) {
@@ -2216,18 +2216,18 @@ public final class client extends class143 {
                                  break label3956;
                               }
 
-                              class121 var88;
+                              class121 var89;
                               if(185 == field446) {
                                  class114.method2467(false);
                                  field320.method2796();
                                  var27 = field320.method2538();
-                                 var88 = field320;
-                                 var6 = var88.field1981;
+                                 var89 = field320;
+                                 var6 = var89.field1981;
                                  class32.field740 = 0;
-                                 class50.method1065(var88);
-                                 class48.method1037(var88);
-                                 if(var27 != var88.field1981 - var6) {
-                                    throw new RuntimeException(var88.field1981 - var6 + " " + var27);
+                                 class50.method1065(var89);
+                                 class48.method1037(var89);
+                                 if(var27 != var89.field1981 - var6) {
+                                    throw new RuntimeException(var89.field1981 - var6 + " " + var27);
                                  }
 
                                  field446 = -1;
@@ -2395,15 +2395,15 @@ public final class client extends class143 {
 
                               long var9;
                               long var13;
-                              long var98;
+                              long var97;
                               if(field446 == 79) {
                                  var4 = field320.method2544();
                                  var104 = field320.method2734();
-                                 var98 = (long)field320.method2538();
+                                 var97 = (long)field320.method2538();
                                  var9 = (long)field320.method2540();
                                  class151[] var84 = new class151[]{class151.field2253, class151.field2249, class151.field2252, class151.field2250, class151.field2251};
                                  class151 var77 = (class151)class23.method634(var84, field320.method2536());
-                                 var13 = var9 + (var98 << 32);
+                                 var13 = var9 + (var97 << 32);
                                  boolean var100 = false;
 
                                  for(var16 = 0; var16 < 100; ++var16) {
@@ -2757,19 +2757,19 @@ public final class client extends class143 {
 
                               if(40 == field446) {
                                  for(var27 = 0; var27 < class52.field1143; ++var27) {
-                                    class52 var97 = (class52)class52.field1144.method3808((long)var27);
+                                    class52 var98 = (class52)class52.field1144.method3808((long)var27);
                                     class52 var105;
-                                    if(var97 != null) {
-                                       var105 = var97;
+                                    if(var98 != null) {
+                                       var105 = var98;
                                     } else {
                                        byte[] var99 = class52.field1149.method3352(16, var27);
-                                       var97 = new class52();
+                                       var98 = new class52();
                                        if(var99 != null) {
-                                          var97.method1117(new class118(var99));
+                                          var98.method1117(new class118(var99));
                                        }
 
-                                       class52.field1144.method3805(var97, (long)var27);
-                                       var105 = var97;
+                                       class52.field1144.method3805(var98, (long)var27);
+                                       var105 = var98;
                                     }
 
                                     if(var105 != null) {
@@ -2790,10 +2790,10 @@ public final class client extends class143 {
                               if(field446 == 178) {
                                  var4 = field320.method2544();
                                  var104 = (long)field320.method2538();
-                                 var98 = (long)field320.method2540();
+                                 var97 = (long)field320.method2540();
                                  class151[] var78 = new class151[]{class151.field2253, class151.field2249, class151.field2252, class151.field2250, class151.field2251};
                                  class151 var74 = (class151)class23.method634(var78, field320.method2536());
-                                 var11 = var98 + (var104 << 32);
+                                 var11 = var97 + (var104 << 32);
                                  boolean var83 = false;
 
                                  for(var14 = 0; var14 < 100; ++var14) {
@@ -3120,13 +3120,13 @@ public final class client extends class143 {
                                  class114.method2467(true);
                                  field320.method2796();
                                  var27 = field320.method2538();
-                                 var88 = field320;
-                                 var6 = var88.field1981;
+                                 var89 = field320;
+                                 var6 = var89.field1981;
                                  class32.field740 = 0;
-                                 class50.method1065(var88);
-                                 class48.method1037(var88);
-                                 if(var27 != var88.field1981 - var6) {
-                                    throw new RuntimeException(var88.field1981 - var6 + " " + var27);
+                                 class50.method1065(var89);
+                                 class48.method1037(var89);
+                                 if(var27 != var89.field1981 - var6) {
+                                    throw new RuntimeException(var89.field1981 - var6 + " " + var27);
                                  }
 
                                  field446 = -1;
@@ -3135,8 +3135,8 @@ public final class client extends class143 {
                               }
 
                               if(field446 == 50) {
-                                 var89 = field320.method2536() == 1;
-                                 if(var89) {
+                                 var88 = field320.method2536() == 1;
+                                 if(var88) {
                                     class34.field759 = class92.method2177() - field320.method2734();
                                     class143.field2193 = new class220(field320, true);
                                  } else {
@@ -3185,11 +3185,11 @@ public final class client extends class143 {
                               }
 
                               if(field446 == 172) {
-                                 var89 = field320.method2559() == 1;
+                                 var88 = field320.method2559() == 1;
                                  var5 = field320.method2580();
                                  var38 = class48.method1036(var5);
-                                 if(var89 != var38.field2724) {
-                                    var38.field2724 = var89;
+                                 if(var88 != var38.field2724) {
+                                    var38.field2724 = var88;
                                     class42.method942(var38);
                                  }
 
@@ -3264,7 +3264,7 @@ public final class client extends class143 {
 
                               if(208 == field446) {
                                  while(field320.field1981 < field289) {
-                                    var89 = field320.method2536() == 1;
+                                    var88 = field320.method2536() == 1;
                                     var32 = field320.method2544();
                                     var41 = field320.method2544();
                                     var39 = field320.method2538();
@@ -3282,18 +3282,18 @@ public final class client extends class143 {
 
                                     for(var70 = 0; var70 < field541; ++var70) {
                                        class17 var81 = field410[var70];
-                                       if(!var89) {
+                                       if(!var88) {
                                           if(var32.equals(var81.field237)) {
                                              if(var81.field238 != var39) {
                                                 boolean var86 = true;
 
-                                                for(class38 var90 = (class38)field544.method3826(); null != var90; var90 = (class38)field544.method3827()) {
-                                                   if(var90.field859.equals(var32)) {
-                                                      if(0 != var39 && 0 == var90.field860) {
-                                                         var90.method3963();
+                                                for(class38 var91 = (class38)field544.method3826(); null != var91; var91 = (class38)field544.method3827()) {
+                                                   if(var91.field859.equals(var32)) {
+                                                      if(0 != var39 && 0 == var91.field860) {
+                                                         var91.method3963();
                                                          var86 = false;
-                                                      } else if(0 == var39 && var90.field860 != 0) {
-                                                         var90.method3963();
+                                                      } else if(0 == var39 && var91.field860 != 0) {
+                                                         var91.method3963();
                                                          var86 = false;
                                                       }
                                                    }
@@ -3336,11 +3336,11 @@ public final class client extends class143 {
 
                                  field542 = 2;
                                  field458 = field459;
-                                 var89 = false;
+                                 var88 = false;
                                  var5 = field541;
 
                                  while(var5 > 0) {
-                                    var89 = true;
+                                    var88 = true;
                                     --var5;
 
                                     for(var6 = 0; var6 < var5; ++var6) {
@@ -3367,11 +3367,11 @@ public final class client extends class143 {
                                           class17 var68 = field410[var6];
                                           field410[var6] = field410[1 + var6];
                                           field410[1 + var6] = var68;
-                                          var89 = false;
+                                          var88 = false;
                                        }
                                     }
 
-                                    if(var89) {
+                                    if(var88) {
                                        break;
                                     }
                                  }
@@ -4484,7 +4484,7 @@ public final class client extends class143 {
                                                                            if(1 != field414 || field416 <= 2) {
                                                                               var5 = field416 - 1;
                                                                               if(var5 < 0) {
-                                                                                 var89 = false;
+                                                                                 var88 = false;
                                                                               } else {
                                                                                  var6 = field419[var5];
                                                                                  if(var6 >= 2000) {
@@ -4492,13 +4492,13 @@ public final class client extends class143 {
                                                                                  }
 
                                                                                  if(var6 == 1007) {
-                                                                                    var89 = true;
+                                                                                    var88 = true;
                                                                                  } else {
-                                                                                    var89 = false;
+                                                                                    var88 = false;
                                                                                  }
                                                                               }
 
-                                                                              if(!var89) {
+                                                                              if(!var88) {
                                                                                  break label4070;
                                                                               }
                                                                            }
@@ -4895,16 +4895,16 @@ public final class client extends class143 {
                                                                class83.field1434 &= 2047;
                                                             }
 
-                                                            int var91 = var59 - class83.field1434;
-                                                            if(var91 > 1024) {
-                                                               var91 -= 2048;
+                                                            int var90 = var59 - class83.field1434;
+                                                            if(var90 > 1024) {
+                                                               var90 -= 2048;
                                                             }
 
-                                                            if(var91 < -1024) {
-                                                               var91 += 2048;
+                                                            if(var90 < -1024) {
+                                                               var90 += 2048;
                                                             }
 
-                                                            if(var91 < 0 && var70 > 0 || var91 > 0 && var70 < 0) {
+                                                            if(var90 < 0 && var70 > 0 || var90 > 0 && var70 < 0) {
                                                                class83.field1434 = var59;
                                                             }
                                                          }
