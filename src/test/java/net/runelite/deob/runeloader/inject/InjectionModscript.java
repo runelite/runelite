@@ -9,7 +9,7 @@ import java.util.List;
 import org.objectweb.asm.tree.AbstractInsnNode;
 
 public class InjectionModscript {
-   private List getterInjects = new LinkedList();
+   private List<GetterInjectInstruction> getterInjects = new LinkedList<>();
    private List superChangeInjects = new LinkedList();
    private List addInterfaceInjects = new LinkedList();
    private List methodMods = new LinkedList();
