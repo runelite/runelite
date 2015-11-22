@@ -3,12 +3,13 @@ package net.runelite.deob.attributes.code.instructions;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
-public class AALoad extends Instruction
+public class AALoad extends Instruction implements ArrayLoad
 {
 	public AALoad(Instructions instructions, InstructionType type, int pc)
 	{

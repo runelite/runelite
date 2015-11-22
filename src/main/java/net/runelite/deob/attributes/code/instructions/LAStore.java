@@ -3,12 +3,13 @@ package net.runelite.deob.attributes.code.instructions;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.ArrayStore;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
-public class LAStore extends Instruction
+public class LAStore extends Instruction implements ArrayStore
 {
 	public LAStore(Instructions instructions, InstructionType type, int pc)
 	{

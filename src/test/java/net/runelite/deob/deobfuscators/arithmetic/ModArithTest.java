@@ -124,22 +124,10 @@ public class ModArithTest
 
 		ModArith d1 = new ModArith();
 		d1.run(group);
+		d1.runOnce();
 		
-		int last = -1, cur;
-		while ((cur = d1.runOnce()) > 0)
-		{
-			Deobfuscator d2 = new MultiplicationDeobfuscator();
-			d2.run(group);
-			
-			new MultiplyOneDeobfuscator().run(group);
-
-			new MultiplyZeroDeobfuscator().run(group);
-		
-			if (last == cur)
-				break;
-			
-			last = cur;
-		}
+		Deobfuscator d2 = new MultiplicationDeobfuscator();
+		d2.run(group);
 		
 		Encryption e = d1.getEncryption();
 		

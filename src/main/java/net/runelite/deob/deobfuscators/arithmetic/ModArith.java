@@ -1,15 +1,11 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
@@ -19,6 +15,7 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.ArrayStore;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
@@ -52,7 +49,9 @@ public class ModArith implements Deobfuscator
 		if (ctx == null || set.contains(ctx.getInstruction()))
 			return l;
 		
-		if (ctx.getInstruction() instanceof InvokeInstruction)
+		// invoke and array store pops are unrelated to each other
+		if (ctx.getInstruction() instanceof InvokeInstruction ||
+			ctx.getInstruction() instanceof ArrayStore)
 			return l;
 		
 		set.add(ctx.getInstruction());
@@ -218,9 +217,6 @@ public class ModArith implements Deobfuscator
 					boolean other = false; // check if this contains another field
 					for (InstructionContext i : l)
 					{
-						if (i.getInstruction() instanceof InvokeInstruction)
-							continue;
-						
 						if (i.getInstruction() instanceof FieldInstruction)
 						{
 							FieldInstruction fi2 = (FieldInstruction) i.getInstruction();
