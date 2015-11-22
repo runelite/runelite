@@ -124,15 +124,7 @@ public class Execution
 			
 			methods.add(frame.getMethod());
 			
-			if (!frame.isExecuting())
-			{
-				frames.remove(0);
-				processedFrames.add(frame);
-				continue;
-			}
-			
 			++fcount;
-			assert frame.isExecuting();
 			frame.execute();
 			
 			assert frames.get(0) == frame;

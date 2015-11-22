@@ -695,4 +695,9 @@ public class ModArith implements Deobfuscator
 			}
 		}
 	}
+	
+	public Encryption getEncryption()
+	{
+		return encryption;
+	}
 }
