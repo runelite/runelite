@@ -1,4 +1,4 @@
-package net.runelite.deob.inject;
+package net.runelite.deob.runeloader.inject;
 
 public class AddFieldInstruction {
    public static String owner;

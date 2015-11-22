@@ -1,4 +1,4 @@
-package net.runelite.deob.inject;
+package net.runelite.deob.runeloader.inject;
 
 import java.util.Iterator;
 import org.objectweb.asm.Label;

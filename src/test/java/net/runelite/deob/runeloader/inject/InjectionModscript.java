@@ -1,9 +1,7 @@
-package net.runelite.deob.inject;
+package net.runelite.deob.runeloader.inject;
 
 import com.google.common.io.Files;
 import com.google.gson.GsonBuilder;
-import com.runeloader.RuneLoader;
-import com.runeloader.api.inject.InstructionDeserializer;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;

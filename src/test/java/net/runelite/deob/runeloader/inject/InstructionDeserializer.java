@@ -1,4 +1,4 @@
-package net.runelite.deob.inject;
+package net.runelite.deob.runeloader.inject;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

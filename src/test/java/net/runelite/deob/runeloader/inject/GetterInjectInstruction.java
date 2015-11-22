@@ -1,14 +1,4 @@
-package net.runelite.deob.inject;
-
-import java.util.Iterator;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.ClassNode;
-import org.objectweb.asm.tree.FieldInsnNode;
-import org.objectweb.asm.tree.FieldNode;
-import org.objectweb.asm.tree.InsnNode;
-import org.objectweb.asm.tree.LdcInsnNode;
-import org.objectweb.asm.tree.MethodNode;
-import org.objectweb.asm.tree.VarInsnNode;
+package net.runelite.deob.runeloader.inject;
 
 public class GetterInjectInstruction {
    private final String className;
