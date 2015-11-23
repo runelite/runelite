@@ -5,19 +5,24 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Insets;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("n")
+@Implements("Friend")
 public class class17 {
    @ObfuscatedName("t")
    static byte[][] field236;
    @ObfuscatedName("j")
+   @Export("name")
    String field237;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 284396947
    )
+   @Export("world")
    int field238;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -27,6 +32,7 @@ public class class17 {
    @ObfuscatedName("a")
    boolean field240;
    @ObfuscatedName("m")
+   @Export("previousName")
    String field241;
    @ObfuscatedName("u")
    boolean field243;

@@ -3,10 +3,13 @@ package net.runelite.rs.client;
 import java.awt.Component;
 import java.io.DataInputStream;
 import java.net.URL;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("at")
+@Implements("Actor")
 public abstract class class37 extends class84 {
    @ObfuscatedName("au")
    @ObfuscatedGetter(
@@ -75,6 +78,7 @@ public abstract class class37 extends class84 {
    @ObfuscatedName("ah")
    boolean field812;
    @ObfuscatedName("ak")
+   @Export("inSequence")
    boolean field813 = false;
    @ObfuscatedName("ag")
    @ObfuscatedGetter(
@@ -96,11 +100,13 @@ public abstract class class37 extends class84 {
    )
    int field818 = -1;
    @ObfuscatedName("aj")
+   @Export("hitCycle")
    int[] field819 = new int[4];
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = 23796935
    )
+   @Export("loopCycle")
    int field820 = -1000;
    @ObfuscatedName("br")
    @ObfuscatedGetter(
@@ -116,6 +122,7 @@ public abstract class class37 extends class84 {
    @ObfuscatedGetter(
       intValue = -154519275
    )
+   @Export("interacting")
    int field823 = -1;
    @ObfuscatedName("bf")
    boolean field824 = false;
@@ -143,6 +150,7 @@ public abstract class class37 extends class84 {
    @ObfuscatedGetter(
       intValue = 965521915
    )
+   @Export("animation")
    int field829 = -1;
    @ObfuscatedName("bq")
    @ObfuscatedGetter(
@@ -163,11 +171,13 @@ public abstract class class37 extends class84 {
    @ObfuscatedGetter(
       intValue = 2076125665
    )
+   @Export("health")
    int field833;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = -2042807017
    )
+   @Export("y")
    int field834;
    @ObfuscatedName("bt")
    @ObfuscatedGetter(
@@ -225,6 +235,7 @@ public abstract class class37 extends class84 {
    @ObfuscatedGetter(
       intValue = 524459231
    )
+   @Export("x")
    int field846;
    @ObfuscatedName("af")
    int[] field847 = new int[4];
@@ -249,11 +260,13 @@ public abstract class class37 extends class84 {
    )
    int field851 = 0;
    @ObfuscatedName("ar")
+   @Export("overhead")
    String field852 = null;
    @ObfuscatedName("bj")
    @ObfuscatedGetter(
       intValue = 778956329
    )
+   @Export("maxHealth")
    int field853;
    @ObfuscatedName("bl")
    @ObfuscatedGetter(

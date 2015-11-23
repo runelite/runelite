@@ -1,15 +1,19 @@
 package net.runelite.rs.client;
 
 import java.awt.event.ActionEvent;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("as")
+@Implements("Item")
 public final class class28 extends class84 {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -748024123
    )
+   @Export("quantity")
    int field658;
    @ObfuscatedName("a")
    static class72 field659;
@@ -17,6 +21,7 @@ public final class class28 extends class84 {
    @ObfuscatedGetter(
       intValue = -1494914441
    )
+   @Export("id")
    int field660;
 
    @ObfuscatedName("cy")

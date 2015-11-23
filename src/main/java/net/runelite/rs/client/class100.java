@@ -6,10 +6,13 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Random;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cu")
+@Implements("Tile")
 public final class class100 extends class207 {
    @ObfuscatedName("a")
    class96 field1716;
@@ -28,6 +31,7 @@ public final class class100 extends class207 {
    @ObfuscatedName("u")
    class88 field1720;
    @ObfuscatedName("k")
+   @Export("itemLayer")
    class98 field1721;
    @ObfuscatedName("h")
    class86 field1722;
@@ -44,8 +48,10 @@ public final class class100 extends class207 {
    @ObfuscatedGetter(
       intValue = -1533965455
    )
+   @Export("plane")
    int field1726;
    @ObfuscatedName("w")
+   @Export("objects")
    class97[] field1727 = new class97[5];
    @ObfuscatedName("z")
    @ObfuscatedGetter(
@@ -56,6 +62,7 @@ public final class class100 extends class207 {
    @ObfuscatedGetter(
       intValue = -2057134613
    )
+   @Export("y")
    int field1729;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
@@ -89,6 +96,7 @@ public final class class100 extends class207 {
    @ObfuscatedGetter(
       intValue = 262047279
    )
+   @Export("x")
    int field1738;
 
    @ObfuscatedName("a")

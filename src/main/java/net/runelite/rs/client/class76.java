@@ -1,5 +1,6 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -31,6 +32,7 @@ public class class76 {
    @ObfuscatedGetter(
       intValue = -177783653
    )
+   @Export("cameraY")
    static int field1374;
    @ObfuscatedName("dw")
    static byte[][] field1377;

@@ -1,9 +1,12 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("h")
+@Implements("Projectile")
 public final class class6 extends class84 {
    @ObfuscatedName("o")
    @ObfuscatedGetter(
@@ -67,8 +70,10 @@ public final class class6 extends class84 {
    )
    int field107;
    @ObfuscatedName("r")
+   @Export("velocityX")
    double field108;
    @ObfuscatedName("g")
+   @Export("velocityY")
    double field109;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
@@ -76,6 +81,7 @@ public final class class6 extends class84 {
    )
    int field110;
    @ObfuscatedName("y")
+   @Export("velocityZ")
    double field111;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
@@ -90,6 +96,7 @@ public final class class6 extends class84 {
    )
    int field114;
    @ObfuscatedName("d")
+   @Export("animationSequence")
    class42 field115;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
@@ -97,8 +104,10 @@ public final class class6 extends class84 {
    )
    int field116 = 0;
    @ObfuscatedName("n")
+   @Export("scalar")
    double field117;
    @ObfuscatedName("w")
+   @Export("isMoving")
    boolean field120 = false;
 
    class6(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {

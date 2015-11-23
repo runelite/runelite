@@ -1,36 +1,45 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hs")
+@Implements("XGrandExchangeOffer")
 public class class219 {
    @ObfuscatedName("j")
+   @Export("progress")
    byte field3149;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 1518557493
    )
+   @Export("itemId")
    public int field3150;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1405506295
    )
+   @Export("price")
    public int field3151;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 1708138833
    )
+   @Export("totalQuantity")
    public int field3152;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = -2046919749
    )
+   @Export("quantitySold")
    public int field3153;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
       intValue = 1723392219
    )
+   @Export("spent")
    public int field3154;
    @ObfuscatedName("im")
    @ObfuscatedGetter(

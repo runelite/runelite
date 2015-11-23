@@ -1,5 +1,6 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -25,6 +26,7 @@ public class class47 extends class203 {
    @ObfuscatedGetter(
       intValue = -1084232987
    )
+   @Export("baseX")
    static int field1053;
    @ObfuscatedName("z")
    public static class171 field1054;

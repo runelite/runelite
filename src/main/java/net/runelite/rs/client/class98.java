@@ -1,21 +1,27 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cn")
+@Implements("ItemLayer")
 public final class class98 {
    @ObfuscatedName("a")
+   @Export("top")
    class84 field1657;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1612412647
    )
+   @Export("x")
    int field1658;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -551432189
    )
+   @Export("y")
    int field1659;
    @ObfuscatedName("ix")
    @ObfuscatedGetter(
@@ -23,25 +29,31 @@ public final class class98 {
    )
    static int field1660;
    @ObfuscatedName("m")
+   @Export("middle")
    class84 field1661;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 298308091
    )
+   @Export("hash")
    int field1662;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 1607886499
    )
+   @Export("flags")
    int field1663;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -2093829273
    )
+   @Export("height")
    int field1664;
    @ObfuscatedName("u")
+   @Export("bottom")
    class84 field1665;
    @ObfuscatedName("mo")
+   @Export("clanMembers")
    static class24[] field1667;
 
    @ObfuscatedName("bo")

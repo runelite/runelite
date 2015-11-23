@@ -1,14 +1,18 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ak")
+@Implements("Sequence")
 public class class42 extends class203 {
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1032111723
    )
+   @Export("replyMode")
    public int field969 = 2;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
@@ -33,13 +37,16 @@ public class class42 extends class203 {
    )
    public int field977 = 1;
    @ObfuscatedName("s")
+   @Export("interleaveLeave")
    int[] field978;
    @ObfuscatedName("w")
+   @Export("stretches")
    public boolean field979 = false;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = -1404598901
    )
+   @Export("precedenceAnimating")
    public int field980 = -1;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
@@ -55,6 +62,7 @@ public class class42 extends class203 {
    @ObfuscatedGetter(
       intValue = 1200371909
    )
+   @Export("maxLoops")
    public int field983 = 99;
    @ObfuscatedName("rs")
    protected static String field984;

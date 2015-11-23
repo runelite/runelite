@@ -1,11 +1,15 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("f")
+@Implements("Player")
 public final class class2 extends class37 {
    @ObfuscatedName("m")
+   @Export("composition")
    class178 field31;
    @ObfuscatedName("a")
    String[] field32 = new String[3];
@@ -15,6 +19,7 @@ public final class class2 extends class37 {
    )
    int field33 = -1;
    @ObfuscatedName("j")
+   @Export("name")
    String field34;
    @ObfuscatedName("x")
    boolean field35;
@@ -32,6 +37,7 @@ public final class class2 extends class37 {
    @ObfuscatedGetter(
       intValue = 1312493237
    )
+   @Export("totalLevel")
    int field39;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
@@ -54,6 +60,7 @@ public final class class2 extends class37 {
    )
    int field43;
    @ObfuscatedName("p")
+   @Export("model")
    class104 field44;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
@@ -81,6 +88,7 @@ public final class class2 extends class37 {
    @ObfuscatedGetter(
       intValue = -252226933
    )
+   @Export("team")
    int field50;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
@@ -96,6 +104,7 @@ public final class class2 extends class37 {
    @ObfuscatedGetter(
       intValue = -249902191
    )
+   @Export("combatLevel")
    int field53;
    @ObfuscatedName("c")
    boolean field54;

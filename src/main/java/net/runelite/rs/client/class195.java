@@ -1,8 +1,10 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gs")
+@Implements("XHashTable")
 public final class class195 {
    @ObfuscatedName("u")
    int field3077 = 0;

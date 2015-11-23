@@ -2,12 +2,16 @@ package net.runelite.rs.client;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hl")
+@Implements("ClassInfo")
 public class class209 extends class207 {
    @ObfuscatedName("i")
+   @Export("methods")
    Method[] field3107;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
@@ -17,6 +21,7 @@ public class class209 extends class207 {
    @ObfuscatedName("u")
    int[] field3109;
    @ObfuscatedName("h")
+   @Export("fields")
    Field[] field3110;
    @ObfuscatedName("a")
    int[] field3111;
@@ -28,6 +33,7 @@ public class class209 extends class207 {
    )
    int field3113;
    @ObfuscatedName("m")
+   @Export("args")
    byte[][][] field3114;
 
    @ObfuscatedName("x")

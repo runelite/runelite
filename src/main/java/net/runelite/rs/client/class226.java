@@ -4,22 +4,28 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hm")
+@Implements("FileOnDisk")
 public final class class226 {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       longValue = -5491611329971135641L
    )
+   @Export("length")
    long field3197;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       longValue = -1222268832551527705L
    )
+   @Export("position")
    long field3198;
    @ObfuscatedName("j")
+   @Export("file")
    RandomAccessFile field3199;
 
    @ObfuscatedName("j")

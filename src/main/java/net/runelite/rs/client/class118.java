@@ -1,21 +1,26 @@
 package net.runelite.rs.client;
 
 import java.math.BigInteger;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("dc")
+@Implements("Buffer")
 public class class118 extends class207 {
    @ObfuscatedName("f")
    static int[] field1978 = new int[256];
    @ObfuscatedName("i")
    public static short[][] field1979;
    @ObfuscatedName("j")
+   @Export("payload")
    public byte[] field1980;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = 2014740975
    )
+   @Export("offset")
    public int field1981;
    @ObfuscatedName("u")
    static long[] field1982;

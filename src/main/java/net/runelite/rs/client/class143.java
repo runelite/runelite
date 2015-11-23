@@ -12,10 +12,13 @@ import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.net.URL;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("eb")
+@Implements("GameEngine")
 public abstract class class143 extends Applet implements Runnable, FocusListener, WindowListener {
    @ObfuscatedName("cs")
    static class223 field2174;
@@ -42,6 +45,7 @@ public abstract class class143 extends Applet implements Runnable, FocusListener
    @ObfuscatedGetter(
       intValue = -587476029
    )
+   @Export("fPS")
    protected static int field2181 = 0;
    @ObfuscatedName("qr")
    protected static long[] field2182 = new long[32];

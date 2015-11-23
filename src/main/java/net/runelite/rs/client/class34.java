@@ -3,10 +3,13 @@ package net.runelite.rs.client;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Iterator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("az")
+@Implements("NPC")
 public final class class34 extends class37 {
    @ObfuscatedName("py")
    @ObfuscatedGetter(
@@ -16,6 +19,7 @@ public final class class34 extends class37 {
    @ObfuscatedName("ew")
    static class80[] field760;
    @ObfuscatedName("j")
+   @Export("composition")
    class39 field761;
    @ObfuscatedName("s")
    static int[] field764;

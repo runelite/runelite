@@ -14,9 +14,12 @@ import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.net.Socket;
 import java.util.Iterator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
+@Implements("Client")
 public final class client extends class143 {
    @ObfuscatedName("my")
    @ObfuscatedGetter(
@@ -69,6 +72,8 @@ public final class client extends class143 {
    @ObfuscatedGetter(
       intValue = -61212269
    )
+   //@Export("currentPacketOpcode")
+   //@Export("gameCycle")
    static int field286 = 0;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
@@ -107,8 +112,10 @@ public final class client extends class143 {
    @ObfuscatedGetter(
       intValue = 800135253
    )
+   @Export("gameState")
    static int field296 = 0;
    @ObfuscatedName("if")
+   @Export("menuActions")
    static String[] field297;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
@@ -132,6 +139,7 @@ public final class client extends class143 {
    @ObfuscatedName("ah")
    static class20 field303;
    @ObfuscatedName("ic")
+   @Export("componentTable")
    static class195 field304;
    @ObfuscatedName("gy")
    static int[][] field305;
@@ -171,6 +179,7 @@ public final class client extends class143 {
    )
    static int field312;
    @ObfuscatedName("cb")
+   @Export("cachedNPCs")
    static class34[] field313;
    @ObfuscatedName("cp")
    @ObfuscatedGetter(
@@ -251,6 +260,7 @@ public final class client extends class143 {
    @ObfuscatedName("nk")
    static boolean field334;
    @ObfuscatedName("w")
+   @Export("collisionMaps")
    static class107[] field335;
    @ObfuscatedName("df")
    static boolean field336;
@@ -291,6 +301,7 @@ public final class client extends class143 {
    )
    static int field346;
    @ObfuscatedName("ho")
+   @Export("skillExperiences")
    static int[] field347;
    @ObfuscatedName("ea")
    @ObfuscatedGetter(
@@ -488,6 +499,7 @@ public final class client extends class143 {
    )
    static int field396;
    @ObfuscatedName("gp")
+   @Export("cachedPlayers")
    static class2[] field397;
    @ObfuscatedName("ib")
    @ObfuscatedGetter(
@@ -523,16 +535,20 @@ public final class client extends class143 {
    )
    static int field406;
    @ObfuscatedName("hf")
+   @Export("groundItemDeque")
    static class198[][][] field407;
    @ObfuscatedName("hs")
    static class198 field408;
    @ObfuscatedName("hp")
    static class198 field409;
    @ObfuscatedName("or")
+   @Export("friends")
    static class17[] field410;
    @ObfuscatedName("hk")
+   @Export("boostedSkillLevels")
    static int[] field411;
    @ObfuscatedName("hj")
+   @Export("realSkillLevels")
    static int[] field412;
    @ObfuscatedName("hx")
    @ObfuscatedGetter(
@@ -566,8 +582,10 @@ public final class client extends class143 {
    @ObfuscatedGetter(
       intValue = 1388015669
    )
+   @Export("world")
    static int field421 = 1;
    @ObfuscatedName("ig")
+   @Export("menuOptions")
    static String[] field422;
    @ObfuscatedName("ii")
    @ObfuscatedGetter(
@@ -585,6 +603,7 @@ public final class client extends class143 {
    )
    static int field425;
    @ObfuscatedName("ly")
+   @Export("isResized")
    static boolean field426;
    @ObfuscatedName("od")
    static boolean[] field427;
@@ -601,6 +620,7 @@ public final class client extends class143 {
    @ObfuscatedGetter(
       intValue = -779763173
    )
+   @Export("weight")
    static int field431;
    @ObfuscatedName("ir")
    static String field432;
@@ -635,6 +655,7 @@ public final class client extends class143 {
    @ObfuscatedGetter(
       intValue = -1870477629
    )
+   @Export("energy")
    static int field439;
    @ObfuscatedName("gm")
    static boolean field440;
@@ -656,6 +677,7 @@ public final class client extends class143 {
    )
    static int field444;
    @ObfuscatedName("op")
+   @Export("ignores")
    static class7[] field445;
    @ObfuscatedName("cj")
    @ObfuscatedGetter(
@@ -793,8 +815,10 @@ public final class client extends class143 {
    @ObfuscatedName("lf")
    static boolean[] field481;
    @ObfuscatedName("lx")
+   @Export("widgetPositionX")
    static int[] field482;
    @ObfuscatedName("ll")
+   @Export("widgetPositionY")
    static int[] field483;
    @ObfuscatedName("lb")
    static int[] field484;
@@ -851,6 +875,7 @@ public final class client extends class143 {
    @ObfuscatedName("mb")
    static int[] field498;
    @ObfuscatedName("pe")
+   @Export("grandExchangeOffers")
    static class219[] field499;
    @ObfuscatedName("hm")
    static boolean field500;
@@ -983,16 +1008,19 @@ public final class client extends class143 {
    @ObfuscatedGetter(
       intValue = 1797905553
    )
+   @Export("camera2")
    static int field538;
    @ObfuscatedName("oq")
    @ObfuscatedGetter(
       intValue = 294769919
    )
+   @Export("camera3")
    static int field539;
    @ObfuscatedName("oy")
    @ObfuscatedGetter(
       intValue = 163765829
    )
+   @Export("scale")
    static int field540;
    @ObfuscatedName("oj")
    @ObfuscatedGetter(

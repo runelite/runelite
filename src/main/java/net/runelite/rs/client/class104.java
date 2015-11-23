@@ -1,8 +1,10 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("da")
+@Implements("Model")
 public class class104 extends class84 {
    @ObfuscatedName("az")
    static boolean[] field1775 = new boolean[4096];

@@ -1,11 +1,15 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("b")
+@Implements("World")
 public class class25 {
    @ObfuscatedName("u")
+   @Export("worldList")
    static class25[] field615;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
@@ -20,6 +24,7 @@ public class class25 {
    @ObfuscatedGetter(
       intValue = -696630233
    )
+   @Export("id")
    int field621;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
@@ -32,6 +37,7 @@ public class class25 {
    )
    static int field623 = 0;
    @ObfuscatedName("z")
+   @Export("address")
    String field624;
    @ObfuscatedName("jx")
    @ObfuscatedGetter(
@@ -42,11 +48,13 @@ public class class25 {
    @ObfuscatedGetter(
       intValue = -634971913
    )
+   @Export("playerCount")
    int field626;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 60515985
    )
+   @Export("mask")
    int field627;
    @ObfuscatedName("e")
    @ObfuscatedGetter(

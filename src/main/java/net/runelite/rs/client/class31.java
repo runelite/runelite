@@ -1,5 +1,6 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -67,6 +68,7 @@ public class class31 {
    @ObfuscatedName("at")
    static String field712;
    @ObfuscatedName("al")
+   @Export("username")
    static String field713;
    @ObfuscatedName("ap")
    static String field714;

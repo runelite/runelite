@@ -1,10 +1,13 @@
 package net.runelite.rs.client;
 
 import java.awt.Frame;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ac")
+@Implements("NPCComposition")
 public class class39 extends class203 {
    @ObfuscatedName("s")
    @ObfuscatedGetter(
@@ -22,8 +25,10 @@ public class class39 extends class203 {
    @ObfuscatedGetter(
       intValue = 209287787
    )
+   @Export("id")
    public int field869;
    @ObfuscatedName("a")
+   @Export("name")
    public String field870 = "null";
    @ObfuscatedName("h")
    @ObfuscatedGetter(
@@ -43,6 +48,7 @@ public class class39 extends class203 {
    )
    int field874 = -1;
    @ObfuscatedName("i")
+   @Export("models")
    int[] field875;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
@@ -70,13 +76,16 @@ public class class39 extends class203 {
    @ObfuscatedName("l")
    static class192 field884 = new class192(50);
    @ObfuscatedName("q")
+   @Export("actions")
    public String[] field885 = new String[5];
    @ObfuscatedName("x")
+   @Export("isClickable")
    public boolean field886 = true;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 638513191
    )
+   @Export("combatLevel")
    public int field887 = -1;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
@@ -84,6 +93,7 @@ public class class39 extends class203 {
    )
    int field888 = 128;
    @ObfuscatedName("b")
+   @Export("isVisible")
    public boolean field890 = false;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
@@ -120,6 +130,7 @@ public class class39 extends class203 {
    @ObfuscatedName("av")
    public boolean field898 = false;
    @ObfuscatedName("az")
+   @Export("isMinimapVisible")
    public boolean field899 = true;
    @ObfuscatedName("v")
    short[] field900;

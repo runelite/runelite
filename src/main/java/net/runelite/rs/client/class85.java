@@ -1,8 +1,11 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ch")
+@Implements("Region")
 public class class85 {
    @ObfuscatedName("p")
    static int field1443 = 0;
@@ -21,6 +24,7 @@ public class class85 {
    @ObfuscatedName("i")
    int field1450 = 0;
    @ObfuscatedName("t")
+   @Export("objects")
    class97[] field1451 = new class97[5000];
    @ObfuscatedName("y")
    static int field1452;
@@ -91,6 +95,7 @@ public class class85 {
    @ObfuscatedName("u")
    int[][][] field1491;
    @ObfuscatedName("a")
+   @Export("tiles")
    class100[][][] field1492;
    @ObfuscatedName("aj")
    static final int[] field1493;

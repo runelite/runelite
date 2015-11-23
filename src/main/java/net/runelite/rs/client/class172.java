@@ -1,13 +1,18 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("fv")
+@Implements("Widget")
 public class class172 extends class207 {
    @ObfuscatedName("ax")
+   @Export("isHidden")
    public boolean field2724 = false;
    @ObfuscatedName("m")
+   @Export("validInterfaces")
    static boolean[] field2725;
    @ObfuscatedName("f")
    static class166 field2726;
@@ -34,6 +39,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -1157286855
    )
+   @Export("index")
    public int field2735 = -1;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
@@ -49,6 +55,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -1953257935
    )
+   @Export("contentType")
    public int field2738 = 0;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
@@ -69,6 +76,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -1142692655
    )
+   @Export("parentId")
    public int field2742 = -1;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -90,16 +98,19 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = 1426033919
    )
+   @Export("relativeY")
    public int field2748 = 0;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = 22288699
    )
+   @Export("width")
    public int field2749 = 0;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = 1562285645
    )
+   @Export("height")
    public int field2750 = 0;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
@@ -119,8 +130,10 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -14221453
    )
+   @Export("itemId")
    public int field2755 = 0;
    @ObfuscatedName("bw")
+   @Export("text")
    public String field2756 = "";
    @ObfuscatedName("db")
    public int[] field2757;
@@ -132,6 +145,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -878760671
    )
+   @Export("rotationZ")
    public int field2760 = 0;
    @ObfuscatedName("bo")
    @ObfuscatedGetter(
@@ -142,6 +156,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -790030913
    )
+   @Export("scrollY")
    public int field2762 = 0;
    @ObfuscatedName("ah")
    public boolean field2763 = false;
@@ -178,6 +193,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = 385730901
    )
+   @Export("borderThickness")
    public int field2771 = 0;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
@@ -192,16 +208,19 @@ public class class172 extends class207 {
    @ObfuscatedName("bj")
    public boolean field2774;
    @ObfuscatedName("ch")
+   @Export("parent")
    public class172 field2775 = null;
    @ObfuscatedName("bf")
    @ObfuscatedGetter(
       intValue = -2085325033
    )
+   @Export("modelId")
    public int field2776 = -1;
    @ObfuscatedName("bn")
    @ObfuscatedGetter(
       intValue = 1076693301
    )
+   @Export("modelType")
    public int field2777 = 1;
    @ObfuscatedName("bc")
    @ObfuscatedGetter(
@@ -232,18 +251,22 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = 143381333
    )
+   @Export("rotationX")
    public int field2783 = 0;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       intValue = 1209300247
    )
+   @Export("opacity")
    public int field2784 = 0;
    @ObfuscatedName("bl")
    @ObfuscatedGetter(
       intValue = 544106025
    )
+   @Export("rotationY")
    public int field2785 = 0;
    @ObfuscatedName("cm")
+   @Export("actions")
    public String[] field2786;
    @ObfuscatedName("bg")
    @ObfuscatedGetter(
@@ -315,8 +338,10 @@ public class class172 extends class207 {
    )
    public int field2804 = 0;
    @ObfuscatedName("cz")
+   @Export("name")
    public String field2805 = "";
    @ObfuscatedName("ea")
+   @Export("children")
    public class172[] field2806;
    @ObfuscatedName("dn")
    public Object[] field2807;
@@ -368,6 +393,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = -149325679
    )
+   @Export("textColor")
    public int field2824 = 0;
    @ObfuscatedName("ci")
    public Object[] field2825;
@@ -420,6 +446,7 @@ public class class172 extends class207 {
    @ObfuscatedName("de")
    public Object[] field2843;
    @ObfuscatedName("dp")
+   @Export("dynamicValues")
    public int[][] field2844;
    @ObfuscatedName("dm")
    public int[] field2845;
@@ -427,6 +454,8 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = 369792335
    )
+   //@Export("relativeX")
+   @Export("scrollX")
    public int field2846 = 0;
    @ObfuscatedName("dy")
    @ObfuscatedGetter(
@@ -438,13 +467,17 @@ public class class172 extends class207 {
    @ObfuscatedName("dg")
    public String field2849 = "Ok";
    @ObfuscatedName("dx")
+   @Export("itemIds")
    public int[] field2850;
    @ObfuscatedName("dj")
+   @Export("itemQuantities")
    public int[] field2851;
    @ObfuscatedName("em")
    @ObfuscatedGetter(
       intValue = 330795751
    )
+   @Export("type")
+   //@Export("itemQuantity")
    public int field2852 = -1;
    @ObfuscatedName("ec")
    @ObfuscatedGetter(
@@ -464,6 +497,7 @@ public class class172 extends class207 {
    )
    public int field2856 = 0;
    @ObfuscatedName("j")
+   @Export("widgets")
    public static class172[][] field2857;
    @ObfuscatedName("cs")
    public Object[] field2858;
@@ -488,6 +522,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = 378529589
    )
+   @Export("boundsIndex")
    public int field2863 = -1;
    @ObfuscatedName("ca")
    @ObfuscatedGetter(
@@ -500,6 +535,7 @@ public class class172 extends class207 {
    @ObfuscatedGetter(
       intValue = 1740819181
    )
+   @Export("textureId")
    public int field2866 = -1;
 
    @ObfuscatedName("a")

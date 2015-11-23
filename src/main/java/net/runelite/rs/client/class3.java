@@ -1,9 +1,12 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("l")
+@Implements("WidgetNode")
 public class class3 extends class207 {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
@@ -16,6 +19,7 @@ public class class3 extends class207 {
    @ObfuscatedGetter(
       intValue = 16913577
    )
+   @Export("id")
    int field63;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(

@@ -1,11 +1,15 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("c")
+@Implements("XClanMember")
 public class class24 extends class207 {
    @ObfuscatedName("j")
+   @Export("username")
    String field604;
    @ObfuscatedName("m")
    String field605;
@@ -13,8 +17,10 @@ public class class24 extends class207 {
    @ObfuscatedGetter(
       intValue = -1116075037
    )
+   @Export("world")
    int field606;
    @ObfuscatedName("l")
+   @Export("rank")
    byte field607;
    @ObfuscatedName("fd")
    @ObfuscatedGetter(
@@ -22,6 +28,7 @@ public class class24 extends class207 {
    )
    static int field609;
    @ObfuscatedName("dk")
+   @Export("region")
    static class85 field610;
 
    @ObfuscatedName("l")

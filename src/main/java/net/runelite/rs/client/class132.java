@@ -1,6 +1,7 @@
 package net.runelite.rs.client;
 
 import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -10,6 +11,7 @@ public abstract class class132 {
    @ObfuscatedGetter(
       intValue = 2135240255
    )
+   @Export("cameraZ")
    static int field2053;
 
    @ObfuscatedName("j")

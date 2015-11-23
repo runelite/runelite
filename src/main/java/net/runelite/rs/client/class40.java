@@ -1,10 +1,13 @@
 package net.runelite.rs.client;
 
 import java.awt.Graphics;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ar")
+@Implements("ObjectComposition")
 public class class40 extends class203 {
    @ObfuscatedName("ac")
    public boolean field905 = false;
@@ -31,6 +34,7 @@ public class class40 extends class203 {
    @ObfuscatedName("s")
    int[] field913;
    @ObfuscatedName("w")
+   @Export("name")
    public String field914 = "null";
    @ObfuscatedName("e")
    short[] field915;
@@ -89,6 +93,7 @@ public class class40 extends class203 {
    )
    int field930 = 0;
    @ObfuscatedName("as")
+   @Export("actions")
    public String[] field931 = new String[5];
    @ObfuscatedName("am")
    boolean field933 = false;

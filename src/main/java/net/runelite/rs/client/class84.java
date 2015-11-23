@@ -1,9 +1,12 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cm")
+@Implements("Renderable")
 public abstract class class84 extends class203 {
    @ObfuscatedName("qm")
    public static class77 field1440;
@@ -11,6 +14,7 @@ public abstract class class84 extends class203 {
    @ObfuscatedGetter(
       intValue = 1450079013
    )
+   @Export("modelHeight")
    public int field1441 = 1000;
 
    @ObfuscatedName("m")

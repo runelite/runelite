@@ -5,9 +5,11 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cq")
+@Implements("SpritePixels")
 public final class class78 extends class79 {
    @ObfuscatedName("a")
    public int field1388;

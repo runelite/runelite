@@ -1,5 +1,6 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -23,6 +24,7 @@ public final class class5 {
    @ObfuscatedName("q")
    static final int[] field78 = new int[]{1, 0, -1, 0};
    @ObfuscatedName("j")
+   @Export("tileHeights")
    static int[][][] field79 = new int[4][105][105];
    @ObfuscatedName("y")
    static final int[] field82 = new int[]{1, 2, 4, 8};
@@ -33,6 +35,7 @@ public final class class5 {
    @ObfuscatedName("l")
    static byte[][][] field85;
    @ObfuscatedName("m")
+   @Export("tileSettings")
    static byte[][][] field86 = new byte[4][104][104];
    @ObfuscatedName("x")
    static final int[] field87 = new int[]{0, -1, 0, 1};

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.net.MalformedURLException;
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -45,6 +46,7 @@ public class class0 extends class207 {
    @ObfuscatedName("j")
    Object[] field10;
    @ObfuscatedName("hl")
+   @Export("localPlayer")
    static class2 field12;
    @ObfuscatedName("x")
    public static String field14;

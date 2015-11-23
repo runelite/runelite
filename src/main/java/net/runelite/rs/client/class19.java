@@ -2,10 +2,13 @@ package net.runelite.rs.client;
 
 import java.io.EOFException;
 import java.util.Date;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("v")
+@Implements("PlayerComposition")
 public class class19 {
    @ObfuscatedName("cm")
    static class145 field259;
@@ -31,6 +34,7 @@ public class class19 {
    )
    static int field268;
    @ObfuscatedName("h")
+   @Export("isFemale")
    boolean field269 = false;
    @ObfuscatedName("dc")
    static byte[][] field270;

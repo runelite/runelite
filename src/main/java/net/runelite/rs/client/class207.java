@@ -1,14 +1,20 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gt")
+@Implements("Node")
 public class class207 {
    @ObfuscatedName("es")
+   @Export("next")
    public class207 field3102;
    @ObfuscatedName("ee")
+   @Export("previous")
    class207 field3103;
    @ObfuscatedName("eg")
+   @Export("hash")
    public long field3104;
 
    @ObfuscatedName("ip")

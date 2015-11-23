@@ -3,10 +3,13 @@ package net.runelite.rs.client;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("dh")
+@Implements("CollisionData")
 public class class107 {
    @ObfuscatedName("av")
    @ObfuscatedGetter(
@@ -14,6 +17,7 @@ public class class107 {
    )
    int field1869;
    @ObfuscatedName("at")
+   @Export("flags")
    public int[][] field1879;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(

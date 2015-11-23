@@ -2,6 +2,7 @@ package net.runelite.rs.client;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -17,6 +18,7 @@ public class class11 {
    @ObfuscatedGetter(
       intValue = 1926067081
    )
+   @Export("cameraPitch")
    static int field169;
    @ObfuscatedName("ch")
    static class142 field170;

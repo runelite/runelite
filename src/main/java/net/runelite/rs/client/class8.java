@@ -3,6 +3,7 @@ package net.runelite.rs.client;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -17,6 +18,7 @@ public class class8 {
    @ObfuscatedGetter(
       intValue = -1222407947
    )
+   @Export("plane")
    static int field134;
    @ObfuscatedName("l")
    boolean field135;

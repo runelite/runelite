@@ -2,10 +2,13 @@ package net.runelite.rs.client;
 
 import java.io.File;
 import java.io.RandomAccessFile;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("an")
+@Implements("ItemComposition")
 public class class51 extends class203 {
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -44,6 +47,7 @@ public class class51 extends class203 {
    )
    int field1098;
    @ObfuscatedName("z")
+   @Export("name")
    public String field1099 = "null";
    @ObfuscatedName("p")
    short[] field1100;
@@ -91,6 +95,7 @@ public class class51 extends class203 {
    )
    public int field1111 = 1;
    @ObfuscatedName("aa")
+   @Export("isMembers")
    public boolean field1112 = false;
    @ObfuscatedName("s")
    static class223 field1113;

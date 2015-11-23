@@ -1,12 +1,17 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("i")
+@Implements("Ignore")
 public class class7 {
    @ObfuscatedName("m")
+   @Export("previousName")
    String field126;
    @ObfuscatedName("j")
+   @Export("name")
    String field130;
    @ObfuscatedName("bl")
    static class167 field131;

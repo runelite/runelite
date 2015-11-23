@@ -1,9 +1,12 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("av")
+@Implements("MessageNode")
 public class class35 extends class203 {
    @ObfuscatedName("m")
    @ObfuscatedGetter(
@@ -14,6 +17,7 @@ public class class35 extends class203 {
    @ObfuscatedGetter(
       intValue = -1804049261
    )
+   @Export("type")
    int field768;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
@@ -23,6 +27,7 @@ public class class35 extends class203 {
    @ObfuscatedName("u")
    String field770;
    @ObfuscatedName("a")
+   @Export("value")
    String field771;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
@@ -30,6 +35,7 @@ public class class35 extends class203 {
    )
    static int field773;
    @ObfuscatedName("l")
+   @Export("sender")
    String field774;
    @ObfuscatedName("nj")
    @ObfuscatedGetter(

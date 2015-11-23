@@ -1,12 +1,17 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gu")
+@Implements("Deque")
 public class class198 {
    @ObfuscatedName("j")
+   @Export("head")
    public class207 field3086 = new class207();
    @ObfuscatedName("m")
+   @Export("current")
    class207 field3087;
 
    @ObfuscatedName("j")

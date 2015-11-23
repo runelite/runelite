@@ -1,17 +1,23 @@
 package net.runelite.rs.client;
 
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("r")
+@Implements("XItemContainer")
 public class class15 extends class207 {
    @ObfuscatedName("nl")
    static class56 field212;
    @ObfuscatedName("f")
+   @Export("stackSizes")
    int[] field214 = new int[]{0};
    @ObfuscatedName("j")
+   @Export("itemContainers")
    static class195 field216 = new class195(32);
    @ObfuscatedName("m")
+   @Export("itemIds")
    int[] field217 = new int[]{-1};
    @ObfuscatedName("by")
    @ObfuscatedGetter(
