@@ -5,11 +5,13 @@ import java.io.IOException;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
+import net.runelite.deob.Interfaces;
 import net.runelite.deob.attributes.Annotations;
 import net.runelite.deob.attributes.AttributeType;
 import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.attributes.annotation.Element;
 import net.runelite.deob.pool.UTF8;
+import net.runelite.deob.runeloader.inject.AddInterfaceInstruction;
 import net.runelite.deob.runeloader.inject.GetterInjectInstruction;
 import net.runelite.deob.runeloader.inject.InjectionModscript;
 import net.runelite.deob.signature.Type;
@@ -27,6 +29,7 @@ public class MappingImporter
 	
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
+	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
 	
 	private ClassGroup group;
 	
@@ -115,6 +118,16 @@ public class MappingImporter
 			}
 			
 			f.getAttributes().addAnnotation(EXPORT, "value", new UTF8(attrName));
+		}
+		
+		for (AddInterfaceInstruction aii : mod.getAddInterfaceInjects())
+		{
+			ClassFile cf = this.findClassWithObfuscatedName(aii.getClientClass());
+			Assert.assertNotNull(cf);
+			
+			String iface = aii.getInterfaceClass();
+			
+			cf.getAttributes().addAnnotation(IMPLEMENTS, "value", new UTF8(iface));
 		}
 	}
 }

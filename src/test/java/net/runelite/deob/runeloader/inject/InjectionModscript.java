@@ -11,7 +11,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 public class InjectionModscript {
    private List<GetterInjectInstruction> getterInjects = new LinkedList<>();
    private List superChangeInjects = new LinkedList();
-   private List addInterfaceInjects = new LinkedList();
+   private List<AddInterfaceInstruction> addInterfaceInjects = new LinkedList();
    private List methodMods = new LinkedList();
    private List addMethods = new LinkedList();
    private List newMethodMods = new LinkedList();
@@ -40,7 +40,7 @@ public class InjectionModscript {
       return this.superChangeInjects;
    }
 
-   public List getAddInterfaceInjects() {
+   public List<AddInterfaceInstruction> getAddInterfaceInjects() {
       return this.addInterfaceInjects;
    }
 
