@@ -127,6 +127,8 @@ public class MappingImporter
 			
 			String iface = aii.getInterfaceClass();
 			
+			iface = iface.replace("com/runeloader/api/bridge/os/accessor/", "");
+			
 			cf.getAttributes().addAnnotation(IMPLEMENTS, "value", new UTF8(iface));
 		}
 	}
