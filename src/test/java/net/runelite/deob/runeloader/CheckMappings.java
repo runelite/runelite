@@ -21,8 +21,6 @@ import org.slf4j.LoggerFactory;
 
 public class CheckMappings
 {
-	private static final Logger logger = LoggerFactory.getLogger(CheckMappings.class);
-
 	private static final File CLIENT = new File("/Users/adam/w/rs/07/rs-client-1.0-SNAPSHOT.jar");
 	private static final File RL_INJECTION = new File("/Users/adam/w/rs/07/rl/injection.json");
 	
