@@ -2,8 +2,10 @@ package net.runelite.deob.deobfuscators.rename.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Graph
 {
@@ -11,15 +13,36 @@ public class Graph
 	
 	private Map<Object, Vertex> o2v = new HashMap<>();
 	
+//	public Vertex getVertexFor(Object o)
+//	{
+//		Vertex v = o2v.get(o);
+//		if (v != null)
+//			return v;
+//		
+//		v = new Vertex(this, o);
+//		o2v.put(o, v);
+//		verticies.add(v);
+//		return v;
+//	}
+	
 	public Vertex getVertexFor(Object o)
 	{
 		Vertex v = o2v.get(o);
-		if (v != null)
-			return v;
+		assert v != null;
+		return v;
+	}
+	
+	public Vertex addVertex(Object o, VertexType type)
+	{
+		assert o2v.get(o) == null;
 		
-		v = new Vertex(this, o);
-		o2v.put(o, v);
+		Vertex v = new Vertex(this, o);
+		//v.setType(type);
+		assert type == v.getType();
+		
 		verticies.add(v);
+		o2v.put(o, v);
+		
 		return v;
 	}
 	
@@ -68,5 +91,25 @@ public class Graph
 			if (v.getOther() != null && (type == null || v.getType() == type))
 				++solved;
 		return solved;
+	}
+	
+	private void recurse(Vertex v, Set<Vertex> verticies)
+	{
+		if (verticies.contains(v))
+			return;
+		
+		verticies.add(v);
+		
+		for (Edge e : v.getEdges())
+			recurse(e.getTo(), verticies);
+	}
+	
+	public Set<Vertex> reachableVerticiesFromSolvedVerticies()
+	{
+		Set<Vertex> verticies = new HashSet<>();
+		for (Vertex v : this.verticies)
+			if (v.getOther() != null)
+				recurse(v, verticies);
+		return verticies;
 	}
 }

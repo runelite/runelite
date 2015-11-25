@@ -8,6 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.Method;
 
 public abstract class Instruction implements Cloneable
 {
@@ -25,6 +26,13 @@ public abstract class Instruction implements Cloneable
 		this.instructions = instructions;
 		this.type = type;
 		this.pc = pc;
+	}
+	
+	@Override
+	public String toString()
+	{
+		Method m = this.getInstructions().getCode().getAttributes().getMethod();
+		return super.toString() + " in " + m;
 	}
 	
 	@Override

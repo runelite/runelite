@@ -53,6 +53,12 @@ public class Method
 		attributes = new Attributes(this);
 	}
 	
+	@Override
+	public String toString()
+	{
+		return this.getMethods().getClassFile().getName() + "." + this.name + this.arguments;
+	}
+	
 	public void write(DataOutputStream out) throws IOException
 	{
 		assert methods.getMethods().contains(this);

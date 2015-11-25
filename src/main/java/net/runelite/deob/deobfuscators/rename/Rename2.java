@@ -8,16 +8,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.Deob;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.deobfuscators.Renamer;
+import net.runelite.deob.deobfuscators.rename.graph.Edge;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import net.runelite.deob.deobfuscators.rename.graph.Vertex;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
@@ -43,10 +46,11 @@ public class Rename2
 		
 		if (o1 instanceof Method)
 		{
+			Method m0 = (Method) o0;
 			Method m1 = (Method) o1;
 			Method m2 = (Method) o2;
 			
-			System.out.println("COLLISION " + mname(m1) + " -> " + mname(m2));
+			System.out.println("COLLISION on " + mname(m0) + ": " + mname(m1) + " -> " + mname(m2));
 		}
 		else if (o1 instanceof Field)
 		{
@@ -82,7 +86,7 @@ public class Rename2
 		return set;
 	}
 	
-	void mapClassMethods(Map<Signature, Method> one, Map<Signature, Method> two)
+	private void mapClassMethods(Map<Signature, Method> one, Map<Signature, Method> two)
 	{
 		if (!one.keySet().equals(two.keySet()))
 			return;
@@ -99,6 +103,27 @@ public class Rename2
 			v2.is(v1);
 			
 			System.out.println(mname(m1) + " is " + mname(m2));
+		}
+	}
+	
+	private void mapDeobfuscatedMethods(ClassFile cf1, ClassFile cf2)
+	{
+		List<Method> m1 = cf1.getMethods().getMethods().stream().filter(m -> !Deob.isObfuscated(m.getName())).collect(Collectors.toList()),
+			m2 = cf2.getMethods().getMethods().stream().filter(m -> !Deob.isObfuscated(m.getName())).collect(Collectors.toList());
+		
+		for (Method m : m1)
+		{
+			Optional<Method> opt = m2.stream().filter(m2m -> m.getName().equals(m2m.getName()) && m.getDescriptor().equals(m2m.getDescriptor())).findAny();
+			if (!opt.isPresent())
+				continue;
+			
+			Vertex v1 = g1.getVertexFor(m);
+			Vertex v2 = g2.getVertexFor(opt.get());
+			
+			v1.is(v2);
+			v2.is(v1);
+			
+			System.out.println(mname(m) + " is " + mname(opt.get()));
 		}
 	}
 	
@@ -131,22 +156,58 @@ public class Rename2
 		{
 			Vertex other = s.getOther();
 			
-			s.getEdges().stream()
-				.filter(e -> e.getTo().getOther() == null) // only get vertexes that aren't solved yet
-				.forEach(e ->
-					e.getTo().merge(
-						other.getEdges().stream()
-							.filter(e2 -> e2.getTo().getOther() == null)
-							.filter(e2 -> e.getTo().couldBeEqual(e2.getTo()))
-							.filter(e2 -> e.couldBeEqual(e2))
-							.map(e2 -> e2.getTo())
-							.collect(Collectors.toList())
-					)
-				);
+			assert s.getGraph() != other.getGraph();
+			
+			for (Edge e : s.getEdges())
+			{
+				assert e.getFrom() == s;
+				
+				if (e.getTo().getOther() != null)
+					continue; // skip solved edges
+
+				Vertex v = e.getTo(); // end of edge in g1
+				
+				Method m = (Method) v.getObject();
+				if (m.getName().equals("vmethod3054"))
+				{
+					int i = 5;
+				}
+				
+				List<Vertex> l = new ArrayList<>();
+				for (Edge e2 : other.getEdges())
+				{
+					if (e2.getTo().getOther() != null)
+						continue; // skip solved edges
+					
+				if (e.getTo().toString().equals("Vertex{object=client.vmethod3054()V}")
+							&& e2.getTo().toString().equals("Vertex{object=client.vmethod2973()V}"))
+						{
+							int i= 5;
+						}
+					
+					if (!e.getTo().couldBeEqual(e2.getTo()))
+					{
+						System.out.println(e.getTo() + " != " + e2.getTo());
+						continue;
+					}
+					
+					if (!e.couldBeEqual(e2))
+					{
+						System.out.println(e + " != " + e2);
+						continue;
+					}
+					
+					Vertex v2 = e2.getTo();
+					
+					l.add(v2);
+				}
+				
+				v.merge(l);
+			}
 		}
 	}
 	
-	public void run(ClassGroup one, ClassGroup two)
+	public NameMappings run(ClassGroup one, ClassGroup two)
 	{
 		Execution eone = new Execution(one);
 		eone.setBuildGraph(true);
@@ -166,34 +227,51 @@ public class Rename2
 		
 		for (int i = 0; i < Math.min(one.getClasses().size(), two.getClasses().size()); ++i)
 		{
+			ClassFile c1 = one.getClasses().get(i);
+			ClassFile c2 = two.getClasses().get(i);
+			
 			Map m1 = this.find(one.getClasses().get(i));
 			Map m2 = this.find(two.getClasses().get(i));
 			
-			mapClassMethods(m1, m2);
+		//	mapClassMethods(m1, m2);
+			
+			mapDeobfuscatedMethods(c1, c2);
 		}
 		
-		List<Field> fl1 = getClientFields(one, eone);
-		List<Field> fl2 = getClientFields(two, etwo);
+		//List<Field> fl1 = getClientFields(one, eone);
+		//List<Field> fl2 = getClientFields(two, etwo);
 		
-		for (int i = 0; i < Math.min(fl1.size(), fl2.size()); ++i)
-		{
-			Field f1 = fl1.get(i), f2 = fl2.get(i);
-			
-			Vertex v1 = g1.getVertexFor(f1);
-			Vertex v2 = g2.getVertexFor(f2);
-			
-			v1.is(v2);
-			v2.is(v1);
-			
-			System.out.println(fname(f1) + " is " + fname(f2));
-		}
+//		for (int i = 0; i < Math.min(fl1.size(), fl2.size()); ++i)
+//		{
+//			Field f1 = fl1.get(i), f2 = fl2.get(i);
+//			
+//			Vertex v1 = g1.getVertexFor(f1);
+//			Vertex v2 = g2.getVertexFor(f2);
+//			
+//			v1.is(v2);
+//			v2.is(v1);
+//			
+//			System.out.println(fname(f1) + " is " + fname(f2));
+//		}
+		
+		System.out.println("g1 verticies " + g1.getVerticies().size() + " reachable " + g1.reachableVerticiesFromSolvedVerticies().size());
+		Set<Vertex> reachable = g1.reachableVerticiesFromSolvedVerticies();
+		for (Vertex v : g1.getVerticies())
+			if (!reachable.contains(v))
+			{
+				System.out.println("unreachable " + v);
+			}
 		
 		for (;;)
 		{
 			int before = g1.solved(null);
 			System.out.println("Before " + before);
+			
 			solve();
+			
 			g1.getVerticies().forEach(v -> v.finish());
+			//g2
+			
 			int after = g1.solved(null);
 			System.out.println("After " + after);
 			
@@ -214,16 +292,20 @@ public class Rename2
 		
 		show(mappings);
 		
-		rename(mappings, two);
+		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", total " + g1.getVerticies().size());
+		
+		//rename(mappings, two);
 		
 		try
 		{
-			JarUtil.saveJar(two, new File("d:/rs/07/adamout.jar"));
+			JarUtil.saveJar(two, new File("/Users/adam/w/rs/07/adamout.jar"));
 		}
 		catch (IOException ex)
 		{
 			Logger.getLogger(Rename2.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		
+		return mappings;
 	}
 	
 	private void show(NameMappings mappings)
@@ -244,6 +326,8 @@ public class Rename2
 				System.out.println("FINAL " + n + " -> " + f.getNameAndType().getName());
 			}
 		}
+		
+		System.out.println("Mappins size " + mappings.getMap().size());
 	}
 	
 	private NameMappings buildCollisionMap(ClassGroup one, ClassGroup two)
@@ -255,6 +339,9 @@ public class Rename2
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
+				if (m.isStatic() && !m.getName().equals("<clinit>"))
+					continue;
+				
 				Vertex v = g2.getVertexFor(m);
 				Vertex other = v.getOther();
 				
@@ -266,25 +353,30 @@ public class Rename2
 				
 				Method m2 = (Method) other.getObject();
 				
+				if (m.getName().equals(m2.getName()))
+					continue; // already correct
+				
 				Method existingMethod = cf.findMethod(m2.getName());
 				if (existingMethod != null)
+				{
 					mappings.map(existingMethod.getPoolMethod(), "collidedMethod" + count++);
+				}
 			}
 			
-			for (Field f : cf.getFields().getFields())
-			{
-				Vertex v = g2.getVertexFor(f);
-				Vertex other = v.getOther();
-				
-				if (other == null)
-					continue;
-				
-				Field f2 = (Field) other.getObject();
-				
-				Field existingField = cf.findField(f2.getName());
-				if (existingField != null)
-					mappings.map(existingField.getPoolField(), "collidedField" + count++);
-			}
+//			for (Field f : cf.getFields().getFields())
+//			{
+//				Vertex v = g2.getVertexFor(f);
+//				Vertex other = v.getOther();
+//				
+//				if (other == null)
+//					continue;
+//				
+//				Field f2 = (Field) other.getObject();
+//				
+//				Field existingField = cf.findField(f2.getName());
+//				if (existingField != null)
+//					mappings.map(existingField.getPoolField(), "collidedField" + count++);
+//			}
 		}
 		
 		return mappings;
@@ -298,6 +390,9 @@ public class Rename2
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
+				if (m.isStatic() && !m.getName().equals("<clinit>"))
+					continue;
+				
 				Vertex v = g2.getVertexFor(m);
 				Vertex other = v.getOther();
 				
@@ -309,27 +404,30 @@ public class Rename2
 				
 				Method m2 = (Method) other.getObject();
 				
-				Method existingMethod = cf.findMethod(m2.getName());
-				assert existingMethod == null;
+				if (!m.getName().equals(m2.getName()))
+				{
+					Method existingMethod = cf.findMethod(m2.getName());
+					assert existingMethod == null;
+				}
 				
 				mappings.map(m.getPoolMethod(), m2.getName());
 			}
 			
-			for (Field f : cf.getFields().getFields())
-			{
-				Vertex v = g2.getVertexFor(f);
-				Vertex other = v.getOther();
-				
-				if (other == null)
-					continue;
-				
-				Field f2 = (Field) other.getObject();
-				
-				Field existingField = cf.findField(f2.getName());
-				assert existingField == null;
-				
-				mappings.map(f.getPoolField(), f2.getName());
-			}
+//			for (Field f : cf.getFields().getFields())
+//			{
+//				Vertex v = g2.getVertexFor(f);
+//				Vertex other = v.getOther();
+//				
+//				if (other == null)
+//					continue;
+//				
+//				Field f2 = (Field) other.getObject();
+//				
+//				Field existingField = cf.findField(f2.getName());
+//				assert existingField == null;
+//				
+//				mappings.map(f.getPoolField(), f2.getName());
+//			}
 		}
 		
 		return mappings;

@@ -14,12 +14,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
+import net.runelite.deob.deobfuscators.rename.graph.VertexType;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Execution
@@ -117,6 +119,8 @@ public class Execution
 	
 	public void run()
 	{
+		initializeGraph();
+		
 		int fcount = 0;
 		while (!frames.isEmpty())
 		{
@@ -161,6 +165,30 @@ public class Execution
 		this.buildGraph = buildGraph;
 	}
 	
+	private void initializeGraph()
+	{
+		if (!isBuildGraph())
+			return;
+		
+		for (ClassFile cf : this.group.getClasses())
+		{
+			//graph.addVertex(cf, VertexType.CLASS);
+			
+			for (Method m : cf.getMethods().getMethods())
+			{
+				if (m.isStatic() && !m.getName().equals("<clinit>"))
+					continue;
+				
+				graph.addVertex(m, VertexType.METHOD);
+			}
+			
+			for (Field f : cf.getFields().getFields())
+			{
+			//	graph.addVertex(f, VertexType.FIELD);
+			}
+		}
+	}
+	
 	protected void buildGraph(Frame frame, Instruction i)
 	{
 		if (!isBuildGraph())
@@ -190,7 +218,7 @@ public class Execution
 				return;
 			
 			EdgeType type = fi instanceof GetFieldInstruction ? EdgeType.GETFIELD : EdgeType.SETFIELD;
-			graph.addEdge(frame.nonStatic, fi.getMyField(), type);
+			//graph.addEdge(frame.nonStatic, fi.getMyField(), type);
 		}
 	}
 	

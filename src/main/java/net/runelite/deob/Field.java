@@ -1,14 +1,11 @@
 package net.runelite.deob;
 
 import net.runelite.deob.attributes.Attributes;
-import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.signature.Type;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
 import net.runelite.deob.pool.NameAndType;
 
 public class Field
@@ -123,5 +120,11 @@ public class Field
 	public int hashCode()
 	{
 		return name.hashCode();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return this.type + " " + this.getFields().getClassFile().getName() + "." + this.getName();
 	}
 }

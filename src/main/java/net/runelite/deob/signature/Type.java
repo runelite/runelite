@@ -92,6 +92,9 @@ public class Type
 	@Override
 	public String toString()
 	{
-		return getFullType();
+		String type = this.type;
+		for (int i = 0; i < this.getArrayDims(); ++i)
+			type += "[]";
+		return type;
 	}
 }

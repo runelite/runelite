@@ -43,6 +43,12 @@ public class Edge
 	}
 
 	@Override
+	public String toString()
+	{
+		return "Edge{" + "from=" + from + ", to=" + to + '}';
+	}
+
+	@Override
 	public int hashCode()
 	{
 		int hash = 5;
@@ -88,8 +94,8 @@ public class Edge
 		if (this.type != other.type)
 			return false;
 		
-//		if (this.weight != other.weight)
-//			return false;
+		if (this.weight != other.weight)
+			return false;
 		
 		return true;
 	}

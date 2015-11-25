@@ -25,7 +25,7 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
-		//merge(); if(true) return;
+		merge(); if(true) return;
 		
 		long start = System.currentTimeMillis();
 		
@@ -73,25 +73,25 @@ public class Deob
 //		
 //		run(group, new UnusedClass());
 	
-		ModArith mod = new ModArith();
-		mod.run(group);
-		
-		int last = -1, cur;
-		while ((cur = mod.runOnce()) > 0)
-		{
-			new MultiplicationDeobfuscator().run(group);
-
-			new MultiplyOneDeobfuscator().run(group);
-
-			new MultiplyZeroDeobfuscator().run(group);
-			
-			if (last == cur)
-				break;
-			
-			last = cur;
-		}
-		
-		mod.annotateEncryption();
+//		ModArith mod = new ModArith();
+//		mod.run(group);
+//		
+//		int last = -1, cur;
+//		while ((cur = mod.runOnce()) > 0)
+//		{
+//			new MultiplicationDeobfuscator().run(group);
+//
+//			new MultiplyOneDeobfuscator().run(group);
+//
+//			new MultiplyZeroDeobfuscator().run(group);
+//			
+//			if (last == cur)
+//				break;
+//			
+//			last = cur;
+//		}
+//		
+//		mod.annotateEncryption();
 		
 		// eval constant fields (only set once to a constant in ctor) maybe just inline them
 		
@@ -105,8 +105,8 @@ public class Deob
 	
 	private static void merge() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar")),
-			group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File("/Users/adam/w/rs/07/adamin1.jar")),
+			group2 = JarUtil.loadJar(new File("/Users/adam/w/rs/07/adamin2.jar"));
 		
 		Rename2 rename = new Rename2();
 		rename.run(group1, group2);

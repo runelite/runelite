@@ -137,6 +137,13 @@ public class ClassFile
 		this.name = new Class(name);
 	}
 	
+	public String getClassName()
+	{
+		String n = getName();
+		int i = n.lastIndexOf('/');
+		return n.substring(i + 1);
+	}
+	
 	public String getSuperName()
 	{
 		return super_class.getName();

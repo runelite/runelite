@@ -1,9 +1,11 @@
 package net.runelite.deob.deobfuscators.rename.graph;
 
 import com.google.common.base.Objects;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.runelite.deob.ClassFile;
@@ -13,15 +15,16 @@ import net.runelite.deob.attributes.AttributeType;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.ConstantValue;
 import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+import net.runelite.deob.deobfuscators.rename.InstructionList;
 import net.runelite.deob.deobfuscators.rename.Rename2;
-import net.runelite.deob.pool.PoolEntry;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class Vertex
 {
 	private Graph graph;
-	private Object object;
+	private final Object object;
 	private VertexType type;
 	
 	private final Map<Edge, Edge> edges = new HashMap<>();
@@ -37,8 +40,43 @@ public class Vertex
 			type = VertexType.METHOD;
 		else if (object instanceof Field)
 			type = VertexType.FIELD;
+		else if (object instanceof ClassFile)
+			type = VertexType.CLASS;
 		else
 			assert false;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Vertex{" + "object=" + object + '}';
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 79 * hash + java.util.Objects.hashCode(this.object);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Vertex other = (Vertex) obj;
+		if (!java.util.Objects.equals(this.object, other.object))
+		{
+			return false;
+		}
+		return true;
 	}
 
 	public Graph getGraph()
@@ -90,11 +128,32 @@ public class Vertex
 	
 	public void finish()
 	{
+		if (mightBe == null)
+			return;
+		
+		if (mightBe != null && mightBe.size() == 2)
+		{
+			System.out.println("Can't decide for " + this);
+			
+			for(Vertex v : mightBe)
+				System.out.println(v);
+			int i = 5;
+		}
+		if (mightBe.isEmpty())
+		{
+			System.out.println("empty " + this);
+			int i = 5;
+		}
 		if (mightBe != null && mightBe.size() == 1)
 		{
-			is(mightBe.stream().findAny().get());
-			is.is(this);
-			mightBe = null;
+			Vertex v = mightBe.stream().findAny().get();
+			//if (v.getOther() == null || v.getOther() == this)
+			{
+				is(v);
+				is.is(this);
+				mightBe = null;
+				System.out.println(this + " is " + is);
+			}
 		}
 	}
 
@@ -119,7 +178,7 @@ public class Vertex
 	
 	private boolean couldBeEqual(ClassFile cf1, ClassFile cf2)
 	{
-		if (!cf1.getName().equals(cf2.getName()))
+		if (!cf1.getClassName().equals(cf2.getClassName()))
 			return false;
 		
 		if (!cf1.getInterfaces().getInterfaces().equals(cf2.getInterfaces().getInterfaces()))
@@ -131,35 +190,45 @@ public class Vertex
 		return true;
 	}
 	
+	private List<Instruction> getInstructionsInMethodInclStatic(Method method, Set<Method> visited)
+	{
+		List<Instruction> ilist = new ArrayList<>();
+		
+		if (visited.contains(method))
+			return ilist;
+		visited.add(method);
+		
+		Code code = method.getCode();
+		if (code == null)
+			return ilist;
+		
+		for (Instruction i : code.getInstructions().getInstructions())
+		{
+			if (i instanceof InvokeStatic)
+			{
+				InvokeInstruction ii = (InvokeInstruction) i;
+				List<Method> methods = ii.getMethods();
+				
+				if (methods.isEmpty())
+					continue;
+				
+				Method m = methods.get(0);
+				ilist.addAll(this.getInstructionsInMethodInclStatic(m, visited));
+			}
+			else
+			{
+				ilist.add(i);
+			}
+		}
+		
+		return ilist;
+	}
+	
 	private boolean couldBeEqual(Method m1, Method m2)
 	{
-		Set<PoolEntry> h1 = new HashSet<>(),
-			h2 = new HashSet<>();
-		
-		if (m1.getCode() == null)
-			return true;
-		
-		for (Instruction i : m1.getCode().getInstructions().getInstructions())
-		{
-			if (i instanceof PushConstantInstruction)
-			{
-				PushConstantInstruction pci = (PushConstantInstruction) i;
-				h1.add(pci.getConstant());
-			}
-		}
-		
-		for (Instruction i : m2.getCode().getInstructions().getInstructions())
-		{
-			if (i instanceof PushConstantInstruction)
-			{
-				PushConstantInstruction pci = (PushConstantInstruction) i;
-				h2.add(pci.getConstant());
-			}
-		}
-		
-		boolean b = h1.equals(h2);
-		return b;
-		//return true;
+		InstructionList il1 = new InstructionList(this.getInstructionsInMethodInclStatic(m1, new HashSet())),
+			il2 = new InstructionList(this.getInstructionsInMethodInclStatic(m2, new HashSet()));
+		return il1.couldBeEqual(il2);
 	}
 	
 	public boolean couldBeEqual(Vertex other)
@@ -197,8 +266,8 @@ public class Vertex
 			if (!couldBeEqual(cf1, cf2))
 				return false;
 			
-//			if (!couldBeEqual(m1, m2))
-//				return false;
+			if (!couldBeEqual(m1, m2))
+				return false;
 		}
 		else if (type == VertexType.FIELD)
 		{
@@ -207,7 +276,8 @@ public class Vertex
 			
 			if (!f1.getType().equals(f2.getType()))
 				return false;
-			
+	
+			access flags can change sometimes from non public to public like 2726 -> 2738
 			if (f1.isStatic() != f2.isStatic() || f1.getAccessFlags() != f2.getAccessFlags())
 				return false;
 			
