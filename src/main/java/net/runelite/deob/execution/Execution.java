@@ -208,7 +208,10 @@ public class Execution
 				return;
 			
 			for (Method m : methods)
+			{
 				graph.addEdge(frame.nonStatic, m, EdgeType.INVOKE);
+				graph.addEdge(m, frame.nonStatic, EdgeType.INVOKED_FROM);
+			}
 		}
 		else if (i instanceof FieldInstruction)
 		{

@@ -221,7 +221,6 @@ public class Rename2
 		System.out.println(etwo.getGraph());
 		
 		for (int i = 0; i < 250; ++i)
-		//for (int i = 0; i < Math.min(one.getClasses().size(), two.getClasses().size()); ++i)
 		{
 			ClassFile c1 = one.findClass("class" + i);
 			ClassFile c2 = two.findClass("class" + i);
@@ -240,9 +239,9 @@ public class Rename2
 		ClassFile cf1 = one.findClass("client"), cf2 = two.findClass("client");
 		mapDeobfuscatedMethods(cf1, cf2);
 		
-		//List<Field> fl1 = getClientFields(one, eone);
-		//List<Field> fl2 = getClientFields(two, etwo);
-		
+//		List<Field> fl1 = getClientFields(one, eone);
+//		List<Field> fl2 = getClientFields(two, etwo);
+//		
 //		for (int i = 0; i < Math.min(fl1.size(), fl2.size()); ++i)
 //		{
 //			Field f1 = fl1.get(i), f2 = fl2.get(i);
@@ -315,7 +314,7 @@ public class Rename2
 //		
 //		show(mappings);
 		
-		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", total " + g1.getVerticies().size());
+		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", solved fields " + g1.solved(VertexType.FIELD) + ", total " + g1.getVerticies().size());
 		
 		//rename(mappings, two);
 		

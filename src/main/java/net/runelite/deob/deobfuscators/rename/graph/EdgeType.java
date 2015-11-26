@@ -4,5 +4,7 @@ public enum EdgeType
 {
 	INVOKE,
 	GETFIELD,
-	SETFIELD;
+	SETFIELD,
+	
+	INVOKED_FROM;
 }

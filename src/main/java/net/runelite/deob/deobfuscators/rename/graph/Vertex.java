@@ -187,10 +187,13 @@ public class Vertex
 		assert is == null;
 		assert other.graph != graph;
 		
-		Method thism = (Method) object;
-		Method otherm = (Method) other.object;
+		if (object instanceof Method)
+		{
+			Method thism = (Method) object;
+			Method otherm = (Method) other.object;
 		
-		assert thism.getMethods().getClassFile().getName().equals(otherm.getMethods().getClassFile().getName());
+			assert thism.getMethods().getClassFile().getName().equals(otherm.getMethods().getClassFile().getName());
+		}
 		
 		this.is = other;
 	}
