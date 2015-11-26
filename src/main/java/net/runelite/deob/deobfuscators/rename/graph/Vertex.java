@@ -23,6 +23,9 @@ import org.apache.commons.collections4.CollectionUtils;
 
 public class Vertex
 {
+	private static final int FIELD_MASK = Field.ACC_FINAL | Field.ACC_STATIC;
+	private static final int METHOD_MASK = Method.ACC_ABSTRACT | Method.ACC_FINAL | Method.ACC_STATIC | Method.ACC_SYNCHRONIZED;
+	
 	private Graph graph;
 	private final Object object;
 	private VertexType type;
@@ -118,20 +121,36 @@ public class Vertex
 	
 	public void merge(Collection<Vertex> maybe)
 	{
-		// mightBe and maybe
+		boolean b = false;
+		if (this.toString().equals("Vertex{object=class207.<init>()V}"))
+		{
+			b = true;
+		}
 		
 		if (mightBe == null)
 			mightBe = maybe;
 		else
+		{
+			int old = mightBe.size();
 			mightBe = CollectionUtils.intersection(mightBe, maybe);
+			if (old == 1 && mightBe.isEmpty())
+			{
+				int i = 6;
+			}
+		}
 	}
 	
 	public void finish()
 	{
+		if (this.toString().equals("Vertex{object=class207.<init>()V}"))
+		{
+			int i =5;
+		}
+		
 		if (mightBe == null)
 			return;
 		
-		if (mightBe != null && mightBe.size() == 2)
+		if (mightBe != null && mightBe.size() > 1)
 		{
 			System.out.println("Can't decide for " + this);
 			
@@ -167,6 +186,11 @@ public class Vertex
 		}
 		assert is == null;
 		assert other.graph != graph;
+		
+		Method thism = (Method) object;
+		Method otherm = (Method) other.object;
+		
+		assert thism.getMethods().getClassFile().getName().equals(otherm.getMethods().getClassFile().getName());
 		
 		this.is = other;
 	}
@@ -255,7 +279,7 @@ public class Vertex
 			if (!m1.getDescriptor().equals(m2.getDescriptor()))
 				return false;
 			
-			if (m1.getAccessFlags() != m2.getAccessFlags())
+			if ((m1.getAccessFlags() & METHOD_MASK) != (m2.getAccessFlags() & METHOD_MASK))
 				return false;
 			
 			if ((m1.getCode() == null) != (m2.getCode() == null))
@@ -277,8 +301,7 @@ public class Vertex
 			if (!f1.getType().equals(f2.getType()))
 				return false;
 	
-			access flags can change sometimes from non public to public like 2726 -> 2738
-			if (f1.isStatic() != f2.isStatic() || f1.getAccessFlags() != f2.getAccessFlags())
+			if ((f1.getAccessFlags() & FIELD_MASK) != (f2.getAccessFlags() & FIELD_MASK))
 				return false;
 			
 			if (!f1.isStatic())

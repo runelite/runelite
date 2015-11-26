@@ -9,13 +9,12 @@ import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.deob.attributes.code.instructions.InvokeVirtual;
-import net.runelite.deob.deobfuscators.arithmetic.DMath;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.pool.PoolEntry;
 import net.runelite.deob.signature.Signature;
-import net.runelite.deob.signature.Type;
 
 public class InstructionList
 {
@@ -32,14 +31,18 @@ public class InstructionList
 			sig2 = HashMultiset.create();
 		
 		// check signatures and field types
-		instructions.stream().filter(i -> i instanceof InvokeVirtual).forEach(i -> {
-			InvokeVirtual iv = (InvokeVirtual) i;
+		instructions.stream().filter(i -> i instanceof InvokeInstruction).forEach(i -> {
+			assert !(i instanceof InvokeStatic);
+			
+			InvokeInstruction iv = (InvokeInstruction) i;
 			for (Method m : iv.getMethods())
 				sig1.add(m.getDescriptor());
 		});
 		
-		other.instructions.stream().filter(i -> i instanceof InvokeVirtual).forEach(i -> {
-			InvokeVirtual iv = (InvokeVirtual) i;
+		other.instructions.stream().filter(i -> i instanceof InvokeInstruction).forEach(i -> {
+			assert !(i instanceof InvokeStatic);
+			
+			InvokeInstruction iv = (InvokeInstruction) i;
 			for (Method m : iv.getMethods())
 				sig2.add(m.getDescriptor());
 		});
@@ -104,7 +107,7 @@ public class InstructionList
 		if (!ms1.equals(ms2))
 			return false;
 		
-		Set<Object> constants1 = new HashSet<>(),
+		Set<ConstantWrapper> constants1 = new HashSet<>(),
 			constants2 = new HashSet<>();
 		
 		instructions.stream().filter(i -> i instanceof PushConstantInstruction).forEach(i -> {
@@ -113,10 +116,9 @@ public class InstructionList
 			Object o = e.getObject();
 			
 			if (o instanceof Integer || o instanceof Long)
-				if (DMath.isBig((Number) o))
-					return;
+				return;
 			
-			constants1.add(o);
+			constants1.add(new ConstantWrapper(o, pci));
 		});
 		
 		other.instructions.stream().filter(i -> i instanceof PushConstantInstruction).forEach(i -> {
@@ -125,14 +127,22 @@ public class InstructionList
 			Object o = e.getObject();
 			
 			if (o instanceof Integer || o instanceof Long)
-				if (DMath.isBig((Number) o))
-					return;
+				return;
 			
-			constants2.add(o);
+			constants2.add(new ConstantWrapper(o, pci));
 		});
 		
 		if (!constants1.equals(constants2))
+		{
+			for (ConstantWrapper o : constants1)
+			{
+				if (!constants2.contains(o))
+				{
+					System.out.println(o);
+				}
+			}
 			return false;
+		}
 		
 		return true;
 	}

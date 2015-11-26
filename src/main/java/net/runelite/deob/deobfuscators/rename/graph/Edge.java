@@ -93,9 +93,9 @@ public class Edge
 	{	
 		if (this.type != other.type)
 			return false;
-		
-		if (this.weight != other.weight)
-			return false;
+
+		//if (this.weight != other.weight)
+		//	return false;
 		
 		return true;
 	}

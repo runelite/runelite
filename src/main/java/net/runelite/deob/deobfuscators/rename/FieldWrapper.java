@@ -7,6 +7,8 @@ import net.runelite.deob.signature.Type;
 
 public class FieldWrapper
 {
+	private static final int FIELD_MASK = Field.ACC_FINAL | Field.ACC_STATIC;
+	
 	private FieldInstruction fi;
 	public Field field;
 	private Type type;
@@ -31,7 +33,7 @@ public class FieldWrapper
 	{
 		int hash = 3;
 		hash = 29 * hash + Objects.hashCode(this.type);
-		hash = 29 * hash + this.accessFlags;
+		hash = 29 * hash + (this.accessFlags & FIELD_MASK);
 		return hash;
 	}
 
@@ -51,7 +53,7 @@ public class FieldWrapper
 		{
 			return false;
 		}
-		if (this.accessFlags != other.accessFlags)
+		if ((this.accessFlags & FIELD_MASK) != (other.accessFlags & FIELD_MASK))
 		{
 			return false;
 		}

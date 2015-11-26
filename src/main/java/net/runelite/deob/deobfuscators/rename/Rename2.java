@@ -167,10 +167,11 @@ public class Rename2
 
 				Vertex v = e.getTo(); // end of edge in g1
 				
-				Method m = (Method) v.getObject();
-				if (m.getName().equals("vmethod3054"))
+				boolean b = false;
+				if (s.toString().equals("Vertex{object=class0.<init>()V}") &&
+				v.toString().equals("Vertex{object=class207.<init>()V}"))
 				{
-					int i = 5;
+					b = true;
 				}
 				
 				List<Vertex> l = new ArrayList<>();
@@ -178,12 +179,6 @@ public class Rename2
 				{
 					if (e2.getTo().getOther() != null)
 						continue; // skip solved edges
-					
-				if (e.getTo().toString().equals("Vertex{object=client.vmethod3054()V}")
-							&& e2.getTo().toString().equals("Vertex{object=client.vmethod2973()V}"))
-						{
-							int i= 5;
-						}
 					
 					if (!e.getTo().couldBeEqual(e2.getTo()))
 					{
@@ -225,18 +220,25 @@ public class Rename2
 		System.out.println(eone.getGraph());
 		System.out.println(etwo.getGraph());
 		
-		for (int i = 0; i < Math.min(one.getClasses().size(), two.getClasses().size()); ++i)
+		for (int i = 0; i < 250; ++i)
+		//for (int i = 0; i < Math.min(one.getClasses().size(), two.getClasses().size()); ++i)
 		{
-			ClassFile c1 = one.getClasses().get(i);
-			ClassFile c2 = two.getClasses().get(i);
+			ClassFile c1 = one.findClass("class" + i);
+			ClassFile c2 = two.findClass("class" + i);
 			
-			Map m1 = this.find(one.getClasses().get(i));
-			Map m2 = this.find(two.getClasses().get(i));
+			if (c1 == null || c2 == null)
+				continue;
+			
+			//Map m1 = this.find(c1);
+			//Map m2 = this.find(c2);
 			
 		//	mapClassMethods(m1, m2);
 			
 			mapDeobfuscatedMethods(c1, c2);
 		}
+		
+		ClassFile cf1 = one.findClass("client"), cf2 = two.findClass("client");
+		mapDeobfuscatedMethods(cf1, cf2);
 		
 		//List<Field> fl1 = getClientFields(one, eone);
 		//List<Field> fl2 = getClientFields(two, etwo);
@@ -285,12 +287,33 @@ public class Rename2
 		System.out.println("methods " +g1.solved(VertexType.METHOD));
 		System.out.println("f " +g1.solved(VertexType.FIELD));
 		
-		NameMappings col = buildCollisionMap(one, two);
-		rename(col, two);
+		Vertex stored = null;
+		for (Vertex v : g1.getVerticies())
+		{
+			if (v.getOther() == null)
+				continue;
+			
+			if (!v.toString().equals("Vertex{object=class0.<init>()V}"))
+				continue;
+			
+			assert stored == null;
+			stored = v;
+			
+			for (Edge e : v.getEdges())
+			{
+				if (e.getTo().getOther() == null)
+				{
+					System.out.println("Edge " + e + " on vertex " + v + " is unsolved");
+				}
+			}
+		}
 		
-		NameMappings mappings = buildMappings(one, two); // two -> one
-		
-		show(mappings);
+//		NameMappings col = buildCollisionMap(one, two);
+//		rename(col, two);
+//		
+//		NameMappings mappings = buildMappings(one, two); // two -> one
+//		
+//		show(mappings);
 		
 		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", total " + g1.getVerticies().size());
 		
@@ -305,7 +328,7 @@ public class Rename2
 			Logger.getLogger(Rename2.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
-		return mappings;
+		return null;
 	}
 	
 	private void show(NameMappings mappings)
