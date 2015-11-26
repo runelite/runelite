@@ -158,6 +158,13 @@ public class Rename2
 			
 			assert s.getGraph() != other.getGraph();
 			
+			boolean b =false;
+			if (s.toString().equals("Vertex{object=B[] class118.field1980}")
+				&& other.toString().equals("Vertex{object=B[] class118.field1986}"))
+			{
+				b=true;
+			}
+			
 			for (Edge e : s.getEdges())
 			{
 				assert e.getFrom() == s;
@@ -166,12 +173,11 @@ public class Rename2
 					continue; // skip solved edges
 
 				Vertex v = e.getTo(); // end of edge in g1
-				
-				boolean b = false;
-				if (s.toString().equals("Vertex{object=class0.<init>()V}") &&
-				v.toString().equals("Vertex{object=class207.<init>()V}"))
+	
+				boolean b2 = false;
+				if (b && v.toString().equals("Vertex{object=class118.method2566()B}"))
 				{
-					b = true;
+					b2 = true;
 				}
 				
 				List<Vertex> l = new ArrayList<>();
@@ -180,15 +186,24 @@ public class Rename2
 					if (e2.getTo().getOther() != null)
 						continue; // skip solved edges
 					
+					if (b2)
+					{
+						Method m = (Method) e2.getTo().getObject();
+						if (m.getName().equals("method2489"))
+						{
+							b2 = true;
+						}
+					}
+					
 					if (!e.getTo().couldBeEqual(e2.getTo()))
 					{
-						System.out.println(e.getTo() + " != " + e2.getTo());
+			//			System.out.println(e.getTo() + " != " + e2.getTo());
 						continue;
 					}
 					
 					if (!e.couldBeEqual(e2))
 					{
-						System.out.println(e + " != " + e2);
+				//		System.out.println(e + " != " + e2);
 						continue;
 					}
 					
@@ -239,21 +254,21 @@ public class Rename2
 		ClassFile cf1 = one.findClass("client"), cf2 = two.findClass("client");
 		mapDeobfuscatedMethods(cf1, cf2);
 		
-//		List<Field> fl1 = getClientFields(one, eone);
-//		List<Field> fl2 = getClientFields(two, etwo);
-//		
-//		for (int i = 0; i < Math.min(fl1.size(), fl2.size()); ++i)
-//		{
-//			Field f1 = fl1.get(i), f2 = fl2.get(i);
-//			
-//			Vertex v1 = g1.getVertexFor(f1);
-//			Vertex v2 = g2.getVertexFor(f2);
-//			
-//			v1.is(v2);
-//			v2.is(v1);
-//			
-//			System.out.println(fname(f1) + " is " + fname(f2));
-//		}
+		List<Field> fl1 = getClientFields(one, eone);
+		List<Field> fl2 = getClientFields(two, etwo);
+		
+		for (int i = 0; i < Math.min(fl1.size(), fl2.size()); ++i)
+		{
+			Field f1 = fl1.get(i), f2 = fl2.get(i);
+			
+			Vertex v1 = g1.getVertexFor(f1);
+			Vertex v2 = g2.getVertexFor(f2);
+			
+			v1.is(v2);
+			v2.is(v1);
+			
+			System.out.println(fname(f1) + " is " + fname(f2));
+		}
 		
 		System.out.println("g1 verticies " + g1.getVerticies().size() + " reachable " + g1.reachableVerticiesFromSolvedVerticies().size());
 		Set<Vertex> reachable = g1.reachableVerticiesFromSolvedVerticies();
@@ -314,7 +329,7 @@ public class Rename2
 //		
 //		show(mappings);
 		
-		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", solved fields " + g1.solved(VertexType.FIELD) + ", total " + g1.getVerticies().size());
+		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", solved fields " + g1.solved(VertexType.FIELD) + ", unsolved methods " +g1.unsolved(VertexType.METHOD) + ", unsolved fields " + g1.unsolved(VertexType.FIELD));
 		
 		//rename(mappings, two);
 		

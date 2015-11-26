@@ -122,9 +122,14 @@ public class Vertex
 	public void merge(Collection<Vertex> maybe)
 	{
 		boolean b = false;
-		if (this.toString().equals("Vertex{object=class207.<init>()V}"))
+		if (this.object instanceof Method)
 		{
-			b = true;
+			Method m = (Method) object;
+			
+			if (m.getName().equals("method2566"))
+			{
+				b = true;
+			}
 		}
 		
 		if (mightBe == null)
@@ -133,7 +138,7 @@ public class Vertex
 		{
 			int old = mightBe.size();
 			mightBe = CollectionUtils.intersection(mightBe, maybe);
-			if (old == 1 && mightBe.isEmpty())
+			if (b && old == 1 && mightBe.isEmpty())
 			{
 				int i = 6;
 			}
@@ -152,11 +157,11 @@ public class Vertex
 		
 		if (mightBe != null && mightBe.size() > 1)
 		{
-			System.out.println("Can't decide for " + this);
+	//		System.out.println("Can't decide for " + this);
 			
-			for(Vertex v : mightBe)
-				System.out.println(v);
-			int i = 5;
+	//		for(Vertex v : mightBe)
+	//			System.out.println(v);
+	//		int i = 5;
 		}
 		if (mightBe.isEmpty())
 		{
@@ -166,12 +171,19 @@ public class Vertex
 		if (mightBe != null && mightBe.size() == 1)
 		{
 			Vertex v = mightBe.stream().findAny().get();
+			
 			//if (v.getOther() == null || v.getOther() == this)
 			{
 				is(v);
 				is.is(this);
 				mightBe = null;
 				System.out.println(this + " is " + is);
+			}
+			
+			if (object instanceof Method)
+			{
+				//Method m = (Method) object;
+				//if (m.getName().equals
 			}
 		}
 	}
@@ -180,9 +192,11 @@ public class Vertex
 	{
 		if (is != null)
 		{
-			assert graph != other.graph;
-			assert is.graph == other.graph;
-			Rename2.collide(object, is.object, other.object);
+			assert is.is == this;
+			is.is = null;
+			is = null;
+
+			//Rename2.collide(object, is.object, other.object);
 		}
 		assert is == null;
 		assert other.graph != graph;

@@ -93,6 +93,15 @@ public class Graph
 		return solved;
 	}
 	
+	public int unsolved(VertexType type)
+	{
+		int solved = 0;
+		for (Vertex v : verticies)
+			if (v.getOther() == null && type == v.getType())
+				++solved;
+		return solved;
+	}
+	
 	private void recurse(Vertex v, Set<Vertex> verticies)
 	{
 		if (verticies.contains(v))

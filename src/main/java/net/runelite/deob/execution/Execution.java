@@ -184,7 +184,7 @@ public class Execution
 			
 			for (Field f : cf.getFields().getFields())
 			{
-			//	graph.addVertex(f, VertexType.FIELD);
+				graph.addVertex(f, VertexType.FIELD);
 			}
 		}
 	}
@@ -221,7 +221,9 @@ public class Execution
 				return;
 			
 			EdgeType type = fi instanceof GetFieldInstruction ? EdgeType.GETFIELD : EdgeType.SETFIELD;
-			//graph.addEdge(frame.nonStatic, fi.getMyField(), type);
+			graph.addEdge(frame.nonStatic, fi.getMyField(), type);
+			EdgeType typeRev = fi instanceof GetFieldInstruction ? EdgeType.GETFIELD_FROM : EdgeType.SETFIELD_FROM;
+			graph.addEdge(fi.getMyField(), frame.nonStatic, typeRev);
 		}
 	}
 	
