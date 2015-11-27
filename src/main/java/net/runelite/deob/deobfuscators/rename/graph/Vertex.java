@@ -332,8 +332,8 @@ public class Vertex
 			ConstantValue cf1 = (ConstantValue) f1.getAttributes().findType(AttributeType.CONSTANT_VALUE);
 			ConstantValue cf2 = (ConstantValue) f2.getAttributes().findType(AttributeType.CONSTANT_VALUE);
 			
-			if (!Objects.equal(cf1, cf2))
-				return false;
+			//if (!Objects.equal(cf1, cf2))
+			//	return false;
 		}
 		else
 			assert false;

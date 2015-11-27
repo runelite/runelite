@@ -45,7 +45,7 @@ public class Edge
 	@Override
 	public String toString()
 	{
-		return "Edge{" + "from=" + from + ", to=" + to + '}';
+		return "Edge{" + "from=" + from + ", to=" + to + ", type=" + type + '}';
 	}
 
 	@Override

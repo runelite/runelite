@@ -115,16 +115,10 @@ public class Field
 			new NameAndType(this.getName(), this.getType())
 		);
 	}
-
-	@Override
-	public int hashCode()
-	{
-		return name.hashCode();
-	}
 	
 	@Override
 	public String toString()
 	{
-		return this.type + " " + this.getFields().getClassFile().getName() + "." + this.getName();
+		return (this.isStatic() ? "static " : "") + this.type + " " + this.getFields().getClassFile().getName() + "." + this.getName();
 	}
 }

@@ -18,6 +18,10 @@ import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.Annotations;
+import net.runelite.deob.attributes.AttributeType;
+import net.runelite.deob.attributes.Attributes;
+import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.graph.Edge;
@@ -28,6 +32,7 @@ import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.signature.Signature;
+import net.runelite.deob.signature.Type;
 import net.runelite.deob.util.JarUtil;
 import net.runelite.deob.util.NameMappings;
 
@@ -86,6 +91,28 @@ public class Rename2
 		return set;
 	}
 	
+	private Map<Type, Field> findField(ClassFile cf)
+	{
+		Map<Type, Field> set = new HashMap<>();
+		Set collided = new HashSet();
+		for (Field f : cf.getFields().getFields())
+		{
+			if (f.isStatic())
+				continue;
+			
+			Type t = f.getType();
+			
+			if (set.containsKey(t) || collided.contains(t))
+			{
+				collided.add(t);
+				set.remove(t);
+				continue;
+			}
+			set.put(t, f);
+		}
+		return set;
+	}
+	
 	private void mapClassMethods(Map<Signature, Method> one, Map<Signature, Method> two)
 	{
 		if (!one.keySet().equals(two.keySet()))
@@ -103,6 +130,24 @@ public class Rename2
 			v2.is(v1);
 			
 			System.out.println(mname(m1) + " is " + mname(m2));
+		}
+	}
+	
+	private void mapClassFields(Map<Type, Field> one, Map<Type, Field> two)
+	{
+		if (!one.keySet().equals(two.keySet()))
+			return;
+		
+		for (Type t : one.keySet())
+		{
+			Field f1 = one.get(t), f2 = two.get(t);
+			
+			Vertex v1 = g1.getVertexFor(f1), v2 = g2.getVertexFor(f2);
+			
+			v1.is(v2);
+			v2.is(v1);
+			
+			System.out.println(fname(f1) + " is " + fname(f2));
 		}
 	}
 	
@@ -243,12 +288,17 @@ public class Rename2
 			if (c1 == null || c2 == null)
 				continue;
 			
-			//Map m1 = this.find(c1);
-			//Map m2 = this.find(c2);
+			Map m1 = this.find(c1);
+			Map m2 = this.find(c2);
 			
-		//	mapClassMethods(m1, m2);
+			mapClassMethods(m1, m2);
 			
 			mapDeobfuscatedMethods(c1, c2);
+			
+			m1 = findField(c1);
+			m2 = findField(c2);
+			
+			mapClassFields(m1, m2);
 		}
 		
 		ClassFile cf1 = one.findClass("client"), cf2 = two.findClass("client");
@@ -307,11 +357,10 @@ public class Rename2
 			if (v.getOther() == null)
 				continue;
 			
-			if (!v.toString().equals("Vertex{object=class0.<init>()V}"))
-				continue;
+			if (v.getObject() instanceof Method) continue;
 			
-			assert stored == null;
-			stored = v;
+			//assert stored == null;
+			//stored = v;
 			
 			for (Edge e : v.getEdges())
 			{
@@ -341,6 +390,8 @@ public class Rename2
 		{
 			Logger.getLogger(Rename2.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		
+		checkExports(one);
 		
 		return null;
 	}
@@ -474,5 +525,58 @@ public class Rename2
 	{
 		Renamer renamer = new Renamer(mappings);
 		renamer.run(group);
+	}
+	
+	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
+	
+	private boolean isExported(Attributes attr)
+	{
+		Annotations an = (Annotations) attr.findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+		if (an == null)
+			return false;
+				
+		for (Annotation a : an.getAnnotations())
+		{
+			if (a.getType().equals(EXPORT))
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private void checkExports(ClassGroup one)
+	{
+		for (ClassFile cf : one.getClasses())
+		{
+			for (Field f : cf.getFields().getFields())
+			{
+				if (!isExported(f.getAttributes()))
+					continue;
+				
+				Vertex v = g1.getVertexFor(f);
+				assert v != null;
+				
+				if (v.getOther() == null)
+				{
+					System.out.println("Unsolved exported field " + f);
+				}
+			}
+			
+			for (Method m : cf.getMethods().getMethods())
+			{
+				if (!isExported(m.getAttributes()))
+					continue;
+				
+				Vertex v = g1.getVertexFor(m);
+				assert v != null;
+				
+				if (v.getOther() == null)
+				{
+					System.out.println("Unsolved exported method " + m);
+				}
+			}
+		}
 	}
 }
