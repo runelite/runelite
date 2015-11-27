@@ -73,7 +73,7 @@ public final class client extends class143 {
       intValue = -61212269
    )
    //@Export("currentPacketOpcode")
-   //@Export("gameCycle")
+   @Export("gameCycle")
    static int field286 = 0;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
