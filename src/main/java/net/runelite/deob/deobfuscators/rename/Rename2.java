@@ -391,7 +391,7 @@ public class Rename2
 			Logger.getLogger(Rename2.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		
-		checkExports(one);
+		//checkExports(one);
 		
 		return null;
 	}
