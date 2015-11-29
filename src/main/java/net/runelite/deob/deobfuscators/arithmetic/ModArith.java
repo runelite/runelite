@@ -42,7 +42,7 @@ public class ModArith implements Deobfuscator
 	private List<Pair> pairs = new ArrayList<>();
 	private Encryption encryption = new Encryption();
 	
-	private List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
+	private static List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
 	{
 		List<InstructionContext> l = new ArrayList<>();
 		

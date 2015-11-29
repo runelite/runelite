@@ -31,67 +31,67 @@ public class Deob
 		
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
 		
-//		run(group, new RenameUnique());
-//
-//		// remove except RuntimeException
-//		run(group, new RuntimeExceptions());
-//		
-//		// remove unused methods
-//		run(group, new UnreachedCode());
-//		run(group, new UnusedMethods());
-//		
-//		// remove illegal state exceptions, frees up some parameters
-//		run(group, new IllegalStateExceptions());
-//		
-//		// remove constant logically dead parameters
-//		run(group, new ConstantParameter());
-//		
-//		// remove unhit blocks
-//		run(group, new UnreachedCode());
-//		run(group, new UnusedMethods());
-//
-//		// remove unused parameters
-//		run(group, new UnusedParameters());
-//		
-//		// remove unused fields
-//		run(group, new UnusedFields());
-//		
-//		// remove unused methods, again?
-//		run(group, new UnusedMethods());
-//
-////		run(group, new MethodInliner());
-////		run(group, new UnusedMethods()); // inliner might leave unused methods
-//
-////		// broken because rename was removed
-////		//run(group, new MethodMover());
-//		
-//		run(group, new FieldInliner());
-//		
-////		// XXX this is broken because when moving clinit around, some fields can depend on other fields
-////		// (like multianewarray)
-////		//new FieldMover().run(group);
-//		
-//		run(group, new UnusedClass());
+		run(group, new RenameUnique());
+
+		// remove except RuntimeException
+		run(group, new RuntimeExceptions());
+		
+		// remove unused methods
+		run(group, new UnreachedCode());
+		run(group, new UnusedMethods());
+		
+		// remove illegal state exceptions, frees up some parameters
+		run(group, new IllegalStateExceptions());
+		
+		// remove constant logically dead parameters
+		run(group, new ConstantParameter());
+		
+		// remove unhit blocks
+		run(group, new UnreachedCode());
+		run(group, new UnusedMethods());
+
+		// remove unused parameters
+		run(group, new UnusedParameters());
+		
+		// remove unused fields
+		run(group, new UnusedFields());
+		
+		// remove unused methods, again?
+		run(group, new UnusedMethods());
+
+//		run(group, new MethodInliner());
+//		run(group, new UnusedMethods()); // inliner might leave unused methods
+
+//		// broken because rename was removed
+//		//run(group, new MethodMover());
+		
+		run(group, new FieldInliner());
+		
+//		// XXX this is broken because when moving clinit around, some fields can depend on other fields
+//		// (like multianewarray)
+//		//new FieldMover().run(group);
+		
+		run(group, new UnusedClass());
 	
-//		ModArith mod = new ModArith();
-//		mod.run(group);
-//		
-//		int last = -1, cur;
-//		while ((cur = mod.runOnce()) > 0)
-//		{
-//			new MultiplicationDeobfuscator().run(group);
-//
-//			new MultiplyOneDeobfuscator().run(group);
-//
-//			new MultiplyZeroDeobfuscator().run(group);
-//			
-//			if (last == cur)
-//				break;
-//			
-//			last = cur;
-//		}
-//		
-//		mod.annotateEncryption();
+		ModArith mod = new ModArith();
+		mod.run(group);
+		
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{
+			new MultiplicationDeobfuscator().run(group);
+
+			new MultiplyOneDeobfuscator().run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+			
+			if (last == cur)
+				break;
+			
+			last = cur;
+		}
+		
+		mod.annotateEncryption();
 		
 		// eval constant fields (only set once to a constant in ctor) maybe just inline them
 		
@@ -105,8 +105,8 @@ public class Deob
 	
 	private static void merge() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("/Users/adam/w/rs/07/adamin1.jar")),
-			group2 = JarUtil.loadJar(new File("/Users/adam/w/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar")),
+			group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
 		Rename2 rename = new Rename2();
 		rename.run(group1, group2);

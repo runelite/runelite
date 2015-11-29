@@ -54,7 +54,7 @@ public class Field
 		
 		out.writeShort(accessFlags);
 		out.writeShort(pool.makeUTF8(name));
-		out.writeShort(pool.makeUTF8(type.toString()));
+		out.writeShort(pool.makeUTF8(type.getFullType()));
 		attributes.write(out);
 	}
 

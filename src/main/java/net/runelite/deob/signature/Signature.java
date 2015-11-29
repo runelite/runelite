@@ -64,9 +64,9 @@ public class Signature
 		StringBuffer sb = new StringBuffer();
 		sb.append('(');
 		for (Type a : arguments)
-			sb.append(a.toString());
+			sb.append(a.getFullType());
 		sb.append(')');
-		sb.append(rv.toString());
+		sb.append(rv.getFullType());
 		return sb.toString();
 	}
 	

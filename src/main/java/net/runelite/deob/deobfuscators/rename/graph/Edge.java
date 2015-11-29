@@ -1,20 +1,28 @@
 package net.runelite.deob.deobfuscators.rename.graph;
 
 import java.util.Objects;
+import net.runelite.deob.attributes.code.Instruction;
 
 public class Edge
 {
+	private final Instruction ins; // craetor
 	private final Vertex from, to;
 	private final EdgeType type;
 	private int weight;
 
-	public Edge(Vertex from, Vertex to, EdgeType type)
+	public Edge(Instruction ins, Vertex from, Vertex to, EdgeType type)
 	{
+		this.ins = ins;
 		this.from = from;
 		this.to = to;
 		this.type = type;
 		
 		assert from.getGraph() == to.getGraph();
+	}
+
+	public Instruction getIns()
+	{
+		return ins;
 	}
 
 	public Vertex getFrom()
@@ -94,8 +102,8 @@ public class Edge
 		if (this.type != other.type)
 			return false;
 
-		//if (this.weight != other.weight)
-		//	return false;
+//		if (this.weight != other.weight)
+//			return false;
 		
 		return true;
 	}

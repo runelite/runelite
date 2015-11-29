@@ -64,7 +64,7 @@ public class Element
 	{
 		ConstantPool pool = annotation.getAnnotations().getAttributes().getClassFile().getPool();
 
-		out.writeShort(pool.makeUTF8(type.toString()));
+		out.writeShort(pool.makeUTF8(type.getFullType()));
 		byte type;
 		switch (value.getType())
 		{

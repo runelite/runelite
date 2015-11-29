@@ -46,15 +46,9 @@ public class Graph
 		return v;
 	}
 	
-	public void addEdge(Object from, Object to, EdgeType type)
+	public void addEdge(Edge e)
 	{
-		assert from != null;
-		assert to != null;
-		
-		Vertex v1 = getVertexFor(from), v2 = getVertexFor(to);
-		
-		Edge e = new Edge(v1, v2, type);
-		v1.addEdge(e);
+		e.getFrom().addEdge(e);
 	}
 
 	public List<Vertex> getVerticies()

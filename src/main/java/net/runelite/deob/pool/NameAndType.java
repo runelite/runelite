@@ -61,7 +61,7 @@ public class NameAndType extends PoolEntry
 		if (signature != null)
 			descriptorIndex = pool.makeUTF8(signature.toString());
 		else
-			descriptorIndex = pool.makeUTF8(type.toString());
+			descriptorIndex = pool.makeUTF8(type.getFullType());
 	}
 	
 	@Override
@@ -97,7 +97,7 @@ public class NameAndType extends PoolEntry
 
 	public Object getStackObject()
 	{
-		switch (type.toString())
+		switch (type.getFullType())
 		{
 			case "B":
 				return (byte) 0;

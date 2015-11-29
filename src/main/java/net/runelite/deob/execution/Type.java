@@ -28,7 +28,7 @@ public class Type
 	
 	private static String asmTypeToClass(String type)
 	{
-		switch (type.toString())
+		switch (type)
 		{
 			case "B":
 				return byte.class.getCanonicalName();

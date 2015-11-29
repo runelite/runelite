@@ -65,7 +65,7 @@ public class Annotation
 	{
 		ConstantPool pool = annotations.getAttributes().getClassFile().getPool();
 		
-		out.writeShort(pool.makeUTF8(type.toString()));
+		out.writeShort(pool.makeUTF8(type.getFullType()));
 		out.writeShort(elements.size());
 		for (Element e : elements)
 		{

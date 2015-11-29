@@ -18,9 +18,13 @@ import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+import net.runelite.deob.deobfuscators.rename.graph.Edge;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
+import net.runelite.deob.deobfuscators.rename.graph.FieldEdge;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
+import net.runelite.deob.deobfuscators.rename.graph.MethodEdge;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -100,14 +104,15 @@ public class Execution
 		frames.add(frame);
 	}
 	
-	public void invoke(InstructionContext from, Method to)
+	public Frame invoke(InstructionContext from, Method to)
 	{
 		if (hasInvoked(from, to))
-			return;
+			return null;
 		
 		Frame f = new Frame(this, to);
 		f.initialize(from);
 		this.addFrame(f);
+		return f;
 	}
 	
 	public void addMethod(Method to)
@@ -132,7 +137,9 @@ public class Execution
 			frame.execute();
 			
 			assert frames.get(0) == frame;
-			frames.remove(0);
+			assert !frame.isExecuting();
+
+			frames.remove(frame);
 			processedFrames.add(frame);
 		}
 		
@@ -189,12 +196,13 @@ public class Execution
 		}
 	}
 	
-	protected void buildGraph(Frame frame, Instruction i)
+	protected void buildGraph(Frame frame, Instruction i, InstructionContext ctx)
 	{
 		if (!isBuildGraph())
 			return;
 		
 		assert frame.getMethod() == frame.nonStatic || frame.nonStatic.isStatic() == false;
+		assert ctx.getInstruction() == i;
 		
 		if (i instanceof InvokeInstruction)
 		{
@@ -209,8 +217,8 @@ public class Execution
 			
 			for (Method m : methods)
 			{
-				graph.addEdge(frame.nonStatic, m, EdgeType.INVOKE);
-				graph.addEdge(m, frame.nonStatic, EdgeType.INVOKED_FROM);
+				graph.addEdge(new Edge(i, graph.getVertexFor(frame.nonStatic), graph.getVertexFor(m), EdgeType.INVOKE));
+				graph.addEdge(new Edge(i, graph.getVertexFor(m), graph.getVertexFor(frame.nonStatic), EdgeType.INVOKED_FROM));
 			}
 		}
 		else if (i instanceof FieldInstruction)
@@ -220,11 +228,85 @@ public class Execution
 			if (fi.getMyField() == null)
 				return;
 			
+			//int id = frame.getMethodCtx().fcount++;
 			EdgeType type = fi instanceof GetFieldInstruction ? EdgeType.GETFIELD : EdgeType.SETFIELD;
-			graph.addEdge(frame.nonStatic, fi.getMyField(), type);
+			graph.addEdge(new Edge(i, graph.getVertexFor(frame.nonStatic), graph.getVertexFor(fi.getMyField()), type));
 			EdgeType typeRev = fi instanceof GetFieldInstruction ? EdgeType.GETFIELD_FROM : EdgeType.SETFIELD_FROM;
-			graph.addEdge(fi.getMyField(), frame.nonStatic, typeRev);
+			graph.addEdge(new Edge(i, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(frame.nonStatic), typeRev));
+			
+			if (fi instanceof SetFieldInstruction && frame.lastField != null)
+			{
+				graph.addEdge(new MethodEdge(i, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(frame.lastField), EdgeType.PREV_FIELD, frame.nonStatic));
+				graph.addEdge(new MethodEdge(i, graph.getVertexFor(frame.lastField), graph.getVertexFor(fi.getMyField()), EdgeType.PREV_FIELD_FROM, frame.nonStatic));
+			}
+			
+//			if (fi instanceof SetFieldInstruction)
+//			{
+//				StackContext sctx = ctx.getPops().get(0);
+//				if (sctx.getPushed().getInstruction() instanceof GetFieldInstruction)
+//				{
+//					GetFieldInstruction gfi = (GetFieldInstruction) sctx.getPushed().getInstruction();
+//					
+//					if (gfi.getMyField() != null)
+//					{
+//						// XXX dup edges
+//						graph.addEdge(new MethodEdge(i, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(gfi.getMyField()), EdgeType.FIELD_ASSIGNMENT_FIELD, frame.nonStatic));
+//						graph.addEdge(new MethodEdge(i, graph.getVertexFor(gfi.getMyField()), graph.getVertexFor(fi.getMyField()), EdgeType.FIELD_ASSIGNMENT_FIELD_FROM, frame.nonStatic));
+//					}
+//				}
+//			}
+			
+			// associated fields
+			for (InstructionContext ic : getInsInExpr(ctx, new HashSet<>()))
+			{
+				Instruction i2 = (Instruction) ic.getInstruction();
+				
+				if (i2 instanceof FieldInstruction)
+				{
+					FieldInstruction fi2 = (FieldInstruction) i2;
+					
+					if (fi2.getMyField() == null)
+						continue;
+					
+					// these are within the context of a method
+					graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(fi2.getMyField()), EdgeType.FIELD_ASSOCIATION, frame.nonStatic));
+					graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi2.getMyField()), graph.getVertexFor(fi.getMyField()), EdgeType.FIELD_ASSOCIATION_FROM, frame.nonStatic));
+				}
+				else if (i2 instanceof InvokeInstruction)
+				{
+					InvokeInstruction ii2 = (InvokeInstruction) i2;
+					
+					if (ii2 instanceof InvokeStatic)
+						continue;
+					
+					for (Method m : ii2.getMethods())
+					{
+						graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(m), EdgeType.METHOD_ASSOCIATION, frame.nonStatic));
+						graph.addEdge(new MethodEdge(i2, graph.getVertexFor(m), graph.getVertexFor(fi.getMyField()), EdgeType.METHOD_ASSOCIATION_FROM, frame.nonStatic));
+					}
+				}
+			}
 		}
+	}
+	
+	private static List<InstructionContext> getInsInExpr(InstructionContext ctx, Set<Instruction> set)
+	{
+		List<InstructionContext> l = new ArrayList<>();
+		
+		if (ctx == null || set.contains(ctx.getInstruction()))
+			return l;
+
+		set.add(ctx.getInstruction());
+		
+		l.add(ctx);
+		
+		for (StackContext s : ctx.getPops())
+			l.addAll(getInsInExpr(s.getPushed(), set));
+		for (StackContext s : ctx.getPushes())
+			for (InstructionContext i : s.getPopped())
+				l.addAll(getInsInExpr(i, set));
+		
+		return l;
 	}
 	
 	public Graph getGraph()

@@ -25,6 +25,8 @@ import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.graph.Edge;
+import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
+import net.runelite.deob.deobfuscators.rename.graph.FieldEdge;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import net.runelite.deob.deobfuscators.rename.graph.Vertex;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
@@ -193,6 +195,47 @@ public class Rename2
 		return fields;
 	}
 	
+	private void mapOneFrame(ClassGroup group, Execution e)
+	{
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : cf.getMethods().getMethods())
+			{
+				if (m.isStatic())
+					continue;
+				
+				List<Frame> frames = e.processedFrames.stream().filter(f -> f.getMethod() == m).collect(Collectors.toList());
+				
+				if (frames.size() != 1)
+					continue;
+				
+				int count = 0;
+				for (InstructionContext i : frames.get(0).getInstructions())
+				{
+					if (i.getInstruction() instanceof SetFieldInstruction)
+					{
+						SetFieldInstruction sfi = (SetFieldInstruction) i.getInstruction();
+						
+						Field f = sfi.getMyField();
+						if (f == null)
+							continue;
+						
+						Vertex methodVertex = e.getGraph().getVertexFor(m),
+							fieldVertex = e.getGraph().getVertexFor(f);
+						
+						Edge edge = new FieldEdge(i.getInstruction(), methodVertex, fieldVertex, EdgeType.SETFIELD, count);
+						e.getGraph().addEdge(edge);
+						
+						edge = new FieldEdge(i.getInstruction(), fieldVertex, methodVertex, EdgeType.SETFIELD_FROM, count);
+						e.getGraph().addEdge(edge);
+						
+						++count;
+					}
+				}
+			}
+		}
+	}
+	
 	private void solve()
 	{
 		List<Vertex> solved = g1.getVerticies().stream().filter(v -> v.getOther() != null).collect(Collectors.toList());
@@ -231,14 +274,14 @@ public class Rename2
 					if (e2.getTo().getOther() != null)
 						continue; // skip solved edges
 					
-					if (b2)
-					{
-						Method m = (Method) e2.getTo().getObject();
-						if (m.getName().equals("method2489"))
-						{
-							b2 = true;
-						}
-					}
+//					if (b2)
+//					{
+//						Method m = (Method) e2.getTo().getObject();
+//						if (m.getName().equals("method2489"))
+//						{
+//							b2 = true;
+//						}
+//					}
 					
 					if (!e.getTo().couldBeEqual(e2.getTo()))
 					{
@@ -320,6 +363,9 @@ public class Rename2
 			System.out.println(fname(f1) + " is " + fname(f2));
 		}
 		
+//		mapOneFrame(one, eone);
+//		mapOneFrame(two, etwo);
+		
 		System.out.println("g1 verticies " + g1.getVerticies().size() + " reachable " + g1.reachableVerticiesFromSolvedVerticies().size());
 		Set<Vertex> reachable = g1.reachableVerticiesFromSolvedVerticies();
 		for (Vertex v : g1.getVerticies())
@@ -384,7 +430,7 @@ public class Rename2
 		
 		try
 		{
-			JarUtil.saveJar(two, new File("/Users/adam/w/rs/07/adamout.jar"));
+			JarUtil.saveJar(two, new File("d:/rs/07/adamout.jar"));
 		}
 		catch (IOException ex)
 		{

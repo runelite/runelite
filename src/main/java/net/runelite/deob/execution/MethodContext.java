@@ -1,6 +1,7 @@
 package net.runelite.deob.execution;
 
 import java.util.Collection;
+import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.Instruction;
 import org.apache.commons.collections4.map.MultiValueMap;
 

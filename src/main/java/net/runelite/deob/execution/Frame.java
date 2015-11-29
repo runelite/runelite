@@ -3,6 +3,7 @@ package net.runelite.deob.execution;
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Exception;
@@ -11,6 +12,9 @@ import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.deob.attributes.code.instructions.AThrow;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 
 public class Frame
 {
@@ -23,6 +27,8 @@ public class Frame
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MethodContext ctx;
 	protected Method nonStatic; // next non static method up the stack
+	public Field lastField;
+	public Frame staticReturn;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -63,6 +69,9 @@ public class Frame
 		if (this.getMethod().isStatic())
 		{
 			this.nonStatic = ctx.getFrame().nonStatic;
+//			this.lastField = ctx.getFrame().lastField;
+//			this.staticReturn = ctx.getFrame();
+			//this.ctx = ctx.getFrame().ctx;
 		}
 		
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
@@ -99,6 +108,8 @@ public class Frame
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
 		this.nonStatic = other.nonStatic;
+		this.lastField = other.lastField;
+		this.staticReturn = other.staticReturn;
 	}
 	
 	public Frame dup()
@@ -167,6 +178,21 @@ public class Frame
 		{
 			Instruction oldCur = cur;
 			
+			if ((cur instanceof ReturnInstruction || cur instanceof AThrow) && this.staticReturn != null)
+			{
+				Frame newFrame = this.staticReturn.dup();
+				newFrame.lastField = this.lastField;
+				newFrame.executing = true;
+				
+				assert newFrame.cur instanceof InvokeStatic;
+				int i = newFrame.method.getCode().getInstructions().getInstructions().indexOf(newFrame.cur);
+				assert i != -1;
+				newFrame.cur = newFrame.method.getCode().getInstructions().getInstructions().get(i + 1);
+				
+				assert execution.frames.contains(newFrame);
+				//this.execution.frames.add(newFrame);
+			}
+			
 			try
 			{
 				cur.execute(this);
@@ -199,7 +225,13 @@ public class Frame
 			if (!executing)
 				break;
 			
-			execution.buildGraph(this, oldCur);
+			execution.buildGraph(this, oldCur, ictx);
+			if (oldCur instanceof SetFieldInstruction)
+			{
+				SetFieldInstruction sfi = (SetFieldInstruction) oldCur;
+				if (sfi.getMyField() != null)
+					this.lastField = sfi.getMyField();
+			}
 			
 			if (oldCur == cur)
 			{

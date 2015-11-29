@@ -16,6 +16,7 @@ import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.ConstantValue;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.rename.InstructionList;
 import net.runelite.deob.deobfuscators.rename.Rename2;
@@ -34,6 +35,8 @@ public class Vertex
 	
 	private Collection<Vertex> mightBe;
 	private Vertex is;
+	
+	private Set<Instruction> edgeFrom = new HashSet<>();
 
 	public Vertex(Graph graph, Object object)
 	{
@@ -107,7 +110,11 @@ public class Vertex
 		Edge c = edges.get(edge);
 		if (c != null)
 		{
-			c.increase();
+			if (edge.getIns() instanceof SetFieldInstruction && !edgeFrom.contains(edge.getIns()))
+			{
+				edgeFrom.add(edge.getIns());
+				c.increase();
+			}
 			return;
 		}
 		
