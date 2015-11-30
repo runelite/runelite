@@ -428,6 +428,14 @@ public class Rename2
 		
 		//rename(mappings, two);
 		
+//		for (Vertex v : g1.getVerticies())
+//		{
+//			if (v.getOther() != null)
+//				System.out.println(v.getObject() + " -> " + v.getOther().getOther());
+//			else
+//				System.out.println(v.getObject() + " -> unk");
+//		}
+		
 		try
 		{
 			JarUtil.saveJar(two, new File("d:/rs/07/adamout.jar"));

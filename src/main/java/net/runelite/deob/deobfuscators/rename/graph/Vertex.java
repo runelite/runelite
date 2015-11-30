@@ -279,15 +279,86 @@ public class Vertex
 		return il1.couldBeEqual(il2);
 	}
 	
+	private static boolean recurse = true;
 	public boolean couldBeEqual(Vertex other)
 	{
 		assert this != other;
 		assert graph != other.graph;
-		assert is == null;
-		assert other.is == null;
+//		assert is == null;
+		//assert other.is == null;
+		
+		if (this.getOther() != null || other.getOther() != null)
+		{
+			return this.getOther() == other && other.getOther() == this;
+		}
 		
 		if (this.getType() != other.getType())
 			return false;
+
+		if (this.getEdges().size() != other.getEdges().size())
+			return false;
+
+		for (EdgeType e : EdgeType.values())
+		{
+			// for each edge of this type, it must be equal with just one of the others
+
+			if (this.edgesOf(e) != other.edgesOf(e))// ||
+				//this.solvedEdgesOfType(e) != other.solvedEdgesOfType(e))
+			{
+				int thise = edgesOf(e), othere = other.edgesOf(e);
+				int thisse = this.solvedEdgesOfType(e), otherse = other.solvedEdgesOfType(e);
+				return false;
+			}
+		}
+
+		// must be 1->1
+		// map v -> possibles
+		// start with the ones with the least possibilities
+		
+//		if (recurse)
+//		{
+//			Set<Edge> others = new HashSet<>(other.getEdges());
+//			for (Edge e : edges.values())
+//			{
+//				Vertex v = e.getTo();
+//
+//				boolean found = false;
+//				List<Vertex> lv = new ArrayList();
+//				for (Edge e2 : others)
+//				{
+//					Vertex v2 = e2.getTo();
+//					lv.add(v2);
+//
+//					recurse = false;
+//					if (v.couldBeEqual(v2))
+//				//	if (e.couldBeEqual(e2))
+//					{
+//						recurse = true;
+//					//	others.remove(e2);
+//						found = true;
+//						break;
+//					}
+//					recurse = true;
+//				}
+//
+//				if (!found)
+//				{
+//					Vertex v2 = null;
+//					for (Vertex vt : lv)
+//						if (vt.getObject() instanceof Method)
+//						{
+//							Method m = (Method) vt.getObject();
+//							if (m.getName().equals("vmethod2975"))
+//							{
+//								v2 = vt;
+//								break;
+//							}
+//						}
+//					//v.couldBeEqual(v2);
+//					return false;
+//				}
+//			}
+//		}
 		
 		if (this.getType() == VertexType.METHOD)
 		{
@@ -336,6 +407,8 @@ public class Vertex
 					return false;
 			}
 			
+			// compare other edges, 
+			
 			ConstantValue cf1 = (ConstantValue) f1.getAttributes().findType(AttributeType.CONSTANT_VALUE);
 			ConstantValue cf2 = (ConstantValue) f2.getAttributes().findType(AttributeType.CONSTANT_VALUE);
 			
@@ -346,5 +419,19 @@ public class Vertex
 			assert false;
 		
 		return true;
+	}
+	
+	private int edgesOf(EdgeType type)
+	{
+		int t = 0;
+		for (Edge e : this.edges.values())
+			if (e.getType() == type)
+				++t;
+		return t;
+	}
+	
+	private int solvedEdgesOfType(EdgeType type)
+	{
+		return (int) edges.values().stream().filter(e -> e.getType() == type).filter(e -> e.getTo().getOther() != null).count();
 	}
 }

@@ -236,8 +236,8 @@ public class Execution
 			
 			if (fi instanceof SetFieldInstruction && frame.lastField != null)
 			{
-				graph.addEdge(new MethodEdge(i, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(frame.lastField), EdgeType.PREV_FIELD, frame.nonStatic));
-				graph.addEdge(new MethodEdge(i, graph.getVertexFor(frame.lastField), graph.getVertexFor(fi.getMyField()), EdgeType.PREV_FIELD_FROM, frame.nonStatic));
+				//graph.addEdge(new MethodEdge(i, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(frame.lastField), EdgeType.PREV_FIELD, frame.nonStatic));
+				//graph.addEdge(new MethodEdge(i, graph.getVertexFor(frame.lastField), graph.getVertexFor(fi.getMyField()), EdgeType.PREV_FIELD_FROM, frame.nonStatic));
 			}
 			
 //			if (fi instanceof SetFieldInstruction)
@@ -256,36 +256,36 @@ public class Execution
 //				}
 //			}
 			
-			// associated fields
-			for (InstructionContext ic : getInsInExpr(ctx, new HashSet<>()))
-			{
-				Instruction i2 = (Instruction) ic.getInstruction();
-				
-				if (i2 instanceof FieldInstruction)
-				{
-					FieldInstruction fi2 = (FieldInstruction) i2;
-					
-					if (fi2.getMyField() == null)
-						continue;
-					
-					// these are within the context of a method
-					graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(fi2.getMyField()), EdgeType.FIELD_ASSOCIATION, frame.nonStatic));
-					graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi2.getMyField()), graph.getVertexFor(fi.getMyField()), EdgeType.FIELD_ASSOCIATION_FROM, frame.nonStatic));
-				}
-				else if (i2 instanceof InvokeInstruction)
-				{
-					InvokeInstruction ii2 = (InvokeInstruction) i2;
-					
-					if (ii2 instanceof InvokeStatic)
-						continue;
-					
-					for (Method m : ii2.getMethods())
-					{
-						graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(m), EdgeType.METHOD_ASSOCIATION, frame.nonStatic));
-						graph.addEdge(new MethodEdge(i2, graph.getVertexFor(m), graph.getVertexFor(fi.getMyField()), EdgeType.METHOD_ASSOCIATION_FROM, frame.nonStatic));
-					}
-				}
-			}
+//			// associated fields
+//			for (InstructionContext ic : getInsInExpr(ctx, new HashSet<>()))
+//			{
+//				Instruction i2 = (Instruction) ic.getInstruction();
+//				
+//				if (i2 instanceof FieldInstruction)
+//				{
+//					FieldInstruction fi2 = (FieldInstruction) i2;
+//					
+//					if (fi2.getMyField() == null)
+//						continue;
+//					
+//					// these are within the context of a method
+//					graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(fi2.getMyField()), EdgeType.FIELD_ASSOCIATION, frame.nonStatic));
+//					graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi2.getMyField()), graph.getVertexFor(fi.getMyField()), EdgeType.FIELD_ASSOCIATION_FROM, frame.nonStatic));
+//				}
+//				else if (i2 instanceof InvokeInstruction)
+//				{
+//					InvokeInstruction ii2 = (InvokeInstruction) i2;
+//					
+//					if (ii2 instanceof InvokeStatic)
+//						continue;
+//					
+//					for (Method m : ii2.getMethods())
+//					{
+//						graph.addEdge(new MethodEdge(i2, graph.getVertexFor(fi.getMyField()), graph.getVertexFor(m), EdgeType.METHOD_ASSOCIATION, frame.nonStatic));
+//						graph.addEdge(new MethodEdge(i2, graph.getVertexFor(m), graph.getVertexFor(fi.getMyField()), EdgeType.METHOD_ASSOCIATION_FROM, frame.nonStatic));
+//					}
+//				}
+//			}
 		}
 	}
 	
