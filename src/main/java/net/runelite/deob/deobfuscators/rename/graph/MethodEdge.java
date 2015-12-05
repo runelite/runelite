@@ -2,13 +2,13 @@ package net.runelite.deob.deobfuscators.rename.graph;
 
 import java.util.Objects;
 import net.runelite.deob.Method;
-import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.execution.InstructionContext;
 
 public class MethodEdge extends Edge
 {
 	private final Method method;
 
-	public MethodEdge(Instruction i, Vertex from, Vertex to, EdgeType type, Method method)
+	public MethodEdge(InstructionContext i, Vertex from, Vertex to, EdgeType type, Method method)
 	{
 		super(i, from, to, type);
 		this.method = method;

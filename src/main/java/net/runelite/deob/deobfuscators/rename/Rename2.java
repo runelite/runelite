@@ -195,46 +195,46 @@ public class Rename2
 		return fields;
 	}
 	
-	private void mapOneFrame(ClassGroup group, Execution e)
-	{
-		for (ClassFile cf : group.getClasses())
-		{
-			for (Method m : cf.getMethods().getMethods())
-			{
-				if (m.isStatic())
-					continue;
-				
-				List<Frame> frames = e.processedFrames.stream().filter(f -> f.getMethod() == m).collect(Collectors.toList());
-				
-				if (frames.size() != 1)
-					continue;
-				
-				int count = 0;
-				for (InstructionContext i : frames.get(0).getInstructions())
-				{
-					if (i.getInstruction() instanceof SetFieldInstruction)
-					{
-						SetFieldInstruction sfi = (SetFieldInstruction) i.getInstruction();
-						
-						Field f = sfi.getMyField();
-						if (f == null)
-							continue;
-						
-						Vertex methodVertex = e.getGraph().getVertexFor(m),
-							fieldVertex = e.getGraph().getVertexFor(f);
-						
-						Edge edge = new FieldEdge(i.getInstruction(), methodVertex, fieldVertex, EdgeType.SETFIELD, count);
-						e.getGraph().addEdge(edge);
-						
-						edge = new FieldEdge(i.getInstruction(), fieldVertex, methodVertex, EdgeType.SETFIELD_FROM, count);
-						e.getGraph().addEdge(edge);
-						
-						++count;
-					}
-				}
-			}
-		}
-	}
+//	private void mapOneFrame(ClassGroup group, Execution e)
+//	{
+//		for (ClassFile cf : group.getClasses())
+//		{
+//			for (Method m : cf.getMethods().getMethods())
+//			{
+//				if (m.isStatic())
+//					continue;
+//				
+//				List<Frame> frames = e.processedFrames.stream().filter(f -> f.getMethod() == m).collect(Collectors.toList());
+//				
+//				if (frames.size() != 1)
+//					continue;
+//				
+//				int count = 0;
+//				for (InstructionContext i : frames.get(0).getInstructions())
+//				{
+//					if (i.getInstruction() instanceof SetFieldInstruction)
+//					{
+//						SetFieldInstruction sfi = (SetFieldInstruction) i.getInstruction();
+//						
+//						Field f = sfi.getMyField();
+//						if (f == null)
+//							continue;
+//						
+//						Vertex methodVertex = e.getGraph().getVertexFor(m),
+//							fieldVertex = e.getGraph().getVertexFor(f);
+//						
+//						Edge edge = new FieldEdge(i.getInstruction(), methodVertex, fieldVertex, EdgeType.SETFIELD, count);
+//						e.getGraph().addEdge(edge);
+//						
+//						edge = new FieldEdge(i.getInstruction(), fieldVertex, methodVertex, EdgeType.SETFIELD_FROM, count);
+//						e.getGraph().addEdge(edge);
+//						
+//						++count;
+//					}
+//				}
+//			}
+//		}
+//	}
 	
 	private void solve()
 	{

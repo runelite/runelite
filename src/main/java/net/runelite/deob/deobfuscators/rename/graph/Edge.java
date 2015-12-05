@@ -1,16 +1,19 @@
 package net.runelite.deob.deobfuscators.rename.graph;
 
+import java.util.Arrays;
 import java.util.Objects;
-import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
+import net.runelite.deob.execution.InstructionContext;
+import net.runelite.deob.execution.StackContext;
 
 public class Edge
 {
-	private final Instruction ins; // craetor
+	private final InstructionContext ins;
 	private final Vertex from, to;
 	private final EdgeType type;
 	private int weight;
 
-	public Edge(Instruction ins, Vertex from, Vertex to, EdgeType type)
+	public Edge(InstructionContext ins, Vertex from, Vertex to, EdgeType type)
 	{
 		this.ins = ins;
 		this.from = from;
@@ -20,7 +23,7 @@ public class Edge
 		assert from.getGraph() == to.getGraph();
 	}
 
-	public Instruction getIns()
+	public InstructionContext getIns()
 	{
 		return ins;
 	}
@@ -102,9 +105,40 @@ public class Edge
 		if (this.type != other.type)
 			return false;
 
+		if (this.type == EdgeType.SETFIELD)
+		{
+			if (!compareSetField(other.getIns()))
+				return false;
+		}
 //		if (this.weight != other.weight)
 //			return false;
 		
 		return true;
+	}
+	
+	private InstructionContext handleDup(InstructionContext i, StackContext sctx)
+	{
+		DupInstruction d = (DupInstruction) i.getInstruction();
+		return d.getOriginal(sctx).getPushed();
+	}
+	
+	private boolean compareSetField(InstructionContext other)
+	{
+		InstructionContext thisp = ins.getPops().get(0).getPushed(),
+			otherp = other.getPops().get(0).getPushed();
+		
+		if (thisp.getInstruction() instanceof DupInstruction)
+		{
+			thisp = handleDup(thisp, ins.getPops().get(0));
+		}
+		if (otherp.getInstruction() instanceof DupInstruction)
+		{
+			otherp = handleDup(otherp, other.getPops().get(0));
+		}
+		
+		Class[] c1 = thisp.getInstruction().getClass().getInterfaces(),
+			c2 = otherp.getInstruction().getClass().getInterfaces();
+		
+		return Arrays.equals(c1, c2);
 	}
 }
