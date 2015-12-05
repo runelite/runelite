@@ -1,12 +1,13 @@
 package net.runelite.deob.deobfuscators.rename.graph;
 
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.execution.InstructionContext;
 
 public class FieldEdge extends Edge
 {
 	private int id;
 	
-	public FieldEdge(Instruction ins, Vertex from, Vertex to, EdgeType type, int id)
+	public FieldEdge(InstructionContext ins, Vertex from, Vertex to, EdgeType type, int id)
 	{
 		super(ins, from, to, type);
 		this.id = id;

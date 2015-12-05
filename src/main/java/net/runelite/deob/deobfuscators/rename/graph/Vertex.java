@@ -36,7 +36,7 @@ public class Vertex
 	private Collection<Vertex> mightBe;
 	private Vertex is;
 	
-	private Set<Instruction> edgeFrom = new HashSet<>();
+	//private Set<Instruction> edgeFrom = new HashSet<>();
 
 	public Vertex(Graph graph, Object object)
 	{
@@ -110,11 +110,11 @@ public class Vertex
 		Edge c = edges.get(edge);
 		if (c != null)
 		{
-			if (edge.getIns() instanceof SetFieldInstruction && !edgeFrom.contains(edge.getIns()))
-			{
-				edgeFrom.add(edge.getIns());
-				c.increase();
-			}
+//			if (edge.getIns() instanceof SetFieldInstruction && !edgeFrom.contains(edge.getIns()))
+//			{
+//				edgeFrom.add(edge.getIns());
+//				c.increase();
+//			}
 			return;
 		}
 		
