@@ -246,27 +246,20 @@ public class Rename2
 			
 			assert s.getGraph() != other.getGraph();
 			
-			boolean b =false;
-			if (s.toString().equals("Vertex{object=B[] class118.field1980}")
-				&& other.toString().equals("Vertex{object=B[] class118.field1986}"))
-			{
-				b=true;
-			}
-			
 			for (Edge e : s.getEdges())
 			{
 				assert e.getFrom() == s;
+				
+				boolean b = false;
+				if (e.toString().equals("Edge{from=Vertex{object=client.init()V}, to=Vertex{object=static Ljava/lang/String;[] class14.field209}, type=SETFIELD}"))
+				{
+					b = true;
+				}
 				
 				if (e.getTo().getOther() != null)
 					continue; // skip solved edges
 
 				Vertex v = e.getTo(); // end of edge in g1
-	
-				boolean b2 = false;
-				if (b && v.toString().equals("Vertex{object=class118.method2566()B}"))
-				{
-					b2 = true;
-				}
 				
 				List<Vertex> l = new ArrayList<>();
 				for (Edge e2 : other.getEdges())
@@ -287,6 +280,11 @@ public class Rename2
 					{
 			//			System.out.println(e.getTo() + " != " + e2.getTo());
 						continue;
+					}
+					
+					if (b)
+					{
+						int i = 5;
 					}
 					
 					if (!e.couldBeEqual(e2))
@@ -397,13 +395,14 @@ public class Rename2
 		System.out.println("methods " +g1.solved(VertexType.METHOD));
 		System.out.println("f " +g1.solved(VertexType.FIELD));
 		
-		Vertex stored = null;
+		List<Edge> unsolved = new ArrayList<>();
+		//Vertex stored = null;
 		for (Vertex v : g1.getVerticies())
 		{
 			if (v.getOther() == null)
 				continue;
 			
-			if (v.getObject() instanceof Method) continue;
+			//if (v.getObject() instanceof Method) continue;
 			
 			//assert stored == null;
 			//stored = v;
@@ -412,9 +411,18 @@ public class Rename2
 			{
 				if (e.getTo().getOther() == null)
 				{
-					System.out.println("Edge " + e + " on vertex " + v + " is unsolved");
+					unsolved.add(e);
+					
+					if (e.getType() == EdgeType.SETFIELD)
+						System.out.println("Edge " + e + " is unsolved");
 				}
 			}
+		}
+		for (EdgeType t : EdgeType.values())
+		{
+			long count = unsolved.stream().filter(e -> e.getType() == t).count();
+			if (count >0)
+				System.out.println(t + " " + count);
 		}
 		
 //		NameMappings col = buildCollisionMap(one, two);
@@ -430,9 +438,10 @@ public class Rename2
 		
 //		for (Vertex v : g1.getVerticies())
 //		{
-//			if (v.getOther() != null)
-//				System.out.println(v.getObject() + " -> " + v.getOther().getOther());
-//			else
+////			if (v.getOther() != null)
+////				System.out.println(v.getObject() + " -> " + v.getOther().getOther());
+////			else
+//			if (v.getObject() instanceof Field)
 //				System.out.println(v.getObject() + " -> unk");
 //		}
 		

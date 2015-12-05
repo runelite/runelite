@@ -42,6 +42,12 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	}
 	
 	@Override
+	public String toString()
+	{
+		return "invokestatic " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod();
+	}
+	
+	@Override
 	public void load(DataInputStream is) throws IOException
 	{
 		method = this.getPool().getMethod(is.readUnsignedShort());
@@ -96,15 +102,6 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			// add possible method call to execution
 			Execution execution = frame.getExecution();
 			Frame f = execution.invoke(ins, method);
-			
-			if (f != null)
-			{
-				assert f.getMethod() == method;
-				//assert f.lastField == frame.lastField;
-				//assert f.staticReturn == frame;
-
-				//frame.stop();
-			}
 		}
 		
 		frame.addInstructionContext(ins);

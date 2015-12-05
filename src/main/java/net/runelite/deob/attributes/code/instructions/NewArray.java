@@ -21,6 +21,11 @@ public class NewArray extends Instruction
 	{
 		super(instructions, type, pc);
 	}
+
+	public int getArrayType()
+	{
+		return type;
+	}
 	
 	@Override
 	public void load(DataInputStream is) throws IOException

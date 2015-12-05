@@ -26,9 +26,7 @@ public class AAStore extends Instruction implements ArrayStore
 		StackContext index = stack.pop();
 		StackContext array = stack.pop();
 		
-		ins.pop(value);
-		ins.pop(index);
-		ins.pop(array);
+		ins.pop(value, index, array);
 		
 		frame.addInstructionContext(ins);
 	}
