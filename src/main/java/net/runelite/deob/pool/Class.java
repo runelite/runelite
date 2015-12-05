@@ -47,6 +47,12 @@ public class Class extends PoolEntry
 	{
 		index = pool.makeUTF8(name);
 	}
+
+	@Override
+	public java.lang.String toString()
+	{
+		return name;
+	}
 	
 	@Override
 	public boolean equals(Object other)

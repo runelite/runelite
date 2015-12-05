@@ -63,6 +63,15 @@ public class NameAndType extends PoolEntry
 		else
 			descriptorIndex = pool.makeUTF8(type.getFullType());
 	}
+
+	@Override
+	public java.lang.String toString()
+	{
+		if (type != null)
+			return name + " " + type;
+		else
+			return name + signature;
+	}
 	
 	@Override
 	public boolean equals(Object other)

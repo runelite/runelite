@@ -30,27 +30,19 @@ public class UnusedFields implements Deobfuscator
 					if (ins instanceof FieldInstruction)
 					{
 						FieldInstruction fi = (FieldInstruction) ins;
-						net.runelite.deob.pool.Field ff = fi.getField();
 						
-						// pool to Field
-						ClassFile clazz = group.findClass(ff.getClassEntry().getName());
-						if (clazz == null)
+						if (fi.getMyField() != field)
 							continue;
-						
-						Field f = clazz.findFieldDeep(ff.getNameAndType());
-						
-						if (field == f)
-						{
-							if (ins instanceof GetFieldInstruction)
-								++get;
-							if (ins instanceof SetFieldInstruction)
-								++set;
-						}
+
+						if (ins instanceof GetFieldInstruction)
+							++get;
+						if (ins instanceof SetFieldInstruction)
+							++set;
 					}
 				}
 			}
 		
-		if (get == 0 && set == 0)
+		if (get == 0)
 			return true;
 		
 		return false;

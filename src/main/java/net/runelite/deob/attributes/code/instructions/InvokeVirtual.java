@@ -35,6 +35,12 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	}
 	
 	@Override
+	public String toString()
+	{
+		return "invokevirtual " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod();
+	}
+	
+	@Override
 	public void load(DataInputStream is) throws IOException
 	{
 		method = this.getPool().getMethod(is.readUnsignedShort());
