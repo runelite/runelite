@@ -12,6 +12,7 @@ import net.runelite.deob.execution.Type;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class NewArray extends Instruction
 {
@@ -77,9 +78,11 @@ public class NewArray extends Instruction
 			case 11:
 				t = long.class;
 				break;
+			default:
+				throw new IllegalStateException("unknown array type " + type);
 		}
 		
-		StackContext ctx = new StackContext(ins, new Type(t.getName()));
+		StackContext ctx = new StackContext(ins, new Type(t.getName()), Value.newArray(count.getValue()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

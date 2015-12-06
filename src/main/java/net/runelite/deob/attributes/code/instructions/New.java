@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.execution.Value;
 
 public class New extends Instruction
 {
@@ -46,7 +47,7 @@ public class New extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, new Type(clazz.getName()));
+		StackContext ctx = new StackContext(ins, new Type(clazz.getName()), Value.NULL);
 		stack.push(ctx);
 		
 		ins.push(ctx);

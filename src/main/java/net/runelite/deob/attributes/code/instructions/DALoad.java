@@ -27,7 +27,7 @@ public class DALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, double.class);
+		StackContext ctx = new StackContext(ins, double.class, array.getValue().arrayGet(index.getValue()).cast(double.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

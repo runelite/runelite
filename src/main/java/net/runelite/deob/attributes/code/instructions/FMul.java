@@ -7,6 +7,7 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.execution.Value;
 
 public class FMul extends Instruction
 {
@@ -21,12 +22,21 @@ public class FMul extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext one = stack.pop();
 		StackContext two = stack.pop();
+		StackContext one = stack.pop();
 		
-		ins.pop(one, two);
+		ins.pop(two, one);
 		
-		StackContext ctx = new StackContext(ins, float.class);
+		Value result = Value.NULL;
+		if (!two.getValue().isNull() && !one.getValue().isNull())
+		{
+			float f2 = (float) two.getValue().getValue(),
+				f1 = (float) one.getValue().getValue();
+			
+			result = new Value(f1 * f2);
+		}
+		
+		StackContext ctx = new StackContext(ins, float.class, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

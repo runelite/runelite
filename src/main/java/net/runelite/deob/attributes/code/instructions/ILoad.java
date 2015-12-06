@@ -73,7 +73,7 @@ public class ILoad extends Instruction implements LVTInstruction, WideInstructio
 		assert vctx.getType().equals(new Type(int.class.getName()));
 		ins.read(vctx);
 		
-		StackContext ctx = new StackContext(ins, vctx.getType());
+		StackContext ctx = new StackContext(ins, vctx);
 		stack.push(ctx);
 		
 		ins.push(ctx);

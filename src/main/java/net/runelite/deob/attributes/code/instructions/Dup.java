@@ -27,12 +27,12 @@ public class Dup extends Instruction implements DupInstruction
 		StackContext obj = stack.pop();
 		ins.pop(obj);
 		
-		StackContext ctx = new StackContext(ins, obj.getType());
+		StackContext ctx = new StackContext(ins, obj.getType(), obj.getValue());
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
-		ctx = new StackContext(ins, obj.getType());
+		ctx = new StackContext(ins, obj.getType(), obj.getValue());
 		stack.push(ctx);
 		
 		ins.push(ctx);

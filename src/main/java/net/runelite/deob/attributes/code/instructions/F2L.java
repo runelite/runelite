@@ -26,7 +26,7 @@ public class F2L extends Instruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, long.class);
+		StackContext ctx = new StackContext(ins, long.class, object.getValue().cast(long.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

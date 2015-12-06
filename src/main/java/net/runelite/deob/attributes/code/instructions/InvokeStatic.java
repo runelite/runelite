@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.execution.Execution;
+import net.runelite.deob.execution.Value;
 
 public class InvokeStatic extends Instruction implements InvokeInstruction
 {
@@ -83,7 +84,10 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		
 		if (!method.getNameAndType().isVoid())
 		{
-			StackContext ctx = new StackContext(ins, new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType());
+			StackContext ctx = new StackContext(ins,
+				new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType(),
+				Value.NULL
+			);
 			stack.push(ctx);
 			
 			ins.push(ctx);

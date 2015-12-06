@@ -9,6 +9,7 @@ import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class DCmpG extends Instruction
 {
@@ -23,12 +24,26 @@ public class DCmpG extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext one = stack.pop();
 		StackContext two = stack.pop();
+		StackContext one = stack.pop();
 		
-		ins.pop(one, two);
+		ins.pop(two, one);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		Value result = Value.NULL;
+		if (!two.getValue().isNull() && !one.getValue().isNull())
+		{
+			double d2 = (double) two.getValue().getValue(),
+				d1 = (double) one.getValue().getValue();
+			
+			if (d1 > d2)
+				result = new Value(1);
+			else if (d1 == d2)
+				result = new Value(0);
+			else if (d1 < d2)
+				result = new Value(-1);
+		}
+		
+		StackContext ctx = new StackContext(ins, int.class, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

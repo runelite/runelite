@@ -30,7 +30,7 @@ public class ALoad_1 extends Instruction implements LVTInstruction
 		VariableContext vctx = var.get(1);
 		ins.read(vctx);
 		
-		StackContext ctx = new StackContext(ins, vctx.getType());
+		StackContext ctx = new StackContext(ins, vctx);
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -71,7 +71,7 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 		VariableContext vctx = var.get(index);
 		ins.read(vctx);
 		
-		StackContext ctx = new StackContext(ins, vctx.getType());
+		StackContext ctx = new StackContext(ins, vctx);
 		stack.push(ctx);
 		
 		ins.push(ctx);

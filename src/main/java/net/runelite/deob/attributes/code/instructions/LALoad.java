@@ -27,7 +27,7 @@ public class LALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, long.class);
+		StackContext ctx = new StackContext(ins, long.class, array.getValue().arrayGet(index.getValue()).cast(long.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

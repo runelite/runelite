@@ -26,7 +26,7 @@ public class I2C extends Instruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, int.class); // sign extended
+		StackContext ctx = new StackContext(ins, int.class, object.getValue().cast(int.class)); // sign extended
 		stack.push(ctx);
 		
 		ins.push(ctx);

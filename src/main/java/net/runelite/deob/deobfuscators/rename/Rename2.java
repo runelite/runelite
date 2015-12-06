@@ -276,6 +276,8 @@ public class Rename2
 //						}
 //					}
 					
+					// e Edge{from=Vertex{object=client.init()V}, to=Vertex{object=static Ljava/lang/String;[] class14.field209}, type=SETFIELD}
+					// e2 Edge{from=Vertex{object=client.init()V}, to=Vertex{object=static Ljava/lang/String;[] class89.field1550}, type=SETFIELD}
 					if (!e.getTo().couldBeEqual(e2.getTo()))
 					{
 			//			System.out.println(e.getTo() + " != " + e2.getTo());

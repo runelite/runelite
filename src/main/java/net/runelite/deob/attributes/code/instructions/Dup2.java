@@ -35,26 +35,26 @@ public class Dup2 extends Instruction implements DupInstruction
 		
 		if (two != null)
 		{
-			StackContext ctx = new StackContext(ins, two.getType());
+			StackContext ctx = new StackContext(ins, two.getType(), two.getValue());
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
-		StackContext ctx = new StackContext(ins, one.getType());
+		StackContext ctx = new StackContext(ins, one.getType(), one.getValue());
 		stack.push(one);
 		
 		ins.push(ctx);
 
 		if (two != null)
 		{
-			ctx = new StackContext(ins, two.getType());
+			ctx = new StackContext(ins, two.getType(), two.getValue());
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
-		ctx = new StackContext(ins, one.getType());
+		ctx = new StackContext(ins, one.getType(), one.getValue());
 		stack.push(one);
 		
 		ins.push(ctx);

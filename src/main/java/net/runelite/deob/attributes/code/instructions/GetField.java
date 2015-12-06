@@ -17,6 +17,7 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class GetField extends Instruction implements GetFieldInstruction
 {
@@ -51,7 +52,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType());
+		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()).toStackType(), Value.NULL);
 		stack.push(ctx);
 		
 		ins.push(ctx);

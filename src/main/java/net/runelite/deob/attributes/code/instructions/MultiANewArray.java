@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.execution.Value;
 
 public class MultiANewArray extends Instruction
 {
@@ -49,14 +50,17 @@ public class MultiANewArray extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
+		Value[] lenghts = new Value[dimensions];
 		for (int i = 0; i < dimensions; ++i)
 		{
 			StackContext ctx = stack.pop();
 			ins.pop(ctx);
+			
+			lenghts[i] = ctx.getValue();
 		}
 		
 		Type t = new Type(new net.runelite.deob.signature.Type(clazz.getName()));
-		StackContext ctx = new StackContext(ins, t);
+		StackContext ctx = new StackContext(ins, t, Value.newArray(lenghts));
 		stack.push(ctx);
 		
 		ins.push(ctx);

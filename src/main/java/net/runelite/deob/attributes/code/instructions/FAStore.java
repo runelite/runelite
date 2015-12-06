@@ -28,6 +28,8 @@ public class FAStore extends Instruction implements ArrayStore
 		
 		ins.pop(value, index, array);
 		
+		array.getValue().arraySet(index.getValue(), value.getValue());
+		
 		frame.addInstructionContext(ins);
 	}
 }

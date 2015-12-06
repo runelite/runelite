@@ -26,7 +26,7 @@ public class F2D extends Instruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, double.class);
+		StackContext ctx = new StackContext(ins, double.class, object.getValue().cast(double.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

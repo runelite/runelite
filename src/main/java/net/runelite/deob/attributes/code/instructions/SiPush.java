@@ -13,6 +13,7 @@ import net.runelite.deob.pool.PoolEntry;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class SiPush extends Instruction implements PushConstantInstruction
 {
@@ -49,7 +50,7 @@ public class SiPush extends Instruction implements PushConstantInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, int.class); // sign extend
+		StackContext ctx = new StackContext(ins, int.class, new Value((int) s)); // sign extend
 		stack.push(ctx);
 		
 		ins.push(ctx);

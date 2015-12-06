@@ -26,7 +26,7 @@ public class F2I extends Instruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		StackContext ctx = new StackContext(ins, int.class, object.getValue().cast(int.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

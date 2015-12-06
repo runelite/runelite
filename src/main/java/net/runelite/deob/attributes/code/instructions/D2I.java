@@ -27,7 +27,7 @@ public class D2I extends Instruction
 		
 		ins.pop(value);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		StackContext ctx = new StackContext(ins, int.class, value.getValue().cast(int.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

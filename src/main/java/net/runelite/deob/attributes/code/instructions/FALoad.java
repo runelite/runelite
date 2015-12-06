@@ -27,7 +27,7 @@ public class FALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, float.class);
+		StackContext ctx = new StackContext(ins, float.class, array.getValue().arrayGet(index.getValue()).cast(float.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

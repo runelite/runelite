@@ -7,6 +7,7 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.execution.Value;
 
 public class DNeg extends Instruction
 {
@@ -24,7 +25,15 @@ public class DNeg extends Instruction
 		StackContext value = stack.pop();
 		ins.pop(value);
 		
-		StackContext ctx = new StackContext(ins, double.class);
+		Value result = Value.NULL;
+		if (!value.getValue().isNull())
+		{
+			double d = (double) value.getValue().getValue();
+			
+			result = new Value(-d);
+		}
+		
+		StackContext ctx = new StackContext(ins, double.class, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

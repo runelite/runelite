@@ -9,6 +9,7 @@ import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class AConstNull extends Instruction
 {
@@ -23,7 +24,7 @@ public class AConstNull extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, Object.class);
+		StackContext ctx = new StackContext(ins, Object.class, Value.NULL);
 		stack.push(ctx);
 		
 		ins.push(ctx);

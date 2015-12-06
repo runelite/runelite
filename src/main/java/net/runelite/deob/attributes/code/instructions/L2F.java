@@ -26,7 +26,7 @@ public class L2F extends Instruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, float.class);
+		StackContext ctx = new StackContext(ins, float.class, object.getValue().cast(float.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

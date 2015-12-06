@@ -27,7 +27,7 @@ public class IALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		StackContext ctx = new StackContext(ins, int.class, array.getValue().arrayGet(index.getValue()).cast(int.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);
