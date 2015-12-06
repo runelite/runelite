@@ -251,19 +251,15 @@ public class Rename2
 				assert e.getFrom() == s;
 				
 				boolean b = false;
-//				if (e.toString().equals("Edge{from=Vertex{object=class97.<init>()V}, to=Vertex{object=I class97.field1653}, type=SETFIELD}"))
-//				{
-//					b = true;
-//				}
 				
 				if (e.getTo().getOther() != null)
 					continue; // skip solved edges
 
 				Vertex v = e.getTo(); // end of edge in g1
-				if (v.toString().equals("Vertex{object=I class100.field1728}"))
-				{
-					b = true;
-				}
+//				if (v.toString().equals("Vertex{object=static J class114.field1961}"))
+//				{
+//					b = true;
+//				}
 				
 				List<Vertex> l = new ArrayList<>();
 				for (Edge e2 : other.getEdges())
@@ -271,29 +267,27 @@ public class Rename2
 					if (e2.getTo().getOther() != null)
 						continue; // skip solved edges
 					
+					if (e.toString().equals("Edge{from=Vertex{object=class139.mousePressed(Ljava/awt/event/MouseEvent;)V}, to=Vertex{object=static J class114.field1961}, type=SETFIELD}")
+						&& e2.toString().equals("Edge{from=Vertex{object=class139.mousePressed(Ljava/awt/event/MouseEvent;)V}, to=Vertex{object=static J class114.field1962}, type=SETFIELD}"))
+						b = true;
+					
+					if (b && e.getType() == EdgeType.SETFIELD && e2.getType() == EdgeType.SETFIELD)
+					{
+						//Edge{from=Vertex{object=class139.mousePressed(Ljava/awt/event/MouseEvent;)V}, to=Vertex{object=static J class114.field1961}, type=SETFIELD}
+						//Edge{from=Vertex{object=class139.mousePressed(Ljava/awt/event/MouseEvent;)V}, to=Vertex{object=static J class114.field1962}, type=SETFIELD}
+						int i = 5;
+					}
+					
 					if (!e.getTo().couldBeEqual(e2.getTo()))
 					{
 			//			System.out.println(e.getTo() + " != " + e2.getTo());
 						continue;
 					}
 					
-					if (b && e.getType() == EdgeType.SETFIELD && e2.getType() == EdgeType.SETFIELD)
-					{
-						int i = 5;
-					}
-					
 					if (!e.couldBeEqual(e2))
 					{
-						//Edge{from=Vertex{object=class96.<init>(IIIIIIIIIIIIIIIIIII)V}, to=Vertex{object=I[] class96.field1630}, type=SETFIELD}
-						//Edge{from=Vertex{object=class96.<init>(IIIIIIIIIIIIIIIIIII)V}, to=Vertex{object=I[] class96.field1632}, type=GETFIELD}
+						e.couldBeEqual(e2);
 						
-						//if (e.getTo().toString().equals("Vertex{object=I[] class96.field1630}") && e.getType() == EdgeType.SETFIELD
-						//	&& e2.getTo().toString().equals("Vertex{object=I[] class96.field1632}") && e2.getType() == EdgeType.SETFIELD)
-						{
-							e.couldBeEqual(e2);
-						}
-						
-				//		System.out.println(e + " != " + e2);
 						continue;
 					}
 					
