@@ -138,4 +138,10 @@ public class InstructionContext
 		hash = 73 * hash + Objects.hashCode(this.ins);
 		return hash;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "InstructionContext{" + "ins=" + ins + '}';
+	}
 }

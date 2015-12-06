@@ -48,12 +48,12 @@ public class Frame
 		// initialize LVT
 		int pos = 0;
 		if (!method.isStatic())
-			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())));
+			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())).markParameter());
 		
 		NameAndType nat = method.getNameAndType();
 		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
 		{
-			variables.set(pos, new VariableContext(new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()));
+			variables.set(pos, new VariableContext(new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()).markParameter());
 			pos += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		
@@ -69,9 +69,6 @@ public class Frame
 		if (this.getMethod().isStatic())
 		{
 			this.nonStatic = ctx.getFrame().nonStatic;
-//			this.lastField = ctx.getFrame().lastField;
-//			this.staticReturn = ctx.getFrame();
-			//this.ctx = ctx.getFrame().ctx;
 		}
 		
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
@@ -80,7 +77,7 @@ public class Frame
 		
 		int lvtOffset = 0;
 		if (!method.isStatic())
-			variables.set(lvtOffset++, new VariableContext(ctx, pops.remove(0)));
+			variables.set(lvtOffset++, new VariableContext(ctx, pops.remove(0)).markParameter());
 
 		NameAndType nat = method.getNameAndType();
 		
@@ -88,7 +85,7 @@ public class Frame
 		{
 			StackContext argument = pops.remove(0);
 			
-			variables.set(lvtOffset, new VariableContext(ctx, argument));
+			variables.set(lvtOffset, new VariableContext(ctx, argument).markParameter());
 			lvtOffset += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		

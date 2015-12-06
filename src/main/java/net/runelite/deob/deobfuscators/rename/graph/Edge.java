@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators.rename.graph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -9,6 +10,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.attributes.code.instructions.NewArray;
@@ -162,7 +164,10 @@ public class Edge
 
 				InstructionContext storedCtx = vctx.getInstructionWhichStored();
 				if (storedCtx == null)
-					return ctx; // parameter?
+					return ctx; // initial parameter
+				
+				if (vctx.isIsParameter())
+					return ctx; // parameter (storedCtx is invoking instruction in another frame). this lvt index is fixed.
 				
 				return resolve(storedCtx, null);
 			}
@@ -171,44 +176,70 @@ public class Edge
 		return ctx;
 	}
 	
-//	private static final String[][] map = {
-//		{"field1989", "field2042"},
-//		{"field164", "field2156"},
-//		{"field2904", "field2881"},
-//		{"field296", "field287"},
-//		{"field297", "field425"},
-//		{"field416", "field420"},
-//		{"field329", "field331"},
-//		{"field2203", "field2216"},
-//		{"field2202", "field2222"},
-//		{"field2100", "field2109"},
-//	};
-//	
-//	private boolean isEqual(SetFieldInstruction sf1, SetFieldInstruction sf2)
-//	{
-//		for (int i = 0; i < map.length; ++i)
+	private List<InstructionContext> resolveUp(
+		List<InstructionContext> ctxs,
+		StackContext from // popped by ctxs
+	)
+	{
+		List<InstructionContext> list = new ArrayList<>();
+		
+		for (InstructionContext ctx : ctxs)
+		{
+			if (ctx.getInstruction() instanceof DupInstruction)
+			{
+				DupInstruction d = (DupInstruction) ctx.getInstruction();
+				//StackContext s = d.
+				//return resolve(s.getPushed(), s);
+			}
+
+			list.add(ctx);
+		}
+		
+		return list;
+//		if (ctx.getInstruction() instanceof SetFieldInstruction)
 //		{
-//			if (sf1.getMyField() != null && sf1.getMyField().getName().equals(map[i][0]) &&
-//				sf2.getMyField() != null && sf2.getMyField().getName().equals(map[i][1]))
-//				return true;
+//			StackContext s = ctx.getPops().get(0);
+//			return resolve(s.getPushed(), s);
 //		}
-//		return false;
-//	}
+//		
+
+//		
+//		if (ctx.getInstruction() instanceof LVTInstruction)
+//		{
+//			LVTInstruction lvt = (LVTInstruction) ctx.getInstruction();
+//			Variables variables = ctx.getVariables();
+//			
+//			if (lvt.store())
+//			{
+//				StackContext s = ctx.getPops().get(0); // is this right?
+//				return resolve(s.getPushed(), s);
+//			}
+//			else
+//			{
+//				VariableContext vctx = variables.get(lvt.getVariableIndex()); // variable being loaded
+//				assert vctx != null;
+//
+//				InstructionContext storedCtx = vctx.getInstructionWhichStored();
+//				if (storedCtx == null)
+//					return ctx; // parameter?
+//				
+//				return resolve(storedCtx, null);
+//			}
+//		}
+		
+	//	return ctx;
+	}
 	
 	private boolean compareSetField(Field field1, Field field2, InstructionContext other)
 	{
 		InstructionContext thisp = resolve(ins.getPops().get(0).getPushed(), ins.getPops().get(0)),
 			otherp = resolve(other.getPops().get(0).getPushed(), other.getPops().get(0));
 
-		return couldBeEqual(field1, field2, thisp, otherp);
+		return couldBeEqual(field1, field2, thisp, otherp, null);
 	}
 	
-	private boolean couldBeEqual(Field field1, Field field2, InstructionContext one, InstructionContext two)
+	private boolean couldBeEqual(Field field1, Field field2, InstructionContext one, InstructionContext two, InstructionContext from)
 	{
-		if (field2.getName().equals("field209"))
-		{
-			int i =5;
-		}
 		Instruction i1 = one.getInstruction(), i2 = two.getInstruction();
 		
 		if (i1 instanceof LVTInstruction && i2 instanceof LVTInstruction)
@@ -221,8 +252,12 @@ public class Edge
 			VariableContext v1 = one.getVariables().get(l1.getVariableIndex()),
 				v2 = two.getVariables().get(l2.getVariableIndex());
 			
-			assert v1.getInstructionWhichStored() == null;
-			assert v2.getInstructionWhichStored() == null;
+			assert v1.isIsParameter();
+			assert v2.isIsParameter();
+			
+			// resolve() resolves these unless they are parameters, so compare indexes
+			if (l1.getVariableIndex() != l2.getVariableIndex())
+				return false;
 			
 			return v1.getType().equals(v2.getType());
 		}
@@ -262,10 +297,65 @@ public class Edge
 			//int i = 5;
 		}
 		
+		if (i1 instanceof PushConstantInstruction && i2 instanceof PushConstantInstruction)
+		{
+			PushConstantInstruction pc1 = (PushConstantInstruction) i1, pc2 = (PushConstantInstruction) i2;
+			
+			return pc1.getConstant().equals(pc2.getConstant());
+		}
+		
 		if (!i1.getClass().equals(i2.getClass()))
 		{
 			return false;
 		}
+		
+		// check down
+		assert one.getPops().size() == two.getPops().size();
+		for (int i = 0; i < one.getPops().size(); ++i)
+		{
+			StackContext s1 = one.getPops().get(i), s2 = two.getPops().get(i);
+			
+			if (resolve(s1.getPushed(), s1) == from)
+				continue;
+			
+			if (!couldBeEqual(
+				field1, field2,
+				resolve(s1.getPushed(), s1),
+				resolve(s2.getPushed(), s2),
+				one
+			))
+				return false;
+		}
+		
+		// check up
+//		assert one.getPushes().size() == two.getPushes().size();
+//		for (int i = 0; i < one.getPushes().size(); ++i)
+//		{
+//			StackContext s1 = one.getPushes().get(i), s2 = two.getPushes().get(i);
+//			List<InstructionContext> p1 = s1.getPopped(), p2 = s2.getPopped(); // instructions which popped the push
+//			
+//			assert p1.size() == p2.size();
+//			
+//			//resolveUp(p1, s1);
+//			
+//			for (int j = 0; j < p1.size(); ++i)
+//			{
+//				InstructionContext ic1 = p1.get(j), ic2 = p2.get(j);
+//				
+//				if (from == ic1)
+//					continue;
+//				
+////				resolveUp(ic1, s1);
+////				resolveUp(ic2, s2);
+//				
+//				if (!couldBeEqual(
+//					field1, field2,
+//					ic1, ic2,
+//					one
+//				)) {}
+//					//return false;
+//			}
+//		}
 		
 		return true;
 	}

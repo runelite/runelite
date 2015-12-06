@@ -163,7 +163,7 @@ public class Rename2
 			Optional<Method> opt = m2.stream().filter(m2m -> m.getName().equals(m2m.getName()) && m.getDescriptor().equals(m2m.getDescriptor())).findAny();
 			if (!opt.isPresent())
 				continue;
-			
+
 			Vertex v1 = g1.getVertexFor(m);
 			Vertex v2 = g2.getVertexFor(opt.get());
 			
@@ -251,7 +251,7 @@ public class Rename2
 				assert e.getFrom() == s;
 				
 				boolean b = false;
-				if (e.toString().equals("Edge{from=Vertex{object=client.init()V}, to=Vertex{object=static Ljava/lang/String;[] class14.field209}, type=SETFIELD}"))
+				if (e.toString().equals("Edge{from=Vertex{object=class97.<init>()V}, to=Vertex{object=I class97.field1653}, type=SETFIELD}"))
 				{
 					b = true;
 				}
@@ -260,6 +260,10 @@ public class Rename2
 					continue; // skip solved edges
 
 				Vertex v = e.getTo(); // end of edge in g1
+				if (v.toString().equals("Vertex{object=I class97.field1653}"))
+				{
+					b = true;
+				}
 				
 				List<Vertex> l = new ArrayList<>();
 				for (Edge e2 : other.getEdges())
@@ -267,17 +271,6 @@ public class Rename2
 					if (e2.getTo().getOther() != null)
 						continue; // skip solved edges
 					
-//					if (b2)
-//					{
-//						Method m = (Method) e2.getTo().getObject();
-//						if (m.getName().equals("method2489"))
-//						{
-//							b2 = true;
-//						}
-//					}
-					
-					// e Edge{from=Vertex{object=client.init()V}, to=Vertex{object=static Ljava/lang/String;[] class14.field209}, type=SETFIELD}
-					// e2 Edge{from=Vertex{object=client.init()V}, to=Vertex{object=static Ljava/lang/String;[] class89.field1550}, type=SETFIELD}
 					if (!e.getTo().couldBeEqual(e2.getTo()))
 					{
 			//			System.out.println(e.getTo() + " != " + e2.getTo());
@@ -300,7 +293,10 @@ public class Rename2
 					l.add(v2);
 				}
 				
-				v.merge(l);
+				if (b)
+					v.merge(l);
+				else
+					v.merge(l);
 			}
 		}
 	}

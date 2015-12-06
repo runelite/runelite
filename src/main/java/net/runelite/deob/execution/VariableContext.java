@@ -10,6 +10,7 @@ public class VariableContext
 	private Type type;
 	private List<InstructionContext> read = new ArrayList<>(); // instructions which reads this
 	private Value value;
+	private boolean isParameter; // if is a parameter. ctx will be the invoking method (in another frame)
 
 	public VariableContext(InstructionContext i, StackContext ctx)
 	{
@@ -68,5 +69,16 @@ public class VariableContext
 	public List<InstructionContext> getRead()
 	{
 		return read;
-	}	
+	}
+
+	public boolean isIsParameter()
+	{
+		return isParameter;
+	}
+	
+	public VariableContext markParameter()
+	{
+		isParameter = true;
+		return this;
+	}
 }
