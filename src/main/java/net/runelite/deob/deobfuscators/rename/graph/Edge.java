@@ -1,13 +1,14 @@
 package net.runelite.deob.deobfuscators.rename.graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
+import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
@@ -120,7 +121,9 @@ public class Edge
 
 		if (this.type == EdgeType.SETFIELD)// || this.type == EdgeType.SETFIELD_FROM)
 		{
-			if (!compareSetField((Field) this.getTo().getObject(), (Field) other.getTo().getObject(), other.getIns()))
+			if (!compareSetField(getGraph(), other.getGraph(),
+				(Field) this.getTo().getObject(), (Field) other.getTo().getObject(),
+				other.getIns()))
 				return false;
 		}
 //		if (this.weight != other.weight)
@@ -230,15 +233,15 @@ public class Edge
 	//	return ctx;
 	}
 	
-	private boolean compareSetField(Field field1, Field field2, InstructionContext other)
+	private boolean compareSetField(Graph g1, Graph g2, Field field1, Field field2, InstructionContext other)
 	{
 		InstructionContext thisp = resolve(ins.getPops().get(0).getPushed(), ins.getPops().get(0)),
 			otherp = resolve(other.getPops().get(0).getPushed(), other.getPops().get(0));
 
-		return couldBeEqual(field1, field2, thisp, otherp, null);
+		return couldBeEqual(g1, g2, field1, field2, thisp, otherp, null);
 	}
 	
-	private boolean couldBeEqual(Field field1, Field field2, InstructionContext one, InstructionContext two, InstructionContext from)
+	private boolean couldBeEqual(Graph g1, Graph g2, Field field1, Field field2, InstructionContext one, InstructionContext two, InstructionContext from)
 	{
 		Instruction i1 = one.getInstruction(), i2 = two.getInstruction();
 		
@@ -265,7 +268,8 @@ public class Edge
 		if (i1 instanceof NewArray && i2 instanceof NewArray)
 		{
 			NewArray a1 = (NewArray) i1, a2 = (NewArray) i2;
-			return a1.getArrayType() == a2.getArrayType();
+			if (a1.getArrayType() != a2.getArrayType())
+				return false;
 		}
 		
 		// XXX check for invokestatic vs.
@@ -294,7 +298,41 @@ public class Edge
 		else if (i1 instanceof InvokeStatic || i2 instanceof InvokeStatic)
 		{
 			return true;
-			//int i = 5;
+		}
+		
+		if (i1 instanceof FieldInstruction && i2 instanceof FieldInstruction)
+		{
+			assert i1 instanceof GetFieldInstruction;
+			assert i2 instanceof GetFieldInstruction;
+			
+			GetFieldInstruction gf1 = (GetFieldInstruction) i1, gf2 = (GetFieldInstruction) i2;
+			Field f1 = gf1.getMyField(), f2 = gf2.getMyField();
+			
+			if ((f1 != null) != (f2 != null))
+				return false;
+			
+			//if (f1 == null || f2 == null)
+			//	return
+			
+			if (!f1.getType().equals(f2.getType()))
+				return false;
+			
+			// lookup already solved fields.
+			
+			Vertex v1 = g1.getVertexFor(f1), v2 = g2.getVertexFor(f2); // vertex of fields whose value is being set to
+			
+			// get solved field
+			v1 = v1.getOther();
+			v2 = v2.getOther();
+			
+			if ((v1 != null) != (v2 != null))
+				return false;
+			
+			if (v1 != null || v2 != null)
+			{
+				if (v1.getObject() != f2 || v2.getObject() != f1)
+					return false;
+			}
 		}
 		
 		if (i1 instanceof PushConstantInstruction && i2 instanceof PushConstantInstruction)
@@ -319,6 +357,7 @@ public class Edge
 				continue;
 			
 			if (!couldBeEqual(
+				g1, g2,
 				field1, field2,
 				resolve(s1.getPushed(), s1),
 				resolve(s2.getPushed(), s2),
@@ -358,5 +397,11 @@ public class Edge
 //		}
 		
 		return true;
+	}
+	
+	private Graph getGraph()
+	{
+		assert from.getGraph() == to.getGraph();
+		return from.getGraph();
 	}
 }

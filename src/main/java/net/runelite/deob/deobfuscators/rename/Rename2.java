@@ -251,16 +251,16 @@ public class Rename2
 				assert e.getFrom() == s;
 				
 				boolean b = false;
-				if (e.toString().equals("Edge{from=Vertex{object=class97.<init>()V}, to=Vertex{object=I class97.field1653}, type=SETFIELD}"))
-				{
-					b = true;
-				}
+//				if (e.toString().equals("Edge{from=Vertex{object=class97.<init>()V}, to=Vertex{object=I class97.field1653}, type=SETFIELD}"))
+//				{
+//					b = true;
+//				}
 				
 				if (e.getTo().getOther() != null)
 					continue; // skip solved edges
 
 				Vertex v = e.getTo(); // end of edge in g1
-				if (v.toString().equals("Vertex{object=I class97.field1653}"))
+				if (v.toString().equals("Vertex{object=I class100.field1728}"))
 				{
 					b = true;
 				}
@@ -277,16 +277,27 @@ public class Rename2
 						continue;
 					}
 					
-					if (b)
+					if (b && e.getType() == EdgeType.SETFIELD && e2.getType() == EdgeType.SETFIELD)
 					{
 						int i = 5;
 					}
 					
 					if (!e.couldBeEqual(e2))
 					{
+						//Edge{from=Vertex{object=class96.<init>(IIIIIIIIIIIIIIIIIII)V}, to=Vertex{object=I[] class96.field1630}, type=SETFIELD}
+						//Edge{from=Vertex{object=class96.<init>(IIIIIIIIIIIIIIIIIII)V}, to=Vertex{object=I[] class96.field1632}, type=GETFIELD}
+						
+						//if (e.getTo().toString().equals("Vertex{object=I[] class96.field1630}") && e.getType() == EdgeType.SETFIELD
+						//	&& e2.getTo().toString().equals("Vertex{object=I[] class96.field1632}") && e2.getType() == EdgeType.SETFIELD)
+						{
+							e.couldBeEqual(e2);
+						}
+						
 				//		System.out.println(e + " != " + e2);
 						continue;
 					}
+					
+					e.couldBeEqual(e2);
 					
 					Vertex v2 = e2.getTo();
 					
