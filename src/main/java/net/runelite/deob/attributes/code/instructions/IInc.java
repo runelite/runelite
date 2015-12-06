@@ -14,6 +14,7 @@ import net.runelite.deob.execution.Variables;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class IInc extends Instruction implements LVTInstruction, WideInstruction
 {
@@ -67,7 +68,15 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 		assert vctx.getType().equals(new Type(int.class.getCanonicalName()));
 		ins.read(vctx);
 		
-		vctx = new VariableContext(ins, vctx);
+		Value value = vctx.getValue();
+		if (!vctx.getValue().isNull())
+		{
+			int i = (int) vctx.getValue().getValue();
+			i += inc;
+			value = new Value(i);
+		}
+		
+		vctx = new VariableContext(ins, new Type(int.class.getCanonicalName()), value);
 		var.set(index, vctx);
 		
 		frame.addInstructionContext(ins);

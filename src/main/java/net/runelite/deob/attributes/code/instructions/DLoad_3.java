@@ -32,7 +32,7 @@ public class DLoad_3 extends Instruction implements LVTInstruction
 		assert vctx.getType().equals(new Type(double.class.getName()));
 		ins.read(vctx);
 		
-		StackContext ctx = new StackContext(ins, double.class);
+		StackContext ctx = new StackContext(ins, vctx);
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -14,6 +14,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.execution.Type;
 
 public class CheckCast extends Instruction
 {
@@ -49,7 +50,10 @@ public class CheckCast extends Instruction
 		
 		ins.pop(value);
 		
-		StackContext ctx = new StackContext(ins, value.getType());
+		StackContext ctx = new StackContext(ins,
+			new Type(new net.runelite.deob.signature.Type(clazz.getName())),
+			value.getValue()
+		);
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -13,6 +13,7 @@ import net.runelite.deob.pool.PoolEntry;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 import net.runelite.deob.pool.ConstantType;
 
 public class LDC_W extends Instruction implements PushConstantInstruction
@@ -100,7 +101,7 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, value.getTypeClass());
+		StackContext ctx = new StackContext(ins, value.getTypeClass(), new Value(value.getObject()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

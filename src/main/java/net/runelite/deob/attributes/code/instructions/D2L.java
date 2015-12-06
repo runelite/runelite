@@ -27,7 +27,7 @@ public class D2L extends Instruction
 		
 		ins.pop(value);
 		
-		StackContext ctx = new StackContext(ins, long.class);
+		StackContext ctx = new StackContext(ins, long.class, value.getValue().cast(long.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

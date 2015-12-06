@@ -27,7 +27,7 @@ public class ArrayLength extends Instruction
 		
 		ins.pop(array);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		StackContext ctx = new StackContext(ins, int.class, array.getValue().arrayLength());
 		stack.push(ctx);
 		
 		ins.push(ctx);

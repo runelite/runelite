@@ -27,7 +27,7 @@ public class D2F extends Instruction
 		
 		ins.pop(value);
 		
-		StackContext ctx = new StackContext(ins, float.class);
+		StackContext ctx = new StackContext(ins, float.class, value.getValue().cast(float.class));
 		stack.push(ctx);
 		
 		ins.push(ctx);

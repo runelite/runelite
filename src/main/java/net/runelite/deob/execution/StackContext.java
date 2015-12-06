@@ -2,30 +2,37 @@ package net.runelite.deob.execution;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.deob.util.PrimitiveUtils;
 
 public class StackContext
 {
 	public InstructionContext pushed; // instruction which pushed this
 	public List<InstructionContext> poppeds = new ArrayList<>(); // instructions which popped this
 	public Type type; // type of this
+	private Value value;
 	public boolean removed;
 	
-	public StackContext(InstructionContext pushed, Type type)
+	public StackContext(InstructionContext pushed, Type type, Value value)
 	{
 		this.pushed = pushed;
 		this.type = type;
+		this.value = value;
 	}
 	
-	public StackContext(InstructionContext pushed, Class<?> clazz)
+	public StackContext(InstructionContext pushed, Class<?> clazz, Value value)
 	{
+		assert value.isNull() || value.getValue().getClass() == PrimitiveUtils.unbox(clazz);
+		
 		this.pushed = pushed;
 		type = new Type(clazz.getCanonicalName());
+		this.value = value;
 	}
 	
-	public StackContext(InstructionContext pushed, net.runelite.deob.pool.Class c)
+	public StackContext(InstructionContext pushed, VariableContext vctx)
 	{
 		this.pushed = pushed;
-		type = new Type(c.getName());
+		this.type = vctx.getType();
+		this.value = vctx.getValue();
 	}
 
 	public InstructionContext getPushed()
@@ -47,6 +54,11 @@ public class StackContext
 	public Type getType()
 	{
 		return type;
+	}
+
+	public Value getValue()
+	{
+		return value;
 	}
 	
 	// remove this object from the stack

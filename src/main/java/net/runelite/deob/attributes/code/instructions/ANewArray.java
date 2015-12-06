@@ -15,6 +15,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.execution.Value;
 
 public class ANewArray extends Instruction
 {
@@ -53,7 +54,7 @@ public class ANewArray extends Instruction
 		ins.pop(count);
 		
 		Type t = new Type(new net.runelite.deob.signature.Type("[" + clazz.getName()));
-		StackContext ctx = new StackContext(ins, t);
+		StackContext ctx = new StackContext(ins, t, Value.newArray(count.getValue()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

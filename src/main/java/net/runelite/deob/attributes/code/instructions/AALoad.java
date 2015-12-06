@@ -27,7 +27,7 @@ public class AALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, array.getType().getSubtype());
+		StackContext ctx = new StackContext(ins, array.getType().getSubtype(), array.getValue().arrayGet(index.getValue()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

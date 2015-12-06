@@ -27,7 +27,7 @@ public class CALoad extends Instruction implements ArrayLoad
 		
 		ins.pop(index, array);
 		
-		StackContext ctx = new StackContext(ins, int.class); // zero extended to int
+		StackContext ctx = new StackContext(ins, int.class, array.getValue().arrayGet(index.getValue()).cast(int.class)); // zero extended to int
 		stack.push(ctx);
 		
 		ins.push(ctx);

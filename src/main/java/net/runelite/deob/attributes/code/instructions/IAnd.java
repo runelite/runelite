@@ -7,6 +7,7 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.execution.Value;
 
 public class IAnd extends Instruction
 {
@@ -26,7 +27,16 @@ public class IAnd extends Instruction
 		
 		ins.pop(two, one);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		Value result = Value.NULL;
+		if (!two.getValue().isNull() && !one.getValue().isNull())
+		{
+			int i2 = (int) two.getValue().getValue(),
+				i1 = (int) one.getValue().getValue();
+			
+			result = new Value(i1 & i2);
+		}
+		
+		StackContext ctx = new StackContext(ins, int.class, result);
 		stack.push(ctx);
 		
 		ins.push(ctx);

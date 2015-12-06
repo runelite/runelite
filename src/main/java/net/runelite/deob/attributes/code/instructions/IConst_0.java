@@ -11,6 +11,7 @@ import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.pool.PoolEntry;
 
 import java.io.IOException;
+import net.runelite.deob.execution.Value;
 
 public class IConst_0 extends Instruction implements PushConstantInstruction
 {
@@ -30,7 +31,7 @@ public class IConst_0 extends Instruction implements PushConstantInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		StackContext ctx = new StackContext(ins, int.class, new Value(0));
 		stack.push(ctx);
 		
 		ins.push(ctx);

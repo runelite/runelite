@@ -14,6 +14,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.execution.Value;
 
 public class InstanceOf extends Instruction
 {
@@ -48,7 +49,7 @@ public class InstanceOf extends Instruction
 		StackContext obj = stack.pop();
 		ins.pop(obj);
 		
-		StackContext ctx = new StackContext(ins, int.class);
+		StackContext ctx = new StackContext(ins, int.class, Value.NULL);
 		stack.push(ctx);
 		
 		ins.push(ctx);

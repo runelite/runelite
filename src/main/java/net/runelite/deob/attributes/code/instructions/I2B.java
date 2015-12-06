@@ -26,7 +26,7 @@ public class I2B extends Instruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, int.class); // sign extneded
+		StackContext ctx = new StackContext(ins, int.class, object.getValue().cast(int.class)); // sign extneded
 		stack.push(ctx);
 		
 		ins.push(ctx);

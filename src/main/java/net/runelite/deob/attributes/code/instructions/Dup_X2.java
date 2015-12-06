@@ -34,25 +34,25 @@ public class Dup_X2 extends Instruction implements DupInstruction
 		if (three != null)
 			ins.pop(three);
 		
-		StackContext ctx = new StackContext(ins, one.getType());
+		StackContext ctx = new StackContext(ins, one.getType(), one.getValue());
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
 		if (three != null)
 		{
-			ctx = new StackContext(ins, three.getType());
+			ctx = new StackContext(ins, three.getType(), three.getValue());
 			stack.push(ctx);
 			
 			ins.push(ctx);
 		}
 		
-		ctx = new StackContext(ins, two.getType());
+		ctx = new StackContext(ins, two.getType(), two.getValue());
 		stack.push(ctx);
 		
 		ins.push(ctx);
 		
-		ctx = new StackContext(ins, one.getType());
+		ctx = new StackContext(ins, one.getType(), one.getValue());
 		stack.push(ctx);
 		
 		ins.push(ctx);

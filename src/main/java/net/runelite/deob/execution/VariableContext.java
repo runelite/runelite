@@ -9,12 +9,14 @@ public class VariableContext
 	private InstructionContext ic; // the instruction which stored it. also ctx.popped?
 	private Type type;
 	private List<InstructionContext> read = new ArrayList<>(); // instructions which reads this
+	private Value value;
 
 	public VariableContext(InstructionContext i, StackContext ctx)
 	{
 		ic = i;
 		this.ctx = ctx;
 		type = ctx.getType();
+		value = ctx.getValue();
 	}
 	
 	public VariableContext(Type type) // for entrypoints
@@ -27,6 +29,14 @@ public class VariableContext
 		ic = i;
 		ctx = other.ctx;
 		type = other.type;
+		value = other.value;
+	}
+	
+	public VariableContext(InstructionContext i, Type type, Value value)
+	{
+		ic = i;
+		this.type = type;
+		this.value = value;
 	}
 	
 	public StackContext getStackContext()
@@ -42,6 +52,11 @@ public class VariableContext
 	public Type getType()
 	{
 		return type;
+	}
+
+	public Value getValue()
+	{
+		return value;
 	}
 	
 	public void addRead(InstructionContext ctx)
