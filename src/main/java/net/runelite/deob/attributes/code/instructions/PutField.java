@@ -16,6 +16,7 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.Method;
 
 public class PutField extends Instruction implements SetFieldInstruction
 {
@@ -25,6 +26,13 @@ public class PutField extends Instruction implements SetFieldInstruction
 	public PutField(Instructions instructions, InstructionType type, int pc) throws IOException
 	{
 		super(instructions, type, pc);
+	}
+
+	@Override
+	public String toString()
+	{
+		Method m = this.getInstructions().getCode().getAttributes().getMethod();
+		return "putfield " + myField + " in " + m;
 	}
 	
 	@Override

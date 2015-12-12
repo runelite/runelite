@@ -56,7 +56,7 @@ public class Method
 	@Override
 	public String toString()
 	{
-		return this.getMethods().getClassFile().getName() + "." + this.name + this.arguments;
+		return (this.isStatic() ? "static " : "") + this.getMethods().getClassFile().getName() + "." + this.name + this.arguments;
 	}
 	
 	public void write(DataOutputStream out) throws IOException
