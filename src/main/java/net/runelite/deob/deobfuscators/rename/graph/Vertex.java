@@ -31,7 +31,8 @@ public class Vertex
 	private final Object object;
 	private VertexType type;
 	
-	private final Set<Edge> edges = new HashSet<>();
+	private final Set<Edge> edges = new HashSet<>(),
+		from = new HashSet<>();
 	
 	private Collection<Vertex> mightBe;
 	private Vertex is;
@@ -107,6 +108,9 @@ public class Vertex
 	
 	public void addEdge(Edge edge)
 	{
+		assert edge.getFrom() == this;
+		//assert edge.getTo() != this;
+		
 		if (edges.contains(edge))
 		//if (c != null)
 		{
@@ -118,13 +122,36 @@ public class Vertex
 			return;
 		}
 		
+		Vertex to = edge.getTo();
+		assert to.from.contains(edge) == false;
+		
 		edges.add(edge);
+		to.from.add(edge);
+		
 		//edges.put(edge, edge);
+	}
+	
+	public void removeEdge(Edge edge)
+	{
+		assert edge.getFrom() == this;
+		
+		assert edges.contains(edge);
+		
+		Vertex to = edge.getTo();
+		assert to.from.contains(edge);
+		
+		edges.remove(edge);
+		to.from.remove(edge);
 	}
 	
 	public Set<Edge> getEdges()
 	{
 		return edges;
+	}
+	
+	public Set<Edge> getEdgesFrom()
+	{
+		return from;
 	}
 	
 	public void merge(Collection<Vertex> maybe)
