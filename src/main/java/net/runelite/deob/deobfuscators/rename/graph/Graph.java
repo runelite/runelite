@@ -46,6 +46,17 @@ public class Graph
 		return v;
 	}
 	
+	public void removeVertex(Object o)
+	{
+		Vertex v = this.getVertexFor(o);
+		
+		assert v.getEdges().isEmpty();
+		assert v.getEdgesFrom().isEmpty();
+		
+		verticies.remove(v);
+		o2v.remove(o);
+	}
+	
 	public void addEdge(Edge e)
 	{
 		e.getFrom().addEdge(e);
