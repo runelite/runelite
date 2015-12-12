@@ -31,7 +31,7 @@ public class Vertex
 	private final Object object;
 	private VertexType type;
 	
-	private final Map<Edge, Edge> edges = new HashMap<>();
+	private final Set<Edge> edges = new HashSet<>();
 	
 	private Collection<Vertex> mightBe;
 	private Vertex is;
@@ -107,8 +107,8 @@ public class Vertex
 	
 	public void addEdge(Edge edge)
 	{
-		Edge c = edges.get(edge);
-		if (c != null)
+		if (edges.contains(edge))
+		//if (c != null)
 		{
 //			if (edge.getIns() instanceof SetFieldInstruction && !edgeFrom.contains(edge.getIns()))
 //			{
@@ -118,12 +118,13 @@ public class Vertex
 			return;
 		}
 		
-		edges.put(edge, edge);
+		edges.add(edge);
+		//edges.put(edge, edge);
 	}
 	
 	public Set<Edge> getEdges()
 	{
-		return edges.keySet();
+		return edges;
 	}
 	
 	public void merge(Collection<Vertex> maybe)
@@ -295,21 +296,21 @@ public class Vertex
 		if (this.getType() != other.getType())
 			return false;
 
-		if (this.getEdges().size() != other.getEdges().size())
-			return false;
-
-		for (EdgeType e : EdgeType.values())
-		{
-			// for each edge of this type, it must be equal with just one of the others
-
-			if (this.edgesOf(e) != other.edgesOf(e))// ||
-				//this.solvedEdgesOfType(e) != other.solvedEdgesOfType(e))
-			{
-				int thise = edgesOf(e), othere = other.edgesOf(e);
-				int thisse = this.solvedEdgesOfType(e), otherse = other.solvedEdgesOfType(e);
-				return false;
-			}
-		}
+//		if (this.getEdges().size() != other.getEdges().size())
+//			return false;
+//
+//		for (EdgeType e : EdgeType.values())
+//		{
+//			// for each edge of this type, it must be equal with just one of the others
+//
+//			if (this.edgesOf(e) != other.edgesOf(e))// ||
+//				//this.solvedEdgesOfType(e) != other.solvedEdgesOfType(e))
+//			{
+//				int thise = edgesOf(e), othere = other.edgesOf(e);
+//				int thisse = this.solvedEdgesOfType(e), otherse = other.solvedEdgesOfType(e);
+//				return false;
+//			}
+//		}
 
 		// must be 1->1
 		// map v -> possibles
@@ -424,7 +425,7 @@ public class Vertex
 	private int edgesOf(EdgeType type)
 	{
 		int t = 0;
-		for (Edge e : this.edges.values())
+		for (Edge e : this.edges)
 			if (e.getType() == type)
 				++t;
 		return t;
@@ -432,6 +433,6 @@ public class Vertex
 	
 	private int solvedEdgesOfType(EdgeType type)
 	{
-		return (int) edges.values().stream().filter(e -> e.getType() == type).filter(e -> e.getTo().getOther() != null).count();
+		return (int) edges.stream().filter(e -> e.getType() == type).filter(e -> e.getTo().getOther() != null).count();
 	}
 }

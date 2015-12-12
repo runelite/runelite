@@ -27,8 +27,7 @@ public class Frame
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
 	private MethodContext ctx;
 	protected Method nonStatic; // next non static method up the stack
-	public Field lastField;
-	public Frame staticReturn;
+	private Frame caller;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -39,7 +38,10 @@ public class Frame
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
-		ctx = execution.getMethodContext(method);
+		// don't cache method contexts per execution
+		// need to allow the same method to execute multiple times
+		// when called from multiple places to allow graph building
+		ctx = new MethodContext(execution);
 		nonStatic = method;
 	}
 	
@@ -70,6 +72,7 @@ public class Frame
 		{
 			this.nonStatic = ctx.getFrame().nonStatic;
 		}
+		caller = ctx.getFrame();
 		
 		// initialize LVT. the last argument is popped first, and is at arguments[0]
 		List<StackContext> pops = ctx.getPops();
@@ -105,8 +108,7 @@ public class Frame
 		this.variables = new Variables(other.variables);
 		this.ctx = other.ctx;
 		this.nonStatic = other.nonStatic;
-		this.lastField = other.lastField;
-		this.staticReturn = other.staticReturn;
+		this.caller = other.caller;
 	}
 	
 	public Frame dup()
@@ -223,12 +225,6 @@ public class Frame
 				break;
 			
 			execution.buildGraph(this, oldCur, ictx);
-			if (oldCur instanceof SetFieldInstruction)
-			{
-				SetFieldInstruction sfi = (SetFieldInstruction) oldCur;
-				if (sfi.getMyField() != null)
-					this.lastField = sfi.getMyField();
-			}
 			
 			if (oldCur == cur)
 			{

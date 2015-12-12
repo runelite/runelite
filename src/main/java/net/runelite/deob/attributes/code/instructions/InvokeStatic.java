@@ -105,7 +105,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			
 			// add possible method call to execution
 			Execution execution = frame.getExecution();
-			Frame f = execution.invoke(ins, method);
+			execution.invoke(ins, method);
 		}
 		
 		frame.addInstructionContext(ins);

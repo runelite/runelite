@@ -37,7 +37,6 @@ public class Execution
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
-	private Map<Method, MethodContext> methodContexts = new HashMap<>();
 	private boolean buildGraph; // if true the frame graph is built and execution hasJumped also compares previous instructions
 	private Graph graph = new Graph();
 
@@ -91,6 +90,8 @@ public class Execution
 	
 	private boolean hasInvoked(InstructionContext from, Method to)
 	{
+		// this is wrong because the called of the method of from
+		// might be different, for building graph
 		Collection<Method> methods = invokes.getCollection(from);
 		if (methods != null && methods.contains(to))
 			return true;
@@ -149,17 +150,6 @@ public class Execution
 	public Collection<InstructionContext> getInstructonContexts(Instruction i)
 	{
 		return contexts.getCollection(i);
-	}
-	
-	public MethodContext getMethodContext(Method m)
-	{
-		MethodContext c = methodContexts.get(m);
-		if (c != null)
-			return c;
-		
-		c = new MethodContext(this);
-		methodContexts.put(m, c);
-		return c;
 	}
 
 	public boolean isBuildGraph()
