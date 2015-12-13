@@ -94,4 +94,13 @@ public class PutField extends Instruction implements SetFieldInstruction
 		if (myField != null)
 			field = myField.getPoolField();
 	}
+
+	@Override
+	public void map(InstructionContext ctx, InstructionContext other)
+	{
+		net.runelite.deob.Field myField = this.getMyField(),
+			otherField = ((PutField) other.getInstruction()).getMyField();
+		
+		System.out.println("MAPPING " + myField + " -> " + otherField);
+	}
 }

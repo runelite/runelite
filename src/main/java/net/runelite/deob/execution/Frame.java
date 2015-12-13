@@ -11,6 +11,7 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.AThrow;
@@ -28,6 +29,7 @@ public class Frame
 	private MethodContext ctx;
 	protected Method nonStatic; // next non static method up the stack
 	private Frame caller;
+	public Frame other; // in the other execution for mapping
 
 	public Frame(Execution execution, Method method)
 	{
@@ -43,6 +45,12 @@ public class Frame
 		// when called from multiple places to allow graph building
 		ctx = new MethodContext(execution);
 		nonStatic = method;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Frame{" + "cur=" + cur + '}';
 	}
 	
 	public void initialize()
@@ -218,6 +226,12 @@ public class Frame
 			else
 			{
 				/* jump */
+			}
+			
+			if (oldCur instanceof MappableInstruction)
+			{
+				execution.paused = true;
+				return;
 			}
 		}
 	}

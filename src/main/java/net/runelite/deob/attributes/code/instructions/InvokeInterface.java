@@ -157,4 +157,11 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		if (myMethods != null && !myMethods.isEmpty())
 			method = myMethods.get(0).getPoolInterfaceMethod(); // is this right?
 	}
+	
+	@Override
+	public void map(InstructionContext ctx, InstructionContext other)
+	{
+		List<net.runelite.deob.Method> myMethods = this.getMethods(),
+			otherMethods = ((InvokeInterface) other.getInstruction()).getMethods();
+	}
 }
