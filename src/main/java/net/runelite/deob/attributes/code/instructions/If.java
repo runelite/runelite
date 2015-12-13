@@ -73,10 +73,12 @@ public class If extends Instruction implements JumpingInstruction, ComparisonIns
 		
 		ins.pop(one, two);
 		
-		frame.addInstructionContext(ins);
-		
 		Frame other = frame.dup();
 		other.jump(ins, to);
+		
+		ins.branch(other);
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	@Override

@@ -74,10 +74,12 @@ public class If0 extends Instruction implements JumpingInstruction, ComparisonIn
 		
 		ins.pop(one);
 		
-		frame.addInstructionContext(ins);
-		
 		Frame other = frame.dup();
 		other.jump(ins, to);
+		
+		ins.branch(other);
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	@Override

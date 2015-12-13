@@ -121,8 +121,20 @@ import net.runelite.deob.attributes.code.instructions.IStore_3;
 import net.runelite.deob.attributes.code.instructions.ISub;
 import net.runelite.deob.attributes.code.instructions.IUShR;
 import net.runelite.deob.attributes.code.instructions.IXor;
-import net.runelite.deob.attributes.code.instructions.If;
-import net.runelite.deob.attributes.code.instructions.If0;
+import net.runelite.deob.attributes.code.instructions.IfCmpEq;
+import net.runelite.deob.attributes.code.instructions.IfCmpGe;
+import net.runelite.deob.attributes.code.instructions.IfCmpGt;
+import net.runelite.deob.attributes.code.instructions.IfCmpLe;
+import net.runelite.deob.attributes.code.instructions.IfCmpLt;
+import net.runelite.deob.attributes.code.instructions.IfCmpNe;
+import net.runelite.deob.attributes.code.instructions.IfEq;
+import net.runelite.deob.attributes.code.instructions.IfGe;
+import net.runelite.deob.attributes.code.instructions.IfGt;
+import net.runelite.deob.attributes.code.instructions.IfLe;
+import net.runelite.deob.attributes.code.instructions.IfLt;
+import net.runelite.deob.attributes.code.instructions.IfNe;
+import net.runelite.deob.attributes.code.instructions.IfNonNull;
+import net.runelite.deob.attributes.code.instructions.IfNull;
 import net.runelite.deob.attributes.code.instructions.InstanceOf;
 import net.runelite.deob.attributes.code.instructions.InvokeInterface;
 import net.runelite.deob.attributes.code.instructions.InvokeSpecial;
@@ -335,20 +347,20 @@ public enum InstructionType
 	FCMPG(0x96, "fcmpg", FCmpG.class),
 	DCMPL(0x97, "dcmpl", DCmpL.class),
 	DCMPG(0x98, "dcmpg", DCmpG.class),
-	IFEQ(0x99, "ifeq", If0.class),
-	IFNE(0x9a, "ifne", If0.class),
-	IFLT(0x9b, "iflt", If0.class),
-	IFGE(0x9c, "ifge", If0.class),
-	IFGT(0x9d, "ifgt", If0.class),
-	IFLE(0x9e, "ifle", If0.class),
-	IF_ICMPEQ(0x9f, "if_icmpeq", If.class),
-	IF_ICMPNE(0xa0, "if_icmpne", If.class),
-	IF_ICMPLT(0xa1, "if_cmplt", If.class),
-	IF_ICMPGE(0xa2, "if_icmpge", If.class),
-	IF_ICMPGT(0xa3, "if_icmpgt", If.class),
-	IF_ICMPLE(0xa4, "if_icmple", If.class),
-	IF_ACMPEQ(0xa5, "if_acmpeq", If.class),
-	IF_ACMPNE(0xa6, "if_acmpne", If.class),
+	IFEQ(0x99, "ifeq", IfEq.class),
+	IFNE(0x9a, "ifne", IfNe.class),
+	IFLT(0x9b, "iflt", IfLt.class),
+	IFGE(0x9c, "ifge", IfGe.class),
+	IFGT(0x9d, "ifgt", IfGt.class),
+	IFLE(0x9e, "ifle", IfLe.class),
+	IF_ICMPEQ(0x9f, "if_icmpeq", IfCmpEq.class),
+	IF_ICMPNE(0xa0, "if_icmpne", IfCmpNe.class),
+	IF_ICMPLT(0xa1, "if_cmplt", IfCmpLt.class),
+	IF_ICMPGE(0xa2, "if_icmpge", IfCmpGe.class),
+	IF_ICMPGT(0xa3, "if_icmpgt", IfCmpGt.class),
+	IF_ICMPLE(0xa4, "if_icmple", IfCmpLe.class),
+	IF_ACMPEQ(0xa5, "if_acmpeq", IfCmpEq.class),
+	IF_ACMPNE(0xa6, "if_acmpne", IfCmpNe.class),
 	GOTO(0xa7, "goto", Goto.class),
 	TABLESWITCH(0xaa, "tableswitch", TableSwitch.class),
 	LOOKUPSWITCH(0xab, "lookupswitch", LookupSwitch.class),
@@ -377,8 +389,8 @@ public enum InstructionType
 	MONITOREXIT(0xc3, "monitorexit", MonitorExit.class),
 	WIDE(0xc4, "wide", Wide.class),
 	MULTIANEWARRAY(0xc5, "multianewarray", MultiANewArray.class),
-	IFNULL(0xc6, "ifnull", If0.class),
-	IFNONNULL(0xc7, "ifnonnull", If0.class),
+	IFNULL(0xc6, "ifnull", IfNull.class),
+	IFNONNULL(0xc7, "ifnonnull", IfNonNull.class),
 	GOTO_W(0xc8, "goto_w", GotoW.class);
 
 	private byte code;
