@@ -6,6 +6,9 @@ import java.util.List;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 import java.util.Objects;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
+import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 
 public class InstructionContext
 {
@@ -157,5 +160,53 @@ public class InstructionContext
 	public String toString()
 	{
 		return "InstructionContext{" + "ins=" + ins + '}';
+	}
+	
+	public InstructionContext resolve(
+		StackContext from // pushed from this
+	)
+	{
+		InstructionContext ctx = this;
+		
+		if (ctx.getInstruction() instanceof SetFieldInstruction)
+		{
+			StackContext s = ctx.getPops().get(0);
+			return s.getPushed().resolve(s);
+		}
+		
+		if (ctx.getInstruction() instanceof DupInstruction)
+		{
+			DupInstruction d = (DupInstruction) ctx.getInstruction();
+			StackContext s = d.getOriginal(from);
+			return s.getPushed().resolve(s);
+		}
+		
+		if (ctx.getInstruction() instanceof LVTInstruction)
+		{
+			LVTInstruction lvt = (LVTInstruction) ctx.getInstruction();
+			Variables variables = ctx.getVariables();
+			
+			if (lvt.store())
+			{
+				StackContext s = ctx.getPops().get(0); // is this right?
+				return s.getPushed().resolve(s);
+			}
+			else
+			{
+				VariableContext vctx = variables.get(lvt.getVariableIndex()); // variable being loaded
+				assert vctx != null;
+
+				InstructionContext storedCtx = vctx.getInstructionWhichStored();
+				if (storedCtx == null)
+					return ctx; // initial parameter
+				
+				if (vctx.isIsParameter())
+					return ctx; // parameter (storedCtx is invoking instruction in another frame). this lvt index is fixed.
+				
+				return storedCtx.resolve(null);
+			}
+		}
+		
+		return ctx;
 	}
 }

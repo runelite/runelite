@@ -28,6 +28,7 @@ import net.runelite.deob.deobfuscators.rename.graph.Edge;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
 import net.runelite.deob.deobfuscators.rename.graph.FieldEdge;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
+import net.runelite.deob.deobfuscators.rename.graph.GraphBuilder;
 import net.runelite.deob.deobfuscators.rename.graph.Vertex;
 import net.runelite.deob.deobfuscators.rename.graph.VertexType;
 import net.runelite.deob.execution.Execution;
@@ -309,20 +310,20 @@ public class Rename2
 	public NameMappings run(ClassGroup one, ClassGroup two)
 	{
 		Execution eone = new Execution(one);
-		eone.setBuildGraph(true);
+		//eone.setBuildGraph(true);
 		eone.populateInitialMethods();
 		eone.run();
 		
 		Execution etwo = new Execution(two);
-		etwo.setBuildGraph(true);
+		//etwo.setBuildGraph(true);
 		etwo.populateInitialMethods();
 		etwo.run();
 		
-		g1 = eone.getGraph();
-		g2 = etwo.getGraph();
+		g1 = GraphBuilder.build(one);
+		g2 = GraphBuilder.build(two);
 		
-		System.out.println(eone.getGraph());
-		System.out.println(etwo.getGraph());
+//		System.out.println(eone.getGraph());
+//		System.out.println(etwo.getGraph());
 		
 		for (int i = 0; i < 250; ++i)
 		{

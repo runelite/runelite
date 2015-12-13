@@ -121,10 +121,10 @@ public class Edge
 
 		if (this.type == EdgeType.SETFIELD)// || this.type == EdgeType.SETFIELD_FROM)
 		{
-			if (!compareSetField(getGraph(), other.getGraph(),
-				(Field) this.getTo().getObject(), (Field) other.getTo().getObject(),
-				other.getIns()))
-				return false;
+//			if (!compareSetField(getGraph(), other.getGraph(),
+//				(Field) this.getTo().getObject(), (Field) other.getTo().getObject(),
+//				other.getIns()))
+//				return false;
 		}
 //		if (this.weight != other.weight)
 //			return false;
