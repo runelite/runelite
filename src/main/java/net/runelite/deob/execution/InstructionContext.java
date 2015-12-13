@@ -17,6 +17,7 @@ public class InstructionContext
 	private List<StackContext> pushes = new ArrayList<>(); // stack contexts pushed by instruction execution
 	private List<VariableContext> reads = new ArrayList<>(); // lvt reads
 	private List<Method> invokes = new ArrayList<>(); // invokes
+	private List<Frame> branches = new ArrayList<>();
 	
 	public InstructionContext(Instruction i, Frame f)
 	{
@@ -53,6 +54,14 @@ public class InstructionContext
 	public void invoke(Method method)
 	{
 		invokes.add(method);
+	}
+	
+	public void branch(Frame frame)
+	{
+		assert frame != this.frame;
+		assert !branches.contains(frame);
+		
+		branches.add(frame);
 	}
 	
 	public Instruction getInstruction()

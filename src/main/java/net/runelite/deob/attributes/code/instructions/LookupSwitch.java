@@ -118,15 +118,17 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 		StackContext value = stack.pop();
 		ins.pop(value);
 		
-		frame.addInstructionContext(ins);
-		
 		for (Instruction i : branchi)
 		{
 			Frame other = frame.dup();
 			other.jump(ins, i);
+			
+			ins.branch(other);
 		}
 		
 		frame.jump(ins, defi);
+		
+		frame.addInstructionContext(ins);
 	}
 	
 	@Override

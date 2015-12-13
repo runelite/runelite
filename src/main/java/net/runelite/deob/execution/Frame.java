@@ -209,8 +209,6 @@ public class Frame
 			if (!executing)
 				break;
 			
-			execution.buildGraph(this, oldCur, ictx);
-			
 			if (oldCur == cur)
 			{
 				int idx = instructions.indexOf(cur);
