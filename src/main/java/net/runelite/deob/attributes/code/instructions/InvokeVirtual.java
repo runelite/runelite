@@ -161,4 +161,11 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		if (myMethods != null && !myMethods.isEmpty())
 			method = myMethods.get(0).getPoolMethod(); // is this right?
 	}
+	
+	@Override
+	public void map(InstructionContext ctx, InstructionContext other)
+	{
+		List<net.runelite.deob.Method> myMethods = this.getMethods(),
+			otherMethods = ((InvokeVirtual) other.getInstruction()).getMethods();
+	}
 }

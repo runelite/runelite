@@ -32,7 +32,7 @@ public abstract class Instruction implements Cloneable
 	public String toString()
 	{
 		Method m = this.getInstructions().getCode().getAttributes().getMethod();
-		return super.toString() + " in " + m + " at pc " + this.getPc();
+		return super.toString() + " in " + m + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
 	
 	@Override

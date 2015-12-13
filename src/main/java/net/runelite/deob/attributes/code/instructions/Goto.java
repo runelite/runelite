@@ -22,6 +22,12 @@ public class Goto extends Instruction implements JumpingInstruction
 	{
 		super(instructions, type, pc);
 	}
+
+	@Override
+	public String toString()
+	{
+		return "goto " + to + " (at pc " + (this.getPc() + offset) + ")";
+	}
 	
 	public Goto(Instructions instructions, Instruction to)
 	{

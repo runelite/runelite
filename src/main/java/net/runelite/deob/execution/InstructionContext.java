@@ -98,6 +98,11 @@ public class InstructionContext
 	{
 		return invokes;
 	}
+
+	public List<Frame> getBranches()
+	{
+		return branches;
+	}
 	
 	public List<StackContext> removeStack(int idx)
 	{

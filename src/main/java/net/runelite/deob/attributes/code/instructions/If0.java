@@ -15,8 +15,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 
-public class If0 extends Instruction implements JumpingInstruction, ComparisonInstruction
+public abstract class If0 extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
 	private Instruction to;
 	private short offset;
@@ -93,5 +94,25 @@ public class If0 extends Instruction implements JumpingInstruction, ComparisonIn
 	public List<Instruction> getJumps()
 	{
 		return Arrays.asList(to);
+	}
+	
+	@Override
+	public final/*XXX tmp*/ void map(InstructionContext ctx, InstructionContext other)
+	{
+		InstructionContext one = ctx.getPops().get(0).getPushed().resolve(ctx.getPops().get(0)),
+			two = other.getPops().get(0).getPushed().resolve(other.getPops().get(0));
+		
+		// we can map these if they are getfield instructions?
+		
+		assert ctx.getInstruction().getClass().equals(other.getInstruction().getClass());
+		
+		Frame branch1 = ctx.getBranches().get(0),
+			branch2 = other.getBranches().get(0);
+		
+		assert branch1.other == null;
+		assert branch2.other == null;
+		
+		branch1.other = branch2;
+		branch2.other = branch1;
 	}
 }
