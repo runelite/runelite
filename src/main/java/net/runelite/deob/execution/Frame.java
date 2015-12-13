@@ -177,21 +177,6 @@ public class Frame
 		{
 			Instruction oldCur = cur;
 			
-			if ((cur instanceof ReturnInstruction || cur instanceof AThrow) && this.staticReturn != null)
-			{
-				Frame newFrame = this.staticReturn.dup();
-				newFrame.lastField = this.lastField;
-				newFrame.executing = true;
-				
-				assert newFrame.cur instanceof InvokeStatic;
-				int i = newFrame.method.getCode().getInstructions().getInstructions().indexOf(newFrame.cur);
-				assert i != -1;
-				newFrame.cur = newFrame.method.getCode().getInstructions().getInstructions().get(i + 1);
-				
-				assert execution.frames.contains(newFrame);
-				//this.execution.frames.add(newFrame);
-			}
-			
 			try
 			{
 				cur.execute(this);
