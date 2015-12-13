@@ -37,6 +37,8 @@ public class Execution
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
+	public boolean paused;
+	public boolean step = true;
 
 	public Execution(ClassGroup group)
 	{
@@ -105,6 +107,7 @@ public class Execution
 	
 	public Frame invoke(InstructionContext from, Method to)
 	{
+		if(!step) return null;//THIS BREAKS THIS
 		if (hasInvoked(from, to))
 			return null;
 		
@@ -123,6 +126,7 @@ public class Execution
 	
 	public void run()
 	{
+		assert !paused;
 		
 		int fcount = 0;
 		while (!frames.isEmpty())
@@ -144,10 +148,17 @@ public class Execution
 		System.out.println("Processed " + fcount + " frames");
 	}
 	
-	{
-		
-	}
+//	public InstructionContext getPaused()
+//	{
+//		if (frames.isEmpty())
+//			return null;
+//		
+//		Frame f = frames.get(0);
+//		return f.getInstructions().get(f.getInstructions().size() - 1);
+//	}
 	
+	public Collection<InstructionContext> getInstructonContexts(Instruction i)
 	{
+		return contexts.getCollection(i);
 	}
 }
