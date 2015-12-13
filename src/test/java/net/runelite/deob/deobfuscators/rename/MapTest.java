@@ -12,11 +12,39 @@ import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
+import net.runelite.deob.execution.ParallellMappingExecutor;
 import net.runelite.deob.util.JarUtil;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class MapTest
 {
+	public boolean isMappable(Method m1, Method m2)
+	{
+		// must have same number of each type
+		// invokes
+		
+		List<Instruction> l1 = m1.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof MappableInstruction).collect(Collectors.toList());
+		List<Instruction> l2 = m2.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof MappableInstruction).collect(Collectors.toList());
+		
+		if (l1.size() != l2.size())
+			return false;
+		
+		return true;
+	}
+	
+	//@Test
+	public void testMappable() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		
+		Assert.assertTrue(isMappable(
+			group1.findClass("client").findMethod("init"),
+			group2.findClass("client").findMethod("init")
+		));
+	}
+	
 	@Test
 	public void main() throws IOException
 	{
@@ -38,66 +66,17 @@ public class MapTest
 		frame.other = frame2;
 		frame2.other = frame;
 		
-		List<Instruction> l1 = m1.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof MappableInstruction).collect(Collectors.toList());
-		List<Instruction> l2 = m2.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof MappableInstruction).collect(Collectors.toList());
+		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
 		
-		while (!e.frames.isEmpty())
+		while (parallel.step())
 		{
-			assert e.frames.size() == e2.frames.size();
-			Frame f1 = e.frames.get(0), f2 = e2.frames.get(0);
-			
-			assert f1.other == f2;
-			assert f2.other == f1;
-			
-			assert f1.isExecuting() == f2.isExecuting();
-			
-			// on if it is duped then jumped,
-			if (!f1.isExecuting())
-			{
-				assert e.frames.get(0) == f1;
-				assert e2.frames.get(0) == f2;
-				
-				e.frames.remove(0);
-				e2.frames.remove(0);
-				continue;
-			}
-			
-			// step frame
-			f1.execute();
-			f2.execute();
-			
 			// get what each frame is paused/exited on
-			InstructionContext p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
-			InstructionContext p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-			
-			if (!f1.isExecuting() || !f2.isExecuting())
-			{
-				for (Frame branch : p1.getBranches())
-				{
-					e.frames.remove(branch);
-				}
-				for (Frame branch : p2.getBranches())
-				{
-					e2.frames.remove(branch);
-				}
-				
-			//	System.out.println("Something exited " + f1 + " " + f2);
-				
-				assert e.frames.get(0) == f1;
-				assert e2.frames.get(0) == f2;
-				
-				e.frames.remove(0);
-				e2.frames.remove(0);
-				continue;
-			}
-			
-			// frames can stop executing if they've determined that they've executed
-			// the ins before, and it won't necessarily be at the same time?
+			InstructionContext p1 = parallel.getP1(), p2 = parallel.getP2();
 			
 			assert e.paused;
 			assert e2.paused;
 			
-			//System.out.println(p1.getInstruction() + " <-> " + p2.getInstruction());
+			System.out.println(p1.getInstruction() + " <-> " + p2.getInstruction());
 			
 			assert p1.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m1;
 			assert p2.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m2;
