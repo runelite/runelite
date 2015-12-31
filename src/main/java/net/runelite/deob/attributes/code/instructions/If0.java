@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public abstract class If0 extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
@@ -97,7 +98,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	}
 	
 	@Override
-	public final/*XXX tmp*/ void map(InstructionContext ctx, InstructionContext other)
+	public final/*XXX tmp*/ void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
 		InstructionContext one = ctx.getPops().get(0).getPushed().resolve(ctx.getPops().get(0)),
 			two = other.getPops().get(0).getPushed().resolve(other.getPops().get(0));

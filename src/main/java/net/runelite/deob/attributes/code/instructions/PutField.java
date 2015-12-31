@@ -17,6 +17,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public class PutField extends Instruction implements SetFieldInstruction
 {
@@ -94,13 +96,29 @@ public class PutField extends Instruction implements SetFieldInstruction
 		if (myField != null)
 			field = myField.getPoolField();
 	}
+	
+	private boolean isConstantAssignment(InstructionContext ctx)
+	{
+		return ctx.getPops().get(0).getPushed().getInstruction() instanceof PushConstantInstruction;
+	}
 
 	@Override
-	public void map(InstructionContext ctx, InstructionContext other)
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
 		net.runelite.deob.Field myField = this.getMyField(),
 			otherField = ((PutField) other.getInstruction()).getMyField();
 		
-		System.out.println("MAPPING " + myField + " -> " + otherField);
+		// it appears ConstantValue field attributes are inlined into the constructor
+		// and their orders scrambled, so don't accept constant value assignments?
+//		if (ctx.getFrame().getMethod().getName().equals("<init>"))
+//		{
+//			//assert isConstantAssignment(ctx) == isConstantAssignment(other);
+//			//if (isConstantAssignment(ctx))
+//				return;
+//		}
+		
+		// XXX field types must be the same
+		
+		mapping.map(myField, otherField);
 	}
 }

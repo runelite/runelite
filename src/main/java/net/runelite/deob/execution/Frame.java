@@ -238,6 +238,9 @@ public class Frame
 	
 	private void processExceptions(Instruction i)
 	{
+		if (this.execution.step)
+			return; // no frame.other
+		
 		Code code = method.getCode();
 		InstructionContext ictx = instructions.get(instructions.size() - 1);
 		
