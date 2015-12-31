@@ -38,7 +38,7 @@ public class Execution
 	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
 	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 	public boolean paused;
-	public boolean step = true;
+	public boolean step = false;
 
 	public Execution(ClassGroup group)
 	{
@@ -107,7 +107,9 @@ public class Execution
 	
 	public Frame invoke(InstructionContext from, Method to)
 	{
-		if(!step) return null;//THIS BREAKS THIS
+		if (step) // step executor
+			return null;
+		
 		if (hasInvoked(from, to))
 			return null;
 		

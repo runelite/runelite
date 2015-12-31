@@ -228,7 +228,7 @@ public class Frame
 				/* jump */
 			}
 			
-			if (!execution.step && oldCur instanceof MappableInstruction)
+			if (execution.step && oldCur instanceof MappableInstruction)
 			{
 				execution.paused = true;
 				return;

@@ -3,7 +3,9 @@ package net.runelite.deob.deobfuscators.rename;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
@@ -30,6 +32,31 @@ public class MapTest
 		if (l1.size() != l2.size())
 			return false;
 		
+		Map<Class, Integer> map1 = new HashMap<>(),
+			map2 = new HashMap<>();
+		
+		for (int i = 0; i < l1.size(); ++i)
+		{
+			Instruction i1 = l1.get(i);
+			
+			Integer c = map1.get(i1.getClass());
+			if (c == null)
+				map1.put(i1.getClass(), 1);
+			else
+				map1.put(i1.getClass(), c + 1);
+		}
+		
+		for (int i = 0; i < l2.size(); ++i)
+		{
+			Instruction i2 = l2.get(i);
+			
+			Integer c = map2.get(i2.getClass());
+			if (c == null)
+				map2.put(i2.getClass(), 1);
+			else
+				map2.put(i2.getClass(), c + 1);
+		}
+		
 		return true;
 	}
 	
@@ -40,8 +67,8 @@ public class MapTest
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
 		Assert.assertTrue(isMappable(
-			group1.findClass("client").findMethod("init"),
-			group2.findClass("client").findMethod("init")
+			group1.findClass("class99").findMethod("method2220"),
+			group2.findClass("class99").findMethod("method2149")
 		));
 	}
 	
@@ -53,12 +80,14 @@ public class MapTest
 		
 		Method m1 = group1.findClass("class99").findMethod("method2220");
 		Execution e = new Execution(group1);
+		e.step = true;
 		Frame frame = new Frame(e, m1);
 		frame.initialize();
 		e.frames.add(frame);
 		
 		Method m2 = group2.findClass("class99").findMethod("method2149");
 		Execution e2 = new Execution(group2);
+		e2.step = true;
 		Frame frame2 = new Frame(e2, m2);
 		frame2.initialize();
 		e2.frames.add(frame2);
