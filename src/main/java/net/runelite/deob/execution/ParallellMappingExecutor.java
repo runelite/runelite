@@ -17,7 +17,7 @@ public class ParallellMappingExecutor
 		
 		p1 = p2 = null;
 		
-		if (e.frames.isEmpty())
+		if (e.frames.isEmpty() || e2.frames.isEmpty())
 			return false;
 		
 		Frame f1 = e.frames.get(0), f2 = e2.frames.get(0);
