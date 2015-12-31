@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Value;
 
@@ -152,9 +153,16 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	}
 
 	@Override
-	public void map(InstructionContext ctx, InstructionContext other)
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
 		List<net.runelite.deob.Method> myMethods = this.getMethods(),
 			otherMethods = ((InvokeSpecial) other.getInstruction()).getMethods();
+		
+		List<net.runelite.deob.Method> m1 = this.myMethods;
+		List<net.runelite.deob.Method> m2 = ((InvokeSpecial) other.getInstruction()).myMethods;
+		assert myMethods.size() == otherMethods.size();
+		
+		for (int i = 0; i < myMethods.size(); ++i)
+			mapping.map(myMethods.get(i), otherMethods.get(i));
 	}
 }

@@ -17,6 +17,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.Method;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public class PutStatic extends Instruction implements SetFieldInstruction
 {
@@ -95,11 +96,11 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	}
 
 	@Override
-	public void map(InstructionContext ctx, InstructionContext other)
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
 		net.runelite.deob.Field myField = this.getMyField(),
 			otherField = ((PutStatic) other.getInstruction()).getMyField();
 		
-		System.out.println("MAPPING " + myField + " -> " + otherField);
+		mapping.map(myField, otherField);
 	}
 }

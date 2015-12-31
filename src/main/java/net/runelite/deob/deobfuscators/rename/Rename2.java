@@ -172,6 +172,8 @@ public class Rename2
 			v2.is(v1);
 			
 			System.out.println(mname(m) + " is " + mname(opt.get()));
+			
+			executeMethod(m, opt.get());
 		}
 	}
 	
@@ -307,6 +309,53 @@ public class Rename2
 		}
 	}
 	
+	private void executeNewMethods()
+	{
+		for (Vertex v : g1.getVerticies())
+		{
+			Vertex other = v.getOther();
+			
+			if (other == null || !(v.getObject() instanceof Method))
+				continue;
+			
+			executeMethod((Method) v.getObject(), (Method) other.getObject());
+		}
+	}
+	
+	static int count = 0;
+	private void executeMethod(Method m1, Method m2)
+	{
+//		assert (m1.getCode() == null) == (m2.getCode() == null);
+//		
+//		if (m1.getCode() == null)
+//			return;
+//		
+		if (!MappingExecutorUtil.isMappable(m1, m2))
+			return;
+		
+		if (m1.getName().equals("<clinit>") || m1.getName().equals("<init>"))
+			return;
+		
+		ParallelExecutorMapping mapping = MappingExecutorUtil.map(m1, m2);
+		System.out.println("EXEC " + count++ + " " + mname(m1) + " " + mname(m2) + " " + mapping);
+		
+		for (Entry<Object, Object> e : mapping.getMap().entrySet())
+		{
+			if (e.getKey() instanceof Method)
+			{
+				Method m = (Method) e.getKey();
+				if (m.isStatic())
+					continue;
+			}
+			Vertex v1 = g1.getVertexFor(e.getKey()),
+				v2 = g2.getVertexFor(e.getValue());
+			
+			v1.is(v2);
+			v2.is(v1);
+		}
+		// XXX next is use mappings. and then use executeMethod() on more than just the initial method mappings
+	}
+	
 	public NameMappings run(ClassGroup one, ClassGroup two)
 	{
 		Execution eone = new Execution(one);
@@ -388,6 +437,8 @@ public class Rename2
 			
 			int after = g1.solved(null);
 			System.out.println("After " + after);
+			
+			executeNewMethods();
 			
 			if (before == after)
 				break;
