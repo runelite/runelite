@@ -30,6 +30,7 @@ public class Frame
 	protected Method nonStatic; // next non static method up the stack
 	private Frame caller;
 	public Frame other; // in the other execution for mapping
+	public Frame returnTo; // is this the same as caller?
 
 	public Frame(Execution execution, Method method)
 	{
@@ -219,9 +220,7 @@ public class Frame
 			
 			if (oldCur == cur)
 			{
-				int idx = instructions.indexOf(cur);
-				assert idx != -1;
-				cur = instructions.get(idx + 1);
+				this.nextInstruction();
 			}
 			else
 			{
@@ -234,6 +233,16 @@ public class Frame
 				return;
 			}
 		}
+	}
+	
+	public void nextInstruction()
+	{
+		Instructions ins = method.getCode().getInstructions();
+		List<Instruction> instructions = ins.getInstructions();
+		
+		int idx = instructions.indexOf(cur);
+		assert idx != -1;
+		cur = instructions.get(idx + 1);
 	}
 	
 	private void processExceptions(Instruction i)
