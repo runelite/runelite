@@ -1,5 +1,9 @@
 package net.runelite.deob.execution;
 
+import net.runelite.deob.Method;
+import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+
 public class ParallellMappingExecutor
 {
 	private Execution e, e2;
@@ -44,10 +48,24 @@ public class ParallellMappingExecutor
 		// step frame
 		f1.execute();
 		f2.execute();
+		
+		f1 = popStack(f1);
+		f2 = popStack(f2);
 
 		// get what each frame is paused/exited on
 		p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 		p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+		
+		if (p1.getInstruction() instanceof InvokeStatic && !(p2.getInstruction() instanceof InvokeStatic))
+		{
+			f1 = stepInto(f1);
+			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+		}
+		else if (p2.getInstruction() instanceof InvokeStatic && !(p1.getInstruction() instanceof InvokeStatic))
+		{
+			f2 = stepInto(f2);
+			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+		}
 
 		// frames can stop executing at different times if one sees a jump
 		// that has been done before, so stop both and remove the pending branch
@@ -88,5 +106,73 @@ public class ParallellMappingExecutor
 	public InstructionContext getP2()
 	{
 		return p2;
+	}
+	
+	private Frame stepInto(Frame f)
+	{
+		Execution e = f.getExecution();
+		
+		assert e == this.e || e == e2;
+		assert e.frames.get(0) == f;
+		
+		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
+		assert i.getInstruction() instanceof InvokeStatic;
+		
+		InvokeStatic is = (InvokeStatic) i.getInstruction();
+		Method to = is.getMethods().get(0);
+		
+		Frame f2 = new Frame(e, to);
+		f2.initialize(i);
+		
+		e.frames.remove(0); // old frame goes away
+		e.frames.add(0, f2);
+		
+		assert f.other.other == f;
+		
+		f2.other = f.other; // even though theyre in different methods
+		f.other.other = f2;
+		
+		f.other = null;
+		
+		f2.returnTo = new Frame(f); // where to go when we're done
+		
+		// step new frame
+		f2.execute();
+		
+		return f2;
+	}
+	
+	private Frame popStack(Frame f)
+	{
+		Execution e = f.getExecution();
+		
+		if (f.isExecuting() || f.returnTo == null)
+			return f;
+		
+		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
+		if (!(i.getInstruction() instanceof ReturnInstruction))
+			return f;
+		
+		assert e.frames.contains(f);
+		assert !e.frames.contains(f.returnTo);
+		
+		// replace frame with returnTo
+		assert e.frames.get(0) == f;
+		e.frames.remove(0);
+		e.frames.add(0, f.returnTo);
+		
+		assert f.other.other == f;
+		assert f.returnTo.other == null;
+		
+		Frame newFrame = f.returnTo;
+		newFrame.other = f.other;
+		newFrame.other.other = newFrame;
+		
+		f.other = null;
+		
+		// step return frame
+		f.returnTo.execute();
+		
+		return f.returnTo;
 	}
 }
