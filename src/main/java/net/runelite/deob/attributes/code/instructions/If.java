@@ -118,4 +118,10 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		
 		// we can map these if they are getfield instructions?
 	}
+	
+	@Override
+	public boolean isSame(MappableInstruction other)
+	{
+		return this.getClass() == other.getClass();
+	}
 }

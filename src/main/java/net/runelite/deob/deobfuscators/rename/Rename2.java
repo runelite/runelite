@@ -309,6 +309,7 @@ public class Rename2
 		}
 	}
 	
+	static int pass = 0, asserts  = 0;
 	private void executeNewMethods()
 	{
 		for (Vertex v : g1.getVerticies())
@@ -318,13 +319,26 @@ public class Rename2
 			if (other == null || !(v.getObject() instanceof Method))
 				continue;
 			
-			executeMethod((Method) v.getObject(), (Method) other.getObject());
+			try
+			{
+				executeMethod((Method) v.getObject(), (Method) other.getObject());
+				++pass;
+			}
+			catch (Exception | AssertionError ex)
+			{
+				ex.printStackTrace();
+				++asserts;
+			}
 		}
 	}
 	
 	static int count = 0;
+	private Set<Method> executed = new HashSet<>();
 	private void executeMethod(Method m1, Method m2)
 	{
+		if (executed.contains(m1))
+			return;
+		executed.add(m1);
 //		assert (m1.getCode() == null) == (m2.getCode() == null);
 //		
 //		if (m1.getCode() == null)
@@ -343,9 +357,23 @@ public class Rename2
 		{
 			if (e.getKey() instanceof Method)
 			{
+				try
+				{
+					executeMethod((Method) e.getKey(), (Method) e.getValue());
+					++pass;
+				}
+				catch (Exception | AssertionError ex)
+				{
+					ex.printStackTrace();
+					++asserts;
+				}
+			
 				Method m = (Method) e.getKey();
 				if (m.isStatic())
+				{
+					// we can map execute these, though.
 					continue;
+				}
 			}
 			Vertex v1 = g1.getVertexFor(e.getKey()),
 				v2 = g2.getVertexFor(e.getValue());
@@ -433,12 +461,11 @@ public class Rename2
 			solve();
 			
 			g1.getVerticies().forEach(v -> v.finish());
-			//g2
+			
+			executeNewMethods();
 			
 			int after = g1.solved(null);
 			System.out.println("After " + after);
-			
-			executeNewMethods();
 			
 			if (before == after)
 				break;
@@ -488,6 +515,7 @@ public class Rename2
 //		show(mappings);
 		
 		System.out.println("Solved methods "+ g1.solved(VertexType.METHOD) + ", solved fields " + g1.solved(VertexType.FIELD) + ", unsolved methods " +g1.unsolved(VertexType.METHOD) + ", unsolved fields " + g1.unsolved(VertexType.FIELD));
+		System.out.println("asserts " + asserts + ", pass " + pass);
 		
 		//rename(mappings, two);
 		
