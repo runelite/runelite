@@ -6,4 +6,6 @@ import net.runelite.deob.execution.InstructionContext;
 public interface MappableInstruction
 {
 	void map(ParallelExecutorMapping mappings, InstructionContext ctx, InstructionContext other);
+	
+	boolean isSame(MappableInstruction other);
 }

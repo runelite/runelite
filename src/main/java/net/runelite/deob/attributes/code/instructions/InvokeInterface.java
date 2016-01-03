@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Value;
@@ -169,5 +170,11 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		
 		for (int i = 0; i < myMethods.size(); ++i)
 			mapping.map(myMethods.get(i), otherMethods.get(i));
+	}
+	
+	@Override
+	public boolean isSame(MappableInstruction other)
+	{
+		return this.getClass() == other.getClass();
 	}
 }

@@ -116,4 +116,10 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		branch1.other = branch2;
 		branch2.other = branch1;
 	}
+	
+	@Override
+	public boolean isSame(MappableInstruction other)
+	{
+		return this.getClass() == other.getClass();
+	}
 }

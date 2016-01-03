@@ -17,6 +17,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public class PutStatic extends Instruction implements SetFieldInstruction
@@ -102,5 +103,11 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 			otherField = ((PutStatic) other.getInstruction()).getMyField();
 		
 		mapping.map(myField, otherField);
+	}
+	
+	@Override
+	public boolean isSame(MappableInstruction other)
+	{
+		return this.getClass() == other.getClass();
 	}
 }
