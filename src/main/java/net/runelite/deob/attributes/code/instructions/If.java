@@ -120,8 +120,8 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	}
 	
 	@Override
-	public boolean isSame(MappableInstruction other)
+	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		return this.getClass() == other.getClass();
+		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
 	}
 }

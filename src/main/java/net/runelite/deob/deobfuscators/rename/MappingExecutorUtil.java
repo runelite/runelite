@@ -100,7 +100,8 @@ public class MappingExecutorUtil
 			
 			MappableInstruction mi1 = (MappableInstruction) p1.getInstruction(),
 				mi2 = (MappableInstruction) p2.getInstruction();
-			assert mi1.isSame(mi2);
+			
+			assert mi1.isSame(p1, p2);
 			//assert p1.getInstruction().getClass().equals(p2.getInstruction().getClass());
 
 			mi1.map(mappings, p1, p2);
