@@ -105,7 +105,8 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		
 		// we can map these if they are getfield instructions?
 		
-		assert ctx.getInstruction().getClass().equals(other.getInstruction().getClass());
+		// this is already checked before this
+		//assert ctx.getInstruction().getClass().equals(other.getInstruction().getClass());
 		
 		Frame branch1 = ctx.getBranches().get(0),
 			branch2 = other.getBranches().get(0);
