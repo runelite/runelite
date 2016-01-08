@@ -121,12 +121,14 @@ import net.runelite.deob.attributes.code.instructions.IStore_3;
 import net.runelite.deob.attributes.code.instructions.ISub;
 import net.runelite.deob.attributes.code.instructions.IUShR;
 import net.runelite.deob.attributes.code.instructions.IXor;
-import net.runelite.deob.attributes.code.instructions.IfCmpEq;
+import net.runelite.deob.attributes.code.instructions.IfACmpEq;
+import net.runelite.deob.attributes.code.instructions.IfACmpNe;
+import net.runelite.deob.attributes.code.instructions.IfICmpEq;
 import net.runelite.deob.attributes.code.instructions.IfCmpGe;
 import net.runelite.deob.attributes.code.instructions.IfCmpGt;
 import net.runelite.deob.attributes.code.instructions.IfCmpLe;
 import net.runelite.deob.attributes.code.instructions.IfCmpLt;
-import net.runelite.deob.attributes.code.instructions.IfCmpNe;
+import net.runelite.deob.attributes.code.instructions.IfICmpNe;
 import net.runelite.deob.attributes.code.instructions.IfEq;
 import net.runelite.deob.attributes.code.instructions.IfGe;
 import net.runelite.deob.attributes.code.instructions.IfGt;
@@ -353,14 +355,14 @@ public enum InstructionType
 	IFGE(0x9c, "ifge", IfGe.class),
 	IFGT(0x9d, "ifgt", IfGt.class),
 	IFLE(0x9e, "ifle", IfLe.class),
-	IF_ICMPEQ(0x9f, "if_icmpeq", IfCmpEq.class),
-	IF_ICMPNE(0xa0, "if_icmpne", IfCmpNe.class),
+	IF_ICMPEQ(0x9f, "if_icmpeq", IfICmpEq.class),
+	IF_ICMPNE(0xa0, "if_icmpne", IfICmpNe.class),
 	IF_ICMPLT(0xa1, "if_cmplt", IfCmpLt.class),
 	IF_ICMPGE(0xa2, "if_icmpge", IfCmpGe.class),
 	IF_ICMPGT(0xa3, "if_icmpgt", IfCmpGt.class),
 	IF_ICMPLE(0xa4, "if_icmple", IfCmpLe.class),
-	IF_ACMPEQ(0xa5, "if_acmpeq", IfCmpEq.class),
-	IF_ACMPNE(0xa6, "if_acmpne", IfCmpNe.class),
+	IF_ACMPEQ(0xa5, "if_acmpeq", IfACmpEq.class),
+	IF_ACMPNE(0xa6, "if_acmpne", IfACmpNe.class),
 	GOTO(0xa7, "goto", Goto.class),
 	TABLESWITCH(0xaa, "tableswitch", TableSwitch.class),
 	LOOKUPSWITCH(0xab, "lookupswitch", LookupSwitch.class),

@@ -18,7 +18,7 @@ public class IfNull extends If0
 		if (super.isSame(thisIc, otherIc))
 			return true;
 		
-		if (otherIc.getInstruction() instanceof IfCmpEq)
+		if (otherIc.getInstruction() instanceof IfACmpEq)
 		{
 			StackContext s1 = otherIc.getPops().get(0),
 				s2 = otherIc.getPops().get(1);
