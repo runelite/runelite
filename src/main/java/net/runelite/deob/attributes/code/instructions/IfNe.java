@@ -20,7 +20,7 @@ public class IfNe extends If0
 		if (super.isSame(thisIc, otherIc))
 			return true;
 		
-		if (otherIc.getInstruction() instanceof IfCmpNe)
+		if (otherIc.getInstruction() instanceof IfICmpNe)
 		{
 			// check for one side being 0
 			StackContext s1 = otherIc.getPops().get(0),

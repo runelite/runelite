@@ -13,8 +13,8 @@ public class MapStaticTest
 	//@Test
 	public void testMappable() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File("c:/rs/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("c:/rs/adamin2.jar"));
 		
 //		Assert.assertTrue(MappingExecutorUtil.isMappable(
 //			group1.findClass("class99").findMethod("method2220"),
@@ -25,8 +25,8 @@ public class MapStaticTest
 	@Test
 	public void test() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File("c:/rs/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("c:/rs/adamin2.jar"));
 		
 		Method m1 = group1.findClass("client").findMethod("vmethod3054");
 		Method m2 = group2.findClass("client").findMethod("vmethod2973");
