@@ -9,10 +9,6 @@ public class ParallelExecutorMapping
 	
 	public void map(Object one, Object two)
 	{
-		if (one.toString().equals("Z class6.field120"))
-		{
-			int i =5;
-		}
 		assert !map.containsKey(one) || map.get(one) == two;
 		map.put(one, two);
 	}
