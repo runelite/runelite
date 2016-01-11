@@ -65,7 +65,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	private void findMethodFromClass(List<net.runelite.deob.Method> list, ClassFile clazz)
 	{
 		net.runelite.deob.Method m = clazz.findMethodDeep(method.getNameAndType());
-		if (m != null)
+		if (m != null && !list.contains(m))
 			list.add(m);
 	
 		for (ClassFile cf : clazz.getChildren())
