@@ -1,5 +1,6 @@
 package net.runelite.deob.execution;
 
+import java.util.List;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
@@ -55,17 +56,6 @@ public class ParallellMappingExecutor
 		// get what each frame is paused/exited on
 		p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 		p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-		
-		if (p1.getInstruction() instanceof InvokeStatic && !(p2.getInstruction() instanceof InvokeStatic))
-		{
-			f1 = stepInto(f1);
-			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
-		}
-		else if (p2.getInstruction() instanceof InvokeStatic && !(p1.getInstruction() instanceof InvokeStatic))
-		{
-			f2 = stepInto(f2);
-			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-		}
 
 		// frames can stop executing at different times if one sees a jump
 		// that has been done before, so stop both and remove the pending branch
@@ -90,6 +80,17 @@ public class ParallellMappingExecutor
 			e2.frames.remove(0);
 			
 			return step();
+		}
+		
+		if (p1.getInstruction() instanceof InvokeStatic && !(p2.getInstruction() instanceof InvokeStatic))
+		{
+			f1 = stepInto(f1);
+			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+		}
+		else if (p2.getInstruction() instanceof InvokeStatic && !(p1.getInstruction() instanceof InvokeStatic))
+		{
+			f2 = stepInto(f2);
+			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
 		}
 
 		assert e.paused;
@@ -119,6 +120,10 @@ public class ParallellMappingExecutor
 		assert i.getInstruction() instanceof InvokeStatic;
 		
 		InvokeStatic is = (InvokeStatic) i.getInstruction();
+		List<Method> methods = is.getMethods();
+		if (methods.isEmpty()) // not my method
+			return null;
+		
 		Method to = is.getMethods().get(0);
 		
 		Frame f2 = new Frame(e, to);

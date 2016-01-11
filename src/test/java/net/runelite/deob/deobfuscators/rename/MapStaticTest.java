@@ -10,6 +10,12 @@ import org.junit.Test;
 
 public class MapStaticTest
 {
+	private static final String methods[][] = {
+		{ "client.vmethod3054", "client.vmethod2973" },
+		{ "class99.method2220", "class99.method2149" },
+		{ "class146.vmethod3158", "class146.vmethod3070" },
+	};
+	
 	//@Test
 	public void testMappable() throws IOException
 	{
@@ -22,14 +28,31 @@ public class MapStaticTest
 //		));
 	}
 	
+	//@Test
+	public void testAll() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		
+		for (String[] s : methods)
+		{
+			String[] one = s[0].split("\\."), two = s[1].split("\\.");
+			
+			Method m1 = group1.findClass(one[0]).findMethod(one[1]);
+			Method m2 = group2.findClass(two[0]).findMethod(two[1]);
+		
+			ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+		}
+	}
+	
 	@Test
 	public void test() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("c:/rs/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("c:/rs/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("client").findMethod("vmethod3054");
-		Method m2 = group2.findClass("client").findMethod("vmethod2973");
+		Method m1 = group1.findClass("class146").findMethod("vmethod3158");
+		Method m2 = group2.findClass("class146").findMethod("vmethod3070");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 	}
