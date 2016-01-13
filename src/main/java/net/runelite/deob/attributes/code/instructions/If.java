@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.execution.Execution;
 
 public abstract class If extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
@@ -99,16 +100,6 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-//		InstructionContext oneLhs = ctx.getPops().get(0).getPushed().resolve(ctx.getPops().get(0)),
-//			oneRhs = ctx.getPops().get(1).getPushed().resolve(ctx.getPops().get(1)),
-//			
-//			twoLhs = other.getPops().get(0).getPushed().resolve(other.getPops().get(0)),
-//			twoRhs = other.getPops().get(1).getPushed().resolve(other.getPops().get(1));
-		
-		// if we get here weve assedted isSame(ctx, other). but they might not be the same instruction.
-		// need to do something so branching can be always done right, eg ifeq vs ifne
-		//assert ctx.getInstruction().getClass().equals(other.getInstruction().getClass());
-		
 		Frame branch1 = ctx.getBranches().get(0),
 			branch2 = other.getBranches().get(0);
 		
@@ -117,8 +108,43 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		
 		branch1.other = branch2;
 		branch2.other = branch1;
-		
-		// we can map these if they are getfield instructions?
+	}
+	
+	protected void mapOtherBranch(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		Frame f1 = ctx.getFrame(),
+			f2 = other.getFrame(),
+			branch1 = ctx.getBranches().get(0),
+			branch2 = other.getBranches().get(0);
+
+		assert branch1.other == null;
+		assert branch2.other == null;
+
+		// currently f1 <-> f2
+		assert f1.other == f2;
+		assert f2.other == f1;
+
+		// change to f1 <-> branch2, f2 <-> branch1
+
+		f1.other = branch2;
+		branch2.other = f1;
+
+		f2.other = branch1;
+		branch1.other = f2;
+
+		// switch frame order in executor frame list
+
+		Execution e = f1.getExecution(),
+			e2 = f2.getExecution();
+
+		int i = e2.frames.indexOf(f2),
+			i2 = e2.frames.indexOf(branch2);
+
+		e2.frames.remove(i);
+		e2.frames.add(i, branch2);
+
+		e2.frames.remove(i2);
+		e2.frames.add(i2, f2);
 	}
 	
 	@Override

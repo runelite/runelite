@@ -3,6 +3,8 @@ package net.runelite.deob.attributes.code.instructions;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.execution.Execution;
+import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 
 public class IfCmpGt extends If
@@ -21,9 +23,8 @@ public class IfCmpGt extends If
 		if (otherIc.getInstruction() instanceof IfCmpLe)
 		{
 			return true;
-			 //this is equal, but the branching is different
 		}
-		
+	
 		return false;
 	}
 	
@@ -32,11 +33,11 @@ public class IfCmpGt extends If
 	{
 		if (other.getInstruction() instanceof IfCmpLe)
 		{
-			
+			super.mapOtherBranch(mapping, ctx, other);
 		}
 		else
 		{
-			//super.ma
+			super.map(mapping, ctx, other);
 		}
 	}
 }
