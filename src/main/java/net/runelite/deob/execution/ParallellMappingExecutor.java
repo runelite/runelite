@@ -30,12 +30,12 @@ public class ParallellMappingExecutor
 		assert f1.other == f2;
 		assert f2.other == f1;
 
-		assert f1.isExecuting() == f2.isExecuting();
+		//assert f1.isExecuting() == f2.isExecuting();
 
 		// this will happen because conditional branches will create their frame
 		// before realizing its already executed it before, so it will set the frame
 		// as not executing
-		if (!f1.isExecuting())
+		if (!f1.isExecuting() || !f2.isExecuting())
 		{
 			assert e.frames.get(0) == f1;
 			assert e2.frames.get(0) == f2;

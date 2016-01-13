@@ -4,6 +4,7 @@ import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
 
@@ -47,7 +48,24 @@ public class IfNe extends If0
 				}
 			}
 		}
+		else if (otherIc.getInstruction() instanceof IfEq)
+		{
+			return true;
+		}
 		
 		return false;
+	}
+	
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		if (other.getInstruction() instanceof IfEq)
+		{
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
+		}
 	}
 }
