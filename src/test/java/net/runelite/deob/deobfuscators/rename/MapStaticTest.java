@@ -17,7 +17,8 @@ public class MapStaticTest
 		{ "class166.method3315", "class166.method3254" },
 		{ "class167.method3406", "class167.method3296" },
 		{ "client.method585", "class44.method930" },
-		{ "class222.method4086", "class222.method3957" }
+		{ "class222.method4086", "class222.method3957" },
+		{ "class40.method851", "class40.method803" },
 	};
 	
 //	@Test
