@@ -97,7 +97,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	}
 	
 	@Override
-	public final/*XXX tmp*/ void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
 //		InstructionContext oneLhs = ctx.getPops().get(0).getPushed().resolve(ctx.getPops().get(0)),
 //			oneRhs = ctx.getPops().get(1).getPushed().resolve(ctx.getPops().get(1)),
