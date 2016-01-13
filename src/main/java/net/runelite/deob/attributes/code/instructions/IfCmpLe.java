@@ -2,6 +2,8 @@ package net.runelite.deob.attributes.code.instructions;
 
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.execution.InstructionContext;
 
 public class IfCmpLe extends If
 {
@@ -10,4 +12,30 @@ public class IfCmpLe extends If
 		super(instructions, type, pc);
 	}
 
+	@Override
+	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
+	{
+		if (super.isSame(thisIc, otherIc))
+			return true;
+		
+		if (otherIc.getInstruction() instanceof IfCmpGt)
+		{
+			return true;
+		}
+	
+		return false;
+	}
+	
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		if (other.getInstruction() instanceof IfCmpGt)
+		{
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
+		}
+	}
 }
