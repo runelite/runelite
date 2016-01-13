@@ -20,17 +20,24 @@ public class MapStaticTest
 		{ "class222.method4086", "class222.method3957" }
 	};
 	
-	//@Test
-	public void testMappable() throws IOException
-	{
-		ClassGroup group1 = JarUtil.loadJar(new File("c:/rs/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("c:/rs/adamin2.jar"));
-		
-//		Assert.assertTrue(MappingExecutorUtil.isMappable(
-//			group1.findClass("class99").findMethod("method2220"),
-//			group2.findClass("class99").findMethod("method2149")
-//		));
-	}
+//	@Test
+//	public void testMappable() throws IOException
+//	{
+//		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+//		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+//		
+//		for (String[] s : methods)
+//		{
+//			String[] one = s[0].split("\\."), two = s[1].split("\\.");
+//			
+//			Method m1 = group1.findClass(one[0]).findMethod(one[1]);
+//			Method m2 = group2.findClass(two[0]).findMethod(two[1]);
+//			
+//			Assert.assertTrue(MappingExecutorUtil.isMappable(
+//				m1, m2
+//			));
+//		}
+//	}
 	
 	//@Test
 	public void testAll() throws IOException
@@ -55,8 +62,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("class222").findMethod("method4086");
-		Method m2 = group2.findClass("class222").findMethod("method3957");
+		Method m1 = group1.findClass("class40").findMethod("method851");
+		Method m2 = group2.findClass("class40").findMethod("method803");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 	}

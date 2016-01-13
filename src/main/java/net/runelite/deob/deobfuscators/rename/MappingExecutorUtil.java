@@ -18,6 +18,7 @@ import net.runelite.deob.util.JarUtil;
 
 public class MappingExecutorUtil
 {
+	// won't work with static funcs etc
 	public static boolean isMappable(Method m1, Method m2)
 	{
 		assert (m1.getCode() == null) == (m2.getCode() == null);
