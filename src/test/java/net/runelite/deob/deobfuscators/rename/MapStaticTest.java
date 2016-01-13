@@ -16,7 +16,8 @@ public class MapStaticTest
 		{ "class146.vmethod3158", "class146.vmethod3070" },
 		{ "class166.method3315", "class166.method3254" },
 		{ "class167.method3406", "class167.method3296" },
-		{ "client.method585", "class44.method930" }
+		{ "client.method585", "class44.method930" },
+		{ "class222.method4086", "class222.method3957" }
 	};
 	
 	//@Test
@@ -54,8 +55,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("client").findMethod("method585");
-		Method m2 = group2.findClass("class44").findMethod("method930");
+		Method m1 = group1.findClass("class222").findMethod("method4086");
+		Method m2 = group2.findClass("class222").findMethod("method3957");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 	}
