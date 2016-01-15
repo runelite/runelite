@@ -173,7 +173,13 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		assert myMethods.size() == otherMethods.size();
 		
 		for (int i = 0; i < myMethods.size(); ++i)
-			mapping.map(myMethods.get(i), otherMethods.get(i));
+		{
+			net.runelite.deob.Method m1 = myMethods.get(i), m2 = otherMethods.get(i);
+
+			assert m1.getMethods().getClassFile().getName().equals(m2.getMethods().getClassFile().getName());
+			
+			mapping.map(m1, m2);
+		}
 	}
 	
 	@Override
