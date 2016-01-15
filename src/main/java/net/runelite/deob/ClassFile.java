@@ -66,6 +66,12 @@ public class ClassFile
 		methods = new Methods(this);
 		attributes = new Attributes(this);
 	}
+
+	@Override
+	public String toString()
+	{
+		return "ClassFile{" + "name=" + name + '}';
+	}
 	
 	public void write(DataOutputStream out) throws IOException
 	{
