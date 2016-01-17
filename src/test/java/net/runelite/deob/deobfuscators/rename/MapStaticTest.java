@@ -2,6 +2,9 @@ package net.runelite.deob.deobfuscators.rename;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
 import net.runelite.deob.util.JarUtil;
@@ -67,5 +70,58 @@ public class MapStaticTest
 		Method m2 = group2.findClass("class55").findMethod("method1140");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+	}
+	
+	//@Test
+	public void test2() throws Exception
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		
+		List<ClassFile> cl1 = group1.getClasses(),
+		cl2 = group2.getClasses();
+		
+		for (int i = 0; i < 200; ++i)
+		{
+			ClassFile c1 = cl1.get(i), c2 = cl2.get(i);
+			System.out.println(c1 + " <-> " + c2);
+		}
+		//Assert.assertEquals(cl1.size(), cl2.size());
+		
+		Method m1 = group1.findClass("class66").findMethod("vmethod3787");
+		Method m2 = group2.findClass("class66").findMethod("vmethod3664");
+		
+		List<Method> list = new ArrayList<>();
+		findMethodFromClass(m1.getPoolMethod(), list, group1.findClass("class66"));
+		
+		System.out.println("break");
+		
+		List<Method> list2 = new ArrayList<>();
+		findMethodFromClass(m2.getPoolMethod(), list2, group2.findClass("class66"));
+		
+		Assert.assertEquals(list.size(), list2.size());
+		
+		for (int i = 0; i < list.size(); ++i)
+		{
+			m1 = list.get(i);
+			m2 = list2.get(i);
+			
+			System.out.println(m1 + " vs " + m2);
+
+			Assert.assertEquals(m1.getMethods().getClassFile().getName(), m2.getMethods().getClassFile().getName());
+		}
+	}
+	
+	private void findMethodFromClass(net.runelite.deob.pool.Method method, List<Method> list, ClassFile clazz)
+	{
+		net.runelite.deob.Method m = clazz.findMethodDeep(method.getNameAndType());
+		if (m != null && !list.contains(m))
+			list.add(m);
+	
+		for (ClassFile cf : clazz.getChildren())
+		{
+			System.out.println("Child of " + clazz + ": " +cf);
+			findMethodFromClass(method, list, cf);
+		}
 	}
 }
