@@ -85,11 +85,13 @@ public class ParallellMappingExecutor
 		if (p1.getInstruction() instanceof InvokeStatic && !(p2.getInstruction() instanceof InvokeStatic))
 		{
 			f1 = stepInto(f1);
+			f1 = popStack(f1);
 			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 		}
 		else if (p2.getInstruction() instanceof InvokeStatic && !(p1.getInstruction() instanceof InvokeStatic))
 		{
 			f2 = stepInto(f2);
+			f2 = popStack(f2);
 			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
 		}
 
