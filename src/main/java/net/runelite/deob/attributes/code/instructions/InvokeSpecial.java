@@ -102,6 +102,12 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		
 		frame.addInstructionContext(ins);
 	}
+	
+	@Override
+	public String toString()
+	{
+		return "invokespecial " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod();
+	}
 
 	@Override
 	public String getDesc(Frame frame)
