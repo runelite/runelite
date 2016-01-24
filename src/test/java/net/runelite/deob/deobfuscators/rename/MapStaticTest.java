@@ -3,7 +3,12 @@ package net.runelite.deob.deobfuscators.rename;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
@@ -24,6 +29,8 @@ public class MapStaticTest
 		{ "class40.method851", "class40.method803" },
 		{ "class55.method1187", "class55.method1140" },
 		{ "class107.method2427", "class107.method2344" },
+		{ "client.init", "client.init" },
+		{ "class162.method3270", "class86.method2020" },
 	};
 	
 //	@Test
@@ -68,10 +75,63 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
+		Method m1 = group1.findClass("class162").findMethod("method3270");
+		Method m2 = group2.findClass("class86").findMethod("method2020");
+		
+		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+		
+		System.out.println("BEGIN OF MAPPING");
+		for (Entry<Object, Object> e : mappings.getMap().entrySet())
+		{
+			System.out.println(e.getKey() + " <-> " + e.getValue());
+		}
+	}
+	
+	//@Test
+	public void testAllMap() throws Exception
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		
 		Method m1 = group1.findClass("client").findMethod("init");
 		Method m2 = group2.findClass("client").findMethod("init");
 		
-		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+		HashMap<Object, Object> all = new HashMap();
+		map(all, new HashSet(), m1, m2);
+		
+		for (Entry<Object, Object> e : all.entrySet())
+		{
+			System.out.println(e.getKey() + " <-> " + e.getValue());
+		}
+		System.out.println("Total " + all.size());
+	}
+	
+	private void map(Map<Object, Object> all, Set<Object> invalid, Method m1, Method m2)
+	{
+		if (all.containsKey(m1))
+			return;
+		all.put(m1, m2);
+		
+		ParallelExecutorMapping mappings;
+		try
+		{
+			mappings = MappingExecutorUtil.map(m1, m2);
+		}
+		catch (Throwable ex)
+		{
+			System.err.println("Error mapping " + m1 + " to " + m2);
+			return;
+		}
+		
+		for (Entry<Object, Object> e : mappings.getMap().entrySet())
+		{
+			if (e.getKey() instanceof Method)
+				map(all, invalid, (Method) e.getKey(), (Method) e.getValue());
+			else
+				all.put(e.getKey(), e.getValue());
+			//assert all
+			//all.put(e.getKey(), e.getValue());
+		}
 	}
 	
 	//@Test

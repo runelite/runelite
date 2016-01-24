@@ -152,4 +152,10 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	{
 		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
 	}
+	
+	@Override
+	public boolean canMap()
+	{
+		return true;
+	}
 }

@@ -229,8 +229,12 @@ public class Frame
 			
 			if (execution.step && oldCur instanceof MappableInstruction)
 			{
-				execution.paused = true;
-				return;
+				MappableInstruction mi = (MappableInstruction) oldCur;
+				if (mi.canMap())
+				{
+					execution.paused = true;
+					return;
+				}
 			}
 		}
 	}

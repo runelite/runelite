@@ -178,4 +178,10 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	{
 		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
 	}
+	
+	@Override
+	public boolean canMap()
+	{
+		return true;
+	}
 }
