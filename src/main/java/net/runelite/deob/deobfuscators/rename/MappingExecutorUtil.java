@@ -1,7 +1,5 @@
 package net.runelite.deob.deobfuscators.rename;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +7,12 @@ import java.util.stream.Collectors;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.ParallellMappingExecutor;
-import net.runelite.deob.util.JarUtil;
 
 public class MappingExecutorUtil
 {
@@ -111,5 +109,23 @@ public class MappingExecutorUtil
 		}
 		
 		return mappings;
+	}
+	
+	public static boolean isMappable(InvokeInstruction ii)
+	{
+		net.runelite.deob.pool.Method m = (net.runelite.deob.pool.Method) ii.getMethod();
+		String className = m.getClassEntry().getName();
+		
+		if (className.startsWith("java/"))
+			return false;
+//		switch (className)
+//		{
+//			case "java/lang/String":
+//			
+//		}
+//		if (m.getClassEntry().getName().equals("java/lang/String"))
+//			return false;
+		
+		return true;
 	}
 }

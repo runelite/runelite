@@ -110,4 +110,10 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	{
 		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
 	}
+	
+	@Override
+	public boolean canMap()
+	{
+		return true;
+	}
 }

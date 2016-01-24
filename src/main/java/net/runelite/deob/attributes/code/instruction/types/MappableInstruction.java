@@ -8,4 +8,6 @@ public interface MappableInstruction
 	void map(ParallelExecutorMapping mappings, InstructionContext ctx, InstructionContext other);
 	
 	boolean isSame(InstructionContext thisIc, InstructionContext otherIc);
+	
+	boolean canMap();
 }

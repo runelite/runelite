@@ -3,6 +3,7 @@ package net.runelite.deob.attributes.code.instructions;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
 
@@ -34,7 +35,7 @@ public class IfICmpEq extends If
 			return true;
 		
 		// check for other being ifeq and this has a constant 0
-		if (otherIc.getInstruction() instanceof IfEq)
+		if (otherIc.getInstruction() instanceof IfEq || otherIc.getInstruction() instanceof IfNe)
 		{
 			StackContext s1 = thisIc.getPops().get(0),
 				s2 = thisIc.getPops().get(1);
@@ -44,5 +45,18 @@ public class IfICmpEq extends If
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		if (other.getInstruction() instanceof IfNe)
+		{
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
+		}
 	}
 }

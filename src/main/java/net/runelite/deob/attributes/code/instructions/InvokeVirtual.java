@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Value;
@@ -186,5 +187,11 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
 		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+	}
+	
+	@Override
+	public boolean canMap()
+	{
+		return MappingExecutorUtil.isMappable(this);
 	}
 }
