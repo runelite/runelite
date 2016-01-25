@@ -4,6 +4,7 @@ import java.util.List;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 
 public class ParallellMappingExecutor
 {
@@ -82,13 +83,13 @@ public class ParallellMappingExecutor
 			return step();
 		}
 		
-		if (p1.getInstruction() instanceof InvokeStatic && !(p2.getInstruction() instanceof InvokeStatic))
+		if (MappingExecutorUtil.isInlineable(p1.getInstruction()) && !MappingExecutorUtil.isInlineable(p2.getInstruction()))
 		{
 			f1 = stepInto(f1);
 			f1 = popStack(f1);
 			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 		}
-		else if (p2.getInstruction() instanceof InvokeStatic && !(p1.getInstruction() instanceof InvokeStatic))
+		else if (MappingExecutorUtil.isInlineable(p2.getInstruction()) && !MappingExecutorUtil.isInlineable(p1.getInstruction()))
 		{
 			f2 = stepInto(f2);
 			f2 = popStack(f2);
