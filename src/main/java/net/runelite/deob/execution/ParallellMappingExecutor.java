@@ -3,6 +3,7 @@ package net.runelite.deob.execution;
 import java.util.List;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
+import net.runelite.deob.attributes.code.instructions.InvokeSpecial;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 
@@ -17,6 +18,7 @@ public class ParallellMappingExecutor
 		this.e2 = two;
 	}
 	
+	boolean step1 = true, step2 = true;
 	public boolean step()
 	{
 		assert e.frames.size() == e2.frames.size();
@@ -48,8 +50,10 @@ public class ParallellMappingExecutor
 		}
 
 		// step frame
-		f1.execute();
-		f2.execute();
+		if (step1)
+			f1.execute();
+		if (step2)
+			f2.execute();
 		
 		f1 = popStack(f1);
 		f2 = popStack(f2);
@@ -83,17 +87,57 @@ public class ParallellMappingExecutor
 			return step();
 		}
 		
+		Frame oldf1 = f1, oldf2 = f2;
 		if (MappingExecutorUtil.isInlineable(p1.getInstruction()) && !MappingExecutorUtil.isInlineable(p2.getInstruction()))
 		{
 			f1 = stepInto(f1);
-			f1 = popStack(f1);
-			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+			try
+			{
+				step2 = false;
+				return step();
+			}
+			finally
+			{
+				step2 = true;
+			}
+			//f1 = popStack(f1);
+			//p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 		}
 		else if (MappingExecutorUtil.isInlineable(p2.getInstruction()) && !MappingExecutorUtil.isInlineable(p1.getInstruction()))
 		{
 			f2 = stepInto(f2);
-			f2 = popStack(f2);
-			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+			//f2 = popStack(f2);
+			//p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+			try
+			{
+				step1 = false;
+				return step();
+			}
+			finally
+			{
+				step1 = true;
+			}
+		}
+		else if (MappingExecutorUtil.isInlineable(p1.getInstruction()) && MappingExecutorUtil.isInlineable(p2.getInstruction()))
+		{
+			// p1s func might equal p2s func
+			
+			// step into both at once, and insert to beginning of e.frames
+			
+			// when two funcs exit at once, map them then (if static?)
+			
+//			f1 = stepInto(f1);
+//			f1 = popStack(f1);
+//			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+//			
+//			f2 = stepInto(f2);
+//			f2 = popStack(f2);
+//			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+		}
+		
+		if (p1.getInstruction() instanceof InvokeSpecial && p2.getInstruction() instanceof InvokeStatic)
+		{
+			int i = 5;
 		}
 
 		assert e.paused;
@@ -124,8 +168,10 @@ public class ParallellMappingExecutor
 		
 		InvokeStatic is = (InvokeStatic) i.getInstruction();
 		List<Method> methods = is.getMethods();
-		if (methods.isEmpty()) // not my method
-			return null;
+		
+		assert methods.size() == 1;
+		//if (methods.isEmpty()) // not my method
+		//	return null;
 		
 		Method to = is.getMethods().get(0);
 		
@@ -145,7 +191,7 @@ public class ParallellMappingExecutor
 		f2.returnTo = new Frame(f); // where to go when we're done
 		
 		// step new frame
-		f2.execute();
+		//f2.execute();
 		
 		return f2;
 	}
