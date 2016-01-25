@@ -17,7 +17,7 @@ import net.runelite.deob.execution.ParallellMappingExecutor;
 
 public class MappingExecutorUtil
 {
-	// won't work with static funcs etc
+	// won't work with static funcs etc. this is all wrong. XXX
 	public static boolean isMappable(Method m1, Method m2)
 	{
 		assert (m1.getCode() == null) == (m2.getCode() == null);
@@ -101,7 +101,10 @@ public class MappingExecutorUtil
 			MappableInstruction mi1 = (MappableInstruction) p1.getInstruction(),
 				mi2 = (MappableInstruction) p2.getInstruction();
 			
-			assert mi1.isSame(p1, p2);
+			if (!mi1.isSame(p1, p2))
+			{
+				assert mi1.isSame(p1, p2);
+			}
 			//assert p1.getInstruction().getClass().equals(p2.getInstruction().getClass());
 
 			mi1.map(mappings, p1, p2);
