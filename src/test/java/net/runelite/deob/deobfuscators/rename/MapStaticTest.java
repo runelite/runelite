@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deob;
@@ -33,6 +34,7 @@ public class MapStaticTest
 		{ "client.init", "client.init" },
 		{ "class162.method3270", "class86.method2020" },
 		{ "class29.method711", "class36.method742" },
+		{ "class72.run", "class72.run" },
 	};
 	
 //	@Test
@@ -77,8 +79,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("class29").findMethod("method711");
-		Method m2 = group2.findClass("class36").findMethod("method742");
+		Method m1 = group1.findClass("class72").findMethod("run");
+		Method m2 = group2.findClass("class72").findMethod("run");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -127,6 +129,8 @@ public class MapStaticTest
 		
 		for (ClassFile cf : group.getClasses())
 		{
+			List<Method> cmethods = new ArrayList<>();
+			
 			for (Method m : cf.getMethods().getMethods())
 			{
 				if (!Deob.isObfuscated(m.getName()) && !m.getName().startsWith("<"))
@@ -137,9 +141,14 @@ public class MapStaticTest
 						continue;
 					}
 					
-					methods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
+					cmethods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
 				}
 			}
+			
+			// cmethods are scrambled randomally, so sort by name
+			cmethods = cmethods.stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
+			
+			methods.addAll(cmethods);
 		}
 		
 		return methods;

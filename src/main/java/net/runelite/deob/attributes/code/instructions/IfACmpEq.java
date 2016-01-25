@@ -2,6 +2,7 @@ package net.runelite.deob.attributes.code.instructions;
 
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.StackContext;
 
@@ -32,7 +33,24 @@ public class IfACmpEq extends If
 				return true;
 			}
 		}
+		else if (otherIc.getInstruction() instanceof IfACmpNe)
+		{
+			return true;
+		}
 		
 		return false;
+	}
+	
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		if (other.getInstruction() instanceof IfACmpNe)
+		{
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
+		}
 	}
 }
