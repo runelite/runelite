@@ -33,10 +33,6 @@ public class IfNull extends If0
 				return true;
 			}
 		}
-		else if (otherIc.getInstruction() instanceof IfNull)
-		{
-			return true;
-		}
 		
 		return false;
 	}
@@ -44,7 +40,7 @@ public class IfNull extends If0
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfACmpNe || other.getInstruction() instanceof IfNull)
+		if (other.getInstruction() instanceof IfACmpNe)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}
