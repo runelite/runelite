@@ -150,15 +150,6 @@ public class Execution
 		System.out.println("Processed " + fcount + " frames");
 	}
 	
-//	public InstructionContext getPaused()
-//	{
-//		if (frames.isEmpty())
-//			return null;
-//		
-//		Frame f = frames.get(0);
-//		return f.getInstructions().get(f.getInstructions().size() - 1);
-//	}
-	
 	public Collection<InstructionContext> getInstructonContexts(Instruction i)
 	{
 		return contexts.getCollection(i);
