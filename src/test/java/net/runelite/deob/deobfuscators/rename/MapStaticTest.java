@@ -34,7 +34,7 @@ public class MapStaticTest
 		{ "client.init", "client.init" },
 		{ "class162.method3270", "class86.method2020" },
 		{ "class29.method711", "class36.method742" },
-		{ "class72.run", "class72.run" },
+		//{ "class72.run", "class72.run" },
 	};
 	
 //	@Test
@@ -57,30 +57,30 @@ public class MapStaticTest
 //	}
 	
 	//@Test
-//	public void testAll() throws IOException
-//	{
-//		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-//		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
-//		
-//		for (String[] s : methods)
-//		{
-//			String[] one = s[0].split("\\."), two = s[1].split("\\.");
-//			
-//			Method m1 = group1.findClass(one[0]).findMethod(one[1]);
-//			Method m2 = group2.findClass(two[0]).findMethod(two[1]);
-//		
-//			ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
-//		}
-//	}
-	
-	//@Test
-	public void test() throws IOException
+	public void testAll() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("class72").findMethod("run");
-		Method m2 = group2.findClass("class72").findMethod("run");
+		for (String[] s : methods)
+		{
+			String[] one = s[0].split("\\."), two = s[1].split("\\.");
+			
+			Method m1 = group1.findClass(one[0]).findMethod(one[1]);
+			Method m2 = group2.findClass(two[0]).findMethod(two[1]);
+		
+			ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+		}
+	}
+	
+	@Test
+	public void test() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+	
+		Method m1 = group1.findClass("client").findMethod("vmethod3054");
+		Method m2 = group2.findClass("client").findMethod("vmethod2973");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -91,7 +91,7 @@ public class MapStaticTest
 		}
 	}
 	
-	@Test
+	//@Test
 	public void testDeep() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
