@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.Deob;
 import net.runelite.deob.Method;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
@@ -31,6 +32,7 @@ public class MapStaticTest
 		{ "class107.method2427", "class107.method2344" },
 		{ "client.init", "client.init" },
 		{ "class162.method3270", "class86.method2020" },
+		{ "class29.method711", "class36.method742" },
 	};
 	
 //	@Test
@@ -75,8 +77,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("class162").findMethod("method3270");
-		Method m2 = group2.findClass("class86").findMethod("method2020");
+		Method m1 = group1.findClass("class29").findMethod("method711");
+		Method m2 = group2.findClass("class36").findMethod("method742");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -93,17 +95,54 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("client").findMethod("init");
-		Method m2 = group2.findClass("client").findMethod("init");
+		List<Method> m1s = getInitialMethods(group1), m2s = getInitialMethods(group2);
+		//Method m1 = group1.findClass("client").findMethod("init");
+		//Method m2 = group2.findClass("client").findMethod("init");
+		
+		assert m1s.size() == m2s.size();
 		
 		HashMap<Object, Object> all = new HashMap();
-		map(all, new HashSet(), m1, m2);
-		
-		for (Entry<Object, Object> e : all.entrySet())
+		for (int i = 0; i < m1s.size(); ++i)
 		{
-			System.out.println(e.getKey() + " <-> " + e.getValue());
+			Method m1 = m1s.get(i), m2 = m2s.get(i);
+			
+			assert m1.getPoolMethod().equals(m2.getPoolMethod());
+			
+			map(all, new HashSet(), m1, m2);
+
+			for (Entry<Object, Object> e : all.entrySet())
+			{
+				System.out.println(e.getKey() + " <-> " + e.getValue());
+			}
+			System.out.println("Total " + all.size());
 		}
-		System.out.println("Total " + all.size());
+	}
+	
+	public List<Method> getInitialMethods(ClassGroup group)
+	{
+		List<Method> methods = new ArrayList<>();
+		
+		group.buildClassGraph(); // required when looking up methods
+		group.lookup(); // lookup methods
+		
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : cf.getMethods().getMethods())
+			{
+				if (!Deob.isObfuscated(m.getName()) && !m.getName().startsWith("<"))
+				{
+					if (m.getCode() == null)
+					{
+						methods.add(m);
+						continue;
+					}
+					
+					methods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
+				}
+			}
+		}
+		
+		return methods;
 	}
 	
 	private void map(Map<Object, Object> all, Set<Object> invalid, Method m1, Method m2)

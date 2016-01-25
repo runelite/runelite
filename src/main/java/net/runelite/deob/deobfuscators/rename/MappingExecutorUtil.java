@@ -9,6 +9,7 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
@@ -118,14 +119,12 @@ public class MappingExecutorUtil
 		
 		if (className.startsWith("java/"))
 			return false;
-//		switch (className)
-//		{
-//			case "java/lang/String":
-//			
-//		}
-//		if (m.getClassEntry().getName().equals("java/lang/String"))
-//			return false;
 		
 		return true;
+	}
+	
+	public static boolean isInlineable(Instruction i)
+	{
+		return i instanceof InvokeStatic && isMappable((InvokeStatic) i);
 	}
 }
