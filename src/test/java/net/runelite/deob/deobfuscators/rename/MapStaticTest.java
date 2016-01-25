@@ -34,7 +34,7 @@ public class MapStaticTest
 		{ "client.init", "client.init" },
 		{ "class162.method3270", "class86.method2020" },
 		{ "class29.method711", "class36.method742" },
-		//{ "class72.run", "class72.run" },
+		{ "class72.run", "class72.run" },
 	};
 	
 //	@Test
@@ -56,7 +56,7 @@ public class MapStaticTest
 //		}
 //	}
 	
-	//@Test
+	@Test
 	public void testAll() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
@@ -79,8 +79,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 	
-		Method m1 = group1.findClass("client").findMethod("vmethod3054");
-		Method m2 = group2.findClass("client").findMethod("vmethod2973");
+		Method m1 = group1.findClass("client").findMethod("init");
+		Method m2 = group2.findClass("client").findMethod("init");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		

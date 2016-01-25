@@ -21,7 +21,8 @@ public class ParallellMappingExecutor
 	boolean step1 = true, step2 = true;
 	public boolean step()
 	{
-		assert e.frames.size() == e2.frames.size();
+		// this no longer holds with recursive stepinfo
+		//assert e.frames.size() == e2.frames.size();
 		
 		p1 = p2 = null;
 		
