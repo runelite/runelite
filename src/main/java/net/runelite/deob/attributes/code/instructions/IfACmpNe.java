@@ -33,7 +33,24 @@ public class IfACmpNe extends If
 				return true;
 			}
 		}
+		else if (otherIc.getInstruction() instanceof IfACmpEq)
+		{
+			return true;
+		}
 		
 		return false;
+	}
+	
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		if (other.getInstruction() instanceof IfACmpEq)
+		{
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
+		}
 	}
 }

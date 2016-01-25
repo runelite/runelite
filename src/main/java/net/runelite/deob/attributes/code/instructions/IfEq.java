@@ -2,8 +2,10 @@ package net.runelite.deob.attributes.code.instructions;
 
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import static net.runelite.deob.attributes.code.instructions.IfICmpEq.isZero;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.InstructionContext;
+import net.runelite.deob.execution.StackContext;
 
 public class IfEq extends If0
 {
@@ -22,6 +24,14 @@ public class IfEq extends If0
 		{
 			return true;
 		}
+		else if (otherIc.getInstruction() instanceof IfICmpNe)
+		{
+			StackContext s1 = otherIc.getPops().get(0),
+				s2 = otherIc.getPops().get(1);
+			
+			if (isZero(s1) || isZero(s2))
+				return true;
+		}
 	
 		return false;
 	}
@@ -29,7 +39,7 @@ public class IfEq extends If0
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfNe)
+		if (other.getInstruction() instanceof IfNe || other.getInstruction() instanceof IfICmpNe)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}

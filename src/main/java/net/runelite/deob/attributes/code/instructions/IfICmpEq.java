@@ -14,7 +14,7 @@ public class IfICmpEq extends If
 		super(instructions, type, pc);
 	}
 	
-	private static boolean isZero(StackContext s)
+	static boolean isZero(StackContext s)
 	{
 		if (s.getPushed().getInstruction() instanceof PushConstantInstruction)
 		{
