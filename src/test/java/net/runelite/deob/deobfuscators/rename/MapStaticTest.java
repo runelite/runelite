@@ -91,7 +91,7 @@ public class MapStaticTest
 		}
 	}
 	
-	//@Test
+	@Test
 	public void testDeep() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
@@ -102,6 +102,24 @@ public class MapStaticTest
 		
 		HashMap<Object, Object> all = new HashMap();
 		map(all, new HashSet(), m1, m2);
+	}
+	
+	@Test
+	public void testAllDeep() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
+		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		
+		for (String[] s : methods)
+		{
+			String[] one = s[0].split("\\."), two = s[1].split("\\.");
+			
+			Method m1 = group1.findClass(one[0]).findMethod(one[1]);
+			Method m2 = group2.findClass(two[0]).findMethod(two[1]);
+		
+			HashMap<Object, Object> all = new HashMap();
+			map(all, new HashSet(), m1, m2);
+		}
 	}
 	
 	//@Test
@@ -202,59 +220,6 @@ public class MapStaticTest
 				all.put(e.getKey(), e.getValue());
 			//assert all
 			//all.put(e.getKey(), e.getValue());
-		}
-	}
-	
-	//@Test
-	public void test2() throws Exception
-	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
-		
-		List<ClassFile> cl1 = group1.getClasses(),
-		cl2 = group2.getClasses();
-		
-		for (int i = 0; i < 200; ++i)
-		{
-			ClassFile c1 = cl1.get(i), c2 = cl2.get(i);
-			System.out.println(c1 + " <-> " + c2);
-		}
-		//Assert.assertEquals(cl1.size(), cl2.size());
-		
-		Method m1 = group1.findClass("class66").findMethod("vmethod3787");
-		Method m2 = group2.findClass("class66").findMethod("vmethod3664");
-		
-		List<Method> list = new ArrayList<>();
-		findMethodFromClass(m1.getPoolMethod(), list, group1.findClass("class66"));
-		
-		System.out.println("break");
-		
-		List<Method> list2 = new ArrayList<>();
-		findMethodFromClass(m2.getPoolMethod(), list2, group2.findClass("class66"));
-		
-		Assert.assertEquals(list.size(), list2.size());
-		
-		for (int i = 0; i < list.size(); ++i)
-		{
-			m1 = list.get(i);
-			m2 = list2.get(i);
-			
-			System.out.println(m1 + " vs " + m2);
-
-			Assert.assertEquals(m1.getMethods().getClassFile().getName(), m2.getMethods().getClassFile().getName());
-		}
-	}
-	
-	private void findMethodFromClass(net.runelite.deob.pool.Method method, List<Method> list, ClassFile clazz)
-	{
-		net.runelite.deob.Method m = clazz.findMethodDeep(method.getNameAndType());
-		if (m != null && !list.contains(m))
-			list.add(m);
-	
-		for (ClassFile cf : clazz.getChildren())
-		{
-			System.out.println("Child of " + clazz + ": " +cf);
-			findMethodFromClass(method, list, cf);
 		}
 	}
 }
