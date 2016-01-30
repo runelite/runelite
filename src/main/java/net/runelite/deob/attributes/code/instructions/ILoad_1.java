@@ -29,7 +29,7 @@ public class ILoad_1 extends Instruction implements LVTInstruction
 		Variables variables = frame.getVariables();
 		
 		VariableContext vctx = variables.get(1);
-		assert vctx.getType().equals(new Type(int.class.getName()));
+		assert vctx.getType().isInt();
 		ins.read(vctx);
 		
 		StackContext ctx = new StackContext(ins, vctx);

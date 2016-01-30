@@ -65,7 +65,7 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 		Variables var = frame.getVariables();
 		
 		VariableContext vctx = var.get(index);
-		assert vctx.getType().equals(new Type(int.class.getCanonicalName()));
+		assert vctx.getType().isInt();
 		ins.read(vctx);
 		
 		Value value = vctx.getValue();

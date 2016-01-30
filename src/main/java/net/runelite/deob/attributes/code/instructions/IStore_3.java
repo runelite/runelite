@@ -29,7 +29,7 @@ public class IStore_3 extends Instruction implements LVTInstruction
 		Variables variables = frame.getVariables();
 		
 		StackContext value = stack.pop();
-		assert value.getType().equals(new Type(int.class.getName()));
+		assert value.getType().isInt();
 		ins.pop(value);
 		
 		variables.set(3, new VariableContext(ins, value));
