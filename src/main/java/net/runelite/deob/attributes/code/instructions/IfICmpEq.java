@@ -43,6 +43,10 @@ public class IfICmpEq extends If
 			if (isZero(s1) || isZero(s2))
 				return true;
 		}
+		else if (otherIc.getInstruction() instanceof IfICmpNe)
+		{
+			return true;
+		}
 		
 		return false;
 	}
@@ -50,7 +54,7 @@ public class IfICmpEq extends If
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfNe)
+		if (other.getInstruction() instanceof IfNe || other.getInstruction() instanceof IfICmpNe)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}
