@@ -20,6 +20,9 @@ import org.junit.Test;
 
 public class MapStaticTest
 {
+	private static final String JAR1 = MapStaticTest.class.getResource("/adamin1.jar").getFile(),
+		JAR2 = MapStaticTest.class.getResource("/adamin2.jar").getFile();
+	
 	private static final String methods[][] = {
 		{ "client.vmethod3054", "client.vmethod2973" },
 		{ "class99.method2220", "class99.method2149" },
@@ -62,8 +65,8 @@ public class MapStaticTest
 	@Test
 	public void testAll() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
 		for (String[] s : methods)
 		{
@@ -79,8 +82,8 @@ public class MapStaticTest
 	@Test
 	public void test() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 	
 		Method m1 = group1.findClass("class183").findMethod("method3685");
 		Method m2 = group2.findClass("class183").findMethod("method3560");
@@ -101,8 +104,8 @@ public class MapStaticTest
 	{
 		//test = true;
 		
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
 		Method m1 = group1.findClass("class183").findMethod("method3685");
 		Method m2 = group2.findClass("class183").findMethod("method3560");
@@ -114,8 +117,8 @@ public class MapStaticTest
 	@Test
 	public void testAllDeep() throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
 		for (String[] s : methods)
 		{
@@ -132,8 +135,8 @@ public class MapStaticTest
 	@Test
 	public void testAllMap() throws Exception
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
-		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
 		List<Method> m1s = getInitialMethods(group1), m2s = getInitialMethods(group2);
 		//Method m1 = group1.findClass("client").findMethod("init");
