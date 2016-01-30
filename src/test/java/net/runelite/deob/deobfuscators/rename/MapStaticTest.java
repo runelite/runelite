@@ -35,6 +35,7 @@ public class MapStaticTest
 		{ "class162.method3270", "class86.method2020" },
 		{ "class29.method711", "class36.method742" },
 		{ "class72.run", "class72.run" },
+		{ "class64.vmethod3787", "class64.vmethod3664" },
 	};
 	
 //	@Test
@@ -79,8 +80,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 	
-		Method m1 = group1.findClass("client").findMethod("init");
-		Method m2 = group2.findClass("client").findMethod("init");
+		Method m1 = group1.findClass("class64").findMethod("vmethod3787");
+		Method m2 = group2.findClass("class64").findMethod("vmethod3664");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -97,8 +98,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
 		
-		Method m1 = group1.findClass("class72").findMethod("run");
-		Method m2 = group2.findClass("class72").findMethod("run");
+		Method m1 = group1.findClass("class64").findMethod("vmethod3787");
+		Method m2 = group2.findClass("class64").findMethod("vmethod3664");
 		
 		HashMap<Object, Object> all = new HashMap();
 		map(all, new HashSet(), m1, m2);
@@ -122,7 +123,7 @@ public class MapStaticTest
 		}
 	}
 	
-	//@Test
+	@Test
 	public void testAllMap() throws Exception
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
@@ -147,8 +148,8 @@ public class MapStaticTest
 			{
 				System.out.println(e.getKey() + " <-> " + e.getValue());
 			}
-			System.out.println("Total " + all.size());
 		}
+		System.out.println("Total " + all.size());
 	}
 	
 	public List<Method> getInitialMethods(ClassGroup group)
