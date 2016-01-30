@@ -24,6 +24,10 @@ public class IfICmpNe extends If
 			if (o instanceof Integer && (int) o == 0)
 				return true;
 		}
+		else if (s.getPushed().getInstruction() instanceof IfICmpEq)
+		{
+			return true;
+		}
 		
 		return false;
 	}
@@ -42,6 +46,10 @@ public class IfICmpNe extends If
 			
 			if (isZero(s1) || isZero(s2))
 				return true;
+		}
+		else if (otherIc.getInstruction() instanceof IfICmpEq)
+		{
+			return true;
 		}
 		
 		return false;
