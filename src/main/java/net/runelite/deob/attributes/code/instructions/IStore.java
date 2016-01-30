@@ -55,7 +55,7 @@ public class IStore extends Instruction implements LVTInstruction, WideInstructi
 		Variables variables = frame.getVariables();
 		
 		StackContext value = stack.pop();
-		assert value.getType().equals(new Type(int.class.getName()));
+		assert value.getType().isInt();
 		ins.pop(value);
 		
 		variables.set(index, new VariableContext(ins, value));

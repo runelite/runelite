@@ -64,7 +64,7 @@ public class Frame
 		NameAndType nat = method.getNameAndType();
 		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
 		{
-			variables.set(pos, new VariableContext(new Type(nat.getDescriptor().getTypeOfArg(i)).toStackType()).markParameter());
+			variables.set(pos, new VariableContext(new Type(nat.getDescriptor().getTypeOfArg(i))).markParameter());
 			pos += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		

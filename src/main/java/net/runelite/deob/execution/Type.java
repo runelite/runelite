@@ -17,13 +17,18 @@ public class Type
 		for (int i = 0; i < t.getArrayDims(); ++i)
 			type = type + "[]";
 	}
-	
-	public Type toStackType()
+
+	private Type toStackType()
 	{
 		if (type.equals(byte.class.getCanonicalName()) || type.equals(char.class.getCanonicalName()) || type.equals(short.class.getCanonicalName())
 				|| type.equals(boolean.class.getCanonicalName()))
 			return new Type(int.class.getCanonicalName());
 		return this;
+	}
+	
+	public boolean isInt()
+	{
+		return toStackType().equals(new Type(int.class.getName()));
 	}
 	
 	private static String asmTypeToClass(String type)

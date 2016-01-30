@@ -87,7 +87,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		if (!method.getNameAndType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins,
-				new Type(method.getNameAndType().getDescriptor().getReturnValue()).toStackType(),
+				new Type(method.getNameAndType().getDescriptor().getReturnValue()),
 				Value.NULL
 			);
 			stack.push(ctx);
