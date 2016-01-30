@@ -120,7 +120,7 @@ public class MappingExecutorUtil
 		net.runelite.deob.pool.Method m = (net.runelite.deob.pool.Method) ii.getMethod();
 		String className = m.getClassEntry().getName();
 		
-		if (className.startsWith("java/"))
+		if (className.startsWith("java/") || className.startsWith("netscape/"))
 			return false;
 		
 		return true;

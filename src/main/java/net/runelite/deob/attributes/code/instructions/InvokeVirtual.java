@@ -21,8 +21,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import java.util.Set;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
@@ -113,14 +114,25 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		return myMethods != null ? myMethods : Arrays.asList();
 	}
 	
-	private void findMethodFromClass(List<net.runelite.deob.Method> list, ClassFile clazz)
+	private void findMethodFromClass(Set<ClassFile> visited, List<net.runelite.deob.Method> list, ClassFile clazz)
 	{
-		net.runelite.deob.Method m = clazz.findMethodDeep(method.getNameAndType());
+		if (visited.contains(clazz))
+			return;
+		visited.add(clazz);
+		
+		ClassFile parent = clazz.getParent();
+		if (parent != null)
+			findMethodFromClass(visited, list, parent);
+		
+		for (ClassFile cf : clazz.getInterfaces().getMyInterfaces())
+			findMethodFromClass(visited, list, cf);
+		
+		net.runelite.deob.Method m = clazz.findMethod(method.getNameAndType());
 		if (m != null && !list.contains(m))
 			list.add(m);
 	
 		for (ClassFile cf : clazz.getChildren())
-			findMethodFromClass(list, cf);
+			findMethodFromClass(visited, list, cf);
 	}
 	
 	@Override
@@ -152,9 +164,10 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		if (otherClass == null)
 			return; // not our class
 		
-		// look up this method in this class and anything that inherits from it
+		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
+		
 		List<net.runelite.deob.Method> list = new ArrayList<>();
-		findMethodFromClass(list, otherClass);
+		findMethodFromClass(new HashSet<>(), list, otherClass);
 		myMethods = list;
 	}
 	
