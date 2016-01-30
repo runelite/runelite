@@ -24,7 +24,7 @@ public class IfEq extends If0
 		{
 			return true;
 		}
-		else if (otherIc.getInstruction() instanceof IfICmpNe)
+		else if (otherIc.getInstruction() instanceof IfICmpEq || otherIc.getInstruction() instanceof IfICmpNe)
 		{
 			StackContext s1 = otherIc.getPops().get(0),
 				s2 = otherIc.getPops().get(1);
