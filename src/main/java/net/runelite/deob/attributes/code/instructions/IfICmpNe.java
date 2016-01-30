@@ -24,10 +24,6 @@ public class IfICmpNe extends If
 			if (o instanceof Integer && (int) o == 0)
 				return true;
 		}
-		else if (s.getPushed().getInstruction() instanceof IfICmpEq)
-		{
-			return true;
-		}
 		
 		return false;
 	}
@@ -58,7 +54,7 @@ public class IfICmpNe extends If
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfEq)
+		if (other.getInstruction() instanceof IfEq || other.getInstruction() instanceof IfICmpEq)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}
