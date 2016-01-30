@@ -14,18 +14,28 @@ public class IfICmpEq extends If
 		super(instructions, type, pc);
 	}
 	
-	static boolean isZero(StackContext s)
+	static boolean is(StackContext s, int val)
 	{
 		if (s.getPushed().getInstruction() instanceof PushConstantInstruction)
 		{
 			PushConstantInstruction pc = (PushConstantInstruction) s.getPushed().getInstruction();
 			Object o = pc.getConstant().getObject();
 			
-			if (o instanceof Integer && (int) o == 0)
+			if (o instanceof Integer && (int) o == val)
 				return true;
 		}
 		
 		return false;
+	}
+	
+	static boolean isZero(StackContext s)
+	{
+		return is(s, 0);
+	}
+	
+	static boolean isOne(StackContext s)
+	{
+		return is(s, 1);
 	}
 	
 	@Override
