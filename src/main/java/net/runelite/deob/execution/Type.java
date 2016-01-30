@@ -31,6 +31,11 @@ public class Type
 		return toStackType().equals(new Type(int.class.getName()));
 	}
 	
+	public boolean isBoolean()
+	{
+		return type.equals("boolean");
+	}
+	
 	private static String asmTypeToClass(String type)
 	{
 		switch (type)
