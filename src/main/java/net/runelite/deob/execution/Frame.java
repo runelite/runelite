@@ -31,6 +31,7 @@ public class Frame
 	private Frame caller;
 	public Frame other; // in the other execution for mapping
 	public Frame returnTo; // is this the same as caller?
+	public Frame otherStatic;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -118,6 +119,8 @@ public class Frame
 		this.ctx = other.ctx;
 		this.nonStatic = other.nonStatic;
 		this.caller = other.caller;
+		if (other.returnTo != null)
+			this.returnTo = new Frame(other.returnTo);
 	}
 	
 	public Frame dup()
