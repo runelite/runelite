@@ -85,8 +85,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 	
-		Method m1 = group1.findClass("class183").findMethod("method3685");
-		Method m2 = group2.findClass("class183").findMethod("method3560");
+		Method m1 = group1.findClass("client").findMethod("vmethod3096");
+		Method m2 = group2.findClass("client").findMethod("vmethod2975");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -114,7 +114,7 @@ public class MapStaticTest
 		map(all, new HashSet(), m1, m2);
 	}
 	
-	@Test
+	//@Test
 	public void testAllDeep() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
