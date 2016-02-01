@@ -78,6 +78,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		ins.pop(one);
 		
 		Frame other = frame.dup();
+		other.created = this;
 		other.jump(ins, to);
 		
 		ins.branch(other);

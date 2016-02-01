@@ -77,6 +77,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		ins.pop(one, two);
 		
 		Frame other = frame.dup();
+		other.created = this;
 		other.jump(ins, to);
 		
 		ins.branch(other);
