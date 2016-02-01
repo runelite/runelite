@@ -32,6 +32,7 @@ public class Frame
 	public Frame other; // in the other execution for mapping
 	public Frame returnTo; // is this the same as caller?
 	public Frame otherStatic;
+	public Instruction created;
 
 	public Frame(Execution execution, Method method)
 	{

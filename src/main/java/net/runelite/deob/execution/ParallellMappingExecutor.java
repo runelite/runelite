@@ -30,6 +30,9 @@ public class ParallellMappingExecutor
 			return false;
 		
 		Frame f1 = e.frames.get(0), f2 = e2.frames.get(0);
+		
+//		assert f1.other.other == f1;
+//		assert f2.other.other == f2;
 
 		assert f1.other == f2;
 		assert f2.other == f1;
@@ -45,25 +48,25 @@ public class ParallellMappingExecutor
 			assert f2.returnTo == null || !e2.frames.contains(f2.returnTo);
 			
 			// I dont know if this is necessary.
-			if (f1.getInstructions().size() > 0)
-			{
-				p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
-
-				for (Frame branch : p1.getBranches())
-				{
-					e.frames.remove(branch);
-				}
-			}
-
-			if (f2.getInstructions().size() > 0)
-			{
-				p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-				
-				for (Frame branch : p2.getBranches())
-				{
-					e2.frames.remove(branch);
-				}
-			}
+//			if (f1.getInstructions().size() > 0)
+//			{
+//				p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+//
+//				for (Frame branch : p1.getBranches())
+//				{
+//					e.frames.remove(branch);
+//				}
+//			}
+//
+//			if (f2.getInstructions().size() > 0)
+//			{
+//				p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+//				
+//				for (Frame branch : p2.getBranches())
+//				{
+//					e2.frames.remove(branch);
+//				}
+//			}
 			
 			assert e.frames.get(0) == f1;
 			assert e2.frames.get(0) == f2;
@@ -92,9 +95,20 @@ public class ParallellMappingExecutor
 //			{
 //				assert false;
 //			}
+
+			Frame f1wtf = e.frames.get(0), f2wtf = e2.frames.get(0);
+
+	//		assert f1wtf.other.other == f1wtf;
+	//		assert f2wtf.other.other == f2wtf;
+
+			assert f1wtf.other == f2wtf;
+			assert f2wtf.other == f1wtf;
 			
 			return step();
 		}
+		
+		Frame old1 = new Frame(f1), old2 = new Frame(f2);
+		int s1 = e.frames.size(), s2 = e.frames.size();
 
 		// step frame
 		if (step1)
@@ -106,6 +120,11 @@ public class ParallellMappingExecutor
 			f2.execute();
 		else
 			step2 = true;
+		
+		if (e.frames.size() - s1 != e2.frames.size() - s2)
+		{
+			System.out.println("fr mismatch");
+		}
 		
 		Frame oldf1 = f1, oldf2 = f2;
 		
