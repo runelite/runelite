@@ -19,8 +19,16 @@ public class ParallellMappingExecutor
 	}
 	
 	boolean step1 = true, step2 = true;
+	int count;
 	public boolean step()
 	{
+		++count;
+		
+
+		if (count == 685)
+		{
+			int i = 5;
+		}
 		// this no longer holds with recursive stepinfo
 		//assert e.frames.size() == e2.frames.size();
 		
@@ -47,26 +55,28 @@ public class ParallellMappingExecutor
 			assert f1.returnTo == null || !e.frames.contains(f1.returnTo);
 			assert f2.returnTo == null || !e2.frames.contains(f2.returnTo);
 			
-			// I dont know if this is necessary.
-//			if (f1.getInstructions().size() > 0)
-//			{
-//				p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
-//
-//				for (Frame branch : p1.getBranches())
-//				{
-//					e.frames.remove(branch);
-//				}
-//			}
-//
-//			if (f2.getInstructions().size() > 0)
-//			{
-//				p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-//				
-//				for (Frame branch : p2.getBranches())
-//				{
-//					e2.frames.remove(branch);
-//				}
-//			}
+			// Due to jump ob one side can stop while the other side jumps
+			if (f1.getInstructions().size() > 0)
+			{
+				p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+
+				for (Frame branch : p1.getBranches())
+				{
+					e.frames.remove(branch);
+				}
+			}
+
+			// this is empty but should be removing a branch, because of the map other, theres no prev instruction.
+			// should always populate prev instruction
+			if (f2.getInstructions().size() > 0)
+			{
+				p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+				
+				for (Frame branch : p2.getBranches())
+				{
+					e2.frames.remove(branch);
+				}
+			}
 			
 			assert e.frames.get(0) == f1;
 			assert e2.frames.get(0) == f2;
@@ -96,7 +106,11 @@ public class ParallellMappingExecutor
 //				assert false;
 //			}
 
-			Frame f1wtf = e.frames.get(0), f2wtf = e2.frames.get(0);
+			Frame f1wtf = e.frames.get(0),
+				f2wtf = e2.frames.get(0);
+			
+			int otherIndex1 = e2.frames.indexOf(f1wtf.other),
+				otherIndex2 = e.frames.indexOf(f2wtf.other);
 
 	//		assert f1wtf.other.other == f1wtf;
 	//		assert f2wtf.other.other == f2wtf;
@@ -104,11 +118,13 @@ public class ParallellMappingExecutor
 			assert f1wtf.other == f2wtf;
 			assert f2wtf.other == f1wtf;
 			
+			step1 = step2 = true;
+			
 			return step();
 		}
 		
 		Frame old1 = new Frame(f1), old2 = new Frame(f2);
-		int s1 = e.frames.size(), s2 = e.frames.size();
+		int s1 = e.frames.size(), s2 = e2.frames.size();
 
 		// step frame
 		if (step1)
@@ -121,15 +137,24 @@ public class ParallellMappingExecutor
 		else
 			step2 = true;
 		
-		if (e.frames.size() - s1 != e2.frames.size() - s2)
-		{
-			System.out.println("fr mismatch");
-		}
-		
 		Frame oldf1 = f1, oldf2 = f2;
 		
 		f1 = popStack(f1);
 		f2 = popStack(f2);
+		
+//		if (e.frames.size() - s1 != e2.frames.size() - s2)
+//		{
+//			System.out.println("fr mismatch");
+//		}
+		
+		if (oldf1 != f1 || oldf2 != f2)
+		{
+			if (f1 == oldf1)
+				step1 = false;
+			if (f2 == oldf2)
+				step2 = false;
+			return step();
+		}
 		
 		if (oldf1 != f1 || oldf2 != f2)
 		{
@@ -155,6 +180,11 @@ public class ParallellMappingExecutor
 		if (!f1.isExecuting() || !f2.isExecuting())
 		{
 			return step();
+		}
+		
+		if (!(e.frames.size() == e2.frames.size()))
+		{
+			int i =56;
 		}
 		
 		if (MappingExecutorUtil.isInlineable(p1.getInstruction()) && !MappingExecutorUtil.isInlineable(p2.getInstruction()))
@@ -197,6 +227,11 @@ public class ParallellMappingExecutor
 			
 			return step();
 		}
+		
+		if (!(e.frames.size() == e2.frames.size()))
+		{
+			int i =56;
+		}
 
 		assert e.paused;
 		assert e2.paused;
@@ -229,7 +264,7 @@ public class ParallellMappingExecutor
 		
 		assert methods.size() == 1;
 		
-		Method to = is.getMethods().get(0);
+		Method to = methods.get(0);
 		
 		Frame f2 = new Frame(e, to);
 		f2.initialize(i);
@@ -263,7 +298,7 @@ public class ParallellMappingExecutor
 		f = popStackForce(f);
 		
 		// step return frame
-		f.execute();
+		//f.execute();
 		
 		return f;
 	}

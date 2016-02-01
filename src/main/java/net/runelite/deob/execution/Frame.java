@@ -53,7 +53,7 @@ public class Frame
 	@Override
 	public String toString()
 	{
-		return "Frame{" + "cur=" + cur + '}';
+		return "Frame{" + "cur=" + cur + ", last=" + this.lastInstruction() + "}";
 	}
 	
 	public void initialize()
@@ -251,6 +251,11 @@ public class Frame
 		int idx = instructions.indexOf(cur);
 		assert idx != -1;
 		cur = instructions.get(idx + 1);
+	}
+	
+	private InstructionContext lastInstruction()
+	{
+		return instructions.isEmpty() ? null : instructions.get(instructions.size() - 1);
 	}
 	
 	private void processExceptions(Instruction i)
