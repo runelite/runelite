@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Value;
@@ -181,6 +182,6 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	@Override
 	public boolean canMap()
 	{
-		return true;
+		return MappingExecutorUtil.isMappable(this);
 	}
 }

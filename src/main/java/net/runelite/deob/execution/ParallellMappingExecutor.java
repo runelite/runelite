@@ -25,7 +25,7 @@ public class ParallellMappingExecutor
 		++count;
 		
 
-		if (count == 685)
+		if (count == 18223)
 		{
 			int i = 5;
 		}
@@ -55,12 +55,36 @@ public class ParallellMappingExecutor
 			assert f1.returnTo == null || !e.frames.contains(f1.returnTo);
 			assert f2.returnTo == null || !e2.frames.contains(f2.returnTo);
 			
-			// Due to jump ob one side can stop while the other side jumps
-			if (f1.getInstructions().size() > 0)
+			InstructionContext fork1 = f1.getInstructions().isEmpty() ? f1.forking : f1.getInstructions().get(f1.getInstructions().size() - 1);
+			InstructionContext fork2 = f2.getInstructions().isEmpty() ? f2.forking : f2.getInstructions().get(f2.getInstructions().size() - 1);
+			
+			assert fork1 != null;
+			assert fork2 != null;
+			
+			if (!(f1.getInstructions().isEmpty() == f2.getInstructions().isEmpty()))
 			{
-				p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+				int i = 5;
+			}
+			
+			// Due to jump ob one side can stop while the other side jumps
+			//if (f1.getInstructions().size() > 0)
+			if (fork1 == f1.forking)
+			{
+				assert fork1.getBranches().size() == 1;
+				//assert fork1.getBranches().get(0) == f1;
+				
+				int i1 = e.frames.indexOf(fork1.getFrame());
+				int i2 = e.frames.indexOf(fork1.getBranches().get(0));
+				
+				// remove fork1.frame
+				e.frames.remove(fork1.getFrame());
+				//e.frames.remove(fork1.getBranches().get(0));
+			}
+			else
+			{
+				//p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
 
-				for (Frame branch : p1.getBranches())
+				for (Frame branch : fork1.getBranches())
 				{
 					e.frames.remove(branch);
 				}
@@ -68,11 +92,23 @@ public class ParallellMappingExecutor
 
 			// this is empty but should be removing a branch, because of the map other, theres no prev instruction.
 			// should always populate prev instruction
-			if (f2.getInstructions().size() > 0)
+			//if (f2.getInstructions().size() > 0)
+			if (fork2 == f2.forking)
 			{
-				p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+				assert fork2.getBranches().size() == 1;
+				//assert fork2.getBranches().get(0) == f2;
 				
-				for (Frame branch : p2.getBranches())
+				int i1 = e2.frames.indexOf(fork2.getFrame());
+				int i2 = e2.frames.indexOf(fork2.getBranches().get(0));
+				
+				e2.frames.remove(fork2.getFrame());
+				//e.frames.remove(fork2.getBranches().get(0));
+			}
+			else
+			{
+				//p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+				
+				for (Frame branch : fork2.getBranches())
 				{
 					e2.frames.remove(branch);
 				}
@@ -267,6 +303,7 @@ public class ParallellMappingExecutor
 		Method to = methods.get(0);
 		
 		Frame f2 = new Frame(e, to);
+		f2.created = is;
 		f2.initialize(i);
 		
 		e.frames.remove(0); // old frame goes away
@@ -280,6 +317,8 @@ public class ParallellMappingExecutor
 		f.other = null;
 		
 		f2.returnTo = new Frame(f); // where to go when we're done
+		assert f.getInstructions().isEmpty() == false;
+		f2.returnTo.getInstructions().addAll(f.getInstructions());
 		
 		return f2;
 	}

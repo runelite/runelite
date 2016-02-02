@@ -113,13 +113,16 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		
 		StackContext value = stack.pop();
 		ins.pop(value);
-		
-		for (Instruction i : branchi)
+	
+		if (!frame.getExecution().step)
 		{
-			Frame other = frame.dup();
-			other.jump(ins, i);
-			
-			ins.branch(other);
+			for (Instruction i : branchi)
+			{
+				Frame other = frame.dup();
+				other.jump(ins, i);
+
+				ins.branch(other);
+			}
 		}
 		
 		frame.jump(ins, defi);

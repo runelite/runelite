@@ -33,6 +33,9 @@ public class Frame
 	public Frame returnTo; // is this the same as caller?
 	public Frame otherStatic;
 	public Instruction created;
+	public InstructionContext forking;
+	public boolean initial;
+	public boolean isdup,iscopy;
 
 	public Frame(Execution execution, Method method)
 	{
@@ -57,7 +60,8 @@ public class Frame
 	}
 	
 	public void initialize()
-	{	
+	{
+		initial = true;
 		// initialize LVT
 		int pos = 0;
 		if (!method.isStatic())
@@ -76,6 +80,7 @@ public class Frame
 	
 	public void initialize(InstructionContext ctx)
 	{
+		created = ctx.getInstruction();
 		// initialize frame from invoking context
 		assert ctx.getInstruction() instanceof InvokeInstruction;
 		
@@ -111,6 +116,7 @@ public class Frame
 	
 	protected Frame(Frame other)
 	{
+		iscopy=true;
 		this.execution = other.execution;
 		this.method = other.method;
 		this.executing = other.executing;
@@ -121,12 +127,18 @@ public class Frame
 		this.nonStatic = other.nonStatic;
 		this.caller = other.caller;
 		if (other.returnTo != null)
+		{
 			this.returnTo = new Frame(other.returnTo);
+			this.returnTo.instructions.addAll(other.returnTo.instructions);
+		}
+		this.created = other.created;
+		this.forking = other.forking;
 	}
 	
 	public Frame dup()
 	{
 		Frame other = new Frame(this);
+		other.isdup=true;
 		execution.frames.add(other);
 		return other;
 	}
