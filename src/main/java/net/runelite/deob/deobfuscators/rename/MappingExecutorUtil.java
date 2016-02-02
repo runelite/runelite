@@ -120,8 +120,23 @@ public class MappingExecutorUtil
 	
 	public static boolean isMappable(InvokeInstruction ii)
 	{
-		net.runelite.deob.pool.Method m = (net.runelite.deob.pool.Method) ii.getMethod();
-		String className = m.getClassEntry().getName();
+		String className;
+		
+		if (ii.getMethod() instanceof net.runelite.deob.pool.Method)
+		{
+			net.runelite.deob.pool.Method m = (net.runelite.deob.pool.Method) ii.getMethod();
+			className = m.getClassEntry().getName();
+		}
+		else if (ii.getMethod() instanceof net.runelite.deob.pool.InterfaceMethod)
+		{
+			net.runelite.deob.pool.InterfaceMethod m = (net.runelite.deob.pool.InterfaceMethod) ii.getMethod();
+			className = m.getClassEntry().getName();	
+		}
+		else
+		{
+			assert false;
+			return false;
+		}
 		
 		if (className.startsWith("java/") || className.startsWith("netscape/"))
 			return false;
