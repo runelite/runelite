@@ -73,7 +73,7 @@ public class ParallellMappingExecutor
 				assert fork1.getBranches().size() == 1;
 				//assert fork1.getBranches().get(0) == f1;
 				
-				int i1 = e.frames.indexOf(fork1.getFrame());
+				int i1 = e.frames.indexOf(fork1.getFrame()); // this might be -1 because it is now in an invokestatic. AHhh.
 				int i2 = e.frames.indexOf(fork1.getBranches().get(0));
 				
 				// remove fork1.frame
@@ -354,6 +354,7 @@ public class ParallellMappingExecutor
 		// replace frame with returnTo
 		assert e.frames.get(0) == f;
 		e.frames.remove(0);
+		assert !e.frames.contains(f.returnTo);
 		e.frames.add(0, f.returnTo);
 		
 		assert f.other.other == f;
