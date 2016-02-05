@@ -38,8 +38,6 @@ public class ParallellMappingExecutor
 		if (e.frames.isEmpty())
 			return false;
 		
-		assert !e2.frames.isEmpty();
-		
 		Frame f1 = e.frames.get(0),
 			f2 = f1.other;
 		

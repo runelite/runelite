@@ -19,7 +19,7 @@ public class IfACmpNe extends If
 		if (super.isSame(thisIc, otherIc))
 			return true;
 		
-		if (otherIc.getInstruction() instanceof IfNonNull)
+		if (otherIc.getInstruction() instanceof IfNonNull || otherIc.getInstruction() instanceof IfNull)
 		{
 			StackContext s1 = thisIc.getPops().get(0),
 				s2 = thisIc.getPops().get(1);
@@ -44,7 +44,7 @@ public class IfACmpNe extends If
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfACmpEq)
+		if (other.getInstruction() instanceof IfACmpEq || other.getInstruction() instanceof IfNull)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}
