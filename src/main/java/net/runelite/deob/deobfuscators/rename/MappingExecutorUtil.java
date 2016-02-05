@@ -84,8 +84,6 @@ public class MappingExecutorUtil
 		
 		while (parallel.step())
 		{
-			assert e.frames.size() == e2.frames.size();
-			
 			// get what each frame is paused/exited on
 			InstructionContext p1 = parallel.getP1(), p2 = parallel.getP2();
 			
@@ -111,25 +109,10 @@ public class MappingExecutorUtil
 
 			mi1.map(mappings, p1, p2);
 
-			assert e.frames.size() == e2.frames.size();
-			//checkConsistency(e, e2);
 			e.paused = e2.paused = false;
 		}
 		
 		return mappings;
-	}
-	
-	private static void checkConsistency(Execution e, Execution e2)
-	{
-		assert e.frames.size() == e2.frames.size();
-		
-		for (int i = 0; i < e.frames.size(); ++i)
-		{
-			Frame f1 = e.frames.get(i), f2 = e2.frames.get(i);
-			
-			assert f1.other == f2;
-			assert f2.other == f1;
-		}
 	}
 	
 	public static boolean isMappable(InvokeInstruction ii)
