@@ -1,9 +1,10 @@
 package net.runelite.deob.execution;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
-import net.runelite.deob.attributes.code.instructions.InvokeSpecial;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 
@@ -25,7 +26,7 @@ public class ParallellMappingExecutor
 		++count;
 		
 
-		if (count == 18223)
+		if (count == 34403)
 		{
 			int i = 5;
 		}
@@ -34,15 +35,25 @@ public class ParallellMappingExecutor
 		
 		p1 = p2 = null;
 		
-		if (e.frames.isEmpty() || e2.frames.isEmpty())
+		if (e.frames.isEmpty())
 			return false;
 		
-		Frame f1 = e.frames.get(0), f2 = e2.frames.get(0);
+		assert !e2.frames.isEmpty();
+		
+		Frame f1 = e.frames.get(0),
+			f2 = f1.other;
+		
+		if (f2 == null)
+		{
+			// why?
+			e.frames.remove(0);
+			return step();
+		}
 		
 //		assert f1.other.other == f1;
 //		assert f2.other.other == f2;
 
-		assert f1.other == f2;
+		//assert f1.other == f2;
 		assert f2.other == f1;
 
 		//assert f1.isExecuting() == f2.isExecuting();
@@ -52,107 +63,93 @@ public class ParallellMappingExecutor
 		// as not executing
 		if (!f1.isExecuting() || !f2.isExecuting())
 		{
-			assert f1.returnTo == null || !e.frames.contains(f1.returnTo);
-			assert f2.returnTo == null || !e2.frames.contains(f2.returnTo);
-			
-			InstructionContext fork1 = f1.getInstructions().isEmpty() ? f1.forking : f1.getInstructions().get(f1.getInstructions().size() - 1);
-			InstructionContext fork2 = f2.getInstructions().isEmpty() ? f2.forking : f2.getInstructions().get(f2.getInstructions().size() - 1);
-			
-			assert fork1 != null;
-			assert fork2 != null;
-			
-			if (!(f1.getInstructions().isEmpty() == f2.getInstructions().isEmpty()))
-			{
-				int i = 5;
-			}
-			
-			// Due to jump ob one side can stop while the other side jumps
-			//if (f1.getInstructions().size() > 0)
-			if (fork1 == f1.forking)
-			{
-				assert fork1.getBranches().size() == 1;
-				//assert fork1.getBranches().get(0) == f1;
-				
-				int i1 = e.frames.indexOf(fork1.getFrame()); // this might be -1 because it is now in an invokestatic. AHhh.
-				int i2 = e.frames.indexOf(fork1.getBranches().get(0));
-				
-				// remove fork1.frame
-				e.frames.remove(fork1.getFrame());
-				//e.frames.remove(fork1.getBranches().get(0));
-			}
-			else
-			{
-				//p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
-
-				for (Frame branch : fork1.getBranches())
-				{
-					e.frames.remove(branch);
-				}
-			}
-
-			// this is empty but should be removing a branch, because of the map other, theres no prev instruction.
-			// should always populate prev instruction
-			//if (f2.getInstructions().size() > 0)
-			if (fork2 == f2.forking)
-			{
-				assert fork2.getBranches().size() == 1;
-				//assert fork2.getBranches().get(0) == f2;
-				
-				int i1 = e2.frames.indexOf(fork2.getFrame());
-				int i2 = e2.frames.indexOf(fork2.getBranches().get(0));
-				
-				e2.frames.remove(fork2.getFrame());
-				//e.frames.remove(fork2.getBranches().get(0));
-			}
-			else
-			{
-				//p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
-				
-				for (Frame branch : fork2.getBranches())
-				{
-					e2.frames.remove(branch);
-				}
-			}
-			
-			assert e.frames.get(0) == f1;
-			assert e2.frames.get(0) == f2;
-			
-			e.frames.remove(0);
-			e2.frames.remove(0);
-			
-			//assert (f1.returnTo != null) == (f2.returnTo != null);
-//			boolean exit1 = !f1.isExecuting() && f1.returnTo != null,
-//				exit2 = !f2.isExecuting() && f2.returnTo != null;
+//			assert f1.returnTo == null || !e.frames.contains(f1.returnTo);
+//			assert f2.returnTo == null || !e2.frames.contains(f2.returnTo);
 //			
-//			if (exit1 && exit2)
+//			// get the previous instruction. if this frame is the result of a fork and there isn't any, get the fork instruction
+//			InstructionContext fork1 = f1.getInstructions().isEmpty() ? f1.forking : f1.getInstructions().get(f1.getInstructions().size() - 1);
+//			InstructionContext fork2 = f2.getInstructions().isEmpty() ? f2.forking : f2.getInstructions().get(f2.getInstructions().size() - 1);
+//			
+//			assert fork1 != null;
+//			assert fork2 != null;
+//			
+//			if (!(f1.getInstructions().isEmpty() == f2.getInstructions().isEmpty()))
 //			{
-				//removeOrPop(e, f1);
-				//removeOrPop(e2, f2);
+//				int i = 5;
 //			}
-//			else if (exit1)
+//			
+//			// Due to jump ob one side can stop while the other side jumps. So we need to remove the excess frames to keep it in line.
+//			
+//			if (fork1 == f1.forking)
 //			{
-//				removeOrPop(e, f1);
-//			}
-//			else if (exit2)
-//			{
-//				removeOrPop(e2, f2);
+//				// if f1 was forked, remove source frame.
+//				
+//				assert fork1.getBranches().size() == 1;
+//				//assert fork1.getBranches().get(0) == f1;
+//				
+//				int i1 = e.frames.indexOf(fork1.getFrame()); // this might be -1 because it is now in an invokestatic. AHhh.
+//				if (i1 == -1)
+//				{
+//					i1 = e.frames.indexOf(fork1.getFrame().returnTo);
+//					//XXX returnframes are diff objects is why?
+//				}
+//				int i2 = e.frames.indexOf(fork1.getBranches().get(0));
+//				
+//				// remove fork1.frame
+//				e.frames.remove(fork1.getFrame());
+//				//e.frames.remove(fork1.getBranches().get(0));
 //			}
 //			else
 //			{
-//				assert false;
+//				//p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+//
+//				for (Frame branch : fork1.getBranches())
+//				{
+//					e.frames.remove(branch);
+//				}
 //			}
-
-			Frame f1wtf = e.frames.get(0),
-				f2wtf = e2.frames.get(0);
+//
+//			// this is empty but should be removing a branch, because of the map other, theres no prev instruction.
+//			// should always populate prev instruction
+//			//if (f2.getInstructions().size() > 0)
+//			if (fork2 == f2.forking)
+//			{
+//				assert fork2.getBranches().size() == 1;
+//				//assert fork2.getBranches().get(0) == f2;
+//				
+//				int i1 = e2.frames.indexOf(fork2.getFrame());
+//				int i2 = e2.frames.indexOf(fork2.getBranches().get(0));
+//				
+//				e2.frames.remove(fork2.getFrame());
+//				//e.frames.remove(fork2.getBranches().get(0));
+//			}
+//			else
+//			{
+//				//p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+//				
+//				for (Frame branch : fork2.getBranches())
+//				{
+//					e2.frames.remove(branch);
+//				}
+//			}
 			
-			int otherIndex1 = e2.frames.indexOf(f1wtf.other),
-				otherIndex2 = e.frames.indexOf(f2wtf.other);
+			//assert e.frames.get(0) == f1;
+			//assert e2.frames.get(0) == f2;
+			
+			e.frames.remove(f1);
+			e2.frames.remove(f2);
 
-	//		assert f1wtf.other.other == f1wtf;
-	//		assert f2wtf.other.other == f2wtf;
-
-			assert f1wtf.other == f2wtf;
-			assert f2wtf.other == f1wtf;
+//			Frame f1wtf = e.frames.get(0),
+//				f2wtf = e2.frames.get(0);
+//			
+//			int otherIndex1 = e2.frames.indexOf(f1wtf.other),
+//				otherIndex2 = e.frames.indexOf(f2wtf.other);
+//
+//	//		assert f1wtf.other.other == f1wtf;
+//	//		assert f2wtf.other.other == f2wtf;
+//
+//			assert f1wtf.other == f2wtf;
+//			assert f2wtf.other == f1wtf;
 			
 			step1 = step2 = true;
 			
@@ -218,14 +215,13 @@ public class ParallellMappingExecutor
 			return step();
 		}
 		
-		if (!(e.frames.size() == e2.frames.size()))
-		{
-			int i =56;
-		}
-		
 		if (MappingExecutorUtil.isInlineable(p1.getInstruction()) && !MappingExecutorUtil.isInlineable(p2.getInstruction()))
 		{
-			f1 = stepInto(f1);
+			if (stepInto(f1) == null)
+			{
+				f1.stop();
+				return step();
+			}
 			
 			//try
 			//{
@@ -239,7 +235,11 @@ public class ParallellMappingExecutor
 		}
 		else if (MappingExecutorUtil.isInlineable(p2.getInstruction()) && !MappingExecutorUtil.isInlineable(p1.getInstruction()))
 		{
-			f2 = stepInto(f2);
+			if (stepInto(f2) == null)
+			{
+				f2.stop();
+				return step();
+			}
 
 			//try
 			//{
@@ -256,17 +256,23 @@ public class ParallellMappingExecutor
 			Frame stepf1 = stepInto(f1);
 			Frame stepf2 = stepInto(f2);
 			
+			if (stepf1 == null)
+			{
+				f1.stop();
+			}
+			if (stepf2 == null)
+			{
+				f2.stop();
+			}
+			if (stepf1 == null || stepf2 == null)
+				return step();
+			
 			stepf1.otherStatic = stepf2;
 			stepf2.otherStatic = stepf1;
 			
 			System.out.println("STEP " + stepf1.getMethod() + " <-> " + stepf2.getMethod());
 			
 			return step();
-		}
-		
-		if (!(e.frames.size() == e2.frames.size()))
-		{
-			int i =56;
 		}
 
 		assert e.paused;
@@ -285,12 +291,26 @@ public class ParallellMappingExecutor
 		return p2;
 	}
 	
+	private boolean isLoop(Frame f)
+	{
+		Set<Method> set = new HashSet<>();
+		while (f != null)
+		{
+			if (set.contains(f.getMethod()))
+				return true;
+			
+			set.add(f.getMethod());
+			f = f.returnTo;
+		}
+		
+		return false;
+	}
+	
 	private Frame stepInto(Frame f)
 	{
 		Execution e = f.getExecution();
 		
 		assert e == this.e || e == e2;
-		assert e.frames.get(0) == f;
 		
 		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
 		assert i.getInstruction() instanceof InvokeStatic;
@@ -302,12 +322,19 @@ public class ParallellMappingExecutor
 		
 		Method to = methods.get(0);
 		
+		if (isLoop(f))
+			return null;
+		//assert e.methods.contains(to) == false;
+		//e.methods.add(to);
+		
 		Frame f2 = new Frame(e, to);
 		f2.created = is;
 		f2.initialize(i);
 		
-		e.frames.remove(0); // old frame goes away
-		e.frames.add(0, f2);
+		assert e.frames.contains(f);
+		int idx = e.frames.indexOf(f);
+		e.frames.remove(f); // old frame goes away
+		e.frames.add(idx, f2);
 		
 		assert f.other.other == f;
 		
@@ -334,12 +361,14 @@ public class ParallellMappingExecutor
 		if (!(i.getInstruction() instanceof ReturnInstruction))
 			return f;
 		
-		f = popStackForce(f);
+		Frame r = popStackForce(f);
+		
+		f.returnTo = null;
 		
 		// step return frame
-		//f.execute();
+		//r.execute();
 		
-		return f;
+		return r;
 	}
 	
 	private Frame popStackForce(Frame f)
@@ -352,10 +381,10 @@ public class ParallellMappingExecutor
 		assert !e.frames.contains(f.returnTo);
 		
 		// replace frame with returnTo
-		assert e.frames.get(0) == f;
-		e.frames.remove(0);
+		int idx = e.frames.indexOf(f);
+		e.frames.remove(f);
 		assert !e.frames.contains(f.returnTo);
-		e.frames.add(0, f.returnTo);
+		e.frames.add(idx, f.returnTo);
 		
 		assert f.other.other == f;
 		assert f.returnTo.other == null;
@@ -370,27 +399,5 @@ public class ParallellMappingExecutor
 		//f.returnTo.execute();
 		
 		return f.returnTo;
-	}
-	
-	private void removeOrPop(Execution e, Frame f)
-	{
-		// get what each frame is paused/exited on
-		InstructionContext p = f.getInstructions().get(f.getInstructions().size() - 1);
-
-		for (Frame branch : p.getBranches())
-		{
-			e.frames.remove(branch);
-		}
-		
-		if (f.returnTo != null)
-		{
-			popStackForce(f);
-		}
-		else
-		{
-			assert e.frames.get(0) == f;
-
-			e.frames.remove(0);
-		}
 	}
 }
