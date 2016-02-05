@@ -85,16 +85,22 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 	
-		Method m1 = group1.findClass("client").findMethod("vmethod3096");
-		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+		Method m1 = group1.findClass("client").findMethod("vmethod3054");
+		Method m2 = group2.findClass("client").findMethod("vmethod2973");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
 		System.out.println("BEGIN OF MAPPING");
-		for (Entry<Object, Object> e : mappings.getMap().entrySet())
+		for (Object o : mappings.getOrder())
 		{
-			System.out.println(e.getKey() + " <-> " + e.getValue());
+			Object value = mappings.get(o);
+			System.out.println(o + " <-> " + value);
 		}
+		System.out.println("END OF MAPPINGS " + mappings.getMap().size());
+		
+		// I think because this is an array store
+		//Object other = mappings.get(group1.findClass("class136").findField("field2098"));
+		//Assert.assertNotNull(other);
 	}
 	
 	private static boolean test;
