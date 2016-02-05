@@ -135,7 +135,7 @@ public class MappingExecutorUtil
 			return false;
 		}
 		
-		if (className.startsWith("java/") || className.startsWith("netscape/"))
+		if (className.startsWith("java/") || className.startsWith("netscape/") || className.startsWith("javax/"))
 			return false;
 		
 		return true;
