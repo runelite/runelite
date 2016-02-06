@@ -63,7 +63,7 @@ public class MapStaticTest
 //	}
 	
 	@Test
-	public void testAll() throws IOException
+	public void testAll() throws IOException, MappingException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
@@ -80,7 +80,7 @@ public class MapStaticTest
 	}
 	
 	@Test
-	public void test() throws IOException
+	public void test() throws IOException, MappingException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
@@ -103,7 +103,7 @@ public class MapStaticTest
 		//Assert.assertNotNull(other);
 	}
 	
-	private static boolean test;
+	private static boolean test = true;
 	
 	@Test
 	public void testDeep() throws IOException
@@ -220,8 +220,8 @@ public class MapStaticTest
 		catch (Throwable ex)
 		{
 			System.err.println("Error mapping " + m1 + " to " + m2);
-			if (test)
-				throw ex;
+			//if (test)
+			//	throw ex;
 			return;
 		}
 		

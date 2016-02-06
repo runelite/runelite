@@ -59,7 +59,7 @@ public class MappingExecutorUtil
 		return map1.equals(map2);
 	}
 	
-	public static ParallelExecutorMapping map(Method m1, Method m2)
+	public static ParallelExecutorMapping map(Method m1, Method m2) throws MappingException
 	{
 		ClassGroup group1 = m1.getMethods().getClassFile().getGroup();
 		ClassGroup group2 = m2.getMethods().getClassFile().getGroup();
@@ -103,9 +103,8 @@ public class MappingExecutorUtil
 			
 			if (!mi1.isSame(p1, p2))
 			{
-				assert mi1.isSame(p1, p2);
+				throw new MappingException();
 			}
-			//assert p1.getInstruction().getClass().equals(p2.getInstruction().getClass());
 
 			mi1.map(mappings, p1, p2);
 

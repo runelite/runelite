@@ -21,7 +21,7 @@ public class IfNe extends If0
 		if (super.isSame(thisIc, otherIc))
 			return true;
 		
-		if (otherIc.getInstruction() instanceof IfICmpNe)
+		if (otherIc.getInstruction() instanceof IfICmpNe || otherIc.getInstruction() instanceof IfICmpEq)
 		{
 			// check for one side being 0
 			StackContext s1 = otherIc.getPops().get(0),
@@ -59,7 +59,7 @@ public class IfNe extends If0
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfEq)
+		if (other.getInstruction() instanceof IfEq || other.getInstruction() instanceof IfICmpEq)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}

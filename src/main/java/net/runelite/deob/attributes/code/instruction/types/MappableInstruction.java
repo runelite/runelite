@@ -9,5 +9,5 @@ public interface MappableInstruction
 	
 	boolean isSame(InstructionContext thisIc, InstructionContext otherIc);
 	
-	boolean canMap();
+	boolean canMap(InstructionContext thisIc);
 }

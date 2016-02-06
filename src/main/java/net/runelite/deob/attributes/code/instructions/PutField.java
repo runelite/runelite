@@ -130,8 +130,13 @@ public class PutField extends Instruction implements SetFieldInstruction
 	}
 	
 	@Override
-	public boolean canMap()
+	public boolean canMap(InstructionContext thisIc)
 	{
+		StackContext value = thisIc.getPops().get(0);
+		Instruction i = value.getPushed().getInstruction();
+		if (thisIc.getFrame().getMethod().getName().equals("<init>"))
+			if (i instanceof PushConstantInstruction || i instanceof AConstNull)
+				return false;
 		return true;
 	}
 }

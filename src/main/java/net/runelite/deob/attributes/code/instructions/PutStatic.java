@@ -112,7 +112,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	}
 	
 	@Override
-	public boolean canMap()
+	public boolean canMap(InstructionContext thisIc)
 	{
 		return true;
 	}
