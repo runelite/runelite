@@ -69,9 +69,32 @@ public class Dup2 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public StackContext getOriginal(StackContext ctx)
+	public StackContext getOriginal(StackContext sctx)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		// 2 1 -> 2 1 2 1 OR 1 -> 1 1
+		InstructionContext ctx = sctx.getPushed();
+		assert ctx.getPops().size() == 2 || ctx.getPops().size() == 1;
+		
+		assert ctx.getInstruction() == this;
+		assert ctx.getPushes().contains(sctx);
+		int idx = ctx.getPushes().indexOf(sctx);
+		
+		if (ctx.getPops().size() == 1)
+		{
+			return ctx.getPops().get(0);
+		}
+		
+		switch (idx)
+		{
+			case 0:
+			case 2:
+				return ctx.getPops().get(1);
+			case 1:
+			case 4:
+				return ctx.getPops().get(0);
+			default:
+				throw new IllegalStateException();
+		}
 	}
 
 	@Override

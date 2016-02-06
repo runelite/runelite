@@ -20,13 +20,13 @@ public class ParallellMappingExecutor
 	}
 	
 	boolean step1 = true, step2 = true;
-	int count;
+	static int count;
 	public boolean step()
 	{
 		++count;
 		
 
-		if (count == 34403)
+		if (count == 65925)
 		{
 			int i = 5;
 		}

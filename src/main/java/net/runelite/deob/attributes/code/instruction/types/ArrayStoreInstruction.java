@@ -1,6 +1,6 @@
 package net.runelite.deob.attributes.code.instruction.types;
 
-public interface ArrayStore
+public interface ArrayStoreInstruction extends MappableInstruction
 {
 	
 }

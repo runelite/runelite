@@ -7,13 +7,20 @@ import java.util.stream.Collectors;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.ParallellMappingExecutor;
+import net.runelite.deob.execution.StackContext;
+import net.runelite.deob.execution.VariableContext;
+import net.runelite.deob.execution.Variables;
+import net.runelite.deob.signature.Signature;
 
 public class MappingExecutorUtil
 {
@@ -143,5 +150,74 @@ public class MappingExecutorUtil
 	public static boolean isInlineable(Instruction i)
 	{
 		return i instanceof InvokeStatic && isMappable((InvokeStatic) i);
+	}
+	
+	public static InstructionContext resolve(
+		InstructionContext ctx,
+		StackContext from // pushed from ctx
+	)
+	{
+		if (ctx.getInstruction() instanceof SetFieldInstruction)
+		{
+			StackContext s = ctx.getPops().get(0);
+			return resolve(s.getPushed(), s);
+		}
+		
+		if (ctx.getInstruction() instanceof DupInstruction)
+		{
+			DupInstruction d = (DupInstruction) ctx.getInstruction();
+			StackContext s = d.getOriginal(from);
+			return resolve(s.getPushed(), s);
+		}
+		
+		if (ctx.getInstruction() instanceof LVTInstruction)
+		{
+			LVTInstruction lvt = (LVTInstruction) ctx.getInstruction();
+			Variables variables = ctx.getVariables();
+			
+			if (lvt.store())
+			{
+				StackContext s = ctx.getPops().get(0); // is this right?
+				return resolve(s.getPushed(), s);
+			}
+			else
+			{
+				VariableContext vctx = variables.get(lvt.getVariableIndex()); // variable being loaded
+				assert vctx != null;
+
+				InstructionContext storedCtx = vctx.getInstructionWhichStored();
+				if (storedCtx == null)
+					return ctx; // initial parameter
+				
+				if (vctx.isIsParameter())
+				{
+					// Normally storedCtx being an InvokeInstruction means that this resolves to the
+					// return value of an invoke instruction, but if the variable is a parameter, it means
+					// this storedCtx is the invoke instruction which called this method.
+					assert storedCtx.getInstruction() instanceof InvokeInstruction;
+					// In PME non static functions are never stepped into/aren't inline obfuscated
+					assert storedCtx.getInstruction() instanceof InvokeStatic;
+					
+					// Figure out parameter index from variable index.
+					Signature sig = ctx.getFrame().getMethod().getDescriptor(); // signature of current method
+					int paramIndex = 0;
+					for (int lvtIndex = 0 /* static */;
+						paramIndex < sig.size();
+						lvtIndex += sig.getTypeOfArg(paramIndex++).getSlots())
+						if (lvtIndex == lvt.getVariableIndex())
+							break;
+					assert paramIndex < sig.size();
+
+					// Get stack context that was popped by the invoke
+					// pops[0] is the first thing popped, which is the last parameter.
+					StackContext sctx = storedCtx.getPops().get(sig.size() - 1 - paramIndex);
+					return resolve(sctx.getPushed(), sctx);
+				}
+				
+				return resolve(storedCtx, null);
+			}
+		}
+		
+		return ctx;
 	}
 }
