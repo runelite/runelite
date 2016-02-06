@@ -203,7 +203,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	}
 	
 	@Override
-	public boolean canMap()
+	public boolean canMap(InstructionContext thisIc)
 	{
 		return MappingExecutorUtil.isMappable(this);
 	}

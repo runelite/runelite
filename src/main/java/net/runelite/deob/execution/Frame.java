@@ -257,7 +257,7 @@ public class Frame
 			if (execution.step && oldCur instanceof MappableInstruction)
 			{
 				MappableInstruction mi = (MappableInstruction) oldCur;
-				if (mi.canMap())
+				if (mi.canMap(ictx))
 				{
 					execution.paused = true;
 					return;

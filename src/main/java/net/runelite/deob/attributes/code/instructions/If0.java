@@ -159,7 +159,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	}
 	
 	@Override
-	public boolean canMap()
+	public boolean canMap(InstructionContext thisIc)
 	{
 		return true;
 	}
