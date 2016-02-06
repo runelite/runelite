@@ -15,7 +15,6 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.ArrayStore;
 import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
@@ -32,6 +31,7 @@ import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.pool.PoolEntry;
 import net.runelite.deob.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
+import net.runelite.deob.attributes.code.instruction.types.ArrayStoreInstruction;
 
 public class ModArith implements Deobfuscator
 {
@@ -51,7 +51,7 @@ public class ModArith implements Deobfuscator
 		
 		// invoke and array store pops are unrelated to each other
 		if (ctx.getInstruction() instanceof InvokeInstruction ||
-			ctx.getInstruction() instanceof ArrayStore)
+			ctx.getInstruction() instanceof ArrayStoreInstruction)
 			return l;
 		
 		set.add(ctx.getInstruction());

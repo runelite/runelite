@@ -26,7 +26,6 @@ import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.graph.Edge;
 import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
-import net.runelite.deob.deobfuscators.rename.graph.FieldEdge;
 import net.runelite.deob.deobfuscators.rename.graph.Graph;
 import net.runelite.deob.deobfuscators.rename.graph.GraphBuilder;
 import net.runelite.deob.deobfuscators.rename.graph.Vertex;
@@ -350,7 +349,15 @@ public class Rename2
 		if (m1.getName().equals("<clinit>") || m1.getName().equals("<init>"))
 			return;
 		
-		ParallelExecutorMapping mapping = MappingExecutorUtil.map(m1, m2);
+		ParallelExecutorMapping mapping = null;
+		try
+		{
+			mapping = MappingExecutorUtil.map(m1, m2);
+		}
+		catch (MappingException ex)
+		{
+			throw new RuntimeException(ex);
+		}
 		System.out.println("EXEC " + count++ + " " + mname(m1) + " " + mname(m2) + " " + mapping);
 		
 		for (Entry<Object, Object> e : mapping.getMap().entrySet())
