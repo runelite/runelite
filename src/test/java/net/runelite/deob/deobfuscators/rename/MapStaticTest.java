@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deob;
+import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
@@ -117,7 +118,8 @@ public class MapStaticTest
 		Method m2 = group2.findClass("class183").findMethod("method3560");
 		
 		HashMap<Object, Object> all = new HashMap();
-		map(all, new HashSet(), m1, m2);
+		List<ParallelExecutorMapping> pmes = new ArrayList<>();
+		map(all, pmes, m1, m2);
 	}
 	
 	//@Test
@@ -126,6 +128,7 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
+		List<ParallelExecutorMapping> pmes = new ArrayList<>();
 		for (String[] s : methods)
 		{
 			String[] one = s[0].split("\\."), two = s[1].split("\\.");
@@ -134,7 +137,7 @@ public class MapStaticTest
 			Method m2 = group2.findClass(two[0]).findMethod(two[1]);
 		
 			HashMap<Object, Object> all = new HashMap();
-			map(all, new HashSet(), m1, m2);
+			map(all, pmes, m1, m2);
 		}
 	}
 	
@@ -150,21 +153,43 @@ public class MapStaticTest
 		
 		assert m1s.size() == m2s.size();
 		
-		HashMap<Object, Object> all = new HashMap();
+		List<ParallelExecutorMapping> pmes = new ArrayList<>();
 		for (int i = 0; i < m1s.size(); ++i)
 		{
 			Method m1 = m1s.get(i), m2 = m2s.get(i);
 			
 			assert m1.getPoolMethod().equals(m2.getPoolMethod());
-			
-			map(all, new HashSet(), m1, m2);
-
-			for (Entry<Object, Object> e : all.entrySet())
+		
+			HashMap<Object, Object> all = new HashMap();
+			map(all, pmes, m1, m2);
+		}
+		int fields = 0, staticMethod = 0, method = 0, total = 0;
+		for (ParallelExecutorMapping pme : pmes)
+			for (Entry<Object, Object> e : pme.getMap().entrySet())
 			{
 				System.out.println(e.getKey() + " <-> " + e.getValue());
+
+				Object o = e.getKey();
+				if (o instanceof Field)
+					++fields;
+				else if (o instanceof Method)
+				{
+					Method m = (Method) o;
+
+					if (m.isStatic())
+						++staticMethod;
+					else
+						++method;
+				}
+				
+				++total;
 			}
-		}
-		System.out.println("Total " + all.size());
+		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " methods");
+//		for (Method m : group1.findClass("client").getMethods().getMethods())
+//		{
+//			if (!all.containsKey(m) && !m.isStatic())
+//				System.out.println("missing " + m);
+//		}
 	}
 	
 	public List<Method> getInitialMethods(ClassGroup group)
@@ -201,7 +226,7 @@ public class MapStaticTest
 		return methods;
 	}
 	
-	private void map(Map<Object, Object> all, Set<Object> invalid, Method m1, Method m2)
+	private void map(Map<Object, Object> all, List<ParallelExecutorMapping> result, Method m1, Method m2)
 	{
 		if (all.containsKey(m1))
 			return;
@@ -225,6 +250,8 @@ public class MapStaticTest
 			return;
 		}
 		
+		result.add(mappings);
+		
 		for (Entry<Object, Object> e : mappings.getMap().entrySet())
 		{
 			if (e.getKey() instanceof Method)
@@ -232,12 +259,33 @@ public class MapStaticTest
 				Method n1 = (Method) e.getKey(),
 					n2 = (Method) e.getValue();
 				
-				map(all, invalid, n1, n2);
+				map(all, result, n1, n2);
 			}
 			else
 				all.put(e.getKey(), e.getValue());
 			//assert all
 			//all.put(e.getKey(), e.getValue());
 		}
+	}
+	
+	private void print(ClassGroup cg)
+	{
+		int methods = 0, fields = 0, classes = 0;
+		for (ClassFile cf : cg.getClasses())
+		{
+			++classes;
+			methods += cf.getMethods().getMethods().size();
+			fields += cf.getFields().getFields().size();
+		}
+		int total = methods + fields;
+		System.out.println("Goal; total m/f: " + total + ", " + methods + " methods, " + fields + " fields"); 
+	}
+	
+	@Test
+	public void printTotalObjects() throws Exception
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		//ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		print(group1);
 	}
 }

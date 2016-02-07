@@ -89,6 +89,11 @@ public class MappingExecutorUtil
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
 		ParallelExecutorMapping mappings = new ParallelExecutorMapping();
 		
+		mappings.m1 = m1;
+		mappings.m2 = m2;
+		
+		parallel.mappings = mappings;
+		
 		while (parallel.step())
 		{
 			// get what each frame is paused/exited on
