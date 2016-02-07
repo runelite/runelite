@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.deob.Method;
 
 public class ParallelExecutorMapping
 {
 	private Map<Object, Object> map = new HashMap<>();
 	private List<Object> order = new ArrayList<>();
+	public Method m1, m2;
 	
 	public void map(Object one, Object two)
 	{

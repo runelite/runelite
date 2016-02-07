@@ -7,11 +7,13 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public class ParallellMappingExecutor
 {
 	private Execution e, e2;
 	private InstructionContext p1, p2;
+	public ParallelExecutorMapping mappings;
 
 	public ParallellMappingExecutor(Execution one, Execution two)
 	{
@@ -172,6 +174,13 @@ public class ParallellMappingExecutor
 		
 		f1 = popStack(f1);
 		f2 = popStack(f2);
+		
+		if (oldf1 != f1 && oldf2 != f2)
+			if (oldf1.otherStatic == oldf2 && oldf2.otherStatic == oldf1)
+			{
+				mappings.map(oldf1.getMethod(), oldf2.getMethod());
+				System.out.println("hmmm");
+			}
 		
 //		if (e.frames.size() - s1 != e2.frames.size() - s2)
 //		{
