@@ -115,7 +115,57 @@ public class MappingExecutorUtil
 			
 			if (!mi1.isSame(p1, p2))
 			{
-				throw new MappingException();
+				p1.getFrame().stop();
+				p2.getFrame().stop();
+				continue;
+//				if (!hit)
+//				{
+//					hit = true;
+//				
+//					throw new MappingException();
+//				}
+//				
+//				System.out.println("ERROR mapping " + p1 + " to " + p2);
+//				
+//				// methods don't map. find common static method and back out.
+//				
+//				Frame c1 = p1.getFrame(), c2 = p2.getFrame();
+//				
+//				while (c1 != null && c1.otherStatic == null)
+//					c1 = c1.returnTo;
+//				
+//				while (c2 != null && c2.otherStatic == null)
+//					c2 = c2.returnTo;
+//				
+//				// otherStatic would point to the original frame of the method, which the other might not be. we don't
+//				// care just compare the method.
+//				if (c1 == null || c2 == null || c1.otherStatic.getMethod() != c2.getMethod() || c2.otherStatic.getMethod() != c1.getMethod())
+//				{
+//					throw new MappingException();
+//				}
+//				
+//				// c1/c2 are top frames of static methods that we can't map.
+//				// return out of frames
+//				c1 = c1.returnTo;
+//				c2 = c2.returnTo;
+//				
+//				if (c1 == null || c2 == null)
+//					throw new MappingException();
+//				
+//				// Back execution out to c1 and c2.
+//				// When something is stepped into, the calling frame is removed.
+//				// Remove all frames from the respective method, add frame from good method to continue
+//				parallel.removeFramesFromMethod(p1.getFrame().getMethod());
+//				parallel.removeFramesFromMethod(p2.getFrame().getMethod());
+//				
+//				assert c1.other == null;
+//				assert c2.other == null;
+//				
+//				c1.other = c2;
+//				c2.other = c1;
+//				
+//				parallel.addFrame(c1, c2);
+//				continue;
 			}
 
 			mi1.map(mappings, p1, p2);
@@ -125,6 +175,7 @@ public class MappingExecutorUtil
 		
 		return mappings;
 	}
+	//static boolean hit;
 	
 	public static boolean isMappable(InvokeInstruction ii)
 	{

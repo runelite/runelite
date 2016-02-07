@@ -3,6 +3,7 @@ package net.runelite.deob.execution;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
@@ -406,5 +407,17 @@ public class ParallellMappingExecutor
 		//f.returnTo.execute();
 		
 		return f.returnTo;
+	}
+	
+	public void removeFramesFromMethod(Method m)
+	{
+		e.frames = e.frames.stream().filter(f -> f.getMethod() != m).collect(Collectors.toList());
+		e2.frames = e2.frames.stream().filter(f -> f.getMethod() != m).collect(Collectors.toList());
+	}
+	
+	public void addFrame(Frame f1, Frame f2)
+	{
+		e.frames.add(0, f1);
+		e2.frames.add(0, f2);
 	}
 }

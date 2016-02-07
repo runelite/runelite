@@ -114,8 +114,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
-		Method m1 = group1.findClass("class183").findMethod("method3685");
-		Method m2 = group2.findClass("class183").findMethod("method3560");
+		Method m1 = group1.findClass("client").findMethod("vmethod3096");
+		Method m2 = group2.findClass("client").findMethod("vmethod2975");
 		
 		HashMap<Object, Object> all = new HashMap();
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
@@ -163,33 +163,38 @@ public class MapStaticTest
 			HashMap<Object, Object> all = new HashMap();
 			map(all, pmes, m1, m2);
 		}
-		int fields = 0, staticMethod = 0, method = 0, total = 0;
+		
+		ParallelExecutorMapping finalm = new ParallelExecutorMapping();
 		for (ParallelExecutorMapping pme : pmes)
-			for (Entry<Object, Object> e : pme.getMap().entrySet())
+			finalm.merge(pme);
+		
+		int fields = 0, staticMethod = 0, method = 0, total = 0;
+		for (Entry<Object, Object> e : finalm.getMap().entrySet())
+		{
+			System.out.println(e.getKey() + " <-> " + e.getValue());
+
+			Object o = e.getKey();
+			if (o instanceof Field)
+				++fields;
+			else if (o instanceof Method)
 			{
-				System.out.println(e.getKey() + " <-> " + e.getValue());
+				Method m = (Method) o;
 
-				Object o = e.getKey();
-				if (o instanceof Field)
-					++fields;
-				else if (o instanceof Method)
-				{
-					Method m = (Method) o;
-
-					if (m.isStatic())
-						++staticMethod;
-					else
-						++method;
-				}
-				
-				++total;
+				if (m.isStatic())
+					++staticMethod;
+				else
+					++method;
 			}
+
+			++total;
+		}
 		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " methods");
-//		for (Method m : group1.findClass("client").getMethods().getMethods())
-//		{
-//			if (!all.containsKey(m) && !m.isStatic())
-//				System.out.println("missing " + m);
-//		}
+		
+		for (Method m : group1.findClass("client").getMethods().getMethods())
+		{
+			if (!finalm.getMap().containsKey(m) && !m.isStatic())
+				System.out.println("missing " + m);
+		}
 	}
 	
 	public List<Method> getInitialMethods(ClassGroup group)
