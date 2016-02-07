@@ -48,7 +48,7 @@ public class Frame
 		variables = new Variables(code.getMaxLocals());
 		// don't cache method contexts per execution
 		// need to allow the same method to execute multiple times
-		// when called from multiple places to allow graph building
+		// when called from multiple places to allow graph building //XXX there no longer is a graph
 		ctx = new MethodContext(execution);
 		nonStatic = method;
 	}
@@ -144,6 +144,7 @@ public class Frame
 		ffs.remove(this);
 		this.created = other.created;
 		this.forking = other.forking;
+		this.otherStatic = other.otherStatic;
 	}
 	
 	public Frame dup()

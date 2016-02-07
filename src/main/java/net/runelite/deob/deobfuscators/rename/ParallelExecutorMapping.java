@@ -12,9 +12,14 @@ public class ParallelExecutorMapping
 	private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	
+	public void merge(ParallelExecutorMapping other)
+	{
+		map.putAll(other.map); // is this right?
+	}
+	
 	public void map(Object one, Object two)
 	{
-		assert !map.containsKey(one) || map.get(one) == two;
+		//assert !map.containsKey(one) || map.get(one) == two;
 		
 		if (map.containsKey(one))
 			return;
