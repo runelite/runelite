@@ -102,7 +102,7 @@ public class MappingExecutorUtil
 			assert e.paused;
 			assert e2.paused;
 			
-			System.out.println(p1.getInstruction() + " <-> " + p2.getInstruction());
+			//System.out.println(p1.getInstruction() + " <-> " + p2.getInstruction());
 			
 			//assert p1.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m1;
 			//assert p2.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m2;

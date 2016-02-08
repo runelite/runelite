@@ -180,7 +180,7 @@ public class ParallellMappingExecutor
 			if (oldf1.otherStatic == oldf2 && oldf2.otherStatic == oldf1)
 			{
 				mappings.map(oldf1.getMethod(), oldf2.getMethod());
-				System.out.println("hmmm");
+				System.out.println("STEP OUT " + oldf1.getMethod() + " <-> " + oldf2.getMethod());
 			}
 		
 //		if (e.frames.size() - s1 != e2.frames.size() - s2)
@@ -352,8 +352,8 @@ public class ParallellMappingExecutor
 		f.other = null;
 		
 		f2.returnTo = new Frame(f); // where to go when we're done
-		assert f.getInstructions().isEmpty() == false;
-		f2.returnTo.getInstructions().addAll(f.getInstructions());
+		assert f.getInstructions().isEmpty() == false; // this is wrong?
+		f2.returnTo.getInstructions().addAll(f.getInstructions()); // also wrong?
 		
 		return f2;
 	}
