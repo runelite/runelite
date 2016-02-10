@@ -42,7 +42,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	@Override
 	public String toString()
 	{
-		return "invokevirtual " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod();
+		return "invokevirtual " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod() + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
+import net.runelite.deob.execution.ParallellMappingExecutor;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -120,6 +121,12 @@ public class MapStaticTest
 		HashMap<Object, Object> all = new HashMap();
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
 		map(all, pmes, m1, m2);
+		
+		ParallelExecutorMapping finalm = new ParallelExecutorMapping();
+		for (ParallelExecutorMapping pme : pmes)
+			finalm.merge(pme);
+		
+		summary(finalm);
 	}
 	
 	//@Test
@@ -139,6 +146,31 @@ public class MapStaticTest
 			HashMap<Object, Object> all = new HashMap();
 			map(all, pmes, m1, m2);
 		}
+	}
+	
+	private void summary(ParallelExecutorMapping finalm)
+	{
+		int fields = 0, staticMethod = 0, method = 0, total = 0;
+		for (Entry<Object, Object> e : finalm.getMap().entrySet())
+		{
+			System.out.println(e.getKey() + " <-> " + e.getValue());
+
+			Object o = e.getKey();
+			if (o instanceof Field)
+				++fields;
+			else if (o instanceof Method)
+			{
+				Method m = (Method) o;
+
+				if (m.isStatic())
+					++staticMethod;
+				else
+					++method;
+			}
+
+			++total;
+		}
+		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " methods");
 	}
 	
 	@Test
@@ -168,31 +200,18 @@ public class MapStaticTest
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
 		
-		int fields = 0, staticMethod = 0, method = 0, total = 0;
-		for (Entry<Object, Object> e : finalm.getMap().entrySet())
-		{
-			System.out.println(e.getKey() + " <-> " + e.getValue());
-
-			Object o = e.getKey();
-			if (o instanceof Field)
-				++fields;
-			else if (o instanceof Method)
-			{
-				Method m = (Method) o;
-
-				if (m.isStatic())
-					++staticMethod;
-				else
-					++method;
-			}
-
-			++total;
-		}
-		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " methods");
+		summary(finalm);
+		print(group1);
+		System.out.println("db step " + ParallellMappingExecutor.doubleStep.size());
 		
 		for (Method m : group1.findClass("client").getMethods().getMethods())
 		{
 			if (!finalm.getMap().containsKey(m) && !m.isStatic())
+				System.out.println("missing " + m);
+		}
+		for (Field m : group1.findClass("client").getFields().getFields())
+		{
+			if (!finalm.getMap().containsKey(m))
 				System.out.println("missing " + m);
 		}
 	}
@@ -242,6 +261,15 @@ public class MapStaticTest
 		if (m1.getCode() == null)
 			return;
 		
+		// XXX this is the packet stuff..
+		if (m1.getName().equals("vmethod3096"))
+			return;
+		
+		if (m1.getName().equals("method32"))
+		{
+			int i=5;
+		}
+		
 		ParallelExecutorMapping mappings;
 		try
 		{
@@ -249,6 +277,7 @@ public class MapStaticTest
 		}
 		catch (Throwable ex)
 		{
+			ex.printStackTrace();
 			System.err.println("Error mapping " + m1 + " to " + m2);
 			//if (test)
 			//	throw ex;

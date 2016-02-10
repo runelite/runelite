@@ -278,6 +278,7 @@ public class ParallellMappingExecutor
 			stepf1.otherStatic = stepf2;
 			stepf2.otherStatic = stepf1;
 			
+			doubleStep.add(stepf1.getMethod());
 			System.out.println("STEP " + stepf1.getMethod() + " <-> " + stepf2.getMethod());
 			
 			return step();
@@ -288,6 +289,7 @@ public class ParallellMappingExecutor
 		
 		return true;
 	}
+	public static Set<Method> doubleStep = new HashSet();
 
 	public InstructionContext getP1()
 	{
@@ -331,6 +333,9 @@ public class ParallellMappingExecutor
 		Method to = methods.get(0);
 		
 		if (isLoop(f))
+			return null;
+		
+		if (e.hasInvoked(i, to))
 			return null;
 		//assert e.methods.contains(to) == false;
 		//e.methods.add(to);
