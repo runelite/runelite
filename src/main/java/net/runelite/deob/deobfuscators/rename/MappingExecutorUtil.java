@@ -117,6 +117,7 @@ public class MappingExecutorUtil
 			{
 				p1.getFrame().stop();
 				p2.getFrame().stop();
+				e.paused = e2.paused = false;
 				continue;
 //				if (!hit)
 //				{
@@ -168,7 +169,16 @@ public class MappingExecutorUtil
 //				continue;
 			}
 
-			mi1.map(mappings, p1, p2);
+			try
+			{
+				mi1.map(mappings, p1, p2);
+			}
+			catch (Throwable ex)
+			{
+				p1.getFrame().stop();
+				p2.getFrame().stop();
+				ex.printStackTrace();
+			}
 
 			e.paused = e2.paused = false;
 		}

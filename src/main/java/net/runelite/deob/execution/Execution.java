@@ -88,7 +88,7 @@ public class Execution
 		}
 	}
 	
-	private boolean hasInvoked(InstructionContext from, Method to)
+	public boolean hasInvoked(InstructionContext from, Method to)
 	{
 		// this is wrong because the called of the method of from
 		// might be different, for building graph

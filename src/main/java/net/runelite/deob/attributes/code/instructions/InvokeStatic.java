@@ -48,7 +48,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public String toString()
 	{
-		return "invokestatic " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod();
+		return "invokestatic " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod() + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
 	
 	@Override
