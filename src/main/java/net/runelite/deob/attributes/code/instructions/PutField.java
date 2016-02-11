@@ -109,16 +109,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		net.runelite.deob.Field myField = this.getMyField(),
 			otherField = ((PutField) other.getInstruction()).getMyField();
 		
-		// it appears ConstantValue field attributes are inlined into the constructor
-		// and their orders scrambled, so don't accept constant value assignments?
-//		if (ctx.getFrame().getMethod().getName().equals("<init>"))
-//		{
-//			//assert isConstantAssignment(ctx) == isConstantAssignment(other);
-//			//if (isConstantAssignment(ctx))
-//				return;
-//		}
-		
-		// XXX field types must be the same
+		assert myField.getType().equals(otherField.getType());
 		
 		mapping.map(myField, otherField);
 	}
@@ -126,7 +117,14 @@ public class PutField extends Instruction implements SetFieldInstruction
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+			return false;
+		
+		PutField thisPf = (PutField) thisIc.getInstruction(),
+			otherPf = (PutField) otherIc.getInstruction();
+		
+		return thisPf.getField().getClassEntry().equals(otherPf.getField().getClassEntry())
+			&& thisPf.getField().getNameAndType().getDescriptorType().equals(otherPf.getField().getNameAndType().getDescriptorType());
 	}
 	
 	@Override

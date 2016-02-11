@@ -199,7 +199,37 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+			return false;
+		
+		InvokeVirtual thisIi = (InvokeVirtual) thisIc.getInstruction(),
+			otherIi = (InvokeVirtual) otherIc.getInstruction();
+		
+		List<net.runelite.deob.Method> thisMethods = thisIi.getMethods(),
+			otherMethods = otherIi.getMethods();
+		
+		if ((thisMethods != null) != (otherMethods != null))
+			return false;
+		
+		if (thisMethods == null || otherMethods == null)
+			return true; // we don't map these anyway
+		
+		if (thisMethods.size() != otherMethods.size())
+			return false;
+		
+		for (int i = 0; i < thisMethods.size(); ++i)
+		{
+			net.runelite.deob.Method m1 = thisMethods.get(i),
+				m2 = otherMethods.get(i);
+			
+			if (!m1.getMethods().getClassFile().getPoolClass().equals(m2.getMethods().getClassFile().getPoolClass()))
+				return false;
+			
+			if (!m1.getNameAndType().getDescriptor().equals(m2.getNameAndType().getDescriptor()))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	@Override

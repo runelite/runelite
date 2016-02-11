@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
@@ -179,7 +178,39 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+			return false;
+		
+		InvokeStatic thisIi = (InvokeStatic) thisIc.getInstruction(),
+			otherIi = (InvokeStatic) otherIc.getInstruction();
+		
+		List<net.runelite.deob.Method> thisMethods = thisIi.getMethods(),
+			otherMethods = otherIi.getMethods();
+		
+		if ((thisMethods != null) != (otherMethods != null))
+			return false;
+		
+		if (thisMethods == null || otherMethods == null)
+			return true; // we don't map these anyway
+		
+		if (thisMethods.size() != otherMethods.size())
+			return false;
+		
+		assert thisMethods.size() == 1;
+		assert otherMethods.size() == 1;
+		
+		for (int i = 0; i < thisMethods.size(); ++i)
+		{
+			net.runelite.deob.Method m1 = thisMethods.get(i),
+				m2 = otherMethods.get(i);
+			
+			/* The class names are random */
+			
+			if (!m1.getNameAndType().getDescriptor().equals(m2.getNameAndType().getDescriptor()))
+				return false;
+		}
+		
+		return true;
 	}
 	
 	@Override
