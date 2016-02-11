@@ -102,13 +102,22 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		net.runelite.deob.Field myField = this.getMyField(),
 			otherField = ((PutStatic) other.getInstruction()).getMyField();
 		
+		assert myField.getType().equals(otherField.getType());
+		
 		mapping.map(myField, otherField);
 	}
 	
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+		if (thisIc.getInstruction().getClass() != otherIc.getInstruction().getClass())
+			return false;
+		
+		PutStatic thisPf = (PutStatic) thisIc.getInstruction(),
+			otherPf = (PutStatic) otherIc.getInstruction();
+		
+		/* The class names are random */
+		return thisPf.getField().getNameAndType().getDescriptorType().equals(otherPf.getField().getNameAndType().getDescriptorType());
 	}
 	
 	@Override
