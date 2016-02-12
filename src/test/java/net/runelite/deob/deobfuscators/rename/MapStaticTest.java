@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import com.google.common.collect.Multimap;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -116,8 +117,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
-		Method m1 = group1.findClass("class92").findMethod("method2176");
-		Method m2 = group2.findClass("client").findMethod("method540");
+		Method m1 = group1.findClass("client").findMethod("method273");
+		Method m2 = group2.findClass("client").findMethod("method235");
 		
 		HashMap<Object, Object> all = new HashMap();
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
@@ -209,25 +210,6 @@ public class MapStaticTest
 			map(all, pmes, m1, m2);
 		}
 		
-		for (int i = 0; i < 250; ++i)
-		{
-			ClassFile c1 = group1.findClass("class" + i);
-			ClassFile c2 = group2.findClass("class" + i);
-			
-			if (c1 == null || c2 == null)
-				continue;
-			
-			MethodSignatureMapper msm = new MethodSignatureMapper();
-			msm.map(c1, c2);
-			
-			Map<Method, Method> map = msm.getMap();
-			for (Entry<Method, Method> e : map.entrySet())
-			{
-				HashMap<Object, Object> all = new HashMap();
-				map(all, pmes, e.getKey(), e.getValue());
-			}
-		}
-		
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(group1, group2);
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
@@ -245,16 +227,16 @@ public class MapStaticTest
 		System.out.println("GROUP 2 " + sg2);
 
 		
-//		for (Method m : group1.findClass("client").getMethods().getMethods())
-//		{
-//			if (!finalm.getMap().containsKey(m))
-//				System.out.println("missing " + m);
-//		}
-//		for (Field m : group1.findClass("client").getFields().getFields())
-//		{
-//			if (!finalm.getMap().containsKey(m))
-//				System.out.println("missing " + m);
-//		}
+		for (Method m : group1.findClass("client").getMethods().getMethods())
+		{
+			if (!finalm.getMap().containsKey(m))
+				System.out.println("missing " + m);
+		}
+		for (Field m : group1.findClass("client").getFields().getFields())
+		{
+			if (!finalm.getMap().containsKey(m))
+				System.out.println("missing " + m);
+		}
 	}
 	
 	//@Test
@@ -275,11 +257,24 @@ public class MapStaticTest
 			MethodSignatureMapper msm = new MethodSignatureMapper();
 			msm.map(c1, c2);
 			
-			Map<Method, Method> map = msm.getMap();
-			for (Entry<Method, Method> e : map.entrySet())
+			Multimap<Method, Method> map = msm.getMap();
+			for (Method m : msm.getMap().keySet())
 			{
-				HashMap<Object, Object> all = new HashMap();
-				map(all, pmes, e.getKey(), e.getValue());
+				Collection<Method> methods = msm.getMap().get(m);
+				
+				for (Method other : methods)
+				{
+					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+					
+					if (pme.getMap().isEmpty())
+						continue;
+					
+					pme.map(m, other);
+				
+					pmes.add(pme);
+				}
+				//HashMap<Object, Object> all = new HashMap();
+				//map(all, pmes, e.getKey(), e.getValue());
 			}
 		}
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
