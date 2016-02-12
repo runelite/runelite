@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.deob.Field;
+import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
@@ -171,6 +173,29 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		
 		for (int i = 0; i < myMethods.size(); ++i)
 			mapping.map(myMethods.get(i), otherMethods.get(i));
+		
+		for (int i = 0; i < ctx.getPops().size(); ++i)
+		{
+			StackContext s1 = ctx.getPops().get(i),
+				s2 = other.getPops().get(i);
+			
+			InstructionContext base1 = MappingExecutorUtil.resolve(s1.getPushed(), s1);
+			InstructionContext base2 = MappingExecutorUtil.resolve(s2.getPushed(), s2);
+			
+			if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+			{
+				GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+					gf2 = (GetFieldInstruction) base2.getInstruction();
+				
+				Field f1 = gf1.getMyField(),
+					f2 = gf2.getMyField();
+				
+				if (f1 != null && f2 != null)
+				{
+					mapping.map(f1, f2);
+				}
+			}
+		}
 	}
 	
 	@Override
