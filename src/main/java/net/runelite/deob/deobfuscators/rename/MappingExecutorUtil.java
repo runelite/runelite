@@ -87,7 +87,8 @@ public class MappingExecutorUtil
 		frame2.other = frame;
 		
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
-		ParallelExecutorMapping mappings = new ParallelExecutorMapping();
+		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getMethods().getClassFile().getGroup(),
+			m2.getMethods().getClassFile().getGroup());
 		
 		mappings.m1 = m1;
 		mappings.m2 = m2;

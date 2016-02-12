@@ -4,16 +4,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.deob.ClassGroup;
+import net.runelite.deob.Field;
 import net.runelite.deob.Method;
 
 public class ParallelExecutorMapping
 {
+	private ClassGroup group, group2;
 	private Map<Object, Object> map = new HashMap<>();
 	private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	
+	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
+	{
+		this.group = group;
+		this.group2 = group2;
+		assert group != group2;
+	}
+	
 	public void merge(ParallelExecutorMapping other)
 	{
+		assert this != other;
 		map.putAll(other.map); // is this right?
 	}
 	
@@ -23,6 +34,9 @@ public class ParallelExecutorMapping
 		
 		if (map.containsKey(one))
 			return;
+		
+		belongs(one, group);
+		belongs(two, group2);
 		
 		map.put(one, two);
 		order.add(one);
@@ -39,4 +53,20 @@ public class ParallelExecutorMapping
 	}
 	
 	public List<Object> getOrder() { return order; }
+	
+	private void belongs(Object o, ClassGroup to)
+	{
+		if (o instanceof Field)
+		{
+			Field f = (Field) o;
+			assert f.getFields().getClassFile().getGroup() == to;
+		}
+		else if (o instanceof Method)
+		{
+			Method m = (Method) o;
+			assert m.getMethods().getClassFile().getGroup() == to;
+		}
+		else
+			assert false;
+	}
 }
