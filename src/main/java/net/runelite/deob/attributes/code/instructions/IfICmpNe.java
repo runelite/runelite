@@ -31,7 +31,10 @@ public class IfICmpNe extends If
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		if (super.isSame(thisIc, otherIc))
+		if (!this.isSameField(thisIc, otherIc))
+			return false;
+		
+		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
 		
 		// check for other being ifne and this has a constant 0

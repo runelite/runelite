@@ -15,7 +15,10 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.deob.Field;
+import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
 
@@ -112,6 +115,8 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		
 		branch1.other = branch2;
 		branch2.other = branch1;
+		
+		this.mapArguments(mapping, ctx, other);
 	}
 	
 	// duplicated from If
@@ -150,12 +155,54 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 //
 //		e2.frames.remove(i2);
 //		e2.frames.add(i2, f2);
+
+		this.mapArguments(mapping, ctx, other);
 	}
 	
-	@Override
-	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
+	private void mapArguments(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		return thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass();
+		Field f1 = getComparedField(ctx), f2 = getComparedField(other);
+		if (f1 == null || f2 == null)
+			return;
+		
+		assert f1.getType().equals(f2.getType());
+		
+		mapping.map(f1, f2);
+	}
+	
+	private Field getComparedField(InstructionContext ctx)
+	{
+		GetFieldInstruction gfi = null;
+		
+		for (StackContext sctx : ctx.getPops())
+		{
+			InstructionContext base = MappingExecutorUtil.resolve(sctx.getPushed(), sctx);
+			
+			if (base.getInstruction() instanceof GetFieldInstruction)
+			{
+				if (gfi != null)
+					return null;
+				
+				gfi = (GetFieldInstruction) base.getInstruction();
+			}
+		}
+		
+		if (gfi == null)
+			return null;
+		
+		return gfi.getMyField();
+	}
+	
+	protected boolean isSameField(InstructionContext thisIc, InstructionContext otherIc)
+	{
+		Field f1 = getComparedField(thisIc), f2 = getComparedField(otherIc);
+		if ((f1 != null) != (f2 != null))
+			return false;
+		
+		if (f1 == null || f2 == null)
+			return true;
+		
+		return f1.getType().equals(f2.getType());
 	}
 	
 	@Override
