@@ -349,15 +349,8 @@ public class Rename2
 		if (m1.getName().equals("<clinit>") || m1.getName().equals("<init>"))
 			return;
 		
-		ParallelExecutorMapping mapping = null;
-		try
-		{
-			mapping = MappingExecutorUtil.map(m1, m2);
-		}
-		catch (MappingException ex)
-		{
-			throw new RuntimeException(ex);
-		}
+		ParallelExecutorMapping mapping = MappingExecutorUtil.map(m1, m2);
+
 		System.out.println("EXEC " + count++ + " " + mname(m1) + " " + mname(m2) + " " + mapping);
 		
 		for (Entry<Object, Object> e : mapping.getMap().entrySet())
