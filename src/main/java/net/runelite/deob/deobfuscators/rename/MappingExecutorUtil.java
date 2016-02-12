@@ -66,7 +66,7 @@ public class MappingExecutorUtil
 		return map1.equals(map2);
 	}
 	
-	public static ParallelExecutorMapping map(Method m1, Method m2) throws MappingException
+	public static ParallelExecutorMapping map(Method m1, Method m2)
 	{
 		ClassGroup group1 = m1.getMethods().getClassFile().getGroup();
 		ClassGroup group2 = m2.getMethods().getClassFile().getGroup();
@@ -169,16 +169,16 @@ public class MappingExecutorUtil
 //				continue;
 			}
 
-			try
-			{
-				mi1.map(mappings, p1, p2);
-			}
-			catch (Throwable ex)
-			{
-				p1.getFrame().stop();
-				p2.getFrame().stop();
-				ex.printStackTrace();
-			}
+//			try
+//			{
+			mi1.map(mappings, p1, p2);
+//			}
+//			catch (Throwable ex)
+//			{
+//				p1.getFrame().stop();
+//				p2.getFrame().stop();
+//				ex.printStackTrace();
+//			}
 
 			e.paused = e2.paused = false;
 		}

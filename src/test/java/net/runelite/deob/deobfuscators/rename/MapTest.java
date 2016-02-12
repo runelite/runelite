@@ -23,7 +23,7 @@ public class MapTest
 	}
 	
 	@Test
-	public void test() throws IOException, MappingException
+	public void test() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar"));
 		ClassGroup group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));

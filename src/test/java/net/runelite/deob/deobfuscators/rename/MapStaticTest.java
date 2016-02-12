@@ -3,6 +3,7 @@ package net.runelite.deob.deobfuscators.rename;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -65,7 +66,7 @@ public class MapStaticTest
 //	}
 	
 	@Test
-	public void testAll() throws IOException, MappingException
+	public void testAll() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
@@ -82,7 +83,7 @@ public class MapStaticTest
 	}
 	
 	@Test
-	public void test() throws IOException, MappingException
+	public void test() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
@@ -196,23 +197,98 @@ public class MapStaticTest
 			map(all, pmes, m1, m2);
 		}
 		
+		for (int i = 0; i < 250; ++i)
+		{
+			ClassFile c1 = group1.findClass("class" + i);
+			ClassFile c2 = group2.findClass("class" + i);
+			
+			if (c1 == null || c2 == null)
+				continue;
+			
+			MethodSignatureMapper msm = new MethodSignatureMapper();
+			msm.map(c1, c2);
+			
+			Map<Method, Method> map = msm.getMap();
+			for (Entry<Method, Method> e : map.entrySet())
+			{
+				HashMap<Object, Object> all = new HashMap();
+				map(all, pmes, e.getKey(), e.getValue());
+			}
+		}
+		
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping();
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
 		
 		summary(finalm);
 		print(group1);
-		System.out.println("db step " + ParallellMappingExecutor.doubleStep.size());
+//		System.out.println("db step " + ParallellMappingExecutor.doubleStep.size());
+//		
+//		for (Method m : group1.findClass("client").getMethods().getMethods())
+//		{
+//			if (!finalm.getMap().containsKey(m) && !m.isStatic())
+//				System.out.println("missing " + m);
+//		}
+//		for (Field m : group1.findClass("client").getFields().getFields())
+//		{
+//			if (!finalm.getMap().containsKey(m))
+//				System.out.println("missing " + m);
+//		}
+	}
+	
+	//@Test
+	public void testMapperMap() throws IOException
+	{
+		ClassGroup one = JarUtil.loadJar(new File(JAR1));
+		ClassGroup two = JarUtil.loadJar(new File(JAR2));
 		
-		for (Method m : group1.findClass("client").getMethods().getMethods())
+		List<ParallelExecutorMapping> pmes = new ArrayList<>();
+		for (int i = 0; i < 250; ++i)
 		{
-			if (!finalm.getMap().containsKey(m) && !m.isStatic())
-				System.out.println("missing " + m);
+			ClassFile c1 = one.findClass("class" + i);
+			ClassFile c2 = two.findClass("class" + i);
+			
+			if (c1 == null || c2 == null)
+				continue;
+			
+			MethodSignatureMapper msm = new MethodSignatureMapper();
+			msm.map(c1, c2);
+			
+			Map<Method, Method> map = msm.getMap();
+			for (Entry<Method, Method> e : map.entrySet())
+			{
+				HashMap<Object, Object> all = new HashMap();
+				map(all, pmes, e.getKey(), e.getValue());
+			}
 		}
-		for (Field m : group1.findClass("client").getFields().getFields())
+		ParallelExecutorMapping finalm = new ParallelExecutorMapping();
+		for (ParallelExecutorMapping pme : pmes)
+			finalm.merge(pme);
+		
+		summary(finalm);
+		print(one);
+	}
+	
+	@Test
+	public void testStaticMapperMap() throws IOException
+	{
+		ClassGroup one = JarUtil.loadJar(new File(JAR1));
+		ClassGroup two = JarUtil.loadJar(new File(JAR2));
+		
+		StaticMethodSignatureMapper smsm = new StaticMethodSignatureMapper();
+		smsm.map(one, two);
+		
+		for (Method m : smsm.getMap().keySet())
 		{
-			if (!finalm.getMap().containsKey(m))
-				System.out.println("missing " + m);
+			Collection<Method> methods = smsm.getMap().get(m);
+			
+			if (methods.size() == 1)
+			{
+				Method other = methods.stream().findFirst().get();
+				ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+				
+				System.out.println(m + " " + other + " " + pme.getMap().size());
+			}
 		}
 	}
 	
@@ -270,19 +346,19 @@ public class MapStaticTest
 			int i=5;
 		}
 		
-		ParallelExecutorMapping mappings;
-		try
-		{
+		ParallelExecutorMapping
+//		try
+//		{
 			mappings = MappingExecutorUtil.map(m1, m2);
-		}
-		catch (Throwable ex)
-		{
-			ex.printStackTrace();
-			System.err.println("Error mapping " + m1 + " to " + m2);
-			//if (test)
-			//	throw ex;
-			return;
-		}
+//		}
+//		catch (Throwable ex)
+//		{
+//			ex.printStackTrace();
+//			System.err.println("Error mapping " + m1 + " to " + m2);
+//			//if (test)
+//			//	throw ex;
+//			return;
+//		}
 		
 		result.add(mappings);
 		

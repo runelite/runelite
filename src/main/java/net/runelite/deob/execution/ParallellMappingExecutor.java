@@ -180,7 +180,7 @@ public class ParallellMappingExecutor
 			if (oldf1.otherStatic == oldf2 && oldf2.otherStatic == oldf1)
 			{
 				mappings.map(oldf1.getMethod(), oldf2.getMethod());
-				System.out.println("STEP OUT " + oldf1.getMethod() + " <-> " + oldf2.getMethod());
+			//	System.out.println("STEP OUT " + oldf1.getMethod() + " <-> " + oldf2.getMethod());
 			}
 		
 //		if (e.frames.size() - s1 != e2.frames.size() - s2)
@@ -279,7 +279,7 @@ public class ParallellMappingExecutor
 			stepf2.otherStatic = stepf1;
 			
 			doubleStep.add(stepf1.getMethod());
-			System.out.println("STEP " + stepf1.getMethod() + " <-> " + stepf2.getMethod());
+			//System.out.println("STEP " + stepf1.getMethod() + " <-> " + stepf2.getMethod());
 			
 			return step();
 		}
