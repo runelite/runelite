@@ -16,7 +16,10 @@ public class IfACmpEq extends If
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		if (super.isSame(thisIc, otherIc))
+		if (!this.isSameField(thisIc, otherIc))
+			return false;
+		
+		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
 		
 		if (otherIc.getInstruction() instanceof IfNull || otherIc.getInstruction() instanceof IfNonNull)

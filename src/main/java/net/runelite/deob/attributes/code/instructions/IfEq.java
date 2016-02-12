@@ -18,7 +18,10 @@ public class IfEq extends If0
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		if (super.isSame(thisIc, otherIc))
+		if (!this.isSameField(thisIc, otherIc))
+			return false;
+		
+		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
 		
 		if (otherIc.getInstruction() instanceof IfNe)

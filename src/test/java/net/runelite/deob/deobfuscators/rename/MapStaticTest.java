@@ -245,16 +245,16 @@ public class MapStaticTest
 		System.out.println("GROUP 2 " + sg2);
 
 		
-		for (Method m : group1.findClass("client").getMethods().getMethods())
-		{
-			if (!finalm.getMap().containsKey(m))
-				System.out.println("missing " + m);
-		}
-		for (Field m : group1.findClass("client").getFields().getFields())
-		{
-			if (!finalm.getMap().containsKey(m))
-				System.out.println("missing " + m);
-		}
+//		for (Method m : group1.findClass("client").getMethods().getMethods())
+//		{
+//			if (!finalm.getMap().containsKey(m))
+//				System.out.println("missing " + m);
+//		}
+//		for (Field m : group1.findClass("client").getFields().getFields())
+//		{
+//			if (!finalm.getMap().containsKey(m))
+//				System.out.println("missing " + m);
+//		}
 	}
 	
 	//@Test
