@@ -88,13 +88,13 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 	
-		Method m1 = group1.findClass("client").findMethod("vmethod3054");
-		Method m2 = group2.findClass("client").findMethod("vmethod2973");
+		Method m1 = group1.findClass("class92").findMethod("method2176");
+		Method m2 = group2.findClass("client").findMethod("method540");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
 		System.out.println("BEGIN OF MAPPING");
-		for (Object o : mappings.getOrder())
+		for (Object o : mappings.getMap().keySet())
 		{
 			Object value = mappings.get(o);
 			System.out.println(o + " <-> " + value);
@@ -116,8 +116,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
-		Method m1 = group1.findClass("client").findMethod("vmethod3096");
-		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+		Method m1 = group1.findClass("class92").findMethod("method2176");
+		Method m2 = group2.findClass("client").findMethod("method540");
 		
 		HashMap<Object, Object> all = new HashMap();
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
@@ -127,7 +127,13 @@ public class MapStaticTest
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
 		
-		//summary(finalm);
+		System.out.println("BEGIN OF MAPPING");
+		for (Object o : finalm.getMap().keySet())
+		{
+			Object value = finalm.get(o);
+			System.out.println(o + " <-> " + value);
+		}
+		System.out.println("END OF MAPPINGS " + finalm.getMap().size());
 	}
 	
 	//@Test
@@ -237,18 +243,18 @@ public class MapStaticTest
 		
 		System.out.println("GROUP 1 " + sg1);
 		System.out.println("GROUP 2 " + sg2);
-//		System.out.println("db step " + ParallellMappingExecutor.doubleStep.size());
-//		
-//		for (Method m : group1.findClass("client").getMethods().getMethods())
-//		{
-//			if (!finalm.getMap().containsKey(m) && !m.isStatic())
-//				System.out.println("missing " + m);
-//		}
-//		for (Field m : group1.findClass("client").getFields().getFields())
-//		{
-//			if (!finalm.getMap().containsKey(m))
-//				System.out.println("missing " + m);
-//		}
+
+		
+		for (Method m : group1.findClass("client").getMethods().getMethods())
+		{
+			if (!finalm.getMap().containsKey(m))
+				System.out.println("missing " + m);
+		}
+		for (Field m : group1.findClass("client").getFields().getFields())
+		{
+			if (!finalm.getMap().containsKey(m))
+				System.out.println("missing " + m);
+		}
 	}
 	
 	//@Test

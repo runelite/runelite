@@ -139,17 +139,17 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 
 		// switch frame order in executor frame list
 
-		Execution e = f1.getExecution(),
-			e2 = f2.getExecution();
-
-		int i = e2.frames.indexOf(f2),
-			i2 = e2.frames.indexOf(branch2);
-
-		e2.frames.remove(i);
-		e2.frames.add(i, branch2);
-
-		e2.frames.remove(i2);
-		e2.frames.add(i2, f2);
+//		Execution e = f1.getExecution(),
+//			e2 = f2.getExecution();
+//
+//		int i = e2.frames.indexOf(f2),
+//			i2 = e2.frames.indexOf(branch2);
+//
+//		e2.frames.remove(i);
+//		e2.frames.add(i, branch2);
+//
+//		e2.frames.remove(i2);
+//		e2.frames.add(i2, f2);
 	}
 	
 	@Override

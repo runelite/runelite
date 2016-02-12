@@ -12,7 +12,7 @@ public class ParallelExecutorMapping
 {
 	private ClassGroup group, group2;
 	private Map<Object, Object> map = new HashMap<>();
-	private List<Object> order = new ArrayList<>();
+	//private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
@@ -39,7 +39,7 @@ public class ParallelExecutorMapping
 		belongs(two, group2);
 		
 		map.put(one, two);
-		order.add(one);
+		//order.add(one);
 	}
 	
 	public Object get(Object o)
@@ -52,7 +52,7 @@ public class ParallelExecutorMapping
 		return map;
 	}
 	
-	public List<Object> getOrder() { return order; }
+	//public List<Object> getOrder() { return order; }
 	
 	private void belongs(Object o, ClassGroup to)
 	{
