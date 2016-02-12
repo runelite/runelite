@@ -27,7 +27,7 @@ public class MethodSignatureMapper
 	{
 		for (Method m : c1.getMethods().getMethods())
 		{
-			if (m.isStatic() || m.getName().equals("<init>") || count(c1.getMethods(), m.getDescriptor()) > 1)
+			if (m.isStatic() || count(c1.getMethods(), m.getDescriptor()) > 1)
 				continue;
 			
 			Method other = get(c2.getMethods(), m.getDescriptor());
