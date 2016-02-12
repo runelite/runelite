@@ -182,6 +182,9 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		InvokeInterface thisIi = (InvokeInterface) thisIc.getInstruction(),
 			otherIi = (InvokeInterface) otherIc.getInstruction();
 		
+		if (!thisIi.method.getNameAndType().getDescriptor().equals(otherIi.method.getNameAndType().getDescriptor()))
+			return false;
+		
 		List<net.runelite.deob.Method> thisMethods = thisIi.getMethods(),
 			otherMethods = otherIi.getMethods();
 		

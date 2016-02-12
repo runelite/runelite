@@ -205,6 +205,9 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		InvokeVirtual thisIi = (InvokeVirtual) thisIc.getInstruction(),
 			otherIi = (InvokeVirtual) otherIc.getInstruction();
 		
+		if (!thisIi.method.getNameAndType().getDescriptor().equals(otherIi.method.getNameAndType().getDescriptor()))
+			return false;
+		
 		List<net.runelite.deob.Method> thisMethods = thisIi.getMethods(),
 			otherMethods = otherIi.getMethods();
 		

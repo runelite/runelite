@@ -182,6 +182,9 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		InvokeSpecial thisIi = (InvokeSpecial) thisIc.getInstruction(),
 			otherIi = (InvokeSpecial) otherIc.getInstruction();
 		
+		if (!thisIi.method.getNameAndType().getDescriptor().equals(otherIi.method.getNameAndType().getDescriptor()))
+			return false;
+		
 		List<net.runelite.deob.Method> thisMethods = thisIi.getMethods(),
 			otherMethods = otherIi.getMethods();
 		
