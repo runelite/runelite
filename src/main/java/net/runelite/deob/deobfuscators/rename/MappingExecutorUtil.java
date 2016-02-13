@@ -121,6 +121,7 @@ public class MappingExecutorUtil
 			
 			if (!mi1.isSame(p1, p2))
 			{
+				mappings.crashed = true;
 				p1.getFrame().stop();
 				p2.getFrame().stop();
 				e.paused = e2.paused = false;

@@ -14,6 +14,7 @@ public class ParallelExecutorMapping
 	private Map<Object, Object> map = new HashMap<>();
 	//private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
+	public boolean crashed;
 	
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
 	{
