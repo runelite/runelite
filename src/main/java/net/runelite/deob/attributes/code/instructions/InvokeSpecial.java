@@ -164,8 +164,10 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
+		InvokeSpecial otherIv = (InvokeSpecial) other.getInstruction();
+		
 		List<net.runelite.deob.Method> myMethods = this.getMethods(),
-			otherMethods = ((InvokeSpecial) other.getInstruction()).getMethods();
+			otherMethods = otherIv.getMethods();
 		
 		List<net.runelite.deob.Method> m1 = this.myMethods;
 		List<net.runelite.deob.Method> m2 = ((InvokeSpecial) other.getInstruction()).myMethods;
@@ -194,6 +196,28 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 				{
 					mapping.map(f1, f2);
 				}
+			}
+		}
+		
+		/* map field that was invoked on */
+		
+		StackContext object1 = ctx.getPops().get(method.getNameAndType().getNumberOfArgs()),
+			object2 = other.getPops().get(otherIv.method.getNameAndType().getNumberOfArgs());
+		
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+
+			if (f1 != null && f2 != null)
+			{
+				mapping.map(f1, f2);
 			}
 		}
 	}

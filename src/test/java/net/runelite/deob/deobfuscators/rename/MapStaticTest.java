@@ -89,8 +89,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 	
-		Method m1 = group1.findClass("class92").findMethod("method2176");
-		Method m2 = group2.findClass("client").findMethod("method540");
+		Method m1 = group1.findClass("class222").findMethod("method4107");
+		Method m2 = group2.findClass("class222").findMethod("method3980");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -161,7 +161,7 @@ public class MapStaticTest
 		int fields = 0, staticMethod = 0, method = 0, total = 0;
 		for (Entry<Object, Object> e : finalm.getMap().entrySet())
 		{
-			System.out.println(e.getKey() + " <-> " + e.getValue());
+			//System.out.println(e.getKey() + " <-> " + e.getValue());
 
 			Object o = e.getKey();
 			if (o instanceof Field)
@@ -217,6 +217,34 @@ public class MapStaticTest
 				
 		finalm.merge(testStaticMapperMap(group1, group2));
 		finalm.merge(testMapperMap(group1, group2));
+
+		for (int i = -1; i < 250; ++i)
+		{
+			ClassFile c1;
+			
+			if (i == -1)
+			{
+				c1 = group1.findClass("client");
+			}
+			else
+			{
+				c1 = group1.findClass("class" + i);
+			}
+			
+			if (c1 == null)
+				continue;
+			
+			for (Method m : c1.getMethods().getMethods())
+			{
+				if (!finalm.getMap().containsKey(m))
+					System.out.println("missing " + m);
+			}
+			for (Field m : c1.getFields().getFields())
+			{
+				if (!finalm.getMap().containsKey(m))
+					System.out.println("missing " + m);
+			}
+		}
 		
 		summary(finalm, group1);
 		
@@ -225,18 +253,6 @@ public class MapStaticTest
 		
 		System.out.println("GROUP 1 " + sg1);
 		System.out.println("GROUP 2 " + sg2);
-
-		
-		for (Method m : group1.findClass("client").getMethods().getMethods())
-		{
-			if (!finalm.getMap().containsKey(m))
-				System.out.println("missing " + m);
-		}
-		for (Field m : group1.findClass("client").getFields().getFields())
-		{
-			if (!finalm.getMap().containsKey(m))
-				System.out.println("missing " + m);
-		}
 	}
 	
 	//@Test
