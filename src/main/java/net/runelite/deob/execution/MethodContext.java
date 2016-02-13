@@ -1,7 +1,8 @@
 package net.runelite.deob.execution;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import net.runelite.deob.Field;
+import java.util.List;
 import net.runelite.deob.attributes.code.Instruction;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -9,6 +10,7 @@ public class MethodContext
 {
 	private Execution execution;
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
+	public List<InstructionContext> instructions = new ArrayList<>();
 
 	public MethodContext(Execution execution)
 	{

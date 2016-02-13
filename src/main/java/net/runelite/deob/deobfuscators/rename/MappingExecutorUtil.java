@@ -11,11 +11,13 @@ import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
+import net.runelite.deob.execution.MethodContext;
 import net.runelite.deob.execution.ParallellMappingExecutor;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.VariableContext;
@@ -85,6 +87,9 @@ public class MappingExecutorUtil
 		
 		frame.other = frame2;
 		frame2.other = frame;
+		
+		MethodContext ctx1 = frame.getMethodCtx(),
+			ctx2 = frame2.getMethodCtx();
 		
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
 		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getMethods().getClassFile().getGroup(),
@@ -184,9 +189,31 @@ public class MappingExecutorUtil
 			e.paused = e2.paused = false;
 		}
 		
+//		if (mappings.getMap().isEmpty() == false)
+//		{
+//			checkReturns(m1, ctx1);
+//		}
+		
 		return mappings;
 	}
-	//static boolean hit;
+	
+	private static boolean checkReturns(Method method, MethodContext ctx)
+	{
+		List<Instruction> ins = method.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof ReturnInstruction).collect(Collectors.toList());
+		List<Instruction> exc = ctx.instructions.stream().map(i -> i.getInstruction()).collect(Collectors.toList());
+		
+		for (Instruction i : ins)
+		{
+			if (!exc.contains(i))
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	//private static boolean containsMappableInstruction
 	
 	public static boolean isMappable(InvokeInstruction ii)
 	{
