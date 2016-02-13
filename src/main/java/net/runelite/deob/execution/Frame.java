@@ -236,8 +236,11 @@ public class Frame
 			}
 			
 			InstructionContext ictx = this.instructions.get(this.instructions.size() - 1);
+			
 			assert ictx.getInstruction() == oldCur;
 			execution.contexts.put(oldCur, ictx);
+			
+			this.ctx.instructions.add(ictx);
 			
 			execution.executed.add(oldCur);
 			

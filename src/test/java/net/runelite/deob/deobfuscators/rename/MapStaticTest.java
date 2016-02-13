@@ -117,8 +117,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
-		Method m1 = group1.findClass("client").findMethod("method273");
-		Method m2 = group2.findClass("client").findMethod("method235");
+		Method m1 = group1.findClass("client").findMethod("method585");
+		Method m2 = group2.findClass("class44").findMethod("method930");
 		
 		HashMap<Object, Object> all = new HashMap();
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
@@ -200,15 +200,15 @@ public class MapStaticTest
 		assert m1s.size() == m2s.size();
 		
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-		for (int i = 0; i < m1s.size(); ++i)
-		{
-			Method m1 = m1s.get(i), m2 = m2s.get(i);
-			
-			assert m1.getPoolMethod().equals(m2.getPoolMethod());
-		
-			HashMap<Object, Object> all = new HashMap();
-			map(all, pmes, m1, m2);
-		}
+//		for (int i = 0; i < m1s.size(); ++i)
+//		{
+//			Method m1 = m1s.get(i), m2 = m2s.get(i);
+//			
+//			assert m1.getPoolMethod().equals(m2.getPoolMethod());
+//		
+//			HashMap<Object, Object> all = new HashMap();
+//			map(all, pmes, m1, m2);
+//		}
 		
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(group1, group2);
 		for (ParallelExecutorMapping pme : pmes)
@@ -246,10 +246,20 @@ public class MapStaticTest
 //		ClassGroup two = JarUtil.loadJar(new File(JAR2));
 		
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-		for (int i = 0; i < 250; ++i)
+		for (int i = -1; i < 250; ++i)
 		{
-			ClassFile c1 = one.findClass("class" + i);
-			ClassFile c2 = two.findClass("class" + i);
+			ClassFile c1, c2;
+			
+			if (i == -1)
+			{
+				c1 = one.findClass("client");
+				c2 = two.findClass("client");
+			}
+			else
+			{
+				c1 = one.findClass("class" + i);
+				c2 = two.findClass("class" + i);
+			}
 			
 			if (c1 == null || c2 == null)
 				continue;
@@ -258,20 +268,22 @@ public class MapStaticTest
 			msm.map(c1, c2);
 			
 			Multimap<Method, Method> map = msm.getMap();
-			for (Method m : msm.getMap().keySet())
+			for (Method m : map.keySet())
 			{
-				Collection<Method> methods = msm.getMap().get(m);
+				Collection<Method> methods = map.get(m);
 				
 				for (Method other : methods)
 				{
-					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
-					
-					if (pme.getMap().isEmpty())
-						continue;
-					
-					pme.map(m, other);
-				
-					pmes.add(pme);
+					HashMap<Object, Object> all = new HashMap();
+					map(all, pmes, m, other);
+//					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+//					
+//					if (pme.getMap().isEmpty())
+//						continue;
+//					
+//					pme.map(m, other);
+//				
+//					pmes.add(pme);
 				}
 				//HashMap<Object, Object> all = new HashMap();
 				//map(all, pmes, e.getKey(), e.getValue());
@@ -305,17 +317,17 @@ public class MapStaticTest
 			{
 				for (Method other : methods)
 				{
-					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+					HashMap<Object, Object> all = new HashMap();
+					map(all, pmes, m, other);
 					
-					if (pme.getMap().isEmpty())
-						continue;
-				
-//					HashMap<Object, Object> all = new HashMap();
-//					map(all, pmes, m, other);
-					pme.map(m, other);
-				
-					pmes.add(pme);
-					//System.out.println(m + " " + other + " " + pme.getMap().size());
+//					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+//					
+//					if (pme.getMap().isEmpty())
+//						continue;
+//				
+//					pme.map(m, other);
+//				
+//					pmes.add(pme);
 				}
 			}
 		}
@@ -378,25 +390,12 @@ public class MapStaticTest
 		if (m1.getName().equals("vmethod3096"))
 			return;
 		
-		if (m1.getName().equals("method32"))
-		{
-			int i=5;
-		}
+		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
-		ParallelExecutorMapping
-//		try
-//		{
-			mappings = MappingExecutorUtil.map(m1, m2);
-//		}
-//		catch (Throwable ex)
-//		{
-//			ex.printStackTrace();
-//			System.err.println("Error mapping " + m1 + " to " + m2);
-//			//if (test)
-//			//	throw ex;
-//			return;
-//		}
+		if (mappings.getMap().isEmpty())
+			return;
 		
+		mappings.map(m1, m2);
 		result.add(mappings);
 		
 		for (Entry<Object, Object> e : mappings.getMap().entrySet())
