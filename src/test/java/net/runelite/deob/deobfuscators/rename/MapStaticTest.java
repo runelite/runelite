@@ -408,7 +408,7 @@ public class MapStaticTest
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
-		if (mappings.getMap().isEmpty())
+		if (mappings.getMap().isEmpty() && mappings.crashed)
 			return;
 		
 		mappings.map(m1, m2);
