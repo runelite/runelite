@@ -17,7 +17,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public class PutStatic extends Instruction implements SetFieldInstruction
@@ -105,6 +107,26 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		assert myField.getType().equals(otherField.getType());
 		
 		mapping.map(myField, otherField);
+		
+		StackContext object1 = ctx.getPops().get(0),
+			object2 = other.getPops().get(0);
+		
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			net.runelite.deob.Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+
+			if (f1 != null && f2 != null)
+			{
+				mapping.map(f1, f2);
+			}
+		}
 	}
 	
 	@Override
