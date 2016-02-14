@@ -403,8 +403,8 @@ public class MapStaticTest
 			return;
 		
 		// XXX this is the packet stuff..
-		if (m1.getName().equals("vmethod3096"))
-			return;
+//		if (m1.getName().equals("vmethod3096"))
+//			return;
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -447,7 +447,25 @@ public class MapStaticTest
 	public void printTotalObjects() throws Exception
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		//ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		//print(group1);
+	}
+	
+	@Test
+	public void testCore() throws Exception
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		
+		Rename rename = new Rename(group1, group2);
+		rename.run();
+		
+		summary(rename.getMapping(), group1);
+		
+		String sg1 = print(group1),
+			sg2 = print(group2);
+		
+		System.out.println("GROUP 1 " + sg1);
+		System.out.println("GROUP 2 " + sg2);
 	}
 }
