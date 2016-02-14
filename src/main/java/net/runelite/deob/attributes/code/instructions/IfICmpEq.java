@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
@@ -12,6 +13,11 @@ public class IfICmpEq extends If
 	public IfICmpEq(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public IfICmpEq(Instructions instructions, Instruction to)
+	{
+		super(instructions, InstructionType.IF_ICMPEQ, to);
 	}
 	
 	static boolean is(StackContext s, int val)

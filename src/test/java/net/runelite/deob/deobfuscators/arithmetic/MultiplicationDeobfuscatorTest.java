@@ -10,20 +10,17 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.Dup2_X1;
 import net.runelite.deob.attributes.code.instructions.Dup_X1;
-import net.runelite.deob.attributes.code.instructions.GetStatic;
 import net.runelite.deob.attributes.code.instructions.Goto;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_0;
-import net.runelite.deob.attributes.code.instructions.IConst_1;
 import net.runelite.deob.attributes.code.instructions.IConst_2;
 import net.runelite.deob.attributes.code.instructions.IConst_3;
 import net.runelite.deob.attributes.code.instructions.IConst_M1;
-import net.runelite.deob.attributes.code.instructions.IDiv;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.IStore;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
-import net.runelite.deob.attributes.code.instructions.If0;
+import net.runelite.deob.attributes.code.instructions.IfEq;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.attributes.code.instructions.LConst_1;
 import net.runelite.deob.attributes.code.instructions.LDC2_W;
@@ -212,7 +209,7 @@ public class MultiplicationDeobfuscatorTest
 			new ILoad(ins, 0),
 			new IMul(ins),
 			new IConst_0(ins),
-			new If0(ins, label1),
+			new IfEq(ins, label1),
 			constant2,
 			new IMul(ins),
 			label1,
@@ -281,7 +278,7 @@ public class MultiplicationDeobfuscatorTest
 			new IMul(ins),
 			
 			new IConst_0(ins),
-			new If0(ins, label1),
+			new IfEq(ins, label1),
 			
 			new Pop(ins),
 			new LDC_W(ins, 3),
@@ -506,7 +503,7 @@ public class MultiplicationDeobfuscatorTest
 			new ILoad(ins, 0),
 			
 			new LDC_W(ins, 42),
-			new If0(ins, label1),
+			new IfEq(ins, label1),
 			new Goto(ins, label2),
 			
 			label1,

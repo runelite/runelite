@@ -16,8 +16,8 @@ import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.IStore_0;
 import net.runelite.deob.attributes.code.instructions.IStore_1;
-import net.runelite.deob.attributes.code.instructions.If;
-import net.runelite.deob.attributes.code.instructions.If0;
+import net.runelite.deob.attributes.code.instructions.IfEq;
+import net.runelite.deob.attributes.code.instructions.IfICmpEq;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
 import net.runelite.deob.attributes.code.instructions.NOP;
 import net.runelite.deob.attributes.code.instructions.SiPush;
@@ -55,7 +55,7 @@ public class MultiplyOneDeobfuscatorTest
 			new SiPush(ins, (short) 256),
 			
 			new ILoad(ins, 0),
-			new If0(ins, label),
+			new IfEq(ins, label),
 			
 			new IConst_2(ins),
 			new Goto(ins, label2),
@@ -111,7 +111,7 @@ public class MultiplyOneDeobfuscatorTest
 			new SiPush(ins, (short) 256),
 			
 			new ILoad(ins, 0),
-			new If0(ins, label),
+			new IfEq(ins, label),
 			
 			label,
 			one,
@@ -195,7 +195,7 @@ public class MultiplyOneDeobfuscatorTest
 			
 			new IConst_M1(ins),
 			new ILoad(ins, 0),
-			new If(ins, label),
+			new IfICmpEq(ins, label),
 
 			new Goto(ins, label2),
 			

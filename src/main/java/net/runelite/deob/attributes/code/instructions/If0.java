@@ -32,9 +32,9 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		super(instructions, type, pc);
 	}
 	
-	public If0(Instructions instructions, Instruction to)
+	public If0(Instructions instructions, InstructionType type, Instruction to)
 	{
-		super(instructions, InstructionType.IFEQ, -1);
+		super(instructions, type, -1);
 		
 		assert this != to;
 		assert to.getInstructions() == this.getInstructions();

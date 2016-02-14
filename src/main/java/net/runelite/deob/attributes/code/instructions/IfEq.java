@@ -1,5 +1,6 @@
 package net.runelite.deob.attributes.code.instructions;
 
+import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import static net.runelite.deob.attributes.code.instructions.IfICmpEq.isOne;
@@ -13,6 +14,11 @@ public class IfEq extends If0
 	public IfEq(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public IfEq(Instructions instructions, Instruction to)
+	{
+		super(instructions, InstructionType.IFEQ, to);
 	}
 
 	@Override
