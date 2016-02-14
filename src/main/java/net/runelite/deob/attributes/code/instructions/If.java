@@ -32,6 +32,13 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		super(instructions, type, pc);
 	}
 	
+	public If(Instructions instructions, InstructionType type, Instruction to)
+	{
+		super(instructions, type, -1);
+		
+		this.to = to;
+	}
+	
 	public If(Instructions instructions, Instruction to)
 	{
 		super(instructions, InstructionType.IF_ICMPNE, -1);
