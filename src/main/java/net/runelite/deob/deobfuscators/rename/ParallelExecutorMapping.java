@@ -7,6 +7,7 @@ import java.util.Map;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.code.instructions.If;
 
 public class ParallelExecutorMapping
 {
@@ -15,6 +16,8 @@ public class ParallelExecutorMapping
 	//private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	public boolean crashed;
+	public List<If> packetHandler1 = new ArrayList<>();
+	public List<If> packetHandler2 = new ArrayList<>();
 	
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
 	{

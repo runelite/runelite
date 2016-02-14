@@ -479,7 +479,8 @@ public class MapStaticTest
 		for (Field f : exported)
 		{
 			Field other = (Field) mapping.get(f);
-			System.out.println(f + " " + other);
+			if (other == null)
+				System.out.println("missing " + f + " " + other);
 			if (other != null) ++mapped;
 			else ++not;
 		}
@@ -511,5 +512,34 @@ public class MapStaticTest
 			}
 		}
 		return list;
+	}
+	
+	@Test
+	public void testPackets() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		
+		group1.findClass("client").findField("field446").packetHandler = true;
+		group2.findClass("client").findField("field324").packetHandler = true;
+	
+		Method m1 = group1.findClass("client").findMethod("vmethod3096");
+		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+		
+		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+		
+		System.out.println("BEGIN OF MAPPING");
+		for (Object o : mappings.getMap().keySet())
+		{
+			Object value = mappings.get(o);
+			System.out.println(o + " <-> " + value);
+		}
+		System.out.println("END OF MAPPINGS " + mappings.getMap().size());
+		
+		System.out.println(mappings.packetHandler1.size() + " vs " + mappings.packetHandler2.size() + " handlers");
+		
+		// I think because this is an array store
+		//Object other = mappings.get(group1.findClass("class136").findField("field2098"));
+		//Assert.assertNotNull(other);
 	}
 }

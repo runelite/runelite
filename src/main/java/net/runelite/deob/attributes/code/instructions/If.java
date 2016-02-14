@@ -86,12 +86,26 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		
 		ins.pop(one, two);
 		
-		Frame other = frame.dup();
-		other.created = this;
-		other.forking = ins;
-		other.jump(ins, to);
-		
-		ins.branch(other);
+		Field f1 = getComparedField(ins);
+		if (f1 != null && f1.getName().equals("field289"))
+		{
+			int i =5;
+		}
+//		if (f1 != null && f1.packetHandler)
+//		{
+//			assert this instanceof IfICmpNe;
+//			
+//			frame.jump(ins, to);
+//		}
+//		else
+		{
+			Frame other = frame.dup();
+			other.created = this;
+			other.forking = ins;
+			other.jump(ins, to);
+
+			ins.branch(other);
+		}
 		
 		frame.addInstructionContext(ins);
 	}
@@ -112,14 +126,20 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		Frame branch1 = ctx.getBranches().get(0),
-			branch2 = other.getBranches().get(0);
+		assert ctx.getBranches().size() == other.getBranches().size();
 		
-		assert branch1.other == null;
-		assert branch2.other == null;
-		
-		branch1.other = branch2;
-		branch2.other = branch1;
+		// can be empty for packet handlers
+		if (!ctx.getBranches().isEmpty())
+		{
+			Frame branch1 = ctx.getBranches().get(0),
+				branch2 = other.getBranches().get(0);
+
+			assert branch1.other == null;
+			assert branch2.other == null;
+
+			branch1.other = branch2;
+			branch2.other = branch1;
+		}
 		
 		this.mapArguments(mapping, ctx, other);
 	}
@@ -173,6 +193,12 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		assert f1.getType().equals(f2.getType());
 		
 		mapping.map(f1, f2);
+		
+		if (f1.packetHandler && f2.packetHandler)
+		{
+			mapping.packetHandler1.add(this);
+			mapping.packetHandler2.add((If) other.getInstruction());
+		}
 	}
 	
 	private Field getComparedField(InstructionContext ctx)
