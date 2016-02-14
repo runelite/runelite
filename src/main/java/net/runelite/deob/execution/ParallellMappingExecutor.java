@@ -29,7 +29,7 @@ public class ParallellMappingExecutor
 		++count;
 		
 
-		if (count == 65925)
+		if (count == 26)
 		{
 			int i = 5;
 		}
@@ -70,8 +70,9 @@ public class ParallellMappingExecutor
 //			assert f2.returnTo == null;
 			
 			// XXX I dont know if this is right! only helps a few fields.
-			popStack(f1);
-			popStack(f2);
+			// XXX if a frame exits from a jump loop it would step out which might be bad
+			//popStack(f1);
+			//popStack(f2);
 			
 			e.frames.remove(f1);
 			e2.frames.remove(f2);
@@ -304,9 +305,9 @@ public class ParallellMappingExecutor
 //		if (!f.getInstructions().isEmpty())
 //			return f;
 //		
-//		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
-//		if (!(i.getInstruction() instanceof ReturnInstruction))
-//			return f;
+		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
+		if (!(i.getInstruction() instanceof ReturnInstruction))
+			return f;
 		
 		Frame r = popStackForce(f);
 		

@@ -26,6 +26,7 @@ public class Field
 	private String name;
 	private Type type;
 	private Attributes attributes;
+	public boolean packetHandler;
 
 	Field(Fields fields, DataInputStream is) throws IOException
 	{
