@@ -17,7 +17,11 @@ import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.Annotations;
+import net.runelite.deob.attributes.AttributeType;
+import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.execution.ParallellMappingExecutor;
+import net.runelite.deob.signature.Type;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -460,6 +464,8 @@ public class MapStaticTest
 		Rename rename = new Rename(group1, group2);
 		rename.run();
 		
+		ParallelExecutorMapping mapping = rename.getMapping();
+		
 		summary(rename.getMapping(), group1);
 		
 		String sg1 = print(group1),
@@ -467,5 +473,43 @@ public class MapStaticTest
 		
 		System.out.println("GROUP 1 " + sg1);
 		System.out.println("GROUP 2 " + sg2);
+		
+		List<Field> exported = getExportedFields(group1);
+		int mapped = 0, not = 0;
+		for (Field f : exported)
+		{
+			Field other = (Field) mapping.get(f);
+			System.out.println(f + " " + other);
+			if (other != null) ++mapped;
+			else ++not;
+		}
+		System.out.println("Mapped " + mapped + " total " + (mapped+not));
+		
+	}
+	
+	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
+	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
+	
+	private List<Field> getExportedFields(ClassGroup group)
+	{
+		List<Field> list = new ArrayList<>();
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Field f : cf.getFields().getFields())
+			{
+				Annotations an = (Annotations) f.getAttributes().findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+				if (an == null)
+					continue;
+				for (Annotation a : an.getAnnotations())
+				{
+					if (a.getType().equals(EXPORT))
+					{
+						list.add(f);
+					}
+				}
+			}
+		}
+		return list;
 	}
 }
