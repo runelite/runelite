@@ -7,12 +7,14 @@ import java.util.stream.Collectors;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.instruction.types.ComparisonInstruction;
 import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.deob.attributes.code.instructions.AALoad;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
@@ -262,6 +264,13 @@ public class MappingExecutorUtil
 		{
 			DupInstruction d = (DupInstruction) ctx.getInstruction();
 			StackContext s = d.getOriginal(from);
+			return resolve(s.getPushed(), s);
+		}
+		
+		if (ctx.getInstruction() instanceof AALoad)
+		{
+			// might be multidimensional array
+			StackContext s = ctx.getPops().get(1);
 			return resolve(s.getPushed(), s);
 		}
 		
