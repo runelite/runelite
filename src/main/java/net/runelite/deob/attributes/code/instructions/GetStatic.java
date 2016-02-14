@@ -17,6 +17,7 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.Method;
 import net.runelite.deob.execution.Value;
 
 public class GetStatic extends Instruction implements GetFieldInstruction
@@ -34,6 +35,13 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		super(instructions, InstructionType.GETSTATIC, -1);
 		
 		this.field = field;
+	}
+	
+	@Override
+	public String toString()
+	{
+		Method m = this.getInstructions().getCode().getAttributes().getMethod();
+		return "getstatic " + myField + " in " + m;
 	}
 	
 	@Override

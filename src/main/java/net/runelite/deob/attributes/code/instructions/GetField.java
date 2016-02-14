@@ -17,6 +17,7 @@ import net.runelite.deob.pool.NameAndType;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.Method;
 import net.runelite.deob.execution.Value;
 
 public class GetField extends Instruction implements GetFieldInstruction
@@ -27,6 +28,13 @@ public class GetField extends Instruction implements GetFieldInstruction
 	public GetField(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	@Override
+	public String toString()
+	{
+		Method m = this.getInstructions().getCode().getAttributes().getMethod();
+		return "getfield " + myField + " in " + m;
 	}
 	
 	@Override
