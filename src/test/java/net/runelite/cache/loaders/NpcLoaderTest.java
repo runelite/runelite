@@ -16,7 +16,7 @@ import org.junit.Test;
 
 public class NpcLoaderTest
 {
-	@Test
+	//@Test
 	public void extract() throws IOException
 	{
 		NpcLoader loader = new NpcLoader();

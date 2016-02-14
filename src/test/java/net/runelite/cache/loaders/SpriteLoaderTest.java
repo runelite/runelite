@@ -19,7 +19,7 @@ import org.junit.Test;
 
 public class SpriteLoaderTest
 {
-	@Test
+	//@Test
 	public void extract() throws IOException
 	{
 		java.io.File base = StoreLocation.LOCATION;
