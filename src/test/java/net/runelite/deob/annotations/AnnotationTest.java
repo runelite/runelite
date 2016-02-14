@@ -14,6 +14,7 @@ import net.runelite.deob.attributes.Annotations;
 import net.runelite.deob.attributes.AttributeType;
 import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.attributes.annotation.Element;
+import net.runelite.deob.pool.UTF8;
 import net.runelite.deob.signature.Type;
 import org.junit.Assert;
 import org.junit.Test;
@@ -55,6 +56,6 @@ public class AnnotationTest
 		Element element = elements.get(0);
 		
 		Assert.assertEquals("value", element.getType().toString());
-		Assert.assertEquals("method1", element.getValue());
+		Assert.assertEquals("method1", ((UTF8) element.getValue()).getValue());
 	}
 }

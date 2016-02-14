@@ -15,7 +15,7 @@ public class StoreLoadTest
 		System.out.println(store);
 	}
 
-	@Test
+	//@Test
 	public void unpackStore() throws IOException
 	{
 		java.io.File base = StoreLocation.LOCATION;

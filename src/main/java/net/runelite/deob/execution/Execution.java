@@ -8,24 +8,10 @@ import net.runelite.deob.attributes.code.Instruction;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import net.runelite.deob.Field;
-import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.deob.attributes.code.instructions.InvokeStatic;
-import net.runelite.deob.deobfuscators.rename.graph.Edge;
-import net.runelite.deob.deobfuscators.rename.graph.EdgeType;
-import net.runelite.deob.deobfuscators.rename.graph.FieldEdge;
-import net.runelite.deob.deobfuscators.rename.graph.Graph;
-import net.runelite.deob.deobfuscators.rename.graph.MethodEdge;
-import net.runelite.deob.deobfuscators.rename.graph.VertexType;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Execution

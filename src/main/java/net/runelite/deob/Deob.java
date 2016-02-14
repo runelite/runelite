@@ -17,7 +17,6 @@ import net.runelite.deob.deobfuscators.arithmetic.ModArith;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
-import net.runelite.deob.deobfuscators.rename.Rename2;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.util.JarUtil;
 
@@ -107,9 +106,9 @@ public class Deob
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File("d:/rs/07/adamin1.jar")),
 			group2 = JarUtil.loadJar(new File("d:/rs/07/adamin2.jar"));
-		
-		Rename2 rename = new Rename2();
-		rename.run(group1, group2);
+//		
+//		Rename2 rename = new Rename2();
+//		rename.run(group1, group2);
 	}
 	
 	public static boolean isObfuscated(String name)
