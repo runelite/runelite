@@ -142,8 +142,14 @@ public class PutField extends Instruction implements SetFieldInstruction
 		PutField thisPf = (PutField) thisIc.getInstruction(),
 			otherPf = (PutField) otherIc.getInstruction();
 		
-		return thisPf.getField().getClassEntry().equals(otherPf.getField().getClassEntry())
-			&& thisPf.getField().getNameAndType().getDescriptorType().equals(otherPf.getField().getNameAndType().getDescriptorType());
+		net.runelite.deob.Field f1 = thisPf.getMyField(),
+			f2 = otherPf.getMyField();
+		
+		if ((f1 != null) != (f2 != null))
+			return false;
+		
+		return f1.getFields().getClassFile().getPoolClass().equals(f2.getFields().getClassFile().getPoolClass())
+			&& f1.getType().equals(f2.getType());
 	}
 	
 	@Override
