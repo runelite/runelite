@@ -297,7 +297,7 @@ public class ParallellMappingExecutor
 		return f2;
 	}
 
-	public static boolean enable = false;
+	public static boolean enable = true;
 	public static List<StackContext> returnStacks = new ArrayList<>();
 	private Frame popStack(Frame f)
 	{
@@ -335,27 +335,30 @@ public class ParallellMappingExecutor
 			
 			StackContext invokePushed = i2.getPushes().get(0);
 
-			if (invokePushed.getPushed().getInstruction() != i2.getInstruction())
-			//if (!(invokePushed.getPushed().getInstruction() instanceof InvokeStatic))
-			{
-				return r;
-			}
-			
-			//returnStacks.add(invokePushed);
-			returnStacks.add(returnValue);
-			boolean b = returnStacks.contains(invokePushed);
-			assert invokePushed.getPopped().isEmpty();
-
-			// replace invokePushed with returnValue?
-			i2.getPushes().remove(invokePushed);
-			i2.getPushes().add(returnValue);
-
-			//invokePushed.setpushed = null
-
-			Stack stack = r.getStack();
-			StackContext s = stack.pop();
-			assert s == invokePushed;
-			stack.push(returnValue);
+			//assert invokePushed.returnSource == null;
+			invokePushed.returnSource = returnValue;
+//
+//			if (invokePushed.getPushed().getInstruction() != i2.getInstruction())
+//			//if (!(invokePushed.getPushed().getInstruction() instanceof InvokeStatic))
+//			{
+//				return r;
+//			}
+//
+//			//returnStacks.add(invokePushed);
+//			returnStacks.add(returnValue);
+//			boolean b = returnStacks.contains(invokePushed);
+//			assert invokePushed.getPopped().isEmpty();
+//
+//			// replace invokePushed with returnValue?
+//			i2.getPushes().remove(invokePushed);
+//			i2.getPushes().add(returnValue);
+//
+//			//invokePushed.setpushed = null
+//
+//			Stack stack = r.getStack();
+//			StackContext s = stack.pop();
+//			assert s == invokePushed;
+//			stack.push(returnValue);
 
 			//assert invokePushed.getPushed().getPushes().contains(invokePushed);
 			//invokePushed.getpu

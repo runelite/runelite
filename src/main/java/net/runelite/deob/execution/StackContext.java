@@ -11,6 +11,7 @@ public class StackContext
 	public Type type; // type of this
 	private Value value;
 	public boolean removed;
+	public StackContext returnSource; // if this is the return value of an invokestatic, returnSource is the stack popped by the Return instruction
 	
 	public StackContext(InstructionContext pushed, Type type, Value value)
 	{
