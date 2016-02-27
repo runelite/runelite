@@ -13,6 +13,7 @@ import net.runelite.deob.execution.StackContext;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.deob.Field;
@@ -88,26 +89,12 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		
 		ins.pop(one, two);
 		
-		Field f1 = getComparedField(ins);
-		if (f1 != null && f1.getName().equals("field289"))
-		{
-			int i =5;
-		}
-//		if (f1 != null && f1.packetHandler)
-//		{
-//			assert this instanceof IfICmpNe;
-//			
-//			frame.jump(ins, to);
-//		}
-//		else
-		{
-			Frame other = frame.dup();
-			other.created = this;
-			other.forking = ins;
-			other.jump(ins, to);
+		Frame other = frame.dup();
+		other.created = this;
+		other.forking = ins;
+		other.jump(ins, to);
 
-			ins.branch(other);
-		}
+		ins.branch(other);
 		
 		frame.addInstructionContext(ins);
 	}
@@ -143,7 +130,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			branch2.other = branch1;
 		}
 		
-		this.mapArguments(mapping, ctx, other);
+		this.mapArguments(mapping, ctx, other, false);
 	}
 	
 	protected void mapOtherBranch(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
@@ -182,38 +169,53 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 //		e2.frames.remove(i2);
 //		e2.frames.add(i2, f2);
 
-		this.mapArguments(mapping, ctx, other);
+		this.mapArguments(mapping, ctx, other, true);
 	}
 	
-	private void mapArguments(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	private void mapArguments(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other, boolean inverse)
 	{
-		Field f1 = getComparedField(ctx), f2 = getComparedField(other);
+		List<Field> f1s = getComparedFields(ctx), f2s = getComparedFields(other);
 		
-		if (f1 == null || f2 == null)
+		if (f1s == null || f2s == null || f1s.size() != f2s.size())
 			return;
-		
-		assert f1.getType().equals(f2.getType());
-		
-		mapping.map(f1, f2);
-		
-		if (f1.packetHandler && f2.packetHandler)
+
+		if (f1s.size() == 1)
 		{
-			int pc1 = this.getConstantInstruction(ctx),
-				pc2 = this.getConstantInstruction(other);
+			Field f1 = f1s.get(0), f2 = f2s.get(0);
 
-			assert (pc1 != -1) == (pc2 != -1);
+			assert f1.getType().equals(f2.getType());
 
-			if (pc1 == -1 && pc2 == -1)
-				return;
-			
-			mapping.packetHandler1.add(new PacketHandler(this, pc1));
-			mapping.packetHandler2.add(new PacketHandler((If) other.getInstruction(), pc2));
+			mapping.map(f1, f2);
+
+			if (f1.packetHandler && f2.packetHandler)
+			{
+				int pc1 = this.getConstantInstruction(ctx),
+					pc2 = this.getConstantInstruction(other);
+
+				assert (pc1 != -1) == (pc2 != -1);
+
+				if (pc1 == -1 && pc2 == -1)
+					return;
+
+				mapping.packetHandler1.add(new PacketHandler(this, pc1));
+				mapping.packetHandler2.add(new PacketHandler((If) other.getInstruction(), pc2));
+			}
 		}
+		else if (f1s.size() == 2)
+		{
+			Field f1 = f1s.get(0), f2 = f2s.get(0);
+			Field j1 = f1s.get(1), j2 = f2s.get(1);
+
+			mapping.map(f1, j2);
+			mapping.map(j1, f2);
+		}
+		else
+			assert false;
 	}
 	
-	private Field getComparedField(InstructionContext ctx)
+	private List<Field> getComparedFields(InstructionContext ctx)
 	{
-		GetFieldInstruction gfi = null;
+		List<Field> fields = new ArrayList<>();
 		
 		for (StackContext sctx : ctx.getPops())
 		{
@@ -221,17 +223,14 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			
 			if (base.getInstruction() instanceof GetFieldInstruction)
 			{
-				if (gfi != null)
-					return null;
+				GetFieldInstruction gfi = (GetFieldInstruction) base.getInstruction();
 				
-				gfi = (GetFieldInstruction) base.getInstruction();
+				if (gfi.getMyField() != null)
+					fields.add(gfi.getMyField());
 			}
 		}
-		
-		if (gfi == null)
-			return null;
-		
-		return gfi.getMyField();
+
+		return fields.isEmpty() ? null : fields;
 	}
 
 	private Integer getConstantInstruction(InstructionContext ctx)
@@ -256,14 +255,33 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	
 	protected boolean isSameField(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		Field f1 = getComparedField(thisIc), f2 = getComparedField(otherIc);
-		if ((f1 != null) != (f2 != null))
+		List<Field> f1s = getComparedFields(thisIc), f2s = getComparedFields(otherIc);
+
+		if ((f1s != null) != (f2s != null))
 			return false;
 		
-		if (f1 == null || f2 == null)
+		if (f1s == null || f2s == null)
 			return true;
-		
-		return f1.getType().equals(f2.getType());
+
+		if (f1s.size() != f2s.size())
+			return false;
+
+		assert f1s.size() == 1 || f1s.size() == 2;
+
+		if (f1s.size() == 2)
+		{
+			Field f1 = f1s.get(0), f2 = f2s.get(0);
+			Field j1 = f1s.get(1), j2 = f2s.get(1);
+
+			return (f1.getType().equals(f2.getType()) && j1.getType().equals(j2.getType())) ||
+				(f1.getType().equals(j2.getType()) && j1.getType().equals(f2.getType()));
+		}
+		else
+		{
+			Field f1 = f1s.get(0), f2 = f2s.get(0);
+
+			return f1.getType().equals(f2.getType());
+		}
 	}
 	
 	@Override
