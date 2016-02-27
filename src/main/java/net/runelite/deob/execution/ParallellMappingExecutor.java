@@ -1,5 +1,6 @@
 package net.runelite.deob.execution;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,6 +8,7 @@ import java.util.stream.Collectors;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+import net.runelite.deob.attributes.code.instructions.Return;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
@@ -294,7 +296,9 @@ public class ParallellMappingExecutor
 		
 		return f2;
 	}
-	
+
+	public static boolean enable = false;
+	public static List<StackContext> returnStacks = new ArrayList<>();
 	private Frame popStack(Frame f)
 	{
 		Execution e = f.getExecution();
@@ -308,10 +312,54 @@ public class ParallellMappingExecutor
 		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
 		if (!(i.getInstruction() instanceof ReturnInstruction))
 			return f;
+
+		StackContext returnValue = null;
+		if (enable&& i.getInstruction() instanceof Return)
+		{
+			assert i.getPops().size() == 1;
+			
+			returnValue = i.getPops().get(0);
+		}
 		
 		Frame r = popStackForce(f);
 		
 		f.returnTo = null;
+
+		// last ins must be an invokestatic
+		InstructionContext i2 = r.getInstructions().get(r.getInstructions().size() - 1);
+		assert i2.getInstruction() instanceof InvokeStatic;
+		if (returnValue != null)
+		{
+			// if the function retunred something, we must have pushed
+			assert i2.getPushes().size() == 1;
+			
+			StackContext invokePushed = i2.getPushes().get(0);
+
+			if (invokePushed.getPushed().getInstruction() != i2.getInstruction())
+			//if (!(invokePushed.getPushed().getInstruction() instanceof InvokeStatic))
+			{
+				return r;
+			}
+			
+			//returnStacks.add(invokePushed);
+			returnStacks.add(returnValue);
+			boolean b = returnStacks.contains(invokePushed);
+			assert invokePushed.getPopped().isEmpty();
+
+			// replace invokePushed with returnValue?
+			i2.getPushes().remove(invokePushed);
+			i2.getPushes().add(returnValue);
+
+			//invokePushed.setpushed = null
+
+			Stack stack = r.getStack();
+			StackContext s = stack.pop();
+			assert s == invokePushed;
+			stack.push(returnValue);
+
+			//assert invokePushed.getPushed().getPushes().contains(invokePushed);
+			//invokePushed.getpu
+		}
 		
 		// step return frame
 		//r.execute();
