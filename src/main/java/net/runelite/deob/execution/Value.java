@@ -109,6 +109,11 @@ public class Value
 		else
 		{
 			int len = (int) length.getValue();
+
+			// the generated garbage code can create negative sized arrays
+			if (len < 0 || len > 0xFFFF)
+				len = 0;
+
 			Value[] array = new Value[len];
 			Arrays.fill(array, NULL);
 			return new Value(array);
