@@ -24,7 +24,7 @@ public class Deob
 {
 	public static void main(String[] args) throws IOException
 	{
-		merge(); if(true) return;
+		//merge(); if(true) return;
 		
 		long start = System.currentTimeMillis();
 		
@@ -34,27 +34,27 @@ public class Deob
 //
 //		// remove except RuntimeException
 //		run(group, new RuntimeExceptions());
-//		
+//
 //		// remove unused methods
 //		run(group, new UnreachedCode());
 //		run(group, new UnusedMethods());
-//		
+//
 //		// remove illegal state exceptions, frees up some parameters
 //		run(group, new IllegalStateExceptions());
-//		
+//
 //		// remove constant logically dead parameters
 //		run(group, new ConstantParameter());
-//		
+//
 //		// remove unhit blocks
 //		run(group, new UnreachedCode());
 //		run(group, new UnusedMethods());
 //
 //		// remove unused parameters
 //		run(group, new UnusedParameters());
-//		
-		// remove unused fields
-		run(group, new UnusedFields());
-//		
+//
+//		// remove unused fields
+//		run(group, new UnusedFields());
+//
 //		// remove unused methods, again?
 //		run(group, new UnusedMethods());
 //
@@ -63,38 +63,34 @@ public class Deob
 //
 ////		// broken because rename was removed
 ////		//run(group, new MethodMover());
-//		
+//
 //		run(group, new FieldInliner());
-//		
+//
 ////		// XXX this is broken because when moving clinit around, some fields can depend on other fields
 ////		// (like multianewarray)
 ////		//new FieldMover().run(group);
-//		
+//
 //		run(group, new UnusedClass());
-//	
-//		ModArith mod = new ModArith();
-//		mod.run(group);
-//		
-//		int last = -1, cur;
-//		while ((cur = mod.runOnce()) > 0)
-//		{
-//			new MultiplicationDeobfuscator().run(group);
-//
-//			new MultiplyOneDeobfuscator().run(group);
-//
-//			new MultiplyZeroDeobfuscator().run(group);
-//			
-//			if (last == cur)
-//				break;
-//			
-//			last = cur;
-//		}
-//		
-//		mod.annotateEncryption();
-		
-		// eval constant fields (only set once to a constant in ctor) maybe just inline them
-		
-		// make fields private
+	
+		ModArith mod = new ModArith();
+		mod.run(group);
+
+		int last = -1, cur;
+		while ((cur = mod.runOnce()) > 0)
+		{
+			new MultiplicationDeobfuscator().run(group);
+
+			new MultiplyOneDeobfuscator().run(group);
+
+			new MultiplyZeroDeobfuscator().run(group);
+
+			if (last == cur)
+				break;
+
+			last = cur;
+		}
+
+		mod.annotateEncryption();
 
 		JarUtil.saveJar(group, new File(args[1]));
 		
