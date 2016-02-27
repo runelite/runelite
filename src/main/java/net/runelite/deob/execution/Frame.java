@@ -99,6 +99,9 @@ public class Frame
 		created = ctx.getInstruction();
 		// initialize frame from invoking context
 		assert ctx.getInstruction() instanceof InvokeInstruction;
+
+		// this assert fails. evidently it's possible to invokevirtual a static method.
+		//assert ctx.getInstruction() instanceof InvokeStatic == this.method.isStatic();
 		
 		if (this.getMethod().isStatic())
 		{
@@ -111,8 +114,17 @@ public class Frame
 		pops = Lists.reverse(new ArrayList<>(pops)); // reverse the list so first argument is at index 0
 		
 		int lvtOffset = 0;
-		if (!method.isStatic())
-			variables.set(lvtOffset++, new VariableContext(ctx, pops.remove(0)).markParameter());
+		if (!(ctx.getInstruction() instanceof InvokeStatic))
+		{
+			StackContext s = pops.remove(0); // object
+			
+			// sometimes there are invokevirtuals on static methods. still must pop the object from the stack,
+			// but don't set as a parameter
+			if (!method.isStatic())
+			{
+				variables.set(lvtOffset++, new VariableContext(ctx, s).markParameter());
+			}
+		}
 
 		NameAndType nat = method.getNameAndType();
 		
