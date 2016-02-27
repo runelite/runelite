@@ -14,6 +14,7 @@ import net.runelite.deob.attributes.code.instruction.types.PushConstantInstructi
 import net.runelite.deob.attributes.code.instructions.BiPush;
 import net.runelite.deob.attributes.code.instructions.IAdd;
 import net.runelite.deob.attributes.code.instructions.IConst_M1;
+import net.runelite.deob.attributes.code.instructions.IInc;
 import net.runelite.deob.attributes.code.instructions.IMul;
 import net.runelite.deob.attributes.code.instructions.ISub;
 import net.runelite.deob.attributes.code.instructions.LAdd;
@@ -74,6 +75,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						// invoking funcs can put stuff in lvt
 						
 						LVTInstruction storelvt = (LVTInstruction) storeCtx.getInstruction();
+
+						if (storelvt instanceof IInc)
+							throw new IllegalStateException();
 
 						assert storelvt.store();
 
