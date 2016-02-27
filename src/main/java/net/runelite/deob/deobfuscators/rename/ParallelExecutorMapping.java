@@ -16,8 +16,8 @@ public class ParallelExecutorMapping
 	//private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	public boolean crashed;
-	public List<If> packetHandler1 = new ArrayList<>();
-	public List<If> packetHandler2 = new ArrayList<>();
+	public List<PacketHandler> packetHandler1 = new ArrayList<>();
+	public List<PacketHandler> packetHandler2 = new ArrayList<>();
 	
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
 	{
@@ -72,5 +72,21 @@ public class ParallelExecutorMapping
 		}
 		else
 			assert false;
+	}
+
+	public PacketHandler findPacketHandler1(int id)
+	{
+		for (PacketHandler p : this.packetHandler1)
+			if (p.getPacketId() == id)
+				return p;
+		return null;
+	}
+
+	public PacketHandler findPacketHandler2(int id)
+	{
+		for (PacketHandler p : this.packetHandler2)
+			if (p.getPacketId() == id)
+				return p;
+		return null;
 	}
 }

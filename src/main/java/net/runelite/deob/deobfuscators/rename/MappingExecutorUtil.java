@@ -90,9 +90,6 @@ public class MappingExecutorUtil
 		frame.other = frame2;
 		frame2.other = frame;
 		
-		MethodContext ctx1 = frame.getMethodCtx(),
-			ctx2 = frame2.getMethodCtx();
-		
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
 		ParallelExecutorMapping mappings = new ParallelExecutorMapping(m1.getMethods().getClassFile().getGroup(),
 			m2.getMethods().getClassFile().getGroup());
@@ -128,95 +125,78 @@ public class MappingExecutorUtil
 				p2.getFrame().stop();
 				e.paused = e2.paused = false;
 				continue;
-//				if (!hit)
-//				{
-//					hit = true;
-//				
-//					throw new MappingException();
-//				}
-//				
-//				System.out.println("ERROR mapping " + p1 + " to " + p2);
-//				
-//				// methods don't map. find common static method and back out.
-//				
-//				Frame c1 = p1.getFrame(), c2 = p2.getFrame();
-//				
-//				while (c1 != null && c1.otherStatic == null)
-//					c1 = c1.returnTo;
-//				
-//				while (c2 != null && c2.otherStatic == null)
-//					c2 = c2.returnTo;
-//				
-//				// otherStatic would point to the original frame of the method, which the other might not be. we don't
-//				// care just compare the method.
-//				if (c1 == null || c2 == null || c1.otherStatic.getMethod() != c2.getMethod() || c2.otherStatic.getMethod() != c1.getMethod())
-//				{
-//					throw new MappingException();
-//				}
-//				
-//				// c1/c2 are top frames of static methods that we can't map.
-//				// return out of frames
-//				c1 = c1.returnTo;
-//				c2 = c2.returnTo;
-//				
-//				if (c1 == null || c2 == null)
-//					throw new MappingException();
-//				
-//				// Back execution out to c1 and c2.
-//				// When something is stepped into, the calling frame is removed.
-//				// Remove all frames from the respective method, add frame from good method to continue
-//				parallel.removeFramesFromMethod(p1.getFrame().getMethod());
-//				parallel.removeFramesFromMethod(p2.getFrame().getMethod());
-//				
-//				assert c1.other == null;
-//				assert c2.other == null;
-//				
-//				c1.other = c2;
-//				c2.other = c1;
-//				
-//				parallel.addFrame(c1, c2);
-//				continue;
 			}
 
-//			try
-//			{
 			mi1.map(mappings, p1, p2);
-//			}
-//			catch (Throwable ex)
-//			{
-//				p1.getFrame().stop();
-//				p2.getFrame().stop();
-//				ex.printStackTrace();
-//			}
-
 			e.paused = e2.paused = false;
 		}
 		
-//		if (mappings.getMap().isEmpty() == false)
-//		{
-//			checkReturns(m1, ctx1);
-//		}
-		
 		return mappings;
 	}
-	
-	private static boolean checkReturns(Method method, MethodContext ctx)
+
+	public static ParallelExecutorMapping mapFrame(ClassGroup group1, ClassGroup group2, Instruction i1, Instruction i2)
 	{
-		List<Instruction> ins = method.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof ReturnInstruction).collect(Collectors.toList());
-		List<Instruction> exc = ctx.instructions.stream().map(i -> i.getInstruction()).collect(Collectors.toList());
-		
-		for (Instruction i : ins)
+		Execution e = new Execution(group1);
+		e.step = true;
+		Frame frame = new Frame(e, i1.getInstructions().getCode().getAttributes().getMethod(), i1);
+		//frame.initialize();
+		e.frames.add(frame);
+
+		Execution e2 = new Execution(group2);
+		e2.step = true;
+		//Frame frame2 = new Frame(e2, m2);
+		Frame frame2 = new Frame(e2, i2.getInstructions().getCode().getAttributes().getMethod(), i2);
+		//frame2.initialize();
+		e2.frames.add(frame2);
+
+		frame.other = frame2;
+		frame2.other = frame;
+
+		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
+		ParallelExecutorMapping mappings = new ParallelExecutorMapping(group1, group2);
+
+		//mappings.m1 = m1;
+		//mappings.m2 = m2;
+
+		parallel.mappings = mappings;
+
+		int compare = 0;
+		while (parallel.step())
 		{
-			if (!exc.contains(i))
+			// get what each frame is paused/exited on
+			InstructionContext p1 = parallel.getP1(), p2 = parallel.getP2();
+
+			assert e.paused;
+			assert e2.paused;
+			++compare;
+
+			//System.out.println(p1.getInstruction() + " <-> " + p2.getInstruction());
+
+			//assert p1.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m1;
+			//assert p2.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m2;
+
+			assert p1.getInstruction() instanceof MappableInstruction;
+			assert p2.getInstruction() instanceof MappableInstruction;
+
+			MappableInstruction mi1 = (MappableInstruction) p1.getInstruction(),
+				mi2 = (MappableInstruction) p2.getInstruction();
+
+			if (!mi1.isSame(p1, p2))
 			{
-				return false;
+				mappings.crashed = true;
+				mi1.isSame(p1, p2);
+				p1.getFrame().stop();
+				p2.getFrame().stop();
+				e.paused = e2.paused = false;
+				continue;
 			}
+
+			mi1.map(mappings, p1, p2);
+			e.paused = e2.paused = false;
 		}
-		
-		return true;
+
+		return mappings;
 	}
-	
-	//private static boolean containsMappableInstruction
 	
 	public static boolean isMappable(InvokeInstruction ii)
 	{

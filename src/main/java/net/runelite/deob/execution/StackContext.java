@@ -47,6 +47,7 @@ public class StackContext
 
 	public void addPopped(InstructionContext popped)
 	{
+//		assert ParallellMappingExecutor.returnStacks.contains(this) == false;
 		if (!this.poppeds.contains(popped))
 			this.poppeds.add(popped);
 	}

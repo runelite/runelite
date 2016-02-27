@@ -53,6 +53,22 @@ public class Frame
 		nonStatic = method;
 	}
 
+	public Frame(Execution execution, Method method, Instruction i)
+	{
+		this.execution = execution;
+		this.method = method;
+
+		Code code = method.getCode();
+
+		stack = new Stack(code.getMaxStack());
+		variables = new Variables(code.getMaxLocals());
+
+		ctx = new MethodContext(execution);
+		nonStatic = method;
+
+		cur = i;
+	}
+
 	@Override
 	public String toString()
 	{
@@ -113,8 +129,7 @@ public class Frame
 		Code code = method.getCode();
 		cur = code.getInstructions().getInstructions().get(0);
 	}
-	
-	static List<Frame> ffs = new ArrayList();
+
 	protected Frame(Frame other)
 	{
 		iscopy=true;
@@ -127,21 +142,11 @@ public class Frame
 		this.ctx = other.ctx;
 		this.nonStatic = other.nonStatic;
 		this.caller = other.caller;
-		ffs.add(this);
-		if (ffs.size() == 10)
-		{
-			for (Frame f : ffs)
-			{
-				System.out.println(f.method);
-			}
-			int i = 5;
-		}
 		if (other.returnTo != null)
 		{
 			this.returnTo = new Frame(other.returnTo);
 			this.returnTo.instructions.addAll(other.returnTo.instructions);
 		}
-		ffs.remove(this);
 		this.created = other.created;
 		this.forking = other.forking;
 		this.otherStatic = other.otherStatic;

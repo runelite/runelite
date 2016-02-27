@@ -18,7 +18,9 @@ import java.util.List;
 import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.rename.PacketHandler;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
 
@@ -196,8 +198,16 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		
 		if (f1.packetHandler && f2.packetHandler)
 		{
-			mapping.packetHandler1.add(this);
-			mapping.packetHandler2.add((If) other.getInstruction());
+			int pc1 = this.getConstantInstruction(ctx),
+				pc2 = this.getConstantInstruction(other);
+
+			assert (pc1 != -1) == (pc2 != -1);
+
+			if (pc1 == -1 && pc2 == -1)
+				return;
+			
+			mapping.packetHandler1.add(new PacketHandler(this, pc1));
+			mapping.packetHandler2.add(new PacketHandler((If) other.getInstruction(), pc2));
 		}
 	}
 	
@@ -222,6 +232,26 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			return null;
 		
 		return gfi.getMyField();
+	}
+
+	private Integer getConstantInstruction(InstructionContext ctx)
+	{
+		PushConstantInstruction gfi = null;
+
+		for (StackContext sctx : ctx.getPops())
+		{
+			InstructionContext base = MappingExecutorUtil.resolve(sctx.getPushed(), sctx);
+
+			if (base.getInstruction() instanceof PushConstantInstruction)
+			{
+				if (gfi != null)
+					return null;
+
+				gfi = (PushConstantInstruction) base.getInstruction();
+			}
+		}
+
+		return (Integer) gfi.getConstant().getObject();
 	}
 	
 	protected boolean isSameField(InstructionContext thisIc, InstructionContext otherIc)

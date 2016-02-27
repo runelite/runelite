@@ -20,6 +20,12 @@ import net.runelite.deob.Method;
 import net.runelite.deob.attributes.Annotations;
 import net.runelite.deob.attributes.AttributeType;
 import net.runelite.deob.attributes.annotation.Annotation;
+import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.instructions.If;
+import net.runelite.deob.attributes.code.instructions.IfICmpEq;
+import net.runelite.deob.attributes.code.instructions.IfICmpNe;
+import net.runelite.deob.execution.Execution;
+import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.ParallellMappingExecutor;
 import net.runelite.deob.signature.Type;
 import net.runelite.deob.util.JarUtil;
@@ -93,8 +99,8 @@ public class MapStaticTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 	
-		Method m1 = group1.findClass("class222").findMethod("method4107");
-		Method m2 = group2.findClass("class222").findMethod("method3980");
+		Method m1 = group1.findClass("class6").findMethod("method112");
+		Method m2 = group2.findClass("class20").findMethod("method551");
 		
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 		
@@ -104,7 +110,7 @@ public class MapStaticTest
 			Object value = mappings.get(o);
 			System.out.println(o + " <-> " + value);
 		}
-		System.out.println("END OF MAPPINGS " + mappings.getMap().size());
+		System.out.println("END OF MAPPINGS " + mappings.getMap().size() + " " + mappings.crashed);
 		
 		// I think because this is an array store
 		//Object other = mappings.get(group1.findClass("class136").findField("field2098"));
@@ -211,7 +217,7 @@ public class MapStaticTest
 //			assert m1.getPoolMethod().equals(m2.getPoolMethod());
 //		
 //			HashMap<Object, Object> all = new HashMap();
-//			map(all, pmes, m1, m2);
+//			map(all, pmes, m1, m2);/fil
 //		}
 		
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(group1, group2);
@@ -221,6 +227,7 @@ public class MapStaticTest
 				
 		finalm.merge(testStaticMapperMap(group1, group2));
 		finalm.merge(testMapperMap(group1, group2));
+		finalm.merge(this.testPackets(group1, group2));
 
 		for (int i = -1; i < 250; ++i)
 		{
@@ -465,6 +472,8 @@ public class MapStaticTest
 		rename.run();
 		
 		ParallelExecutorMapping mapping = rename.getMapping();
+
+		mapping.merge(this.testPackets(group1, group2));
 		
 		summary(rename.getMapping(), group1);
 		
@@ -514,11 +523,11 @@ public class MapStaticTest
 		return list;
 	}
 	
-	@Test
-	public void testPackets() throws IOException
+	//@Test
+	public ParallelExecutorMapping testPackets(ClassGroup group1, ClassGroup group2) throws IOException
 	{
-		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		//ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		//ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 		
 		group1.findClass("client").findField("field446").packetHandler = true;
 		group2.findClass("client").findField("field324").packetHandler = true;
@@ -537,9 +546,80 @@ public class MapStaticTest
 		System.out.println("END OF MAPPINGS " + mappings.getMap().size());
 		
 		System.out.println(mappings.packetHandler1.size() + " vs " + mappings.packetHandler2.size() + " handlers");
-		
-		// I think because this is an array store
-		//Object other = mappings.get(group1.findClass("class136").findField("field2098"));
-		//Assert.assertNotNull(other);
+
+		assert mappings.packetHandler1.size() == mappings.packetHandler2.size();
+
+		ParallellMappingExecutor.enable = true;
+		ParallelExecutorMapping all = new ParallelExecutorMapping(group1, group2);
+
+		for (int i = 0; i < mappings.packetHandler1.size(); ++i)
+		{
+			PacketHandler if1 = mappings.packetHandler1.get(i);
+
+			PacketHandler highestHandler = null;
+			ParallelExecutorMapping highest = null;
+			
+			for (int j = 0; j < mappings.packetHandler2.size(); ++j)
+			{
+				PacketHandler if2 = mappings.packetHandler2.get(j);
+
+				Instruction i1 = if1.getFirstInsOfHandler(),
+					i2 = if2.getFirstInsOfHandler();
+
+				ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(group1, group2, i1, i2);
+
+				if (mapping.getMap().isEmpty())
+					continue;
+
+				if (highest == null || mapping.getMap().size() > highest.getMap().size())
+				{
+					highest = mapping;
+					highestHandler = if2;
+				}
+
+
+//				Execution e1 = new Execution(group1);
+//				Execution e2 = new Execution(group2);
+//
+//				Frame f1 = new Frame(e1, i1.getInstructions().getCode().getAttributes().getMethod(), i1);
+//				Frame f2 = new Frame(e2, i2.getInstructions().getCode().getAttributes().getMethod(), i2);
+
+				//e1.frames.add(f1);
+				//e2.frames.add(f2);
+			}
+
+			System.out.println(if1 + " <-> " + highestHandler + " <-> " + highest.getMap().size() + " " + highest.crashed);
+			all.merge(highest);
+		}
+
+		ParallellMappingExecutor.enable = false;
+		return all;
+	}
+
+	private static int handlers[][] = {
+		{ 74, 187 }
+	};
+
+	@Test
+	public void testPacket() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+
+		group1.findClass("client").findField("field446").packetHandler = true;
+		group2.findClass("client").findField("field324").packetHandler = true;
+
+		Method m1 = group1.findClass("client").findMethod("vmethod3096");
+		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+
+		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+
+		//                       var55 = class17.method214(); vs var107 = class25.field625[++class25.field624 - 1];
+		PacketHandler h1 = mappings.findPacketHandler1(127);
+		PacketHandler h2 = mappings.findPacketHandler2(160);
+
+		ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(group1, group2, h1.getFirstInsOfHandler(), h2.getFirstInsOfHandler());
+
+		System.out.println(h1 + " <-> " + h2 + " <-> " + mapping.getMap().size() + " " + mapping.crashed);
 	}
 }
