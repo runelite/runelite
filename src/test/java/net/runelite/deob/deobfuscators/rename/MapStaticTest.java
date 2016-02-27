@@ -522,6 +522,14 @@ public class MapStaticTest
 		}
 		return list;
 	}
+
+	@Test
+	public void testPackets() throws IOException
+	{
+		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+		testPackets(group1, group2);
+	}
 	
 	//@Test
 	public ParallelExecutorMapping testPackets(ClassGroup group1, ClassGroup group2) throws IOException

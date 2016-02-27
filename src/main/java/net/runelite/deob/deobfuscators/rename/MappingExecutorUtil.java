@@ -301,6 +301,14 @@ public class MappingExecutorUtil
 				return resolve(storedCtx, null);
 			}
 		}
+
+		if (ctx.getInstruction() instanceof InvokeStatic)
+		{
+			if (from.returnSource != null)
+			{
+				return resolve(from.returnSource.getPushed(), from.returnSource);
+			}
+		}
 		
 		return ctx;
 	}
