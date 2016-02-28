@@ -25,6 +25,7 @@ import java.util.List;
 import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
@@ -151,9 +152,9 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 			return; // not our class
 		
 		// look up this method in this class and anything that inherits from it
-		List<net.runelite.deob.Method> list = new ArrayList<>();
-		findMethodFromClass(list, otherClass);
-		myMethods = list;
+		//List<net.runelite.deob.Method> list = new ArrayList<>();
+		//findMethodFromClass(list, otherClass);
+		myMethods = Renamer.getVirutalMethods(otherClass.findMethod(method.getNameAndType()));
 	}
 	
 	@Override

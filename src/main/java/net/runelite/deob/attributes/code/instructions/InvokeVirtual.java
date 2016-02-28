@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Set;
 import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.deob.execution.Execution;
@@ -168,9 +169,15 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
 		
-		List<net.runelite.deob.Method> list = new ArrayList<>();
-		findMethodFromClass(new HashSet<>(), list, otherClass);
-		myMethods = list;
+		//List<net.runelite.deob.Method> list = new ArrayList<>();
+		//findMethodFromClass(new HashSet<>(), list, otherClass);
+		net.runelite.deob.Method m = otherClass.findMethodDeep(method.getNameAndType());
+		if (m == null)
+		{
+			return;
+		}
+
+		myMethods = Renamer.getVirutalMethods(m);
 	}
 	
 	@Override
