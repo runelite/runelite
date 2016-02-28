@@ -41,11 +41,13 @@ public class UnusedFields implements Deobfuscator
 					}
 				}
 			}
-		
-		if (get == 0)
-			return true;
-		
-		return false;
+
+		// for only checking 'get' wed need a way to remove field initialization in constructors/class initializers
+		return get + set == 0;
+//		if (get == 0)
+//			return true;
+//
+//		return false;
 	}
 	
 	@Override
