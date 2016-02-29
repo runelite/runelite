@@ -24,6 +24,12 @@ public class Integer extends PoolEntry
 		
 		value = i;
 	}
+
+	@Override
+	public Integer copy()
+	{
+		return new Integer(value);
+	}
 	
 	@Override
 	public boolean equals(Object other)

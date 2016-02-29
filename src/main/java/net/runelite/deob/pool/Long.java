@@ -24,6 +24,12 @@ public class Long extends PoolEntry
 		
 		value = l;
 	}
+
+	@Override
+	public Long copy()
+	{
+		return new Long(value);
+	}
 	
 	@Override
 	public boolean equals(Object other)

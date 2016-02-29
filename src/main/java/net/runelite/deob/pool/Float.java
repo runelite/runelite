@@ -24,6 +24,12 @@ public class Float extends PoolEntry
 		
 		value = f;
 	}
+
+	@Override
+	public Float copy()
+	{
+		return new Float(value);
+	}
 	
 	@Override
 	public boolean equals(Object other)

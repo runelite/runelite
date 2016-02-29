@@ -197,210 +197,210 @@ public class MapStaticTest
 		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " methods");
 	}
 	
-	@Test
-	public void testAllMap() throws Exception
-	{
-		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
-		
-		List<Method> m1s = getInitialMethods(group1), m2s = getInitialMethods(group2);
-		//Method m1 = group1.findClass("client").findMethod("init");
-		//Method m2 = group2.findClass("client").findMethod("init");
-		
-		assert m1s.size() == m2s.size();
-		
-		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-//		for (int i = 0; i < m1s.size(); ++i)
+//	@Test
+//	public void testAllMap() throws Exception
+//	{
+//		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+//		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+//
+//		List<Method> m1s = getInitialMethods(group1), m2s = getInitialMethods(group2);
+//		//Method m1 = group1.findClass("client").findMethod("init");
+//		//Method m2 = group2.findClass("client").findMethod("init");
+//
+//		assert m1s.size() == m2s.size();
+//
+//		List<ParallelExecutorMapping> pmes = new ArrayList<>();
+////		for (int i = 0; i < m1s.size(); ++i)
+////		{
+////			Method m1 = m1s.get(i), m2 = m2s.get(i);
+////
+////			assert m1.getPoolMethod().equals(m2.getPoolMethod());
+////
+////			HashMap<Object, Object> all = new HashMap();
+////			map(all, pmes, m1, m2);/fil
+////		}
+//
+//		ParallelExecutorMapping finalm = new ParallelExecutorMapping(group1, group2);
+//		for (ParallelExecutorMapping pme : pmes)
+//			finalm.merge(pme);
+//
+//
+//		finalm.merge(testStaticMapperMap(group1, group2));
+//		finalm.merge(testMapperMap(group1, group2));
+//		finalm.merge(this.testPackets(group1, group2));
+//
+//		for (int i = -1; i < 250; ++i)
 //		{
-//			Method m1 = m1s.get(i), m2 = m2s.get(i);
-//			
-//			assert m1.getPoolMethod().equals(m2.getPoolMethod());
-//		
-//			HashMap<Object, Object> all = new HashMap();
-//			map(all, pmes, m1, m2);/fil
+//			ClassFile c1;
+//
+//			if (i == -1)
+//			{
+//				c1 = group1.findClass("client");
+//			}
+//			else
+//			{
+//				c1 = group1.findClass("class" + i);
+//			}
+//
+//			if (c1 == null)
+//				continue;
+//
+//			for (Method m : c1.getMethods().getMethods())
+//			{
+//				if (!finalm.getMap().containsKey(m))
+//					System.out.println("missing " + m);
+//			}
+//			for (Field m : c1.getFields().getFields())
+//			{
+//				if (!finalm.getMap().containsKey(m))
+//					System.out.println("missing " + m);
+//			}
 //		}
-		
-		ParallelExecutorMapping finalm = new ParallelExecutorMapping(group1, group2);
-		for (ParallelExecutorMapping pme : pmes)
-			finalm.merge(pme);
-		
-				
-		finalm.merge(testStaticMapperMap(group1, group2));
-		finalm.merge(testMapperMap(group1, group2));
-		finalm.merge(this.testPackets(group1, group2));
-
-		for (int i = -1; i < 250; ++i)
-		{
-			ClassFile c1;
-			
-			if (i == -1)
-			{
-				c1 = group1.findClass("client");
-			}
-			else
-			{
-				c1 = group1.findClass("class" + i);
-			}
-			
-			if (c1 == null)
-				continue;
-			
-			for (Method m : c1.getMethods().getMethods())
-			{
-				if (!finalm.getMap().containsKey(m))
-					System.out.println("missing " + m);
-			}
-			for (Field m : c1.getFields().getFields())
-			{
-				if (!finalm.getMap().containsKey(m))
-					System.out.println("missing " + m);
-			}
-		}
-		
-		summary(finalm, group1);
-		
-		String sg1 = print(group1),
-			sg2 = print(group2);
-		
-		System.out.println("GROUP 1 " + sg1);
-		System.out.println("GROUP 2 " + sg2);
-	}
+//
+//		summary(finalm, group1);
+//
+//		String sg1 = print(group1),
+//			sg2 = print(group2);
+//
+//		System.out.println("GROUP 1 " + sg1);
+//		System.out.println("GROUP 2 " + sg2);
+//	}
 	
 	//@Test
-	public ParallelExecutorMapping testMapperMap(ClassGroup one, ClassGroup two) throws IOException
-	{
-//		ClassGroup one = JarUtil.loadJar(new File(JAR1));
-//		ClassGroup two = JarUtil.loadJar(new File(JAR2));
-		
-		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-		for (int i = -1; i < 250; ++i)
-		{
-			ClassFile c1, c2;
-			
-			if (i == -1)
-			{
-				c1 = one.findClass("client");
-				c2 = two.findClass("client");
-			}
-			else
-			{
-				c1 = one.findClass("class" + i);
-				c2 = two.findClass("class" + i);
-			}
-			
-			if (c1 == null || c2 == null)
-				continue;
-			
-			MethodSignatureMapper msm = new MethodSignatureMapper();
-			msm.map(c1, c2);
-			
-			Multimap<Method, Method> map = msm.getMap();
-			for (Method m : map.keySet())
-			{
-				Collection<Method> methods = map.get(m);
-				
-				for (Method other : methods)
-				{
-					HashMap<Object, Object> all = new HashMap();
-					map(all, pmes, m, other);
-//					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
-//					
-//					if (pme.getMap().isEmpty())
-//						continue;
-//					
-//					pme.map(m, other);
-//				
-//					pmes.add(pme);
-				}
-				//HashMap<Object, Object> all = new HashMap();
-				//map(all, pmes, e.getKey(), e.getValue());
-			}
-		}
-		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
-		for (ParallelExecutorMapping pme : pmes)
-			finalm.merge(pme);
-
-		return finalm;		
-//		summary(finalm);
-//		print(one);
-	}
+//	public ParallelExecutorMapping testMapperMap(ClassGroup one, ClassGroup two) throws IOException
+//	{
+////		ClassGroup one = JarUtil.loadJar(new File(JAR1));
+////		ClassGroup two = JarUtil.loadJar(new File(JAR2));
+//
+//		List<ParallelExecutorMapping> pmes = new ArrayList<>();
+//		for (int i = -1; i < 250; ++i)
+//		{
+//			ClassFile c1, c2;
+//
+//			if (i == -1)
+//			{
+//				c1 = one.findClass("client");
+//				c2 = two.findClass("client");
+//			}
+//			else
+//			{
+//				c1 = one.findClass("class" + i);
+//				c2 = two.findClass("class" + i);
+//			}
+//
+//			if (c1 == null || c2 == null)
+//				continue;
+//
+//			MethodSignatureMapper msm = new MethodSignatureMapper();
+//			msm.map(c1, c2);
+//
+//			Multimap<Method, Method> map = msm.getMap();
+//			for (Method m : map.keySet())
+//			{
+//				Collection<Method> methods = map.get(m);
+//
+//				for (Method other : methods)
+//				{
+//					HashMap<Object, Object> all = new HashMap();
+//					map(all, pmes, m, other);
+////					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+////
+////					if (pme.getMap().isEmpty())
+////						continue;
+////
+////					pme.map(m, other);
+////
+////					pmes.add(pme);
+//				}
+//				//HashMap<Object, Object> all = new HashMap();
+//				//map(all, pmes, e.getKey(), e.getValue());
+//			}
+//		}
+//		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
+//		for (ParallelExecutorMapping pme : pmes)
+//			finalm.merge(pme);
+//
+//		return finalm;
+////		summary(finalm);
+////		print(one);
+//	}
 	
 	//@Test
-	public ParallelExecutorMapping testStaticMapperMap(ClassGroup one, ClassGroup two) throws IOException
-	{
-//		ClassGroup one = JarUtil.loadJar(new File(JAR1));
-//		ClassGroup two = JarUtil.loadJar(new File(JAR2));
-		
-		StaticMethodSignatureMapper smsm = new StaticMethodSignatureMapper();
-		smsm.map(one, two);
-		
-		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-		
-		for (Method m : smsm.getMap().keySet())
-		{
-			Collection<Method> methods = smsm.getMap().get(m);
-			
-			//if (methods.size() >= 1)
-			{
-				for (Method other : methods)
-				{
-					HashMap<Object, Object> all = new HashMap();
-					map(all, pmes, m, other);
-					
-//					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
-//					
-//					if (pme.getMap().isEmpty())
-//						continue;
-//				
-//					pme.map(m, other);
-//				
-//					pmes.add(pme);
-				}
-			}
-		}
-		
-		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
-		for (ParallelExecutorMapping pme : pmes)
-			finalm.merge(pme);
-
-		return finalm;		
-//		summary(finalm);
-//		print(one);
-	}
+//	public ParallelExecutorMapping testStaticMapperMap(ClassGroup one, ClassGroup two) throws IOException
+//	{
+////		ClassGroup one = JarUtil.loadJar(new File(JAR1));
+////		ClassGroup two = JarUtil.loadJar(new File(JAR2));
+//
+//		StaticMethodSignatureMapper smsm = new StaticMethodSignatureMapper();
+//		smsm.map(one, two);
+//
+//		List<ParallelExecutorMapping> pmes = new ArrayList<>();
+//
+//		for (Method m : smsm.getMap().keySet())
+//		{
+//			Collection<Method> methods = smsm.getMap().get(m);
+//
+//			//if (methods.size() >= 1)
+//			{
+//				for (Method other : methods)
+//				{
+//					HashMap<Object, Object> all = new HashMap();
+//					map(all, pmes, m, other);
+//
+////					ParallelExecutorMapping pme = MappingExecutorUtil.map(m, other);
+////
+////					if (pme.getMap().isEmpty())
+////						continue;
+////
+////					pme.map(m, other);
+////
+////					pmes.add(pme);
+//				}
+//			}
+//		}
+//
+//		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
+//		for (ParallelExecutorMapping pme : pmes)
+//			finalm.merge(pme);
+//
+//		return finalm;
+////		summary(finalm);
+////		print(one);
+//	}
 	
-	public List<Method> getInitialMethods(ClassGroup group)
-	{
-		List<Method> methods = new ArrayList<>();
-		
-		group.buildClassGraph(); // required when looking up methods
-		group.lookup(); // lookup methods
-		
-		for (ClassFile cf : group.getClasses())
-		{
-			List<Method> cmethods = new ArrayList<>();
-			
-			for (Method m : cf.getMethods().getMethods())
-			{
-				if (!Deob.isObfuscated(m.getName()) && !m.getName().startsWith("<"))
-				{
-					if (m.getCode() == null)
-					{
-						methods.add(m);
-						continue;
-					}
-					
-					cmethods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
-				}
-			}
-			
-			// cmethods are scrambled randomally, so sort by name
-			cmethods = cmethods.stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
-			
-			methods.addAll(cmethods);
-		}
-		
-		return methods;
-	}
+//	public List<Method> getInitialMethods(ClassGroup group)
+//	{
+//		List<Method> methods = new ArrayList<>();
+//
+//		group.buildClassGraph(); // required when looking up methods
+//		group.lookup(); // lookup methods
+//
+//		for (ClassFile cf : group.getClasses())
+//		{
+//			List<Method> cmethods = new ArrayList<>();
+//
+//			for (Method m : cf.getMethods().getMethods())
+//			{
+//				if (!Deob.isObfuscated(m.getName()) && !m.getName().startsWith("<"))
+//				{
+//					if (m.getCode() == null)
+//					{
+//						methods.add(m);
+//						continue;
+//					}
+//
+//					cmethods.add(m); // I guess this method name is overriding a jre interface (init, run, ?).
+//				}
+//			}
+//
+//			// cmethods are scrambled randomally, so sort by name
+//			cmethods = cmethods.stream().sorted((m1, m2) -> m1.getName().compareTo(m2.getName())).collect(Collectors.toList());
+//
+//			methods.addAll(cmethods);
+//		}
+//
+//		return methods;
+//	}
 	
 	private void map(Map<Object, Object> all, List<ParallelExecutorMapping> result, Method m1, Method m2)
 	{
@@ -454,48 +454,40 @@ public class MapStaticTest
 		return "total methods/fields: " + total + ", " + methods + " methods, " + fields + " fields";
 	}
 	
-	@Test
-	public void printTotalObjects() throws Exception
-	{
-		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
-		//print(group1);
-	}
-	
-	@Test
-	public void testCore() throws Exception
-	{
-		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
-		
-		Rename rename = new Rename(group1, group2);
-		rename.run();
-		
-		ParallelExecutorMapping mapping = rename.getMapping();
-
-		mapping.merge(this.testPackets(group1, group2));
-		
-		summary(rename.getMapping(), group1);
-		
-		String sg1 = print(group1),
-			sg2 = print(group2);
-		
-		System.out.println("GROUP 1 " + sg1);
-		System.out.println("GROUP 2 " + sg2);
-		
-		List<Field> exported = getExportedFields(group1);
-		int mapped = 0, not = 0;
-		for (Field f : exported)
-		{
-			Field other = (Field) mapping.get(f);
-			if (other == null)
-				System.out.println("missing " + f + " " + other);
-			if (other != null) ++mapped;
-			else ++not;
-		}
-		System.out.println("Mapped " + mapped + " total " + (mapped+not));
-		
-	}
+//	@Test
+//	public void testCore() throws Exception
+//	{
+//		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+//		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
+//
+//		Mapper rename = new Mapper(group1, group2);
+//		rename.run();
+//
+//		ParallelExecutorMapping mapping = rename.getMapping();
+//
+//		mapping.merge(this.testPackets(group1, group2));
+//
+//		summary(rename.getMapping(), group1);
+//
+//		String sg1 = print(group1),
+//			sg2 = print(group2);
+//
+//		System.out.println("GROUP 1 " + sg1);
+//		System.out.println("GROUP 2 " + sg2);
+//
+//		List<Field> exported = getExportedFields(group1);
+//		int mapped = 0, not = 0;
+//		for (Field f : exported)
+//		{
+//			Field other = (Field) mapping.get(f);
+//			if (other == null)
+//				System.out.println("missing " + f + " " + other);
+//			if (other != null) ++mapped;
+//			else ++not;
+//		}
+//		System.out.println("Mapped " + mapped + " total " + (mapped+not));
+//
+//	}
 	
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
@@ -528,81 +520,92 @@ public class MapStaticTest
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
-		testPackets(group1, group2);
+
+		Mapper mapper = new Mapper(group1, group2);
+		mapper.run();
+		ParallelExecutorMapping mapping = mapper.getMapping();
+
+		summary(mapping, group1);
+
+		String sg1 = print(group1),
+			sg2 = print(group2);
+
+		System.out.println("GROUP 1 " + sg1);
+		System.out.println("GROUP 2 " + sg2);
 	}
 	
 	//@Test
-	public ParallelExecutorMapping testPackets(ClassGroup group1, ClassGroup group2) throws IOException
-	{
-		//ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
-		//ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
-		
-		group1.findClass("client").findField("field446").packetHandler = true;
-		group2.findClass("client").findField("field324").packetHandler = true;
-	
-		Method m1 = group1.findClass("client").findMethod("vmethod3096");
-		Method m2 = group2.findClass("client").findMethod("vmethod2975");
-		
-		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
-		
-		System.out.println("BEGIN OF MAPPING");
-		for (Object o : mappings.getMap().keySet())
-		{
-			Object value = mappings.get(o);
-			System.out.println(o + " <-> " + value);
-		}
-		System.out.println("END OF MAPPINGS " + mappings.getMap().size());
-		
-		System.out.println(mappings.packetHandler1.size() + " vs " + mappings.packetHandler2.size() + " handlers");
-
-		assert mappings.packetHandler1.size() == mappings.packetHandler2.size();
-
-		ParallellMappingExecutor.enable = true;
-		ParallelExecutorMapping all = new ParallelExecutorMapping(group1, group2);
-
-		for (int i = 0; i < mappings.packetHandler1.size(); ++i)
-		{
-			PacketHandler if1 = mappings.packetHandler1.get(i);
-
-			PacketHandler highestHandler = null;
-			ParallelExecutorMapping highest = null;
-			
-			for (int j = 0; j < mappings.packetHandler2.size(); ++j)
-			{
-				PacketHandler if2 = mappings.packetHandler2.get(j);
-
-				Instruction i1 = if1.getFirstInsOfHandler(),
-					i2 = if2.getFirstInsOfHandler();
-
-				ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(group1, group2, i1, i2);
-
-				if (mapping.getMap().isEmpty())
-					continue;
-
-				if (highest == null || mapping.getMap().size() > highest.getMap().size())
-				{
-					highest = mapping;
-					highestHandler = if2;
-				}
-
-
-//				Execution e1 = new Execution(group1);
-//				Execution e2 = new Execution(group2);
+//	public ParallelExecutorMapping testPackets(ClassGroup group1, ClassGroup group2) throws IOException
+//	{
+//		//ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
+//		//ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 //
-//				Frame f1 = new Frame(e1, i1.getInstructions().getCode().getAttributes().getMethod(), i1);
-//				Frame f2 = new Frame(e2, i2.getInstructions().getCode().getAttributes().getMethod(), i2);
-
-				//e1.frames.add(f1);
-				//e2.frames.add(f2);
-			}
-
-			System.out.println(if1 + " <-> " + highestHandler + " <-> " + highest.getMap().size() + " " + highest.crashed);
-			all.merge(highest);
-		}
-
-		ParallellMappingExecutor.enable = false;
-		return all;
-	}
+//		group1.findClass("client").findField("field446").packetHandler = true;
+//		group2.findClass("client").findField("field324").packetHandler = true;
+//
+//		Method m1 = group1.findClass("client").findMethod("vmethod3096");
+//		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+//
+//		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+//
+//		System.out.println("BEGIN OF MAPPING");
+//		for (Object o : mappings.getMap().keySet())
+//		{
+//			Object value = mappings.get(o);
+//			System.out.println(o + " <-> " + value);
+//		}
+//		System.out.println("END OF MAPPINGS " + mappings.getMap().size());
+//
+//		System.out.println(mappings.packetHandler1.size() + " vs " + mappings.packetHandler2.size() + " handlers");
+//
+//		assert mappings.packetHandler1.size() == mappings.packetHandler2.size();
+//
+//		ParallellMappingExecutor.enable = true;
+//		ParallelExecutorMapping all = new ParallelExecutorMapping(group1, group2);
+//
+//		for (int i = 0; i < mappings.packetHandler1.size(); ++i)
+//		{
+//			PacketHandler if1 = mappings.packetHandler1.get(i);
+//
+//			PacketHandler highestHandler = null;
+//			ParallelExecutorMapping highest = null;
+//
+//			for (int j = 0; j < mappings.packetHandler2.size(); ++j)
+//			{
+//				PacketHandler if2 = mappings.packetHandler2.get(j);
+//
+//				Instruction i1 = if1.getFirstInsOfHandler(),
+//					i2 = if2.getFirstInsOfHandler();
+//
+//				ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(group1, group2, i1, i2);
+//
+//				if (mapping.getMap().isEmpty())
+//					continue;
+//
+//				if (highest == null || mapping.getMap().size() > highest.getMap().size())
+//				{
+//					highest = mapping;
+//					highestHandler = if2;
+//				}
+//
+//
+////				Execution e1 = new Execution(group1);
+////				Execution e2 = new Execution(group2);
+////
+////				Frame f1 = new Frame(e1, i1.getInstructions().getCode().getAttributes().getMethod(), i1);
+////				Frame f2 = new Frame(e2, i2.getInstructions().getCode().getAttributes().getMethod(), i2);
+//
+//				//e1.frames.add(f1);
+//				//e2.frames.add(f2);
+//			}
+//
+//			System.out.println(if1 + " <-> " + highestHandler + " <-> " + highest.getMap().size() + " " + highest.crashed);
+//			all.merge(highest);
+//		}
+//
+//		ParallellMappingExecutor.enable = false;
+//		return all;
+//	}
 
 	private static int handlers[][] = {
 		{ 74, 187 }

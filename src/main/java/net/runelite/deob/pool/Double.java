@@ -24,6 +24,12 @@ public class Double extends PoolEntry
 		
 		value = d;
 	}
+
+	@Override
+	public Double copy()
+	{
+		return new Double(value);
+	}
 	
 	@Override
 	public boolean equals(Object other)

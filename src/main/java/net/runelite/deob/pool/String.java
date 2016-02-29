@@ -26,6 +26,12 @@ public class String extends PoolEntry
 		
 		string = str;
 	}
+
+	@Override
+	public String copy()
+	{
+		return new String(string);
+	}
 	
 	@Override
 	public void resolve(ConstantPool pool)

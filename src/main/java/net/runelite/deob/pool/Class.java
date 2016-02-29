@@ -35,6 +35,12 @@ public class Class extends PoolEntry
 		
 		this.name = name;
 	}
+
+	@Override
+	public Class copy()
+	{
+		return new Class(name);
+	}
 	
 	@Override
 	public void resolve(ConstantPool pool)

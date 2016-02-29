@@ -31,6 +31,8 @@ public abstract class PoolEntry
 	
 	@Override
 	public abstract int hashCode();
+
+	public abstract PoolEntry copy();
 	
 	public abstract void write(DataOutputStream out) throws IOException;
 	

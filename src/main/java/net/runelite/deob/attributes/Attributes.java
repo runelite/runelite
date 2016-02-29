@@ -146,4 +146,9 @@ public class Attributes
 		element.setValue(value);
 		annotation.addElement(element);
 	}
+
+	public Annotations getAnnotations()
+	{
+		return (Annotations) findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+	}
 }

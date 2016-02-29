@@ -41,6 +41,24 @@ public class NameAndType extends PoolEntry
 		this.name = name;
 		this.type = type;
 	}
+
+	@Override
+	public NameAndType copy()
+	{
+		if (signature != null)
+		{
+			return new NameAndType(name, new Signature(signature));
+		}
+		else if (type != null)
+		{
+			return new NameAndType(name, new Type(type));
+		}
+		else
+		{
+			assert false;
+			return null;
+		}
+	}
 	
 	@Override
 	public void resolve(ConstantPool pool)
