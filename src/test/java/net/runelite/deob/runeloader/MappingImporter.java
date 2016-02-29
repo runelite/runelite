@@ -2,6 +2,7 @@ package net.runelite.deob.runeloader;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
@@ -23,9 +24,9 @@ import org.junit.Test;
 
 public class MappingImporter
 {
-	private static final File IN = new File("/Users/adam/w/rs/07/adamin.jar");
-	private static final File OUT = new File("/Users/adam/w/rs/07/adamout.jar");
-	private static final File RL_INJECTION = new File("/Users/adam/w/rs/07/rl/injection.json");
+	private static final File IN = new File("d:/rs/07/adamin.jar");
+	private static final File OUT = new File("d:/rs/07/adamout.jar");
+	private static final File RL_INJECTION = new File("C:\\Users\\Adam\\git\\jbytecode\\src\\test\\resources\\injection_v16.json");
 	
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");

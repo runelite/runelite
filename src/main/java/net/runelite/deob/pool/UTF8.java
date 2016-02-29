@@ -24,6 +24,12 @@ public class UTF8 extends PoolEntry
 		
 		string = value;
 	}
+
+	@Override
+	public UTF8 copy()
+	{
+		return new UTF8(string);
+	}
 	
 	@Override
 	public boolean equals(Object other)

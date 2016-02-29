@@ -27,6 +27,12 @@ public class Field extends PoolEntry
 		this.clazz = clazz;
 		this.nat = nat;
 	}
+
+	@Override
+	public Field copy()
+	{
+		return new Field(clazz.copy(), nat.copy());
+	}
 	
 	@Override
 	public void resolve(ConstantPool pool)

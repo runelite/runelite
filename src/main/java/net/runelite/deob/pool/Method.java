@@ -30,6 +30,12 @@ public class Method extends PoolEntry
 	}
 
 	@Override
+	public Method copy()
+	{
+		return new Method(clazz.copy(), nat.copy());
+	}
+
+	@Override
 	public java.lang.String toString()
 	{
 		return clazz + "." + nat;

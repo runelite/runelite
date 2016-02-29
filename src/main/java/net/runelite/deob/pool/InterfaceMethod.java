@@ -28,6 +28,12 @@ public class InterfaceMethod extends PoolEntry
 		classIndex = is.readUnsignedShort();
 		natIndex = is.readUnsignedShort();
 	}
+
+	@Override
+	public InterfaceMethod copy()
+	{
+		return new InterfaceMethod(clazz.copy(), nat.copy());
+	}
 	
 	@Override
 	public void resolve(ConstantPool pool)
