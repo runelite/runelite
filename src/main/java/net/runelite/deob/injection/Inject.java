@@ -205,7 +205,7 @@ public class Inject
 		methodAttributes.addAttribute(code);
 		
 		Instructions instructions = code.getInstructions();
-		List<Instruction> ins = new ArrayList<>();
+		List<Instruction> ins = instructions.getInstructions();
 		
 		if (field.isStatic())
 		{
