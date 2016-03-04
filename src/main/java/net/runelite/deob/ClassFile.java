@@ -185,6 +185,11 @@ public class ClassFile
 		return fields.findField(name);
 	}
 	
+	public Field findField(NameAndType nat)
+	{
+		return fields.findField(nat);
+	}
+	
 	public Class getPoolClass()
 	{
 		return name;

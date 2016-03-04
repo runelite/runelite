@@ -9,13 +9,17 @@ import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
 
-import java.io.IOException;
 
 public class Return extends Instruction implements ReturnInstruction
 {
-	public Return(Instructions instructions, InstructionType type, int pc) throws IOException
+	public Return(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+	
+	public Return(Instructions instructions)
+	{
+		super(instructions, InstructionType.RETURN, -1);
 	}
 
 	@Override

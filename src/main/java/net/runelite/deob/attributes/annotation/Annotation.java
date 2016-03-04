@@ -40,6 +40,11 @@ public class Annotation
 		return elements;
 	}
 	
+	public Element getElement()
+	{
+		return elements.get(0);
+	}
+	
 	public void addElement(Element element)
 	{
 		elements.add(element);

@@ -14,6 +14,10 @@ public class Signature
 	private List<Type> arguments = new ArrayList<>();
 	private Type rv;
 	
+	public Signature()
+	{
+	}
+	
 	public Signature(String str)
 	{
 		Matcher m = paramRetPattern.matcher(str);
@@ -90,6 +94,11 @@ public class Signature
 		arguments.set(i, type);
 	}
 	
+	public void addArg(Type type)
+	{
+		arguments.add(type);
+	}
+	
 	public Type getReturnValue()
 	{
 		return rv;
@@ -98,5 +107,10 @@ public class Signature
 	public void setTypeOfReturnValue(Type type)
 	{
 		rv = type;
+	}
+	
+	public List<Type> getArguments()
+	{
+		return arguments;
 	}
 }
