@@ -30,6 +30,12 @@ public class Interfaces
 		classFile = c;
 	}
 	
+	public void addInterface(Class clazz)
+	{
+		if (!interfaces.contains(clazz))
+			interfaces.add(clazz);
+	}
+	
 	public List<Class> getInterfaces()
 	{
 		return interfaces;

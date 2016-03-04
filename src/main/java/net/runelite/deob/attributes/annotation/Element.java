@@ -43,6 +43,11 @@ public class Element
 		this.value = value;
 	}
 	
+	public String getString()
+	{
+		return (String) value.getObject();
+	}
+	
 	public void load(DataInputStream is) throws IOException
 	{
 		ConstantPool pool = annotation.getAnnotations().getAttributes().getClassFile().getPool();

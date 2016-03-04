@@ -30,6 +30,13 @@ public class GetField extends Instruction implements GetFieldInstruction
 		super(instructions, type, pc);
 	}
 	
+	public GetField(Instructions instructions, Field field)
+	{
+		super(instructions, InstructionType.GETFIELD, -1);
+		
+		this.field = field;
+	}
+	
 	@Override
 	public String toString()
 	{

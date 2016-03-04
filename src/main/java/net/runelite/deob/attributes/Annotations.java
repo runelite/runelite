@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.deob.attributes.annotation.Annotation;
+import net.runelite.deob.signature.Type;
 
 public class Annotations extends Attribute
 {
@@ -24,6 +25,14 @@ public class Annotations extends Attribute
 	public void addAnnotation(Annotation annotation)
 	{
 		annotations.add(annotation);
+	}
+	
+	public Annotation find(Type type)
+	{
+		for (Annotation a : annotations)
+			if (a.getType().equals(type))
+				return a;
+		return null;
 	}
 	
 	@Override
