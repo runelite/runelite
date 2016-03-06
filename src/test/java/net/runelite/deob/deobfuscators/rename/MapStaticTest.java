@@ -166,7 +166,7 @@ public class MapStaticTest
 		}
 	}
 	
-	private void summary(ParallelExecutorMapping finalm, ClassGroup in)
+	public static void summary(ParallelExecutorMapping finalm, ClassGroup in)
 	{
 		int fields = 0, staticMethod = 0, method = 0, total = 0;
 		for (Entry<Object, Object> e : finalm.getMap().entrySet())
@@ -441,7 +441,7 @@ public class MapStaticTest
 		}
 	}
 	
-	private String print(ClassGroup cg)
+	public static String print(ClassGroup cg)
 	{
 		int methods = 0, fields = 0, classes = 0;
 		for (ClassFile cf : cg.getClasses())
