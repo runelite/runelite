@@ -1,47 +1,35 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fh")
+@ObfuscatedName("fg")
 public class class174 extends class203 {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -452953895
-   )
-   public final int field2877;
-   @ObfuscatedName("f")
-   public final int[] field2878;
+   @ObfuscatedName("a")
+   public final int[] field2899;
    @ObfuscatedName("l")
-   public final int[] field2879;
+   @ObfuscatedGetter(
+      intValue = 2133330049
+   )
+   public final int field2900;
+   @ObfuscatedName("i")
+   public final int[] field2902;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1834044955
+      intValue = -1439598841
    )
-   public final int field2882;
+   public final int field2903;
 
-   @ObfuscatedName("j")
-   static void method3508() {
-      for(class23 var0 = (class23)class23.field590.method3871(); null != var0; var0 = (class23)class23.field590.method3873()) {
-         if(var0.field595 != null) {
-            class16.field235.method1177(var0.field595);
-            var0.field595 = null;
-         }
-
-         if(null != var0.field600) {
-            class16.field235.method1177(var0.field600);
-            var0.field600 = null;
-         }
-      }
-
-      class23.field590.method3865();
+   class174(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2903 = var1;
+      this.field2900 = var2;
+      this.field2899 = var3;
+      this.field2902 = var4;
    }
 
    @ObfuscatedName("j")
-   public boolean method3510(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2879.length) {
-         int var3 = this.field2879[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2878[var2]) {
+   public boolean method3404(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2902.length) {
+         int var3 = this.field2902[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2899[var2]) {
             return true;
          }
       }
@@ -49,10 +37,80 @@ public class class174 extends class203 {
       return false;
    }
 
-   class174(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2882 = var1;
-      this.field2877 = var2;
-      this.field2878 = var3;
-      this.field2879 = var4;
+   @ObfuscatedName("ao")
+   static final void method3407(int var0, int var1, int var2, int var3, boolean var4) {
+      if(var2 < 1) {
+         var2 = 1;
+      }
+
+      if(var3 < 1) {
+         var3 = 1;
+      }
+
+      int var5 = var3 - 334;
+      if(var5 < 0) {
+         var5 = 0;
+      } else if(var5 > 100) {
+         var5 = 100;
+      }
+
+      int var6 = client.field370 + (client.field404 - client.field370) * var5 / 100;
+      int var7 = var3 * var6 * 512 / (var2 * 334);
+      int var8;
+      int var9;
+      short var14;
+      if(var7 < client.field548) {
+         var14 = client.field548;
+         var6 = var14 * var2 * 334 / (512 * var3);
+         if(var6 > client.field547) {
+            var6 = client.field547;
+            var8 = 512 * var6 * var3 / (334 * var14);
+            var9 = (var2 - var8) / 2;
+            if(var4) {
+               class79.method1769();
+               class79.method1776(var0, var1, var9, var3, -16777216);
+               class79.method1776(var2 + var0 - var9, var1, var9, var3, -16777216);
+            }
+
+            var0 += var9;
+            var2 -= var9 * 2;
+         }
+      } else if(var7 > client.field549) {
+         var14 = client.field549;
+         var6 = 334 * var2 * var14 / (512 * var3);
+         if(var6 < client.field462) {
+            var6 = client.field462;
+            var8 = 334 * var2 * var14 / (512 * var6);
+            var9 = (var3 - var8) / 2;
+            if(var4) {
+               class79.method1769();
+               class79.method1776(var0, var1, var2, var9, -16777216);
+               class79.method1776(var0, var1 + var3 - var9, var2, var9, -16777216);
+            }
+
+            var1 += var9;
+            var3 -= var9 * 2;
+         }
+      }
+
+      var8 = var5 * (client.field545 - client.field544) / 100 + client.field544;
+      client.field487 = var8 * var6 * var3 / 85504 << 1;
+      if(client.field552 != var2 || var3 != client.field553) {
+         int[] var15 = new int[9];
+
+         for(int var10 = 0; var10 < 9; ++var10) {
+            int var11 = 15 + 128 + var10 * 32;
+            int var12 = var11 * 3 + 600;
+            int var13 = class90.field1587[var11];
+            var15[var10] = var12 * var13 >> 16;
+         }
+
+         class85.method1910(var15, 500, 800, var2, var3);
+      }
+
+      client.field441 = var0;
+      client.field417 = var1;
+      client.field552 = var2;
+      client.field553 = var3;
    }
 }

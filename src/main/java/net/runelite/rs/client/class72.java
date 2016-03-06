@@ -1,96 +1,88 @@
-package net.runelite.rs.client;
-
+import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bn")
 public class class72 implements Runnable {
+   @ObfuscatedName("a")
+   volatile boolean field1357 = false;
+   @ObfuscatedName("i")
+   volatile boolean field1358 = false;
    @ObfuscatedName("l")
-   volatile boolean field1338 = false;
-   @ObfuscatedName("m")
-   volatile class56[] field1340 = new class56[2];
-   @ObfuscatedName("f")
-   volatile boolean field1341 = false;
+   volatile class56[] field1359 = new class56[2];
    @ObfuscatedName("j")
-   class135 field1342;
+   class135 field1360;
 
    public void run() {
-      this.field1338 = true;
+      this.field1358 = true;
 
       try {
-         while(!this.field1341) {
+         while(!this.field1357) {
+            class56 var2;
             for(int var1 = 0; var1 < 2; ++var1) {
-               class56 var2 = this.field1340[var1];
+               var2 = this.field1359[var1];
                if(var2 != null) {
-                  var2.method1218();
+                  var2.method1175();
                }
             }
 
-            class29.method711(10L);
-            class28.method697(this.field1342, (Object)null);
+            class105.method2332(10L);
+            class135 var9 = this.field1360;
+            var2 = null;
+            if(var9.field2097 != null) {
+               for(int var3 = 0; var3 < 50 && var9.field2097.peekEvent() != null; ++var3) {
+                  class105.method2332(1L);
+               }
+
+               if(var2 != null) {
+                  var9.field2097.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               }
+            }
          }
-      } catch (Exception var6) {
-         class37.method803((String)null, var6);
+      } catch (Exception var7) {
+         class16.method184((String)null, var7);
       } finally {
-         this.field1338 = false;
+         this.field1358 = false;
       }
 
    }
 
-   @ObfuscatedName("w")
-   static final int method1598(int var0, int var1) {
-      int var2 = class32.method749(var0 + '넵', 91923 + var1, 4) - 128 + (class32.method749(10294 + var0, '鎽' + var1, 2) - 128 >> 1) + (class32.method749(var0, var1, 1) - 128 >> 2);
-      var2 = (int)((double)var2 * 0.3D) + 35;
-      if(var2 < 10) {
-         var2 = 10;
-      } else if(var2 > 60) {
-         var2 = 60;
-      }
-
-      return var2;
+   @ObfuscatedName("a")
+   public static int method1567(int var0) {
+      --var0;
+      var0 |= var0 >>> 1;
+      var0 |= var0 >>> 2;
+      var0 |= var0 >>> 4;
+      var0 |= var0 >>> 8;
+      var0 |= var0 >>> 16;
+      return var0 + 1;
    }
 
-   @ObfuscatedName("j")
-   static boolean method1599(int var0, int var1) {
-      return var0 != 4 || var1 < 8;
-   }
-
-   @ObfuscatedName("ba")
-   static final void method1600(boolean var0) {
-      client.field413 = 0;
-      client.field444 = 0;
-      class129.method2867();
-      class126.method2859(var0);
-      class171.method3460();
-
-      int var1;
-      for(var1 = 0; var1 < client.field413; ++var1) {
-         int var2 = client.field401[var1];
-         if(client.field286 != client.field313[var2].field799) {
-            client.field313[var2].field761 = null;
-            client.field313[var2] = null;
-         }
-      }
-
-      if(client.field320.field1981 != client.field289) {
-         throw new RuntimeException(client.field320.field1981 + "," + client.field289);
+   @ObfuscatedName("cu")
+   static final boolean method1568(class172 var0) {
+      if(null == var0.field2870) {
+         return false;
       } else {
-         for(var1 = 0; var1 < client.field314; ++var1) {
-            if(client.field313[client.field315[var1]] == null) {
-               throw new RuntimeException(var1 + "," + client.field314);
+         for(int var1 = 0; var1 < var0.field2870.length; ++var1) {
+            int var2 = class141.method2926(var0, var1);
+            int var3 = var0.field2871[var1];
+            if(2 == var0.field2870[var1]) {
+               if(var2 >= var3) {
+                  return false;
+               }
+            } else if(3 == var0.field2870[var1]) {
+               if(var2 <= var3) {
+                  return false;
+               }
+            } else if(var0.field2870[var1] == 4) {
+               if(var2 == var3) {
+                  return false;
+               }
+            } else if(var3 != var2) {
+               return false;
             }
          }
 
+         return true;
       }
-   }
-
-   @ObfuscatedName("f")
-   public static int method1601(char var0) {
-      int var1 = var0 << 4;
-      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-         var0 = Character.toLowerCase(var0);
-         var1 = 1 + (var0 << 4);
-      }
-
-      return var1;
    }
 }

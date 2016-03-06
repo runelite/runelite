@@ -1,78 +1,72 @@
-package net.runelite.rs.client;
-
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fy")
 public class class170 {
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 747287853
-   )
-   public static int field2695 = 0;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1651160123
-   )
-   public static int field2696 = 0;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      longValue = -8308699322228801729L
-   )
-   public static long field2697;
-   @ObfuscatedName("l")
-   public static class195 field2698 = new class195(4096);
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 2006380171
-   )
-   public static int field2699 = 0;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -695015927
-   )
-   public static int field2700 = 0;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -309406671
-   )
-   public static int field2701 = 0;
+   @ObfuscatedName("w")
+   static class167[] field2721 = new class167[256];
    @ObfuscatedName("a")
-   public static class195 field2703 = new class195(32);
+   @ObfuscatedGetter(
+      longValue = 2394504921183277099L
+   )
+   static long field2722;
+   @ObfuscatedName("i")
+   static class195 field2723 = new class195(4096);
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 984387515
+   )
+   static int field2724 = 0;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -1132645213
+      intValue = -1557945107
    )
-   public static int field2704 = 0;
-   @ObfuscatedName("s")
-   public static class195 field2705 = new class195(4096);
-   @ObfuscatedName("w")
+   public static int field2726 = 0;
+   @ObfuscatedName("h")
+   static class202 field2727 = new class202();
+   @ObfuscatedName("n")
+   static class195 field2728 = new class195(4096);
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 643723397
+      intValue = -1893837243
    )
-   public static int field2706 = 0;
-   @ObfuscatedName("i")
-   public static class202 field2707 = new class202();
+   public static int field2729 = 0;
    @ObfuscatedName("r")
-   public static class118 field2708;
-   @ObfuscatedName("p")
-   public static class118 field2709 = new class118(8);
-   @ObfuscatedName("y")
-   static CRC32 field2710 = new CRC32();
-   @ObfuscatedName("v")
-   static class118 field2711;
-   @ObfuscatedName("q")
-   static class167[] field2712 = new class167[256];
-   @ObfuscatedName("x")
-   public static byte field2713 = 0;
+   static class195 field2730 = new class195(4096);
+   @ObfuscatedName("z")
+   static CRC32 field2731 = new CRC32();
+   @ObfuscatedName("u")
+   static class171 field2732;
    @ObfuscatedName("g")
+   static class118 field2733 = new class118(8);
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 246301671
+      intValue = 164841449
    )
-   public static int field2714 = 0;
-   @ObfuscatedName("j")
-   public static class142 field2715;
+   static int field2734 = 0;
+   @ObfuscatedName("m")
+   static class195 field2735 = new class195(32);
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 775427319
+   )
+   public static int field2736 = 0;
    @ObfuscatedName("t")
-   public static class195 field2716 = new class195(4096);
+   static byte field2737 = 0;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 695409489
+   )
+   public static int field2738 = 0;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 198310501
+   )
+   public static int field2739 = 0;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -235840203
+   )
+   public static int field2741 = 0;
 }

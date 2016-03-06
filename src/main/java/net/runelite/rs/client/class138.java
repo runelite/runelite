@@ -1,88 +1,77 @@
-package net.runelite.rs.client;
-
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Graphics;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("eh")
 public final class class138 extends Canvas {
-   @ObfuscatedName("iv")
+   @ObfuscatedName("fy")
    @ObfuscatedGetter(
-      intValue = 1035273299
+      intValue = 1934134293
    )
-   static int field2124;
+   static int field2153;
    @ObfuscatedName("j")
-   Component field2127;
+   Component field2155;
 
    public final void update(Graphics var1) {
-      this.field2127.update(var1);
+      this.field2155.update(var1);
    }
 
    public final void paint(Graphics var1) {
-      this.field2127.paint(var1);
+      this.field2155.paint(var1);
    }
 
    class138(Component var1) {
-      this.field2127 = var1;
+      this.field2155 = var1;
+   }
+
+   @ObfuscatedName("r")
+   public static String method2883(CharSequence var0) {
+      return class28.method652('*', var0.length());
    }
 
    @ObfuscatedName("h")
-   static final void method2977(class118 var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7;
-      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
-         class5.field86[var1][var2][var3] = 0;
+   static final void method2885(class80 var0) {
+      short var1 = 256;
 
-         while(true) {
-            var7 = var0.method2536();
-            if(0 == var7) {
-               if(0 == var1) {
-                  class5.field79[0][var2][var3] = -class72.method1598(var4 + var2 + 932731, var3 + 556238 + var5) * 8;
-               } else {
-                  class5.field79[var1][var2][var3] = class5.field79[var1 - 1][var2][var3] - 240;
-               }
-               break;
-            }
+      int var2;
+      for(var2 = 0; var2 < class10.field165.length; ++var2) {
+         class10.field165[var2] = 0;
+      }
 
-            if(var7 == 1) {
-               int var8 = var0.method2536();
-               if(var8 == 1) {
-                  var8 = 0;
-               }
+      int var3;
+      for(var2 = 0; var2 < 5000; ++var2) {
+         var3 = (int)(Math.random() * 128.0D * (double)var1);
+         class10.field165[var3] = (int)(Math.random() * 256.0D);
+      }
 
-               if(var1 == 0) {
-                  class5.field79[0][var2][var3] = -var8 * 8;
-               } else {
-                  class5.field79[var1][var2][var3] = class5.field79[var1 - 1][var2][var3] - 8 * var8;
-               }
-               break;
-            }
-
-            if(var7 <= 49) {
-               class164.field2645[var1][var2][var3] = var0.method2537();
-               class5.field76[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class133.field2058[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
-            } else if(var7 <= 81) {
-               class5.field86[var1][var2][var3] = (byte)(var7 - 49);
-            } else {
-               class5.field85[var1][var2][var3] = (byte)(var7 - 81);
+      int var4;
+      int var5;
+      for(var2 = 0; var2 < 20; ++var2) {
+         for(var3 = 1; var3 < var1 - 1; ++var3) {
+            for(var4 = 1; var4 < 127; ++var4) {
+               var5 = (var3 << 7) + var4;
+               class126.field2045[var5] = (class10.field165[var5 + 1] + class10.field165[var5 - 1] + class10.field165[var5 - 128] + class10.field165[128 + var5]) / 4;
             }
          }
-      } else {
-         while(true) {
-            var7 = var0.method2536();
-            if(0 == var7) {
-               break;
-            }
 
-            if(var7 == 1) {
-               var0.method2536();
-               break;
-            }
+         int[] var8 = class10.field165;
+         class10.field165 = class126.field2045;
+         class126.field2045 = var8;
+      }
 
-            if(var7 <= 49) {
-               var0.method2536();
+      if(var0 != null) {
+         var2 = 0;
+
+         for(var3 = 0; var3 < var0.field1434; ++var3) {
+            for(var4 = 0; var4 < var0.field1431; ++var4) {
+               if(var0.field1429[var2++] != 0) {
+                  var5 = var0.field1433 + 16 + var4;
+                  int var6 = var3 + 16 + var0.field1430;
+                  int var7 = (var6 << 7) + var5;
+                  class10.field165[var7] = 0;
+               }
             }
          }
       }

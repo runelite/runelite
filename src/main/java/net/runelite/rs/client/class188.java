@@ -1,11 +1,10 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gp")
 public class class188 {
-   @ObfuscatedName("r")
-   public static String[] field3036;
-   @ObfuscatedName("a")
-   public static class166 field3038;
+   @ObfuscatedName("l")
+   public static boolean method3701() {
+      class209 var0 = (class209)class210.field3125.method3807();
+      return null != var0;
+   }
 }

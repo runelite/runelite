@@ -1,5 +1,3 @@
-package net.runelite.rs.client;
-
 import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
@@ -9,65 +7,47 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hm")
+@ObfuscatedName("hk")
 @Implements("FileOnDisk")
 public final class class226 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      longValue = -5491611329971135641L
+      longValue = 2631444657544578999L
    )
    @Export("length")
-   long field3197;
-   @ObfuscatedName("f")
+   long field3206;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      longValue = -1222268832551527705L
+      longValue = 1960349642373544815L
    )
    @Export("position")
-   long field3198;
+   long field3207;
+   @ObfuscatedName("af")
+   static class145 field3208;
    @ObfuscatedName("j")
    @Export("file")
-   RandomAccessFile field3199;
+   RandomAccessFile field3209;
 
    @ObfuscatedName("j")
-   final void method4173(long var1) throws IOException {
-      this.field3199.seek(var1);
-      this.field3198 = var1;
+   final void method4060(long var1) throws IOException {
+      this.field3209.seek(var1);
+      this.field3207 = var1;
    }
 
    @ObfuscatedName("l")
-   public final long method4176() throws IOException {
-      return this.field3199.length();
-   }
-
-   @ObfuscatedName("u")
-   public final int method4177(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.field3199.read(var1, var2, var3);
-      if(var4 > 0) {
-         this.field3198 += (long)var4;
+   public final void method4061(byte[] var1, int var2, int var3) throws IOException {
+      if((long)var3 + this.field3207 > this.field3206) {
+         this.field3209.seek(1L + this.field3206);
+         this.field3209.write(1);
+         throw new EOFException();
+      } else {
+         this.field3209.write(var1, var2, var3);
+         this.field3207 += (long)var3;
       }
-
-      return var4;
-   }
-
-   protected void finalize() throws Throwable {
-      if(null != this.field3199) {
-         System.out.println("");
-         this.method4183();
-      }
-
-   }
-
-   @ObfuscatedName("f")
-   public final void method4183() throws IOException {
-      if(this.field3199 != null) {
-         this.field3199.close();
-         this.field3199 = null;
-      }
-
    }
 
    public class226(File var1, String var2, long var3) throws IOException {
-      if(var3 == -1L) {
+      if(-1L == var3) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -75,27 +55,47 @@ public final class class226 {
          var1.delete();
       }
 
-      this.field3199 = new RandomAccessFile(var1, var2);
-      this.field3197 = var3;
-      this.field3198 = 0L;
-      int var5 = this.field3199.read();
+      this.field3209 = new RandomAccessFile(var1, var2);
+      this.field3206 = var3;
+      this.field3207 = 0L;
+      int var5 = this.field3209.read();
       if(var5 != -1 && !var2.equals("r")) {
-         this.field3199.seek(0L);
-         this.field3199.write(var5);
+         this.field3209.seek(0L);
+         this.field3209.write(var5);
       }
 
-      this.field3199.seek(0L);
+      this.field3209.seek(0L);
    }
 
-   @ObfuscatedName("m")
-   public final void method4185(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.field3198 > this.field3197) {
-         this.field3199.seek(this.field3197 + 1L);
-         this.field3199.write(1);
-         throw new EOFException();
-      } else {
-         this.field3199.write(var1, var2, var3);
-         this.field3198 += (long)var3;
+   @ObfuscatedName("i")
+   public final long method4067() throws IOException {
+      return this.field3209.length();
+   }
+
+   @ObfuscatedName("f")
+   public final int method4068(byte[] var1, int var2, int var3) throws IOException {
+      int var4 = this.field3209.read(var1, var2, var3);
+      if(var4 > 0) {
+         this.field3207 += (long)var4;
       }
+
+      return var4;
+   }
+
+   @ObfuscatedName("a")
+   public final void method4069() throws IOException {
+      if(this.field3209 != null) {
+         this.field3209.close();
+         this.field3209 = null;
+      }
+
+   }
+
+   protected void finalize() throws Throwable {
+      if(null != this.field3209) {
+         System.out.println("");
+         this.method4069();
+      }
+
    }
 }

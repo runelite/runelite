@@ -1,9 +1,9 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dv")
+@ObfuscatedName("dh")
 public class class113 {
-   @ObfuscatedName("ki")
-   static class130 field1954;
+   @ObfuscatedName("f")
+   static void method2397() {
+      class15.field225 = new class195(32);
+   }
 }

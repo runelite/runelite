@@ -1,117 +1,114 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("cz")
 @Implements("GameObject")
 public final class class97 {
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1691294757
-   )
-   @Export("flags")
-   int field1641 = 0;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 919293527
-   )
-   @Export("height")
-   int field1642;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1460744763
-   )
-   @Export("plane")
-   int field1643;
-   @ObfuscatedName("a")
-   @Export("renderable")
-   public class84 field1644;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1616526365
-   )
-   int field1645;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1655844155
-   )
-   @Export("orientation")
-   int field1646;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1852021673
-   )
-   @Export("relativeX")
-   int field1647;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1481383257
-   )
-   @Export("offsetX")
-   int field1648;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 895022087
-   )
-   @Export("relativeY")
-   int field1649;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 981018825
-   )
-   @Export("offsetY")
-   int field1650;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1046625625
+      intValue = 249963455
    )
    @Export("y")
-   int field1651;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1516740967
-   )
-   int field1652;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -819960345
-   )
-   @Export("hash")
-   public int field1653 = 0;
+   int field1665;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 635743121
+      intValue = -1496951985
+   )
+   @Export("height")
+   int field1666;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1324128483
+   )
+   @Export("relativeX")
+   int field1667;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -439838937
    )
    @Export("x")
-   int field1654;
-   @ObfuscatedName("mu")
-   static class78 field1655;
+   int field1668;
+   @ObfuscatedName("be")
+   static class167 field1669;
+   @ObfuscatedName("f")
+   @Export("renderable")
+   public class84 field1670;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1678710799
+   )
+   @Export("offsetX")
+   int field1672;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1900169327
+   )
+   @Export("relativeY")
+   int field1673;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 590979045
+   )
+   @Export("offsetY")
+   int field1674;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 438025847
+   )
+   int field1675;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1323849609
+   )
+   int field1676;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1171940171
+   )
+   @Export("hash")
+   public int field1677 = 0;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1386293683
+   )
+   @Export("flags")
+   int field1678 = 0;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1937641387
+   )
+   @Export("plane")
+   int field1679;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1178349931
+   )
+   @Export("orientation")
+   int field1682;
 
-   @ObfuscatedName("bw")
-   static void method2214(int var0, int var1) {
-      client.field318.method2785(66);
-      client.field318.method2547(var1);
-      client.field318.method2577(var0);
+   @ObfuscatedName("ai")
+   static int method2167() {
+      return client.field382?2:1;
    }
 
-   @ObfuscatedName("m")
-   public static class41 method2215(int var0) {
-      class41 var1 = (class41)class41.field957.method3808((long)var0);
-      if(var1 != null) {
-         return var1;
+   @ObfuscatedName("h")
+   public static Object method2168(byte[] var0) {
+      if(null == var0) {
+         return null;
       } else {
-         byte[] var2 = class41.field963.method3352(1, var0);
-         var1 = new class41();
-         if(null != var2) {
-            var1.method886(new class118(var2));
+         if(var0.length > 136 && !class124.field2036) {
+            try {
+               class117 var1 = new class117();
+               var1.vmethod2734(var0);
+               return var1;
+            } catch (Throwable var2) {
+               class124.field2036 = true;
+            }
          }
 
-         var1.method885();
-         class41.field957.method3805(var1, (long)var0);
-         return var1;
+         return var0;
       }
    }
 }

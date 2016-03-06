@@ -1,78 +1,66 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("az")
 public class class30 {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1335665773
-   )
-   int field680;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -499352561
-   )
-   int field681;
-   @ObfuscatedName("u")
-   String field683;
+   @ObfuscatedName("er")
+   static class78[] field695;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 2089683503
+      intValue = 2019357385
    )
-   int field686;
+   int field696;
+   @ObfuscatedName("f")
+   String field697;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 701202811
+   )
+   int field698;
+   @ObfuscatedName("qs")
+   static class132 field703;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1501921919
+      intValue = 765536297
    )
-   int field688;
+   int field704;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -145419437
+   )
+   int field705;
 
-   @ObfuscatedName("s")
-   static class102 method712(int var0) {
-      class102 var1 = (class102)class42.field972.method3808((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         class166 var3 = class141.field2161;
-         class166 var4 = class42.field974;
-         boolean var5 = true;
-         int[] var6 = var3.method3321(var0);
+   @ObfuscatedName("a")
+   public static void method664() {
+      class136 var0 = class136.field2113;
+      synchronized(class136.field2113) {
+         ++class136.field2132;
+         class136.field2129 = class136.field2131;
+         class136.field2128 = 0;
+         int var1;
+         if(class136.field2124 < 0) {
+            for(var1 = 0; var1 < 112; ++var1) {
+               class136.field2121[var1] = false;
+            }
 
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.method3318(var0, var6[var7]);
-            if(var8 == null) {
-               var5 = false;
-            } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.method3318(var9, 0);
-               if(null == var10) {
-                  var5 = false;
+            class136.field2124 = class136.field2123;
+         } else {
+            while(class136.field2124 != class136.field2123) {
+               var1 = class136.field2134[class136.field2123];
+               class136.field2123 = class136.field2123 + 1 & 127;
+               if(var1 < 0) {
+                  class136.field2121[~var1] = false;
+               } else {
+                  if(!class136.field2121[var1] && class136.field2128 < class136.field2127.length - 1) {
+                     class136.field2127[++class136.field2128 - 1] = var1;
+                  }
+
+                  class136.field2121[var1] = true;
                }
             }
          }
 
-         class102 var2;
-         if(!var5) {
-            var2 = null;
-         } else {
-            try {
-               var2 = new class102(var3, var4, var0, false);
-            } catch (Exception var11) {
-               var2 = null;
-            }
-         }
-
-         if(var2 != null) {
-            class42.field972.method3805(var2, (long)var0);
-         }
-
-         return var2;
+         class136.field2131 = class136.field2130;
       }
-   }
-
-   @ObfuscatedName("f")
-   public static boolean method713(int var0) {
-      return (var0 >> 20 & 1) != 0;
    }
 }

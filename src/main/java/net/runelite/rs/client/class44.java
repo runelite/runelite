@@ -1,54 +1,108 @@
-package net.runelite.rs.client;
-
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("aq")
+@ObfuscatedName("ae")
 public class class44 extends class203 {
+   @ObfuscatedName("b")
+   public boolean field1023 = false;
+   @ObfuscatedName("l")
+   public static class166 field1024;
+   @ObfuscatedName("m")
+   int[] field1025;
+   @ObfuscatedName("i")
+   public static class192 field1026 = new class192(64);
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -56223219
+      intValue = -695596241
    )
-   public static int field1008;
-   @ObfuscatedName("m")
-   public static class166 field1009;
-   @ObfuscatedName("w")
-   public boolean field1010 = false;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1846105755
-   )
-   public int field1011 = -1;
-   @ObfuscatedName("j")
-   public static class166 field1012;
-   @ObfuscatedName("a")
-   int[] field1013;
+   public int field1027 = -1;
    @ObfuscatedName("h")
-   short[] field1014;
-   @ObfuscatedName("i")
-   short[] field1015;
-   @ObfuscatedName("t")
-   short[] field1016;
+   short[] field1028;
+   @ObfuscatedName("o")
+   short[] field1029;
+   @ObfuscatedName("j")
+   public static class166 field1030;
+   @ObfuscatedName("n")
+   short[] field1031;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 791723521
+   )
+   public static int field1032;
+   @ObfuscatedName("r")
+   int[] field1033 = new int[]{-1, -1, -1, -1, -1};
    @ObfuscatedName("k")
-   short[] field1017;
-   @ObfuscatedName("s")
-   int[] field1018 = new int[]{-1, -1, -1, -1, -1};
-   @ObfuscatedName("aj")
-   static class167 field1019;
-   @ObfuscatedName("l")
-   public static class192 field1020 = new class192(64);
-   @ObfuscatedName("pq")
-   static class133 field1022;
+   short[] field1034;
 
-   @ObfuscatedName("u")
-   public class99 method960() {
-      if(null == this.field1013) {
+   @ObfuscatedName("a")
+   void method916(class118 var1, int var2) {
+      if(var2 == 1) {
+         this.field1027 = var1.method2453();
+      } else {
+         int var3;
+         int var4;
+         if(var2 == 2) {
+            var3 = var1.method2453();
+            this.field1025 = new int[var3];
+
+            for(var4 = 0; var4 < var3; ++var4) {
+               this.field1025[var4] = var1.method2455();
+            }
+         } else if(var2 == 3) {
+            this.field1023 = true;
+         } else if(var2 == 40) {
+            var3 = var1.method2453();
+            this.field1029 = new short[var3];
+            this.field1028 = new short[var3];
+
+            for(var4 = 0; var4 < var3; ++var4) {
+               this.field1029[var4] = (short)var1.method2455();
+               this.field1028[var4] = (short)var1.method2455();
+            }
+         } else if(var2 == 41) {
+            var3 = var1.method2453();
+            this.field1031 = new short[var3];
+            this.field1034 = new short[var3];
+
+            for(var4 = 0; var4 < var3; ++var4) {
+               this.field1031[var4] = (short)var1.method2455();
+               this.field1034[var4] = (short)var1.method2455();
+            }
+         } else if(var2 >= 60 && var2 < 70) {
+            this.field1033[var2 - 60] = var1.method2455();
+         }
+      }
+
+   }
+
+   @ObfuscatedName("i")
+   public boolean method917() {
+      if(null == this.field1025) {
+         return true;
+      } else {
+         boolean var1 = true;
+
+         for(int var2 = 0; var2 < this.field1025.length; ++var2) {
+            if(!field1024.method3216(this.field1025[var2], 0)) {
+               var1 = false;
+            }
+         }
+
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("f")
+   public class99 method918() {
+      if(this.field1025 == null) {
          return null;
       } else {
-         class99[] var1 = new class99[this.field1013.length];
+         class99[] var1 = new class99[this.field1025.length];
 
-         for(int var2 = 0; var2 < this.field1013.length; ++var2) {
-            var1[var2] = class99.method2218(field1009, this.field1013[var2], 0);
+         for(int var2 = 0; var2 < this.field1025.length; ++var2) {
+            var1[var2] = class99.method2237(field1024, this.field1025[var2], 0);
          }
 
          class99 var4;
@@ -59,15 +113,15 @@ public class class44 extends class203 {
          }
 
          int var3;
-         if(this.field1014 != null) {
-            for(var3 = 0; var3 < this.field1014.length; ++var3) {
-               var4.method2298(this.field1014[var3], this.field1015[var3]);
+         if(this.field1029 != null) {
+            for(var3 = 0; var3 < this.field1029.length; ++var3) {
+               var4.method2189(this.field1029[var3], this.field1028[var3]);
             }
          }
 
-         if(null != this.field1016) {
-            for(var3 = 0; var3 < this.field1016.length; ++var3) {
-               var4.method2233(this.field1016[var3], this.field1017[var3]);
+         if(this.field1031 != null) {
+            for(var3 = 0; var3 < this.field1031.length; ++var3) {
+               var4.method2183(this.field1031[var3], this.field1034[var3]);
             }
          }
 
@@ -75,12 +129,12 @@ public class class44 extends class203 {
       }
    }
 
-   @ObfuscatedName("a")
-   public boolean method963() {
+   @ObfuscatedName("m")
+   public boolean method919() {
       boolean var1 = true;
 
       for(int var2 = 0; var2 < 5; ++var2) {
-         if(this.field1018[var2] != -1 && !field1009.method3314(this.field1018[var2], 0)) {
+         if(this.field1033[var2] != -1 && !field1024.method3216(this.field1033[var2], 0)) {
             var1 = false;
          }
       }
@@ -88,101 +142,115 @@ public class class44 extends class203 {
       return var1;
    }
 
-   @ObfuscatedName("h")
-   public class99 method964() {
+   @ObfuscatedName("o")
+   public class99 method920() {
       class99[] var1 = new class99[5];
       int var2 = 0;
 
       for(int var3 = 0; var3 < 5; ++var3) {
-         if(-1 != this.field1018[var3]) {
-            var1[var2++] = class99.method2218(field1009, this.field1018[var3], 0);
+         if(-1 != this.field1033[var3]) {
+            var1[var2++] = class99.method2237(field1024, this.field1033[var3], 0);
          }
       }
 
       class99 var5 = new class99(var1, var2);
       int var4;
-      if(this.field1014 != null) {
-         for(var4 = 0; var4 < this.field1014.length; ++var4) {
-            var5.method2298(this.field1014[var4], this.field1015[var4]);
+      if(null != this.field1029) {
+         for(var4 = 0; var4 < this.field1029.length; ++var4) {
+            var5.method2189(this.field1029[var4], this.field1028[var4]);
          }
       }
 
-      if(null != this.field1016) {
-         for(var4 = 0; var4 < this.field1016.length; ++var4) {
-            var5.method2233(this.field1016[var4], this.field1017[var4]);
+      if(this.field1031 != null) {
+         for(var4 = 0; var4 < this.field1031.length; ++var4) {
+            var5.method2183(this.field1031[var4], this.field1034[var4]);
          }
       }
 
       return var5;
    }
 
-   @ObfuscatedName("m")
-   void method971(class118 var1) {
+   @ObfuscatedName("l")
+   void method926(class118 var1) {
       while(true) {
-         int var2 = var1.method2536();
-         if(0 == var2) {
+         int var2 = var1.method2453();
+         if(var2 == 0) {
             return;
          }
 
-         this.method975(var1, var2);
+         this.method916(var1, var2);
       }
    }
 
    @ObfuscatedName("l")
-   public boolean method973() {
-      if(null == this.field1013) {
-         return true;
-      } else {
-         boolean var1 = true;
+   static void method934(int var0, String var1, String var2, String var3) {
+      class27 var4 = (class27)class11.field174.get(Integer.valueOf(var0));
+      if(null == var4) {
+         var4 = new class27();
+         class11.field174.put(Integer.valueOf(var0), var4);
+      }
 
-         for(int var2 = 0; var2 < this.field1013.length; ++var2) {
-            if(!field1009.method3314(this.field1013[var2], 0)) {
-               var1 = false;
+      class35 var5 = var4.method639(var0, var1, var2, var3);
+      class11.field172.method3760(var5, (long)var5.field789);
+      class11.field173.method3799(var5);
+      client.field480 = client.field392;
+   }
+
+   @ObfuscatedName("cs")
+   static final void method939(int var0) {
+      if(class149.method3102(var0)) {
+         class172[] var1 = class172.field2757[var0];
+
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            class172 var3 = var1[var2];
+            if(null != var3) {
+               var3.field2816 = 0;
+               var3.field2760 = 0;
             }
          }
 
-         return var1;
       }
    }
 
-   @ObfuscatedName("f")
-   void method975(class118 var1, int var2) {
-      if(1 == var2) {
-         this.field1011 = var1.method2536();
+   @ObfuscatedName("l")
+   static File method940(String var0) {
+      if(!class134.field2087) {
+         throw new RuntimeException("");
       } else {
-         int var3;
-         int var4;
-         if(var2 == 2) {
-            var3 = var1.method2536();
-            this.field1013 = new int[var3];
+         File var1 = (File)class134.field2084.get(var0);
+         if(null != var1) {
+            return var1;
+         } else {
+            File var2 = new File(class134.field2083, var0);
+            RandomAccessFile var3 = null;
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.field1013[var4] = var1.method2538();
-            }
-         } else if(3 == var2) {
-            this.field1010 = true;
-         } else if(var2 == 40) {
-            var3 = var1.method2536();
-            this.field1014 = new short[var3];
-            this.field1015 = new short[var3];
+            try {
+               File var4 = new File(var2.getParent());
+               if(!var4.exists()) {
+                  throw new RuntimeException("");
+               } else {
+                  var3 = new RandomAccessFile(var2, "rw");
+                  int var5 = var3.read();
+                  var3.seek(0L);
+                  var3.write(var5);
+                  var3.seek(0L);
+                  var3.close();
+                  class134.field2084.put(var0, var2);
+                  return var2;
+               }
+            } catch (Exception var7) {
+               try {
+                  if(null != var3) {
+                     var3.close();
+                     var3 = null;
+                  }
+               } catch (Exception var6) {
+                  ;
+               }
 
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.field1014[var4] = (short)var1.method2538();
-               this.field1015[var4] = (short)var1.method2538();
+               throw new RuntimeException();
             }
-         } else if(41 == var2) {
-            var3 = var1.method2536();
-            this.field1016 = new short[var3];
-            this.field1017 = new short[var3];
-
-            for(var4 = 0; var4 < var3; ++var4) {
-               this.field1016[var4] = (short)var1.method2538();
-               this.field1017[var4] = (short)var1.method2538();
-            }
-         } else if(var2 >= 60 && var2 < 70) {
-            this.field1018[var2 - 60] = var1.method2538();
          }
       }
-
    }
 }

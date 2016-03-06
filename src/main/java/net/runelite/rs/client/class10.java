@@ -1,152 +1,138 @@
-package net.runelite.rs.client;
-
-import java.net.URL;
+import java.awt.Graphics;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("s")
+@ObfuscatedName("r")
 public class class10 extends class106 {
-   @ObfuscatedName("eh")
-   static class78[] field155;
-   @ObfuscatedName("gl")
-   static class172 field156;
-   @ObfuscatedName("jw")
+   @ObfuscatedName("mi")
    @ObfuscatedGetter(
-      intValue = -1514328843
+      intValue = -21592299
    )
-   static int field157;
-   @ObfuscatedName("bn")
-   static class80 field159;
-   @ObfuscatedName("au")
-   static class142 field160;
-   @ObfuscatedName("bb")
-   @ObfuscatedGetter(
-      intValue = -1383770245
-   )
-   static int field161;
-   @ObfuscatedName("br")
-   @ObfuscatedGetter(
-      intValue = -64971617
-   )
-   static int field164;
+   static int field163;
+   @ObfuscatedName("e")
+   static int[] field165;
+   @ObfuscatedName("av")
+   static class167 field168;
+   @ObfuscatedName("ph")
+   static class8 field169;
 
    @ObfuscatedName("j")
-   public boolean vmethod2416(int var1, int var2) {
-      return super.field1860 == var1 && var2 == super.field1858;
+   protected boolean vmethod2336(int var1, int var2) {
+      return super.field1889 == var1 && super.field1885 == var2;
    }
 
-   @ObfuscatedName("j")
-   public static class43 method156(int var0) {
-      class43 var1 = (class43)class43.field993.method3808((long)var0);
-      if(var1 != null) {
-         return var1;
+   @ObfuscatedName("cp")
+   static void method126(class172 var0, int var1, int var2) {
+      if(var0.field2764 == 0) {
+         var0.field2772 = var0.field2768;
+      } else if(1 == var0.field2764) {
+         var0.field2772 = var0.field2768 + (var1 - var0.field2774) / 2;
+      } else if(2 == var0.field2764) {
+         var0.field2772 = var1 - var0.field2774 - var0.field2768;
+      } else if(var0.field2764 == 3) {
+         var0.field2772 = var1 * var0.field2768 >> 14;
+      } else if(4 == var0.field2764) {
+         var0.field2772 = (var1 - var0.field2774) / 2 + (var1 * var0.field2768 >> 14);
       } else {
-         byte[] var2 = class43.field991.method3352(13, var0);
-         var1 = new class43();
-         var1.field995 = var0;
-         if(var2 != null) {
-            var1.method947(new class118(var2));
+         var0.field2772 = var1 - var0.field2774 - (var0.field2768 * var1 >> 14);
+      }
+
+      if(0 == var0.field2866) {
+         var0.field2773 = var0.field2769;
+      } else if(var0.field2866 == 1) {
+         var0.field2773 = (var2 - var0.field2890) / 2 + var0.field2769;
+      } else if(2 == var0.field2866) {
+         var0.field2773 = var2 - var0.field2890 - var0.field2769;
+      } else if(var0.field2866 == 3) {
+         var0.field2773 = var0.field2769 * var2 >> 14;
+      } else if(4 == var0.field2866) {
+         var0.field2773 = (var2 - var0.field2890) / 2 + (var2 * var0.field2769 >> 14);
+      } else {
+         var0.field2773 = var2 - var0.field2890 - (var0.field2769 * var2 >> 14);
+      }
+
+      if(client.field458 && 0 == var0.field2849) {
+         if(var0.field2772 < 0) {
+            var0.field2772 = 0;
+         } else if(var0.field2774 + var0.field2772 > var1) {
+            var0.field2772 = var1 - var0.field2774;
          }
 
-         class43.field993.method3805(var1, (long)var0);
-         return var1;
+         if(var0.field2773 < 0) {
+            var0.field2773 = 0;
+         } else if(var0.field2890 + var0.field2773 > var2) {
+            var0.field2773 = var2 - var0.field2890;
+         }
       }
+
    }
 
-   @ObfuscatedName("l")
-   static boolean method157(String var0, int var1, String var2) {
-      if(0 == var1) {
+   @ObfuscatedName("af")
+   static final void method128(String var0, boolean var1) {
+      byte var2 = 4;
+      int var3 = 6 + var2;
+      int var4 = var2 + 6;
+      int var5 = class29.field692.method3964(var0, 250);
+      int var6 = class29.field692.method3965(var0, 250) * 13;
+      class79.method1776(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 0);
+      class79.method1813(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
+      class29.field692.method3970(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      class159.method3134(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2);
+      if(var1) {
          try {
-            if(!class137.field2117.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var10 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+            Graphics var7 = class125.field2039.getGraphics();
+            class75.field1385.vmethod1842(var7, 0, 0);
+         } catch (Exception var12) {
+            class125.field2039.repaint();
+         }
+      } else {
+         int var13 = var3;
+         int var8 = var4;
+         int var9 = var5;
+         int var10 = var6;
 
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var10.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
+         for(int var11 = 0; var11 < client.field491; ++var11) {
+            if(client.field496[var11] + client.field498[var11] > var13 && client.field496[var11] < var9 + var13 && client.field499[var11] + client.field456[var11] > var8 && client.field456[var11] < var8 + var10) {
+               client.field497[var11] = true;
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("al")
+   static final void method129() {
+      for(class6 var0 = (class6)client.field422.method3773(); var0 != null; var0 = (class6)client.field422.method3772()) {
+         if(var0.field106 == class75.field1386 && client.field394 <= var0.field112) {
+            if(client.field394 >= var0.field105) {
+               if(var0.field115 > 0) {
+                  class34 var1 = client.field324[var0.field115 - 1];
+                  if(var1 != null && var1.field839 >= 0 && var1.field839 < 13312 && var1.field848 >= 0 && var1.field848 < 13312) {
+                     var0.method85(var1.field839, var1.field848, class105.method2335(var1.field839, var1.field848, var0.field106) - var0.field122, client.field394);
                   }
                }
 
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
+               if(var0.field115 < 0) {
+                  int var2 = -var0.field115 - 1;
+                  class2 var3;
+                  if(var2 == client.field477) {
+                     var3 = class148.field2249;
+                  } else {
+                     var3 = client.field410[var2];
+                  }
+
+                  if(var3 != null && var3.field839 >= 0 && var3.field839 < 13312 && var3.field848 >= 0 && var3.field848 < 13312) {
+                     var0.method85(var3.field839, var3.field848, class105.method2335(var3.field839, var3.field848, var0.field106) - var0.field122, client.field394);
+                  }
+               }
+
+               var0.method92(client.field362);
+               class107.field1906.method1886(class75.field1386, (int)var0.field113, (int)var0.field117, (int)var0.field123, 60, var0, var0.field125, -1, false);
             }
-         } catch (Throwable var5) {
-            return false;
+         } else {
+            var0.method3853();
          }
-      } else if(1 == var1) {
-         try {
-            Object var3 = class131.method2877(class137.field2116, var2, new Object[]{(new URL(class137.field2116.getCodeBase(), var0)).toString()});
-            return var3 != null;
-         } catch (Throwable var6) {
-            return false;
-         }
-      } else if(2 == var1) {
-         try {
-            class137.field2116.getAppletContext().showDocument(new URL(class137.field2116.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var7) {
-            return false;
-         }
-      } else if(var1 == 3) {
-         try {
-            class131.method2879(class137.field2116, "loggedout");
-         } catch (Throwable var9) {
-            ;
-         }
-
-         try {
-            class137.field2116.getAppletContext().showDocument(new URL(class137.field2116.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var8) {
-            return false;
-         }
-      } else {
-         throw new IllegalArgumentException();
       }
-   }
 
-   @ObfuscatedName("m")
-   public static class51 method158(int var0) {
-      class51 var1 = (class51)class51.field1093.method3808((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class221.field3164.method3352(10, var0);
-         var1 = new class51();
-         var1.field1097 = var0;
-         if(null != var2) {
-            var1.method1114(new class118(var2));
-         }
-
-         var1.method1080();
-         if(-1 != var1.field1114) {
-            var1.method1070(method158(var1.field1114), method158(var1.field1104));
-         }
-
-         if(var1.field1125 != -1) {
-            var1.method1071(method158(var1.field1125), method158(var1.field1138));
-         }
-
-         if(!class102.field1750 && var1.field1112) {
-            var1.field1099 = "Members object";
-            var1.field1137 = false;
-            var1.field1108 = null;
-            var1.field1116 = null;
-            var1.field1124 = 0;
-         }
-
-         class51.field1093.method3805(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("dc")
-   static String method159(class172 var0, int var1) {
-      int var3 = class7.method126(var0);
-      boolean var2 = 0 != (var3 >> var1 + 1 & 1);
-      return !var2 && null == var0.field2766?null:(null != var0.field2786 && var0.field2786.length > var1 && null != var0.field2786[var1] && var0.field2786[var1].trim().length() != 0?var0.field2786[var1]:null);
    }
 }

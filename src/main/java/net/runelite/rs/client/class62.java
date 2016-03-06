@@ -1,49 +1,47 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("be")
+@ObfuscatedName("bj")
 public class class62 extends class65 {
+   @ObfuscatedName("i")
+   int field1238;
    @ObfuscatedName("l")
-   int field1218;
-   @ObfuscatedName("m")
-   public byte[] field1219;
+   public byte[] field1239;
+   @ObfuscatedName("a")
+   public int field1240;
+   @ObfuscatedName("j")
+   public int field1241;
    @ObfuscatedName("f")
-   public int field1220;
-   @ObfuscatedName("j")
-   public int field1221;
-   @ObfuscatedName("u")
-   public boolean field1222;
-
-   class62(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1221 = var1;
-      this.field1219 = var2;
-      this.field1220 = var3;
-      this.field1218 = var4;
-      this.field1222 = var5;
-   }
+   public boolean field1242;
 
    @ObfuscatedName("j")
-   public class62 method1320(class74 var1) {
-      this.field1219 = var1.method1614(this.field1219);
-      this.field1221 = var1.method1615(this.field1221);
-      if(this.field1220 == this.field1218) {
-         this.field1220 = this.field1218 = var1.method1616(this.field1220);
+   public class62 method1280(class74 var1) {
+      this.field1239 = var1.method1583(this.field1239);
+      this.field1241 = var1.method1586(this.field1241);
+      if(this.field1240 == this.field1238) {
+         this.field1240 = this.field1238 = var1.method1589(this.field1240);
       } else {
-         this.field1220 = var1.method1616(this.field1220);
-         this.field1218 = var1.method1616(this.field1218);
-         if(this.field1220 == this.field1218) {
-            --this.field1220;
+         this.field1240 = var1.method1589(this.field1240);
+         this.field1238 = var1.method1589(this.field1238);
+         if(this.field1240 == this.field1238) {
+            --this.field1240;
          }
       }
 
       return this;
    }
 
+   class62(int var1, byte[] var2, int var3, int var4, boolean var5) {
+      this.field1241 = var1;
+      this.field1239 = var2;
+      this.field1240 = var3;
+      this.field1238 = var4;
+      this.field1242 = var5;
+   }
+
    class62(int var1, byte[] var2, int var3, int var4) {
-      this.field1221 = var1;
-      this.field1219 = var2;
-      this.field1220 = var3;
-      this.field1218 = var4;
+      this.field1241 = var1;
+      this.field1239 = var2;
+      this.field1240 = var3;
+      this.field1238 = var4;
    }
 }

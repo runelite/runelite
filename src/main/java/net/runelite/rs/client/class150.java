@@ -1,18 +1,27 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("ej")
 public class class150 {
-   @ObfuscatedName("i")
-   static byte[][][] field2239;
-   @ObfuscatedName("a")
-   static class78 field2240;
-   @ObfuscatedName("w")
-   static class172 field2244;
+   @ObfuscatedName("ce")
+   static class145 field2262;
+   @ObfuscatedName("q")
+   static boolean field2267;
+   @ObfuscatedName("aq")
+   static String field2268;
+   @ObfuscatedName("k")
+   static class80 field2269;
 
-   @ObfuscatedName("m")
-   public static String method3183(class118 var0) {
-      return class88.method2100(var0, 32767);
+   @ObfuscatedName("j")
+   public static class111 method3104(class111[] var0, int var1) {
+      class111[] var2 = var0;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class111 var4 = var2[var3];
+         if(var1 == var4.vmethod3121()) {
+            return var4;
+         }
+      }
+
+      return null;
    }
 }

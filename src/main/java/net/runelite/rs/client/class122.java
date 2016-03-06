@@ -1,70 +1,81 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("dw")
 public final class class122 {
-   @ObfuscatedName("u")
-   int[] field2005 = new int[256];
+   @ObfuscatedName("n")
+   int field2019;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -895721933
+   )
+   int field2020;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1288963103
+   )
+   int field2021;
+   @ObfuscatedName("m")
+   int[] field2022 = new int[256];
+   @ObfuscatedName("o")
+   int[] field2023 = new int[256];
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1939473845
+      intValue = 1358710615
    )
-   int field2007;
+   int field2025;
+   @ObfuscatedName("ay")
+   @ObfuscatedGetter(
+      longValue = -6916080085384449655L
+   )
+   static long field2028;
+
    @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 717033881
-   )
-   int field2008;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1771407287
-   )
-   int field2011;
-   @ObfuscatedName("t")
-   int field2013;
-   @ObfuscatedName("h")
-   int[] field2014 = new int[256];
-
-   @ObfuscatedName("j")
-   final int method2807() {
-      if(0 == --this.field2008 + 1) {
-         this.method2808();
-         this.field2008 = 255;
-      }
-
-      return this.field2005[this.field2008];
-   }
-
-   @ObfuscatedName("m")
-   final void method2808() {
-      this.field2007 += (this.field2013 += -2043727055) * 2090550737;
+   final void method2710() {
+      this.field2025 += (this.field2019 += -463473387) * -330124739;
 
       for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = this.field2014[var1];
-         if((var1 & 2) == 0) {
+         int var2 = this.field2023[var1];
+         if(0 == (var1 & 2)) {
             if(0 == (var1 & 1)) {
-               this.field2011 ^= this.field2011 << 13;
+               this.field2020 ^= this.field2020 << 13;
             } else {
-               this.field2011 ^= this.field2011 >>> 6;
+               this.field2020 ^= this.field2020 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2011 ^= this.field2011 << 2;
+            this.field2020 ^= this.field2020 << 2;
          } else {
-            this.field2011 ^= this.field2011 >>> 16;
+            this.field2020 ^= this.field2020 >>> 16;
          }
 
-         this.field2011 += this.field2014[var1 + 128 & 255];
+         this.field2020 += this.field2023[128 + var1 & 255];
          int var3;
-         this.field2014[var1] = var3 = this.field2014[(var2 & 1020) >> 2] + this.field2011 + this.field2007;
-         this.field2005[var1] = this.field2007 = var2 + this.field2014[(var3 >> 8 & 1020) >> 2];
+         this.field2023[var1] = var3 = this.field2023[(var2 & 1020) >> 2] + this.field2020 + this.field2025;
+         this.field2022[var1] = this.field2025 = this.field2023[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
-   @ObfuscatedName("f")
-   final void method2809() {
+   class122(int[] var1) {
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         this.field2022[var2] = var1[var2];
+      }
+
+      this.method2718();
+   }
+
+   @ObfuscatedName("j")
+   final int method2717() {
+      if(0 == --this.field2021 + 1) {
+         this.method2710();
+         this.field2021 = 255;
+      }
+
+      return this.field2022[this.field2021];
+   }
+
+   @ObfuscatedName("a")
+   final void method2718() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -103,14 +114,14 @@ public final class class122 {
       }
 
       for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2005[var1];
-         var3 += this.field2005[var1 + 1];
-         var4 += this.field2005[2 + var1];
-         var5 += this.field2005[3 + var1];
-         var6 += this.field2005[4 + var1];
-         var7 += this.field2005[var1 + 5];
-         var8 += this.field2005[6 + var1];
-         var9 += this.field2005[var1 + 7];
+         var2 += this.field2022[var1];
+         var3 += this.field2022[1 + var1];
+         var4 += this.field2022[var1 + 2];
+         var5 += this.field2022[3 + var1];
+         var6 += this.field2022[4 + var1];
+         var7 += this.field2022[5 + var1];
+         var8 += this.field2022[var1 + 6];
+         var9 += this.field2022[7 + var1];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -135,25 +146,25 @@ public final class class122 {
          var9 ^= var2 >>> 9;
          var4 += var9;
          var2 += var3;
-         this.field2014[var1] = var2;
-         this.field2014[var1 + 1] = var3;
-         this.field2014[var1 + 2] = var4;
-         this.field2014[var1 + 3] = var5;
-         this.field2014[var1 + 4] = var6;
-         this.field2014[5 + var1] = var7;
-         this.field2014[var1 + 6] = var8;
-         this.field2014[7 + var1] = var9;
+         this.field2023[var1] = var2;
+         this.field2023[var1 + 1] = var3;
+         this.field2023[2 + var1] = var4;
+         this.field2023[3 + var1] = var5;
+         this.field2023[4 + var1] = var6;
+         this.field2023[5 + var1] = var7;
+         this.field2023[var1 + 6] = var8;
+         this.field2023[7 + var1] = var9;
       }
 
       for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2014[var1];
-         var3 += this.field2014[1 + var1];
-         var4 += this.field2014[2 + var1];
-         var5 += this.field2014[var1 + 3];
-         var6 += this.field2014[var1 + 4];
-         var7 += this.field2014[5 + var1];
-         var8 += this.field2014[6 + var1];
-         var9 += this.field2014[var1 + 7];
+         var2 += this.field2023[var1];
+         var3 += this.field2023[var1 + 1];
+         var4 += this.field2023[var1 + 2];
+         var5 += this.field2023[3 + var1];
+         var6 += this.field2023[var1 + 4];
+         var7 += this.field2023[5 + var1];
+         var8 += this.field2023[var1 + 6];
+         var9 += this.field2023[var1 + 7];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -178,30 +189,50 @@ public final class class122 {
          var9 ^= var2 >>> 9;
          var4 += var9;
          var2 += var3;
-         this.field2014[var1] = var2;
-         this.field2014[var1 + 1] = var3;
-         this.field2014[var1 + 2] = var4;
-         this.field2014[var1 + 3] = var5;
-         this.field2014[var1 + 4] = var6;
-         this.field2014[5 + var1] = var7;
-         this.field2014[6 + var1] = var8;
-         this.field2014[var1 + 7] = var9;
+         this.field2023[var1] = var2;
+         this.field2023[1 + var1] = var3;
+         this.field2023[var1 + 2] = var4;
+         this.field2023[3 + var1] = var5;
+         this.field2023[var1 + 4] = var6;
+         this.field2023[var1 + 5] = var7;
+         this.field2023[var1 + 6] = var8;
+         this.field2023[var1 + 7] = var9;
       }
 
-      this.method2808();
-      this.field2008 = 256;
+      this.method2710();
+      this.field2021 = 256;
    }
 
-   class122(int[] var1) {
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         this.field2005[var2] = var1[var2];
+   @ObfuscatedName("l")
+   static void method2721(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
+
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
+            }
+         }
+
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method2721(var0, var1, var2, var5 - 1);
+         method2721(var0, var1, var5 + 1, var3);
       }
 
-      this.method2809();
-   }
-
-   @ObfuscatedName("f")
-   static boolean method2816(String var0, int var1) {
-      return class10.method157(var0, var1, "openjs");
    }
 }

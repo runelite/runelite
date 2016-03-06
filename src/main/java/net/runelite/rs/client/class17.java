@@ -1,134 +1,54 @@
-package net.runelite.rs.client;
-
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Insets;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("n")
+@ObfuscatedName("d")
 @Implements("Friend")
 public class class17 {
-   @ObfuscatedName("t")
-   static byte[][] field236;
-   @ObfuscatedName("j")
-   @Export("name")
-   String field237;
    @ObfuscatedName("f")
+   boolean field246;
+   @ObfuscatedName("l")
+   @Export("previousName")
+   String field247;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 284396947
+      intValue = 1035471415
    )
    @Export("world")
-   int field238;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1824080249
-   )
-   int field239;
-   @ObfuscatedName("a")
-   boolean field240;
-   @ObfuscatedName("m")
-   @Export("previousName")
-   String field241;
-   @ObfuscatedName("u")
-   boolean field243;
-   @ObfuscatedName("qd")
-   public static Canvas field244;
-
-   @ObfuscatedName("bd")
-   static void method212(int var0, int var1, int var2, int var3) {
-      class172 var4 = class214.method4009(var0, var1);
-      if(null != var4 && var4.field2858 != null) {
-         class0 var5 = new class0();
-         var5.field2 = var4;
-         var5.field10 = var4.field2858;
-         class171.method3458(var5);
-      }
-
-      client.field379 = var3;
-      client.field546 = true;
-      class77.field1386 = var0;
-      client.field355 = var1;
-      class138.field2124 = var2;
-      class42.method942(var4);
-   }
-
-   @ObfuscatedName("ax")
-   static void method213() {
-      int var0 = class143.field2188;
-      int var1 = class143.field2185;
-      int var2 = class18.field252 - class129.field2048 - var0;
-      int var3 = class22.field585 - class136.field2101 - var1;
-      if(var0 > 0 || var2 > 0 || var1 > 0 || var3 > 0) {
-         try {
-            Container var4 = client.field274.method3059();
-            int var5 = 0;
-            int var6 = 0;
-            if(var4 == class39.field902) {
-               Insets var7 = class39.field902.getInsets();
-               var5 = var7.left;
-               var6 = var7.top;
-            }
-
-            Graphics var9 = var4.getGraphics();
-            var9.setColor(Color.black);
-            if(var0 > 0) {
-               var9.fillRect(var5, var6, var0, class22.field585);
-            }
-
-            if(var1 > 0) {
-               var9.fillRect(var5, var6, class18.field252, var1);
-            }
-
-            if(var2 > 0) {
-               var9.fillRect(var5 + class18.field252 - var2, var6, var2, class22.field585);
-            }
-
-            if(var3 > 0) {
-               var9.fillRect(var5, class22.field585 + var6 - var3, class18.field252, var3);
-            }
-         } catch (Exception var8) {
-            ;
-         }
-      }
-
-   }
-
+   int field248;
    @ObfuscatedName("i")
-   static class25 method214() {
-      return class25.field623 < class25.field616?class25.field615[++class25.field623 - 1]:null;
-   }
+   @ObfuscatedGetter(
+      intValue = 129022621
+   )
+   int field249;
+   @ObfuscatedName("m")
+   boolean field251;
+   @ObfuscatedName("nr")
+   static class55 field252;
+   @ObfuscatedName("j")
+   @Export("name")
+   String field253;
 
    @ObfuscatedName("n")
-   static final int method215(int var0, int var1) {
-      if(-2 == var0) {
-         return 12345678;
-      } else if(-1 == var0) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
+   public static byte[] method188(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var6 = (byte[])((byte[])var0);
+         if(var1) {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
+            return var5;
+         } else {
+            return var6;
          }
-
-         return var1;
+      } else if(var0 instanceof class124) {
+         class124 var2 = (class124)var0;
+         return var2.vmethod2728();
       } else {
-         var1 = var1 * (var0 & 127) / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 'ﾀ') + var1;
+         throw new IllegalArgumentException();
       }
-   }
-
-   @ObfuscatedName("u")
-   public static boolean method216(int var0) {
-      return 0 != (var0 >> 28 & 1);
    }
 }

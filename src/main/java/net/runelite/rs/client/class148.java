@@ -1,61 +1,44 @@
-package net.runelite.rs.client;
-
 import java.io.File;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ek")
 public class class148 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("f")
+   static File field2236;
+   @ObfuscatedName("i")
+   static File field2237;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 920973357
+      intValue = 1043612833
    )
-   public static int field2215;
-   @ObfuscatedName("s")
-   public static class227 field2220 = null;
+   public static int field2239;
+   @ObfuscatedName("q")
+   public static class227 field2240 = null;
+   @ObfuscatedName("r")
+   public static class227 field2241 = null;
+   @ObfuscatedName("b")
+   public static class227 field2243 = null;
    @ObfuscatedName("w")
-   public static class227 field2221 = null;
-   @ObfuscatedName("e")
-   public static class227 field2222 = null;
-   @ObfuscatedName("u")
-   public static File field2226;
+   static String field2246;
+   @ObfuscatedName("hi")
+   @Export("localPlayer")
+   static class2 field2249;
 
-   @ObfuscatedName("dh")
-   static final boolean method3181(class172 var0) {
-      int var1 = var0.field2738;
-      if(205 == var1) {
-         client.field400 = 250;
-         return true;
-      } else {
-         int var2;
-         int var3;
-         if(var1 >= 300 && var1 <= 313) {
-            var2 = (var1 - 300) / 2;
-            var3 = var1 & 1;
-            client.field547.method3538(var2, var3 == 1);
-         }
+   @ObfuscatedName("f")
+   static Class method3099(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Class.forName(var0)))))))));
+   }
 
-         if(var1 >= 314 && var1 <= 323) {
-            var2 = (var1 - 314) / 2;
-            var3 = var1 & 1;
-            client.field547.method3544(var2, 1 == var3);
-         }
+   @ObfuscatedName("j")
+   static int method3100() {
+      return 9;
+   }
 
-         if(var1 == 324) {
-            client.field547.method3540(false);
-         }
-
-         if(325 == var1) {
-            client.field547.method3540(true);
-         }
-
-         if(326 == var1) {
-            client.field318.method2785(207);
-            client.field547.method3541(client.field318);
-            return true;
-         } else {
-            return false;
-         }
-      }
+   @ObfuscatedName("j")
+   public static void method3101(class166 var0) {
+      class52.field1172 = var0;
+      class52.field1166 = class52.field1172.method3224(16);
    }
 }

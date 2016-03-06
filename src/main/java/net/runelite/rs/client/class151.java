@@ -1,49 +1,42 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("eq")
 public class class151 implements class111 {
-   @ObfuscatedName("u")
-   public static final class151 field2249 = new class151(4, 3, false, false, true);
-   @ObfuscatedName("m")
-   public static final class151 field2250 = new class151(1, 0, true, true, true);
-   @ObfuscatedName("j")
-   public static final class151 field2251 = new class151(0, -1, true, false, true);
-   @ObfuscatedName("l")
-   public static final class151 field2252 = new class151(3, 2, false, false, true);
-   @ObfuscatedName("f")
-   public static final class151 field2253 = new class151(2, 1, true, true, false);
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 47741021
-   )
-   public final int field2255;
-   @ObfuscatedName("i")
-   public final boolean field2256;
-   @ObfuscatedName("t")
-   public final boolean field2257;
    @ObfuscatedName("a")
+   static final class151 field2270 = new class151(2, 1, true, true, false);
+   @ObfuscatedName("j")
+   static final class151 field2271 = new class151(0, -1, true, false, true);
+   @ObfuscatedName("i")
+   static final class151 field2273 = new class151(3, 2, false, false, true);
+   @ObfuscatedName("f")
+   static final class151 field2274 = new class151(4, 3, false, false, true);
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 447034859
+      intValue = 1084065871
    )
-   final int field2260;
+   final int field2275;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1992473191
+   )
+   public final int field2276;
+   @ObfuscatedName("h")
+   public final boolean field2277;
+   @ObfuscatedName("n")
+   public final boolean field2278;
+   @ObfuscatedName("l")
+   static final class151 field2279 = new class151(1, 0, true, true, true);
+
+   @ObfuscatedName("j")
+   public int vmethod3121() {
+      return this.field2275;
+   }
 
    class151(int var1, int var2, boolean var3, boolean var4, boolean var5) {
-      this.field2260 = var1;
-      this.field2255 = var2;
-      this.field2256 = var4;
-      this.field2257 = var5;
-   }
-
-   @ObfuscatedName("m")
-   public int vmethod3208() {
-      return this.field2260;
-   }
-
-   @ObfuscatedName("j")
-   public static class189[] method3186() {
-      return new class189[]{class189.field3044, class189.field3041, class189.field3048, class189.field3047, class189.field3050, class189.field3049, class189.field3043, class189.field3053, class189.field3051, class189.field3054, class189.field3045, class189.field3042, class189.field3046, class189.field3052, class189.field3040};
+      this.field2275 = var1;
+      this.field2276 = var2;
+      this.field2277 = var4;
+      this.field2278 = var5;
    }
 }

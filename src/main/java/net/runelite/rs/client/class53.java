@@ -1,24 +1,22 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("bv")
 public interface class53 {
    @ObfuscatedName("m")
-   void method1132() throws Exception;
-
-   @ObfuscatedName("f")
-   int method1133();
+   void method1094();
 
    @ObfuscatedName("l")
-   void method1134();
-
-   @ObfuscatedName("u")
-   void method1135();
-
-   @ObfuscatedName("j")
-   void method1144() throws Exception;
+   void method1095() throws Exception;
 
    @ObfuscatedName("a")
-   void method1148();
+   int method1096();
+
+   @ObfuscatedName("f")
+   void method1098();
+
+   @ObfuscatedName("j")
+   void method1099() throws Exception;
+
+   @ObfuscatedName("i")
+   void method1102();
 }

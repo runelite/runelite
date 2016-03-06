@@ -1,94 +1,111 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("z")
+@ObfuscatedName("u")
 public class class13 implements Runnable {
    @ObfuscatedName("l")
-   int[] field187 = new int[500];
-   @ObfuscatedName("m")
-   Object field188 = new Object();
-   @ObfuscatedName("f")
+   Object field198 = new Object();
+   @ObfuscatedName("dj")
    @ObfuscatedGetter(
-      intValue = 2110328759
+      intValue = 2073468339
    )
-   int field190 = 0;
-   @ObfuscatedName("u")
-   int[] field191 = new int[500];
-   @ObfuscatedName("ey")
-   static class78[] field192;
-   @ObfuscatedName("eq")
-   static class78[] field193;
-   @ObfuscatedName("ds")
-   static int[][] field197;
-   @ObfuscatedName("du")
+   static int field199;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1134122303
+      intValue = 208238489
    )
-   static int field198;
-   @ObfuscatedName("q")
-   public static String field199;
+   static int field200;
+   @ObfuscatedName("i")
+   int[] field202 = new int[500];
    @ObfuscatedName("j")
-   boolean field200 = true;
+   boolean field203 = true;
+   @ObfuscatedName("e")
+   static int[] field204;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1218314907
+   )
+   int field205 = 0;
+   @ObfuscatedName("f")
+   int[] field206 = new int[500];
+
+   @ObfuscatedName("cn")
+   static void method154(class172[] var0, class172 var1, boolean var2) {
+      int var3 = var1.field2782 != 0?var1.field2782:var1.field2774;
+      int var4 = 0 != var1.field2783?var1.field2783:var1.field2890;
+      class125.method2744(var0, var1.field2759 * -1, var3, var4, var2);
+      if(null != var1.field2881) {
+         class125.method2744(var1.field2881, var1.field2759 * -1, var3, var4, var2);
+      }
+
+      class3 var5 = (class3)client.field449.method3744((long)(var1.field2759 * -1));
+      if(null != var5) {
+         class95.method2166(var5.field66, var3, var4, var2);
+      }
+
+      if(1337 == var1.field2763) {
+         ;
+      }
+
+   }
 
    public void run() {
-      for(; this.field200; class29.method711(50L)) {
-         Object var1 = this.field188;
-         synchronized(this.field188) {
-            if(this.field190 < 500) {
-               this.field187[this.field190] = class139.field2134;
-               this.field191[this.field190] = class139.field2135;
-               ++this.field190;
+      for(; this.field203; class105.method2332(50L)) {
+         Object var1 = this.field198;
+         synchronized(this.field198) {
+            if(this.field205 < 500) {
+               this.field202[this.field205] = class139.field2162;
+               this.field206[this.field205] = class139.field2171;
+               ++this.field205;
             }
          }
       }
 
    }
 
-   @ObfuscatedName("cx")
-   static void method192(class172 var0, int var1, int var2) {
-      if(var0.field2739 == 0) {
-         var0.field2846 = var0.field2743;
-      } else if(1 == var0.field2739) {
-         var0.field2846 = (var1 - var0.field2749) / 2 + var0.field2743;
-      } else if(2 == var0.field2739) {
-         var0.field2846 = var1 - var0.field2749 - var0.field2743;
-      } else if(3 == var0.field2739) {
-         var0.field2846 = var1 * var0.field2743 >> 14;
-      } else if(4 == var0.field2739) {
-         var0.field2846 = (var0.field2743 * var1 >> 14) + (var1 - var0.field2749) / 2;
+   @ObfuscatedName("co")
+   static final void method158(class172 var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(client.field435) {
+         client.field371 = 32;
       } else {
-         var0.field2846 = var1 - var0.field2749 - (var0.field2743 * var1 >> 14);
+         client.field371 = 0;
       }
 
-      if(var0.field2740 == 0) {
-         var0.field2748 = var0.field2792;
-      } else if(var0.field2740 == 1) {
-         var0.field2748 = var0.field2792 + (var2 - var0.field2750) / 2;
-      } else if(2 == var0.field2740) {
-         var0.field2748 = var2 - var0.field2750 - var0.field2792;
-      } else if(3 == var0.field2740) {
-         var0.field2748 = var2 * var0.field2792 >> 14;
-      } else if(var0.field2740 == 4) {
-         var0.field2748 = (var2 - var0.field2750) / 2 + (var2 * var0.field2792 >> 14);
-      } else {
-         var0.field2748 = var2 - var0.field2750 - (var0.field2792 * var2 >> 14);
-      }
+      client.field435 = false;
+      int var7;
+      if(class139.field2161 == 1 || !class94.field1617 && class139.field2161 == 4) {
+         if(var5 >= var1 && var5 < 16 + var1 && var6 >= var2 && var6 < var2 + 16) {
+            var0.field2886 -= 4;
+            class114.method2400(var0);
+         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var2 + var3) {
+            var0.field2886 += 4;
+            class114.method2400(var0);
+         } else if(var5 >= var1 - client.field371 && var5 < client.field371 + var1 + 16 && var6 >= var2 + 16 && var6 < var2 + var3 - 16) {
+            var7 = (var3 - 32) * var3 / var4;
+            if(var7 < 8) {
+               var7 = 8;
+            }
 
-      if(client.field442 && var0.field2736 == 0) {
-         if(var0.field2846 < 0) {
-            var0.field2846 = 0;
-         } else if(var0.field2749 + var0.field2846 > var1) {
-            var0.field2846 = var1 - var0.field2749;
-         }
-
-         if(var0.field2748 < 0) {
-            var0.field2748 = 0;
-         } else if(var0.field2750 + var0.field2748 > var2) {
-            var0.field2748 = var2 - var0.field2750;
+            int var8 = var6 - var2 - 16 - var7 / 2;
+            int var9 = var3 - 32 - var7;
+            var0.field2886 = (var4 - var3) * var8 / var9;
+            class114.method2400(var0);
+            client.field435 = true;
          }
       }
 
+      if(client.field486 != 0) {
+         var7 = var0.field2774;
+         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var3 + var2) {
+            var0.field2886 += client.field486 * 45;
+            class114.method2400(var0);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   public static boolean method159(char var0) {
+      return var0 >= 32 && var0 <= 126?true:(var0 >= 160 && var0 <= 255?true:8364 == var0 || var0 == 338 || 8212 == var0 || 339 == var0 || var0 == 376);
    }
 }

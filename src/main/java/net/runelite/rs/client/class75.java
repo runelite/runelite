@@ -1,5 +1,3 @@
-package net.runelite.rs.client;
-
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -9,58 +7,79 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.ImageConsumer;
 import java.awt.image.ImageObserver;
 import java.awt.image.ImageProducer;
-import java.io.File;
-import java.io.IOException;
 import java.util.Hashtable;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bb")
+@ObfuscatedName("bp")
 public final class class75 extends class77 implements ImageProducer, ImageObserver {
    @ObfuscatedName("j")
-   ColorModel field1358;
-   @ObfuscatedName("m")
-   ImageConsumer field1359;
-   @ObfuscatedName("bt")
-   static class167 field1364;
+   ColorModel field1379;
+   @ObfuscatedName("jc")
+   static class172[] field1381;
+   @ObfuscatedName("g")
+   static int[][][] field1383;
+   @ObfuscatedName("l")
+   ImageConsumer field1384;
+   @ObfuscatedName("qx")
+   public static class77 field1385;
+   @ObfuscatedName("gs")
+   @ObfuscatedGetter(
+      intValue = 1591567857
+   )
+   @Export("plane")
+   static int field1386;
+   @ObfuscatedName("hn")
+   @ObfuscatedGetter(
+      intValue = 572824159
+   )
+   static int field1387;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1635065399
+   )
+   public static int field1388;
 
-   @ObfuscatedName("m")
-   public final void vmethod1895(Graphics var1, int var2, int var3) {
-      this.method1662();
-      var1.drawImage(super.field1382, var2, var3, this);
+   @ObfuscatedName("j")
+   final void vmethod1841(int var1, int var2, Component var3) {
+      super.field1400 = var1;
+      super.field1401 = var2;
+      super.field1402 = new int[var2 * var1 + 1];
+      this.field1379 = new DirectColorModel(32, 16711680, '\uff00', 255);
+      super.field1399 = var3.createImage(this);
+      this.method1616();
+      var3.prepareImage(super.field1399, this);
+      this.method1616();
+      var3.prepareImage(super.field1399, this);
+      this.method1616();
+      var3.prepareImage(super.field1399, this);
+      this.method1667();
    }
 
-   @ObfuscatedName("f")
-   public final void vmethod1897(Graphics var1, int var2, int var3, int var4, int var5) {
-      this.method1633(var2, var3, var4, var5);
+   public void requestTopDownLeftRightResend(ImageConsumer var1) {
+   }
+
+   @ObfuscatedName("a")
+   public final void vmethod1847(Graphics var1, int var2, int var3, int var4, int var5) {
+      this.method1602(var2, var3, var4, var5);
       Shape var6 = var1.getClip();
       var1.clipRect(var2, var3, var4, var5);
-      var1.drawImage(super.field1382, 0, 0, this);
+      var1.drawImage(super.field1399, 0, 0, this);
       var1.setClip(var6);
    }
 
-   @ObfuscatedName("j")
-   public final void vmethod1896(int var1, int var2, Component var3) {
-      super.field1381 = var1;
-      super.field1380 = var2;
-      super.field1387 = new int[1 + var2 * var1];
-      this.field1358 = new DirectColorModel(32, 16711680, '\uff00', 255);
-      super.field1382 = var3.createImage(this);
-      this.method1662();
-      var3.prepareImage(super.field1382, this);
-      this.method1662();
-      var3.prepareImage(super.field1382, this);
-      this.method1662();
-      var3.prepareImage(super.field1382, this);
-      this.method1713();
-   }
-
-   public synchronized boolean isConsumer(ImageConsumer var1) {
-      return var1 == this.field1359;
+   public synchronized void addConsumer(ImageConsumer var1) {
+      this.field1384 = var1;
+      var1.setDimensions(super.field1400, super.field1401);
+      var1.setProperties((Hashtable)null);
+      var1.setColorModel(this.field1379);
+      var1.setHints(14);
    }
 
    public synchronized void removeConsumer(ImageConsumer var1) {
-      if(this.field1359 == var1) {
-         this.field1359 = null;
+      if(this.field1384 == var1) {
+         this.field1384 = null;
       }
 
    }
@@ -69,93 +88,60 @@ public final class class75 extends class77 implements ImageProducer, ImageObserv
       this.addConsumer(var1);
    }
 
-   public void requestTopDownLeftRightResend(ImageConsumer var1) {
+   public synchronized boolean isConsumer(ImageConsumer var1) {
+      return this.field1384 == var1;
+   }
+
+   @ObfuscatedName("f")
+   synchronized void method1602(int var1, int var2, int var3, int var4) {
+      if(this.field1384 != null) {
+         this.field1384.setPixels(var1, var2, var3, var4, this.field1379, super.field1402, var2 * super.field1400 + var1, super.field1400);
+         this.field1384.imageComplete(2);
+      }
    }
 
    public boolean imageUpdate(Image var1, int var2, int var3, int var4, int var5, int var6) {
       return true;
    }
 
-   @ObfuscatedName("u")
-   synchronized void method1633(int var1, int var2, int var3, int var4) {
-      if(null != this.field1359) {
-         this.field1359.setPixels(var1, var2, var3, var4, this.field1358, super.field1387, var2 * super.field1381 + var1, super.field1381);
-         this.field1359.imageComplete(2);
-      }
-   }
-
-   public synchronized void addConsumer(ImageConsumer var1) {
-      this.field1359 = var1;
-      var1.setDimensions(super.field1381, super.field1380);
-      var1.setProperties((Hashtable)null);
-      var1.setColorModel(this.field1358);
-      var1.setHints(14);
-   }
-
-   @ObfuscatedName("t")
-   static class78 method1651() {
-      class78 var0 = new class78();
-      var0.field1388 = class76.field1367;
-      var0.field1399 = class76.field1368;
-      var0.field1391 = class76.field1366[0];
-      var0.field1392 = class76.field1370[0];
-      var0.field1389 = class76.field1371[0];
-      var0.field1390 = class76.field1373[0];
-      int var1 = var0.field1389 * var0.field1390;
-      byte[] var2 = class17.field236[0];
-      var0.field1394 = new int[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.field1394[var3] = class76.field1369[var2[var3] & 255];
-      }
-
-      class135.method2935();
-      return var0;
-   }
-
    @ObfuscatedName("l")
-   synchronized void method1662() {
-      if(this.field1359 != null) {
-         this.field1359.setPixels(0, 0, super.field1381, super.field1380, this.field1358, super.field1387, 0, super.field1381);
-         this.field1359.imageComplete(2);
+   public final void vmethod1842(Graphics var1, int var2, int var3) {
+      this.method1616();
+      var1.drawImage(super.field1399, var2, var3, this);
+   }
+
+   @ObfuscatedName("u")
+   static final int method1612(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = var2 / 2 + (var0 / 4 << 10) + (var1 / 32 << 7);
+      return var3;
+   }
+
+   @ObfuscatedName("i")
+   synchronized void method1616() {
+      if(this.field1384 != null) {
+         this.field1384.setPixels(0, 0, super.field1400, super.field1401, this.field1379, super.field1402, 0, super.field1400);
+         this.field1384.imageComplete(2);
       }
    }
 
-   @ObfuscatedName("f")
-   public static class226 method1666(String var0, String var1, boolean var2) {
-      File var3 = new File(class148.field2226, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            class226 var10 = new class226(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
-      }
-
-      String var4 = "";
-      if(class20.field562 == 33) {
-         var4 = "_rc";
-      } else if(34 == class20.field562) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class0.field14, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      class226 var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new class226(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new class226(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
+   @ObfuscatedName("a")
+   public static class223 method1631(class166 var0, class166 var1, int var2, int var3) {
+      return !class11.method148(var0, var2, var3)?null:class5.method52(var1.method3214(var2, var3));
    }
 }

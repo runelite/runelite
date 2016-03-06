@@ -1,82 +1,105 @@
-package net.runelite.rs.client;
-
-import java.awt.FontMetrics;
+import java.net.URL;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cx")
+@ObfuscatedName("cv")
 public final class class86 {
-   @ObfuscatedName("h")
-   public class84 field1505;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1680202377
-   )
-   int field1506;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1089403757
-   )
-   int field1507 = 0;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -7910203
+      intValue = 2115671315
    )
-   int field1508;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1580436473
-   )
-   int field1509;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 742105871
-   )
-   int field1510;
+   int field1526;
    @ObfuscatedName("a")
-   public class84 field1511;
-   @ObfuscatedName("bf")
-   protected static FontMetrics field1512;
-   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2013349905
+      intValue = -1563287113
    )
-   public int field1513 = 0;
-   @ObfuscatedName("aa")
-   static int[] field1514;
+   int field1527;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 543843765
+      intValue = 837353951
    )
-   int field1515;
-   @ObfuscatedName("rr")
-   protected static boolean field1516;
-   @ObfuscatedName("e")
-   public static class59 field1518;
-
+   int field1528;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -270660157
+   )
+   int field1529;
    @ObfuscatedName("m")
-   static void method2096(int var0, String var1, String var2, String var3) {
-      class27 var4 = (class27)class11.field171.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new class27();
-         class11.field171.put(Integer.valueOf(var0), var4);
+   public class84 field1530;
+   @ObfuscatedName("o")
+   public class84 field1531;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -761083041
+   )
+   public int field1532 = 0;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -959220627
+   )
+   int field1533 = 0;
+   @ObfuscatedName("qf")
+   @ObfuscatedGetter(
+      intValue = 1015186923
+   )
+   protected static int field1534;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1536424703
+   )
+   int field1535;
+
+   @ObfuscatedName("h")
+   public static void method2048() {
+      if(class216.field3155 != null) {
+         class216.field3155.method2948();
       }
 
-      class35 var5 = var4.method687(var0, var1, var2, var3);
-      class11.field166.method3850(var5, (long)var5.field769);
-      class11.field172.method3899(var5);
-      client.field466 = client.field459;
    }
 
-   @ObfuscatedName("m")
-   public static int method2097(int var0, int var1, int var2) {
-      var2 &= 3;
-      return 0 == var2?var1:(1 == var2?7 - var0:(2 == var2?7 - var1:var0));
+   @ObfuscatedName("o")
+   static int method2049(int var0, int var1, int var2) {
+      return (class5.field81[var0][var1][var2] & 8) != 0?0:(var0 > 0 && 0 != (class5.field81[1][var1][var2] & 2)?var0 - 1:var0);
    }
 
-   @ObfuscatedName("t")
-   static final int method2098(int var0, int var1, int var2) {
-      int var3 = 256 - var2;
-      return ((var1 & '\uff00') * var2 + var3 * (var0 & '\uff00') & 16711680) + ((var0 & 16711935) * var3 + (var1 & 16711935) * var2 & -16711936) >> 8;
+   @ObfuscatedName("a")
+   public static boolean method2050(int var0) {
+      return (var0 >> 28 & 1) != 0;
+   }
+
+   @ObfuscatedName("j")
+   static boolean method2051() {
+      try {
+         if(null == class216.field3156) {
+            class216.field3156 = new class18(class26.field648, new URL(client.field294));
+         } else {
+            byte[] var0 = class216.field3156.method197();
+            if(var0 != null) {
+               class118 var1 = new class118(var0);
+               class25.field633 = var1.method2455();
+               class25.field632 = new class25[class25.field633];
+
+               class25 var3;
+               for(int var2 = 0; var2 < class25.field633; var3.field642 = var2++) {
+                  var3 = class25.field632[var2] = new class25();
+                  var3.field637 = var1.method2455();
+                  var3.field638 = var1.method2458();
+                  var3.field640 = var1.method2461();
+                  var3.field641 = var1.method2461();
+                  var3.field635 = var1.method2453();
+                  var3.field639 = var1.method2558();
+               }
+
+               class23.method591(class25.field632, 0, class25.field632.length - 1, class25.field636, class25.field645);
+               class216.field3156 = null;
+               return true;
+            }
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         class216.field3156 = null;
+      }
+
+      return false;
    }
 }

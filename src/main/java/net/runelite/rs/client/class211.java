@@ -1,51 +1,49 @@
-package net.runelite.rs.client;
-
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hq")
 public class class211 {
-   @ObfuscatedName("t")
-   public static final class211 field3118;
-   @ObfuscatedName("m")
-   static final class211 field3119 = new class211(3, 1, "", "");
-   @ObfuscatedName("f")
-   static final class211 field3120 = new class211(5, 2, "", "");
    @ObfuscatedName("i")
-   static final class211 field3121 = new class211(1, 7, "", "");
-   @ObfuscatedName("u")
-   static final class211 field3122 = new class211(6, 4, "", "");
-   @ObfuscatedName("a")
-   static final class211 field3123 = new class211(0, 5, "", "");
+   static final class211 field3127 = new class211(6, 3, "", "");
+   @ObfuscatedName("n")
+   public static final class211 field3128;
    @ObfuscatedName("l")
-   static final class211 field3124 = new class211(7, 3, "", "");
-   @ObfuscatedName("j")
-   public static final class211 field3125 = new class211(2, 0, "", "");
+   static final class211 field3129 = new class211(0, 1, "", "");
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1755525711
+      intValue = 1608391241
    )
-   public final int field3126;
+   public final int field3130;
+   @ObfuscatedName("f")
+   static final class211 field3131 = new class211(1, 4, "", "");
+   @ObfuscatedName("m")
+   static final class211 field3132 = new class211(8, 5, "", "");
+   @ObfuscatedName("o")
+   static final class211 field3133 = new class211(7, 6, "", "");
    @ObfuscatedName("h")
-   static final class211 field3127 = new class211(4, 6, "", "");
-   @ObfuscatedName("s")
-   final String field3128;
+   static final class211 field3134 = new class211(2, 7, "", "");
+   @ObfuscatedName("j")
+   public static final class211 field3135 = new class211(5, 0, "", "");
+   @ObfuscatedName("a")
+   static final class211 field3136 = new class211(4, 2, "", "");
+   @ObfuscatedName("r")
+   final String field3137;
 
-   class211(int var1, int var2, String var3, String var4, boolean var5, class211[] var6) {
-      this.field3126 = var1;
-      this.field3128 = var4;
+   class211(int var1, int var2, String var3, String var4) {
+      this.field3130 = var1;
+      this.field3137 = var4;
    }
 
    public String toString() {
-      return this.field3128;
-   }
-
-   class211(int var1, int var2, String var3, String var4) {
-      this.field3126 = var1;
-      this.field3128 = var4;
+      return this.field3137;
    }
 
    static {
-      field3118 = new class211(8, -1, "", "", true, new class211[]{field3125, field3119, field3120, field3122, field3124});
+      field3128 = new class211(3, -1, "", "", true, new class211[]{field3135, field3129, field3136, field3131, field3127});
+   }
+
+   class211(int var1, int var2, String var3, String var4, boolean var5, class211[] var6) {
+      this.field3130 = var1;
+      this.field3137 = var4;
    }
 }

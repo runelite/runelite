@@ -1,67 +1,95 @@
-package net.runelite.rs.client;
-
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("ds")
 public final class class128 {
-   @ObfuscatedName("h")
-   static int method2863(class25 var0, class25 var1, int var2, boolean var3) {
-      if(var2 == 1) {
-         int var4 = var0.field629;
-         int var5 = var1.field629;
-         if(!var3) {
-            if(var4 == -1) {
-               var4 = 2001;
-            }
+   @ObfuscatedName("n")
+   static class80[] field2054;
+   @ObfuscatedName("u")
+   public static class227[] field2055;
 
-            if(-1 == var5) {
-               var5 = 2001;
-            }
+   @ObfuscatedName("a")
+   static boolean method2755(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
          }
 
-         return var4 - var5;
-      } else {
-         return var2 == 2?var0.field626 - var1.field626:(var2 == 3?(var0.field633.equals("-")?(var1.field633.equals("-")?0:(var3?-1:1)):(var1.field633.equals("-")?(var3?1:-1):var0.field633.compareTo(var1.field633))):(4 == var2?(var0.method672()?(var1.method672()?0:1):(var1.method672()?-1:0)):(var2 == 5?(var0.method644()?(var1.method644()?0:1):(var1.method644()?-1:0)):(6 == var2?(var0.method643()?(var1.method643()?0:1):(var1.method643()?-1:0)):(var2 == 7?(var0.method660()?(var1.method660()?0:1):(var1.method660()?-1:0)):var0.field621 - var1.field621)))));
+         return true;
+      } catch (Exception var4) {
+         return false;
       }
    }
 
-   @ObfuscatedName("da")
-   static final void method2864(class172 var0) {
-      int var1 = var0.field2738;
-      if(var1 == 324) {
-         if(-1 == client.field548 * -1) {
-            client.field548 = var0.field2866 * -1;
-            client.field549 = var0.field2768 * -1;
+   @ObfuscatedName("a")
+   public static int method2756(CharSequence var0, int var1) {
+      boolean var2 = false;
+      boolean var3 = false;
+      int var4 = 0;
+      int var5 = var0.length();
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         char var7 = var0.charAt(var6);
+         if(0 == var6) {
+            if(45 == var7) {
+               var2 = true;
+               continue;
+            }
+
+            if(var7 == 43) {
+               continue;
+            }
          }
 
-         if(client.field547.field2900) {
-            var0.field2866 = client.field548 * -1;
+         int var9;
+         if(var7 >= 48 && var7 <= 57) {
+            var9 = var7 - 48;
+         } else if(var7 >= 65 && var7 <= 90) {
+            var9 = var7 - 55;
          } else {
-            var0.field2866 = client.field549 * -1;
+            if(var7 < 97 || var7 > 122) {
+               throw new NumberFormatException();
+            }
+
+            var9 = var7 - 87;
          }
 
-      } else if(var1 == 325) {
-         if(client.field548 * -1 == -1) {
-            client.field548 = var0.field2866 * -1;
-            client.field549 = var0.field2768 * -1;
+         if(var9 >= var1) {
+            throw new NumberFormatException();
          }
 
-         if(client.field547.field2900) {
-            var0.field2866 = client.field549 * -1;
-         } else {
-            var0.field2866 = client.field548 * -1;
+         if(var2) {
+            var9 = -var9;
          }
 
-      } else if(327 == var1) {
-         var0.field2783 = 150;
-         var0.field2760 = (int)(Math.sin((double)client.field286 / 40.0D) * 256.0D) & 2047;
-         var0.field2777 = 5;
-         var0.field2776 = 0;
-      } else if(328 == var1) {
-         var0.field2783 = 150;
-         var0.field2760 = (int)(Math.sin((double)client.field286 / 40.0D) * 256.0D) & 2047;
-         var0.field2777 = 5;
-         var0.field2776 = 1;
+         int var8 = var1 * var4 + var9;
+         if(var8 / var1 != var4) {
+            throw new NumberFormatException();
+         }
+
+         var4 = var8;
+         var3 = true;
       }
+
+      if(!var3) {
+         throw new NumberFormatException();
+      } else {
+         return var4;
+      }
+   }
+
+   @ObfuscatedName("b")
+   public static void method2757() {
+      class40.field935.method3720();
+      class40.field957.method3720();
+      class40.field921.method3720();
+      class40.field951.method3720();
    }
 }

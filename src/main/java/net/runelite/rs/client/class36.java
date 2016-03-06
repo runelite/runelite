@@ -1,141 +1,111 @@
-package net.runelite.rs.client;
-
 import java.util.Calendar;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ap")
+@ObfuscatedName("as")
 public class class36 {
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1608449863
-   )
-   static int field780 = 0;
-   @ObfuscatedName("f")
-   static int[] field782;
-   @ObfuscatedName("l")
-   static String[] field783;
-   @ObfuscatedName("z")
-   static final String[] field784 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-   @ObfuscatedName("h")
-   static int[] field786 = new int[1000];
-   @ObfuscatedName("i")
-   static String[] field787 = new String[1000];
-   @ObfuscatedName("u")
-   static int[] field788 = new int[5];
    @ObfuscatedName("k")
-   static class14[] field789 = new class14[50];
-   @ObfuscatedName("e")
-   static Calendar field790 = Calendar.getInstance();
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -949942251
-   )
-   static int field791 = 0;
+   static class14[] field794 = new class14[50];
+   @ObfuscatedName("o")
+   static int[] field795 = new int[1000];
    @ObfuscatedName("a")
-   static int[][] field792 = new int[5][5000];
-   @ObfuscatedName("hb")
+   static int[] field796;
+   @ObfuscatedName("fh")
    @ObfuscatedGetter(
-      intValue = -2028770867
+      intValue = 2024395599
    )
-   static int field793;
-
+   @Export("cameraZ")
+   static int field797;
+   @ObfuscatedName("pk")
+   @ObfuscatedGetter(
+      intValue = -1540388305
+   )
+   static int field798;
+   @ObfuscatedName("h")
+   static String[] field800 = new String[1000];
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -302352101
+   )
+   static int field801 = 0;
+   @ObfuscatedName("f")
+   static int[] field802 = new int[5];
+   @ObfuscatedName("q")
+   static Calendar field803 = Calendar.getInstance();
    @ObfuscatedName("u")
-   public static class78[] method780(class166 var0, String var1, String var2) {
-      int var3 = var0.method3327(var1);
-      int var4 = var0.method3323(var3, var2);
-      class78[] var5;
-      if(!class46.method1007(var0, var3, var4)) {
-         var5 = null;
+   static final String[] field804 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 136798177
+   )
+   static int field805 = 0;
+   @ObfuscatedName("m")
+   static int[][] field808 = new int[5][5000];
+
+   @ObfuscatedName("j")
+   public static class42 method741(int var0) {
+      class42 var1 = (class42)class42.field984.method3711((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         class78[] var7 = new class78[class76.field1379];
-
-         for(int var8 = 0; var8 < class76.field1379; ++var8) {
-            class78 var9 = var7[var8] = new class78();
-            var9.field1388 = class76.field1367;
-            var9.field1399 = class76.field1368;
-            var9.field1391 = class76.field1366[var8];
-            var9.field1392 = class76.field1370[var8];
-            var9.field1389 = class76.field1371[var8];
-            var9.field1390 = class76.field1373[var8];
-            int var10 = var9.field1390 * var9.field1389;
-            byte[] var11 = class17.field236[var8];
-            var9.field1394 = new int[var10];
-
-            for(int var12 = 0; var12 < var10; ++var12) {
-               var9.field1394[var12] = class76.field1369[var11[var12] & 255];
-            }
+         byte[] var2 = class42.field989.method3214(12, var0);
+         var1 = new class42();
+         if(null != var2) {
+            var1.method863(new class118(var2));
          }
 
-         class135.method2935();
-         var5 = var7;
+         var1.method865();
+         class42.field984.method3713(var1, (long)var0);
+         return var1;
       }
-
-      return var5;
    }
 
-   @ObfuscatedName("c")
-   public static final class56 method788(class135 var0, int var1, int var2) {
-      if(0 == class56.field1183) {
-         throw new IllegalStateException();
-      } else {
-         if(var2 < 256) {
-            var2 = 256;
+   @ObfuscatedName("h")
+   public static int method742(String var0) {
+      return var0.length() + 1;
+   }
+
+   @ObfuscatedName("l")
+   static void method747(int var0, int var1) {
+      int[] var2 = new int[4];
+      int[] var3 = new int[4];
+      var2[0] = var0;
+      var3[0] = var1;
+      int var4 = 1;
+
+      for(int var5 = 0; var5 < 4; ++var5) {
+         if(var0 != class25.field636[var5]) {
+            var2[var4] = class25.field636[var5];
+            var3[var4] = class25.field645[var5];
+            ++var4;
          }
+      }
 
-         try {
-            class69 var6 = new class69();
-            var6.field1165 = new int[(class228.field3215?2:1) * 256];
-            var6.field1170 = var2;
-            var6.vmethod1529();
-            var6.field1169 = (var2 & -1024) + 1024;
-            if(var6.field1169 > 16384) {
-               var6.field1169 = 16384;
-            }
+      class25.field636 = var2;
+      class25.field645 = var3;
+      class23.method591(class25.field632, 0, class25.field632.length - 1, class25.field636, class25.field645);
+   }
 
-            var6.vmethod1530(var6.field1169);
-            if(class56.field1162 > 0 && null == class28.field659) {
-               class28.field659 = new class72();
-               class28.field659.field1342 = var0;
-               var0.method2919(class28.field659, class56.field1162);
-            }
+   @ObfuscatedName("j")
+   public static class129 method748(int var0) {
+      class129[] var1 = new class129[]{class129.field2064, class129.field2062, class129.field2061};
+      class129[] var2 = var1;
 
-            if(class28.field659 != null) {
-               if(class28.field659.field1340[var1] != null) {
-                  throw new IllegalArgumentException();
-               }
-
-               class28.field659.field1340[var1] = var6;
-            }
-
-            return var6;
-         } catch (Throwable var5) {
-            try {
-               class54 var3 = new class54(var0, var1);
-               var3.field1165 = new int[(class228.field3215?2:1) * 256];
-               var3.field1170 = var2;
-               var3.vmethod1529();
-               var3.field1169 = 16384;
-               var3.vmethod1530(var3.field1169);
-               if(class56.field1162 > 0 && null == class28.field659) {
-                  class28.field659 = new class72();
-                  class28.field659.field1342 = var0;
-                  var0.method2919(class28.field659, class56.field1162);
-               }
-
-               if(class28.field659 != null) {
-                  if(class28.field659.field1340[var1] != null) {
-                     throw new IllegalArgumentException();
-                  }
-
-                  class28.field659.field1340[var1] = var3;
-               }
-
-               return var3;
-            } catch (Throwable var4) {
-               return new class56();
-            }
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class129 var4 = var2[var3];
+         if(var0 == var4.field2063) {
+            return var4;
          }
+      }
+
+      return null;
+   }
+
+   @ObfuscatedName("cw")
+   static final void method749(int var0) {
+      if(class149.method3102(var0)) {
+         class41.method857(class172.field2757[var0], -1);
       }
    }
 }
