@@ -1307,6 +1307,7 @@ public final class client extends class143 {
    }
 
    @ObfuscatedName("h")
+   @Export("packetHandler")
    protected final void vmethod2968() {
       ++field394;
       this.method385();
