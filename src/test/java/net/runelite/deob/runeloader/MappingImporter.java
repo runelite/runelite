@@ -26,7 +26,7 @@ public class MappingImporter
 {
 	private static final File IN = new File("d:/rs/07/adamin.jar");
 	private static final File OUT = new File("d:/rs/07/adamout.jar");
-	private static final File RL_INJECTION = new File("C:\\Users\\Adam\\git\\jbytecode\\src\\test\\resources\\injection_v16.json");
+	private static final File RL_INJECTION = new File(MappingImporter.class.getResource("/injection_v16.json").getFile());
 	
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");

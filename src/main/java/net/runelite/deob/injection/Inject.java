@@ -61,11 +61,14 @@ public class Inject
 	
 	private Type toObType(Type t)
 	{
+		if (t.isPrimitive())
+			return t;
+		
 		String className = t.getType();
 		ClassFile cf = deobfuscated.findClass(className);
 		
 		Annotations an = cf.getAttributes().getAnnotations();
-		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().toString();
+		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 		return new Type(obfuscatedName, t.getArrayDims());
 	}
 	
@@ -83,7 +86,11 @@ public class Inject
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
 			Annotations an = cf.getAttributes().getAnnotations();
-			String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().toString();
+
+			String obfuscatedName = cf.getName();
+			Annotation obfuscatedNameAnnotation = an.find(OBFUSCATED_NAME);
+			if (obfuscatedNameAnnotation != null)
+				obfuscatedName = obfuscatedNameAnnotation.getElement().getString();
 			
 			ClassFile other = vanilla.findClass(obfuscatedName);
 			assert other != null;
@@ -99,8 +106,8 @@ public class Inject
 				if (an.find(EXPORT) == null)
 					continue; // not an exported field
 				
-				String exportedName = an.find(EXPORT).getElement().toString();
-				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().toString();
+				String exportedName = an.find(EXPORT).getElement().getString();
+				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 				
 				Annotation getterAnnotation = an.find(OBFUSCATED_GETTER);
 				Number getter = null;
@@ -131,8 +138,8 @@ public class Inject
 				if (an.find(EXPORT) == null)
 					continue; // not an exported method
 				
-				String exportedName = an.find(EXPORT).getElement().toString();
-				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().toString();
+				String exportedName = an.find(EXPORT).getElement().getString();
+				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 				
 				// XXX static methods don't have to be in the same class, so we should have @ObfuscatedClass or something
 				
@@ -152,7 +159,7 @@ public class Inject
 		if (a == null)
 			return null;
 		
-		String ifaceName = a.getElement().toString();
+		String ifaceName = "net.runelite.rs.api." + a.getElement().getString();
 		Class clazz = new Class(ifaceName);
 		
 		Interfaces interfaces = other.getInterfaces();
@@ -164,7 +171,7 @@ public class Inject
 		}
 		catch (ClassNotFoundException ex)
 		{
-			ex.addSuppressed(ex);
+			ex.printStackTrace();
 			return null;
 		}
 	}
