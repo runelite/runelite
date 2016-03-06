@@ -8,9 +8,12 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.Field;
 import net.runelite.deob.Method;
+import net.runelite.deob.attributes.Annotations;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.execution.ParallellMappingExecutor;
+import net.runelite.deob.signature.Type;
 
 public class Mapper
 {
@@ -36,7 +39,7 @@ public class Mapper
 
 		finalm.merge(mapStaticMethods(source, target));
 		finalm.merge(mapMethods(source, target));
-		finalm.merge(mapPackets(source, target));
+		finalm.merge(mapPackets(finalm, source, target));
 
 		mapping = finalm;
 	}
@@ -145,16 +148,24 @@ public class Mapper
 		}
 	}
 
-	private ParallelExecutorMapping mapPackets(ClassGroup group1, ClassGroup group2)
+	private ParallelExecutorMapping mapPackets(ParallelExecutorMapping pem, ClassGroup group1, ClassGroup group2)
 	{
-		// XXX PULL THESE FROM PREVIOUS MAPPINGS
-		group1.findClass("client").findField("field446").packetHandler = true;
-		group2.findClass("client").findField("field324").packetHandler = true;
+		Method packetMethod = this.findPacketMethod();
+		Field packetField = this.findPacketField();
 
-		Method m1 = group1.findClass("client").findMethod("vmethod3096");
-		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+		assert packetMethod != null;
+		assert packetField != null;
 
-		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
+		Method otherPacketMethod = (Method) pem.get(packetMethod);
+		Field otherPacketField = (Field) pem.get(packetField);
+
+		assert otherPacketMethod != null;
+		assert otherPacketField != null;
+
+		packetField.packetHandler = true;
+		otherPacketField.packetHandler = true;
+
+		ParallelExecutorMapping mappings = MappingExecutorUtil.map(packetMethod, otherPacketMethod);
 
 		System.out.println(mappings.packetHandler1.size() + " vs " + mappings.packetHandler2.size() + " handlers");
 
@@ -195,5 +206,42 @@ public class Mapper
 
 		ParallellMappingExecutor.enable = false;
 		return all;
+	}
+
+
+	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/Export;");
+
+	private Field findPacketField()
+	{
+		for (ClassFile cf : source.getClasses())
+		{
+			for (Field f : cf.getFields().getFields())
+			{
+				Annotations an = f.getAttributes().getAnnotations();
+
+				if (an == null || an.find(OBFUSCATED_NAME) == null)
+					continue;
+
+				if (an.find(OBFUSCATED_NAME).getElement().getString().equals("packetOpcode"))
+					return f;
+			}
+		}
+		return null;
+	}
+
+	private Method findPacketMethod()
+	{
+		for (Method m : source.findClass("client").getMethods().getMethods())
+		{
+			Annotations an = m.getAttributes().getAnnotations();
+
+			if (an == null || an.find(OBFUSCATED_NAME) == null)
+				continue;
+
+			if (an.find(OBFUSCATED_NAME).getElement().getString().equals("packetHandler"))
+				return m;
+		}
+
+		return null;
 	}
 }
