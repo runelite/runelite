@@ -14,6 +14,7 @@ import net.runelite.deob.attributes.Attributes;
 import net.runelite.deob.attributes.Code;
 import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.attributes.code.Instruction;
+import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.ALoad;
 import net.runelite.deob.attributes.code.instructions.GetField;
@@ -63,13 +64,18 @@ public class Inject
 	{
 		if (t.isPrimitive())
 			return t;
+
+		if (!t.isObfuscatedType() && !t.getType().equals("client"))
+			return t;
 		
 		String className = t.getType();
+		className = className.substring(1, className.length() - 1); // remove L ;
 		ClassFile cf = deobfuscated.findClass(className);
+		assert cf != null;
 		
 		Annotations an = cf.getAttributes().getAnnotations();
 		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
-		return new Type(obfuscatedName, t.getArrayDims());
+		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
 	}
 	
 	private Signature toObSignature(Signature s)
@@ -115,8 +121,11 @@ public class Inject
 					getter = (Number) getterAnnotation.getElement().getValue().getObject();
 				
 				// the ob jar is the same as the vanilla so this field must exist in this class.
-				
-				Field otherf = other.findField(new NameAndType(obfuscatedName, toObType(f.getType())));
+
+				Type obType = toObType(f.getType());
+				Field otherf = other.findField(new NameAndType(obfuscatedName, obType));
+				if (otherf == null)
+					otherf = other.findField(new NameAndType(obfuscatedName, obType));
 				assert otherf != null;
 				
 				assert f.isStatic() == otherf.isStatic();
@@ -127,6 +136,11 @@ public class Inject
 				java.lang.Class targetApiClass = f.isStatic() ? clientClass : implementingClass; // target api class for getter
 				
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName);
+				if (apiMethod == null)
+				{
+					System.out.println("no api method");
+					continue;
+				}
 				
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
@@ -135,7 +149,7 @@ public class Inject
 			{
 				an = m.getAttributes().getAnnotations();
 				
-				if (an.find(EXPORT) == null)
+				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported method
 				
 				String exportedName = an.find(EXPORT).getElement().getString();
@@ -204,6 +218,7 @@ public class Inject
 		Signature sig = new Signature();
 		sig.setTypeOfReturnValue(field.getType());
 		Method getterMethod = new Method(clazz.getMethods(), method.getName(), sig);
+		getterMethod.setAccessFlags(Method.ACC_PUBLIC);
 		
 		Attributes methodAttributes = getterMethod.getAttributes();
 
@@ -216,16 +231,22 @@ public class Inject
 		
 		if (field.isStatic())
 		{
+			code.setMaxStack(1);
+			
 			ins.add(new GetStatic(instructions, field.getPoolField()));
 		}
 		else
 		{
+			code.setMaxStack(2);
+
 			ins.add(new ALoad(instructions, 0));
 			ins.add(new GetField(instructions, field.getPoolField()));
 		}
 		
 		if (getter != null)
 		{
+			code.setMaxStack(2);
+
 			assert getter instanceof Integer || getter instanceof Long;
 			
 			if (getter instanceof Integer)
@@ -239,8 +260,30 @@ public class Inject
 				ins.add(new LMul(instructions));
 			}
 		}
+
+		InstructionType returnType;
+		if (field.getType().isPrimitive() && field.getType().getArrayDims() == 0)
+		{
+			switch (field.getType().getType())
+			{
+				case "Z":
+				case "I":
+					returnType = InstructionType.IRETURN;
+					break;
+				case "J":
+					returnType = InstructionType.LRETURN;
+					break;
+				default:
+					assert false;
+					return;
+			}
+		}
+		else
+		{
+			returnType = InstructionType.ARETURN;
+		}
 		
-		ins.add(new Return(instructions));
+		ins.add(new Return(instructions, returnType));
 		
 		clazz.getMethods().addMethod(getterMethod);
 	}
