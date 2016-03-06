@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Graphics;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;

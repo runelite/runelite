@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Container;
 import java.awt.Insets;
 import net.runelite.mapping.ObfuscatedGetter;

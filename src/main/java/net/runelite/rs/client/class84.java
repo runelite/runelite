@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;

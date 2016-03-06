@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.datatransfer.Clipboard;
 import java.util.Iterator;
 import java.util.LinkedHashMap;

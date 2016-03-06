@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.io.File;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;

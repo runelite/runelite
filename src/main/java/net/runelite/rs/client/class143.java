@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.applet.Applet;
 import java.awt.Canvas;
 import java.awt.Container;

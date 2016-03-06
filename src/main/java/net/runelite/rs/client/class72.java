@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedName;
 

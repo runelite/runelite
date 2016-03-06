@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Graphics;
 import java.io.File;
 import java.util.Hashtable;

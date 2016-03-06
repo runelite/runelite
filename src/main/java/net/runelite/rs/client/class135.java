@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.io.DataInputStream;

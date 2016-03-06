@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.MediaTracker;

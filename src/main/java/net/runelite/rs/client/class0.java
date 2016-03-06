@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.applet.Applet;
 import java.io.File;
 import java.io.IOException;

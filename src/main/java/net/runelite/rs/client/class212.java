@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 

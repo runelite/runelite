@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.util.Date;
 import net.runelite.mapping.ObfuscatedName;
 

@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("br")

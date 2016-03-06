@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;

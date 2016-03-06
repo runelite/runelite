@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import net.runelite.mapping.Export;

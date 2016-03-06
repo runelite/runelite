@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.nio.ByteBuffer;
 import net.runelite.mapping.ObfuscatedName;
 

@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.math.BigInteger;
 import net.runelite.mapping.ObfuscatedName;
 

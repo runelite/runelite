@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;

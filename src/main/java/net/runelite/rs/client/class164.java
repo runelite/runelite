@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Desktop;
 import java.awt.Desktop.Action;
 import java.io.IOException;

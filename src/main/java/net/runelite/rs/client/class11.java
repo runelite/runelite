@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.mapping.ObfuscatedName;

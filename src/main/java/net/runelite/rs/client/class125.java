@@ -1,3 +1,4 @@
+package net.runelite.rs.client;
 import java.awt.Canvas;
 import java.io.File;
 import java.io.IOException;
