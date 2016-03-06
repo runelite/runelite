@@ -17,9 +17,9 @@ public class Return extends Instruction implements ReturnInstruction
 		super(instructions, type, pc);
 	}
 	
-	public Return(Instructions instructions)
+	public Return(Instructions instructions, InstructionType type)
 	{
-		super(instructions, InstructionType.RETURN, -1);
+		super(instructions, type, -1);
 	}
 
 	@Override

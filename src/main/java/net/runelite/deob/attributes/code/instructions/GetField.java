@@ -35,6 +35,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 		super(instructions, InstructionType.GETFIELD, -1);
 		
 		this.field = field;
+		length += 2;
 	}
 	
 	@Override

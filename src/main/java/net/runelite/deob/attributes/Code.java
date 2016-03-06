@@ -9,6 +9,7 @@ import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.deob.signature.Signature;
 
 public class Code extends Attribute
 {
@@ -68,8 +69,10 @@ public class Code extends Attribute
 	private int getMaxLocalsFromSig()
 	{
 		Method m = super.getAttributes().getMethod();
-		int num = m.isStatic() ? 0 : 1;
-		num += m.getDescriptor().size();
+		int num = m.isStatic() ? -1 : 0;
+		Signature sig = m.getDescriptor();
+		for (int i = 0; i < sig.size(); ++i)
+			num += sig.getTypeOfArg(i).getSlots();
 		return num;
 	}
 
@@ -84,7 +87,7 @@ public class Code extends Attribute
 				LVTInstruction lvt = (LVTInstruction) ins;
 				
 				if (lvt.getVariableIndex() > max)
-					max = lvt.getVariableIndex();
+					max = lvt.getVariableIndex(); // XXX if this is long or double and highest lvt, requires 2 slots
 			}
 		}
 		

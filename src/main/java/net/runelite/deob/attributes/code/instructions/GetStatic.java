@@ -35,6 +35,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		super(instructions, InstructionType.GETSTATIC, -1);
 		
 		this.field = field;
+		length += 2;
 	}
 	
 	@Override
