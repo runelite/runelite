@@ -12,6 +12,7 @@ import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.deob.attributes.code.instructions.AALoad;
@@ -98,7 +99,8 @@ public class MappingExecutorUtil
 		mappings.m2 = m2;
 		
 		parallel.mappings = mappings;
-		
+
+		outer:
 		while (parallel.step())
 		{
 			// get what each frame is paused/exited on
@@ -129,6 +131,26 @@ public class MappingExecutorUtil
 
 			mi1.map(mappings, p1, p2);
 			e.paused = e2.paused = false;
+
+			// detect end of handler. this method is only used to map handlers.
+			if (mi1 instanceof SetFieldInstruction && mi2 instanceof SetFieldInstruction)
+			{
+				SetFieldInstruction sfi1 = (SetFieldInstruction) mi1,
+					sfi2 = (SetFieldInstruction) mi2;
+
+				if (sfi1.getMyField().packetHandler && sfi2.getMyField().packetHandler)
+				{
+					Instruction sfii = p1.getPops().get(0).getPushed().getInstruction();
+					if (sfii instanceof PushConstantInstruction)
+					{
+						Object o = ((PushConstantInstruction) sfii).getConstant().getObject();
+						if (o.equals(-1))
+						{
+							break outer;
+						}
+					}
+				}
+			}
 		}
 		
 		return mappings;
