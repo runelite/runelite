@@ -1,5 +1,6 @@
 package net.runelite.deob.injection;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -117,6 +118,17 @@ public class Inject
 			java.lang.Class implementingClass = injectInterface(cf, other);
 			if (implementingClass == null)
 				continue;
+
+			InjectReplace ij = new InjectReplace(cf, other);
+			try
+			{
+				ij.run();
+			}
+			catch (ClassNotFoundException | IOException ex)
+			{
+				ex.printStackTrace();
+				assert false;
+			}
 			
 			for (Field f : cf.getFields().getFields())
 			{

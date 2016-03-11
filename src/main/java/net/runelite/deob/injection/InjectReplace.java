@@ -74,12 +74,13 @@ public class InjectReplace
 
 		// set parent
 		classToInject.setParentClass(vanilla.getPoolClass());
-		assert !vanilla.isFinal();
+		vanilla.clearFinal(); // can't be final anymore now that we inherit from it
 		
 		injectConstructors(classToInject);
 
 		overideMethods(classToInject);
 
+		// find all classes which inherit from 'vanilla'. replace with classToInject
 		replaceSuperclass(classToInject);
 
 		replaceNew(classToInject);
@@ -228,11 +229,12 @@ public class InjectReplace
 
 	private void replaceSuperclass(ClassFile classToInject)
 	{
-		// find all classes which inherit from 'vanilla'. replace with classToInject
-
 		for (ClassFile cf : vanilla.getGroup().getClasses())
 			if (cf.getParentClass().equals(vanilla.getPoolClass()))
 			{
+				if (cf == classToInject) // of course this inherits from it.
+					continue;
+
 				cf.setParentClass(classToInject.getPoolClass());
 				
 				// adjust constructors
@@ -275,46 +277,47 @@ public class InjectReplace
 		// new vanilla -> new classToInject
 
 		for (ClassFile cf : vanilla.getGroup().getClasses())
-			if (cf.getParentClass().equals(vanilla.getPoolClass()))
+			for (Method m : cf.getMethods().getMethods())
 			{
-				for (Method m : cf.getMethods().getMethods())
+				Code code = m.getCode();
+
+				if (code == null)
+					continue;
+
+				Instructions ins = code.getInstructions();
+
+				boolean seen = false, isConstructor = m.getName().equals("<init>");
+
+				for (Instruction i : ins.getInstructions())
 				{
-					Code code = m.getCode();
-					Instructions ins = code.getInstructions();
-
-					boolean seen = false, isConstructor = m.getName().equals("<init>");
-
-					for (Instruction i : ins.getInstructions())
+					if (i instanceof New)
 					{
-						if (i instanceof New)
-						{
-							New n = (New) i;
-							if (!n.getNewClass().equals(vanilla.getPoolClass()))
-								continue;
+						New n = (New) i;
+						if (!n.getNewClass().equals(vanilla.getPoolClass()))
+							continue;
 
-							n.setNewClass(classToInject.getPoolClass());
-						}
-						else if (i instanceof InvokeSpecial)
+						n.setNewClass(classToInject.getPoolClass());
+					}
+					else if (i instanceof InvokeSpecial)
+					{
+						if (isConstructor)
 						{
-							if (isConstructor)
+							if (!seen)
 							{
-								if (!seen)
-								{
-									seen = true;
-									continue; // superclass invoke in constructor of class which inherits classToInject
-								}
+								seen = true;
+								continue; // superclass invoke in constructor of class which inherits classToInject
 							}
-
-							InvokeSpecial is = (InvokeSpecial) i;
-							net.runelite.deob.pool.Method method = (net.runelite.deob.pool.Method) is.getMethod();
-
-							is.setMethod(
-								new net.runelite.deob.pool.Method(
-									classToInject.getPoolClass(),
-									method.getNameAndType()
-								)
-							);
 						}
+
+						InvokeSpecial is = (InvokeSpecial) i;
+						net.runelite.deob.pool.Method method = (net.runelite.deob.pool.Method) is.getMethod();
+
+						is.setMethod(
+							new net.runelite.deob.pool.Method(
+								classToInject.getPoolClass(),
+								method.getNameAndType()
+							)
+						);
 					}
 				}
 			}
