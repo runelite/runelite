@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import net.runelite.deob.attributes.Annotations;
+import net.runelite.deob.attributes.Attributes;
+import net.runelite.deob.attributes.annotation.Annotation;
+import net.runelite.deob.attributes.annotation.Element;
+import net.runelite.deob.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 class ConstantMethodParameter
@@ -71,8 +76,6 @@ class ConstantMethodParameter
 		}
 		return true;
 	}
-	
-	
 }
 
 class MethodGroup
@@ -342,12 +345,14 @@ public class ConstantParameter implements Deobfuscator
 		Method method;
 		int lvtIndex;
 		int paramIndex;
+		Object value; // example value, used for @ObfuscatedSignature. Just one possible value.
 
-		public MethodLvtPair(Method method, int lvtIndex, int paramIndex)
+		public MethodLvtPair(Method method, int lvtIndex, int paramIndex, Object value)
 		{
 			this.method = method;
 			this.lvtIndex = lvtIndex;
 			this.paramIndex = paramIndex;
+			this.value = value;
 		}
 
 		@Override
@@ -396,7 +401,7 @@ public class ConstantParameter implements Deobfuscator
 		{
 			for (Method method : cmp.methods)
 			{
-				MethodLvtPair pair = new MethodLvtPair(method, cmp.lvtIndex, cmp.paramIndex);
+				MethodLvtPair pair = new MethodLvtPair(method, cmp.lvtIndex, cmp.paramIndex, cmp.value);
 				
 				if (invalidDeadops.contains(pair))
 					continue;
@@ -440,8 +445,9 @@ public class ConstantParameter implements Deobfuscator
 		int count = 0;
 		for (MethodLvtPair mvp : deadops.keySet())
 		{
-			Method method = mvp.method;
 			List<LogicallyDeadOp> ops = deadops.get(mvp);
+
+			annotateObfuscatedSignature(mvp);
 			
 			for (LogicallyDeadOp op : ops)
 			{
@@ -508,6 +514,27 @@ public class ConstantParameter implements Deobfuscator
 			}
 		}
 		return count;
+	}
+	
+	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
+
+	private void annotateObfuscatedSignature(MethodLvtPair mvp)
+	{
+		Method m = mvp.method;
+		Object value = mvp.value;
+
+		Attributes attributes = m.getAttributes();
+		Annotations annotations = attributes.getAnnotations();
+
+		if (annotations != null && annotations.find(OBFUSCATED_SIGNATURE) != null)
+			return;
+
+		Annotation annotation = attributes.addAnnotation(OBFUSCATED_SIGNATURE, "signature", new net.runelite.deob.pool.UTF8(m.getDescriptor().toString()));
+
+		Element element = new Element(annotation);
+		element.setType(new Type("garbageValue"));
+		element.setValue(new net.runelite.deob.pool.UTF8(value.toString()));
+		annotation.addElement(element);
 	}
 	
 	@Override
