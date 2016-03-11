@@ -295,4 +295,9 @@ public class ClassFile
 	{
 		return (this.access_flags & ACC_FINAL) != 0;
 	}
+
+	public void clearFinal()
+	{
+		this.access_flags &= ~ACC_FINAL;
+	}
 }
