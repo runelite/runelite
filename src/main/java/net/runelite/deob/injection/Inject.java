@@ -44,6 +44,8 @@ public class Inject
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
 	private static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
 	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
+
+	private static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 	
 	private static java.lang.Class<?> clientClass;
 	
@@ -214,7 +216,7 @@ public class Inject
 		if (a == null)
 			return null;
 		
-		String ifaceName = "net.runelite.rs.api." + a.getElement().getString();
+		String ifaceName = API_PACKAGE_BASE + a.getElement().getString();
 		Class clazz = new Class(ifaceName);
 		
 		Interfaces interfaces = other.getInterfaces();

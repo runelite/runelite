@@ -14,6 +14,9 @@ import java.util.List;
 public class ClassFile
 {
 	private static final int MAGIC = 0xcafebabe;
+
+	private static final short ACC_FINAL = 0x0010;
+	private static final short ACC_ABSTRACT = 0x0400;
 	
 	private ClassGroup group;
 
@@ -281,5 +284,15 @@ public class ClassFile
 	public boolean instanceOf(ClassFile other)
 	{
 		return this == other || interfaces.instanceOf(other) || (getParent() != null && getParent().instanceOf(other));
+	}
+
+	public boolean isAbstract()
+	{
+		return (this.access_flags & ACC_ABSTRACT) != 0;
+	}
+
+	public boolean isFinal()
+	{
+		return (this.access_flags & ACC_FINAL) != 0;
 	}
 }
