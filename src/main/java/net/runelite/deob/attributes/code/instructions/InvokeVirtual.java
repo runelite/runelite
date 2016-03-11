@@ -39,6 +39,14 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	{
 		super(instructions, type, pc);
 	}
+
+	public InvokeVirtual(Instructions instructions, Method method)
+	{
+		super(instructions, InstructionType.INVOKEVIRTUAL, -1);
+
+		this.method = method;
+		length += 2;
+	}
 	
 	@Override
 	public String toString()
