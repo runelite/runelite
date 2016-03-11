@@ -135,6 +135,16 @@ public class Method
 	{
 		return (accessFlags & ACC_SYNCHRONIZED) != 0;
 	}
+
+	public boolean isFinal()
+	{
+		return (accessFlags & ACC_FINAL) != 0;
+	}
+
+	public boolean isPrivate()
+	{
+		return (accessFlags & ACC_PRIVATE) != 0;
+	}
 	
 	public Exceptions getExceptions()
 	{

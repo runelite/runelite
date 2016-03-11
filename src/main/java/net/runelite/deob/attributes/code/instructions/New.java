@@ -59,6 +59,11 @@ public class New extends Instruction
 	{
 		return clazz;
 	}
+
+	public void setNewClass(Class clazz)
+	{
+		this.clazz = clazz;
+	}
 	
 	@Override
 	public void lookup()

@@ -38,6 +38,14 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	{
 		super(instructions, type, pc);
 	}
+
+	public InvokeSpecial(Instructions instructions, Method method)
+	{
+		super(instructions, InstructionType.INVOKESPECIAL, -1);
+
+		this.method = method;
+		length += 2;
+	}
 	
 	@Override
 	public void load(DataInputStream is) throws IOException
@@ -135,6 +143,11 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	public PoolEntry getMethod()
 	{
 		return method;
+	}
+
+	public void setMethod(Method method)
+	{
+		this.method = method;
 	}
 	
 	@Override
