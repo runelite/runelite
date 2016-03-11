@@ -41,6 +41,11 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	{
 		this(instructions, new net.runelite.deob.pool.Integer(value));
 	}
+
+	public LDC_W(Instructions instructions, float value)
+	{
+		this(instructions, new net.runelite.deob.pool.Float(value));
+	}
 	
 	@Override
 	public void load(DataInputStream is) throws IOException

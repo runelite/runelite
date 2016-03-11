@@ -17,13 +17,20 @@ import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
 import net.runelite.deob.attributes.code.instructions.ALoad;
+import net.runelite.deob.attributes.code.instructions.BiPush;
+import net.runelite.deob.attributes.code.instructions.DLoad;
+import net.runelite.deob.attributes.code.instructions.FLoad;
 import net.runelite.deob.attributes.code.instructions.GetField;
 import net.runelite.deob.attributes.code.instructions.GetStatic;
+import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.IMul;
+import net.runelite.deob.attributes.code.instructions.InvokeVirtual;
 import net.runelite.deob.attributes.code.instructions.LDC2_W;
 import net.runelite.deob.attributes.code.instructions.LDC_W;
+import net.runelite.deob.attributes.code.instructions.LLoad;
 import net.runelite.deob.attributes.code.instructions.LMul;
 import net.runelite.deob.attributes.code.instructions.Return;
+import net.runelite.deob.attributes.code.instructions.SiPush;
 import net.runelite.deob.signature.Type;
 import net.runelite.deob.pool.Class;
 import net.runelite.deob.pool.NameAndType;
@@ -36,6 +43,7 @@ public class Inject
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
 	private static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
+	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
 	
 	private static java.lang.Class<?> clientClass;
 	
@@ -93,6 +101,9 @@ public class Inject
 		{
 			Annotations an = cf.getAttributes().getAnnotations();
 
+			if (an == null)
+				continue;
+
 			String obfuscatedName = cf.getName();
 			Annotation obfuscatedNameAnnotation = an.find(OBFUSCATED_NAME);
 			if (obfuscatedNameAnnotation != null)
@@ -124,13 +135,9 @@ public class Inject
 
 				Type obType = toObType(f.getType());
 				Field otherf = other.findField(new NameAndType(obfuscatedName, obType));
-				if (otherf == null)
-					otherf = other.findField(new NameAndType(obfuscatedName, obType));
 				assert otherf != null;
 				
 				assert f.isStatic() == otherf.isStatic();
-				
-				//
 				
 				ClassFile targetClass = f.isStatic() ? vanilla.findClass("client") : other; // target class for getter
 				java.lang.Class targetApiClass = f.isStatic() ? clientClass : implementingClass; // target api class for getter
@@ -151,14 +158,48 @@ public class Inject
 				
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported method
+
+				// XXX static methods can be in any class not just 'other' so the below finding won't work.
+				// XXX static methods can also be totally inlined by the obfuscator and thus removed by the dead code remover,
+				// so exporting them maybe wouldn't work anyway?
+				assert !m.isStatic();
 				
 				String exportedName = an.find(EXPORT).getElement().getString();
 				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 				
-				// XXX static methods don't have to be in the same class, so we should have @ObfuscatedClass or something
-				
-				Method otherm = other.findMethod(new NameAndType(obfuscatedName, toObSignature(m.getDescriptor())));
+				Method otherm;
+
+				Annotation obfuscatedSignature = an.find(OBFUSCATED_SIGNATURE);
+
+				String garbage = null;
+				if (obfuscatedSignature != null)
+				{
+					String signatureString = obfuscatedSignature.getElements().get(0).getString();
+					garbage = obfuscatedSignature.getElements().get(1).getString();
+
+					Signature signature = new Signature(signatureString); // parse signature
+
+					// The obfuscated signature annotation is generated post rename unique, so class
+					// names in the signature match our class names and not theirs, so we toObSignature() it
+					otherm = other.findMethod(new NameAndType(obfuscatedName, toObSignature(signature)));
+				}
+				else
+				{
+					// No obfuscated signature annotation, so the annotation wasn't changed during deobfuscation.
+					// We should be able to just find it normally.
+					otherm = other.findMethod(new NameAndType(obfuscatedName, toObSignature(m.getDescriptor())));
+				}
+
 				assert otherm != null;
+
+				java.lang.reflect.Method apiMethod = findImportMethodOnApi(implementingClass, exportedName); // api method to invoke 'otherm'
+				if (apiMethod == null)
+				{
+					System.out.println("no api method");
+					continue;
+				}
+
+				injectInvoker(other, apiMethod, m, otherm, garbage);
 			}
 		}
 	}
@@ -286,5 +327,153 @@ public class Inject
 		ins.add(new Return(instructions, returnType));
 		
 		clazz.getMethods().addMethod(getterMethod);
+	}
+
+	private void injectInvoker(ClassFile clazz, java.lang.reflect.Method method, Method deobfuscatedMethod, Method invokeMethod, String garbage)
+	{
+		// clazz = clazz to add invoker to
+		// method = api method to override
+		// deobfuscatedMethod = deobfuscated method, used to get the deobfuscated signature
+		// invokeMethod = method to invoke, obfuscated
+
+		assert clazz.findMethod(method.getName()) == null;
+		assert !invokeMethod.isStatic();
+		assert invokeMethod.getMethods().getClassFile() == clazz;
+
+		Type lastGarbageArgumentType = null;
+
+		if (!deobfuscatedMethod.getDescriptor().equals(invokeMethod.getDescriptor()))
+		{
+			// allow for obfuscated method to have a single bogus signature at the end
+			assert deobfuscatedMethod.getDescriptor().size() + 1 == invokeMethod.getDescriptor().size();
+
+			List<Type> arguments = invokeMethod.getDescriptor().getArguments();
+			lastGarbageArgumentType = arguments.get(arguments.size() - 1);
+		}
+
+		Method invokerMethodSignature = new Method(clazz.getMethods(), method.getName(), deobfuscatedMethod.getDescriptor());
+		invokerMethodSignature.setAccessFlags(Method.ACC_PUBLIC);
+
+		Attributes methodAttributes = invokerMethodSignature.getAttributes();
+
+		// create code attribute
+		Code code = new Code(methodAttributes);
+		methodAttributes.addAttribute(code);
+
+		Instructions instructions = code.getInstructions();
+		List<Instruction> ins = instructions.getInstructions();
+
+		code.setMaxStack(1 + invokeMethod.getDescriptor().size()); // this + arguments
+
+		// load function arguments onto the stack.
+
+		int index = 0;
+		ins.add(new ALoad(instructions, index++)); // this
+
+		for (int i = 0; i < deobfuscatedMethod.getDescriptor().size(); ++i)
+		{
+			Type type = deobfuscatedMethod.getDescriptor().getTypeOfArg(i);
+
+			if (type.getArrayDims() > 0 || !type.isPrimitive())
+			{
+				ins.add(new ALoad(instructions, index++));
+			}
+			else
+			{
+				switch (type.getType())
+				{
+					case "B":
+					case "C":
+					case "I":
+					case "S":
+					case "Z":
+						ins.add(new ILoad(instructions, index++));
+						break;
+					case "D":
+						ins.add(new DLoad(instructions, index++));
+						++index; // takes two slots
+						break;
+					case "F":
+						ins.add(new FLoad(instructions, index++));
+						break;
+					case "J":
+						ins.add(new LLoad(instructions, index++));
+						++index;
+						break;
+					default:
+						throw new RuntimeException("Unknown type");
+				}
+			}
+		}
+
+		if (lastGarbageArgumentType != null)
+		{
+			// function requires garbage value
+
+			switch (lastGarbageArgumentType.getType())
+			{
+				case "Z":
+				case "B":
+				case "C":
+					ins.add(new BiPush(instructions, Byte.parseByte(garbage)));
+					break;
+				case "S":
+					ins.add(new SiPush(instructions, Short.parseShort(garbage)));
+					break;
+				case "I":
+					ins.add(new LDC_W(instructions, Integer.parseInt(garbage)));
+					break;
+				case "D":
+					ins.add(new LDC2_W(instructions, Double.parseDouble(garbage)));
+					break;
+				case "F":
+					ins.add(new LDC_W(instructions, Float.parseFloat(garbage)));
+					break;
+				case "J":
+					ins.add(new LDC2_W(instructions, Long.parseLong(garbage)));
+					break;
+				default:
+					throw new RuntimeException("Unknown type");
+			}
+		}
+
+		ins.add(new InvokeVirtual(instructions, invokeMethod.getPoolMethod()));
+
+		Type returnValue = invokeMethod.getDescriptor().getReturnValue();
+		InstructionType returnType;
+
+		if (returnValue.isPrimitive() && returnValue.getArrayDims() == 0)
+		{
+			switch (returnValue.getType())
+			{
+				case "Z":
+				case "I":
+					returnType = InstructionType.IRETURN;
+					break;
+				case "J":
+					returnType = InstructionType.LRETURN;
+					break;
+				case "F":
+					returnType = InstructionType.FRETURN;
+					break;
+				case "D":
+					returnType = InstructionType.DRETURN;
+					break;
+				case "V":
+					returnType = InstructionType.RETURN;
+					break;
+				default:
+					assert false;
+					return;
+			}
+		}
+		else
+		{
+			returnType = InstructionType.ARETURN;
+		}
+
+		ins.add(new Return(instructions, returnType));
+
+		clazz.getMethods().addMethod(invokerMethodSignature);
 	}
 }

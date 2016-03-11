@@ -24,11 +24,18 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 	{
 		super(instructions, type, pc);
 	}
-	
+
 	public LDC2_W(Instructions instructions, long value)
 	{
 		super(instructions, InstructionType.LDC2_W, -1);
 		this.value = new net.runelite.deob.pool.Long(value);
+		length += 2;
+	}
+
+	public LDC2_W(Instructions instructions, double value)
+	{
+		super(instructions, InstructionType.LDC2_W, -1);
+		this.value = new net.runelite.deob.pool.Double(value);
 		length += 2;
 	}
 	

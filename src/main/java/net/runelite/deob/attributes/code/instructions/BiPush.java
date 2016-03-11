@@ -23,6 +23,13 @@ public class BiPush extends Instruction implements PushConstantInstruction
 	{
 		super(instructions, type, pc);
 	}
+
+	public BiPush(Instructions instructions, byte b)
+	{
+		super(instructions, InstructionType.BIPUSH, -1);
+
+		this.b = b;
+	}
 	
 	@Override
 	public void load(DataInputStream is) throws IOException
