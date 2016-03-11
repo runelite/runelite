@@ -48,7 +48,7 @@ public class ClassGroup
 	
 	public void initialize()
 	{
-		sort();
+		//sort();
 		buildClassGraph();
 		lookup();
 	}
