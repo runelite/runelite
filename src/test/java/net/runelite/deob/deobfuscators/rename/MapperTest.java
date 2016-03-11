@@ -8,10 +8,11 @@ import static net.runelite.deob.deobfuscators.rename.MapStaticTest.summary;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Test;
 
+// Compares two deobfuscated versions of the client
 public class MapperTest
 {
 	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.0-SNAPSHOT\\rs-client-1.0-SNAPSHOT.jar",//"d:/rs/07/gamepack_v16_deobbed.jar",
-		JAR2 = "d:/rs/07/gamepack_v17_deobbed.jar";
+		JAR2 = MapperTest.class.getResource("/gamepack_v16_deobbed.jar").getFile();
 //	private static final String JAR1 = MapStaticTest.class.getResource("/adamin1.jar").getFile(),
 //		JAR2 = MapStaticTest.class.getResource("/adamin2.jar").getFile();
 
