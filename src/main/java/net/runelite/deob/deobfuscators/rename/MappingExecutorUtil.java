@@ -131,26 +131,6 @@ public class MappingExecutorUtil
 
 			mi1.map(mappings, p1, p2);
 			e.paused = e2.paused = false;
-
-			// detect end of handler. this method is only used to map handlers.
-			if (mi1 instanceof SetFieldInstruction && mi2 instanceof SetFieldInstruction)
-			{
-				SetFieldInstruction sfi1 = (SetFieldInstruction) mi1,
-					sfi2 = (SetFieldInstruction) mi2;
-
-				if (sfi1.getMyField().packetHandler && sfi2.getMyField().packetHandler)
-				{
-					Instruction sfii = p1.getPops().get(0).getPushed().getInstruction();
-					if (sfii instanceof PushConstantInstruction)
-					{
-						Object o = ((PushConstantInstruction) sfii).getConstant().getObject();
-						if (o.equals(-1))
-						{
-							break outer;
-						}
-					}
-				}
-			}
 		}
 		
 		return mappings;
@@ -215,6 +195,29 @@ public class MappingExecutorUtil
 
 			mi1.map(mappings, p1, p2);
 			e.paused = e2.paused = false;
+
+
+			// detect end of handler. this method is only used to map handlers.
+			if (mi1 instanceof SetFieldInstruction && mi2 instanceof SetFieldInstruction)
+			{
+				SetFieldInstruction sfi1 = (SetFieldInstruction) mi1,
+					sfi2 = (SetFieldInstruction) mi2;
+
+				if (sfi1.getMyField().packetHandler && sfi2.getMyField().packetHandler)
+				{
+					Instruction sfii = p1.getPops().get(0).getPushed().getInstruction();
+					if (sfii instanceof PushConstantInstruction)
+					{
+						Object o = ((PushConstantInstruction) sfii).getConstant().getObject();
+						if (o.equals(-1))
+						{
+							p1.getFrame().stop();
+							p2.getFrame().stop();
+							e.paused = e2.paused = false;
+						}
+					}
+				}
+			}
 		}
 
 		return mappings;
