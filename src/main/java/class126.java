@@ -1,5 +1,6 @@
 import java.util.Date;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dk")
 public class class126 {
@@ -11,6 +12,10 @@ public class class126 {
    static int[] field2048;
 
    @ObfuscatedName("ca")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "88"
+   )
    static final void method2750() {
       class114.method2400(client.field536);
       ++class83.field1458;
@@ -154,6 +159,10 @@ public class class126 {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lclass0;II)V",
+      garbageValue = "1045016862"
+   )
    static void method2751(class0 var0, int var1) {
       Object[] var2 = var0.field5;
       int var3 = ((Integer)var2[0]).intValue();
@@ -1855,10 +1864,10 @@ public class class126 {
                                     if(var54 != null) {
                                        var41 = var54;
                                     } else {
-                                       byte[] var57 = class48.field1083.method3214(8, var35);
+                                       byte[] var58 = class48.field1083.method3214(8, var35);
                                        var54 = new class48();
-                                       if(var57 != null) {
-                                          var54.method985(new class118(var57));
+                                       if(var58 != null) {
+                                          var54.method985(new class118(var58));
                                        }
 
                                        class48.field1077.method3713(var54, (long)var35);
@@ -2351,8 +2360,8 @@ public class class126 {
                                     var59 = (int)(var53 / 3600000L);
                                     var20 = (int)((var53 - (long)(3600000 * var59)) / 60000L);
                                     var48 = (int)((var53 - (long)(var59 * 3600000) - (long)('\uea60' * var20)) / 1000L);
-                                    String var58 = var59 + ":" + var20 / 10 + var20 % 10 + ":" + var48 / 10 + var48 % 10;
-                                    class36.field800[var6++] = var58;
+                                    String var57 = var59 + ":" + var20 / 10 + var20 % 10 + ":" + var48 / 10 + var48 % 10;
+                                    class36.field800[var6++] = var57;
                                     continue;
                                  }
 

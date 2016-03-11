@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cw")
 public final class class103 {
@@ -95,6 +96,10 @@ public final class class103 {
    int field1800;
 
    @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "(Lclass37;IIIIII)V",
+      garbageValue = "-1824041249"
+   )
    static final void method2255(class37 var0, int var1, int var2, int var3) {
       if(null != var0 && var0.vmethod753()) {
          if(var0 instanceof class34) {

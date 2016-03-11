@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bs")
 public class class52 extends class203 {
@@ -23,6 +24,10 @@ public class class52 extends class203 {
    public static short[][] field1173;
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "-1288966774"
+   )
    void method1082(class118 var1, int var2) {
       if(var2 == 5) {
          this.field1168 = var1.method2455();
@@ -31,6 +36,10 @@ public class class52 extends class203 {
    }
 
    @ObfuscatedName("at")
+   @ObfuscatedSignature(
+      signature = "(ZB)V",
+      garbageValue = "4"
+   )
    static final void method1090(boolean var0) {
       for(int var1 = 0; var1 < client.field561; ++var1) {
          class34 var2 = client.field324[client.field326[var1]];
@@ -59,6 +68,10 @@ public class class52 extends class203 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;I)V",
+      garbageValue = "1466304381"
+   )
    void method1093(class118 var1) {
       while(true) {
          int var2 = var1.method2453();

@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cy")
 public class class94 implements class91 {
@@ -127,6 +128,10 @@ public class class94 implements class91 {
    }
 
    @ObfuscatedName("bs")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "255"
+   )
    static final void method2162() {
       int var0;
       int var1;

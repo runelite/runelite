@@ -5,6 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ef")
 public class class139 implements MouseListener, MouseMotionListener, FocusListener {
@@ -182,6 +183,10 @@ public class class139 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    @ObfuscatedName("bf")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-61"
+   )
    static final void method2913() {
       class109.method2382();
       if(null == class132.field2073) {

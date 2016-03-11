@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cn")
 public class class83 {
@@ -25,6 +26,10 @@ public class class83 {
    static int field1458;
 
    @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "(IIIILjava/lang/String;Ljava/lang/String;IIB)V",
+      garbageValue = "88"
+   )
    static final void method1863(int var0, int var1, int var2, int var3, String var4, int var5, int var6) {
       if(var2 >= 2000) {
          var2 -= 2000;
@@ -917,6 +922,10 @@ public class class83 {
    }
 
    @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-77"
+   )
    static void method1864() {
       for(class3 var0 = (class3)client.field449.method3748(); var0 != null; var0 = (class3)client.field449.method3747()) {
          int var1 = var0.field66;
@@ -945,6 +954,10 @@ public class class83 {
    }
 
    @ObfuscatedName("dc")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1558849917"
+   )
    static final void method1865(String var0) {
       if(null != var0) {
          String var1 = class134.method2803(var0, client.field473);
@@ -994,6 +1007,10 @@ public class class83 {
    }
 
    @ObfuscatedName("dv")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "532347191"
+   )
    static final void method1868() {
       client.field329.method2686(166);
 

@@ -1,6 +1,7 @@
 import java.math.BigInteger;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("f")
 public class class4 {
@@ -65,6 +66,10 @@ public class class4 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-5"
+   )
    public static void method40(int var0) {
       if(var0 != -1) {
          if(class172.field2750[var0]) {
@@ -106,6 +111,10 @@ public class class4 {
    }
 
    @ObfuscatedName("ad")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "-1373017621"
+   )
    static final void method42(int var0, int var1, int var2) {
       if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
          int var3 = class105.method2335(var0, var1, class75.field1386) - var2;

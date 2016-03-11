@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fx")
 public final class class161 {
@@ -10,6 +11,10 @@ public final class class161 {
    public static final char[] field2655 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
    @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "-63"
+   )
    static final void method3146(int var0, int var1) {
       if(class130.field2065 != var0 || class105.field1878 != var1) {
          class130.field2065 = var0;
@@ -114,6 +119,10 @@ public final class class161 {
    }
 
    @ObfuscatedName("di")
+   @ObfuscatedSignature(
+      signature = "(Lclass172;IIII)V",
+      garbageValue = "409267339"
+   )
    static final void method3147(class172 var0, int var1, int var2, int var3) {
       class38.method764();
       class174 var4 = var0.method3360(false);

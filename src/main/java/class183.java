@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gh")
 public class class183 extends class66 {
@@ -87,6 +88,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass179;Lclass166;Lclass59;II)Z",
+      garbageValue = "22050"
+   )
    public synchronized boolean method3551(class179 var1, class166 var2, class59 var3, int var4) {
       var1.method3461();
       boolean var5 = true;
@@ -127,6 +132,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-113"
+   )
    synchronized void method3553() {
       for(class180 var1 = (class180)this.field2978.method3748(); var1 != null; var1 = (class180)this.field2978.method3747()) {
          var1.method3853();
@@ -202,6 +211,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1797936758"
+   )
    void method3566(int var1) {
       for(class186 var2 = (class186)this.field2967.field2999.method3773(); var2 != null; var2 = (class186)this.field2967.field2999.method3772()) {
          if(var1 < 0 || var2.field3012 == var1) {
@@ -225,6 +238,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-1270952642"
+   )
    void method3567(int var1) {
       if(var1 >= 0) {
          this.field2961[var1] = 12800;
@@ -276,6 +293,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-43"
+   )
    void method3572(int var1) {
       int var2 = var1 & 240;
       int var3;
@@ -527,6 +548,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("aq")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "584789802"
+   )
    void method3582() {
       int var1 = this.field2981;
       int var2 = this.field2966;
@@ -720,6 +745,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "1893593205"
+   )
    void method3635(int var1, int var2, int var3) {
       this.method3636(var1, var2);
       if((this.field2971[var1] & 2) != 0) {
@@ -788,6 +817,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "-1633144929"
+   )
    void method3636(int var1, int var2) {
       class186 var3 = this.field2977[var1][var2];
       if(var3 != null) {
@@ -865,6 +898,10 @@ public class class183 extends class66 {
    }
 
    @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-2032291229"
+   )
    void method3658(int var1) {
       if((this.field2971[var1] & 2) != 0) {
          for(class186 var2 = (class186)this.field2967.field2999.method3773(); null != var2; var2 = (class186)this.field2967.field2999.method3772()) {

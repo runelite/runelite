@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URI;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fk")
 public class class164 {
@@ -21,6 +22,10 @@ public class class164 {
    static int field2672;
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZZI)V",
+      garbageValue = "0"
+   )
    public static void method3191(String var0, boolean var1) {
       if(var1) {
          if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {

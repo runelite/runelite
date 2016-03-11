@@ -5,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cr")
 @Implements("SpritePixels")
@@ -428,6 +429,10 @@ public final class class78 extends class79 {
    }
 
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "128"
+   )
    public void method1696(int var1, int var2, int var3, int var4) {
       var1 += this.field1413;
       var2 += this.field1420;

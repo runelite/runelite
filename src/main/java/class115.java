@@ -1,6 +1,7 @@
 import java.util.zip.Inflater;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dp")
 public class class115 {
@@ -15,6 +16,10 @@ public class class115 {
    Inflater field1980;
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;[BI)V",
+      garbageValue = "1547226549"
+   )
    public void method2401(class118 var1, byte[] var2) {
       if(var1.field1995[var1.field1998] == 31 && var1.field1995[1 + var1.field1998] == -117) {
          if(this.field1980 == null) {

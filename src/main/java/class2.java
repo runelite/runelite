@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("a")
 @Implements("Player")
@@ -124,6 +125,10 @@ public final class class2 extends class37 {
    int field59;
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;I)V",
+      garbageValue = "-1557444878"
+   )
    final void method11(class118 var1) {
       var1.field1998 = 0;
       int var2 = var1.method2453();
@@ -354,6 +359,10 @@ public final class class2 extends class37 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIBI)V",
+      garbageValue = "2082524716"
+   )
    final void method26(int var1, int var2, byte var3) {
       if(super.field820 != -1 && class36.method741(super.field820).field998 == 1) {
          super.field820 = -1;

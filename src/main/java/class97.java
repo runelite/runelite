@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cz")
 @Implements("GameObject")
@@ -94,6 +95,10 @@ public final class class97 {
    }
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "0"
+   )
    public static Object method2168(byte[] var0) {
       if(null == var0) {
          return null;

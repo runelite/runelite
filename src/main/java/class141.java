@@ -1,5 +1,6 @@
 import java.io.File;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ey")
 public class class141 {
@@ -19,6 +20,10 @@ public class class141 {
    }
 
    @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lclass135;Ljava/awt/Component;IIS)Lclass56;",
+      garbageValue = "0"
+   )
    public static final class56 method2925(class135 var0, int var1, int var2) {
       if(0 == class102.field1780) {
          throw new IllegalStateException();
@@ -243,6 +248,10 @@ public class class141 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(IIIZIZI)V",
+      garbageValue = "2057745190"
+   )
    static void method2927(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
       if(var0 < var1) {
          int var6 = (var0 + var1) / 2;

@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fg")
 public class class174 extends class203 {
@@ -38,6 +39,10 @@ public class class174 extends class203 {
    }
 
    @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "(IIIIZI)V",
+      garbageValue = "-825230774"
+   )
    static final void method3407(int var0, int var1, int var2, int var3, boolean var4) {
       if(var2 < 1) {
          var2 = 1;

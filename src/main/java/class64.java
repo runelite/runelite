@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bd")
 public class class64 extends class66 {
@@ -123,6 +124,10 @@ public class class64 extends class66 {
    }
 
    @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Z)V",
+      garbageValue = "1"
+   )
    public synchronized void method1311() {
       this.field1256 = (this.field1256 ^ this.field1256 >> 31) + (this.field1256 >>> 31);
       this.field1256 = -this.field1256;
@@ -634,33 +639,33 @@ public class class64 extends class66 {
       var7 <<= 1;
 
       int var10001;
-      byte var12;
-      for(var7 -= 6; var4 < var7; var2[var10001] += var12 * var6) {
-         var12 = var1[var3++];
+      byte var11;
+      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
-         var2[var10001] += var12 * var6;
-         var12 = var1[var3++];
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
-         var2[var10001] += var12 * var6;
-         var12 = var1[var3++];
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
-         var2[var10001] += var12 * var6;
-         var12 = var1[var3++];
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
-      for(var7 += 6; var4 < var7; var2[var10001] += var12 * var6) {
-         var12 = var1[var3++];
+      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
@@ -710,33 +715,33 @@ public class class64 extends class66 {
       var7 <<= 1;
 
       int var10001;
-      byte var12;
-      for(var7 -= 6; var4 < var7; var2[var10001] += var12 * var6) {
-         var12 = var1[var3--];
+      byte var11;
+      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
-         var2[var10001] += var12 * var6;
-         var12 = var1[var3--];
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
-         var2[var10001] += var12 * var6;
-         var12 = var1[var3--];
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
-         var2[var10001] += var12 * var6;
-         var12 = var1[var3--];
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
-      for(var7 += 6; var4 < var7; var2[var10001] += var12 * var6) {
-         var12 = var1[var3--];
+      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var12 * var5;
+         var2[var10001] += var11 * var5;
          var10001 = var4++;
       }
 
@@ -750,13 +755,13 @@ public class class64 extends class66 {
          var7 = var8;
       }
 
-      byte var14;
+      byte var13;
       int var10001;
       while(var5 < var7) {
          var1 = var4 >> 8;
-         var14 = var2[var1];
+         var13 = var2[var1];
          var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -765,9 +770,9 @@ public class class64 extends class66 {
       }
 
       for(var1 = var12; var5 < var7; var4 += var11) {
-         var14 = var2[var4 >> 8];
+         var13 = var2[var4 >> 8];
          var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
       }
 
       var10.field1266 = var4;
@@ -944,45 +949,45 @@ public class class64 extends class66 {
       var4 <<= 1;
       var9 <<= 1;
 
-      byte var14;
+      byte var13;
       int var10001;
       for(var9 -= 6; var4 < var9; var6 += var8) {
-         var14 = var1[var3--];
+         var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
          var6 += var8;
-         var14 = var1[var3--];
+         var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
          var6 += var8;
-         var14 = var1[var3--];
+         var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
          var6 += var8;
-         var14 = var1[var3--];
+         var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
       }
 
       for(var9 += 6; var4 < var9; var6 += var8) {
-         var14 = var1[var3--];
+         var13 = var1[var3--];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
       }
 
       var12.field1255 = var5 >> 2;
@@ -999,13 +1004,13 @@ public class class64 extends class66 {
          var8 = var9;
       }
 
-      byte var15;
+      byte var14;
       int var10001;
       while(var5 < var8) {
          var1 = var4 >> 8;
-         var15 = var2[var1];
+         var14 = var2[var1];
          var10001 = var5++;
-         var3[var10001] += ((var15 << 8) + (var2[var1 + 1] - var15) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1015,9 +1020,9 @@ public class class64 extends class66 {
       }
 
       for(var1 = var13; var5 < var8; var4 += var12) {
-         var15 = var2[var4 >> 8];
+         var14 = var2[var4 >> 8];
          var10001 = var5++;
-         var3[var10001] += ((var15 << 8) + (var1 - var15) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
       }
 
@@ -1108,9 +1113,9 @@ public class class64 extends class66 {
       int var10001;
       while(var5 < var8) {
          var1 = var4 >> 8;
-         byte var15 = var2[var1 - 1];
+         byte var14 = var2[var1 - 1];
          var10001 = var5++;
-         var3[var10001] += ((var15 << 8) + (var2[var1] - var15) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1146,8 +1151,8 @@ public class class64 extends class66 {
       int var10001;
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
-         byte var17 = var2[var1 - 1];
-         var0 = (var17 << 8) + (var2[var1] - var17) * (var4 & 255);
+         byte var16 = var2[var1 - 1];
+         var0 = (var16 << 8) + (var2[var1] - var16) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var6 += var8;
@@ -1239,9 +1244,9 @@ public class class64 extends class66 {
       int var10001;
       while(var5 < var7) {
          var1 = var4 >> 8;
-         byte var14 = var2[var1 - 1];
+         byte var13 = var2[var1 - 1];
          var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
+         var3[var10001] += ((var13 << 8) + (var2[var1] - var13) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -1276,45 +1281,45 @@ public class class64 extends class66 {
       var4 <<= 1;
       var9 <<= 1;
 
-      byte var14;
+      byte var13;
       int var10001;
       for(var9 -= 6; var4 < var9; var6 += var8) {
-         var14 = var1[var3++];
+         var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
          var6 += var8;
-         var14 = var1[var3++];
+         var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
          var6 += var8;
-         var14 = var1[var3++];
+         var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
          var6 += var8;
-         var14 = var1[var3++];
+         var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
       }
 
       for(var9 += 6; var4 < var9; var6 += var8) {
-         var14 = var1[var3++];
+         var13 = var1[var3++];
          var10001 = var4++;
-         var2[var10001] += var14 * var5;
+         var2[var10001] += var13 * var5;
          var5 += var7;
          var10001 = var4++;
-         var2[var10001] += var14 * var6;
+         var2[var10001] += var13 * var6;
       }
 
       var12.field1255 = var5 >> 2;
@@ -1337,12 +1342,12 @@ public class class64 extends class66 {
 
       var5 <<= 1;
 
-      byte var17;
+      byte var16;
       int var10001;
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
-         var17 = var2[var1];
-         var0 = (var17 << 8) + (var2[var1 + 1] - var17) * (var4 & 255);
+         var16 = var2[var1];
+         var0 = (var16 << 8) + (var2[var1 + 1] - var16) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var6 += var8;
@@ -1358,8 +1363,8 @@ public class class64 extends class66 {
       var10 <<= 1;
 
       for(var1 = var15; var5 < var10; var4 += var14) {
-         var17 = var2[var4 >> 8];
-         var0 = (var17 << 8) + (var1 - var17) * (var4 & 255);
+         var16 = var2[var4 >> 8];
+         var0 = (var16 << 8) + (var1 - var16) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var6 += var8;
@@ -1384,12 +1389,12 @@ public class class64 extends class66 {
 
       var5 <<= 1;
 
-      byte var15;
+      byte var14;
       int var10001;
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
-         var15 = var2[var1];
-         var0 = (var15 << 8) + (var2[var1 + 1] - var15) * (var4 & 255);
+         var14 = var2[var1];
+         var0 = (var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var10001 = var5++;
@@ -1403,8 +1408,8 @@ public class class64 extends class66 {
       var8 <<= 1;
 
       for(var1 = var13; var5 < var8; var4 += var12) {
-         var15 = var2[var4 >> 8];
-         var0 = (var15 << 8) + (var1 - var15) * (var4 & 255);
+         var14 = var2[var4 >> 8];
+         var0 = (var14 << 8) + (var1 - var14) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var10001 = var5++;
@@ -1458,8 +1463,8 @@ public class class64 extends class66 {
       int var10001;
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
-         byte var15 = var2[var1 - 1];
-         var0 = (var15 << 8) + (var2[var1] - var15) * (var4 & 255);
+         byte var14 = var2[var1 - 1];
+         var0 = (var14 << 8) + (var2[var1] - var14) * (var4 & 255);
          var10001 = var5++;
          var3[var10001] += var0 * var6 >> 6;
          var10001 = var5++;

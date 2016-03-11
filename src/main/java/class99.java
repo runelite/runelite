@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cb")
 public class class99 extends class84 {
@@ -1118,6 +1119,10 @@ public class class99 extends class84 {
       return var3;
    }
 
+   @ObfuscatedSignature(
+      signature = "(Lclass99;ZZZZ)V",
+      garbageValue = "1"
+   )
    public class99(class99 var1, boolean var2, boolean var3, boolean var4, boolean var5) {
       this.field1704 = var1.field1704;
       this.field1703 = var1.field1703;
@@ -1345,6 +1350,10 @@ public class class99 extends class84 {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "([[IIIIZI)Lclass99;",
+      garbageValue = "1"
+   )
    public class99 method2184(int[][] var1, int var2, int var3, int var4, int var5) {
       this.method2188();
       int var6 = var2 + this.field1737;

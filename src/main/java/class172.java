@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fv")
 @Implements("Widget")
@@ -108,6 +109,7 @@ public class class172 extends class207 {
       intValue = 601602425
    )
    @Export("relativeX")
+   //@Export("scrollX")
    public int field2772 = 0;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
@@ -537,6 +539,10 @@ public class class172 extends class207 {
    public Object[] field2891;
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;I)V",
+      garbageValue = "1481402467"
+   )
    void method3351(class118 var1) {
       this.field2758 = false;
       this.field2849 = var1.method2453();
@@ -1096,6 +1102,10 @@ public class class172 extends class207 {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;I)V",
+      garbageValue = "-1896410316"
+   )
    void method3390(class118 var1) {
       var1.method2453();
       this.field2758 = true;

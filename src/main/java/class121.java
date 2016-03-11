@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("db")
 public final class class121 extends class118 {
@@ -77,6 +78,10 @@ public final class class121 extends class118 {
    }
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(IIIIIILclass85;Lclass107;B)V",
+      garbageValue = "84"
+   )
    static final void method2706(int var0, int var1, int var2, int var3, int var4, int var5, class85 var6, class107 var7) {
       if(!client.field457 || 0 != (class5.field81[0][var1][var2] & 2) || (class5.field81[var0][var1][var2] & 16) == 0) {
          if(var0 < class5.field82) {

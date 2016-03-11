@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ff")
 public abstract class class166 {
@@ -48,6 +49,10 @@ public abstract class class166 {
    int[] field2697;
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "([BI)V",
+      garbageValue = "-1258670449"
+   )
    void method3212(byte[] var1) {
       this.field2688 = class4.method38(var1, var1.length);
       class118 var2 = new class118(class24.method594(var1));
@@ -283,6 +288,10 @@ public abstract class class166 {
    }
 
    @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "99"
+   )
    public void method3227() {
       for(int var1 = 0; var1 < this.field2689.length; ++var1) {
          if(this.field2689[var1] != null) {
@@ -478,6 +487,10 @@ public abstract class class166 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(ILclass133;Lclass167;I)V",
+      garbageValue = "247120227"
+   )
    static void method3286(int var0, class133 var1, class167 var2) {
       byte[] var3 = null;
       class198 var4 = class169.field2717;

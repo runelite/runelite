@@ -1,5 +1,6 @@
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dd")
 @Implements("Model")
@@ -635,6 +636,10 @@ public class class104 extends class84 {
    }
 
    @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIII)V",
+      garbageValue = "0"
+   )
    public final void method2273(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       field1865[0] = -1;
       if(this.field1830 != 2 && this.field1830 != 1) {
@@ -917,6 +922,10 @@ public class class104 extends class84 {
    }
 
    @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(IIIIIII)V",
+      garbageValue = "0"
+   )
    public final void method2289(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       field1865[0] = -1;
       if(this.field1830 != 2 && this.field1830 != 1) {

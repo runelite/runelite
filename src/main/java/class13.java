@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("u")
 public class class13 implements Runnable {
@@ -64,6 +65,10 @@ public class class13 implements Runnable {
    }
 
    @ObfuscatedName("co")
+   @ObfuscatedSignature(
+      signature = "(Lclass172;IIIIIII)V",
+      garbageValue = "-1342971075"
+   )
    static final void method158(class172 var0, int var1, int var2, int var3, int var4, int var5, int var6) {
       if(client.field435) {
          client.field371 = 32;

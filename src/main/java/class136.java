@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("eu")
 public final class class136 implements KeyListener, FocusListener {
@@ -188,6 +189,10 @@ public final class class136 implements KeyListener, FocusListener {
    }
 
    @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "895544119"
+   )
    static final void method2870() {
       try {
          if(client.field320 == 0) {

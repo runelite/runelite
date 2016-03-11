@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ea")
 public class class135 implements Runnable {
@@ -109,6 +110,10 @@ public class class135 implements Runnable {
    }
 
    @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "(Lclass33;B)V",
+      garbageValue = "13"
+   )
    static final void method2812(class33 var0) {
       if(client.field296 == class148.field2249.field839 >> 7 && client.field319 == class148.field2249.field848 >> 7) {
          client.field296 = 0;

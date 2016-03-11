@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dr")
 public class class108 {
@@ -17,6 +18,10 @@ public class class108 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1855774929"
+   )
    public static void method2375(int var0) {
       if(class182.field2957 != 0) {
          class75.field1388 = var0;
@@ -27,6 +32,10 @@ public class class108 {
    }
 
    @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "(IIIIIB)V",
+      garbageValue = "-47"
+   )
    static final void method2377(int var0, int var1, int var2, int var3, int var4) {
       int var5 = class107.field1906.method1901(var0, var1, var2);
       int var6;

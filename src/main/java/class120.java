@@ -1,6 +1,7 @@
 import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("df")
 public class class120 {
@@ -85,6 +86,10 @@ public class class120 {
    }
 
    @ObfuscatedName("bv")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "-2111220956"
+   )
    static final void method2681(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       class16 var9 = null;
 

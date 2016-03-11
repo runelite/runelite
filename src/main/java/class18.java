@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.net.URL;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("z")
 public class class18 {
@@ -54,6 +55,10 @@ public class class18 {
    }
 
    @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-1026038056"
+   )
    static void method190(int var0) {
       if(-1 == var0 && !client.field527) {
          class45.method951();
@@ -263,6 +268,10 @@ public class class18 {
    }
 
    @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-37082840"
+   )
    static void method196(int var0) {
       if(var0 == -3) {
          class3.method32("Connection timed out.", "Please try using a different world.", "");

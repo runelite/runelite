@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ai")
 public class class33 {
@@ -123,6 +124,10 @@ public class class33 {
    }
 
    @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "([Lclass172;IIIIIIIIS)V",
+      garbageValue = "13592"
+   )
    static final void method723(class172[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       class79.method1778(var2, var3, var4, var5);
       class90.method2114();

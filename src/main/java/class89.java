@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cd")
 public class class89 {
@@ -15,6 +16,10 @@ public class class89 {
    public static int field1566;
 
    @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIII)V",
+      garbageValue = "-1387896447"
+   )
    static final void method2055(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(class149.method3102(var0)) {
          class75.field1381 = null;
@@ -37,6 +42,10 @@ public class class89 {
    }
 
    @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "2"
+   )
    static final void method2056() {
       short var0 = 256;
       int var1;

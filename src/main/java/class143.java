@@ -17,6 +17,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("er")
 @Implements("GameEngine")
@@ -87,6 +88,10 @@ public abstract class class143 extends Applet implements Runnable, FocusListener
    static class143 field2215 = null;
 
    @ObfuscatedName("qk")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "2140243539"
+   )
    protected final void method2957(int var1, int var2, int var3) {
       try {
          if(null != field2215) {
@@ -405,6 +410,10 @@ public abstract class class143 extends Applet implements Runnable, FocusListener
    protected abstract void vmethod2969();
 
    @ObfuscatedName("qp")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "124"
+   )
    protected void method2970(String var1) {
       if(!this.field2202) {
          this.field2202 = true;
@@ -450,6 +459,10 @@ public abstract class class143 extends Applet implements Runnable, FocusListener
    }
 
    @ObfuscatedName("qw")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-232787874"
+   )
    final synchronized void method2986() {
       if(!field2201) {
          field2201 = true;

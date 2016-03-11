@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 import netscape.javascript.JSObject;
 
 @ObfuscatedName("ag")
@@ -102,7 +103,8 @@ public abstract class class37 extends class84 {
    @ObfuscatedName("ay")
    int[] field830 = new int[4];
    @ObfuscatedName("av")
-   @Export("hitCycle")
+   @Export("hitSplats")
+   //@Export("hitCycle")
    int[] field831 = new int[4];
    @ObfuscatedName("by")
    @ObfuscatedGetter(
@@ -281,6 +283,10 @@ public abstract class class37 extends class84 {
    int field868 = 0;
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lclass166;Lclass166;IZI)Lclass102;",
+      garbageValue = "0"
+   )
    public static class102 method750(class166 var0, class166 var1, int var2, boolean var3) {
       boolean var4 = true;
       int[] var5 = var0.method3223(var2);
@@ -321,6 +327,10 @@ public abstract class class37 extends class84 {
    }
 
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "-707654844"
+   )
    final void method754(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < 4; ++var4) {
          if(this.field831[var4] <= var3) {
@@ -334,6 +344,10 @@ public abstract class class37 extends class84 {
    }
 
    @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-928656128"
+   )
    static void method759() {
       int var0 = class142.field2190;
       int var1 = class89.field1566;

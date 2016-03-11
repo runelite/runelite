@@ -11,6 +11,7 @@ import java.net.URLConnection;
 import java.util.Random;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("s")
 public final class class16 extends class207 {
@@ -87,6 +88,10 @@ public final class class16 extends class207 {
    }
 
    @ObfuscatedName("ct")
+   @ObfuscatedSignature(
+      signature = "([Lclass172;IIIIIIII)V",
+      garbageValue = "2074699794"
+   )
    static final void method183(class172[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       for(int var8 = 0; var8 < var0.length; ++var8) {
          class172 var9 = var0[var8];
@@ -985,6 +990,10 @@ public final class class16 extends class207 {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
+      garbageValue = "1"
+   )
    public static void method184(String var0, Throwable var1) {
       try {
          String var2 = "";
@@ -1197,6 +1206,10 @@ public final class class16 extends class207 {
    }
 
    @ObfuscatedName("cy")
+   @ObfuscatedSignature(
+      signature = "([Lclass172;II)V",
+      garbageValue = "1006578465"
+   )
    static final void method187(class172[] var0, int var1) {
       for(int var2 = 0; var2 < var0.length; ++var2) {
          class172 var3 = var0[var2];

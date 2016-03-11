@@ -3,6 +3,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bu")
 public abstract class class77 {
@@ -53,6 +54,10 @@ public abstract class class77 {
    }
 
    @ObfuscatedName("dg")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1356925084"
+   )
    static void method1674(String var0) {
       class95.field1639 = var0;
 

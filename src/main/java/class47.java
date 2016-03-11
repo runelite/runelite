@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("au")
 public class class47 extends class203 {
@@ -31,6 +32,10 @@ public class class47 extends class203 {
    static int field1074;
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;B)V",
+      garbageValue = "-118"
+   )
    void method968(class118 var1) {
       while(true) {
          int var2 = var1.method2453();

@@ -3,6 +3,7 @@ import java.lang.reflect.Method;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("m")
 public final class class5 {
@@ -71,6 +72,10 @@ public final class class5 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "1054365682"
+   )
    public static void method57(class118 var0) {
       class209 var1 = new class209();
       var1.field3124 = var0.method2453();
@@ -187,6 +192,10 @@ public final class class5 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "([BIIIIIII[Lclass107;I)V",
+      garbageValue = "-234429232"
+   )
    static final void method79(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, class107[] var8) {
       int var10;
       for(int var9 = 0; var9 < 8; ++var9) {

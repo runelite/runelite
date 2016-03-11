@@ -1,5 +1,6 @@
 import java.math.BigInteger;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("k")
 public class class9 {
@@ -9,6 +10,10 @@ public class class9 {
    static final BigInteger field157 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
 
    @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "(Lclass37;B)V",
+      garbageValue = "2"
+   )
    static final void method115(class37 var0) {
       if(0 != var0.field862) {
          if(-1 != var0.field835) {

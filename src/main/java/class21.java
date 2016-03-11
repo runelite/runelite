@@ -1,5 +1,6 @@
 import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("t")
 final class class21 implements Comparator {
@@ -36,6 +37,10 @@ final class class21 implements Comparator {
    }
 
    @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "-12025"
+   )
    static final void method570() {
       if(client.field339 > 0) {
          class27.method648();

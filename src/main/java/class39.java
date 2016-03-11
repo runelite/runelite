@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ao")
 @Implements("NPCComposition")
@@ -310,6 +311,10 @@ public class class39 extends class203 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "1800101407"
+   )
    void method795(class118 var1, int var2) {
       int var3;
       int var4;

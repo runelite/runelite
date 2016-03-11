@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aj")
 @Implements("ItemComposition")
@@ -273,6 +274,10 @@ public class class51 extends class203 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "-1165215489"
+   )
    void method1019(class118 var1, int var2) {
       if(var2 == 1) {
          this.field1120 = var1.method2455();
@@ -574,6 +579,10 @@ public class class51 extends class203 {
    }
 
    @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "([BB)V",
+      garbageValue = "-10"
+   )
    static void method1036(byte[] var0) {
       class118 var1 = new class118(var0);
       var1.field1998 = var0.length - 2;
@@ -778,6 +787,10 @@ public class class51 extends class203 {
    }
 
    @ObfuscatedName("be")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "500985843"
+   )
    static final void method1079(boolean var0) {
       while(true) {
          if(client.field293.method2691(client.field332) >= 27) {

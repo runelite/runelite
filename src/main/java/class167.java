@@ -1,6 +1,7 @@
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fe")
 public class class167 extends class166 {
@@ -69,6 +70,10 @@ public class class167 extends class166 {
    }
 
    @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "(I[BZZI)V",
+      garbageValue = "-154981689"
+   )
    void method3291(int var1, byte[] var2, boolean var3, boolean var4) {
       if(var3) {
          if(this.field2701) {
@@ -135,6 +140,10 @@ public class class167 extends class166 {
    }
 
    @ObfuscatedName("ch")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1318687794"
+   )
    void method3293() {
       this.field2707 = new boolean[super.field2695.length];
 
@@ -182,6 +191,10 @@ public class class167 extends class166 {
    }
 
    @ObfuscatedName("bu")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "1564953793"
+   )
    void method3294(int var1, int var2) {
       this.field2705 = var1;
       this.field2706 = var2;
@@ -238,6 +251,10 @@ public class class167 extends class166 {
    }
 
    @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "2129860153"
+   )
    static final void method3305(boolean var0) {
       client.field347 = var0;
       int var1;
@@ -368,6 +385,10 @@ public class class167 extends class166 {
    }
 
    @ObfuscatedName("cx")
+   @ObfuscatedSignature(
+      signature = "(Lclass133;I[BZI)V",
+      garbageValue = "-257264300"
+   )
    public void method3320(class133 var1, int var2, byte[] var3, boolean var4) {
       int var5;
       if(this.field2699 == var1) {

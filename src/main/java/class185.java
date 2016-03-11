@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gz")
 public class class185 extends class66 {
@@ -130,6 +131,10 @@ public class class185 extends class66 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lclass186;II)V",
+      garbageValue = "-584142135"
+   )
    void method3683(class186 var1, int var2) {
       if((this.field3000.field2971[var1.field3012] & 4) != 0 && var1.field3017 < 0) {
          int var3 = this.field3000.field2976[var1.field3012] / class102.field1780;

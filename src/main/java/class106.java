@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dv")
 public abstract class class106 {
@@ -30,6 +31,10 @@ public abstract class class106 {
    protected abstract boolean vmethod2336(int var1, int var2);
 
    @ObfuscatedName("dp")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1912116538"
+   )
    static final void method2338(String var0) {
       if(var0 != null) {
          if((client.field421 < 200 || client.field412 == 1) && client.field421 < 400) {

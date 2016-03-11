@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fu")
 public class class159 extends class207 {
@@ -98,6 +99,10 @@ public class class159 extends class207 {
    int field2643;
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "615808914"
+   )
    void method3127() {
       if(this.field2642.length() > 40) {
          this.field2642 = this.field2642.substring(0, 40);
@@ -162,6 +167,10 @@ public class class159 extends class207 {
       return var2;
    }
 
+   @ObfuscatedSignature(
+      signature = "(Z)V",
+      garbageValue = "1"
+   )
    public class159(boolean var1) {
       if(class35.field790.startsWith("win")) {
          this.field2616 = 1;
@@ -382,6 +391,10 @@ public class class159 extends class207 {
    }
 
    @ObfuscatedName("bx")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "-108"
+   )
    static final void method3134(int var0, int var1, int var2, int var3) {
       for(int var4 = 0; var4 < client.field491; ++var4) {
          if(client.field498[var4] + client.field496[var4] > var0 && client.field496[var4] < var2 + var0 && client.field499[var4] + client.field456[var4] > var1 && client.field456[var4] < var1 + var3) {

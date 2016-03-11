@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("do")
 public class class114 {
@@ -31,6 +32,10 @@ public class class114 {
    }
 
    @ObfuscatedName("cf")
+   @ObfuscatedSignature(
+      signature = "(Lclass172;I)V",
+      garbageValue = "271633530"
+   )
    static void method2400(class172 var0) {
       if(client.field492 == var0.field2889 * -1) {
          client.field493[var0.field2888] = true;

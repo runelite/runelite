@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("o")
 @Implements("Projectile")
@@ -176,6 +177,10 @@ public final class class6 extends class84 {
    }
 
    @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lclass143;B)V",
+      garbageValue = "44"
+   )
    static void method86() {
       if(class139.field2168 == 1 || !class94.field1617 && 4 == class139.field2168) {
          int var0 = 280 + class31.field732;
@@ -244,6 +249,10 @@ public final class class6 extends class84 {
    }
 
    @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-43"
+   )
    static final void method91() {
       for(int var0 = 0; var0 < client.field327; ++var0) {
          int var1 = client.field328[var0];
@@ -354,6 +363,10 @@ public final class class6 extends class84 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-639159184"
+   )
    final void method92(int var1) {
       this.field116 = true;
       this.field113 += (double)var1 * this.field120;
@@ -385,6 +398,10 @@ public final class class6 extends class84 {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(IIILclass106;Lclass107;Z[I[IB)I",
+      garbageValue = "1"
+   )
    public static int method93(int var0, int var1, int var2, class106 var3, class107 var4, int[] var5, int[] var6) {
       int var8;
       for(int var7 = 0; var7 < 128; ++var7) {

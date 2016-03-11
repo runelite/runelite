@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("al")
 @Implements("Sequence")
@@ -90,6 +91,10 @@ public class class42 extends class203 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "859629678"
+   )
    void method864(class118 var1, int var2) {
       int var3;
       int var4;
@@ -279,6 +284,10 @@ public class class42 extends class203 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-105055571"
+   )
    static void method878(int var0) {
       if(var0 != -1) {
          if(class149.method3102(var0)) {

@@ -2,6 +2,7 @@ import java.awt.Container;
 import java.awt.Insets;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("at")
 public class class41 extends class203 {
@@ -68,6 +69,10 @@ public class class41 extends class203 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1035193256"
+   )
    void method843(int var1) {
       double var2 = (double)(var1 >> 16 & 255) / 256.0D;
       double var4 = (double)(var1 >> 8 & 255) / 256.0D;
@@ -158,6 +163,10 @@ public class class41 extends class203 {
    }
 
    @ObfuscatedName("dd")
+   @ObfuscatedSignature(
+      signature = "([Lclass172;IS)V",
+      garbageValue = "21790"
+   )
    static final void method857(class172[] var0, int var1) {
       for(int var2 = 0; var2 < var0.length; ++var2) {
          class172 var3 = var0[var2];
@@ -242,6 +251,10 @@ public class class41 extends class203 {
    }
 
    @ObfuscatedName("aa")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-127117358"
+   )
    static void method860() {
       client var0 = client.field284;
       synchronized(client.field284) {

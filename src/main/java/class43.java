@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("aq")
 public class class43 extends class203 {
@@ -118,6 +119,10 @@ public class class43 extends class203 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "-2054514251"
+   )
    void method900(class118 var1, int var2) {
       if(var2 == 1) {
          this.field1011 = var1.method2455();

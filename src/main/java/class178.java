@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fa")
 @Implements("PlayerComposition")
@@ -40,6 +41,10 @@ public class class178 {
    public boolean field2922;
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1497889955"
+   )
    void method3432() {
       long var1 = this.field2917;
       int var3 = this.field2915[5];
@@ -103,6 +108,10 @@ public class class178 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IZI)V",
+      garbageValue = "190612903"
+   )
    public void method3434(int var1, boolean var2) {
       int var3 = this.field2914[var1];
       boolean var4;

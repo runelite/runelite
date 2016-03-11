@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dx")
 public class class129 {
@@ -16,6 +17,10 @@ public class class129 {
    static final class129 field2064 = new class129(0);
 
    @ObfuscatedName("dn")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1878409802"
+   )
    static final void method2758(int var0) {
       class83.method1864();
       class101.method2246();

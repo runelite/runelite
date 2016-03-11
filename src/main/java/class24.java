@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("e")
 @Implements("XClanMember")
@@ -77,6 +78,10 @@ public class class24 extends class207 {
    }
 
    @ObfuscatedName("cv")
+   @ObfuscatedSignature(
+      signature = "(Lclass172;IIZI)V",
+      garbageValue = "118219901"
+   )
    static void method595(class172 var0, int var1, int var2, boolean var3) {
       int var4 = var0.field2774;
       int var5 = var0.field2890;

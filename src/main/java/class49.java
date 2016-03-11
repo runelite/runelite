@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("av")
 public class class49 extends class203 {
@@ -36,6 +37,10 @@ public class class49 extends class203 {
    }
 
    @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "(Lclass172;IIB)V",
+      garbageValue = "10"
+   )
    static final void method1007(class172 var0, int var1, int var2) {
       if(null == client.field536 && !client.field308) {
          if(var0 != null && class89.method2057(var0) != null) {

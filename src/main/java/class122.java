@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dw")
 public final class class122 {
@@ -75,6 +76,10 @@ public final class class122 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "30025"
+   )
    final void method2718() {
       int var9 = -1640531527;
       int var8 = -1640531527;
@@ -204,6 +209,10 @@ public final class class122 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "1524055126"
+   )
    static void method2721(String[] var0, short[] var1, int var2, int var3) {
       if(var2 < var3) {
          int var4 = (var3 + var2) / 2;

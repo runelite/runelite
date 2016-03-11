@@ -2,6 +2,7 @@ import java.applet.Applet;
 import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hs")
 final class class217 implements Comparator {
@@ -31,6 +32,10 @@ final class class217 implements Comparator {
    }
 
    @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1744929749"
+   )
    static final void method3916() {
       for(int var0 = 0; var0 < client.field530; ++var0) {
          --client.field443[var0];

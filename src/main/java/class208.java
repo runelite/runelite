@@ -3,10 +3,15 @@ import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Insets;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hh")
 public final class class208 {
    @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2064612667"
+   )
    static void method3862() {
       int var0 = class143.field2208;
       int var1 = class143.field2209;

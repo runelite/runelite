@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ds")
 public final class class128 {
@@ -29,6 +30,10 @@ public final class class128 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZI)I",
+      garbageValue = "1"
+   )
    public static int method2756(CharSequence var0, int var1) {
       boolean var2 = false;
       boolean var3 = false;

@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("h")
 @Implements("Ignore")
@@ -79,6 +80,10 @@ public class class7 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass143;B)V",
+      garbageValue = "0"
+   )
    static void method98() {
       if(class31.field721) {
          class6.method86();

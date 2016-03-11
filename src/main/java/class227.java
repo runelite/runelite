@@ -2,6 +2,7 @@ import java.io.EOFException;
 import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ha")
 public class class227 {
@@ -67,6 +68,10 @@ public class class227 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "-1663708032"
+   )
    public void method4085(byte[] var1, int var2, int var3) throws IOException {
       try {
          if(var2 + var3 > var1.length) {
@@ -168,6 +173,10 @@ public class class227 {
    }
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-96"
+   )
    void method4086() throws IOException {
       this.field3213 = 0;
       if(this.field3217 * -1L != this.field3216) {
@@ -188,6 +197,10 @@ public class class227 {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "-1145935846"
+   )
    public void method4087(byte[] var1, int var2, int var3) throws IOException {
       try {
          if(this.field3216 + (long)var3 > this.field3219) {
@@ -275,6 +288,10 @@ public class class227 {
    }
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "346666416"
+   )
    void method4103() throws IOException {
       if(this.field3215 * -1L != -1L) {
          if(this.field3215 * -1L != this.field3217 * -1L) {

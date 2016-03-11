@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fz")
 public final class class162 {
@@ -6,6 +7,10 @@ public final class class162 {
    static byte[][] field2656;
 
    @ObfuscatedName("aw")
+   @ObfuscatedSignature(
+      signature = "(Lclass37;II)V",
+      garbageValue = "1749814831"
+   )
    static final void method3179(class37 var0) {
       int var1;
       class42 var10;

@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dl")
 public class class112 {
@@ -10,6 +11,10 @@ public class class112 {
    int[] field1963;
 
    @ObfuscatedName("dk")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "-628162174"
+   )
    static void method2390(String var0, boolean var1) {
       var0 = var0.toLowerCase();
       short[] var2 = new short[16];

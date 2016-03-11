@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dt")
 @Implements("CollisionData")
@@ -35,6 +36,10 @@ public class class107 {
    static class85 field1906;
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1955052744"
+   )
    public void method2341() {
       for(int var1 = 0; var1 < this.field1902; ++var1) {
          for(int var2 = 0; var2 < this.field1903; ++var2) {
@@ -49,6 +54,10 @@ public class class107 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IIIIZI)V",
+      garbageValue = "-831283716"
+   )
    public void method2342(int var1, int var2, int var3, int var4, boolean var5) {
       int var6 = 256;
       if(var5) {
@@ -85,6 +94,10 @@ public class class107 {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(IIIIZS)V",
+      garbageValue = "24794"
+   )
    public void method2347(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.field1895;
       var2 -= this.field1901;
@@ -233,6 +246,10 @@ public class class107 {
    }
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(IIIIIZI)V",
+      garbageValue = "-1286133239"
+   )
    public void method2348(int var1, int var2, int var3, int var4, int var5, boolean var6) {
       int var7 = 256;
       if(var6) {
@@ -290,6 +307,10 @@ public class class107 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IIIIZI)V",
+      garbageValue = "1873044489"
+   )
    public void method2365(int var1, int var2, int var3, int var4, boolean var5) {
       var1 -= this.field1895;
       var2 -= this.field1901;
@@ -438,6 +459,10 @@ public class class107 {
    }
 
    @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-1329165537"
+   )
    static final void method2366(int var0, int var1) {
       class198 var2 = client.field420[class75.field1386][var0][var1];
       if(null == var2) {
@@ -497,6 +522,10 @@ public class class107 {
    }
 
    @ObfuscatedName("bm")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1873976098"
+   )
    static void method2371() {
       for(int var0 = 0; var0 < client.field430; ++var0) {
          int var2 = client.field433[var0];

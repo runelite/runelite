@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("eh")
 public final class class138 extends Canvas {
@@ -32,6 +33,10 @@ public final class class138 extends Canvas {
    }
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Lclass80;B)V",
+      garbageValue = "-3"
+   )
    static final void method2885(class80 var0) {
       short var1 = 256;
 

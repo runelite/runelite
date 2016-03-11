@@ -6,6 +6,7 @@ import java.net.Socket;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("em")
 public final class class142 implements Runnable {
@@ -68,6 +69,10 @@ public final class class142 implements Runnable {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "([BIII)V",
+      garbageValue = "1281005631"
+   )
    public void method2931(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field2184) {
          while(var3 > 0) {
@@ -84,6 +89,10 @@ public final class class142 implements Runnable {
    }
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "([BIIS)V",
+      garbageValue = "128"
+   )
    public void method2932(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field2184) {
          if(this.field2194) {

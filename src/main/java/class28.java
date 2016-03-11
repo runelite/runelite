@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("am")
 @Implements("Item")
@@ -39,6 +40,10 @@ public final class class28 extends class84 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Component;Lclass166;Lclass166;ZII)V",
+      garbageValue = "-1263071987"
+   )
    static void method655(Component var0, class166 var1, class166 var2, boolean var3, int var4) {
       if(class31.field715) {
          if(4 == var4) {

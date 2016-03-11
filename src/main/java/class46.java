@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ad")
 public class class46 extends class203 {
@@ -82,6 +83,10 @@ public class class46 extends class203 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "6"
+   )
    void method955(int var1) {
       double var2 = (double)(var1 >> 16 & 255) / 256.0D;
       double var4 = (double)(var1 >> 8 & 255) / 256.0D;

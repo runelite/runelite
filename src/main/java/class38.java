@@ -1,6 +1,7 @@
 import java.awt.Image;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("af")
 public class class38 extends class206 {
@@ -35,6 +36,10 @@ public class class38 extends class206 {
    }
 
    @ObfuscatedName("dl")
+   @ObfuscatedSignature(
+      signature = "(IIIILclass78;Lclass174;I)V",
+      garbageValue = "-1762468340"
+   )
    static final void method763(int var0, int var1, int var2, int var3, class78 var4, class174 var5) {
       if(var4 != null) {
          int var6 = client.field374 + client.field522 & 2047;
@@ -57,6 +62,10 @@ public class class38 extends class206 {
    }
 
    @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1937180431"
+   )
    static final void method764() {
       if(class77.field1403 != null) {
          class77.field1403.method1175();

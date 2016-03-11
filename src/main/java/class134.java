@@ -2,6 +2,7 @@ import java.awt.Graphics;
 import java.io.File;
 import java.util.Hashtable;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("en")
 public class class134 {
@@ -166,6 +167,10 @@ public class class134 {
    }
 
    @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lclass223;Lclass223;Lclass223;ZI)V",
+      garbageValue = "1813245945"
+   )
    static void method2806(class223 var0, class223 var1, class223 var2, boolean var3) {
       if(var3) {
          class31.field732 = (class142.field2190 - client.field503 * 765) / 2;

@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ei")
 public class class140 extends class132 {
@@ -99,6 +100,10 @@ public class class140 extends class132 {
    }
 
    @ObfuscatedName("dm")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-761183572"
+   )
    static final void method2923(String var0) {
       if(var0 != null) {
          String var1 = class134.method2803(var0, client.field473);

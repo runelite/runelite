@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ar")
 @Implements("NPC")
@@ -54,6 +55,10 @@ public final class class34 extends class37 {
    }
 
    @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "(Lclass39;IIII)V",
+      garbageValue = "-1698326003"
+   )
    static final void method726(class39 var0, int var1, int var2, int var3) {
       if(client.field430 < 400) {
          if(null != var0.field909) {
@@ -181,6 +186,10 @@ public final class class34 extends class37 {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(IBI)V",
+      garbageValue = "-1228850242"
+   )
    final void method727(int var1, byte var2) {
       int var3 = super.field864[0];
       int var4 = super.field817[0];
@@ -240,6 +249,10 @@ public final class class34 extends class37 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IIZI)V",
+      garbageValue = "856894675"
+   )
    final void method734(int var1, int var2, boolean var3) {
       if(-1 != super.field820 && class36.method741(super.field820).field998 == 1) {
          super.field820 = -1;

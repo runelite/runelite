@@ -1,6 +1,7 @@
 import java.io.EOFException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("p")
 public class class19 {
@@ -40,6 +41,10 @@ public class class19 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;I)V",
+      garbageValue = "108937803"
+   )
    void method202(int var1, String var2) {
       this.field272[var1] = var2;
       if(this.field270[var1]) {
@@ -54,6 +59,10 @@ public class class19 {
    }
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1505707658"
+   )
    void method204() {
       class226 var1 = this.method205(false);
 
@@ -120,6 +129,10 @@ public class class19 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "946055480"
+   )
    void method208() {
       int var1;
       for(var1 = 0; var1 < this.field271.length; ++var1) {
@@ -142,6 +155,10 @@ public class class19 {
    }
 
    @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "7"
+   )
    static final void method212(int var0, int var1) {
       int var2 = class1.field28.method3962("Choose Option");
 
@@ -182,6 +199,10 @@ public class class19 {
    }
 
    @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1325493128"
+   )
    void method213() {
       class226 var1 = this.method205(true);
 
@@ -283,6 +304,10 @@ public class class19 {
    }
 
    @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "(IIS)V",
+      garbageValue = "20409"
+   )
    static final void method230(int var0, int var1) {
       if(client.field430 >= 2 || client.field301 != 0 || client.field408) {
          String var2;

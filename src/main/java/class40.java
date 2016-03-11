@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("an")
 @Implements("ObjectComposition")
@@ -244,6 +245,10 @@ public class class40 extends class203 {
    }
 
    @ObfuscatedName("dy")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZB)V",
+      garbageValue = "1"
+   )
    static final void method801(String var0) {
       if(null != var0) {
          if((client.field559 < 100 || client.field412 == 1) && client.field559 < 400) {
@@ -423,6 +428,10 @@ public class class40 extends class203 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;IIIIIIB)V",
+      garbageValue = "94"
+   )
    static final void method807(class118 var0, int var1, int var2, int var3, int var4, int var5, int var6) {
       int var7;
       if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
@@ -539,6 +548,10 @@ public class class40 extends class203 {
    }
 
    @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "1159773062"
+   )
    void method834(class118 var1, int var2) {
       int var3;
       int var4;

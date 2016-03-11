@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("y")
 @Implements("XItemContainer")
@@ -42,6 +43,10 @@ public class class15 extends class207 {
    }
 
    @ObfuscatedName("bq")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIB)V",
+      garbageValue = "46"
+   )
    static final void method181(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
          if(client.field457 && var0 != class75.field1386) {

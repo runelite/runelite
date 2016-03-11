@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ay")
 public class class48 extends class203 {
@@ -31,6 +32,10 @@ public class class48 extends class203 {
    public char field1086;
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;IB)V",
+      garbageValue = "-27"
+   )
    void method982(class118 var1, int var2) {
       if(1 == var2) {
          this.field1078 = (char)var1.method2453();
@@ -78,6 +83,10 @@ public class class48 extends class203 {
    }
 
    @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "(Lclass66;I)V",
+      garbageValue = "2115907454"
+   )
    static final void method994(class66 var0) {
       var0.field1273 = false;
       if(null != var0.field1272) {

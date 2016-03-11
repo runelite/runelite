@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ak")
 public class class27 {
@@ -89,6 +90,10 @@ public class class27 {
    }
 
    @ObfuscatedName("br")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "-748297535"
+   )
    static final void method649(boolean var0) {
       client.field413 = 0;
       client.field327 = 0;

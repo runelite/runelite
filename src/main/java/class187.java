@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gm")
 public class class187 {
@@ -15,6 +16,10 @@ public class class187 {
    public static final int[] field3044 = new int[]{6, 4, 0, 0, 0, 0, 0, 0, -2, 1, 0, -2, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 0, 2, 0, 0, 0, 0, 6, 0, 2, 0, 0, 12, -1, 0, 6, -2, 0, 0, 0, 0, 4, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, -2, 0, 0, -2, 0, 3, 6, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 5, -2, 5, 0, -2, 0, -2, 0, 10, 0, -1, 0, 0, -2, 0, 0, 4, 0, 0, 0, 0, 2, 4, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 7, 7, 0, 0, 6, 6, -2, 0, 0, 4, 0, 0, 0, -2, -2, -2, 0, 0, 0, 8, 0, 8, -1, 0, 0, 2, -2, 0, 0, 0, 0, 6, 0, 0, -2, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 6, 6, 0, 0, 6, 3, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 6, 14, 0, 0, 1, 0, 6, 15, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 8, 0, -1, 0, 0, 0, 0, 28, 2, 0, 0, 0, 0, -1, 0, 0, 4, 0, 0, 0, 0};
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass121;I)V",
+      garbageValue = "1198230787"
+   )
    public static void method3700(class121 var0) {
       class209 var1 = (class209)class210.field3125.method3807();
       if(null != var1) {

@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("n")
 public class class8 {
@@ -82,6 +83,10 @@ public class class8 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass121;B)V",
+      garbageValue = "112"
+   )
    static final void method100(class121 var0) {
       int var1 = 0;
       var0.method2688();
@@ -207,6 +212,10 @@ public class class8 {
    }
 
    @ObfuscatedName("bo")
+   @ObfuscatedSignature(
+      signature = "(Lclass2;IIII)V",
+      garbageValue = "1856979859"
+   )
    static final void method108(class2 var0, int var1, int var2, int var3) {
       if(class148.field2249 != var0) {
          if(client.field430 < 400) {
@@ -297,6 +306,10 @@ public class class8 {
    }
 
    @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "(Lclass2;IIBI)V",
+      garbageValue = "-324052031"
+   )
    static final void method112(class2 var0, int var1, int var2, byte var3) {
       int var4 = var0.field864[0];
       int var5 = var0.field817[0];

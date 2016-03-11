@@ -7,6 +7,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 import netscape.javascript.JSObject;
 
 @ObfuscatedName("j")
@@ -188,6 +189,10 @@ public class class0 extends class207 {
    }
 
    @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Lclass121;II)V",
+      garbageValue = "-1219039184"
+   )
    static void method4(class121 var0, int var1) {
       boolean var2 = var0.method2689(1) == 1;
       if(var2) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dg")
 public class class125 {
@@ -21,6 +22,10 @@ public class class125 {
    public static int field2043;
 
    @ObfuscatedName("cq")
+   @ObfuscatedSignature(
+      signature = "([Lclass172;IIIZB)V",
+      garbageValue = "-70"
+   )
    static void method2744(class172[] var0, int var1, int var2, int var3, boolean var4) {
       for(int var5 = 0; var5 < var0.length; ++var5) {
          class172 var6 = var0[var5];
@@ -52,6 +57,10 @@ public class class125 {
    }
 
    @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIB)V",
+      garbageValue = "21"
+   )
    public static void method2748(String var0, String var1, int var2, int var3) throws IOException {
       class148.field2239 = var3;
       class13.field200 = var2;

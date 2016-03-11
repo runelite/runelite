@@ -1,5 +1,6 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("x")
 public final class class23 extends class207 {
@@ -69,6 +70,10 @@ public final class class23 extends class207 {
    int[] field619;
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "10"
+   )
    void method583() {
       int var1 = this.field609;
       class40 var2 = this.field616.method824();
@@ -94,6 +99,10 @@ public final class class23 extends class207 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "([Lclass25;II[I[II)V",
+      garbageValue = "150736759"
+   )
    static void method591(class25[] var0, int var1, int var2, int[] var3, int[] var4) {
       if(var1 < var2) {
          int var5 = var1 - 1;

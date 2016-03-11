@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("i")
 @Implements("WidgetNode")
@@ -45,6 +46,10 @@ public class class3 extends class207 {
    }
 
    @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "34"
+   )
    static final void method33(int var0, int var1, int var2, int var3) {
       for(int var4 = var1; var4 <= var3 + var1; ++var4) {
          for(int var5 = var0; var5 <= var2 + var0; ++var5) {
@@ -72,6 +77,10 @@ public class class3 extends class207 {
    }
 
    @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Lclass223;Lclass223;I)V",
+      garbageValue = "-532060997"
+   )
    static void method34(class223 var0, class223 var1) {
       if(null == class29.field688) {
          class29.field688 = class129.method2761(class157.field2595, "sl_back", "");

@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hm")
 public class class210 {
@@ -6,6 +7,10 @@ public class class210 {
    static class201 field3125 = new class201();
 
    @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1082972379"
+   )
    static final void method3871() {
       int var0 = class136.field2114;
       int var1 = class75.field1387;

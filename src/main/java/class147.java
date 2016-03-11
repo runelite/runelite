@@ -1,6 +1,7 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ew")
 public class class147 extends RuntimeException {
@@ -25,6 +26,10 @@ public class class147 extends RuntimeException {
    public static String field2235;
 
    @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Lclass121;ILclass2;IB)V",
+      garbageValue = "-33"
+   )
    static final void method3082(class121 var0, int var1, class2 var2, int var3) {
       byte var4 = -1;
       int var5;

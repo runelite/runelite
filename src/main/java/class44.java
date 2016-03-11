@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ae")
 public class class44 extends class203 {
@@ -37,6 +38,10 @@ public class class44 extends class203 {
    short[] field1034;
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass118;II)V",
+      garbageValue = "1761384939"
+   )
    void method916(class118 var1, int var2) {
       if(var2 == 1) {
          this.field1027 = var1.method2453();

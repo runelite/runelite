@@ -2,6 +2,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hz")
 @Implements("XGrandExchangeOffer")
@@ -40,6 +41,10 @@ public class class219 {
    @Export("price")
    public int field3169;
 
+   @ObfuscatedSignature(
+      signature = "(Lclass118;Z)V",
+      garbageValue = "0"
+   )
    public class219(class118 var1, boolean var2) {
       this.field3166 = var1.method2454();
       this.field3165 = var1.method2455();

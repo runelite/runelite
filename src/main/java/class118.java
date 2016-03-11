@@ -3,6 +3,7 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dc")
 @Implements("Buffer")
@@ -79,6 +80,10 @@ public class class118 extends class207 {
    }
 
    @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "([IIII)V",
+      garbageValue = "-129183302"
+   )
    public void method2445(int[] var1, int var2, int var3) {
       int var4 = this.field1998;
       this.field1998 = var2;
@@ -104,6 +109,10 @@ public class class118 extends class207 {
    }
 
    @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)V",
+      garbageValue = "1910511879"
+   )
    public void method2446(CharSequence var1) {
       int var3 = var1.length();
       int var4 = 0;
@@ -146,6 +155,10 @@ public class class118 extends class207 {
    }
 
    @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-66"
+   )
    public void method2452(int var1) {
       if(0 != (var1 & -128)) {
          if((var1 & -16384) != 0) {
@@ -287,6 +300,10 @@ public class class118 extends class207 {
    }
 
    @ObfuscatedName("aa")
+   @ObfuscatedSignature(
+      signature = "([II)V",
+      garbageValue = "-1955582469"
+   )
    public void method2470(int[] var1) {
       int var2 = this.field1998 / 8;
       this.field1998 = 0;
@@ -310,6 +327,10 @@ public class class118 extends class207 {
    }
 
    @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "([IIIB)V",
+      garbageValue = "-127"
+   )
    public void method2472(int[] var1, int var2, int var3) {
       int var4 = this.field1998;
       this.field1998 = var2;
@@ -667,6 +688,10 @@ public class class118 extends class207 {
    }
 
    @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "([BIIII[Lclass107;I)V",
+      garbageValue = "-2139102415"
+   )
    static final void method2646(byte[] var0, int var1, int var2, int var3, int var4, class107[] var5) {
       int var7;
       int var8;

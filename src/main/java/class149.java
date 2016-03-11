@@ -1,4 +1,5 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ec")
 public final class class149 {
@@ -40,6 +41,10 @@ public final class class149 {
    }
 
    @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-371810819"
+   )
    static void method3103() {
       int var0;
       if(0 == client.field403) {
