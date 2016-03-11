@@ -34,6 +34,12 @@ public class InterfaceMethod extends PoolEntry
 	{
 		return new InterfaceMethod(clazz.copy(), nat.copy());
 	}
+
+	@Override
+	public java.lang.String toString()
+	{
+		return clazz + "." + nat;
+	}
 	
 	@Override
 	public void resolve(ConstantPool pool)

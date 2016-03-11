@@ -19,9 +19,7 @@ import net.runelite.deob.signature.Signature;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import net.runelite.deob.Field;
@@ -108,34 +106,10 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		frame.addInstructionContext(ins);
 	}
 	
-	// find the possible methods this instruction might be invoking. we can't know for sure
-	// which method is being invoked without tracking the types of objects in fields and when
-	// passed in parameters/return values.
 	@Override
 	public List<net.runelite.deob.Method> getMethods()
 	{
 		return myMethods != null ? myMethods : Arrays.asList();
-	}
-	
-	private void findMethodFromClass(Set<ClassFile> visited, List<net.runelite.deob.Method> list, ClassFile clazz)
-	{
-		if (visited.contains(clazz))
-			return;
-		visited.add(clazz);
-		
-		ClassFile parent = clazz.getParent();
-		if (parent != null)
-			findMethodFromClass(visited, list, parent);
-		
-		for (ClassFile cf : clazz.getInterfaces().getMyInterfaces())
-			findMethodFromClass(visited, list, cf);
-		
-		net.runelite.deob.Method m = clazz.findMethod(method.getNameAndType());
-		if (m != null && !list.contains(m))
-			list.add(m);
-	
-		for (ClassFile cf : clazz.getChildren())
-			findMethodFromClass(visited, list, cf);
 	}
 	
 	@Override
