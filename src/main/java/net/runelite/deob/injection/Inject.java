@@ -157,11 +157,7 @@ public class Inject
 				java.lang.Class targetApiClass = f.isStatic() ? clientClass : implementingClass; // target api class for getter
 				
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName);
-				if (apiMethod == null)
-				{
-					System.out.println("no api method");
-					continue;
-				}
+				assert apiMethod != null;
 				
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
@@ -207,11 +203,7 @@ public class Inject
 				assert otherm != null;
 
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(implementingClass, exportedName); // api method to invoke 'otherm'
-				if (apiMethod == null)
-				{
-					System.out.println("no api method");
-					continue;
-				}
+				assert apiMethod != null;
 
 				injectInvoker(other, apiMethod, m, otherm, garbage);
 			}
@@ -321,16 +313,24 @@ public class Inject
 		{
 			switch (field.getType().getType())
 			{
-				case "Z":
+				case "B":
+				case "C":
 				case "I":
+				case "S":
+				case "Z":
 					returnType = InstructionType.IRETURN;
+					break;
+				case "D":
+					returnType = InstructionType.DRETURN;
+					break;
+				case "F":
+					returnType = InstructionType.FRETURN;
 					break;
 				case "J":
 					returnType = InstructionType.LRETURN;
 					break;
 				default:
-					assert false;
-					return;
+					throw new RuntimeException("Unknown type");
 			}
 		}
 		else
