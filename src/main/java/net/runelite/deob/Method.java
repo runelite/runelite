@@ -24,6 +24,8 @@ public class Method
 	public static final short ACC_FINAL = 0x10;
 	public static final short ACC_SYNCHRONIZED = 0x20;
 	public static final short ACC_ABSTRACT = 0x400;
+
+	public static final short ACCESS_MODIFIERS = ACC_PUBLIC | ACC_PRIVATE | ACC_PROTECTED;
 	
 	private Methods methods;
 
@@ -144,6 +146,11 @@ public class Method
 	public boolean isPrivate()
 	{
 		return (accessFlags & ACC_PRIVATE) != 0;
+	}
+
+	public void setPrivate()
+	{
+		accessFlags = (short) ((accessFlags & ~ACCESS_MODIFIERS) | ACC_PRIVATE);
 	}
 	
 	public Exceptions getExceptions()
