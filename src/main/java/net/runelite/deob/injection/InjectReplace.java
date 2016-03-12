@@ -19,8 +19,10 @@ import net.runelite.deob.attributes.code.instructions.DLoad;
 import net.runelite.deob.attributes.code.instructions.FLoad;
 import net.runelite.deob.attributes.code.instructions.ILoad;
 import net.runelite.deob.attributes.code.instructions.InvokeSpecial;
+import net.runelite.deob.attributes.code.instructions.InvokeVirtual;
 import net.runelite.deob.attributes.code.instructions.LLoad;
 import net.runelite.deob.attributes.code.instructions.New;
+import net.runelite.deob.attributes.code.instructions.Pop;
 import net.runelite.deob.attributes.code.instructions.Return;
 import net.runelite.deob.signature.Type;
 
@@ -85,6 +87,8 @@ public class InjectReplace
 
 		replaceNew(classToInject);
 	}
+
+	private static final String INITFN = "init";
 	
 	private void injectConstructors(ClassFile classToInject)
 	{
@@ -92,9 +96,38 @@ public class InjectReplace
 		Methods methods = classToInject.getMethods();
 		Methods vanillaMethods = vanilla.getMethods();
 
-		for (Method m : new ArrayList<>(methods.getMethods()))
+		boolean seen = false;
+		for (Method m : methods.getMethods())
 			if (m.getName().equals("<init>"))
-				methods.removeMethod(m);
+			{
+				assert seen == false; // only one ctor allowed
+				seen = true;
+
+				Code code = m.getCode();
+				Instructions instructions = code.getInstructions();
+
+				m.setName(INITFN); // magic
+
+				// replace invokespecial call
+
+				for (Instruction i : instructions.getInstructions())
+				{
+					if (!(i instanceof InvokeSpecial))
+						continue;
+
+					InvokeSpecial is = (InvokeSpecial) i;
+					net.runelite.deob.pool.Method method = (net.runelite.deob.pool.Method) is.getMethod();
+					assert method.getNameAndType().getDescriptor().size() == 0; // Replace classes must extend Object so this must be Object.init()
+
+					instructions.replace(i, new Pop(instructions)); // pop this
+
+					break;
+				}
+
+				m.setPrivate();
+
+				// now we'll just add a call to init in the constructors
+			}
 
 		// Add constructors
 		for (Method m : vanillaMethods.getMethods())
@@ -154,6 +187,15 @@ public class InjectReplace
 				}
 
 				ins.add(new InvokeSpecial(instructions, m.getPoolMethod()));
+
+				// invoke our init func if it exists
+				Method initfn = methods.findMethod(INITFN);
+				if (initfn != null)
+				{
+					ins.add(new ALoad(instructions, 0)); // this
+					ins.add(new InvokeVirtual(instructions, initfn.getPoolMethod()));
+				}
+
 				ins.add(new Return(instructions, InstructionType.RETURN));
 
 				methods.addMethod(constructor);
@@ -293,6 +335,7 @@ public class InjectReplace
 					if (i instanceof New)
 					{
 						New n = (New) i;
+
 						if (!n.getNewClass().equals(vanilla.getPoolClass()))
 							continue;
 
