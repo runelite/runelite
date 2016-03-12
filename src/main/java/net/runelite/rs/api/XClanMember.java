@@ -4,8 +4,8 @@ import net.runelite.mapping.Import;
 
 public interface XClanMember
 {
-	@Import("name")
-	String getName();
+	@Import("username")
+	String getUsernameName();
 
 	@Import("world")
 	int getWorld();

@@ -33,4 +33,7 @@ public interface Actor extends Renderable
 
 	@Import("animation")
 	int getAnimation();
+
+	@Import("hitSplats")
+	int[] getHitSplats();
 }

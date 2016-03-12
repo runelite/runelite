@@ -7,6 +7,6 @@ public interface Ignore
 	@Import("name")
 	String getName();
 
-	@Import("prevousName")
+	@Import("previousName")
 	String getPreviousName();
 }

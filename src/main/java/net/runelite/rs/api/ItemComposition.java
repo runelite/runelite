@@ -9,4 +9,7 @@ public interface ItemComposition
 
 	@Import("isMembers")
 	boolean isMembers();
+
+	@Import("maleModel")
+	int getMaleModel();
 }

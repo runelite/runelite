@@ -13,7 +13,7 @@ public interface NPCComposition
 	@Import("actions")
 	String[] getActions();
 
-	@Import("clickable")
+	@Import("isClickable")
 	boolean isClickable();
 
 	@Import("isMinimapVisible")

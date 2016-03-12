@@ -64,7 +64,7 @@ public interface Client extends GameEngine
 	@Import("realSkillLevels")
 	int[] getRealSkillLevels();
 
-	@Import("skillExperience")
+	@Import("skillExperiences")
 	int[] getSkillExperiences();
 
 	@Import("gameState")
@@ -82,7 +82,7 @@ public interface Client extends GameEngine
 	@Import("cachedNPCs")
 	NPC[] getCachedNPCs();
 
-	@Import("collionMaps")
+	@Import("collisionMaps")
 	CollisionData[] getCollisionMaps();
 
 	@Import("cachedPlayers")
@@ -94,11 +94,23 @@ public interface Client extends GameEngine
 	@Import("username")
 	String getUsername();
 
-	@Import("menuACtions")
+	@Import("menuActions")
 	String[] getMenuActions();
+
+	@Import("menuTargets")
+	String[] getMenuTargets();
 
 	@Import("menuOptions")
 	String[] getMenuOptions();
+
+	@Import("menuOptionCount")
+	int getMenuOptionCount();
+
+	@Import("menuTypes")
+	int[] getMenuTypes();
+
+	@Import("menuIdentifiers")
+	int[] getMenuIdentifiers();
 
 	@Import("friends")
 	Friend[] getFriends();
@@ -135,7 +147,7 @@ public interface Client extends GameEngine
 	@Import("validInterfaces")
 	boolean[] getValidInterfaces();
 
-	@Import("resized")
+	@Import("isResized")
 	boolean isResized();
 
 	@Import("widgetPositionX")
@@ -158,4 +170,16 @@ public interface Client extends GameEngine
 
 	@Import("clanMembers")
 	XClanMember[] getClanMembers();
+
+	@Import("isMenuOpen")
+	boolean isMenuOpen();
+
+	@Import("packetOpcode")
+	int getPacketOpcode();
+
+	@Import("gameCycle")
+	int getGameCycle();
+
+	@Import("packetHandler")
+	void packetHandler();
 }

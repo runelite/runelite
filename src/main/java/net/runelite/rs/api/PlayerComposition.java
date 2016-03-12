@@ -9,4 +9,10 @@ public interface PlayerComposition
 
 	@Import("equipment")
 	int[] getEquipment();
+
+	@Import("bodyPartColours")
+	int[] getBodyPartColours();
+
+	@Import("bodyParts")
+	int[] getBodyParts();
 }

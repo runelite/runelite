@@ -58,7 +58,7 @@ public interface Widget
 	@Import("width")
 	int getWidth();
 
-	@Import("heigth")
+	@Import("height")
 	int getHeight();
 
 	@Import("isHidden")
