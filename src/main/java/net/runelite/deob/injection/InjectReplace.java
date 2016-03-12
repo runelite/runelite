@@ -24,13 +24,15 @@ import net.runelite.deob.attributes.code.instructions.LLoad;
 import net.runelite.deob.attributes.code.instructions.New;
 import net.runelite.deob.attributes.code.instructions.Pop;
 import net.runelite.deob.attributes.code.instructions.Return;
+import net.runelite.deob.pool.NameAndType;
 import net.runelite.deob.signature.Type;
 
 public class InjectReplace
 {
 	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
 	private static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
-	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	//private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 
 	private ClassFile cf, vanilla;
 
@@ -71,7 +73,7 @@ public class InjectReplace
 			vanilla.getGroup().addClass(classToInject);
 		}
 
-		assert classToInject.getParentClass().getName().equals("java/lang/Object");
+		// parent is either java/lang/Object or a dummy class so that invokespecial (super) calls work.
 		assert classToInject.isAbstract();
 
 		// set parent
@@ -220,7 +222,8 @@ public class InjectReplace
 			String overridenMethod = annotation.getElement().getString(); // name of @Exported method to override
 
 			// Find method with exported name on 'cf'
-			Method obfuscatedMethodToOverride = findMethodByObfuscatedName(overridenMethod);
+			Method obfuscatedMethodToOverride = findMethodByExportedName(overridenMethod);
+			NameAndType deobfuscatedNat = m.getNameAndType();
 			
 			assert obfuscatedMethodToOverride != null;
 			assert !obfuscatedMethodToOverride.isFinal();
@@ -246,23 +249,44 @@ public class InjectReplace
 
 			// Now that the function is overriden, when the invoke injector is called, it turns around and invokevirtuals
 			// the parent method, which hits ours.
+
+			// locate super.method() calls and modify...
+			for (Instruction i : m.getCode().getInstructions().getInstructions())
+			{
+				if (!(i instanceof InvokeSpecial))
+					continue;
+
+				InvokeSpecial is = (InvokeSpecial) i;
+
+				net.runelite.deob.pool.Method invokedMethod = (net.runelite.deob.pool.Method) is.getMethod();
+
+				if (invokedMethod.getNameAndType().equals(deobfuscatedNat))
+				{
+					is.setMethod(
+						new net.runelite.deob.pool.Method(
+							classToInject.getParentClass(), // invokedMethod.getClassEntry() is probably our dummy class
+							m.getNameAndType() // set to obfuscated name
+						)
+					);
+				}
+			}
 		}
 	}
 
-	private Method findMethodByObfuscatedName(String name)
+	private Method findMethodByExportedName(String name)
 	{
 		for (Method m : cf.getMethods().getMethods())
 		{
 			Attributes attributes = m.getAttributes();
 			Annotations annotations = attributes.getAnnotations();
 
-			if (annotations == null || annotations.find(OBFUSCATED_NAME) == null)
+			if (annotations == null || annotations.find(EXPORT) == null)
 				continue;
 
-			Annotation annotation = annotations.find(OBFUSCATED_NAME);
-			String obfuscatedName = annotation.getElement().getString();
+			Annotation annotation = annotations.find(EXPORT);
+			String exportedName = annotation.getElement().getString();
 
-			if (name.equals(obfuscatedName))
+			if (name.equals(exportedName))
 				return m;
 		}
 
@@ -319,6 +343,10 @@ public class InjectReplace
 		// new vanilla -> new classToInject
 
 		for (ClassFile cf : vanilla.getGroup().getClasses())
+		{
+			if (cf == classToInject)
+				continue;
+
 			for (Method m : cf.getMethods().getMethods())
 			{
 				Code code = m.getCode();
@@ -364,5 +392,6 @@ public class InjectReplace
 					}
 				}
 			}
+		}
 	}
 }
