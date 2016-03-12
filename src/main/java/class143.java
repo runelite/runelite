@@ -55,7 +55,7 @@ public abstract class class143 extends Applet implements Runnable, FocusListener
    @ObfuscatedGetter(
       intValue = 95389503
    )
-   @Export("fPS")
+   @Export("FPS")
    protected static int field2205 = 0;
    @ObfuscatedName("qu")
    static long[] field2206 = new long[32];
