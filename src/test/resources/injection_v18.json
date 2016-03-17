@@ -1,0 +1,2492 @@
+{
+  "getterInjects": [
+    {
+      "className": "hj",
+      "getterMethodDesc": "()[Ljava/lang/reflect/Field;",
+      "getterName": "getFields",
+      "getterClassName": "hj",
+      "getterFieldName": "e",
+      "staticField": false
+    },
+    {
+      "className": "hj",
+      "getterMethodDesc": "()[Ljava/lang/reflect/Method;",
+      "getterName": "getMethods",
+      "getterClassName": "hj",
+      "getterFieldName": "g",
+      "staticField": false
+    },
+    {
+      "className": "hj",
+      "getterMethodDesc": "()[[[B",
+      "getterName": "getArgs",
+      "getterClassName": "hj",
+      "getterFieldName": "m",
+      "staticField": false
+    },
+    {
+      "className": "hn",
+      "getterMethodDesc": "()Ljava/io/RandomAccessFile;",
+      "getterName": "getFile",
+      "getterClassName": "hn",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "hn",
+      "getterMethodDesc": "()J",
+      "getterName": "getPosition",
+      "getterClassName": "hn",
+      "getterFieldName": "f",
+      "staticField": false
+    },
+    {
+      "className": "hn",
+      "getterMethodDesc": "()J",
+      "getterName": "getLength",
+      "getterClassName": "hn",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "b",
+      "getterMethodDesc": "()I",
+      "getterName": "getWorld",
+      "getterClassName": "b",
+      "getterFieldName": "f",
+      "multiplier": 1246044911,
+      "staticField": false
+    },
+    {
+      "className": "b",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "b",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "b",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getPreviousName",
+      "getterClassName": "b",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "hp",
+      "getterMethodDesc": "()I",
+      "getterName": "getItemId",
+      "getterClassName": "hp",
+      "getterFieldName": "r",
+      "multiplier": 648329009,
+      "staticField": false
+    },
+    {
+      "className": "hp",
+      "getterMethodDesc": "()I",
+      "getterName": "getPrice",
+      "getterClassName": "hp",
+      "getterFieldName": "f",
+      "multiplier": -1396237507,
+      "staticField": false
+    },
+    {
+      "className": "hp",
+      "getterMethodDesc": "()I",
+      "getterName": "getTotalQuantity",
+      "getterClassName": "hp",
+      "getterFieldName": "s",
+      "multiplier": 757875425,
+      "staticField": false
+    },
+    {
+      "className": "hp",
+      "getterMethodDesc": "()I",
+      "getterName": "getQuantitySold",
+      "getterClassName": "hp",
+      "getterFieldName": "y",
+      "multiplier": -1021142605,
+      "staticField": false
+    },
+    {
+      "className": "hp",
+      "getterMethodDesc": "()I",
+      "getterName": "getSpent",
+      "getterClassName": "hp",
+      "getterFieldName": "e",
+      "multiplier": -731012833,
+      "staticField": false
+    },
+    {
+      "className": "hp",
+      "getterMethodDesc": "()B",
+      "getterName": "getProgress",
+      "getterClassName": "hp",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "m",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "m",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "m",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getPreviousName",
+      "getterClassName": "m",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "gs",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Node;",
+      "getterName": "getPrevious",
+      "getterClassName": "gs",
+      "getterFieldName": "ez",
+      "staticField": false
+    },
+    {
+      "className": "gs",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Node;",
+      "getterName": "getNext",
+      "getterClassName": "gs",
+      "getterFieldName": "ep",
+      "staticField": false
+    },
+    {
+      "className": "gs",
+      "getterMethodDesc": "()J",
+      "getterName": "getHash",
+      "getterClassName": "gs",
+      "getterFieldName": "eq",
+      "staticField": false
+    },
+    {
+      "className": "g",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Sequence;",
+      "getterName": "getAnimationSequence",
+      "getterClassName": "g",
+      "getterFieldName": "q",
+      "staticField": false
+    },
+    {
+      "className": "g",
+      "getterMethodDesc": "()Z",
+      "getterName": "isMoving",
+      "getterClassName": "g",
+      "getterFieldName": "h",
+      "staticField": false
+    },
+    {
+      "className": "g",
+      "getterMethodDesc": "()D",
+      "getterName": "getVelocityY",
+      "getterClassName": "g",
+      "getterFieldName": "b",
+      "staticField": false
+    },
+    {
+      "className": "g",
+      "getterMethodDesc": "()D",
+      "getterName": "getVelocityX",
+      "getterClassName": "g",
+      "getterFieldName": "c",
+      "staticField": false
+    },
+    {
+      "className": "g",
+      "getterMethodDesc": "()D",
+      "getterName": "getVelocityZ",
+      "getterClassName": "g",
+      "getterFieldName": "i",
+      "staticField": false
+    },
+    {
+      "className": "g",
+      "getterMethodDesc": "()D",
+      "getterName": "getScalar",
+      "getterClassName": "g",
+      "getterFieldName": "u",
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()I",
+      "getterName": "getWidth",
+      "getterClassName": "ca",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()I",
+      "getterName": "getHeight",
+      "getterClassName": "ca",
+      "getterFieldName": "f",
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()I",
+      "getterName": "getMaxWidth",
+      "getterClassName": "ca",
+      "getterFieldName": "e",
+      "multiplier": 1112721579,
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()I",
+      "getterName": "getMaxHeight",
+      "getterClassName": "ca",
+      "getterFieldName": "g",
+      "multiplier": -77142269,
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()I",
+      "getterName": "getOffsetX",
+      "getterClassName": "ca",
+      "getterFieldName": "s",
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()I",
+      "getterName": "getOffsetY",
+      "getterClassName": "ca",
+      "getterFieldName": "y",
+      "staticField": false
+    },
+    {
+      "className": "ca",
+      "getterMethodDesc": "()[I",
+      "getterName": "getPixels",
+      "getterClassName": "ca",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()Z",
+      "getterName": "isHidden",
+      "getterClassName": "fa",
+      "getterFieldName": "ac",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Widget;",
+      "getterName": "getParent",
+      "getterClassName": "fa",
+      "getterFieldName": "cz",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()[[I",
+      "getterName": "getDynamicValues",
+      "getterClassName": "fa",
+      "getterFieldName": "db",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/Widget;",
+      "getterName": "getChildren",
+      "getterClassName": "fa",
+      "getterFieldName": "ey",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getParentId",
+      "getterClassName": "fa",
+      "getterFieldName": "ah",
+      "multiplier": -956586605,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getBoundsIndex",
+      "getterClassName": "fa",
+      "getterFieldName": "ex",
+      "multiplier": -214895611,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getModelId",
+      "getterClassName": "fa",
+      "getterFieldName": "bt",
+      "multiplier": -1161936389,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()[I",
+      "getterName": "getItemIds",
+      "getterClassName": "fa",
+      "getterFieldName": "dm",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()[I",
+      "getterName": "getItemQuantities",
+      "getterClassName": "fa",
+      "getterFieldName": "dj",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getModelType",
+      "getterClassName": "fa",
+      "getterFieldName": "br",
+      "multiplier": -1353234851,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getActions",
+      "getterClassName": "fa",
+      "getterFieldName": "cr",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getText",
+      "getterClassName": "fa",
+      "getterFieldName": "bf",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "fa",
+      "getterFieldName": "ct",
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getTextColor",
+      "getterClassName": "fa",
+      "getterFieldName": "ab",
+      "multiplier": 2162251,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getOpacity",
+      "getterClassName": "fa",
+      "getterFieldName": "an",
+      "multiplier": -93851663,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getRelativeX",
+      "getterClassName": "fa",
+      "getterFieldName": "o",
+      "multiplier": 437714097,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getRelativeY",
+      "getterClassName": "fa",
+      "getterFieldName": "ad",
+      "multiplier": 59348735,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getWidth",
+      "getterClassName": "fa",
+      "getterFieldName": "at",
+      "multiplier": 1206291921,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getHeight",
+      "getterClassName": "fa",
+      "getterFieldName": "aw",
+      "multiplier": -492756809,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getIndex",
+      "getterClassName": "fa",
+      "getterFieldName": "v",
+      "multiplier": -1291964211,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getRotationX",
+      "getterClassName": "fa",
+      "getterFieldName": "bs",
+      "multiplier": -1356525223,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getRotationY",
+      "getterClassName": "fa",
+      "getterFieldName": "bn",
+      "multiplier": -232113331,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getRotationZ",
+      "getterClassName": "fa",
+      "getterFieldName": "bl",
+      "multiplier": -1957625285,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getContentType",
+      "getterClassName": "fa",
+      "getterFieldName": "t",
+      "multiplier": 1440606565,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getScrollX",
+      "getterClassName": "fa",
+      "getterFieldName": "o",
+      "multiplier": 437714097,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getScrollY",
+      "getterClassName": "fa",
+      "getterFieldName": "ao",
+      "multiplier": 1842948647,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getTextureId",
+      "getterClassName": "fa",
+      "getterFieldName": "ap",
+      "multiplier": 1089073517,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getBorderThickness",
+      "getterClassName": "fa",
+      "getterFieldName": "au",
+      "multiplier": -1939554089,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getItemId",
+      "getterClassName": "fa",
+      "getterFieldName": "as",
+      "multiplier": -159771149,
+      "staticField": false
+    },
+    {
+      "className": "fa",
+      "getterMethodDesc": "()I",
+      "getterName": "getItemQuantity",
+      "getterClassName": "fa",
+      "getterFieldName": "ek",
+      "multiplier": 1766315823,
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()I",
+      "getterName": "getId",
+      "getterClassName": "o",
+      "getterFieldName": "l",
+      "multiplier": 1453645189,
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()I",
+      "getterName": "getMask",
+      "getterClassName": "o",
+      "getterFieldName": "h",
+      "multiplier": -678873207,
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getAddress",
+      "getterClassName": "o",
+      "getterFieldName": "v",
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getActivity",
+      "getterClassName": "o",
+      "getterFieldName": "z",
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()I",
+      "getterName": "getLocation",
+      "getterClassName": "o",
+      "getterFieldName": "u",
+      "multiplier": -416090705,
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()I",
+      "getterName": "getPlayerCount",
+      "getterClassName": "o",
+      "getterFieldName": "i",
+      "multiplier": -1673311441,
+      "staticField": false
+    },
+    {
+      "className": "o",
+      "getterMethodDesc": "()I",
+      "getterName": "getIndex",
+      "getterClassName": "o",
+      "getterFieldName": "t",
+      "multiplier": -1983248697,
+      "staticField": false
+    },
+    {
+      "className": "ds",
+      "getterMethodDesc": "()I",
+      "getterName": "getOffset",
+      "getterClassName": "ds",
+      "getterFieldName": "r",
+      "multiplier": -1446645023,
+      "staticField": false
+    },
+    {
+      "className": "ds",
+      "getterMethodDesc": "()[B",
+      "getterName": "getPayload",
+      "getterClassName": "ds",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "gq",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/CacheableNode;",
+      "getterName": "getNext",
+      "getterClassName": "gq",
+      "getterFieldName": "cu",
+      "staticField": false
+    },
+    {
+      "className": "gq",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/CacheableNode;",
+      "getterName": "getPrevious",
+      "getterClassName": "gq",
+      "getterFieldName": "cm",
+      "staticField": false
+    },
+    {
+      "className": "k",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getUsername",
+      "getterClassName": "k",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "k",
+      "getterMethodDesc": "()I",
+      "getterName": "getWorld",
+      "getterClassName": "k",
+      "getterFieldName": "f",
+      "multiplier": -459488297,
+      "staticField": false
+    },
+    {
+      "className": "k",
+      "getterMethodDesc": "()B",
+      "getterName": "getRank",
+      "getterClassName": "k",
+      "getterFieldName": "s",
+      "staticField": false
+    },
+    {
+      "className": "dl",
+      "getterMethodDesc": "()[[I",
+      "getterName": "getFlags",
+      "getterClassName": "dl",
+      "getterFieldName": "ab",
+      "staticField": false
+    },
+    {
+      "className": "gd",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Node;",
+      "getterName": "getCurrent",
+      "getterClassName": "gd",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "gd",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Node;",
+      "getterName": "getHead",
+      "getterClassName": "gd",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "ae",
+      "getterFieldName": "v",
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getMaleModel",
+      "getterClassName": "ae",
+      "getterFieldName": "ax",
+      "multiplier": 191810987,
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getActions",
+      "getterClassName": "ae",
+      "getterFieldName": "aw",
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getGroundActions",
+      "getterClassName": "ae",
+      "getterFieldName": "at",
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getCost",
+      "getterClassName": "ae",
+      "getterFieldName": "w",
+      "multiplier": 2131753643,
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()Z",
+      "getterName": "isMembers",
+      "getterClassName": "ae",
+      "getterFieldName": "ae",
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()Z",
+      "getterName": "isTradable",
+      "getterClassName": "ae",
+      "getterFieldName": "ae",
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getNotedId",
+      "getterClassName": "ae",
+      "getterFieldName": "ap",
+      "multiplier": -1447161175,
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getNotedTemplate",
+      "getterClassName": "ae",
+      "getterFieldName": "ap",
+      "multiplier": -1447161175,
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getAmbient",
+      "getterClassName": "ae",
+      "getterFieldName": "ay",
+      "multiplier": 1559555987,
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getContrast",
+      "getterClassName": "ae",
+      "getterFieldName": "au",
+      "multiplier": -1376141753,
+      "staticField": false
+    },
+    {
+      "className": "ae",
+      "getterMethodDesc": "()I",
+      "getterName": "getTeam",
+      "getterClassName": "ae",
+      "getterFieldName": "q",
+      "multiplier": 520953701,
+      "staticField": false
+    },
+    {
+      "className": "u",
+      "getterMethodDesc": "()[I",
+      "getterName": "getItemIds",
+      "getterClassName": "u",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "u",
+      "getterMethodDesc": "()[I",
+      "getterName": "getStackSizes",
+      "getterClassName": "u",
+      "getterFieldName": "f",
+      "staticField": false
+    },
+    {
+      "className": "am",
+      "getterMethodDesc": "()I",
+      "getterName": "getType",
+      "getterClassName": "am",
+      "getterFieldName": "a",
+      "multiplier": -1795494341,
+      "staticField": false
+    },
+    {
+      "className": "am",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getSender",
+      "getterClassName": "am",
+      "getterFieldName": "e",
+      "staticField": false
+    },
+    {
+      "className": "am",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getValue",
+      "getterClassName": "am",
+      "getterFieldName": "s",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "ar",
+      "getterFieldName": "e",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()[I",
+      "getterName": "getModels",
+      "getterClassName": "ar",
+      "getterFieldName": "m",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getActions",
+      "getterClassName": "ar",
+      "getterFieldName": "d",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()Z",
+      "getterName": "isClickable",
+      "getterClassName": "ar",
+      "getterFieldName": "p",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()Z",
+      "getterName": "isMinimapVisible",
+      "getterClassName": "ar",
+      "getterFieldName": "ao",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()Z",
+      "getterName": "isVisible",
+      "getterClassName": "ar",
+      "getterFieldName": "o",
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()I",
+      "getterName": "getId",
+      "getterClassName": "ar",
+      "getterFieldName": "y",
+      "multiplier": 136033589,
+      "staticField": false
+    },
+    {
+      "className": "ar",
+      "getterMethodDesc": "()I",
+      "getterName": "getCombatLevel",
+      "getterClassName": "ar",
+      "getterFieldName": "q",
+      "multiplier": -1595765817,
+      "staticField": false
+    },
+    {
+      "className": "aa",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getActions",
+      "getterClassName": "aa",
+      "getterFieldName": "aw",
+      "staticField": false
+    },
+    {
+      "className": "aa",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "aa",
+      "getterFieldName": "h",
+      "staticField": false
+    },
+    {
+      "className": "cr",
+      "getterMethodDesc": "()I",
+      "getterName": "getModelHeight",
+      "getterClassName": "cr",
+      "getterFieldName": "cv",
+      "multiplier": -564644063,
+      "staticField": false
+    },
+    {
+      "className": "an",
+      "getterMethodDesc": "()[I",
+      "getterName": "getInterleaveLeave",
+      "getterClassName": "an",
+      "getterFieldName": "l",
+      "staticField": false
+    },
+    {
+      "className": "an",
+      "getterMethodDesc": "()Z",
+      "getterName": "getStretches",
+      "getterClassName": "an",
+      "getterFieldName": "h",
+      "staticField": false
+    },
+    {
+      "className": "an",
+      "getterMethodDesc": "()I",
+      "getterName": "getMaxLoops",
+      "getterClassName": "an",
+      "getterFieldName": "u",
+      "multiplier": 1342368047,
+      "staticField": false
+    },
+    {
+      "className": "an",
+      "getterMethodDesc": "()I",
+      "getterName": "getPrecedenceAnimating",
+      "getterClassName": "an",
+      "getterFieldName": "t",
+      "multiplier": 967338619,
+      "staticField": false
+    },
+    {
+      "className": "an",
+      "getterMethodDesc": "()I",
+      "getterName": "getReplyMode",
+      "getterClassName": "an",
+      "getterFieldName": "c",
+      "multiplier": 151742769,
+      "staticField": false
+    },
+    {
+      "className": "cd",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/GameObject;",
+      "getterName": "getObjects",
+      "getterClassName": "cd",
+      "getterFieldName": "h",
+      "staticField": false
+    },
+    {
+      "className": "cd",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/ItemLayer;",
+      "getterName": "getItemLayer",
+      "getterClassName": "cd",
+      "getterFieldName": "n",
+      "staticField": false
+    },
+    {
+      "className": "cd",
+      "getterMethodDesc": "()I",
+      "getterName": "getX",
+      "getterClassName": "cd",
+      "getterFieldName": "r",
+      "multiplier": -670078155,
+      "staticField": false
+    },
+    {
+      "className": "cd",
+      "getterMethodDesc": "()I",
+      "getterName": "getY",
+      "getterClassName": "cd",
+      "getterFieldName": "f",
+      "multiplier": 64231303,
+      "staticField": false
+    },
+    {
+      "className": "cd",
+      "getterMethodDesc": "()I",
+      "getterName": "getPlane",
+      "getterClassName": "cd",
+      "getterFieldName": "a",
+      "multiplier": -2023492897,
+      "staticField": false
+    },
+    {
+      "className": "s",
+      "getterMethodDesc": "()I",
+      "getterName": "getId",
+      "getterClassName": "s",
+      "getterFieldName": "a",
+      "multiplier": 163613459,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()[I",
+      "getterName": "getHitSplats",
+      "getterClassName": "ab",
+      "getterFieldName": "au",
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getHealth",
+      "getterClassName": "ab",
+      "getterFieldName": "ae",
+      "multiplier": -1769667477,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getMaxHealth",
+      "getterClassName": "ab",
+      "getterFieldName": "bd",
+      "multiplier": 1918271229,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()Z",
+      "getterName": "inSequence",
+      "getterClassName": "ab",
+      "getterFieldName": "ag",
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getOverhead",
+      "getterClassName": "ab",
+      "getterFieldName": "aa",
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getLoopCycle",
+      "getterClassName": "ab",
+      "getterFieldName": "az",
+      "multiplier": 778636455,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()[I",
+      "getterName": "getHitCycle",
+      "getterClassName": "ab",
+      "getterFieldName": "au",
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getAnimation",
+      "getterClassName": "ab",
+      "getterFieldName": "bu",
+      "multiplier": -1443845,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getInteracting",
+      "getterClassName": "ab",
+      "getterFieldName": "br",
+      "multiplier": -1143801517,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getY",
+      "getterClassName": "ab",
+      "getterFieldName": "aw",
+      "multiplier": 1879086531,
+      "staticField": false
+    },
+    {
+      "className": "ab",
+      "getterMethodDesc": "()I",
+      "getterName": "getX",
+      "getterClassName": "ab",
+      "getterFieldName": "at",
+      "multiplier": -236632999,
+      "staticField": false
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/XClanMember;",
+      "getterName": "getClanMembers",
+      "getterClassName": "an",
+      "getterFieldName": "mx",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Region;",
+      "getterName": "getRegion",
+      "getterClassName": "bh",
+      "getterFieldName": "dt",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/World;",
+      "getterName": "getWorldList",
+      "getterClassName": "o",
+      "getterFieldName": "y",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/XHashTable;",
+      "getterName": "getItemContainers",
+      "getterClassName": "u",
+      "getterFieldName": "a",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Player;",
+      "getterName": "getLocalPlayer",
+      "getterClassName": "eo",
+      "getterFieldName": "hj",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[[Lcom/runeloader/api/bridge/os/accessor/Widget;",
+      "getterName": "getWidgets",
+      "getterClassName": "fa",
+      "getterFieldName": "a",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/NPC;",
+      "getterName": "getCachedNPCs",
+      "getterClassName": "client",
+      "getterFieldName": "cs",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/CollisionData;",
+      "getterName": "getCollisionMaps",
+      "getterClassName": "client",
+      "getterFieldName": "w",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/Player;",
+      "getterName": "getCachedPlayers",
+      "getterClassName": "client",
+      "getterFieldName": "gx",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[[[Lcom/runeloader/api/bridge/os/accessor/Deque;",
+      "getterName": "getGroundItemDeque",
+      "getterClassName": "client",
+      "getterFieldName": "ha",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/XGrandExchangeOffer;",
+      "getterName": "getGrandExchangeOffers",
+      "getterClassName": "client",
+      "getterFieldName": "pn",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getScale",
+      "getterClassName": "client",
+      "getterFieldName": "oc",
+      "multiplier": 2072351141,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCamera3",
+      "getterClassName": "client",
+      "getterFieldName": "os",
+      "multiplier": 1018157665,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCamera2",
+      "getterClassName": "client",
+      "getterFieldName": "oi",
+      "multiplier": -1040513165,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCameraX",
+      "getterClassName": "aj",
+      "getterFieldName": "fp",
+      "multiplier": -1707774671,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCameraY",
+      "getterClassName": "b",
+      "getterFieldName": "fw",
+      "multiplier": 2018633355,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCameraZ",
+      "getterClassName": "ak",
+      "getterFieldName": "fc",
+      "multiplier": -125723295,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getPlane",
+      "getterClassName": "ay",
+      "getterFieldName": "gl",
+      "multiplier": 184537967,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCameraPitch",
+      "getterClassName": "u",
+      "getterFieldName": "ff",
+      "multiplier": 838886437,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCameraYaw",
+      "getterClassName": "v",
+      "getterFieldName": "fr",
+      "multiplier": -1396045617,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getMapScale",
+      "getterClassName": "client",
+      "getterFieldName": "ea",
+      "multiplier": 2033178713,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getMapAngle",
+      "getterClassName": "client",
+      "getterFieldName": "fb",
+      "multiplier": 1597874683,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getMapOffset",
+      "getterClassName": "client",
+      "getterFieldName": "ey",
+      "multiplier": 758508433,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[[[I",
+      "getterName": "getTileHeights",
+      "getterClassName": "e",
+      "getterFieldName": "a",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[[[B",
+      "getterName": "getTileSettings",
+      "getterClassName": "e",
+      "getterFieldName": "r",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getSettings",
+      "getterClassName": "fx",
+      "getterFieldName": "r",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getWidgetSettings",
+      "getterClassName": "fx",
+      "getterFieldName": "f",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getEnergy",
+      "getterClassName": "client",
+      "getterFieldName": "jg",
+      "multiplier": 60076685,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getWeight",
+      "getterClassName": "client",
+      "getterFieldName": "jn",
+      "multiplier": 2050958043,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getBaseX",
+      "getterClassName": "ez",
+      "getterFieldName": "dn",
+      "multiplier": -521676429,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getBaseY",
+      "getterClassName": "b",
+      "getterFieldName": "di",
+      "multiplier": 1420280507,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getBoostedSkillLevels",
+      "getterClassName": "client",
+      "getterFieldName": "hs",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getRealSkillLevels",
+      "getterClassName": "client",
+      "getterFieldName": "ht",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getSkillExperiences",
+      "getterClassName": "client",
+      "getterFieldName": "hk",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getGameState",
+      "getterClassName": "client",
+      "getterFieldName": "b",
+      "multiplier": -959777641,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getUsername",
+      "getterClassName": "ah",
+      "getterFieldName": "ar",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getFPS",
+      "getterClassName": "el",
+      "getterFieldName": "qo",
+      "multiplier": 1903634739,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getWorld",
+      "getterClassName": "client",
+      "getterFieldName": "m",
+      "multiplier": -690463111,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getMenuOptionCount",
+      "getterClassName": "client",
+      "getterFieldName": "hi",
+      "multiplier": -1552435313,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Z",
+      "getterName": "isMenuOpen",
+      "getterClassName": "client",
+      "getterFieldName": "hn",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getMenuOptions",
+      "getterClassName": "client",
+      "getterFieldName": "if",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Ljava/lang/String;",
+      "getterName": "getMenuTargets",
+      "getterClassName": "client",
+      "getterFieldName": "ia",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getMenuTypes",
+      "getterClassName": "client",
+      "getterFieldName": "ij",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getMenuIdentifiers",
+      "getterClassName": "client",
+      "getterFieldName": "iv",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/Friend;",
+      "getterName": "getFriends",
+      "getterClassName": "client",
+      "getterFieldName": "ov",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/Ignore;",
+      "getterName": "getIgnores",
+      "getterClassName": "client",
+      "getterFieldName": "oz",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getCurrentPacketOpcode",
+      "getterClassName": "client",
+      "getterFieldName": "d",
+      "multiplier": 1966177037,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()I",
+      "getterName": "getGameCycle",
+      "getterClassName": "client",
+      "getterFieldName": "d",
+      "multiplier": 1966177037,
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[Z",
+      "getterName": "getValidInterfaces",
+      "getterClassName": "fa",
+      "getterFieldName": "r",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Z",
+      "getterName": "isResized",
+      "getterClassName": "client",
+      "getterFieldName": "le",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/XHashTable;",
+      "getterName": "getComponentTable",
+      "getterClassName": "client",
+      "getterFieldName": "iu",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getWidgetPositionX",
+      "getterClassName": "client",
+      "getterFieldName": "lv",
+      "staticField": true
+    },
+    {
+      "className": "client",
+      "getterMethodDesc": "()[I",
+      "getterName": "getWidgetPositionY",
+      "getterClassName": "client",
+      "getterFieldName": "lg",
+      "staticField": true
+    },
+    {
+      "className": "aw",
+      "getterMethodDesc": "()I",
+      "getterName": "getId",
+      "getterClassName": "aw",
+      "getterFieldName": "a",
+      "multiplier": -1746317977,
+      "staticField": false
+    },
+    {
+      "className": "aw",
+      "getterMethodDesc": "()I",
+      "getterName": "getQuantity",
+      "getterClassName": "aw",
+      "getterFieldName": "r",
+      "multiplier": -1652614887,
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()I",
+      "getterName": "getX",
+      "getterClassName": "cn",
+      "getterFieldName": "r",
+      "multiplier": 683648049,
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()I",
+      "getterName": "getY",
+      "getterClassName": "cn",
+      "getterFieldName": "f",
+      "multiplier": -1428007657,
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()I",
+      "getterName": "getHash",
+      "getterClassName": "cn",
+      "getterFieldName": "a",
+      "multiplier": 1979191033,
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()I",
+      "getterName": "getFlags",
+      "getterClassName": "cn",
+      "getterFieldName": "g",
+      "multiplier": 713144085,
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()I",
+      "getterName": "getHeight",
+      "getterClassName": "cn",
+      "getterFieldName": "m",
+      "multiplier": 360153119,
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Renderable;",
+      "getterName": "getBottom",
+      "getterClassName": "cn",
+      "getterFieldName": "s",
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Renderable;",
+      "getterName": "getMiddle",
+      "getterClassName": "cn",
+      "getterFieldName": "y",
+      "staticField": false
+    },
+    {
+      "className": "cn",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Renderable;",
+      "getterName": "getTop",
+      "getterClassName": "cn",
+      "getterFieldName": "e",
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Renderable;",
+      "getterName": "getRenderable",
+      "getterClassName": "co",
+      "getterFieldName": "y",
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getPlane",
+      "getterClassName": "co",
+      "getterFieldName": "a",
+      "multiplier": -1330274781,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getRelativeX",
+      "getterClassName": "co",
+      "getterFieldName": "g",
+      "multiplier": -475625613,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getRelativeY",
+      "getterClassName": "co",
+      "getterFieldName": "j",
+      "multiplier": 398697699,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getOffsetX",
+      "getterClassName": "co",
+      "getterFieldName": "m",
+      "multiplier": 470862905,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getOffsetY",
+      "getterClassName": "co",
+      "getterFieldName": "n",
+      "multiplier": -1990596615,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getX",
+      "getterClassName": "co",
+      "getterFieldName": "f",
+      "multiplier": -1618181379,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getY",
+      "getterClassName": "co",
+      "getterFieldName": "s",
+      "multiplier": -1902285057,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getHeight",
+      "getterClassName": "co",
+      "getterFieldName": "r",
+      "multiplier": -1333066751,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getOrientation",
+      "getterClassName": "co",
+      "getterFieldName": "e",
+      "multiplier": -193714387,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getHash",
+      "getterClassName": "co",
+      "getterFieldName": "i",
+      "multiplier": 1282112201,
+      "staticField": false
+    },
+    {
+      "className": "co",
+      "getterMethodDesc": "()I",
+      "getterName": "getFlags",
+      "getterClassName": "co",
+      "getterFieldName": "v",
+      "multiplier": -1454343935,
+      "staticField": false
+    },
+    {
+      "className": "f",
+      "getterMethodDesc": "()I",
+      "getterName": "getTotalLevel",
+      "getterClassName": "f",
+      "getterFieldName": "n",
+      "multiplier": 301224879,
+      "staticField": false
+    },
+    {
+      "className": "f",
+      "getterMethodDesc": "()I",
+      "getterName": "getCombatLevel",
+      "getterClassName": "f",
+      "getterFieldName": "g",
+      "multiplier": 10726615,
+      "staticField": false
+    },
+    {
+      "className": "f",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/Model;",
+      "getterName": "getModel",
+      "getterClassName": "f",
+      "getterFieldName": "z",
+      "staticField": false
+    },
+    {
+      "className": "f",
+      "getterMethodDesc": "()Ljava/lang/String;",
+      "getterName": "getName",
+      "getterClassName": "f",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "f",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/PlayerComposition;",
+      "getterName": "getComposition",
+      "getterClassName": "f",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "f",
+      "getterMethodDesc": "()I",
+      "getterName": "getTeam",
+      "getterClassName": "f",
+      "getterFieldName": "d",
+      "multiplier": -100224169,
+      "staticField": false
+    },
+    {
+      "className": "cz",
+      "getterMethodDesc": "()[Lcom/runeloader/api/bridge/os/accessor/GameObject;",
+      "getterName": "getObjects",
+      "getterClassName": "cz",
+      "getterFieldName": "j",
+      "staticField": false
+    },
+    {
+      "className": "cz",
+      "getterMethodDesc": "()[[[Lcom/runeloader/api/bridge/os/accessor/Tile;",
+      "getterName": "getTiles",
+      "getterClassName": "cz",
+      "getterFieldName": "e",
+      "staticField": false
+    },
+    {
+      "className": "ao",
+      "getterMethodDesc": "()Lcom/runeloader/api/bridge/os/accessor/NPCComposition;",
+      "getterName": "getComposition",
+      "getterClassName": "ao",
+      "getterFieldName": "a",
+      "staticField": false
+    },
+    {
+      "className": "fd",
+      "getterMethodDesc": "()Z",
+      "getterName": "isFemale",
+      "getterClassName": "fd",
+      "getterFieldName": "f",
+      "staticField": false
+    },
+    {
+      "className": "fd",
+      "getterMethodDesc": "()[I",
+      "getterName": "getBodyParts",
+      "getterClassName": "fd",
+      "getterFieldName": "r",
+      "staticField": false
+    },
+    {
+      "className": "fd",
+      "getterMethodDesc": "()[I",
+      "getterName": "getBodyPartColours",
+      "getterClassName": "fd",
+      "getterFieldName": "a",
+      "staticField": false
+    }
+  ],
+  "superChangeInjects": [],
+  "addInterfaceInjects": [
+    {
+      "clientClass": "hj",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/ClassInfo"
+    },
+    {
+      "clientClass": "hn",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/FileOnDisk"
+    },
+    {
+      "clientClass": "b",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Friend"
+    },
+    {
+      "clientClass": "el",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/GameEngine"
+    },
+    {
+      "clientClass": "hp",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/XGrandExchangeOffer"
+    },
+    {
+      "clientClass": "go",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/XHashTable"
+    },
+    {
+      "clientClass": "m",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Ignore"
+    },
+    {
+      "clientClass": "gs",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Node"
+    },
+    {
+      "clientClass": "g",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Projectile"
+    },
+    {
+      "clientClass": "ca",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/SpritePixels"
+    },
+    {
+      "clientClass": "fa",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Widget"
+    },
+    {
+      "clientClass": "o",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/World"
+    },
+    {
+      "clientClass": "ds",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Buffer"
+    },
+    {
+      "clientClass": "gq",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/CacheableNode"
+    },
+    {
+      "clientClass": "k",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/XClanMember"
+    },
+    {
+      "clientClass": "dl",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/CollisionData"
+    },
+    {
+      "clientClass": "gd",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Deque"
+    },
+    {
+      "clientClass": "ae",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/ItemComposition"
+    },
+    {
+      "clientClass": "u",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/XItemContainer"
+    },
+    {
+      "clientClass": "am",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/MessageNode"
+    },
+    {
+      "clientClass": "ar",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/NPCComposition"
+    },
+    {
+      "clientClass": "aa",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/ObjectComposition"
+    },
+    {
+      "clientClass": "cr",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Renderable"
+    },
+    {
+      "clientClass": "an",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Sequence"
+    },
+    {
+      "clientClass": "cd",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Tile"
+    },
+    {
+      "clientClass": "s",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/WidgetNode"
+    },
+    {
+      "clientClass": "ab",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Actor"
+    },
+    {
+      "clientClass": "client",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Client"
+    },
+    {
+      "clientClass": "aw",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Item"
+    },
+    {
+      "clientClass": "cn",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/ItemLayer"
+    },
+    {
+      "clientClass": "dn",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Model"
+    },
+    {
+      "clientClass": "co",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/GameObject"
+    },
+    {
+      "clientClass": "f",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Player"
+    },
+    {
+      "clientClass": "cz",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/Region"
+    },
+    {
+      "clientClass": "ao",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/NPC"
+    },
+    {
+      "clientClass": "fd",
+      "interfaceClass": "com/runeloader/api/bridge/os/accessor/PlayerComposition"
+    }
+  ],
+  "fields": [],
+  "methodMods": [
+    {
+      "startIndex": 0,
+      "nodes": [
+        {
+          "opcode": 21,
+          "var": 0
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runecore/api/bridge/os/Callbacks",
+          "name": "gameStateChanged",
+          "desc": "(I)V"
+        }
+      ],
+      "owner": "r",
+      "method": "n",
+      "desc": "(II)V"
+    },
+    {
+      "startIndex": 158,
+      "nodes": [
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "worldChanged",
+          "desc": "()V"
+        }
+      ],
+      "owner": "client",
+      "method": "init",
+      "desc": "()V"
+    },
+    {
+      "startIndex": 0,
+      "nodes": [
+        {
+          "opcode": 25,
+          "var": 1
+        },
+        {
+          "opcode": 21,
+          "var": 2
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "transform",
+          "desc": "(Ljava/lang/String;I)Ljava/lang/String;"
+        },
+        {
+          "opcode": 58,
+          "var": 1
+        }
+      ],
+      "owner": "hc",
+      "method": "bm",
+      "desc": "(Ljava/lang/String;Ljava/lang/String;IIIIB)V"
+    },
+    {
+      "startIndex": 6081,
+      "nodes": [
+        {
+          "opcode": 21,
+          "var": 5
+        },
+        {
+          "opcode": 21,
+          "var": 7
+        },
+        {
+          "opcode": 21,
+          "var": 6
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "skill",
+          "desc": "(III)V"
+        }
+      ],
+      "owner": "client",
+      "method": "g",
+      "desc": "(B)V"
+    },
+    {
+      "startIndex": 5,
+      "nodes": [
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "pulse",
+          "desc": "()V"
+        }
+      ],
+      "owner": "client",
+      "method": "g",
+      "desc": "(B)V"
+    },
+    {
+      "startIndex": 0,
+      "nodes": [
+        {
+          "opcode": 21,
+          "var": 0
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "varpChange",
+          "desc": "(I)V"
+        }
+      ],
+      "owner": "ap",
+      "method": "di",
+      "desc": "(IB)V"
+    },
+    {
+      "startIndex": 0,
+      "nodes": [
+        {
+          "opcode": 21,
+          "var": 1
+        },
+        {
+          "opcode": 25,
+          "var": 2
+        },
+        {
+          "opcode": 25,
+          "var": 3
+        },
+        {
+          "opcode": 25,
+          "var": 4
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "message",
+          "desc": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;)V"
+        }
+      ],
+      "owner": "at",
+      "method": "a",
+      "desc": "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Lam;"
+    },
+    {
+      "startIndex": 0,
+      "nodes": [
+        {
+          "opcode": 25,
+          "var": 1
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "objectRemoved",
+          "desc": "(Lcom/runeloader/api/bridge/os/accessor/GameObject;)V"
+        }
+      ],
+      "owner": "cz",
+      "method": "u",
+      "desc": "(Lco;)V"
+    },
+    {
+      "startIndex": 284,
+      "nodes": [
+        {
+          "opcode": 89
+        },
+        {
+          "opcode": 184,
+          "owner": "com/runeloader/api/bridge/os/Callbacks",
+          "name": "objectSpawned",
+          "desc": "(Lcom/runeloader/api/bridge/os/accessor/GameObject;)V"
+        }
+      ],
+      "owner": "cz",
+      "method": "v",
+      "desc": "(IIIIIIIILcr;IZII)Z"
+    }
+  ],
+  "addMethods": [
+    {
+      "clientClass": "client",
+      "methodName": "sendGameMessage",
+      "methodDesc": "(ILjava/lang/String;Ljava/lang/String;I)V",
+      "instructions": [
+        {
+          "opcode": 21,
+          "var": 1
+        },
+        {
+          "opcode": 25,
+          "var": 2
+        },
+        {
+          "opcode": 25,
+          "var": 3
+        },
+        {
+          "opcode": 21,
+          "var": 4
+        },
+        {
+          "opcode": 184,
+          "owner": "eu",
+          "name": "r",
+          "desc": "(ILjava/lang/String;Ljava/lang/String;I)V"
+        },
+        {
+          "opcode": 177
+        }
+      ]
+    },
+    {
+      "clientClass": "go",
+      "methodName": "get",
+      "methodDesc": "(J)Lcom/runeloader/api/bridge/os/accessor/Node;",
+      "instructions": [
+        {
+          "opcode": 25,
+          "var": 0
+        },
+        {
+          "opcode": 22,
+          "var": 1
+        },
+        {
+          "opcode": 182,
+          "owner": "go",
+          "name": "a",
+          "desc": "(J)Lgs;"
+        },
+        {
+          "opcode": 176
+        }
+      ]
+    },
+    {
+      "clientClass": "client",
+      "methodName": "getItemDefinition",
+      "methodDesc": "(I)Lcom/runeloader/api/bridge/os/accessor/ItemComposition;",
+      "instructions": [
+        {
+          "opcode": 21,
+          "var": 1
+        },
+        {
+          "opcode": 18,
+          "cst": -829788199
+        },
+        {
+          "opcode": 184,
+          "owner": "bk",
+          "name": "a",
+          "desc": "(II)Lae;"
+        },
+        {
+          "opcode": 176
+        }
+      ]
+    },
+    {
+      "clientClass": "client",
+      "methodName": "getItemSprite",
+      "methodDesc": "(IIZ)Lcom/runeloader/api/bridge/os/accessor/SpritePixels;",
+      "instructions": [
+        {
+          "opcode": 21,
+          "var": 1
+        },
+        {
+          "opcode": 21,
+          "var": 2
+        },
+        {
+          "opcode": 4
+        },
+        {
+          "opcode": 18,
+          "cst": 3153952
+        },
+        {
+          "opcode": 3
+        },
+        {
+          "opcode": 21,
+          "var": 3
+        },
+        {
+          "opcode": 16,
+          "operand": -61
+        },
+        {
+          "opcode": 184,
+          "owner": "fb",
+          "name": "n",
+          "desc": "(IIIIIZB)Lca;"
+        },
+        {
+          "opcode": 176
+        }
+      ]
+    },
+    {
+      "clientClass": "ae",
+      "methodName": "setActions",
+      "methodDesc": "([Ljava/lang/String;)V",
+      "instructions": [
+        {
+          "opcode": 25,
+          "var": 0
+        },
+        {
+          "opcode": 25,
+          "var": 1
+        },
+        {
+          "opcode": 181,
+          "owner": "ae",
+          "name": "aw",
+          "desc": "[Ljava/lang/String;"
+        },
+        {
+          "opcode": 177
+        }
+      ]
+    },
+    {
+      "clientClass": "fa",
+      "methodName": "setRelativeY",
+      "methodDesc": "(I)V",
+      "instructions": [
+        {
+          "opcode": 25,
+          "var": 0
+        },
+        {
+          "opcode": 21,
+          "var": 1
+        },
+        {
+          "opcode": 18,
+          "cst": -26908417
+        },
+        {
+          "opcode": 104
+        },
+        {
+          "opcode": 181,
+          "owner": "fa",
+          "name": "ad",
+          "desc": "I"
+        },
+        {
+          "opcode": 177
+        }
+      ]
+    },
+    {
+      "clientClass": "client",
+      "methodName": "hopToWorld",
+      "methodDesc": "(Ljava/lang/String;II)V",
+      "instructions": [
+        {
+          "opcode": 187,
+          "desc": "o"
+        },
+        {
+          "opcode": 89
+        },
+        {
+          "opcode": 183,
+          "owner": "o",
+          "name": "\u003cinit\u003e",
+          "desc": "()V"
+        },
+        {
+          "opcode": 58,
+          "var": 4
+        },
+        {
+          "opcode": 25,
+          "var": 4
+        },
+        {
+          "opcode": 25,
+          "var": 1
+        },
+        {
+          "opcode": 181,
+          "owner": "o",
+          "name": "v",
+          "desc": "Ljava/lang/String;"
+        },
+        {
+          "opcode": 25,
+          "var": 4
+        },
+        {
+          "opcode": 21,
+          "var": 2
+        },
+        {
+          "opcode": 18,
+          "cst": -750873779
+        },
+        {
+          "opcode": 104
+        },
+        {
+          "opcode": 181,
+          "owner": "o",
+          "name": "l",
+          "desc": "I"
+        },
+        {
+          "opcode": 25,
+          "var": 4
+        },
+        {
+          "opcode": 21,
+          "var": 3
+        },
+        {
+          "opcode": 18,
+          "cst": 1873440441
+        },
+        {
+          "opcode": 104
+        },
+        {
+          "opcode": 181,
+          "owner": "o",
+          "name": "h",
+          "desc": "I"
+        },
+        {
+          "opcode": 16,
+          "operand": 45
+        },
+        {
+          "opcode": 18,
+          "cst": -12679580
+        },
+        {
+          "opcode": 184,
+          "owner": "r",
+          "name": "n",
+          "desc": "(II)V"
+        },
+        {
+          "opcode": 178,
+          "owner": "fd",
+          "name": "cz",
+          "desc": "Lec;"
+        },
+        {
+          "opcode": 18,
+          "cst": 1331538431
+        },
+        {
+          "opcode": 182,
+          "owner": "ec",
+          "name": "f",
+          "desc": "(I)V"
+        },
+        {
+          "opcode": 1
+        },
+        {
+          "opcode": 179,
+          "owner": "fd",
+          "name": "cz",
+          "desc": "Lec;"
+        },
+        {
+          "opcode": 25,
+          "var": 4
+        },
+        {
+          "opcode": 16,
+          "operand": -59
+        },
+        {
+          "opcode": 184,
+          "owner": "c",
+          "name": "l",
+          "desc": "(Lo;B)V"
+        },
+        {
+          "opcode": 177
+        }
+      ]
+    }
+  ],
+  "newMethodMods": [],
+  "instructionReplacements": []
+}
