@@ -155,20 +155,6 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		f2.other = branch1;
 		branch1.other = f2;
 
-		// switch frame order in executor frame list
-
-//		Execution e = f1.getExecution(),
-//			e2 = f2.getExecution();
-//
-//		int i = e2.frames.indexOf(f2),
-//			i2 = e2.frames.indexOf(branch2);
-//
-//		e2.frames.remove(i);
-//		e2.frames.add(i, branch2);
-//
-//		e2.frames.remove(i2);
-//		e2.frames.add(i2, f2);
-
 		this.mapArguments(mapping, ctx, other, true);
 	}
 	
@@ -206,8 +192,20 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			Field f1 = f1s.get(0), f2 = f2s.get(0);
 			Field j1 = f1s.get(1), j2 = f2s.get(1);
 
-			mapping.map(f1, j2);
-			mapping.map(j1, f2);
+			
+			assert !(couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2));
+			
+			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
+			{
+				mapping.map(f1, f2);
+				mapping.map(j1, f2);
+			}
+			
+			if (couldBeSame(f1, j2) && couldBeSame(j1, f2))
+			{
+				mapping.map(f1, j2);
+				mapping.map(j1, f2);
+			}
 		}
 		else
 			assert false;
@@ -253,6 +251,18 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		return (Integer) gfi.getConstant().getObject();
 	}
 	
+	private boolean couldBeSame(Field f1, Field f2)
+	{
+		if (f1.isStatic() != f2.isStatic())
+			return false;
+
+		if (!f1.isStatic())
+			if (!f1.getFields().getClassFile().getName().equals(f2.getFields().getClassFile().getName()))
+				return false;
+
+		return f1.getType().equals(f2.getType());
+	}
+	
 	protected boolean isSameField(InstructionContext thisIc, InstructionContext otherIc)
 	{
 		List<Field> f1s = getComparedFields(thisIc), f2s = getComparedFields(otherIc);
@@ -272,15 +282,23 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		{
 			Field f1 = f1s.get(0), f2 = f2s.get(0);
 			Field j1 = f1s.get(1), j2 = f2s.get(1);
-
-			return (f1.getType().equals(f2.getType()) && j1.getType().equals(j2.getType())) ||
-				(f1.getType().equals(j2.getType()) && j1.getType().equals(f2.getType()));
+			
+			if (couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2))
+				return false; // ambiguous
+			
+			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
+				return true;
+			
+			if (couldBeSame(f1, j2) && couldBeSame(j1, f2))
+				return true;
+			
+			return false;
 		}
 		else
 		{
 			Field f1 = f1s.get(0), f2 = f2s.get(0);
-
-			return f1.getType().equals(f2.getType());
+			
+			return couldBeSame(f1, f2);
 		}
 	}
 	
