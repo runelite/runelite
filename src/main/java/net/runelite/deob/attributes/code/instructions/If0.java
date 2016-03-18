@@ -20,7 +20,6 @@ import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
-import net.runelite.deob.execution.Execution;
 
 public abstract class If0 extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
@@ -201,6 +200,13 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		
 		if (f1 == null || f2 == null)
 			return true;
+		
+		if (f1.isStatic() != f2.isStatic())
+			return false;
+
+		if (!f1.isStatic())
+			if (!f1.getFields().getClassFile().getName().equals(f2.getFields().getClassFile().getName()))
+				return false;
 		
 		return f1.getType().equals(f2.getType());
 	}

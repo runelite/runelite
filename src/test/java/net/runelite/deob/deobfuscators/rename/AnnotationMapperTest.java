@@ -8,8 +8,9 @@ import org.junit.Test;
 
 public class AnnotationMapperTest
 {
-	private static final String JAR1 = MapStaticTest.class.getResource("/adamin1.jar").getFile(),
-		JAR2 = MapStaticTest.class.getResource("/adamin2.jar").getFile();
+	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.0-SNAPSHOT\\rs-client-1.0-SNAPSHOT.jar",
+		JAR2 = "c:/rs/gamepack_v18_deobbed.jar",
+		OUT = "c:/rs/adamout.jar";
 	
 	@Test
 	public void testRun() throws IOException
@@ -23,6 +24,8 @@ public class AnnotationMapperTest
 		
 		AnnotationMapper amapper = new AnnotationMapper(group1, group2, mapping);
 		amapper.run();
+		
+		JarUtil.saveJar(group2, new File(OUT));
 	}
 
 }
