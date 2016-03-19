@@ -198,7 +198,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
 			{
 				mapping.map(f1, f2);
-				mapping.map(j1, f2);
+				mapping.map(j1, j2);
 			}
 			
 			if (couldBeSame(f1, j2) && couldBeSame(j1, f2))
