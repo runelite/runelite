@@ -180,6 +180,7 @@ public class Mapper
 
 			PacketHandler highestHandler = null;
 			ParallelExecutorMapping highest = null;
+			int maxContradictions = 0;
 
 			for (int j = 0; j < mappings.packetHandler2.size(); ++j)
 			{
@@ -193,13 +194,36 @@ public class Mapper
 				if (mapping.getMap().isEmpty())
 					continue;
 
+				if (mapping.hasAnyMultiples())
+					continue;
+
+				int p = pem.contradicts(mapping);
+
+				if (if1.getPacketId() == 9 && (if2.getPacketId() == 25 || if2.getPacketId() == 187))
+				{
+					int i444 =6;
+					pem.contradicts(mapping);
+				}
+
+				//if (highest == null || p < maxContradictions)
 				if (highest == null || mapping.getMap().size() > highest.getMap().size())
 				{
-					highest = mapping;
-					highestHandler = if2;
+					if (p == 0 && mapping.crashed == false)
+					//if (p == 0)
+					//if (!pem.contradicts(mapping))
+					{
+						highest = mapping;
+						highestHandler = if2;
+						maxContradictions = p;
+					}
 				}
 			}
 
+			if (highest == null)
+			{
+				continue;
+				//int i44 = 5;
+			}
 			System.out.println(if1 + " <-> " + highestHandler + " <-> " + highest.getMap().size() + " " + highest.crashed);
 			all.merge(highest);
 		}
