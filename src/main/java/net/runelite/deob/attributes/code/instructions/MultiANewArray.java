@@ -87,7 +87,10 @@ public class MultiANewArray extends Instruction
 			StringBuffer sb = new StringBuffer();
 			for (int i = 0; i < this.dimensions; ++i)
 				sb.append('[');
-			sb.append("L" + myClass.getName() + ";");
+			if (this.dimensions > 0)
+				sb.append("L" + myClass.getName() + ";");
+			else
+				sb.append(myClass.getName());
 			clazz = new Class(sb.toString());
 		}
 	}

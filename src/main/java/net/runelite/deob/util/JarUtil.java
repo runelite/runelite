@@ -1,5 +1,6 @@
 package net.runelite.deob.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,6 +15,8 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
+import net.runelite.deob.asm.AsmUtils;
+import org.objectweb.asm.ClassReader;
 
 public class JarUtil
 {
@@ -51,7 +54,11 @@ public class JarUtil
 				
 				ByteArrayOutputStream bout = new ByteArrayOutputStream();
 				cf.write(new DataOutputStream(bout));
-				jout.write(bout.toByteArray());
+
+				// run through asm to generate stackmaps
+				byte[] b = AsmUtils.rebuildWithStackmaps(group, new ByteArrayInputStream(bout.toByteArray()));
+
+				jout.write(b);
 				
 				jout.closeEntry();
 			}

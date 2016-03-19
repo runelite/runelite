@@ -82,7 +82,9 @@ public class Instructions
 	
 	public void write(DataOutputStream out) throws IOException
 	{
-		// trnaslate instructions to specific
+		this.regeneratePool();
+		
+		// translate instructions to specific
 		this.buildJumpGraph();
 		
 		for (Instruction i : new ArrayList<>(instructions))
