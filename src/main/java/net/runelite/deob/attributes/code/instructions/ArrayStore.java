@@ -4,6 +4,7 @@ import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.Instruction;
 import net.runelite.deob.attributes.code.InstructionType;
 import net.runelite.deob.attributes.code.Instructions;
+import net.runelite.deob.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.deob.attributes.code.instruction.types.ArrayStoreInstruction;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
@@ -48,6 +49,28 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 			otherField = ((ArrayStore) other.getInstruction()).getMyField(other);
 		
 		mapping.map(myField, otherField);
+		
+		// map value
+
+		StackContext object1 = ctx.getPops().get(0), // value set to.
+			object2 = other.getPops().get(0);
+
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			net.runelite.deob.Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+
+			if (f1 != null && f2 != null)
+			{
+				mapping.map(f1, f2);
+			}
+		}
 	}
 
 	@Override

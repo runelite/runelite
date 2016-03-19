@@ -131,6 +131,8 @@ public class PutField extends Instruction implements SetFieldInstruction
 				mapping.map(f1, f2);
 			}
 		}
+
+		// XXX also map value here?
 	}
 
 	@Override

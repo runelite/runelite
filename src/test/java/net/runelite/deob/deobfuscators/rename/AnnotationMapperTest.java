@@ -9,8 +9,8 @@ import org.junit.Test;
 public class AnnotationMapperTest
 {
 	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.0-SNAPSHOT\\rs-client-1.0-SNAPSHOT.jar",
-		JAR2 = "c:/rs/gamepack_v18_deobbed.jar",
-		OUT = "c:/rs/adamout.jar";
+		JAR2 = "d:/rs/07/gamepack_v18_deobbed.jar",
+		OUT = "d:/rs/07/adamout.jar";
 	
 	@Test
 	public void testRun() throws IOException

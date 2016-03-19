@@ -7,20 +7,17 @@ import java.util.stream.Collectors;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.ComparisonInstruction;
+import net.runelite.deob.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
 import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.deob.attributes.code.instructions.AALoad;
 import net.runelite.deob.attributes.code.instructions.InvokeStatic;
 import net.runelite.deob.execution.Execution;
 import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.MethodContext;
 import net.runelite.deob.execution.ParallellMappingExecutor;
 import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.VariableContext;
@@ -272,10 +269,10 @@ public class MappingExecutorUtil
 			return resolve(s.getPushed(), s);
 		}
 		
-		if (ctx.getInstruction() instanceof AALoad)
+		if (ctx.getInstruction() instanceof ArrayLoad)
 		{
 			// might be multidimensional array
-			StackContext s = ctx.getPops().get(1);
+			StackContext s = ctx.getPops().get(1); // the array
 			return resolve(s.getPushed(), s);
 		}
 		
