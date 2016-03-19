@@ -614,20 +614,22 @@ public class MapStaticTest
 	@Test
 	public void testPacket() throws IOException
 	{
+		String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.0-SNAPSHOT\\rs-client-1.0-SNAPSHOT.jar",
+		JAR2 = "d:/rs/07/gamepack_v18_deobbed.jar";
+			
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 
-		group1.findClass("client").findField("field446").packetHandler = true;
-		group2.findClass("client").findField("field324").packetHandler = true;
+		group1.findClass("client").findField("field333").packetHandler = true;
+		group2.findClass("client").findField("field488").packetHandler = true;
 
-		Method m1 = group1.findClass("client").findMethod("vmethod3096");
-		Method m2 = group2.findClass("client").findMethod("vmethod2975");
+		Method m1 = group1.findClass("client").findMethod("vmethod2968");
+		Method m2 = group2.findClass("client").findMethod("vmethod3044");
 
 		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
 
-		//                       var55 = class17.method214(); vs var107 = class25.field625[++class25.field624 - 1];
-		PacketHandler h1 = mappings.findPacketHandler1(127);
-		PacketHandler h2 = mappings.findPacketHandler2(160);
+		PacketHandler h1 = mappings.findPacketHandler1(9);
+		PacketHandler h2 = mappings.findPacketHandler2(25);
 
 		ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(group1, group2, h1.getFirstInsOfHandler(), h2.getFirstInsOfHandler());
 
