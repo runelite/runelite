@@ -1,9 +1,12 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
 import net.runelite.deob.Method;
@@ -12,7 +15,8 @@ import net.runelite.deob.attributes.code.instructions.If;
 public class ParallelExecutorMapping
 {
 	private ClassGroup group, group2;
-	private Map<Object, Object> map = new HashMap<>();
+	private Multimap<Object, Mapping> map = HashMultimap.create();
+	//private Map<Object, Object> map = new HashMap<>();
 	//private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	public boolean crashed;
@@ -25,38 +29,90 @@ public class ParallelExecutorMapping
 		this.group2 = group2;
 		assert group != group2;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "ParallelExecutorMapping{size = " + map.size() + ", crashed = " + crashed + "}";
+	}
+
+	private Mapping getMapping(Object from, Object to)
+	{
+		for (Mapping m : map.get(from))
+			if (m.getObject() == to)
+				return m;
+
+		Mapping m = new Mapping(to);
+		map.put(from, m);
+		return m;
+	}
+
+	private Object highest(Object from)
+	{
+		Mapping highest = null;
+		for (Mapping m : map.get(from))
+			if (highest == null || m.getCount() > highest.getCount())
+				highest = m;
+		return highest != null ? highest.getObject() : null;
+	}
 	
 	public void merge(ParallelExecutorMapping other)
 	{
 		assert this != other;
-		map.putAll(other.map); // is this right?
+
+		for (Entry<Object, Mapping> e : other.map.entries())
+		{
+			Object o = e.getKey();
+			Mapping v = e.getValue();
+
+			Mapping m = this.getMapping(o, v.getObject());
+			m.merge(v);
+		}
 	}
+	
+//	public void mergeButNotOverride(ParallelExecutorMapping other)
+//	{
+//		assert this != other;
+//		for (Object o : other.map.keySet())
+//			if (map.containsKey(o) == false)
+//				map.put(o, other.map.get(o));
+//	}
 	
 	public void map(Object one, Object two)
 	{
-		//assert !map.containsKey(one) || map.get(one) == two;
-		
-		if (map.containsKey(one))
-			return;
+		if (one instanceof Field)
+		{
+			Field f= (Field) one;
+			if (f.getName().equals("field849"))
+			{
+				int i = 5;
+			}
+		}
+		Mapping m = getMapping(one, two);
 		
 		belongs(one, group);
 		belongs(two, group2);
-		
-		map.put(one, two);
-		//order.add(one);
+
+		m.inc();
 	}
 	
 	public Object get(Object o)
 	{
-		return map.get(o);
+		return highest(o);
+		//return map.get(o);
 	}
 	
 	public Map<Object, Object> getMap()
 	{
-		return map;
+		Map<Object, Object> m = new HashMap<>();
+
+		for (Object o : map.keySet())
+		{
+			m.put(o, highest(o));
+		}
+
+		return m;
 	}
-	
-	//public List<Object> getOrder() { return order; }
 	
 	private void belongs(Object o, ClassGroup to)
 	{
@@ -88,5 +144,31 @@ public class ParallelExecutorMapping
 			if (p.getPacketId() == id)
 				return p;
 		return null;
+	}
+
+	public int contradicts(ParallelExecutorMapping other)
+	{
+		int count = 0;
+
+		for (Entry<Object, Mapping> e : other.map.entries())
+		{
+			Object key = e.getKey();
+			Mapping value = e.getValue();
+
+			Object highest = highest(key);
+
+			if (highest != null && highest != value.getObject())
+				++count;
+		}
+
+		return count;
+	}
+
+	public boolean hasAnyMultiples()
+	{
+		for (Object o : map.keySet())
+			if (map.get(o).size() > 1)
+				return true;
+		return false;
 	}
 }
