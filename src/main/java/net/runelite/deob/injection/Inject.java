@@ -1,10 +1,7 @@
 package net.runelite.deob.injection;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
@@ -221,7 +218,9 @@ public class Inject
 			return null;
 		
 		String ifaceName = API_PACKAGE_BASE + a.getElement().getString();
-		Class clazz = new Class(ifaceName);
+		String ifaceNameInternal = ifaceName.replace('.', '/'); // to internal name
+
+		Class clazz = new Class(ifaceNameInternal);
 		
 		Interfaces interfaces = other.getInterfaces();
 		interfaces.addInterface(clazz);
