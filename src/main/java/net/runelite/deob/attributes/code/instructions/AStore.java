@@ -86,4 +86,22 @@ public class AStore extends Instruction implements LVTInstruction, WideInstructi
 		index = idx;
 		return this;
 	}
+
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (index)
+		{
+			case 0:
+				return new AStore_0(this.getInstructions());
+			case 1:
+				return new AStore_1(this.getInstructions());
+			case 2:
+				return new AStore_2(this.getInstructions());
+			case 3:
+				return new AStore_3(this.getInstructions());
+			default:
+				return this;
+		}
+	}
 }

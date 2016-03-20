@@ -8,10 +8,8 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.pool.PoolEntry;
-
-import java.io.IOException;
 import net.runelite.deob.execution.Value;
+import net.runelite.deob.pool.PoolEntry;
 
 public class LConst_1 extends Instruction implements PushConstantInstruction
 {

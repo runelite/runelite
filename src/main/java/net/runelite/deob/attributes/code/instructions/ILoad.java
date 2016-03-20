@@ -9,7 +9,6 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.execution.Type;
 import net.runelite.deob.execution.VariableContext;
 import net.runelite.deob.execution.Variables;
 
@@ -105,5 +104,24 @@ public class ILoad extends Instruction implements LVTInstruction, WideInstructio
 	{
 		index = idx;
 		return this;
+	}
+
+
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (index)
+		{
+			case 0:
+				return new ILoad_0(this.getInstructions());
+			case 1:
+				return new ILoad_1(this.getInstructions());
+			case 2:
+				return new ILoad_2(this.getInstructions());
+			case 3:
+				return new ILoad_3(this.getInstructions());
+			default:
+				return this;
+		}
 	}
 }

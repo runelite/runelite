@@ -88,4 +88,22 @@ public class IStore extends Instruction implements LVTInstruction, WideInstructi
 		index = idx;
 		return this;
 	}
+
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (index)
+		{
+			case 0:
+				return new IStore_0(this.getInstructions());
+			case 1:
+				return new IStore_1(this.getInstructions());
+			case 2:
+				return new IStore_2(this.getInstructions());
+			case 3:
+				return new IStore_3(this.getInstructions());
+			default:
+				return this;
+		}
+	}
 }

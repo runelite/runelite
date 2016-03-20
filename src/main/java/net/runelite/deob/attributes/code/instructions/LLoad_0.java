@@ -12,13 +12,17 @@ import net.runelite.deob.execution.Type;
 import net.runelite.deob.execution.VariableContext;
 import net.runelite.deob.execution.Variables;
 
-import java.io.IOException;
 
 public class LLoad_0 extends Instruction implements LVTInstruction
 {
-	public LLoad_0(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LLoad_0(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+
+	public LLoad_0(Instructions instructions)
+	{
+		super(instructions, InstructionType.LLOAD_0, -1);
 	}
 
 	@Override

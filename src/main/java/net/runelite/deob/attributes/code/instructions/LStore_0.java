@@ -12,7 +12,6 @@ import net.runelite.deob.execution.Type;
 import net.runelite.deob.execution.VariableContext;
 import net.runelite.deob.execution.Variables;
 
-import java.io.IOException;
 
 public class LStore_0 extends Instruction implements LVTInstruction
 {
