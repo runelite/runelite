@@ -18,7 +18,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import net.runelite.deob.Method;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
@@ -95,7 +94,8 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	public void regeneratePool()
 	{
 		if (myField != null)
-			field = myField.getPoolField();
+			if (getMyField() != myField)
+				field = myField.getPoolField();
 	}
 
 	@Override

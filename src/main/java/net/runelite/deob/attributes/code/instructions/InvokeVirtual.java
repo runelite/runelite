@@ -21,7 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 import net.runelite.deob.Field;
 import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.deobfuscators.Renamer;
@@ -140,33 +139,37 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		return method;
 	}
 	
-	@Override
-	public void lookup()
+	private List<net.runelite.deob.Method> lookupMethods()
 	{
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
 		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
-			return; // not our class
+			return null; // not our class
 		
 		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
 		
-		//List<net.runelite.deob.Method> list = new ArrayList<>();
-		//findMethodFromClass(new HashSet<>(), list, otherClass);
 		net.runelite.deob.Method m = otherClass.findMethodDeep(method.getNameAndType());
 		if (m == null)
 		{
-			return;
+			return null;
 		}
 
-		myMethods = Renamer.getVirutalMethods(m);
+		return Renamer.getVirutalMethods(m);
+	}
+
+	@Override
+	public void lookup()
+	{
+		myMethods = lookupMethods();
 	}
 	
 	@Override
 	public void regeneratePool()
 	{
 		if (myMethods != null && !myMethods.isEmpty())
-			method = myMethods.get(0).getPoolMethod(); // is this right?
+			if (!myMethods.equals(lookupMethods()))
+				method = myMethods.get(0).getPoolMethod(); // is this right?
 	}
 	
 	@Override
