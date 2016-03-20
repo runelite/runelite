@@ -1,9 +1,16 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("dp")
 public class class113 {
-   @ObfuscatedName("f")
-   static void method2397() {
-      class15.field225 = new class195(32);
+   @ObfuscatedName("y")
+   static void method2449() {
+      Object var0 = class169.field2699;
+      synchronized(class169.field2699) {
+         if(class169.field2695 == 0) {
+            class129.field2056.method2893(new class169(), 5);
+         }
+
+         class169.field2695 = 600;
+      }
    }
 }

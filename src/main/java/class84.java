@@ -3,45 +3,56 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cr")
 @Implements("Renderable")
 public abstract class class84 extends class203 {
-   @ObfuscatedName("cp")
+   @ObfuscatedName("cv")
    @ObfuscatedGetter(
-      intValue = 1911097579
+      intValue = -564644063
    )
    @Export("modelHeight")
-   public int field1461 = 1000;
+   public int field1448 = 1000;
 
-   @ObfuscatedName("cm")
-   static void method1869(class172 var0) {
-      class172 var1 = var0.field2778 == -1?null:class31.method698(var0.field2778);
-      int var2;
-      int var3;
-      if(var1 == null) {
-         var2 = class142.field2190;
-         var3 = class89.field1566;
-      } else {
-         var2 = var1.field2774;
-         var3 = var1.field2890;
+   @ObfuscatedName("ac")
+   void vmethod2324(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+      class104 var10 = this.vmethod1919();
+      if(null != var10) {
+         this.field1448 = var10.field1448;
+         var10.vmethod2324(var1, var2, var3, var4, var5, var6, var7, var8, var9);
       }
 
-      class24.method595(var0, var2, var3, false);
-      class10.method126(var0, var2, var3);
    }
 
    @ObfuscatedName("a")
-   protected class104 vmethod1870() {
-      return null;
-   }
+   public static long method1913(CharSequence var0) {
+      long var1 = 0L;
+      int var3 = var0.length();
 
-   @ObfuscatedName("v")
-   void vmethod2302(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      class104 var10 = this.vmethod1870();
-      if(null != var10) {
-         this.field1461 = var10.field1461;
-         var10.vmethod2302(var1, var2, var3, var4, var5, var6, var7, var8, var9);
+      for(int var4 = 0; var4 < var3; ++var4) {
+         var1 *= 37L;
+         char var5 = var0.charAt(var4);
+         if(var5 >= 65 && var5 <= 90) {
+            var1 += (long)(var5 + 1 - 65);
+         } else if(var5 >= 97 && var5 <= 122) {
+            var1 += (long)(var5 + 1 - 97);
+         } else if(var5 >= 48 && var5 <= 57) {
+            var1 += (long)(27 + var5 - 48);
+         }
+
+         if(var1 >= 177917621779460413L) {
+            break;
+         }
       }
 
+      while(var1 % 37L == 0L && var1 != 0L) {
+         var1 /= 37L;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("f")
+   protected class104 vmethod1919() {
+      return null;
    }
 }

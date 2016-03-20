@@ -1,18 +1,18 @@
 import java.applet.Applet;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.FontMetrics;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("eu")
 public class class137 {
-   @ObfuscatedName("bg")
-   static class167 field2139;
-   @ObfuscatedName("j")
-   static Applet field2143 = null;
-   @ObfuscatedName("ih")
-   @ObfuscatedGetter(
-      intValue = 590900641
-   )
-   static int field2144;
-   @ObfuscatedName("l")
-   static String field2147 = null;
+   @ObfuscatedName("r")
+   static String field2123 = null;
+   @ObfuscatedName("bf")
+   protected static FontMetrics field2124;
+   @ObfuscatedName("a")
+   static Applet field2126 = null;
+
+   @ObfuscatedName("r")
+   static void method2943(int var0, String var1, String var2) {
+      class0.method5(var0, var1, var2, (String)null);
+   }
 }

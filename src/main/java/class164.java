@@ -1,74 +1,84 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.io.IOException;
-import java.net.URI;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fm")
 public class class164 {
-   @ObfuscatedName("j")
-   static final char[] field2668 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1111609909
-   )
-   static int field2669;
-   @ObfuscatedName("iv")
-   @ObfuscatedGetter(
-      intValue = 1714525251
-   )
-   static int field2672;
+   @ObfuscatedName("ap")
+   static class142 field2649;
+   @ObfuscatedName("a")
+   public static final char[] field2650 = new char[]{'€', '\u0000', '‚', 'ƒ', '„', '…', '†', '‡', 'ˆ', '‰', 'Š', '‹', 'Œ', '\u0000', 'Ž', '\u0000', '\u0000', '‘', '’', '“', '”', '•', '–', '—', '˜', '™', 'š', '›', 'œ', '\u0000', 'ž', 'Ÿ'};
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZI)V",
-      garbageValue = "0"
-   )
-   public static void method3191(String var0, boolean var1) {
-      if(var1) {
-         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
-            try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var3) {
-               ;
-            }
+   @ObfuscatedName("r")
+   static char method3253(char var0) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
          }
 
-         if(class137.field2147.startsWith("win")) {
-            class0.method2(var0, 0, "openjs");
-         } else if(class137.field2147.startsWith("mac")) {
-            class0.method2(var0, 1, "openjs");
-         } else {
-            class77.method1673(var0, 2);
+         if(199 == var0) {
+            return 'C';
          }
-      } else {
-         class0.method2(var0, 3, "openjs");
+
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
+         }
+
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
+         }
+
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
+         }
+
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
+         }
+
+         if(var0 == 221) {
+            return 'Y';
+         }
+
+         if(223 == var0) {
+            return 's';
+         }
+
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
+         }
+
+         if(var0 == 231) {
+            return 'c';
+         }
+
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
+         }
+
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
+         }
+
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
+         }
+
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
+         }
+
+         if(253 == var0 || var0 == 255) {
+            return 'y';
+         }
       }
 
-   }
-
-   @ObfuscatedName("l")
-   public static void method3192(boolean var0) {
-      if(null != class216.field3155) {
-         try {
-            class118 var1 = new class118(4);
-            var1.method2438(var0?2:3);
-            var1.method2457(0);
-            class216.field3155.method2932(var1.field1995, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class216.field3155.method2948();
-            } catch (Exception var3) {
-               ;
-            }
-
-            ++class170.field2739;
-            class216.field3155 = null;
-         }
-
+      if(338 == var0) {
+         return 'O';
+      } else if(var0 == 339) {
+         return 'o';
+      } else if(var0 == 376) {
+         return 'Y';
+      } else {
+         return var0;
       }
    }
 }

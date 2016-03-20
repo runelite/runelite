@@ -1,79 +1,122 @@
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("bh")
 public abstract class class77 {
-   @ObfuscatedName("m")
-   public Image field1399;
-   @ObfuscatedName("i")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -734183465
+      intValue = -474665953
    )
-   public int field1400;
+   int field1389;
+   @ObfuscatedName("bl")
+   static class167 field1391;
+   @ObfuscatedName("e")
+   public Image field1392;
+   @ObfuscatedName("n")
+   static class80 field1393;
    @ObfuscatedName("f")
+   public int[] field1394;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -788494945
+      intValue = 628640771
    )
-   int field1401;
-   @ObfuscatedName("a")
-   public int[] field1402;
-   @ObfuscatedName("no")
-   static class56 field1403;
-
-   @ObfuscatedName("j")
-   abstract void vmethod1841(int var1, int var2, Component var3);
+   public int field1395;
+   @ObfuscatedName("dt")
+   @Export("region")
+   static class85 field1396;
 
    @ObfuscatedName("a")
-   public abstract void vmethod1847(Graphics var1, int var2, int var3, int var4, int var5);
+   abstract void vmethod1893(int var1, int var2, Component var3);
 
-   @ObfuscatedName("l")
-   public abstract void vmethod1842(Graphics var1, int var2, int var3);
+   @ObfuscatedName("r")
+   public abstract void vmethod1900(Graphics var1, int var2, int var3);
 
-   @ObfuscatedName("j")
-   public static void method1665(class166 var0, class166 var1, class166 var2, class166 var3) {
-      class51.field1162 = var0;
-      class172.field2848 = var1;
-      class172.field2752 = var2;
-      class212.field3141 = var3;
-      class172.field2757 = new class172[class51.field1162.method3246()][];
-      class172.field2750 = new boolean[class51.field1162.method3246()];
+   @ObfuscatedName("f")
+   public abstract void vmethod1895(Graphics var1, int var2, int var3, int var4, int var5);
+
+   @ObfuscatedName("ax")
+   public final void method1723() {
+      class79.method1822(this.field1394, this.field1395, this.field1389);
    }
 
-   @ObfuscatedName("ai")
-   public final void method1667() {
-      class79.method1768(this.field1402, this.field1400, this.field1401);
+   @ObfuscatedName("e")
+   static int method1724(int var0) {
+      class35 var1 = (class35)class11.field164.method3849((long)var0);
+      return var1 == null?-1:(class11.field165.field3095 == var1.field3100?-1:((class35)var1.field3100).field789);
    }
 
-   @ObfuscatedName("a")
-   static boolean method1673(String var0, int var1) {
-      return class0.method2(var0, var1, "openjs");
-   }
-
-   @ObfuscatedName("dg")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1356925084"
+      signature = "([BB)V",
+      garbageValue = "-75"
    )
-   static void method1674(String var0) {
-      class95.field1639 = var0;
+   static void method1725(byte[] var0) {
+      class118 var1 = new class118(var0);
+      var1.field1979 = var0.length - 2;
+      class76.field1385 = var1.method2514();
+      class76.field1386 = new int[class76.field1385];
+      class76.field1382 = new int[class76.field1385];
+      class102.field1764 = new int[class76.field1385];
+      class76.field1383 = new int[class76.field1385];
+      class30.field708 = new byte[class76.field1385][];
+      var1.field1979 = var0.length - 7 - class76.field1385 * 8;
+      class76.field1379 = var1.method2514();
+      class76.field1381 = var1.method2514();
+      int var2 = (var1.method2579() & 255) + 1;
 
-      try {
-         String var1 = client.field284.getParameter(class189.field3059.field3062);
-         String var2 = client.field284.getParameter(class189.field3060.field3062);
-         String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
-         if(var0.length() == 0) {
-            var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
-         } else {
-            var3 = var3 + "; Expires=" + class165.method3208(class109.method2381() + 94608000000L) + "; Max-Age=" + 94608000L;
+      int var3;
+      for(var3 = 0; var3 < class76.field1385; ++var3) {
+         class76.field1386[var3] = var1.method2514();
+      }
+
+      for(var3 = 0; var3 < class76.field1385; ++var3) {
+         class76.field1382[var3] = var1.method2514();
+      }
+
+      for(var3 = 0; var3 < class76.field1385; ++var3) {
+         class102.field1764[var3] = var1.method2514();
+      }
+
+      for(var3 = 0; var3 < class76.field1385; ++var3) {
+         class76.field1383[var3] = var1.method2514();
+      }
+
+      var1.field1979 = var0.length - 7 - class76.field1385 * 8 - 3 * (var2 - 1);
+      class115.field1968 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         class115.field1968[var3] = var1.method2516();
+         if(0 == class115.field1968[var3]) {
+            class115.field1968[var3] = 1;
          }
+      }
 
-         class131.method2775(client.field284, "document.cookie=\"" + var3 + "\"");
-      } catch (Throwable var4) {
-         ;
+      var1.field1979 = 0;
+
+      for(var3 = 0; var3 < class76.field1385; ++var3) {
+         int var4 = class102.field1764[var3];
+         int var5 = class76.field1383[var3];
+         int var6 = var4 * var5;
+         byte[] var7 = new byte[var6];
+         class30.field708[var3] = var7;
+         int var8 = var1.method2579();
+         int var9;
+         if(0 == var8) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.method2707();
+            }
+         } else if(1 == var8) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var9 + var4 * var10] = var1.method2707();
+               }
+            }
+         }
       }
 
    }

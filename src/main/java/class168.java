@@ -1,19 +1,17 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fr")
+@ObfuscatedName("fq")
 public class class168 extends class207 {
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1424464439
-   )
-   int field2709;
-   @ObfuscatedName("l")
-   public byte[] field2710;
+   @ObfuscatedName("r")
+   byte[] field2687;
    @ObfuscatedName("a")
-   public class133 field2711;
-   @ObfuscatedName("i")
-   public class167 field2712;
-   @ObfuscatedName("m")
-   public static boolean field2714;
+   @ObfuscatedGetter(
+      intValue = 2065473767
+   )
+   int field2688;
+   @ObfuscatedName("f")
+   class133 field2689;
+   @ObfuscatedName("s")
+   class167 field2690;
 }

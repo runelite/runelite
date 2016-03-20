@@ -1,95 +1,80 @@
-import java.awt.Component;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cu")
 public final class class88 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("e")
+   boolean field1532 = true;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1594173459
+      intValue = 1838885315
    )
-   int field1548;
+   int field1533;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 130856537
+   )
+   int field1534;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1392151033
+   )
+   int field1535;
+   @ObfuscatedName("ie")
+   @ObfuscatedGetter(
+      intValue = -1746051767
+   )
+   static int field1536;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1755682431
+   )
+   int field1538;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -927489615
+      intValue = -1852973911
    )
-   int field1549;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1067708009
-   )
-   int field1550;
+   int field1539;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1420833989
+      intValue = 246233117
    )
-   int field1551;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -742775071
-   )
-   int field1553;
-   @ObfuscatedName("m")
-   boolean field1554 = true;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1734906607
-   )
-   int field1555;
+   int field1541;
 
-   @ObfuscatedName("am")
-   static final void method2052() {
-      for(int var0 = 0; var0 < client.field561; ++var0) {
-         int var1 = client.field326[var0];
-         class34 var2 = client.field324[var1];
-         if(var2 != null) {
-            class162.method3179(var2);
-         }
-      }
-
-   }
-
-   @ObfuscatedName("m")
-   static int method2053(class25 var0, class25 var1, int var2, boolean var3) {
-      if(1 == var2) {
-         int var4 = var0.field639;
-         int var5 = var1.field639;
-         if(!var3) {
-            if(-1 == var4) {
-               var4 = 2001;
-            }
-
-            if(-1 == var5) {
-               var5 = 2001;
-            }
-         }
-
-         return var4 - var5;
-      } else {
-         return 2 == var2?var0.field635 - var1.field635:(var2 == 3?(var0.field641.equals("-")?(var1.field641.equals("-")?0:(var3?-1:1)):(var1.field641.equals("-")?(var3?1:-1):var0.field641.compareTo(var1.field641))):(4 == var2?(var0.method631()?(var1.method631()?0:1):(var1.method631()?-1:0)):(5 == var2?(var0.method598()?(var1.method598()?0:1):(var1.method598()?-1:0)):(6 == var2?(var0.method602()?(var1.method602()?0:1):(var1.method602()?-1:0)):(7 == var2?(var0.method612()?(var1.method612()?0:1):(var1.method612()?-1:0)):var0.field637 - var1.field637)))));
-      }
-   }
-
-   @ObfuscatedName("ax")
-   public static class77 method2054(int var0, int var1, Component var2) {
-      try {
-         class81 var3 = new class81();
-         var3.vmethod1841(var0, var1, var2);
-         return var3;
-      } catch (Throwable var5) {
-         class75 var4 = new class75();
-         var4.vmethod1841(var0, var1, var2);
-         return var4;
-      }
+   @ObfuscatedName("a")
+   static class80 method2098(class166 var0, int var1, int var2) {
+      return !class12.method176(var0, var1, var2)?null:class92.method2178();
    }
 
    class88(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
-      this.field1550 = var1;
-      this.field1548 = var2;
-      this.field1549 = var3;
-      this.field1555 = var4;
-      this.field1551 = var5;
-      this.field1553 = var6;
-      this.field1554 = var7;
+      this.field1539 = var1;
+      this.field1533 = var2;
+      this.field1541 = var3;
+      this.field1534 = var4;
+      this.field1535 = var5;
+      this.field1538 = var6;
+      this.field1532 = var7;
+   }
+
+   @ObfuscatedName("cl")
+   @ObfuscatedSignature(
+      signature = "(Lclass172;B)V",
+      garbageValue = "-58"
+   )
+   static void method2099(class172 var0) {
+      class172 var1 = var0.field2762 == -1?null:class92.method2180(var0.field2762);
+      int var2;
+      int var3;
+      if(var1 == null) {
+         var2 = class6.field107;
+         var3 = class31.field749;
+      } else {
+         var2 = var1.field2752;
+         var3 = var1.field2759;
+      }
+
+      class3.method48(var0, var2, var3, false);
+      class49.method1030(var0, var2, var3);
    }
 }

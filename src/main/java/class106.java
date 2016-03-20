@@ -1,98 +1,80 @@
+import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dv")
+@ObfuscatedName("dd")
 public abstract class class106 {
-   @ObfuscatedName("f")
-   static int[] field1884;
-   @ObfuscatedName("l")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1941352069
+      intValue = -261834867
    )
-   public int field1885;
+   public int field1864;
+   @ObfuscatedName("g")
+   public static short[] field1865;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 14768683
+   )
+   public int field1866;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1880612437
+   )
+   public int field1867;
+   @ObfuscatedName("v")
+   public static class171 field1868;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1179236901
+      intValue = -1102143669
    )
-   public int field1886;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1847655269
-   )
-   public int field1888;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 321407347
-   )
-   public int field1889;
+   public int field1871;
 
-   @ObfuscatedName("j")
-   protected abstract boolean vmethod2336(int var1, int var2);
+   @ObfuscatedName("f")
+   static void method2387(int var0) {
+      if(-1 != var0) {
+         if(class103.method2303(var0)) {
+            class172[] var1 = class172.field2850[var0];
 
-   @ObfuscatedName("dp")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1912116538"
-   )
-   static final void method2338(String var0) {
-      if(var0 != null) {
-         if((client.field421 < 200 || client.field412 == 1) && client.field421 < 400) {
-            String var1 = class134.method2803(var0, client.field473);
-            if(null != var1) {
-               int var2;
-               String var4;
-               String var5;
-               for(var2 = 0; var2 < client.field421; ++var2) {
-                  class17 var3 = client.field557[var2];
-                  var4 = class134.method2803(var3.field253, client.field473);
-                  if(var4 != null && var4.equals(var1)) {
-                     class16.method186(30, "", var0 + " is already on your friend list");
-                     return;
-                  }
-
-                  if(var3.field247 != null) {
-                     var5 = class134.method2803(var3.field247, client.field473);
-                     if(null != var5 && var5.equals(var1)) {
-                        class16.method186(30, "", var0 + " is already on your friend list");
-                        return;
-                     }
-                  }
-               }
-
-               for(var2 = 0; var2 < client.field559; ++var2) {
-                  class7 var6 = client.field560[var2];
-                  var4 = class134.method2803(var6.field139, client.field473);
-                  if(var4 != null && var4.equals(var1)) {
-                     class16.method186(30, "", "Please remove " + var0 + " from your ignore list first");
-                     return;
-                  }
-
-                  if(null != var6.field136) {
-                     var5 = class134.method2803(var6.field136, client.field473);
-                     if(null != var5 && var5.equals(var1)) {
-                        class16.method186(30, "", "Please remove " + var0 + " from your ignore list first");
-                        return;
-                     }
-                  }
-               }
-
-               if(class134.method2803(class148.field2249.field48, client.field473).equals(var1)) {
-                  class16.method186(30, "", "You can\'t add yourself to your own friend list");
-               } else {
-                  client.field329.method2686(89);
-                  client.field329.method2438(class36.method742(var0));
-                  client.field329.method2444(var0);
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               class172 var3 = var1[var2];
+               if(null != var3.field2822) {
+                  class0 var4 = new class0();
+                  var4.field6 = var3;
+                  var4.field8 = var3.field2822;
+                  class72.method1613(var4, 2000000);
                }
             }
-         } else {
-            class16.method186(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
+
          }
       }
    }
 
-   @ObfuscatedName("l")
-   public static int method2339(CharSequence var0) {
-      return class128.method2756(var0, 10);
+   @ObfuscatedName("a")
+   protected abstract boolean vmethod2388(int var1, int var2);
+
+   @ObfuscatedName("e")
+   public static int method2390(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var2 + var0) / var1 - var2;
+   }
+
+   @ObfuscatedName("a")
+   public static void method2392(class135 var0, Object var1) {
+      if(null != var0.field2086) {
+         for(int var2 = 0; var2 < 50 && var0.field2086.peekEvent() != null; ++var2) {
+            class103.method2301(1L);
+         }
+
+         if(null != var1) {
+            var0.field2086.postEvent(new ActionEvent(var1, 1001, "dummy"));
+         }
+
+      }
+   }
+
+   @ObfuscatedName("y")
+   static int method2394(int var0, int var1) {
+      long var2 = (long)(var1 + (var0 << 16));
+      return field1868 != null && var2 == field1868.field3111?1 + class76.field1388.field1979 * 99 / (class76.field1388.field1980.length - field1868.field2728):0;
    }
 }

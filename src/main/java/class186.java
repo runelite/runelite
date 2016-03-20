@@ -1,107 +1,107 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gf")
+@ObfuscatedName("gh")
 public class class186 extends class207 {
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1227627151
-   )
-   int field3003;
-   @ObfuscatedName("l")
-   class180 field3004;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1657294981
-   )
-   int field3005;
-   @ObfuscatedName("i")
-   class184 field3006;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1873959247
-   )
-   int field3007;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -145701843
-   )
-   int field3008;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1383190783
-   )
-   int field3009;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 615010197
-   )
-   int field3010;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1870329271
-   )
-   int field3011;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -351976313
-   )
-   int field3012;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1793698055
-   )
-   int field3013;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 2055509005
+      intValue = -1250968691
    )
-   int field3014;
-   @ObfuscatedName("a")
-   class62 field3015;
-   @ObfuscatedName("q")
+   int field2999;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -523199597
+      intValue = -1391464431
    )
-   int field3016;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 819755441
-   )
-   int field3017;
-   @ObfuscatedName("z")
-   class64 field3018;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1641222173
-   )
-   int field3019;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1677979529
-   )
-   int field3020;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1579985135
-   )
-   int field3021;
+   int field3000;
+   @ObfuscatedName("f")
+   class62 field3001;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 509308575
+      intValue = 1945743529
    )
-   int field3022;
-   @ObfuscatedName("k")
+   int field3002;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1640695253
+      intValue = 1677832471
    )
-   int field3023;
-
+   int field3003;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 790186681
+   )
+   int field3004;
+   @ObfuscatedName("r")
+   class180 field3005;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 921922043
+   )
+   int field3006;
    @ObfuscatedName("j")
-   void method3698() {
-      this.field3004 = null;
-      this.field3015 = null;
-      this.field3006 = null;
-      this.field3018 = null;
+   @ObfuscatedGetter(
+      intValue = -610718977
+   )
+   int field3007;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -338011873
+   )
+   int field3008;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 2032105035
+   )
+   int field3009;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 310021487
+   )
+   int field3010;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 699070345
+   )
+   int field3011;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -2059924947
+   )
+   int field3012;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1504967055
+   )
+   int field3013;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1759501545
+   )
+   int field3014;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1948143523
+   )
+   int field3015;
+   @ObfuscatedName("s")
+   class184 field3016;
+   @ObfuscatedName("c")
+   class64 field3017;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1072135287
+   )
+   int field3018;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 959389467
+   )
+   int field3019;
+
+   @ObfuscatedName("a")
+   void method3782() {
+      this.field3005 = null;
+      this.field3001 = null;
+      this.field3016 = null;
+      this.field3017 = null;
    }
 }

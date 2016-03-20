@@ -1,111 +1,185 @@
 import java.util.Calendar;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("ai")
 public class class36 {
-   @ObfuscatedName("k")
-   static class14[] field794 = new class14[50];
-   @ObfuscatedName("o")
-   static int[] field795 = new int[1000];
-   @ObfuscatedName("a")
-   static int[] field796;
-   @ObfuscatedName("fh")
-   @ObfuscatedGetter(
-      intValue = 2024395599
-   )
-   @Export("cameraZ")
-   static int field797;
-   @ObfuscatedName("pk")
-   @ObfuscatedGetter(
-      intValue = -1540388305
-   )
-   static int field798;
-   @ObfuscatedName("h")
-   static String[] field800 = new String[1000];
    @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -302352101
-   )
-   static int field801 = 0;
+   static class14[] field797 = new class14[50];
    @ObfuscatedName("f")
-   static int[] field802 = new int[5];
-   @ObfuscatedName("q")
-   static Calendar field803 = Calendar.getInstance();
-   @ObfuscatedName("u")
-   static final String[] field804 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-   @ObfuscatedName("g")
+   static int[] field798;
+   @ObfuscatedName("s")
+   static String[] field799;
+   @ObfuscatedName("ba")
    @ObfuscatedGetter(
-      intValue = 136798177
+      intValue = 1773111771
    )
-   static int field805 = 0;
+   static int field800;
+   @ObfuscatedName("e")
+   static int[][] field801 = new int[5][5000];
+   @ObfuscatedName("g")
+   static int[] field802 = new int[1000];
    @ObfuscatedName("m")
-   static int[][] field808 = new int[5][5000];
-
+   static String[] field803 = new String[1000];
    @ObfuscatedName("j")
-   public static class42 method741(int var0) {
-      class42 var1 = (class42)class42.field984.method3711((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class42.field989.method3214(12, var0);
-         var1 = new class42();
-         if(null != var2) {
-            var1.method863(new class118(var2));
-         }
-
-         var1.method865();
-         class42.field984.method3713(var1, (long)var0);
-         return var1;
-      }
-   }
-
+   @ObfuscatedGetter(
+      intValue = 181234013
+   )
+   static int field804 = 0;
+   @ObfuscatedName("y")
+   static int[] field805 = new int[5];
    @ObfuscatedName("h")
-   public static int method742(String var0) {
-      return var0.length() + 1;
+   static class172 field806;
+   @ObfuscatedName("i")
+   static Calendar field807 = Calendar.getInstance();
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1312028153
+   )
+   static int field808 = 0;
+   @ObfuscatedName("v")
+   static final String[] field809 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+   @ObfuscatedName("y")
+   public static boolean method742(int var0) {
+      return (var0 >> 30 & 1) != 0;
    }
 
-   @ObfuscatedName("l")
-   static void method747(int var0, int var1) {
-      int[] var2 = new int[4];
-      int[] var3 = new int[4];
-      var2[0] = var0;
-      var3[0] = var1;
-      int var4 = 1;
+   @ObfuscatedName("ch")
+   static void method745(class172 var0) {
+      if(client.field322 == var0.field2873 * -1) {
+         client.field499[var0.field2872] = true;
+      }
 
-      for(int var5 = 0; var5 < 4; ++var5) {
-         if(var0 != class25.field636[var5]) {
-            var2[var4] = class25.field636[var5];
-            var3[var4] = class25.field645[var5];
-            ++var4;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-675626182"
+   )
+   static void method750() {
+      client.field304 = 1L;
+      client.field307 = -1;
+      class93.field1600.field189 = 0;
+      class46.field1057 = true;
+      client.field308 = true;
+      client.field563 = -1L;
+      class0.method2();
+      client.field301.field1979 = 0;
+      client.field472.field1979 = 0;
+      client.field488 = -1;
+      client.field342 = 1;
+      client.field343 = -1;
+      client.field344 = -1;
+      client.field340 = 0;
+      client.field310 = 0;
+      client.field345 = 0;
+      client.field311 = 0;
+      client.field435 = 0;
+      client.field470 = false;
+      class139.field2139 = 0;
+      class11.field169.clear();
+      class11.field164.method3844();
+      class11.field165.method3883();
+      class11.field166 = 0;
+      client.field446 = 0;
+      client.field448 = false;
+      client.field536 = 0;
+      client.field356 = (int)(Math.random() * 100.0D) - 50;
+      client.field379 = (int)(Math.random() * 110.0D) - 55;
+      client.field360 = (int)(Math.random() * 80.0D) - 40;
+      client.field546 = (int)(Math.random() * 120.0D) - 60;
+      client.field365 = (int)(Math.random() * 30.0D) - 20;
+      client.field495 = (int)(Math.random() * 20.0D) - 10 & 2047;
+      client.field530 = 0;
+      client.field523 = 1;
+      client.field528 = 0;
+      client.field529 = 0;
+      client.field319 = class20.field589;
+      client.field332 = class20.field589;
+      client.field331 = 0;
+      class130.method2851();
+
+      int var0;
+      for(var0 = 0; var0 < 2048; ++var0) {
+         client.field415[var0] = null;
+      }
+
+      for(var0 = 0; var0 < '耀'; ++var0) {
+         client.field358[var0] = null;
+      }
+
+      client.field521 = -1;
+      client.field385.method3854();
+      client.field429.method3854();
+
+      int var1;
+      for(var0 = 0; var0 < 4; ++var0) {
+         for(var1 = 0; var1 < 104; ++var1) {
+            for(int var2 = 0; var2 < 104; ++var2) {
+               client.field419[var0][var1][var2] = null;
+            }
          }
       }
 
-      class25.field636 = var2;
-      class25.field645 = var3;
-      class23.method591(class25.field632, 0, class25.field632.length - 1, class25.field636, class25.field645);
-   }
+      client.field427 = new class198();
+      client.field369 = 0;
+      client.field562 = 0;
+      client.field509 = 0;
 
-   @ObfuscatedName("j")
-   public static class129 method748(int var0) {
-      class129[] var1 = new class129[]{class129.field2064, class129.field2062, class129.field2061};
-      class129[] var2 = var1;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class129 var4 = var2[var3];
-         if(var0 == var4.field2063) {
-            return var4;
+      for(var0 = 0; var0 < class52.field1157; ++var0) {
+         class52 var3 = class5.method101(var0);
+         if(null != var3) {
+            class175.field2891[var0] = 0;
+            class175.field2890[var0] = 0;
          }
       }
 
-      return null;
-   }
-
-   @ObfuscatedName("cw")
-   static final void method749(int var0) {
-      if(class149.method3102(var0)) {
-         class41.method857(class172.field2757[var0], -1);
+      class112.field1958.method220();
+      client.field461 = -1;
+      if(-1 != client.field453) {
+         class95.method2213(client.field453);
       }
+
+      for(class3 var4 = (class3)client.field454.method3836(); null != var4; var4 = (class3)client.field454.method3827()) {
+         class112.method2446(var4, true);
+      }
+
+      client.field453 = -1;
+      client.field454 = new class195(8);
+      client.field431 = null;
+      client.field470 = false;
+      client.field435 = 0;
+      client.field378.method3496((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
+
+      for(var0 = 0; var0 < 8; ++var0) {
+         client.field432[var0] = null;
+         client.field520[var0] = false;
+      }
+
+      class15.field225 = new class195(32);
+      client.field426 = true;
+
+      for(var0 = 0; var0 < 100; ++var0) {
+         client.field499[var0] = true;
+      }
+
+      client.field301.method2753(78);
+      class121 var5 = client.field301;
+      var1 = client.field508?2:1;
+      var5.method2497(var1);
+      client.field301.method2498(class6.field107);
+      client.field301.method2498(class31.field749);
+      client.field438 = null;
+      class9.field151 = 0;
+      class42.field1003 = null;
+
+      for(var0 = 0; var0 < 8; ++var0) {
+         client.field572[var0] = new class219();
+      }
+
+      class165.field2653 = null;
    }
 }

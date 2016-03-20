@@ -1,65 +1,65 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gc")
+@ObfuscatedName("gz")
 public final class class202 {
-   @ObfuscatedName("j")
-   class203 field3099 = new class203();
-
-   @ObfuscatedName("j")
-   public void method3814(class203 var1) {
-      if(var1.field3101 != null) {
-         var1.method3835();
-      }
-
-      var1.field3101 = this.field3099.field3101;
-      var1.field3100 = this.field3099;
-      var1.field3101.field3100 = var1;
-      var1.field3100.field3101 = var1;
-   }
+   @ObfuscatedName("a")
+   class203 field3098 = new class203();
 
    @ObfuscatedName("a")
-   class203 method3816() {
-      class203 var1 = this.field3099.field3100;
-      if(var1 == this.field3099) {
+   public void method3908(class203 var1) {
+      if(var1.field3099 != null) {
+         var1.method3920();
+      }
+
+      var1.field3099 = this.field3098.field3099;
+      var1.field3100 = this.field3098;
+      var1.field3099.field3100 = var1;
+      var1.field3100.field3099 = var1;
+   }
+
+   @ObfuscatedName("r")
+   public void method3909(class203 var1) {
+      if(var1.field3099 != null) {
+         var1.method3920();
+      }
+
+      var1.field3099 = this.field3098;
+      var1.field3100 = this.field3098.field3100;
+      var1.field3099.field3100 = var1;
+      var1.field3100.field3099 = var1;
+   }
+
+   @ObfuscatedName("f")
+   class203 method3910() {
+      class203 var1 = this.field3098.field3100;
+      if(var1 == this.field3098) {
          return null;
       } else {
-         var1.method3835();
+         var1.method3920();
          return var1;
       }
    }
 
-   @ObfuscatedName("i")
-   public class203 method3817() {
-      class203 var1 = this.field3099.field3100;
-      return var1 == this.field3099?null:var1;
+   @ObfuscatedName("s")
+   public class203 method3912() {
+      class203 var1 = this.field3098.field3100;
+      return var1 == this.field3098?null:var1;
    }
 
-   @ObfuscatedName("l")
-   public void method3818(class203 var1) {
-      if(var1.field3101 != null) {
-         var1.method3835();
-      }
-
-      var1.field3101 = this.field3099;
-      var1.field3100 = this.field3099.field3100;
-      var1.field3101.field3100 = var1;
-      var1.field3100.field3101 = var1;
-   }
-
-   public class202() {
-      this.field3099.field3100 = this.field3099;
-      this.field3099.field3101 = this.field3099;
-   }
-
-   @ObfuscatedName("f")
-   void method3824() {
+   @ObfuscatedName("y")
+   void method3917() {
       while(true) {
-         class203 var1 = this.field3099.field3100;
-         if(var1 == this.field3099) {
+         class203 var1 = this.field3098.field3100;
+         if(var1 == this.field3098) {
             return;
          }
 
-         var1.method3835();
+         var1.method3920();
       }
+   }
+
+   public class202() {
+      this.field3098.field3100 = this.field3098;
+      this.field3098.field3099 = this.field3098;
    }
 }

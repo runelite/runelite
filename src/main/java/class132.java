@@ -1,37 +1,26 @@
-import java.awt.FontMetrics;
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("ea")
 public abstract class class132 {
-   @ObfuscatedName("bf")
-   protected static FontMetrics field2070;
-   @ObfuscatedName("gd")
-   static class172 field2073;
+   @ObfuscatedName("n")
+   static class211 field2062;
 
-   @ObfuscatedName("l")
-   abstract void vmethod3066();
+   @ObfuscatedName("r")
+   abstract void vmethod3128();
 
-   @ObfuscatedName("a")
-   abstract int vmethod3067(int var1, int var2);
+   @ObfuscatedName("f")
+   abstract int vmethod3122(int var1, int var2);
 
-   @ObfuscatedName("dh")
-   static boolean method2791(String var0, boolean var1) {
-      if(var0 == null) {
-         return false;
-      } else {
-         String var2 = class134.method2803(var0, client.field473);
+   @ObfuscatedName("g")
+   static String method2859() {
+      String var0 = "";
 
-         for(int var3 = 0; var3 < client.field421; ++var3) {
-            if(var2.equalsIgnoreCase(class134.method2803(client.field557[var3].field253, client.field473)) && (!var1 || client.field557[var3].field248 != 0)) {
-               return true;
-            }
-         }
-
-         if(var2.equalsIgnoreCase(class134.method2803(class148.field2249.field48, client.field473))) {
-            return true;
-         } else {
-            return false;
-         }
+      class35 var2;
+      for(Iterator var1 = class11.field164.iterator(); var1.hasNext(); var0 = var0 + var2.field791 + ':' + var2.field793 + '\n') {
+         var2 = (class35)var1.next();
       }
+
+      return var0;
    }
 }

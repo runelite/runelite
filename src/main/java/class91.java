@@ -1,16 +1,16 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cl")
+@ObfuscatedName("cx")
 public interface class91 {
-   @ObfuscatedName("j")
-   int[] vmethod2142(int var1);
+   @ObfuscatedName("f")
+   boolean vmethod2188(int var1);
+
+   @ObfuscatedName("s")
+   boolean vmethod2197();
+
+   @ObfuscatedName("r")
+   int vmethod2187(int var1);
 
    @ObfuscatedName("a")
-   boolean vmethod2160(int var1);
-
-   @ObfuscatedName("i")
-   boolean vmethod2143();
-
-   @ObfuscatedName("l")
-   int vmethod2157(int var1);
+   int[] vmethod2186(int var1);
 }

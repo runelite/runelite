@@ -1,96 +1,89 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("cp")
 public final class class93 {
-   @ObfuscatedName("h")
-   public class84 field1604;
-   @ObfuscatedName("l")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -954826965
+      intValue = 304511389
    )
-   int field1605;
+   int field1590;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1403017975
+   )
+   int field1591;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1895479415
+   )
+   int field1592;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -729243043
+      intValue = -2137982489
    )
-   int field1606;
-   @ObfuscatedName("i")
+   int field1593;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1086133027
+      intValue = 406322495
    )
-   int field1607;
-   @ObfuscatedName("f")
+   int field1594;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1076148873
+      intValue = -1612193253
    )
-   int field1608;
+   int field1595;
+   @ObfuscatedName("m")
+   public class84 field1596;
    @ObfuscatedName("j")
+   public class84 field1597;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1253091099
+      intValue = -316885593
    )
-   int field1609;
-   @ObfuscatedName("o")
+   public int field1598 = 0;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1366947501
+      intValue = 1430743955
    )
-   int field1610;
+   int field1599 = 0;
+   @ObfuscatedName("q")
+   static class13 field1600;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 389092317
+      intValue = -1898743395
    )
-   int field1611 = 0;
-   @ObfuscatedName("n")
-   public class84 field1612;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -329058449
-   )
-   public int field1613 = 0;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 416393405
-   )
-   int field1615;
+   int field1604;
 
-   @ObfuscatedName("f")
-   public static void method2137() {
-      class43.field1008.method3720();
-      class43.field1006.method3720();
+   @ObfuscatedName("dk")
+   static final void method2182(String var0, int var1) {
+      client.field301.method2753(153);
+      client.field301.method2497(class22.method578(var0) + 1);
+      client.field301.method2503(var0);
+      client.field301.method2648(var1);
    }
 
-   @ObfuscatedName("j")
-   static class80[] method2138(class166 var0, int var1, int var2) {
-      if(!class11.method148(var0, var1, var2)) {
-         return null;
-      } else {
-         class80[] var4 = new class80[class76.field1395];
-
-         for(int var5 = 0; var5 < class76.field1395; ++var5) {
-            class80 var6 = var4[var5] = new class80();
-            var6.field1435 = class76.field1390;
-            var6.field1436 = class76.field1391;
-            var6.field1433 = class76.field1392[var5];
-            var6.field1430 = class106.field1884[var5];
-            var6.field1431 = class215.field3153[var5];
-            var6.field1434 = class147.field2230[var5];
-            var6.field1432 = class126.field2048;
-            var6.field1429 = class41.field977[var5];
-         }
-
-         class76.field1392 = null;
-         class106.field1884 = null;
-         class215.field3153 = null;
-         class147.field2230 = null;
-         class126.field2048 = null;
-         class41.field977 = (byte[][])null;
-         return var4;
+   @ObfuscatedName("dc")
+   static String method2183(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(client.field295 == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(2 == client.field295) {
+         var0 = var0 + "-wtqa";
+      } else if(3 == client.field295) {
+         var0 = var0 + "-wtwip";
+      } else if(5 == client.field295) {
+         var0 = var0 + "-wti";
+      } else if(4 == client.field295) {
+         var0 = "local";
       }
-   }
 
-   @ObfuscatedName("j")
-   public static int method2139(int var0, int var1, int var2) {
-      var2 &= 3;
-      return 0 == var2?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
+      String var3 = "";
+      if(class3.field58 != null) {
+         var3 = "/p=" + class3.field58;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + client.field298 + "/a=" + client.field299 + var3 + "/";
    }
 }

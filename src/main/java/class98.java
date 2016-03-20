@@ -1,61 +1,74 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cn")
 @Implements("ItemLayer")
 public final class class98 {
-   @ObfuscatedName("dd")
-   @ObfuscatedGetter(
-      intValue = -1831938679
-   )
-   @Export("baseX")
-   static int field1683;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1653966587
-   )
-   @Export("x")
-   int field1684;
-   @ObfuscatedName("f")
+   @ObfuscatedName("y")
    @Export("middle")
-   class84 field1687;
-   @ObfuscatedName("m")
-   @Export("top")
-   class84 field1688;
-   @ObfuscatedName("o")
+   class84 field1669;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -521899065
-   )
-   @Export("flags")
-   int field1689;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1596143467
-   )
-   @Export("hash")
-   int field1690;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 560834759
+      intValue = -1428007657
    )
    @Export("y")
-   int field1691;
-   @ObfuscatedName("h")
+   int field1670;
+   @ObfuscatedName("s")
+   @Export("bottom")
+   class84 field1671;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1607844131
+      intValue = 360153119
    )
    @Export("height")
-   int field1692;
-   @ObfuscatedName("pv")
-   static class159 field1693;
-   @ObfuscatedName("fc")
+   int field1672;
+   @ObfuscatedName("e")
+   @Export("top")
+   class84 field1673;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -892635795
+      intValue = 713144085
    )
-   static int field1695;
-   @ObfuscatedName("i")
-   @Export("bottom")
-   class84 field1698;
+   @Export("flags")
+   int field1674;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1979191033
+   )
+   @Export("hash")
+   int field1675;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 683648049
+   )
+   @Export("x")
+   int field1676;
+
+   @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "(Lclass66;I)V",
+      garbageValue = "900795537"
+   )
+   static final void method2216(class66 var0) {
+      var0.field1263 = false;
+      if(var0.field1266 != null) {
+         var0.field1266.field1262 = 0;
+      }
+
+      for(class66 var1 = var0.vmethod3767(); null != var1; var1 = var0.vmethod3752()) {
+         method2216(var1);
+      }
+
+   }
+
+   @ObfuscatedName("a")
+   public static void method2217(Component var0) {
+      var0.addMouseListener(class139.field2136);
+      var0.addMouseMotionListener(class139.field2136);
+      var0.addFocusListener(class139.field2136);
+   }
 }

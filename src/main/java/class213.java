@@ -1,54 +1,51 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hg")
 public class class213 {
-   @ObfuscatedName("a")
-   public final class219 field3142;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      longValue = 6976904459576955929L
-   )
-   public final long field3143;
-   @ObfuscatedName("i")
-   String field3144;
-   @ObfuscatedName("po")
-   @ObfuscatedGetter(
-      intValue = -1800740669
-   )
-   static int field3145;
    @ObfuscatedName("f")
-   String field3146;
-   @ObfuscatedName("j")
+   public final class219 field3139;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 775167693
+      longValue = 3336522195039149473L
    )
-   public final int field3147;
+   public final long field3140;
+   @ObfuscatedName("s")
+   String field3141;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -487228125
+   )
+   public final int field3142;
+   @ObfuscatedName("y")
+   String field3143;
+   @ObfuscatedName("bu")
+   static class167 field3146;
 
-   @ObfuscatedName("j")
-   public String method3882() {
-      return this.field3144;
+   @ObfuscatedName("a")
+   public String method3985() {
+      return this.field3141;
    }
 
-   @ObfuscatedName("l")
-   public String method3883() {
-      return this.field3146;
+   @ObfuscatedName("r")
+   public String method3986() {
+      return this.field3143;
    }
 
    class213(class118 var1, byte var2, int var3) {
-      this.field3144 = var1.method2461();
-      this.field3146 = var1.method2461();
-      this.field3147 = var1.method2455();
-      this.field3143 = var1.method2632();
-      int var4 = var1.method2458();
-      int var5 = var1.method2458();
-      this.field3142 = new class219();
-      this.field3142.method3931(2);
-      this.field3142.method3932(var2);
-      this.field3142.field3169 = var4;
-      this.field3142.field3167 = var5;
-      this.field3142.field3168 = 0;
-      this.field3142.field3164 = 0;
-      this.field3142.field3165 = var3;
+      this.field3141 = var1.method2520();
+      this.field3143 = var1.method2520();
+      this.field3142 = var1.method2514();
+      this.field3140 = var1.method2518();
+      int var4 = var1.method2517();
+      int var5 = var1.method2517();
+      this.field3139 = new class219();
+      this.field3139.method4030(2);
+      this.field3139.method4031(var2);
+      this.field3139.field3164 = var4;
+      this.field3139.field3162 = var5;
+      this.field3139.field3165 = 0;
+      this.field3139.field3167 = 0;
+      this.field3139.field3163 = var3;
    }
 }
