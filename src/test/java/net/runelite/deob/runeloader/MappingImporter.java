@@ -2,13 +2,12 @@ package net.runelite.deob.runeloader;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import net.runelite.deob.ClassFile;
 import net.runelite.deob.ClassGroup;
 import net.runelite.deob.Field;
-import net.runelite.deob.Interfaces;
 import net.runelite.deob.attributes.Annotations;
 import net.runelite.deob.attributes.AttributeType;
+import net.runelite.deob.attributes.Attributes;
 import net.runelite.deob.attributes.annotation.Annotation;
 import net.runelite.deob.attributes.annotation.Element;
 import net.runelite.deob.pool.UTF8;
@@ -24,9 +23,9 @@ import org.junit.Test;
 
 public class MappingImporter
 {
-	private static final File IN = new File("d:/rs/07/adamin.jar");
+	private static final File IN = new File("d:/rs/07/gamepack_v18_annotationmap.jar");
 	private static final File OUT = new File("d:/rs/07/adamout.jar");
-	private static final File RL_INJECTION = new File(MappingImporter.class.getResource("/injection_v16.json").getFile());
+	private static final File RL_INJECTION = new File(MappingImporter.class.getResource("/injection_v18.json").getFile());
 	
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
@@ -112,13 +111,25 @@ public class MappingImporter
 			Assert.assertNotNull(f);
 			
 			String attrName = gii.getGetterName();
-			if (attrName.startsWith("get"))
+			attrName = Utils.toExportedName(attrName);
+
+			Attributes attr = f.getAttributes();
+			Annotations an = attr.getAnnotations();
+
+			Annotation a = an.find(EXPORT);
+			if (a != null)
 			{
-				attrName = attrName.substring(3);
-				attrName = Character.toLowerCase(attrName.charAt(0)) + attrName.substring(1);
+				String exportedName = a.getElement().getString();
+
+				if (!attrName.equals(exportedName))
+				{
+					System.out.println("Exported field " + f + " with mismatched name. Theirs: " + attrName + ", mine: " + exportedName);
+				}
 			}
-			
-			f.getAttributes().addAnnotation(EXPORT, "value", new UTF8(attrName));
+			else
+			{
+				attr.addAnnotation(EXPORT, "value", new UTF8(attrName));
+			}
 		}
 		
 		for (AddInterfaceInstruction aii : mod.getAddInterfaceInjects())
@@ -129,8 +140,24 @@ public class MappingImporter
 			String iface = aii.getInterfaceClass();
 			
 			iface = iface.replace("com/runeloader/api/bridge/os/accessor/", "");
-			
-			cf.getAttributes().addAnnotation(IMPLEMENTS, "value", new UTF8(iface));
+
+			Attributes attr = cf.getAttributes();
+			Annotations an = attr.getAnnotations();
+
+			Annotation a = an.find(IMPLEMENTS);
+			if (a != null)
+			{
+				String implementsName = a.getElement().getString();
+
+				if (!iface.equals(implementsName))
+				{
+					System.out.println("Implements class " + cf + " with mismatched name. Theirs: " + iface + ", mine: " + implementsName);
+				}
+			}
+			else
+			{
+				attr.addAnnotation(IMPLEMENTS, "value", new UTF8(iface));
+			}
 		}
 	}
 }

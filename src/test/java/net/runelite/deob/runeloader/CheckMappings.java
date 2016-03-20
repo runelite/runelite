@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.runelite.deob.runeloader.inject.GetterInjectInstruction;
 import net.runelite.deob.runeloader.inject.InjectionModscript;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import org.junit.Assert;
@@ -19,8 +20,8 @@ import org.junit.Test;
 
 public class CheckMappings
 {
-	private static final File CLIENT = new File("/Users/adam/w/rs/07/rs-client-1.0-SNAPSHOT.jar");
-	private static final File RL_INJECTION = new File("/Users/adam/w/rs/07/rl/injection.json");
+	private static final File CLIENT = new File("d:/rs/07/adamout.jar");
+	private static final File RL_INJECTION = new File(CheckMappings.class.getResource("/injection_v18.json").getFile());
 	
 	private final List<Class> classes = new ArrayList<>();
 	
@@ -29,14 +30,14 @@ public class CheckMappings
 	{
 		ClassLoader loader = new URLClassLoader(new URL[] { CLIENT.toURL() });
 		
-		Class c = loader.loadClass("net.runelite.rs.client.client");
+		Class c = loader.loadClass("client");
 		classes.add(c);
 		
 		for (int i = 0; i < 230; ++i)
 		{
 			try
 			{
-				c = loader.loadClass("net.runelite.rs.client.class" + i);
+				c = loader.loadClass("class" + i);
 				classes.add(c);
 			}
 			catch (ClassNotFoundException ex)
@@ -81,7 +82,15 @@ public class CheckMappings
 		ObfuscatedGetter getter = (ObfuscatedGetter) f.getDeclaredAnnotation(ObfuscatedGetter.class);
 		if (getter == null)
 			return null;
-		return getter.intValue();
+		return getter.intValue() == 0 ? null : getter.intValue();
+	}
+
+	private String getExportedName(Field f)
+	{
+		Export e = (Export) f.getDeclaredAnnotation(Export.class);
+		if (e == null)
+			return null;
+		return e.value();
 	}
 
 	@Test
@@ -98,14 +107,18 @@ public class CheckMappings
 			
 			Field f = this.findFieldWithObfuscatedName(c, gii.getGetterFieldName());
 			Assert.assertNotNull(f);
+
+			String exportedName = this.getExportedName(f);
+			String attrName = gii.getGetterName();
+			attrName = Utils.toExportedName(attrName);
 			
 			Integer mul = gii.getMultiplier(),
 				myMul = this.getIntegerMultiplier(f);
-			
-			if (myMul != null && myMul == 0)
-				myMul = null;
-			
-			Assert.assertTrue(Objects.equal(mul, myMul));
+
+			// XXX Check @Export etc names
+
+			//Assert.assertEquals(exportedName, attrName);
+			Assert.assertEquals(myMul, mul);
 		}
 	}
 }

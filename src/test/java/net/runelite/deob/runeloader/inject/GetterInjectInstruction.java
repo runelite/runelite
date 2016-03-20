@@ -19,6 +19,12 @@ public class GetterInjectInstruction {
       this.staticField = var7;
    }
 
+	@Override
+	public String toString()
+	{
+		return "GetterInjectInstruction{" + "className=" + className + ", getterMethodDesc=" + getterMethodDesc + ", getterName=" + getterName + ", getterClassName=" + getterClassName + ", getterFieldName=" + getterFieldName + ", multiplier=" + multiplier + ", staticField=" + staticField + '}';
+	}
+
    public String getClassName() {
       return this.className;
    }
