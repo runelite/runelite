@@ -96,4 +96,29 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 	{
 		return (long) value.getObject();
 	}
+
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (value.getType())
+		{
+			case LONG:
+			{
+				long l = (long) value.getObject();
+
+				if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE)
+					break;
+
+				switch ((int) l)
+				{
+					case 0:
+						return new LConst_0(this.getInstructions());
+					case 1:
+						return new LConst_1(this.getInstructions());
+				}
+			}
+		}
+
+		return super.makeSpecific();
+	}
 }

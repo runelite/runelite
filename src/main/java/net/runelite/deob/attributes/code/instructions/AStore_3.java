@@ -11,13 +11,17 @@ import net.runelite.deob.execution.StackContext;
 import net.runelite.deob.execution.VariableContext;
 import net.runelite.deob.execution.Variables;
 
-import java.io.IOException;
 
 public class AStore_3 extends Instruction implements LVTInstruction
 {
-	public AStore_3(Instructions instructions, InstructionType type, int pc) throws IOException
+	public AStore_3(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
+	}
+
+	public AStore_3(Instructions instructions)
+	{
+		super(instructions, InstructionType.ASTORE_3, -1);
 	}
 
 	@Override

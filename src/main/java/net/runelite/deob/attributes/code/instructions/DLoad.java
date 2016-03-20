@@ -106,4 +106,22 @@ public class DLoad extends Instruction implements LVTInstruction, WideInstructio
 		index = idx;
 		return this;
 	}
+
+	@Override
+	public Instruction makeSpecific()
+	{
+		switch (index)
+		{
+			case 0:
+				return new DLoad_0(this.getInstructions());
+			case 1:
+				return new DLoad_1(this.getInstructions());
+			case 2:
+				return new DLoad_2(this.getInstructions());
+			case 3:
+				return new DLoad_3(this.getInstructions());
+			default:
+				return this;
+		}
+	}
 }

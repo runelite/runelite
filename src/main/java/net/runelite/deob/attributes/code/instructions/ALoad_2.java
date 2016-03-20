@@ -20,6 +20,11 @@ public class ALoad_2 extends Instruction implements LVTInstruction
 		super(instructions, type, pc);
 	}
 
+	public ALoad_2(Instructions instructions)
+	{
+		super(instructions, InstructionType.ALOAD_2, -1);
+	}
+
 	@Override
 	public void execute(Frame frame)
 	{

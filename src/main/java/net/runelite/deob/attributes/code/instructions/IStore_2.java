@@ -8,11 +8,9 @@ import net.runelite.deob.execution.Frame;
 import net.runelite.deob.execution.InstructionContext;
 import net.runelite.deob.execution.Stack;
 import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.execution.Type;
 import net.runelite.deob.execution.VariableContext;
 import net.runelite.deob.execution.Variables;
 
-import java.io.IOException;
 
 public class IStore_2 extends Instruction implements LVTInstruction
 {

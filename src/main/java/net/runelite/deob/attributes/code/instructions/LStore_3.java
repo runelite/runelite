@@ -21,6 +21,11 @@ public class LStore_3 extends Instruction implements LVTInstruction
 		super(instructions, type, pc);
 	}
 
+	public LStore_3(Instructions instructions)
+	{
+		super(instructions, InstructionType.LSTORE_3, -1);
+	}
+
 	@Override
 	public void execute(Frame frame)
 	{
