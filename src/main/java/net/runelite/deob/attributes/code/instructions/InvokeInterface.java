@@ -146,26 +146,29 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		return method;
 	}
 	
-	@Override
-	public void lookup()
+	private List<net.runelite.deob.Method> lookupMethods()
 	{
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
 		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
-			return; // not our class
+			return null; // not our class
 		
-		// look up this method in this class and anything that inherits from it
-		//List<net.runelite.deob.Method> list = new ArrayList<>();
-		//findMethodFromClass(list, otherClass);
-		myMethods = Renamer.getVirutalMethods(otherClass.findMethod(method.getNameAndType()));
+		return Renamer.getVirutalMethods(otherClass.findMethod(method.getNameAndType()));
+	}
+
+	@Override
+	public void lookup()
+	{
+		myMethods = lookupMethods();
 	}
 	
 	@Override
 	public void regeneratePool()
 	{
 		if (myMethods != null && !myMethods.isEmpty())
-			method = myMethods.get(0).getPoolInterfaceMethod(); // is this right?
+			if (!myMethods.equals(lookupMethods()))
+				method = myMethods.get(0).getPoolInterfaceMethod(); // is this right?
 	}
 	
 	@Override

@@ -32,7 +32,7 @@ import net.runelite.deob.execution.Value;
 public class InvokeStatic extends Instruction implements InvokeInstruction
 {
 	private Method method;
-	private List<net.runelite.deob.Method> myMethods;
+	private net.runelite.deob.Method myMethod;
 
 	public InvokeStatic(Instructions instructions, InstructionType type, int pc)
 	{
@@ -69,7 +69,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public List<net.runelite.deob.Method> getMethods()
 	{
-		return myMethods != null ? myMethods : Arrays.asList();
+		return myMethod != null ? Arrays.asList(myMethod) : Arrays.asList();
 	}
 
 	@Override
@@ -141,28 +141,32 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		return method;
 	}
 	
-	@Override
-	public void lookup()
+	private net.runelite.deob.Method lookupMethod()
 	{
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
 		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
-			return; // not our class
+			return null; // not our class
 		
 		net.runelite.deob.Method other = otherClass.findMethodDeepStatic(method.getNameAndType());
 		assert other != null;
 		
-		List<net.runelite.deob.Method> list = new ArrayList<>();
-		list.add(other);
-		myMethods = list;
+		return other;
+	}
+
+	@Override
+	public void lookup()
+	{
+		myMethod = lookupMethod();
 	}
 	
 	@Override
 	public void regeneratePool()
 	{
-		if (myMethods != null && !myMethods.isEmpty())
-			method = myMethods.get(0).getPoolMethod();
+		if (myMethod != null)
+			if (myMethod != lookupMethod())
+				method = myMethod.getPoolMethod();
 	}
 	
 	@Override

@@ -103,6 +103,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 	public void regeneratePool()
 	{
 		if (myField != null)
-			field = myField.getPoolField();
+			if (getMyField() != myField)
+				field = myField.getPoolField();
 	}
 }

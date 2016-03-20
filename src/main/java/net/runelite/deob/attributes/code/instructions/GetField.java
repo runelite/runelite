@@ -106,6 +106,10 @@ public class GetField extends Instruction implements GetFieldInstruction
 	public void regeneratePool()
 	{
 		if (myField != null)
-			field = myField.getPoolField();
+			// only rebuild field info if the field has changed.
+			// otherwise it will rewrite the pool field into to something
+			// different if the field was deep
+			if (getMyField() != myField)
+				field = myField.getPoolField();
 	}
 }
