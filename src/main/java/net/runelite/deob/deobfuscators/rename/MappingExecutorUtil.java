@@ -4,25 +4,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.ArrayLoad;
-import net.runelite.deob.attributes.code.instruction.types.DupInstruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.deob.attributes.code.instruction.types.MappableInstruction;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.deob.attributes.code.instructions.InvokeStatic;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.ParallellMappingExecutor;
-import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.execution.VariableContext;
-import net.runelite.deob.execution.Variables;
-import net.runelite.deob.signature.Signature;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
+import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.ParallellMappingExecutor;
+import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.execution.VariableContext;
+import net.runelite.asm.execution.Variables;
+import net.runelite.asm.signature.Signature;
 
 public class MappingExecutorUtil
 {
@@ -224,14 +224,14 @@ public class MappingExecutorUtil
 	{
 		String className;
 		
-		if (ii.getMethod() instanceof net.runelite.deob.pool.Method)
+		if (ii.getMethod() instanceof net.runelite.asm.pool.Method)
 		{
-			net.runelite.deob.pool.Method m = (net.runelite.deob.pool.Method) ii.getMethod();
+			net.runelite.asm.pool.Method m = (net.runelite.asm.pool.Method) ii.getMethod();
 			className = m.getClassEntry().getName();
 		}
-		else if (ii.getMethod() instanceof net.runelite.deob.pool.InterfaceMethod)
+		else if (ii.getMethod() instanceof net.runelite.asm.pool.InterfaceMethod)
 		{
-			net.runelite.deob.pool.InterfaceMethod m = (net.runelite.deob.pool.InterfaceMethod) ii.getMethod();
+			net.runelite.asm.pool.InterfaceMethod m = (net.runelite.asm.pool.InterfaceMethod) ii.getMethod();
 			className = m.getClassEntry().getName();	
 		}
 		else

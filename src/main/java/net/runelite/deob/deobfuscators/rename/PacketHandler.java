@@ -1,10 +1,10 @@
 package net.runelite.deob.deobfuscators.rename;
 
 import java.util.List;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instructions.If;
-import net.runelite.deob.attributes.code.instructions.IfICmpEq;
-import net.runelite.deob.attributes.code.instructions.IfICmpNe;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.instructions.If;
+import net.runelite.asm.attributes.code.instructions.IfICmpEq;
+import net.runelite.asm.attributes.code.instructions.IfICmpNe;
 
 public class PacketHandler
 {

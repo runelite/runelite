@@ -1,33 +1,33 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.deob.attributes.code.instruction.types.ReturnInstruction;
-import net.runelite.deob.attributes.code.instructions.AStore;
-import net.runelite.deob.attributes.code.instructions.DStore;
-import net.runelite.deob.attributes.code.instructions.FStore;
-import net.runelite.deob.attributes.code.instructions.Goto;
-import net.runelite.deob.attributes.code.instructions.IStore;
-import net.runelite.deob.attributes.code.instructions.InvokeStatic;
-import net.runelite.deob.attributes.code.instructions.LStore;
-import net.runelite.deob.attributes.code.instructions.NOP;
-import net.runelite.deob.signature.Signature;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
+import net.runelite.asm.attributes.code.instructions.AStore;
+import net.runelite.asm.attributes.code.instructions.DStore;
+import net.runelite.asm.attributes.code.instructions.FStore;
+import net.runelite.asm.attributes.code.instructions.Goto;
+import net.runelite.asm.attributes.code.instructions.IStore;
+import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.attributes.code.instructions.LStore;
+import net.runelite.asm.attributes.code.instructions.NOP;
+import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import net.runelite.deob.attributes.code.Exceptions;
-import net.runelite.deob.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.deob.attributes.code.instructions.If;
+import net.runelite.asm.attributes.code.Exceptions;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.attributes.code.instructions.If;
 
 public class MethodInliner implements Deobfuscator
 {
@@ -218,7 +218,7 @@ public class MethodInliner implements Deobfuscator
 		}
 		invokeIns.from.clear();
 		
-		for (net.runelite.deob.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
+		for (net.runelite.asm.attributes.code.Exception e : invokeMethodCode.getExceptions().getExceptions())
 			e.replace(invokeIns, firstParamStore);
 		
 		methodInstructions.remove(invokeIns);
@@ -255,7 +255,7 @@ public class MethodInliner implements Deobfuscator
 		Exceptions fromExceptions = invokeMethod.getCode().getExceptions();
 		Exceptions toExceptions = method.getCode().getExceptions();
 		
-		for (net.runelite.deob.attributes.code.Exception e : fromExceptions.getExceptions())
+		for (net.runelite.asm.attributes.code.Exception e : fromExceptions.getExceptions())
 		{
 			e = e.clone();
 			e.setExceptions(toExceptions);
@@ -290,7 +290,7 @@ public class MethodInliner implements Deobfuscator
 				for (Instruction i2 : insMap.values())
 					i2.replace(oldI, i);
 				
-				for (net.runelite.deob.attributes.code.Exception e : toExceptions.getExceptions())
+				for (net.runelite.asm.attributes.code.Exception e : toExceptions.getExceptions())
 					e.replace(oldI, i);
 				
 				insMap.put(orig, i);

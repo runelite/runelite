@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.deob.gson.GsonFactory;
-import net.runelite.deob.pool.Field;
+import net.runelite.asm.pool.Field;
 
 public class Encryption
 {	

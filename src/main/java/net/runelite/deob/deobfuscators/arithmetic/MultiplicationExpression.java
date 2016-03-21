@@ -2,11 +2,11 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.Field;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.execution.InstructionContext;
+import net.runelite.asm.Field;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.execution.InstructionContext;
 
 public class MultiplicationExpression
 {

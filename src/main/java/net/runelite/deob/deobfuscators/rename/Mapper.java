@@ -6,14 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Annotations;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.execution.ParallellMappingExecutor;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.execution.ParallellMappingExecutor;
+import net.runelite.asm.signature.Type;
 
 public class Mapper
 {

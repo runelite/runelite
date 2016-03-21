@@ -2,7 +2,7 @@ package net.runelite.deob.injection;
 
 import java.io.File;
 import java.io.IOException;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Before;

@@ -1,11 +1,17 @@
 package net.runelite.deob;
 
-import net.runelite.deob.attributes.Attributes;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instructions.VReturn;
-import net.runelite.deob.signature.Signature;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Methods;
+import net.runelite.asm.Fields;
+import net.runelite.asm.Method;
+import net.runelite.asm.Field;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.VReturn;
+import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 
 public class ClassGroupFactory
 {

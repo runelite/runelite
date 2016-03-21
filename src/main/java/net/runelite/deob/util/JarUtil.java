@@ -13,9 +13,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.asm.AsmUtils;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.objectwebasm.AsmUtils;
 import org.objectweb.asm.ClassReader;
 
 public class JarUtil

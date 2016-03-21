@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
-import net.runelite.deob.pool.Field;
+import net.runelite.asm.pool.Field;
 
 public class FieldSerializer implements JsonSerializer<Field>
 {

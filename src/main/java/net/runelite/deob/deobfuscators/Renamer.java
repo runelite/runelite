@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Field;
-import net.runelite.deob.Interfaces;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Exceptions;
-import net.runelite.deob.pool.NameAndType;
-import net.runelite.deob.pool.UTF8;
-import net.runelite.deob.signature.Signature;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.Field;
+import net.runelite.asm.Interfaces;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Exceptions;
+import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.pool.UTF8;
+import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.deob.util.NameMappings;
 
 public class Renamer implements Deobfuscator
@@ -32,16 +32,16 @@ public class Renamer implements Deobfuscator
 	private void renameClass(ClassFile on, ClassFile old, String name)
 	{
 		if (on.getParentClass().getName().equals(old.getName()))
-			on.setParentClass(new net.runelite.deob.pool.Class(name));
+			on.setParentClass(new net.runelite.asm.pool.Class(name));
 		
 		Interfaces interfaces = on.getInterfaces();
-		List<net.runelite.deob.pool.Class> interfaceList = interfaces.getInterfaces();
-		for (net.runelite.deob.pool.Class inter : interfaceList)
+		List<net.runelite.asm.pool.Class> interfaceList = interfaces.getInterfaces();
+		for (net.runelite.asm.pool.Class inter : interfaceList)
 			if (inter.getName().equals(old.getName()))
 			{
 				int idx = interfaceList.indexOf(inter);
 				interfaceList.remove(idx);
-				interfaceList.add(idx, new net.runelite.deob.pool.Class(name));
+				interfaceList.add(idx, new net.runelite.asm.pool.Class(name));
 				break;
 			}
 	}

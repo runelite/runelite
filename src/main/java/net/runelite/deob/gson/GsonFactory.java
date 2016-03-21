@@ -2,9 +2,9 @@ package net.runelite.deob.gson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.runelite.deob.pool.Field;
-import net.runelite.deob.pool.Method;
-import net.runelite.deob.pool.Class;
+import net.runelite.asm.pool.Field;
+import net.runelite.asm.pool.Method;
+import net.runelite.asm.pool.Class;
 
 public class GsonFactory
 {

@@ -7,31 +7,31 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.deob.attributes.code.instructions.IMul;
-import net.runelite.deob.attributes.code.instructions.LDC2_W;
-import net.runelite.deob.attributes.code.instructions.LDC_W;
-import net.runelite.deob.attributes.code.instructions.LMul;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.pool.PoolEntry;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.asm.attributes.code.instructions.IMul;
+import net.runelite.asm.attributes.code.instructions.LDC2_W;
+import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LMul;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.pool.PoolEntry;
+import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
-import net.runelite.deob.attributes.code.instruction.types.ArrayStoreInstruction;
+import net.runelite.asm.attributes.code.instruction.types.ArrayStoreInstruction;
 
 public class ModArith implements Deobfuscator
 {
@@ -593,7 +593,7 @@ public class ModArith implements Deobfuscator
 
 						if (p.getType() == Integer.class)
 						{
-							ilist.add(i++, new LDC_W(ins, new net.runelite.deob.pool.Integer((int) p.getter)));
+							ilist.add(i++, new LDC_W(ins, new net.runelite.asm.pool.Integer((int) p.getter)));
 							ilist.add(i++, new IMul(ins));
 						}
 						else if (p.getType() == Long.class)
@@ -620,7 +620,7 @@ public class ModArith implements Deobfuscator
 						// imul
 						if (p.getType() == Integer.class)
 						{
-							ilist.add(++i, new LDC_W(ins, new net.runelite.deob.pool.Integer((int) p.setter)));
+							ilist.add(++i, new LDC_W(ins, new net.runelite.asm.pool.Integer((int) p.setter)));
 							ilist.add(++i, new IMul(ins));
 						}
 						else if (p.getType() == Long.class)
@@ -682,8 +682,8 @@ public class ModArith implements Deobfuscator
 					continue;
 				
 				PoolEntry value = pair.getType() == Long.class ?
-					new net.runelite.deob.pool.Long((long) pair.getter) :
-					new net.runelite.deob.pool.Integer((int) pair.getter);
+					new net.runelite.asm.pool.Long((long) pair.getter) :
+					new net.runelite.asm.pool.Integer((int) pair.getter);
 				String ename = pair.getType() == Long.class ?
 					"longValue" :
 					"intValue";

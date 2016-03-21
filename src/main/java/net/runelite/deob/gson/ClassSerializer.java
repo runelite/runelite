@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
-import net.runelite.deob.pool.Class;
+import net.runelite.asm.pool.Class;
 
 public class ClassSerializer implements JsonSerializer<Class>
 {

@@ -1,11 +1,11 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.execution.Execution;
+import net.runelite.asm.Method;
+import net.runelite.asm.execution.Execution;
 
 import java.util.ArrayList;
 

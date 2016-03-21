@@ -2,8 +2,8 @@ package net.runelite.deob.deobfuscators.rename;
 
 import java.io.File;
 import java.io.IOException;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.Method;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Assert;
 import org.junit.Test;

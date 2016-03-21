@@ -4,28 +4,28 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.Method;
-import net.runelite.deob.Methods;
-import net.runelite.deob.attributes.Annotations;
-import net.runelite.deob.attributes.Attributes;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.annotation.Annotation;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.InstructionType;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instructions.ALoad;
-import net.runelite.deob.attributes.code.instructions.DLoad;
-import net.runelite.deob.attributes.code.instructions.FLoad;
-import net.runelite.deob.attributes.code.instructions.ILoad;
-import net.runelite.deob.attributes.code.instructions.InvokeSpecial;
-import net.runelite.deob.attributes.code.instructions.InvokeVirtual;
-import net.runelite.deob.attributes.code.instructions.LLoad;
-import net.runelite.deob.attributes.code.instructions.New;
-import net.runelite.deob.attributes.code.instructions.Pop;
-import net.runelite.deob.attributes.code.instructions.Return;
-import net.runelite.deob.pool.NameAndType;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Method;
+import net.runelite.asm.Methods;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.DLoad;
+import net.runelite.asm.attributes.code.instructions.FLoad;
+import net.runelite.asm.attributes.code.instructions.ILoad;
+import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
+import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
+import net.runelite.asm.attributes.code.instructions.LLoad;
+import net.runelite.asm.attributes.code.instructions.New;
+import net.runelite.asm.attributes.code.instructions.Pop;
+import net.runelite.asm.attributes.code.instructions.Return;
+import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.signature.Type;
 
 public class InjectReplace
 {
@@ -118,7 +118,7 @@ public class InjectReplace
 						continue;
 
 					InvokeSpecial is = (InvokeSpecial) i;
-					net.runelite.deob.pool.Method method = (net.runelite.deob.pool.Method) is.getMethod();
+					net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
 					assert method.getNameAndType().getDescriptor().size() == 0; // Replace classes must extend Object so this must be Object.init()
 
 					instructions.replace(i, new Pop(instructions)); // pop this
@@ -258,12 +258,11 @@ public class InjectReplace
 
 				InvokeSpecial is = (InvokeSpecial) i;
 
-				net.runelite.deob.pool.Method invokedMethod = (net.runelite.deob.pool.Method) is.getMethod();
+				net.runelite.asm.pool.Method invokedMethod = (net.runelite.asm.pool.Method) is.getMethod();
 
 				if (invokedMethod.getNameAndType().equals(deobfuscatedNat))
 				{
-					is.setMethod(
-						new net.runelite.deob.pool.Method(
+					is.setMethod(new net.runelite.asm.pool.Method(
 							classToInject.getParentClass(), // invokedMethod.getClassEntry() is probably our dummy class
 							m.getNameAndType() // set to obfuscated name
 						)
@@ -321,12 +320,11 @@ public class InjectReplace
 						// The super constructor invokespecial will be the first invokespecial instruction encountered
 						InvokeSpecial is = (InvokeSpecial) i;
 
-						net.runelite.deob.pool.Method method = (net.runelite.deob.pool.Method) is.getMethod();
+						net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
 						assert method.getClassEntry().equals(vanilla.getPoolClass());
 						assert method.getNameAndType().getName().equals("<init>");
 
-						is.setMethod(
-							new net.runelite.deob.pool.Method(
+						is.setMethod(new net.runelite.asm.pool.Method(
 								classToInject.getPoolClass(),
 								method.getNameAndType()
 							)
@@ -381,10 +379,9 @@ public class InjectReplace
 						}
 
 						InvokeSpecial is = (InvokeSpecial) i;
-						net.runelite.deob.pool.Method method = (net.runelite.deob.pool.Method) is.getMethod();
+						net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
 
-						is.setMethod(
-							new net.runelite.deob.pool.Method(
+						is.setMethod(new net.runelite.asm.pool.Method(
 								classToInject.getPoolClass(),
 								method.getNameAndType()
 							)

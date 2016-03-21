@@ -1,27 +1,27 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.pool.NameAndType;
-import net.runelite.deob.pool.PoolEntry;
-import net.runelite.deob.signature.Signature;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.pool.PoolEntry;
+import net.runelite.asm.signature.Signature;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.runelite.deob.execution.StackContext;
+import net.runelite.asm.execution.StackContext;
 
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -150,9 +150,9 @@ public class UnusedParameters implements Deobfuscator
 							InvokeInstruction ii = (InvokeInstruction) i;
 							PoolEntry pool = ii.getMethod();
 							
-							if (pool instanceof net.runelite.deob.pool.Method)
+							if (pool instanceof net.runelite.asm.pool.Method)
 							{
-								net.runelite.deob.pool.Method pm = (net.runelite.deob.pool.Method) pool;
+								net.runelite.asm.pool.Method pm = (net.runelite.asm.pool.Method) pool;
 								
 								if (pm.getClassEntry().getName().equals(method.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(method.getNameAndType()) && !done.contains(i))
 								{
@@ -161,9 +161,9 @@ public class UnusedParameters implements Deobfuscator
 									//assert false;
 								}
 							}
-							else if (pool instanceof net.runelite.deob.pool.InterfaceMethod)
+							else if (pool instanceof net.runelite.asm.pool.InterfaceMethod)
 							{
-								net.runelite.deob.pool.InterfaceMethod pm = (net.runelite.deob.pool.InterfaceMethod) pool;
+								net.runelite.asm.pool.InterfaceMethod pm = (net.runelite.asm.pool.InterfaceMethod) pool;
 								
 								if (pm.getClassEntry().getName().equals(method.getMethods().getClassFile().getName()) && pm.getNameAndType().equals(method.getNameAndType()) && !done.contains(i))
 								{

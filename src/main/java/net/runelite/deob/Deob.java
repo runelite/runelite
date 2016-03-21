@@ -1,5 +1,6 @@
 package net.runelite.deob;
 
+import net.runelite.asm.ClassGroup;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.deob.deobfuscators.ConstantParameter;
@@ -17,7 +18,7 @@ import net.runelite.deob.deobfuscators.arithmetic.ModArith;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
-import net.runelite.deob.execution.Execution;
+import net.runelite.asm.execution.Execution;
 import net.runelite.deob.util.JarUtil;
 
 public class Deob
