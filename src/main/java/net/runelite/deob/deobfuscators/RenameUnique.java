@@ -1,10 +1,6 @@
 package net.runelite.deob.deobfuscators;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
