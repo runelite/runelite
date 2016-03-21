@@ -1,19 +1,19 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.List;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.attributes.code.instructions.IMul;
-import net.runelite.deob.attributes.code.instructions.LDC2_W;
-import net.runelite.deob.attributes.code.instructions.LDC_W;
-import net.runelite.deob.attributes.code.instructions.LMul;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.StackContext;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.attributes.code.instructions.IMul;
+import net.runelite.asm.attributes.code.instructions.LDC2_W;
+import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.LMul;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.StackContext;
 
 public class MultiplyZeroDeobfuscator implements Deobfuscator
 {
@@ -82,7 +82,7 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 				ictx.removeStack(0);
 				
 				if (instruction instanceof IMul)
-					ins.replace(instruction, new LDC_W(ins, new net.runelite.deob.pool.Integer(0)));
+					ins.replace(instruction, new LDC_W(ins, new net.runelite.asm.pool.Integer(0)));
 				else if (instruction instanceof LMul)
 					ins.replace(instruction, new LDC2_W(ins, 0L));
 				else

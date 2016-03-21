@@ -2,16 +2,16 @@ package net.runelite.deob.deobfuscators;
 
 import java.util.ArrayList;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 
 public class UnusedFields implements Deobfuscator
 {

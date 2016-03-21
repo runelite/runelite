@@ -2,7 +2,7 @@ package net.runelite.deob.deobfuscators.rename;
 
 import java.io.File;
 import java.io.IOException;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassGroup;
 import static net.runelite.deob.deobfuscators.rename.MapStaticTest.print;
 import static net.runelite.deob.deobfuscators.rename.MapStaticTest.summary;
 import net.runelite.deob.util.JarUtil;

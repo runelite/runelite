@@ -5,10 +5,10 @@ import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.Method;
-import net.runelite.deob.signature.Signature;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
+import net.runelite.asm.signature.Signature;
 
 public class StaticMethodSignatureMapper
 {

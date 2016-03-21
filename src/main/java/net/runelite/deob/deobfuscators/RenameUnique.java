@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
 import net.runelite.deob.util.NameMappings;
 
 public class RenameUnique implements Deobfuscator

@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.deob.gson.GsonFactory;
-import net.runelite.deob.pool.Class;
-import net.runelite.deob.pool.Field;
-import net.runelite.deob.pool.Method;
+import net.runelite.asm.pool.Class;
+import net.runelite.asm.pool.Field;
+import net.runelite.asm.pool.Method;
 
 public class NameMappings
 {

@@ -1,7 +1,7 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.math.BigInteger;
-import net.runelite.deob.pool.PoolEntry;
+import net.runelite.asm.pool.PoolEntry;
 
 public class DMath
 {
@@ -122,9 +122,9 @@ public class DMath
 	public static PoolEntry toPool(Number value)
 	{
 		if (value instanceof Integer)
-			return new net.runelite.deob.pool.Integer((int) value);
+			return new net.runelite.asm.pool.Integer((int) value);
 		else if (value instanceof Long)
-			return new net.runelite.deob.pool.Long((long) value);
+			return new net.runelite.asm.pool.Long((long) value);
 		else
 			throw new IllegalArgumentException();
 	}

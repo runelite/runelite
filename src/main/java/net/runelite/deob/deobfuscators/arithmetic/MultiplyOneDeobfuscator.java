@@ -4,18 +4,18 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.attributes.code.instructions.IMul;
-import net.runelite.deob.attributes.code.instructions.LMul;
-import net.runelite.deob.attributes.code.instructions.NOP;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.StackContext;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.attributes.code.instructions.IMul;
+import net.runelite.asm.attributes.code.instructions.LMul;
+import net.runelite.asm.attributes.code.instructions.NOP;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.StackContext;
 
 public class MultiplyOneDeobfuscator implements Deobfuscator
 {

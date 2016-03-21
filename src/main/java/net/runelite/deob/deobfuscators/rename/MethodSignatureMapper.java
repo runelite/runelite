@@ -2,8 +2,8 @@ package net.runelite.deob.deobfuscators.rename;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.Method;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.Method;
 
 public class MethodSignatureMapper
 {

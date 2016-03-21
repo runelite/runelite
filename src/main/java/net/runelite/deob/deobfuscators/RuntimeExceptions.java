@@ -1,10 +1,10 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public class RuntimeExceptions implements Deobfuscator
 				if (c == null)
 					continue;
 				
-				for (net.runelite.deob.attributes.code.Exception e : new ArrayList<>(c.getExceptions().getExceptions()))
+				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(c.getExceptions().getExceptions()))
 				{
 					if (e.getCatchType() != null && e.getCatchType().getName().equals("java/lang/RuntimeException"))
 					{

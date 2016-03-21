@@ -1,12 +1,12 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.execution.Execution;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.execution.Execution;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class UnreachedCode implements Deobfuscator
 				i.from.clear(); // if this is never executed, anything that jumps here ia also never executed?
 				
 				// if this is an exception handler, the exception handler is never used...
-				for (net.runelite.deob.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
+				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
 				{
 					if (e.getStart() == i)
 					{

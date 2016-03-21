@@ -1,31 +1,31 @@
 package net.runelite.deob.deobfuscators;
 
 import java.util.ArrayList;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.instruction.types.FieldInstruction;
-import net.runelite.deob.pool.NameAndType;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.asm.pool.NameAndType;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import net.runelite.deob.attributes.Attributes;
-import net.runelite.deob.attributes.code.InstructionType;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instructions.Goto;
-import net.runelite.deob.attributes.code.instructions.PutStatic;
-import net.runelite.deob.attributes.code.instructions.VReturn;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.StackContext;
-import net.runelite.deob.signature.Signature;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.Goto;
+import net.runelite.asm.attributes.code.instructions.PutStatic;
+import net.runelite.asm.attributes.code.instructions.VReturn;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.signature.Signature;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class FieldMover implements Deobfuscator
@@ -153,8 +153,8 @@ public class FieldMover implements Deobfuscator
 	{
 		assert field.getFields().getClassFile() != to;
 		
-		net.runelite.deob.pool.Field newField = new net.runelite.deob.pool.Field(
-			new net.runelite.deob.pool.Class(to.getName()),
+		net.runelite.asm.pool.Field newField = new net.runelite.asm.pool.Field(
+			new net.runelite.asm.pool.Class(to.getName()),
 			new NameAndType(field.getName(), field.getType())
 		);
 		

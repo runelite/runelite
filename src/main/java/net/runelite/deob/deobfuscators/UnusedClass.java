@@ -1,8 +1,8 @@
 package net.runelite.deob.deobfuscators;
 
 import java.util.ArrayList;
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 
 public class UnusedClass implements Deobfuscator

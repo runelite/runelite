@@ -2,23 +2,23 @@ package net.runelite.deob.deobfuscators;
 
 import java.util.List;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.ComparisonInstruction;
-import net.runelite.deob.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.deob.attributes.code.instructions.AThrow;
-import net.runelite.deob.attributes.code.instructions.Goto;
-import net.runelite.deob.attributes.code.instructions.If;
-import net.runelite.deob.attributes.code.instructions.If0;
-import net.runelite.deob.attributes.code.instructions.New;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.attributes.code.instructions.AThrow;
+import net.runelite.asm.attributes.code.instructions.Goto;
+import net.runelite.asm.attributes.code.instructions.If;
+import net.runelite.asm.attributes.code.instructions.If0;
+import net.runelite.asm.attributes.code.instructions.New;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
 
 public class IllegalStateExceptions implements Deobfuscator
 {
@@ -53,7 +53,7 @@ public class IllegalStateExceptions implements Deobfuscator
 						continue;
 					
 					New new2 = (New) ins2;
-					net.runelite.deob.pool.Class clazz = new2.getNewClass();
+					net.runelite.asm.pool.Class clazz = new2.getNewClass();
 					if (!clazz.getName().equals("java/lang/IllegalStateException"))
 						continue;
 					

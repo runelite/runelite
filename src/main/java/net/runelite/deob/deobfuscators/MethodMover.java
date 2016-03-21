@@ -1,13 +1,13 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Code;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -98,8 +98,8 @@ public class MethodMover implements Deobfuscator
 	{
 		assert method.getMethods().getClassFile() != to;
 		
-		net.runelite.deob.pool.Method newMethod = new net.runelite.deob.pool.Method(
-			new net.runelite.deob.pool.Class(to.getName()),
+		net.runelite.asm.pool.Method newMethod = new net.runelite.asm.pool.Method(
+			new net.runelite.asm.pool.Class(to.getName()),
 			method.getNameAndType()
 		);
 		

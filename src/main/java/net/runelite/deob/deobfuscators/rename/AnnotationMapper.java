@@ -1,13 +1,13 @@
 package net.runelite.deob.deobfuscators.rename;
 
-import net.runelite.deob.ClassFile;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.Attributes;
-import net.runelite.deob.attributes.annotation.Annotation;
-import net.runelite.deob.attributes.annotation.Element;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.signature.Type;
 
 public class AnnotationMapper
 {

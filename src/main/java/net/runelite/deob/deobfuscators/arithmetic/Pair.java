@@ -1,6 +1,6 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import net.runelite.deob.pool.Field;
+import net.runelite.asm.pool.Field;
 
 public class Pair
 {

@@ -1,22 +1,22 @@
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.deob.ClassGroup;
+import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.code.Instruction;
-import net.runelite.deob.attributes.code.Instructions;
-import net.runelite.deob.attributes.code.instruction.types.ComparisonInstruction;
-import net.runelite.deob.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.deob.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.deob.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.deob.attributes.code.instruction.types.PushConstantInstruction;
-import net.runelite.deob.attributes.code.instructions.Goto;
-import net.runelite.deob.attributes.code.instructions.If;
-import net.runelite.deob.attributes.code.instructions.If0;
-import net.runelite.deob.execution.Execution;
-import net.runelite.deob.execution.Frame;
-import net.runelite.deob.execution.InstructionContext;
-import net.runelite.deob.execution.StackContext;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import net.runelite.asm.attributes.code.instructions.Goto;
+import net.runelite.asm.attributes.code.instructions.If;
+import net.runelite.asm.attributes.code.instructions.If0;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.StackContext;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -26,11 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import net.runelite.deob.attributes.Annotations;
-import net.runelite.deob.attributes.Attributes;
-import net.runelite.deob.attributes.annotation.Annotation;
-import net.runelite.deob.attributes.annotation.Element;
-import net.runelite.deob.signature.Type;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 class ConstantMethodParameter
@@ -529,11 +529,11 @@ public class ConstantParameter implements Deobfuscator
 		if (annotations != null && annotations.find(OBFUSCATED_SIGNATURE) != null)
 			return;
 
-		Annotation annotation = attributes.addAnnotation(OBFUSCATED_SIGNATURE, "signature", new net.runelite.deob.pool.UTF8(m.getDescriptor().toString()));
+		Annotation annotation = attributes.addAnnotation(OBFUSCATED_SIGNATURE, "signature", new net.runelite.asm.pool.UTF8(m.getDescriptor().toString()));
 
 		Element element = new Element(annotation);
 		element.setType(new Type("garbageValue"));
-		element.setValue(new net.runelite.deob.pool.UTF8(value.toString()));
+		element.setValue(new net.runelite.asm.pool.UTF8(value.toString()));
 		annotation.addElement(element);
 	}
 	

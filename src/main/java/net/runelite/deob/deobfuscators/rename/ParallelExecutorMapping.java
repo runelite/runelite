@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import net.runelite.deob.ClassGroup;
-import net.runelite.deob.Field;
-import net.runelite.deob.Method;
-import net.runelite.deob.attributes.code.instructions.If;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.instructions.If;
 
 public class ParallelExecutorMapping
 {
