@@ -34,7 +34,7 @@ class NonloadingClassWriter extends ClassWriter
 					if (c == c2)
 						return c.getName();
 
-			throw new RuntimeException("No common base");
+			return "java/lang/Object";
 		}
 
 		ClassFile found;

@@ -16,7 +16,6 @@ import java.util.jar.Manifest;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.objectwebasm.AsmUtils;
-import org.objectweb.asm.ClassReader;
 
 public class JarUtil
 {
