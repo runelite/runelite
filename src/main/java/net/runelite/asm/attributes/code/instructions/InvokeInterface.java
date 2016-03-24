@@ -153,8 +153,12 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
 		if (otherClass == null)
 			return null; // not our class
+
+		net.runelite.asm.Method m = otherClass.findMethod(method.getNameAndType());
+		if (m == null)
+			return null;
 		
-		return Renamer.getVirutalMethods(otherClass.findMethod(method.getNameAndType()));
+		return Renamer.getVirutalMethods(m);
 	}
 
 	@Override

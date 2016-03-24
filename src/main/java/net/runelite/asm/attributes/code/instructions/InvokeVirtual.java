@@ -151,9 +151,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getNameAndType());
 		if (m == null)
-		{
 			return null;
-		}
 
 		return Renamer.getVirutalMethods(m);
 	}
