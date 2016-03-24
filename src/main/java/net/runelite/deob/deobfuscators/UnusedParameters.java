@@ -206,7 +206,7 @@ public class UnusedParameters implements Deobfuscator
 			method.arguments.remove(paramIndex);
 	}
 	
-	private int[] checkParametersOnce(Execution execution, ClassGroup group)
+	private int checkParametersOnce(Execution execution, ClassGroup group)
 	{
 		// removing parameters shifts the others around which is annoying.
 		// if more than one is unused, we'll just remove the one
@@ -263,14 +263,15 @@ public class UnusedParameters implements Deobfuscator
 				break;
 			}
 		}
-		return new int[] { count };
+		return count;
 	}
+
+	private int count;
 	
 	@Override
 	public void run(ClassGroup group)
 	{		
-		int count = 0;
-		int[] i;
+		int i;
 		do
 		{
 			group.buildClassGraph();
@@ -281,10 +282,15 @@ public class UnusedParameters implements Deobfuscator
 			
 			i = checkParametersOnce(execution, group);
 		
-			count += i[0];
+			count += i;
 		}
-		while (i[0] > 0);
+		while (i > 0);
 		
 		System.out.println("Removed " + count + " unused parameters");
+	}
+
+	public int getCount()
+	{
+		return count;
 	}
 }
