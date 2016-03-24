@@ -23,7 +23,6 @@ import net.runelite.asm.attributes.code.instruction.types.PushConstantInstructio
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.PacketHandler;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
-import net.runelite.asm.execution.Execution;
 
 public abstract class If extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
@@ -70,12 +69,6 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	{
 		super.write(out);
 		out.writeShort(to.getPc() - this.getPc());
-	}
-
-	@Override
-	public void buildJumpGraph()
-	{
-		this.addJump(to);
 	}
 	
 	@Override

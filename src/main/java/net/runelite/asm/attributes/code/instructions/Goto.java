@@ -64,12 +64,6 @@ public class Goto extends Instruction implements JumpingInstruction
 		
 		out.writeShort(offset);
 	}
-
-	@Override
-	public void buildJumpGraph()
-	{
-		this.addJump(to);
-	}
 	
 	@Override
 	public void execute(Frame frame)

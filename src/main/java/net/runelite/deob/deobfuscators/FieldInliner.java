@@ -101,22 +101,12 @@ public class FieldInliner implements Deobfuscator
 				
 				// nop
 				NOP nop1 = new NOP(instructions), nop2 = new NOP(instructions);
-				
-				for (Instruction i : prev.from)
-				{
-					i.jump.remove(prev);
-					i.jump.add(nop1);
+
+				for (Instruction i : instructions.getInstructions())
 					i.replace(prev, nop1);
-				}
-				prev.from.clear();
-				
-				for (Instruction i : ins.from)
-				{
-					i.jump.remove(ins);
-					i.jump.add(nop1);
+
+				for (Instruction i : instructions.getInstructions())
 					i.replace(ins, nop1);
-				}
-				ins.from.clear();
 				
 				boolean b = instructions.getInstructions().remove(prev);
 				assert b;
@@ -144,8 +134,6 @@ public class FieldInliner implements Deobfuscator
 				// remove fin, add push constant
 				Instruction i = (Instruction) fin;
 				
-				i.getInstructions().buildJumpGraph();
-				
 				Instruction pushIns = new LDC_W(i.getInstructions(), value.getValue());
 				
 				List<Instruction> instructions = i.getInstructions().getInstructions();
@@ -154,13 +142,8 @@ public class FieldInliner implements Deobfuscator
 				assert idx != -1;
 				
 				// move jumps to i to pushIns
-				for (Instruction i2 : i.from)
-				{
-					i2.jump.remove(i);
-					i2.jump.add(pushIns);
+				for (Instruction i2 : instructions)
 					i2.replace(i, pushIns);
-				}
-				i.from.clear();
 				
 				i.getInstructions().remove(i);
 				instructions.add(idx, pushIns);

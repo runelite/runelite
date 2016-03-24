@@ -42,12 +42,6 @@ public class GotoW extends Instruction implements JumpingInstruction
 		super.write(out);
 		out.writeInt(to.getPc() - this.getPc());
 	}
-
-	@Override
-	public void buildJumpGraph()
-	{
-		this.addJump(to);
-	}
 	
 	@Override
 	public void execute(Frame frame)

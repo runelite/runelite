@@ -6,7 +6,6 @@ import java.io.IOException;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.FieldInliner;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
-import net.runelite.deob.deobfuscators.MethodInliner;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -73,25 +72,25 @@ public class Deob
 
 		run(group, new UnusedClass());
 	
-		ModArith mod = new ModArith();
-		mod.run(group);
-
-		int last = -1, cur;
-		while ((cur = mod.runOnce()) > 0)
-		{
-			new MultiplicationDeobfuscator().run(group);
-
-			new MultiplyOneDeobfuscator().run(group);
-
-			new MultiplyZeroDeobfuscator().run(group);
-
-			if (last == cur)
-				break;
-
-			last = cur;
-		}
-
-		mod.annotateEncryption();
+//		ModArith mod = new ModArith();
+//		mod.run(group);
+//
+//		int last = -1, cur;
+//		while ((cur = mod.runOnce()) > 0)
+//		{
+//			new MultiplicationDeobfuscator().run(group);
+//
+//			new MultiplyOneDeobfuscator().run(group);
+//
+//			new MultiplyZeroDeobfuscator().run(group);
+//
+//			if (last == cur)
+//				break;
+//
+//			last = cur;
+//		}
+//
+//		mod.annotateEncryption();
 
 		JarUtil.saveJar(group, new File(args[1]));
 		
