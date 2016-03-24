@@ -34,8 +34,6 @@ public class IllegalStateExceptions implements Deobfuscator
 				if (c == null)
 					continue;
 				
-				//assert execution.methods.contains(m);
-				
 				Instructions instructions = c.getInstructions();
 				instructions.buildJumpGraph();
 				
@@ -107,7 +105,6 @@ public class IllegalStateExceptions implements Deobfuscator
 					ilist.add(i, g);
 					
 					++count;
-					break;
 				}
 			}
 		}
@@ -122,21 +119,9 @@ public class IllegalStateExceptions implements Deobfuscator
 		Execution execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
-			
-		int count = 0;
-		int passes = 0;
-		int i;
-		do
-		{		
-			i = checkOnce(execution, group);
-			
-			System.out.println("ise removal pass " + passes + " removed " + i);
+				
+		int count = checkOnce(execution, group);
 		
-			count += i;
-			++passes;
-		}
-		while (i > 0);
-		
-		System.out.println("Removed " + count + " illegal state exceptions in " + passes + " passes");
+		System.out.println("Removed " + count + " illegal state exceptions");
 	}
 }
