@@ -65,20 +65,12 @@ public class IllegalStateExceptions implements Deobfuscator
 					if (ics == null)
 						continue; // never executed
 
-					boolean found = false;
 					for (InstructionContext ic : ics)
 					{
-						found = true;
-
 						if (ins instanceof If)
 							ic.removeStack(1);
 						ic.removeStack(0);
-						break;
-					}
-					if (!found)
-					{
-						System.out.println("Unable to locate instruction ctx to remove stack for illegalstateexception " + ins.getType().getName() + " in method " + m.getName() + " class " + m.getMethods().getClassFile().getName());
-						continue;
+						break; // XXX I guess this doesnt matter we're only removing one path
 					}
 					
 					// instruction is no longer at 'i' because we've just removed stuff...
