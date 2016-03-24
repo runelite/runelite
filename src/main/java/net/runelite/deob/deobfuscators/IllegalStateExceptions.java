@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators;
 
+import java.util.Collection;
 import java.util.List;
 
 import net.runelite.asm.ClassFile;
@@ -14,10 +15,8 @@ import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instructions.AThrow;
 import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.If;
-import net.runelite.asm.attributes.code.instructions.If0;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.execution.Execution;
-import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 
 public class IllegalStateExceptions implements Deobfuscator
@@ -35,7 +34,7 @@ public class IllegalStateExceptions implements Deobfuscator
 				if (c == null)
 					continue;
 				
-				assert execution.methods.contains(m);
+				//assert execution.methods.contains(m);
 				
 				Instructions instructions = c.getInstructions();
 				instructions.buildJumpGraph();
@@ -45,7 +44,7 @@ public class IllegalStateExceptions implements Deobfuscator
 				{
 					Instruction ins = ilist.get(i);
 					
-					if (!(ins instanceof ComparisonInstruction))
+					if (!(ins instanceof ComparisonInstruction)) // the if
 						continue;
 					
 					Instruction ins2 = ilist.get(i + 1);
@@ -62,22 +61,20 @@ public class IllegalStateExceptions implements Deobfuscator
 					Instruction to = jumpIns.getJumps().get(0);
 					
 					// remove stack of if.
+					Collection<InstructionContext> ics = execution.getInstructonContexts(ins);
+					if (ics == null)
+						continue; // never executed
+
 					boolean found = false;
-					outer:
-					for (Frame f : execution.processedFrames)
-						if (f.getMethod() == m)
-						{
-							for (InstructionContext ic : f.getInstructions())
-								if (ic.getInstruction() == ins) // this is the if
-								{
-									found = true;
-									
-									if (ins instanceof If)
-										ic.removeStack(1);
-									ic.removeStack(0);
-									break outer;
-								}
-						}
+					for (InstructionContext ic : ics)
+					{
+						found = true;
+
+						if (ins instanceof If)
+							ic.removeStack(1);
+						ic.removeStack(0);
+						break;
+					}
 					if (!found)
 					{
 						System.out.println("Unable to locate instruction ctx to remove stack for illegalstateexception " + ins.getType().getName() + " in method " + m.getName() + " class " + m.getMethods().getClassFile().getName());
