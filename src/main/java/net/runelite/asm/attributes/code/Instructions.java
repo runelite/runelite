@@ -85,8 +85,6 @@ public class Instructions
 		this.regeneratePool();
 		
 		// translate instructions to specific
-		this.buildJumpGraph();
-		
 		for (Instruction i : new ArrayList<>(instructions))
 		{
 			Instruction specific = i.makeSpecific();
@@ -119,26 +117,6 @@ public class Instructions
 		byte[] ba = b.toByteArray();
 		out.writeInt(ba.length);
 		out.write(ba);
-	}
-	
-	public void clearJumpGraph()
-	{
-		for (Instruction i : instructions)
-		{
-			i.jump.clear();
-			i.from.clear();
-		}
-	}
-
-	public void buildJumpGraph()
-	{
-		clearJumpGraph();
-		
-		assert new HashSet<>(instructions).size() == instructions.size();
-		
-		for (Instruction i : instructions)
-			if (i instanceof JumpingInstruction)
-				((JumpingInstruction) i).buildJumpGraph();
 	}
 	
 	public Code getCode()
@@ -180,21 +158,9 @@ public class Instructions
 		instructions.remove(oldi);
 		oldi.setInstructions(null);
 		instructions.add(i, newi);
-		
-		for (Instruction ins : oldi.from)
-		{
-			assert ins.getInstructions() == this;
-			assert this.getInstructions().contains(ins);
-			assert ins.jump.contains(oldi);
-			
-			ins.jump.remove(oldi);
-			
-			ins.jump.add(newi);
-			newi.from.add(ins);
-			
+
+		for (Instruction ins : instructions)
 			ins.replace(oldi, newi);
-		}
-		oldi.from.clear();
 		
 		for (net.runelite.asm.attributes.code.Exception e : code.getExceptions().getExceptions())
 			e.replace(oldi, newi);

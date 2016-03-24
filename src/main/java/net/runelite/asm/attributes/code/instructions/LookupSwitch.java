@@ -13,7 +13,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,14 +98,6 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 			out.writeInt(match[i]);
 			out.writeInt(branchi.get(i).getPc() - this.getPc());
 		}
-	}
-
-	@Override
-	public void buildJumpGraph()
-	{
-		for (Instruction i : branchi)
-			this.addJump(i);
-		this.addJump(defi);
 	}
 
 	@Override

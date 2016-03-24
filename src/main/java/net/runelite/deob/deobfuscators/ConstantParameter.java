@@ -459,7 +459,6 @@ public class ConstantParameter implements Deobfuscator
 					continue; // ins already removed?
 				
 				Instructions instructions = ins.getInstructions();
-				instructions.buildJumpGraph();
 				
 				// remove the if
 				if (ctx.getInstruction() instanceof If)
@@ -489,14 +488,8 @@ public class ConstantParameter implements Deobfuscator
 				assert instructions.getInstructions().contains(to);
 				
 				// move things that jump here to instead jump to 'to'
-				for (Instruction fromI : ins.from)
-				{
-					assert fromI.jump.contains(ins);
-
-					fromI.jump.remove(ins);
-					fromI.replace(ins, to);
-				}
-				ins.from.clear();
+				for (Instruction i : instructions.getInstructions())
+					i.replace(ins, to);
 				
 				instructions.remove(ins);
 				
@@ -505,8 +498,6 @@ public class ConstantParameter implements Deobfuscator
 				if (branch)
 				{
 					Goto gotoins = new Goto(instructions, to);
-					to.from.add(gotoins);
-					gotoins.jump.add(to);
 					
 					// insert goto
 					instructions.getInstructions().add(idx, gotoins);

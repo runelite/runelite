@@ -64,12 +64,6 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	}
 
 	@Override
-	public void buildJumpGraph()
-	{
-		this.addJump(to);
-	}
-
-	@Override
 	public void execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);

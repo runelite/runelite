@@ -98,14 +98,6 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	}
 
 	@Override
-	public void buildJumpGraph()
-	{
-		for (Instruction i : branchi)
-			this.addJump(i);
-		this.addJump(defi);
-	}
-
-	@Override
 	public void execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);

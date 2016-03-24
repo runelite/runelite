@@ -27,10 +27,6 @@ public class UnreachedCode implements Deobfuscator
 			
 			if (!execution.executed.contains(i))
 			{
-				for (Instruction i2 : i.from)
-					i2.jump.remove(i);
-				i.from.clear(); // if this is never executed, anything that jumps here ia also never executed?
-				
 				// if this is an exception handler, the exception handler is never used...
 				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
 				{

@@ -35,7 +35,6 @@ public class IllegalStateExceptions implements Deobfuscator
 					continue;
 				
 				Instructions instructions = c.getInstructions();
-				instructions.buildJumpGraph();
 				
 				List<Instruction> ilist = instructions.getInstructions();
 				for (int i = 0; i < ilist.size(); ++i)
@@ -78,17 +77,9 @@ public class IllegalStateExceptions implements Deobfuscator
 					while (!(ins instanceof AThrow))
 					{
 						// modify instructions which jump to here to instead jump to 'to'
-						
-						for (Instruction from : ins.from)
-						{
-							from.jump.remove(ins);
-							//ins.from.remove(from);
-							
+
+						for (Instruction from : ilist)
 							from.replace(ins, to);
-							
-							from.jump.add(to);
-						}
-						ins.from.clear();
 						
 						instructions.remove(ins);
 						ins = ilist.get(i); // don't need to ++i because 
@@ -100,8 +91,6 @@ public class IllegalStateExceptions implements Deobfuscator
 					// insert goto
 					assert ilist.contains(to);
 					Goto g = new Goto(instructions, to);
-					g.jump.add(to);
-					to.from.add(g);
 					ilist.add(i, g);
 					
 					++count;

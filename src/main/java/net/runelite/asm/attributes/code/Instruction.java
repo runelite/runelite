@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 
 public abstract class Instruction implements Cloneable
 {
@@ -17,9 +18,6 @@ public abstract class Instruction implements Cloneable
 
 	private int pc; // offset into method this instructions resides at
 	protected int length = 1; // length of this instruction
-
-	public List<Instruction> jump = new ArrayList<>(), // instructions which this instruction jumps to
-								from = new ArrayList<>(); // instructions which jump to this instruction
 
 	public Instruction(Instructions instructions, InstructionType type, int pc)
 	{
@@ -48,9 +46,6 @@ public abstract class Instruction implements Cloneable
 			throw new RuntimeException();
 		}
 		
-		i.from = new ArrayList<>();
-		i.jump = new ArrayList<>();
-		
 		return i;
 	}
 	
@@ -60,10 +55,6 @@ public abstract class Instruction implements Cloneable
 	
 	protected void remove()
 	{
-		for (Instruction i : jump)
-			i.from.remove(this);
-		jump.clear();
-		
 		Exceptions exceptions = instructions.getCode().getExceptions();
 		for (Exception e : exceptions.getExceptions())
 		{
@@ -71,8 +62,12 @@ public abstract class Instruction implements Cloneable
 			assert this != e.getEnd();
 			assert this != e.getHandler();
 		}
-		
-		assert from.isEmpty(); // because this is empty no jumping instructions point here
+
+		// XXX unreached code deob relies on being able to remove instructions that other ins jump to,
+		// if those other ins are also unreached.
+		//for (Instruction i : instructions.getInstructions())
+		//	if (i instanceof JumpingInstruction)
+		//		assert ((JumpingInstruction) i).getJumps().contains(this) == false;
 	}
 	
 	public void replace(Instruction other)
@@ -83,34 +78,11 @@ public abstract class Instruction implements Cloneable
 		assert ins.contains(this);
 		assert !ins.contains(other);
 		
-		// XXX instructions which hold references to instructions !
+		// is this really the right place for this?
 		for (Instruction i : ins)
 		{
 			i.replace(this, other);
 		}
-		
-		// update instructions which jump here to jump to the new instruction
-		for (Instruction i : from)
-		{
-			assert i.jump.contains(this);
-			assert !i.jump.contains(other);
-			
-			i.jump.remove(this);
-			i.jump.add(other);
-		}
-		from.clear();
-		
-		// move jumps over
-		for (Instruction i : jump)
-		{
-			assert i.from.contains(this);
-			assert !i.from.contains(other);
-			
-			i.from.remove(this);
-			i.from.add(other);
-		}
-		other.jump = new ArrayList<>(this.jump);
-		jump.clear();
 		
 		Exceptions exceptions = instructions.getCode().getExceptions();
 		for (Exception e : exceptions.getExceptions())
@@ -140,17 +112,6 @@ public abstract class Instruction implements Cloneable
 		{
 			i.replace(this, next);
 		}
-		
-		for (Instruction i : from)
-		{
-			assert i.jump.contains(this);
-			
-			i.jump.remove(this);
-			
-			i.jump.add(next);
-			next.from.add(i);
-		}
-		from.clear();
 		
 		for (Exception e : instructions.getCode().getExceptions().getExceptions())
 			e.replace(this, next);
@@ -218,19 +179,6 @@ public abstract class Instruction implements Cloneable
 	public String getDesc(Frame frame)
 	{
 		return type.getName() + " at pc " + frame.getPc() + " in " + frame.getMethod().getName() + " " + frame.getMethod().getDescriptor() + " class " + frame.getMethod().getCode().getAttributes().getClassFile().getName();
-	}
-
-	protected void addJump(Instruction to)
-	{
-		assert to != null;
-		assert to != this;
-		
-		assert this.jump.contains(to) == to.from.contains(this);
-		if (this.jump.contains(to))
-			return; // switch statements can jump to the same place multiple times
-
-		this.jump.add(to);
-		to.from.add(this);
 	}
 
 	public abstract void execute(Frame e);
