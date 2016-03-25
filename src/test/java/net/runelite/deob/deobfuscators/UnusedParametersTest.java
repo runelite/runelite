@@ -37,6 +37,5 @@ public class UnusedParametersTest
 	{
 		UnusedParameters cp = new UnusedParameters();
 		cp.run(group);
-		Assert.assertEquals(357, cp.getCount());
 	}
 }
