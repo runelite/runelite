@@ -7,6 +7,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.util.NameMappings;
 
 public class RenameUnique implements Deobfuscator
@@ -50,7 +51,7 @@ public class RenameUnique implements Deobfuscator
 				if (method.getName().length() > 2)
 					continue;
 				
-				List<Method> virtualMethods = Renamer.getVirutalMethods(method);
+				List<Method> virtualMethods = VirtualMethods.getVirutalMethods(method);
 				assert !virtualMethods.isEmpty();
 				
 				String name;

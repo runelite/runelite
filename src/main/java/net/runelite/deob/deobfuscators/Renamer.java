@@ -1,9 +1,6 @@
 package net.runelite.deob.deobfuscators;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -12,10 +9,10 @@ import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exceptions;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.pool.UTF8;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
+import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.util.NameMappings;
 
 public class Renamer implements Deobfuscator
@@ -92,66 +89,6 @@ public class Renamer implements Deobfuscator
 		cf.setName(name);
 	}
 	
-	// find the base methods for a method. search goes up from there to see if two
-	// different methods can be invoked with the same instruction.
-	private static List<Method> findBaseMethods(List<Method> methods, ClassFile cf, NameAndType method)
-	{
-		if (cf == null)
-			return methods;
-		
-		Method m = cf.findMethod(method);
-		if (m != null && !m.isStatic())
-			methods.add(m);
-		
-		List<Method> parentMethods = findBaseMethods(new ArrayList<Method>(), cf.getParent(), method);
-		
-		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
-			findBaseMethods(parentMethods, inter, method);
-		
-		// parentMethods take precedence over our methods
-		return parentMethods.isEmpty() ? methods : parentMethods;
-	}
-	
-	private static List<Method> findBaseMethods(Method method)
-	{
-		return findBaseMethods(new ArrayList<>(), method.getMethods().getClassFile(), method.getNameAndType());
-	}
-	
-	private static void findMethodUp(List<Method> methods, Set<ClassFile> visited, ClassFile cf, NameAndType method)
-	{
-		if (cf == null || visited.contains(cf))
-			return;
-		
-		visited.add(cf); // can do diamond inheritance with interfaces
-		
-		Method m = cf.findMethod(method);
-		if (m != null && !m.isStatic())
-			methods.add(m);
-		
-		for (ClassFile child : cf.getChildren())
-			findMethodUp(methods, visited, child, method);
-	}
-	
-	public static List<Method> getVirutalMethods(Method method)
-	{
-		List<Method> list = new ArrayList<>();
-		
-		if (method.isStatic())
-		{
-			list.add(method);
-			return list;
-		}
-		
-		List<Method> bases = findBaseMethods(method); // base methods method overrides
-		assert !bases.isEmpty(); // must contain at least a method
-		
-		// now search up from bases, appending to list.
-		for (Method m : bases)
-			findMethodUp(list, new HashSet<>(), m.getMethods().getClassFile(), m.getNameAndType());
-
-		return list;
-	}
-	
 	private void regeneratePool(ClassGroup group)
 	{
 		for (ClassFile cf : group.getClasses())
@@ -194,7 +131,7 @@ public class Renamer implements Deobfuscator
 				if (newName == null)
 					continue;
 				
-				List<Method> virtualMethods = getVirutalMethods(method);
+				List<Method> virtualMethods = VirtualMethods.getVirutalMethods(method);
 				assert !virtualMethods.isEmpty();
 				
 				for (Method m : virtualMethods)
