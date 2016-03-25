@@ -23,11 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.Field;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.deobfuscators.Renamer;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Value;
+import net.runelite.asm.signature.util.VirtualMethods;
 
 public class InvokeInterface extends Instruction implements InvokeInstruction
 {
@@ -158,7 +158,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		if (m == null)
 			return null;
 		
-		return Renamer.getVirutalMethods(m);
+		return VirtualMethods.getVirutalMethods(m);
 	}
 
 	@Override
