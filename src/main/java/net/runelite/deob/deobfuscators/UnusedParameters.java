@@ -22,44 +22,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.signature.util.VirtualMethods;
 
 import org.apache.commons.collections4.CollectionUtils;
 
 public class UnusedParameters implements Deobfuscator
-{
-	private static List<Method> findDependentMethods(NameAndType nat, Set<ClassFile> visited, ClassGroup group, ClassFile cf)
-	{
-		List<Method> list = new ArrayList<>();
-		
-		if (cf == null || visited.contains(cf))
-			return list;
-		
-		visited.add(cf);
-		
-		Method method = cf.findMethod(nat);
-		if (method != null && !method.isStatic())
-			list.add(method);
-		
-		// search parent
-		list.addAll(findDependentMethods(nat, visited, group, cf.getParent()));
-		
-		// search interfaces
-		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
-			list.addAll(findDependentMethods(nat, visited, group, inter));
-		
-		// search children
-		for (ClassFile child : cf.getChildren())
-			list.addAll(findDependentMethods(nat, visited, group, child));
-		
-		return list;
-	}
-	
-	private static List<Method> findDependentMethods(Method m)
-	{
-		ClassFile cf = m.getMethods().getClassFile();
-		return findDependentMethods(m.getNameAndType(), new HashSet<ClassFile>(), cf.getGroup(), cf);
-	}
-	
+{	
 	private List<Integer> findUnusedParameters(Method method)
 	{
 		int offset = method.isStatic() ? 0 : 1;
@@ -227,16 +195,7 @@ public class UnusedParameters implements Deobfuscator
 				
 				// for a parameter to be unused it must be unused on all methods that override it
 				
-				List<Method> methods;
-				if (!m.isStatic())
-				{
-					methods = findDependentMethods(m); // these are all of the methods the param must be unused in
-				}
-				else
-				{
-					methods = new ArrayList<>();
-					methods.add(m);
-				}
+				List<Method> methods = VirtualMethods.getVirutalMethods(m);
 				
 				Collection<Integer> unusedParameters = findUnusedParameters(methods);
 				
