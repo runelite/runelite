@@ -71,7 +71,7 @@ class TestClass2
 	}
 }
 
-public class ModArithTest
+public class SimpleModArithTest
 {
 	private void checkConstants(ClassFile cf)
 	{
