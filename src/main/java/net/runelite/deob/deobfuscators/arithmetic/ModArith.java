@@ -37,6 +37,7 @@ public class ModArith implements Deobfuscator
 {
 	private ClassGroup group;
 	private Execution execution;
+	private Set<Field> obfuscatedFields = new HashSet<>();
 	private MultiValueMap<Field, Number> constantGetters = new MultiValueMap<>(),
 		constantSetters = new MultiValueMap<>();
 	private List<Pair> pairs = new ArrayList<>();
@@ -67,11 +68,12 @@ public class ModArith implements Deobfuscator
 		return l;
 	}
 	
-	private boolean isFieldObfuscated(Execution e, Field field)
+	private void findObfuscatedFields()
 	{
 		// find a direct big*field with no other fields involved
+		obfuscatedFields.clear();
 		
-		for (Frame f : e.processedFrames)
+		for (Frame f : execution.processedFrames)
 		{
 			outer:
 			for (InstructionContext ctx : f.getInstructions())
@@ -80,48 +82,45 @@ public class ModArith implements Deobfuscator
 				{
 					SetFieldInstruction sfi = (SetFieldInstruction) ctx.getInstruction();
 					
-					if (sfi.getMyField() == field)
+					InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
+					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
 					{
-						InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
-						if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+						PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
+						if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
 						{
-							PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
-							if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
-							{
-								Number it = (Number) ldc.getConstant().getObject();
-								if (DMath.isBig(it))
-									// field = constant
-									return true;
-							}
+							Number it = (Number) ldc.getConstant().getObject();
+							if (DMath.isBig(it))
+								// field = constant
+								this.obfuscatedFields.add(sfi.getMyField());
 						}
-						else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul)
+					}
+					else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul)
+					{
+						Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
+						Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
+
+						PushConstantInstruction pci = null;
+						Instruction other = null;
+						if (one instanceof LDC_W || one instanceof LDC2_W)
 						{
-							Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
-							Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
-							
-							PushConstantInstruction pci = null;
-							Instruction other = null;
-							if (one instanceof LDC_W || one instanceof LDC2_W)
+							pci = (PushConstantInstruction) one;
+							other = two;
+						}
+						else if (two instanceof LDC_W || two instanceof LDC2_W)
+						{
+							pci = (PushConstantInstruction) two;
+							other = one;
+						}
+
+						if (pci != null
+							&& !(other instanceof GetFieldInstruction))
+						{
+							if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
 							{
-								pci = (PushConstantInstruction) one;
-								other = two;
-							}
-							else if (two instanceof LDC_W || two instanceof LDC2_W)
-							{
-								pci = (PushConstantInstruction) two;
-								other = one;
-							}
-							
-							if (pci != null
-								&& !(other instanceof GetFieldInstruction))
-							{
-								if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
-								{
-									Number i = (Number) pci.getConstant().getObject();
-									if (DMath.isBig(i))
-										// field = constant * not other field
-										return true;
-								}
+								Number i = (Number) pci.getConstant().getObject();
+								if (DMath.isBig(i))
+									// field = constant * not other field
+									this.obfuscatedFields.add(sfi.getMyField());
 							}
 						}
 					}
@@ -152,7 +151,7 @@ public class ModArith implements Deobfuscator
 					continue;
 				}
 				
-				if (other.getMyField() != null && other.getMyField() != field)
+				if (other.getMyField() != null)
 					continue;
 				
 				if (!(pc.getConstant().getObject() instanceof Integer) && !(pc.getConstant().getObject() instanceof Long))
@@ -164,8 +163,8 @@ public class ModArith implements Deobfuscator
 				
 				try
 				{
-					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(e, ctx, ctx.getInstruction().getClass());
-					if (expr.hasFieldOtherThan(field))
+					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(execution, ctx, ctx.getInstruction().getClass());
+					if (expr.hasFieldOtherThan(other.getMyField()))
 						continue;
 				}
 				catch (IllegalStateException ex)
@@ -178,15 +177,13 @@ public class ModArith implements Deobfuscator
 				{
 					SetFieldInstruction sfi = (SetFieldInstruction) popped.getInstruction();
 					
-					if (sfi.getMyField() != null && sfi.getMyField() != field)
+					if (sfi.getMyField() != null)
 						continue;
 				}
 				
-				return true;
+				this.obfuscatedFields.add(other.getMyField());
 			}
 		}
-		
-		return false;
 	}
 	
 	static class AssociatedConstant
@@ -537,7 +534,7 @@ public class ModArith implements Deobfuscator
 				removeDupes(noOther);
 				removeDupes(other);
 
-				if (!isFieldObfuscated(execution, f))
+				if (!this.obfuscatedFields.contains(f))
 					continue;
 
 				// guess with constants not associated with other fields
@@ -648,6 +645,7 @@ public class ModArith implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 		
+		findObfuscatedFields();
 		findUses();
 		findUses2();
 		reduce2();
