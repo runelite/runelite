@@ -1,5 +1,7 @@
 package net.runelite.deob.deobfuscators;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deobfuscator;
@@ -18,13 +20,16 @@ import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.NOP;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 
 public class FieldInliner implements Deobfuscator
 {
 	private ClassGroup group;
+	private Multimap<Field, FieldInstruction> fieldInstructions = HashMultimap.create();
 	private List<Field> fields = new ArrayList<>();
 	
-	private List<FieldInstruction> findFieldIns(Field field, boolean set)
+	private void findFieldIns()
 	{
 		List<FieldInstruction> ins = new ArrayList<>();
 		
@@ -44,18 +49,13 @@ public class FieldInliner implements Deobfuscator
 					
 					FieldInstruction sf = (FieldInstruction) i;
 					
-					if (sf.getMyField() != field)
+					if (sf.getMyField() == null)
 						continue;
-					
-					if (sf instanceof SetFieldInstruction != set)
-						continue;
-					
-					ins.add(sf);
+
+					fieldInstructions.put(sf.getMyField(), sf);
 				}
 			}
 		}
-		
-		return ins;
 	}
 	
 	private void makeConstantValues()
@@ -71,8 +71,8 @@ public class FieldInliner implements Deobfuscator
 				ConstantValue constantValue = (ConstantValue) attributes.findType(AttributeType.CONSTANT_VALUE);
 				if (constantValue != null)
 					continue;
-				
-				List<FieldInstruction> sfis = findFieldIns(f, true);
+
+				List<FieldInstruction> sfis = fieldInstructions.get(f).stream().filter(f2 -> f2 instanceof SetFieldInstruction).collect(Collectors.toList());
 				if (sfis.size() != 1)
 					continue;
 				
@@ -126,7 +126,7 @@ public class FieldInliner implements Deobfuscator
 		for (Field f : fields)
 		{
 			// replace getfield with constant push
-			List<FieldInstruction> fins = findFieldIns(f, false);
+			List<FieldInstruction> fins = fieldInstructions.get(f).stream().filter(f2 -> f2 instanceof GetFieldInstruction).collect(Collectors.toList());
 			ConstantValue value = (ConstantValue) f.getAttributes().findType(AttributeType.CONSTANT_VALUE);
 			
 			for (FieldInstruction fin : fins)
@@ -161,6 +161,7 @@ public class FieldInliner implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		this.group = group;
+		findFieldIns();
 		makeConstantValues();
 		int count = inlineUse();
 		
