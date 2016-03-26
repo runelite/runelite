@@ -649,20 +649,21 @@ public class ModArith implements Deobfuscator
 		findUses();
 		findUses2();
 		reduce2();
-		
+
 		int i = 0;
+		Encryption encr = new Encryption();
 		for (Pair pair : pairs)
 		{
 			System.out.println("Processing " + pair.field.getNameAndType().getName() + " getter " + pair.getter + " setter " + pair.setter);
-			
-			Encryption encr = new Encryption();
+
 			encr.addPair(pair);
 			encryption.addPair(pair); // sum total
-			
-			insertGetterSetterMuls(encr);
-			
-			System.out.println("Changed " + ++i);
+			++i;
 		}
+
+
+		if (i > 0)
+			insertGetterSetterMuls(encr);
 		
 		return i;
 	}
