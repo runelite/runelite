@@ -58,7 +58,6 @@ public class UnusedParameters implements Deobfuscator
 			for (int unusedParameter : u)
 			{
 				Signature signature = m.get(0).getDescriptor();
-				//int[] lvtIndexes = getLvtIndexes(signature, offset);//XX reverse this
 				int lvtIndex = this.getLvtIndex(signature, offset, unusedParameter);
 				/* removing the parameter can't cause collisions on other (overloaded) methods because prior to this we rename
 				 * all classes/fields/methods to have unique names.
@@ -69,8 +68,6 @@ public class UnusedParameters implements Deobfuscator
 			}
 
 			++count;
-
-			//break;
 		}
 		
 		return count;
@@ -185,9 +182,6 @@ public class UnusedParameters implements Deobfuscator
 							
 							Instruction newIns = lins.setVariableIndex(i - slots);
 							assert ins == newIns;
-							// this doesn't work because we'd have to reexecute or the above Frames would be messing with these instructions
-							//if (newIns != ins)
-							//	ins.replace(newIns);
 						}
 					}
 				}
