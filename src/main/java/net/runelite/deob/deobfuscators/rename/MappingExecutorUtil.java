@@ -25,49 +25,7 @@ import net.runelite.asm.execution.Variables;
 import net.runelite.asm.signature.Signature;
 
 public class MappingExecutorUtil
-{
-	// won't work with static funcs etc. this is all wrong. XXX
-	public static boolean isMappable(Method m1, Method m2)
-	{
-		assert (m1.getCode() == null) == (m2.getCode() == null);
-		
-		if (m1.getCode() == null || m2.getCode() == null)
-			return false;
-		
-		List<Instruction> l1 = m1.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof MappableInstruction).collect(Collectors.toList());
-		List<Instruction> l2 = m2.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof MappableInstruction).collect(Collectors.toList());
-		
-		if (l1.size() != l2.size())
-			return false;
-		
-		Map<Class, Integer> map1 = new HashMap<>(),
-			map2 = new HashMap<>();
-		
-		for (int i = 0; i < l1.size(); ++i)
-		{
-			Instruction i1 = l1.get(i);
-			
-			Integer c = map1.get(i1.getClass());
-			if (c == null)
-				map1.put(i1.getClass(), 1);
-			else
-				map1.put(i1.getClass(), c + 1);
-		}
-		
-		for (int i = 0; i < l2.size(); ++i)
-		{
-			Instruction i2 = l2.get(i);
-			
-			Integer c = map2.get(i2.getClass());
-			if (c == null)
-				map2.put(i2.getClass(), 1);
-			else
-				map2.put(i2.getClass(), c + 1);
-		}
-		
-		return map1.equals(map2);
-	}
-	
+{	
 	public static ParallelExecutorMapping map(Method m1, Method m2)
 	{
 		ClassGroup group1 = m1.getMethods().getClassFile().getGroup();
