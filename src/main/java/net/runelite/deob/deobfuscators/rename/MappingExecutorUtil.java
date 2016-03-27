@@ -200,7 +200,7 @@ public class MappingExecutorUtil
 			return false;
 		}
 
-		if (className.startsWith("java/lang/reflect/"))
+		if (className.startsWith("java/lang/reflect/") || className.startsWith("java/io/"))
 			return true;
 		
 		if (className.startsWith("java/") || className.startsWith("netscape/") || className.startsWith("javax/"))
