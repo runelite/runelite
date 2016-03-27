@@ -17,8 +17,6 @@ import net.runelite.asm.signature.Type;
 
 public class Mapper
 {
-	private static final int MAX_CLASSES = 250;
-	
 	private final ClassGroup source, target;
 	private ParallelExecutorMapping mapping;
 	
@@ -46,41 +44,22 @@ public class Mapper
 
 	private ParallelExecutorMapping mapMethods(ClassGroup one, ClassGroup two)
 	{
+		MethodSignatureMapper msm = new MethodSignatureMapper();
+		msm.map(one, two);
+
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
-		for (int i = -1; i < MAX_CLASSES; ++i)
+
+		for (Method m : msm.getMap().keySet())
 		{
-			ClassFile c1, c2;
+			Collection<Method> methods = msm.getMap().get(m);
 
-			if (i == -1)
+			for (Method other : methods)
 			{
-				c1 = one.findClass("client");
-				c2 = two.findClass("client");
-			}
-			else
-			{
-				c1 = one.findClass("class" + i);
-				c2 = two.findClass("class" + i);
-			}
-
-			if (c1 == null || c2 == null)
-				continue;
-
-			MethodSignatureMapper msm = new MethodSignatureMapper();
-			msm.map(c1, c2);
-
-			Multimap<Method, Method> map = msm.getMap();
-			for (Method m : map.keySet())
-			{
-				Collection<Method> methods = map.get(m);
-
-				for (Method other : methods)
-				{
-					HashMap<Object, Object> all = new HashMap();
-					map(all, pmes, m, other);
-				}
+				HashMap<Object, Object> all = new HashMap();
+				map(all, pmes, m, other);
 			}
 		}
-		
+
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
