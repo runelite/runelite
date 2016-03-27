@@ -1107,6 +1107,7 @@ public final class client extends class143 {
       signature = "(B)V",
       garbageValue = "126"
    )
+   @Export("packetHandler")
    protected final void vmethod3044() {
       ++field303;
       this.method256();
