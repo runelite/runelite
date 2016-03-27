@@ -88,6 +88,7 @@ public class Dup_X2 extends Instruction implements DupInstruction
 				break;
 			case 2:
 				poppedIndex = 1;
+				break;
 			default:
 				throw new IllegalStateException();
 		}
