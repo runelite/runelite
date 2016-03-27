@@ -4,7 +4,6 @@ import net.runelite.asm.Field;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.asm.attributes.code.instruction.types.ArrayStoreInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;

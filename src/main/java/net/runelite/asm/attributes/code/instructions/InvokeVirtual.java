@@ -255,12 +255,6 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),
 			otherMethods = otherIi.getMethods();
 		
-		if ((thisMethods != null) != (otherMethods != null))
-			return false;
-		
-		if (thisMethods == null || otherMethods == null)
-			return true; // we don't map these anyway
-		
 		if (thisMethods.size() != otherMethods.size())
 			return false;
 		
