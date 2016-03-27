@@ -186,10 +186,11 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			Field j1 = f1s.get(1), j2 = f2s.get(1);
 
 			
-			if (couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2))
-			{
-				return; // ambiguous
-			}
+//			if (couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2))
+//			{
+//				mapping.map()
+//				return; // ambiguous
+//			}
 			
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
 			{
