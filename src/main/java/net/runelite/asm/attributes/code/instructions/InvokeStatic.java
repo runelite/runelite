@@ -19,7 +19,6 @@ import net.runelite.asm.signature.Signature;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.Field;
@@ -219,12 +218,6 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),
 			otherMethods = otherIi.getMethods();
-		
-		if ((thisMethods != null) != (otherMethods != null))
-			return false;
-		
-		if (thisMethods == null || otherMethods == null)
-			return true; // we don't map these anyway
 		
 		if (thisMethods.size() != otherMethods.size())
 			return false;
