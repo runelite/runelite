@@ -144,7 +144,7 @@ public class ParallellMappingExecutor
 		{
 			if (stepInto(f1) == null)
 			{
-				f1.stop();
+				//f1.stop();
 				return step();
 			}
 			
@@ -162,7 +162,7 @@ public class ParallellMappingExecutor
 		{
 			if (stepInto(f2) == null)
 			{
-				f2.stop();
+				//f2.stop();
 				return step();
 			}
 
@@ -183,11 +183,11 @@ public class ParallellMappingExecutor
 			
 			if (stepf1 == null)
 			{
-				f1.stop();
+				//f1.stop();
 			}
 			if (stepf2 == null)
 			{
-				f2.stop();
+				//f2.stop();
 			}
 			if (stepf1 == null || stepf2 == null)
 				return step();
