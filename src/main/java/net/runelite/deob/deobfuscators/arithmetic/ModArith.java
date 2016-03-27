@@ -151,9 +151,6 @@ public class ModArith implements Deobfuscator
 					continue;
 				}
 				
-				if (other.getMyField() != null)
-					continue;
-				
 				if (!(pc.getConstant().getObject() instanceof Integer) && !(pc.getConstant().getObject() instanceof Long))
 					continue;
 				
@@ -170,15 +167,6 @@ public class ModArith implements Deobfuscator
 				catch (IllegalStateException ex)
 				{
 					continue;
-				}
-				
-				InstructionContext popped = ctx.getPushes().get(0).getPopped().get(0);
-				if (popped.getInstruction() instanceof SetFieldInstruction)
-				{
-					SetFieldInstruction sfi = (SetFieldInstruction) popped.getInstruction();
-					
-					if (sfi.getMyField() != null)
-						continue;
 				}
 				
 				this.obfuscatedFields.add(other.getMyField());
