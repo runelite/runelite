@@ -25,19 +25,9 @@ public class ParallellMappingExecutor
 	}
 	
 	boolean step1 = true, step2 = true;
-	static int count;
-	public boolean step()
-	{
-		++count;
-		
 
-		if (count == 26)
-		{
-			int i = 5;
-		}
-		// this no longer holds with recursive stepinfo
-		//assert e.frames.size() == e2.frames.size();
-		
+	public boolean step()
+	{		
 		p1 = p2 = null;
 		
 		if (e.frames.isEmpty())
@@ -330,7 +320,7 @@ public class ParallellMappingExecutor
 		assert i2.getInstruction() instanceof InvokeStatic;
 		if (returnValue != null)
 		{
-			// if the function retunred something, we must have pushed
+			// if the function returned something, we must have pushed
 			assert i2.getPushes().size() == 1;
 			
 			StackContext invokePushed = i2.getPushes().get(0);

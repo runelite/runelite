@@ -76,8 +76,6 @@ public class Execution
 	
 	public boolean hasInvoked(InstructionContext from, Method to)
 	{
-		// this is wrong because the called of the method of from
-		// might be different, for building graph
 		Collection<Method> methods = invokes.getCollection(from);
 		if (methods != null && methods.contains(to))
 			return true;
