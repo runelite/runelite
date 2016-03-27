@@ -103,8 +103,8 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 	{
 		net.runelite.asm.Field myField = this.getMyField();
 		net.runelite.asm.Field otherField = ((PutStatic) other.getInstruction()).getMyField();
-		
-		assert myField.getType().equals(otherField.getType());
+
+		assert MappingExecutorUtil.isMaybeEqual(myField.getType(), otherField.getType());
 		
 		mapping.map(myField, otherField);
 		
@@ -137,9 +137,15 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 		
 		PutStatic thisPf = (PutStatic) thisIc.getInstruction(),
 			otherPf = (PutStatic) otherIc.getInstruction();
+
+		net.runelite.asm.Field f1 = thisPf.getMyField();
+		net.runelite.asm.Field f2 = otherPf.getMyField();
+
+		if ((f1 != null) != (f2 != null))
+			return false;
 		
 		/* The class names are random */
-		return thisPf.getField().getNameAndType().getDescriptorType().equals(otherPf.getField().getNameAndType().getDescriptorType());
+		return MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 	}
 	
 	@Override

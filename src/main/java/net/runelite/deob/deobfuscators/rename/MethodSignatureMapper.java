@@ -22,8 +22,8 @@ public class MethodSignatureMapper
 			{
 				if (m2.getCode() == null)
 					continue;
-				
-				if (!m.getDescriptor().equals(m2.getDescriptor()))
+
+				if (!MappingExecutorUtil.isMaybeEqual(m.getDescriptor(), m2.getDescriptor()))
 					continue;
 				
 				boolean isConstructor2 = m2.getName().equals("<init>");

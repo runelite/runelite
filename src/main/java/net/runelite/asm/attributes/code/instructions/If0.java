@@ -135,20 +135,6 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		f2.other = branch1;
 		branch1.other = f2;
 
-		// switch frame order in executor frame list
-
-//		Execution e = f1.getExecution(),
-//			e2 = f2.getExecution();
-//
-//		int i = e2.frames.indexOf(f2),
-//			i2 = e2.frames.indexOf(branch2);
-//
-//		e2.frames.remove(i);
-//		e2.frames.add(i, branch2);
-//
-//		e2.frames.remove(i2);
-//		e2.frames.add(i2, f2);
-
 		this.mapArguments(mapping, ctx, other);
 	}
 	
@@ -157,8 +143,8 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		Field f1 = getComparedField(ctx), f2 = getComparedField(other);
 		if (f1 == null || f2 == null)
 			return;
-		
-		assert f1.getType().equals(f2.getType());
+
+		assert MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 		
 		mapping.map(f1, f2);
 	}
@@ -199,10 +185,10 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 			return false;
 
 		if (!f1.isStatic())
-			if (!f1.getFields().getClassFile().getName().equals(f2.getFields().getClassFile().getName()))
+			if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile()))
 				return false;
 		
-		return f1.getType().equals(f2.getType());
+		return MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 	}
 	
 	@Override

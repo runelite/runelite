@@ -162,7 +162,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		{
 			Field f1 = f1s.get(0), f2 = f2s.get(0);
 
-			assert f1.getType().equals(f2.getType());
+			assert MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 
 			mapping.map(f1, f2);
 
@@ -186,7 +186,10 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			Field j1 = f1s.get(1), j2 = f2s.get(1);
 
 			
-			assert !(couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2));
+			if (couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2))
+			{
+				return; // ambiguous
+			}
 			
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
 			{
@@ -250,10 +253,10 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			return false;
 
 		if (!f1.isStatic())
-			if (!f1.getFields().getClassFile().getName().equals(f2.getFields().getClassFile().getName()))
+			if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile()))
 				return false;
 
-		return f1.getType().equals(f2.getType());
+		return MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 	}
 	
 	protected boolean isSameField(InstructionContext thisIc, InstructionContext otherIc)
@@ -277,7 +280,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			Field j1 = f1s.get(1), j2 = f2s.get(1);
 			
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2))
-				return false; // ambiguous
+				return true;
 			
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
 				return true;

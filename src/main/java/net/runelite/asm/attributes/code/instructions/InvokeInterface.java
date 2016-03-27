@@ -242,8 +242,8 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		
 		InvokeInterface thisIi = (InvokeInterface) thisIc.getInstruction(),
 			otherIi = (InvokeInterface) otherIc.getInstruction();
-		
-		if (!thisIi.method.getNameAndType().getDescriptor().equals(otherIi.method.getNameAndType().getDescriptor()))
+
+		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getNameAndType().getDescriptor(), otherIi.method.getNameAndType().getDescriptor()))
 			return false;
 		
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),
@@ -262,11 +262,11 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		{
 			net.runelite.asm.Method m1 = thisMethods.get(i);
 			net.runelite.asm.Method m2 = otherMethods.get(i);
-			
-			if (!m1.getMethods().getClassFile().getPoolClass().equals(m2.getMethods().getClassFile().getPoolClass()))
+
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getMethods().getClassFile(), m2.getMethods().getClassFile()))
 				return false;
 			
-			if (!m1.getNameAndType().getDescriptor().equals(m2.getNameAndType().getDescriptor()))
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getNameAndType().getDescriptor(), m2.getNameAndType().getDescriptor()))
 				return false;
 		}
 		
