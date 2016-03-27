@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.instructions.If;
 
 public class ParallelExecutorMapping
 {
@@ -80,14 +80,8 @@ public class ParallelExecutorMapping
 	
 	public void map(Object one, Object two)
 	{
-		if (one instanceof Field)
-		{
-			Field f= (Field) one;
-			if (f.getName().equals("field849"))
-			{
-				int i = 5;
-			}
-		}
+		mapClass(one, two);
+
 		Mapping m = getMapping(one, two);
 		
 		belongs(one, group);
@@ -95,11 +89,50 @@ public class ParallelExecutorMapping
 
 		m.inc();
 	}
+
+	private void mapClass(Object one, Object two)
+	{
+		ClassFile cf1, cf2;
+
+		if (one instanceof Field || two instanceof Field)
+		{
+			assert one instanceof Field;
+			assert two instanceof Field;
+
+			Field f1 = (Field) one;
+			Field f2 = (Field) two;
+
+			cf1 = f1.getFields().getClassFile();
+			cf2 = f2.getFields().getClassFile();
+		}
+		else if (one instanceof Method || two instanceof Method)
+		{
+			assert one instanceof Method;
+			assert two instanceof Method;
+
+			Method m1 = (Method) one;
+			Method m2 = (Method) two;
+
+			cf1 = m1.getMethods().getClassFile();
+			cf2 = m2.getMethods().getClassFile();
+		}
+		else
+		{
+			assert false;
+			return;
+		}
+
+		belongs(cf1, group);
+		belongs(cf2, group2);
+
+		Mapping m = getMapping(cf1, cf2);
+
+		m.inc();
+	}
 	
 	public Object get(Object o)
 	{
 		return highest(o);
-		//return map.get(o);
 	}
 	
 	public Map<Object, Object> getMap()
@@ -125,6 +158,11 @@ public class ParallelExecutorMapping
 		{
 			Method m = (Method) o;
 			assert m.getMethods().getClassFile().getGroup() == to;
+		}
+		else if (o instanceof ClassFile)
+		{
+			ClassFile c = (ClassFile) o;
+			assert c.getGroup() == to;
 		}
 		else
 			assert false;
