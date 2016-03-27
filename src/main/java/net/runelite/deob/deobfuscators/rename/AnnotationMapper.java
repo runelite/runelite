@@ -32,10 +32,13 @@ public class AnnotationMapper
 
 		for (ClassFile c : source.getClasses())
 		{
-			ClassFile other = target.findClass(c.getName());
+			ClassFile other = (ClassFile) mapping.get(c);
 
 			if (other == null)
+			{
+				System.out.println("Unable to map class " + c); // XXX if this has any mappings it won't be reported below.
 				continue;
+			}
 
 			count += run(c, other);
 		}
@@ -57,13 +60,15 @@ public class AnnotationMapper
 			Field other = (Field) mapping.get(f);
 			if (other == null)
 			{
-				assert false;
+				System.out.println("UNABLE TO MAP " + f);
+				continue;
+				//assert false;
 			}
 
 			count += copyAnnotations(f.getAttributes(), other.getAttributes());
 		}
 
-		for (Method m : to.getMethods().getMethods())
+		for (Method m : from.getMethods().getMethods())
 		{
 			if (!hasCopyableAnnotation(m.getAttributes()))
 				continue;
@@ -71,7 +76,9 @@ public class AnnotationMapper
 			Method other = (Method) mapping.get(m);
 			if (other == null)
 			{
-				assert false;
+				System.out.println("UNABLE TO MAP " + m);
+				continue;
+				//assert false;
 			}
 
 			count += copyAnnotations(m.getAttributes(), other.getAttributes());
