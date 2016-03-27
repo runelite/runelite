@@ -106,7 +106,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		net.runelite.asm.Field myField = this.getMyField();
 		net.runelite.asm.Field otherField = ((PutField) other.getInstruction()).getMyField();
 		
-		assert myField.getType().equals(otherField.getType());
+		assert MappingExecutorUtil.isMaybeEqual(myField.getType(), otherField.getType());
 		
 		mapping.map(myField, otherField);
 		
@@ -149,9 +149,9 @@ public class PutField extends Instruction implements SetFieldInstruction
 		
 		if ((f1 != null) != (f2 != null))
 			return false;
-		
-		return f1.getFields().getClassFile().getPoolClass().equals(f2.getFields().getClassFile().getPoolClass())
-			&& f1.getType().equals(f2.getType());
+
+		return MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+			&& MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 	}
 	
 	@Override

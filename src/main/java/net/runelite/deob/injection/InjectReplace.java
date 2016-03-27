@@ -232,6 +232,7 @@ public class InjectReplace
 			// Rename method to override
 			m.setName(obfuscatedMethodToOverride.getName());
 
+			assert false;
 			if (!m.getDescriptor().equals(obfuscatedMethodToOverride.getDescriptor()))
 			{
 				// Obfuscation can add garbage parameter.

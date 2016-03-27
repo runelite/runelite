@@ -177,8 +177,8 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		List<net.runelite.asm.Method> myMethods = this.getMethods(),
 			otherMethods = otherIv.getMethods();
-		
-		assert method.getNameAndType().getDescriptor().equals(otherIv.method.getNameAndType().getDescriptor());
+
+		assert MappingExecutorUtil.isMaybeEqual(method.getNameAndType().getDescriptor(), otherIv.method.getNameAndType().getDescriptor());
 		assert myMethods.size() == otherMethods.size();
 		
 		for (int i = 0; i < myMethods.size(); ++i)
@@ -186,7 +186,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			net.runelite.asm.Method m1 = myMethods.get(i);
 			net.runelite.asm.Method m2 = otherMethods.get(i);
 
-			assert m1.getMethods().getClassFile().getName().equals(m2.getMethods().getClassFile().getName());
+			assert MappingExecutorUtil.isMaybeEqual(m1.getMethods().getClassFile(), m2.getMethods().getClassFile());
 			
 			mapping.map(m1, m2);
 		}
@@ -248,8 +248,8 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		InvokeVirtual thisIi = (InvokeVirtual) thisIc.getInstruction(),
 			otherIi = (InvokeVirtual) otherIc.getInstruction();
-		
-		if (!thisIi.method.getNameAndType().getDescriptor().equals(otherIi.method.getNameAndType().getDescriptor()))
+
+		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getNameAndType().getDescriptor(), otherIi.method.getNameAndType().getDescriptor()))
 			return false;
 		
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),
@@ -268,11 +268,11 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		{
 			net.runelite.asm.Method m1 = thisMethods.get(i);
 			net.runelite.asm.Method m2 = otherMethods.get(i);
-			
-			if (!m1.getMethods().getClassFile().getPoolClass().equals(m2.getMethods().getClassFile().getPoolClass()))
+
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getMethods().getClassFile(), m2.getMethods().getClassFile()))
 				return false;
-			
-			if (!m1.getNameAndType().getDescriptor().equals(m2.getNameAndType().getDescriptor()))
+
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getNameAndType().getDescriptor(), m2.getNameAndType().getDescriptor()))
 				return false;
 		}
 		

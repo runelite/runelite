@@ -213,8 +213,8 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		
 		InvokeStatic thisIi = (InvokeStatic) thisIc.getInstruction(),
 			otherIi = (InvokeStatic) otherIc.getInstruction();
-		
-		if (!thisIi.method.getNameAndType().getDescriptor().equals(otherIi.method.getNameAndType().getDescriptor()))
+
+		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getNameAndType().getDescriptor(), otherIi.method.getNameAndType().getDescriptor()))
 			return false;
 		
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),

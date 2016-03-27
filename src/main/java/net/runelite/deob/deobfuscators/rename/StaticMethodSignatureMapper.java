@@ -26,7 +26,9 @@ public class StaticMethodSignatureMapper
 	
 	private List<Method> getStaticMethodsOfSignature(ClassGroup group, Signature sig)
 	{
-		return getStaticMethods(group).stream().filter(m -> m.getDescriptor().equals(sig)).collect(Collectors.toList());
+		return getStaticMethods(group).stream().filter(
+			m -> MappingExecutorUtil.isMaybeEqual(m.getDescriptor(), sig)
+		).collect(Collectors.toList());
 	}
 	
 	public void map(ClassGroup group1, ClassGroup group2)

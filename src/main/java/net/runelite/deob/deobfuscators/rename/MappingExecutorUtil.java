@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
@@ -23,6 +24,7 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 
 public class MappingExecutorUtil
 {	
@@ -291,5 +293,40 @@ public class MappingExecutorUtil
 		}
 		
 		return ctx;
+	}
+
+	public static boolean isMaybeEqual(Type t1, Type t2)
+	{
+		if (t1.isPrimitive() != t2.isPrimitive())
+			return false;
+
+		if (t1.getArrayDims() != t2.getArrayDims())
+			return false;
+
+		return true;
+	}
+
+	public static boolean isMaybeEqual(Signature s1, Signature s2)
+	{
+		if (s1.size() != s2.size())
+			return false;
+
+		if (!isMaybeEqual(s1.getReturnValue(), s2.getReturnValue()))
+			return false;
+
+		for (int i = 0; i < s1.size(); ++i)
+		{
+			Type t1 = s1.getTypeOfArg(i), t2 = s2.getTypeOfArg(i);
+
+			if (!isMaybeEqual(t1, t2))
+				return false;
+		}
+
+		return true;
+	}
+
+	public static boolean isMaybeEqual(ClassFile cf1, ClassFile cf2)
+	{
+		return true;
 	}
 }
