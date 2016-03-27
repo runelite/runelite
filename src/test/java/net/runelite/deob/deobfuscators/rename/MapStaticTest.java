@@ -168,7 +168,7 @@ public class MapStaticTest
 	
 	public static void summary(ParallelExecutorMapping finalm, ClassGroup in)
 	{
-		int fields = 0, staticMethod = 0, method = 0, total = 0;
+		int fields = 0, staticMethod = 0, method = 0, total = 0, classes = 0;
 		for (Entry<Object, Object> e : finalm.getMap().entrySet())
 		{
 			//System.out.println(e.getKey() + " <-> " + e.getValue());
@@ -191,10 +191,12 @@ public class MapStaticTest
 				else
 					++method;
 			}
+			else if (o instanceof ClassFile)
+				++classes;
 
 			++total;
 		}
-		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " methods");
+		System.out.println("Total " + total + ". " + fields + " fields, " + staticMethod + " static methods, " + method + " non-static methods, " + classes + " classes");
 	}
 	
 //	@Test
@@ -450,8 +452,8 @@ public class MapStaticTest
 			methods += cf.getMethods().getMethods().size();
 			fields += cf.getFields().getFields().size();
 		}
-		int total = methods + fields;
-		return "total methods/fields: " + total + ", " + methods + " methods, " + fields + " fields";
+		int total = methods + fields + classes;
+		return "total: " + total + ", " + methods + " methods, " + fields + " fields, " + classes + " classes";
 	}
 	
 //	@Test
