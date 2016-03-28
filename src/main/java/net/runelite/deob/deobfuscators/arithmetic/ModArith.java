@@ -2,9 +2,12 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
@@ -33,6 +36,7 @@ import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
 import net.runelite.asm.attributes.code.instruction.types.ArrayStoreInstruction;
+import org.apache.commons.collections4.CollectionUtils;
 
 public class ModArith implements Deobfuscator
 {
@@ -477,13 +481,31 @@ public class ModArith implements Deobfuscator
 		return false;
 	}
 	
-	// remove duplicates from a collection
-	private <T> void removeDupes(Collection<T> in)
+	private static class NComparator implements Comparator<Number>
 	{
-		Set set = new HashSet();
-		for (Iterator<T> it = in.iterator(); it.hasNext();)
+		private Map<Number, Integer> map;
+
+		public NComparator(Collection<Number> col)
 		{
-			T i = it.next();
+			map = CollectionUtils.getCardinalityMap(col);
+		}
+		
+		@Override
+		public int compare(Number o1, Number o2)
+		{
+			return Integer.compare(map.get(o2), map.get(o1));
+		}
+	}
+	
+	// remove duplicates from a collection
+	private void removeDupes(List<Number> in)
+	{
+		Collections.sort(in, new NComparator(in));
+		
+		Set set = new HashSet();
+		for (Iterator<Number> it = in.iterator(); it.hasNext();)
+		{
+			Number i = it.next();
 
 			if (set.contains(i))
 			{
