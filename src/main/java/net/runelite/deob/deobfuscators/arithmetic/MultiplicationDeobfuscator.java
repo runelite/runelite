@@ -194,10 +194,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 							assert me.subexpressions.isEmpty();
 						}
 					}
-					else
-					{
-						System.out.println("dup ins " + otherCtxI.getInstruction());
-					}
 				}
 				else if (i.getInstruction() instanceof GetFieldInstruction)
 				{

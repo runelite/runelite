@@ -15,6 +15,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
@@ -52,7 +53,8 @@ public class ModArith implements Deobfuscator
 		
 		// invoke and array store pops are unrelated to each other
 		if (ctx.getInstruction() instanceof InvokeInstruction ||
-			ctx.getInstruction() instanceof ArrayStoreInstruction)
+			ctx.getInstruction() instanceof ArrayStoreInstruction ||
+			ctx.getInstruction() instanceof ArrayLoad)
 			return l;
 		
 		set.add(ctx.getInstruction());
@@ -75,7 +77,6 @@ public class ModArith implements Deobfuscator
 		
 		for (Frame f : execution.processedFrames)
 		{
-			outer:
 			for (InstructionContext ctx : f.getInstructions())
 			{
 				if (ctx.getInstruction() instanceof SetFieldInstruction)
@@ -546,7 +547,7 @@ public class ModArith implements Deobfuscator
 	private void insertGetterSetterMuls(Encryption encr)
 	{
 		// after getfield insert imul * setter
-		// before setfield insert inul * getter
+		// before setfield insert imul * getter
 		for (ClassFile cf : group.getClasses())
 			for (Method m : cf.getMethods().getMethods())
 			{
@@ -605,7 +606,7 @@ public class ModArith implements Deobfuscator
 						// imul
 						if (p.getType() == Integer.class)
 						{
-							ilist.add(++i, new LDC_W(ins, new net.runelite.asm.pool.Integer((int) p.setter)));
+							ilist.add(++i, new LDC_W(ins, (int) p.setter));
 							ilist.add(++i, new IMul(ins));
 						}
 						else if (p.getType() == Long.class)
