@@ -1,65 +1,46 @@
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gz")
-public final class class202 {
-   @ObfuscatedName("a")
-   class203 field3098 = new class203();
+@ObfuscatedName("gx")
+public class class202 implements Iterable {
+   @ObfuscatedName("w")
+   class208 field3111 = new class208();
 
-   @ObfuscatedName("a")
-   public void method3908(class203 var1) {
-      if(var1.field3099 != null) {
-         var1.method3920();
-      }
-
-      var1.field3099 = this.field3098.field3099;
-      var1.field3100 = this.field3098;
-      var1.field3099.field3100 = var1;
-      var1.field3100.field3099 = var1;
-   }
-
-   @ObfuscatedName("r")
-   public void method3909(class203 var1) {
-      if(var1.field3099 != null) {
-         var1.method3920();
-      }
-
-      var1.field3099 = this.field3098;
-      var1.field3100 = this.field3098.field3100;
-      var1.field3099.field3100 = var1;
-      var1.field3100.field3099 = var1;
-   }
-
-   @ObfuscatedName("f")
-   class203 method3910() {
-      class203 var1 = this.field3098.field3100;
-      if(var1 == this.field3098) {
-         return null;
+   @ObfuscatedName("t")
+   class208 method3876(class208 var1) {
+      class208 var2;
+      if(var1 == null) {
+         var2 = this.field3111.field3124;
       } else {
-         var1.method3920();
-         return var1;
+         var2 = var1;
       }
+
+      return var2 == this.field3111?null:var2;
    }
 
-   @ObfuscatedName("s")
-   public class203 method3912() {
-      class203 var1 = this.field3098.field3100;
-      return var1 == this.field3098?null:var1;
+   @ObfuscatedName("w")
+   public void method3877(class208 var1) {
+      if(var1.field3125 != null) {
+         var1.method3935();
+      }
+
+      var1.field3125 = this.field3111.field3125;
+      var1.field3124 = this.field3111;
+      var1.field3125.field3124 = var1;
+      var1.field3124.field3125 = var1;
    }
 
-   @ObfuscatedName("y")
-   void method3917() {
-      while(true) {
-         class203 var1 = this.field3098.field3100;
-         if(var1 == this.field3098) {
-            return;
-         }
-
-         var1.method3920();
-      }
+   @ObfuscatedName("x")
+   public class208 method3879() {
+      return this.method3876((class208)null);
    }
 
    public class202() {
-      this.field3098.field3100 = this.field3098;
-      this.field3098.field3099 = this.field3098;
+      this.field3111.field3124 = this.field3111;
+      this.field3111.field3125 = this.field3111;
+   }
+
+   public Iterator iterator() {
+      return new class205(this);
    }
 }

@@ -1,245 +1,177 @@
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
+import java.io.DataInputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eh")
-public final class class136 implements KeyListener, FocusListener {
-   @ObfuscatedName("cl")
-   public static boolean[] field2087 = new boolean[112];
-   @ObfuscatedName("ck")
-   static char[] field2093 = new char[128];
-   @ObfuscatedName("cf")
-   @ObfuscatedGetter(
-      intValue = -537606549
-   )
-   static int field2101 = 0;
-   @ObfuscatedName("cp")
-   static int[] field2103 = new int[128];
-   @ObfuscatedName("cm")
-   static int[] field2107 = new int[128];
-   @ObfuscatedName("a")
-   public static class136 field2108 = new class136();
-   @ObfuscatedName("cx")
-   @ObfuscatedGetter(
-      intValue = -1760746293
-   )
-   static int field2109 = 0;
-   @ObfuscatedName("cy")
-   @ObfuscatedGetter(
-      intValue = 283046807
-   )
-   public static int field2110 = 0;
-   @ObfuscatedName("co")
-   @ObfuscatedGetter(
-      intValue = -1710349687
-   )
-   static int field2111 = 0;
-   @ObfuscatedName("cb")
-   public static int[] field2112 = new int[128];
-   @ObfuscatedName("cq")
-   @ObfuscatedGetter(
-      intValue = -386299427
-   )
-   static int field2113 = 0;
-   @ObfuscatedName("cn")
-   @ObfuscatedGetter(
-      intValue = 1276853551
-   )
-   static int field2116 = 0;
-   @ObfuscatedName("ch")
-   @ObfuscatedGetter(
-      intValue = 1565648987
-   )
-   static volatile int field2117 = 0;
-   @ObfuscatedName("cd")
-   public static int[] field2118 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-   @ObfuscatedName("ip")
-   static class30 field2120;
-   @ObfuscatedName("i")
-   public static class59 field2121;
+@ObfuscatedName("es")
+public class class136 implements Runnable {
+   @ObfuscatedName("rj")
+   protected static boolean field2103;
+   @ObfuscatedName("t")
+   class53 field2104;
+   @ObfuscatedName("m")
+   boolean field2105 = false;
+   @ObfuscatedName("e")
+   class146 field2106 = null;
+   @ObfuscatedName("y")
+   Thread field2107;
+   @ObfuscatedName("p")
+   class146 field2108 = null;
+   @ObfuscatedName("c")
+   public EventQueue field2109;
+   @ObfuscatedName("w")
+   public static String field2112;
 
-   public final synchronized void keyPressed(KeyEvent var1) {
-      if(field2108 != null) {
-         field2117 = 0;
-         int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field2118.length) {
-            var2 = field2118[var2];
-            if(0 != (var2 & 128)) {
-               var2 = -1;
-            }
-         } else {
-            var2 = -1;
-         }
+   @ObfuscatedName("p")
+   public final class146 method2885(String var1, int var2) {
+      return this.method2887(1, var2, var1);
+   }
 
-         if(field2109 >= 0 && var2 >= 0) {
-            field2107[field2109] = var2;
-            field2109 = field2109 + 1 & 127;
-            if(field2113 == field2109) {
-               field2109 = -1;
-            }
-         }
+   @ObfuscatedName("x")
+   final void method2886() {
+      synchronized(this) {
+         this.field2105 = true;
+         this.notifyAll();
+      }
 
-         int var3;
-         if(var2 >= 0) {
-            var3 = 1 + field2111 & 127;
-            if(var3 != field2101) {
-               field2103[field2111] = var2;
-               field2093[field2111] = 0;
-               field2111 = var3;
-            }
-         }
-
-         var3 = var1.getModifiers();
-         if((var3 & 10) != 0 || 85 == var2 || var2 == 10) {
-            var1.consume();
-         }
+      try {
+         this.field2107.join();
+      } catch (InterruptedException var3) {
+         ;
       }
 
    }
 
-   public final void keyTyped(KeyEvent var1) {
-      if(null != field2108) {
-         char var2 = var1.getKeyChar();
-         if(0 != var2 && '\uffff' != var2) {
-            boolean var3;
-            if((var2 <= 0 || var2 >= 128) && (var2 < 160 || var2 > 255)) {
-               label63: {
-                  if(var2 != 0) {
-                     char[] var4 = class164.field2650;
+   public final void run() {
+      while(true) {
+         class146 var1;
+         synchronized(this) {
+            while(true) {
+               if(this.field2105) {
+                  return;
+               }
 
-                     for(int var5 = 0; var5 < var4.length; ++var5) {
-                        char var6 = var4[var5];
-                        if(var6 == var2) {
-                           var3 = true;
-                           break label63;
-                        }
-                     }
+               if(this.field2108 != null) {
+                  var1 = this.field2108;
+                  this.field2108 = this.field2108.field2231;
+                  if(this.field2108 == null) {
+                     this.field2106 = null;
                   }
-
-                  var3 = false;
+                  break;
                }
-            } else {
-               var3 = true;
-            }
 
-            if(var3) {
-               int var7 = field2111 + 1 & 127;
-               if(var7 != field2101) {
-                  field2103[field2111] = -1;
-                  field2093[field2111] = var2;
-                  field2111 = var7;
+               try {
+                  this.wait();
+               } catch (InterruptedException var7) {
+                  ;
                }
             }
          }
-      }
 
-      var1.consume();
+         try {
+            int var2 = var1.field2236;
+            if(var2 == 1) {
+               var1.field2234 = new Socket(InetAddress.getByName((String)var1.field2238), var1.field2237);
+            } else if(var2 == 2) {
+               Thread var3 = new Thread((Runnable)var1.field2238);
+               var3.setDaemon(true);
+               var3.start();
+               var3.setPriority(var1.field2237);
+               var1.field2234 = var3;
+            } else if(var2 == 4) {
+               var1.field2234 = new DataInputStream(((URL)var1.field2238).openStream());
+            } else if(3 == var2) {
+               String var9 = (var1.field2237 >> 24 & 255) + "." + (var1.field2237 >> 16 & 255) + "." + (var1.field2237 >> 8 & 255) + "." + (var1.field2237 & 255);
+               var1.field2234 = InetAddress.getByName(var9).getHostName();
+            }
+
+            var1.field2235 = 1;
+         } catch (ThreadDeath var5) {
+            throw var5;
+         } catch (Throwable var6) {
+            var1.field2235 = 2;
+         }
+      }
    }
 
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(null != field2108) {
-         field2109 = -1;
-      }
+   @ObfuscatedName("t")
+   final class146 method2887(int var1, int var2, Object var3) {
+      class146 var4 = new class146();
+      var4.field2236 = var1;
+      var4.field2237 = var2;
+      var4.field2238 = var3;
+      synchronized(this) {
+         if(this.field2106 != null) {
+            this.field2106.field2231 = var4;
+            this.field2106 = var4;
+         } else {
+            this.field2106 = this.field2108 = var4;
+         }
 
+         this.notify();
+         return var4;
+      }
    }
 
-   public final void focusGained(FocusEvent var1) {
+   @ObfuscatedName("m")
+   public final class146 method2888(URL var1) {
+      return this.method2887(4, 0, var1);
    }
 
    @ObfuscatedName("e")
-   static final void method2926(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, class85 var8, class107[] var9) {
-      class118 var10 = new class118(var0);
-      int var11 = -1;
-
-      while(true) {
-         int var12 = var10.method2659();
-         if(0 == var12) {
-            return;
-         }
-
-         var11 += var12;
-         int var13 = 0;
-
-         while(true) {
-            int var14 = var10.method2659();
-            if(var14 == 0) {
-               break;
-            }
-
-            var13 += var14 - 1;
-            int var15 = var13 & 63;
-            int var16 = var13 >> 6 & 63;
-            int var17 = var13 >> 12;
-            int var18 = var10.method2579();
-            int var19 = var18 >> 2;
-            int var20 = var18 & 3;
-            if(var17 == var4 && var16 >= var5 && var16 < 8 + var5 && var15 >= var6 && var15 < var6 + 8) {
-               class40 var21 = class156.method3176(var11);
-               int var24 = var16 & 7;
-               int var25 = var15 & 7;
-               int var27 = var21.field938;
-               int var28 = var21.field939;
-               int var29;
-               if(1 == (var20 & 1)) {
-                  var29 = var27;
-                  var27 = var28;
-                  var28 = var29;
-               }
-
-               int var26 = var7 & 3;
-               int var23;
-               if(0 == var26) {
-                  var23 = var24;
-               } else if(var26 == 1) {
-                  var23 = var25;
-               } else if(var26 == 2) {
-                  var23 = 7 - var24 - (var27 - 1);
-               } else {
-                  var23 = 7 - var25 - (var28 - 1);
-               }
-
-               var29 = var23 + var2;
-               int var30 = var3 + class157.method3178(var16 & 7, var15 & 7, var7, var21.field938, var21.field939, var20);
-               if(var29 > 0 && var30 > 0 && var29 < 103 && var30 < 103) {
-                  int var31 = var1;
-                  if((class5.field90[1][var29][var30] & 2) == 2) {
-                     var31 = var1 - 1;
-                  }
-
-                  class107 var32 = null;
-                  if(var31 >= 0) {
-                     var32 = var9[var31];
-                  }
-
-                  class32.method712(var1, var29, var30, var11, var20 + var7 & 3, var19, var8, var32);
-               }
-            }
-         }
-      }
+   public final class146 method2889(Runnable var1, int var2) {
+      return this.method2887(2, var2, var1);
    }
 
-   public final synchronized void keyReleased(KeyEvent var1) {
-      if(null != field2108) {
-         field2117 = 0;
-         int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field2118.length) {
-            var2 = field2118[var2] & -129;
-         } else {
-            var2 = -1;
-         }
+   @ObfuscatedName("c")
+   public final class53 method2896() {
+      return this.field2104;
+   }
 
-         if(field2109 >= 0 && var2 >= 0) {
-            field2107[field2109] = ~var2;
-            field2109 = field2109 + 1 & 127;
-            if(field2109 == field2113) {
-               field2109 = -1;
-            }
-         }
+   @ObfuscatedName("y")
+   public final class146 method2897(int var1) {
+      return this.method2887(3, var1, (Object)null);
+   }
+
+   class136() {
+      field2112 = "Unknown";
+      class34.field786 = "1.1";
+
+      try {
+         field2112 = System.getProperty("java.vendor");
+         class34.field786 = System.getProperty("java.version");
+      } catch (Exception var3) {
+         ;
       }
 
-      var1.consume();
+      try {
+         this.field2109 = Toolkit.getDefaultToolkit().getSystemEventQueue();
+      } catch (Throwable var2) {
+         ;
+      }
+
+      this.field2105 = false;
+      this.field2107 = new Thread(this);
+      this.field2107.setPriority(10);
+      this.field2107.setDaemon(true);
+      this.field2107.start();
+   }
+
+   @ObfuscatedName("z")
+   static class80 method2901() {
+      class80 var0 = new class80();
+      var0.field1426 = class76.field1387;
+      var0.field1422 = class76.field1385;
+      var0.field1424 = class76.field1392[0];
+      var0.field1420 = class76.field1388[0];
+      var0.field1425 = class76.field1389[0];
+      var0.field1423 = class76.field1390[0];
+      var0.field1421 = class76.field1391;
+      var0.field1427 = class10.field180[0];
+      class21.method582();
+      return var0;
    }
 }

@@ -1,64 +1,77 @@
+import java.awt.Frame;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("ac")
 public class class33 {
-   @ObfuscatedName("at")
-   static int[] field775;
-   @ObfuscatedName("a")
-   static final class33 field776 = new class33();
-   @ObfuscatedName("f")
-   static final class33 field777 = new class33();
-   @ObfuscatedName("s")
-   static final class33 field778 = new class33();
-   @ObfuscatedName("r")
-   static final class33 field783 = new class33();
+   @ObfuscatedName("x")
+   static final class33 field767 = new class33();
+   @ObfuscatedName("t")
+   static final class33 field768 = new class33();
+   @ObfuscatedName("p")
+   static final class33 field769 = new class33();
+   @ObfuscatedName("cm")
+   public static char field772;
+   @ObfuscatedName("qk")
+   protected static Frame field773;
+   @ObfuscatedName("w")
+   static final class33 field774 = new class33();
+   @ObfuscatedName("ao")
+   @ObfuscatedGetter(
+      intValue = -1750642347
+   )
+   static int field778;
+   @ObfuscatedName("v")
+   static class80[] field779;
 
-   @ObfuscatedName("y")
-   public static final boolean method715() {
-      class136 var0 = class136.field2108;
-      synchronized(class136.field2108) {
-         if(class136.field2116 == class136.field2101) {
-            return false;
+   @ObfuscatedName("w")
+   public static int method729(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 <= 127) {
+            ++var2;
+         } else if(var4 <= 2047) {
+            var2 += 2;
          } else {
-            class13.field201 = class136.field2103[class136.field2101];
-            class110.field1948 = class136.field2093[class136.field2101];
-            class136.field2101 = class136.field2101 + 1 & 127;
-            return true;
+            var2 += 3;
          }
       }
+
+      return var2;
    }
 
-   @ObfuscatedName("r")
-   public static String method716(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(0L == var0 % 37L) {
-            return null;
-         } else {
-            int var2 = 0;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "987149267"
+   )
+   static final void method730(int var0, int var1, int var2, int var3) {
+      for(int var4 = var1; var4 <= var1 + var3; ++var4) {
+         for(int var5 = var0; var5 <= var2 + var0; ++var5) {
+            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
+               class129.field2062[0][var5][var4] = 127;
+               if(var5 == var0 && var5 > 0) {
+                  class5.field96[0][var5][var4] = class5.field96[0][var5 - 1][var4];
+               }
 
-            for(long var3 = var0; 0L != var3; var3 /= 37L) {
-               ++var2;
-            }
+               if(var5 == var0 + var2 && var5 < 103) {
+                  class5.field96[0][var5][var4] = class5.field96[0][var5 + 1][var4];
+               }
 
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); 0L != var0; var5.append(var8)) {
-               long var6 = var0;
-               var0 /= 37L;
-               var8 = class161.field2630[(int)(var6 - var0 * 37L)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
+               if(var1 == var4 && var4 > 0) {
+                  class5.field96[0][var5][var4] = class5.field96[0][var5][var4 - 1];
+               }
+
+               if(var4 == var1 + var3 && var4 < 103) {
+                  class5.field96[0][var5][var4] = class5.field96[0][var5][var4 + 1];
                }
             }
-
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
          }
-      } else {
-         return null;
       }
+
    }
 }

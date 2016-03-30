@@ -1,55 +1,72 @@
+import java.awt.Component;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cw")
-public class class102 extends class203 {
-   @ObfuscatedName("qx")
+@ObfuscatedName("cb")
+@Implements("XClanMember")
+public class class102 extends class208 {
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 743359911
+      intValue = 1301762175
    )
-   static int field1761;
-   @ObfuscatedName("e")
-   static int[] field1764;
-   @ObfuscatedName("a")
-   class87[] field1765;
+   int field1773;
+   @ObfuscatedName("at")
+   static class146 field1775;
+   @ObfuscatedName("p")
+   int[][] field1776;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -93732025
+   )
+   int field1777;
+   @ObfuscatedName("t")
+   int[] field1779;
 
-   class102(class166 var1, class166 var2, int var3, boolean var4) {
-      class198 var5 = new class198();
-      int var6 = var1.method3273(var3);
-      this.field1765 = new class87[var6];
-      int[] var7 = var1.method3272(var3);
-
-      for(int var8 = 0; var8 < var7.length; ++var8) {
-         byte[] var9 = var1.method3263(var3, var7[var8]);
-         class101 var10 = null;
-         int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
-
-         for(class101 var12 = (class101)var5.method3860(); var12 != null; var12 = (class101)var5.method3861()) {
-            if(var12.field1752 == var11) {
-               var10 = var12;
-               break;
-            }
+   @ObfuscatedName("db")
+   static boolean method2282(class173 var0) {
+      if(client.field521) {
+         if(class169.method3395(var0) != 0) {
+            return false;
          }
 
-         if(var10 == null) {
-            byte[] var13;
-            if(var4) {
-               var13 = var2.method3299(0, var11);
-            } else {
-               var13 = var2.method3299(var11, 0);
-            }
-
-            var10 = new class101(var11, var13);
-            var5.method3855(var10);
+         if(0 == var0.field2814) {
+            return false;
          }
-
-         this.field1765[var7[var8]] = new class87(var9, var10);
       }
 
+      return var0.field2787;
    }
 
-   @ObfuscatedName("r")
-   public boolean method2295(int var1) {
-      return this.field1765[var1].field1521;
+   @ObfuscatedName("w")
+   public static void method2283(Component var0) {
+      var0.removeMouseListener(class140.field2163);
+      var0.removeMouseMotionListener(class140.field2163);
+      var0.removeFocusListener(class140.field2163);
+      class140.field2165 = 0;
+   }
+
+   class102(int var1, byte[] var2) {
+      this.field1777 = var1;
+      class119 var3 = new class119(var2);
+      this.field1773 = var3.method2506();
+      this.field1779 = new int[this.field1773];
+      this.field1776 = new int[this.field1773][];
+
+      int var4;
+      for(var4 = 0; var4 < this.field1773; ++var4) {
+         this.field1779[var4] = var3.method2506();
+      }
+
+      for(var4 = 0; var4 < this.field1773; ++var4) {
+         this.field1776[var4] = new int[var3.method2506()];
+      }
+
+      for(var4 = 0; var4 < this.field1773; ++var4) {
+         for(int var5 = 0; var5 < this.field1776[var4].length; ++var5) {
+            this.field1776[var4][var5] = var3.method2506();
+         }
+      }
+
    }
 }

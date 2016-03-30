@@ -1,50 +1,96 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fp")
 public class class156 {
-   @ObfuscatedName("y")
-   public static void method3175() {
-      try {
-         class148.field2225.method4172();
-
-         for(int var0 = 0; var0 < class95.field1619; ++var0) {
-            class228.field3221[var0].method4172();
-         }
-
-         class148.field2221.method4172();
-         class148.field2223.method4172();
-      } catch (Exception var1) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("a")
-   public static class40 method3176(int var0) {
-      class40 var1 = (class40)class40.field945.method3792((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class40.field965.method3263(6, var0);
-         var1 = new class40();
-         var1.field930 = var0;
-         if(null != var2) {
-            var1.method808(new class118(var2));
-         }
-
-         var1.method829();
-         if(var1.field962) {
-            var1.field925 = 0;
-            var1.field941 = false;
-         }
-
-         class40.field945.method3794(var1, (long)var0);
-         return var1;
-      }
-   }
+   @ObfuscatedName("fe")
+   @ObfuscatedGetter(
+      intValue = 39048027
+   )
+   @Export("cameraZ")
+   static int field2333;
 
    @ObfuscatedName("e")
-   public static void method3177() {
-      class46.field1058.method3800();
+   @ObfuscatedSignature(
+      signature = "(Lclass119;IB)V",
+      garbageValue = "3"
+   )
+   public static void method3193(class119 var0, int var1) {
+      if(class149.field2252 != null) {
+         try {
+            class149.field2252.method4169(0L);
+            class149.field2252.method4157(var0.field2012, var1, 24);
+         } catch (Exception var3) {
+            ;
+         }
+      }
+
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZI)I",
+      garbageValue = "1"
+   )
+   static int method3194(CharSequence var0, int var1) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var2 = false;
+         boolean var3 = false;
+         int var4 = 0;
+         int var5 = var0.length();
+
+         for(int var6 = 0; var6 < var5; ++var6) {
+            char var7 = var0.charAt(var6);
+            if(0 == var6) {
+               if(var7 == 45) {
+                  var2 = true;
+                  continue;
+               }
+
+               if(var7 == 43) {
+                  continue;
+               }
+            }
+
+            int var9;
+            if(var7 >= 48 && var7 <= 57) {
+               var9 = var7 - 48;
+            } else if(var7 >= 65 && var7 <= 90) {
+               var9 = var7 - 55;
+            } else {
+               if(var7 < 97 || var7 > 122) {
+                  throw new NumberFormatException();
+               }
+
+               var9 = var7 - 87;
+            }
+
+            if(var9 >= var1) {
+               throw new NumberFormatException();
+            }
+
+            if(var2) {
+               var9 = -var9;
+            }
+
+            int var8 = var9 + var1 * var4;
+            if(var4 != var8 / var1) {
+               throw new NumberFormatException();
+            }
+
+            var4 = var8;
+            var3 = true;
+         }
+
+         if(!var3) {
+            throw new NumberFormatException();
+         } else {
+            return var4;
+         }
+      } else {
+         throw new IllegalArgumentException("");
+      }
    }
 }

@@ -1,22 +1,22 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bb")
 public interface class53 {
-   @ObfuscatedName("r")
-   void method1109() throws Exception;
+   @ObfuscatedName("x")
+   void method1118() throws Exception;
+
+   @ObfuscatedName("t")
+   int method1119();
 
    @ObfuscatedName("e")
-   void method1110();
-
-   @ObfuscatedName("s")
-   void method1111();
+   void method1121();
 
    @ObfuscatedName("y")
-   void method1112();
+   void method1122();
 
-   @ObfuscatedName("a")
-   void method1117() throws Exception;
+   @ObfuscatedName("w")
+   void method1124() throws Exception;
 
-   @ObfuscatedName("f")
-   int method1120();
+   @ObfuscatedName("p")
+   void method1128();
 }

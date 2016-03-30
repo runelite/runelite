@@ -2,71 +2,128 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("m")
+@ObfuscatedName("c")
 @Implements("Ignore")
 public class class7 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("x")
    @Export("previousName")
-   String field125;
-   @ObfuscatedName("lr")
-   static class129 field126;
-   @ObfuscatedName("bv")
-   static class167 field127;
-   @ObfuscatedName("a")
+   String field140;
+   @ObfuscatedName("ew")
+   static class78[] field142;
+   @ObfuscatedName("mw")
+   static class78 field143;
+   @ObfuscatedName("en")
+   static class78[] field144;
+   @ObfuscatedName("w")
    @Export("name")
-   String field129;
+   String field146;
 
-   @ObfuscatedName("cr")
-   static String method115(String var0, class172 var1) {
-      if(var0.indexOf("%") != -1) {
-         int var2;
-         String var4;
-         for(var2 = 1; var2 <= 5; ++var2) {
-            while(true) {
-               int var3 = var0.indexOf("%" + var2);
-               if(var3 == -1) {
-                  break;
-               }
+   @ObfuscatedName("w")
+   public static int method101(CharSequence var0, CharSequence var1) {
+      int var2 = var0.length();
+      int var3 = var1.length();
+      int var4 = 0;
+      int var5 = 0;
+      byte var6 = 0;
+      byte var7 = 0;
 
-               var4 = var0.substring(0, var3);
-               int var6 = class89.method2100(var1, var2 - 1);
-               String var5;
-               if(var6 < 999999999) {
-                  var5 = Integer.toString(var6);
-               } else {
-                  var5 = "*";
-               }
-
-               var0 = var4 + var5 + var0.substring(2 + var3);
-            }
+      while(var4 - var6 < var2 || var5 - var7 < var3) {
+         if(var4 - var6 >= var2) {
+            return -1;
          }
 
-         while(true) {
-            var2 = var0.indexOf("%dns");
-            if(-1 == var2) {
-               break;
-            }
+         if(var5 - var7 >= var3) {
+            return 1;
+         }
 
-            String var7 = "";
-            if(null != class72.field1356) {
-               int var8 = class72.field1356.field2203;
-               var4 = (var8 >> 24 & 255) + "." + (var8 >> 16 & 255) + "." + (var8 >> 8 & 255) + "." + (var8 & 255);
-               var7 = var4;
-               if(class72.field1356.field2206 != null) {
-                  var7 = (String)class72.field1356.field2206;
-               }
-            }
+         char var8;
+         if(0 != var6) {
+            var8 = (char)var6;
+            boolean var13 = false;
+         } else {
+            var8 = var0.charAt(var4++);
+         }
 
-            var0 = var0.substring(0, var2) + var7 + var0.substring(var2 + 4);
+         char var9;
+         if(0 != var7) {
+            var9 = (char)var7;
+            boolean var14 = false;
+         } else {
+            var9 = var1.charAt(var5++);
+         }
+
+         byte var10;
+         if(var8 == 198) {
+            var10 = 69;
+         } else if(var8 == 230) {
+            var10 = 101;
+         } else if(223 == var8) {
+            var10 = 115;
+         } else if(338 == var8) {
+            var10 = 69;
+         } else if(339 == var8) {
+            var10 = 101;
+         } else {
+            var10 = 0;
+         }
+
+         var6 = var10;
+         byte var11;
+         if(198 == var9) {
+            var11 = 69;
+         } else if(var9 == 230) {
+            var11 = 101;
+         } else if(var9 == 223) {
+            var11 = 115;
+         } else if(338 == var9) {
+            var11 = 69;
+         } else if(339 == var9) {
+            var11 = 101;
+         } else {
+            var11 = 0;
+         }
+
+         var7 = var11;
+         var8 = class42.method914(var8);
+         var9 = class42.method914(var9);
+         if(var9 != var8 && Character.toUpperCase(var8) != Character.toUpperCase(var9)) {
+            var8 = Character.toLowerCase(var8);
+            var9 = Character.toLowerCase(var9);
+            if(var8 != var9) {
+               return class49.method1044(var8) - class49.method1044(var9);
+            }
          }
       }
 
-      return var0;
-   }
+      int var15 = Math.min(var2, var3);
 
-   @ObfuscatedName("a")
-   public static void method116(class166 var0, class166 var1) {
-      class39.field908 = var0;
-      class39.field906 = var1;
+      int var16;
+      char var19;
+      for(var16 = 0; var16 < var15; ++var16) {
+         char var17 = var0.charAt(var16);
+         var19 = var1.charAt(var16);
+         if(var19 != var17 && Character.toUpperCase(var17) != Character.toUpperCase(var19)) {
+            var17 = Character.toLowerCase(var17);
+            var19 = Character.toLowerCase(var19);
+            if(var17 != var19) {
+               return class49.method1044(var17) - class49.method1044(var19);
+            }
+         }
+      }
+
+      var16 = var2 - var3;
+      if(0 != var16) {
+         return var16;
+      } else {
+         for(int var18 = 0; var18 < var15; ++var18) {
+            var19 = var0.charAt(var18);
+            char var12 = var1.charAt(var18);
+            if(var12 != var19) {
+               return class49.method1044(var19) - class49.method1044(var12);
+            }
+         }
+
+         return 0;
+      }
    }
 }

@@ -1,129 +1,169 @@
-import java.net.URL;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("y")
 public final class class5 {
-   @ObfuscatedName("j")
-   static int[][] field71;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1414126985
-   )
-   static int field72 = 99;
-   @ObfuscatedName("g")
-   static byte[][][] field73;
-   @ObfuscatedName("s")
-   static byte[][][] field74;
-   @ObfuscatedName("y")
-   static byte[][][] field75;
    @ObfuscatedName("e")
-   static byte[][][] field76;
-   @ObfuscatedName("w")
-   static final int[] field77 = new int[]{-1, -1, 1, 1};
-   @ObfuscatedName("m")
-   static byte[][][] field78;
-   @ObfuscatedName("q")
-   static final int[] field79 = new int[]{1, -1, -1, 1};
-   @ObfuscatedName("z")
-   static int[][][] field80;
-   @ObfuscatedName("c")
-   static final int[] field81 = new int[]{1, 2, 4, 8};
-   @ObfuscatedName("x")
-   static final int[] field82 = new int[]{16, 32, 64, 128};
-   @ObfuscatedName("d")
-   static final int[] field83 = new int[]{1, 0, -1, 0};
-   @ObfuscatedName("p")
-   static final int[] field84 = new int[]{0, -1, 0, 1};
-   @ObfuscatedName("a")
-   @Export("tileHeights")
-   static int[][][] field86 = new int[4][105][105];
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1765698797
-   )
-   static int field87 = (int)(Math.random() * 17.0D) - 8;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1937801931
-   )
-   static int field88 = (int)(Math.random() * 33.0D) - 16;
-   @ObfuscatedName("r")
-   @Export("tileSettings")
-   static byte[][][] field90 = new byte[4][104][104];
-
+   static byte[][][] field93;
    @ObfuscatedName("l")
-   static class102 method83(int var0) {
-      class102 var1 = (class102)class42.field1004.method3792((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         var1 = class22.method575(class42.field984, class42.field985, var0, false);
-         if(var1 != null) {
-            class42.field1004.method3794(var1, (long)var0);
-         }
+   static int[] field94;
+   @ObfuscatedName("j")
+   public static class59 field95;
+   @ObfuscatedName("w")
+   @Export("tileHeights")
+   static int[][][] field96 = new int[4][105][105];
+   @ObfuscatedName("v")
+   static int[][] field97;
+   @ObfuscatedName("r")
+   static final int[] field98 = new int[]{1, -1, -1, 1};
+   @ObfuscatedName("o")
+   static final int[] field100 = new int[]{1, 2, 4, 8};
+   @ObfuscatedName("h")
+   static final int[] field101 = new int[]{16, 32, 64, 128};
+   @ObfuscatedName("k")
+   static final int[] field102 = new int[]{1, 0, -1, 0};
+   @ObfuscatedName("f")
+   static final int[] field103 = new int[]{0, -1, 0, 1};
+   @ObfuscatedName("cc")
+   static class146 field104;
+   @ObfuscatedName("n")
+   static final int[] field105 = new int[]{-1, -1, 1, 1};
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 528350797
+   )
+   static int field106 = (int)(Math.random() * 17.0D) - 8;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1544222357
+   )
+   static int field107 = (int)(Math.random() * 33.0D) - 16;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1942512641
+   )
+   static int field108 = 99;
+   @ObfuscatedName("x")
+   @Export("tileSettings")
+   static byte[][][] field109 = new byte[4][104][104];
 
-         return var1;
+   @ObfuscatedName("bn")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "1308978484"
+   )
+   static final void method62(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      class16 var9 = null;
+
+      for(class16 var10 = (class16)client.field482.method3836(); var10 != null; var10 = (class16)client.field482.method3841()) {
+         if(var10.field243 == var0 && var10.field238 == var1 && var10.field239 == var2 && var10.field249 == var3) {
+            var9 = var10;
+            break;
+         }
       }
+
+      if(null == var9) {
+         var9 = new class16();
+         var9.field243 = var0;
+         var9.field249 = var3;
+         var9.field238 = var1;
+         var9.field239 = var2;
+         class20.method580(var9);
+         client.field482.method3834(var9);
+      }
+
+      var9.field250 = var4;
+      var9.field245 = var5;
+      var9.field251 = var6;
+      var9.field246 = var7;
+      var9.field247 = var8;
    }
 
-   @ObfuscatedName("a")
-   static boolean method99() {
-      try {
-         if(class107.field1879 == null) {
-            class107.field1879 = new class18(class129.field2056, new URL(class208.field3114));
-         } else {
-            byte[] var0 = class107.field1879.method206();
-            if(null != var0) {
-               class118 var1 = new class118(var0);
-               class25.field634 = var1.method2514();
-               class25.field633 = new class25[class25.field634];
-
-               class25 var3;
-               for(int var2 = 0; var2 < class25.field634; var3.field641 = var2++) {
-                  var3 = class25.field633[var2] = new class25();
-                  var3.field638 = var1.method2514();
-                  var3.field639 = var1.method2517();
-                  var3.field630 = var1.method2520();
-                  var3.field643 = var1.method2520();
-                  var3.field644 = var1.method2579();
-                  var3.field635 = var1.method2515();
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-466596852"
+   )
+   static final void method91() {
+      for(class6 var0 = (class6)client.field427.method3836(); null != var0; var0 = (class6)client.field427.method3841()) {
+         if(var0.field113 == class82.field1437 && client.field305 <= var0.field119) {
+            if(client.field305 >= var0.field118) {
+               if(var0.field128 > 0) {
+                  class34 var1 = client.field331[var0.field128 - 1];
+                  if(var1 != null && var1.field849 >= 0 && var1.field849 < 13312 && var1.field819 >= 0 && var1.field819 < 13312) {
+                     var0.method95(var1.field849, var1.field819, class43.method938(var1.field849, var1.field819, var0.field113) - var0.field117, client.field305);
+                  }
                }
 
-               class4.method53(class25.field633, 0, class25.field633.length - 1, class25.field637, class25.field636);
-               class107.field1879 = null;
-               return true;
+               if(var0.field128 < 0) {
+                  int var2 = -var0.field128 - 1;
+                  class2 var3;
+                  if(client.field416 == var2) {
+                     var3 = class167.field2692;
+                  } else {
+                     var3 = client.field415[var2];
+                  }
+
+                  if(null != var3 && var3.field849 >= 0 && var3.field849 < 13312 && var3.field819 >= 0 && var3.field819 < 13312) {
+                     var0.method95(var3.field849, var3.field819, class43.method938(var3.field849, var3.field819, var0.field113) - var0.field117, client.field305);
+                  }
+               }
+
+               var0.method99(client.field370);
+               class3.field75.method1919(class82.field1437, (int)var0.field124, (int)var0.field125, (int)var0.field126, 60, var0, var0.field132, -1, false);
             }
+         } else {
+            var0.method3935();
          }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         class107.field1879 = null;
       }
 
-      return false;
    }
 
-   @ObfuscatedName("a")
-   public static int method100(int var0, int var1, int var2) {
-      var2 &= 3;
-      return 0 == var2?var0:(var2 == 1?var1:(2 == var2?7 - var0:7 - var1));
-   }
-
-   @ObfuscatedName("a")
-   public static class52 method101(int var0) {
-      class52 var1 = (class52)class52.field1164.method3792((long)var0);
-      if(var1 != null) {
-         return var1;
+   @ObfuscatedName("w")
+   static class80[] method92(class167 var0, int var1, int var2) {
+      if(!class121.method2747(var0, var1, var2)) {
+         return null;
       } else {
-         byte[] var2 = class52.field1156.method3263(16, var0);
-         var1 = new class52();
-         if(var2 != null) {
-            var1.method1100(new class118(var2));
+         class80[] var4 = new class80[class178.field2922];
+
+         for(int var5 = 0; var5 < class178.field2922; ++var5) {
+            class80 var6 = var4[var5] = new class80();
+            var6.field1426 = class76.field1387;
+            var6.field1422 = class76.field1385;
+            var6.field1424 = class76.field1392[var5];
+            var6.field1420 = class76.field1388[var5];
+            var6.field1425 = class76.field1389[var5];
+            var6.field1423 = class76.field1390[var5];
+            var6.field1421 = class76.field1391;
+            var6.field1427 = class10.field180[var5];
          }
 
-         class52.field1164.method3794(var1, (long)var0);
-         return var1;
+         class21.method582();
+         return var4;
       }
+   }
+
+   @ObfuscatedName("df")
+   static final void method93(class3 var0, boolean var1) {
+      int var2 = var0.field74;
+      int var3 = (int)var0.field3123;
+      var0.method3935();
+      if(var1) {
+         class48.method1033(var2);
+      }
+
+      class104.method2297(var2);
+      class173 var4 = class52.method1115(var3);
+      if(null != var4) {
+         class134.method2877(var4);
+      }
+
+      class32.method727();
+      if(-1 != client.field454) {
+         class39.method797(client.field454, 1);
+      }
+
    }
 }

@@ -1,115 +1,72 @@
-import java.applet.Applet;
-import java.net.URL;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("df")
+@ObfuscatedName("dj")
 public class class126 {
-   @ObfuscatedName("nx")
-   @ObfuscatedGetter(
-      intValue = 1598234469
-   )
-   static int field2037;
-   @ObfuscatedName("f")
-   static class80 field2038;
+   @ObfuscatedName("k")
+   public static String field2050;
 
-   @ObfuscatedName("a")
-   public static int method2820(int var0) {
-      class47 var1 = class49.method1029(var0);
-      int var2 = var1.field1063;
-      int var3 = var1.field1065;
-      int var4 = var1.field1066;
-      int var5 = class175.field2893[var4 - var3];
-      return class175.field2890[var2] >> var3 & var5;
+   @ObfuscatedName("bk")
+   static boolean method2805(int var0) {
+      return var0 == 57 || 58 == var0 || 1007 == var0 || 25 == var0 || 30 == var0;
    }
 
-   @ObfuscatedName("z")
-   static final int method2826(int var0, int var1) {
-      if(var0 == -1) {
-         return 12345678;
+   @ObfuscatedName("x")
+   public static int method2812(int var0) {
+      --var0;
+      var0 |= var0 >>> 1;
+      var0 |= var0 >>> 2;
+      var0 |= var0 >>> 4;
+      var0 |= var0 >>> 8;
+      var0 |= var0 >>> 16;
+      return var0 + 1;
+   }
+
+   @ObfuscatedName("m")
+   public static class80 method2818(class167 var0, String var1, String var2) {
+      int var3 = var0.method3303(var1);
+      int var4 = var0.method3289(var3, var2);
+      return class10.method125(var0, var3, var4);
+   }
+
+   @ObfuscatedName("w")
+   static class22 method2819(int var0) {
+      class22 var1 = (class22)class22.field607.method3771((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
+         byte[] var2 = class9.field169.method3335(var0, 0);
+         if(null == var2) {
+            return null;
+         } else {
+            var1 = new class22();
+            class119 var3 = new class119(var2);
+            var3.field2011 = var3.field2012.length - 12;
+            int var4 = var3.method2511();
+            var1.field603 = var3.method2508();
+            var1.field598 = var3.method2508();
+            var1.field602 = var3.method2508();
+            var1.field604 = var3.method2508();
+            var3.field2011 = 0;
+            var3.method2513();
+            var1.field597 = new int[var4];
+            var1.field599 = new int[var4];
+            var1.field600 = new String[var4];
 
-         return (var0 & 'ﾀ') + var1;
-      }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IZI)Ljava/lang/String;",
-      garbageValue = "1"
-   )
-   public static String method2827(int var0, boolean var1) {
-      return var0 < 0?Integer.toString(var0):class97.method2215(var0, 10, var1);
-   }
-
-   @ObfuscatedName("r")
-   public static boolean method2828() {
-      class209 var0 = (class209)class210.field3125.method3893();
-      return var0 != null;
-   }
-
-   @ObfuscatedName("s")
-   static boolean method2829(String var0, int var1, String var2) {
-      if(0 == var1) {
-         try {
-            if(!class137.field2123.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var12 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-               for(int var13 = 0; var13 < var0.length(); ++var13) {
-                  if(var12.indexOf(var0.charAt(var13)) == -1) {
-                     throw new Exception();
-                  }
+            int var6;
+            for(int var5 = 0; var3.field2011 < var3.field2012.length - 12; var1.field597[var5++] = var6) {
+               var6 = var3.method2508();
+               if(3 == var6) {
+                  var1.field600[var5] = var3.method2683();
+               } else if(var6 < 100 && var6 != 21 && 38 != var6 && var6 != 39) {
+                  var1.field599[var5] = var3.method2511();
+               } else {
+                  var1.field599[var5] = var3.method2506();
                }
-
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
             }
-         } catch (Throwable var7) {
-            return false;
-         }
-      } else if(1 == var1) {
-         try {
-            Applet var4 = class137.field2126;
-            Object[] var5 = new Object[]{(new URL(class137.field2126.getCodeBase(), var0)).toString()};
-            Object var3 = JSObject.getWindow(var4).call(var2, var5);
-            return null != var3;
-         } catch (Throwable var8) {
-            return false;
-         }
-      } else if(2 == var1) {
-         try {
-            class137.field2126.getAppletContext().showDocument(new URL(class137.field2126.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var9) {
-            return false;
-         }
-      } else if(3 == var1) {
-         try {
-            class131.method2854(class137.field2126, "loggedout");
-         } catch (Throwable var11) {
-            ;
-         }
 
-         try {
-            class137.field2126.getAppletContext().showDocument(new URL(class137.field2126.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var10) {
-            return false;
+            class22.field607.method3773(var1, (long)var0);
+            return var1;
          }
-      } else {
-         throw new IllegalArgumentException();
       }
    }
 }

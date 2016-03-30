@@ -1,89 +1,115 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cp")
+@ObfuscatedName("cx")
 public final class class93 {
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 304511389
+      intValue = -2131204619
    )
-   int field1590;
-   @ObfuscatedName("f")
+   int field1596;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1403017975
+      intValue = -1580000801
    )
-   int field1591;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1895479415
-   )
-   int field1592;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -2137982489
-   )
-   int field1593;
+   int field1597;
+   @ObfuscatedName("p")
+   public class85 field1599;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 406322495
+      intValue = -593151139
    )
-   int field1594;
-   @ObfuscatedName("g")
+   public int field1600;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1612193253
+      intValue = -724666071
    )
-   int field1595;
-   @ObfuscatedName("m")
-   public class84 field1596;
-   @ObfuscatedName("j")
-   public class84 field1597;
-   @ObfuscatedName("n")
+   int field1601;
+   @ObfuscatedName("u")
+   static String field1604;
+   @ObfuscatedName("bq")
    @ObfuscatedGetter(
-      intValue = -316885593
+      intValue = -297379225
    )
-   public int field1598 = 0;
-   @ObfuscatedName("l")
+   static int field1607;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1430743955
+      intValue = -1554255059
    )
-   int field1599 = 0;
-   @ObfuscatedName("q")
-   static class13 field1600;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1898743395
-   )
-   int field1604;
+   int field1608;
+   @ObfuscatedName("em")
+   static class80[] field1610;
 
-   @ObfuscatedName("dk")
-   static final void method2182(String var0, int var1) {
-      client.field301.method2753(153);
-      client.field301.method2497(class22.method578(var0) + 1);
-      client.field301.method2503(var0);
-      client.field301.method2648(var1);
+   @ObfuscatedName("w")
+   public static byte method2158(char var0) {
+      byte var1;
+      if((var0 <= 0 || var0 >= 128) && (var0 < 160 || var0 > 255)) {
+         if(8364 == var0) {
+            var1 = -128;
+         } else if(var0 == 8218) {
+            var1 = -126;
+         } else if(402 == var0) {
+            var1 = -125;
+         } else if(8222 == var0) {
+            var1 = -124;
+         } else if(var0 == 8230) {
+            var1 = -123;
+         } else if(8224 == var0) {
+            var1 = -122;
+         } else if(var0 == 8225) {
+            var1 = -121;
+         } else if(710 == var0) {
+            var1 = -120;
+         } else if(var0 == 8240) {
+            var1 = -119;
+         } else if(352 == var0) {
+            var1 = -118;
+         } else if(var0 == 8249) {
+            var1 = -117;
+         } else if(338 == var0) {
+            var1 = -116;
+         } else if(var0 == 381) {
+            var1 = -114;
+         } else if(8216 == var0) {
+            var1 = -111;
+         } else if(var0 == 8217) {
+            var1 = -110;
+         } else if(8220 == var0) {
+            var1 = -109;
+         } else if(8221 == var0) {
+            var1 = -108;
+         } else if(8226 == var0) {
+            var1 = -107;
+         } else if(8211 == var0) {
+            var1 = -106;
+         } else if(8212 == var0) {
+            var1 = -105;
+         } else if(732 == var0) {
+            var1 = -104;
+         } else if(var0 == 8482) {
+            var1 = -103;
+         } else if(var0 == 353) {
+            var1 = -102;
+         } else if(var0 == 8250) {
+            var1 = -101;
+         } else if(339 == var0) {
+            var1 = -100;
+         } else if(382 == var0) {
+            var1 = -98;
+         } else if(376 == var0) {
+            var1 = -97;
+         } else {
+            var1 = 63;
+         }
+      } else {
+         var1 = (byte)var0;
+      }
+
+      return var1;
    }
 
-   @ObfuscatedName("dc")
-   static String method2183(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(client.field295 == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(2 == client.field295) {
-         var0 = var0 + "-wtqa";
-      } else if(3 == client.field295) {
-         var0 = var0 + "-wtwip";
-      } else if(5 == client.field295) {
-         var0 = var0 + "-wti";
-      } else if(4 == client.field295) {
-         var0 = "local";
-      }
-
-      String var3 = "";
-      if(class3.field58 != null) {
-         var3 = "/p=" + class3.field58;
-      }
-
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + client.field298 + "/a=" + client.field299 + var3 + "/";
+   @ObfuscatedName("z")
+   static final String method2159(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

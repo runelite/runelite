@@ -1,18 +1,18 @@
 import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hy")
+@ObfuscatedName("hb")
 final class class216 implements Comparator {
-   public boolean equals(Object var1) {
-      return super.equals(var1);
+   @ObfuscatedName("w")
+   int method3972(class214 var1, class214 var2) {
+      return var1.field3156.field3174 < var2.field3156.field3174?-1:(var2.field3156.field3174 == var1.field3156.field3174?0:1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method4006((class213)var1, (class213)var2);
+      return this.method3972((class214)var1, (class214)var2);
    }
 
-   @ObfuscatedName("a")
-   int method4006(class213 var1, class213 var2) {
-      return var1.field3139.field3164 < var2.field3139.field3164?-1:(var2.field3139.field3164 == var1.field3139.field3164?0:1);
+   public boolean equals(Object var1) {
+      return super.equals(var1);
    }
 }

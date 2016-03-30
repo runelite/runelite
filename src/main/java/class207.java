@@ -1,32 +1,19 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gs")
-@Implements("Node")
+@ObfuscatedName("gv")
 public class class207 {
-   @ObfuscatedName("ez")
-   @Export("previous")
-   class207 field3109;
-   @ObfuscatedName("ep")
-   @Export("next")
-   public class207 field3110;
-   @ObfuscatedName("eq")
-   @Export("hash")
-   public long field3111;
+   @ObfuscatedName("p")
+   class207 field3121;
+   @ObfuscatedName("e")
+   class207 field3122;
 
-   @ObfuscatedName("iz")
-   public boolean method3944() {
-      return this.field3109 != null;
-   }
-
-   @ObfuscatedName("if")
-   public void method3946() {
-      if(this.field3109 != null) {
-         this.field3109.field3110 = this.field3110;
-         this.field3110.field3109 = this.field3109;
-         this.field3110 = null;
-         this.field3109 = null;
+   @ObfuscatedName("w")
+   public void method3929() {
+      if(this.field3122 != null) {
+         this.field3122.field3121 = this.field3121;
+         this.field3121.field3122 = this.field3122;
+         this.field3121 = null;
+         this.field3122 = null;
       }
    }
 }

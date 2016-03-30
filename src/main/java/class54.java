@@ -1,48 +1,48 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bo")
 public class class54 extends class56 {
-   @ObfuscatedName("r")
-   int field1166;
-   @ObfuscatedName("a")
-   static class53 field1167;
+   @ObfuscatedName("w")
+   static class53 field1175;
+   @ObfuscatedName("x")
+   int field1176;
 
-   @ObfuscatedName("a")
-   void vmethod1563() throws Exception {
-      field1167.method1117();
+   class54(class136 var1, int var2) {
+      field1175 = var1.method2896();
+      this.field1176 = var2;
    }
 
-   @ObfuscatedName("e")
-   void vmethod1548() {
-      field1167.method1110();
-   }
-
-   @ObfuscatedName("r")
-   void vmethod1545(int var1) throws Exception {
+   @ObfuscatedName("x")
+   void vmethod1517(int var1) throws Exception {
       if(var1 > '耀') {
          throw new IllegalArgumentException();
       } else {
-         field1167.method1109();
+         field1175.method1118();
       }
    }
 
-   @ObfuscatedName("f")
-   int vmethod1542() {
-      return field1167.method1120();
+   @ObfuscatedName("t")
+   int vmethod1512() {
+      return field1175.method1119();
    }
 
-   @ObfuscatedName("s")
-   void vmethod1546() {
-      field1167.method1111();
+   @ObfuscatedName("e")
+   void vmethod1514() {
+      field1175.method1121();
    }
 
    @ObfuscatedName("y")
-   void vmethod1547() {
-      field1167.method1112();
+   void vmethod1518() {
+      field1175.method1122();
    }
 
-   class54(class135 var1, int var2) {
-      field1167 = var1.method2886();
-      this.field1166 = var2;
+   @ObfuscatedName("p")
+   void vmethod1513() {
+      field1175.method1128();
+   }
+
+   @ObfuscatedName("w")
+   void vmethod1510() throws Exception {
+      field1175.method1124();
    }
 }

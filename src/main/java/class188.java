@@ -1,43 +1,28 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gk")
+@ObfuscatedName("gh")
 public class class188 {
-   @ObfuscatedName("id")
-   static class172 field3039;
-   @ObfuscatedName("bd")
-   static class167 field3040;
+   @ObfuscatedName("gr")
+   public static final int[] field3058 = new int[]{0, -2, 0, 0, 0, 0, 0, -2, 6, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, -2, 8, 0, -2, 0, -2, 0, 0, 0, 0, 0, 0, -2, 0, 8, 3, 0, 2, 0, 6, -1, 0, 0, -1, 0, 0, 0, 4, 0, 2, 0, 6, 0, 0, 0, 6, -1, 0, 0, 0, 5, 0, 0, 0, 0, 0, -2, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 6, 0, 1, 6, 0, 7, 0, 0, 0, 0, 6, 10, 0, 5, 2, 0, 0, 0, 0, 5, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, -1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 2, 0, 0, 0, 0, -2, 2, 0, 8, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 2, 4, 0, 0, 0, 0, 0, -2, 0, 6, 0, 0, 0, -1, 0, 0, 0, 0, 0, 8, -2, -2, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, -2, 0, 0, 0, 0, 2, 4, 0, 15, 0, 0, 2, 0, 0, 0, 0, 4, 4, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 14, 0, 0, 0, 6, 0, -2, 10, 1, 0, 0, 0, 0, 12, 0, 0, 6, 0, 0, 0, -2, 5, -2, 3, 0, 0, 28, 0, 0, 0, 0, -2};
 
-   @ObfuscatedName("j")
-   public static String method3784(String var0) {
-      int var1 = var0.length();
-      char[] var2 = new char[var1];
-      byte var3 = 2;
-
-      for(int var4 = 0; var4 < var1; ++var4) {
-         char var5 = var0.charAt(var4);
-         if(0 == var3) {
-            var5 = Character.toLowerCase(var5);
-         } else if(var3 == 2 || Character.isUpperCase(var5)) {
-            var5 = class92.method2179(var5);
+   @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-69"
+   )
+   static void method3761() {
+      if(client.field573) {
+         class173 var0 = class157.method3195(client.field449, client.field442);
+         if(null != var0 && null != var0.field2859) {
+            class0 var1 = new class0();
+            var1.field2 = var0;
+            var1.field7 = var0.field2859;
+            class3.method48(var1);
          }
 
-         if(Character.isLetter(var5)) {
-            var3 = 0;
-         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
-            if(Character.isSpaceChar(var5)) {
-               if(var3 != 2) {
-                  var3 = 1;
-               }
-            } else {
-               var3 = 1;
-            }
-         } else {
-            var3 = 2;
-         }
-
-         var2[var4] = var5;
+         client.field573 = false;
+         class134.method2877(var0);
       }
-
-      return new String(var2);
    }
 }

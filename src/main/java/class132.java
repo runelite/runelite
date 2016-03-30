@@ -1,26 +1,16 @@
-import java.util.Iterator;
+import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedName;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("ea")
-public abstract class class132 {
-   @ObfuscatedName("n")
-   static class211 field2062;
+@ObfuscatedName("ey")
+public class class132 {
+   @ObfuscatedName("w")
+   public static void method2848(Applet var0, String var1) throws Throwable {
+      JSObject.getWindow(var0).eval(var1);
+   }
 
-   @ObfuscatedName("r")
-   abstract void vmethod3128();
-
-   @ObfuscatedName("f")
-   abstract int vmethod3122(int var1, int var2);
-
-   @ObfuscatedName("g")
-   static String method2859() {
-      String var0 = "";
-
-      class35 var2;
-      for(Iterator var1 = class11.field164.iterator(); var1.hasNext(); var0 = var0 + var2.field791 + ':' + var2.field793 + '\n') {
-         var2 = (class35)var1.next();
-      }
-
-      return var0;
+   @ObfuscatedName("x")
+   public static Object method2849(Applet var0, String var1, Object[] var2) throws Throwable {
+      return JSObject.getWindow(var0).call(var1, var2);
    }
 }

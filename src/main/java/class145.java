@@ -1,21 +1,35 @@
+import java.awt.Component;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eq")
-public class class145 {
-   @ObfuscatedName("e")
+@ObfuscatedName("ee")
+public class class145 extends class131 implements MouseWheelListener {
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1943844401
+      intValue = -732532415
    )
-   int field2198;
-   @ObfuscatedName("y")
-   public volatile int field2202 = 0;
-   @ObfuscatedName("g")
-   public int field2203;
-   @ObfuscatedName("a")
-   class145 field2204;
-   @ObfuscatedName("m")
-   Object field2205;
-   @ObfuscatedName("j")
-   public volatile Object field2206;
+   int field2230 = 0;
+
+   @ObfuscatedName("w")
+   public void vmethod3122(Component var1) {
+      var1.addMouseWheelListener(this);
+   }
+
+   @ObfuscatedName("x")
+   public void vmethod3123(Component var1) {
+      var1.removeMouseWheelListener(this);
+   }
+
+   public synchronized void mouseWheelMoved(MouseWheelEvent var1) {
+      this.field2230 += var1.getWheelRotation();
+   }
+
+   @ObfuscatedName("t")
+   public synchronized int vmethod3129() {
+      int var1 = this.field2230;
+      this.field2230 = 0;
+      return var1;
+   }
 }

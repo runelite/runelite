@@ -1,141 +1,225 @@
+import java.awt.Container;
+import java.awt.Insets;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ah")
+@ObfuscatedName("ab")
 public class class31 {
-   @ObfuscatedName("ag")
-   static class158 field715;
+   @ObfuscatedName("aj")
+   static String field714;
+   @ObfuscatedName("w")
+   static boolean field715;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -449668731
+      intValue = 1640278675
    )
-   static int field716 = 0;
-   @ObfuscatedName("e")
-   static class78 field717;
-   @ObfuscatedName("g")
-   static class78 field718;
-   @ObfuscatedName("l")
-   static class80 field719;
-   @ObfuscatedName("u")
+   static int field716;
+   @ObfuscatedName("p")
+   static class80 field717;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -321520927
+      intValue = -1857356855
+   )
+   static int field718;
+   @ObfuscatedName("i")
+   static int[] field719;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1772102235
+   )
+   static int field720 = 0;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 432798871
    )
    static int field721;
-   @ObfuscatedName("b")
-   static int[] field722;
-   @ObfuscatedName("c")
-   static int[] field723;
-   @ObfuscatedName("d")
-   static int[] field724;
-   @ObfuscatedName("q")
+   @ObfuscatedName("at")
+   static boolean field722;
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = -1566603199
+      intValue = -1202752659
+   )
+   static int field723;
+   @ObfuscatedName("ai")
+   @ObfuscatedGetter(
+      intValue = 1213060405
    )
    static int field725;
-   @ObfuscatedName("aa")
-   static String field726;
-   @ObfuscatedName("aw")
+   @ObfuscatedName("ab")
    @ObfuscatedGetter(
-      intValue = 1301794705
+      intValue = -214222025
+   )
+   static int field726;
+   @ObfuscatedName("av")
+   @ObfuscatedGetter(
+      intValue = 312901363
    )
    static int field727;
-   @ObfuscatedName("ax")
-   @ObfuscatedGetter(
-      intValue = -1261748671
-   )
-   static int field728;
+   @ObfuscatedName("ac")
+   static String field728;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
-      intValue = 1764657703
+      intValue = 1098614667
    )
-   static int field730;
-   @ObfuscatedName("aj")
-   static boolean field731;
-   @ObfuscatedName("w")
+   static int field729;
+   @ObfuscatedName("ae")
+   static String field730;
+   @ObfuscatedName("t")
+   static class80 field731;
+   @ObfuscatedName("az")
+   static String field732;
+   @ObfuscatedName("ay")
    @ObfuscatedGetter(
-      intValue = -461236707
-   )
-   static int field732;
-   @ObfuscatedName("ao")
-   @ObfuscatedGetter(
-      intValue = -15876849
+      intValue = 362980185
    )
    static int field733;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ag")
+   @Export("username")
    static String field734;
-   @ObfuscatedName("ai")
+   @ObfuscatedName("ad")
    static String field735;
-   @ObfuscatedName("ab")
-   static String field736;
-   @ObfuscatedName("al")
-   static String field737;
-   @ObfuscatedName("ap")
+   @ObfuscatedName("au")
+   static class159 field736;
+   @ObfuscatedName("b")
+   static int[] field737;
+   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = -207605875
+      intValue = 496413647
    )
    static int field738;
-   @ObfuscatedName("ed")
-   static class80[] field739;
-   @ObfuscatedName("as")
-   static String field740;
-   @ObfuscatedName("au")
+   @ObfuscatedName("al")
+   static String field739;
+   @ObfuscatedName("an")
    static boolean field741;
-   @ObfuscatedName("ar")
-   @Export("username")
-   static String field742;
-   @ObfuscatedName("a")
-   static boolean field745;
-   @ObfuscatedName("bt")
-   static class80 field746;
-   @ObfuscatedName("bp")
+   @ObfuscatedName("bf")
    @ObfuscatedGetter(
-      intValue = -616779237
+      intValue = 318643399
    )
-   static int field747;
-   @ObfuscatedName("ak")
-   @ObfuscatedGetter(
-      intValue = 563657321
-   )
-   static int field748;
-   @ObfuscatedName("qv")
-   @ObfuscatedGetter(
-      intValue = 389556285
-   )
-   public static int field749;
-   @ObfuscatedName("ac")
-   @ObfuscatedGetter(
-      intValue = -1367457195
-   )
-   static int field750;
-   @ObfuscatedName("pz")
-   @ObfuscatedGetter(
-      intValue = 617772383
-   )
-   static int field751;
+   static int field742;
+   @ObfuscatedName("cy")
+   static class143 field743;
 
    static {
-      field721 = 202 + field716;
-      field722 = new int[256];
-      field725 = 0;
-      field732 = 0;
-      field727 = 0;
-      field728 = 0;
-      field748 = 0;
-      field730 = 0;
-      field750 = 10;
-      field740 = "";
+      field718 = 202 + field720;
+      field719 = new int[256];
+      field716 = 0;
+      field721 = 0;
+      field723 = 0;
       field733 = 0;
+      field725 = 0;
+      field726 = 0;
+      field727 = 10;
+      field728 = "";
+      field729 = 0;
+      field730 = "";
+      field714 = "";
+      field732 = "";
+      field739 = "";
       field734 = "";
       field735 = "";
-      field736 = "";
-      field737 = "";
-      field742 = "";
-      field726 = "";
-      field715 = class158.field2584;
-      field731 = true;
+      field736 = class159.field2626;
+      field722 = true;
       field738 = 0;
       field741 = false;
-      field747 = -1;
+      field742 = -1;
+   }
+
+   @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "1"
+   )
+   static void method698() {
+      client var0 = client.field294;
+      synchronized(client.field294) {
+         Container var1 = client.field294.method3039();
+         if(var1 != null) {
+            class16.field252 = Math.max(var1.getSize().width, class30.field711);
+            class90.field1568 = Math.max(var1.getSize().height, class22.field601);
+            Insets var2;
+            if(class33.field773 == var1) {
+               var2 = class33.field773.getInsets();
+               class16.field252 -= var2.right + var2.left;
+               class90.field1568 -= var2.bottom + var2.top;
+            }
+
+            if(class16.field252 <= 0) {
+               class16.field252 = 1;
+            }
+
+            if(class90.field1568 <= 0) {
+               class90.field1568 = 1;
+            }
+
+            if(class44.method979() == 1) {
+               class15.field235 = client.field509;
+               class15.field233 = client.field510 * 503;
+            } else {
+               class15.field235 = Math.min(class16.field252, 7680);
+               class15.field233 = Math.min(class90.field1568, 2160);
+            }
+
+            class144.field2226 = (class16.field252 - class15.field235) / 2;
+            class144.field2221 = 0;
+            class87.field1537.setSize(class15.field235, class15.field233);
+            class42.field991 = class24.method610(class15.field235, class15.field233, class87.field1537);
+            if(class33.field773 == var1) {
+               var2 = class33.field773.getInsets();
+               class87.field1537.setLocation(class144.field2226 + var2.left, class144.field2221 + var2.top);
+            } else {
+               class87.field1537.setLocation(class144.field2226, class144.field2221);
+            }
+
+            int var8 = class15.field235;
+            int var3 = class15.field233;
+            if(class16.field252 < var8) {
+               var8 = class16.field252;
+            }
+
+            if(class90.field1568 < var3) {
+               var3 = class90.field1568;
+            }
+
+            if(null != class41.field989) {
+               try {
+                  class132.method2849(client.field294, "resize", new Object[]{Integer.valueOf(class44.method979())});
+               } catch (Throwable var6) {
+                  ;
+               }
+            }
+
+            if(client.field454 != -1) {
+               class14.method168(client.field454, class15.field235, class15.field233, true);
+            }
+
+            class36.method766();
+         }
+      }
+   }
+
+   @ObfuscatedName("d")
+   static final int method706(int var0, int var1) {
+      if(-2 == var0) {
+         return 12345678;
+      } else if(-1 == var0) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 'ﾀ') + var1;
+      }
    }
 }
