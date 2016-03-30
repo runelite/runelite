@@ -58,6 +58,16 @@ public class Type
 		}
 		return 1;
 	}
+
+	public boolean isInt()
+	{
+		return type.equals("I") && arrayDimms == 0;
+	}
+
+	public boolean isLong()
+	{
+		return type.equals("J") && arrayDimms == 0;
+	}
 	
 	public boolean isPrimitive()
 	{
