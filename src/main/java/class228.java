@@ -288,7 +288,8 @@ public class class228 {
          }
 
          this.field3226.method4143(this.field3225, 0, this.field3227);
-         this.field3228 += 1343052417L * (long)(this.field3227 * -279911039);
+         //this.field3228 += 1343052417L * (long)(this.field3227 * -279911039);
+         this.field3228 += (long)(this.field3227);
          if(this.field3228 > this.field3229) {
             this.field3229 = this.field3228;
          }
