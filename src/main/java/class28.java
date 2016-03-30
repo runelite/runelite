@@ -147,7 +147,7 @@ public final class class28 extends class85 {
             var26.method2573(null != var8?1:0);
             var26.method2572(var19.getPath());
             if(null != var8) {
-               var26.method2572(var8.getPath());
+//               var26.method2572(var8.getPath());
             }
 
             var24.method4143(var26.field2012, 0, var26.field2011);
