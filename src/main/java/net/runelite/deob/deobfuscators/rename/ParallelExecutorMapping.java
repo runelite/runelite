@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -80,7 +81,7 @@ public class ParallelExecutorMapping
 	
 	public void map(Object one, Object two)
 	{
-		mapClass(one, two);
+		//mapClass(one, two);
 
 		Mapping m = getMapping(one, two);
 		
@@ -101,6 +102,11 @@ public class ParallelExecutorMapping
 
 			Field f1 = (Field) one;
 			Field f2 = (Field) two;
+			
+			assert f1.isStatic() == f2.isStatic();
+			
+			if (f1.isStatic() || f2.isStatic())
+				return;
 
 			cf1 = f1.getFields().getClassFile();
 			cf2 = f2.getFields().getClassFile();
@@ -112,6 +118,11 @@ public class ParallelExecutorMapping
 
 			Method m1 = (Method) one;
 			Method m2 = (Method) two;
+			
+			assert m1.isStatic() == m1.isStatic();
+			
+			if (m1.isStatic() || m2.isStatic())
+				return;
 
 			cf1 = m1.getMethods().getClassFile();
 			cf2 = m2.getMethods().getClassFile();
@@ -128,6 +139,21 @@ public class ParallelExecutorMapping
 		Mapping m = getMapping(cf1, cf2);
 
 		m.inc();
+	}
+	
+	public void buildClasses()
+	{
+		for (Object o : new HashSet<>(map.keySet()))
+			if (o instanceof ClassFile)
+				map.removeAll(o);
+		
+		Map<Object, Object> map = getMap();
+		for (Object key : map.keySet())
+		{
+			Object value = map.get(key);
+			
+			mapClass(key, value);
+		}
 	}
 	
 	public Object get(Object o)
