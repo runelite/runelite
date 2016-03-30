@@ -211,6 +211,7 @@ public class ModArith implements Deobfuscator
 	{
 		Number value;
 		boolean other;
+		boolean constant;
 	}
 	private MultiValueMap<Field, AssociatedConstant> constants = new MultiValueMap();
 	

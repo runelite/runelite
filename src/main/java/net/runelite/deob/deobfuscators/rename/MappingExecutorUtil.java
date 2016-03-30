@@ -1,11 +1,8 @@
 package net.runelite.deob.deobfuscators.rename;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
@@ -330,6 +327,19 @@ public class MappingExecutorUtil
 
 	public static boolean isMaybeEqual(ClassFile cf1, ClassFile cf2)
 	{
+		if (cf1 == null && cf2 == null)
+			return true;
+		
+		if (cf1 == null || cf2 == null)
+			return false;
+		
+		if (!isMaybeEqual(cf1.getParent(), cf2.getParent()))
+			return false;
+		
+		Interfaces i1 = cf1.getInterfaces(), i2 = cf2.getInterfaces();
+		if (i1.getInterfaces().size() != i2.getInterfaces().size())
+			return false;
+		
 		return true;
 	}
 }

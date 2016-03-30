@@ -38,6 +38,8 @@ public class Mapper
 		finalm.merge(mapStaticMethods(source, target));
 		finalm.merge(mapMethods(source, target));
 		finalm.merge(mapPackets(finalm, source, target));
+		
+		finalm.buildClasses();
 
 		mapping = finalm;
 	}
