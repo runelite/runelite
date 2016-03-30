@@ -36,6 +36,11 @@ import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
 import net.runelite.asm.attributes.code.instruction.types.ArrayStoreInstruction;
+import net.runelite.asm.attributes.code.instructions.IAdd;
+import net.runelite.asm.attributes.code.instructions.If;
+import net.runelite.asm.attributes.code.instructions.If0;
+import net.runelite.asm.attributes.code.instructions.LAdd;
+import net.runelite.asm.attributes.code.instructions.LCmp;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class ModArith implements Deobfuscator
@@ -58,7 +63,10 @@ public class ModArith implements Deobfuscator
 		// invoke and array store pops are unrelated to each other
 		if (ctx.getInstruction() instanceof InvokeInstruction ||
 			ctx.getInstruction() instanceof ArrayStoreInstruction ||
-			ctx.getInstruction() instanceof ArrayLoad)
+			ctx.getInstruction() instanceof ArrayLoad ||
+			ctx.getInstruction() instanceof If ||
+			ctx.getInstruction() instanceof If0 ||
+			ctx.getInstruction() instanceof LCmp)
 			return l;
 		
 		set.add(ctx.getInstruction());
@@ -88,6 +96,7 @@ public class ModArith implements Deobfuscator
 					SetFieldInstruction sfi = (SetFieldInstruction) ctx.getInstruction();
 					
 					InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
+					pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
 					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
 					{
 						PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
@@ -99,7 +108,8 @@ public class ModArith implements Deobfuscator
 								this.obfuscatedFields.add(sfi.getMyField());
 						}
 					}
-					else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul)
+					else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul
+						|| pushedsfi.getInstruction() instanceof IAdd || pushedsfi.getInstruction() instanceof LAdd)
 					{
 						Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
 						Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
@@ -116,17 +126,24 @@ public class ModArith implements Deobfuscator
 							pci = (PushConstantInstruction) two;
 							other = one;
 						}
+						
+						if (pci == null)
+							continue;
 
-						if (pci != null
-							&& !(other instanceof GetFieldInstruction))
+						if (other instanceof GetFieldInstruction)
 						{
-							if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
-							{
-								Number i = (Number) pci.getConstant().getObject();
-								if (DMath.isBig(i))
-									// field = constant * not other field
-									this.obfuscatedFields.add(sfi.getMyField());
-							}
+							GetFieldInstruction gfi = (GetFieldInstruction) other;
+
+							if (gfi.getMyField() != sfi.getMyField())
+								continue;
+						}
+
+						if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
+						{
+							Number i = (Number) pci.getConstant().getObject();
+							if (DMath.isBig(i))
+								// field = constant * not other field
+								this.obfuscatedFields.add(sfi.getMyField());
 						}
 					}
 				}
@@ -173,6 +190,17 @@ public class ModArith implements Deobfuscator
 				{
 					continue;
 				}
+
+				InstructionContext popped = ctx.getPushes().get(0).getPopped().isEmpty() ? null : ctx.getPushes().get(0).getPopped().get(0);
+				if (popped != null && popped.getInstruction() instanceof SetFieldInstruction)
+				{
+					SetFieldInstruction sfi = (SetFieldInstruction) popped.getInstruction();
+
+					if (sfi.getMyField() != null)// && sfi.getMyField() != field)
+					{
+						continue;
+					}
+				}
 				
 				this.obfuscatedFields.add(other.getMyField());
 			}
@@ -213,7 +241,25 @@ public class ModArith implements Deobfuscator
 							Field myField = fi2.getMyField();
 							
 							if (myField != null && myField != fi.getMyField())
-								other = true;
+							{
+								Type t = myField.getType();
+								if (t.equals(fi.getMyField().getType()))
+								{
+									other = true;
+								}
+							}
+						}
+					}
+
+					boolean constant = false;
+					if (fi instanceof SetFieldInstruction)
+					{
+						InstructionContext pushedsfi = ctx.getPops().get(0).getPushed(); // value being set
+						pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
+
+						if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+						{
+							constant = true;
 						}
 					}
 					
@@ -227,6 +273,7 @@ public class ModArith implements Deobfuscator
 								AssociatedConstant n = new AssociatedConstant();
 								n.value = (Number) w.getConstant().getObject();
 								n.other = other;
+								n.constant = constant;
 								constants.put(fi.getMyField(), n);
 							}
 						}
@@ -280,13 +327,16 @@ public class ModArith implements Deobfuscator
 					Field field = sf.getMyField();
 					if (field == null)
 						continue;
-					
-					StackContext value = ctx.getPops().get(0); // the first thing popped from both putfield and putstatic is the value
-					if (!(value.getPushed().getInstruction() instanceof IMul) && !(value.getPushed().getInstruction() instanceof LMul))
+
+					InstructionContext pushedsfi = ctx.getPops().get(0).getPushed(); // value being set
+					pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
+
+					if (!(pushedsfi.getInstruction() instanceof IMul) && !(pushedsfi.getInstruction() instanceof LMul)
+						&& !(pushedsfi.getInstruction() instanceof IAdd) && !(pushedsfi.getInstruction() instanceof LAdd))
 					{
-						if (value.getPushed().getInstruction() instanceof LDC_W || value.getPushed().getInstruction() instanceof LDC2_W)
+						if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
 						{
-							PushConstantInstruction ldc = (PushConstantInstruction) value.getPushed().getInstruction();
+							PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
 							
 							if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
 							{
@@ -300,8 +350,8 @@ public class ModArith implements Deobfuscator
 						continue;
 					}
 					
-					Instruction one = value.getPushed().getPops().get(0).getPushed().getInstruction();
-					Instruction two = value.getPushed().getPops().get(1).getPushed().getInstruction();
+					Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
+					Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
 					
 					PushConstantInstruction pc = null;
 					Instruction other = null;
@@ -323,6 +373,12 @@ public class ModArith implements Deobfuscator
 					
 					if (DMath.equals(value2, 1) || DMath.equals(value2, 0))
 						continue;
+
+					if (pushedsfi.getInstruction() instanceof IAdd || pushedsfi.getInstruction() instanceof LAdd)
+					{
+						if (!DMath.isBig(value2))
+							continue;
+					}
 					
 					// field = something * constant
 					constantSetters.put(field, value2);
@@ -538,8 +594,8 @@ public class ModArith implements Deobfuscator
 					.collect(Collectors.toList());
 
 				// filer out ones that have another field in the expression
-				Collection<Number> noOther = col2.stream().filter(i -> !i.other).map(i -> i.value).collect(Collectors.toList());
-				Collection<Number> other = col2.stream().filter(i -> i.other).map(i -> i.value).collect(Collectors.toList());
+				List<Number> noOther = col2.stream().filter(i -> !i.other).filter(i -> !i.constant).map(i -> i.value).collect(Collectors.toList());
+				List<Number> other = col2.stream().filter(i -> i.other || i.constant).map(i -> i.value).collect(Collectors.toList());
 				other.addAll(noOther);
 
 				removeDupes(noOther);
