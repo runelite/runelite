@@ -117,6 +117,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = 1774445885
    )
+   @Export("health")
    int field841;
    @ObfuscatedName("ca")
    @ObfuscatedGetter(
@@ -149,6 +150,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = 1191251743
    )
+   @Export("maxHealth")
    int field848;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
