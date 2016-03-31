@@ -29,6 +29,7 @@ public class BiPush extends Instruction implements PushConstantInstruction
 		super(instructions, InstructionType.BIPUSH, -1);
 
 		this.b = b;
+		length += 1;
 	}
 	
 	@Override

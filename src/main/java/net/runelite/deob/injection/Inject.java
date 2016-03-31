@@ -355,7 +355,6 @@ public class Inject
 
 		Type lastGarbageArgumentType = null;
 
-		assert false;
 		if (!deobfuscatedMethod.getDescriptor().equals(invokeMethod.getDescriptor()))
 		{
 			// allow for obfuscated method to have a single bogus signature at the end
