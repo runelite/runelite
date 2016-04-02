@@ -1,13 +1,7 @@
 package net.runelite.deob.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.deob.gson.GsonFactory;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Field;
 import net.runelite.asm.pool.Method;
@@ -39,16 +33,5 @@ public class NameMappings
 	public Map<Object, String> getMap()
 	{
 		return map;
-	}
-	
-	public void save(File file) throws IOException
-	{
-		Gson g = GsonFactory.gson;
-		String str = g.toJson(map);
-		
-		try (FileWriter fw = new FileWriter(file))
-		{
-			fw.write(str);
-		}
 	}
 }
