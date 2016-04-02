@@ -9,7 +9,7 @@ import org.junit.Test;
 public class AnnotationMapperTest
 {
 	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\1.0-SNAPSHOT\\rs-client-1.0-SNAPSHOT.jar",
-		JAR2 = "d:/rs/07/gamepack_v18_deobbed.jar",
+		JAR2 = "d:/rs/07/gamepack_v20_deobfuscated.jar",
 		OUT = "d:/rs/07/adamout.jar";
 	
 	@Test
