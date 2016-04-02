@@ -10,8 +10,8 @@ import org.junit.Test;
 
 public class InjectTest
 {
-	private static final File DEOBFUSCATED = new File("d:/rs/07/gamepack_v18_with_annotations.jar");
-	private static final File VANILLA = new File(InjectTest.class.getResource("/gamepack_v18.jar").getFile());
+	private static final File DEOBFUSCATED = new File("d:/rs/07/gamepack_v20_mapped.jar");
+	private static final File VANILLA = new File(InjectTest.class.getResource("/gamepack_v20.jar").getFile());
 	private static final File OUT = new File("d:/rs/07/adamout.jar");
 
 	private ClassGroup deob, vanilla;
