@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import net.runelite.deob.gson.GsonFactory;
 import net.runelite.asm.pool.Field;
 
 public class Encryption
@@ -31,16 +30,5 @@ public class Encryption
 	public Pair getField(Field field)
 	{
 		return fields.get(field);
-	}
-	
-	public void save(File file) throws IOException
-	{
-		Gson g = GsonFactory.gson;
-		String str = g.toJson(fields);
-		
-		try (FileWriter fw = new FileWriter(file))
-		{
-			fw.write(str);
-		}
 	}
 }
