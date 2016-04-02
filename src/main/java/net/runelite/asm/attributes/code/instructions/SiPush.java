@@ -27,7 +27,9 @@ public class SiPush extends Instruction implements PushConstantInstruction
 	public SiPush(Instructions instructions, short value)
 	{
 		super(instructions, InstructionType.SIPUSH, -1);
+
 		s = value;
+		length += 2;
 	}
 	
 	@Override
