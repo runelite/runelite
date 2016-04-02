@@ -15,7 +15,7 @@
 	<distributionManagement>
 		<repository>
 			<id>runelite</id>
-			<url>sftp://192.168.1.2/var/www/rs/repo</url>
+			<url>${runelite.repository.url}</url>
 		</repository>
 	</distributionManagement>
 
