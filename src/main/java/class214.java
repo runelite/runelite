@@ -1,49 +1,49 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hx")
 public class class214 {
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      longValue = 5850702340937648831L
-   )
-   public final long field3154;
-   @ObfuscatedName("t")
-   public final class220 field3156;
-   @ObfuscatedName("p")
-   String field3157;
-   @ObfuscatedName("e")
-   String field3158;
+   @ObfuscatedName("f")
+   public final class220 field3146;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -2038622679
+      longValue = 8222344070006396279L
    )
-   public final int field3160;
+   public final long field3147;
+   @ObfuscatedName("s")
+   String field3148;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1067212417
+   )
+   public final int field3149;
+   @ObfuscatedName("p")
+   String field3150;
 
    class214(class119 var1, byte var2, int var3) {
-      this.field3157 = var1.method2683();
-      this.field3158 = var1.method2683();
-      this.field3160 = var1.method2508();
-      this.field3154 = var1.method2512();
-      int var4 = var1.method2511();
-      int var5 = var1.method2511();
-      this.field3156 = new class220();
-      this.field3156.method4002(2);
-      this.field3156.method3998(var2);
-      this.field3156.field3173 = var4;
-      this.field3156.field3174 = var5;
-      this.field3156.field3171 = 0;
-      this.field3156.field3176 = 0;
-      this.field3156.field3172 = var3;
+      this.field3148 = var1.method2531();
+      this.field3150 = var1.method2531();
+      this.field3149 = var1.method2700();
+      this.field3147 = var1.method2529();
+      int var4 = var1.method2528();
+      int var5 = var1.method2528();
+      this.field3146 = new class220();
+      this.field3146.method3993(2);
+      this.field3146.method3982(var2);
+      this.field3146.field3167 = var4;
+      this.field3146.field3170 = var5;
+      this.field3146.field3171 = 0;
+      this.field3146.field3168 = 0;
+      this.field3146.field3169 = var3;
    }
 
-   @ObfuscatedName("x")
-   public String method3963() {
-      return this.field3158;
+   @ObfuscatedName("e")
+   public String method3939() {
+      return this.field3148;
    }
 
    @ObfuscatedName("w")
-   public String method3964() {
-      return this.field3157;
+   public String method3940() {
+      return this.field3150;
    }
 }

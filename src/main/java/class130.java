@@ -1,64 +1,70 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("eu")
 public class class130 {
-   @ObfuscatedName("t")
-   static final class130 field2064 = new class130(2);
+   @ObfuscatedName("f")
+   static final class130 field2048 = new class130(2);
    @ObfuscatedName("w")
-   static final class130 field2065 = new class130(0);
-   @ObfuscatedName("x")
-   public static final class130 field2066 = new class130(1);
-   @ObfuscatedName("p")
+   public static final class130 field2049 = new class130(1);
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 668139557
+      intValue = -2081433417
    )
-   public final int field2067;
+   public final int field2050;
+   @ObfuscatedName("e")
+   static final class130 field2052 = new class130(0);
 
-   class130(int var1) {
-      this.field2067 = var1;
-   }
+   @ObfuscatedName("e")
+   public static final void method2818(long var0) {
+      if(var0 > 0L) {
+         if(0L == var0 % 10L) {
+            long var2 = var0 - 1L;
 
-   @ObfuscatedName("x")
-   static void method2833(int var0, byte[] var1, class134 var2) {
-      class169 var3 = new class169();
-      var3.field2723 = 0;
-      var3.field3123 = (long)var0;
-      var3.field2721 = var1;
-      var3.field2722 = var2;
-      class199 var4 = class170.field2729;
-      synchronized(class170.field2729) {
-         class170.field2729.method3834(var3);
-      }
+            try {
+               Thread.sleep(var2);
+            } catch (InterruptedException var7) {
+               ;
+            }
 
-      Object var9 = class170.field2726;
-      synchronized(class170.field2726) {
-         if(0 == class170.field2728) {
-            class123.field2036.method2889(new class170(), 5);
-         }
-
-         class170.field2728 = 600;
-      }
-   }
-
-   @ObfuscatedName("dz")
-   static boolean method2834(String var0, boolean var1) {
-      if(null == var0) {
-         return false;
-      } else {
-         String var2 = class142.method2997(var0, class164.field2678);
-
-         for(int var3 = 0; var3 < client.field561; ++var3) {
-            if(var2.equalsIgnoreCase(class142.method2997(client.field474[var3].field260, class164.field2678)) && (!var1 || 0 != client.field474[var3].field255)) {
-               return true;
+            try {
+               Thread.sleep(1L);
+            } catch (InterruptedException var6) {
+               ;
+            }
+         } else {
+            try {
+               Thread.sleep(var0);
+            } catch (InterruptedException var5) {
+               ;
             }
          }
 
-         if(var2.equalsIgnoreCase(class142.method2997(class167.field2692.field59, class164.field2678))) {
-            return true;
-         } else {
-            return false;
+      }
+   }
+
+   @ObfuscatedName("n")
+   static void method2820(class25 var0) {
+      if(var0.method628() != client.field284) {
+         client.field284 = var0.method628();
+         boolean var1 = var0.method628();
+         if(class51.field1100 != var1) {
+            class51.field1086.method3760();
+            class51.field1087.method3760();
+            class51.field1129.method3760();
+            class51.field1100 = var1;
          }
       }
+
+      class101.field1732 = var0.field623;
+      client.field279 = var0.field620;
+      client.field280 = var0.field621;
+      class155.field2281 = client.field282 == 0?'ꩊ':var0.field620 + '鱀';
+      class113.field1947 = 0 == client.field282?443:var0.field620 + '썐';
+      class51.field1103 = class155.field2281;
+   }
+
+   class130(int var1) {
+      this.field2050 = var1;
    }
 }

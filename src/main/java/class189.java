@@ -1,11 +1,13 @@
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gc")
+@ObfuscatedName("gr")
 public class class189 {
-   @ObfuscatedName("l")
-   static class80 field3061;
-   @ObfuscatedName("e")
-   @Export("worldList")
-   static class25[] field3062;
+   @ObfuscatedName("s")
+   static class80 field3044;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 331910873
+   )
+   static int field3047;
 }

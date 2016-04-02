@@ -2,70 +2,91 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fe")
 public class class176 {
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @Export("widgetSettings")
-   public static int[] field2916;
-   @ObfuscatedName("x")
-   @Export("settings")
-   public static int[] field2917;
+   public static int[] field2903;
    @ObfuscatedName("w")
-   public static int[] field2918 = new int[32];
+   @Export("settings")
+   public static int[] field2905;
+   @ObfuscatedName("e")
+   public static int[] field2907 = new int[32];
 
    static {
       int var0 = 2;
 
       for(int var1 = 0; var1 < 32; ++var1) {
-         field2918[var1] = var0 - 1;
+         field2907[var1] = var0 - 1;
          var0 += var0;
       }
 
-      field2917 = new int[2000];
-      field2916 = new int[2000];
+      field2905 = new int[2000];
+      field2903 = new int[2000];
    }
 
-   @ObfuscatedName("do")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lclass173;I)V",
-      garbageValue = "-434462163"
+      signature = "(Lclass119;IIIIIIB)V",
+      garbageValue = "104"
    )
-   static final void method3480(class173 var0) {
-      int var1 = var0.field2890;
-      if(324 == var1) {
-         if(-1 == client.field320) {
-            client.field320 = var0.field2806;
-            client.field426 = var0.field2887;
-         }
+   static final void method3432(class119 var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class5.field80[var1][var2][var3] = 0;
 
-         if(client.field309.field2927) {
-            var0.field2806 = client.field320;
-         } else {
-            var0.field2806 = client.field426;
-         }
+         while(true) {
+            var7 = var0.method2523();
+            if(var7 == 0) {
+               if(0 == var1) {
+                  class5.field90[0][var2][var3] = -class114.method2463(var2 + 932731 + var4, var3 + 556238 + var5) * 8;
+               } else {
+                  class5.field90[var1][var2][var3] = class5.field90[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
 
-      } else if(var1 == 325) {
-         if(client.field320 == -1) {
-            client.field320 = var0.field2806;
-            client.field426 = var0.field2887;
-         }
+            if(1 == var7) {
+               int var8 = var0.method2523();
+               if(var8 == 1) {
+                  var8 = 0;
+               }
 
-         if(client.field309.field2927) {
-            var0.field2806 = client.field426;
-         } else {
-            var0.field2806 = client.field320;
-         }
+               if(var1 == 0) {
+                  class5.field90[0][var2][var3] = -var8 * 8;
+               } else {
+                  class5.field90[var1][var2][var3] = class5.field90[var1 - 1][var2][var3] - 8 * var8;
+               }
+               break;
+            }
 
-      } else if(var1 == 327) {
-         var0.field2763 = 150;
-         var0.field2819 = (int)(Math.sin((double)client.field305 / 40.0D) * 256.0D) & 2047;
-         var0.field2810 = 5;
-         var0.field2811 = 0;
-      } else if(var1 == 328) {
-         var0.field2763 = 150;
-         var0.field2819 = (int)(Math.sin((double)client.field305 / 40.0D) * 256.0D) & 2047;
-         var0.field2810 = 5;
-         var0.field2811 = 1;
+            if(var7 <= 49) {
+               class124.field2024[var1][var2][var3] = var0.method2633();
+               class107.field1856[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class5.field82[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+            } else if(var7 <= 81) {
+               class5.field80[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class84.field1431[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.method2523();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(1 == var7) {
+               var0.method2523();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.method2523();
+            }
+         }
       }
+
    }
 }

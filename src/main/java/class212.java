@@ -1,49 +1,49 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("ho")
 public class class212 {
-   @ObfuscatedName("z")
-   final String field3140;
-   @ObfuscatedName("x")
-   static final class212 field3141 = new class212(2, 1, "", "");
-   @ObfuscatedName("t")
-   static final class212 field3142 = new class212(3, 2, "", "");
+   @ObfuscatedName("a")
+   static final class212 field3132 = new class212(4, 7, "", "");
+   @ObfuscatedName("f")
+   static final class212 field3133 = new class212(0, 2, "", "");
+   @ObfuscatedName("s")
+   static final class212 field3134 = new class212(1, 3, "", "");
    @ObfuscatedName("p")
-   static final class212 field3143 = new class212(5, 3, "", "");
+   static final class212 field3135 = new class212(3, 4, "", "");
+   @ObfuscatedName("h")
+   static final class212 field3136 = new class212(6, 5, "", "");
+   @ObfuscatedName("g")
+   static final class212 field3137 = new class212(7, 6, "", "");
    @ObfuscatedName("e")
-   static final class212 field3144 = new class212(7, 4, "", "");
-   @ObfuscatedName("y")
-   static final class212 field3145 = new class212(6, 5, "", "");
-   @ObfuscatedName("v")
-   public static final class212 field3146;
-   @ObfuscatedName("c")
-   static final class212 field3147 = new class212(0, 7, "", "");
-   @ObfuscatedName("l")
+   public static final class212 field3138 = new class212(5, 0, "", "");
+   @ObfuscatedName("r")
+   public static final class212 field3139;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 2065507163
+      intValue = -377440549
    )
-   public final int field3148;
-   @ObfuscatedName("m")
-   static final class212 field3149 = new class212(1, 6, "", "");
+   public final int field3140;
    @ObfuscatedName("w")
-   public static final class212 field3150 = new class212(4, 0, "", "");
-
-   class212(int var1, int var2, String var3, String var4, boolean var5, class212[] var6) {
-      this.field3148 = var1;
-      this.field3140 = var4;
-   }
-
-   class212(int var1, int var2, String var3, String var4) {
-      this.field3148 = var1;
-      this.field3140 = var4;
-   }
+   static final class212 field3141 = new class212(8, 1, "", "");
+   @ObfuscatedName("m")
+   final String field3143;
 
    public String toString() {
-      return this.field3140;
+      return this.field3143;
+   }
+
+   class212(int var1, int var2, String var3, String var4, boolean var5, class212[] var6) {
+      this.field3140 = var1;
+      this.field3143 = var4;
    }
 
    static {
-      field3146 = new class212(8, -1, "", "", true, new class212[]{field3150, field3141, field3142, field3144, field3143});
+      field3139 = new class212(2, -1, "", "", true, new class212[]{field3138, field3141, field3133, field3135, field3134});
+   }
+
+   class212(int var1, int var2, String var3, String var4) {
+      this.field3140 = var1;
+      this.field3143 = var4;
    }
 }

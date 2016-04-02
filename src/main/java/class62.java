@@ -1,37 +1,37 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bu")
 public class class62 extends class65 {
-   @ObfuscatedName("t")
-   public int field1236;
+   @ObfuscatedName("s")
+   int field1202;
    @ObfuscatedName("w")
-   public int field1237;
-   @ObfuscatedName("x")
-   public byte[] field1238;
-   @ObfuscatedName("p")
-   int field1239;
+   public byte[] field1203;
    @ObfuscatedName("e")
-   public boolean field1240;
+   public int field1204;
+   @ObfuscatedName("f")
+   public int field1205;
+   @ObfuscatedName("p")
+   public boolean field1206;
 
    class62(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1237 = var1;
-      this.field1238 = var2;
-      this.field1236 = var3;
-      this.field1239 = var4;
-      this.field1240 = var5;
+      this.field1204 = var1;
+      this.field1203 = var2;
+      this.field1205 = var3;
+      this.field1202 = var4;
+      this.field1206 = var5;
    }
 
-   @ObfuscatedName("w")
-   public class62 method1295(class74 var1) {
-      this.field1238 = var1.method1587(this.field1238);
-      this.field1237 = var1.method1588(this.field1237);
-      if(this.field1236 == this.field1239) {
-         this.field1236 = this.field1239 = var1.method1589(this.field1236);
+   @ObfuscatedName("e")
+   public class62 method1279(class74 var1) {
+      this.field1203 = var1.method1593(this.field1203);
+      this.field1204 = var1.method1595(this.field1204);
+      if(this.field1205 == this.field1202) {
+         this.field1205 = this.field1202 = var1.method1596(this.field1205);
       } else {
-         this.field1236 = var1.method1589(this.field1236);
-         this.field1239 = var1.method1589(this.field1239);
-         if(this.field1236 == this.field1239) {
-            --this.field1236;
+         this.field1205 = var1.method1596(this.field1205);
+         this.field1202 = var1.method1596(this.field1202);
+         if(this.field1205 == this.field1202) {
+            --this.field1205;
          }
       }
 
@@ -39,9 +39,9 @@ public class class62 extends class65 {
    }
 
    class62(int var1, byte[] var2, int var3, int var4) {
-      this.field1237 = var1;
-      this.field1238 = var2;
-      this.field1236 = var3;
-      this.field1239 = var4;
+      this.field1204 = var1;
+      this.field1203 = var2;
+      this.field1205 = var3;
+      this.field1202 = var4;
    }
 }

@@ -4,70 +4,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hp")
+@ObfuscatedName("hb")
 @Implements("XGrandExchangeOffer")
 public class class220 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1396490125
+      intValue = 1047643245
+   )
+   @Export("price")
+   public int field3167;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 651764155
+   )
+   @Export("spent")
+   public int field3168;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1104544609
+   )
+   @Export("itemId")
+   public int field3169;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1342885107
+   )
+   @Export("totalQuantity")
+   public int field3170;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -257658507
    )
    @Export("quantitySold")
    public int field3171;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 951021169
-   )
-   @Export("itemId")
-   public int field3172;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -1230652013
-   )
-   @Export("price")
-   public int field3173;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -2137566865
-   )
-   @Export("totalQuantity")
-   public int field3174;
-   @ObfuscatedName("w")
+   @ObfuscatedName("e")
    @Export("progress")
-   byte field3175;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1073512627
-   )
-   @Export("spent")
-   public int field3176;
+   byte field3172;
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1646966705"
-   )
-   void method3998(int var1) {
-      this.field3175 &= -9;
-      if(1 == var1) {
-         this.field3175 = (byte)(this.field3175 | 8);
+   public class220() {
+   }
+
+   @ObfuscatedName("s")
+   public int method3981() {
+      return (this.field3172 & 8) == 8?1:0;
+   }
+
+   @ObfuscatedName("h")
+   void method3982(int var1) {
+      this.field3172 &= -9;
+      if(var1 == 1) {
+         this.field3172 = (byte)(this.field3172 | 8);
       }
 
-   }
-
-   @ObfuscatedName("t")
-   public int method4000() {
-      return this.field3175 & 7;
-   }
-
-   @ObfuscatedName("e")
-   void method4002(int var1) {
-      this.field3175 &= -8;
-      this.field3175 = (byte)(this.field3175 | var1 & 7);
-   }
-
-   @ObfuscatedName("p")
-   public int method4003() {
-      return 8 == (this.field3175 & 8)?1:0;
    }
 
    @ObfuscatedSignature(
@@ -75,14 +63,22 @@ public class class220 {
       garbageValue = "0"
    )
    public class220(class119 var1, boolean var2) {
-      this.field3175 = var1.method2524();
-      this.field3172 = var1.method2508();
-      this.field3173 = var1.method2511();
-      this.field3174 = var1.method2511();
-      this.field3171 = var1.method2511();
-      this.field3176 = var1.method2511();
+      this.field3172 = var1.method2633();
+      this.field3169 = var1.method2700();
+      this.field3167 = var1.method2528();
+      this.field3170 = var1.method2528();
+      this.field3171 = var1.method2528();
+      this.field3168 = var1.method2528();
    }
 
-   public class220() {
+   @ObfuscatedName("p")
+   void method3993(int var1) {
+      this.field3172 &= -8;
+      this.field3172 = (byte)(this.field3172 | var1 & 7);
+   }
+
+   @ObfuscatedName("f")
+   public int method3996() {
+      return this.field3172 & 7;
    }
 }

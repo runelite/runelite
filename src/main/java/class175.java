@@ -1,28 +1,28 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fn")
 public class class175 extends class204 {
-   @ObfuscatedName("p")
-   public final int[] field2909;
+   @ObfuscatedName("f")
+   public final int[] field2896;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -500781995
+      intValue = -975986503
    )
-   public final int field2911;
-   @ObfuscatedName("x")
+   public final int field2897;
+   @ObfuscatedName("s")
+   public final int[] field2898;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -399827109
+      intValue = 36079183
    )
-   public final int field2912;
-   @ObfuscatedName("t")
-   public final int[] field2914;
+   public final int field2899;
 
-   @ObfuscatedName("w")
-   public boolean method3475(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2909.length) {
-         int var3 = this.field2909[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2914[var2]) {
+   @ObfuscatedName("e")
+   public boolean method3426(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2898.length) {
+         int var3 = this.field2898[var2];
+         if(var1 >= var3 && var1 <= this.field2896[var2] + var3) {
             return true;
          }
       }
@@ -31,9 +31,9 @@ public class class175 extends class204 {
    }
 
    class175(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2911 = var1;
-      this.field2912 = var2;
-      this.field2914 = var3;
-      this.field2909 = var4;
+      this.field2899 = var1;
+      this.field2897 = var2;
+      this.field2896 = var3;
+      this.field2898 = var4;
    }
 }
