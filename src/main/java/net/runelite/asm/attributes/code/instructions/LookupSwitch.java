@@ -114,7 +114,6 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 			for (Instruction i : branchi)
 			{
 				Frame other = frame.dup();
-				other.forking = ins;
 				other.jump(ins, i);
 
 				ins.branch(other);

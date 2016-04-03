@@ -43,29 +43,13 @@ public class ParallellMappingExecutor
 			return step();
 		}
 		
-		//assert e2.frames.contains(f2);
-		
-//		assert f1.other.other == f1;
-//		assert f2.other.other == f2;
-
-		//assert f1.other == f2;
 		assert f2.other == f1;
-
-		//assert f1.isExecuting() == f2.isExecuting();
 
 		// this will happen because conditional branches will create their frame
 		// before realizing its already executed it before, so it will set the frame
 		// as not executing
 		if (!f1.isExecuting() || !f2.isExecuting())
-		{	
-//			assert f1.returnTo == null;
-//			assert f2.returnTo == null;
-			
-			// XXX I dont know if this is right! only helps a few fields.
-			// XXX if a frame exits from a jump loop it would step out which might be bad
-			//popStack(f1);
-			//popStack(f2);
-			
+		{
 			e.frames.remove(f1);
 			e2.frames.remove(f2);
 			
@@ -73,9 +57,6 @@ public class ParallellMappingExecutor
 			
 			return step();
 		}
-		
-		Frame old1 = new Frame(f1), old2 = new Frame(f2);
-		int s1 = e.frames.size(), s2 = e2.frames.size();
 
 		// step frame
 		if (step1)
@@ -100,11 +81,6 @@ public class ParallellMappingExecutor
 			//	System.out.println("STEP OUT " + oldf1.getMethod() + " <-> " + oldf2.getMethod());
 			}
 		
-//		if (e.frames.size() - s1 != e2.frames.size() - s2)
-//		{
-//			System.out.println("fr mismatch");
-//		}
-		
 		if (oldf1 != f1 || oldf2 != f2)
 		{
 			if (f1 == oldf1)
@@ -112,20 +88,6 @@ public class ParallellMappingExecutor
 			if (f2 == oldf2)
 				step2 = false;
 			return step();
-		}
-		
-		if (oldf1 != f1 || oldf2 != f2)
-		{
-//			assert oldf1 != f1;
-//			assert oldf2 != f2;
-//			
-//			Method m1 = oldf1.getMethod(), m2 = oldf2.getMethod();
-//			
-//			System.out.println("RETURN MAP " + m1 + " -> " + m2);
-//			
-//			// if one exits and the other doesnt, the functions arent equal
-//			assert oldf1.otherStatic == oldf2;
-//			assert oldf2.otherStatic == oldf1;
 		}
 
 		// get what each frame is paused/exited on
@@ -144,58 +106,33 @@ public class ParallellMappingExecutor
 		{
 			if (stepInto(f1) == null)
 			{
-				//f1.stop();
 				return step();
 			}
 			
-			//try
-			//{
-				step2 = false;
-				return step();
-//			}
-//			finally
-//			{
-//				step2 = true;
-//			}
+			step2 = false;
+			return step();
 		}
 		else if (MappingExecutorUtil.isInlineable(p2.getInstruction()) && !MappingExecutorUtil.isInlineable(p1.getInstruction()))
 		{
 			if (stepInto(f2) == null)
 			{
-				//f2.stop();
 				return step();
 			}
 
-			//try
-			//{
-				step1 = false;
-				return step();
-//			}
-//			finally
-//			{
-//				step1 = true;
-//			}
+			step1 = false;
+			return step();
 		}
 		else if (MappingExecutorUtil.isInlineable(p1.getInstruction()) && MappingExecutorUtil.isInlineable(p2.getInstruction()))
 		{
 			Frame stepf1 = stepInto(f1);
 			Frame stepf2 = stepInto(f2);
 			
-			if (stepf1 == null)
-			{
-				//f1.stop();
-			}
-			if (stepf2 == null)
-			{
-				//f2.stop();
-			}
 			if (stepf1 == null || stepf2 == null)
 				return step();
 			
 			stepf1.otherStatic = stepf2;
 			stepf2.otherStatic = stepf1;
 			
-			doubleStep.add(stepf1.getMethod());
 			//System.out.println("STEP " + stepf1.getMethod() + " <-> " + stepf2.getMethod());
 			
 			return step();
@@ -206,7 +143,6 @@ public class ParallellMappingExecutor
 		
 		return true;
 	}
-	public static Set<Method> doubleStep = new HashSet();
 
 	public InstructionContext getP1()
 	{
@@ -254,14 +190,10 @@ public class ParallellMappingExecutor
 		
 		if (e.hasInvoked(i, to))
 			return null;
-		//assert e.methods.contains(to) == false;
-		//e.methods.add(to);
 		
 		Frame f2 = new Frame(e, to);
-		f2.created = is;
 		f2.initialize(i);
 		
-//		assert e.frames.contains(f);
 		if (e.frames.contains(f))
 		{
 			int idx = e.frames.indexOf(f);
@@ -295,10 +227,7 @@ public class ParallellMappingExecutor
 		
 		if (f.isExecuting() || f.returnTo == null)
 			return f;
-		
-//		if (!f.getInstructions().isEmpty())
-//			return f;
-//		
+			
 		InstructionContext i = f.getInstructions().get(f.getInstructions().size() - 1);
 		if (!(i.getInstruction() instanceof ReturnInstruction))
 			return f;
@@ -325,37 +254,8 @@ public class ParallellMappingExecutor
 			
 			StackContext invokePushed = i2.getPushes().get(0);
 
-			//assert invokePushed.returnSource == null;
 			invokePushed.returnSource = returnValue;
-//
-//			if (invokePushed.getPushed().getInstruction() != i2.getInstruction())
-//			//if (!(invokePushed.getPushed().getInstruction() instanceof InvokeStatic))
-//			{
-//				return r;
-//			}
-//
-//			//returnStacks.add(invokePushed);
-//			returnStacks.add(returnValue);
-//			boolean b = returnStacks.contains(invokePushed);
-//			assert invokePushed.getPopped().isEmpty();
-//
-//			// replace invokePushed with returnValue?
-//			i2.getPushes().remove(invokePushed);
-//			i2.getPushes().add(returnValue);
-//
-//			//invokePushed.setpushed = null
-//
-//			Stack stack = r.getStack();
-//			StackContext s = stack.pop();
-//			assert s == invokePushed;
-//			stack.push(returnValue);
-
-			//assert invokePushed.getPushed().getPushes().contains(invokePushed);
-			//invokePushed.getpu
 		}
-		
-		// step return frame
-		//r.execute();
 		
 		return r;
 	}
@@ -390,9 +290,6 @@ public class ParallellMappingExecutor
 		newFrame.other.other = newFrame;
 		
 		f.other = null;
-		
-		// step return frame
-		//f.returnTo.execute();
 		
 		return f.returnTo;
 	}
