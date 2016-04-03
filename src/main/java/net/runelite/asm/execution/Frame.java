@@ -2,6 +2,7 @@ package net.runelite.asm.execution;
 
 import com.google.common.collect.Lists;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
@@ -16,6 +17,7 @@ import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.AThrow;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Frame
 {
@@ -26,7 +28,7 @@ public class Frame
 	private Stack stack;
 	private Variables variables;
 	private List<InstructionContext> instructions = new ArrayList<>(); // instructions executed in this frame
-	private MethodContext ctx;
+	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
 	protected Method nonStatic; // next non static method up the stack
 	public Frame other; // in the other execution for mapping
 	public Frame returnTo; // is this the same as caller?
@@ -41,10 +43,6 @@ public class Frame
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
-		// don't cache method contexts per execution
-		// need to allow the same method to execute multiple times
-		// when called from multiple places to allow graph building //XXX there no longer is a graph
-		ctx = new MethodContext(execution);
 		nonStatic = method;
 	}
 
@@ -58,7 +56,6 @@ public class Frame
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
 
-		ctx = new MethodContext(execution);
 		nonStatic = method;
 
 		cur = i;
@@ -142,7 +139,6 @@ public class Frame
 		this.cur = other.cur;
 		this.stack = new Stack(other.stack);
 		this.variables = new Variables(other.variables);
-		this.ctx = other.ctx;
 		this.nonStatic = other.nonStatic;
 		if (other.returnTo != null)
 		{
@@ -192,11 +188,6 @@ public class Frame
 	public Variables getVariables()
 	{
 		return variables;
-	}
-
-	public MethodContext getMethodCtx()
-	{
-		return ctx;
 	}
 	
 	public void addInstructionContext(InstructionContext i)
@@ -324,12 +315,22 @@ public class Frame
 		assert to.getInstructions() == method.getCode().getInstructions();
 		assert method.getCode().getInstructions().getInstructions().contains(to);
 		
-		if (ctx.hasJumped(from, to))
+		if (hasJumped(from, to))
 		{
 			executing = false;
 			return;
 		}
 		
 		cur = to;
+	}
+
+	private boolean hasJumped(InstructionContext from, Instruction to)
+	{
+		Collection<Instruction> i = visited.getCollection(from);
+		if (i != null && i.contains(to))
+			return true;
+
+		visited.put(from, to);
+		return false;
 	}
 }
