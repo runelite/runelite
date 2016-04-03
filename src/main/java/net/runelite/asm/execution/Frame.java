@@ -239,6 +239,8 @@ public class Frame
 			execution.contexts.put(oldCur, ictx);
 			
 			execution.executed.add(oldCur);
+
+			execution.accept(ictx);
 			
 			processExceptions(ictx);
 			

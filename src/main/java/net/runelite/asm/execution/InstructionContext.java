@@ -209,4 +209,20 @@ public class InstructionContext
 		
 		return ctx;
 	}
+
+	public WeakInstructionContext toWeak()
+	{
+		WeakInstructionContext wic = new WeakInstructionContext(this.getInstruction());
+
+		for (StackContext sctx : stack.getStack())
+		{
+			if (sctx == null)
+				break;
+			
+			InstructionContext i = sctx.getPushed();
+			wic.addStack(i.getInstruction());
+		}
+
+		return wic;
+	}
 }
