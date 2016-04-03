@@ -63,7 +63,7 @@ public class DLoad extends Instruction implements LVTInstruction, WideInstructio
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -78,7 +78,7 @@ public class DLoad extends Instruction implements LVTInstruction, WideInstructio
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

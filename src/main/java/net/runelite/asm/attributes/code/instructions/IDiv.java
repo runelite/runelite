@@ -27,7 +27,7 @@ public class IDiv extends Instruction implements MappableInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -52,7 +52,7 @@ public class IDiv extends Instruction implements MappableInstruction
 		
 		ins.push(ctx);
 
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 
 	@Override

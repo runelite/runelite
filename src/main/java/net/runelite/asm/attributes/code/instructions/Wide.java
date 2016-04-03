@@ -1,5 +1,9 @@
 package net.runelite.asm.attributes.code.instructions;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -7,11 +11,6 @@ import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 
 public class Wide extends Instruction implements LVTInstruction
 {
@@ -59,13 +58,9 @@ public class Wide extends Instruction implements LVTInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
-		InstructionContext ctx = new InstructionContext(this, frame);
-		
-		ins.execute(frame);
-		
-		frame.addInstructionContext(ctx);
+		return ins.execute(frame);
 	}
 
 	@Override

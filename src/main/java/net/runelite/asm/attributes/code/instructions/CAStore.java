@@ -15,7 +15,7 @@ public class CAStore extends ArrayStore
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -28,6 +28,6 @@ public class CAStore extends ArrayStore
 		
 		array.getValue().arraySet(index.getValue(), value.getValue());
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 }

@@ -11,7 +11,6 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 
-import java.io.IOException;
 
 public class DStore_0 extends Instruction implements LVTInstruction
 {
@@ -26,7 +25,7 @@ public class DStore_0 extends Instruction implements LVTInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -37,7 +36,7 @@ public class DStore_0 extends Instruction implements LVTInstruction
 		
 		variables.set(0, new VariableContext(ins, value));
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

@@ -1,23 +1,22 @@
 package net.runelite.asm.attributes.code.instructions;
 
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
-import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.asm.execution.Frame;
-import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.Stack;
-import net.runelite.asm.execution.StackContext;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.Field;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.Stack;
+import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
@@ -64,7 +63,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -78,7 +77,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 		
 		ins.branch(other);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

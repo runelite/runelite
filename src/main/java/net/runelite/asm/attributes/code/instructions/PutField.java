@@ -1,9 +1,15 @@
 package net.runelite.asm.attributes.code.instructions;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
@@ -12,13 +18,6 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Field;
 import net.runelite.asm.pool.NameAndType;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
@@ -27,7 +26,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 	private Field field;
 	private net.runelite.asm.Field myField;
 
-	public PutField(Instructions instructions, InstructionType type, int pc) throws IOException
+	public PutField(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
@@ -54,7 +53,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -63,7 +62,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		StackContext object = stack.pop();
 		ins.pop(value, object);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 
 	@Override

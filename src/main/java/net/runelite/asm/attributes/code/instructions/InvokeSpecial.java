@@ -1,33 +1,32 @@
 package net.runelite.asm.attributes.code.instructions;
 
-import net.runelite.asm.ClassFile;
-import net.runelite.asm.ClassGroup;
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
-import net.runelite.asm.execution.Frame;
-import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.Stack;
-import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
-import net.runelite.asm.pool.Method;
-import net.runelite.asm.pool.NameAndType;
-import net.runelite.asm.pool.PoolEntry;
-import net.runelite.asm.signature.Signature;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.Stack;
+import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.execution.Type;
+import net.runelite.asm.execution.Value;
+import net.runelite.asm.pool.Method;
+import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.pool.PoolEntry;
+import net.runelite.asm.signature.Signature;
 import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
-import net.runelite.asm.execution.Execution;
-import net.runelite.asm.execution.Value;
 
 public class InvokeSpecial extends Instruction implements InvokeInstruction
 {
@@ -68,7 +67,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -110,7 +109,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 			execution.invoke(ins, method);
 		}
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

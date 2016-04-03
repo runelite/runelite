@@ -19,7 +19,7 @@ public class Dup2 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -59,7 +59,7 @@ public class Dup2 extends Instruction implements DupInstruction
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

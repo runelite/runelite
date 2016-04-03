@@ -8,17 +8,16 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 
-import java.io.IOException;
 
 public class I2L extends Instruction
 {
-	public I2L(Instructions instructions, InstructionType type, int pc) throws IOException
+	public I2L(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -31,6 +30,6 @@ public class I2L extends Instruction
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 }

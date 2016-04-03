@@ -21,13 +21,13 @@ public class Pop extends Instruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		
 		StackContext value = frame.getStack().pop();
 		ins.pop(value);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 }

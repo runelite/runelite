@@ -1,6 +1,5 @@
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -24,7 +23,7 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -71,7 +70,7 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

@@ -25,7 +25,7 @@ public class AStore_3 extends Instruction implements LVTInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -36,7 +36,7 @@ public class AStore_3 extends Instruction implements LVTInstruction
 		
 		variables.set(3, new VariableContext(ins, object));
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

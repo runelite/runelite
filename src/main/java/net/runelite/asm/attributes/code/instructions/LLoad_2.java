@@ -12,11 +12,9 @@ import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 
-import java.io.IOException;
-
 public class LLoad_2 extends Instruction implements LVTInstruction
 {
-	public LLoad_2(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LLoad_2(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
@@ -27,7 +25,7 @@ public class LLoad_2 extends Instruction implements LVTInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -42,7 +40,7 @@ public class LLoad_2 extends Instruction implements LVTInstruction
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

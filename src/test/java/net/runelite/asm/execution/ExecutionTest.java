@@ -1,6 +1,5 @@
 package net.runelite.asm.execution;
 
-import net.runelite.asm.execution.Execution;
 import java.io.File;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.deobfuscators.rename.MapStaticTest;
