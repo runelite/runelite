@@ -17,14 +17,14 @@ import org.apache.commons.collections4.map.MultiValueMap;
 public class Execution
 {
 	private ClassGroup group;
-	public List<Frame> frames = new LinkedList<>(),
-			processedFrames = new LinkedList<>();
+	public List<Frame> frames = new LinkedList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
-	private MultiValueMap<InstructionContext, Method> invokes = new MultiValueMap<>();
-	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
+	private MultiValueMap<WeakInstructionContext, Method> invokes = new MultiValueMap<>();
+	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>(); // XXX this should move to method ctx probably
 	public boolean paused;
 	public boolean step = false;
+	private List<ExecutionVisitor> visitors = new ArrayList<>();
 
 	public Execution(ClassGroup group)
 	{
@@ -76,11 +76,11 @@ public class Execution
 	
 	public boolean hasInvoked(InstructionContext from, Method to)
 	{
-		Collection<Method> methods = invokes.getCollection(from);
+		Collection<Method> methods = invokes.getCollection(from.toWeak());
 		if (methods != null && methods.contains(to))
 			return true;
 		
-		invokes.put(from, to);
+		invokes.put(from.toWeak(), to);
 		return false;
 	}
 
@@ -128,7 +128,6 @@ public class Execution
 			assert !frame.isExecuting();
 
 			frames.remove(frame);
-			processedFrames.add(frame);
 		}
 		
 		System.out.println("Processed " + fcount + " frames");
@@ -137,5 +136,15 @@ public class Execution
 	public Collection<InstructionContext> getInstructonContexts(Instruction i)
 	{
 		return contexts.getCollection(i);
+	}
+
+	public void addExecutionVisitor(ExecutionVisitor ev)
+	{
+		this.visitors.add(ev);
+	}
+
+	public void accept(InstructionContext ic)
+	{
+		visitors.forEach(v -> v.visit(ic));
 	}
 }
