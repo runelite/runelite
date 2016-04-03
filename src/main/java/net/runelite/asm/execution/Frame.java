@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exception;
@@ -13,9 +12,6 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
-import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
-import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
-import net.runelite.asm.attributes.code.instructions.AThrow;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import org.apache.commons.collections4.map.MultiValueMap;
 
