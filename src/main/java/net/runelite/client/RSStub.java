@@ -59,7 +59,7 @@ public class RSStub implements AppletStub
 	public void appletResize(int width, int height)
 	{
 		Dimension d = new Dimension(width, height);
-		
+
 		app.setSize(d);
 		app.setPreferredSize(d);
 	}
