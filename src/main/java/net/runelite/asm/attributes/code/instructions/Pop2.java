@@ -26,7 +26,6 @@ public class Pop2 extends Instruction
 		StackContext value = stack.pop();
 		ins.pop(value);
 
-		//Object obj = frame.getStack().pop();
 		if (value.getType().equals(new Type(double.class.getCanonicalName())) || value.getType().equals(new Type(long.class.getCanonicalName())))
 			return ins;
 		
