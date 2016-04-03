@@ -257,8 +257,6 @@ public class Frame
 			assert ictx.getInstruction() == oldCur;
 			execution.contexts.put(oldCur, ictx);
 			
-			this.ctx.instructions.add(ictx);
-			
 			execution.executed.add(oldCur);
 			
 			processExceptions(oldCur);

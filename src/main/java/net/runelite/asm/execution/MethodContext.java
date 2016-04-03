@@ -10,7 +10,6 @@ public class MethodContext
 {
 	private Execution execution;
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
-	public List<InstructionContext> instructions = new ArrayList<>();
 
 	public MethodContext(Execution execution)
 	{
