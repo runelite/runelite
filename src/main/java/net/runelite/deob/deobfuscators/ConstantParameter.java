@@ -14,18 +14,13 @@ import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.If0;
 import net.runelite.asm.execution.Execution;
-import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
@@ -80,20 +75,12 @@ class ConstantMethodParameter
 	}
 }
 
-class MethodGroup
-{
-	public List<Method> methods; // methods that can be invoked
-	public Collection<Integer> constantParameters; // parameters which are always constant for all invocations
-	public List<ConstantMethodParameter> cmps = new ArrayList<>(); // cmps for all methods in the group, which hold the values.
-}
-
 public class ConstantParameter implements Deobfuscator
 {
 	private List<ConstantMethodParameter> parameters = new ArrayList<>();
 	private MultiValueMap<Method, ConstantMethodParameter> mparams = new MultiValueMap<>();
 	
 	private MultiValueMap<Method, Integer> nonconst = new MultiValueMap<>(); // methods with non const parameters
-	private List<MethodGroup> methodGroups = new ArrayList<>();
 	
 	private void checkMethodsAreConsistent(List<Method> methods)
 	{
@@ -109,10 +96,8 @@ public class ConstantParameter implements Deobfuscator
 		}
 	}
 	
-	private List<ConstantMethodParameter> findConstantParameter(List<Method> methods, InstructionContext invokeCtx)
+	private void findConstantParameter(List<Method> methods, InstructionContext invokeCtx)
 	{
-		List<ConstantMethodParameter> list = new ArrayList<>();
-		
 		checkMethodsAreConsistent(methods);
 		
 		Method method = methods.get(0); // all methods must have the same signature etc
@@ -157,8 +142,6 @@ public class ConstantParameter implements Deobfuscator
 				parameters.add(cmp);
 				for (Method m : methods)
 					mparams.put(m, cmp);
-
-				list.add(cmp);
 			}
 			else
 			{
@@ -172,13 +155,10 @@ public class ConstantParameter implements Deobfuscator
 					if (c.methods.equals(methods) && c.lvtIndex == lvtOffset)
 					{
 						it.remove();
-						list.remove(c);
 					}
 				}
 			}
 		}
-
-		return list;
 	}
 	
 	private void findParameters(InstructionContext ins)
@@ -191,19 +171,14 @@ public class ConstantParameter implements Deobfuscator
 			return;
 
 		findConstantParameter(methods, ins);
-		//findDeadParameters(ins, c);
 	}
 	
 	private List<ConstantMethodParameter> findParametersForMethod(Method m)
 	{
-		Collection c = mparams.getCollection(m);
-		if (c == null) return new ArrayList();
-		return new ArrayList(c);
-//		List<ConstantMethodParameter> list = new ArrayList<>();
-//		for (ConstantMethodParameter c : parameters)
-//			if (c.methods.contains(m))
-//				list.add(c);
-//		return list;
+		Collection<ConstantMethodParameter> c = mparams.getCollection(m);
+		if (c == null)
+			return new ArrayList<>();
+		return new ArrayList<>(c);
 	}
 
 	private void findDeadParameters(InstructionContext ins)
@@ -297,27 +272,9 @@ public class ConstantParameter implements Deobfuscator
 				parameter.operations.add(ins);
 				parameter.result = result;
 			}
-//
-//			Boolean b = deadOps.get(ins.getInstruction());
-//			if (b != null)
-//			{
-//				if (b != result)
-//				{
-//					//deadOps.remove(ins.getInstruction());
-//					this.parameters.remove(parameter);
-//					//invalidDeadOps.add(ins.getInstruction());
-//				}
-//			}
-//			else
-//			{
-//				deadOps.put(ins.getInstruction(), result);
-//			}
 		}
 	}
 
-	//private Map<Instruction, Boolean> deadOps = new HashMap<>();
-//	private Set<Instruction> invalidDeadOps = new HashSet<>();
-	
 	private boolean doLogicalComparison(Object value, ComparisonInstruction comparison, Object otherValue)
 	{
 		Instruction ins = (Instruction) comparison;
@@ -355,228 +312,7 @@ public class ConstantParameter implements Deobfuscator
 				throw new RuntimeException("Unknown constant comparison instructuction");
 		}
 	}
-	
-	private static class LogicallyDeadOp
-	{
-		InstructionContext compCtx; // logically dead comparison
-		boolean branch; // branch which is always taken
 
-		@Override
-		public boolean equals(Object obj)
-		{
-			if (obj == null)
-			{
-				return false;
-			}
-			if (getClass() != obj.getClass())
-			{
-				return false;
-			}
-			final LogicallyDeadOp other = (LogicallyDeadOp) obj;
-			if (!Objects.equals(this.compCtx.getInstruction(), other.compCtx.getInstruction()))
-			{
-				return false;
-			}
-			if (this.branch != other.branch)
-			{
-				return false;
-			}
-			return true;
-		}
-	}
-	
-	// find all comparisons of lvtIndex in method and record branch taken
-//	private List<LogicallyDeadOp> isLogicallyDead(Execution execution, Method method, int lvtIndex, Object value)
-//	{
-//		List<LogicallyDeadOp> ops = new ArrayList<>();
-//
-//		for (Frame frame : execution.processedFrames)
-//		{
-//			if (frame.getMethod() != method)
-//				continue;
-//
-//			for (InstructionContext ins : frame.getInstructions())
-//			{
-//				if (ins.getInstruction() instanceof LVTInstruction)
-//				{
-//					LVTInstruction lvt = (LVTInstruction) ins.getInstruction();
-//
-//					if (lvt.getVariableIndex() == lvtIndex && lvt.store())
-//					{
-//						return null;
-//					}
-//				}
-//
-//				if (!(ins.getInstruction() instanceof ComparisonInstruction))
-//					continue;
-//
-//				// assume that this will always be variable index #paramIndex comp with a constant.
-//
-//				ComparisonInstruction comp = (ComparisonInstruction) ins.getInstruction();
-//
-//				StackContext one, two = null;
-//
-//				if (comp instanceof If0)
-//				{
-//					one = ins.getPops().get(0);
-//				}
-//				else if (comp instanceof If)
-//				{
-//					one = ins.getPops().get(0);
-//					two = ins.getPops().get(1);
-//				}
-//				else
-//				{
-//					throw new RuntimeException("Unknown comp ins");
-//				}
-//
-//				// find if one is a lvt ins
-//				LVTInstruction lvt = null;
-//				StackContext other = null;
-//
-//				if (one.getPushed().getInstruction() instanceof LVTInstruction)
-//				{
-//					lvt = (LVTInstruction) one.getPushed().getInstruction();
-//					other = two;
-//				}
-//				else if (two != null && two.getPushed().getInstruction() instanceof LVTInstruction)
-//				{
-//					lvt = (LVTInstruction) two.getPushed().getInstruction();
-//					other = one;
-//				}
-//
-//				assert lvt == null || !lvt.store();
-//
-//				if (lvt == null || lvt.getVariableIndex() != lvtIndex)
-//					continue;
-//
-//				Object otherValue = null;
-//
-//				if (two != null) // two is null for if0
-//				{
-//					if (!(other.getPushed().getInstruction() instanceof PushConstantInstruction))
-//						continue;
-//
-//					PushConstantInstruction pc = (PushConstantInstruction) other.getPushed().getInstruction();
-//					otherValue = pc.getConstant().getObject();
-//				}
-//
-//				// the result of the comparison doesn't matter, only that it always goes the same direction for every invocation
-//				boolean result = doLogicalComparison(value, comp, otherValue);
-//
-//				LogicallyDeadOp deadOp = new LogicallyDeadOp();
-//				deadOp.compCtx = ins;
-//				deadOp.branch = result;
-//				ops.add(deadOp);
-//			}
-//		}
-//
-//		return ops;
-//	}
-	
-	private static class MethodLvtPair
-	{
-		Method method;
-		int lvtIndex;
-		int paramIndex;
-		Object value; // example value, used for @ObfuscatedSignature. Just one possible value.
-
-		public MethodLvtPair(Method method, int lvtIndex, int paramIndex, Object value)
-		{
-			this.method = method;
-			this.lvtIndex = lvtIndex;
-			this.paramIndex = paramIndex;
-			this.value = value;
-		}
-
-		@Override
-		public int hashCode()
-		{
-			int hash = 5;
-			hash = 31 * hash + Objects.hashCode(this.method);
-			hash = 31 * hash + this.lvtIndex;
-			hash = 31 * hash + this.paramIndex;
-			return hash;
-		}
-
-		@Override
-		public boolean equals(Object obj)
-		{
-			if (obj == null)
-			{
-				return false;
-			}
-			if (getClass() != obj.getClass())
-			{
-				return false;
-			}
-			final MethodLvtPair other = (MethodLvtPair) obj;
-			if (!Objects.equals(this.method, other.method))
-			{
-				return false;
-			}
-			if (this.lvtIndex != other.lvtIndex)
-			{
-				return false;
-			}
-			if (this.paramIndex != other.paramIndex)
-			{
-				return false;
-			}
-			return true;
-		}
-		
-		
-	}
-//
-//	private Map<MethodLvtPair, List<LogicallyDeadOp> > deadops = new HashMap<>();
-//	private Set<MethodLvtPair> invalidDeadops = new HashSet<>();
-	
-	// check every method parameter that we've identified as being passed constants to see if it's logically dead
-//	private void findLogicallyDeadOperations(Execution execution)
-//	{
-//		for (ConstantMethodParameter cmp : parameters)
-//		{
-//			for (Method method : cmp.methods)
-//			{
-//				MethodLvtPair pair = new MethodLvtPair(method, cmp.lvtIndex, cmp.paramIndex, cmp.value);
-//
-//				if (invalidDeadops.contains(pair))
-//					continue;
-//
-//				// the dead comparisons must be the same and branch the same way for every call to this method.
-//				List<LogicallyDeadOp> deadOps = isLogicallyDead(execution, method, cmp.lvtIndex, cmp.value);
-//
-//				if (deadOps == null)
-//				{
-//					deadops.remove(pair);
-//					invalidDeadops.add(pair);
-//					continue; // lvt store
-//				}
-//
-//				if (deadOps.isEmpty())
-//					continue; // no ops to compare
-//
-//				// this must be per method,lvtindex
-//				List<LogicallyDeadOp> existing = deadops.get(pair);
-//				if (existing != null)
-//					if (!existing.equals(deadOps))
-//					{
-//						// one of the branches taken differs because of the value, skip it
-//						deadops.remove(pair);
-//						invalidDeadops.add(pair);
-//						continue;
-//					}
-//					else
-//					{
-//						continue;
-//					}
-//
-//				deadops.put(pair, deadOps);
-//			}
-//		}
-//	}
-	
 	// remove logically dead comparisons
 	private int removeDeadOperations()
 	{
@@ -671,20 +407,12 @@ public class ConstantParameter implements Deobfuscator
 	@Override
 	public void run(ClassGroup group)
 	{
-		group.buildClassGraph(); // required for getMethods in the invoke stuff by execution...
-		
 		Execution execution = new Execution(group);
 		execution.addExecutionVisitor((i) -> findParameters(i));
 		execution.addExecutionVisitor((i) -> findDeadParameters(i));
 		execution.populateInitialMethods();
 		execution.run();
 
-//		execution = new Execution(group);
-//		execution.addExecutionVisitor((i) -> findDeadParameters(i));
-//		execution.populateInitialMethods();
-//		execution.run();
-		
-		//findLogicallyDeadOperations(execution);
 		int count = removeDeadOperations();
 		
 		System.out.println("Removed " + count + " logically dead conditional jumps");
