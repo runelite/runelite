@@ -1,5 +1,11 @@
 package net.runelite.asm.attributes.code.instructions;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -8,13 +14,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class LookupSwitch extends Instruction implements JumpingInstruction
 {
@@ -101,7 +100,7 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -122,7 +121,7 @@ public class LookupSwitch extends Instruction implements JumpingInstruction
 		
 		frame.jump(ins, defi);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

@@ -6,10 +6,9 @@ import net.runelite.asm.execution.Frame;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.execution.InstructionContext;
 
 public abstract class Instruction implements Cloneable
 {
@@ -181,7 +180,7 @@ public abstract class Instruction implements Cloneable
 		return type.getName() + " at pc " + frame.getPc() + " in " + frame.getMethod().getName() + " " + frame.getMethod().getDescriptor() + " class " + frame.getMethod().getCode().getAttributes().getClassFile().getName();
 	}
 
-	public abstract void execute(Frame e);
+	public abstract InstructionContext execute(Frame e);
 	
 	/* does this terminate a block? */
 	public boolean isTerminal()

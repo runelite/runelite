@@ -23,7 +23,7 @@ public class Return extends Instruction implements ReturnInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -31,9 +31,9 @@ public class Return extends Instruction implements ReturnInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		frame.addInstructionContext(ins);
-		
 		frame.stop();
+
+		return ins;
 	}
 	
 	@Override

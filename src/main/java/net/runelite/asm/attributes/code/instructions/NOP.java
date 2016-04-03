@@ -6,7 +6,6 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 
-import java.io.IOException;
 
 public class NOP extends Instruction
 {
@@ -21,9 +20,8 @@ public class NOP extends Instruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
-		InstructionContext ctx = new InstructionContext(this, frame);
-		frame.addInstructionContext(ctx);
+		return new InstructionContext(this, frame);
 	}
 }

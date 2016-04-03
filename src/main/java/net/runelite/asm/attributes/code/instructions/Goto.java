@@ -66,12 +66,13 @@ public class Goto extends Instruction implements JumpingInstruction
 	}
 	
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ctx = new InstructionContext(this, frame);
-		frame.addInstructionContext(ctx);
 		
 		frame.jump(ctx, to);
+
+		return ctx;
 	}
 	
 	@Override

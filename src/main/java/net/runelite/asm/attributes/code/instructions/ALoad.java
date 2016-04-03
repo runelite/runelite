@@ -28,12 +28,12 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 		++length;
 	}
 
-	public ALoad(Instructions instructions, InstructionType type, int pc) throws IOException
+	public ALoad(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
 	
-	public ALoad(Instructions instructions, InstructionType type, Instruction instruction, int pc) throws IOException
+	public ALoad(Instructions instructions, InstructionType type, Instruction instruction, int pc)
 	{
 		super(instructions, type, pc);
 		wide = true;
@@ -62,7 +62,7 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -76,7 +76,7 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 
 	@Override

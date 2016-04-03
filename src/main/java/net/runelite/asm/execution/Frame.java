@@ -12,6 +12,7 @@ import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
+import net.runelite.asm.attributes.code.instructions.Wide;
 
 public class Frame
 {
@@ -210,10 +211,12 @@ public class Frame
 		while (executing)
 		{
 			Instruction oldCur = cur;
+			InstructionContext ictx;
 			
 			try
 			{
-				cur.execute(this);
+				ictx = cur.execute(this);
+				this.addInstructionContext(ictx);
 			}
 			catch (Throwable ex)
 			{
@@ -232,14 +235,12 @@ public class Frame
 				throw ex;
 			}
 			
-			InstructionContext ictx = this.instructions.get(this.instructions.size() - 1);
-			
-			assert ictx.getInstruction() == oldCur;
+			assert ictx.getInstruction() == oldCur || oldCur instanceof Wide;
 			execution.contexts.put(oldCur, ictx);
 			
 			execution.executed.add(oldCur);
 			
-			processExceptions(oldCur);
+			processExceptions(ictx);
 			
 			if (!executing)
 				break;
@@ -280,19 +281,16 @@ public class Frame
 		return instructions.isEmpty() ? null : instructions.get(instructions.size() - 1);
 	}
 	
-	private void processExceptions(Instruction i)
+	private void processExceptions(InstructionContext ictx)
 	{
 		if (this.execution.step)
 			return; // no frame.other
 		
 		Code code = method.getCode();
-		InstructionContext ictx = instructions.get(instructions.size() - 1);
-		
-		assert ictx.getInstruction() == i;
 		
 		for (Exception e : code.getExceptions().getExceptions())
 		{
-			if (e.getStart() == i)
+			if (e.getStart() == ictx.getInstruction())
 			{				
 				Frame f = dup();
 				Stack stack = f.getStack();
@@ -300,7 +298,7 @@ public class Frame
 				while (stack.getSize() > 0)
 					stack.pop();
 				
-				InstructionContext ins = new InstructionContext(i, f);
+				InstructionContext ins = new InstructionContext(ictx.getInstruction(), f);
 				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"), Value.NULL);
 				stack.push(ctx);
 				

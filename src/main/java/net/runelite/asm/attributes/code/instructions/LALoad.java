@@ -17,7 +17,7 @@ public class LALoad extends Instruction implements ArrayLoad
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -32,6 +32,6 @@ public class LALoad extends Instruction implements ArrayLoad
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 }

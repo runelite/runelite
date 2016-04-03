@@ -10,18 +10,17 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.pool.PoolEntry;
 
-import java.io.IOException;
 import net.runelite.asm.execution.Value;
 
 public class DConst_0 extends Instruction implements PushConstantInstruction
 {
-	public DConst_0(Instructions instructions, InstructionType type, int pc) throws IOException
+	public DConst_0(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -31,7 +30,7 @@ public class DConst_0 extends Instruction implements PushConstantInstruction
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 
 	@Override
@@ -43,6 +42,6 @@ public class DConst_0 extends Instruction implements PushConstantInstruction
 	@Override
 	public Instruction setConstant(PoolEntry entry)
 	{
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 }

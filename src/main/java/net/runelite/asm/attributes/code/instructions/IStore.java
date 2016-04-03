@@ -9,7 +9,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 
@@ -48,7 +47,7 @@ public class IStore extends Instruction implements LVTInstruction, WideInstructi
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -60,7 +59,7 @@ public class IStore extends Instruction implements LVTInstruction, WideInstructi
 		
 		variables.set(index, new VariableContext(ins, value));
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 	
 	@Override

@@ -7,19 +7,17 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-
-import java.io.IOException;
 import net.runelite.asm.execution.Value;
 
 public class FCmpG extends Instruction
 {
-	public FCmpG(Instructions instructions, InstructionType type, int pc) throws IOException
+	public FCmpG(Instructions instructions, InstructionType type, int pc)
 	{
 		super(instructions, type, pc);
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
@@ -48,6 +46,6 @@ public class FCmpG extends Instruction
 		
 		ins.push(ctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 }

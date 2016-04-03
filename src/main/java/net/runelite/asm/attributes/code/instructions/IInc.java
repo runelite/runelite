@@ -1,5 +1,8 @@
 package net.runelite.asm.attributes.code.instructions;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -8,13 +11,9 @@ import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Type;
+import net.runelite.asm.execution.Value;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.execution.Value;
 
 public class IInc extends Instruction implements LVTInstruction, WideInstruction
 {
@@ -59,7 +58,7 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Variables var = frame.getVariables();
@@ -79,7 +78,7 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 		vctx = new VariableContext(ins, new Type(int.class.getCanonicalName()), value);
 		var.set(index, vctx);
 		
-		frame.addInstructionContext(ins);
+		return ins;
 	}
 
 	@Override

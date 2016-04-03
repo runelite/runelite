@@ -21,12 +21,14 @@ public class VReturn extends Instruction implements ReturnInstruction
 	}
 
 	@Override
-	public void execute(Frame frame)
+	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		frame.addInstructionContext(ins);
 		
 		frame.stop();
+
+		return ins;
 	}
 	
 	@Override
