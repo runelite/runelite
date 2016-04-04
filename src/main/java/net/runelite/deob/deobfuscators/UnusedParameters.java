@@ -1,5 +1,7 @@
 package net.runelite.deob.deobfuscators;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,6 +27,24 @@ import org.apache.commons.collections4.CollectionUtils;
 public class UnusedParameters implements Deobfuscator
 {
 	private Map<List<Method>, Collection<Integer>> unused = new HashMap<>();
+	private Multimap<Instruction, InstructionContext> invokes = HashMultimap.create();
+	
+	private void visit(InstructionContext ictx)
+	{
+		Instruction i = ictx.getInstruction();
+		
+		if (!(i instanceof InvokeInstruction))
+			return;
+		
+		InvokeInstruction ii = (InvokeInstruction) i;
+		List<Method> methods = ii.getMethods();
+		
+		if (!unused.containsKey(methods))
+			return;
+		
+		for (Method m : methods)
+			invokes.put(i, ictx);
+	}
 	
 	private void buildUnused(ClassGroup group)
 	{
@@ -144,7 +164,7 @@ public class UnusedParameters implements Deobfuscator
 					
 					ii.removeParameter(paramIndex); // remove parameter from instruction
 					
-					Collection<InstructionContext> ics = execution.getInstructonContexts(i);
+					Collection<InstructionContext> ics = invokes.get(i);//execution.getInstructonContexts(i);
 					if (ics != null)
 					{
 						InstructionContext ins = ics.toArray(new InstructionContext[0])[0];
@@ -198,15 +218,18 @@ public class UnusedParameters implements Deobfuscator
 		do
 		{
 			group.buildClassGraph();
-			
+
+			invokes.clear();
+			this.buildUnused(group);
+
 			Execution execution = new Execution(group);
+			execution.addExecutionVisitor(ictx -> visit(ictx));
 			execution.populateInitialMethods();
 			execution.run();
 			
-			this.buildUnused(group);
 			i = this.processUnused(execution, group);
 			System.out.println("PASS " + pnum++ + " " + i);
-		
+
 			count += i;
 		}
 		while (i > 0);
