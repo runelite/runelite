@@ -136,10 +136,10 @@ public class Execution
 		System.out.println("Processed " + fcount + " frames");
 	}
 	
-	public Collection<InstructionContext> getInstructonContexts(Instruction i)
-	{
-		return contexts.getCollection(i);
-	}
+//	public Collection<InstructionContext> getInstructonContexts(Instruction i)
+//	{
+//		return contexts.getCollection(i);
+//	}
 
 	public void addExecutionVisitor(ExecutionVisitor ev)
 	{
