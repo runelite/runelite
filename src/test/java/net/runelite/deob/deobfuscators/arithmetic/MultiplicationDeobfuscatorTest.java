@@ -1,6 +1,5 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import java.util.Collection;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.ClassGroupFactory;
 import net.runelite.deob.Deobfuscator;
@@ -32,7 +31,6 @@ import net.runelite.asm.attributes.code.instructions.NOP;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
-import net.runelite.asm.execution.InstructionContext;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -29,7 +29,6 @@ import net.runelite.asm.attributes.code.instructions.LDC2_W;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.execution.Execution;
-import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.pool.PoolEntry;
@@ -41,6 +40,7 @@ import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.If0;
 import net.runelite.asm.attributes.code.instructions.LAdd;
 import net.runelite.asm.attributes.code.instructions.LCmp;
+import net.runelite.asm.execution.MethodContext;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class ModArith implements Deobfuscator
@@ -82,128 +82,122 @@ public class ModArith implements Deobfuscator
 		return l;
 	}
 	
-	private void findObfuscatedFields()
+	private void findObfuscatedFields(MethodContext mctx)
 	{
-		// find a direct big*field with no other fields involved
-		obfuscatedFields.clear();
-		
-		for (Frame f : execution.processedFrames)
+		for (InstructionContext ctx : mctx.getInstructionContexts())
 		{
-			for (InstructionContext ctx : f.getInstructions())
+			if (ctx.getInstruction() instanceof SetFieldInstruction)
 			{
-				if (ctx.getInstruction() instanceof SetFieldInstruction)
-				{
-					SetFieldInstruction sfi = (SetFieldInstruction) ctx.getInstruction();
-					
-					InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
-					pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
-					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
-					{
-						PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
-						if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
-						{
-							Number it = (Number) ldc.getConstant().getObject();
-							if (DMath.isBig(it))
-								// field = constant
-								this.obfuscatedFields.add(sfi.getMyField());
-						}
-					}
-					else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul
-						|| pushedsfi.getInstruction() instanceof IAdd || pushedsfi.getInstruction() instanceof LAdd)
-					{
-						Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
-						Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
+				SetFieldInstruction sfi = (SetFieldInstruction) ctx.getInstruction();
 
-						PushConstantInstruction pci = null;
-						Instruction other = null;
-						if (one instanceof LDC_W || one instanceof LDC2_W)
-						{
-							pci = (PushConstantInstruction) one;
-							other = two;
-						}
-						else if (two instanceof LDC_W || two instanceof LDC2_W)
-						{
-							pci = (PushConstantInstruction) two;
-							other = one;
-						}
-						
-						if (pci == null)
+				InstructionContext pushedsfi = ctx.getPops().get(0).getPushed();
+				pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
+				if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+				{
+					PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
+					if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
+					{
+						Number it = (Number) ldc.getConstant().getObject();
+						if (DMath.isBig(it))
+							// field = constant
+							this.obfuscatedFields.add(sfi.getMyField());
+					}
+				}
+				else if (pushedsfi.getInstruction() instanceof IMul || pushedsfi.getInstruction() instanceof LMul
+					|| pushedsfi.getInstruction() instanceof IAdd || pushedsfi.getInstruction() instanceof LAdd)
+				{
+					Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
+					Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
+
+					PushConstantInstruction pci = null;
+					Instruction other = null;
+					if (one instanceof LDC_W || one instanceof LDC2_W)
+					{
+						pci = (PushConstantInstruction) one;
+						other = two;
+					}
+					else if (two instanceof LDC_W || two instanceof LDC2_W)
+					{
+						pci = (PushConstantInstruction) two;
+						other = one;
+					}
+
+					if (pci == null)
+						continue;
+
+					if (other instanceof GetFieldInstruction)
+					{
+						GetFieldInstruction gfi = (GetFieldInstruction) other;
+
+						if (gfi.getMyField() != sfi.getMyField())
 							continue;
-
-						if (other instanceof GetFieldInstruction)
-						{
-							GetFieldInstruction gfi = (GetFieldInstruction) other;
-
-							if (gfi.getMyField() != sfi.getMyField())
-								continue;
-						}
-
-						if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
-						{
-							Number i = (Number) pci.getConstant().getObject();
-							if (DMath.isBig(i))
-								// field = constant * not other field
-								this.obfuscatedFields.add(sfi.getMyField());
-						}
 					}
-				}
-				
-				// field * imul
-				if (!(ctx.getInstruction() instanceof IMul) && !(ctx.getInstruction() instanceof LMul))
-					continue;
-				
-				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
-				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
-				
-				PushConstantInstruction pc = null;
-				GetFieldInstruction other = null;
-				if ((one instanceof LDC_W || one instanceof LDC2_W) && two instanceof GetFieldInstruction)
-				{
-					pc = (PushConstantInstruction) one;
-					other = (GetFieldInstruction) two;
-				}
-				else if ((two instanceof LDC_W || two instanceof LDC2_W) && one instanceof GetFieldInstruction)
-				{
-					pc = (PushConstantInstruction) two;
-					other = (GetFieldInstruction) one;
-				}
 
-				if (pc == null || other == null)
-				{
-					continue;
-				}
-				
-				if (!(pc.getConstant().getObject() instanceof Integer) && !(pc.getConstant().getObject() instanceof Long))
-					continue;
-				
-				Number ivalue = (Number) pc.getConstant().getObject();
-				if (!DMath.isBig(ivalue))
-					continue;
-				
-				try
-				{
-					MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(execution, ctx, ctx.getInstruction().getClass());
-					if (expr.hasFieldOtherThan(other.getMyField()))
-						continue;
-				}
-				catch (IllegalStateException ex)
-				{
-					continue;
-				}
-
-				InstructionContext popped = ctx.getPushes().get(0).getPopped().isEmpty() ? null : ctx.getPushes().get(0).getPopped().get(0);
-				if (popped != null && popped.getInstruction() instanceof SetFieldInstruction)
-				{
-					SetFieldInstruction sfi = (SetFieldInstruction) popped.getInstruction();
-
-					if (sfi.getMyField() != null)// && sfi.getMyField() != field)
+					if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
 					{
-						continue;
+						Number i = (Number) pci.getConstant().getObject();
+						if (DMath.isBig(i))
+							// field = constant * not other field
+							this.obfuscatedFields.add(sfi.getMyField());
 					}
 				}
-				
-				this.obfuscatedFields.add(other.getMyField());
 			}
+
+			// field * imul
+			if (!(ctx.getInstruction() instanceof IMul) && !(ctx.getInstruction() instanceof LMul))
+				continue;
+
+			Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+			Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+
+			PushConstantInstruction pc = null;
+			GetFieldInstruction other = null;
+			if ((one instanceof LDC_W || one instanceof LDC2_W) && two instanceof GetFieldInstruction)
+			{
+				pc = (PushConstantInstruction) one;
+				other = (GetFieldInstruction) two;
+			}
+			else if ((two instanceof LDC_W || two instanceof LDC2_W) && one instanceof GetFieldInstruction)
+			{
+				pc = (PushConstantInstruction) two;
+				other = (GetFieldInstruction) one;
+			}
+
+			if (pc == null || other == null)
+			{
+				continue;
+			}
+
+			if (!(pc.getConstant().getObject() instanceof Integer) && !(pc.getConstant().getObject() instanceof Long))
+				continue;
+
+			Number ivalue = (Number) pc.getConstant().getObject();
+			if (!DMath.isBig(ivalue))
+				continue;
+
+			try
+			{
+				MultiplicationExpression expr = MultiplicationDeobfuscator.parseExpression(ctx, ctx.getInstruction().getClass());
+				if (expr.hasFieldOtherThan(other.getMyField()))
+					continue;
+			}
+			catch (IllegalStateException ex)
+			{
+				continue;
+			}
+
+			InstructionContext popped = ctx.getPushes().get(0).getPopped().isEmpty() ? null : ctx.getPushes().get(0).getPopped().get(0);
+			if (popped != null && popped.getInstruction() instanceof SetFieldInstruction)
+			{
+				SetFieldInstruction sfi = (SetFieldInstruction) popped.getInstruction();
+
+				if (sfi.getMyField() != null)// && sfi.getMyField() != field)
+				{
+					continue;
+				}
+			}
+
+			this.obfuscatedFields.add(other.getMyField());
 		}
 	}
 	
@@ -215,176 +209,174 @@ public class ModArith implements Deobfuscator
 	}
 	private MultiValueMap<Field, AssociatedConstant> constants = new MultiValueMap();
 	
-	private void findUses2()
+	private void findUses2(MethodContext mctx)
 	{
-		for (Frame f : execution.processedFrames)
-			for (InstructionContext ctx : f.getInstructions())
+		for (InstructionContext ctx : mctx.getInstructionContexts())
+		{
+			if (ctx.getInstruction() instanceof FieldInstruction)
 			{
-				if (ctx.getInstruction() instanceof FieldInstruction)
+				FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
+
+				if (fi.getMyField() == null)
+					continue;
+
+				if ((!fi.getField().getNameAndType().getDescriptorType().getType().equals("I")
+					&& !fi.getField().getNameAndType().getDescriptorType().getType().equals("J"))
+					|| fi.getField().getNameAndType().getDescriptorType().getArrayDims() != 0)
+					continue;
+
+				List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
+				boolean other = false; // check if this contains another field
+				for (InstructionContext i : l)
 				{
-					FieldInstruction fi = (FieldInstruction) ctx.getInstruction();
-					
-					if (fi.getMyField() == null)
-						continue;
-					
-					if ((!fi.getField().getNameAndType().getDescriptorType().getType().equals("I")
-						&& !fi.getField().getNameAndType().getDescriptorType().getType().equals("J"))
-						|| fi.getField().getNameAndType().getDescriptorType().getArrayDims() != 0)
-						continue;
-					
-					List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
-					boolean other = false; // check if this contains another field
-					for (InstructionContext i : l)
+					if (i.getInstruction() instanceof FieldInstruction)
 					{
-						if (i.getInstruction() instanceof FieldInstruction)
-						{
-							FieldInstruction fi2 = (FieldInstruction) i.getInstruction();
-							Field myField = fi2.getMyField();
-							
-							if (myField != null && myField != fi.getMyField())
-							{
-								Type t = myField.getType();
-								if (t.equals(fi.getMyField().getType()))
-								{
-									other = true;
-								}
-							}
-						}
-					}
+						FieldInstruction fi2 = (FieldInstruction) i.getInstruction();
+						Field myField = fi2.getMyField();
 
-					boolean constant = false;
-					if (fi instanceof SetFieldInstruction)
-					{
-						InstructionContext pushedsfi = ctx.getPops().get(0).getPushed(); // value being set
-						pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
-
-						if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+						if (myField != null && myField != fi.getMyField())
 						{
-							constant = true;
-						}
-					}
-					
-					for (InstructionContext i : l)
-					{
-						if (i.getInstruction() instanceof LDC_W || i.getInstruction() instanceof LDC2_W)
-						{
-							PushConstantInstruction w = (PushConstantInstruction) i.getInstruction();
-							if (w.getConstant().getObject() instanceof Integer || w.getConstant().getObject() instanceof Long)
+							Type t = myField.getType();
+							if (t.equals(fi.getMyField().getType()))
 							{
-								AssociatedConstant n = new AssociatedConstant();
-								n.value = (Number) w.getConstant().getObject();
-								n.other = other;
-								n.constant = constant;
-								constants.put(fi.getMyField(), n);
+								other = true;
 							}
 						}
 					}
 				}
-			}
-	}
 
-	private void findUses()
-	{
-		for (Frame f : execution.processedFrames)
-			for (InstructionContext ctx : f.getInstructions())
-			{
-				if (ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul)
+				boolean constant = false;
+				if (fi instanceof SetFieldInstruction)
 				{
-					Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
-					Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
-					
-					PushConstantInstruction pc = null;
-					GetFieldInstruction gf = null;
-					if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
-					{
-						pc = (PushConstantInstruction) one;
-						gf = (GetFieldInstruction) two;
-					}
-					else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
-					{
-						pc = (PushConstantInstruction) two;
-						gf = (GetFieldInstruction) one;
-					}
-					
-					if (pc == null)
-						continue;
-					
-					Field field = gf.getMyField();
-					if (field == null)
-						continue;
-					
-					Number value = (Number) pc.getConstant().getObject();
-					
-					if (DMath.equals(value, 1) || DMath.equals(value, 0))
-						continue;
-					
-					// field * constant
-					constantGetters.put(field, value);
-				}
-				else if (ctx.getInstruction() instanceof SetFieldInstruction)
-				{
-					SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
-					
-					Field field = sf.getMyField();
-					if (field == null)
-						continue;
-
 					InstructionContext pushedsfi = ctx.getPops().get(0).getPushed(); // value being set
 					pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
 
-					if (!(pushedsfi.getInstruction() instanceof IMul) && !(pushedsfi.getInstruction() instanceof LMul)
-						&& !(pushedsfi.getInstruction() instanceof IAdd) && !(pushedsfi.getInstruction() instanceof LAdd))
+					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
 					{
-						if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
-						{
-							PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
-							
-							if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
-							{
-								Number i = (Number) ldc.getConstant().getObject();
-								
-								if (DMath.isBig(i))
-									// field = constant
-									constantSetters.put(field, i);
-							}
-						}
-						continue;
+						constant = true;
 					}
-					
-					Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
-					Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
-					
-					PushConstantInstruction pc = null;
-					Instruction other = null;
-					if (one instanceof PushConstantInstruction)
-					{
-						pc = (PushConstantInstruction) one;
-						other  = two;
-					}
-					else if (two instanceof PushConstantInstruction)
-					{
-						pc = (PushConstantInstruction) two;
-						other = one;
-					}
-					
-					if (pc == null)
-						continue;
-					
-					Number value2 = (Number) pc.getConstant().getObject();
-					
-					if (DMath.equals(value2, 1) || DMath.equals(value2, 0))
-						continue;
+				}
 
-					if (pushedsfi.getInstruction() instanceof IAdd || pushedsfi.getInstruction() instanceof LAdd)
+				for (InstructionContext i : l)
+				{
+					if (i.getInstruction() instanceof LDC_W || i.getInstruction() instanceof LDC2_W)
 					{
-						if (!DMath.isBig(value2))
-							continue;
+						PushConstantInstruction w = (PushConstantInstruction) i.getInstruction();
+						if (w.getConstant().getObject() instanceof Integer || w.getConstant().getObject() instanceof Long)
+						{
+							AssociatedConstant n = new AssociatedConstant();
+							n.value = (Number) w.getConstant().getObject();
+							n.other = other;
+							n.constant = constant;
+							constants.put(fi.getMyField(), n);
+						}
 					}
-					
-					// field = something * constant
-					constantSetters.put(field, value2);
 				}
 			}
+		}
+	}
+
+	private void findUses(MethodContext mctx)
+	{
+		for (InstructionContext ctx : mctx.getInstructionContexts())
+		{
+			if (ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul)
+			{
+				Instruction one = ctx.getPops().get(0).getPushed().getInstruction();
+				Instruction two = ctx.getPops().get(1).getPushed().getInstruction();
+
+				PushConstantInstruction pc = null;
+				GetFieldInstruction gf = null;
+				if (one instanceof PushConstantInstruction && two instanceof GetFieldInstruction)
+				{
+					pc = (PushConstantInstruction) one;
+					gf = (GetFieldInstruction) two;
+				}
+				else if (two instanceof PushConstantInstruction && one instanceof GetFieldInstruction)
+				{
+					pc = (PushConstantInstruction) two;
+					gf = (GetFieldInstruction) one;
+				}
+
+				if (pc == null)
+					continue;
+
+				Field field = gf.getMyField();
+				if (field == null)
+					continue;
+
+				Number value = (Number) pc.getConstant().getObject();
+
+				if (DMath.equals(value, 1) || DMath.equals(value, 0))
+					continue;
+
+				// field * constant
+				constantGetters.put(field, value);
+			}
+			else if (ctx.getInstruction() instanceof SetFieldInstruction)
+			{
+				SetFieldInstruction sf = (SetFieldInstruction) ctx.getInstruction();
+
+				Field field = sf.getMyField();
+				if (field == null)
+					continue;
+
+				InstructionContext pushedsfi = ctx.getPops().get(0).getPushed(); // value being set
+				pushedsfi = pushedsfi.resolve(ctx.getPops().get(0));
+
+				if (!(pushedsfi.getInstruction() instanceof IMul) && !(pushedsfi.getInstruction() instanceof LMul)
+					&& !(pushedsfi.getInstruction() instanceof IAdd) && !(pushedsfi.getInstruction() instanceof LAdd))
+				{
+					if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
+					{
+						PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
+
+						if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
+						{
+							Number i = (Number) ldc.getConstant().getObject();
+
+							if (DMath.isBig(i))
+								// field = constant
+								constantSetters.put(field, i);
+						}
+					}
+					continue;
+				}
+
+				Instruction one = pushedsfi.getPops().get(0).getPushed().getInstruction();
+				Instruction two = pushedsfi.getPops().get(1).getPushed().getInstruction();
+
+				PushConstantInstruction pc = null;
+				Instruction other = null;
+				if (one instanceof PushConstantInstruction)
+				{
+					pc = (PushConstantInstruction) one;
+					other  = two;
+				}
+				else if (two instanceof PushConstantInstruction)
+				{
+					pc = (PushConstantInstruction) two;
+					other = one;
+				}
+
+				if (pc == null)
+					continue;
+
+				Number value2 = (Number) pc.getConstant().getObject();
+
+				if (DMath.equals(value2, 1) || DMath.equals(value2, 0))
+					continue;
+
+				if (pushedsfi.getInstruction() instanceof IAdd || pushedsfi.getInstruction() instanceof LAdd)
+				{
+					if (!DMath.isBig(value2))
+						continue;
+				}
+
+				// field = something * constant
+				constantSetters.put(field, value2);
+			}
+		}
 	}
 	
 	private Pair guess(Field field, Collection<Number> constants)
@@ -708,14 +700,20 @@ public class ModArith implements Deobfuscator
 		constantGetters.clear();
 		constantSetters.clear();
 		constants.clear();
+
+		// find a direct big*field with no other fields involved
+		obfuscatedFields.clear();
 		
 		execution = new Execution(group);
+		execution.addMethodContextVisitor(i -> findObfuscatedFields(i));
+		execution.addMethodContextVisitor(i -> findUses(i));
+		execution.addMethodContextVisitor(i -> findUses2(i));
 		execution.populateInitialMethods();
 		execution.run();
 		
-		findObfuscatedFields();
-		findUses();
-		findUses2();
+//		findObfuscatedFields();
+//		findUses();
+//		findUses2();
 		reduce2();
 
 		int i = 0;

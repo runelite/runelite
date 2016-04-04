@@ -4,10 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.Method;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -25,7 +23,6 @@ import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.LSub;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.execution.Execution;
-import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
@@ -245,7 +242,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 	{
 		assert ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul;
 		
-		// XXX this needs to be all in all frames
 		Collection<InstructionContext> ins = ctx.getFrame().getMethodCtx().getInstructonContexts(ctx.getInstruction());
 		for (InstructionContext i : ins)
 		{	
@@ -346,7 +342,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		count = 0;
 		
 		Execution e = new Execution(group);
-		//e.addFrameVisitor(f -> visit(f));
 		e.addMethodContextVisitor(m -> visit(m));
 		e.populateInitialMethods();
 		e.run();

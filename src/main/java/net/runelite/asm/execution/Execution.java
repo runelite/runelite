@@ -22,7 +22,6 @@ public class Execution
 	private MultiValueMap<WeakInstructionContext, Method> invokes = new MultiValueMap<>();
 	public boolean paused;
 	public boolean step = false;
-	public boolean processInvokes = true;
 	private List<ExecutionVisitor> visitors = new ArrayList<>();
 	private List<FrameVisitor> frameVisitors = new ArrayList<>();
 	private List<MethodContextVisitor> methodContextVisitors = new ArrayList<>();
@@ -96,9 +95,6 @@ public class Execution
 	public Frame invoke(InstructionContext from, Method to)
 	{
 		if (step) // step executor
-			return null;
-		
-		if (!processInvokes)
 			return null;
 		
 		if (hasInvoked(from, to))
