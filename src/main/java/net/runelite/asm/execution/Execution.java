@@ -1,31 +1,31 @@
 package net.runelite.asm.execution;
 
-import net.runelite.asm.ClassFile;
-import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deob;
-import net.runelite.asm.Method;
-import net.runelite.asm.attributes.code.Instruction;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.deob.Deob;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Execution
 {
 	private ClassGroup group;
-	public List<Frame> frames = new LinkedList<>();
+	public List<Frame> frames = new ArrayList<>(), framesOther = new ArrayList<>();
 	public Set<Method> methods = new HashSet<>(); // all methods
 	public Set<Instruction> executed = new HashSet<>(); // executed instructions
 	private MultiValueMap<WeakInstructionContext, Method> invokes = new MultiValueMap<>();
-	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>(); // XXX this should move to method ctx probably
 	public boolean paused;
 	public boolean step = false;
+	public boolean processInvokes = true;
 	private List<ExecutionVisitor> visitors = new ArrayList<>();
 	private List<FrameVisitor> frameVisitors = new ArrayList<>();
+	private List<MethodContextVisitor> methodContextVisitors = new ArrayList<>();
 
 	public Execution(ClassGroup group)
 	{
@@ -85,14 +85,20 @@ public class Execution
 		return false;
 	}
 
-	private void addFrame(Frame frame)
+	public void addFrame(Frame frame)
 	{
-		frames.add(frame);
+		if (frames.isEmpty() || frames.get(0).getMethod() == frame.getMethod())
+			frames.add(frame);
+		else
+			framesOther.add(frame);
 	}
 	
 	public Frame invoke(InstructionContext from, Method to)
 	{
 		if (step) // step executor
+			return null;
+		
+		if (!processInvokes)
 			return null;
 		
 		if (hasInvoked(from, to))
@@ -131,15 +137,17 @@ public class Execution
 			accept(frame);
 
 			frames.remove(frame);
+			
+			if (frames.isEmpty())
+			{
+				accept(frame.getMethodCtx());
+				frames.addAll(framesOther);
+				framesOther.clear();
+			}
 		}
 		
 		System.out.println("Processed " + fcount + " frames");
 	}
-	
-//	public Collection<InstructionContext> getInstructonContexts(Instruction i)
-//	{
-//		return contexts.getCollection(i);
-//	}
 
 	public void addExecutionVisitor(ExecutionVisitor ev)
 	{
@@ -159,5 +167,15 @@ public class Execution
 	public void accept(Frame f)
 	{
 		frameVisitors.forEach(v -> v.visit(f));
+	}
+	
+	public void addMethodContextVisitor(MethodContextVisitor mcv)
+	{
+		methodContextVisitors.add(mcv);
+	}
+	
+	public void accept(MethodContext m)
+	{
+		methodContextVisitors.forEach(mc -> mc.visit(m));
 	}
 }

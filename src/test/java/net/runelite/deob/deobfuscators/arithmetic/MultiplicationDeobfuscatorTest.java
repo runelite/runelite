@@ -231,14 +231,14 @@ public class MultiplicationDeobfuscatorTest
 		
 		assert constant4.getConstantAsInt() * constant5.getConstantAsInt() == 1;
 		
-		{
-			Collection<InstructionContext> ctxs = e.getInstructonContexts(body[3]);
-			assert ctxs.size() == 1;
-			
-			InstructionContext ictx = ctxs.iterator().next();
-			boolean onlyPath = MultiplicationDeobfuscator.isOnlyPath(e, ictx);
-			Assert.assertFalse(onlyPath);
-		}
+//		{
+//			Collection<InstructionContext> ctxs = e.getInstructonContexts(body[3]);
+//			assert ctxs.size() == 1;
+//			
+//			InstructionContext ictx = ctxs.iterator().next();
+//			boolean onlyPath = MultiplicationDeobfuscator.isOnlyPath(e, ictx);
+//			Assert.assertFalse(onlyPath);
+//		}
 		
 		Deobfuscator d = new MultiplicationDeobfuscator();
 		d.run(group);
