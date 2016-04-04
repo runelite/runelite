@@ -25,6 +25,7 @@ public class Execution
 	public boolean paused;
 	public boolean step = false;
 	private List<ExecutionVisitor> visitors = new ArrayList<>();
+	private List<FrameVisitor> frameVisitors = new ArrayList<>();
 
 	public Execution(ClassGroup group)
 	{
@@ -127,6 +128,8 @@ public class Execution
 			assert frames.get(0) == frame;
 			assert !frame.isExecuting();
 
+			accept(frame);
+
 			frames.remove(frame);
 		}
 		
@@ -146,5 +149,15 @@ public class Execution
 	public void accept(InstructionContext ic)
 	{
 		visitors.forEach(v -> v.visit(ic));
+	}
+
+	public void addFrameVisitor(FrameVisitor pv)
+	{
+		this.frameVisitors.add(pv);
+	}
+
+	public void accept(Frame f)
+	{
+		frameVisitors.forEach(v -> v.visit(f));
 	}
 }
