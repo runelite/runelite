@@ -1,5 +1,11 @@
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deob;
@@ -11,17 +17,9 @@ import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.signature.Signature;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.util.VirtualMethods;
-
 import org.apache.commons.collections4.CollectionUtils;
 
 public class UnusedParameters implements Deobfuscator
