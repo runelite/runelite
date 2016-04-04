@@ -1,7 +1,10 @@
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
@@ -17,15 +20,18 @@ import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.execution.Execution;
+import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 
 public class IllegalStateExceptions implements Deobfuscator
 {
+	private int count;
+	private Set<Instruction> interesting = new HashSet<>();
+	private InstructionContext currentInstruction;
+
 	/* find if, new, ..., athrow, replace with goto */
-	private int checkOnce(Execution execution, ClassGroup group)
+	private void findInteresting(ClassGroup group)
 	{
-		int count = 0;
-		
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : cf.getMethods().getMethods())
@@ -52,64 +58,88 @@ public class IllegalStateExceptions implements Deobfuscator
 					net.runelite.asm.pool.Class clazz = new2.getNewClass();
 					if (!clazz.getName().equals("java/lang/IllegalStateException"))
 						continue;
-					
-					JumpingInstruction jumpIns = (JumpingInstruction) ins;
-					assert jumpIns.getJumps().size() == 1;
-					Instruction to = jumpIns.getJumps().get(0);
-					
-					// remove stack of if.
-					Collection<InstructionContext> ics = execution.getInstructonContexts(ins);
-					if (ics == null)
-						continue; // never executed
 
-					for (InstructionContext ic : ics)
-					{
-						if (ins instanceof If)
-							ic.removeStack(1);
-						ic.removeStack(0);
-						break; // XXX I guess this doesnt matter we're only removing one path
-					}
-					
-					// instruction is no longer at 'i' because we've just removed stuff...
-					i = ilist.indexOf(ins);
-					
-					// remove up to athrow
-					while (!(ins instanceof AThrow))
-					{
-						// modify instructions which jump to here to instead jump to 'to'
-
-						for (Instruction from : ilist)
-							from.replace(ins, to);
-						
-						instructions.remove(ins);
-						ins = ilist.get(i); // don't need to ++i because 
-					}
-					
-					// remove athrow
-					instructions.remove(ins);
-					
-					// insert goto
-					assert ilist.contains(to);
-					Goto g = new Goto(instructions, to);
-					ilist.add(i, g);
-					
-					++count;
+					interesting.add(ins);
 				}
 			}
 		}
-		return count;
+	}
+
+	private void visit(InstructionContext ic)
+	{
+		if (interesting.contains(ic.getInstruction()))
+		{
+			assert currentInstruction == null;
+			currentInstruction = ic;
+		}
+	}
+
+	private void visit(Frame f)
+	{
+		if (currentInstruction == null)
+			return;
+
+		processOne(currentInstruction);
+		currentInstruction = null;
+	}
+
+	private void processOne(InstructionContext ic)
+	{
+		Instruction ins = ic.getInstruction();
+		Instructions instructions = ins.getInstructions();
+		List<Instruction> ilist = instructions.getInstructions();
+
+		JumpingInstruction jumpIns = (JumpingInstruction) ins;
+		assert jumpIns.getJumps().size() == 1;
+		Instruction to = jumpIns.getJumps().get(0);
+
+		// remove stack of if.
+		if (ins instanceof If)
+		{
+			ic.removeStack(1);
+		}
+		ic.removeStack(0);
+
+		int i = ilist.indexOf(ins);
+		assert i != -1;
+
+		// remove up to athrow
+		while (!(ins instanceof AThrow))
+		{
+			// modify instructions which jump to here to instead jump to 'to'
+
+			for (Instruction from : ilist)
+			{
+				from.replace(ins, to);
+			}
+
+			instructions.remove(ins);
+			ins = ilist.get(i); // don't need to ++i because
+		}
+
+		// remove athrow
+		instructions.remove(ins);
+
+		// insert goto
+		assert ilist.contains(to);
+		Goto g = new Goto(instructions, to);
+		ilist.add(i, g);
+
+		++count;
 	}
 	
 	@Override
 	public void run(ClassGroup group)
 	{	
-		group.buildClassGraph();
+		findInteresting(group);
 		
 		Execution execution = new Execution(group);
+		execution.addExecutionVisitor(i -> visit(i));
+		execution.addFrameVisitor(i -> visit(i));
 		execution.populateInitialMethods();
 		execution.run();
-				
-		int count = checkOnce(execution, group);
+
+		assert currentInstruction == null;
 		
 		System.out.println("Removed " + count + " illegal state exceptions");
 	}
