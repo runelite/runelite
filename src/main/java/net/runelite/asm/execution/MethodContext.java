@@ -8,6 +8,7 @@ public class MethodContext
 {
 	private Execution execution;
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
+	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>(); // XXX this should move to method ctx probably
 
 	public MethodContext(Execution execution)
 	{
@@ -22,5 +23,15 @@ public class MethodContext
 		
 		visited.put(from, to);
 		return false;
+	}
+	
+	public Collection<InstructionContext> getInstructonContexts(Instruction i)
+	{
+		return contexts.getCollection(i);
+	}
+	
+	public Collection<InstructionContext> getInstructionContexts()
+	{
+		return (Collection) contexts.values();
 	}
 }

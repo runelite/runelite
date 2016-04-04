@@ -149,7 +149,7 @@ public class Frame
 	public Frame dup()
 	{
 		Frame other = new Frame(this);
-		execution.frames.add(other);
+		execution.addFrame(other);
 		return other;
 	}
 	
@@ -236,7 +236,7 @@ public class Frame
 			}
 			
 			assert ictx.getInstruction() == oldCur || oldCur instanceof Wide;
-			execution.contexts.put(oldCur, ictx);
+			ctx.contexts.put(oldCur, ictx);
 			
 			execution.executed.add(oldCur);
 

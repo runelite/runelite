@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
@@ -26,6 +27,7 @@ import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
@@ -49,11 +51,9 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		System.out.println("Total changed " + count);
 	}
 	
-	public static MultiplicationExpression parseExpression(Execution e, InstructionContext ctx, Class want)
+	public static MultiplicationExpression parseExpression(InstructionContext ctx, Class want)
 	{
 		MultiplicationExpression me = new MultiplicationExpression();
-		
-//		assert !(ctx.getInstruction() instanceof DupInstruction);
 		
 		if (ctx.getInstruction() instanceof LVTInstruction)
 		{
@@ -82,7 +82,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						assert storelvt.store();
 
 						InstructionContext pushed = storeCtx.getPops().get(0).getPushed();
-						return parseExpression(e, pushed, want);
+						return parseExpression(pushed, want);
 					}
 				}
 			}
@@ -104,7 +104,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		{
 			if (ctx.getInstruction().getClass() == want)
 			{
-				if (!isOnlyPath(e, ctx, sctx))
+				if (!isOnlyPath(ctx, sctx))
 					continue;
 			}
 			
@@ -126,7 +126,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					// chained imul, append to me
 					try
 					{
-						MultiplicationExpression other = parseExpression(e, i, want);
+						MultiplicationExpression other = parseExpression(i, want);
 
 						me.instructions.addAll(other.instructions);
 						me.subexpressions.addAll(other.subexpressions);
@@ -142,7 +142,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					// imul using result of iadd or isub. evaluate expression
 					try
 					{
-						MultiplicationExpression other = parseExpression(e, i, want);
+						MultiplicationExpression other = parseExpression(i, want);
 
 						// subexpr
 						me.subexpressions.add(other);
@@ -174,7 +174,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 						StackContext orig = dup.getOriginal(sctx); // original
 						try
 						{
-							MultiplicationExpression other = parseExpression(e, orig.getPushed(), want);
+							MultiplicationExpression other = parseExpression(orig.getPushed(), want);
 							// this expression is used elsewhere like 'pushConstant' so any changes
 							// done to it affect that, too. so multiply it by existing values?
 							if (orig.getPushed().getInstruction() instanceof IAdd || orig.getPushed().getInstruction() instanceof ISub
@@ -209,7 +209,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			else if (ctx.getInstruction() instanceof IAdd || ctx.getInstruction() instanceof ISub
 				|| ctx.getInstruction() instanceof LAdd || ctx.getInstruction() instanceof LSub)
 			{
-				MultiplicationExpression other = parseExpression(e, i, want); // parse this side of the add/sub
+				MultiplicationExpression other = parseExpression(i, want); // parse this side of the add/sub
 				
 				me.subexpressions.add(other);
 			}
@@ -223,25 +223,6 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			throw new IllegalStateException();
 		
 		return me;
-	}
-	
-	public static boolean isOnlyPath(Execution execution, InstructionContext ctx)
-	{
-		assert ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul;
-		
-		Collection<InstructionContext> ins = execution.getInstructonContexts(ctx.getInstruction());
-		for (InstructionContext i : ins)
-		{
-			if (!i.equals(ctx))
-			{
-				return false;
-			}
-
-			for (StackContext sctx : i.getPushes())
-				if (sctx.getPopped().size() > 1)
-					return false;
-		}
-		return true;
 	}
 	
 	private static boolean ictxEqualsDir(InstructionContext one, InstructionContext two, StackContext sctx)
@@ -260,76 +241,115 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		return true;
 	}
 	
-	public static boolean isOnlyPath(Execution execution, InstructionContext ctx, StackContext sctx)
+	public static boolean isOnlyPath(InstructionContext ctx, StackContext sctx)
 	{
 		assert ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul;
 		
-		Collection<InstructionContext> ins = execution.getInstructonContexts(ctx.getInstruction());
+		// XXX this needs to be all in all frames
+		Collection<InstructionContext> ins = ctx.getFrame().getMethodCtx().getInstructonContexts(ctx.getInstruction());
 		for (InstructionContext i : ins)
-		{
-			if (!ictxEqualsDir(ctx, i, sctx))
+		{	
+			if (sctx == null)
 			{
-				return false;
-			}
-
-			Instruction poppedIns = null;
-			for (StackContext s : i.getPushes())
-				for (InstructionContext i2 : s.getPopped())
+				if (!i.equals(ctx))
 				{
-					if (poppedIns == null)
-						poppedIns = i2.getInstruction();
-					else if (poppedIns != i2.getInstruction())
-						return false;
+					return false;
 				}
+				
+				for (StackContext sctx2 : i.getPushes())
+				{
+					if (sctx2.getPopped().size() > 1)
+					{
+						return false;
+					}
+				}
+			}
+			else
+			{
+				// everything which pushed the parameters must be the same
+				if (!ictxEqualsDir(ctx, i, sctx))
+				{
+					return false;
+				}
+
+				// everything which pops the result must be the same
+				Instruction poppedIns = null;
+				for (StackContext s : i.getPushes())
+					for (InstructionContext i2 : s.getPopped())
+					{
+						if (poppedIns == null)
+							poppedIns = i2.getInstruction();
+						else if (poppedIns != i2.getInstruction())
+							return false;
+					}
+			}
 		}
 		return true;
 	}
 	
 	private Set<Instruction> done = new HashSet<>();
 	
+	private void visit(MethodContext ctx)
+	{
+		for (InstructionContext ictx : ctx.getInstructionContexts())
+		{
+			Instruction instruction = ictx.getInstruction();
+
+			if (!(instruction instanceof IMul) && !(instruction instanceof LMul))
+			{
+				continue;
+			}
+
+			MultiplicationExpression expression;
+			try
+			{
+				expression = parseExpression(ictx, instruction.getClass());
+			}
+			catch (IllegalStateException ex)
+			{
+				continue;
+			}
+
+			if (expression == null)
+			{
+				continue;
+			}
+
+			if (done.contains(instruction))
+			{
+				continue;
+			}
+			done.add(instruction);
+
+			assert instruction instanceof IMul || instruction instanceof LMul;
+			if (instruction instanceof IMul)
+			{
+				count += expression.simplify(1);
+			}
+			else if (instruction instanceof LMul)
+			{
+				count += expression.simplify(1L);
+			}
+			else
+			{
+				throw new IllegalStateException();
+			}
+		}
+	}
+	
+	int count;
+	
 	private int runOnce()
 	{
 		group.buildClassGraph();
 		
+		count = 0;
+		
 		Execution e = new Execution(group);
+		//e.addFrameVisitor(f -> visit(f));
+		e.addMethodContextVisitor(m -> visit(m));
 		e.populateInitialMethods();
 		e.run();
-		
-		int count = 0;
-		
-		for (Frame frame : e.processedFrames)
-			for (InstructionContext ictx : frame.getInstructions())
-			{
-				Instruction instruction = ictx.getInstruction();
-				
-				if (!(instruction instanceof IMul) && !(instruction instanceof LMul))
-					continue;
-				
-				MultiplicationExpression expression;
-				try
-				{
-					 expression = parseExpression(e, ictx, instruction.getClass());
-				}
-				catch (IllegalStateException ex)
-				{
-					continue;
-				}
-				
-				if (expression == null)
-					continue;		
-								
-				if (done.contains(instruction))
-					continue;
-				done.add(instruction);
-				
-				assert instruction instanceof IMul || instruction instanceof LMul;
-				if (instruction instanceof IMul)
-					count += expression.simplify(1);
-				else if (instruction instanceof LMul)
-					count += expression.simplify(1L);
-				else
-					throw new IllegalStateException();
-			}
 		
 		return count;
 	}
