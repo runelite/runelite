@@ -2,13 +2,9 @@ package net.runelite.deob.deobfuscators;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.Method;
-import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

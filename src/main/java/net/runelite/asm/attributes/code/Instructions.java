@@ -1,7 +1,6 @@
 package net.runelite.asm.attributes.code;
 
 import net.runelite.asm.attributes.Code;
-import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -9,7 +8,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class Instructions

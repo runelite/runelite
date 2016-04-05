@@ -39,11 +39,10 @@ public class UnusedParameters implements Deobfuscator
 		InvokeInstruction ii = (InvokeInstruction) i;
 		List<Method> methods = ii.getMethods();
 		
-		if (!unused.containsKey(methods))
-			return;
+		//if (!unused.containsKey(methods))
+		//	return;
 		
-		for (Method m : methods)
-			invokes.put(i, ictx);
+		invokes.put(i, ictx);
 	}
 	
 	private void buildUnused(ClassGroup group)
@@ -165,6 +164,7 @@ public class UnusedParameters implements Deobfuscator
 					ii.removeParameter(paramIndex); // remove parameter from instruction
 					
 					Collection<InstructionContext> ics = invokes.get(i);//execution.getInstructonContexts(i);
+					assert ics != null;
 					if (ics != null)
 					{
 						InstructionContext ins = ics.toArray(new InstructionContext[0])[0];
@@ -231,6 +231,7 @@ public class UnusedParameters implements Deobfuscator
 			System.out.println("PASS " + pnum++ + " " + i);
 
 			count += i;
+			break;
 		}
 		while (i > 0);
 		
