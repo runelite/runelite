@@ -61,9 +61,11 @@ public class UnusedParameters implements Deobfuscator
 					unused.put(ms, u);
 			}
 	}
-	
+
 	private int processUnused(Execution execution, ClassGroup group)
 	{
+		// XXX maybe only remove parameters at the very end, in the event i want to export a func?
+		
 		int count = 0;
 		
 		for (List<Method> m : unused.keySet())
@@ -163,19 +165,20 @@ public class UnusedParameters implements Deobfuscator
 					
 					ii.removeParameter(paramIndex); // remove parameter from instruction
 					
-					Collection<InstructionContext> ics = invokes.get(i);//execution.getInstructonContexts(i);
+					Collection<InstructionContext> ics = invokes.get(i);
 					assert ics != null;
 					if (ics != null)
 					{
-						InstructionContext ins = ics.toArray(new InstructionContext[0])[0];
+						for (InstructionContext ins : ics)
+						{
+							int pops = signature.size() - paramIndex - 1; // index from top of stack of parameter. 0 is the last parameter
 
-						int pops = signature.size() - paramIndex - 1; // index from top of stack of parameter. 0 is the last parameter
+							StackContext sctx = ins.getPops().get(pops);
+							if (sctx.getPushed().getInstruction().getInstructions() == null)
+								continue;
 
-						StackContext sctx = ins.getPops().get(pops);
-						if (sctx.getPushed().getInstruction().getInstructions() == null)
-							continue;
-
-						ins.removeStack(pops); // remove parameter from stack
+							ins.removeStack(pops); // remove parameter from stack
+						}
 					}
 				}
 			}

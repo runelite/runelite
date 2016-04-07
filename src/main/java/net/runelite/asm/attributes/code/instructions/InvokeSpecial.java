@@ -117,12 +117,6 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	{
 		return "invokespecial " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod();
 	}
-
-	@Override
-	public String getDesc(Frame frame)
-	{	
-		return "invokespecial " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName();
-	}
 	
 	@Override
 	public void removeParameter(int idx)

@@ -174,11 +174,6 @@ public abstract class Instruction implements Cloneable
 	{
 		return length;
 	}
-	
-	public String getDesc(Frame frame)
-	{
-		return type.getName() + " at pc " + frame.getPc() + " in " + frame.getMethod().getName() + " " + frame.getMethod().getDescriptor() + " class " + frame.getMethod().getCode().getAttributes().getClassFile().getName();
-	}
 
 	public abstract InstructionContext execute(Frame e);
 	
