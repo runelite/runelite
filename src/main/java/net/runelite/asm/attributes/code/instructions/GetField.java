@@ -42,7 +42,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 	public String toString()
 	{
 		Method m = this.getInstructions().getCode().getAttributes().getMethod();
-		return "getfield " + myField + " in " + m;
+		return "getfield " + myField + " in " + m + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
 	
 	@Override

@@ -115,7 +115,7 @@ public class LDC_W extends Instruction implements PushConstantInstruction
 	
 	
 	@Override
-	public String getDesc(Frame frame)
+	public String toString()
 	{
 		return "ldc_w " + value;
 	}

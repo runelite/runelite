@@ -220,7 +220,7 @@ public class Frame
 			}
 			catch (Throwable ex)
 			{
-				System.err.println("Error executing instruction " + cur.getDesc(this));
+				System.err.println("Error executing instruction " + cur);
 				System.err.println("Frame stack (grows downward):");
 				while (stack.getSize() > 0)
 				{
@@ -228,7 +228,7 @@ public class Frame
 					InstructionContext pushed = stacki.getPushed();
 					Frame frame = pushed.getFrame();
 					
-					System.err.println(pushed.getInstruction().getDesc(frame));
+					System.err.println(pushed.getInstruction());
 				}
 				System.err.println("end of stack");
 				ex.printStackTrace();

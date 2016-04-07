@@ -112,12 +112,6 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		
 		return ins;
 	}
-
-	@Override
-	public String getDesc(Frame frame)
-	{	
-		return "invokestatic " + method.getNameAndType().getDescriptor() + " on " + method.getClassEntry().getName() + " return value " + method.getNameAndType().getDescriptor().getReturnValue();
-	}
 	
 	@Override
 	public void removeParameter(int idx)
