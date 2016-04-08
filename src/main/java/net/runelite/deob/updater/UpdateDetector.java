@@ -20,7 +20,8 @@ public class UpdateDetector
 			GameConfig config = new GameConfig();
 			config.fetch();
 			save(config, saveFile);
-			return;
+			System.out.println("update: uncached");
+			System.exit(-1);
 		}
 
 		GameConfig saved = load(saveFile);
@@ -31,6 +32,10 @@ public class UpdateDetector
 		GameConfigUpdateDetector gcud = new GameConfigUpdateDetector(saved, current);
 		boolean updated = gcud.hasUpdated();
 
+		if (updated)
+			save(current, saveFile);
+
+		System.out.println("update: " + updated);
 		System.exit(updated ? 0 : -1);
 	}
 
