@@ -472,8 +472,6 @@ public class MultiplicationDeobfuscatorTest
 	{
 		ClassGroup group = ClassGroupFactory.generateGroup();
 		Code code = group.findClass("test").findMethod("func").getCode();
-		Code code2 = group.findClass("test").findMethod("func2").getCode();
-		Field field = group.findClass("test").findField("field");
 		Instructions ins = code.getInstructions();
 		
 		code.setMaxStack(2);
@@ -606,5 +604,52 @@ public class MultiplicationDeobfuscatorTest
 		Assert.assertEquals(1L, constant1.getConstantAsLong());
 		Assert.assertEquals(1L, constant2.getConstantAsLong());
 		Assert.assertEquals(1L, constant3.getConstantAsLong());
+	}
+
+	@Test
+	public void test10()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(5);
+
+		// vars[0] = 3
+		Instruction[] prepareVariables = {
+			new IConst_3(ins),
+			new IStore_0(ins)
+		};
+
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+
+		LDC_W constant1 = new LDC_W(ins, -1729723287),
+		      constant2 = new LDC_W(ins, -143176743);
+
+		Instruction body[] = {
+			new ILoad(ins, 0),
+			constant1,
+			new IMul(ins),
+			constant2,
+			new IMul(ins),
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+			ins.addInstruction(i);
+
+		// check execution runs ok
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
 	}
 }

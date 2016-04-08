@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deob;
@@ -136,9 +137,19 @@ public class Execution
 			
 			if (frames.isEmpty())
 			{
+				assert frame.getMethod() == frame.getMethodCtx().getMethod();
+
 				accept(frame.getMethodCtx());
-				frames.addAll(framesOther);
-				framesOther.clear();
+
+				if (framesOther.isEmpty())
+					break;
+
+				Frame begin = framesOther.remove(0);
+				frames.add(begin);
+
+				List<Frame> toMove = framesOther.stream().filter(f -> f.getMethod() == begin.getMethod()).collect(Collectors.toList());
+				frames.addAll(toMove);
+				framesOther.removeAll(toMove);
 			}
 		}
 		

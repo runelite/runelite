@@ -38,7 +38,7 @@ public class Frame
 
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
-		ctx = new MethodContext(execution);
+		ctx = new MethodContext(execution, method);
 		nonStatic = method;
 	}
 
@@ -52,7 +52,7 @@ public class Frame
 		stack = new Stack(code.getMaxStack());
 		variables = new Variables(code.getMaxLocals());
 
-		ctx = new MethodContext(execution);
+		ctx = new MethodContext(execution, method);
 		nonStatic = method;
 
 		cur = i;
