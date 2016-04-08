@@ -276,11 +276,6 @@ public class ConstantParameter implements Deobfuscator
 		}
 	}
 
-	private void buildContexts(InstructionContext context)
-	{
-		//
-	}
-
 	private boolean doLogicalComparison(Object value, ComparisonInstruction comparison, Object otherValue)
 	{
 		Instruction ins = (Instruction) comparison;
