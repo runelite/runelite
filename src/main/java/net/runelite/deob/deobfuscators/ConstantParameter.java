@@ -25,6 +25,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
+import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.signature.Type;
 import org.apache.commons.collections4.map.MultiValueMap;
 
@@ -34,7 +35,7 @@ class ConstantMethodParameter
 	public int paramIndex;
 	public int lvtIndex;
 	public Object value;
-	List<InstructionContext> operations = new ArrayList<>();
+	List<Instruction> operations = new ArrayList<>();
 	Boolean result;
 
 	@Override
@@ -269,10 +270,15 @@ public class ConstantParameter implements Deobfuscator
 			}
 			else
 			{
-				parameter.operations.add(ins);
+				parameter.operations.add(ins.getInstruction());
 				parameter.result = result;
 			}
 		}
+	}
+
+	private void buildContexts(InstructionContext context)
+	{
+		//
 	}
 
 	private boolean doLogicalComparison(Object value, ComparisonInstruction comparison, Object otherValue)
@@ -314,16 +320,22 @@ public class ConstantParameter implements Deobfuscator
 	}
 
 	// remove logically dead comparisons
-	private int removeDeadOperations()
+	private int removeDeadOperations(MethodContext mctx)
 	{
 		int count = 0;
 		for (ConstantMethodParameter cmp : parameters)
 		{
+			if (!cmp.methods.contains(mctx.getMethod()))
+				continue;
+			
 			annotateObfuscatedSignature(cmp);
 
-			for (InstructionContext ctx : cmp.operations) // comparisons
+			for (Instruction ins : cmp.operations) // comparisons
 			{
-				Instruction ins = ctx.getInstruction();
+				if (ins.getInstructions() == null || ins.getInstructions().getCode().getAttributes().getMethod() != mctx.getMethod())
+					continue;
+				
+				InstructionContext ctx = mctx.getInstructonContexts(ins).toArray(new InstructionContext[0])[0];
 				boolean branch = cmp.result; // branch that is always taken
 				
 				if (ins.getInstructions() == null)
@@ -403,17 +415,22 @@ public class ConstantParameter implements Deobfuscator
 			annotation.addElement(element);
 		}
 	}
+
+	private int count;
 	
 	@Override
 	public void run(ClassGroup group)
 	{
 		Execution execution = new Execution(group);
-		execution.addExecutionVisitor((i) -> findParameters(i));
-		execution.addExecutionVisitor((i) -> findDeadParameters(i));
+		execution.addExecutionVisitor(i -> findParameters(i));
+		execution.addExecutionVisitor(i -> findDeadParameters(i));
 		execution.populateInitialMethods();
 		execution.run();
 
-		int count = removeDeadOperations();
+		execution = new Execution(group);
+		execution.addMethodContextVisitor(m -> count += removeDeadOperations(m));
+		execution.populateInitialMethods();
+		execution.run();
 		
 		System.out.println("Removed " + count + " logically dead conditional jumps");
 	}
