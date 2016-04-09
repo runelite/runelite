@@ -5,6 +5,7 @@ DEOBFUSCATOR_REPO=/home/runelite/jbytecode
 RS_CLIENT_REPO=/home/runelite/rs2-client
 M2_REPOSITORY=/home/runelite/.m2/repository
 FERNFLOWER_JAR=/home/runelite/fernflower/fernflower.jar
+DEPLOY_REPO_URL=file:///var/www/repo.runelite.net/
 
 # Find latest deobfuscator
 DEOB_VER=$(mvn -f $DEOBFUSCATOR_REPO/pom.xml org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -e '^[[:digit:]]')
@@ -57,6 +58,7 @@ rm $VANILLA_INJECTED
 java -cp $DEOB_JAR net.runelite.deob.updater.UpdateIject $DEOBFUSCATED_WITH_MAPPINGS $VANILLA $VANILLA_INJECTED
 
 # step 4. deploy vanilla client.
+mvn deploy:deploy-file -DgroupId=net.runelite.rs -DartifactId=client -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar -Dfile=$VANILLA_INJECTED -Durl=$DEPLOY_REPO_URL
 
 # step 5. decompile deobfuscated mapped client.
 rm -rf /tmp/dest
