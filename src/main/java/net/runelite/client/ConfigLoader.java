@@ -26,8 +26,7 @@ public class ConfigLoader
 	{
 		try
 		{
-			configURL = new URL("http://192.168.1.2/rs/jav_config.ws");
-			//configURL = new URL("http://oldschool1.runescape.com/jav_config.ws"); // https redirects us to rs3
+			configURL = new URL("http://oldschool.runescape.com/jav_config.ws"); // https redirects us to rs3
 		}
 		catch (MalformedURLException ex)
 		{

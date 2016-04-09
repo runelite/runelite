@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLConnection;
 import java.util.List;
 import net.runelite.launcher.ArtifactResolver;
 import net.runelite.launcher.Launcher;
@@ -19,7 +20,7 @@ import org.eclipse.aether.resolution.DependencyResolutionException;
 
 public class ClientLoader
 {
-	private static final String CLIENT_ARTIFACT_URL = "http://192.168.1.2/rs/client.json";
+	private static final String CLIENT_ARTIFACT_URL = "https://static.runelite.net/client.json";
 	
 	public Applet load() throws MalformedURLException, ClassNotFoundException, IOException, InstantiationException, IllegalAccessException, DependencyResolutionException
 	{
@@ -46,7 +47,9 @@ public class ClientLoader
 	private static Artifact getClientArtifact() throws MalformedURLException, IOException
 	{
 		URL u = new URL(CLIENT_ARTIFACT_URL);
-		try (InputStream i = u.openStream())
+		URLConnection conn = u.openConnection();
+		conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+		try (InputStream i = conn.getInputStream())
 		{
 			Gson g = new Gson();
 			return g.fromJson(new InputStreamReader(i), DefaultArtifact.class);
