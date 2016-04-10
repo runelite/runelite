@@ -13,7 +13,9 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -21,6 +23,7 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -37,11 +40,7 @@ public class UnusedParameters implements Deobfuscator
 			return;
 		
 		InvokeInstruction ii = (InvokeInstruction) i;
-		List<Method> methods = ii.getMethods();
-		
-		//if (!unused.containsKey(methods))
-		//	return;
-		
+
 		invokes.put(i, ictx);
 	}
 	
@@ -62,10 +61,32 @@ public class UnusedParameters implements Deobfuscator
 			}
 	}
 
+	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
+	
+	private Signature getObfuscatedSignature(Method m)
+	{
+		Annotations an = m.getAttributes().getAnnotations();
+		if (an == null)
+			return null;
+		
+		Annotation a = an.find(OBFUSCATED_SIGNATURE);
+		if (a == null)
+			return null;
+
+		return new Signature(a.getElement().getString());
+	}
+
+	private boolean shouldRemove(Method m, int parameter)
+	{
+		Signature obSig = getObfuscatedSignature(m);
+		if (obSig == null)
+			return false;
+
+		return parameter + 1 == obSig.size();
+	}
+
 	private int processUnused(Execution execution, ClassGroup group)
 	{
-		// XXX maybe only remove parameters at the very end, in the event i want to export a func?
-		
 		int count = 0;
 		
 		for (List<Method> m : unused.keySet())
@@ -76,6 +97,9 @@ public class UnusedParameters implements Deobfuscator
 
 			for (int unusedParameter : u)
 			{
+				if (!shouldRemove(m.get(0), unusedParameter))
+					continue;
+
 				Signature signature = m.get(0).getDescriptor();
 				int lvtIndex = this.getLvtIndex(signature, offset, unusedParameter);
 				/* removing the parameter can't cause collisions on other (overloaded) methods because prior to this we rename
