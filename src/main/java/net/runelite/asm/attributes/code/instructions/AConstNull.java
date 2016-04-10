@@ -16,6 +16,11 @@ public class AConstNull extends Instruction
 		super(instructions, type, pc);
 	}
 
+	public AConstNull(Instructions instructions)
+	{
+		super(instructions, InstructionType.ACONST_NULL, -1);
+	}
+
 	@Override
 	public InstructionContext execute(Frame frame)
 	{

@@ -11,6 +11,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -172,7 +173,12 @@ public class Inject
 				assert !m.isStatic();
 				
 				String exportedName = an.find(EXPORT).getElement().getString();
-				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
+
+				Annotation obAn = an.find(OBFUSCATED_NAME);
+				if (obAn != null)
+					obfuscatedName = obAn.getElement().getString();
+				else
+					obfuscatedName = m.getName();
 				
 				Method otherm;
 
@@ -181,8 +187,11 @@ public class Inject
 				String garbage = null;
 				if (obfuscatedSignature != null)
 				{
-					String signatureString = obfuscatedSignature.getElements().get(0).getString();
-					garbage = obfuscatedSignature.getElements().get(1).getString();
+					List<Element> elements = obfuscatedSignature.getElements();
+
+					String signatureString = elements.get(0).getString();
+					if (elements.size() == 2)
+						garbage = obfuscatedSignature.getElements().get(1).getString();
 
 					Signature signature = new Signature(signatureString); // parse signature
 
@@ -349,7 +358,11 @@ public class Inject
 		// deobfuscatedMethod = deobfuscated method, used to get the deobfuscated signature
 		// invokeMethod = method to invoke, obfuscated
 
-		assert clazz.findMethod(method.getName()) == null;
+		if (clazz.findMethod(method.getName()) != null)
+		{
+			return; // hmm. this might be due to an export/import of a non obfuscated method
+		}
+
 		assert !invokeMethod.isStatic();
 		assert invokeMethod.getMethods().getClassFile() == clazz;
 
@@ -422,6 +435,10 @@ public class Inject
 		if (lastGarbageArgumentType != null)
 		{
 			// function requires garbage value
+
+			// if garbage is null here it might just be an unused parameter, not part of the obfuscation
+			if (garbage == null)
+				garbage = "0";
 
 			switch (lastGarbageArgumentType.getType())
 			{

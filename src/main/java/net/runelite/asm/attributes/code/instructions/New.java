@@ -62,6 +62,7 @@ public class New extends Instruction
 	public void setNewClass(Class clazz)
 	{
 		this.clazz = clazz;
+		lookup();
 	}
 	
 	@Override

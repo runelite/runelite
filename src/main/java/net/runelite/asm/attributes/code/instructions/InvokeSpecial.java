@@ -141,11 +141,13 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 	public void setMethod(Method method)
 	{
 		this.method = method;
+		lookup();
 	}
 	
 	@Override
 	public void lookup()
 	{
+		myMethods = null;
 		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
 		
 		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
