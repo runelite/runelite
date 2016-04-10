@@ -1,9 +1,13 @@
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Graphics;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.Replace;
 
 @ObfuscatedName("ex")
+@Implements("RSCanvas")
+@Replace("net.runelite.inject.RSCanvas")
 public final class class139 extends Canvas {
    @ObfuscatedName("e")
    Component field2130;
