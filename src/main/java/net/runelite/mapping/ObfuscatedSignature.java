@@ -11,5 +11,5 @@ public @interface ObfuscatedSignature
 {
 	String signature();
 
-	String garbageValue(); // valid garbage value for last parameter. can't be an Object because Java.
+	String garbageValue() default ""; // valid garbage value for last parameter. can't be an Object because Java.
 }
