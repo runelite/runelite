@@ -10,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.signature.Signature;
 
 public class ClassFile
 {
@@ -246,6 +247,11 @@ public class ClassFile
 	{
 		return methods.findMethod(name);
 	}
+
+	public Method findMethod(String name, Signature signature)
+	{
+		return methods.findMethod(new NameAndType(name, signature));
+	}
 	
 	public Method findMethodDeep(String name)
 	{
@@ -299,5 +305,10 @@ public class ClassFile
 	public void clearFinal()
 	{
 		this.access_flags &= ~ACC_FINAL;
+	}
+
+	public void clearAbstract()
+	{
+		this.access_flags &= ~ACC_ABSTRACT;
 	}
 }

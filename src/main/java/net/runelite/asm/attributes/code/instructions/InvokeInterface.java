@@ -68,16 +68,6 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 	{
 		return myMethods != null ? myMethods : Arrays.asList();
 	}
-	
-	private void findMethodFromClass(List<net.runelite.asm.Method> list, ClassFile clazz)
-	{
-		net.runelite.asm.Method m = clazz.findMethodDeep(method.getNameAndType());
-		if (m != null && !list.contains(m))
-			list.add(m);
-	
-		for (ClassFile cf : clazz.getChildren())
-			findMethodFromClass(list, cf);
-	}
 
 	@Override
 	public InstructionContext execute(Frame frame)

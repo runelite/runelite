@@ -143,6 +143,14 @@ public class Method
 		return (accessFlags & ACC_FINAL) != 0;
 	}
 
+	public void setFinal(boolean f)
+	{
+		if (f)
+			accessFlags |= ACC_FINAL;
+		else
+			accessFlags &= ~ACC_FINAL;
+	}
+
 	public boolean isPrivate()
 	{
 		return (accessFlags & ACC_PRIVATE) != 0;
@@ -151,6 +159,11 @@ public class Method
 	public void setPrivate()
 	{
 		accessFlags = (short) ((accessFlags & ~ACCESS_MODIFIERS) | ACC_PRIVATE);
+	}
+
+	public void setPublic()
+	{
+		accessFlags = (short) ((accessFlags & ~ACCESS_MODIFIERS) | ACC_PUBLIC);
 	}
 	
 	public Exceptions getExceptions()

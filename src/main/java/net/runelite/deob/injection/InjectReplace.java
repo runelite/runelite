@@ -14,24 +14,31 @@ import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.ALoad;
+import net.runelite.asm.attributes.code.instructions.BiPush;
 import net.runelite.asm.attributes.code.instructions.DLoad;
 import net.runelite.asm.attributes.code.instructions.FLoad;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
+import net.runelite.asm.attributes.code.instructions.LDC2_W;
+import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.Return;
+import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 
 public class InjectReplace
 {
 	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
 	private static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
-	//private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 
 	private ClassFile cf, vanilla;
@@ -79,6 +86,7 @@ public class InjectReplace
 		// set parent
 		classToInject.setParentClass(vanilla.getPoolClass());
 		vanilla.clearFinal(); // can't be final anymore now that we inherit from it
+		classToInject.clearAbstract(); // this is being instantiated now, so is no longer abstract
 		
 		injectConstructors(classToInject);
 
@@ -94,7 +102,7 @@ public class InjectReplace
 	
 	private void injectConstructors(ClassFile classToInject)
 	{
-		// Delete compiler generate constructors
+		// Delete compiler generated constructors
 		Methods methods = classToInject.getMethods();
 		Methods vanillaMethods = vanilla.getMethods();
 
@@ -138,6 +146,9 @@ public class InjectReplace
 				// create new constructor with same signature
 				Method constructor = new Method(methods, "<init>", m.getDescriptor());
 				constructor.setAccessFlags(Method.ACC_PUBLIC);
+
+				// ensure vanilla ctor is public too
+				m.setAccessFlags(Method.ACC_PUBLIC);
 
 				Attributes methodAttributes = constructor.getAttributes();
 
@@ -222,40 +233,101 @@ public class InjectReplace
 			String overridenMethod = annotation.getElement().getString(); // name of @Exported method to override
 
 			// Find method with exported name on 'cf'
-			Method obfuscatedMethodToOverride = findMethodByExportedName(overridenMethod);
+			Method obfuscatedMethodToOverride = findMethodByExportedName(overridenMethod); // this is from the deobfuscated jar
+			Method vanillaMethodToOverride = findVanillaMethodFromDeobfuscatedMethod(obfuscatedMethodToOverride);
 			NameAndType deobfuscatedNat = m.getNameAndType();
 			
 			assert obfuscatedMethodToOverride != null;
-			assert !obfuscatedMethodToOverride.isFinal();
-			assert !obfuscatedMethodToOverride.isPrivate();
+			assert vanillaMethodToOverride != null;
+
+			vanillaMethodToOverride.setFinal(false);
+			vanillaMethodToOverride.setPublic();
+			
+			assert !vanillaMethodToOverride.isFinal();
+			assert !vanillaMethodToOverride.isPrivate();
 
 			// Rename method to override
-			m.setName(obfuscatedMethodToOverride.getName());
+			m.setName(vanillaMethodToOverride.getName());
 
-			assert false;
-			if (!m.getDescriptor().equals(obfuscatedMethodToOverride.getDescriptor()))
+			String garbageValue = null;
+			Signature originalSignature = null;
+			if (!m.getDescriptor().equals(vanillaMethodToOverride.getDescriptor()))
 			{
 				// Obfuscation can add garbage parameter.
-				assert m.getDescriptor().size() + 1 == obfuscatedMethodToOverride.getDescriptor().size();
+				assert m.getDescriptor().size() + 1 == vanillaMethodToOverride.getDescriptor().size();
 
-				// Either we have to modify the bytecode when it is copied over to include this,
-				// or maybe can inject overloaded function into superclass if it doesn't cause a signature collision
-				assert false;
+				originalSignature = m.getDescriptor();
+
+				m.arguments = vanillaMethodToOverride.getDescriptor(); // is this right?
+
+				garbageValue = this.getGarbage(obfuscatedMethodToOverride);
 			}
 
 			// This means method is overriden. It is possible that the return value is a child class
 			// of the parents overriden method, and it will still override the method however the signatures won't match,
 			// but we don't do that.
-			assert m.getDescriptor().equals(obfuscatedMethodToOverride.getDescriptor());
+			assert m.getDescriptor().equals(vanillaMethodToOverride.getDescriptor());
 
 			// Now that the function is overriden, when the invoke injector is called, it turns around and invokevirtuals
 			// the parent method, which hits ours.
 
 			// locate super.method() calls and modify...
-			for (Instruction i : m.getCode().getInstructions().getInstructions())
+			for (Instruction i : new ArrayList<>(m.getCode().getInstructions().getInstructions()))
 			{
 				if (!(i instanceof InvokeSpecial))
 					continue;
+
+				if (originalSignature != null)
+				{
+					assert originalSignature.size() + 1 == m.getDescriptor().size();
+
+					Instructions instructions = m.getCode().getInstructions();
+					List<Instruction> ins = instructions.getInstructions();
+					Type type = m.getDescriptor().getTypeOfArg(m.getDescriptor().size() - 1);
+					int offset = ins.indexOf(i);
+					
+					assert offset != -1;
+
+					// XXX we could maybe just pull the variable off of the lvt here, instead
+					// if we know we haven't overwritten it?
+					if (type.getArrayDims() > 0 || !type.isPrimitive())
+					{
+						ins.add(offset, new AConstNull(instructions));
+					}
+					else
+					{
+						if (garbageValue == null)
+						{
+							garbageValue = "0";
+						}
+
+						switch (type.getType())
+						{
+							case "Z":
+							case "B":
+							case "C":
+								ins.add(offset, new BiPush(instructions, Byte.parseByte(garbageValue)));
+								break;
+							case "S":
+								ins.add(offset, new SiPush(instructions, Short.parseShort(garbageValue)));
+								break;
+							case "I":
+								ins.add(offset, new LDC_W(instructions, Integer.parseInt(garbageValue)));
+								break;
+							case "D":
+								ins.add(offset, new LDC2_W(instructions, Double.parseDouble(garbageValue)));
+								break;
+							case "F":
+								ins.add(offset, new LDC_W(instructions, Float.parseFloat(garbageValue)));
+								break;
+							case "J":
+								ins.add(offset, new LDC2_W(instructions, Long.parseLong(garbageValue)));
+								break;
+							default:
+								throw new RuntimeException("Unknown type");
+						}
+					}
+				}
 
 				InvokeSpecial is = (InvokeSpecial) i;
 
@@ -291,6 +363,60 @@ public class InjectReplace
 		}
 
 		return null;
+	}
+
+	private Method findVanillaMethodFromDeobfuscatedMethod(Method method)
+	{
+		String name = getObfuscatedName(method);
+		Signature sig = getObfuscatedSignature(method);
+		return vanilla.findMethod(name, sig);
+	}
+
+	private String getObfuscatedName(Method method)
+	{
+		Annotations an = method.getAttributes().getAnnotations();
+		if (an == null)
+			return method.getName();
+
+		Annotation a = an.find(OBFUSCATED_NAME);
+		if (a == null)
+			return method.getName();
+		
+		return a.getElement().getString();
+	}
+
+	private Signature getObfuscatedSignature(Method method)
+	{
+		Annotations an = method.getAttributes().getAnnotations();
+		if (an == null)
+		{
+			return method.getDescriptor();
+		}
+
+		Annotation obSig = an.find(OBFUSCATED_SIGNATURE);
+		if (obSig == null)
+		{
+			return method.getDescriptor();
+		}
+
+		return new Signature(obSig.getElement().getString());
+	}
+
+	private String getGarbage(Method method)
+	{
+		Annotations an = method.getAttributes().getAnnotations();
+		if (an == null)
+		{
+			return null;
+		}
+
+		Annotation obSig = an.find(OBFUSCATED_SIGNATURE);
+		if (obSig == null || obSig.getElements().size() < 2)
+		{
+			return null;
+		}
+
+		return obSig.getElements().get(1).getString();
 	}
 
 	private void replaceSuperclass(ClassFile classToInject)
@@ -381,6 +507,9 @@ public class InjectReplace
 
 						InvokeSpecial is = (InvokeSpecial) i;
 						net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
+
+						if (!method.getNameAndType().getName().equals("<init>") || !method.getClassEntry().equals(vanilla.getPoolClass()))
+							continue;
 
 						is.setMethod(new net.runelite.asm.pool.Method(
 								classToInject.getPoolClass(),
