@@ -14,6 +14,7 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.execution.ParallellMappingExecutor;
 import net.runelite.asm.signature.Type;
+import net.runelite.deob.deobfuscators.mapping.ExecutionMapper;
 
 public class Mapper
 {
@@ -55,11 +56,12 @@ public class Mapper
 		{
 			Collection<Method> methods = msm.getMap().get(m);
 
-			for (Method other : methods)
-			{
-				HashMap<Object, Object> all = new HashMap();
-				map(all, pmes, m, other);
-			}
+			ExecutionMapper em = new ExecutionMapper(m, methods);
+
+			ParallelExecutorMapping mapping = em.run();
+			mapping.map(mapping.m1, mapping.m2);
+
+			pmes.add(mapping);
 		}
 
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
@@ -79,12 +81,13 @@ public class Mapper
 		for (Method m : smsm.getMap().keySet())
 		{
 			Collection<Method> methods = smsm.getMap().get(m);
-			
-			for (Method other : methods)
-			{
-				HashMap<Object, Object> all = new HashMap();
-				map(all, pmes, m, other);
-			}
+
+			ExecutionMapper em = new ExecutionMapper(m, methods);
+
+			ParallelExecutorMapping mapping = em.run();
+			mapping.map(mapping.m1, mapping.m2);
+
+			pmes.add(mapping);
 		}
 		
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
@@ -92,41 +95,6 @@ public class Mapper
 			finalm.merge(pme);
 
 		return finalm;
-	}
-
-	private void map(Map<Object, Object> all, List<ParallelExecutorMapping> result, Method m1, Method m2)
-	{
-		if (all.containsKey(m1))
-			return;
-		all.put(m1, m2);
-
-		assert (m1.getCode() == null) == (m2.getCode() == null);
-
-		if (m1.getCode() == null)
-			return;
-
-		ParallelExecutorMapping mappings = MappingExecutorUtil.map(m1, m2);
-
-		if (mappings.getMap().isEmpty() && mappings.crashed)
-			return;
-
-		mappings.map(m1, m2);
-		result.add(mappings);
-
-		for (Map.Entry<Object, Object> e : mappings.getMap().entrySet())
-		{
-			if (e.getKey() instanceof Method)
-			{
-				Method n1 = (Method) e.getKey(),
-					n2 = (Method) e.getValue();
-
-				map(all, result, n1, n2);
-			}
-			else
-			{
-				all.put(e.getKey(), e.getValue());
-			}
-		}
 	}
 
 	private ParallelExecutorMapping mapPackets(ParallelExecutorMapping pem, ClassGroup group1, ClassGroup group2)

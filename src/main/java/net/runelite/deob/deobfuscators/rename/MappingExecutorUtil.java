@@ -54,7 +54,7 @@ public class MappingExecutorUtil
 		
 		parallel.mappings = mappings;
 
-		outer:
+		int same = 0;
 		while (parallel.step())
 		{
 			// get what each frame is paused/exited on
@@ -83,9 +83,12 @@ public class MappingExecutorUtil
 				continue;
 			}
 
+			++same;
 			mi1.map(mappings, p1, p2);
 			e.paused = e2.paused = false;
 		}
+
+		mappings.same = same;
 		
 		return mappings;
 	}

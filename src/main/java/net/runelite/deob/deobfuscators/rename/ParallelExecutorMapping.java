@@ -17,12 +17,11 @@ public class ParallelExecutorMapping
 {
 	private ClassGroup group, group2;
 	private Multimap<Object, Mapping> map = HashMultimap.create();
-	//private Map<Object, Object> map = new HashMap<>();
-	//private List<Object> order = new ArrayList<>();
 	public Method m1, m2;
 	public boolean crashed;
 	public List<PacketHandler> packetHandler1 = new ArrayList<>();
 	public List<PacketHandler> packetHandler2 = new ArrayList<>();
+	public int same;
 	
 	public ParallelExecutorMapping(ClassGroup group, ClassGroup group2)
 	{
@@ -71,18 +70,8 @@ public class ParallelExecutorMapping
 		}
 	}
 	
-//	public void mergeButNotOverride(ParallelExecutorMapping other)
-//	{
-//		assert this != other;
-//		for (Object o : other.map.keySet())
-//			if (map.containsKey(o) == false)
-//				map.put(o, other.map.get(o));
-//	}
-	
 	public void map(Object one, Object two)
 	{
-		//mapClass(one, two);
-
 		Mapping m = getMapping(one, two);
 		
 		belongs(one, group);
