@@ -7,10 +7,10 @@ import net.runelite.mapping.Import;
 public interface ClassInfo
 {
 	@Import("methods")
-	Method getMethods();
+	Method[] getMethods();
 
 	@Import("fields")
-	Field getFields();
+	Field[] getFields();
 
 	@Import("args")
 	byte[][][] getArgs();
