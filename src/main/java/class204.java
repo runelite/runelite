@@ -2,23 +2,23 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gh")
+@ObfuscatedName("gi")
 @Implements("CacheableNode")
 public class class204 extends class208 {
-   @ObfuscatedName("cw")
+   @ObfuscatedName("cj")
    @Export("next")
-   public class204 field3104;
-   @ObfuscatedName("ck")
+   public class204 field3113;
+   @ObfuscatedName("cn")
    @Export("previous")
-   public class204 field3105;
+   public class204 field3114;
 
-   @ObfuscatedName("fu")
-   public void method3891() {
-      if(this.field3104 != null) {
-         this.field3104.field3105 = this.field3105;
-         this.field3105.field3104 = this.field3104;
-         this.field3105 = null;
-         this.field3104 = null;
+   @ObfuscatedName("fp")
+   public void method3979() {
+      if(this.field3113 != null) {
+         this.field3113.field3114 = this.field3114;
+         this.field3114.field3113 = this.field3113;
+         this.field3114 = null;
+         this.field3113 = null;
       }
    }
 }

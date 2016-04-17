@@ -1,53 +1,45 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("bi")
 public class class58 {
-   @ObfuscatedName("s")
-   int field1181;
+   @ObfuscatedName("d")
+   int field1217;
    @ObfuscatedName("w")
-   class71[] field1182 = new class71[10];
-   @ObfuscatedName("f")
-   int field1183;
+   class71[] field1218 = new class71[10];
+   @ObfuscatedName("c")
+   int field1220;
 
-   class58(class119 var1) {
-      for(int var2 = 0; var2 < 10; ++var2) {
-         int var3 = var1.method2523();
-         if(var3 != 0) {
-            --var1.field1976;
-            this.field1182[var2] = new class71();
-            this.field1182[var2].method1568(var1);
-         }
-      }
-
-      this.field1183 = var1.method2700();
-      this.field1181 = var1.method2700();
+   @ObfuscatedName("w")
+   public class62 method1330() {
+      byte[] var1 = this.method1343();
+      return new class62(22050, var1, 22050 * this.field1217 / 1000, 22050 * this.field1220 / 1000);
    }
 
-   @ObfuscatedName("f")
-   public final int method1241() {
+   @ObfuscatedName("d")
+   public final int method1333() {
       int var1 = 9999999;
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.field1182[var2] != null && this.field1182[var2].field1313 / 20 < var1) {
-            var1 = this.field1182[var2].field1313 / 20;
+         if(this.field1218[var2] != null && this.field1218[var2].field1333 / 20 < var1) {
+            var1 = this.field1218[var2].field1333 / 20;
          }
       }
 
-      if(this.field1183 < this.field1181 && this.field1183 / 20 < var1) {
-         var1 = this.field1183 / 20;
+      if(this.field1217 < this.field1220 && this.field1217 / 20 < var1) {
+         var1 = this.field1217 / 20;
       }
 
       if(var1 != 9999999 && var1 != 0) {
          for(var2 = 0; var2 < 10; ++var2) {
-            if(this.field1182[var2] != null) {
-               this.field1182[var2].field1313 -= var1 * 20;
+            if(this.field1218[var2] != null) {
+               this.field1218[var2].field1333 -= var1 * 20;
             }
          }
 
-         if(this.field1183 < this.field1181) {
-            this.field1183 -= var1 * 20;
-            this.field1181 -= var1 * 20;
+         if(this.field1217 < this.field1220) {
+            this.field1217 -= var1 * 20;
+            this.field1220 -= var1 * 20;
          }
 
          return var1;
@@ -56,26 +48,34 @@ public class class58 {
       }
    }
 
-   @ObfuscatedName("e")
-   public static class58 method1244(class167 var0, int var1, int var2) {
-      byte[] var3 = var0.method3280(var1, var2);
+   class58(class119 var1) {
+      for(int var2 = 0; var2 < 10; ++var2) {
+         int var3 = var1.method2613();
+         if(var3 != 0) {
+            --var1.field1992;
+            this.field1218[var2] = new class71();
+            this.field1218[var2].method1664(var1);
+         }
+      }
+
+      this.field1217 = var1.method2615();
+      this.field1220 = var1.method2615();
+   }
+
+   @ObfuscatedName("a")
+   public static class58 method1341(class167 var0, int var1, int var2) {
+      byte[] var3 = var0.method3403(var1, var2);
       return var3 == null?null:new class58(new class119(var3));
    }
 
-   @ObfuscatedName("w")
-   public class62 method1246() {
-      byte[] var1 = this.method1249();
-      return new class62(22050, var1, 22050 * this.field1183 / 1000, 22050 * this.field1181 / 1000);
-   }
-
-   @ObfuscatedName("s")
-   final byte[] method1249() {
+   @ObfuscatedName("c")
+   final byte[] method1343() {
       int var1 = 0;
 
       int var2;
       for(var2 = 0; var2 < 10; ++var2) {
-         if(this.field1182[var2] != null && this.field1182[var2].field1302 + this.field1182[var2].field1313 > var1) {
-            var1 = this.field1182[var2].field1302 + this.field1182[var2].field1313;
+         if(this.field1218[var2] != null && this.field1218[var2].field1334 + this.field1218[var2].field1333 > var1) {
+            var1 = this.field1218[var2].field1334 + this.field1218[var2].field1333;
          }
       }
 
@@ -86,10 +86,10 @@ public class class58 {
          byte[] var3 = new byte[var2];
 
          for(int var4 = 0; var4 < 10; ++var4) {
-            if(this.field1182[var4] != null) {
-               int var5 = this.field1182[var4].field1302 * 22050 / 1000;
-               int var6 = this.field1182[var4].field1313 * 22050 / 1000;
-               int[] var7 = this.field1182[var4].method1569(var5, this.field1182[var4].field1302);
+            if(this.field1218[var4] != null) {
+               int var5 = this.field1218[var4].field1334 * 22050 / 1000;
+               int var6 = this.field1218[var4].field1333 * 22050 / 1000;
+               int[] var7 = this.field1218[var4].method1669(var5, this.field1218[var4].field1334);
 
                for(int var8 = 0; var8 < var5; ++var8) {
                   int var9 = var3[var8 + var6] + (var7[var8] >> 8);

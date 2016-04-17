@@ -1,69 +1,77 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("gq")
 public class class186 extends class66 {
-   @ObfuscatedName("s")
-   class55 field3002 = new class55();
-   @ObfuscatedName("f")
-   class199 field3003 = new class199();
-   @ObfuscatedName("e")
-   class184 field3004;
-
-   @ObfuscatedName("h")
-   protected class66 vmethod3713() {
-      class187 var1 = (class187)this.field3003.method3825();
-      return (class66)(var1 == null?null:(null != var1.field3020?var1.field3020:this.vmethod3733()));
-   }
-
+   @ObfuscatedName("q")
+   public static short[] field3018;
+   @ObfuscatedName("d")
+   class199 field3019 = new class199();
    @ObfuscatedName("a")
-   protected int vmethod3715() {
-      return 0;
-   }
+   class184 field3020;
+   @ObfuscatedName("c")
+   class55 field3021 = new class55();
 
-   @ObfuscatedName("r")
-   protected void vmethod3716(int[] var1, int var2, int var3) {
-      this.field3002.vmethod3716(var1, var2, var3);
+   @ObfuscatedName("q")
+   protected void vmethod3796(int[] var1, int var2, int var3) {
+      this.field3021.vmethod3796(var1, var2, var3);
 
-      for(class187 var6 = (class187)this.field3003.method3825(); var6 != null; var6 = (class187)this.field3003.method3827()) {
-         if(!this.field3004.method3622(var6)) {
+      for(class187 var6 = (class187)this.field3019.method3926(); null != var6; var6 = (class187)this.field3019.method3902()) {
+         if(!this.field3020.method3711(var6)) {
             int var4 = var2;
             int var5 = var3;
 
             do {
-               if(var5 <= var6.field3024) {
-                  this.method3723(var6, var1, var4, var5, var4 + var5);
-                  var6.field3024 -= var5;
+               if(var5 <= var6.field3041) {
+                  this.method3818(var6, var1, var4, var5, var5 + var4);
+                  var6.field3041 -= var5;
                   break;
                }
 
-               this.method3723(var6, var1, var4, var6.field3024, var5 + var4);
-               var4 += var6.field3024;
-               var5 -= var6.field3024;
-            } while(!this.field3004.method3623(var6, var1, var4, var5));
+               this.method3818(var6, var1, var4, var6.field3041, var4 + var5);
+               var4 += var6.field3041;
+               var5 -= var6.field3041;
+            } while(!this.field3020.method3758(var6, var1, var4, var5));
          }
       }
 
    }
 
-   @ObfuscatedName("m")
-   protected void vmethod3717(int var1) {
-      this.field3002.vmethod3717(var1);
+   @ObfuscatedName("r")
+   protected class66 vmethod3797() {
+      class187 var1;
+      do {
+         var1 = (class187)this.field3019.method3902();
+         if(var1 == null) {
+            return null;
+         }
+      } while(var1.field3040 == null);
 
-      for(class187 var3 = (class187)this.field3003.method3825(); null != var3; var3 = (class187)this.field3003.method3827()) {
-         if(!this.field3004.method3622(var3)) {
+      return var1.field3040;
+   }
+
+   class186(class184 var1) {
+      this.field3020 = var1;
+   }
+
+   @ObfuscatedName("e")
+   protected void vmethod3800(int var1) {
+      this.field3021.vmethod3800(var1);
+
+      for(class187 var3 = (class187)this.field3019.method3926(); null != var3; var3 = (class187)this.field3019.method3902()) {
+         if(!this.field3020.method3711(var3)) {
             int var2 = var1;
 
             do {
-               if(var2 <= var3.field3024) {
-                  this.method3719(var3, var2);
-                  var3.field3024 -= var2;
+               if(var2 <= var3.field3041) {
+                  this.method3801(var3, var2);
+                  var3.field3041 -= var2;
                   break;
                }
 
-               this.method3719(var3, var3.field3024);
-               var2 -= var3.field3024;
-            } while(!this.field3004.method3623(var3, (int[])null, 0, var2));
+               this.method3801(var3, var3.field3041);
+               var2 -= var3.field3041;
+            } while(!this.field3020.method3758(var3, (int[])null, 0, var2));
          }
       }
 
@@ -72,96 +80,107 @@ public class class186 extends class66 {
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(Lclass187;IB)V",
-      garbageValue = "-9"
+      garbageValue = "0"
    )
-   void method3719(class187 var1, int var2) {
-      if(0 != (this.field3004.field2975[var1.field3016] & 4) && var1.field3009 < 0) {
-         int var3 = this.field3004.field2980[var1.field3016] / class56.field1153;
-         int var4 = (1048575 + var3 - var1.field3005) / var3;
-         var1.field3005 = var2 * var3 + var1.field3005 & 1048575;
+   void method3801(class187 var1, int var2) {
+      if((this.field3020.field2985[var1.field3031] & 4) != 0 && var1.field3036 < 0) {
+         int var3 = this.field3020.field2993[var1.field3031] / class40.field973;
+         int var4 = (1048575 + var3 - var1.field3042) / var3;
+         var1.field3042 = var1.field3042 + var2 * var3 & 1048575;
          if(var4 <= var2) {
-            if(0 == this.field3004.field2978[var1.field3016]) {
-               var1.field3020 = class64.method1300(var1.field3007, var1.field3020.method1396(), var1.field3020.method1364(), var1.field3020.method1307());
+            if(this.field3020.field2976[var1.field3031] == 0) {
+               var1.field3040 = class64.method1397(var1.field3032, var1.field3040.method1538(), var1.field3040.method1403(), var1.field3040.method1404());
             } else {
-               var1.field3020 = class64.method1300(var1.field3007, var1.field3020.method1396(), 0, var1.field3020.method1307());
-               this.field3004.method3600(var1, var1.field3011.field2933[var1.field3010] < 0);
+               var1.field3040 = class64.method1397(var1.field3032, var1.field3040.method1538(), 0, var1.field3040.method1404());
+               this.field3020.method3689(var1, var1.field3023.field2944[var1.field3039] < 0);
             }
 
-            if(var1.field3011.field2933[var1.field3010] < 0) {
-               var1.field3020.method1441(-1);
+            if(var1.field3023.field2944[var1.field3039] < 0) {
+               var1.field3040.method1399(-1);
             }
 
-            var2 = var1.field3005 / var3;
+            var2 = var1.field3042 / var3;
          }
       }
 
-      var1.field3020.vmethod3717(var2);
+      var1.field3040.vmethod3800(var2);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("k")
+   protected class66 vmethod3806() {
+      class187 var1 = (class187)this.field3019.method3926();
+      return (class66)(var1 == null?null:(var1.field3040 != null?var1.field3040:this.vmethod3797()));
+   }
+
+   @ObfuscatedName("bo")
    @ObfuscatedSignature(
-      signature = "(Lclass187;[IIIIB)V",
-      garbageValue = "98"
+      signature = "(II)V",
+      garbageValue = "-1240575306"
    )
-   void method3723(class187 var1, int[] var2, int var3, int var4, int var5) {
-      if((this.field3004.field2975[var1.field3016] & 4) != 0 && var1.field3009 < 0) {
-         int var6 = this.field3004.field2980[var1.field3016] / class56.field1153;
+   static final void method3809(int var0) {
+      if(var0 >= 0) {
+         int var1 = client.field435[var0];
+         int var2 = client.field525[var0];
+         int var3 = client.field437[var0];
+         int var4 = client.field500[var0];
+         String var5 = client.field439[var0];
+         String var6 = client.field440[var0];
+         class4.method56(var1, var2, var3, var4, var5, var6, class140.field2160, class140.field2159);
+      }
+   }
+
+   @ObfuscatedName("p")
+   protected int vmethod3810() {
+      return 0;
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass187;[IIIII)V",
+      garbageValue = "740771635"
+   )
+   void method3818(class187 var1, int[] var2, int var3, int var4, int var5) {
+      if((this.field3020.field2985[var1.field3031] & 4) != 0 && var1.field3036 < 0) {
+         int var6 = this.field3020.field2993[var1.field3031] / class40.field973;
 
          while(true) {
-            int var7 = (var6 + 1048575 - var1.field3005) / var6;
+            int var7 = (1048575 + var6 - var1.field3042) / var6;
             if(var7 > var4) {
-               var1.field3005 += var6 * var4;
+               var1.field3042 += var4 * var6;
                break;
             }
 
-            var1.field3020.vmethod3716(var2, var3, var7);
+            var1.field3040.vmethod3796(var2, var3, var7);
             var3 += var7;
             var4 -= var7;
-            var1.field3005 += var7 * var6 - 1048576;
-            int var8 = class56.field1153 / 100;
+            var1.field3042 += var6 * var7 - 1048576;
+            int var8 = class40.field973 / 100;
             int var9 = 262144 / var6;
             if(var9 < var8) {
                var8 = var9;
             }
 
-            class64 var10 = var1.field3020;
-            if(this.field3004.field2978[var1.field3016] == 0) {
-               var1.field3020 = class64.method1300(var1.field3007, var10.method1396(), var10.method1364(), var10.method1307());
+            class64 var10 = var1.field3040;
+            if(0 == this.field3020.field2976[var1.field3031]) {
+               var1.field3040 = class64.method1397(var1.field3032, var10.method1538(), var10.method1403(), var10.method1404());
             } else {
-               var1.field3020 = class64.method1300(var1.field3007, var10.method1396(), 0, var10.method1307());
-               this.field3004.method3600(var1, var1.field3011.field2933[var1.field3010] < 0);
-               var1.field3020.method1311(var8, var10.method1364());
+               var1.field3040 = class64.method1397(var1.field3032, var10.method1538(), 0, var10.method1404());
+               this.field3020.method3689(var1, var1.field3023.field2944[var1.field3039] < 0);
+               var1.field3040.method1492(var8, var10.method1403());
             }
 
-            if(var1.field3011.field2933[var1.field3010] < 0) {
-               var1.field3020.method1441(-1);
+            if(var1.field3023.field2944[var1.field3039] < 0) {
+               var1.field3040.method1399(-1);
             }
 
-            var10.method1444(var8);
-            var10.vmethod3716(var2, var3, var5 - var3);
-            if(var10.method1317()) {
-               this.field3002.method1128(var10);
+            var10.method1410(var8);
+            var10.vmethod3796(var2, var3, var5 - var3);
+            if(var10.method1451()) {
+               this.field3021.method1253(var10);
             }
          }
       }
 
-      var1.field3020.vmethod3716(var2, var3, var4);
-   }
-
-   class186(class184 var1) {
-      this.field3004 = var1;
-   }
-
-   @ObfuscatedName("g")
-   protected class66 vmethod3733() {
-      class187 var1;
-      do {
-         var1 = (class187)this.field3003.method3827();
-         if(null == var1) {
-            return null;
-         }
-      } while(var1.field3020 == null);
-
-      return var1.field3020;
+      var1.field3040.vmethod3796(var2, var3, var4);
    }
 }

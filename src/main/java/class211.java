@@ -1,7 +1,9 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hr")
+@ObfuscatedName("hh")
 public class class211 {
-   @ObfuscatedName("e")
-   public static class202 field3129 = new class202();
+   @ObfuscatedName("bu")
+   static class168 field3137;
+   @ObfuscatedName("a")
+   public static class202 field3138 = new class202();
 }

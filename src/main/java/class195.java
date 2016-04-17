@@ -1,49 +1,51 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("gf")
 public class class195 {
    @ObfuscatedName("w")
-   class207 field3087;
-   @ObfuscatedName("e")
-   class207 field3088 = new class207();
-
-   @ObfuscatedName("e")
-   public void method3778(class207 var1) {
-      if(var1.field3113 != null) {
-         var1.method3911();
-      }
-
-      var1.field3113 = this.field3088.field3113;
-      var1.field3112 = this.field3088;
-      var1.field3113.field3112 = var1;
-      var1.field3112.field3113 = var1;
-   }
+   @Export("current")
+   class207 field3096;
+   @ObfuscatedName("a")
+   class207 field3097 = new class207();
 
    public class195() {
-      this.field3088.field3112 = this.field3088;
-      this.field3088.field3113 = this.field3088;
+      this.field3097.field3122 = this.field3097;
+      this.field3097.field3121 = this.field3097;
    }
 
-   @ObfuscatedName("f")
-   public class207 method3779() {
-      class207 var1 = this.field3087;
-      if(var1 == this.field3088) {
-         this.field3087 = null;
+   @ObfuscatedName("a")
+   public void method3862(class207 var1) {
+      if(var1.field3121 != null) {
+         var1.method3994();
+      }
+
+      var1.field3121 = this.field3097.field3121;
+      var1.field3122 = this.field3097;
+      var1.field3121.field3122 = var1;
+      var1.field3122.field3121 = var1;
+   }
+
+   @ObfuscatedName("d")
+   public class207 method3863() {
+      class207 var1 = this.field3096;
+      if(var1 == this.field3097) {
+         this.field3096 = null;
          return null;
       } else {
-         this.field3087 = var1.field3112;
+         this.field3096 = var1.field3122;
          return var1;
       }
    }
 
    @ObfuscatedName("w")
-   public class207 method3784() {
-      class207 var1 = this.field3088.field3112;
-      if(var1 == this.field3088) {
-         this.field3087 = null;
+   public class207 method3866() {
+      class207 var1 = this.field3097.field3122;
+      if(var1 == this.field3097) {
+         this.field3096 = null;
          return null;
       } else {
-         this.field3087 = var1.field3112;
+         this.field3096 = var1.field3122;
          return var1;
       }
    }

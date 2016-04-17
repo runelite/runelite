@@ -1,49 +1,58 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("hu")
 public class class212 {
-   @ObfuscatedName("a")
-   static final class212 field3132 = new class212(4, 7, "", "");
-   @ObfuscatedName("f")
-   static final class212 field3133 = new class212(0, 2, "", "");
-   @ObfuscatedName("s")
-   static final class212 field3134 = new class212(1, 3, "", "");
-   @ObfuscatedName("p")
-   static final class212 field3135 = new class212(3, 4, "", "");
-   @ObfuscatedName("h")
-   static final class212 field3136 = new class212(6, 5, "", "");
-   @ObfuscatedName("g")
-   static final class212 field3137 = new class212(7, 6, "", "");
-   @ObfuscatedName("e")
-   public static final class212 field3138 = new class212(5, 0, "", "");
-   @ObfuscatedName("r")
-   public static final class212 field3139;
    @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -377440549
-   )
-   public final int field3140;
-   @ObfuscatedName("w")
-   static final class212 field3141 = new class212(8, 1, "", "");
+   static final class212 field3140 = new class212(6, 5, "", "");
+   @ObfuscatedName("p")
+   static final class212 field3141 = new class212(3, 7, "", "");
+   @ObfuscatedName("c")
+   static final class212 field3142 = new class212(5, 3, "", "");
+   @ObfuscatedName("y")
+   static final class212 field3143 = new class212(1, 4, "", "");
+   @ObfuscatedName("a")
+   public static final class212 field3144 = new class212(4, 0, "", "");
+   @ObfuscatedName("r")
+   static final class212 field3145 = new class212(2, 6, "", "");
+   @ObfuscatedName("e")
+   final String field3146;
+   @ObfuscatedName("q")
+   public static final class212 field3147;
    @ObfuscatedName("m")
-   final String field3143;
+   @ObfuscatedGetter(
+      intValue = -1019105003
+   )
+   public final int field3148;
+   @ObfuscatedName("d")
+   static final class212 field3149 = new class212(0, 2, "", "");
+   @ObfuscatedName("w")
+   static final class212 field3150 = new class212(8, 1, "", "");
 
-   public String toString() {
-      return this.field3143;
+   @ObfuscatedSignature(
+      signature = "(IILjava/lang/String;Ljava/lang/String;)V",
+      garbageValue = "4"
+   )
+   class212(int var1, int var2, String var3, String var4) {
+      this.field3148 = var1;
+      this.field3146 = var4;
    }
 
+   @ObfuscatedSignature(
+      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lclass212;)V",
+      garbageValue = "7"
+   )
    class212(int var1, int var2, String var3, String var4, boolean var5, class212[] var6) {
-      this.field3140 = var1;
-      this.field3143 = var4;
+      this.field3148 = var1;
+      this.field3146 = var4;
+   }
+
+   public String toString() {
+      return this.field3146;
    }
 
    static {
-      field3139 = new class212(2, -1, "", "", true, new class212[]{field3138, field3141, field3133, field3135, field3134});
-   }
-
-   class212(int var1, int var2, String var3, String var4) {
-      this.field3140 = var1;
-      this.field3143 = var4;
+      field3147 = new class212(7, -1, "", "", true, new class212[]{field3144, field3150, field3149, field3143, field3142});
    }
 }

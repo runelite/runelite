@@ -1,84 +1,98 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fc")
 public class class170 implements Runnable {
-   @ObfuscatedName("w")
-   static class199 field2706 = new class199();
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
+   static Object field2705 = new Object();
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2060319013
+      intValue = 1130206189
    )
-   public static int field2707 = 0;
-   @ObfuscatedName("e")
-   static class199 field2708 = new class199();
-   @ObfuscatedName("s")
-   public static Object field2709 = new Object();
+   static int field2706 = 0;
+   @ObfuscatedName("a")
+   static class199 field2707 = new class199();
+   @ObfuscatedName("w")
+   static class199 field2711 = new class199();
 
    public void run() {
       try {
          while(true) {
-            class199 var2 = field2708;
+            class199 var2 = field2707;
             class169 var1;
-            synchronized(field2708) {
-               var1 = (class169)field2708.method3825();
+            synchronized(field2707) {
+               var1 = (class169)field2707.method3926();
             }
 
             Object var14;
             if(null != var1) {
-               if(0 == var1.field2703) {
-                  var1.field2700.method2859((int)var1.field3115, var1.field2699, var1.field2699.length);
-                  var2 = field2708;
-                  synchronized(field2708) {
-                     var1.method3913();
+               if(0 == var1.field2698) {
+                  var1.field2699.method2977((int)var1.field3125, var1.field2695, var1.field2695.length);
+                  var2 = field2707;
+                  synchronized(field2707) {
+                     var1.method3998();
                   }
-               } else if(1 == var1.field2703) {
-                  var1.field2699 = var1.field2700.method2851((int)var1.field3115);
-                  var2 = field2708;
-                  synchronized(field2708) {
-                     field2706.method3834(var1);
+               } else if(var1.field2698 == 1) {
+                  var1.field2695 = var1.field2699.method2979((int)var1.field3125);
+                  var2 = field2707;
+                  synchronized(field2707) {
+                     field2711.method3900(var1);
                   }
                }
 
-               var14 = field2709;
-               synchronized(field2709) {
-                  if(field2707 <= 1) {
-                     field2707 = 0;
-                     field2709.notifyAll();
+               var14 = field2705;
+               synchronized(field2705) {
+                  if(field2706 <= 1) {
+                     field2706 = 0;
+                     field2705.notifyAll();
                      return;
                   }
 
-                  field2707 = 600;
+                  field2706 = 600;
                }
             } else {
-               class130.method2818(100L);
-               var14 = field2709;
-               synchronized(field2709) {
-                  if(field2707 <= 1) {
-                     field2707 = 0;
-                     field2709.notifyAll();
+               class4.method55(100L);
+               var14 = field2705;
+               synchronized(field2705) {
+                  if(field2706 <= 1) {
+                     field2706 = 0;
+                     field2705.notifyAll();
                      return;
                   }
 
-                  --field2707;
+                  --field2706;
                }
             }
          }
       } catch (Exception var13) {
-         class1.method16((String)null, var13);
+         class22.method655((String)null, var13);
       }
    }
 
-   @ObfuscatedName("s")
-   static void method3355(int var0, boolean var1, int var2, boolean var3) {
-      if(null != class25.field615) {
-         class36.method741(0, class25.field615.length - 1, var0, var1, var2, var3);
-      }
-
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "2"
+   )
+   public static void method3462(int var0) {
+      class183.field2967 = 1;
+      class114.field1965 = null;
+      class183.field2963 = -1;
+      class183.field2968 = -1;
+      class183.field2966 = 0;
+      class90.field1568 = false;
+      class59.field1228 = var0;
    }
 
-   @ObfuscatedName("w")
-   public static int method3363(int var0) {
-      return var0 >> 11 & 63;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass167;Lclass167;ZB)V",
+      garbageValue = "78"
+   )
+   public static void method3467(class167 var0, class167 var1, boolean var2) {
+      class226.field3214 = var0;
+      class222.field3182 = var1;
+      class40.field934 = var2;
    }
 }

@@ -1,70 +1,33 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aq")
+@ObfuscatedName("ad")
 public class class26 {
-   @ObfuscatedName("ec")
-   static class78[] field630;
-   @ObfuscatedName("ma")
+   @ObfuscatedName("fd")
    @ObfuscatedGetter(
-      intValue = 1729931565
+      intValue = 1675624939
    )
-   static int field644;
+   @Export("cameraX")
+   static int field673;
+   @ObfuscatedName("ad")
+   static int[] field676;
 
-   @ObfuscatedName("w")
-   public static class40 method633(int var0) {
-      class40 var1 = (class40)class40.field928.method3754((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class40.field899.method3280(6, var0);
-         var1 = new class40();
-         var1.field906 = var0;
-         if(null != var2) {
-            var1.method789(new class119(var2));
-         }
-
-         var1.method788();
-         if(var1.field914) {
-            var1.field924 = 0;
-            var1.field917 = false;
-         }
-
-         class40.field928.method3756(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("f")
-   public static String method634(CharSequence var0) {
-      long var3 = 0L;
-      int var5 = var0.length();
-
-      for(int var6 = 0; var6 < var5; ++var6) {
-         var3 *= 37L;
-         char var7 = var0.charAt(var6);
-         if(var7 >= 65 && var7 <= 90) {
-            var3 += (long)(var7 + 1 - 65);
-         } else if(var7 >= 97 && var7 <= 122) {
-            var3 += (long)(1 + var7 - 97);
-         } else if(var7 >= 48 && var7 <= 57) {
-            var3 += (long)(27 + var7 - 48);
-         }
-
-         if(var3 >= 177917621779460413L) {
-            break;
-         }
+   @ObfuscatedName("ad")
+   @ObfuscatedSignature(
+      signature = "(Lclass66;B)V",
+      garbageValue = "12"
+   )
+   static final void method720(class66 var0) {
+      var0.field1274 = false;
+      if(var0.field1271 != null) {
+         var0.field1271.field1270 = 0;
       }
 
-      while(0L == var3 % 37L && 0L != var3) {
-         var3 /= 37L;
+      for(class66 var1 = var0.vmethod3806(); null != var1; var1 = var0.vmethod3797()) {
+         method720(var1);
       }
 
-      String var8 = class159.method3171(var3);
-      if(var8 == null) {
-         var8 = "";
-      }
-
-      return var8;
    }
 }

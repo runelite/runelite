@@ -1,130 +1,162 @@
+import java.awt.event.ActionEvent;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ds")
 public class class121 {
-   @ObfuscatedName("h")
-   static byte[][] field1989 = new byte[50][];
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1194788587
-   )
-   static int field1990 = 0;
-   @ObfuscatedName("s")
-   static byte[][] field1991 = new byte[1000][];
-   @ObfuscatedName("p")
-   static byte[][] field1992 = new byte[250][];
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1396049981
-   )
-   static int field1993 = 0;
-   @ObfuscatedName("pr")
-   static short[] field1994;
+   @ObfuscatedName("k")
+   static byte[][] field2002 = new byte[50][];
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 179873519
+      intValue = 1442298565
    )
-   static int field1995 = 0;
-   @ObfuscatedName("ev")
-   static class78[] field1997;
+   static int field2003 = 0;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 372647197
+   )
+   static int field2004 = 0;
+   @ObfuscatedName("c")
+   static byte[][] field2005 = new byte[1000][];
+   @ObfuscatedName("y")
+   static byte[][] field2006 = new byte[250][];
+   @ObfuscatedName("l")
+   static class13 field2008;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -637744013
+   )
+   static int field2009 = 0;
+   @ObfuscatedName("ri")
+   protected static boolean field2010;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "1709426712"
+      signature = "(IB)[B",
+      garbageValue = "-72"
    )
-   public static void method2747(byte[] var0) {
-      class119 var1 = new class119(var0);
-      var1.field1976 = var0.length - 2;
-      class76.field1359 = var1.method2700();
-      class76.field1357 = new int[class76.field1359];
-      class84.field1437 = new int[class76.field1359];
-      class5.field86 = new int[class76.field1359];
-      class76.field1355 = new int[class76.field1359];
-      class76.field1352 = new byte[class76.field1359][];
-      var1.field1976 = var0.length - 7 - class76.field1359 * 8;
-      class76.field1356 = var1.method2700();
-      class76.field1354 = var1.method2700();
-      int var2 = (var1.method2523() & 255) + 1;
-
-      int var3;
-      for(var3 = 0; var3 < class76.field1359; ++var3) {
-         class76.field1357[var3] = var1.method2700();
-      }
-
-      for(var3 = 0; var3 < class76.field1359; ++var3) {
-         class84.field1437[var3] = var1.method2700();
-      }
-
-      for(var3 = 0; var3 < class76.field1359; ++var3) {
-         class5.field86[var3] = var1.method2700();
-      }
-
-      for(var3 = 0; var3 < class76.field1359; ++var3) {
-         class76.field1355[var3] = var1.method2700();
-      }
-
-      var1.field1976 = var0.length - 7 - class76.field1359 * 8 - 3 * (var2 - 1);
-      class215.field3152 = new int[var2];
-
-      for(var3 = 1; var3 < var2; ++var3) {
-         class215.field3152[var3] = var1.method2527();
-         if(0 == class215.field3152[var3]) {
-            class215.field3152[var3] = 1;
-         }
-      }
-
-      var1.field1976 = 0;
-
-      for(var3 = 0; var3 < class76.field1359; ++var3) {
-         int var4 = class5.field86[var3];
-         int var5 = class76.field1355[var3];
-         int var6 = var5 * var4;
-         byte[] var7 = new byte[var6];
-         class76.field1352[var3] = var7;
-         int var8 = var1.method2523();
-         int var9;
-         if(var8 == 0) {
-            for(var9 = 0; var9 < var6; ++var9) {
-               var7[var9] = var1.method2633();
-            }
-         } else if(var8 == 1) {
-            for(var9 = 0; var9 < var4; ++var9) {
-               for(int var10 = 0; var10 < var5; ++var10) {
-                  var7[var9 + var10 * var4] = var1.method2633();
-               }
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("h")
-   static void method2750(String var0, String var1, String var2) {
-      class31.field711 = var0;
-      class31.field712 = var1;
-      class31.field713 = var2;
-   }
-
-   @ObfuscatedName("e")
-   static synchronized byte[] method2751(int var0) {
+   static synchronized byte[] method2857(int var0) {
       byte[] var1;
-      if(var0 == 100 && field1993 > 0) {
-         var1 = field1991[--field1993];
-         field1991[field1993] = null;
+      if(100 == var0 && field2009 > 0) {
+         var1 = field2005[--field2009];
+         field2005[field2009] = null;
          return var1;
-      } else if(5000 == var0 && field1995 > 0) {
-         var1 = field1992[--field1995];
-         field1992[field1995] = null;
+      } else if(var0 == 5000 && field2003 > 0) {
+         var1 = field2006[--field2003];
+         field2006[field2003] = null;
          return var1;
-      } else if(var0 == 30000 && field1990 > 0) {
-         var1 = field1989[--field1990];
-         field1989[field1990] = null;
+      } else if(30000 == var0 && field2004 > 0) {
+         var1 = field2002[--field2004];
+         field2002[field2004] = null;
          return var1;
       } else {
          return new byte[var0];
       }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1613880209"
+   )
+   static void method2859() {
+      class31.field749 = class31.field749.trim();
+      if(class31.field749.length() == 0) {
+         class39.method878("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      } else {
+         long var1;
+         try {
+            URL var3 = new URL(class17.method218("services", false) + "m=accountappeal/login.ws");
+            URLConnection var4 = var3.openConnection();
+            var4.setRequestProperty("connection", "close");
+            var4.setDoInput(true);
+            var4.setDoOutput(true);
+            var4.setConnectTimeout(5000);
+            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
+            var5.write("data1=req");
+            var5.flush();
+            InputStream var6 = var4.getInputStream();
+            class119 var7 = new class119(new byte[1000]);
+
+            while(true) {
+               int var8 = var6.read(var7.field1993, var7.field1992, 1000 - var7.field1992);
+               if(-1 == var8) {
+                  var7.field1992 = 0;
+                  long var11 = var7.method2619();
+                  var1 = var11;
+                  break;
+               }
+
+               var7.field1992 += var8;
+               if(var7.field1992 >= 1000) {
+                  var1 = 0L;
+                  break;
+               }
+            }
+         } catch (Exception var10) {
+            var1 = 0L;
+         }
+
+         int var0;
+         if(0L == var1) {
+            var0 = 5;
+         } else {
+            var0 = class108.method2503(var1, class31.field749);
+         }
+
+         switch(var0) {
+         case 2:
+            class39.method878("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class31.field726 = 6;
+            break;
+         case 3:
+            class39.method878("", "Error connecting to server.", "");
+            break;
+         case 4:
+            class39.method878("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            class39.method878("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            class39.method878("", "Error connecting to server.", "");
+            break;
+         case 7:
+            class39.method878("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         }
+
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass136;Ljava/lang/Object;I)V",
+      garbageValue = "1109822106"
+   )
+   public static void method2860(class136 var0, Object var1) {
+      if(var0.field2098 != null) {
+         for(int var2 = 0; var2 < 50 && var0.field2098.peekEvent() != null; ++var2) {
+            class4.method55(1L);
+         }
+
+         if(var1 != null) {
+            var0.field2098.postEvent(new ActionEvent(var1, 1001, "dummy"));
+         }
+
+      }
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(IS)Z",
+      garbageValue = "3715"
+   )
+   public static boolean method2861(int var0) {
+      return (var0 >> 31 & 1) != 0;
    }
 }

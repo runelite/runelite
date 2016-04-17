@@ -1,47 +1,52 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
+@ObfuscatedName("ba")
 public class class62 extends class65 {
-   @ObfuscatedName("s")
-   int field1202;
+   @ObfuscatedName("y")
+   public boolean field1238;
    @ObfuscatedName("w")
-   public byte[] field1203;
-   @ObfuscatedName("e")
-   public int field1204;
-   @ObfuscatedName("f")
-   public int field1205;
-   @ObfuscatedName("p")
-   public boolean field1206;
+   public byte[] field1239;
+   @ObfuscatedName("d")
+   public int field1240;
+   @ObfuscatedName("a")
+   public int field1241;
+   @ObfuscatedName("c")
+   int field1242;
 
    class62(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1204 = var1;
-      this.field1203 = var2;
-      this.field1205 = var3;
-      this.field1202 = var4;
-      this.field1206 = var5;
+      this.field1241 = var1;
+      this.field1239 = var2;
+      this.field1240 = var3;
+      this.field1242 = var4;
+      this.field1238 = var5;
    }
 
-   @ObfuscatedName("e")
-   public class62 method1279(class74 var1) {
-      this.field1203 = var1.method1593(this.field1203);
-      this.field1204 = var1.method1595(this.field1204);
-      if(this.field1205 == this.field1202) {
-         this.field1205 = this.field1202 = var1.method1596(this.field1205);
+   @ObfuscatedName("a")
+   public class62 method1370(class74 var1) {
+      this.field1239 = var1.method1701(this.field1239);
+      this.field1241 = var1.method1691(this.field1241);
+      if(this.field1240 == this.field1242) {
+         this.field1240 = this.field1242 = var1.method1692(this.field1240);
       } else {
-         this.field1205 = var1.method1596(this.field1205);
-         this.field1202 = var1.method1596(this.field1202);
-         if(this.field1205 == this.field1202) {
-            --this.field1205;
+         this.field1240 = var1.method1692(this.field1240);
+         this.field1242 = var1.method1692(this.field1242);
+         if(this.field1240 == this.field1242) {
+            --this.field1240;
          }
       }
 
       return this;
    }
 
+   @ObfuscatedSignature(
+      signature = "(I[BII)V",
+      garbageValue = "22050"
+   )
    class62(int var1, byte[] var2, int var3, int var4) {
-      this.field1204 = var1;
-      this.field1203 = var2;
-      this.field1205 = var3;
-      this.field1202 = var4;
+      this.field1241 = var1;
+      this.field1239 = var2;
+      this.field1240 = var3;
+      this.field1242 = var4;
    }
 }

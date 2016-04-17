@@ -1,49 +1,58 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hx")
+@ObfuscatedName("hd")
 public class class214 {
-   @ObfuscatedName("f")
-   public final class220 field3146;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      longValue = 8222344070006396279L
+      longValue = 7893231178717289103L
    )
-   public final long field3147;
-   @ObfuscatedName("s")
-   String field3148;
-   @ObfuscatedName("e")
+   public final long field3151;
+   @ObfuscatedName("y")
+   String field3152;
+   @ObfuscatedName("d")
+   public final class220 field3153;
+   @ObfuscatedName("c")
+   String field3154;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1067212417
+      intValue = -1827390475
    )
-   public final int field3149;
-   @ObfuscatedName("p")
-   String field3150;
+   public final int field3155;
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "-50"
+   )
+   public String method4033() {
+      return this.field3154;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "8"
+   )
+   public String method4034() {
+      return this.field3152;
+   }
 
    class214(class119 var1, byte var2, int var3) {
-      this.field3148 = var1.method2531();
-      this.field3150 = var1.method2531();
-      this.field3149 = var1.method2700();
-      this.field3147 = var1.method2529();
-      int var4 = var1.method2528();
-      int var5 = var1.method2528();
-      this.field3146 = new class220();
-      this.field3146.method3993(2);
-      this.field3146.method3982(var2);
-      this.field3146.field3167 = var4;
-      this.field3146.field3170 = var5;
-      this.field3146.field3171 = 0;
-      this.field3146.field3168 = 0;
-      this.field3146.field3169 = var3;
-   }
-
-   @ObfuscatedName("e")
-   public String method3939() {
-      return this.field3148;
-   }
-
-   @ObfuscatedName("w")
-   public String method3940() {
-      return this.field3150;
+      this.field3154 = var1.method2621();
+      this.field3152 = var1.method2621();
+      this.field3155 = var1.method2615();
+      this.field3151 = var1.method2619();
+      int var4 = var1.method2618();
+      int var5 = var1.method2618();
+      this.field3153 = new class220();
+      this.field3153.method4075(2);
+      this.field3153.method4081(var2);
+      this.field3153.field3171 = var4;
+      this.field3153.field3172 = var5;
+      this.field3153.field3169 = 0;
+      this.field3153.field3174 = 0;
+      this.field3153.field3170 = var3;
    }
 }

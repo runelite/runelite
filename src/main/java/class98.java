@@ -2,120 +2,170 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("ck")
 @Implements("GameObject")
 public final class class98 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 534015205
+      intValue = -563618469
    )
-   @Export("offsetX")
-   int field1634;
+   int field1656;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1204053613
+      intValue = 676605175
    )
    @Export("height")
-   int field1635;
-   @ObfuscatedName("f")
+   int field1657;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 725357343
+      intValue = 598252231
    )
    @Export("x")
-   int field1636;
-   @ObfuscatedName("i")
+   int field1658;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -2084398495
-   )
-   @Export("flags")
-   int field1637 = 0;
-   @ObfuscatedName("p")
-   @Export("renderable")
-   public class85 field1638;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1394600415
-   )
-   @Export("relativeX")
-   int field1639;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1401278977
-   )
-   @Export("orientation")
-   int field1641;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 956537745
+      intValue = -464699425
    )
    @Export("y")
-   int field1642;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -273267811
-   )
-   @Export("offsetY")
-   int field1643;
+   int field1659;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1191738867
+      intValue = 922777225
    )
-   int field1644;
-   @ObfuscatedName("n")
+   @Export("offsetY")
+   int field1660;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -170621567
+      intValue = 1193924659
    )
-   int field1645;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -494180877
-   )
-   @Export("hash")
-   public int field1646 = 0;
+   @Export("offsetX")
+   int field1661;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -275687597
+      intValue = 1069453069
+   )
+   @Export("relativeX")
+   int field1662;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -690198353
    )
    @Export("relativeY")
-   int field1647;
-   @ObfuscatedName("in")
-   static class173 field1649;
-   @ObfuscatedName("e")
+   int field1664;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1098883741
+      intValue = -557836453
    )
    @Export("plane")
-   int field1650;
+   int field1665;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 218253745
+   )
+   int field1667;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -903846043
+   )
+   @Export("hash")
+   public int field1668 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1194486915
+   )
+   @Export("flags")
+   int field1669 = 0;
+   @ObfuscatedName("qx")
+   @ObfuscatedGetter(
+      intValue = -1910904893
+   )
+   protected static int field1671;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1002185445
+   )
+   @Export("orientation")
+   int field1672;
+   @ObfuscatedName("y")
+   @Export("renderable")
+   public class85 field1673;
 
-   @ObfuscatedName("e")
-   static final boolean method2210(char var0) {
-      if(Character.isISOControl(var0)) {
-         return false;
-      } else if(class18.method192(var0)) {
-         return true;
-      } else {
-         char[] var1 = class164.field2655;
+   @ObfuscatedName("cu")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-629368998"
+   )
+   static void method2282(int var0, int var1, int var2, int var3) {
+      class173 var4 = class210.method4010(var0, var1);
+      if(null != var4 && var4.field2864 != null) {
+         class0 var5 = new class0();
+         var5.field2 = var4;
+         var5.field4 = var4.field2864;
+         class168.method3449(var5, 200000);
+      }
 
-         int var2;
-         char var3;
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var0 == var3) {
-               return true;
+      client.field393 = var3;
+      client.field447 = true;
+      class9.field169 = var0;
+      client.field386 = var1;
+      class161.field2636 = var2;
+      class23.method657(var4);
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-146185429"
+   )
+   public static int method2283(int var0) {
+      return var0 >> 11 & 63;
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lclass168;IIIBZI)V",
+      garbageValue = "2"
+   )
+   static void method2284(class168 var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)(var2 + (var1 << 16));
+      class172 var8 = (class172)class171.field2738.method3868(var6);
+      if(null == var8) {
+         var8 = (class172)class171.field2718.method3868(var6);
+         if(var8 == null) {
+            var8 = (class172)class171.field2721.method3868(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.method3979();
+                  class171.field2738.method3875(var8, var6);
+                  --class171.field2739;
+                  ++class171.field2727;
+               }
+
+            } else {
+               if(!var5) {
+                  var8 = (class172)class171.field2713.method3868(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new class172();
+               var8.field2745 = var0;
+               var8.field2741 = var3;
+               var8.field2740 = var4;
+               if(var5) {
+                  class171.field2738.method3875(var8, var6);
+                  ++class171.field2727;
+               } else {
+                  class171.field2720.method3963(var8);
+                  class171.field2721.method3875(var8, var6);
+                  ++class171.field2739;
+               }
+
             }
          }
-
-         var1 = class164.field2653;
-
-         for(var2 = 0; var2 < var1.length; ++var2) {
-            var3 = var1[var2];
-            if(var3 == var0) {
-               return true;
-            }
-         }
-
-         return false;
       }
    }
 }

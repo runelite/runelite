@@ -1,116 +1,96 @@
-import java.net.URL;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("ch")
 public final class class94 {
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1311016345
-   )
-   int field1579;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1059310921
-   )
-   int field1580;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1552929369
-   )
-   int field1581;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -82127753
-   )
-   int field1582;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 509417485
-   )
-   int field1583;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -256125103
-   )
-   int field1584;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -2061448231
-   )
-   int field1585;
    @ObfuscatedName("r")
-   public class85 field1586;
+   @ObfuscatedGetter(
+      intValue = -354423833
+   )
+   int field1606;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1430746887
+   )
+   int field1607;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -249200927
+   )
+   int field1608;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1304411477
+   )
+   int field1609;
+   @ObfuscatedName("mg")
+   static class78 field1610;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1659822789
+      intValue = -2036816635
    )
-   public int field1587 = 0;
+   int field1611;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1590642729
+   )
+   int field1612;
+   @ObfuscatedName("p")
+   public class85 field1613;
+   @ObfuscatedName("q")
+   public class85 field1614;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1780364447
+      intValue = -219783557
    )
-   int field1588 = 0;
-   @ObfuscatedName("a")
-   public class85 field1589;
-
+   public int field1615 = 0;
    @ObfuscatedName("e")
-   static String method2184(int var0) {
-      return "<img=" + var0 + ">";
+   @ObfuscatedGetter(
+      intValue = 1398711799
+   )
+   int field1616 = 0;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 94475781
+   )
+   int field1618;
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(CIB)I",
+      garbageValue = "-58"
+   )
+   public static int method2252(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = 1 + (var0 << 4);
+      }
+
+      return var2;
    }
 
-   @ObfuscatedName("s")
-   static boolean method2185(String var0, int var1, String var2) {
-      if(0 == var1) {
-         try {
-            if(!class138.field2122.startsWith("win")) {
-               throw new Exception();
-            } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
-               throw new Exception();
-            } else {
-               String var10 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
-
-               for(int var4 = 0; var4 < var0.length(); ++var4) {
-                  if(var10.indexOf(var0.charAt(var4)) == -1) {
-                     throw new Exception();
-                  }
-               }
-
-               Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
-               return true;
-            }
-         } catch (Throwable var5) {
-            return false;
-         }
-      } else if(var1 == 1) {
-         try {
-            Object var3 = class132.method2837(class138.field2123, var2, new Object[]{(new URL(class138.field2123.getCodeBase(), var0)).toString()});
-            return null != var3;
-         } catch (Throwable var6) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class138.field2123.getAppletContext().showDocument(new URL(class138.field2123.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var7) {
-            return false;
-         }
-      } else if(3 == var1) {
-         try {
-            class132.method2836(class138.field2123, "loggedout");
-         } catch (Throwable var9) {
-            ;
-         }
-
-         try {
-            class138.field2123.getAppletContext().showDocument(new URL(class138.field2123.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var8) {
-            return false;
-         }
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "([BZB)Ljava/lang/Object;",
+      garbageValue = "0"
+   )
+   public static Object method2253(byte[] var0, boolean var1) {
+      if(null == var0) {
+         return null;
       } else {
-         throw new IllegalArgumentException();
+         if(var0.length > 136 && !class125.field2037) {
+            try {
+               class118 var2 = new class118();
+               var2.vmethod2916(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class125.field2037 = true;
+            }
+         }
+
+         return var0;
       }
    }
 }

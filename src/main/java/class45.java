@@ -1,107 +1,63 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ax")
+@ObfuscatedName("ag")
 public class class45 extends class204 {
-   @ObfuscatedName("dg")
-   static int[] field1016;
+   @ObfuscatedName("c")
+   static byte[][][] field1053;
    @ObfuscatedName("w")
-   static class193 field1017 = new class193(64);
-   @ObfuscatedName("f")
-   public boolean field1019 = false;
-   @ObfuscatedName("e")
-   static class167 field1024;
-   @ObfuscatedName("ix")
-   @ObfuscatedGetter(
-      intValue = 1775068517
-   )
-   static int field1025;
+   static class193 field1054 = new class193(64);
+   @ObfuscatedName("d")
+   public boolean field1055 = false;
+   @ObfuscatedName("a")
+   public static class167 field1056;
+   @ObfuscatedName("aa")
+   static class168 field1057;
 
-   @ObfuscatedName("cs")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Lclass173;III)V",
-      garbageValue = "1255076130"
+      signature = "(Lclass119;II)V",
+      garbageValue = "331152360"
    )
-   static void method946(class173 var0, int var1, int var2) {
-      if(0 == var0.field2760) {
-         var0.field2880 = var0.field2764;
-      } else if(1 == var0.field2760) {
-         var0.field2880 = (var1 - var0.field2770) / 2 + var0.field2764;
-      } else if(var0.field2760 == 2) {
-         var0.field2880 = var1 - var0.field2770 - var0.field2764;
-      } else if(3 == var0.field2760) {
-         var0.field2880 = var1 * var0.field2764 >> 14;
-      } else if(4 == var0.field2760) {
-         var0.field2880 = (var1 * var0.field2764 >> 14) + (var1 - var0.field2770) / 2;
-      } else {
-         var0.field2880 = var1 - var0.field2770 - (var1 * var0.field2764 >> 14);
-      }
-
-      if(var0.field2761 == 0) {
-         var0.field2769 = var0.field2886;
-      } else if(1 == var0.field2761) {
-         var0.field2769 = var0.field2886 + (var2 - var0.field2834) / 2;
-      } else if(var0.field2761 == 2) {
-         var0.field2769 = var2 - var0.field2834 - var0.field2886;
-      } else if(3 == var0.field2761) {
-         var0.field2769 = var2 * var0.field2886 >> 14;
-      } else if(4 == var0.field2761) {
-         var0.field2769 = (var2 * var0.field2886 >> 14) + (var2 - var0.field2834) / 2;
-      } else {
-         var0.field2769 = var2 - var0.field2834 - (var2 * var0.field2886 >> 14);
-      }
-
-      if(client.field448 && var0.field2757 == 0) {
-         if(var0.field2880 < 0) {
-            var0.field2880 = 0;
-         } else if(var0.field2770 + var0.field2880 > var1) {
-            var0.field2880 = var1 - var0.field2770;
-         }
-
-         if(var0.field2769 < 0) {
-            var0.field2769 = 0;
-         } else if(var0.field2769 + var0.field2834 > var2) {
-            var0.field2769 = var2 - var0.field2834;
-         }
+   void method1045(class119 var1, int var2) {
+      if(2 == var2) {
+         this.field1055 = true;
       }
 
    }
 
-   @ObfuscatedName("f")
-   void method947(class119 var1) {
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Lclass119;S)V",
+      garbageValue = "-9573"
+   )
+   void method1046(class119 var1) {
       while(true) {
-         int var2 = var1.method2523();
+         int var2 = var1.method2613();
          if(var2 == 0) {
             return;
          }
 
-         this.method956(var2);
+         this.method1045(var1, var2);
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IZIB)V",
-      garbageValue = "22050"
+      signature = "(I)[Lclass82;",
+      garbageValue = "620440664"
    )
-   public static final void method949(int var0, boolean var1, int var2) {
-      class56.field1153 = var0;
-      class56.field1160 = var1;
-      class2.field60 = var2;
+   public static class82[] method1050() {
+      return new class82[]{class82.field1438, class82.field1429, class82.field1435, class82.field1428, class82.field1430};
    }
 
-   @ObfuscatedName("s")
-   void method956(int var1) {
-      if(2 == var1) {
-         this.field1019 = true;
-      }
-
-   }
-
-   @ObfuscatedName("e")
-   public static void method957(class167 var0, class167 var1) {
-      class39.field894 = var0;
-      class219.field3166 = var1;
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass167;Lclass167;I)V",
+      garbageValue = "-152405468"
+   )
+   public static void method1051(class167 var0, class167 var1) {
+      class178.field2918 = var0;
+      class43.field1024 = var1;
    }
 }

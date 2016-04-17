@@ -1,22 +1,23 @@
+import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bq")
+@ObfuscatedName("bh")
 public interface class53 {
-   @ObfuscatedName("h")
-   void method1087();
+   @ObfuscatedName("d")
+   int method1197(int var1, int var2);
 
    @ObfuscatedName("w")
-   void method1088() throws Exception;
+   void method1198(int var1, int var2, byte var3) throws Exception;
 
-   @ObfuscatedName("f")
-   int method1089();
+   @ObfuscatedName("y")
+   void method1199(int var1, int var2);
 
-   @ObfuscatedName("s")
-   void method1092();
+   @ObfuscatedName("c")
+   void method1200(int var1, int[] var2, int var3);
 
-   @ObfuscatedName("p")
-   void method1099();
+   @ObfuscatedName("k")
+   void method1202(int var1, byte var2);
 
-   @ObfuscatedName("e")
-   void method1104() throws Exception;
+   @ObfuscatedName("a")
+   void method1212(Component var1, int var2, boolean var3, short var4) throws Exception;
 }
