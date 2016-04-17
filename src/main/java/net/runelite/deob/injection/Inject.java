@@ -95,6 +95,31 @@ public class Inject
 			sig.addArg(toObType(t));
 		return sig;
 	}
+
+	private Type toApiType(Type t)
+	{
+		// t = vanilla type
+		
+		if (t.isPrimitive())
+			return t;
+		
+		String type = t.getType();
+		type = type.substring(1, type.length() - 1);
+
+		ClassFile cf = vanilla.findClass(type);
+		if (cf == null)
+			return t;
+		
+		for (Class c : cf.getInterfaces().getInterfaces())
+		{
+			if (c.getName().startsWith(API_PACKAGE_BASE.replace('.', '/')))
+			{
+				return new Type("L" + c.getName() + ";", t.getArrayDims());
+			}
+		}
+
+		return t;
+	}
 	
 	public void run()
 	{
@@ -114,8 +139,8 @@ public class Inject
 			assert other != null;
 			
 			java.lang.Class implementingClass = injectInterface(cf, other);
-			if (implementingClass == null)
-				continue;
+			// it can not implement an interface but still have exported static fields, which are
+			// moved to client
 
 			InjectReplace ij = new InjectReplace(cf, other);
 			try
@@ -132,7 +157,7 @@ public class Inject
 			{
 				an = f.getAttributes().getAnnotations();
 				
-				if (an.find(EXPORT) == null)
+				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported field
 				
 				String exportedName = an.find(EXPORT).getElement().getString();
@@ -153,12 +178,16 @@ public class Inject
 				
 				ClassFile targetClass = f.isStatic() ? vanilla.findClass("client") : other; // target class for getter
 				java.lang.Class targetApiClass = f.isStatic() ? clientClass : implementingClass; // target api class for getter
+				assert targetApiClass != null;
 				
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName);
 				assert apiMethod != null;
 				
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
+
+			if (implementingClass == null)
+				continue; // can't export methods from non implementing class
 			
 			for (Method m : cf.getMethods().getMethods())
 			{
@@ -271,7 +300,7 @@ public class Inject
 		assert field.isStatic() || field.getFields().getClassFile() == clazz;
 		
 		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(field.getType());
+		sig.setTypeOfReturnValue(toApiType(field.getType()));
 		Method getterMethod = new Method(clazz.getMethods(), method.getName(), sig);
 		getterMethod.setAccessFlags(Method.ACC_PUBLIC);
 		
