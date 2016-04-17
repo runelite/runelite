@@ -11,8 +11,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.util.List;
-import net.runelite.launcher.ArtifactResolver;
-import net.runelite.launcher.Launcher;
 import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.resolution.ArtifactResult;
@@ -28,7 +26,10 @@ public class ClientLoader
 
 		config.fetch();
 
-		ArtifactResolver resolver = new ArtifactResolver(Launcher.REPO_DIR);
+		// the only thing resolved here is the injected client, which has no dependencies, so no need to switch developer mode
+		ArtifactResolver resolver = new ArtifactResolver(RuneLite.REPO_DIR);
+		resolver.addRepositories();
+
 		List<ArtifactResult> results = resolver.resolveArtifacts(getClientArtifact());
 		File client = results.get(0).getArtifact().getFile();
 

@@ -29,7 +29,8 @@ public final class ClientUI extends JFrame implements ComponentListener
 		this.addComponentListener(this);
 	}
 	
-	private void init() throws Exception {
+	private void init() throws Exception
+	{
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter()

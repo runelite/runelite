@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import javax.swing.JPanel;
+import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
+import net.runelite.client.RuneLite;
 
 final class ClientPanel extends JPanel implements ComponentListener
 {
@@ -29,6 +31,8 @@ final class ClientPanel extends JPanel implements ComponentListener
 		rs.init();
 		rs.start();
 		this.add(rs);
+
+		RuneLite.setClient(new Client((net.runelite.rs.api.Client) rs));
 	}
 
 	@Override
