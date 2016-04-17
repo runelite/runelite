@@ -3,6 +3,7 @@ package net.runelite.deob.deobfuscators.rename;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
+import net.runelite.deob.updater.UpdateMappings;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Test;
 
@@ -18,14 +19,10 @@ public class AnnotationMapperTest
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));
 
-		Mapper mapper = new Mapper(group1, group2);
-		mapper.run();
-		ParallelExecutorMapping mapping = mapper.getMapping();
-		
-		AnnotationMapper amapper = new AnnotationMapper(group1, group2, mapping);
-		amapper.run();
-		
-		JarUtil.saveJar(group2, new File(OUT));
+		UpdateMappings um = new UpdateMappings(group1, group2);
+		um.update();
+
+		um.save(new File(OUT));
 	}
 
 }
