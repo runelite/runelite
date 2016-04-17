@@ -2,6 +2,7 @@ package net.runelite.deob.injection;
 
 import java.io.File;
 import java.io.IOException;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
@@ -30,10 +31,21 @@ public class InjectTest
 	}
 
 	@Test
-	public void testRun()
+	public void testRun() throws IOException, ClassNotFoundException
 	{
 		Inject instance = new Inject(deob, vanilla);
 		instance.run();
+
+		testLoading(vanilla);
+	}
+
+	private void testLoading(ClassGroup group) throws ClassNotFoundException
+	{
+		TestingClassLoader loader = new TestingClassLoader(group);
+		for (ClassFile cf : group.getClasses())
+		{
+			loader.findClass(cf.getName());
+		}
 	}
 
 }

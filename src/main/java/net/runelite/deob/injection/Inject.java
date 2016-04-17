@@ -96,29 +96,53 @@ public class Inject
 		return sig;
 	}
 
-	private Type toApiType(Type t)
+	private Type classToType(java.lang.Class<?> c)
 	{
-		// t = vanilla type
-		
-		if (t.isPrimitive())
-			return t;
-		
-		String type = t.getType();
-		type = type.substring(1, type.length() - 1);
-
-		ClassFile cf = vanilla.findClass(type);
-		if (cf == null)
-			return t;
-		
-		for (Class c : cf.getInterfaces().getInterfaces())
+		int dimms = 0;
+		while (c.isArray())
 		{
-			if (c.getName().startsWith(API_PACKAGE_BASE.replace('.', '/')))
-			{
-				return new Type("L" + c.getName() + ";", t.getArrayDims());
-			}
+			c = c.getComponentType();
+			++dimms;
 		}
 
-		return t;
+		if (c.isPrimitive())
+		{
+			String s;
+
+			switch (c.getName())
+			{
+				case "int":
+					s = "I";
+					break;
+				case "long":
+					s = "J";
+					break;
+				case "boolean":
+					s = "Z";
+					break;
+				case "char":
+					s = "C";
+					break;
+				case "short":
+					s = "S";
+					break;
+				case "float":
+					s = "F";
+					break;
+				case "double":
+					s = "D";
+					break;
+				case "byte":
+					s = "B";
+					break;
+				default:
+					throw new RuntimeException("unknown primitive type");
+			}
+
+			return new Type(s, dimms);
+		}
+
+		return new Type("L" + c.getName().replace('.', '/') + ";", dimms);
 	}
 	
 	public void run()
@@ -300,7 +324,7 @@ public class Inject
 		assert field.isStatic() || field.getFields().getClassFile() == clazz;
 		
 		Signature sig = new Signature();
-		sig.setTypeOfReturnValue(toApiType(field.getType()));
+		sig.setTypeOfReturnValue(classToType(method.getReturnType()));
 		Method getterMethod = new Method(clazz.getMethods(), method.getName(), sig);
 		getterMethod.setAccessFlags(Method.ACC_PUBLIC);
 		
