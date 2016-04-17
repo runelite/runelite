@@ -1,4 +1,4 @@
-package net.runelite.deob.deobfuscators.rename;
+package net.runelite.deob.deobfuscators.mapping;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

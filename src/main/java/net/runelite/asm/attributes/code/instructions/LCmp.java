@@ -13,8 +13,8 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class LCmp extends Instruction implements MappableInstruction
 {

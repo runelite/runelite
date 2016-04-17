@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import net.runelite.asm.Method;
-import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
 
 public class ExecutionMapper
 {

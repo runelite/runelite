@@ -1,5 +1,9 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import net.runelite.deob.deobfuscators.mapping.PacketHandler;
+import net.runelite.deob.deobfuscators.mapping.Mapper;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import com.google.common.collect.Multimap;
 import java.io.File;
 import java.io.IOException;

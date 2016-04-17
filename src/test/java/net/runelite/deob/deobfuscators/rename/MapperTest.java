@@ -1,5 +1,7 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.mapping.Mapper;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassFile;

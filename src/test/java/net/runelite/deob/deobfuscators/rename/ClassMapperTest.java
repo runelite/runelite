@@ -1,5 +1,6 @@
 package net.runelite.deob.deobfuscators.rename;
 
+import net.runelite.deob.deobfuscators.mapping.ClassMapper;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
