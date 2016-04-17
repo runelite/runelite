@@ -6,6 +6,7 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("Deque")
 public class class199 {
    @ObfuscatedName("w")
+   @Export("current")
    class208 field3107;
    @ObfuscatedName("a")
    @Export("head")

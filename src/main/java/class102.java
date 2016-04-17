@@ -1,10 +1,8 @@
-import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ca")
-@Implements("XClanMember")
 public class class102 extends class208 {
    @ObfuscatedName("w")
    @ObfuscatedGetter(

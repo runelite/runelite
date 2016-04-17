@@ -1,10 +1,8 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gf")
 public class class195 {
    @ObfuscatedName("w")
-   @Export("current")
    class207 field3096;
    @ObfuscatedName("a")
    class207 field3097 = new class207();

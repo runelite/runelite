@@ -1341,7 +1341,7 @@ public final class client extends class144 {
                      var51.method2603(var10 != null?1:0);
                      var51.method2793(var43.getPath());
                      if(var10 != null) {
-                        var51.method2793(var10.getPath());
+                        //var51.method2793(var10.getPath());
                      }
 
                      var49.method4201(var51.field1993, 0, var51.field1992);
