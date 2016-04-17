@@ -1,4 +1,4 @@
-package net.runelite.deob.deobfuscators.rename;
+package net.runelite.deob.deobfuscators.mapping;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;

@@ -9,8 +9,8 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.instruction.types.ReturnInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.Return;
-import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class ParallellMappingExecutor
 {

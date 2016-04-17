@@ -1,4 +1,4 @@
-package net.runelite.deob.deobfuscators.rename;
+package net.runelite.deob.deobfuscators.mapping;
 
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;

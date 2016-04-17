@@ -17,8 +17,8 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public abstract class If0 extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {

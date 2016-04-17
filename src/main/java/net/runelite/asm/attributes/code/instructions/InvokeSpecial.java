@@ -25,8 +25,8 @@ import net.runelite.asm.pool.Method;
 import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Signature;
-import net.runelite.deob.deobfuscators.rename.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.rename.ParallelExecutorMapping;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class InvokeSpecial extends Instruction implements InvokeInstruction
 {
