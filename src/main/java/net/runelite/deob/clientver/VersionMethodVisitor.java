@@ -25,7 +25,6 @@ public class VersionMethodVisitor extends MethodVisitor
 		if (operand == 765 || operand == 503)
 		{
 			++state;
-			return;
 		}
 	}
 
