@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import org.objectweb.asm.ClassReader;
@@ -35,7 +34,6 @@ public class ClientVersion
 				VersionClassVisitor v = new VersionClassVisitor();
 				reader.accept(v, 0);
 				return v.getVersion();
-				//entries.put(entry.getName(), entry);
 			}
 		}
 
