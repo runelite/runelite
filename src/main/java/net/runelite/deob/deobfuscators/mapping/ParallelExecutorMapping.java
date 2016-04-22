@@ -33,7 +33,7 @@ public class ParallelExecutorMapping
 	@Override
 	public String toString()
 	{
-		return "ParallelExecutorMapping{size = " + map.size() + ", crashed = " + crashed + "}";
+		return "ParallelExecutorMapping{size = " + map.keySet().size() + ", crashed = " + crashed + ", same = " + same + "}";
 	}
 
 	private Mapping getMapping(Object from, Object to)
@@ -143,6 +143,29 @@ public class ParallelExecutorMapping
 			
 			mapClass(key, value);
 		}
+
+		/* get leftover classes, they usually contain exclusively static
+		 * fields and methods so they're hard to pinpoint
+		*/
+		ClassGroupMapper m = new ClassGroupMapper(group, group2);
+		m.map();
+
+		for (ClassFile cf : group.getClasses())
+			if (!map.containsKey(cf))
+			{
+				ClassFile other = m.get(cf);
+				if (other == null)
+				{
+					System.out.println("Unable to map class " + cf);
+				}
+				else
+				{
+					System.out.println("Build classes fallback " + cf + " -> " + other);
+
+					Mapping ma = getMapping(cf, other);
+					ma.inc();
+				}
+			}
 	}
 	
 	public Object get(Object o)

@@ -59,6 +59,9 @@ public class Mapper
 			ExecutionMapper em = new ExecutionMapper(m, methods);
 
 			ParallelExecutorMapping mapping = em.run();
+			if (mapping == null)
+				continue;
+
 			mapping.map(mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
@@ -85,6 +88,9 @@ public class Mapper
 			ExecutionMapper em = new ExecutionMapper(m, methods);
 
 			ParallelExecutorMapping mapping = em.run();
+			if (mapping == null)
+				continue;
+			
 			mapping.map(mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
@@ -129,7 +135,6 @@ public class Mapper
 
 			PacketHandler highestHandler = null;
 			ParallelExecutorMapping highest = null;
-			int maxContradictions = 0;
 
 			for (int j = 0; j < mappings.packetHandler2.size(); ++j)
 			{
@@ -148,22 +153,12 @@ public class Mapper
 
 				int p = pem.contradicts(mapping);
 
-				if (if1.getPacketId() == 9 && (if2.getPacketId() == 25 || if2.getPacketId() == 187))
-				{
-					int i444 =6;
-					pem.contradicts(mapping);
-				}
-
-				//if (highest == null || p < maxContradictions)
 				if (highest == null || mapping.getMap().size() > highest.getMap().size())
 				{
 					if (p == 0 && mapping.crashed == false)
-					//if (p == 0)
-					//if (!pem.contradicts(mapping))
 					{
 						highest = mapping;
 						highestHandler = if2;
-						maxContradictions = p;
 					}
 				}
 			}
@@ -171,7 +166,6 @@ public class Mapper
 			if (highest == null)
 			{
 				continue;
-				//int i44 = 5;
 			}
 			System.out.println(if1 + " <-> " + highestHandler + " <-> " + highest.getMap().size() + " " + highest.crashed);
 			all.merge(highest);
