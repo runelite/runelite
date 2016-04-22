@@ -23,6 +23,7 @@ public class ExecutionMapper
 	public ParallelExecutorMapping run()
 	{
 		ParallelExecutorMapping highest = null;
+		boolean multiple = false;
 
 		for (Method m : methods2)
 		{
@@ -30,8 +31,18 @@ public class ExecutionMapper
 			mappings.put(m, mapping);
 
 			if (highest == null || mapping.same > highest.same)
+			{
 				highest = mapping;
+				multiple = false;
+			}
+			else if (mapping.same == highest.same)
+			{
+				multiple = true;
+			}
 		}
+
+		if (multiple)
+			return null;
 
 		return highest;
 	}

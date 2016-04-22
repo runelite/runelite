@@ -29,19 +29,11 @@ public class AnnotationMapper
 	public void run()
 	{
 		int count = 0;
-		
-		ClassGroupMapper m = new ClassGroupMapper(source, target);
-		m.map();
 
 		for (ClassFile c : source.getClasses())
 		{
-			ClassFile other = m.get(c);
-			
-			if (other == null)
-			{
-				other = (ClassFile) mapping.get(c);
-				System.out.println("FALLBACK " + c + " -> " + other);
-			}
+			ClassFile other = (ClassFile) mapping.get(c);
+			System.out.println(c + " -> " + other);
 
 			if (other == null)
 			{
