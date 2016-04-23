@@ -1,0 +1,54 @@
+{
+  "id": 12351,
+  "resizeY": 0,
+  "xan2d": 162,
+  "cost": 3500,
+  "inventoryModel": 28706,
+  "resizeZ": 0,
+  "colorFind": [
+    29456
+  ],
+  "colorReplace": [
+    920
+  ],
+  "name": "Musketeer hat",
+  "zoom2d": 1221,
+  "yan2d": 1333,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -18,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 28516,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -11,
+  "maleHeadModel": 28776,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 28796,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 12352,
+  "femaleModel0": 28584,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

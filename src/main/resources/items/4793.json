@@ -1,0 +1,82 @@
+{
+  "id": 4793,
+  "resizeY": 0,
+  "xan2d": 324,
+  "cost": 50,
+  "inventoryModel": 6814,
+  "resizeZ": 0,
+  "colorFind": [
+    4771,
+    926,
+    61
+  ],
+  "colorReplace": [
+    7582,
+    127,
+    -22239
+  ],
+  "name": "Mithril brutal",
+  "zoom2d": 1700,
+  "yan2d": 116,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -9,
+  "stackable": 1,
+  "countCo": [
+    2,
+    3,
+    4,
+    5,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "countObj": [
+    4794,
+    4795,
+    4796,
+    4797,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

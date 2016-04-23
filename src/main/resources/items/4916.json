@@ -1,0 +1,56 @@
+{
+  "id": 4916,
+  "resizeY": 0,
+  "xan2d": 412,
+  "cost": 280000,
+  "inventoryModel": 6586,
+  "resizeZ": 0,
+  "colorFind": [
+    10394,
+    10291
+  ],
+  "colorReplace": [
+    10388,
+    10508
+  ],
+  "name": "Guthan\u0027s platebody 100",
+  "zoom2d": 960,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 8,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6672,
+  "maleModel1": 6641,
+  "femaleModel1": 6682,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6699,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

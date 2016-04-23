@@ -1,0 +1,62 @@
+{
+  "id": 4086,
+  "resizeY": 0,
+  "xan2d": 612,
+  "cost": 5,
+  "inventoryModel": 1781,
+  "resizeZ": 0,
+  "colorFind": [
+    17835,
+    -16940,
+    -12369,
+    -28340,
+    10043
+  ],
+  "colorReplace": [
+    19648,
+    -29356,
+    -29364,
+    -29476,
+    -29467
+  ],
+  "name": "Trollweiss",
+  "zoom2d": 840,
+  "yan2d": 816,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 677,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 677,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

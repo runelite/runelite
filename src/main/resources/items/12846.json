@@ -1,0 +1,62 @@
+{
+  "id": 12846,
+  "resizeY": 0,
+  "xan2d": 512,
+  "cost": 30000,
+  "inventoryModel": 10137,
+  "resizeZ": 0,
+  "colorFind": [
+    6464,
+    6587,
+    6604,
+    6608,
+    6583
+  ],
+  "colorReplace": [
+    -9016,
+    -9020,
+    -9024,
+    -9012,
+    -9022
+  ],
+  "name": "Bounty teleport scroll",
+  "zoom2d": 960,
+  "yan2d": 512,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Read",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 12847,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,56 @@
+{
+  "id": 10939,
+  "resizeY": 0,
+  "xan2d": 612,
+  "cost": 50,
+  "inventoryModel": 23185,
+  "resizeZ": 0,
+  "colorFind": [
+    8741,
+    8860
+  ],
+  "colorReplace": [
+    803,
+    922
+  ],
+  "name": "Lumberjack top",
+  "zoom2d": 1232,
+  "yan2d": 1871,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 23174,
+  "maleModel1": 10980,
+  "femaleModel1": 15123,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 23182,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

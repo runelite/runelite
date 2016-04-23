@@ -1,0 +1,58 @@
+{
+  "id": 12814,
+  "resizeY": 0,
+  "xan2d": 488,
+  "cost": 0,
+  "inventoryModel": 11041,
+  "resizeZ": 0,
+  "colorFind": [
+    24,
+    61,
+    41
+  ],
+  "colorReplace": [
+    61,
+    33,
+    24
+  ],
+  "name": "Ultimate ironman platebody",
+  "zoom2d": 1411,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 2662,
+  "maleModel1": 2342,
+  "femaleModel1": 11027,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 11030,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

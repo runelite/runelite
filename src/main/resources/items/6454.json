@@ -1,0 +1,80 @@
+{
+  "id": 6454,
+  "resizeY": 0,
+  "xan2d": 280,
+  "cost": 1,
+  "inventoryModel": 9116,
+  "resizeZ": 0,
+  "colorFind": [
+    -5798,
+    -3657
+  ],
+  "colorReplace": [
+    1352,
+    1825
+  ],
+  "name": "Red rose seed",
+  "zoom2d": 1260,
+  "yan2d": 2008,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 7,
+  "stackable": 1,
+  "countCo": [
+    2,
+    3,
+    4,
+    5,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -8,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "countObj": [
+    6484,
+    6485,
+    6486,
+    6487,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

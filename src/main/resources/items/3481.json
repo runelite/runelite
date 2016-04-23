@@ -1,0 +1,58 @@
+{
+  "id": 3481,
+  "resizeY": 0,
+  "xan2d": 452,
+  "cost": 65000,
+  "inventoryModel": 2378,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    41,
+    24
+  ],
+  "colorReplace": [
+    7114,
+    7097,
+    6057
+  ],
+  "name": "Gilded platebody",
+  "zoom2d": 1180,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 3379,
+  "maleModel1": 164,
+  "femaleModel1": 344,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 3482,
+  "femaleModel0": 3383,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

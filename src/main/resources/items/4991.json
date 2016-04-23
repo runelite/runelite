@@ -1,0 +1,62 @@
+{
+  "id": 4991,
+  "resizeY": 0,
+  "xan2d": 464,
+  "cost": 280000,
+  "inventoryModel": 6596,
+  "resizeZ": 0,
+  "colorFind": [
+    10394,
+    10518,
+    10388,
+    10514,
+    10508
+  ],
+  "colorReplace": [
+    10388,
+    10512,
+    10508,
+    10760,
+    11140
+  ],
+  "name": "Verac\u0027s brassard 25",
+  "zoom2d": 1210,
+  "yan2d": 36,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 315,
+  "maleModel1": 6646,
+  "femaleModel1": 6685,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 478,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 642,
+  "resizeY": 0,
+  "xan2d": 536,
+  "cost": 180,
+  "inventoryModel": 2786,
+  "resizeZ": 0,
+  "colorFind": [
+    8741
+  ],
+  "colorReplace": [
+    10475
+  ],
+  "name": "Cream robe top",
+  "zoom2d": 1370,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 7,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 170,
+  "maleModel1": 292,
+  "femaleModel1": 456,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 643,
+  "femaleModel0": 348,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

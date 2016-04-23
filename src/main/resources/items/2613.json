@@ -1,0 +1,56 @@
+{
+  "id": 2613,
+  "resizeY": 0,
+  "xan2d": 160,
+  "cost": 3520,
+  "inventoryModel": 2813,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    926
+  ],
+  "colorReplace": [
+    21662,
+    7114
+  ],
+  "name": "Adamant full helm (g)",
+  "zoom2d": 800,
+  "yan2d": 152,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 6,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 218,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": 56,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 116,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2614,
+  "femaleModel0": 394,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,56 @@
+{
+  "id": 7458,
+  "resizeY": 0,
+  "xan2d": 609,
+  "cost": 1500,
+  "inventoryModel": 13631,
+  "resizeZ": 0,
+  "colorFind": [
+    10394,
+    8656
+  ],
+  "colorReplace": [
+    -22239,
+    -22254
+  ],
+  "name": "Mithril gloves",
+  "zoom2d": 789,
+  "yan2d": 111,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 13307,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 13319,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

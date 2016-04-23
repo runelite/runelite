@@ -1,0 +1,56 @@
+{
+  "id": 4440,
+  "resizeY": 0,
+  "xan2d": 136,
+  "cost": 15,
+  "inventoryModel": 5640,
+  "resizeZ": 0,
+  "colorFind": [
+    6445,
+    6453
+  ],
+  "colorReplace": [
+    4899,
+    4775
+  ],
+  "name": "Pot lid",
+  "zoom2d": 770,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 15,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 4441,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

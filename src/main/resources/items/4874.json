@@ -1,0 +1,56 @@
+{
+  "id": 4874,
+  "resizeY": 0,
+  "xan2d": 504,
+  "cost": 47000,
+  "inventoryModel": 6577,
+  "resizeZ": 0,
+  "colorFind": [
+    14490,
+    -20068
+  ],
+  "colorReplace": [
+    10512,
+    -21696
+  ],
+  "name": "Ahrim\u0027s robeskirt 100",
+  "zoom2d": 1730,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -4,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6659,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6691,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 10630,
+  "resizeY": 0,
+  "xan2d": 400,
+  "cost": 0,
+  "inventoryModel": 8812,
+  "resizeZ": 0,
+  "colorFind": [
+    8741
+  ],
+  "colorReplace": [
+    127
+  ],
+  "name": "Princess blouse",
+  "zoom2d": 1140,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 9,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 7611,
+  "maleModel1": 162,
+  "femaleModel1": 8846,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 8786,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

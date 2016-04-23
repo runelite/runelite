@@ -1,0 +1,54 @@
+{
+  "id": 1055,
+  "resizeY": 0,
+  "xan2d": 516,
+  "cost": 15,
+  "inventoryModel": 2438,
+  "resizeZ": 0,
+  "colorFind": [
+    926
+  ],
+  "colorReplace": [
+    -21602
+  ],
+  "name": "Blue halloween mask",
+  "zoom2d": 730,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -10,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 3188,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 1755,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 3187,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1056,
+  "femaleModel0": 3192,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 12699,
+  "resizeY": 0,
+  "xan2d": 84,
+  "cost": 90,
+  "inventoryModel": 2384,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    21396
+  ],
+  "name": "Super combat potion(2)",
+  "zoom2d": 550,
+  "yan2d": 1996,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Drink",
+    null,
+    null,
+    "Empty",
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 12700,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 15,
+  "contrast": 15,
+  "team": 0
+}

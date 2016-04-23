@@ -1,0 +1,62 @@
+{
+  "id": 6093,
+  "resizeY": 0,
+  "xan2d": 152,
+  "cost": 1,
+  "inventoryModel": 8278,
+  "resizeZ": 0,
+  "colorFind": [
+    17331,
+    22422,
+    17304,
+    18347,
+    19361
+  ],
+  "colorReplace": [
+    3742,
+    9647,
+    3742,
+    3742,
+    3742
+  ],
+  "name": "Rotten apples",
+  "zoom2d": 1660,
+  "yan2d": 1976,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,62 @@
+{
+  "id": 12014,
+  "resizeY": 0,
+  "xan2d": 404,
+  "cost": 60,
+  "inventoryModel": 28474,
+  "resizeZ": 0,
+  "colorFind": [
+    -22440,
+    70,
+    5037,
+    5027,
+    5400
+  ],
+  "colorReplace": [
+    -29257,
+    -29137,
+    10392,
+    -29143,
+    10392
+  ],
+  "name": "Prospector jacket",
+  "zoom2d": 1474,
+  "yan2d": 94,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 13,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 28457,
+  "maleModel1": 28454,
+  "femaleModel1": 28460,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 28461,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

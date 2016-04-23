@@ -1,0 +1,62 @@
+{
+  "id": 12765,
+  "resizeY": 0,
+  "xan2d": 591,
+  "cost": 120002,
+  "inventoryModel": 26386,
+  "resizeZ": 0,
+  "colorFind": [
+    1571,
+    1575,
+    1436,
+    2454,
+    2576
+  ],
+  "colorReplace": [
+    10417,
+    18983,
+    24988,
+    23958,
+    27144
+  ],
+  "name": "Dark bow",
+  "zoom2d": 2128,
+  "yan2d": 1034,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 26279,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 26279,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 11824,
+  "resizeY": 0,
+  "xan2d": 1669,
+  "cost": 100005,
+  "inventoryModel": 28038,
+  "resizeZ": 0,
+  "colorFind": [
+    22457
+  ],
+  "colorReplace": [
+    924
+  ],
+  "name": "Zamorakian spear",
+  "zoom2d": 2192,
+  "yan2d": 2025,
+  "zan2d": 144,
+  "maleOffset": 0,
+  "yOffset2d": -4,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 27654,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 11825,
+  "femaleModel0": 27654,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

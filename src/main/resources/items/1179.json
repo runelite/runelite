@@ -1,0 +1,54 @@
+{
+  "id": 1179,
+  "resizeY": 0,
+  "xan2d": 268,
+  "cost": 1152,
+  "inventoryModel": 2720,
+  "resizeZ": 0,
+  "colorFind": [
+    57
+  ],
+  "colorReplace": [
+    12
+  ],
+  "name": "Black sq shield",
+  "zoom2d": 1410,
+  "yan2d": 60,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 174,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 541,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1180,
+  "femaleModel0": 541,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,56 @@
+{
+  "id": 1757,
+  "resizeY": 0,
+  "xan2d": 544,
+  "cost": 2,
+  "inventoryModel": 2592,
+  "resizeZ": 0,
+  "colorFind": [
+    127,
+    -11139
+  ],
+  "colorReplace": [
+    4769,
+    4769
+  ],
+  "name": "Brown apron",
+  "zoom2d": 1580,
+  "yan2d": 172,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -4,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 305,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1758,
+  "femaleModel0": 467,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

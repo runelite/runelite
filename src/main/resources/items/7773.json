@@ -1,0 +1,54 @@
+{
+  "id": 7773,
+  "resizeY": 0,
+  "xan2d": 664,
+  "cost": 1,
+  "inventoryModel": 14130,
+  "resizeZ": 0,
+  "colorFind": [
+    5772
+  ],
+  "colorReplace": [
+    14742
+  ],
+  "name": "Branch",
+  "zoom2d": 1632,
+  "yan2d": 263,
+  "zan2d": 111,
+  "maleOffset": 0,
+  "yOffset2d": 26,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 14169,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 46,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 14169,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

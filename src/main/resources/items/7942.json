@@ -1,0 +1,60 @@
+{
+  "id": 7942,
+  "resizeY": 0,
+  "xan2d": 189,
+  "cost": 10,
+  "inventoryModel": 14872,
+  "resizeZ": 0,
+  "colorFind": [
+    3226,
+    4382,
+    4387,
+    5413
+  ],
+  "colorReplace": [
+    1443,
+    2471,
+    2475,
+    3501
+  ],
+  "name": "Fresh monkfish",
+  "zoom2d": 1600,
+  "yan2d": 2012,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -43,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

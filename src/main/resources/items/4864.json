@@ -1,0 +1,60 @@
+{
+  "id": 4864,
+  "resizeY": 0,
+  "xan2d": 224,
+  "cost": 85000,
+  "inventoryModel": 6590,
+  "resizeZ": 0,
+  "colorFind": [
+    14503,
+    14499,
+    14494,
+    14490
+  ],
+  "colorReplace": [
+    10512,
+    10508,
+    10760,
+    11140
+  ],
+  "name": "Ahrim\u0027s staff 50",
+  "zoom2d": 1550,
+  "yan2d": 116,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -19,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6706,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6706,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

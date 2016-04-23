@@ -1,0 +1,58 @@
+{
+  "id": 10138,
+  "resizeY": 0,
+  "xan2d": 556,
+  "cost": 120,
+  "inventoryModel": 9818,
+  "resizeZ": 0,
+  "colorFind": [
+    -31951,
+    -23616,
+    15320
+  ],
+  "colorReplace": [
+    -32172,
+    -22050,
+    10353
+  ],
+  "name": "Raw rainbow fish",
+  "zoom2d": 1250,
+  "yan2d": 2020,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10139,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 30,
+  "contrast": 20,
+  "team": 0
+}

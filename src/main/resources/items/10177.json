@@ -1,0 +1,56 @@
+{
+  "id": 10177,
+  "resizeY": 0,
+  "xan2d": 192,
+  "cost": 1,
+  "inventoryModel": 20085,
+  "resizeZ": 0,
+  "colorFind": [
+    127,
+    -32537
+  ],
+  "colorReplace": [
+    4539,
+    5582
+  ],
+  "name": "Bronze feather",
+  "zoom2d": 595,
+  "yan2d": 1901,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -12,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

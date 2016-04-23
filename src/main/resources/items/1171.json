@@ -1,0 +1,54 @@
+{
+  "id": 1171,
+  "resizeY": 0,
+  "xan2d": 328,
+  "cost": 20,
+  "inventoryModel": 2601,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    5784
+  ],
+  "name": "Wooden shield",
+  "zoom2d": 1390,
+  "yan2d": 32,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 40,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 517,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1172,
+  "femaleModel0": 517,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

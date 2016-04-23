@@ -1,0 +1,54 @@
+{
+  "id": 4608,
+  "resizeY": 0,
+  "xan2d": 1876,
+  "cost": 3,
+  "inventoryModel": 2822,
+  "resizeZ": 0,
+  "colorFind": [
+    9104
+  ],
+  "colorReplace": [
+    951
+  ],
+  "name": "Super kebab",
+  "zoom2d": 700,
+  "yan2d": 1844,
+  "zan2d": 176,
+  "maleOffset": 0,
+  "yOffset2d": 1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 4609,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

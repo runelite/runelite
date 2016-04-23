@@ -1,0 +1,56 @@
+{
+  "id": 2493,
+  "resizeY": 0,
+  "xan2d": 488,
+  "cost": 4320,
+  "inventoryModel": 2507,
+  "resizeZ": 0,
+  "colorFind": [
+    22416,
+    22424
+  ],
+  "colorReplace": [
+    -22248,
+    -22359
+  ],
+  "name": "Blue d\u0027hide chaps",
+  "zoom2d": 1720,
+  "yan2d": 0,
+  "zan2d": 224,
+  "maleOffset": 0,
+  "yOffset2d": 5,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 258,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2494,
+  "femaleModel0": 423,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

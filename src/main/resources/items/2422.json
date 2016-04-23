@@ -1,0 +1,54 @@
+{
+  "id": 2422,
+  "resizeY": 0,
+  "xan2d": 76,
+  "cost": 1,
+  "inventoryModel": 2635,
+  "resizeZ": 0,
+  "colorFind": [
+    926
+  ],
+  "colorReplace": [
+    -21568
+  ],
+  "name": "Blue partyhat",
+  "zoom2d": 440,
+  "yan2d": 1852,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 1,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 187,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": 29,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 87,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 363,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

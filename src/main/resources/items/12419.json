@@ -1,0 +1,62 @@
+{
+  "id": 12419,
+  "resizeY": 0,
+  "xan2d": 112,
+  "cost": 17000,
+  "inventoryModel": 10583,
+  "resizeZ": 0,
+  "colorFind": [
+    695,
+    -9559,
+    9152,
+    -23616,
+    17979
+  ],
+  "colorReplace": [
+    107,
+    7114,
+    5239,
+    6253,
+    7114
+  ],
+  "name": "Light infinity hat",
+  "zoom2d": 1150,
+  "yan2d": 68,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Dismantle"
+  ],
+  "maleModel0": 10684,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 10679,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 10679,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 10691,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

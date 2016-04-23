@@ -1,0 +1,58 @@
+{
+  "id": 10083,
+  "resizeY": 0,
+  "xan2d": 196,
+  "cost": 3600,
+  "inventoryModel": 11397,
+  "resizeZ": 0,
+  "colorFind": [
+    8472,
+    8720,
+    7446
+  ],
+  "colorReplace": [
+    912,
+    540,
+    912
+  ],
+  "name": "Red spiky vambs",
+  "zoom2d": 740,
+  "yan2d": 1784,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -33,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 11328,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10084,
+  "femaleModel0": 11350,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

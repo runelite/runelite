@@ -1,0 +1,62 @@
+{
+  "id": 3371,
+  "resizeY": 0,
+  "xan2d": 220,
+  "cost": 20,
+  "inventoryModel": 4103,
+  "resizeZ": 0,
+  "colorFind": [
+    12713,
+    12717,
+    12605,
+    12589,
+    10545
+  ],
+  "colorReplace": [
+    2972,
+    5784,
+    4890,
+    8976,
+    2972
+  ],
+  "name": "Lean snail meat",
+  "zoom2d": 1640,
+  "yan2d": 1732,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -70,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 3372,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

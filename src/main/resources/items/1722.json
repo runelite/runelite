@@ -1,0 +1,60 @@
+{
+  "id": 1722,
+  "resizeY": 0,
+  "xan2d": 412,
+  "cost": 200,
+  "inventoryModel": 2670,
+  "resizeZ": 0,
+  "colorFind": [
+    10163,
+    5916,
+    4882,
+    11200
+  ],
+  "colorReplace": [
+    94,
+    127,
+    127,
+    94
+  ],
+  "name": "Unpowered symbol",
+  "zoom2d": 630,
+  "yan2d": 120,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -5,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 280,
+  "maleModel1": 286,
+  "femaleModel1": 450,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1723,
+  "femaleModel0": 444,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

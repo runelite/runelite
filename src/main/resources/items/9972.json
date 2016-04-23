@@ -1,0 +1,58 @@
+{
+  "id": 9972,
+  "resizeY": 0,
+  "xan2d": 760,
+  "cost": 1,
+  "inventoryModel": 3023,
+  "resizeZ": 0,
+  "colorFind": [
+    -25644,
+    -26150,
+    -32647
+  ],
+  "colorReplace": [
+    -22411,
+    -22411,
+    127
+  ],
+  "name": "Butterfly",
+  "zoom2d": 640,
+  "yan2d": 132,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 55,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 1275,
+  "resizeY": 0,
+  "xan2d": 224,
+  "cost": 32000,
+  "inventoryModel": 2529,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    -29403
+  ],
+  "name": "Rune pickaxe",
+  "zoom2d": 1070,
+  "yan2d": 1056,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -19,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 509,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1276,
+  "femaleModel0": 509,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

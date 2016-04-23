@@ -1,0 +1,56 @@
+{
+  "id": 12418,
+  "resizeY": 0,
+  "xan2d": 352,
+  "cost": 500000,
+  "inventoryModel": 2840,
+  "resizeZ": 0,
+  "colorFind": [
+    7054,
+    37
+  ],
+  "colorReplace": [
+    7114,
+    7114
+  ],
+  "name": "Dragon sq shield (g)",
+  "zoom2d": 1730,
+  "yan2d": 120,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 10,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Dismantle"
+  ],
+  "maleModel0": 565,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 565,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

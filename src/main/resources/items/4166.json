@@ -1,0 +1,56 @@
+{
+  "id": 4166,
+  "resizeY": 0,
+  "xan2d": 552,
+  "cost": 200,
+  "inventoryModel": 5055,
+  "resizeZ": 0,
+  "colorFind": [
+    268,
+    900
+  ],
+  "colorReplace": [
+    5006,
+    4634
+  ],
+  "name": "Earmuffs",
+  "zoom2d": 490,
+  "yan2d": 2020,
+  "zan2d": 252,
+  "maleOffset": 0,
+  "yOffset2d": 5,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 5102,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 4,
+  "maleHeadModel": 5094,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 5097,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 4167,
+  "femaleModel0": 5108,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

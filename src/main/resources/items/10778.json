@@ -1,0 +1,60 @@
+{
+  "id": 10778,
+  "resizeY": 0,
+  "xan2d": 452,
+  "cost": 65000,
+  "inventoryModel": 3020,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    41,
+    24,
+    11187
+  ],
+  "colorReplace": [
+    -29403,
+    -28266,
+    10467,
+    10467
+  ],
+  "name": "Saradomin plate",
+  "zoom2d": 1180,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 21860,
+  "maleModel1": 164,
+  "femaleModel1": 344,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10779,
+  "femaleModel0": 21861,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

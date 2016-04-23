@@ -1,0 +1,58 @@
+{
+  "id": 8954,
+  "resizeY": 0,
+  "xan2d": 483,
+  "cost": 100,
+  "inventoryModel": 15735,
+  "resizeZ": 0,
+  "colorFind": [
+    -22225,
+    -22233,
+    -22114
+  ],
+  "colorReplace": [
+    414,
+    662,
+    910
+  ],
+  "name": "Red naval shirt",
+  "zoom2d": 1488,
+  "yan2d": 48,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 15978,
+  "maleModel1": 15973,
+  "femaleModel1": 15986,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 15989,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

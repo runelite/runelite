@@ -1,0 +1,60 @@
+{
+  "id": 9097,
+  "resizeY": 0,
+  "xan2d": 498,
+  "cost": 100,
+  "inventoryModel": 16719,
+  "resizeZ": 0,
+  "colorFind": [
+    6573,
+    -29529,
+    -32236,
+    410
+  ],
+  "colorReplace": [
+    -25326,
+    16652,
+    20,
+    -3822
+  ],
+  "name": "Lunar torso",
+  "zoom2d": 1308,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 16484,
+  "maleModel1": 16471,
+  "femaleModel1": 16492,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 16505,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}
