@@ -164,7 +164,7 @@ public class class190 {
             var26.method2503(null != var8?1:0);
             var26.method2569(var19.getPath());
             if(var8 != null) {
-               var26.method2569(var8.getPath());
+               //var26.method2569(var8.getPath());
             }
 
             var24.method4097(var26.field1973, 0, var26.field1971);
