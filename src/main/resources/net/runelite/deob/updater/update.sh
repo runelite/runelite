@@ -51,6 +51,10 @@ echo Downloading vanilla client from $JAR_URL
 rm -f $VANILLA
 wget $JAR_URL -O $VANILLA
 
+# get version of vanilla
+VANILLA_VER=$(java -cp $DEOB_JAR net.runelite.deob.clientver.ClientVersionMain $VANILLA)
+echo "Vanilla client version $VANILLA_VER"
+
 # step 1. deobfuscate vanilla jar. store in $DEOBFUSCATED.
 rm -f $DEOBFUSCATED
 java $JAVA_ARGS -cp $DEOB_JAR net.runelite.deob.Deob $VANILLA $DEOBFUSCATED
@@ -63,13 +67,16 @@ java $JAVA_ARGS -cp $DEOB_JAR net.runelite.deob.updater.UpdateMappings $RS_CLIEN
 rm -f $VANILLA_INJECTED
 java $JAVA_ARGS -cp $DEOB_JAR net.runelite.deob.updater.UpdateInject $DEOBFUSCATED_WITH_MAPPINGS $VANILLA $VANILLA_INJECTED
 
-# step 4. deploy vanilla client.
-mvn deploy:deploy-file -DgroupId=net.runelite.rs -DartifactId=client -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar -Dfile=$VANILLA_INJECTED -Durl=$DEPLOY_REPO_URL
+# step 4. deploy injected client.
+mvn deploy:deploy-file -DgroupId=net.runelite.rs -DartifactId=client -Dversion=$VANILLA_VER -Dpackaging=jar -Dfile=$VANILLA_INJECTED -Durl=$DEPLOY_REPO_URL
+
+# also deploy vanilla client
+mvn deploy:deploy-file -DgroupId=net.runelite.rs -DartifactId=client-vanilla -Dversion=$VANILLA_VER -Dpackaging=jar -Dfile=$VANILLA -Durl=$DEPLOY_REPO_URL
 
 # step 5. decompile deobfuscated mapped client.
 rm -rf /tmp/dest
 mkdir /tmp/dest
-java $JAVA_ARGS -jar $FERNFLOWER_JAR $DEOBFUSCATED_WITH_MAPPINGS /tmp/dest/
+java -Xmx1024m -jar $FERNFLOWER_JAR $DEOBFUSCATED_WITH_MAPPINGS /tmp/dest/
 
 # extract source
 cd /tmp/dest
@@ -86,6 +93,6 @@ git add src/main/java/
 git config user.name "Runelite auto updater"
 git config user.email runelite@runelite.net
 
-git commit -m "Update"
+git commit -m "Update $VANILLA_VER"
 git push
 
