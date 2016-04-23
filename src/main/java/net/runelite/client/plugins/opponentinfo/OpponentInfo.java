@@ -1,6 +1,7 @@
 package net.runelite.client.plugins.opponentinfo;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -9,6 +10,9 @@ import net.runelite.api.Client;
 import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.Overlay;
+import net.runelite.client.ui.OverlayPosition;
+import net.runelite.client.ui.OverlayPriority;
 
 public class OpponentInfo extends Plugin
 {
@@ -26,6 +30,7 @@ public class OpponentInfo extends Plugin
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
 
 	private final BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+	private final Overlay overlay = new Overlay(image, OverlayPosition.TOP_LEFT, OverlayPriority.HIGH);
 
 	private Actor getOpponent()
 	{
@@ -38,12 +43,13 @@ public class OpponentInfo extends Plugin
 		return player.getInteracting();
 	}
 
-	public void draw(Graphics graphics)
+	@Override
+	public Overlay drawOverlay()
 	{
 		Actor opponent = getOpponent();
 
 		if (opponent == null)
-			return;
+			return null;
 
 		int cur = opponent.getHealth();
 		int max = opponent.getMaxHealth();
@@ -92,6 +98,8 @@ public class OpponentInfo extends Plugin
 
 		g.dispose();
 
-		graphics.drawImage(image, 10, 25, null);
+		overlay.setDimension(new Dimension(height, image.getWidth()));
+
+		return overlay;
 	}
 }

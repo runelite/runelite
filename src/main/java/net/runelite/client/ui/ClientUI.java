@@ -4,7 +4,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -13,9 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class ClientUI extends JFrame implements ComponentListener
-{	
-	private static final Logger log = Logger.getLogger(ClientUI.class.getName());
-
+{
 	private ClientPanel panel;
 
 	public ClientUI() throws Exception

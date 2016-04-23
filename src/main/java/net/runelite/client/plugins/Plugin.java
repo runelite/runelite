@@ -1,6 +1,8 @@
 package net.runelite.client.plugins;
 
-public class Plugin
-{
+import net.runelite.client.ui.Overlay;
 
+public abstract class Plugin
+{
+	public abstract Overlay drawOverlay();
 }

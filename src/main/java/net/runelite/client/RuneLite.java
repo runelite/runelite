@@ -4,7 +4,9 @@ import java.io.File;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
+import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.OverlayRenderer;
 
 
 public class RuneLite
@@ -13,8 +15,12 @@ public class RuneLite
 	public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
 
 	public static OptionSet options;
-	private ClientUI gui;
 	private static Client client;
+	private static RuneLite runelite;
+
+	private ClientUI gui;
+	private PluginManager pluginManager;
+	private OverlayRenderer renderer;
 
 	public static void main(String[] args) throws Exception
 	{
@@ -22,13 +28,19 @@ public class RuneLite
 		parser.accepts("developer-mode");
 		options = parser.parse(args);
 		
-		new RuneLite().start();
+		runelite = new RuneLite();
+		runelite.start();
 	}
 
 	public void start() throws Exception
 	{
 		gui = new ClientUI();
 		gui.setVisible(true);
+
+		pluginManager = new PluginManager();
+		pluginManager.loadAll();
+
+		renderer = new OverlayRenderer();
 	}
 
 	public static Client getClient()
@@ -39,5 +51,20 @@ public class RuneLite
 	public static void setClient(Client client)
 	{
 		RuneLite.client = client;
+	}
+
+	public static RuneLite getRunelite()
+	{
+		return runelite;
+	}
+
+	public PluginManager getPluginManager()
+	{
+		return pluginManager;
+	}
+
+	public OverlayRenderer getRenderer()
+	{
+		return renderer;
 	}
 }

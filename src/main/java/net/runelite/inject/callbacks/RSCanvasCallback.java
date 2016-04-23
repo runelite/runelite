@@ -3,7 +3,8 @@ package net.runelite.inject.callbacks;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.RuneLite;
+import net.runelite.client.ui.OverlayRenderer;
 
 public class RSCanvasCallback
 {
@@ -14,11 +15,14 @@ public class RSCanvasCallback
 	{
 		Graphics clientGraphics = clientBuffer.getGraphics();
 		clientGraphics.drawImage(gameBuffer, 0, 0, null);
-		//clientGraphics.dispose();
 
-		//clientGraphics = clientBuffer.getGraphics();
-		//clientGraphics.drawString("something, something 2", 42, 42);
-		new OpponentInfo().draw(clientGraphics);
+		RuneLite runelite = RuneLite.getRunelite();
+		if (runelite != null)
+		{
+			OverlayRenderer renderer = runelite.getRenderer();
+			if (renderer != null)
+				renderer.render(clientGraphics);
+		}
 
 		clientGraphics.dispose();
 
