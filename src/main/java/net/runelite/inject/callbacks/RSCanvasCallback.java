@@ -20,6 +20,8 @@ public class RSCanvasCallback
 		//clientGraphics.drawString("something, something 2", 42, 42);
 		new OpponentInfo().draw(clientGraphics);
 
+		clientGraphics.dispose();
+
 		superGraphics.drawImage(clientBuffer, 0, 0, null);
 
 		return gameBuffer.getGraphics();
