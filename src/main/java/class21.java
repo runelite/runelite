@@ -1,150 +1,254 @@
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Insets;
 import java.util.Comparator;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("f")
+@ObfuscatedName("s")
 final class class21 implements Comparator {
-   @ObfuscatedName("n")
-   public static String[] field588;
-   @ObfuscatedName("bd")
-   static class168 field591;
    // $FF: synthetic field
    final boolean val$preferOwnWorld;
+   @ObfuscatedName("fq")
+   @ObfuscatedGetter(
+      intValue = -378928557
+   )
+   static int field568;
+
+   @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1602871713"
+   )
+   static void method565() {
+      int var0 = class144.field2172;
+      int var1 = class144.field2182;
+      int var2 = class129.field2028 - class5.field102 - var0;
+      int var3 = class37.field809 - class39.field901 - var1;
+      if(var0 > 0 || var2 > 0 || var1 > 0 || var3 > 0) {
+         try {
+            Container var4 = client.field272.method2999();
+            int var5 = 0;
+            int var6 = 0;
+            if(class4.field82 == var4) {
+               Insets var7 = class4.field82.getInsets();
+               var5 = var7.left;
+               var6 = var7.top;
+            }
+
+            Graphics var9 = var4.getGraphics();
+            var9.setColor(Color.black);
+            if(var0 > 0) {
+               var9.fillRect(var5, var6, var0, class37.field809);
+            }
+
+            if(var1 > 0) {
+               var9.fillRect(var5, var6, class129.field2028, var1);
+            }
+
+            if(var2 > 0) {
+               var9.fillRect(var5 + class129.field2028 - var2, var6, var2, class37.field809);
+            }
+
+            if(var3 > 0) {
+               var9.fillRect(var5, class37.field809 + var6 - var3, class129.field2028, var3);
+            }
+         } catch (Exception var8) {
+            ;
+         }
+      }
+
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method580((class214)var1, (class214)var2);
+   }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(IIIIZB)V",
+      garbageValue = "0"
+   )
+   static final void method567(int var0, int var1, int var2, int var3, boolean var4) {
+      if(var2 < 1) {
+         var2 = 1;
+      }
+
+      if(var3 < 1) {
+         var3 = 1;
+      }
+
+      int var5 = var3 - 334;
+      if(var5 < 0) {
+         var5 = 0;
+      } else if(var5 > 100) {
+         var5 = 100;
+      }
+
+      int var6 = client.field527 + (client.field528 - client.field527) * var5 / 100;
+      int var7 = 512 * var6 * var3 / (334 * var2);
+      int var8;
+      int var9;
+      short var14;
+      if(var7 < client.field533) {
+         var14 = client.field533;
+         var6 = 334 * var14 * var2 / (var3 * 512);
+         if(var6 > client.field401) {
+            var6 = client.field401;
+            var8 = var3 * var6 * 512 / (334 * var14);
+            var9 = (var2 - var8) / 2;
+            var0 += var9;
+            var2 -= 2 * var9;
+         }
+      } else if(var7 > client.field504) {
+         var14 = client.field504;
+         var6 = var2 * var14 * 334 / (var3 * 512);
+         if(var6 < client.field324) {
+            var6 = client.field324;
+            var8 = var2 * var14 * 334 / (var6 * 512);
+            var9 = (var3 - var8) / 2;
+            var1 += var9;
+            var3 -= var9 * 2;
+         }
+      }
+
+      var8 = (client.field530 - client.field426) * var5 / 100 + client.field426;
+      client.field539 = var6 * var3 * var8 / 85504 << 1;
+      if(var2 != client.field505 || var3 != client.field538) {
+         int[] var15 = new int[9];
+
+         for(int var10 = 0; var10 < 9; ++var10) {
+            int var11 = 15 + 32 * var10 + 128;
+            int var12 = 600 + 3 * var11;
+            int var13 = class91.field1571[var11];
+            var15[var10] = var12 * var13 >> 16;
+         }
+
+         class86.method1975(var15, 500, 800, var2, var3);
+      }
+
+      client.field535 = var0;
+      client.field536 = var1;
+      client.field505 = var2;
+      client.field538 = var3;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Lclass25;B)V",
+      garbageValue = "-1"
+   )
+   static void method572(class25 var0) {
+      if(var0.method599() != client.field279) {
+         client.field279 = var0.method599();
+         class140.method2949(var0.method599());
+      }
+
+      client.field312 = var0.field627;
+      client.field274 = var0.field618;
+      client.field492 = var0.field613;
+      class39.field903 = client.field431 == 0?'ꩊ':'鱀' + var0.field618;
+      class127.field2020 = 0 == client.field431?443:var0.field618 + '썐';
+      class47.field1055 = class39.field903;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-524371370"
+   )
+   static final void method579() {
+      if(class99.field1660 != null) {
+         class99.field1660.method2964();
+         class99.field1660 = null;
+      }
+
+      class11.method152();
+      class35.field771.method1905();
+
+      for(int var0 = 0; var0 < 4; ++var0) {
+         client.field482[var0].method2378();
+      }
+
+      System.gc();
+      class183.field2959 = 1;
+      class76.field1370 = null;
+      class183.field2960 = -1;
+      class183.field2961 = -1;
+      class183.field2957 = 0;
+      class183.field2964 = false;
+      class183.field2963 = 2;
+      client.field532 = -1;
+      client.field512 = false;
+      class74.method1594();
+      class13.method162(10);
+   }
+
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Lclass214;Lclass214;I)I",
-      garbageValue = "-855156657"
+      garbageValue = "-1919245533"
    )
-   int method643(class214 var1, class214 var2) {
-      if(var2.field3155 == var1.field3155) {
+   int method580(class214 var1, class214 var2) {
+      if(var2.field3162 == var1.field3162) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(client.field296 == var1.field3155) {
+            if(var1.field3162 == client.field274) {
                return -1;
             }
 
-            if(client.field296 == var2.field3155) {
+            if(var2.field3162 == client.field274) {
                return 1;
             }
          }
 
-         return var1.field3155 < var2.field3155?-1:1;
+         return var1.field3162 < var2.field3162?-1:1;
       }
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method643((class214)var1, (class214)var2);
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "174641845"
-   )
-   static void method644(int var0) {
-      if(var0 == -3) {
-         class39.method878("Connection timed out.", "Please try using a different world.", "");
-      } else if(-2 == var0) {
-         class39.method878("", "Error connecting to server.", "");
-      } else if(var0 == -1) {
-         class39.method878("No response from server.", "Please try using a different world.", "");
-      } else if(3 == var0) {
-         class31.field726 = 3;
-      } else if(var0 == 4) {
-         class39.method878("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(5 == var0) {
-         class39.method878("Your account is already logged in.", "Try again in 60 secs...", "");
-      } else if(var0 == 6) {
-         class39.method878("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         class39.method878("This world is full.", "Please use a different world.", "");
-      } else if(8 == var0) {
-         class39.method878("Unable to connect.", "Login server offline.", "");
-      } else if(9 == var0) {
-         class39.method878("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         class39.method878("Unable to connect.", "Bad session id.", "");
-      } else if(11 == var0) {
-         class39.method878("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         class39.method878("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         class39.method878("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         class39.method878("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         class39.method878("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(17 == var0) {
-         class39.method878("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         class39.method878("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         class39.method878("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(20 == var0) {
-         class39.method878("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(22 == var0) {
-         class39.method878("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         class39.method878("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         class39.method878("Error loading your profile.", "Please contact customer support.", "");
-      } else if(25 == var0) {
-         class39.method878("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         class39.method878("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(27 == var0) {
-         class39.method878("", "Service unavailable.", "");
-      } else if(31 == var0) {
-         class39.method878("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         class39.method878("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         class39.method878("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         class39.method878("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(55 == var0) {
-         class39.method878("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
-      } else {
-         if(56 == var0) {
-            class39.method878("Enter the 6-digit code generated by your", "authenticator app.", "");
-            class3.method49(11);
-            return;
-         }
-
-         if(57 == var0) {
-            class39.method878("The code you entered was incorrect.", "Please try again.", "");
-            class3.method49(11);
-            return;
-         }
-
-         class39.method878("Unexpected server response", "Please try using a different world.", "");
-      }
-
-      class3.method49(10);
    }
 
    class21(boolean var1) {
       this.val$preferOwnWorld = var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1629895476"
+      signature = "(II)I",
+      garbageValue = "704769708"
    )
-   public static int method653(int var0, int var1) {
-      int var2;
-      for(var2 = 0; var1 > 0; --var1) {
-         var2 = var2 << 1 | var0 & 1;
-         var0 >>>= 1;
+   public static int method581(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
       }
 
-      return var2;
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
+      }
+
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
+      }
+
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
    }
 }

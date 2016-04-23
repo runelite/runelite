@@ -1,7 +1,7 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bw")
 public abstract class class65 extends class208 {
-   @ObfuscatedName("k")
-   int field1270;
+   @ObfuscatedName("e")
+   int field1245;
 }

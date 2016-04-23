@@ -1,32 +1,49 @@
 import java.io.File;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("ez")
 public class class149 {
-   @ObfuscatedName("c")
-   public static File field2230;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1852537643
-   )
-   public static int field2232;
-   @ObfuscatedName("y")
-   public static File field2233;
-   @ObfuscatedName("e")
-   public static class228 field2234 = null;
-   @ObfuscatedName("x")
-   public static class228 field2235 = null;
    @ObfuscatedName("z")
-   public static class228 field2236 = null;
+   static File field2212;
+   @ObfuscatedName("x")
+   public static File field2213;
+   @ObfuscatedName("u")
+   public static class228 field2215 = null;
+   @ObfuscatedName("r")
+   public static class228 field2217 = null;
+   @ObfuscatedName("a")
+   public static class228 field2218 = null;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 396631321
+   )
+   public static int field2219;
+   @ObfuscatedName("pi")
+   @ObfuscatedGetter(
+      longValue = 1336091171908443015L
+   )
+   static long field2223;
 
-   @ObfuscatedName("w")
-   static final void method3237(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1217732555"
+   )
+   public static void method3107() {
+      Object var0 = class170.field2704;
+      synchronized(class170.field2704) {
+         if(class170.field2705 != 0) {
+            class170.field2705 = 1;
+
+            try {
+               class170.field2704.wait();
+            } catch (InterruptedException var3) {
+               ;
+            }
+         }
+
       }
-
    }
 }

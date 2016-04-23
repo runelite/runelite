@@ -1,96 +1,93 @@
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("cc")
 public final class class94 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -354423833
+      intValue = -2050929451
    )
-   int field1606;
-   @ObfuscatedName("y")
+   int field1586;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1430746887
+      intValue = 1787976929
    )
-   int field1607;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -249200927
-   )
-   int field1608;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1304411477
-   )
-   int field1609;
-   @ObfuscatedName("mg")
-   static class78 field1610;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -2036816635
-   )
-   int field1611;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -1590642729
-   )
-   int field1612;
-   @ObfuscatedName("p")
-   public class85 field1613;
-   @ObfuscatedName("q")
-   public class85 field1614;
+   int field1587;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -219783557
+      intValue = -1225001005
    )
-   public int field1615 = 0;
+   int field1588;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 2025815441
+   )
+   int field1589;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1520871297
+   )
+   int field1590;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1398711799
+      intValue = -1482473541
    )
-   int field1616 = 0;
-   @ObfuscatedName("w")
+   int field1591;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 94475781
+      intValue = -1499340045
    )
-   int field1618;
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(CIB)I",
-      garbageValue = "-58"
+   int field1592;
+   @ObfuscatedName("c")
+   public class85 field1593;
+   @ObfuscatedName("n")
+   public class85 field1594;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1091911809
    )
-   public static int method2252(char var0, int var1) {
-      int var2 = var0 << 4;
-      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-         var0 = Character.toLowerCase(var0);
-         var2 = 1 + (var0 << 4);
-      }
+   public int field1595 = 0;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 150417057
+   )
+   int field1596 = 0;
+   @ObfuscatedName("r")
+   static int[] field1597;
 
-      return var2;
-   }
-
-   @ObfuscatedName("m")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
-      signature = "([BZB)Ljava/lang/Object;",
+      signature = "(ZI)V",
       garbageValue = "0"
    )
-   public static Object method2253(byte[] var0, boolean var1) {
-      if(null == var0) {
-         return null;
-      } else {
-         if(var0.length > 136 && !class125.field2037) {
+   static final void method2162(boolean var0) {
+      class13.method165();
+      ++client.field291;
+      if(client.field291 >= 50) {
+         client.field291 = 0;
+         if(!client.field329 && class99.field1660 != null) {
+            client.field318.method2735(200);
+
             try {
-               class118 var2 = new class118();
-               var2.vmethod2916(var0);
-               return var2;
-            } catch (Throwable var3) {
-               class125.field2037 = true;
+               class99.field1660.method2967(client.field318.field1973, 0, client.field318.field1971);
+               client.field318.field1971 = 0;
+            } catch (IOException var2) {
+               client.field329 = true;
             }
          }
 
-         return var0;
       }
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1278341243"
+   )
+   public static int method2163(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
    }
 }

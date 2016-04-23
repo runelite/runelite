@@ -4,168 +4,157 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("ci")
 @Implements("GameObject")
 public final class class98 {
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -563618469
-   )
-   int field1656;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 676605175
-   )
-   @Export("height")
-   int field1657;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 598252231
-   )
-   @Export("x")
-   int field1658;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -464699425
-   )
-   @Export("y")
-   int field1659;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 922777225
-   )
-   @Export("offsetY")
-   int field1660;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1193924659
-   )
-   @Export("offsetX")
-   int field1661;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1069453069
-   )
-   @Export("relativeX")
-   int field1662;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -690198353
-   )
-   @Export("relativeY")
-   int field1664;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -557836453
-   )
-   @Export("plane")
-   int field1665;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 218253745
+      intValue = -1110913803
    )
-   int field1667;
-   @ObfuscatedName("z")
+   @Export("y")
+   int field1636;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -903846043
+      intValue = 983551319
    )
-   @Export("hash")
-   public int field1668 = 0;
+   @Export("height")
+   int field1637;
+   @ObfuscatedName("dl")
+   static int[] field1638;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -404024169
+   )
+   int field1639;
+   @ObfuscatedName("z")
+   @Export("renderable")
+   public class85 field1640;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -784414093
+   )
+   @Export("plane")
+   int field1641;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1194486915
+      intValue = 1920415701
    )
-   @Export("flags")
-   int field1669 = 0;
-   @ObfuscatedName("qx")
+   @Export("relativeX")
+   int field1642;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1910904893
+      intValue = 655089249
    )
-   protected static int field1671;
-   @ObfuscatedName("k")
+   @Export("x")
+   int field1643;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1002185445
+      intValue = -1130959767
+   )
+   @Export("relativeY")
+   int field1644;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1641327105
+   )
+   @Export("offsetY")
+   int field1645;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -925889521
+   )
+   int field1646;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -487545543
    )
    @Export("orientation")
-   int field1672;
-   @ObfuscatedName("y")
-   @Export("renderable")
-   public class85 field1673;
+   int field1647;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 441424893
+   )
+   @Export("hash")
+   public int field1648 = 0;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1600363513
+   )
+   @Export("flags")
+   int field1649 = 0;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1193533221
+   )
+   @Export("offsetX")
+   int field1650;
+
+   @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "454640079"
+   )
+   static String method2193(int var0) {
+      return client.field290[var0].length() > 0?client.field420[var0] + " " + client.field290[var0]:client.field420[var0];
+   }
 
    @ObfuscatedName("cu")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-629368998"
+      signature = "(Lclass173;IIZI)V",
+      garbageValue = "-1756050322"
    )
-   static void method2282(int var0, int var1, int var2, int var3) {
-      class173 var4 = class210.method4010(var0, var1);
-      if(null != var4 && var4.field2864 != null) {
-         class0 var5 = new class0();
-         var5.field2 = var4;
-         var5.field4 = var4.field2864;
-         class168.method3449(var5, 200000);
+   static void method2194(class173 var0, int var1, int var2, boolean var3) {
+      int var4 = var0.field2840;
+      int var5 = var0.field2746;
+      if(var0.field2751 == 0) {
+         var0.field2840 = var0.field2755;
+      } else if(1 == var0.field2751) {
+         var0.field2840 = var1 - var0.field2755;
+      } else if(var0.field2751 == 2) {
+         var0.field2840 = var0.field2755 * var1 >> 14;
       }
 
-      client.field393 = var3;
-      client.field447 = true;
-      class9.field169 = var0;
-      client.field386 = var1;
-      class161.field2636 = var2;
-      class23.method657(var4);
-   }
+      if(var0.field2752 == 0) {
+         var0.field2746 = var0.field2756;
+      } else if(var0.field2752 == 1) {
+         var0.field2746 = var2 - var0.field2756;
+      } else if(var0.field2752 == 2) {
+         var0.field2746 = var2 * var0.field2756 >> 14;
+      }
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-146185429"
-   )
-   public static int method2283(int var0) {
-      return var0 >> 11 & 63;
-   }
+      if(4 == var0.field2751) {
+         var0.field2840 = var0.field2746 * var0.field2846 / var0.field2762;
+      }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Lclass168;IIIBZI)V",
-      garbageValue = "2"
-   )
-   static void method2284(class168 var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)(var2 + (var1 << 16));
-      class172 var8 = (class172)class171.field2738.method3868(var6);
-      if(null == var8) {
-         var8 = (class172)class171.field2718.method3868(var6);
-         if(var8 == null) {
-            var8 = (class172)class171.field2721.method3868(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.method3979();
-                  class171.field2738.method3875(var8, var6);
-                  --class171.field2739;
-                  ++class171.field2727;
-               }
+      if(4 == var0.field2752) {
+         var0.field2746 = var0.field2762 * var0.field2840 / var0.field2846;
+      }
 
-            } else {
-               if(!var5) {
-                  var8 = (class172)class171.field2713.method3868(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
+      if(client.field443 && var0.field2820 == 0) {
+         if(var0.field2746 < 5 && var0.field2840 < 5) {
+            var0.field2746 = 5;
+            var0.field2840 = 5;
+         } else {
+            if(var0.field2746 <= 0) {
+               var0.field2746 = 5;
+            }
 
-               var8 = new class172();
-               var8.field2745 = var0;
-               var8.field2741 = var3;
-               var8.field2740 = var4;
-               if(var5) {
-                  class171.field2738.method3875(var8, var6);
-                  ++class171.field2727;
-               } else {
-                  class171.field2720.method3963(var8);
-                  class171.field2721.method3875(var8, var6);
-                  ++class171.field2739;
-               }
-
+            if(var0.field2840 <= 0) {
+               var0.field2840 = 5;
             }
          }
       }
+
+      if(var0.field2748 == 1337) {
+         client.field298 = var0;
+      }
+
+      if(var3 && var0.field2858 != null && (var0.field2840 != var4 || var0.field2746 != var5)) {
+         class0 var6 = new class0();
+         var6.field18 = var0;
+         var6.field16 = var0.field2858;
+         client.field472.method3779(var6);
+      }
+
    }
 }

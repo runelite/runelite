@@ -1,122 +1,126 @@
-import java.lang.management.GarbageCollectorMXBean;
+import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ar")
+@ObfuscatedName("aq")
 public class class27 {
-   @ObfuscatedName("bj")
-   @ObfuscatedGetter(
-      intValue = 420676647
-   )
-   static int field680;
    @ObfuscatedName("w")
-   class35[] field681 = new class35[100];
-   @ObfuscatedName("d")
+   static int[] field647;
+   @ObfuscatedName("h")
+   class35[] field648 = new class35[100];
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1986561709
+      intValue = -714408869
    )
-   int field682;
-   @ObfuscatedName("px")
-   static GarbageCollectorMXBean field685;
+   int field649;
+   @ObfuscatedName("ke")
+   static class19 field651;
+   @ObfuscatedName("le")
+   static class130 field653;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "103"
+   )
+   static void method630() {
+      class5.field100 = (byte[][][])null;
+      class5.field87 = (byte[][][])null;
+      class51.field1138 = (byte[][][])null;
+      class5.field88 = (byte[][][])null;
+      class59.field1201 = (int[][][])null;
+      class186.field3009 = (byte[][][])null;
+      class5.field89 = (int[][])null;
+      class4.field73 = null;
+      class5.field90 = null;
+      class94.field1597 = null;
+      class109.field1889 = null;
+      class109.field1895 = null;
+   }
+
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Lclass35;",
-      garbageValue = "7"
+      garbageValue = "49"
    )
-   class35 method721(int var1, String var2, String var3, String var4) {
-      class35 var5 = this.field681[99];
+   class35 method631(int var1, String var2, String var3, String var4) {
+      class35 var5 = this.field648[99];
 
-      for(int var6 = this.field682; var6 > 0; --var6) {
-         if(var6 != 100) {
-            this.field681[var6] = this.field681[var6 - 1];
+      for(int var6 = this.field649; var6 > 0; --var6) {
+         if(100 != var6) {
+            this.field648[var6] = this.field648[var6 - 1];
          }
       }
 
       if(null == var5) {
          var5 = new class35(var1, var2, var4, var3);
       } else {
-         var5.method3998();
-         var5.method3979();
-         var5.method822(var1, var2, var4, var3);
+         var5.method3883();
+         var5.method3863();
+         var5.method729(var1, var2, var4, var3);
       }
 
-      this.field681[0] = var5;
-      if(this.field682 < 100) {
-         ++this.field682;
+      this.field648[0] = var5;
+      if(this.field649 < 100) {
+         ++this.field649;
       }
 
       return var5;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(II)Lclass35;",
-      garbageValue = "-1668428887"
+      signature = "(IS)Lclass35;",
+      garbageValue = "-19101"
    )
-   class35 method722(int var1) {
-      return var1 >= 0 && var1 < this.field682?this.field681[var1]:null;
+   class35 method632(int var1) {
+      return var1 >= 0 && var1 < this.field649?this.field648[var1]:null;
    }
 
-   @ObfuscatedName("cy")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Lclass173;I)Ljava/lang/String;",
-      garbageValue = "-647342731"
-   )
-   static String method725(String var0, class173 var1) {
-      if(var0.indexOf("%") != -1) {
-         int var2;
-         String var4;
-         for(var2 = 1; var2 <= 5; ++var2) {
-            while(true) {
-               int var3 = var0.indexOf("%" + var2);
-               if(var3 == -1) {
-                  break;
-               }
-
-               var4 = var0.substring(0, var3);
-               int var6 = class116.method2556(var1, var2 - 1);
-               String var5;
-               if(var6 < 999999999) {
-                  var5 = Integer.toString(var6);
-               } else {
-                  var5 = "*";
-               }
-
-               var0 = var4 + var5 + var0.substring(var3 + 2);
-            }
-         }
-
-         while(true) {
-            var2 = var0.indexOf("%dns");
-            if(-1 == var2) {
-               break;
-            }
-
-            String var7 = "";
-            if(null != class17.field260) {
-               int var8 = class17.field260.field2212;
-               var4 = (var8 >> 24 & 255) + "." + (var8 >> 16 & 255) + "." + (var8 >> 8 & 255) + "." + (var8 & 255);
-               var7 = var4;
-               if(class17.field260.field2211 != null) {
-                  var7 = (String)class17.field260.field2211;
-               }
-            }
-
-            var0 = var0.substring(0, var2) + var7 + var0.substring(4 + var2);
-         }
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1248429141"
+      garbageValue = "-830052771"
    )
-   int method727() {
-      return this.field682;
+   int method636() {
+      return this.field649;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(Lclass136;Ljava/lang/Object;B)V",
+      garbageValue = "0"
+   )
+   static void method638(class136 var0, Object var1) {
+      if(null != var0.field2077) {
+         for(int var2 = 0; var2 < 50 && var0.field2077.peekEvent() != null; ++var2) {
+            class14.method170(1L);
+         }
+
+         if(null != var1) {
+            var0.field2077.postEvent(new ActionEvent(var1, 1001, "dummy"));
+         }
+
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Object;ZI)[B",
+      garbageValue = "0"
+   )
+   public static byte[] method641(Object var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var3 = (byte[])((byte[])var0);
+         return var3;
+      } else if(var0 instanceof class125) {
+         class125 var2 = (class125)var0;
+         return var2.vmethod2773();
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 }

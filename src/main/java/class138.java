@@ -2,42 +2,37 @@ import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("er")
 public class class138 {
-   @ObfuscatedName("em")
-   static class78[] field2134;
-   @ObfuscatedName("w")
-   public static String field2135 = null;
-   @ObfuscatedName("a")
-   public static Applet field2137 = null;
+   @ObfuscatedName("h")
+   static String field2110 = null;
+   @ObfuscatedName("n")
+   static class80[] field2111;
+   @ObfuscatedName("rc")
+   protected static String field2114;
+   @ObfuscatedName("j")
+   static Applet field2115 = null;
 
-   @ObfuscatedName("dw")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1450085911"
+      signature = "(IIII)I",
+      garbageValue = "283818411"
    )
-   static final void method3042() {
-      client.field338.method2873(157);
-
-      for(class3 var0 = (class3)client.field453.method3871(); null != var0; var0 = (class3)client.field453.method3867()) {
-         if(0 == var0.field72 || 3 == var0.field72) {
-            class31.method777(var0, true);
-         }
-      }
-
-      if(null != client.field526) {
-         class23.method657(client.field526);
-         client.field526 = null;
-      }
-
+   public static int method2899(int var0, int var1, int var2) {
+      var2 &= 3;
+      return 0 == var2?var1:(1 == var2?7 - var0:(var2 == 2?7 - var1:var0));
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("dj")
    @ObfuscatedSignature(
-      signature = "(CS)C",
-      garbageValue = "-4917"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "546863387"
    )
-   static char method3044(char var0) {
-      return 181 != var0 && var0 != 402?Character.toTitleCase(var0):var0;
+   static final void method2907(String var0) {
+      if(null != class123.field2005) {
+         client.field318.method2735(64);
+         client.field318.method2503(class116.method2447(var0));
+         client.field318.method2491(var0);
+      }
    }
 }

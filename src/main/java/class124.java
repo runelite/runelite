@@ -1,30 +1,12 @@
+import java.awt.Font;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("db")
+@ObfuscatedName("dk")
 public class class124 {
-   @ObfuscatedName("a")
-   public static class167 field2031;
-   @ObfuscatedName("i")
-   static class172 field2032;
-
-   @ObfuscatedName("di")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "8"
-   )
-   static final void method2904(int var0, int var1) {
-      if(class9.method161(var0)) {
-         class103.method2381(class173.field2886[var0], var1);
-      }
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "2099004735"
-   )
-   static String method2912(int var0) {
-      return "<img=" + var0 + ">";
-   }
+   @ObfuscatedName("b")
+   public static String[] field2007;
+   @ObfuscatedName("qw")
+   protected static Font field2009;
+   @ObfuscatedName("e")
+   static class72 field2011;
 }

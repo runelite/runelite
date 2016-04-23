@@ -1,74 +1,58 @@
-import java.awt.Canvas;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fi")
 public class class158 {
-   @ObfuscatedName("qo")
-   public static Canvas field2585;
+   @ObfuscatedName("bd")
+   static class168 field2578;
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("az")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;IZI)I",
+      signature = "(ZI)V",
       garbageValue = "1"
    )
-   public static int method3265(CharSequence var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         boolean var3 = false;
-         boolean var4 = false;
-         int var5 = 0;
-         int var6 = var0.length();
+   static final void method3134(boolean var0) {
+      for(int var1 = 0; var1 < client.field314; ++var1) {
+         class34 var2 = client.field517[client.field459[var1]];
+         int var3 = 536870912 + (client.field459[var1] << 14);
+         if(var2 != null && var2.vmethod742() && var0 == var2.field761.field864 && var2.field761.method760()) {
+            int var4 = var2.field816 >> 7;
+            int var5 = var2.field840 >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field795 == 1 && (var2.field816 & 127) == 64 && 64 == (var2.field840 & 127)) {
+                  if(client.field473 == client.field520[var4][var5]) {
+                     continue;
+                  }
 
-         for(int var7 = 0; var7 < var6; ++var7) {
-            char var8 = var0.charAt(var7);
-            if(var7 == 0) {
-               if(var8 == 45) {
-                  var3 = true;
-                  continue;
+                  client.field520[var4][var5] = client.field473;
                }
 
-               if(var8 == 43) {
-                  continue;
-               }
-            }
-
-            int var10;
-            if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
-            } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
-            } else {
-               if(var8 < 97 || var8 > 122) {
-                  throw new NumberFormatException();
+               if(!var2.field761.field880) {
+                  var3 -= Integer.MIN_VALUE;
                }
 
-               var10 = var8 - 87;
+               class35.field771.method2009(class28.field655, var2.field816, var2.field840, class148.method3106(var2.field816 + (var2.field795 * 64 - 64), var2.field795 * 64 - 64 + var2.field840, class28.field655), var2.field795 * 64 - 64 + 60, var2, var2.field796, var3, var2.field843);
             }
-
-            if(var10 >= var1) {
-               throw new NumberFormatException();
-            }
-
-            if(var3) {
-               var10 = -var10;
-            }
-
-            int var9 = var10 + var5 * var1;
-            if(var9 / var1 != var5) {
-               throw new NumberFormatException();
-            }
-
-            var5 = var9;
-            var4 = true;
          }
+      }
 
-         if(!var4) {
-            throw new NumberFormatException();
-         } else {
-            return var5;
-         }
+   }
+
+   @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "2114158116"
+   )
+   static final boolean method3135(int var0) {
+      if(var0 < 0) {
+         return false;
       } else {
-         throw new IllegalArgumentException("");
+         int var1 = client.field418[var0];
+         if(var1 >= 2000) {
+            var1 -= 2000;
+         }
+
+         return var1 == 1007;
       }
    }
 }

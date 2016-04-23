@@ -3,19 +3,19 @@ import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ej")
 public class class146 {
-   @ObfuscatedName("a")
-   class146 field2206;
-   @ObfuscatedName("k")
+   @ObfuscatedName("n")
+   public volatile Object field2194;
+   @ObfuscatedName("x")
+   public volatile int field2195 = 0;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1047124151
+      intValue = -264369319
    )
-   int field2208;
-   @ObfuscatedName("y")
-   public volatile int field2210 = 0;
-   @ObfuscatedName("q")
-   public volatile Object field2211;
-   @ObfuscatedName("r")
-   public int field2212;
-   @ObfuscatedName("p")
-   Object field2213;
+   int field2196;
+   @ObfuscatedName("i")
+   public int field2197;
+   @ObfuscatedName("c")
+   Object field2198;
+   @ObfuscatedName("j")
+   class146 field2199;
 }

@@ -1,47 +1,52 @@
+import java.awt.Image;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("en")
+@ObfuscatedName("ec")
 public class class142 {
-   @ObfuscatedName("x")
-   static int[] field2170;
-   @ObfuscatedName("u")
-   public static String[] field2173;
-
+   @ObfuscatedName("po")
+   public static class136 field2153;
    @ObfuscatedName("r")
+   static class173 field2155;
+   @ObfuscatedName("qh")
+   protected static Image field2156;
+
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIZB)Ljava/lang/String;",
-      garbageValue = "9"
+      signature = "([Ljava/lang/CharSequence;III)Ljava/lang/String;",
+      garbageValue = "-1783042401"
    )
-   static String method3093(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var2 && var0 >= 0) {
-            int var3 = 2;
-
-            for(int var4 = var0 / var1; 0 != var4; ++var3) {
-               var4 /= var1;
-            }
-
-            char[] var5 = new char[var3];
-            var5[0] = 43;
-
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(87 + var8);
-               } else {
-                  var5[var6] = (char)(var8 + 48);
-               }
-            }
-
-            return new String(var5);
-         } else {
-            return Integer.toString(var0, var1);
-         }
+   public static String method2962(CharSequence[] var0, int var1, int var2) {
+      if(var2 == 0) {
+         return "";
+      } else if(var2 == 1) {
+         CharSequence var8 = var0[var1];
+         return null == var8?"null":var8.toString();
       } else {
-         throw new IllegalArgumentException("");
+         int var3 = var2 + var1;
+         int var4 = 0;
+
+         for(int var5 = var1; var5 < var3; ++var5) {
+            CharSequence var6 = var0[var5];
+            if(var6 == null) {
+               var4 += 4;
+            } else {
+               var4 += var6.length();
+            }
+         }
+
+         StringBuilder var9 = new StringBuilder(var4);
+
+         for(int var10 = var1; var10 < var3; ++var10) {
+            CharSequence var7 = var0[var10];
+            if(null == var7) {
+               var9.append("null");
+            } else {
+               var9.append(var7);
+            }
+         }
+
+         return var9.toString();
       }
    }
 }

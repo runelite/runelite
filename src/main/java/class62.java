@@ -1,38 +1,38 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ba")
+@ObfuscatedName("bc")
 public class class62 extends class65 {
-   @ObfuscatedName("y")
-   public boolean field1238;
-   @ObfuscatedName("w")
-   public byte[] field1239;
-   @ObfuscatedName("d")
-   public int field1240;
-   @ObfuscatedName("a")
-   public int field1241;
-   @ObfuscatedName("c")
-   int field1242;
+   @ObfuscatedName("h")
+   public byte[] field1213;
+   @ObfuscatedName("j")
+   public int field1214;
+   @ObfuscatedName("m")
+   public int field1215;
+   @ObfuscatedName("z")
+   int field1216;
+   @ObfuscatedName("x")
+   public boolean field1217;
 
    class62(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1241 = var1;
-      this.field1239 = var2;
-      this.field1240 = var3;
-      this.field1242 = var4;
-      this.field1238 = var5;
+      this.field1214 = var1;
+      this.field1213 = var2;
+      this.field1215 = var3;
+      this.field1216 = var4;
+      this.field1217 = var5;
    }
 
-   @ObfuscatedName("a")
-   public class62 method1370(class74 var1) {
-      this.field1239 = var1.method1701(this.field1239);
-      this.field1241 = var1.method1691(this.field1241);
-      if(this.field1240 == this.field1242) {
-         this.field1240 = this.field1242 = var1.method1692(this.field1240);
+   @ObfuscatedName("j")
+   public class62 method1277(class74 var1) {
+      this.field1213 = var1.method1592(this.field1213);
+      this.field1214 = var1.method1587(this.field1214);
+      if(this.field1215 == this.field1216) {
+         this.field1215 = this.field1216 = var1.method1588(this.field1215);
       } else {
-         this.field1240 = var1.method1692(this.field1240);
-         this.field1242 = var1.method1692(this.field1242);
-         if(this.field1240 == this.field1242) {
-            --this.field1240;
+         this.field1215 = var1.method1588(this.field1215);
+         this.field1216 = var1.method1588(this.field1216);
+         if(this.field1215 == this.field1216) {
+            --this.field1215;
          }
       }
 
@@ -44,9 +44,9 @@ public class class62 extends class65 {
       garbageValue = "22050"
    )
    class62(int var1, byte[] var2, int var3, int var4) {
-      this.field1241 = var1;
-      this.field1239 = var2;
-      this.field1240 = var3;
-      this.field1242 = var4;
+      this.field1214 = var1;
+      this.field1213 = var2;
+      this.field1215 = var3;
+      this.field1216 = var4;
    }
 }
