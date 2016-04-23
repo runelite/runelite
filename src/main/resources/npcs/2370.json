@@ -1,0 +1,54 @@
+{
+  "id": 2370,
+  "recolorToFind": [
+    61,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Librarian",
+  "recolorToReplace": [
+    6356,
+    2394
+  ],
+  "models": [
+    7029,
+    7071,
+    6017,
+    7037,
+    7045,
+    2985
+  ],
+  "models_2": [
+    6988,
+    6996
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

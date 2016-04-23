@@ -1,0 +1,64 @@
+{
+  "id": 3448,
+  "recolorToFind": [
+    4550,
+    8741,
+    61,
+    41,
+    57,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Fire Warrior of Lesarkus",
+  "recolorToReplace": [
+    689,
+    2989,
+    5652,
+    5652,
+    5652,
+    2989
+  ],
+  "models": [
+    230,
+    14441,
+    268,
+    163,
+    176,
+    328,
+    323,
+    246,
+    184
+  ],
+  "models_2": [
+    63
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 273,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 84,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

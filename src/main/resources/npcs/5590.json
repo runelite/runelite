@@ -1,0 +1,47 @@
+{
+  "id": 5590,
+  "recolorToFind": [
+    8
+  ],
+  "anInt2156": 32,
+  "name": "Wily hellcat",
+  "recolorToReplace": [
+    914
+  ],
+  "models": [
+    13412,
+    13408
+  ],
+  "models_2": [
+    12745
+  ],
+  "stanceAnimation": 317,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 314,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 70,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Pick-up",
+    null,
+    "Talk-to",
+    "Interact-with",
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 70,
+  "hasRenderPriority": false,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": true
+}

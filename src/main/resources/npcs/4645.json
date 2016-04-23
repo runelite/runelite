@@ -1,0 +1,54 @@
+{
+  "id": 4645,
+  "recolorToFind": [
+    4758,
+    22420,
+    99,
+    10275
+  ],
+  "anInt2156": 32,
+  "name": "Glouphrie the Untrusted",
+  "recolorToReplace": [
+    16,
+    20,
+    82,
+    12
+  ],
+  "models": [
+    16997,
+    17007,
+    16989
+  ],
+  "models_2": [
+    16969
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

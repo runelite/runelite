@@ -1,0 +1,60 @@
+{
+  "id": 3787,
+  "recolorToFind": [
+    25238,
+    8741,
+    4626,
+    4550,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Meiyerditch citizen",
+  "recolorToReplace": [
+    24854,
+    21526,
+    20,
+    94,
+    61
+  ],
+  "models": [
+    217,
+    246,
+    292,
+    18074,
+    177,
+    18130,
+    183
+  ],
+  "models_2": [
+    18031
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 100,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

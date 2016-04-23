@@ -1,0 +1,63 @@
+{
+  "id": 1330,
+  "recolorToFind": [
+    8741,
+    -32506,
+    107,
+    25238,
+    94,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Trader Crewmember",
+  "recolorToReplace": [
+    103,
+    103,
+    920,
+    103,
+    920,
+    920
+  ],
+  "models": [
+    17353,
+    249,
+    17365,
+    10301,
+    177,
+    267,
+    181
+  ],
+  "models_2": [
+    17363,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    "Trade",
+    "Charter",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

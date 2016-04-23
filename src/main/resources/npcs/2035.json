@@ -1,0 +1,59 @@
+{
+  "id": 2035,
+  "recolorToFind": [
+    74,
+    22426,
+    10347,
+    937,
+    908,
+    5388
+  ],
+  "anInt2156": 0,
+  "name": "Zul-Cheray",
+  "recolorToReplace": [
+    17170,
+    17170,
+    16922,
+    17170,
+    18316,
+    18316
+  ],
+  "models": [
+    17018,
+    16995,
+    2922,
+    16992
+  ],
+  "models_2": [
+    16977
+  ],
+  "stanceAnimation": 4537,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

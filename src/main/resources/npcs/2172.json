@@ -1,0 +1,52 @@
+{
+  "id": 2172,
+  "recolorToFind": [
+    3005,
+    406
+  ],
+  "anInt2156": 32,
+  "name": "TzHaar-Xil",
+  "recolorToReplace": [
+    918,
+    8
+  ],
+  "models": [
+    9311,
+    9310,
+    9313,
+    9312,
+    9307
+  ],
+  "models_2": [
+    9251
+  ],
+  "stanceAnimation": 2603,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2601,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 133,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 110,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

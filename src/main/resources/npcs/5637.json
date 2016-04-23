@@ -1,0 +1,60 @@
+{
+  "id": 5637,
+  "recolorToFind": [
+    4550,
+    -25307,
+    -25299,
+    -25295,
+    11138,
+    12
+  ],
+  "anInt2156": 0,
+  "name": "Held vampyre juvinate",
+  "recolorToReplace": [
+    21584,
+    24745,
+    24749,
+    24753,
+    16536,
+    16536
+  ],
+  "models": [
+    14042,
+    14039,
+    14046,
+    14041,
+    14044
+  ],
+  "models_2": [
+    13943
+  ],
+  "stanceAnimation": 3551,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 143,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 59,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 140,
+  "hasRenderPriority": false,
+  "ambient": -25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,55 @@
+{
+  "id": 3450,
+  "recolorToFind": [
+    25238,
+    5012,
+    10004
+  ],
+  "anInt2156": 32,
+  "name": "Mysterious ghost",
+  "recolorToReplace": [
+    -32630,
+    5648,
+    5648
+  ],
+  "models": [
+    7608,
+    7610,
+    7605,
+    179,
+    262,
+    185
+  ],
+  "models_2": [
+    8375
+  ],
+  "stanceAnimation": 2334,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2333,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 112,
+  "contrast": 35,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 112,
+  "hasRenderPriority": false,
+  "ambient": 35,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,67 @@
+{
+  "id": 4849,
+  "recolorToFind": [
+    4550,
+    -21608,
+    4626,
+    123,
+    6798,
+    107
+  ],
+  "anInt2156": 32,
+  "name": "Culinaromancer",
+  "recolorToReplace": [
+    101,
+    -22365,
+    20,
+    37,
+    123,
+    45
+  ],
+  "models": [
+    12749,
+    215,
+    244,
+    6131,
+    13897,
+    13330,
+    12765,
+    12750,
+    181
+  ],
+  "models_2": [
+    41,
+    53,
+    77,
+    6129
+  ],
+  "stanceAnimation": 3365,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3365,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

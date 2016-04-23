@@ -1,0 +1,58 @@
+{
+  "id": 3190,
+  "recolorToFind": [
+    8741,
+    25238,
+    906
+  ],
+  "anInt2156": 32,
+  "name": "Rogue Guard",
+  "recolorToReplace": [
+    11138,
+    4,
+    113
+  ],
+  "models": [
+    230,
+    280,
+    293,
+    162,
+    176,
+    490,
+    274,
+    185,
+    246
+  ],
+  "models_2": [
+    6571
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 133,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 133,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

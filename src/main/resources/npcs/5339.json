@@ -1,0 +1,58 @@
+{
+  "id": 5339,
+  "recolorToFind": [
+    8609,
+    8602,
+    8598,
+    8086,
+    8976
+  ],
+  "anInt2156": 32,
+  "name": "Cave goblin miner",
+  "recolorToReplace": [
+    14494,
+    14490,
+    14614,
+    16912,
+    17806
+  ],
+  "models": [
+    23667,
+    23703,
+    23632,
+    23681
+  ],
+  "models_2": [
+    23246,
+    23231
+  ],
+  "stanceAnimation": 6004,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6005,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 11,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

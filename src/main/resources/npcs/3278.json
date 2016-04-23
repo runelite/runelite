@@ -1,0 +1,60 @@
+{
+  "id": 3278,
+  "recolorToFind": [
+    25238,
+    -11139,
+    8741,
+    933
+  ],
+  "anInt2156": 32,
+  "name": "Workman",
+  "recolorToReplace": [
+    7452,
+    7376,
+    8371,
+    5285
+  ],
+  "models": [
+    6848,
+    248,
+    302,
+    163,
+    10218,
+    491,
+    263,
+    185
+  ],
+  "models_2": [
+    5787,
+    80
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 10,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

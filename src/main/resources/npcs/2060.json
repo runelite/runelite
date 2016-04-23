@@ -1,0 +1,53 @@
+{
+  "id": 2060,
+  "recolorToFind": [
+    7341,
+    8369,
+    8381,
+    7333,
+    7349,
+    9775
+  ],
+  "anInt2156": 32,
+  "name": "Erin",
+  "recolorToReplace": [
+    11181,
+    11181,
+    11181,
+    11181,
+    11181,
+    4913
+  ],
+  "models": [
+    26870
+  ],
+  "stanceAnimation": 6813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6819,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 170,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 170,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

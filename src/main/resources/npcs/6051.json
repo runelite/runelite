@@ -1,0 +1,55 @@
+{
+  "id": 6051,
+  "recolorToFind": [
+    61,
+    908,
+    906
+  ],
+  "anInt2156": 32,
+  "name": "Black Guard Berserker",
+  "recolorToReplace": [
+    -22386,
+    -22386,
+    -22386
+  ],
+  "models": [
+    7025,
+    7050,
+    7039,
+    2993,
+    2991,
+    7042
+  ],
+  "models_2": [
+    6984
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 150,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 66,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 130,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

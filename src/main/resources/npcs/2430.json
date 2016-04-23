@@ -1,0 +1,62 @@
+{
+  "id": 2430,
+  "recolorToFind": [
+    61,
+    10347,
+    5784,
+    5417,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Rowdy dwarf",
+  "recolorToReplace": [
+    29991,
+    8390,
+    920,
+    4517,
+    3526
+  ],
+  "models": [
+    2971,
+    7072,
+    7062,
+    2978,
+    7044,
+    2985,
+    7054,
+    2992
+  ],
+  "models_2": [
+    1,
+    6997
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 104,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 145,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 120,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,64 @@
+{
+  "id": 2895,
+  "recolorToFind": [
+    107,
+    8741,
+    -21608,
+    123,
+    90,
+    8860
+  ],
+  "anInt2156": 32,
+  "name": "Cook",
+  "recolorToReplace": [
+    8369,
+    8369,
+    8392,
+    8412,
+    8722,
+    8369
+  ],
+  "models": [
+    230,
+    5215,
+    14791,
+    15106,
+    10980,
+    10218,
+    12750,
+    181
+  ],
+  "models_2": [
+    63,
+    5207
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

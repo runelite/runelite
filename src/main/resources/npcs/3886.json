@@ -1,0 +1,67 @@
+{
+  "id": 3886,
+  "recolorToFind": [
+    4550,
+    -16482,
+    926,
+    4626,
+    10304,
+    10283
+  ],
+  "anInt2156": 32,
+  "name": "Coenus",
+  "recolorToReplace": [
+    6563,
+    -22256,
+    -22256,
+    5640,
+    9019,
+    5656
+  ],
+  "models": [
+    20750,
+    5104,
+    11758,
+    20754,
+    20747,
+    10218,
+    9955,
+    20751,
+    185,
+    20755,
+    11762
+  ],
+  "models_2": [
+    20743,
+    5095
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

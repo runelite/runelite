@@ -1,0 +1,58 @@
+{
+  "id": 2379,
+  "recolorToFind": [
+    7473,
+    4550,
+    22,
+    10347,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Factory Worker",
+  "recolorToReplace": [
+    5417,
+    5440,
+    2716,
+    20,
+    41
+  ],
+  "models": [
+    2973,
+    7062,
+    2979,
+    7045,
+    2985
+  ],
+  "models_2": [
+    4
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 130,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

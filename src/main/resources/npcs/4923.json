@@ -1,0 +1,61 @@
+{
+  "id": 4923,
+  "recolorToFind": [
+    6798,
+    5532,
+    25238
+  ],
+  "anInt2156": 32,
+  "name": "Achietties",
+  "recolorToReplace": [
+    6620,
+    61,
+    926
+  ],
+  "models": [
+    393,
+    376,
+    468,
+    430,
+    356,
+    360,
+    339,
+    417,
+    541,
+    518
+  ],
+  "models_2": [
+    115,
+    136,
+    101
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

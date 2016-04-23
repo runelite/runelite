@@ -1,0 +1,67 @@
+{
+  "id": 6618,
+  "recolorToFind": [
+    -22464,
+    3131,
+    3127,
+    3123,
+    25238,
+    5018
+  ],
+  "anInt2156": 32,
+  "name": "Crazy archaeologist",
+  "recolorToReplace": [
+    12,
+    10388,
+    10514,
+    10638,
+    10388,
+    -29917
+  ],
+  "models": [
+    6364,
+    203,
+    250,
+    292,
+    3707,
+    173,
+    176,
+    254,
+    185,
+    556
+  ],
+  "models_2": [
+    45,
+    6212,
+    82
+  ],
+  "stanceAnimation": 3846,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 140,
+  "contrast": 35,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 204,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 140,
+  "hasRenderPriority": false,
+  "ambient": 35,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

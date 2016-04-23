@@ -1,0 +1,63 @@
+{
+  "id": 1816,
+  "recolorToFind": [
+    6798,
+    -16116,
+    8741,
+    -22130,
+    28318,
+    21776
+  ],
+  "anInt2156": 32,
+  "name": "Honest Jimmy",
+  "recolorToReplace": [
+    24,
+    8,
+    22024,
+    8,
+    2954,
+    8
+  ],
+  "models": [
+    10038,
+    15975,
+    10304,
+    14187,
+    10301,
+    177,
+    15977
+  ],
+  "models_2": [
+    15968,
+    10027
+  ],
+  "stanceAnimation": 4257,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4256,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    "Trade",
+    "Join-Team",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

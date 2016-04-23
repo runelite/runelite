@@ -1,0 +1,64 @@
+{
+  "id": 2537,
+  "recolorToFind": [
+    8741,
+    25238,
+    7952,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "H.A.M. Guard",
+  "recolorToReplace": [
+    -4189,
+    -4189,
+    -4189,
+    5784
+  ],
+  "models": [
+    169,
+    176,
+    517,
+    248,
+    181,
+    265,
+    296,
+    5434,
+    5430,
+    5433,
+    317,
+    5437
+  ],
+  "models_2": [
+    5428,
+    80
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 273,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 134,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 18,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 134,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

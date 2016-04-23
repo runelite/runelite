@@ -1,0 +1,57 @@
+{
+  "id": 2952,
+  "recolorToFind": [
+    7073,
+    4626,
+    4550
+  ],
+  "anInt2156": 0,
+  "name": "Void Knight",
+  "recolorToReplace": [
+    8724,
+    -22008,
+    6938
+  ],
+  "models": [
+    378,
+    14578,
+    14570,
+    14572,
+    14576,
+    358,
+    14579
+  ],
+  "models_2": [
+    103,
+    14586
+  ],
+  "stanceAnimation": 3926,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

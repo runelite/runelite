@@ -1,0 +1,45 @@
+{
+  "id": 2173,
+  "anInt2156": 32,
+  "name": "TzHaar-Ket",
+  "models": [
+    9301,
+    9300,
+    9303,
+    9302,
+    9306,
+    9315
+  ],
+  "models_2": [
+    9251
+  ],
+  "stanceAnimation": 2603,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2601,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 156,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 149,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 156,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

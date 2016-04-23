@@ -1,0 +1,65 @@
+{
+  "id": 1049,
+  "recolorToFind": [
+    4550,
+    8741,
+    6798,
+    4626,
+    25238,
+    -11139
+  ],
+  "anInt2156": 32,
+  "name": "Flynn",
+  "recolorToReplace": [
+    4647,
+    10508,
+    7700,
+    24,
+    5281,
+    -11238
+  ],
+  "models": [
+    215,
+    254,
+    249,
+    170,
+    176,
+    185,
+    305,
+    10741
+  ],
+  "models_2": [
+    53,
+    81,
+    10739
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

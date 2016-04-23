@@ -1,0 +1,65 @@
+{
+  "id": 685,
+  "recolorToFind": [
+    4550,
+    10004,
+    8741,
+    25238,
+    22177,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Stranger",
+  "recolorToReplace": [
+    4762,
+    8,
+    8,
+    8,
+    8,
+    8
+  ],
+  "models": [
+    211,
+    248,
+    292,
+    151,
+    179,
+    254,
+    185,
+    6221,
+    539
+  ],
+  "models_2": [
+    50,
+    6374
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 273,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 95,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

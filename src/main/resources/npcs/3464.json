@@ -1,0 +1,60 @@
+{
+  "id": 3464,
+  "recolorToFind": [
+    4550,
+    8741,
+    14490
+  ],
+  "anInt2156": 32,
+  "name": "Cyrisus",
+  "recolorToReplace": [
+    5568,
+    10512,
+    10512
+  ],
+  "models": [
+    3378,
+    215,
+    244,
+    248,
+    3820,
+    156,
+    10218,
+    6232,
+    24985,
+    10683
+  ],
+  "models_2": [
+    24977,
+    77
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 126,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

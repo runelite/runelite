@@ -1,0 +1,66 @@
+{
+  "id": 6530,
+  "recolorToFind": [
+    4550,
+    -29521,
+    8741,
+    25238,
+    7073,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Abidor Crank",
+  "recolorToReplace": [
+    10450,
+    16540,
+    16540,
+    14610,
+    6443,
+    5541
+  ],
+  "models": [
+    223,
+    253,
+    11761,
+    170,
+    10218,
+    265,
+    8919,
+    534,
+    14175
+  ],
+  "models_2": [
+    59,
+    85,
+    13945
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1146,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

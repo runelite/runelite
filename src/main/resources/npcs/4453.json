@@ -1,0 +1,61 @@
+{
+  "id": 4453,
+  "recolorToFind": [
+    25238,
+    8741,
+    61,
+    4626,
+    -22464,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Emilia",
+  "recolorToReplace": [
+    24850,
+    21665,
+    10450,
+    10450,
+    10450,
+    10450
+  ],
+  "models": [
+    390,
+    472,
+    347,
+    353,
+    435
+  ],
+  "models_2": [
+    113,
+    11429
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 117,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 122,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

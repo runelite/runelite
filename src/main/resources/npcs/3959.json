@@ -1,0 +1,63 @@
+{
+  "id": 3959,
+  "recolorToFind": [
+    4550,
+    -22464,
+    61,
+    25238,
+    908,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Jungle savage",
+  "recolorToReplace": [
+    5681,
+    5681,
+    6044,
+    6044,
+    6044,
+    5681
+  ],
+  "models": [
+    231,
+    246,
+    309,
+    173,
+    176,
+    266,
+    181,
+    540
+  ],
+  "models_2": [
+    64
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 273,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 90,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

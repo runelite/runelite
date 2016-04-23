@@ -1,0 +1,59 @@
+{
+  "id": 607,
+  "recolorToFind": [
+    13506,
+    13501,
+    13493,
+    13489,
+    13497
+  ],
+  "anInt2156": 32,
+  "name": "Zombie protester",
+  "recolorToReplace": [
+    28866,
+    28866,
+    28973,
+    28973,
+    28857
+  ],
+  "models": [
+    21102,
+    21069,
+    21051,
+    21096,
+    21125,
+    21075
+  ],
+  "models_2": [
+    21388
+  ],
+  "stanceAnimation": 5584,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5583,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 118,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 118,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,62 @@
+{
+  "id": 4812,
+  "recolorToFind": [
+    33,
+    5784,
+    4515,
+    61,
+    2578,
+    12
+  ],
+  "anInt2156": 32,
+  "name": "Rohak",
+  "recolorToReplace": [
+    7863,
+    16462,
+    16462,
+    9112,
+    6024,
+    6028
+  ],
+  "models": [
+    2970,
+    2986,
+    2984,
+    7037,
+    2980,
+    10326
+  ],
+  "models_2": [
+    0,
+    6
+  ],
+  "stanceAnimation": -1,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 145,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 100,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

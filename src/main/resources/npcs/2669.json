@@ -1,0 +1,66 @@
+{
+  "id": 2669,
+  "recolorToFind": [
+    8741,
+    9104,
+    25238,
+    10378,
+    -22464,
+    13122
+  ],
+  "anInt2156": 32,
+  "name": "Garth",
+  "recolorToReplace": [
+    1581,
+    -356,
+    -30434,
+    6674,
+    4550,
+    3243
+  ],
+  "models": [
+    193,
+    215,
+    247,
+    292,
+    3667,
+    151,
+    176,
+    496,
+    5218
+  ],
+  "models_2": [
+    53,
+    79,
+    36
+  ],
+  "stanceAnimation": 2163,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2164,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

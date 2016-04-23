@@ -1,0 +1,61 @@
+{
+  "id": 5793,
+  "recolorToFind": [
+    5400,
+    5648,
+    41,
+    61,
+    57,
+    -22225
+  ],
+  "anInt2156": 32,
+  "name": "Knight",
+  "recolorToReplace": [
+    5214,
+    5206,
+    5206,
+    5223,
+    7269,
+    926
+  ],
+  "models": [
+    11744,
+    306,
+    164,
+    13318,
+    268,
+    4954
+  ],
+  "models_2": [
+    56
+  ],
+  "stanceAnimation": 784,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

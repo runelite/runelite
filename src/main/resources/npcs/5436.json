@@ -1,0 +1,62 @@
+{
+  "id": 5436,
+  "recolorToFind": [
+    8741,
+    25238,
+    4626,
+    28318,
+    908
+  ],
+  "anInt2156": 32,
+  "name": "Niles",
+  "recolorToReplace": [
+    33,
+    24,
+    0,
+    4,
+    4
+  ],
+  "models": [
+    215,
+    247,
+    7611,
+    163,
+    176,
+    254,
+    181,
+    8954
+  ],
+  "models_2": [
+    53,
+    79
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    "Dismiss"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 136,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

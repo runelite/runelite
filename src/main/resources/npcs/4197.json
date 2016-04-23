@@ -1,0 +1,58 @@
+{
+  "id": 4197,
+  "recolorToFind": [
+    4550,
+    -22464,
+    4626,
+    61,
+    7073,
+    25238
+  ],
+  "anInt2156": 32,
+  "name": "Scabaras",
+  "recolorToReplace": [
+    -22510,
+    -22510,
+    -22510,
+    7863,
+    7863,
+    -22747
+  ],
+  "models": [
+    6470,
+    167,
+    176,
+    6135,
+    266,
+    181
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 140,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 75,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 140,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,61 @@
+{
+  "id": 2110,
+  "recolorToFind": [
+    8741,
+    25238,
+    926,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Wise Old Man",
+  "recolorToReplace": [
+    8856,
+    8856,
+    8617,
+    8617
+  ],
+  "models": [
+    7409,
+    292,
+    170,
+    265,
+    181,
+    176,
+    4925,
+    323,
+    3711
+  ],
+  "models_2": [
+    7379,
+    7380
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1146,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

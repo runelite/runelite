@@ -1,0 +1,65 @@
+{
+  "id": 2462,
+  "recolorToFind": [
+    8741,
+    7700,
+    41,
+    8076,
+    61,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Shanomi",
+  "recolorToReplace": [
+    939,
+    801,
+    10337,
+    914,
+    7370,
+    0
+  ],
+  "models": [
+    208,
+    250,
+    306,
+    4604,
+    15302,
+    176,
+    10318,
+    15313,
+    185
+  ],
+  "models_2": [
+    48,
+    82
+  ],
+  "stanceAnimation": 2561,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2562,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Claim-Tokens",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

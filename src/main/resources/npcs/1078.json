@@ -1,0 +1,62 @@
+{
+  "id": 1078,
+  "recolorToFind": [
+    25238,
+    -22464,
+    8741,
+    4550,
+    908,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Runa",
+  "recolorToReplace": [
+    22412,
+    2524,
+    12399,
+    2524,
+    22024,
+    6618
+  ],
+  "models": [
+    399,
+    456,
+    483,
+    332,
+    353,
+    429,
+    358
+  ],
+  "models_2": [
+    118
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

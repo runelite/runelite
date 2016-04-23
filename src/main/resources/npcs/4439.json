@@ -1,0 +1,57 @@
+{
+  "id": 4439,
+  "recolorToFind": [
+    25238,
+    8741,
+    4550,
+    7236,
+    4626
+  ],
+  "anInt2156": 0,
+  "name": "Held Vampyre Juvenile",
+  "recolorToReplace": [
+    -11242,
+    -22498,
+    3288,
+    3288,
+    3346
+  ],
+  "models": [
+    4089,
+    246,
+    14047,
+    151,
+    10218,
+    254,
+    181
+  ],
+  "stanceAnimation": 3551,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 142,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 45,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 142,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

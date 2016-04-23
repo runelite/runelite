@@ -1,0 +1,45 @@
+{
+  "id": 2825,
+  "recolorToFind": [
+    2380,
+    2372
+  ],
+  "anInt2156": 32,
+  "name": "Piglet",
+  "recolorToReplace": [
+    3532,
+    3524
+  ],
+  "models": [
+    8228
+  ],
+  "stanceAnimation": 2166,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2165,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 70,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 70,
+  "hasRenderPriority": false,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

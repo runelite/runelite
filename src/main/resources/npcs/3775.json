@@ -1,0 +1,62 @@
+{
+  "id": 3775,
+  "recolorToFind": [
+    0,
+    8741,
+    25238,
+    4626,
+    24,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Safalaan",
+  "recolorToReplace": [
+    -23856,
+    -10362,
+    -10362,
+    0,
+    -12394,
+    4558
+  ],
+  "models": [
+    18087,
+    246,
+    18134,
+    10979,
+    177,
+    12138,
+    181
+  ],
+  "models_2": [
+    18040
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 150,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 150,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

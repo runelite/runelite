@@ -1,0 +1,63 @@
+{
+  "id": 3892,
+  "recolorToFind": [
+    4550,
+    9019,
+    926,
+    -22464,
+    -16482,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Jamila",
+  "recolorToReplace": [
+    6563,
+    -15458,
+    -16482,
+    9019,
+    7485,
+    9019
+  ],
+  "models": [
+    376,
+    390,
+    9026,
+    14588,
+    10706,
+    9024,
+    358
+  ],
+  "models_2": [
+    101,
+    113
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

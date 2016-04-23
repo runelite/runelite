@@ -1,0 +1,52 @@
+{
+  "id": 5744,
+  "recolorToFind": [
+    14507,
+    14511,
+    14387,
+    14391,
+    14395
+  ],
+  "anInt2156": 32,
+  "name": "Penance Fighter",
+  "recolorToReplace": [
+    14614,
+    14490,
+    14494,
+    14499,
+    14503
+  ],
+  "models": [
+    20697,
+    20696
+  ],
+  "stanceAnimation": 5094,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5095,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 56,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

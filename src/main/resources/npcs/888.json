@@ -1,0 +1,59 @@
+{
+  "id": 888,
+  "recolorToFind": [
+    25238,
+    8741,
+    -26722
+  ],
+  "anInt2156": 32,
+  "name": "Irwin Feaselbaum",
+  "recolorToReplace": [
+    1719,
+    939,
+    -1241
+  ],
+  "models": [
+    202,
+    215,
+    292,
+    328,
+    170,
+    176,
+    265,
+    181,
+    246
+  ],
+  "models_2": [
+    53,
+    44
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 111,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 103,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

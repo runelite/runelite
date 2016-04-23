@@ -1,0 +1,70 @@
+{
+  "id": 1485,
+  "recolorToFind": [
+    7700,
+    8741,
+    25238,
+    9104,
+    -22464,
+    28
+  ],
+  "anInt2156": 32,
+  "name": "Nickolaus",
+  "recolorToReplace": [
+    7766,
+    7766,
+    6589,
+    6589,
+    4550,
+    9112
+  ],
+  "models": [
+    251,
+    230,
+    292,
+    327,
+    3707,
+    151,
+    179,
+    566,
+    3704,
+    275,
+    6364,
+    245
+  ],
+  "models_2": [
+    63,
+    83,
+    78,
+    6212
+  ],
+  "stanceAnimation": -1,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

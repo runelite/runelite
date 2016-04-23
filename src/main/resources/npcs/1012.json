@@ -1,0 +1,64 @@
+{
+  "id": 1012,
+  "recolorToFind": [
+    8741,
+    25238,
+    4626,
+    -16116,
+    8078
+  ],
+  "anInt2156": 32,
+  "name": "Gambler",
+  "recolorToReplace": [
+    8,
+    8,
+    8,
+    8,
+    8
+  ],
+  "models": [
+    230,
+    10038,
+    248,
+    5221,
+    162,
+    176,
+    3711,
+    254,
+    181
+  ],
+  "models_2": [
+    63,
+    10027,
+    80
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1146,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

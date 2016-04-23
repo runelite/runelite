@@ -1,0 +1,63 @@
+{
+  "id": 4931,
+  "recolorToFind": [
+    25238,
+    8741,
+    7952,
+    908,
+    4626,
+    -22464
+  ],
+  "anInt2156": 32,
+  "name": "Savant",
+  "recolorToReplace": [
+    5223,
+    7277,
+    5210,
+    10341,
+    5318,
+    4550
+  ],
+  "models": [
+    398,
+    471,
+    479,
+    348,
+    353,
+    428,
+    361
+  ],
+  "models_2": [
+    106,
+    9656
+  ],
+  "stanceAnimation": 2256,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

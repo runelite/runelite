@@ -1,0 +1,58 @@
+{
+  "id": 5544,
+  "recolorToFind": [
+    11162,
+    8741,
+    22426,
+    22424,
+    4550,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Jack",
+  "recolorToReplace": [
+    8720,
+    12826,
+    12826,
+    14490,
+    4766,
+    4645
+  ],
+  "models": [
+    2906,
+    2909,
+    2918
+  ],
+  "models_2": [
+    139
+  ],
+  "stanceAnimation": 3862,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

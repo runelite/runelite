@@ -1,0 +1,53 @@
+{
+  "id": 5301,
+  "recolorToFind": [
+    16701,
+    9137,
+    25886
+  ],
+  "anInt2156": 32,
+  "name": "Kelyn",
+  "recolorToReplace": [
+    7613,
+    5429,
+    7646
+  ],
+  "models": [
+    4030,
+    6981,
+    6978,
+    6979
+  ],
+  "models_2": [
+    4013
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

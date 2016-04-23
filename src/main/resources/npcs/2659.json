@@ -1,0 +1,57 @@
+{
+  "id": 2659,
+  "recolorToFind": [
+    10283,
+    25238,
+    -22464,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Purepker895",
+  "recolorToReplace": [
+    10266,
+    -32500,
+    -22386,
+    10508
+  ],
+  "models": [
+    7608,
+    249,
+    7610,
+    7605,
+    4924,
+    524,
+    517,
+    254,
+    185
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    "Walk here",
+    "Follow",
+    "Trade"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 52,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,63 @@
+{
+  "id": 2901,
+  "recolorToFind": [
+    24,
+    4886,
+    8860,
+    8741,
+    25238
+  ],
+  "anInt2156": 32,
+  "name": "Cleaner",
+  "recolorToReplace": [
+    3346,
+    2328,
+    8381,
+    8377,
+    10518
+  ],
+  "models": [
+    12137,
+    5215,
+    10984,
+    15412,
+    10980,
+    10218,
+    25689,
+    271,
+    8919
+  ],
+  "models_2": [
+    14371,
+    5207
+  ],
+  "stanceAnimation": 5800,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5799,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}
