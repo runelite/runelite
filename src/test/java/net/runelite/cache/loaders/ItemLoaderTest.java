@@ -19,6 +19,8 @@ public class ItemLoaderTest
 	//@Test
 	public void extract() throws IOException
 	{
+		// XXX this can all use ItemDumper
+		
 		ItemLoader loader = new ItemLoader();
 		
 		java.io.File base = StoreLocation.LOCATION;
