@@ -37,6 +37,7 @@ public class NpcLoaderTest
 
 		new java.io.File(base, "npcs").mkdir();
 
+		// XXX this can use npc dumper
 		GsonBuilder builder = new GsonBuilder()
 			.setPrettyPrinting();
 		Gson g = builder.create();
