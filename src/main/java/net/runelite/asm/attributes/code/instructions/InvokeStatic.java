@@ -42,6 +42,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		super(instructions, InstructionType.INVOKESTATIC, -1);
 		
 		this.method = method;
+		length += 2;
 	}
 	
 	@Override
