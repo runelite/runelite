@@ -3,6 +3,7 @@ package net.runelite.client.plugins;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 
 public class PluginManager
@@ -11,6 +12,7 @@ public class PluginManager
 
 	public void loadAll()
 	{
+		plugins.add(new Boosts());
 		plugins.add(new OpponentInfo());
 	}
 

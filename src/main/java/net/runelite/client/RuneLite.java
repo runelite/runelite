@@ -6,7 +6,7 @@ import joptsimple.OptionSet;
 import net.runelite.api.Client;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
-import net.runelite.client.ui.OverlayRenderer;
+import net.runelite.client.ui.overlay.OverlayRenderer;
 
 
 public class RuneLite
