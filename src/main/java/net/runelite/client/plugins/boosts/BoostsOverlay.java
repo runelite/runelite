@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Skill;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
@@ -34,6 +35,10 @@ class BoostsOverlay extends Overlay
 	public Dimension render(Graphics2D graphics)
 	{
 		Client client = RuneLite.getClient();
+
+		if (client.getGameState() != GameState.LOGGED_IN)
+			return null;
+		
 		FontMetrics metrics = graphics.getFontMetrics();
 
 		int[] boostedSkills = client.getBoostedSkillLevels(),
