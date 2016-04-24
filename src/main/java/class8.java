@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -72,6 +73,7 @@ public class class8 {
       signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "-424325275"
    )
+   @Export("sendGameMessage")
    static void method109(int var0, String var1, String var2) {
       class77.method1685(var0, var1, var2, (String)null);
    }
