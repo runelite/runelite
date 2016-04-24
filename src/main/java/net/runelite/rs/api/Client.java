@@ -126,7 +126,8 @@ public interface Client extends GameEngine
 
 	//void setUsername(String var1);
 
-	//void sendGameMessage(int var1, String var2, String var3, int var4);
+	@Import("sendGameMessage")
+	void sendGameMessage(int var1, String var2, String var3);
 
 	//void hopToWorld(String var1, int var2, int var3);
 

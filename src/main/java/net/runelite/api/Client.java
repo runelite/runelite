@@ -47,4 +47,14 @@ public class Client
 	{
 		return client.getSkillExperiences();
 	}
+
+	public void sendGameMessage(String message)
+	{
+		client.sendGameMessage(99, "", message);
+	}
+
+	public GameState getGameState()
+	{
+		return GameState.of(client.getGameState());
+	}
 }
