@@ -60,7 +60,6 @@ public class ArtifactResolver
 
 		LocalRepository localRepo = new LocalRepository(repositoryCache.getAbsolutePath());
 		session.setLocalRepositoryManager(system.newLocalRepositoryManager(session, localRepo));
-		session.setUpdatePolicy(RepositoryPolicy.UPDATE_POLICY_ALWAYS); // this causes a refetch of maven-metadata.xml, but not any binaries
 
 		//session.setTransferListener(new ConsoleTransferListener());
 		//session.setRepositoryListener(new ConsoleRepositoryListener());
@@ -99,7 +98,9 @@ public class ArtifactResolver
 
 	public RemoteRepository newRuneliteRepository()
 	{
-		return new RemoteRepository.Builder("runelite", "default", "http://repo.runelite.net/").build();
+		return new RemoteRepository.Builder("runelite", "default", "http://repo.runelite.net/")
+			.setPolicy(new RepositoryPolicy(true, RepositoryPolicy.UPDATE_POLICY_ALWAYS, RepositoryPolicy.CHECKSUM_POLICY_FAIL))
+			.build();
 	}
 
 	private void validate(List<ArtifactResult> artifacts)

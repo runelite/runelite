@@ -15,9 +15,13 @@ import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.resolution.ArtifactResult;
 import org.eclipse.aether.resolution.DependencyResolutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClientLoader
 {
+	private static final Logger logger = LoggerFactory.getLogger(ClientLoader.class);
+
 	private static final String CLIENT_ARTIFACT_URL = "https://static.runelite.net/client.json";
 	
 	public Applet load() throws MalformedURLException, ClassNotFoundException, IOException, InstantiationException, IllegalAccessException, DependencyResolutionException
@@ -26,9 +30,18 @@ public class ClientLoader
 
 		config.fetch();
 
-		// the only thing resolved here is the injected client, which has no dependencies, so no need to switch developer mode
-		ArtifactResolver resolver = new ArtifactResolver(RuneLite.REPO_DIR);
-		resolver.addRepositories();
+		ArtifactResolver resolver;
+		if (!RuneLite.getOptions().has("developer-mode"))
+		{
+			resolver = new ArtifactResolver(RuneLite.REPO_DIR);
+			resolver.addRepositories();
+		}
+		else
+		{
+			resolver = new ArtifactResolver(new File(System.getProperty("user.home"), ".m2/repository"));
+
+			logger.info("In developer mode, not fetching updates for client");
+		}
 
 		List<ArtifactResult> results = resolver.resolveArtifacts(getClientArtifact());
 		File client = results.get(0).getArtifact().getFile();

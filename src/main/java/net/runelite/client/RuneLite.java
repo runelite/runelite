@@ -14,7 +14,7 @@ public class RuneLite
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
 
-	public static OptionSet options;
+	private static OptionSet options;
 	private static Client client;
 	private static RuneLite runelite;
 
@@ -66,5 +66,10 @@ public class RuneLite
 	public OverlayRenderer getRenderer()
 	{
 		return renderer;
+	}
+
+	public static OptionSet getOptions()
+	{
+		return options;
 	}
 }
