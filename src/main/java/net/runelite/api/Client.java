@@ -32,4 +32,19 @@ public class Client
 			.map(player -> player != null ? new Player(this, player) : null)
 			.toArray(size -> new Player[size]);
 	}
+
+	public int[] getBoostedSkillLevels()
+	{
+		return client.getBoostedSkillLevels();
+	}
+
+	public int[] getRealSkillLevels()
+	{
+		return client.getRealSkillLevels();
+	}
+
+	public int[] getSkillExperiences()
+	{
+		return client.getSkillExperiences();
+	}
 }
