@@ -23,6 +23,7 @@ import net.runelite.asm.attributes.code.instructions.GetField;
 import net.runelite.asm.attributes.code.instructions.GetStatic;
 import net.runelite.asm.attributes.code.instructions.ILoad;
 import net.runelite.asm.attributes.code.instructions.IMul;
+import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.LDC2_W;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
@@ -209,9 +210,6 @@ public class Inject
 				
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
-
-			if (implementingClass == null)
-				continue; // can't export methods from non implementing class
 			
 			for (Method m : cf.getMethods().getMethods())
 			{
@@ -219,11 +217,6 @@ public class Inject
 				
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported method
-
-				// XXX static methods can be in any class not just 'other' so the below finding won't work.
-				// XXX static methods can also be totally inlined by the obfuscator and thus removed by the dead code remover,
-				// so exporting them maybe wouldn't work anyway?
-				assert !m.isStatic();
 				
 				String exportedName = an.find(EXPORT).getElement().getString();
 
@@ -260,11 +253,14 @@ public class Inject
 				}
 
 				assert otherm != null;
+				assert m.isStatic() == otherm.isStatic();
+				assert m.isStatic() || implementingClass != null;
 
-				java.lang.reflect.Method apiMethod = findImportMethodOnApi(implementingClass, exportedName); // api method to invoke 'otherm'
+				ClassFile targetClass = m.isStatic() ? vanilla.findClass("client") : other;
+				java.lang.reflect.Method apiMethod = findImportMethodOnApi(m.isStatic() ? clientClass : implementingClass, exportedName); // api method to invoke 'otherm'
 				assert apiMethod != null;
 
-				injectInvoker(other, apiMethod, m, otherm, garbage);
+				injectInvoker(targetClass, apiMethod, m, otherm, garbage);
 			}
 		}
 	}
@@ -416,8 +412,8 @@ public class Inject
 			return; // hmm. this might be due to an export/import of a non obfuscated method
 		}
 
-		assert !invokeMethod.isStatic();
-		assert invokeMethod.getMethods().getClassFile() == clazz;
+		assert invokeMethod.isStatic() == deobfuscatedMethod.isStatic();
+		assert invokeMethod.isStatic() || invokeMethod.getMethods().getClassFile() == clazz;
 
 		Type lastGarbageArgumentType = null;
 
@@ -447,7 +443,10 @@ public class Inject
 		// load function arguments onto the stack.
 
 		int index = 0;
-		ins.add(new ALoad(instructions, index++)); // this
+		if (!invokeMethod.isStatic())
+			ins.add(new ALoad(instructions, index++)); // this
+		else
+			++index; // this method is always non static
 
 		for (int i = 0; i < deobfuscatedMethod.getDescriptor().size(); ++i)
 		{
@@ -520,7 +519,10 @@ public class Inject
 			}
 		}
 
-		ins.add(new InvokeVirtual(instructions, invokeMethod.getPoolMethod()));
+		if (invokeMethod.isStatic())
+			ins.add(new InvokeStatic(instructions, invokeMethod.getPoolMethod()));
+		else
+			ins.add(new InvokeVirtual(instructions, invokeMethod.getPoolMethod()));
 
 		Type returnValue = invokeMethod.getDescriptor().getReturnValue();
 		InstructionType returnType;
