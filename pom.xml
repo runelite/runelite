@@ -9,5 +9,6 @@
 
 	<modules>
 		<module>deobfuscator</module>
+		<module>runescape-client</module>
 	</modules>
 </project>
