@@ -11,5 +11,6 @@
 		<module>deobfuscator</module>
 		<module>runescape-client</module>
 		<module>runelite-client</module>
+		<module>runelite-api</module>
 	</modules>
 </project>
