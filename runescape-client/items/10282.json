@@ -1,0 +1,62 @@
+{
+  "id": 10282,
+  "resizeY": 0,
+  "xan2d": 355,
+  "cost": 1800,
+  "inventoryModel": 20229,
+  "resizeZ": 0,
+  "colorFind": [
+    6674,
+    5648,
+    7050,
+    6550,
+    6554
+  ],
+  "colorReplace": [
+    6457,
+    6577,
+    6697,
+    6461,
+    6470
+  ],
+  "name": "Yew comp bow",
+  "zoom2d": 2070,
+  "yan2d": 39,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 20168,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10283,
+  "femaleModel0": 20168,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

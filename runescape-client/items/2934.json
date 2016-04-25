@@ -1,0 +1,54 @@
+{
+  "id": 2934,
+  "resizeY": 0,
+  "xan2d": 152,
+  "cost": 500,
+  "inventoryModel": 2837,
+  "resizeZ": 0,
+  "colorFind": [
+    4626
+  ],
+  "colorReplace": [
+    -10342
+  ],
+  "name": "Purple boots",
+  "zoom2d": 770,
+  "yan2d": 160,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -6,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 185,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2935,
+  "femaleModel0": 361,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

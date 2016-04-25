@@ -1,0 +1,58 @@
+{
+  "id": 2301,
+  "resizeY": 0,
+  "xan2d": 260,
+  "cost": 100,
+  "inventoryModel": 2802,
+  "resizeZ": 0,
+  "colorFind": [
+    10665,
+    82,
+    926
+  ],
+  "colorReplace": [
+    7488,
+    9152,
+    937
+  ],
+  "name": "Pineapple pizza",
+  "zoom2d": 990,
+  "yan2d": 176,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2302,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

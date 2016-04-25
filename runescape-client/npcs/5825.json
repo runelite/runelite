@@ -1,0 +1,48 @@
+{
+  "id": 5825,
+  "recolorToFind": [
+    61,
+    21570
+  ],
+  "anInt2156": 32,
+  "name": "Ice troll female",
+  "recolorToReplace": [
+    -22405,
+    -22415
+  ],
+  "models": [
+    4941,
+    4944,
+    3755,
+    3765
+  ],
+  "stanceAnimation": 286,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 283,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 134,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 82,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 134,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

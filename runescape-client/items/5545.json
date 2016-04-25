@@ -1,0 +1,54 @@
+{
+  "id": 5545,
+  "resizeY": 0,
+  "xan2d": 232,
+  "cost": 100,
+  "inventoryModel": 7531,
+  "resizeZ": 0,
+  "colorFind": [
+    -22440
+  ],
+  "colorReplace": [
+    -22438
+  ],
+  "name": "Law tiara",
+  "zoom2d": 480,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -25,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 7488,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 7474,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 7474,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 7502,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

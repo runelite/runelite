@@ -1,0 +1,58 @@
+{
+  "id": 12811,
+  "resizeY": 0,
+  "xan2d": 488,
+  "cost": 0,
+  "inventoryModel": 11043,
+  "resizeZ": 0,
+  "colorFind": [
+    24,
+    61,
+    41
+  ],
+  "colorReplace": [
+    61,
+    33,
+    24
+  ],
+  "name": "Ironman platebody",
+  "zoom2d": 1250,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 2444,
+  "maleModel1": 558,
+  "femaleModel1": 11029,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 11033,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

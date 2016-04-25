@@ -1,0 +1,54 @@
+{
+  "id": 10018,
+  "resizeY": 0,
+  "xan2d": 280,
+  "cost": 30,
+  "inventoryModel": 19406,
+  "resizeZ": 0,
+  "colorFind": [
+    -25644
+  ],
+  "colorReplace": [
+    -32448
+  ],
+  "name": "Sapphire glacialis",
+  "zoom2d": 590,
+  "yan2d": 1756,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 60,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    "Release",
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 13,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10019,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

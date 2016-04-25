@@ -1,0 +1,55 @@
+{
+  "id": 2057,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Dark wizard",
+  "recolorToReplace": [
+    262,
+    262,
+    103
+  ],
+  "models": [
+    208,
+    250,
+    292,
+    11766,
+    11809,
+    10218,
+    256,
+    181,
+    11767
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 22,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

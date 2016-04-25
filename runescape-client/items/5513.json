@@ -1,0 +1,60 @@
+{
+  "id": 5513,
+  "resizeY": 0,
+  "xan2d": 132,
+  "cost": 600,
+  "inventoryModel": 7509,
+  "resizeZ": 0,
+  "colorFind": [
+    6430,
+    7467,
+    7223,
+    6798
+  ],
+  "colorReplace": [
+    5268,
+    6558,
+    10407,
+    11144
+  ],
+  "name": "Large pouch",
+  "zoom2d": 760,
+  "yan2d": 96,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Fill",
+    "Empty",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

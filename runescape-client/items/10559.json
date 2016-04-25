@@ -1,0 +1,54 @@
+{
+  "id": 10559,
+  "resizeY": 0,
+  "xan2d": 512,
+  "cost": 1,
+  "inventoryModel": 20578,
+  "resizeZ": 0,
+  "colorFind": [
+    22439
+  ],
+  "colorReplace": [
+    22451
+  ],
+  "name": "Healer icon",
+  "zoom2d": 1049,
+  "yan2d": 1024,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -32,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 19262,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -32,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 20520,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

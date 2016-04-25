@@ -1,0 +1,54 @@
+{
+  "id": 5537,
+  "resizeY": 0,
+  "xan2d": 232,
+  "cost": 100,
+  "inventoryModel": 7530,
+  "resizeZ": 0,
+  "colorFind": [
+    -22440
+  ],
+  "colorReplace": [
+    214
+  ],
+  "name": "Fire tiara",
+  "zoom2d": 480,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -25,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 7487,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 7473,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 7473,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 5538,
+  "femaleModel0": 7501,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

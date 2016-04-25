@@ -1,0 +1,67 @@
+{
+  "id": 4658,
+  "recolorToFind": [
+    8741,
+    25238,
+    10512,
+    10378,
+    4550,
+    10353
+  ],
+  "anInt2156": 32,
+  "name": "Mercenary",
+  "recolorToReplace": [
+    8472,
+    6579,
+    5555,
+    6829,
+    5685,
+    8472
+  ],
+  "models": [
+    6086,
+    250,
+    7365,
+    9458,
+    167,
+    179,
+    19336,
+    517,
+    19334,
+    8919
+  ],
+  "models_2": [
+    63,
+    82,
+    19327
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 140,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 45,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 140,
+  "hasRenderPriority": false,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

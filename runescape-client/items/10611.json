@@ -1,0 +1,54 @@
+{
+  "id": 10611,
+  "resizeY": 0,
+  "xan2d": 459,
+  "cost": 48000,
+  "inventoryModel": 15282,
+  "resizeZ": 0,
+  "colorFind": [
+    -22464
+  ],
+  "colorReplace": [
+    4550
+  ],
+  "name": "Void knight top",
+  "zoom2d": 919,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 14567,
+  "maleModel1": 173,
+  "femaleModel1": 14570,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 15290,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

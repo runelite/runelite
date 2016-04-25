@@ -1,0 +1,58 @@
+{
+  "id": 4111,
+  "resizeY": 0,
+  "xan2d": 376,
+  "cost": 120000,
+  "inventoryModel": 5043,
+  "resizeZ": 0,
+  "colorFind": [
+    -24618,
+    -25152,
+    -25491
+  ],
+  "colorReplace": [
+    103,
+    127,
+    8138
+  ],
+  "name": "Mystic robe top (light)",
+  "zoom2d": 1870,
+  "yan2d": 176,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 4952,
+  "maleModel1": 5028,
+  "femaleModel1": 5035,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 4112,
+  "femaleModel0": 5029,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

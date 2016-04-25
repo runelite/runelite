@@ -1,0 +1,61 @@
+{
+  "id": 3596,
+  "recolorToFind": [
+    12,
+    8741,
+    -25299,
+    -25419
+  ],
+  "anInt2156": 32,
+  "name": "\u0027Black-eye\u0027",
+  "recolorToReplace": [
+    7331,
+    -22419,
+    7331,
+    5772
+  ],
+  "models": [
+    230,
+    22599,
+    246,
+    10705,
+    19329,
+    19332,
+    14379,
+    181
+  ],
+  "models_2": [
+    63,
+    22592,
+    22594
+  ],
+  "stanceAnimation": 5817,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 130,
+  "contrast": 25,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 130,
+  "hasRenderPriority": true,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

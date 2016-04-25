@@ -1,0 +1,53 @@
+{
+  "id": 5767,
+  "recolorToFind": [
+    14391,
+    14395,
+    10425,
+    9403,
+    7485,
+    7481
+  ],
+  "anInt2156": 32,
+  "name": "Penance Healer",
+  "recolorToReplace": [
+    14387,
+    14391,
+    10421,
+    9527,
+    7481,
+    8501
+  ],
+  "models": [
+    20698
+  ],
+  "stanceAnimation": 5104,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5107,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

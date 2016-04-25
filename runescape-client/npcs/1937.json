@@ -1,0 +1,40 @@
+{
+  "id": 1937,
+  "anInt2156": 0,
+  "name": "Barge workman",
+  "models": [
+    25813,
+    25812,
+    25801,
+    25802
+  ],
+  "stanceAnimation": 6457,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

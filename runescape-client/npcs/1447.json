@@ -1,0 +1,65 @@
+{
+  "id": 1447,
+  "recolorToFind": [
+    22177,
+    8741,
+    9104,
+    -22464,
+    25238,
+    0
+  ],
+  "anInt2156": 32,
+  "name": "Pirate",
+  "recolorToReplace": [
+    2737,
+    -24246,
+    -24263,
+    4550,
+    -27359,
+    7062
+  ],
+  "models": [
+    211,
+    236,
+    246,
+    292,
+    3667,
+    173,
+    176,
+    271,
+    185
+  ],
+  "models_2": [
+    50,
+    68
+  ],
+  "stanceAnimation": 2701,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 23,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

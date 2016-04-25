@@ -1,0 +1,60 @@
+{
+  "id": 11785,
+  "resizeY": 0,
+  "xan2d": 240,
+  "cost": 990000,
+  "inventoryModel": 19967,
+  "resizeZ": 0,
+  "colorFind": [
+    5409,
+    5404,
+    6449,
+    7390
+  ],
+  "colorReplace": [
+    115,
+    107,
+    10167,
+    10171
+  ],
+  "name": "Armadyl crossbow",
+  "zoom2d": 1325,
+  "yan2d": 110,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -40,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 19839,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -6,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 11786,
+  "femaleModel0": 19839,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

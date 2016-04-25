@@ -1,0 +1,48 @@
+{
+  "id": 3205,
+  "recolorToFind": [
+    14490,
+    13596,
+    920
+  ],
+  "anInt2156": 32,
+  "name": "Jungle horror",
+  "recolorToReplace": [
+    14627,
+    13617,
+    9152
+  ],
+  "models": [
+    15653,
+    15656
+  ],
+  "stanceAnimation": 4231,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4236,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 80,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 70,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 80,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,55 @@
+{
+  "id": 4744,
+  "recolorToFind": [
+    4521,
+    4391,
+    5413,
+    6435,
+    8481,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Grey golem",
+  "recolorToReplace": [
+    6327,
+    8369,
+    6319,
+    6315,
+    6439,
+    6439
+  ],
+  "models": [
+    6146,
+    6147,
+    6150
+  ],
+  "stanceAnimation": 1913,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1912,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 150,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 75,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 150,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

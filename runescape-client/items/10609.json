@@ -1,0 +1,60 @@
+{
+  "id": 10609,
+  "resizeY": 0,
+  "xan2d": 101,
+  "cost": 100,
+  "inventoryModel": 16717,
+  "resizeZ": 0,
+  "colorFind": [
+    6573,
+    -29529,
+    -32236,
+    410
+  ],
+  "colorReplace": [
+    -25326,
+    16652,
+    20,
+    -3822
+  ],
+  "name": "Lunar helm",
+  "zoom2d": 854,
+  "yan2d": 126,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -5,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 16480,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 16468,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 16468,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 16455,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

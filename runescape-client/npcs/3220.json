@@ -1,0 +1,64 @@
+{
+  "id": 3220,
+  "recolorToFind": [
+    8741,
+    6430,
+    -29521,
+    25238,
+    6439,
+    6674
+  ],
+  "anInt2156": 32,
+  "name": "Crafting tutor",
+  "recolorToReplace": [
+    -24254,
+    -24263,
+    -24254,
+    99,
+    -24254,
+    -24143
+  ],
+  "models": [
+    217,
+    10304,
+    11761,
+    15412,
+    167,
+    177,
+    10218,
+    267,
+    181
+  ],
+  "models_2": [
+    55
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

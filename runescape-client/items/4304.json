@@ -1,0 +1,60 @@
+{
+  "id": 4304,
+  "resizeY": 0,
+  "xan2d": 400,
+  "cost": 75,
+  "inventoryModel": 5417,
+  "resizeZ": 0,
+  "colorFind": [
+    926,
+    7700,
+    11200,
+    6032
+  ],
+  "colorReplace": [
+    -4189,
+    -4189,
+    -4189,
+    -4189
+  ],
+  "name": "Ham cloak",
+  "zoom2d": 2140,
+  "yan2d": 948,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 6,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 323,
+  "maleModel1": 5433,
+  "femaleModel1": 5433,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 4305,
+  "femaleModel0": 481,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

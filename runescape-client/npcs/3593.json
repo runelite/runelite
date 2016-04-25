@@ -1,0 +1,63 @@
+{
+  "id": 3593,
+  "recolorToFind": [
+    6798,
+    12,
+    10508,
+    10396,
+    280,
+    8741
+  ],
+  "anInt2156": 32,
+  "name": "\u0027Transmute\u0027 The Alchemist",
+  "recolorToReplace": [
+    -27376,
+    -18542,
+    -19570,
+    -10728,
+    -10852,
+    -19568
+  ],
+  "models": [
+    207,
+    248,
+    22604,
+    22596,
+    177,
+    17525,
+    181
+  ],
+  "models_2": [
+    47,
+    80
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5822,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 130,
+  "contrast": 25,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 130,
+  "hasRenderPriority": false,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

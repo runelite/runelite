@@ -1,0 +1,58 @@
+{
+  "id": 10784,
+  "resizeY": 0,
+  "xan2d": 476,
+  "cost": 7000,
+  "inventoryModel": 20266,
+  "resizeZ": 0,
+  "colorFind": [
+    916,
+    908,
+    307
+  ],
+  "colorReplace": [
+    -21612,
+    -21620,
+    -22221
+  ],
+  "name": "Saradomin robe top",
+  "zoom2d": 1190,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 20163,
+  "maleModel1": 20127,
+  "femaleModel1": 20175,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10785,
+  "femaleModel0": 20209,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

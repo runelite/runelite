@@ -1,0 +1,64 @@
+{
+  "id": 1146,
+  "recolorToFind": [
+    6798,
+    -22464,
+    8741,
+    25238,
+    6587,
+    7281
+  ],
+  "anInt2156": 32,
+  "name": "Chemist",
+  "recolorToReplace": [
+    4329,
+    4550,
+    10349,
+    6689,
+    5400,
+    5301
+  ],
+  "models": [
+    9452,
+    9619,
+    246,
+    9622,
+    163,
+    176,
+    4226,
+    4218
+  ],
+  "models_2": [
+    9448,
+    9616
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": 7214,
+  "resizeY": 0,
+  "xan2d": 192,
+  "cost": 69,
+  "inventoryModel": 11277,
+  "resizeZ": 0,
+  "colorFind": [
+    5683
+  ],
+  "colorReplace": [
+    5665
+  ],
+  "name": "Part summer pie",
+  "zoom2d": 950,
+  "yan2d": 104,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -9,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 7215,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 10,
+  "contrast": 10,
+  "team": 0
+}

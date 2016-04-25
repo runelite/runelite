@@ -1,0 +1,64 @@
+{
+  "id": 5789,
+  "recolorToFind": [
+    6798,
+    7050,
+    25238,
+    4626,
+    10004
+  ],
+  "anInt2156": 32,
+  "name": "Cap\u0027n Izzy No-Beard",
+  "recolorToReplace": [
+    0,
+    -21992,
+    10557,
+    0,
+    0
+  ],
+  "models": [
+    210,
+    246,
+    193,
+    292,
+    26875,
+    167,
+    179,
+    271,
+    185,
+    18917
+  ],
+  "models_2": [
+    49,
+    36
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

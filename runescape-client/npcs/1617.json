@@ -1,0 +1,60 @@
+{
+  "id": 1617,
+  "recolorToFind": [
+    8652,
+    8792,
+    7595,
+    17864,
+    14517,
+    9137
+  ],
+  "anInt2156": 32,
+  "name": "Priestess Zul-Gwenwynig",
+  "recolorToReplace": [
+    30608,
+    30608,
+    30360,
+    30360,
+    4550,
+    5772
+  ],
+  "models": [
+    4030,
+    4032,
+    14399,
+    6978,
+    8270
+  ],
+  "models_2": [
+    4013
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 123,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 110,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

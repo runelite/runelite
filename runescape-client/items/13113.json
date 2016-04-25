@@ -1,0 +1,58 @@
+{
+  "id": 13113,
+  "resizeY": 0,
+  "xan2d": 470,
+  "cost": 0,
+  "inventoryModel": 29155,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    41,
+    57
+  ],
+  "colorReplace": [
+    33,
+    24,
+    33
+  ],
+  "name": "Morytania legs 2",
+  "zoom2d": 1730,
+  "yan2d": 0,
+  "zan2d": 1,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Teleport",
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 28209,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 29058,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

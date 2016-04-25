@@ -1,0 +1,61 @@
+{
+  "id": 3819,
+  "recolorToFind": [
+    8741,
+    8078,
+    8656,
+    4550,
+    -25299
+  ],
+  "anInt2156": 32,
+  "name": "Meiyerditch miner",
+  "recolorToReplace": [
+    -22365,
+    -22372,
+    -22365,
+    94,
+    3604
+  ],
+  "models": [
+    6848,
+    246,
+    18133,
+    18070,
+    177,
+    18099,
+    18088,
+    7607
+  ],
+  "models_2": [
+    5787
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 100,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

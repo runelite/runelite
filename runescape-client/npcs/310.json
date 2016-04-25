@@ -1,0 +1,63 @@
+{
+  "id": 310,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798,
+    4550,
+    4886
+  ],
+  "anInt2156": 32,
+  "name": "Ayesha",
+  "recolorToReplace": [
+    103,
+    103,
+    10378,
+    7062,
+    3856
+  ],
+  "models": [
+    376,
+    390,
+    471,
+    4392,
+    348,
+    10706,
+    496,
+    421,
+    8934
+  ],
+  "models_2": [
+    101,
+    113
+  ],
+  "stanceAnimation": 2163,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2164,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

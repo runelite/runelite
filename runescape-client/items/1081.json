@@ -1,0 +1,56 @@
+{
+  "id": 1081,
+  "resizeY": 0,
+  "xan2d": 620,
+  "cost": 280,
+  "inventoryModel": 2542,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    25238
+  ],
+  "colorReplace": [
+    33,
+    24
+  ],
+  "name": "Iron plateskirt",
+  "zoom2d": 1100,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 5,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 266,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 5,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1082,
+  "femaleModel0": 430,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

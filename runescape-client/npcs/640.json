@@ -1,0 +1,51 @@
+{
+  "id": 640,
+  "recolorToFind": [
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Ug",
+  "recolorToReplace": [
+    8367
+  ],
+  "models": [
+    3753,
+    3758,
+    3755,
+    3773,
+    4945
+  ],
+  "models_2": [
+    3790,
+    3789
+  ],
+  "stanceAnimation": 1474,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 283,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 124,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 124,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

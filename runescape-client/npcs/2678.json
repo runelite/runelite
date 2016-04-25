@@ -1,0 +1,64 @@
+{
+  "id": 2678,
+  "recolorToFind": [
+    6798,
+    8741,
+    25238,
+    -22464,
+    908,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Alain",
+  "recolorToReplace": [
+    103,
+    123,
+    123,
+    4541,
+    7442,
+    4541
+  ],
+  "models": [
+    206,
+    250,
+    292,
+    170,
+    176,
+    496,
+    260,
+    7121
+  ],
+  "models_2": [
+    46,
+    82
+  ],
+  "stanceAnimation": 2163,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2164,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

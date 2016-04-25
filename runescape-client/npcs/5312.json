@@ -1,0 +1,45 @@
+{
+  "id": 5312,
+  "anInt2156": 32,
+  "name": "null",
+  "models": [
+    212,
+    295,
+    150,
+    4033,
+    273,
+    323
+  ],
+  "models_2": [
+    51
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 296,
+  "walkAnimation": 50717,
+  "rotate90RightAnimation": 40471,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 53251,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "˜\u0002Mourner",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 4139,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

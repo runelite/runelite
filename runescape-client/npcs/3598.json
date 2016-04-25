@@ -1,0 +1,63 @@
+{
+  "id": 3598,
+  "recolorToFind": [
+    25238,
+    8741,
+    -25299,
+    -25303,
+    6798
+  ],
+  "anInt2156": 0,
+  "name": "\u0027Gummy\u0027",
+  "recolorToReplace": [
+    7331,
+    8656,
+    7331,
+    5772,
+    6067
+  ],
+  "models": [
+    230,
+    22599,
+    247,
+    18498,
+    159,
+    179,
+    271,
+    19947
+  ],
+  "models_2": [
+    63,
+    22592,
+    79
+  ],
+  "stanceAnimation": 5816,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 126,
+  "contrast": 25,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 126,
+  "hasRenderPriority": true,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

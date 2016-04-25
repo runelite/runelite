@@ -1,0 +1,56 @@
+{
+  "id": 4953,
+  "resizeY": 0,
+  "xan2d": 0,
+  "cost": 103000,
+  "inventoryModel": 6592,
+  "resizeZ": 0,
+  "colorFind": [
+    10394,
+    6020
+  ],
+  "colorReplace": [
+    10388,
+    11140
+  ],
+  "name": "Torag\u0027s helm 75",
+  "zoom2d": 660,
+  "yan2d": 212,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6656,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 11,
+  "maleHeadModel": 6572,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 6576,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6689,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

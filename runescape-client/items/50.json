@@ -1,0 +1,54 @@
+{
+  "id": 50,
+  "resizeY": 0,
+  "xan2d": 508,
+  "cost": 23,
+  "inventoryModel": 2435,
+  "resizeZ": 0,
+  "colorFind": [
+    6674
+  ],
+  "colorReplace": [
+    6049
+  ],
+  "name": "Shortbow (u)",
+  "zoom2d": 1200,
+  "yan2d": 124,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 26610,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 51,
+  "femaleModel0": 26610,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,58 @@
+{
+  "id": 3769,
+  "resizeY": 0,
+  "xan2d": 536,
+  "cost": 250,
+  "inventoryModel": 4982,
+  "resizeZ": 0,
+  "colorFind": [
+    8741,
+    8078,
+    8084
+  ],
+  "colorReplace": [
+    10405,
+    10529,
+    4525
+  ],
+  "name": "Fremennik grey shirt",
+  "zoom2d": 1370,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 7,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 162,
+  "maleModel1": 292,
+  "femaleModel1": 470,
+  "femaleOffset": 0,
+  "maleModel2": 4391,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": 4392,
+  "notedID": 3770,
+  "femaleModel0": 348,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

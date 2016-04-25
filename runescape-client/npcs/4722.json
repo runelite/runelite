@@ -1,0 +1,48 @@
+{
+  "id": 4722,
+  "recolorToFind": [
+    22422
+  ],
+  "anInt2156": 32,
+  "name": "Assistant Le Smith",
+  "recolorToReplace": [
+    22032
+  ],
+  "models": [
+    19773,
+    19772,
+    10340
+  ],
+  "models_2": [
+    21
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    "Fly",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

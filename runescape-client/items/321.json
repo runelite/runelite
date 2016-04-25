@@ -1,0 +1,56 @@
+{
+  "id": 321,
+  "resizeY": 0,
+  "xan2d": 272,
+  "cost": 15,
+  "inventoryModel": 2590,
+  "resizeZ": 0,
+  "colorFind": [
+    6080,
+    4032
+  ],
+  "colorReplace": [
+    -22330,
+    -22454
+  ],
+  "name": "Raw anchovies",
+  "zoom2d": 950,
+  "yan2d": 552,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 322,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 6946,
+  "resizeY": 0,
+  "xan2d": 312,
+  "cost": 1,
+  "inventoryModel": 10710,
+  "resizeZ": 0,
+  "colorFind": [
+    6618
+  ],
+  "colorReplace": [
+    10432
+  ],
+  "name": "Beer soaked hand",
+  "zoom2d": 770,
+  "yan2d": 1664,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 22,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

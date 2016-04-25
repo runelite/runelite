@@ -1,0 +1,54 @@
+{
+  "id": 2643,
+  "resizeY": 0,
+  "xan2d": 160,
+  "cost": 200,
+  "inventoryModel": 2451,
+  "resizeZ": 0,
+  "colorFind": [
+    7073
+  ],
+  "colorReplace": [
+    8
+  ],
+  "name": "Black cavalier",
+  "zoom2d": 690,
+  "yan2d": 1856,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -8,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 186,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": 28,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 86,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2644,
+  "femaleModel0": 362,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

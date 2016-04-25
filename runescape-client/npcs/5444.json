@@ -1,0 +1,63 @@
+{
+  "id": 5444,
+  "recolorToFind": [
+    8741,
+    8078,
+    8741,
+    25238,
+    5231
+  ],
+  "anInt2156": 32,
+  "name": "Cap\u0027n Hand",
+  "recolorToReplace": [
+    1451,
+    -1380,
+    -1487,
+    8396,
+    7496
+  ],
+  "models": [
+    214,
+    250,
+    14187,
+    162,
+    3660,
+    5218,
+    190,
+    16846
+  ],
+  "models_2": [
+    52,
+    82,
+    31
+  ],
+  "stanceAnimation": 4591,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 273,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": 33296,
+  "aBool2190": false
+}

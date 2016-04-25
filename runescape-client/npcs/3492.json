@@ -1,0 +1,49 @@
+{
+  "id": 3492,
+  "recolorToFind": [
+    17467
+  ],
+  "anInt2156": 32,
+  "name": "Melina",
+  "recolorToReplace": [
+    18626
+  ],
+  "models": [
+    5226,
+    5228,
+    5225,
+    5227
+  ],
+  "models_2": [
+    5208
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 50,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 50,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

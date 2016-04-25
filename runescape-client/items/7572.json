@@ -1,0 +1,60 @@
+{
+  "id": 7572,
+  "resizeY": 0,
+  "xan2d": 280,
+  "cost": 5,
+  "inventoryModel": 2387,
+  "resizeZ": 0,
+  "colorFind": [
+    10952,
+    10939,
+    11055,
+    11173
+  ],
+  "colorReplace": [
+    2743,
+    2867,
+    2863,
+    2987
+  ],
+  "name": "Red banana",
+  "zoom2d": 930,
+  "yan2d": 1944,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 10,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 3875,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 9,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 3875,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,54 @@
+{
+  "id": 6402,
+  "resizeY": 0,
+  "xan2d": 456,
+  "cost": 20,
+  "inventoryModel": 8993,
+  "resizeZ": 0,
+  "colorFind": [
+    8741
+  ],
+  "colorReplace": [
+    -1105
+  ],
+  "name": "Menaphite red top",
+  "zoom2d": 1050,
+  "yan2d": 1024,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 9018,
+  "maleModel1": 151,
+  "femaleModel1": 332,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 6403,
+  "femaleModel0": 9026,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

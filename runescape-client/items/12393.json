@@ -1,0 +1,56 @@
+{
+  "id": 12393,
+  "resizeY": 0,
+  "xan2d": 593,
+  "cost": 5000,
+  "inventoryModel": 28710,
+  "resizeZ": 0,
+  "colorFind": [
+    8741,
+    8078
+  ],
+  "colorReplace": [
+    1814,
+    10341
+  ],
+  "name": "Royal gown top",
+  "zoom2d": 1347,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 5,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 28541,
+  "maleModel1": 28525,
+  "femaleModel1": 28599,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 12394,
+  "femaleModel0": 28606,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

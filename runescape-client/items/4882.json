@@ -1,0 +1,56 @@
+{
+  "id": 4882,
+  "resizeY": 0,
+  "xan2d": 96,
+  "cost": 103000,
+  "inventoryModel": 6580,
+  "resizeZ": 0,
+  "colorFind": [
+    10394,
+    10388
+  ],
+  "colorReplace": [
+    10388,
+    10508
+  ],
+  "name": "Dharok\u0027s helm 50",
+  "zoom2d": 660,
+  "yan2d": 128,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -8,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6651,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 5,
+  "maleHeadModel": 6569,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 6574,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6686,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

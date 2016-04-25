@@ -1,0 +1,62 @@
+{
+  "id": 4942,
+  "resizeY": 0,
+  "xan2d": 556,
+  "cost": 50000,
+  "inventoryModel": 6588,
+  "resizeZ": 0,
+  "colorFind": [
+    10413,
+    10520,
+    10644,
+    10768,
+    908
+  ],
+  "colorReplace": [
+    7510,
+    10388,
+    10512,
+    10508,
+    10760
+  ],
+  "name": "Karil\u0027s leathertop 50",
+  "zoom2d": 1380,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6674,
+  "maleModel1": 6643,
+  "femaleModel1": 6683,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6700,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

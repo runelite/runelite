@@ -1,0 +1,56 @@
+{
+  "id": 5374,
+  "recolorToFind": [
+    6331,
+    6323,
+    6040,
+    6955,
+    2960
+  ],
+  "anInt2156": 32,
+  "name": "Naghead",
+  "recolorToReplace": [
+    -6058,
+    -6070,
+    -11101,
+    -10986,
+    -10986
+  ],
+  "models": [
+    26901,
+    24487,
+    24435,
+    24474,
+    24442,
+    24451
+  ],
+  "stanceAnimation": 6834,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

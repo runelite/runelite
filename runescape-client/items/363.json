@@ -1,0 +1,56 @@
+{
+  "id": 363,
+  "resizeY": 0,
+  "xan2d": 464,
+  "cost": 120,
+  "inventoryModel": 2355,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    103
+  ],
+  "colorReplace": [
+    1488,
+    1249
+  ],
+  "name": "Raw bass",
+  "zoom2d": 1340,
+  "yan2d": 1920,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 364,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

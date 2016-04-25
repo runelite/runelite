@@ -1,0 +1,54 @@
+{
+  "id": 5564,
+  "recolorToFind": [
+    5788,
+    5912,
+    6036,
+    16425,
+    16540,
+    16545
+  ],
+  "anInt2156": 32,
+  "name": "Enraged barbarian spirit",
+  "recolorToReplace": [
+    10281,
+    10401,
+    10392,
+    -32709,
+    -32721,
+    -32725
+  ],
+  "models": [
+    26675,
+    26677
+  ],
+  "stanceAnimation": 6729,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6730,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 166,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

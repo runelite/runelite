@@ -1,0 +1,62 @@
+{
+  "id": 1090,
+  "recolorToFind": [
+    -22464,
+    8741,
+    25238,
+    6798,
+    11844
+  ],
+  "anInt2156": 32,
+  "name": "Reinn",
+  "recolorToReplace": [
+    4550,
+    -27467,
+    -30551,
+    5400,
+    8386
+  ],
+  "models": [
+    206,
+    246,
+    292,
+    317,
+    170,
+    176,
+    4226,
+    4218,
+    322
+  ],
+  "models_2": [
+    105
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 110,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

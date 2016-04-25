@@ -1,0 +1,56 @@
+{
+  "id": 4606,
+  "recolorToFind": [
+    8604,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Oxi",
+  "recolorToReplace": [
+    6327,
+    6319
+  ],
+  "models": [
+    2973,
+    7069,
+    2983,
+    2979,
+    7075,
+    7053,
+    7044,
+    6018
+  ],
+  "models_2": [
+    3,
+    6949
+  ],
+  "stanceAnimation": 2155,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2154,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

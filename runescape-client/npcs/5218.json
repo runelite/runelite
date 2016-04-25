@@ -1,0 +1,52 @@
+{
+  "id": 5218,
+  "recolorToFind": [
+    6798,
+    127
+  ],
+  "anInt2156": 32,
+  "name": "Thief",
+  "recolorToReplace": [
+    7634,
+    -27128
+  ],
+  "models": [
+    11111,
+    25661,
+    5215,
+    25677,
+    25645,
+    25654,
+    25669,
+    25651
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 134,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 16,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 134,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

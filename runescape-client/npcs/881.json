@@ -1,0 +1,67 @@
+{
+  "id": 881,
+  "recolorToFind": [
+    8741,
+    8078,
+    25238,
+    -26722,
+    7700,
+    926
+  ],
+  "anInt2156": 32,
+  "name": "Zavistic Rarve",
+  "recolorToReplace": [
+    -25128,
+    -11139,
+    21629,
+    -25128,
+    127,
+    -32680
+  ],
+  "models": [
+    202,
+    214,
+    251,
+    290,
+    292,
+    323,
+    162,
+    176,
+    534,
+    256
+  ],
+  "models_2": [
+    52,
+    83,
+    44
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

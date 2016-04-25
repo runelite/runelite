@@ -1,0 +1,68 @@
+{
+  "id": 5562,
+  "recolorToFind": [
+    6798,
+    8741,
+    8860,
+    25238,
+    -22446,
+    -22458
+  ],
+  "anInt2156": 0,
+  "name": "Mercy",
+  "recolorToReplace": [
+    -22436,
+    -199,
+    926,
+    -26709,
+    274,
+    152
+  ],
+  "models": [
+    25705,
+    393,
+    28372,
+    15123,
+    10706,
+    12805,
+    11357,
+    361,
+    25690,
+    25682,
+    25706
+  ],
+  "models_2": [
+    16233,
+    15255,
+    16234
+  ],
+  "stanceAnimation": 6478,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

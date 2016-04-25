@@ -1,0 +1,54 @@
+{
+  "id": 11152,
+  "resizeY": 0,
+  "xan2d": 129,
+  "cost": 1,
+  "inventoryModel": 16726,
+  "resizeZ": 0,
+  "colorFind": [
+    -32236
+  ],
+  "colorReplace": [
+    6573
+  ],
+  "name": "Dream vial (water)",
+  "zoom2d": 1232,
+  "yan2d": 174,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 16490,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 16490,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

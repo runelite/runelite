@@ -1,0 +1,56 @@
+{
+  "id": 9634,
+  "resizeY": 0,
+  "xan2d": 443,
+  "cost": 500,
+  "inventoryModel": 18026,
+  "resizeZ": 0,
+  "colorFind": [
+    8741,
+    4550
+  ],
+  "colorReplace": [
+    33,
+    16
+  ],
+  "name": "Vyrewatch top",
+  "zoom2d": 1420,
+  "yan2d": 41,
+  "zan2d": 2047,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 18096,
+  "maleModel1": 18076,
+  "femaleModel1": 14588,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 9635,
+  "femaleModel0": 18119,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

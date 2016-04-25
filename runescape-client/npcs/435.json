@@ -1,0 +1,37 @@
+{
+  "id": 435,
+  "anInt2156": 32,
+  "name": "Pyrefiend",
+  "models": [
+    5083
+  ],
+  "stanceAnimation": 1578,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 270,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 100,
+  "contrast": 58,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 43,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 100,
+  "hasRenderPriority": false,
+  "ambient": 58,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

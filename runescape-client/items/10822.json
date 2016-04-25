@@ -1,0 +1,54 @@
+{
+  "id": 10822,
+  "resizeY": 0,
+  "xan2d": 585,
+  "cost": 500,
+  "inventoryModel": 21965,
+  "resizeZ": 0,
+  "colorFind": [
+    4550
+  ],
+  "colorReplace": [
+    3226
+  ],
+  "name": "Yak-hide armour",
+  "zoom2d": 1503,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 21883,
+  "maleModel1": 156,
+  "femaleModel1": 337,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10823,
+  "femaleModel0": 21913,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

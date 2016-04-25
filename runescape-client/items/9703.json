@@ -1,0 +1,56 @@
+{
+  "id": 9703,
+  "resizeY": 0,
+  "xan2d": 352,
+  "cost": 1,
+  "inventoryModel": 2604,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    11200
+  ],
+  "colorReplace": [
+    127,
+    -24254
+  ],
+  "name": "Training sword",
+  "zoom2d": 1040,
+  "yan2d": 1156,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -3,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 519,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 519,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

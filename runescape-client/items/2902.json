@@ -1,0 +1,56 @@
+{
+  "id": 2902,
+  "resizeY": 0,
+  "xan2d": 420,
+  "cost": 500,
+  "inventoryModel": 2649,
+  "resizeZ": 0,
+  "colorFind": [
+    10004,
+    5532
+  ],
+  "colorReplace": [
+    41,
+    41
+  ],
+  "name": "Grey gloves",
+  "zoom2d": 930,
+  "yan2d": 828,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -8,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 179,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 8,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2903,
+  "femaleModel0": 356,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

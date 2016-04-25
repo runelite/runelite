@@ -1,0 +1,43 @@
+{
+  "id": 1343,
+  "recolorToFind": [
+    4773
+  ],
+  "anInt2156": 32,
+  "name": "Gyr Falcon",
+  "recolorToReplace": [
+    5018
+  ],
+  "models": [
+    19974
+  ],
+  "stanceAnimation": 5202,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5284,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 76,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Retrieve",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 76,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

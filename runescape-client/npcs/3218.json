@@ -1,0 +1,64 @@
+{
+  "id": 3218,
+  "recolorToFind": [
+    8741,
+    24,
+    9164,
+    914,
+    918,
+    929
+  ],
+  "anInt2156": 32,
+  "name": "Magic combat tutor",
+  "recolorToReplace": [
+    -24254,
+    127,
+    127,
+    -24254,
+    -24269,
+    -24155
+  ],
+  "models": [
+    9608,
+    390,
+    11359,
+    11348,
+    10706,
+    534,
+    15126,
+    358
+  ],
+  "models_2": [
+    113,
+    9601
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Claim",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

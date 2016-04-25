@@ -1,0 +1,67 @@
+{
+  "id": 3222,
+  "recolorToFind": [
+    8741,
+    25238,
+    10270,
+    7446,
+    4626,
+    6036
+  ],
+  "anInt2156": 32,
+  "name": "Mining tutor",
+  "recolorToReplace": [
+    127,
+    -24254,
+    -25202,
+    -23903,
+    -25202,
+    5949
+  ],
+  "models": [
+    230,
+    9619,
+    11750,
+    299,
+    9621,
+    167,
+    177,
+    509,
+    263,
+    185
+  ],
+  "models_2": [
+    63,
+    11808,
+    9616
+  ],
+  "stanceAnimation": 2065,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2064,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 120,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

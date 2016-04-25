@@ -1,0 +1,58 @@
+{
+  "id": 4084,
+  "resizeY": 0,
+  "xan2d": 136,
+  "cost": 175,
+  "inventoryModel": 4937,
+  "resizeZ": 0,
+  "colorFind": [
+    6594,
+    5559,
+    5799
+  ],
+  "colorReplace": [
+    5574,
+    4667,
+    4779
+  ],
+  "name": "Sled",
+  "zoom2d": 1960,
+  "yan2d": 160,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Ride",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 4946,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 4946,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

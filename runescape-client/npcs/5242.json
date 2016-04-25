@@ -1,0 +1,53 @@
+{
+  "id": 5242,
+  "recolorToFind": [
+    142,
+    3974,
+    4525,
+    4645,
+    4636,
+    4884
+  ],
+  "anInt2156": 32,
+  "name": "Scorpion",
+  "recolorToReplace": [
+    268,
+    900,
+    156,
+    152,
+    148,
+    272
+  ],
+  "models": [
+    24609
+  ],
+  "stanceAnimation": 6252,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6257,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 32,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 38,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 32,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

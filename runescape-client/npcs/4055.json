@@ -1,0 +1,59 @@
+{
+  "id": 4055,
+  "recolorToFind": [
+    25238,
+    8741,
+    9104
+  ],
+  "anInt2156": 32,
+  "name": "Banker",
+  "recolorToReplace": [
+    10295,
+    10283,
+    10270
+  ],
+  "models": [
+    215,
+    193,
+    246,
+    292,
+    320,
+    10301,
+    10218,
+    254,
+    181
+  ],
+  "models_2": [
+    53,
+    36
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 808,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Bank",
+    "Collect",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

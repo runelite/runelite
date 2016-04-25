@@ -1,0 +1,51 @@
+{
+  "id": 5162,
+  "recolorToFind": [
+    679,
+    920,
+    916
+  ],
+  "anInt2156": 32,
+  "name": "Sergeant Slimetoes",
+  "recolorToReplace": [
+    19742,
+    19862,
+    20110
+  ],
+  "models": [
+    24423,
+    24425
+  ],
+  "models_2": [
+    24223
+  ],
+  "stanceAnimation": 6153,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6152,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 51,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": 6283,
+  "resizeY": 0,
+  "xan2d": 684,
+  "cost": 15,
+  "inventoryModel": 5152,
+  "resizeZ": 0,
+  "colorFind": [
+    7461
+  ],
+  "colorReplace": [
+    7841
+  ],
+  "name": "Thatch spar med",
+  "zoom2d": 1450,
+  "yan2d": 1988,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 12,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 8946,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 6284,
+  "femaleModel0": 8946,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

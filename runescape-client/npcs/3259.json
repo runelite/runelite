@@ -1,0 +1,58 @@
+{
+  "id": 3259,
+  "recolorToFind": [
+    25238,
+    -22464,
+    61,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Market Guard",
+  "recolorToReplace": [
+    12698,
+    3660,
+    2229,
+    2349
+  ],
+  "models": [
+    232,
+    251,
+    293,
+    317,
+    169,
+    176,
+    518,
+    523,
+    274,
+    185
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 20,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

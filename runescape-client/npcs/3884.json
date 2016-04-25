@@ -1,0 +1,65 @@
+{
+  "id": 3884,
+  "recolorToFind": [
+    4550,
+    10353,
+    4626,
+    939,
+    943,
+    926
+  ],
+  "anInt2156": 32,
+  "name": "Sophanem guard",
+  "recolorToReplace": [
+    6558,
+    -25714,
+    9019,
+    -25714,
+    -25714,
+    -25714
+  ],
+  "models": [
+    20750,
+    251,
+    11758,
+    11762,
+    20746,
+    10218,
+    11201,
+    6090,
+    181
+  ],
+  "models_2": [
+    20743,
+    83
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

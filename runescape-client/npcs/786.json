@@ -1,0 +1,48 @@
+{
+  "id": 786,
+  "anInt2156": 32,
+  "name": "Me",
+  "models": [
+    16455,
+    16505,
+    16502,
+    16497,
+    16495,
+    16507,
+    16504,
+    452,
+    16492
+  ],
+  "models_2": [
+    16468
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 40,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 79,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

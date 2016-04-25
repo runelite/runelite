@@ -1,0 +1,64 @@
+{
+  "id": 827,
+  "recolorToFind": [
+    8741,
+    8860,
+    7585,
+    6798,
+    10407,
+    3226
+  ],
+  "anInt2156": 32,
+  "name": "Larry",
+  "recolorToReplace": [
+    7465,
+    6447,
+    6451,
+    5673,
+    7465,
+    7585
+  ],
+  "models": [
+    10981,
+    249,
+    21813,
+    14175,
+    10980,
+    21811,
+    21812,
+    19947
+  ],
+  "models_2": [
+    10976,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Tuxedo-time",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

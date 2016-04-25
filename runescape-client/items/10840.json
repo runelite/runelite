@@ -1,0 +1,54 @@
+{
+  "id": 10840,
+  "resizeY": 0,
+  "xan2d": 415,
+  "cost": 1000,
+  "inventoryModel": 21956,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    -29403
+  ],
+  "name": "A jester stick",
+  "zoom2d": 1892,
+  "yan2d": 1770,
+  "zan2d": 844,
+  "maleOffset": 0,
+  "yOffset2d": 32,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 21898,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 21897,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 15,
+  "contrast": 15,
+  "team": 0
+}

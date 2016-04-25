@@ -1,0 +1,63 @@
+{
+  "id": 5215,
+  "recolorToFind": [
+    10644,
+    8741,
+    8078,
+    10768,
+    10892
+  ],
+  "anInt2156": 32,
+  "name": "King Roald",
+  "recolorToReplace": [
+    1814,
+    1814,
+    10341,
+    10341,
+    5231
+  ],
+  "models": [
+    1808,
+    215,
+    249,
+    23939,
+    162,
+    176,
+    23931,
+    181
+  ],
+  "models_2": [
+    53,
+    2938,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

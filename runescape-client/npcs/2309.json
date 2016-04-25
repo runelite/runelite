@@ -1,0 +1,53 @@
+{
+  "id": 2309,
+  "recolorToFind": [
+    24627,
+    24751,
+    24747
+  ],
+  "anInt2156": 32,
+  "name": "Markog",
+  "recolorToReplace": [
+    -27483,
+    -27359,
+    -27364
+  ],
+  "models": [
+    23663,
+    23698,
+    23629
+  ],
+  "models_2": [
+    23226,
+    23246
+  ],
+  "stanceAnimation": 6040,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6041,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

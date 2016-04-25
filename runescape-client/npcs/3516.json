@@ -1,0 +1,51 @@
+{
+  "id": 3516,
+  "recolorToFind": [
+    18626
+  ],
+  "anInt2156": 32,
+  "name": "Ghost",
+  "recolorToReplace": [
+    10304
+  ],
+  "models": [
+    22280,
+    22283,
+    22278,
+    22282,
+    22279,
+    22284
+  ],
+  "models_2": [
+    22328
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 35,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 35,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

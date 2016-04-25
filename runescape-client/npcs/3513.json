@@ -1,0 +1,58 @@
+{
+  "id": 3513,
+  "recolorToFind": [
+    61,
+    8741,
+    25238,
+    -22464
+  ],
+  "anInt2156": 32,
+  "name": "Scout",
+  "recolorToReplace": [
+    33,
+    37,
+    28,
+    33
+  ],
+  "models": [
+    10376,
+    247,
+    22314,
+    152,
+    176,
+    10377,
+    14175
+  ],
+  "models_2": [
+    22331
+  ],
+  "stanceAnimation": 842,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 841,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 126,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 126,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

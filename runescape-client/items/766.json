@@ -1,0 +1,60 @@
+{
+  "id": 766,
+  "resizeY": 0,
+  "xan2d": 189,
+  "cost": 100,
+  "inventoryModel": 7508,
+  "resizeZ": 0,
+  "colorFind": [
+    6430,
+    7467,
+    6798,
+    7223
+  ],
+  "colorReplace": [
+    -32700,
+    -32591,
+    -32597,
+    14637
+  ],
+  "name": "Gem bag",
+  "zoom2d": 1095,
+  "yan2d": 337,
+  "zan2d": 67,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

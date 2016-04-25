@@ -1,0 +1,58 @@
+{
+  "id": 10730,
+  "resizeY": 0,
+  "xan2d": 512,
+  "cost": 1,
+  "inventoryModel": 10443,
+  "resizeZ": 0,
+  "colorFind": [
+    6457,
+    6573,
+    5543
+  ],
+  "colorReplace": [
+    -21957,
+    -22741,
+    -22626
+  ],
+  "name": "Blue marionette",
+  "zoom2d": 1368,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 8,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

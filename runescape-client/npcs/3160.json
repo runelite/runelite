@@ -1,0 +1,60 @@
+{
+  "id": 3160,
+  "recolorToFind": [
+    8741,
+    6430,
+    10266,
+    10378,
+    -24618,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Spiritual ranger",
+  "recolorToReplace": [
+    805,
+    924,
+    924,
+    908,
+    908,
+    0
+  ],
+  "models": [
+    8381,
+    286,
+    5222,
+    27631,
+    8918,
+    563,
+    7609,
+    7607
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 126,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 118,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 126,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

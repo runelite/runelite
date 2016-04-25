@@ -1,0 +1,58 @@
+{
+  "id": 4429,
+  "recolorToFind": [
+    4550,
+    -25295,
+    -25299,
+    -25307,
+    26698
+  ],
+  "anInt2156": 32,
+  "name": "Vampyre Juvinate",
+  "recolorToReplace": [
+    8394,
+    -25301,
+    -25307,
+    -25188,
+    26690
+  ],
+  "models": [
+    14042,
+    14039,
+    14046,
+    14041,
+    14044
+  ],
+  "models_2": [
+    13943
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 145,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 54,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 147,
+  "hasRenderPriority": false,
+  "ambient": -25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

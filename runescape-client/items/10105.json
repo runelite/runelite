@@ -1,0 +1,58 @@
+{
+  "id": 10105,
+  "resizeY": 100,
+  "xan2d": 624,
+  "cost": 90,
+  "inventoryModel": 19401,
+  "resizeZ": 100,
+  "colorFind": [
+    94,
+    111,
+    127
+  ],
+  "colorReplace": [
+    9804,
+    9812,
+    9445
+  ],
+  "name": "Kebbit spike",
+  "zoom2d": 360,
+  "yan2d": 1528,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 10106,
+  "femaleModel0": -1,
+  "resizeX": 100,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

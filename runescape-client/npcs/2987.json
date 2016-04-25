@@ -1,0 +1,50 @@
+{
+  "id": 2987,
+  "recolorToFind": [
+    17467
+  ],
+  "anInt2156": 32,
+  "name": "Gravingas",
+  "recolorToReplace": [
+    18626
+  ],
+  "models": [
+    5398,
+    5219,
+    5209,
+    5216,
+    5399
+  ],
+  "models_2": [
+    5392
+  ],
+  "stanceAnimation": 1421,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1422,
+  "rotate90RightAnimation": 1424,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 35,
+  "rotate180Animation": 1423,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1425,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 35,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

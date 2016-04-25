@@ -1,0 +1,65 @@
+{
+  "id": 4961,
+  "recolorToFind": [
+    22424,
+    22416,
+    23442,
+    8741,
+    6674,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Ranger",
+  "recolorToReplace": [
+    99,
+    82,
+    82,
+    82,
+    99,
+    74
+  ],
+  "models": [
+    221,
+    253,
+    314,
+    170,
+    179,
+    563,
+    258,
+    185,
+    9651
+  ],
+  "models_2": [
+    58,
+    85
+  ],
+  "stanceAnimation": 2728,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

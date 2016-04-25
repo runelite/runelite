@@ -1,0 +1,58 @@
+{
+  "id": 5369,
+  "recolorToFind": [
+    -22233,
+    6331,
+    7104,
+    6071
+  ],
+  "anInt2156": 32,
+  "name": "Goblin guard",
+  "recolorToReplace": [
+    -27746,
+    -27746,
+    -27750,
+    -25704
+  ],
+  "models": [
+    24466,
+    24484,
+    24436,
+    24472,
+    24446,
+    24449,
+    24507
+  ],
+  "models_2": [
+    24218
+  ],
+  "stanceAnimation": 6200,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6201,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 42,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

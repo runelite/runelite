@@ -1,0 +1,64 @@
+{
+  "id": 633,
+  "recolorToFind": [
+    8741,
+    7281,
+    22177,
+    4550,
+    25238,
+    28318
+  ],
+  "anInt2156": 32,
+  "name": "Brewer",
+  "recolorToReplace": [
+    10460,
+    10460,
+    12,
+    5712,
+    3350,
+    10460
+  ],
+  "models": [
+    215,
+    193,
+    5215,
+    7611,
+    170,
+    176,
+    5218
+  ],
+  "models_2": [
+    53,
+    36,
+    5207
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 132,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

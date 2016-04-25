@@ -1,0 +1,56 @@
+{
+  "id": 2214,
+  "recolorToFind": [
+    -22475,
+    -22479,
+    -22483,
+    -22450,
+    -22456,
+    -22464
+  ],
+  "anInt2156": 32,
+  "name": "Knight of Saradomin",
+  "recolorToReplace": [
+    -24387,
+    -24395,
+    -24275,
+    10318,
+    10308,
+    10301
+  ],
+  "models": [
+    27620,
+    27634,
+    27624,
+    27647
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 101,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

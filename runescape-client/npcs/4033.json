@@ -1,0 +1,63 @@
+{
+  "id": 4033,
+  "recolorToFind": [
+    8741,
+    9104,
+    25238,
+    22177
+  ],
+  "anInt2156": 32,
+  "name": "Pirate",
+  "recolorToReplace": [
+    695,
+    231,
+    7591,
+    -24927
+  ],
+  "models": [
+    193,
+    214,
+    236,
+    252,
+    292,
+    3667,
+    151,
+    10218,
+    555,
+    5218
+  ],
+  "models_2": [
+    52,
+    36,
+    68
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}
