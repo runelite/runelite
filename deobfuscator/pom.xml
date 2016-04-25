@@ -10,6 +10,7 @@
 	<groupId>net.runelite</groupId>
 	<artifactId>deob</artifactId>
 	<version>1.0-SNAPSHOT</version>
+	<name>Deobfuscator</name>
 	
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
