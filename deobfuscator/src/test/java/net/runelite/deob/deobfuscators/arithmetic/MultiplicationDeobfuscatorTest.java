@@ -3,7 +3,6 @@ package net.runelite.deob.deobfuscators.arithmetic;
 import net.runelite.asm.ClassGroup;
 import net.runelite.deob.ClassGroupFactory;
 import net.runelite.deob.Deobfuscator;
-import net.runelite.asm.Field;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;

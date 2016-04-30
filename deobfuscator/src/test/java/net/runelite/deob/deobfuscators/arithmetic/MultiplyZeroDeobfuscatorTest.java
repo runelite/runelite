@@ -3,19 +3,22 @@ package net.runelite.deob.deobfuscators.arithmetic;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
+import net.runelite.cache.StoreLocation;
+import net.runelite.deob.deobfuscators.RenameUniqueTest;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 public class MultiplyZeroDeobfuscatorTest
 {
-	private static final File GAMEPACK = new File("d:/rs/07/gamepack_v19.jar");
+	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
 
 	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
 	private ClassGroup group;
 
@@ -32,6 +35,7 @@ public class MultiplyZeroDeobfuscatorTest
 	}
 
 	@Test
+	@Ignore
 	public void testRun()
 	{
 		MultiplyZeroDeobfuscator m = new MultiplyZeroDeobfuscator();
