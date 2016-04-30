@@ -9,9 +9,10 @@ import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
-import static net.runelite.deob.deobfuscators.rename.MapStaticTest.print;
-import static net.runelite.deob.deobfuscators.rename.MapStaticTest.summary;
+import static net.runelite.deob.deobfuscators.rename.MapperTest.print;
+import static net.runelite.deob.deobfuscators.rename.MapperTest.summary;
 import net.runelite.deob.util.JarUtil;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AnnotationMapperTest
@@ -21,6 +22,7 @@ public class AnnotationMapperTest
 		OUT = "d:/rs/07/adamout.jar";
 	
 	@Test
+	@Ignore
 	public void testRun() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));

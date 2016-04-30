@@ -1,6 +1,5 @@
 package net.runelite.deob.runeloader;
 
-import com.google.common.base.Objects;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -16,6 +15,7 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CheckMappings
@@ -94,6 +94,7 @@ public class CheckMappings
 	}
 
 	@Test
+	@Ignore
 	public void checkMappings() throws IOException
 	{
 		InjectionModscript mod = InjectionModscript.load(RL_INJECTION);

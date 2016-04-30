@@ -19,6 +19,7 @@ import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class MappingImporter
@@ -96,6 +97,7 @@ public class MappingImporter
 	}
 
 	@Test
+	@Ignore
 	public void makeMappings() throws IOException
 	{
 		InjectionModscript mod = InjectionModscript.load(RL_INJECTION);
