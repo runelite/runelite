@@ -19,8 +19,8 @@ JAR_URL=$CODEBASE$INITIAL_JAR
 
 echo Downloading vanilla client from $JAR_URL
 
-#rm -f $VANILLA
-#wget $JAR_URL -O $VANILLA
+rm -f $VANILLA
+wget $JAR_URL -O $VANILLA
 
 # get version of vanilla
 VANILLA_VER=$(java -cp $DEOB_PATH net.runelite.deob.clientver.ClientVersionMain $VANILLA)
