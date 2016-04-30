@@ -96,6 +96,9 @@ public class ItemDumper
 					continue;
 
 				String name = name(def.name);
+				if (name == null)
+					continue;
+				
 				String suffix = "";
 				while (used.contains(name + suffix))
 				{
@@ -119,6 +122,8 @@ public class ItemDumper
 		String s = in.toUpperCase()
 			.replace(' ', '_')
 			.replaceAll("[^a-zA-Z0-9_]", "");
+		if (s.isEmpty())
+			return null;
 		if (Character.isDigit(s.charAt(0)))
 			return "_" + s;
 		else
