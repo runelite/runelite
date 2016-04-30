@@ -2,8 +2,8 @@ package net.runelite.cache.fs;
 
 import java.io.IOException;
 import java.util.Random;
+import net.runelite.cache.StoreLocation;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -11,13 +11,7 @@ import org.junit.rules.TemporaryFolder;
 public class StoreTest
 {
 	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
-	
-	@BeforeClass
-	public static void before()
-	{
-		System.setProperty("java.io.tmpdir", "d:/rs/07/temp/");
-	}
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 	
 	@Test
 	public void testOneFile() throws IOException

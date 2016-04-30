@@ -3,11 +3,16 @@ package net.runelite.cache.fs;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 public class StoreLoadTest
 {
-	//@Test
+	@Rule
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	@Test
 	public void test() throws IOException
 	{
 		Store store = new Store(StoreLocation.LOCATION);
@@ -25,7 +30,7 @@ public class StoreLoadTest
 
 			for (Index i : store.getIndexes())
 			{
-				java.io.File ifile = new java.io.File(base, "" + i.getId());
+				java.io.File ifile = new java.io.File(folder.newFolder(), "" + i.getId());
 				ifile.mkdir();
 
 				for (Archive a : i.getArchives())
@@ -39,7 +44,9 @@ public class StoreLoadTest
 						try (FileOutputStream fout = new FileOutputStream(ffile))
 						{
 							if (f.getContents() != null)
+							{
 								fout.write(f.getContents());
+							}
 						}
 					}
 				}
