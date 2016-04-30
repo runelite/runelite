@@ -10,8 +10,7 @@ import java.util.Map;
 
 public class GameConfig
 {
-	private static final String URL = "http://192.168.1.2/rs/jav_config.ws";
-	//private static final String URL = "http://oldschool.runescape.com/jav_config.ws"; // https redirects to rs3
+	private static final String URL = "http://oldschool.runescape.com/jav_config.ws"; // https redirects to rs3
 
 	private final Map<String, String> properties = new HashMap<>(),
 		appletProperties = new HashMap<>();
