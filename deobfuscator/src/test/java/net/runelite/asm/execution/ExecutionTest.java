@@ -2,14 +2,13 @@ package net.runelite.asm.execution;
 
 import java.io.File;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.deobfuscators.rename.MapStaticTest;
 import net.runelite.deob.util.JarUtil;
 import org.junit.Test;
 
 public class ExecutionTest
 {
-	private static final String JAR1 = MapStaticTest.class.getResource("/adamin1.jar").getFile(),
-		JAR2 = MapStaticTest.class.getResource("/adamin2.jar").getFile();
+	private static final String JAR1 = ExecutionTest.class.getResource("/adamin1.jar").getFile(),
+		JAR2 = ExecutionTest.class.getResource("/adamin2.jar").getFile();
 	
 	@Test
 	public void test() throws Exception
