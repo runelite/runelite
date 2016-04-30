@@ -3,8 +3,8 @@ package net.runelite.cache.fs;
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import net.runelite.cache.StoreLocation;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -12,13 +12,7 @@ import org.junit.rules.TemporaryFolder;
 public class DataFileTest
 {
 	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
-	
-	@BeforeClass
-	public static void before()
-	{
-		System.setProperty("java.io.tmpdir", "d:/temp");
-	}
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
   
 	@Test
 	public void test1() throws IOException
