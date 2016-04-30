@@ -7,6 +7,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class InjectTest
@@ -31,6 +32,7 @@ public class InjectTest
 	}
 
 	@Test
+	@Ignore
 	public void testRun() throws IOException, ClassNotFoundException
 	{
 		Inject instance = new Inject(deob, vanilla);
