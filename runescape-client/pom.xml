@@ -10,7 +10,7 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>rs-client</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.113-SNAPSHOT</version>
 	<name>RuneScape Client</name>
 
 	<dependencies>
