@@ -15,14 +15,25 @@ import net.runelite.cache.fs.Store;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.renderable.RGBSprite;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SpriteLoaderTest
 {
-	//@Test
+	private static final Logger logger = LoggerFactory.getLogger(SpriteLoaderTest.class);
+
+	@Rule
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	@Test
 	public void extract() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION;
+		java.io.File base = StoreLocation.LOCATION,
+			outDir = folder.newFolder();
+
 		try (Store store = new Store(base))
 		{
 			store.load();
@@ -52,11 +63,13 @@ public class SpriteLoaderTest
 						continue;
 
 					BufferedImage image = sp.getBufferedImage();
-					java.io.File targ = new java.io.File(base, "sprites/" + a.getArchiveId() + "-" + i + ".png");
+					java.io.File targ = new java.io.File(outDir, a.getArchiveId() + "-" + i + ".png");
 					targ.mkdirs();
 					ImageIO.write(image, "png", targ);
 				}
 			}
 		}
+
+		logger.info("Dumped to {}", outDir);
 	}
 }
