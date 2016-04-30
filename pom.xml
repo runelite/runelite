@@ -7,11 +7,46 @@
 	<name>Runelite</name>
 	<packaging>pom</packaging>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<distributionManagement>
+		<repository>
+			<id>runelite</id>
+			<url>${runelite.repository.url}</url>
+		</repository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>runelite</id>
+			<name>Runelite</name>
+			<url>https://repo.runelite.net</url>
+		</repository>
+	</repositories>
+
 	<modules>
 		<module>deobfuscator</module>
 		<module>runescape-client</module>
 		<module>runelite-client</module>
 		<module>runelite-api</module>
-		<module>runescape-client-injector</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>Linux</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<modules>
+				<module>runescape-client-injector</module>
+			</modules>
+		</profile>
+	</profiles>
 </project>

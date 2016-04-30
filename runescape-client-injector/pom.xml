@@ -12,21 +12,6 @@
 	<version>1.113-SNAPSHOT</version>
 	<name>Injector</name>
 
-	<distributionManagement>
-		<repository>
-			<id>runelite</id>
-			<url>${runelite.repository.url}</url>
-		</repository>
-	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>runelite</id>
-			<name>Runelite</name>
-			<url>http://repo.runelite.net</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
