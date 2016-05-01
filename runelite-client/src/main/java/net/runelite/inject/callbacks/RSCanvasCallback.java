@@ -15,7 +15,7 @@ public class RSCanvasCallback
 	
 	public Graphics getGraphics(Canvas canvas, Graphics superGraphics)
 	{
-		if (canvas.getHeight() != clientBuffer.getHeight() || canvas.getWidth() != gameBuffer.getWidth())
+		if (canvas.getHeight() != clientBuffer.getHeight() || canvas.getWidth() != clientBuffer.getWidth())
 		{
 			clientBuffer = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
 			gameBuffer = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
