@@ -25,4 +25,9 @@ public class Variables
 	{
 		return variables[index];
 	}
+
+	public int size()
+	{
+		return variables.length;
+	}
 }

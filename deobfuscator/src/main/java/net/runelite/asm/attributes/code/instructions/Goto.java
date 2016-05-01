@@ -23,17 +23,18 @@ public class Goto extends Instruction implements JumpingInstruction
 		super(instructions, type, pc);
 	}
 
+	public Goto(Instructions instructions, Instruction to)
+	{
+		super(instructions, InstructionType.GOTO, -1);
+		
+		this.to = to;
+		length += 2;
+	}
+
 	@Override
 	public String toString()
 	{
 		return "goto " + to + " (at pc " + (this.getPc() + offset) + ")";
-	}
-	
-	public Goto(Instructions instructions, Instruction to)
-	{
-		super(instructions, InstructionType.GOTO, 0);
-		this.to = to;
-		length += 2;
 	}
 	
 	@Override
