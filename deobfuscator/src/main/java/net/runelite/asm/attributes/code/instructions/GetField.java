@@ -68,7 +68,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()), Value.NULL);
+		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()), Value.UNKNOWN);
 		stack.push(ctx);
 		
 		ins.push(ctx);

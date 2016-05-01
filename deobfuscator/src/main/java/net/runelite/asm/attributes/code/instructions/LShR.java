@@ -27,8 +27,8 @@ public class LShR extends Instruction
 		
 		ins.pop(two, one);
 		
-		Value result = Value.NULL;
-		if (!two.getValue().isNull() && !one.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			long l2 = (long) two.getValue().as(long.class),
 				l1 = (long) two.getValue().as(long.class);

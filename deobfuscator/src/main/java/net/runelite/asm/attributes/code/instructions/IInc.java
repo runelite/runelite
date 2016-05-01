@@ -68,7 +68,7 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 		ins.read(vctx);
 		
 		Value value = vctx.getValue();
-		if (!vctx.getValue().isNull())
+		if (!vctx.getValue().isUnknownOrNull())
 		{
 			int i = (int) vctx.getValue().getValue();
 			i += inc;

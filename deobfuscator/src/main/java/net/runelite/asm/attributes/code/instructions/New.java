@@ -46,7 +46,7 @@ public class New extends Instruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, new Type(clazz.getName()), Value.NULL);
+		StackContext ctx = new StackContext(ins, new Type(clazz.getName()), Value.UNKNOWN);
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -89,7 +89,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		{
 			StackContext ctx = new StackContext(ins,
 				new Type(method.getNameAndType().getDescriptor().getReturnValue()),
-				Value.NULL
+				Value.UNKNOWN
 			);
 			stack.push(ctx);
 			
