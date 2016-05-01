@@ -27,8 +27,8 @@ public class FDiv extends Instruction
 		
 		ins.pop(two, one);
 		
-		Value result = Value.NULL;
-		if (!two.getValue().isNull() && !one.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			float f2 = (float) two.getValue().getValue(),
 				f1 = (float) one.getValue().getValue();

@@ -65,7 +65,7 @@ public class GetStatic extends Instruction implements GetFieldInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()), Value.NULL);		
+		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()), Value.UNKNOWN);		
 		stack.push(ctx);
 		
 		ins.push(ctx);

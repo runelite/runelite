@@ -34,8 +34,8 @@ public class LCmp extends Instruction implements MappableInstruction
 		
 		ins.pop(two, one);
 		
-		Value result = Value.NULL;
-		if (!two.getValue().isNull() && !one.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			long l2 = (long) two.getValue().getValue(),
 				l1 = (long) one.getValue().getValue();

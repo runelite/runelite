@@ -301,7 +301,7 @@ public class Frame
 					stack.pop();
 				
 				InstructionContext ins = new InstructionContext(ictx.getInstruction(), f);
-				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"), Value.NULL);
+				StackContext ctx = new StackContext(ins, new Type("java/lang/Exception"), Value.UNKNOWN);
 				stack.push(ctx);
 				
 				ins.push(ctx);

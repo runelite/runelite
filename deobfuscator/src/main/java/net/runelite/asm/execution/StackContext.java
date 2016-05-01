@@ -22,7 +22,7 @@ public class StackContext
 	
 	public StackContext(InstructionContext pushed, Class<?> clazz, Value value)
 	{
-		assert value.isNull() || value.getValue().getClass() == PrimitiveUtils.unbox(clazz);
+		assert value.isUnknownOrNull() || value.getValue().getClass() == PrimitiveUtils.unbox(clazz);
 		
 		this.pushed = pushed;
 		type = new Type(clazz.getCanonicalName());

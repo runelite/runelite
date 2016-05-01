@@ -48,7 +48,7 @@ public class InstanceOf extends Instruction
 		StackContext obj = stack.pop();
 		ins.pop(obj);
 		
-		StackContext ctx = new StackContext(ins, int.class, Value.NULL);
+		StackContext ctx = new StackContext(ins, int.class, Value.UNKNOWN);
 		stack.push(ctx);
 		
 		ins.push(ctx);

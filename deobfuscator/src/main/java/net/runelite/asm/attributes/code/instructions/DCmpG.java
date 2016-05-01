@@ -28,8 +28,8 @@ public class DCmpG extends Instruction
 		
 		ins.pop(two, one);
 		
-		Value result = Value.NULL;
-		if (!two.getValue().isNull() && !one.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			double d2 = (double) two.getValue().getValue(),
 				d1 = (double) one.getValue().getValue();
