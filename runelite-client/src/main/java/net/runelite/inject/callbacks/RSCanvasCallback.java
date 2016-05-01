@@ -8,11 +8,19 @@ import net.runelite.client.ui.overlay.OverlayRenderer;
 
 public class RSCanvasCallback
 {
-	private final BufferedImage clientBuffer = new BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB);
-	private final BufferedImage gameBuffer = new BufferedImage(765, 503, BufferedImage.TYPE_INT_RGB);
+	private static final int WIDTH = 765, HEIGHT = 503;
+	
+	private BufferedImage clientBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private BufferedImage gameBuffer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	
 	public Graphics getGraphics(Canvas canvas, Graphics superGraphics)
 	{
+		if (canvas.getHeight() != clientBuffer.getHeight() || canvas.getWidth() != gameBuffer.getWidth())
+		{
+			clientBuffer = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+			gameBuffer = new BufferedImage(canvas.getWidth(), canvas.getHeight(), BufferedImage.TYPE_INT_RGB);
+		}
+
 		Graphics clientGraphics = clientBuffer.getGraphics();
 		clientGraphics.drawImage(gameBuffer, 0, 0, null);
 		clientGraphics.dispose();
