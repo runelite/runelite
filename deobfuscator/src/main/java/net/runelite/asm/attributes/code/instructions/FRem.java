@@ -27,8 +27,8 @@ public class FRem extends Instruction
 		
 		ins.pop(two, one);
 		
-		Value result = Value.NULL;
-		if (!two.getValue().isNull() && !one.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			float d2 = (float) two.getValue().getValue(),
 				d1 = (float) one.getValue().getValue();

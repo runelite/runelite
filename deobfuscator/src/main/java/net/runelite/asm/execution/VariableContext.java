@@ -23,7 +23,7 @@ public class VariableContext
 	public VariableContext(Type type) // for entrypoints
 	{
 		this.type = type;
-		value = Value.NULL;
+		value = Value.UNKNOWN;
 	}
 	
 	public VariableContext(InstructionContext i, VariableContext other)

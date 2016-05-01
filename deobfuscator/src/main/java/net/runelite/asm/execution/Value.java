@@ -7,6 +7,7 @@ import net.runelite.deob.util.PrimitiveUtils;
 public class Value
 {
 	public static final Value NULL = new Value(null);
+	public static final Value UNKNOWN = new Value(null);
 	
 	private Object value;
 
@@ -16,9 +17,13 @@ public class Value
 		this.value = value;
 	}
 	
+	public boolean isUnknownOrNull()
+	{
+		return this == UNKNOWN || this == NULL;
+	}
+
 	public boolean isNull()
 	{
-		assert (value == null) == (this == NULL);
 		return this == NULL;
 	}
 
@@ -29,40 +34,40 @@ public class Value
 	
 	private boolean isArray()
 	{
-		return !isNull() && value.getClass().isArray();
+		return !isUnknownOrNull() && value.getClass().isArray();
 	}
 	
 	public Value arrayLength()
 	{
-		return isArray() ? new Value(Array.getLength(value)) : NULL;
+		return isArray() ? new Value(Array.getLength(value)) : UNKNOWN;
 	}
 	
 	public Value arrayGet(Value index)
 	{
-		if (isNull() || index.isNull())
-			return NULL;
+		if (isUnknownOrNull() || index.isUnknownOrNull())
+			return UNKNOWN;
 		
 		int i = (int) index.value;
 		
 		if (i < 0)
-			return NULL;
+			return UNKNOWN;
 		
 		assert isArray();
 		
 		int len = Array.getLength(value);
 		if (len <= i)
-			return NULL;
+			return UNKNOWN;
 		
 		Value o = (Value) Array.get(value, i);
-		if (o.isNull())
-			return NULL;
+		if (o.isUnknownOrNull())
+			return UNKNOWN;
 		
 		return o;
 	}
 	
 	public void arraySet(Value index, Value object)
 	{
-		if (isNull() || index.isNull())
+		if (isUnknownOrNull() || index.isUnknownOrNull())
 			return;
 		
 		int i = (int) index.value;
@@ -76,7 +81,7 @@ public class Value
 		if (len <= i)
 		{
 			value = Arrays.copyOf((Value[]) value, i + 1, Value[].class);
-			Arrays.fill((Value[]) value, len, i, NULL);
+			Arrays.fill((Value[]) value, len, i, UNKNOWN);
 		}
 		
 		Array.set(value, i, object);
@@ -84,8 +89,8 @@ public class Value
 	
 	public Value cast(Class<?> c)
 	{
-		if (isNull())
-			return NULL;
+		if (isUnknownOrNull())
+			return UNKNOWN;
 		
 		Object v = value;
 		
@@ -102,7 +107,7 @@ public class Value
 	
 	public static Value newArray(Value length)
 	{
-		if (length.isNull())
+		if (length.isUnknownOrNull())
 		{
 			return new Value(new Value[0]);
 		}
@@ -115,7 +120,7 @@ public class Value
 				len = 0;
 
 			Value[] array = new Value[len];
-			Arrays.fill(array, NULL);
+			Arrays.fill(array, UNKNOWN);
 			return new Value(array);
 		}
 	}

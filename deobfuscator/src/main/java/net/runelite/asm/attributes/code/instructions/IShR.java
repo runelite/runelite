@@ -27,8 +27,8 @@ public class IShR extends Instruction
 		
 		ins.pop(two, one);
 		
-		Value result = Value.NULL;
-		if (!two.getValue().isNull() && !one.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
 			int i2 = (int) two.getValue().getValue(),
 				i1 = (int) one.getValue().getValue();

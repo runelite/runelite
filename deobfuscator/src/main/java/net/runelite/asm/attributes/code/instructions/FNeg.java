@@ -25,8 +25,8 @@ public class FNeg extends Instruction
 		StackContext value = stack.pop();
 		ins.pop(value);
 		
-		Value result = Value.NULL;
-		if (!value.getValue().isNull())
+		Value result = Value.UNKNOWN;
+		if (!value.getValue().isUnknownOrNull())
 		{
 			float f = (float) value.getValue().getValue();
 			
