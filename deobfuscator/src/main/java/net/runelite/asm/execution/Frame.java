@@ -108,7 +108,10 @@ public class Frame
 			// but don't set as a parameter
 			if (!method.isStatic())
 			{
-				variables.set(lvtOffset++, new VariableContext(ctx, s).markParameter());
+				VariableContext vctx = new VariableContext(ctx, s);
+				vctx.markParameter();
+
+				variables.set(lvtOffset++, vctx);
 			}
 		}
 
@@ -117,8 +120,11 @@ public class Frame
 		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
 		{
 			StackContext argument = pops.remove(0);
-			
-			variables.set(lvtOffset, new VariableContext(ctx, argument).markParameter());
+
+			VariableContext vctx = new VariableContext(ctx, argument);
+			vctx.markParameter();
+
+			variables.set(lvtOffset, vctx);
 			lvtOffset += nat.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		

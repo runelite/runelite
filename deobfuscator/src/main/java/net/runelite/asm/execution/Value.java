@@ -22,11 +22,6 @@ public class Value
 		return this == UNKNOWN || this == NULL;
 	}
 
-	public boolean isNull()
-	{
-		return this == NULL;
-	}
-
 	public Object getValue()
 	{
 		return value;

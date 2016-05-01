@@ -18,6 +18,7 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.deobfuscators.IfNull;
 import net.runelite.deob.util.JarUtil;
 
 public class Deob
@@ -44,6 +45,7 @@ public class Deob
 		run(group, new ConstantParameter());
 
 		// remove unhit blocks
+		run(group, new IfNull());
 		run(group, new UnreachedCode());
 		run(group, new UnusedMethods());
 

@@ -10,7 +10,7 @@ public class MethodContext
 	private Execution execution;
 	private Method method;
 	private MultiValueMap<InstructionContext, Instruction> visited = new MultiValueMap<>();
-	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>(); // XXX this should move to method ctx probably
+	public MultiValueMap<Instruction, InstructionContext> contexts = new MultiValueMap<>();
 
 	public MethodContext(Execution execution, Method method)
 	{
