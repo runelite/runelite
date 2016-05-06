@@ -23,9 +23,9 @@ public class GameConfigUpdateDetector
 		
 		int differences = 0;
 
-		for (String key : g1.getProperties().keySet())
+		for (String key : g1.getAppletProperties().keySet())
 		{
-			String value = g1.getAppletProperty(key), otherValue = g2.getAppletProperty(value);
+			String value = g1.getAppletProperty(key), otherValue = g2.getAppletProperty(key);
 
 			if (!Strings.nullToEmpty(value).equals(Strings.nullToEmpty(otherValue)))
 				++differences;
