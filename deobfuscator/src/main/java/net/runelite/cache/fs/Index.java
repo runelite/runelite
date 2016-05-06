@@ -232,7 +232,7 @@ public class Index implements Closeable
 			IndexEntry entry = this.index.read(a.getArchiveId());
 			if (entry == null)
 			{
-				logger.warn("can't read archive " + a.getArchiveId() + " from index " + this.id);
+				logger.debug("can't read archive " + a.getArchiveId() + " from index " + this.id);
 				continue;
 			}
 			
