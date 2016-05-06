@@ -101,7 +101,7 @@ public class IndexFile implements Closeable
 		
 		if (length <= 0 || sector <= 0)
 		{
-			logger.warn("invalid length or sector {}/{}", length, sector);
+			logger.info("invalid length or sector {}/{}", length, sector);
 			return null;
 		}
 		
