@@ -29,6 +29,9 @@ echo "Vanilla client version $VANILLA_VER"
 # inject vanilla client.
 rm -f $VANILLA_INJECTED
 java $JAVA_ARGS -cp $DEOB_PATH net.runelite.deob.updater.UpdateInject $RS_CLIENT_PATH $VANILLA $VANILLA_INJECTED
+if [ $? -ne 0 ] ; then
+        exit 1
+fi
 
 rm -rf /tmp/runelite-work
 mkdir /tmp/runelite-work
