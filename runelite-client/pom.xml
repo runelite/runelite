@@ -5,12 +5,12 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
 	<artifactId>client</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>Runelite Client</name>
 
 	<properties>
@@ -37,12 +37,12 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>api</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>client</artifactId>
-			<version>114.1-SNAPSHOT</version> <!-- rs version -->
+			<version>114.1</version> <!-- rs version -->
 		</dependency>
 		
 		<dependency>
