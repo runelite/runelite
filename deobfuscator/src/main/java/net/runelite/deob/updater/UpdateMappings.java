@@ -3,6 +3,7 @@ package net.runelite.deob.updater;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
+import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
 import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
@@ -26,6 +27,9 @@ public class UpdateMappings
 
 		AnnotationMapper amapper = new AnnotationMapper(group1, group2, mapping);
 		amapper.run();
+
+		AnnotationIntegrityChecker aic = new AnnotationIntegrityChecker(group1, group2, mapping);
+		aic.run();
 	}
 
 	public void save(File out) throws IOException
