@@ -14,8 +14,6 @@
 	<name>Runelite Client</name>
 
 	<properties>
-		<rs.version>1.113-SNAPSHOT</rs.version>
-
 		<slf4j.version>1.7.12</slf4j.version>
 	</properties>
 
@@ -44,7 +42,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>client</artifactId>
-			<version>${rs.version}</version>
+			<version>1.113-SNAPSHOT</version> <!-- rs version -->
 		</dependency>
 		
 		<dependency>
