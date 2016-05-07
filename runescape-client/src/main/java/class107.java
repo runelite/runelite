@@ -2,76 +2,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dt")
+@ObfuscatedName("dg")
 public abstract class class107 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1566883447
+      intValue = -895371417
    )
-   public int field1858;
-   @ObfuscatedName("h")
+   public int field1889;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -391418253
+      intValue = 1245276001
    )
-   public int field1859;
+   public int field1891;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -562829577
+   )
+   public int field1892;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1089833161
+      intValue = 85307635
    )
-   public int field1861;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -525672009
-   )
-   public int field1863;
-   @ObfuscatedName("ri")
-   protected static boolean field1864;
+   public int field1898;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1911528168"
+      signature = "(IIILclass108;I)Z",
+      garbageValue = "-1542389522"
    )
-   public static boolean method2374(int var0) {
-      if(class173.field2792[var0]) {
-         return true;
-      } else if(!class173.field2736.method3220(var0)) {
-         return false;
-      } else {
-         int var1 = class173.field2736.method3227(var0);
-         if(0 == var1) {
-            class173.field2792[var0] = true;
-            return true;
-         } else {
-            if(null == class173.field2735[var0]) {
-               class173.field2735[var0] = new class173[var1];
-            }
+   public abstract boolean vmethod2368(int var1, int var2, int var3, class108 var4);
 
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(class173.field2735[var0][var2] == null) {
-                  byte[] var3 = class173.field2736.method3217(var0, var2);
-                  if(var3 != null) {
-                     class173.field2735[var0][var2] = new class173();
-                     class173.field2735[var0][var2].field2774 = var2 + (var0 << 16);
-                     if(var3[0] == -1) {
-                        class173.field2735[var0][var2].method3390(new class119(var3));
-                     } else {
-                        class173.field2735[var0][var2].method3376(new class119(var3));
-                     }
-                  }
-               }
-            }
-
-            class173.field2792[var0] = true;
-            return true;
+   @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "6"
+   )
+   static final int method2369(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && 2 == (class5.field90[1][var3][var4] & 2)) {
+            var5 = var2 + 1;
          }
+
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = var6 * class5.field93[var5][var3 + 1][var4] + (128 - var6) * class5.field93[var5][var3][var4] >> 7;
+         int var9 = (128 - var6) * class5.field93[var5][var3][1 + var4] + var6 * class5.field93[var5][var3 + 1][var4 + 1] >> 7;
+         return var7 * var9 + (128 - var7) * var8 >> 7;
+      } else {
+         return 0;
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIILclass108;I)Z",
-      garbageValue = "85503227"
+      signature = "(II)Lclass35;",
+      garbageValue = "1458931639"
    )
-   protected abstract boolean vmethod2375(int var1, int var2, int var3, class108 var4);
+   static class35 method2372(int var0) {
+      return (class35)class11.field167.method3794((long)var0);
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "198293957"
+   )
+   public static void method2373() {
+      class183.field2972.method3584();
+      class183.field2973 = 1;
+      class183.field2974 = null;
+   }
 }

@@ -1,50 +1,50 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("go")
 public class class195 {
-   @ObfuscatedName("h")
-   class207 field3095;
+   @ObfuscatedName("s")
+   class207 field3097 = new class207();
    @ObfuscatedName("j")
-   class207 field3096 = new class207();
+   class207 field3098;
 
-   @ObfuscatedName("h")
-   public class207 method3731() {
-      class207 var1 = this.field3096.field3120;
-      if(var1 == this.field3096) {
-         this.field3095 = null;
+   @ObfuscatedName("s")
+   public void method3763(class207 var1) {
+      if(var1.field3123 != null) {
+         var1.method3894();
+      }
+
+      var1.field3123 = this.field3097.field3123;
+      var1.field3122 = this.field3097;
+      var1.field3123.field3122 = var1;
+      var1.field3122.field3123 = var1;
+   }
+
+   @ObfuscatedName("j")
+   public class207 method3764() {
+      class207 var1 = this.field3097.field3122;
+      if(var1 == this.field3097) {
+         this.field3098 = null;
          return null;
       } else {
-         this.field3095 = var1.field3120;
+         this.field3098 = var1.field3122;
          return var1;
       }
    }
 
-   @ObfuscatedName("m")
-   public class207 method3733() {
-      class207 var1 = this.field3095;
-      if(var1 == this.field3096) {
-         this.field3095 = null;
+   @ObfuscatedName("p")
+   public class207 method3765() {
+      class207 var1 = this.field3098;
+      if(var1 == this.field3097) {
+         this.field3098 = null;
          return null;
       } else {
-         this.field3095 = var1.field3120;
+         this.field3098 = var1.field3122;
          return var1;
       }
    }
 
    public class195() {
-      this.field3096.field3120 = this.field3096;
-      this.field3096.field3121 = this.field3096;
-   }
-
-   @ObfuscatedName("j")
-   public void method3739(class207 var1) {
-      if(var1.field3121 != null) {
-         var1.method3880();
-      }
-
-      var1.field3121 = this.field3096.field3121;
-      var1.field3120 = this.field3096;
-      var1.field3121.field3120 = var1;
-      var1.field3120.field3121 = var1;
+      this.field3097.field3122 = this.field3097;
+      this.field3097.field3123 = this.field3097;
    }
 }

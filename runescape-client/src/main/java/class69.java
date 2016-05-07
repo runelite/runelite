@@ -7,93 +7,93 @@ import javax.sound.sampled.DataLine.Info;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bf")
+@ObfuscatedName("by")
 public class class69 extends class56 {
-   @ObfuscatedName("am")
-   @ObfuscatedGetter(
-      intValue = -1875460665
-   )
-   int field1266;
-   @ObfuscatedName("h")
-   SourceDataLine field1267;
+   @ObfuscatedName("s")
+   AudioFormat field1289;
    @ObfuscatedName("j")
-   AudioFormat field1268;
-   @ObfuscatedName("an")
-   byte[] field1269;
+   SourceDataLine field1290;
+   @ObfuscatedName("au")
+   @ObfuscatedGetter(
+      intValue = 946388125
+   )
+   int field1291;
+   @ObfuscatedName("ap")
+   byte[] field1292;
 
-   @ObfuscatedName("h")
-   void vmethod1503(int var1) throws LineUnavailableException {
+   @ObfuscatedName("d")
+   void vmethod1491() {
+      if(null != this.field1290) {
+         this.field1290.close();
+         this.field1290 = null;
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   void vmethod1492(Component var1) {
+      this.field1289 = new AudioFormat((float)class56.field1186, 16, class56.field1180?2:1, true, false);
+      this.field1292 = new byte[256 << (class56.field1180?2:1)];
+   }
+
+   @ObfuscatedName("j")
+   void vmethod1493(int var1) throws LineUnavailableException {
       try {
-         Info var2 = new Info(SourceDataLine.class, this.field1268, var1 << (class113.field1944?2:1));
-         this.field1267 = (SourceDataLine)AudioSystem.getLine(var2);
-         this.field1267.open();
-         this.field1267.start();
-         this.field1266 = var1;
+         Info var2 = new Info(SourceDataLine.class, this.field1289, var1 << (class56.field1180?2:1));
+         this.field1290 = (SourceDataLine)AudioSystem.getLine(var2);
+         this.field1290.open();
+         this.field1290.start();
+         this.field1291 = var1;
       } catch (LineUnavailableException var7) {
          int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var4 = (var4 >>> 2 & 858993459) + (var4 & 858993459);
-         var4 = (var4 >>> 4) + var4 & 252645135;
+         var4 = (var4 & 858993459) + (var4 >>> 2 & 858993459);
+         var4 = var4 + (var4 >>> 4) & 252645135;
          var4 += var4 >>> 8;
          var4 += var4 >>> 16;
          int var3 = var4 & 255;
-         if(1 != var3) {
+         if(var3 != 1) {
             int var6 = var1 - 1;
             var6 |= var6 >>> 1;
             var6 |= var6 >>> 2;
             var6 |= var6 >>> 4;
             var6 |= var6 >>> 8;
             var6 |= var6 >>> 16;
-            int var5 = 1 + var6;
-            this.vmethod1503(var5);
+            int var5 = var6 + 1;
+            this.vmethod1493(var5);
          } else {
-            this.field1267 = null;
+            this.field1290 = null;
             throw var7;
          }
       }
    }
 
    @ObfuscatedName("x")
-   void vmethod1506() {
-      if(this.field1267 != null) {
-         this.field1267.close();
-         this.field1267 = null;
-      }
-
-   }
-
-   @ObfuscatedName("e")
-   void vmethod1507() {
-      this.field1267.flush();
-   }
-
-   @ObfuscatedName("z")
-   void vmethod1518() {
+   void vmethod1495() {
       int var1 = 256;
-      if(class113.field1944) {
+      if(class56.field1180) {
          var1 <<= 1;
       }
 
       for(int var2 = 0; var2 < var1; ++var2) {
-         int var3 = super.field1161[var2];
-         if(0 != (var3 + 8388608 & -16777216)) {
+         int var3 = super.field1200[var2];
+         if((8388608 + var3 & -16777216) != 0) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
-         this.field1269[var2 * 2] = (byte)(var3 >> 8);
-         this.field1269[var2 * 2 + 1] = (byte)(var3 >> 16);
+         this.field1292[var2 * 2] = (byte)(var3 >> 8);
+         this.field1292[2 * var2 + 1] = (byte)(var3 >> 16);
       }
 
-      this.field1267.write(this.field1269, 0, var1 << 1);
+      this.field1290.write(this.field1292, 0, var1 << 1);
    }
 
-   @ObfuscatedName("m")
-   int vmethod1520() {
-      return this.field1266 - (this.field1267.available() >> (class113.field1944?2:1));
+   @ObfuscatedName("u")
+   void vmethod1503() {
+      this.field1290.flush();
    }
 
-   @ObfuscatedName("j")
-   void vmethod1521(Component var1) {
-      this.field1268 = new AudioFormat((float)class56.field1181, 16, class113.field1944?2:1, true, false);
-      this.field1269 = new byte[256 << (class113.field1944?2:1)];
+   @ObfuscatedName("p")
+   int vmethod1510() {
+      return this.field1291 - (this.field1290.available() >> (class56.field1180?2:1));
    }
 }
