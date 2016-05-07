@@ -1,71 +1,78 @@
-import java.net.URL;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bm")
 public class class76 {
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1405533395
+      intValue = 696148323
    )
-   static int field1364;
-   @ObfuscatedName("z")
-   static int[] field1366;
+   public static int field1386;
    @ObfuscatedName("x")
-   static int[] field1367;
-   @ObfuscatedName("j")
+   public static int[] field1387;
+   @ObfuscatedName("pf")
+   static class8 field1388;
+   @ObfuscatedName("u")
+   public static int[] field1389;
+   @ObfuscatedName("d")
+   public static int[] field1390;
+   @ObfuscatedName("nj")
    @ObfuscatedGetter(
-      intValue = -1902325423
+      intValue = 452928601
    )
-   static int field1368;
-   @ObfuscatedName("nx")
-   @ObfuscatedGetter(
-      intValue = 1139425037
-   )
-   static int field1369;
+   static int field1391;
    @ObfuscatedName("e")
-   public static class167 field1370;
-   @ObfuscatedName("i")
-   static int[] field1371;
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "44"
+   public static String[] field1392;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -625573327
    )
-   static boolean method1671() {
-      try {
-         if(null == class17.field245) {
-            class17.field245 = new class18(class142.field2153, new URL(class14.field201));
-         } else {
-            byte[] var0 = class17.field245.method195();
-            if(var0 != null) {
-               class119 var1 = new class119(var0);
-               class25.field614 = var1.method2502();
-               class25.field616 = new class25[class25.field614];
+   static int field1395;
+   @ObfuscatedName("b")
+   public static int[] field1396;
 
-               class25 var3;
-               for(int var2 = 0; var2 < class25.field614; var3.field624 = var2++) {
-                  var3 = class25.field616[var2] = new class25();
-                  var3.field618 = var1.method2502();
-                  var3.field613 = var1.method2505();
-                  var3.field627 = var1.method2508();
-                  var3.field620 = var1.method2508();
-                  var3.field623 = var1.method2500();
-                  var3.field625 = var1.method2501();
-               }
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lclass167;Lclass167;Lclass167;Lclass184;B)Z",
+      garbageValue = "81"
+   )
+   public static boolean method1638(class167 var0, class167 var1, class167 var2, class184 var3) {
+      class183.field2980 = var0;
+      class183.field2978 = var1;
+      class90.field1571 = var2;
+      class183.field2972 = var3;
+      return true;
+   }
 
-               client.method553(class25.field616, 0, class25.field616.length - 1, class25.field617, class25.field622);
-               class17.field245 = null;
-               return true;
-            }
-         }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         class17.field245 = null;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass122;I)I",
+      garbageValue = "1732658369"
+   )
+   static int method1641(class122 var0) {
+      int var1 = var0.method2750(2);
+      int var2;
+      if(var1 == 0) {
+         var2 = 0;
+      } else if(1 == var1) {
+         var2 = var0.method2750(5);
+      } else if(var1 == 2) {
+         var2 = var0.method2750(8);
+      } else {
+         var2 = var0.method2750(11);
       }
 
-      return false;
+      return var2;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1794568473"
+   )
+   static int method1642(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      return class124.field2045 != null && class124.field2045.field3125 == var2?class171.field2735.field2005 * 99 / (class171.field2735.field2007.length - class124.field2045.field2750) + 1:0;
    }
 }

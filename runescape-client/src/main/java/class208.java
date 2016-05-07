@@ -2,31 +2,31 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hc")
+@ObfuscatedName("hd")
 @Implements("Node")
 public class class208 {
-   @ObfuscatedName("eq")
-   @Export("hash")
-   public long field3122;
-   @ObfuscatedName("eh")
+   @ObfuscatedName("ea")
    @Export("next")
-   public class208 field3123;
-   @ObfuscatedName("ez")
+   public class208 field3124;
+   @ObfuscatedName("ed")
+   @Export("hash")
+   public long field3125;
+   @ObfuscatedName("eu")
    @Export("previous")
-   class208 field3124;
+   class208 field3126;
 
-   @ObfuscatedName("it")
-   public boolean method3882() {
-      return this.field3124 != null;
+   @ObfuscatedName("iq")
+   public boolean method3897() {
+      return this.field3126 != null;
    }
 
-   @ObfuscatedName("ig")
-   public void method3883() {
-      if(this.field3124 != null) {
-         this.field3124.field3123 = this.field3123;
-         this.field3123.field3124 = this.field3124;
-         this.field3123 = null;
+   @ObfuscatedName("ia")
+   public void method3898() {
+      if(this.field3126 != null) {
+         this.field3126.field3124 = this.field3124;
+         this.field3124.field3126 = this.field3126;
          this.field3124 = null;
+         this.field3126 = null;
       }
    }
 }

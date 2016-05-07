@@ -2,137 +2,137 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gk")
+@ObfuscatedName("gs")
 @Implements("Deque")
 public class class199 {
-   @ObfuscatedName("h")
-   @Export("current")
-   class208 field3106;
    @ObfuscatedName("j")
+   @Export("current")
+   class208 field3108;
+   @ObfuscatedName("s")
    @Export("head")
-   public class208 field3107 = new class208();
+   public class208 field3109 = new class208();
 
-   @ObfuscatedName("n")
-   public class208 method3777() {
-      class208 var1 = this.field3106;
-      if(var1 == this.field3107) {
-         this.field3106 = null;
-         return null;
-      } else {
-         this.field3106 = var1.field3123;
-         return var1;
+   @ObfuscatedName("s")
+   public void method3806() {
+      while(true) {
+         class208 var1 = this.field3109.field3124;
+         if(var1 == this.field3109) {
+            this.field3108 = null;
+            return;
+         }
+
+         var1.method3898();
       }
    }
 
-   @ObfuscatedName("e")
-   public class208 method3778() {
-      class208 var1 = this.field3107.field3124;
-      if(var1 == this.field3107) {
-         return null;
-      } else {
-         var1.method3883();
-         return var1;
+   @ObfuscatedName("j")
+   public void method3807(class208 var1) {
+      if(var1.field3126 != null) {
+         var1.method3898();
       }
+
+      var1.field3126 = this.field3109.field3126;
+      var1.field3124 = this.field3109;
+      var1.field3126.field3124 = var1;
+      var1.field3124.field3126 = var1;
    }
 
-   @ObfuscatedName("h")
-   public void method3779(class208 var1) {
-      if(var1.field3124 != null) {
-         var1.method3883();
+   @ObfuscatedName("p")
+   public void method3808(class208 var1) {
+      if(var1.field3126 != null) {
+         var1.method3898();
       }
 
-      var1.field3124 = this.field3107.field3124;
-      var1.field3123 = this.field3107;
-      var1.field3124.field3123 = var1;
-      var1.field3123.field3124 = var1;
-   }
-
-   @ObfuscatedName("m")
-   public void method3780(class208 var1) {
-      if(var1.field3124 != null) {
-         var1.method3883();
-      }
-
-      var1.field3124 = this.field3107;
-      var1.field3123 = this.field3107.field3123;
-      var1.field3124.field3123 = var1;
-      var1.field3123.field3124 = var1;
-   }
-
-   @ObfuscatedName("z")
-   public static void method3781(class208 var0, class208 var1) {
-      if(var0.field3124 != null) {
-         var0.method3883();
-      }
-
-      var0.field3124 = var1.field3124;
-      var0.field3123 = var1;
-      var0.field3124.field3123 = var0;
-      var0.field3123.field3124 = var0;
+      var1.field3126 = this.field3109;
+      var1.field3124 = this.field3109.field3124;
+      var1.field3126.field3124 = var1;
+      var1.field3124.field3126 = var1;
    }
 
    @ObfuscatedName("x")
-   public class208 method3782() {
-      class208 var1 = this.field3107.field3123;
-      if(var1 == this.field3107) {
+   public static void method3809(class208 var0, class208 var1) {
+      if(var0.field3126 != null) {
+         var0.method3898();
+      }
+
+      var0.field3126 = var1.field3126;
+      var0.field3124 = var1;
+      var0.field3126.field3124 = var0;
+      var0.field3124.field3126 = var0;
+   }
+
+   @ObfuscatedName("d")
+   public class208 method3810() {
+      class208 var1 = this.field3109.field3124;
+      if(var1 == this.field3109) {
          return null;
       } else {
-         var1.method3883();
+         var1.method3898();
          return var1;
       }
    }
 
-   @ObfuscatedName("i")
-   public class208 method3784() {
-      class208 var1 = this.field3107.field3123;
-      if(var1 == this.field3107) {
-         this.field3106 = null;
+   @ObfuscatedName("o")
+   public class208 method3812() {
+      class208 var1 = this.field3109.field3124;
+      if(var1 == this.field3109) {
+         this.field3108 = null;
          return null;
       } else {
-         this.field3106 = var1.field3123;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("c")
-   public class208 method3785() {
-      class208 var1 = this.field3107.field3124;
-      if(var1 == this.field3107) {
-         this.field3106 = null;
-         return null;
-      } else {
-         this.field3106 = var1.field3124;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("l")
-   public class208 method3787() {
-      class208 var1 = this.field3106;
-      if(var1 == this.field3107) {
-         this.field3106 = null;
-         return null;
-      } else {
-         this.field3106 = var1.field3124;
+         this.field3108 = var1.field3124;
          return var1;
       }
    }
 
    public class199() {
-      this.field3107.field3123 = this.field3107;
-      this.field3107.field3124 = this.field3107;
+      this.field3109.field3124 = this.field3109;
+      this.field3109.field3126 = this.field3109;
    }
 
-   @ObfuscatedName("j")
-   public void method3789() {
-      while(true) {
-         class208 var1 = this.field3107.field3123;
-         if(var1 == this.field3107) {
-            this.field3106 = null;
-            return;
-         }
+   @ObfuscatedName("u")
+   public class208 method3813() {
+      class208 var1 = this.field3109.field3126;
+      if(var1 == this.field3109) {
+         return null;
+      } else {
+         var1.method3898();
+         return var1;
+      }
+   }
 
-         var1.method3883();
+   @ObfuscatedName("c")
+   public class208 method3814() {
+      class208 var1 = this.field3108;
+      if(var1 == this.field3109) {
+         this.field3108 = null;
+         return null;
+      } else {
+         this.field3108 = var1.field3126;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("k")
+   public class208 method3817() {
+      class208 var1 = this.field3108;
+      if(var1 == this.field3109) {
+         this.field3108 = null;
+         return null;
+      } else {
+         this.field3108 = var1.field3124;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("b")
+   public class208 method3831() {
+      class208 var1 = this.field3109.field3126;
+      if(var1 == this.field3109) {
+         this.field3108 = null;
+         return null;
+      } else {
+         this.field3108 = var1.field3126;
+         return var1;
       }
    }
 }

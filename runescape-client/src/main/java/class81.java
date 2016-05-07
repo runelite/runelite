@@ -11,46 +11,46 @@ import java.util.Hashtable;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("ci")
 public final class class81 extends class77 {
-   @ObfuscatedName("j")
-   Component field1409;
+   @ObfuscatedName("s")
+   Component field1433;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIIB)V",
-      garbageValue = "40"
+      signature = "(IILjava/awt/Component;B)V",
+      garbageValue = "0"
    )
-   public final void vmethod1871(Graphics var1, int var2, int var3, int var4, int var5) {
-      Shape var6 = var1.getClip();
-      var1.clipRect(var2, var3, var4, var5);
-      var1.drawImage(super.field1380, 0, 0, this.field1409);
-      var1.setClip(var6);
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-1018784558"
-   )
-   public final void vmethod1872(int var1, int var2, Component var3) {
-      super.field1373 = var1;
-      super.field1374 = var2;
-      super.field1376 = new int[var2 * var1 + 1];
-      DataBufferInt var4 = new DataBufferInt(super.field1376, super.field1376.length);
+   final void vmethod1852(int var1, int var2, Component var3) {
+      super.field1397 = var1;
+      super.field1398 = var2;
+      super.field1401 = new int[var2 * var1 + 1];
+      DataBufferInt var4 = new DataBufferInt(super.field1401, super.field1401.length);
       DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
-      WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.field1373, super.field1374), var4, (Point)null);
-      super.field1380 = new BufferedImage(var5, var6, false, new Hashtable());
-      this.field1409 = var3;
-      this.method1678();
+      WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.field1397, super.field1398), var4, (Point)null);
+      super.field1400 = new BufferedImage(var5, var6, false, new Hashtable());
+      this.field1433 = var3;
+      this.method1646();
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;III)V",
       garbageValue = "0"
    )
-   public final void vmethod1873(Graphics var1, int var2, int var3) {
-      var1.drawImage(super.field1380, var2, var3, this.field1409);
+   public final void vmethod1857(Graphics var1, int var2, int var3) {
+      var1.drawImage(super.field1400, var2, var3, this.field1433);
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Graphics;IIIIS)V",
+      garbageValue = "128"
+   )
+   public final void vmethod1858(Graphics var1, int var2, int var3, int var4, int var5) {
+      Shape var6 = var1.getClip();
+      var1.clipRect(var2, var3, var4, var5);
+      var1.drawImage(super.field1400, 0, 0, this.field1433);
+      var1.setClip(var6);
    }
 }
