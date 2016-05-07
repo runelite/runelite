@@ -1,7 +1,20 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fm")
 public final class class163 {
-   @ObfuscatedName("j")
-   public static class113 field2644;
+   @ObfuscatedName("db")
+   static int[] field2659;
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1064163490"
+   )
+   public static void method3177() {
+      if(class171.field2731 != null) {
+         class171.field2731.method2960();
+      }
+
+   }
 }

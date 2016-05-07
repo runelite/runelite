@@ -1,55 +1,33 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cp")
 public final class class93 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 459392329
+      intValue = -1554027597
    )
-   int field1573;
-   @ObfuscatedName("q")
-   public static class119 field1574;
-   @ObfuscatedName("z")
-   public class85 field1576;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1102973689
-   )
-   public int field1577;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -2008159597
-   )
-   int field1578;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1656635235
-   )
-   int field1579;
-   @ObfuscatedName("nq")
-   @ObfuscatedGetter(
-      intValue = -1134440495
-   )
-   static int field1580;
+   int field1598;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1153464059
+      intValue = -1860884401
    )
-   int field1582;
-   @ObfuscatedName("he")
+   int field1599;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1140425619
+      intValue = -1020282395
    )
-   static int field1585;
-
+   int field1600;
    @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "933865826"
+   public class85 field1601;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -170661593
    )
-   public static int method2161(CharSequence var0) {
-      return class9.method131(var0, 10, true);
-   }
+   public int field1602;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1857645583
+   )
+   int field1604;
 }

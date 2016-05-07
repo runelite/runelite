@@ -1,50 +1,81 @@
-import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ea")
 public class class148 extends RuntimeException {
-   @ObfuscatedName("h")
-   public static String field2201;
+   @ObfuscatedName("r")
+   static int[] field2232;
    @ObfuscatedName("j")
-   static Applet field2202;
-   @ObfuscatedName("na")
-   @ObfuscatedGetter(
-      intValue = -1111382365
-   )
-   static int field2203;
-   @ObfuscatedName("z")
-   String field2204;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 69257817
-   )
-   static int field2205;
+   public static String field2233;
    @ObfuscatedName("x")
-   Throwable field2206;
-
-   @ObfuscatedName("aw")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1139321852"
+   String field2234;
+   @ObfuscatedName("d")
+   Throwable field2235;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1814961131
    )
-   static final int method3106(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class5.field84[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
+   static int field2236;
+
+   @ObfuscatedName("bh")
+   @ObfuscatedSignature(
+      signature = "(Lclass16;I)V",
+      garbageValue = "-1360719882"
+   )
+   static final void method3114(class16 var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(0 == var0.field220) {
+         var1 = client.field339.method1964(var0.field227, var0.field221, var0.field232);
+      }
+
+      if(var0.field220 == 1) {
+         var1 = client.field339.method1922(var0.field227, var0.field221, var0.field232);
+      }
+
+      if(var0.field220 == 2) {
+         var1 = client.field339.method1944(var0.field227, var0.field221, var0.field232);
+      }
+
+      if(3 == var0.field220) {
+         var1 = client.field339.method1924(var0.field227, var0.field221, var0.field232);
+      }
+
+      if(0 != var1) {
+         int var5 = client.field339.method1925(var0.field227, var0.field221, var0.field232, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field229 = var2;
+      var0.field225 = var3;
+      var0.field222 = var4;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "0"
+   )
+   public static Object method3115(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !class125.field2051) {
+            try {
+               class118 var2 = new class118();
+               var2.vmethod2785(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class125.field2051 = true;
+            }
          }
 
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = class5.field91[var5][var3][var4] * (128 - var6) + var6 * class5.field91[var5][var3 + 1][var4] >> 7;
-         int var9 = var6 * class5.field91[var5][1 + var3][var4 + 1] + (128 - var6) * class5.field91[var5][var3][1 + var4] >> 7;
-         return (128 - var7) * var8 + var7 * var9 >> 7;
-      } else {
-         return 0;
+         return var0;
       }
    }
 }

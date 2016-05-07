@@ -1,66 +1,21 @@
-import net.runelite.mapping.Export;
+import java.awt.Canvas;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dc")
+@ObfuscatedName("di")
 public final class class122 extends class119 {
-   @ObfuscatedName("qv")
-   @ObfuscatedGetter(
-      intValue = 1030096795
-   )
-   static int field1989;
    @ObfuscatedName("l")
-   static final int[] field1990 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
-   @ObfuscatedName("fz")
    @ObfuscatedGetter(
-      intValue = -1208822403
+      intValue = 1175337411
    )
-   @Export("cameraX")
-   static int field1991;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -947760493
-   )
-   int field1995;
-   @ObfuscatedName("n")
-   class123 field1996;
-
-   @ObfuscatedName("hb")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-79"
-   )
-   public void method2733() {
-      super.field1971 = (this.field1995 + 7) / 8;
-   }
-
-   @ObfuscatedName("hs")
-   @ObfuscatedSignature(
-      signature = "([II)V",
-      garbageValue = "1442266671"
-   )
-   public void method2734(int[] var1) {
-      this.field1996 = new class123(var1);
-   }
-
-   @ObfuscatedName("ht")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "98"
-   )
-   public void method2735(int var1) {
-      super.field1973[++super.field1971 - 1] = (byte)(var1 + this.field1996.method2755());
-   }
-
-   @ObfuscatedName("hj")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-500430819"
-   )
-   public void method2736() {
-      this.field1995 = super.field1971 * 8;
-   }
+   int field2022;
+   @ObfuscatedName("c")
+   static final int[] field2023 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+   @ObfuscatedName("qu")
+   public static Canvas field2024;
+   @ObfuscatedName("k")
+   class123 field2027;
 
    @ObfuscatedSignature(
       signature = "(I)V",
@@ -70,94 +25,109 @@ public final class class122 extends class119 {
       super(var1);
    }
 
-   @ObfuscatedName("hq")
+   @ObfuscatedName("hx")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "3"
+      signature = "([IB)V",
+      garbageValue = "8"
    )
-   public int method2737(int var1) {
-      int var2 = this.field1995 >> 3;
-      int var3 = 8 - (this.field1995 & 7);
+   public void method2736(int[] var1) {
+      this.field2027 = new class123(var1);
+   }
+
+   @ObfuscatedName("ho")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "203"
+   )
+   public void method2737(int var1) {
+      super.field2007[++super.field2005 - 1] = (byte)(var1 + this.field2027.method2764());
+   }
+
+   @ObfuscatedName("hf")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "974814221"
+   )
+   public int method2738() {
+      return super.field2007[++super.field2005 - 1] - this.field2027.method2764() & 255;
+   }
+
+   @ObfuscatedName("hz")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "379630077"
+   )
+   public void method2739() {
+      this.field2022 = super.field2005 * 8;
+   }
+
+   @ObfuscatedName("hn")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1795249300"
+   )
+   public void method2740() {
+      super.field2005 = (this.field2022 + 7) / 8;
+   }
+
+   @ObfuscatedName("hm")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "597554062"
+   )
+   public int method2741(int var1) {
+      return var1 * 8 - this.field2022;
+   }
+
+   @ObfuscatedName("hs")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "1542303965"
+   )
+   public int method2750(int var1) {
+      int var2 = this.field2022 >> 3;
+      int var3 = 8 - (this.field2022 & 7);
       int var4 = 0;
 
-      for(this.field1995 += var1; var1 > var3; var3 = 8) {
-         var4 += (super.field1973[var2++] & field1990[var3]) << var1 - var3;
+      for(this.field2022 += var1; var1 > var3; var3 = 8) {
+         var4 += (super.field2007[var2++] & field2023[var3]) << var1 - var3;
          var1 -= var3;
       }
 
-      if(var3 == var1) {
-         var4 += super.field1973[var2] & field1990[var3];
+      if(var1 == var3) {
+         var4 += super.field2007[var2] & field2023[var3];
       } else {
-         var4 += super.field1973[var2] >> var3 - var1 & field1990[var1];
+         var4 += super.field2007[var2] >> var3 - var1 & field2023[var1];
       }
 
       return var4;
    }
 
-   @ObfuscatedName("hf")
+   @ObfuscatedName("dw")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1487476723"
+      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
+      garbageValue = "1"
    )
-   public int method2739(int var1) {
-      return 8 * var1 - this.field1995;
-   }
-
-   @ObfuscatedName("hv")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-440447579"
-   )
-   public int method2741() {
-      return super.field1973[++super.field1971 - 1] - this.field1996.method2755() & 255;
-   }
-
-   @ObfuscatedName("ac")
-   @ObfuscatedSignature(
-      signature = "(IIIIIII)V",
-      garbageValue = "1741915561"
-   )
-   static final void method2750(int var0, int var1, int var2, int var3, int var4, int var5) {
-      int var6 = 2048 - var3 & 2047;
-      int var7 = 2048 - var4 & 2047;
-      int var8 = 0;
-      int var9 = 0;
-      int var10 = var5;
-      int var11;
-      int var12;
-      int var13;
-      if(0 != var6) {
-         var11 = class91.field1571[var6];
-         var12 = class91.field1572[var6];
-         var13 = var12 * var9 - var11 * var5 >> 16;
-         var10 = var9 * var11 + var5 * var12 >> 16;
-         var9 = var13;
+   static String method2758(String var0, boolean var1) {
+      String var2 = "https://";
+      if(client.field281 == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(client.field281 == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(client.field281 == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(5 == client.field281) {
+         var0 = var0 + "-wti";
+      } else if(client.field281 == 4) {
+         var0 = "local";
       }
 
-      if(0 != var7) {
-         var11 = class91.field1571[var7];
-         var12 = class91.field1572[var7];
-         var13 = var8 * var12 + var10 * var11 >> 16;
-         var10 = var12 * var10 - var8 * var11 >> 16;
-         var8 = var13;
+      String var3 = "";
+      if(null != class10.field164) {
+         var3 = "/p=" + class10.field164;
       }
 
-      field1991 = var0 - var8;
-      class115.field1952 = var1 - var9;
-      class24.field603 = var2 - var10;
-      class154.field2276 = var3;
-      class17.field243 = var4;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "151437761"
-   )
-   static final int method2751(int var0, int var1) {
-      int var2 = var1 * 57 + var0;
-      var2 ^= var2 << 13;
-      int var3 = 1376312589 + (789221 + var2 * var2 * 15731) * var2 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + client.field285 + "/a=" + class15.field207 + var3 + "/";
    }
 }

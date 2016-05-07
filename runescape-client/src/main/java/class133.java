@@ -1,64 +1,238 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.ImageObserver;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("eb")
 public abstract class class133 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "0"
+      garbageValue = "14"
    )
-   public abstract void vmethod3090();
+   abstract void vmethod3104();
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-708326601"
+      garbageValue = "-650846426"
    )
-   abstract int vmethod3089(int var1, int var2);
+   abstract int vmethod3106(int var1, int var2);
 
-   @ObfuscatedName("du")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)V",
-      garbageValue = "1"
+      signature = "(Ljava/lang/CharSequence;I)Z",
+      garbageValue = "-1762213950"
    )
-   static void method2829(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
+   public static boolean method2844(CharSequence var0) {
+      boolean var2 = false;
+      boolean var3 = false;
+      int var4 = 0;
+      int var5 = var0.length();
+      int var6 = 0;
 
-      for(int var4 = 0; var4 < class51.field1126; ++var4) {
-         class51 var5 = class89.method2081(var4);
-         if(var5.field1127 && -1 == var5.field1139 && var5.field1095.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               class121.field1985 = -1;
-               class36.field789 = null;
-               return;
-            }
+      boolean var1;
+      while(true) {
+         if(var6 >= var5) {
+            var1 = var3;
+            break;
+         }
 
-            if(var3 >= var2.length) {
-               short[] var6 = new short[2 * var2.length];
-
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
+         label93: {
+            char var7 = var0.charAt(var6);
+            if(var6 == 0) {
+               if(45 == var7) {
+                  var2 = true;
+                  break label93;
                }
 
-               var2 = var6;
+               if(43 == var7) {
+                  break label93;
+               }
             }
 
-            var2[var3++] = (short)var4;
+            int var9;
+            if(var7 >= 48 && var7 <= 57) {
+               var9 = var7 - 48;
+            } else if(var7 >= 65 && var7 <= 90) {
+               var9 = var7 - 55;
+            } else {
+               if(var7 < 97 || var7 > 122) {
+                  var1 = false;
+                  break;
+               }
+
+               var9 = var7 - 87;
+            }
+
+            if(var9 >= 10) {
+               var1 = false;
+               break;
+            }
+
+            if(var2) {
+               var9 = -var9;
+            }
+
+            int var8 = var9 + 10 * var4;
+            if(var4 != var8 / 10) {
+               var1 = false;
+               break;
+            }
+
+            var4 = var8;
+            var3 = true;
          }
+
+         ++var6;
       }
 
-      class36.field789 = var2;
-      class52.field1143 = 0;
-      class121.field1985 = var3;
-      String[] var8 = new String[class121.field1985];
+      return var1;
+   }
 
-      for(int var9 = 0; var9 < class121.field1985; ++var9) {
-         var8[var9] = class89.method2081(var2[var9]).field1095;
+   @ObfuscatedName("qh")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/awt/Color;ZI)V",
+      garbageValue = "258541790"
+   )
+   protected static final void method2845(int var0, String var1, Color var2, boolean var3) {
+      try {
+         Graphics var4 = class122.field2024.getGraphics();
+         if(class99.field1695 == null) {
+            class99.field1695 = new Font("Helvetica", 1, 13);
+            class123.field2039 = class122.field2024.getFontMetrics(class99.field1695);
+         }
+
+         if(var3) {
+            var4.setColor(Color.black);
+            var4.fillRect(0, 0, class15.field214, class15.field215);
+         }
+
+         if(null == var2) {
+            var2 = new Color(140, 17, 17);
+         }
+
+         try {
+            if(null == class44.field1030) {
+               class44.field1030 = class122.field2024.createImage(304, 34);
+            }
+
+            Graphics var5 = class44.field1030.getGraphics();
+            var5.setColor(var2);
+            var5.drawRect(0, 0, 303, 33);
+            var5.fillRect(2, 2, var0 * 3, 30);
+            var5.setColor(Color.black);
+            var5.drawRect(1, 1, 301, 31);
+            var5.fillRect(2 + 3 * var0, 2, 300 - 3 * var0, 30);
+            var5.setFont(class99.field1695);
+            var5.setColor(Color.white);
+            var5.drawString(var1, (304 - class123.field2039.stringWidth(var1)) / 2, 22);
+            var4.drawImage(class44.field1030, class15.field214 / 2 - 152, class15.field215 / 2 - 18, (ImageObserver)null);
+         } catch (Exception var8) {
+            int var6 = class15.field214 / 2 - 152;
+            int var7 = class15.field215 / 2 - 18;
+            var4.setColor(var2);
+            var4.drawRect(var6, var7, 303, 33);
+            var4.fillRect(var6 + 2, var7 + 2, 3 * var0, 30);
+            var4.setColor(Color.black);
+            var4.drawRect(var6 + 1, var7 + 1, 301, 31);
+            var4.fillRect(2 + var6 + 3 * var0, 2 + var7, 300 - 3 * var0, 30);
+            var4.setFont(class99.field1695);
+            var4.setColor(Color.white);
+            var4.drawString(var1, var6 + (304 - class123.field2039.stringWidth(var1)) / 2, 22 + var7);
+         }
+      } catch (Exception var9) {
+         class122.field2024.repaint();
       }
 
-      class115.method2441(var8, class36.field789);
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1544059891"
+   )
+   static void method2846(int var0) {
+      if(-3 == var0) {
+         class8.method107("Connection timed out.", "Please try using a different world.", "");
+      } else if(-2 == var0) {
+         class8.method107("", "Error connecting to server.", "");
+      } else if(var0 == -1) {
+         class8.method107("No response from server.", "Please try using a different world.", "");
+      } else if(3 == var0) {
+         class31.field732 = 3;
+      } else if(4 == var0) {
+         class8.method107("Your account has been disabled.", "Please check your message-centre for details.", "");
+      } else if(var0 == 5) {
+         class8.method107("Your account is already logged in.", "Try again in 60 secs...", "");
+      } else if(6 == var0) {
+         class8.method107("RuneScape has been updated!", "Please reload this page.", "");
+      } else if(var0 == 7) {
+         class8.method107("This world is full.", "Please use a different world.", "");
+      } else if(var0 == 8) {
+         class8.method107("Unable to connect.", "Login server offline.", "");
+      } else if(var0 == 9) {
+         class8.method107("Login limit exceeded.", "Too many connections from your address.", "");
+      } else if(10 == var0) {
+         class8.method107("Unable to connect.", "Bad session id.", "");
+      } else if(var0 == 11) {
+         class8.method107("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
+      } else if(var0 == 12) {
+         class8.method107("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+      } else if(13 == var0) {
+         class8.method107("Could not complete login.", "Please try using a different world.", "");
+      } else if(var0 == 14) {
+         class8.method107("The server is being updated.", "Please wait 1 minute and try again.", "");
+      } else if(16 == var0) {
+         class8.method107("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+      } else if(17 == var0) {
+         class8.method107("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+      } else if(var0 == 18) {
+         class8.method107("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
+      } else if(var0 == 19) {
+         class8.method107("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+      } else if(20 == var0) {
+         class8.method107("Invalid loginserver requested.", "Please try using a different world.", "");
+      } else if(var0 == 22) {
+         class8.method107("Malformed login packet.", "Please try again.", "");
+      } else if(var0 == 23) {
+         class8.method107("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 24) {
+         class8.method107("Error loading your profile.", "Please contact customer support.", "");
+      } else if(var0 == 25) {
+         class8.method107("Unexpected loginserver response.", "Please try using a different world.", "");
+      } else if(26 == var0) {
+         class8.method107("This computers address has been blocked", "as it was used to break our rules.", "");
+      } else if(var0 == 27) {
+         class8.method107("", "Service unavailable.", "");
+      } else if(31 == var0) {
+         class8.method107("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+      } else if(32 == var0) {
+         class8.method107("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
+      } else if(var0 == 37) {
+         class8.method107("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+      } else if(var0 == 38) {
+         class8.method107("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+      } else if(55 == var0) {
+         class8.method107("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+      } else {
+         if(56 == var0) {
+            class8.method107("Enter the 6-digit code generated by your", "authenticator app.", "");
+            class15.method188(11);
+            return;
+         }
+
+         if(var0 == 57) {
+            class8.method107("The code you entered was incorrect.", "Please try again.", "");
+            class15.method188(11);
+            return;
+         }
+
+         class8.method107("Unexpected server response", "Please try using a different world.", "");
+      }
+
+      class15.method188(10);
    }
 }

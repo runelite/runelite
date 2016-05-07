@@ -1,52 +1,41 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("en")
 public class class154 implements class112 {
-   @ObfuscatedName("m")
-   static final class154 field2267 = new class154("game3", "Game 3", 2);
-   @ObfuscatedName("h")
-   static final class154 field2268 = new class154("stellardawn", "Stellar Dawn", 1);
-   @ObfuscatedName("c")
+   @ObfuscatedName("jm")
    @ObfuscatedGetter(
-      intValue = 1937593959
+      intValue = 837665201
    )
-   final int field2269;
-   @ObfuscatedName("z")
-   static final class154 field2270 = new class154("game4", "Game 4", 3);
+   static int field2291;
+   @ObfuscatedName("o")
+   public final String field2292;
+   @ObfuscatedName("p")
+   public static final class154 field2293 = new class154("game3", "Game 3", 2);
    @ObfuscatedName("x")
-   static final class154 field2271 = new class154("game5", "Game 5", 4);
-   @ObfuscatedName("e")
-   public static final class154 field2272 = new class154("oldscape", "RuneScape 2007", 5);
-   @ObfuscatedName("i")
-   public final String field2273;
+   public static final class154 field2294 = new class154("game4", "Game 4", 3);
    @ObfuscatedName("j")
-   static final class154 field2274 = new class154("runescape", "RuneScape", 0);
-   @ObfuscatedName("fh")
+   public static final class154 field2295 = new class154("stellardawn", "Stellar Dawn", 1);
+   @ObfuscatedName("u")
+   public static final class154 field2296 = new class154("oldscape", "RuneScape 2007", 5);
+   @ObfuscatedName("d")
+   public static final class154 field2297 = new class154("game5", "Game 5", 4);
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 544897283
+      intValue = 684227889
    )
-   @Export("cameraPitch")
-   static int field2276;
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "1776018937"
-   )
-   static Class method3126(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Class.forName(var0)))))))));
-   }
+   final int field2298;
+   @ObfuscatedName("s")
+   public static final class154 field2299 = new class154("runescape", "RuneScape", 0);
 
    @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "23"
+      signature = "(I)I",
+      garbageValue = "693017402"
    )
-   public int vmethod3136() {
-      return this.field2269;
+   public int vmethod3150() {
+      return this.field2298;
    }
 
    @ObfuscatedSignature(
@@ -54,7 +43,35 @@ public class class154 implements class112 {
       garbageValue = "0"
    )
    class154(String var1, String var2, int var3) {
-      this.field2273 = var1;
-      this.field2269 = var3;
+      this.field2292 = var1;
+      this.field2298 = var3;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lclass167;Lclass167;Ljava/lang/String;Ljava/lang/String;S)Lclass224;",
+      garbageValue = "17761"
+   )
+   public static class224 method3143(class167 var0, class167 var1, String var2, String var3) {
+      int var4 = var0.method3253(var2);
+      int var5 = var0.method3254(var4, var3);
+      class224 var6;
+      if(!class35.method714(var0, var4, var5)) {
+         var6 = null;
+      } else {
+         byte[] var8 = var1.method3239(var4, var5);
+         class224 var7;
+         if(null == var8) {
+            var7 = null;
+         } else {
+            class224 var9 = new class224(var8, class76.field1387, class76.field1390, class76.field1389, class9.field159, class76.field1396, class21.field575);
+            class27.method633();
+            var7 = var9;
+         }
+
+         var6 = var7;
+      }
+
+      return var6;
    }
 }
