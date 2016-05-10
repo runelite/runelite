@@ -43,7 +43,7 @@ public enum Skill
 	WOODCUTTING("Woodcutting"),
 	FLETCHING("Fletching"),
 	FISHING("Fishing"),
-	FIREMARKING("Firemarking"),
+	FIREMAKING("Firemaking"),
 	CRAFTING("Crafting"),
 	SMITHING("Smithing"),
 	MINING("Mining"),
