@@ -52,6 +52,12 @@
 			<groupId>net.runelite</groupId>
 			<artifactId>deob</artifactId>
 			<version>1.1-SNAPSHOT</version>
+			<classifier>jar-with-dependencies</classifier>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>vanilla</artifactId>
+			<version>114</version>
 		</dependency>
 	</dependencies>
 
@@ -83,7 +89,8 @@
 							<executable>${basedir}/src/main/bash/update.sh</executable>
 							<environmentVariables>
 								<RS_CLIENT_PATH>${net.runelite.rs:rs-client:jar}</RS_CLIENT_PATH>
-								<DEOB_PATH>${net.runelite:deob:jar}</DEOB_PATH>
+								<DEOB_PATH>${net.runelite:deob:jar:jar-with-dependencies}</DEOB_PATH>
+								<VANILLA_PATH>${net.runelite.rs:vanilla:jar}</VANILLA_PATH>
 							</environmentVariables>
 						</configuration>
 					</execution>
