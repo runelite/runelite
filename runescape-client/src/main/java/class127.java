@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -6,6 +7,7 @@ public class class127 {
    @ObfuscatedName("bi")
    static class168 field2058;
    @ObfuscatedName("bu")
+   @Export("host")
    static String field2059;
    @ObfuscatedName("dp")
    static byte[][] field2061;
@@ -71,23 +73,23 @@ public class class127 {
                   int var9 = var5;
                   int var10 = var6;
                   if(22 != var8 && var8 != 29 && 34 != var8 && var8 != 36 && 46 != var8 && 47 != var8 && 48 != var8) {
-                     int[][] var13 = client.field340[class21.field581].field1911;
+                     int[][] var11 = client.field340[class21.field581].field1911;
 
-                     for(int var14 = 0; var14 < 10; ++var14) {
-                        int var15 = (int)(Math.random() * 4.0D);
-                        if(0 == var15 && var9 > 0 && var9 > var5 - 3 && 0 == (var13[var9 - 1][var10] & 19136776)) {
+                     for(int var12 = 0; var12 < 10; ++var12) {
+                        int var13 = (int)(Math.random() * 4.0D);
+                        if(0 == var13 && var9 > 0 && var9 > var5 - 3 && 0 == (var11[var9 - 1][var10] & 19136776)) {
                            --var9;
                         }
 
-                        if(var15 == 1 && var9 < 103 && var9 < 3 + var5 && (var13[1 + var9][var10] & 19136896) == 0) {
+                        if(var13 == 1 && var9 < 103 && var9 < 3 + var5 && (var11[1 + var9][var10] & 19136896) == 0) {
                            ++var9;
                         }
 
-                        if(2 == var15 && var10 > 0 && var10 > var6 - 3 && 0 == (var13[var9][var10 - 1] & 19136770)) {
+                        if(2 == var13 && var10 > 0 && var10 > var6 - 3 && 0 == (var11[var9][var10 - 1] & 19136770)) {
                            --var10;
                         }
 
-                        if(3 == var15 && var10 < 103 && var10 < var6 + 3 && 0 == (var13[var9][1 + var10] & 19136800)) {
+                        if(3 == var13 && var10 < 103 && var10 < var6 + 3 && 0 == (var11[var9][1 + var10] & 19136800)) {
                            ++var10;
                         }
                      }

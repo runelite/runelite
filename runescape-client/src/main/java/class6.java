@@ -8,6 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Projectile")
 public final class class6 extends class85 {
    @ObfuscatedName("m")
+   @Export("z")
    double field103;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
@@ -18,11 +19,13 @@ public final class class6 extends class85 {
    @ObfuscatedGetter(
       intValue = 1802403789
    )
+   @Export("y1")
    int field105;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1785876883
    )
+   @Export("z1")
    int field106;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -33,6 +36,7 @@ public final class class6 extends class85 {
    @ObfuscatedGetter(
       intValue = -458672663
    )
+   @Export("floor")
    int field108;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
@@ -43,23 +47,28 @@ public final class class6 extends class85 {
    @ObfuscatedGetter(
       intValue = 2070774807
    )
+   @Export("start")
    int field110;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1959069117
    )
+   @Export("x1")
    int field111;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -417276451
    )
+   @Export("interacting")
    int field112;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -977923133
    )
+   @Export("id")
    int field113;
    @ObfuscatedName("i")
+   @Export("x")
    double field114;
    @ObfuscatedName("r")
    @Export("velocityZ")
@@ -81,6 +90,7 @@ public final class class6 extends class85 {
    )
    int field120 = 0;
    @ObfuscatedName("w")
+   @Export("az")
    double field121;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
@@ -107,6 +117,7 @@ public final class class6 extends class85 {
    @ObfuscatedGetter(
       intValue = 1427833467
    )
+   @Export("startTime")
    int field127;
 
    @ObfuscatedName("s")
@@ -199,15 +210,15 @@ public final class class6 extends class85 {
             var1.field585 = new int[var4];
             var1.field586 = new String[var4];
 
-            int var6;
-            for(int var5 = 0; var3.field2005 < var3.field2007.length - 12; var1.field584[var5++] = var6) {
-               var6 = var3.method2584();
-               if(var6 == 3) {
-                  var1.field586[var5] = var3.method2500();
-               } else if(var6 < 100 && 21 != var6 && var6 != 38 && 39 != var6) {
-                  var1.field585[var5] = var3.method2497();
+            int var5;
+            for(int var6 = 0; var3.field2005 < var3.field2007.length - 12; var1.field584[var6++] = var5) {
+               var5 = var3.method2584();
+               if(var5 == 3) {
+                  var1.field586[var6] = var3.method2500();
+               } else if(var5 < 100 && 21 != var5 && var5 != 38 && 39 != var5) {
+                  var1.field585[var6] = var3.method2497();
                } else {
-                  var1.field585[var5] = var3.method2492();
+                  var1.field585[var6] = var3.method2492();
                }
             }
 

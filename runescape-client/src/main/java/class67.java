@@ -81,6 +81,7 @@ public class class67 {
          this.method1467(var1, var3 - 1);
          this.method1467(var3 + 1, var2);
       }
+
    }
 
    class67() {
@@ -107,7 +108,7 @@ public class class67 {
          this.field1280 = new int[var3];
          this.field1274 = new int[var3][];
 
-         int var7;
+         int var6;
          for(var4 = 0; var4 < var3; ++var4) {
             this.field1279[var4] = class70.method1515(3) + 1;
             var5 = this.field1273[var4] = class70.method1515(2);
@@ -116,11 +117,11 @@ public class class67 {
             }
 
             var5 = 1 << var5;
-            int[] var6 = new int[var5];
-            this.field1274[var4] = var6;
+            int[] var7 = new int[var5];
+            this.field1274[var4] = var7;
 
-            for(var7 = 0; var7 < var5; ++var7) {
-               var6[var7] = class70.method1515(8) - 1;
+            for(var6 = 0; var6 < var5; ++var6) {
+               var7[var6] = class70.method1515(8) - 1;
             }
          }
 
@@ -139,9 +140,9 @@ public class class67 {
          var5 = 2;
 
          for(var9 = 0; var9 < var2; ++var9) {
-            var7 = this.field1277[var9];
+            var6 = this.field1277[var9];
 
-            for(int var8 = 0; var8 < this.field1279[var7]; ++var8) {
+            for(int var8 = 0; var8 < this.field1279[var6]; ++var8) {
                this.field1275[var5++] = class70.method1515(var4);
             }
          }
@@ -214,13 +215,13 @@ public class class67 {
          var9 = this.method1466(field1282[var7], field1281[var7], field1282[var8], field1281[var8], field1282[var6]);
          var10 = field1281[var6];
          int var11 = var4 - var9;
-         int var13 = (var11 < var9?var11:var9) << 1;
+         int var12 = (var11 < var9?var11:var9) << 1;
          if(var10 != 0) {
-            boolean[] var14 = field1284;
+            boolean[] var13 = field1284;
             field1284[var8] = true;
-            var14[var7] = true;
+            var13[var7] = true;
             field1284[var6] = true;
-            if(var10 >= var13) {
+            if(var10 >= var12) {
                field1281[var6] = var11 > var9?var10 - var9 + var9:var9 - var10 + var11 - 1;
             } else {
                field1281[var6] = (var10 & 1) != 0?var9 - (var10 + 1) / 2:var9 + var10 / 2;
@@ -249,10 +250,10 @@ public class class67 {
          }
       }
 
-      float var16 = field1278[var7];
+      float var14 = field1278[var7];
 
       for(var9 = var6; var9 < var2; ++var9) {
-         var1[var9] *= var16;
+         var1[var9] *= var14;
       }
 
    }

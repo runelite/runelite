@@ -21,18 +21,6 @@ public class class176 {
    )
    static int field2922;
 
-   static {
-      int var0 = 2;
-
-      for(int var1 = 0; var1 < 32; ++var1) {
-         field2919[var1] = var0 - 1;
-         var0 += var0;
-      }
-
-      field2918 = new int[2000];
-      field2920 = new int[2000];
-   }
-
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(IZZZI)Lclass168;",
@@ -56,5 +44,18 @@ public class class176 {
       if(class188.method3731(var0)) {
          class17.method203(class217.field3171[var0], -1);
       }
+
+   }
+
+   static {
+      int var0 = 2;
+
+      for(int var1 = 0; var1 < 32; ++var1) {
+         field2919[var1] = var0 - 1;
+         var0 += var0;
+      }
+
+      field2918 = new int[2000];
+      field2920 = new int[2000];
    }
 }

@@ -135,11 +135,14 @@ public class class119 extends class208 {
    public void method2490(int var1) {
       if(var1 >= 0 && var1 < 128) {
          this.method2477(var1);
-      } else if(var1 >= 0 && var1 < '耀') {
-         this.method2661('耀' + var1);
       } else {
-         throw new IllegalArgumentException();
+         if(var1 < 0 || var1 >= '耀') {
+            throw new IllegalArgumentException();
+         }
+
+         this.method2661('耀' + var1);
       }
+
    }
 
    @ObfuscatedName("z")
@@ -444,40 +447,6 @@ public class class119 extends class208 {
    public void method2524(int var1) {
       this.field2007[this.field2005 - var1 - 2] = (byte)(var1 >> 8);
       this.field2007[this.field2005 - var1 - 1] = (byte)var1;
-   }
-
-   static {
-      int var2;
-      for(int var1 = 0; var1 < 256; ++var1) {
-         int var0 = var1;
-
-         for(var2 = 0; var2 < 8; ++var2) {
-            if((var0 & 1) == 1) {
-               var0 = var0 >>> 1 ^ -306674912;
-            } else {
-               var0 >>>= 1;
-            }
-         }
-
-         field2010[var1] = var0;
-      }
-
-      field2008 = new long[256];
-
-      for(var2 = 0; var2 < 256; ++var2) {
-         long var4 = (long)var2;
-
-         for(int var3 = 0; var3 < 8; ++var3) {
-            if(1L == (var4 & 1L)) {
-               var4 = var4 >>> 1 ^ -3932672073523589310L;
-            } else {
-               var4 >>>= 1;
-            }
-         }
-
-         field2008[var2] = var4;
-      }
-
    }
 
    @ObfuscatedName("az")
@@ -801,10 +770,10 @@ public class class119 extends class208 {
       int var2 = var0.method2750(2);
       int var3;
       int var4;
+      int var5;
+      int var6;
       int var7;
       int var8;
-      int var9;
-      int var10;
       if(0 == var2) {
          if(var0.method2750(1) != 0) {
             method2638(var0, var1);
@@ -828,13 +797,13 @@ public class class119 extends class208 {
 
             var12.field862 = class32.field760[var1];
             var12.field837 = class32.field761[var1];
-            var7 = class32.field759[var1];
-            var8 = var7 >> 28;
-            var9 = var7 >> 14 & 255;
-            var10 = var7 & 255;
+            var5 = class32.field759[var1];
+            var6 = var5 >> 28;
+            var7 = var5 >> 14 & 255;
+            var8 = var5 & 255;
             var12.field868[0] = class32.field753[var1];
-            var12.field55 = (byte)var8;
-            var12.method15(var3 + (var9 << 6) - class22.field594, var4 + (var10 << 6) - class114.field1981);
+            var12.field55 = (byte)var6;
+            var12.method15(var3 + (var7 << 6) - class22.field594, var4 + (var8 << 6) - class114.field1981);
             var12.field36 = false;
             return true;
          }
@@ -844,64 +813,64 @@ public class class119 extends class208 {
          class32.field759[var1] = ((var3 + (var4 >> 28) & 3) << 28) + (var4 & 268435455);
          return false;
       } else {
-         int var5;
-         int var6;
+         int var9;
+         int var10;
          if(var2 == 2) {
             var3 = var0.method2750(5);
             var4 = var3 >> 3;
-            var5 = var3 & 7;
-            var6 = class32.field759[var1];
-            var7 = (var6 >> 28) + var4 & 3;
-            var8 = var6 >> 14 & 255;
-            var9 = var6 & 255;
-            if(0 == var5) {
-               --var8;
-               --var9;
+            var9 = var3 & 7;
+            var10 = class32.field759[var1];
+            var5 = (var10 >> 28) + var4 & 3;
+            var6 = var10 >> 14 & 255;
+            var7 = var10 & 255;
+            if(0 == var9) {
+               --var6;
+               --var7;
             }
 
-            if(1 == var5) {
-               --var9;
+            if(1 == var9) {
+               --var7;
             }
 
-            if(var5 == 2) {
-               ++var8;
-               --var9;
+            if(var9 == 2) {
+               ++var6;
+               --var7;
             }
 
-            if(var5 == 3) {
-               --var8;
+            if(var9 == 3) {
+               --var6;
             }
 
-            if(var5 == 4) {
-               ++var8;
+            if(var9 == 4) {
+               ++var6;
             }
 
-            if(var5 == 5) {
-               --var8;
-               ++var9;
+            if(var9 == 5) {
+               --var6;
+               ++var7;
             }
 
-            if(var5 == 6) {
-               ++var9;
+            if(var9 == 6) {
+               ++var7;
             }
 
-            if(7 == var5) {
-               ++var8;
-               ++var9;
+            if(7 == var9) {
+               ++var6;
+               ++var7;
             }
 
-            class32.field759[var1] = var9 + (var7 << 28) + (var8 << 14);
+            class32.field759[var1] = var7 + (var5 << 28) + (var6 << 14);
             return false;
          } else {
             var3 = var0.method2750(18);
             var4 = var3 >> 16;
-            var5 = var3 >> 8 & 255;
-            var6 = var3 & 255;
-            var7 = class32.field759[var1];
-            var8 = var4 + (var7 >> 28) & 3;
-            var9 = var5 + (var7 >> 14) & 255;
-            var10 = var7 + var6 & 255;
-            class32.field759[var1] = var10 + (var9 << 14) + (var8 << 28);
+            var9 = var3 >> 8 & 255;
+            var10 = var3 & 255;
+            var5 = class32.field759[var1];
+            var6 = var4 + (var5 >> 28) & 3;
+            var7 = var9 + (var5 >> 14) & 255;
+            var8 = var5 + var10 & 255;
+            class32.field759[var1] = var8 + (var7 << 14) + (var6 << 28);
             return false;
          }
       }
@@ -983,5 +952,39 @@ public class class119 extends class208 {
    static final void method2694() {
       client.field322.method2737(21);
       client.field322.method2477(0);
+   }
+
+   static {
+      int var0;
+      for(int var1 = 0; var1 < 256; ++var1) {
+         int var2 = var1;
+
+         for(var0 = 0; var0 < 8; ++var0) {
+            if((var2 & 1) == 1) {
+               var2 = var2 >>> 1 ^ -306674912;
+            } else {
+               var2 >>>= 1;
+            }
+         }
+
+         field2010[var1] = var2;
+      }
+
+      field2008 = new long[256];
+
+      for(var0 = 0; var0 < 256; ++var0) {
+         long var4 = (long)var0;
+
+         for(int var3 = 0; var3 < 8; ++var3) {
+            if(1L == (var4 & 1L)) {
+               var4 = var4 >>> 1 ^ -3932672073523589310L;
+            } else {
+               var4 >>>= 1;
+            }
+         }
+
+         field2008[var0] = var4;
+      }
+
    }
 }

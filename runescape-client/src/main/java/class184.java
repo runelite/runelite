@@ -104,30 +104,30 @@ public class class184 extends class66 {
       var1.method3502();
       boolean var5 = true;
       Object var6 = null;
-      int[] var12 = new int[]{var4};
+      int[] var7 = new int[]{var4};
 
-      for(class197 var7 = (class197)var1.field2943.method3780(); var7 != null; var7 = (class197)var1.field2943.method3781()) {
-         int var8 = (int)var7.field3125;
-         class181 var9 = (class181)this.field2987.method3777((long)var8);
-         if(var9 == null) {
-            byte[] var11 = var2.method3244(var8);
-            class181 var10;
+      for(class197 var8 = (class197)var1.field2943.method3780(); var8 != null; var8 = (class197)var1.field2943.method3781()) {
+         int var9 = (int)var8.field3125;
+         class181 var10 = (class181)this.field2987.method3777((long)var9);
+         if(var10 == null) {
+            byte[] var11 = var2.method3244(var9);
+            class181 var12;
             if(var11 == null) {
-               var10 = null;
+               var12 = null;
             } else {
-               var10 = new class181(var11);
+               var12 = new class181(var11);
             }
 
-            var9 = var10;
-            if(null == var10) {
+            var10 = var12;
+            if(null == var12) {
                var5 = false;
                continue;
             }
 
-            this.field2987.method3778(var10, (long)var8);
+            this.field2987.method3778(var12, (long)var9);
          }
 
-         if(!var9.method3506(var3, var7.field3104, var12)) {
+         if(!var10.method3506(var3, var8.field3104, var7)) {
             var5 = false;
          }
       }
@@ -327,7 +327,6 @@ public class class184 extends class66 {
          } else {
             this.method3609(var3, var4, 64);
          }
-
       } else if(var2 == 160) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -469,7 +468,6 @@ public class class184 extends class66 {
          if(var4 == 49) {
             this.method3602(var3, (this.field2997[var3] & -128) + var5);
          }
-
       } else if(var2 == 192) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -488,6 +486,7 @@ public class class184 extends class66 {
             this.method3598();
          }
       }
+
    }
 
    @ObfuscatedName("ay")
@@ -602,8 +601,8 @@ public class class184 extends class66 {
          } else {
             var4.field3027 = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("at")
@@ -696,8 +695,8 @@ public class class184 extends class66 {
          for(var1 = 0; var1 < 16; ++var1) {
             this.method3614(var1);
          }
-
       }
+
    }
 
    @ObfuscatedName("ap")
@@ -924,6 +923,7 @@ public class class184 extends class66 {
             this.field3008[var1][var2] = var6;
          }
       }
+
    }
 
    @ObfuscatedName("ar")

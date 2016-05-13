@@ -20,6 +20,7 @@ public class class31 {
    @ObfuscatedGetter(
       intValue = 2126464411
    )
+   @Export("loginWindowX")
    static int field720;
    @ObfuscatedName("z")
    static int[] field721;
@@ -31,6 +32,7 @@ public class class31 {
    )
    static int field724;
    @ObfuscatedName("ax")
+   @Export("loginMessage2")
    static String field725;
    @ObfuscatedName("an")
    @ObfuscatedGetter(
@@ -51,6 +53,7 @@ public class class31 {
    @ObfuscatedGetter(
       intValue = -1263018595
    )
+   @Export("loginIndex2")
    static int field729;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
@@ -63,10 +66,12 @@ public class class31 {
    @ObfuscatedGetter(
       intValue = -1526898581
    )
+   @Export("loginIndex")
    static int field732;
    @ObfuscatedName("ai")
    static String field733;
    @ObfuscatedName("ah")
+   @Export("loginMessage1")
    static String field734;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
@@ -79,6 +84,7 @@ public class class31 {
    @Export("username")
    static String field737;
    @ObfuscatedName("aa")
+   @Export("loginMessage3")
    static String field738;
    @ObfuscatedName("at")
    static boolean field739;
@@ -87,6 +93,7 @@ public class class31 {
    @ObfuscatedName("y")
    static int[] field741;
    @ObfuscatedName("ak")
+   @Export("worldSelectShown")
    static boolean field744;
    @ObfuscatedName("av")
    static class78[] field745;
@@ -102,6 +109,22 @@ public class class31 {
       intValue = 2032006467
    )
    static int field748 = 0;
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2126329553"
+   )
+   static final void method677() {
+      if(class139.field2154 != null) {
+         class139.field2154.method1148();
+      }
+
+      if(null != class3.field63) {
+         class3.field63.method1148();
+      }
+
+   }
 
    static {
       field720 = field748 + 202;
@@ -126,21 +149,5 @@ public class class31 {
       field729 = 0;
       field744 = false;
       field747 = -1;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2126329553"
-   )
-   static final void method677() {
-      if(class139.field2154 != null) {
-         class139.field2154.method1148();
-      }
-
-      if(null != class3.field63) {
-         class3.field63.method1148();
-      }
-
    }
 }

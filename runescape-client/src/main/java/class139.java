@@ -44,8 +44,8 @@ public final class class139 extends Canvas {
                client.field333 = true;
             }
          }
-
       }
+
    }
 
    class139(Component var1) {

@@ -123,347 +123,347 @@ public class class181 extends class208 {
 
       ++var2.field2005;
       ++var9;
-      byte[] var38 = new byte[var9];
+      byte[] var42 = new byte[var9];
       int var12;
-      int var14;
+      int var13;
       if(var9 > 1) {
-         var38[1] = 1;
-         int var13 = 1;
+         var42[1] = 1;
+         int var14 = 1;
          var12 = 2;
 
-         for(var14 = 2; var14 < var9; ++var14) {
+         for(var13 = 2; var13 < var9; ++var13) {
             int var15 = var2.method2492();
             if(0 == var15) {
-               var13 = var12++;
+               var14 = var12++;
             } else {
-               if(var15 <= var13) {
+               if(var15 <= var14) {
                   --var15;
                }
 
-               var13 = var15;
+               var14 = var15;
             }
 
-            var38[var14] = (byte)var13;
+            var42[var13] = (byte)var14;
          }
       } else {
          var12 = var9;
       }
 
-      class185[] var39 = new class185[var12];
+      class185[] var43 = new class185[var12];
 
-      class185 var40;
-      for(var14 = 0; var14 < var39.length; ++var14) {
-         var40 = var39[var14] = new class185();
+      class185 var44;
+      for(var13 = 0; var13 < var43.length; ++var13) {
+         var44 = var43[var13] = new class185();
          int var16 = var2.method2492();
          if(var16 > 0) {
-            var40.field3018 = new byte[2 * var16];
+            var44.field3018 = new byte[2 * var16];
          }
 
          var16 = var2.method2492();
          if(var16 > 0) {
-            var40.field3011 = new byte[2 + 2 * var16];
-            var40.field3011[1] = 64;
+            var44.field3011 = new byte[2 + 2 * var16];
+            var44.field3011[1] = 64;
          }
       }
 
-      var14 = var2.method2492();
-      byte[] var41 = var14 > 0?new byte[2 * var14]:null;
-      var14 = var2.method2492();
-      byte[] var42 = var14 > 0?new byte[2 * var14]:null;
+      var13 = var2.method2492();
+      byte[] var45 = var13 > 0?new byte[2 * var13]:null;
+      var13 = var2.method2492();
+      byte[] var17 = var13 > 0?new byte[2 * var13]:null;
 
-      int var17;
-      for(var17 = 0; 0 != var2.field2007[var17 + var2.field2005]; ++var17) {
+      int var18;
+      for(var18 = 0; 0 != var2.field2007[var18 + var2.field2005]; ++var18) {
          ;
       }
 
-      byte[] var18 = new byte[var17];
+      byte[] var19 = new byte[var18];
 
-      int var19;
-      for(var19 = 0; var19 < var17; ++var19) {
-         var18[var19] = var2.method2493();
+      int var20;
+      for(var20 = 0; var20 < var18; ++var20) {
+         var19[var20] = var2.method2493();
       }
 
       ++var2.field2005;
-      ++var17;
-      var19 = 0;
+      ++var18;
+      var20 = 0;
 
-      int var20;
-      for(var20 = 0; var20 < 128; ++var20) {
-         var19 += var2.method2492();
-         this.field2947[var20] = (short)var19;
-      }
-
-      var19 = 0;
-
-      for(var20 = 0; var20 < 128; ++var20) {
-         var19 += var2.method2492();
-         this.field2947[var20] = (short)(this.field2947[var20] + (var19 << 8));
+      int var21;
+      for(var21 = 0; var21 < 128; ++var21) {
+         var20 += var2.method2492();
+         this.field2947[var21] = (short)var20;
       }
 
       var20 = 0;
-      int var21 = 0;
-      int var22 = 0;
 
-      int var23;
-      for(var23 = 0; var23 < 128; ++var23) {
-         if(var20 == 0) {
-            if(var21 < var18.length) {
-               var20 = var18[var21++];
-            } else {
-               var20 = -1;
-            }
-
-            var22 = var2.method2507();
-         }
-
-         this.field2947[var23] = (short)(this.field2947[var23] + ((var22 - 1 & 2) << 14));
-         this.field2954[var23] = var22;
-         --var20;
+      for(var21 = 0; var21 < 128; ++var21) {
+         var20 += var2.method2492();
+         this.field2947[var21] = (short)(this.field2947[var21] + (var20 << 8));
       }
 
-      var20 = 0;
       var21 = 0;
-      var23 = 0;
+      int var22 = 0;
+      int var23 = 0;
 
       int var24;
       for(var24 = 0; var24 < 128; ++var24) {
-         if(this.field2954[var24] != 0) {
-            if(0 == var20) {
-               if(var21 < var4.length) {
-                  var20 = var4[var21++];
-               } else {
-                  var20 = -1;
-               }
-
-               var23 = var2.field2007[var5++] - 1;
+         if(var21 == 0) {
+            if(var22 < var19.length) {
+               var21 = var19[var22++];
+            } else {
+               var21 = -1;
             }
 
-            this.field2951[var24] = (byte)var23;
-            --var20;
+            var23 = var2.method2507();
          }
+
+         this.field2947[var24] = (short)(this.field2947[var24] + ((var23 - 1 & 2) << 14));
+         this.field2954[var24] = var23;
+         --var21;
       }
 
-      var20 = 0;
       var21 = 0;
+      var22 = 0;
       var24 = 0;
 
-      for(int var25 = 0; var25 < 128; ++var25) {
+      int var25;
+      for(var25 = 0; var25 < 128; ++var25) {
          if(this.field2954[var25] != 0) {
-            if(var20 == 0) {
-               if(var21 < var7.length) {
-                  var20 = var7[var21++];
+            if(0 == var21) {
+               if(var22 < var4.length) {
+                  var21 = var4[var22++];
                } else {
-                  var20 = -1;
+                  var21 = -1;
                }
 
-               var24 = var2.field2007[var8++] + 16 << 2;
+               var24 = var2.field2007[var5++] - 1;
             }
 
-            this.field2949[var25] = (byte)var24;
-            --var20;
+            this.field2951[var25] = (byte)var24;
+            --var21;
          }
       }
 
-      var20 = 0;
       var21 = 0;
-      class185 var44 = null;
+      var22 = 0;
+      var25 = 0;
 
-      int var26;
-      for(var26 = 0; var26 < 128; ++var26) {
+      for(int var26 = 0; var26 < 128; ++var26) {
          if(this.field2954[var26] != 0) {
-            if(0 == var20) {
-               var44 = var39[var38[var21]];
-               if(var21 < var10.length) {
-                  var20 = var10[var21++];
+            if(var21 == 0) {
+               if(var22 < var7.length) {
+                  var21 = var7[var22++];
                } else {
-                  var20 = -1;
+                  var21 = -1;
                }
+
+               var25 = var2.field2007[var8++] + 16 << 2;
             }
 
-            this.field2952[var26] = var44;
-            --var20;
+            this.field2949[var26] = (byte)var25;
+            --var21;
          }
       }
 
-      var20 = 0;
       var21 = 0;
-      var26 = 0;
+      var22 = 0;
+      class185 var46 = null;
 
       int var27;
       for(var27 = 0; var27 < 128; ++var27) {
-         if(0 == var20) {
-            if(var21 < var18.length) {
-               var20 = var18[var21++];
-            } else {
-               var20 = -1;
+         if(this.field2954[var27] != 0) {
+            if(0 == var21) {
+               var46 = var43[var42[var22]];
+               if(var22 < var10.length) {
+                  var21 = var10[var22++];
+               } else {
+                  var21 = -1;
+               }
             }
 
-            if(this.field2954[var27] > 0) {
-               var26 = var2.method2492() + 1;
+            this.field2952[var27] = var46;
+            --var21;
+         }
+      }
+
+      var21 = 0;
+      var22 = 0;
+      var27 = 0;
+
+      int var28;
+      for(var28 = 0; var28 < 128; ++var28) {
+         if(0 == var21) {
+            if(var22 < var19.length) {
+               var21 = var19[var22++];
+            } else {
+               var21 = -1;
+            }
+
+            if(this.field2954[var28] > 0) {
+               var27 = var2.method2492() + 1;
             }
          }
 
-         this.field2946[var27] = (byte)var26;
-         --var20;
+         this.field2946[var28] = (byte)var27;
+         --var21;
       }
 
       this.field2950 = var2.method2492() + 1;
 
-      class185 var28;
-      int var29;
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var39[var27];
-         if(null != var28.field3018) {
-            for(var29 = 1; var29 < var28.field3018.length; var29 += 2) {
-               var28.field3018[var29] = var2.method2493();
+      class185 var29;
+      int var30;
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var43[var28];
+         if(null != var29.field3018) {
+            for(var30 = 1; var30 < var29.field3018.length; var30 += 2) {
+               var29.field3018[var30] = var2.method2493();
             }
          }
 
-         if(null != var28.field3011) {
-            for(var29 = 3; var29 < var28.field3011.length - 2; var29 += 2) {
-               var28.field3011[var29] = var2.method2493();
-            }
-         }
-      }
-
-      if(var41 != null) {
-         for(var27 = 1; var27 < var41.length; var27 += 2) {
-            var41[var27] = var2.method2493();
-         }
-      }
-
-      if(var42 != null) {
-         for(var27 = 1; var27 < var42.length; var27 += 2) {
-            var42[var27] = var2.method2493();
-         }
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var39[var27];
-         if(null != var28.field3011) {
-            var19 = 0;
-
-            for(var29 = 2; var29 < var28.field3011.length; var29 += 2) {
-               var19 = 1 + var19 + var2.method2492();
-               var28.field3011[var29] = (byte)var19;
+         if(null != var29.field3011) {
+            for(var30 = 3; var30 < var29.field3011.length - 2; var30 += 2) {
+               var29.field3011[var30] = var2.method2493();
             }
          }
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var39[var27];
-         if(var28.field3018 != null) {
-            var19 = 0;
+      if(var45 != null) {
+         for(var28 = 1; var28 < var45.length; var28 += 2) {
+            var45[var28] = var2.method2493();
+         }
+      }
 
-            for(var29 = 2; var29 < var28.field3018.length; var29 += 2) {
-               var19 = 1 + var19 + var2.method2492();
-               var28.field3018[var29] = (byte)var19;
+      if(var17 != null) {
+         for(var28 = 1; var28 < var17.length; var28 += 2) {
+            var17[var28] = var2.method2493();
+         }
+      }
+
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var43[var28];
+         if(null != var29.field3011) {
+            var20 = 0;
+
+            for(var30 = 2; var30 < var29.field3011.length; var30 += 2) {
+               var20 = 1 + var20 + var2.method2492();
+               var29.field3011[var30] = (byte)var20;
             }
          }
       }
 
-      byte var30;
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var43[var28];
+         if(var29.field3018 != null) {
+            var20 = 0;
+
+            for(var30 = 2; var30 < var29.field3018.length; var30 += 2) {
+               var20 = 1 + var20 + var2.method2492();
+               var29.field3018[var30] = (byte)var20;
+            }
+         }
+      }
+
+      byte var31;
       int var32;
       int var33;
       int var34;
       int var35;
       int var36;
-      int var47;
-      byte var49;
-      if(var41 != null) {
-         var19 = var2.method2492();
-         var41[0] = (byte)var19;
+      int var37;
+      byte var38;
+      if(var45 != null) {
+         var20 = var2.method2492();
+         var45[0] = (byte)var20;
 
-         for(var27 = 2; var27 < var41.length; var27 += 2) {
-            var19 = 1 + var19 + var2.method2492();
-            var41[var27] = (byte)var19;
+         for(var28 = 2; var28 < var45.length; var28 += 2) {
+            var20 = 1 + var20 + var2.method2492();
+            var45[var28] = (byte)var20;
          }
 
-         var49 = var41[0];
-         byte var45 = var41[1];
+         var38 = var45[0];
+         byte var39 = var45[1];
 
-         for(var29 = 0; var29 < var49; ++var29) {
-            this.field2946[var29] = (byte)(32 + this.field2946[var29] * var45 >> 6);
+         for(var30 = 0; var30 < var38; ++var30) {
+            this.field2946[var30] = (byte)(32 + this.field2946[var30] * var39 >> 6);
          }
 
-         for(var29 = 2; var29 < var41.length; var29 += 2) {
-            var30 = var41[var29];
-            byte var31 = var41[1 + var29];
-            var32 = (var30 - var49) * var45 + (var30 - var49) / 2;
+         for(var30 = 2; var30 < var45.length; var30 += 2) {
+            var31 = var45[var30];
+            byte var40 = var45[1 + var30];
+            var32 = (var31 - var38) * var39 + (var31 - var38) / 2;
 
-            for(var33 = var49; var33 < var30; ++var33) {
-               var35 = var30 - var49;
+            for(var33 = var38; var33 < var31; ++var33) {
+               var35 = var31 - var38;
                var36 = var32 >>> 31;
                var34 = (var36 + var32) / var35 - var36;
                this.field2946[var33] = (byte)(32 + this.field2946[var33] * var34 >> 6);
-               var32 += var31 - var45;
+               var32 += var40 - var39;
             }
 
-            var49 = var30;
-            var45 = var31;
+            var38 = var31;
+            var39 = var40;
          }
 
-         for(var47 = var49; var47 < 128; ++var47) {
-            this.field2946[var47] = (byte)(32 + var45 * this.field2946[var47] >> 6);
+         for(var37 = var38; var37 < 128; ++var37) {
+            this.field2946[var37] = (byte)(32 + var39 * this.field2946[var37] >> 6);
          }
 
-         var40 = null;
+         var44 = null;
       }
 
-      if(null != var42) {
-         var19 = var2.method2492();
-         var42[0] = (byte)var19;
+      if(null != var17) {
+         var20 = var2.method2492();
+         var17[0] = (byte)var20;
 
-         for(var27 = 2; var27 < var42.length; var27 += 2) {
-            var19 = var19 + 1 + var2.method2492();
-            var42[var27] = (byte)var19;
+         for(var28 = 2; var28 < var17.length; var28 += 2) {
+            var20 = var20 + 1 + var2.method2492();
+            var17[var28] = (byte)var20;
          }
 
-         var49 = var42[0];
-         int var46 = var42[1] << 1;
+         var38 = var17[0];
+         int var47 = var17[1] << 1;
 
-         for(var29 = 0; var29 < var49; ++var29) {
-            var47 = (this.field2949[var29] & 255) + var46;
-            if(var47 < 0) {
-               var47 = 0;
+         for(var30 = 0; var30 < var38; ++var30) {
+            var37 = (this.field2949[var30] & 255) + var47;
+            if(var37 < 0) {
+               var37 = 0;
             }
 
-            if(var47 > 128) {
-               var47 = 128;
+            if(var37 > 128) {
+               var37 = 128;
             }
 
-            this.field2949[var29] = (byte)var47;
+            this.field2949[var30] = (byte)var37;
          }
 
          int var48;
-         for(var29 = 2; var29 < var42.length; var29 += 2) {
-            var30 = var42[var29];
-            var48 = var42[var29 + 1] << 1;
-            var32 = var46 * (var30 - var49) + (var30 - var49) / 2;
+         for(var30 = 2; var30 < var17.length; var30 += 2) {
+            var31 = var17[var30];
+            var48 = var17[var30 + 1] << 1;
+            var32 = var47 * (var31 - var38) + (var31 - var38) / 2;
 
-            for(var33 = var49; var33 < var30; ++var33) {
-               var35 = var30 - var49;
+            for(var33 = var38; var33 < var31; ++var33) {
+               var35 = var31 - var38;
                var36 = var32 >>> 31;
                var34 = (var32 + var36) / var35 - var36;
-               int var37 = var34 + (this.field2949[var33] & 255);
-               if(var37 < 0) {
-                  var37 = 0;
+               int var41 = var34 + (this.field2949[var33] & 255);
+               if(var41 < 0) {
+                  var41 = 0;
                }
 
-               if(var37 > 128) {
-                  var37 = 128;
+               if(var41 > 128) {
+                  var41 = 128;
                }
 
-               this.field2949[var33] = (byte)var37;
-               var32 += var48 - var46;
+               this.field2949[var33] = (byte)var41;
+               var32 += var48 - var47;
             }
 
-            var49 = var30;
-            var46 = var48;
+            var38 = var31;
+            var47 = var48;
          }
 
-         for(var47 = var49; var47 < 128; ++var47) {
-            var48 = var46 + (this.field2949[var47] & 255);
+         for(var37 = var38; var37 < 128; ++var37) {
+            var48 = var47 + (this.field2949[var37] & 255);
             if(var48 < 0) {
                var48 = 0;
             }
@@ -472,46 +472,46 @@ public class class181 extends class208 {
                var48 = 128;
             }
 
-            this.field2949[var47] = (byte)var48;
+            this.field2949[var37] = (byte)var48;
          }
 
-         Object var43 = null;
+         Object var49 = null;
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var39[var27].field3012 = var2.method2492();
+      for(var28 = 0; var28 < var12; ++var28) {
+         var43[var28].field3012 = var2.method2492();
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var39[var27];
-         if(var28.field3018 != null) {
-            var28.field3013 = var2.method2492();
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var43[var28];
+         if(var29.field3018 != null) {
+            var29.field3013 = var2.method2492();
          }
 
-         if(null != var28.field3011) {
-            var28.field3014 = var2.method2492();
+         if(null != var29.field3011) {
+            var29.field3014 = var2.method2492();
          }
 
-         if(var28.field3012 > 0) {
-            var28.field3010 = var2.method2492();
-         }
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var39[var27].field3015 = var2.method2492();
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var39[var27];
-         if(var28.field3015 > 0) {
-            var28.field3016 = var2.method2492();
+         if(var29.field3012 > 0) {
+            var29.field3010 = var2.method2492();
          }
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var39[var27];
-         if(var28.field3016 > 0) {
-            var28.field3019 = var2.method2492();
+      for(var28 = 0; var28 < var12; ++var28) {
+         var43[var28].field3015 = var2.method2492();
+      }
+
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var43[var28];
+         if(var29.field3015 > 0) {
+            var29.field3016 = var2.method2492();
+         }
+      }
+
+      for(var28 = 0; var28 < var12; ++var28) {
+         var29 = var43[var28];
+         if(var29.field3016 > 0) {
+            var29.field3019 = var2.method2492();
          }
       }
 

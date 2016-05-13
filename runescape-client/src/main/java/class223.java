@@ -1,4 +1,5 @@
 import java.util.Random;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -13,6 +14,7 @@ public abstract class class223 extends class79 {
    @ObfuscatedName("x")
    int[] field3191;
    @ObfuscatedName("c")
+   @Export("modIcons")
    public static class80[] field3192;
    @ObfuscatedName("ad")
    static Random field3193 = new Random();
@@ -90,57 +92,57 @@ public abstract class class223 extends class79 {
             this.field3188[var3] = var1[var2++] & 255;
          }
 
-         int[] var10 = new int[256];
+         int[] var12 = new int[256];
          int[] var4 = new int[256];
 
          int var5;
          for(var5 = 0; var5 < 256; ++var5) {
-            var10[var5] = var1[var2++] & 255;
+            var12[var5] = var1[var2++] & 255;
          }
 
          for(var5 = 0; var5 < 256; ++var5) {
             var4[var5] = var1[var2++] & 255;
          }
 
-         byte[][] var11 = new byte[256][];
+         byte[][] var6 = new byte[256][];
 
-         int var8;
-         for(int var6 = 0; var6 < 256; ++var6) {
-            var11[var6] = new byte[var10[var6]];
-            byte var7 = 0;
+         int var7;
+         for(int var8 = 0; var8 < 256; ++var8) {
+            var6[var8] = new byte[var12[var8]];
+            byte var9 = 0;
 
-            for(var8 = 0; var8 < var11[var6].length; ++var8) {
-               var7 += var1[var2++];
-               var11[var6][var8] = var7;
+            for(var7 = 0; var7 < var6[var8].length; ++var7) {
+               var9 += var1[var2++];
+               var6[var8][var7] = var9;
             }
          }
 
-         byte[][] var12 = new byte[256][];
+         byte[][] var13 = new byte[256][];
 
-         int var13;
-         for(var13 = 0; var13 < 256; ++var13) {
-            var12[var13] = new byte[var10[var13]];
-            byte var14 = 0;
+         int var14;
+         for(var14 = 0; var14 < 256; ++var14) {
+            var13[var14] = new byte[var12[var14]];
+            byte var10 = 0;
 
-            for(int var9 = 0; var9 < var12[var13].length; ++var9) {
-               var14 += var1[var2++];
-               var12[var13][var9] = var14;
+            for(int var11 = 0; var11 < var13[var14].length; ++var11) {
+               var10 += var1[var2++];
+               var13[var14][var11] = var10;
             }
          }
 
          this.field3190 = new byte[65536];
 
-         for(var13 = 0; var13 < 256; ++var13) {
-            if(var13 != 32 && var13 != 160) {
-               for(var8 = 0; var8 < 256; ++var8) {
-                  if(var8 != 32 && var8 != 160) {
-                     this.field3190[(var13 << 8) + var8] = (byte)method3995(var11, var12, var4, this.field3188, var10, var13, var8);
+         for(var14 = 0; var14 < 256; ++var14) {
+            if(var14 != 32 && var14 != 160) {
+               for(var7 = 0; var7 < 256; ++var7) {
+                  if(var7 != 32 && var7 != 160) {
+                     this.field3190[(var14 << 8) + var7] = (byte)method3995(var6, var13, var4, this.field3188, var12, var14, var7);
                   }
                }
             }
          }
 
-         this.field3189 = var4[32] + var10[32];
+         this.field3189 = var4[32] + var12[32];
       }
 
    }
@@ -202,6 +204,7 @@ public abstract class class223 extends class79 {
 
          this.method4014(var1, var2 - this.method3997(var1) / 2, var3, (int[])null, var10);
       }
+
    }
 
    @ObfuscatedName("x")
@@ -227,11 +230,11 @@ public abstract class class223 extends class79 {
                      if(!var7.equals("gt")) {
                         if(var7.startsWith("img=")) {
                            try {
-                              String var9 = var7.substring(4);
-                              int var8 = class121.method2729(var9, 10, true);
-                              var4 += field3192[var8].field1425;
+                              String var8 = var7.substring(4);
+                              int var9 = class121.method2729(var8, 10, true);
+                              var4 += field3192[var9].field1425;
                               var3 = -1;
-                           } catch (Exception var11) {
+                           } catch (Exception var10) {
                               ;
                            }
                         }
@@ -311,11 +314,11 @@ public abstract class class223 extends class79 {
                      var11 = 62;
                   } else if(var16.startsWith("img=")) {
                      try {
-                        String var18 = var16.substring(4);
-                        int var17 = class121.method2729(var18, 10, true);
-                        var4 += field3192[var17].field1425;
+                        String var17 = var16.substring(4);
+                        int var18 = class121.method2729(var17, 10, true);
+                        var4 += field3192[var18].field1425;
                         var11 = 0;
-                     } catch (Exception var20) {
+                     } catch (Exception var19) {
                         ;
                      }
                   }
@@ -358,9 +361,9 @@ public abstract class class223 extends class79 {
             }
          }
 
-         String var21 = var6.toString();
-         if(var21.length() > var5) {
-            var3[var12++] = var21.substring(var5, var21.length());
+         String var20 = var6.toString();
+         if(var20.length() > var5) {
+            var3[var12++] = var20.substring(var5, var20.length());
          }
 
          return var12;
@@ -410,6 +413,7 @@ public abstract class class223 extends class79 {
          this.method4010(var4, var5);
          this.method4013(var1, var2, var3);
       }
+
    }
 
    @ObfuscatedName("c")
@@ -422,6 +426,7 @@ public abstract class class223 extends class79 {
          this.method4010(var4, var5);
          this.method4013(var1, var2 - this.method3997(var1), var3);
       }
+
    }
 
    @ObfuscatedName("l")
@@ -434,6 +439,7 @@ public abstract class class223 extends class79 {
          this.method4010(var4, var5);
          this.method4013(var1, var2 - this.method3997(var1) / 2, var3);
       }
+
    }
 
    @ObfuscatedName("t")
@@ -516,6 +522,7 @@ public abstract class class223 extends class79 {
 
          this.method4014(var1, var2 - this.method3997(var1) / 2, var3, (int[])null, var7);
       }
+
    }
 
    @ObfuscatedName("r")
@@ -536,6 +543,7 @@ public abstract class class223 extends class79 {
 
          this.method4014(var1, var2 - this.method3997(var1) / 2, var3, var7, var8);
       }
+
    }
 
    @ObfuscatedName("y")
@@ -563,6 +571,7 @@ public abstract class class223 extends class79 {
 
          this.method4014(var1, var2, var3, var7, (int[])null);
       }
+
    }
 
    @ObfuscatedName("h")
@@ -656,27 +665,27 @@ public abstract class class223 extends class79 {
             if(var7 == 60) {
                var4 = var6;
             } else {
-               int var9;
+               int var8;
                if(var7 == 62 && var4 != -1) {
-                  String var8 = var1.substring(var4 + 1, var6);
+                  String var9 = var1.substring(var4 + 1, var6);
                   var4 = -1;
-                  if(var8.equals("lt")) {
+                  if(var9.equals("lt")) {
                      var7 = 60;
                   } else {
-                     if(!var8.equals("gt")) {
-                        if(var8.startsWith("img=")) {
+                     if(!var9.equals("gt")) {
+                        if(var9.startsWith("img=")) {
                            try {
-                              String var15 = var8.substring(4);
-                              var9 = class121.method2729(var15, 10, true);
-                              class80 var12 = field3192[var9];
-                              var12.method1841(var2, var3 + this.field3189 - var12.field1432);
-                              var2 += var12.field1425;
+                              String var14 = var9.substring(4);
+                              var8 = class121.method2729(var14, 10, true);
+                              class80 var11 = field3192[var8];
+                              var11.method1841(var2, var3 + this.field3189 - var11.field1432);
+                              var2 += var11.field1425;
                               var5 = -1;
-                           } catch (Exception var13) {
+                           } catch (Exception var12) {
                               ;
                            }
                         } else {
-                           this.method4011(var8);
+                           this.method4011(var9);
                         }
                         continue;
                      }
@@ -694,21 +703,21 @@ public abstract class class223 extends class79 {
                      var2 += this.field3190[(var5 << 8) + var7];
                   }
 
-                  int var14 = this.field3208[var7];
-                  var9 = this.field3191[var7];
+                  int var13 = this.field3208[var7];
+                  var8 = this.field3191[var7];
                   if(var7 != 32) {
                      if(field3198 == 256) {
                         if(field3202 != -1) {
-                           method4033(this.field3194[var7], var2 + this.field3205[var7] + 1, var3 + this.field3197[var7] + 1, var14, var9, field3202);
+                           method4033(this.field3194[var7], var2 + this.field3205[var7] + 1, var3 + this.field3197[var7] + 1, var13, var8, field3202);
                         }
 
-                        this.vmethod4093(this.field3194[var7], var2 + this.field3205[var7], var3 + this.field3197[var7], var14, var9, field3204);
+                        this.vmethod4093(this.field3194[var7], var2 + this.field3205[var7], var3 + this.field3197[var7], var13, var8, field3204);
                      } else {
                         if(field3202 != -1) {
-                           method4019(this.field3194[var7], var2 + this.field3205[var7] + 1, var3 + this.field3197[var7] + 1, var14, var9, field3202, field3198);
+                           method4019(this.field3194[var7], var2 + this.field3205[var7] + 1, var3 + this.field3197[var7] + 1, var13, var8, field3202, field3198);
                         }
 
-                        this.vmethod4094(this.field3194[var7], var2 + this.field3205[var7], var3 + this.field3197[var7], var14, var9, field3204, field3198);
+                        this.vmethod4094(this.field3194[var7], var2 + this.field3205[var7], var3 + this.field3197[var7], var13, var8, field3204, field3198);
                      }
                   } else if(field3206 > 0) {
                      field3207 += field3206;
@@ -747,42 +756,42 @@ public abstract class class223 extends class79 {
             if(var10 == 60) {
                var6 = var9;
             } else {
+               int var11;
                int var12;
                int var13;
-               int var14;
                if(var10 == 62 && var6 != -1) {
-                  String var11 = var1.substring(var6 + 1, var9);
+                  String var14 = var1.substring(var6 + 1, var9);
                   var6 = -1;
-                  if(var11.equals("lt")) {
+                  if(var14.equals("lt")) {
                      var10 = 60;
                   } else {
-                     if(!var11.equals("gt")) {
-                        if(var11.startsWith("img=")) {
+                     if(!var14.equals("gt")) {
+                        if(var14.startsWith("img=")) {
                            try {
                               if(var4 != null) {
-                                 var12 = var4[var8];
+                                 var11 = var4[var8];
+                              } else {
+                                 var11 = 0;
+                              }
+
+                              if(var5 != null) {
+                                 var12 = var5[var8];
                               } else {
                                  var12 = 0;
                               }
 
-                              if(var5 != null) {
-                                 var13 = var5[var8];
-                              } else {
-                                 var13 = 0;
-                              }
-
                               ++var8;
-                              String var20 = var11.substring(4);
-                              var14 = class121.method2729(var20, 10, true);
-                              class80 var17 = field3192[var14];
-                              var17.method1841(var2 + var12, var3 + this.field3189 - var17.field1432 + var13);
-                              var2 += var17.field1425;
+                              String var19 = var14.substring(4);
+                              var13 = class121.method2729(var19, 10, true);
+                              class80 var16 = field3192[var13];
+                              var16.method1841(var2 + var11, var3 + this.field3189 - var16.field1432 + var12);
+                              var2 += var16.field1425;
                               var7 = -1;
-                           } catch (Exception var18) {
+                           } catch (Exception var17) {
                               ;
                            }
                         } else {
-                           this.method4011(var11);
+                           this.method4011(var14);
                         }
                         continue;
                      }
@@ -800,34 +809,34 @@ public abstract class class223 extends class79 {
                      var2 += this.field3190[(var7 << 8) + var10];
                   }
 
-                  int var19 = this.field3208[var10];
-                  var12 = this.field3191[var10];
+                  int var18 = this.field3208[var10];
+                  var11 = this.field3191[var10];
                   if(var4 != null) {
-                     var13 = var4[var8];
+                     var12 = var4[var8];
                   } else {
-                     var13 = 0;
+                     var12 = 0;
                   }
 
                   if(var5 != null) {
-                     var14 = var5[var8];
+                     var13 = var5[var8];
                   } else {
-                     var14 = 0;
+                     var13 = 0;
                   }
 
                   ++var8;
                   if(var10 != 32) {
                      if(field3198 == 256) {
                         if(field3202 != -1) {
-                           method4033(this.field3194[var10], var2 + this.field3205[var10] + 1 + var13, var3 + this.field3197[var10] + 1 + var14, var19, var12, field3202);
+                           method4033(this.field3194[var10], var2 + this.field3205[var10] + 1 + var12, var3 + this.field3197[var10] + 1 + var13, var18, var11, field3202);
                         }
 
-                        this.vmethod4093(this.field3194[var10], var2 + this.field3205[var10] + var13, var3 + this.field3197[var10] + var14, var19, var12, field3204);
+                        this.vmethod4093(this.field3194[var10], var2 + this.field3205[var10] + var12, var3 + this.field3197[var10] + var13, var18, var11, field3204);
                      } else {
                         if(field3202 != -1) {
-                           method4019(this.field3194[var10], var2 + this.field3205[var10] + 1 + var13, var3 + this.field3197[var10] + 1 + var14, var19, var12, field3202, field3198);
+                           method4019(this.field3194[var10], var2 + this.field3205[var10] + 1 + var12, var3 + this.field3197[var10] + 1 + var13, var18, var11, field3202, field3198);
                         }
 
-                        this.vmethod4094(this.field3194[var10], var2 + this.field3205[var10] + var13, var3 + this.field3197[var10] + var14, var19, var12, field3204, field3198);
+                        this.vmethod4094(this.field3194[var10], var2 + this.field3205[var10] + var12, var3 + this.field3197[var10] + var13, var18, var11, field3204, field3198);
                      }
                   } else if(field3206 > 0) {
                      field3207 += field3206;
@@ -895,6 +904,7 @@ public abstract class class223 extends class79 {
       if(var3 > 0 && var4 > 0) {
          method4020(class79.field1420, var0, var5, var10, var7, var3, var4, var8, var9, var6);
       }
+
    }
 
    @ObfuscatedName("ab")
@@ -972,6 +982,7 @@ public abstract class class223 extends class79 {
       if(var3 > 0 && var4 > 0) {
          method4088(class79.field1420, var0, var5, var9, var6, var3, var4, var7, var8);
       }
+
    }
 
    @ObfuscatedName("p")

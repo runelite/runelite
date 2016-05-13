@@ -59,6 +59,7 @@ public final class class99 {
       signature = "(IB)Lclass39;",
       garbageValue = "19"
    )
+   @Export("getNpcDefinition")
    public static class39 method2179(int var0) {
       class39 var1 = (class39)class39.field888.method3743((long)var0);
       if(null != var1) {

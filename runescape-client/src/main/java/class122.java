@@ -1,4 +1,5 @@
 import java.awt.Canvas;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -13,6 +14,7 @@ public final class class122 extends class119 {
    @ObfuscatedName("c")
    static final int[] field2023 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    @ObfuscatedName("qu")
+   @Export("canvas")
    public static Canvas field2024;
    @ObfuscatedName("k")
    class123 field2027;

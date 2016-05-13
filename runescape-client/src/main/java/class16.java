@@ -122,22 +122,20 @@ public final class class16 extends class208 {
       garbageValue = "-2063798969"
    )
    static void method198(int var0) {
-      if(-1 != var0) {
-         if(class188.method3731(var0)) {
-            class173[] var1 = class217.field3171[var0];
+      if(-1 != var0 && class188.method3731(var0)) {
+         class173[] var1 = class217.field3171[var0];
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               class173 var3 = var1[var2];
-               if(null != var3.field2846) {
-                  class0 var4 = new class0();
-                  var4.field8 = var3;
-                  var4.field12 = var3.field2846;
-                  class17.method201(var4, 2000000);
-               }
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            class173 var3 = var1[var2];
+            if(null != var3.field2846) {
+               class0 var4 = new class0();
+               var4.field8 = var3;
+               var4.field12 = var3.field2846;
+               class17.method201(var4, 2000000);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("d")
@@ -148,10 +146,11 @@ public final class class16 extends class208 {
    static void method199(int var0, class134 var1, class168 var2) {
       byte[] var3 = null;
       class199 var4 = class170.field2722;
+      class199 var5 = class170.field2722;
       synchronized(class170.field2722) {
-         for(class169 var5 = (class169)class170.field2722.method3812(); null != var5; var5 = (class169)class170.field2722.method3817()) {
-            if(var5.field3125 == (long)var0 && var1 == var5.field2713 && var5.field2712 == 0) {
-               var3 = var5.field2714;
+         for(class169 var6 = (class169)class170.field2722.method3812(); null != var6; var6 = (class169)class170.field2722.method3817()) {
+            if(var6.field3125 == (long)var0 && var1 == var6.field2713 && var6.field2712 == 0) {
+               var3 = var6.field2714;
                break;
             }
          }
@@ -160,9 +159,10 @@ public final class class16 extends class208 {
       if(var3 != null) {
          var2.method3333(var1, var0, var3, true);
       } else {
-         byte[] var8 = var1.method2854(var0);
-         var2.method3333(var1, var0, var8, true);
+         byte[] var9 = var1.method2854(var0);
+         var2.method3333(var1, var0, var9, true);
       }
+
    }
 
    @ObfuscatedName("j")
@@ -171,13 +171,13 @@ public final class class16 extends class208 {
       garbageValue = "-987668850"
    )
    static final void method200(byte[] var0, int var1, int var2, int var3, int var4, class108[] var5) {
+      int var6;
       int var7;
-      int var8;
-      for(int var6 = 0; var6 < 4; ++var6) {
-         for(var7 = 0; var7 < 64; ++var7) {
-            for(var8 = 0; var8 < 64; ++var8) {
-               if(var1 + var7 > 0 && var1 + var7 < 103 && var8 + var2 > 0 && var2 + var8 < 103) {
-                  var5[var6].field1911[var7 + var1][var2 + var8] &= -16777217;
+      for(int var8 = 0; var8 < 4; ++var8) {
+         for(var6 = 0; var6 < 64; ++var6) {
+            for(var7 = 0; var7 < 64; ++var7) {
+               if(var1 + var6 > 0 && var1 + var6 < 103 && var7 + var2 > 0 && var2 + var7 < 103) {
+                  var5[var8].field1911[var6 + var1][var2 + var7] &= -16777217;
                }
             }
          }
@@ -185,10 +185,10 @@ public final class class16 extends class208 {
 
       class119 var10 = new class119(var0);
 
-      for(var7 = 0; var7 < 4; ++var7) {
-         for(var8 = 0; var8 < 64; ++var8) {
+      for(var6 = 0; var6 < 4; ++var6) {
+         for(var7 = 0; var7 < 64; ++var7) {
             for(int var9 = 0; var9 < 64; ++var9) {
-               class43.method890(var10, var7, var8 + var1, var2 + var9, var3, var4, 0);
+               class43.method890(var10, var6, var7 + var1, var2 + var9, var3, var4, 0);
             }
          }
       }

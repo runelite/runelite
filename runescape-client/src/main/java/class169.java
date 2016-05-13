@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -21,6 +22,7 @@ public class class169 extends class208 {
       signature = "(I)V",
       garbageValue = "-2006414992"
    )
+   @Export("widgetReset")
    public static void method3342() {
       class40.field926.method3750();
       class40.field927.method3750();

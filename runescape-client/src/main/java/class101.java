@@ -35,10 +35,13 @@ public final class class101 extends class208 {
    @ObfuscatedName("u")
    class97 field1749;
    @ObfuscatedName("o")
+   @Export("wallObject")
    class87 field1750;
    @ObfuscatedName("b")
+   @Export("decorativeObject")
    class94 field1751;
    @ObfuscatedName("k")
+   @Export("groundObject")
    class93 field1752;
    @ObfuscatedName("c")
    @Export("itemLayer")
@@ -236,16 +239,16 @@ public final class class101 extends class208 {
                }
 
                if(var0.field112 < 0) {
-                  int var2 = -var0.field112 - 1;
-                  class2 var3;
-                  if(client.field291 == var2) {
-                     var3 = class106.field1881;
+                  int var3 = -var0.field112 - 1;
+                  class2 var2;
+                  if(client.field291 == var3) {
+                     var2 = class106.field1881;
                   } else {
-                     var3 = client.field491[var2];
+                     var2 = client.field491[var3];
                   }
 
-                  if(null != var3 && var3.field823 >= 0 && var3.field823 < 13312 && var3.field813 >= 0 && var3.field813 < 13312) {
-                     var0.method91(var3.field823, var3.field813, class107.method2369(var3.field823, var3.field813, var0.field108) - var0.field107, client.field335);
+                  if(null != var2 && var2.field823 >= 0 && var2.field823 < 13312 && var2.field813 >= 0 && var2.field813 < 13312) {
+                     var0.method91(var2.field823, var2.field813, class107.method2369(var2.field823, var2.field813, var0.field108) - var0.field107, client.field335);
                   }
                }
 

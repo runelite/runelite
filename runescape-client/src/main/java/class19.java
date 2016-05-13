@@ -1,15 +1,19 @@
 import java.io.EOFException;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("w")
+@Implements("ChatMessages")
 public class class19 {
    @ObfuscatedName("p")
    boolean[] field264;
    @ObfuscatedName("x")
    boolean[] field265;
    @ObfuscatedName("u")
+   @Export("messages")
    String[] field266;
    @ObfuscatedName("o")
    boolean field268 = false;
@@ -83,58 +87,67 @@ public class class19 {
    void method219() {
       class227 var1 = this.method217(false);
 
-      try {
-         byte[] var2 = new byte[(int)var1.method4108()];
-
-         int var4;
-         for(int var3 = 0; var3 < var2.length; var3 += var4) {
-            var4 = var1.method4119(var2, var3, var2.length - var3);
-            if(-1 == var4) {
-               throw new EOFException();
-            }
-         }
-
-         class119 var23 = new class119(var2);
-         if(var23.field2007.length - var23.field2005 < 1) {
-            return;
-         }
-
-         int var5 = var23.method2492();
-         if(var5 < 0 || var5 > 1) {
-            return;
-         }
-
-         int var6 = var23.method2584();
-
-         int var7;
-         int var8;
-         int var9;
-         for(var7 = 0; var7 < var6; ++var7) {
-            var8 = var23.method2584();
-            var9 = var23.method2497();
-            if(this.field264[var8]) {
-               this.field271[var8] = var9;
-            }
-         }
-
-         var7 = var23.method2584();
-
-         for(var8 = 0; var8 < var7; ++var8) {
-            var9 = var23.method2584();
-            String var10 = var23.method2500();
-            if(this.field265[var9]) {
-               this.field266[var9] = var10;
-            }
-         }
-      } catch (Exception var21) {
-         ;
-      } finally {
+      label196: {
          try {
-            var1.method4121();
-         } catch (Exception var20) {
-            ;
+            byte[] var2 = new byte[(int)var1.method4108()];
+
+            int var3;
+            for(int var4 = 0; var4 < var2.length; var4 += var3) {
+               var3 = var1.method4119(var2, var4, var2.length - var4);
+               if(-1 == var3) {
+                  throw new EOFException();
+               }
+            }
+
+            class119 var23 = new class119(var2);
+            if(var23.field2007.length - var23.field2005 >= 1) {
+               int var5 = var23.method2492();
+               if(var5 >= 0 && var5 <= 1) {
+                  int var6 = var23.method2584();
+
+                  int var7;
+                  int var8;
+                  int var9;
+                  for(var7 = 0; var7 < var6; ++var7) {
+                     var8 = var23.method2584();
+                     var9 = var23.method2497();
+                     if(this.field264[var8]) {
+                        this.field271[var8] = var9;
+                     }
+                  }
+
+                  var7 = var23.method2584();
+                  var8 = 0;
+
+                  while(true) {
+                     if(var8 >= var7) {
+                        break label196;
+                     }
+
+                     var9 = var23.method2584();
+                     String var10 = var23.method2500();
+                     if(this.field265[var9]) {
+                        this.field266[var9] = var10;
+                     }
+
+                     ++var8;
+                  }
+               }
+
+               return;
+            }
+         } catch (Exception var21) {
+            break label196;
+         } finally {
+            try {
+               var1.method4121();
+            } catch (Exception var20) {
+               ;
+            }
+
          }
 
+         return;
       }
 
       this.field268 = false;
@@ -247,45 +260,45 @@ public class class19 {
       this.field264 = new boolean[this.field271.length];
 
       int var1;
-      byte[] var4;
+      byte[] var2;
       for(var1 = 0; var1 < this.field271.length; ++var1) {
          class45 var3 = (class45)class45.field1042.method3743((long)var1);
-         class45 var2;
+         class45 var4;
          if(var3 != null) {
-            var2 = var3;
+            var4 = var3;
          } else {
-            var4 = class45.field1044.method3239(19, var1);
+            var2 = class45.field1044.method3239(19, var1);
             var3 = new class45();
-            if(null != var4) {
-               var3.method923(new class119(var4));
+            if(null != var2) {
+               var3.method923(new class119(var2));
             }
 
             class45.field1042.method3745(var3, (long)var1);
-            var2 = var3;
+            var4 = var3;
          }
 
-         this.field264[var1] = var2.field1041;
+         this.field264[var1] = var4.field1041;
       }
 
       this.field265 = new boolean[this.field266.length];
 
       for(var1 = 0; var1 < this.field266.length; ++var1) {
-         class49 var6 = (class49)class49.field1098.method3743((long)var1);
-         class49 var5;
-         if(var6 != null) {
-            var5 = var6;
+         class49 var5 = (class49)class49.field1098.method3743((long)var1);
+         class49 var6;
+         if(var5 != null) {
+            var6 = var5;
          } else {
-            var4 = class49.field1090.method3239(15, var1);
-            var6 = new class49();
-            if(null != var4) {
-               var6.method975(new class119(var4));
+            var2 = class49.field1090.method3239(15, var1);
+            var5 = new class49();
+            if(null != var2) {
+               var5.method975(new class119(var2));
             }
 
-            class49.field1098.method3745(var6, (long)var1);
-            var5 = var6;
+            class49.field1098.method3745(var5, (long)var1);
+            var6 = var5;
          }
 
-         this.field265[var1] = var5.field1099;
+         this.field265[var1] = var6.field1099;
       }
 
       for(var1 = 0; var1 < this.field271.length; ++var1) {

@@ -1,18 +1,23 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cg")
+@Implements("WallObject")
 public final class class87 {
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1897064509
    )
+   @Export("x")
    int field1529;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1082393053
    )
+   @Export("y")
    int field1530;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
@@ -28,13 +33,16 @@ public final class class87 {
    @ObfuscatedGetter(
       intValue = 787026995
    )
+   @Export("hash")
    public int field1535 = 0;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 182973933
    )
+   @Export("floor")
    int field1536;
    @ObfuscatedName("c")
+   @Export("worldServersDownload")
    static class18 field1537;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -47,8 +55,10 @@ public final class class87 {
    )
    static int field1540;
    @ObfuscatedName("u")
+   @Export("renderable1")
    public class85 field1542;
    @ObfuscatedName("o")
+   @Export("renderable2")
    public class85 field1543;
 
    @ObfuscatedName("d")
@@ -131,5 +141,6 @@ public final class class87 {
       if(class188.method3731(var0)) {
          class5.method88(class217.field3171[var0], var1);
       }
+
    }
 }

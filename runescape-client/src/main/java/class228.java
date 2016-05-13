@@ -108,7 +108,6 @@ public class class228 {
                if(this.field3227 - this.field3223 > (long)this.field3224) {
                   this.field3224 = (int)(this.field3227 - this.field3223);
                }
-
             }
          } else {
             if(this.field3228 != this.field3227) {
@@ -143,6 +142,7 @@ public class class228 {
 
             this.field3227 += (long)var3;
          }
+
       } catch (IOException var9) {
          this.field3228 = -1L;
          throw var9;
@@ -176,77 +176,77 @@ public class class228 {
          }
 
          long var4 = this.field3227;
-         int var7 = var3;
-         int var8;
+         int var6 = var3;
+         int var7;
          if(this.field3227 >= this.field3220 && this.field3227 < this.field3220 + (long)this.field3221) {
-            var8 = (int)((long)this.field3221 - (this.field3227 - this.field3220));
-            if(var8 > var3) {
-               var8 = var3;
+            var7 = (int)((long)this.field3221 - (this.field3227 - this.field3220));
+            if(var7 > var3) {
+               var7 = var3;
             }
 
-            System.arraycopy(this.field3219, (int)(this.field3227 - this.field3220), var1, var2, var8);
-            this.field3227 += (long)var8;
-            var2 += var8;
-            var3 -= var8;
+            System.arraycopy(this.field3219, (int)(this.field3227 - this.field3220), var1, var2, var7);
+            this.field3227 += (long)var7;
+            var2 += var7;
+            var3 -= var7;
          }
 
          if(var3 > this.field3219.length) {
             this.field3225.method4105(this.field3227);
 
-            for(this.field3228 = this.field3227; var3 > 0; var3 -= var8) {
-               var8 = this.field3225.method4119(var1, var2, var3);
-               if(-1 == var8) {
+            for(this.field3228 = this.field3227; var3 > 0; var3 -= var7) {
+               var7 = this.field3225.method4119(var1, var2, var3);
+               if(-1 == var7) {
                   break;
                }
 
-               this.field3228 += (long)var8;
-               this.field3227 += (long)var8;
-               var2 += var8;
+               this.field3228 += (long)var7;
+               this.field3227 += (long)var7;
+               var2 += var7;
             }
          } else if(var3 > 0) {
             this.method4132();
-            var8 = var3;
+            var7 = var3;
             if(var3 > this.field3221) {
-               var8 = this.field3221;
+               var7 = this.field3221;
             }
 
-            System.arraycopy(this.field3219, 0, var1, var2, var8);
-            var2 += var8;
-            var3 -= var8;
-            this.field3227 += (long)var8;
+            System.arraycopy(this.field3219, 0, var1, var2, var7);
+            var2 += var7;
+            var3 -= var7;
+            this.field3227 += (long)var7;
          }
 
          if(-1L != this.field3223) {
             if(this.field3223 > this.field3227 && var3 > 0) {
-               var8 = var2 + (int)(this.field3223 - this.field3227);
-               if(var8 > var3 + var2) {
-                  var8 = var2 + var3;
+               var7 = var2 + (int)(this.field3223 - this.field3227);
+               if(var7 > var3 + var2) {
+                  var7 = var2 + var3;
                }
 
-               while(var2 < var8) {
+               while(var2 < var7) {
                   var1[var2++] = 0;
                   --var3;
                   ++this.field3227;
                }
             }
 
-            long var14 = -1L;
+            long var8 = -1L;
             long var10 = -1L;
-            if(this.field3223 >= var4 && this.field3223 < var4 + (long)var7) {
-               var14 = this.field3223;
+            if(this.field3223 >= var4 && this.field3223 < var4 + (long)var6) {
+               var8 = this.field3223;
             } else if(var4 >= this.field3223 && var4 < this.field3223 + (long)this.field3224) {
-               var14 = var4;
+               var8 = var4;
             }
 
-            if((long)this.field3224 + this.field3223 > var4 && (long)this.field3224 + this.field3223 <= var4 + (long)var7) {
+            if((long)this.field3224 + this.field3223 > var4 && (long)this.field3224 + this.field3223 <= var4 + (long)var6) {
                var10 = (long)this.field3224 + this.field3223;
-            } else if((long)var7 + var4 > this.field3223 && (long)var7 + var4 <= (long)this.field3224 + this.field3223) {
-               var10 = (long)var7 + var4;
+            } else if((long)var6 + var4 > this.field3223 && (long)var6 + var4 <= (long)this.field3224 + this.field3223) {
+               var10 = (long)var6 + var4;
             }
 
-            if(var14 > -1L && var10 > var14) {
-               int var12 = (int)(var10 - var14);
-               System.arraycopy(this.field3222, (int)(var14 - this.field3223), var1, var2 + (int)(var14 - var4), var12);
+            if(var8 > -1L && var10 > var8) {
+               int var12 = (int)(var10 - var8);
+               System.arraycopy(this.field3222, (int)(var8 - this.field3223), var1, var2 + (int)(var8 - var4), var12);
                if(var10 > this.field3227) {
                   var3 = (int)((long)var3 - (var10 - this.field3227));
                   this.field3227 = var10;

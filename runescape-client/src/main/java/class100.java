@@ -1,7 +1,10 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cq")
+@Implements("ModelData")
 public class class100 extends class85 {
    @ObfuscatedName("aa")
    int field1697;
@@ -335,61 +338,61 @@ public class class100 extends class85 {
       }
 
       var26 = var11 + var9;
-      int var28 = var26;
+      int var56 = var26;
       if(var12 == 1) {
          var26 += var10;
       }
 
-      int var29 = var26;
+      int var28 = var26;
       var26 += var10;
-      int var30 = var26;
+      int var29 = var26;
       if(var13 == 255) {
          var26 += var10;
       }
 
-      int var31 = var26;
+      int var30 = var26;
       if(var15 == 1) {
          var26 += var10;
       }
 
-      int var32 = var26;
+      int var31 = var26;
       if(var17 == 1) {
          var26 += var9;
       }
 
-      int var33 = var26;
+      int var32 = var26;
       if(var14 == 1) {
          var26 += var10;
       }
 
-      int var34 = var26;
+      int var33 = var26;
       var26 += var21;
-      int var35 = var26;
+      int var34 = var26;
       if(var16 == 1) {
          var26 += var10 * 2;
       }
 
-      int var36 = var26;
+      int var35 = var26;
       var26 += var22;
-      int var37 = var26;
+      int var36 = var26;
       var26 += var10 * 2;
-      int var38 = var26;
+      int var37 = var26;
       var26 += var18;
-      int var39 = var26;
+      int var38 = var26;
       var26 += var19;
-      int var40 = var26;
+      int var39 = var26;
       var26 += var20;
-      int var41 = var26;
+      int var40 = var26;
       var26 += var23 * 6;
+      int var41 = var26;
+      var26 += var24 * 6;
       int var42 = var26;
       var26 += var24 * 6;
       int var43 = var26;
-      var26 += var24 * 6;
-      int var44 = var26;
       var26 += var24 * 2;
-      int var45 = var26;
+      int var44 = var26;
       var26 += var24;
-      int var46 = var26;
+      int var45 = var26;
       var26 += var24 * 2 + var25 * 2;
       this.field1736 = var9;
       this.field1701 = var10;
@@ -450,188 +453,188 @@ public class class100 extends class85 {
       }
 
       var2.field2005 = var11;
-      var3.field2005 = var38;
-      var4.field2005 = var39;
-      var5.field2005 = var40;
-      var6.field2005 = var32;
+      var3.field2005 = var37;
+      var4.field2005 = var38;
+      var5.field2005 = var39;
+      var6.field2005 = var31;
+      int var46 = 0;
+      int var47 = 0;
       int var48 = 0;
-      int var49 = 0;
-      int var50 = 0;
 
+      int var49;
+      int var50;
       int var51;
       int var52;
       int var53;
-      int var54;
-      int var55;
-      for(var51 = 0; var51 < var9; ++var51) {
-         var52 = var2.method2492();
+      for(var49 = 0; var49 < var9; ++var49) {
+         var50 = var2.method2492();
+         var51 = 0;
+         if((var50 & 1) != 0) {
+            var51 = var3.method2585();
+         }
+
+         var52 = 0;
+         if((var50 & 2) != 0) {
+            var52 = var4.method2585();
+         }
+
          var53 = 0;
-         if((var52 & 1) != 0) {
-            var53 = var3.method2585();
+         if((var50 & 4) != 0) {
+            var53 = var5.method2585();
          }
 
-         var54 = 0;
-         if((var52 & 2) != 0) {
-            var54 = var4.method2585();
-         }
-
-         var55 = 0;
-         if((var52 & 4) != 0) {
-            var55 = var5.method2585();
-         }
-
-         this.field1698[var51] = var48 + var53;
-         this.field1699[var51] = var49 + var54;
-         this.field1700[var51] = var50 + var55;
-         var48 = this.field1698[var51];
-         var49 = this.field1699[var51];
-         var50 = this.field1700[var51];
+         this.field1698[var49] = var46 + var51;
+         this.field1699[var49] = var47 + var52;
+         this.field1700[var49] = var48 + var53;
+         var46 = this.field1698[var49];
+         var47 = this.field1699[var49];
+         var48 = this.field1700[var49];
          if(var17 == 1) {
-            this.field1721[var51] = var6.method2492();
+            this.field1721[var49] = var6.method2492();
          }
       }
 
-      var2.field2005 = var37;
-      var3.field2005 = var28;
-      var4.field2005 = var30;
-      var5.field2005 = var33;
-      var6.field2005 = var31;
-      var7.field2005 = var35;
-      var8.field2005 = var36;
+      var2.field2005 = var36;
+      var3.field2005 = var56;
+      var4.field2005 = var29;
+      var5.field2005 = var32;
+      var6.field2005 = var30;
+      var7.field2005 = var34;
+      var8.field2005 = var35;
 
-      for(var51 = 0; var51 < var10; ++var51) {
-         this.field1741[var51] = (short)var2.method2584();
+      for(var49 = 0; var49 < var10; ++var49) {
+         this.field1741[var49] = (short)var2.method2584();
          if(var12 == 1) {
-            this.field1705[var51] = var3.method2493();
+            this.field1705[var49] = var3.method2493();
          }
 
          if(var13 == 255) {
-            this.field1706[var51] = var4.method2493();
+            this.field1706[var49] = var4.method2493();
          }
 
          if(var14 == 1) {
-            this.field1707[var51] = var5.method2493();
+            this.field1707[var49] = var5.method2493();
          }
 
          if(var15 == 1) {
-            this.field1718[var51] = var6.method2492();
+            this.field1718[var49] = var6.method2492();
          }
 
          if(var16 == 1) {
-            this.field1710[var51] = (short)(var7.method2584() - 1);
+            this.field1710[var49] = (short)(var7.method2584() - 1);
          }
 
-         if(this.field1708 != null && this.field1710[var51] != -1) {
-            this.field1708[var51] = (byte)(var8.method2492() - 1);
+         if(this.field1708 != null && this.field1710[var49] != -1) {
+            this.field1708[var49] = (byte)(var8.method2492() - 1);
          }
       }
 
-      var2.field2005 = var34;
-      var3.field2005 = var29;
+      var2.field2005 = var33;
+      var3.field2005 = var28;
+      var49 = 0;
+      var50 = 0;
       var51 = 0;
       var52 = 0;
-      var53 = 0;
-      var54 = 0;
 
-      int var56;
-      for(var55 = 0; var55 < var10; ++var55) {
-         var56 = var3.method2492();
-         if(var56 == 1) {
-            var51 = var2.method2585() + var54;
-            var52 = var2.method2585() + var51;
-            var53 = var2.method2585() + var52;
-            var54 = var53;
-            this.field1727[var55] = var51;
-            this.field1739[var55] = var52;
-            this.field1704[var55] = var53;
+      int var54;
+      for(var53 = 0; var53 < var10; ++var53) {
+         var54 = var3.method2492();
+         if(var54 == 1) {
+            var49 = var2.method2585() + var52;
+            var50 = var2.method2585() + var49;
+            var51 = var2.method2585() + var50;
+            var52 = var51;
+            this.field1727[var53] = var49;
+            this.field1739[var53] = var50;
+            this.field1704[var53] = var51;
          }
 
-         if(var56 == 2) {
-            var52 = var53;
-            var53 = var2.method2585() + var54;
-            var54 = var53;
-            this.field1727[var55] = var51;
-            this.field1739[var55] = var52;
-            this.field1704[var55] = var53;
+         if(var54 == 2) {
+            var50 = var51;
+            var51 = var2.method2585() + var52;
+            var52 = var51;
+            this.field1727[var53] = var49;
+            this.field1739[var53] = var50;
+            this.field1704[var53] = var51;
          }
 
-         if(var56 == 3) {
-            var51 = var53;
-            var53 = var2.method2585() + var54;
-            var54 = var53;
-            this.field1727[var55] = var51;
-            this.field1739[var55] = var52;
-            this.field1704[var55] = var53;
+         if(var54 == 3) {
+            var49 = var51;
+            var51 = var2.method2585() + var52;
+            var52 = var51;
+            this.field1727[var53] = var49;
+            this.field1739[var53] = var50;
+            this.field1704[var53] = var51;
          }
 
-         if(var56 == 4) {
-            int var57 = var51;
-            var51 = var52;
-            var52 = var57;
-            var53 = var2.method2585() + var54;
-            var54 = var53;
-            this.field1727[var55] = var51;
-            this.field1739[var55] = var57;
-            this.field1704[var55] = var53;
+         if(var54 == 4) {
+            int var55 = var49;
+            var49 = var50;
+            var50 = var55;
+            var51 = var2.method2585() + var52;
+            var52 = var51;
+            this.field1727[var53] = var49;
+            this.field1739[var53] = var55;
+            this.field1704[var53] = var51;
          }
       }
 
-      var2.field2005 = var41;
-      var3.field2005 = var42;
-      var4.field2005 = var43;
-      var5.field2005 = var44;
-      var6.field2005 = var45;
-      var7.field2005 = var46;
+      var2.field2005 = var40;
+      var3.field2005 = var41;
+      var4.field2005 = var42;
+      var5.field2005 = var43;
+      var6.field2005 = var44;
+      var7.field2005 = var45;
 
-      for(var55 = 0; var55 < var11; ++var55) {
-         var56 = this.field1738[var55] & 255;
-         if(var56 == 0) {
-            this.field1714[var55] = (short)var2.method2584();
-            this.field1715[var55] = (short)var2.method2584();
-            this.field1716[var55] = (short)var2.method2584();
+      for(var53 = 0; var53 < var11; ++var53) {
+         var54 = this.field1738[var53] & 255;
+         if(var54 == 0) {
+            this.field1714[var53] = (short)var2.method2584();
+            this.field1715[var53] = (short)var2.method2584();
+            this.field1716[var53] = (short)var2.method2584();
          }
 
-         if(var56 == 1) {
-            this.field1714[var55] = (short)var3.method2584();
-            this.field1715[var55] = (short)var3.method2584();
-            this.field1716[var55] = (short)var3.method2584();
-            this.field1725[var55] = (short)var4.method2584();
-            this.field1740[var55] = (short)var4.method2584();
-            this.field1719[var55] = (short)var4.method2584();
-            this.field1720[var55] = (short)var5.method2584();
-            this.field1723[var55] = var6.method2493();
-            this.field1731[var55] = (short)var7.method2584();
+         if(var54 == 1) {
+            this.field1714[var53] = (short)var3.method2584();
+            this.field1715[var53] = (short)var3.method2584();
+            this.field1716[var53] = (short)var3.method2584();
+            this.field1725[var53] = (short)var4.method2584();
+            this.field1740[var53] = (short)var4.method2584();
+            this.field1719[var53] = (short)var4.method2584();
+            this.field1720[var53] = (short)var5.method2584();
+            this.field1723[var53] = var6.method2493();
+            this.field1731[var53] = (short)var7.method2584();
          }
 
-         if(var56 == 2) {
-            this.field1714[var55] = (short)var3.method2584();
-            this.field1715[var55] = (short)var3.method2584();
-            this.field1716[var55] = (short)var3.method2584();
-            this.field1725[var55] = (short)var4.method2584();
-            this.field1740[var55] = (short)var4.method2584();
-            this.field1719[var55] = (short)var4.method2584();
-            this.field1720[var55] = (short)var5.method2584();
-            this.field1723[var55] = var6.method2493();
-            this.field1731[var55] = (short)var7.method2584();
-            this.field1735[var55] = (short)var7.method2584();
+         if(var54 == 2) {
+            this.field1714[var53] = (short)var3.method2584();
+            this.field1715[var53] = (short)var3.method2584();
+            this.field1716[var53] = (short)var3.method2584();
+            this.field1725[var53] = (short)var4.method2584();
+            this.field1740[var53] = (short)var4.method2584();
+            this.field1719[var53] = (short)var4.method2584();
+            this.field1720[var53] = (short)var5.method2584();
+            this.field1723[var53] = var6.method2493();
+            this.field1731[var53] = (short)var7.method2584();
+            this.field1735[var53] = (short)var7.method2584();
          }
 
-         if(var56 == 3) {
-            this.field1714[var55] = (short)var3.method2584();
-            this.field1715[var55] = (short)var3.method2584();
-            this.field1716[var55] = (short)var3.method2584();
-            this.field1725[var55] = (short)var4.method2584();
-            this.field1740[var55] = (short)var4.method2584();
-            this.field1719[var55] = (short)var4.method2584();
-            this.field1720[var55] = (short)var5.method2584();
-            this.field1723[var55] = var6.method2493();
-            this.field1731[var55] = (short)var7.method2584();
+         if(var54 == 3) {
+            this.field1714[var53] = (short)var3.method2584();
+            this.field1715[var53] = (short)var3.method2584();
+            this.field1716[var53] = (short)var3.method2584();
+            this.field1725[var53] = (short)var4.method2584();
+            this.field1740[var53] = (short)var4.method2584();
+            this.field1719[var53] = (short)var4.method2584();
+            this.field1720[var53] = (short)var5.method2584();
+            this.field1723[var53] = var6.method2493();
+            this.field1731[var53] = (short)var7.method2584();
          }
       }
 
       var2.field2005 = var26;
-      var55 = var2.method2492();
-      if(var55 != 0) {
+      var53 = var2.method2492();
+      if(var53 != 0) {
          new class90();
          var2.method2584();
          var2.method2584();
@@ -664,45 +667,45 @@ public class class100 extends class85 {
       int var19 = var4.method2584();
       int var20 = var4.method2584();
       byte var21 = 0;
-      int var45 = var21 + var9;
-      int var23 = var45;
-      var45 += var10;
-      int var24 = var45;
+      int var22 = var21 + var9;
+      int var23 = var22;
+      var22 += var10;
+      int var24 = var22;
       if(var13 == 255) {
-         var45 += var10;
+         var22 += var10;
       }
 
-      int var25 = var45;
+      int var25 = var22;
       if(var15 == 1) {
-         var45 += var10;
+         var22 += var10;
       }
 
-      int var26 = var45;
+      int var26 = var22;
       if(var12 == 1) {
-         var45 += var10;
+         var22 += var10;
       }
 
-      int var27 = var45;
+      int var27 = var22;
       if(var16 == 1) {
-         var45 += var9;
+         var22 += var9;
       }
 
-      int var28 = var45;
+      int var28 = var22;
       if(var14 == 1) {
-         var45 += var10;
+         var22 += var10;
       }
 
-      int var29 = var45;
-      var45 += var20;
-      int var30 = var45;
-      var45 += var10 * 2;
-      int var31 = var45;
-      var45 += var11 * 6;
-      int var32 = var45;
-      var45 += var17;
-      int var33 = var45;
-      var45 += var18;
-      int var10000 = var45 + var19;
+      int var29 = var22;
+      var22 += var20;
+      int var30 = var22;
+      var22 += var10 * 2;
+      int var31 = var22;
+      var22 += var11 * 6;
+      int var32 = var22;
+      var22 += var17;
+      int var33 = var22;
+      var22 += var18;
+      int var10000 = var22 + var19;
       this.field1736 = var9;
       this.field1701 = var10;
       this.field1712 = var11;
@@ -747,7 +750,7 @@ public class class100 extends class85 {
       var4.field2005 = var21;
       var5.field2005 = var32;
       var6.field2005 = var33;
-      var7.field2005 = var45;
+      var7.field2005 = var22;
       var8.field2005 = var27;
       int var35 = 0;
       int var36 = 0;
@@ -890,7 +893,7 @@ public class class100 extends class85 {
       }
 
       if(this.field1708 != null) {
-         boolean var46 = false;
+         boolean var45 = false;
 
          for(var43 = 0; var43 < var10; ++var43) {
             var44 = this.field1708[var43] & 255;
@@ -898,12 +901,12 @@ public class class100 extends class85 {
                if((this.field1714[var44] & '\uffff') == this.field1727[var43] && (this.field1715[var44] & '\uffff') == this.field1739[var43] && (this.field1716[var44] & '\uffff') == this.field1704[var43]) {
                   this.field1708[var43] = -1;
                } else {
-                  var46 = true;
+                  var45 = true;
                }
             }
          }
 
-         if(!var46) {
+         if(!var45) {
             this.field1708 = null;
          }
       }
@@ -959,6 +962,7 @@ public class class100 extends class85 {
 
          this.field1733 = true;
       }
+
    }
 
    @ObfuscatedSignature(
@@ -1233,8 +1237,8 @@ public class class100 extends class85 {
                this.field1710[var3] = var2;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("a")
@@ -1249,6 +1253,7 @@ public class class100 extends class85 {
    }
 
    @ObfuscatedName("w")
+   @Export("computeNormals")
    public void method2198() {
       if(this.field1729 == null) {
          this.field1729 = new class96[this.field1736];
@@ -1319,8 +1324,8 @@ public class class100 extends class85 {
                var17.field1460 = var13;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("g")
@@ -1412,8 +1417,8 @@ public class class100 extends class85 {
                var1.field1705[var9] = 2;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("q")
@@ -1471,113 +1476,113 @@ public class class100 extends class85 {
          }
       }
 
-      for(int var16 = 0; var16 < this.field1701; ++var16) {
-         byte var17;
-         if(this.field1705 == null) {
-            var17 = 0;
-         } else {
-            var17 = this.field1705[var16];
-         }
-
+      for(int var17 = 0; var17 < this.field1701; ++var17) {
          byte var18;
-         if(this.field1707 == null) {
+         if(this.field1705 == null) {
             var18 = 0;
          } else {
-            var18 = this.field1707[var16];
+            var18 = this.field1705[var17];
+         }
+
+         byte var19;
+         if(this.field1707 == null) {
+            var19 = 0;
+         } else {
+            var19 = this.field1707[var17];
          }
 
          short var12;
          if(this.field1710 == null) {
             var12 = -1;
          } else {
-            var12 = this.field1710[var16];
+            var12 = this.field1710[var17];
          }
 
-         if(var18 == -2) {
-            var17 = 3;
+         if(var19 == -2) {
+            var18 = 3;
          }
 
-         if(var18 == -1) {
-            var17 = 2;
+         if(var19 == -1) {
+            var18 = 2;
          }
 
          class96 var13;
          int var14;
-         class84 var19;
+         class84 var15;
          if(var12 == -1) {
-            if(var17 != 0) {
-               if(var17 == 1) {
-                  var19 = this.field1728[var16];
-                  var14 = var1 + (var3 * var19.field1462 + var4 * var19.field1459 + var5 * var19.field1460) / (var7 + var7 / 2);
-                  var8.field1820[var16] = method2219(this.field1741[var16] & '\uffff', var14);
-                  var8.field1832[var16] = -1;
-               } else if(var17 == 3) {
-                  var8.field1820[var16] = 128;
-                  var8.field1832[var16] = -1;
+            if(var18 != 0) {
+               if(var18 == 1) {
+                  var15 = this.field1728[var17];
+                  var14 = var1 + (var3 * var15.field1462 + var4 * var15.field1459 + var5 * var15.field1460) / (var7 + var7 / 2);
+                  var8.field1820[var17] = method2219(this.field1741[var17] & '\uffff', var14);
+                  var8.field1832[var17] = -1;
+               } else if(var18 == 3) {
+                  var8.field1820[var17] = 128;
+                  var8.field1832[var17] = -1;
                } else {
-                  var8.field1832[var16] = -2;
+                  var8.field1832[var17] = -2;
                }
             } else {
-               int var15 = this.field1741[var16] & '\uffff';
-               if(this.field1730 != null && this.field1730[this.field1727[var16]] != null) {
-                  var13 = this.field1730[this.field1727[var16]];
+               int var16 = this.field1741[var17] & '\uffff';
+               if(this.field1730 != null && this.field1730[this.field1727[var17]] != null) {
+                  var13 = this.field1730[this.field1727[var17]];
                } else {
-                  var13 = this.field1729[this.field1727[var16]];
+                  var13 = this.field1729[this.field1727[var17]];
                }
 
                var14 = var1 + (var3 * var13.field1642 + var4 * var13.field1638 + var5 * var13.field1637) / (var7 * var13.field1640);
-               var8.field1820[var16] = method2219(var15, var14);
-               if(this.field1730 != null && this.field1730[this.field1739[var16]] != null) {
-                  var13 = this.field1730[this.field1739[var16]];
+               var8.field1820[var17] = method2219(var16, var14);
+               if(this.field1730 != null && this.field1730[this.field1739[var17]] != null) {
+                  var13 = this.field1730[this.field1739[var17]];
                } else {
-                  var13 = this.field1729[this.field1739[var16]];
+                  var13 = this.field1729[this.field1739[var17]];
                }
 
                var14 = var1 + (var3 * var13.field1642 + var4 * var13.field1638 + var5 * var13.field1637) / (var7 * var13.field1640);
-               var8.field1821[var16] = method2219(var15, var14);
-               if(this.field1730 != null && this.field1730[this.field1704[var16]] != null) {
-                  var13 = this.field1730[this.field1704[var16]];
+               var8.field1821[var17] = method2219(var16, var14);
+               if(this.field1730 != null && this.field1730[this.field1704[var17]] != null) {
+                  var13 = this.field1730[this.field1704[var17]];
                } else {
-                  var13 = this.field1729[this.field1704[var16]];
+                  var13 = this.field1729[this.field1704[var17]];
                }
 
                var14 = var1 + (var3 * var13.field1642 + var4 * var13.field1638 + var5 * var13.field1637) / (var7 * var13.field1640);
-               var8.field1832[var16] = method2219(var15, var14);
+               var8.field1832[var17] = method2219(var16, var14);
             }
-         } else if(var17 != 0) {
-            if(var17 == 1) {
-               var19 = this.field1728[var16];
-               var14 = var1 + (var3 * var19.field1462 + var4 * var19.field1459 + var5 * var19.field1460) / (var7 + var7 / 2);
-               var8.field1820[var16] = method2253(var14);
-               var8.field1832[var16] = -1;
+         } else if(var18 != 0) {
+            if(var18 == 1) {
+               var15 = this.field1728[var17];
+               var14 = var1 + (var3 * var15.field1462 + var4 * var15.field1459 + var5 * var15.field1460) / (var7 + var7 / 2);
+               var8.field1820[var17] = method2253(var14);
+               var8.field1832[var17] = -1;
             } else {
-               var8.field1832[var16] = -2;
+               var8.field1832[var17] = -2;
             }
          } else {
-            if(this.field1730 != null && this.field1730[this.field1727[var16]] != null) {
-               var13 = this.field1730[this.field1727[var16]];
+            if(this.field1730 != null && this.field1730[this.field1727[var17]] != null) {
+               var13 = this.field1730[this.field1727[var17]];
             } else {
-               var13 = this.field1729[this.field1727[var16]];
+               var13 = this.field1729[this.field1727[var17]];
             }
 
             var14 = var1 + (var3 * var13.field1642 + var4 * var13.field1638 + var5 * var13.field1637) / (var7 * var13.field1640);
-            var8.field1820[var16] = method2253(var14);
-            if(this.field1730 != null && this.field1730[this.field1739[var16]] != null) {
-               var13 = this.field1730[this.field1739[var16]];
+            var8.field1820[var17] = method2253(var14);
+            if(this.field1730 != null && this.field1730[this.field1739[var17]] != null) {
+               var13 = this.field1730[this.field1739[var17]];
             } else {
-               var13 = this.field1729[this.field1739[var16]];
+               var13 = this.field1729[this.field1739[var17]];
             }
 
             var14 = var1 + (var3 * var13.field1642 + var4 * var13.field1638 + var5 * var13.field1637) / (var7 * var13.field1640);
-            var8.field1821[var16] = method2253(var14);
-            if(this.field1730 != null && this.field1730[this.field1704[var16]] != null) {
-               var13 = this.field1730[this.field1704[var16]];
+            var8.field1821[var17] = method2253(var14);
+            if(this.field1730 != null && this.field1730[this.field1704[var17]] != null) {
+               var13 = this.field1730[this.field1704[var17]];
             } else {
-               var13 = this.field1729[this.field1704[var16]];
+               var13 = this.field1729[this.field1704[var17]];
             }
 
             var14 = var1 + (var3 * var13.field1642 + var4 * var13.field1638 + var5 * var13.field1637) / (var7 * var13.field1640);
-            var8.field1832[var16] = method2253(var14);
+            var8.field1832[var17] = method2253(var14);
          }
       }
 
@@ -1627,12 +1632,8 @@ public class class100 extends class85 {
       this.method2199();
    }
 
-   static {
-      field1742 = class91.field1596;
-      field1724 = class91.field1597;
-   }
-
    @ObfuscatedName("b")
+   @Export("computeAnimationTables")
    void method2241() {
       int[] var1;
       int var2;
@@ -1732,5 +1733,10 @@ public class class100 extends class85 {
       }
 
       return var3;
+   }
+
+   static {
+      field1742 = class91.field1596;
+      field1724 = class91.field1597;
    }
 }

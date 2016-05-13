@@ -40,29 +40,30 @@ public final class class123 {
    )
    public static void method2760() {
       class137 var0 = class137.field2119;
+      class137 var1 = class137.field2119;
       synchronized(class137.field2119) {
          ++class137.field2144;
          class137.field2141 = class137.field2143;
          class137.field2140 = 0;
-         int var1;
+         int var2;
          if(class137.field2136 < 0) {
-            for(var1 = 0; var1 < 112; ++var1) {
-               class137.field2120[var1] = false;
+            for(var2 = 0; var2 < 112; ++var2) {
+               class137.field2120[var2] = false;
             }
 
             class137.field2136 = class137.field2118;
          } else {
             while(class137.field2118 != class137.field2136) {
-               var1 = class137.field2134[class137.field2118];
+               var2 = class137.field2134[class137.field2118];
                class137.field2118 = 1 + class137.field2118 & 127;
-               if(var1 < 0) {
-                  class137.field2120[~var1] = false;
+               if(var2 < 0) {
+                  class137.field2120[~var2] = false;
                } else {
-                  if(!class137.field2120[var1] && class137.field2140 < class137.field2139.length - 1) {
-                     class137.field2139[++class137.field2140 - 1] = var1;
+                  if(!class137.field2120[var2] && class137.field2140 < class137.field2139.length - 1) {
+                     class137.field2139[++class137.field2140 - 1] = var2;
                   }
 
-                  class137.field2120[var1] = true;
+                  class137.field2120[var2] = true;
                }
             }
          }
@@ -107,127 +108,127 @@ public final class class123 {
       garbageValue = "-102"
    )
    final void method2762() {
-      int var9 = -1640531527;
-      int var8 = -1640531527;
-      int var7 = -1640531527;
-      int var6 = -1640531527;
-      int var5 = -1640531527;
-      int var4 = -1640531527;
-      int var3 = -1640531527;
+      int var1 = -1640531527;
       int var2 = -1640531527;
+      int var3 = -1640531527;
+      int var4 = -1640531527;
+      int var5 = -1640531527;
+      int var6 = -1640531527;
+      int var7 = -1640531527;
+      int var8 = -1640531527;
 
-      int var1;
-      for(var1 = 0; var1 < 4; ++var1) {
-         var2 ^= var3 << 11;
-         var5 += var2;
-         var3 += var4;
-         var3 ^= var4 >>> 2;
-         var6 += var3;
-         var4 += var5;
-         var4 ^= var5 << 8;
-         var7 += var4;
-         var5 += var6;
-         var5 ^= var6 >>> 16;
-         var8 += var5;
-         var6 += var7;
-         var6 ^= var7 << 10;
-         var9 += var6;
-         var7 += var8;
-         var7 ^= var8 >>> 4;
-         var2 += var7;
-         var8 += var9;
-         var8 ^= var9 << 8;
-         var3 += var8;
-         var9 += var2;
-         var9 ^= var2 >>> 9;
-         var4 += var9;
-         var2 += var3;
+      int var9;
+      for(var9 = 0; var9 < 4; ++var9) {
+         var8 ^= var7 << 11;
+         var5 += var8;
+         var7 += var6;
+         var7 ^= var6 >>> 2;
+         var4 += var7;
+         var6 += var5;
+         var6 ^= var5 << 8;
+         var3 += var6;
+         var5 += var4;
+         var5 ^= var4 >>> 16;
+         var2 += var5;
+         var4 += var3;
+         var4 ^= var3 << 10;
+         var1 += var4;
+         var3 += var2;
+         var3 ^= var2 >>> 4;
+         var8 += var3;
+         var2 += var1;
+         var2 ^= var1 << 8;
+         var7 += var2;
+         var1 += var8;
+         var1 ^= var8 >>> 9;
+         var6 += var1;
+         var8 += var7;
       }
 
-      for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2030[var1];
-         var3 += this.field2030[1 + var1];
-         var4 += this.field2030[var1 + 2];
-         var5 += this.field2030[3 + var1];
-         var6 += this.field2030[var1 + 4];
-         var7 += this.field2030[var1 + 5];
-         var8 += this.field2030[var1 + 6];
-         var9 += this.field2030[var1 + 7];
-         var2 ^= var3 << 11;
-         var5 += var2;
-         var3 += var4;
-         var3 ^= var4 >>> 2;
-         var6 += var3;
-         var4 += var5;
-         var4 ^= var5 << 8;
-         var7 += var4;
-         var5 += var6;
-         var5 ^= var6 >>> 16;
-         var8 += var5;
-         var6 += var7;
-         var6 ^= var7 << 10;
-         var9 += var6;
-         var7 += var8;
-         var7 ^= var8 >>> 4;
-         var2 += var7;
-         var8 += var9;
-         var8 ^= var9 << 8;
-         var3 += var8;
-         var9 += var2;
-         var9 ^= var2 >>> 9;
-         var4 += var9;
-         var2 += var3;
-         this.field2034[var1] = var2;
-         this.field2034[1 + var1] = var3;
-         this.field2034[var1 + 2] = var4;
-         this.field2034[var1 + 3] = var5;
-         this.field2034[4 + var1] = var6;
-         this.field2034[var1 + 5] = var7;
-         this.field2034[var1 + 6] = var8;
-         this.field2034[7 + var1] = var9;
+      for(var9 = 0; var9 < 256; var9 += 8) {
+         var8 += this.field2030[var9];
+         var7 += this.field2030[1 + var9];
+         var6 += this.field2030[var9 + 2];
+         var5 += this.field2030[3 + var9];
+         var4 += this.field2030[var9 + 4];
+         var3 += this.field2030[var9 + 5];
+         var2 += this.field2030[var9 + 6];
+         var1 += this.field2030[var9 + 7];
+         var8 ^= var7 << 11;
+         var5 += var8;
+         var7 += var6;
+         var7 ^= var6 >>> 2;
+         var4 += var7;
+         var6 += var5;
+         var6 ^= var5 << 8;
+         var3 += var6;
+         var5 += var4;
+         var5 ^= var4 >>> 16;
+         var2 += var5;
+         var4 += var3;
+         var4 ^= var3 << 10;
+         var1 += var4;
+         var3 += var2;
+         var3 ^= var2 >>> 4;
+         var8 += var3;
+         var2 += var1;
+         var2 ^= var1 << 8;
+         var7 += var2;
+         var1 += var8;
+         var1 ^= var8 >>> 9;
+         var6 += var1;
+         var8 += var7;
+         this.field2034[var9] = var8;
+         this.field2034[1 + var9] = var7;
+         this.field2034[var9 + 2] = var6;
+         this.field2034[var9 + 3] = var5;
+         this.field2034[4 + var9] = var4;
+         this.field2034[var9 + 5] = var3;
+         this.field2034[var9 + 6] = var2;
+         this.field2034[7 + var9] = var1;
       }
 
-      for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2034[var1];
-         var3 += this.field2034[1 + var1];
-         var4 += this.field2034[2 + var1];
-         var5 += this.field2034[3 + var1];
-         var6 += this.field2034[var1 + 4];
-         var7 += this.field2034[5 + var1];
-         var8 += this.field2034[6 + var1];
-         var9 += this.field2034[var1 + 7];
-         var2 ^= var3 << 11;
-         var5 += var2;
-         var3 += var4;
-         var3 ^= var4 >>> 2;
-         var6 += var3;
-         var4 += var5;
-         var4 ^= var5 << 8;
-         var7 += var4;
-         var5 += var6;
-         var5 ^= var6 >>> 16;
-         var8 += var5;
-         var6 += var7;
-         var6 ^= var7 << 10;
-         var9 += var6;
-         var7 += var8;
-         var7 ^= var8 >>> 4;
-         var2 += var7;
-         var8 += var9;
-         var8 ^= var9 << 8;
-         var3 += var8;
-         var9 += var2;
-         var9 ^= var2 >>> 9;
-         var4 += var9;
-         var2 += var3;
-         this.field2034[var1] = var2;
-         this.field2034[1 + var1] = var3;
-         this.field2034[var1 + 2] = var4;
-         this.field2034[var1 + 3] = var5;
-         this.field2034[var1 + 4] = var6;
-         this.field2034[5 + var1] = var7;
-         this.field2034[var1 + 6] = var8;
-         this.field2034[var1 + 7] = var9;
+      for(var9 = 0; var9 < 256; var9 += 8) {
+         var8 += this.field2034[var9];
+         var7 += this.field2034[1 + var9];
+         var6 += this.field2034[2 + var9];
+         var5 += this.field2034[3 + var9];
+         var4 += this.field2034[var9 + 4];
+         var3 += this.field2034[5 + var9];
+         var2 += this.field2034[6 + var9];
+         var1 += this.field2034[var9 + 7];
+         var8 ^= var7 << 11;
+         var5 += var8;
+         var7 += var6;
+         var7 ^= var6 >>> 2;
+         var4 += var7;
+         var6 += var5;
+         var6 ^= var5 << 8;
+         var3 += var6;
+         var5 += var4;
+         var5 ^= var4 >>> 16;
+         var2 += var5;
+         var4 += var3;
+         var4 ^= var3 << 10;
+         var1 += var4;
+         var3 += var2;
+         var3 ^= var2 >>> 4;
+         var8 += var3;
+         var2 += var1;
+         var2 ^= var1 << 8;
+         var7 += var2;
+         var1 += var8;
+         var1 ^= var8 >>> 9;
+         var6 += var1;
+         var8 += var7;
+         this.field2034[var9] = var8;
+         this.field2034[1 + var9] = var7;
+         this.field2034[var9 + 2] = var6;
+         this.field2034[var9 + 3] = var5;
+         this.field2034[var9 + 4] = var4;
+         this.field2034[5 + var9] = var3;
+         this.field2034[var9 + 6] = var2;
+         this.field2034[var9 + 7] = var1;
       }
 
       this.method2761();
@@ -265,6 +266,7 @@ public final class class123 {
       if(class188.method3731(var0)) {
          class156.method3147(class217.field3171[var0], -1, var1, var2, var3, var4, var5, var6);
       }
+
    }
 
    @ObfuscatedName("j")
@@ -372,5 +374,6 @@ public final class class123 {
          class121.field2016.method1674(class31.field748 + 382, 0);
          class31.field718.method1841(class31.field748 + 382 - class31.field718.field1427 / 2, 18);
       }
+
    }
 }

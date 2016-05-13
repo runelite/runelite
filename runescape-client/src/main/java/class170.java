@@ -21,29 +21,35 @@ public class class170 implements Runnable {
    public void run() {
       try {
          while(true) {
-            class199 var2 = field2722;
-            class169 var1;
+            class199 var1 = field2722;
+            class199 var3 = field2722;
+            class169 var2;
             synchronized(field2722) {
-               var1 = (class169)field2722.method3812();
+               var2 = (class169)field2722.method3812();
             }
 
-            Object var14;
-            if(null != var1) {
-               if(0 == var1.field2712) {
-                  var1.field2713.method2849((int)var1.field3125, var1.field2714, var1.field2714.length);
-                  var2 = field2722;
+            Object var4;
+            Object var15;
+            if(null != var2) {
+               class199 var16;
+               if(0 == var2.field2712) {
+                  var2.field2713.method2849((int)var2.field3125, var2.field2714, var2.field2714.length);
+                  var1 = field2722;
+                  var16 = field2722;
                   synchronized(field2722) {
-                     var1.method3898();
+                     var2.method3898();
                   }
-               } else if(1 == var1.field2712) {
-                  var1.field2714 = var1.field2713.method2854((int)var1.field3125);
-                  var2 = field2722;
+               } else if(1 == var2.field2712) {
+                  var2.field2714 = var2.field2713.method2854((int)var2.field3125);
+                  var1 = field2722;
+                  var16 = field2722;
                   synchronized(field2722) {
-                     field2720.method3807(var1);
+                     field2720.method3807(var2);
                   }
                }
 
-               var14 = field2723;
+               var15 = field2723;
+               var4 = field2723;
                synchronized(field2723) {
                   if(field2721 <= 1) {
                      field2721 = 0;
@@ -55,7 +61,8 @@ public class class170 implements Runnable {
                }
             } else {
                class116.method2448(100L);
-               var14 = field2723;
+               var15 = field2723;
+               var4 = field2723;
                synchronized(field2723) {
                   if(field2721 <= 1) {
                      field2721 = 0;
@@ -67,8 +74,8 @@ public class class170 implements Runnable {
                }
             }
          }
-      } catch (Exception var13) {
-         class90.method2067((String)null, var13);
+      } catch (Exception var14) {
+         class90.method2067((String)null, var14);
       }
    }
 

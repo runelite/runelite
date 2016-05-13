@@ -1,4 +1,5 @@
 import java.util.Calendar;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -27,6 +28,7 @@ public class class36 {
    @ObfuscatedName("r")
    static final String[] field807 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
    @ObfuscatedName("b")
+   @Export("chatboxSegments")
    static String[] field808 = new String[1000];
    @ObfuscatedName("m")
    @ObfuscatedGetter(

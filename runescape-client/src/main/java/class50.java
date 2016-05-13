@@ -39,13 +39,14 @@ public class class50 extends class204 {
    )
    public static void method985() {
       Object var0 = class170.field2723;
+      Object var1 = class170.field2723;
       synchronized(class170.field2723) {
          if(class170.field2721 != 0) {
             class170.field2721 = 1;
 
             try {
                class170.field2723.wait();
-            } catch (InterruptedException var3) {
+            } catch (InterruptedException var4) {
                ;
             }
          }

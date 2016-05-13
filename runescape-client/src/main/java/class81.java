@@ -8,10 +8,13 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.util.Hashtable;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ci")
+@Implements("MainBufferProvider")
 public final class class81 extends class77 {
    @ObfuscatedName("s")
    Component field1433;
@@ -21,6 +24,7 @@ public final class class81 extends class77 {
       signature = "(IILjava/awt/Component;B)V",
       garbageValue = "0"
    )
+   @Export("init")
    final void vmethod1852(int var1, int var2, Component var3) {
       super.field1397 = var1;
       super.field1398 = var2;
@@ -38,6 +42,7 @@ public final class class81 extends class77 {
       signature = "(Ljava/awt/Graphics;III)V",
       garbageValue = "0"
    )
+   @Export("draw")
    public final void vmethod1857(Graphics var1, int var2, int var3) {
       var1.drawImage(super.field1400, var2, var3, this.field1433);
    }
@@ -47,6 +52,7 @@ public final class class81 extends class77 {
       signature = "(Ljava/awt/Graphics;IIIIS)V",
       garbageValue = "128"
    )
+   @Export("drawSub")
    public final void vmethod1858(Graphics var1, int var2, int var3, int var4, int var5) {
       Shape var6 = var1.getClip();
       var1.clipRect(var2, var3, var4, var5);

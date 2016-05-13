@@ -64,66 +64,66 @@ public class class182 {
    @ObfuscatedName("c")
    int method3522(int var1) {
       byte var2 = this.field2965.field2007[this.field2965.field2005];
-      int var5;
+      int var3;
       if(var2 < 0) {
-         var5 = var2 & 255;
-         this.field2961[var1] = var5;
+         var3 = var2 & 255;
+         this.field2961[var1] = var3;
          ++this.field2965.field2005;
       } else {
-         var5 = this.field2961[var1];
+         var3 = this.field2961[var1];
       }
 
-      if(var5 != 240 && var5 != 247) {
-         return this.method3523(var1, var5);
+      if(var3 != 240 && var3 != 247) {
+         return this.method3523(var1, var3);
       } else {
-         int var3 = this.field2965.method2507();
-         if(var5 == 247 && var3 > 0) {
-            int var4 = this.field2965.field2007[this.field2965.field2005] & 255;
-            if(var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
+         int var4 = this.field2965.method2507();
+         if(var3 == 247 && var4 > 0) {
+            int var5 = this.field2965.field2007[this.field2965.field2005] & 255;
+            if(var5 >= 241 && var5 <= 243 || var5 == 246 || var5 == 248 || var5 >= 250 && var5 <= 252 || var5 == 254) {
                ++this.field2965.field2005;
-               this.field2961[var1] = var4;
-               return this.method3523(var1, var4);
+               this.field2961[var1] = var5;
+               return this.method3523(var1, var5);
             }
          }
 
-         this.field2965.field2005 += var3;
+         this.field2965.field2005 += var4;
          return 0;
       }
    }
 
    @ObfuscatedName("l")
    int method3523(int var1, int var2) {
-      int var4;
+      int var3;
       if(var2 == 255) {
          int var7 = this.field2965.method2492();
-         var4 = this.field2965.method2507();
+         var3 = this.field2965.method2507();
          if(var7 == 47) {
-            this.field2965.field2005 += var4;
+            this.field2965.field2005 += var3;
             return 1;
          } else if(var7 == 81) {
             int var5 = this.field2965.method2513();
-            var4 -= 3;
+            var3 -= 3;
             int var6 = this.field2960[var1];
             this.field2964 += (long)var6 * (long)(this.field2968 - var5);
             this.field2968 = var5;
-            this.field2965.field2005 += var4;
+            this.field2965.field2005 += var3;
             return 2;
          } else {
-            this.field2965.field2005 += var4;
+            this.field2965.field2005 += var3;
             return 3;
          }
       } else {
-         byte var3 = field2958[var2 - 128];
-         var4 = var2;
-         if(var3 >= 1) {
-            var4 = var2 | this.field2965.method2492() << 8;
+         byte var4 = field2958[var2 - 128];
+         var3 = var2;
+         if(var4 >= 1) {
+            var3 = var2 | this.field2965.method2492() << 8;
          }
 
-         if(var3 >= 2) {
-            var4 |= this.field2965.method2492() << 16;
+         if(var4 >= 2) {
+            var3 |= this.field2965.method2492() << 16;
          }
 
-         return var4;
+         return var3;
       }
    }
 
@@ -186,11 +186,11 @@ public class class182 {
       this.field2962 = new int[var2];
 
       int var3;
-      int var5;
-      for(var3 = 0; var3 < var2; this.field2965.field2005 += var5) {
-         int var4 = this.field2965.method2497();
-         var5 = this.field2965.method2497();
-         if(var4 == 1297379947) {
+      int var4;
+      for(var3 = 0; var3 < var2; this.field2965.field2005 += var4) {
+         int var5 = this.field2965.method2497();
+         var4 = this.field2965.method2497();
+         if(var5 == 1297379947) {
             this.field2962[var3] = this.field2965.field2005;
             ++var3;
          }

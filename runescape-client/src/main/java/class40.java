@@ -153,6 +153,7 @@ public class class40 extends class204 {
    )
    public int field964 = -1;
    @ObfuscatedName("ar")
+   @Export("impostorIds")
    public int[] field965;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
@@ -443,6 +444,7 @@ public class class40 extends class204 {
       class100 var3 = null;
       boolean var4;
       int var5;
+      int var6;
       int var7;
       if(null == this.field933) {
          if(10 != var1) {
@@ -460,15 +462,15 @@ public class class40 extends class204 {
 
          var5 = this.field932.length;
 
-         for(int var6 = 0; var6 < var5; ++var6) {
-            var7 = this.field932[var6];
+         for(var7 = 0; var7 < var5; ++var7) {
+            var6 = this.field932[var7];
             if(var4) {
-               var7 += 65536;
+               var6 += 65536;
             }
 
-            var3 = (class100)field927.method3743((long)var7);
+            var3 = (class100)field927.method3743((long)var6);
             if(null == var3) {
-               var3 = class100.method2181(class21.field574, var7 & '\uffff', 0);
+               var3 = class100.method2181(class21.field574, var6 & '\uffff', 0);
                if(var3 == null) {
                   return null;
                }
@@ -477,11 +479,11 @@ public class class40 extends class204 {
                   var3.method2228();
                }
 
-               field927.method3745(var3, (long)var7);
+               field927.method3745(var3, (long)var6);
             }
 
             if(var5 > 1) {
-               field930[var6] = var3;
+               field930[var7] = var3;
             }
          }
 
@@ -489,22 +491,22 @@ public class class40 extends class204 {
             var3 = new class100(field930, var5);
          }
       } else {
-         int var8 = -1;
+         var7 = -1;
 
          for(var5 = 0; var5 < this.field933.length; ++var5) {
             if(this.field933[var5] == var1) {
-               var8 = var5;
+               var7 = var5;
                break;
             }
          }
 
-         if(-1 == var8) {
+         if(-1 == var7) {
             return null;
          }
 
-         var5 = this.field932[var8];
-         boolean var9 = this.field954 ^ var2 > 3;
-         if(var9) {
+         var5 = this.field932[var7];
+         boolean var8 = this.field954 ^ var2 > 3;
+         if(var8) {
             var5 += 65536;
          }
 
@@ -515,7 +517,7 @@ public class class40 extends class204 {
                return null;
             }
 
-            if(var9) {
+            if(var8) {
                var3.method2228();
             }
 
@@ -536,42 +538,42 @@ public class class40 extends class204 {
          var10 = true;
       }
 
-      class100 var11 = new class100(var3, var2 == 0 && !var4 && !var10, this.field935 == null, null == this.field937, true);
+      class100 var9 = new class100(var3, var2 == 0 && !var4 && !var10, this.field935 == null, null == this.field937, true);
       if(var1 == 4 && var2 > 3) {
-         var11.method2192(256);
-         var11.method2193(45, 0, -45);
+         var9.method2192(256);
+         var9.method2193(45, 0, -45);
       }
 
       var2 &= 3;
       if(var2 == 1) {
-         var11.method2189();
+         var9.method2189();
       } else if(2 == var2) {
-         var11.method2190();
+         var9.method2190();
       } else if(var2 == 3) {
-         var11.method2191();
+         var9.method2191();
       }
 
       if(this.field935 != null) {
-         for(var7 = 0; var7 < this.field935.length; ++var7) {
-            var11.method2194(this.field935[var7], this.field925[var7]);
+         for(var6 = 0; var6 < this.field935.length; ++var6) {
+            var9.method2194(this.field935[var6], this.field925[var6]);
          }
       }
 
       if(this.field937 != null) {
-         for(var7 = 0; var7 < this.field937.length; ++var7) {
-            var11.method2195(this.field937[var7], this.field938[var7]);
+         for(var6 = 0; var6 < this.field937.length; ++var6) {
+            var9.method2195(this.field937[var6], this.field938[var6]);
          }
       }
 
       if(var4) {
-         var11.method2197(this.field949, this.field957, this.field958);
+         var9.method2197(this.field949, this.field957, this.field958);
       }
 
       if(var10) {
-         var11.method2193(this.field959, this.field960, this.field961);
+         var9.method2193(this.field959, this.field960, this.field961);
       }
 
-      return var11;
+      return var9;
    }
 
    @ObfuscatedName("l")
@@ -579,6 +581,7 @@ public class class40 extends class204 {
       signature = "(I)Lclass40;",
       garbageValue = "1050971925"
    )
+   @Export("getImpostor")
    public final class40 method783() {
       int var1 = -1;
       if(-1 != this.field947) {
