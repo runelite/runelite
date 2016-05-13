@@ -28,78 +28,26 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.asm.objectwebasm;
+package net.runelite.osb.inject;
 
-import net.runelite.asm.ClassFile;
-import net.runelite.asm.ClassGroup;
-import org.objectweb.asm.ClassWriter;
-
-class NonloadingClassWriter extends ClassWriter
+public class MethodHook
 {
-	private final ClassGroup group;
+	private String method; // ob method name
+	private String desc; // deob desc
+	private String clientDesc; // ob desc
 
-	public NonloadingClassWriter(ClassGroup group, int flags)
+	public String getMethod()
 	{
-		super(flags);
-
-		this.group = group;
+		return method;
 	}
 
-	@Override
-	protected String getCommonSuperClass(String type1, String type2)
+	public String getDesc()
 	{
-		ClassFile cf1 = group.findClass(type1),
-			cf2 = group.findClass(type2);
+		return desc;
+	}
 
-		if (cf1 == null && cf2 == null)
-		{
-			// not mine
-			try
-			{
-				return super.getCommonSuperClass(type1, type2);
-			}
-			catch (RuntimeException ex)
-			{
-				// java.lang.RuntimeException: java.lang.ClassNotFoundException: com.sun.deploy.appcontext.AppContext
-				return "java/lang/Object";
-			}
-		}
-
-		if (cf1 != null && cf2 != null)
-		{
-			for (ClassFile c = cf1; c != null; c = c.getParent())
-				for (ClassFile c2 = cf2; c2 != null; c2 = c2.getParent())
-					if (c == c2)
-						return c.getName();
-
-			return "java/lang/Object";
-		}
-
-		ClassFile found;
-		String other;
-
-		if (cf1 == null)
-		{
-			found = cf2;
-			other = type1;
-		}
-		else
-		{
-			assert cf2 == null;
-			found = cf1;
-			other = type2;
-		}
-
-		ClassFile prev = null;
-
-		for (ClassFile c = found; c != null; c = c.getParent())
-		{
-			prev = c;
-
-			if (c.getName().equals(other))
-				return other;
-		}
-
-		return super.getCommonSuperClass(prev.getSuperName(), other);
+	public String getClientDesc()
+	{
+		return clientDesc;
 	}
 }
