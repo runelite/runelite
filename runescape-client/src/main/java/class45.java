@@ -145,22 +145,19 @@ public class class45 extends class204 {
             } else if((client.field545 == 1 || class33.method692(client.field496 - 1)) && client.field496 > 2) {
                class39.method772(client.field559 + client.field452, client.field453 + client.field460);
             } else if(client.field496 > 0) {
-               int var10 = client.field559 + client.field452;
-               int var8 = client.field453 + client.field460;
-               class30 var9 = class16.field231;
-               class13.method171(var9.field713, var9.field704, var9.field705, var9.field711, var9.field703, var9.field703, var10, var8);
+               int var8 = client.field559 + client.field452;
+               int var9 = client.field453 + client.field460;
+               class30 var10 = class16.field231;
+               class13.method171(var10.field713, var10.field704, var10.field705, var10.field711, var10.field703, var10.field703, var8, var9);
                class16.field231 = null;
             }
 
             client.field450 = null;
          }
-
-      } else {
-         if(class56.field1188 > 1) {
-            client.field450 = null;
-         }
-
+      } else if(class56.field1188 > 1) {
+         client.field450 = null;
       }
+
    }
 
    @ObfuscatedName("p")

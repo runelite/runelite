@@ -120,25 +120,25 @@ public class class130 {
                      var0.method2480(var6);
                   }
 
-                  Method var22;
+                  Method var7;
                   if(3 != var4) {
                      if(4 == var4) {
-                        var22 = var1.field3138[var3];
-                        var6 = var22.getModifiers();
+                        var7 = var1.field3138[var3];
+                        var6 = var7.getModifiers();
                         var0.method2477(0);
                         var0.method2480(var6);
                      }
                   } else {
-                     var22 = var1.field3138[var3];
-                     byte[][] var23 = var1.field3139[var3];
-                     Object[] var7 = new Object[var23.length];
+                     var7 = var1.field3138[var3];
+                     byte[][] var8 = var1.field3139[var3];
+                     Object[] var9 = new Object[var8.length];
 
-                     for(int var8 = 0; var8 < var23.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var23[var8]));
-                        var7[var8] = var9.readObject();
+                     for(int var10 = 0; var10 < var8.length; ++var10) {
+                        ObjectInputStream var11 = new ObjectInputStream(new ByteArrayInputStream(var8[var10]));
+                        var9[var10] = var11.readObject();
                      }
 
-                     Object var24 = var22.invoke((Object)null, var7);
+                     Object var24 = var7.invoke((Object)null, var9);
                      if(var24 == null) {
                         var0.method2477(0);
                      } else if(var24 instanceof Number) {
@@ -151,29 +151,29 @@ public class class130 {
                         var0.method2477(4);
                      }
                   }
-               } catch (ClassNotFoundException var10) {
+               } catch (ClassNotFoundException var12) {
                   var0.method2477(-10);
-               } catch (InvalidClassException var11) {
+               } catch (InvalidClassException var13) {
                   var0.method2477(-11);
-               } catch (StreamCorruptedException var12) {
+               } catch (StreamCorruptedException var14) {
                   var0.method2477(-12);
-               } catch (OptionalDataException var13) {
+               } catch (OptionalDataException var15) {
                   var0.method2477(-13);
-               } catch (IllegalAccessException var14) {
+               } catch (IllegalAccessException var16) {
                   var0.method2477(-14);
-               } catch (IllegalArgumentException var15) {
+               } catch (IllegalArgumentException var17) {
                   var0.method2477(-15);
-               } catch (InvocationTargetException var16) {
+               } catch (InvocationTargetException var18) {
                   var0.method2477(-16);
-               } catch (SecurityException var17) {
+               } catch (SecurityException var19) {
                   var0.method2477(-17);
-               } catch (IOException var18) {
+               } catch (IOException var20) {
                   var0.method2477(-18);
-               } catch (NullPointerException var19) {
+               } catch (NullPointerException var21) {
                   var0.method2477(-19);
-               } catch (Exception var20) {
+               } catch (Exception var22) {
                   var0.method2477(-20);
-               } catch (Throwable var21) {
+               } catch (Throwable var23) {
                   var0.method2477(-21);
                }
             }
@@ -182,5 +182,6 @@ public class class130 {
          var0.method2651(var2);
          var1.method3898();
       }
+
    }
 }

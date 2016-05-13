@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -7,10 +8,12 @@ public final class class196 {
    @ObfuscatedName("p")
    class208 field3099;
    @ObfuscatedName("j")
+   @Export("buckets")
    class208[] field3100;
    @ObfuscatedName("x")
    class208 field3101;
    @ObfuscatedName("s")
+   @Export("size")
    int field3102;
    @ObfuscatedName("d")
    int field3103 = 0;
@@ -78,16 +81,15 @@ public final class class196 {
          this.field3101 = var1.field3124;
          return var1;
       } else {
-         do {
-            if(this.field3103 >= this.field3102) {
-               return null;
-            }
-
+         while(this.field3103 < this.field3102) {
             var1 = this.field3100[this.field3103++].field3124;
-         } while(var1 == this.field3100[this.field3103 - 1]);
+            if(var1 != this.field3100[this.field3103 - 1]) {
+               this.field3101 = var1.field3124;
+               return var1;
+            }
+         }
 
-         this.field3101 = var1.field3124;
-         return var1;
+         return null;
       }
    }
 

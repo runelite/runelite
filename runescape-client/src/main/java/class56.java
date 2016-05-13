@@ -186,8 +186,8 @@ public class class56 {
          } catch (Exception var5) {
             this.field1187 = var1;
          }
-
       }
+
    }
 
    @ObfuscatedName("x")
@@ -275,36 +275,36 @@ public class class56 {
          int var5 = 255;
 
          int var6;
-         class66 var10;
-         label138:
+         class66 var7;
+         label106:
          for(var6 = 7; var5 != 0; --var6) {
-            int var7;
             int var8;
+            int var9;
             if(var6 < 0) {
-               var7 = var6 & 3;
-               var8 = -(var6 >> 2);
+               var8 = var6 & 3;
+               var9 = -(var6 >> 2);
             } else {
-               var7 = var6;
-               var8 = 0;
+               var8 = var6;
+               var9 = 0;
             }
 
-            for(int var9 = var5 >>> var7 & 286331153; 0 != var9; var9 >>>= 4) {
-               if(0 != (var9 & 1)) {
-                  var5 &= ~(1 << var7);
-                  var10 = null;
-                  class66 var11 = this.field1198[var7];
+            for(int var10 = var5 >>> var8 & 286331153; 0 != var10; var10 >>>= 4) {
+               if(0 != (var10 & 1)) {
+                  var5 &= ~(1 << var8);
+                  var7 = null;
+                  class66 var11 = this.field1198[var8];
 
-                  label132:
+                  label100:
                   while(true) {
                      while(true) {
                         if(var11 == null) {
-                           break label132;
+                           break label100;
                         }
 
                         class65 var12 = var11.field1271;
-                        if(null != var12 && var12.field1268 > var8) {
-                           var5 |= 1 << var7;
-                           var10 = var11;
+                        if(null != var12 && var12.field1268 > var9) {
+                           var5 |= 1 << var8;
+                           var7 = var11;
                            var11 = var11.field1272;
                         } else {
                            var11.field1269 = true;
@@ -315,7 +315,7 @@ public class class56 {
                            }
 
                            if(var4 >= this.field1184) {
-                              break label138;
+                              break label106;
                            }
 
                            class66 var14 = var11.vmethod3709();
@@ -327,14 +327,14 @@ public class class56 {
 
                            class66 var18 = var11.field1272;
                            var11.field1272 = null;
-                           if(null == var10) {
-                              this.field1198[var7] = var18;
+                           if(null == var7) {
+                              this.field1198[var8] = var18;
                            } else {
-                              var10.field1272 = var18;
+                              var7.field1272 = var18;
                            }
 
                            if(var18 == null) {
-                              this.field1199[var7] = var10;
+                              this.field1199[var8] = var7;
                            }
 
                            var11 = var18;
@@ -343,8 +343,8 @@ public class class56 {
                   }
                }
 
-               var7 += 4;
-               ++var8;
+               var8 += 4;
+               ++var9;
             }
          }
 
@@ -353,8 +353,8 @@ public class class56 {
             class66[] var17 = this.field1198;
             this.field1199[var6] = null;
 
-            for(var17[var6] = null; null != var16; var16 = var10) {
-               var10 = var16.field1272;
+            for(var17[var6] = null; null != var16; var16 = var7) {
+               var7 = var16.field1272;
                var16.field1272 = null;
             }
          }

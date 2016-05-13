@@ -11,6 +11,7 @@ public final class class5 {
    @ObfuscatedGetter(
       intValue = 1075049927
    )
+   @Export("mapHueOffset")
    static int field80 = (int)(Math.random() * 17.0D) - 8;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
@@ -23,6 +24,7 @@ public final class class5 {
    @ObfuscatedGetter(
       intValue = 1419555739
    )
+   @Export("mapLightnessOffset")
    static int field83 = (int)(Math.random() * 33.0D) - 16;
    @ObfuscatedName("b")
    static byte[][][] field84;
@@ -108,26 +110,26 @@ public final class class5 {
                }
             }
 
-            class0 var5;
+            class0 var6;
             if(var1 == 0 && var3.field2763 != null) {
-               var5 = new class0();
-               var5.field8 = var3;
-               var5.field12 = var3.field2763;
-               class16.method197(var5);
+               var6 = new class0();
+               var6.field8 = var3;
+               var6.field12 = var3.field2763;
+               class16.method197(var6);
             }
 
             if(1 == var1 && var3.field2873 != null) {
                if(var3.field2766 >= 0) {
-                  class173 var6 = class29.method645(var3.field2826);
-                  if(var6 == null || null == var6.field2847 || var3.field2766 >= var6.field2847.length || var6.field2847[var3.field2766] != var3) {
+                  class173 var5 = class29.method645(var3.field2826);
+                  if(var5 == null || null == var5.field2847 || var3.field2766 >= var5.field2847.length || var5.field2847[var3.field2766] != var3) {
                      continue;
                   }
                }
 
-               var5 = new class0();
-               var5.field8 = var3;
-               var5.field12 = var3.field2873;
-               class16.method197(var5);
+               var6 = new class0();
+               var6.field8 = var3;
+               var6.field12 = var3.field2873;
+               class16.method197(var6);
             }
          }
       }

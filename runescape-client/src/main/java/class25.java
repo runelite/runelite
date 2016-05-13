@@ -140,9 +140,9 @@ public class class25 {
       File var3 = new File(class4.field72, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            class227 var10 = new class227(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
+            class227 var11 = new class227(var3, "rw", 10000L);
+            return var11;
+         } catch (IOException var10) {
             ;
          }
       }
@@ -160,7 +160,7 @@ public class class25 {
          try {
             var6 = new class227(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var8) {
+         } catch (IOException var9) {
             ;
          }
       }
@@ -168,7 +168,7 @@ public class class25 {
       try {
          var6 = new class227(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          throw new RuntimeException();
       }
    }

@@ -52,7 +52,7 @@ public class class116 {
          } else {
             class15.method193(var0);
          }
-
       }
+
    }
 }

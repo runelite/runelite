@@ -1,4 +1,5 @@
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -22,6 +23,7 @@ public class class38 extends class207 {
       signature = "(S)Z",
       garbageValue = "-1097"
    )
+   @Export("loadWorlds")
    static boolean method734() {
       try {
          if(null == class87.field1537) {
@@ -33,15 +35,15 @@ public class class38 extends class207 {
                class25.field628 = var1.method2584();
                class25.field636 = new class25[class25.field628];
 
-               class25 var3;
-               for(int var2 = 0; var2 < class25.field628; var3.field638 = var2++) {
-                  var3 = class25.field636[var2] = new class25();
-                  var3.field632 = var1.method2584();
-                  var3.field633 = var1.method2497();
-                  var3.field635 = var1.method2500();
-                  var3.field641 = var1.method2500();
-                  var3.field637 = var1.method2492();
-                  var3.field634 = var1.method2495();
+               class25 var2;
+               for(int var3 = 0; var3 < class25.field628; var2.field638 = var3++) {
+                  var2 = class25.field636[var3] = new class25();
+                  var2.field632 = var1.method2584();
+                  var2.field633 = var1.method2497();
+                  var2.field635 = var1.method2500();
+                  var2.field641 = var1.method2500();
+                  var2.field637 = var1.method2492();
+                  var2.field634 = var1.method2495();
                }
 
                class7.method100(class25.field636, 0, class25.field636.length - 1, class25.field631, class25.field627);
@@ -100,15 +102,15 @@ public class class38 extends class207 {
          int var11;
          if(var7 != 0) {
             var11 = client.field339.method1925(var0, var2, var3, var7);
-            int var13 = var7 >> 14 & 32767;
-            int var14 = var11 & 31;
-            int var15 = var11 >> 6 & 3;
-            class40 var12;
+            int var12 = var7 >> 14 & 32767;
+            int var13 = var11 & 31;
+            int var14 = var11 >> 6 & 3;
+            class40 var15;
             if(var1 == 0) {
                client.field339.method1900(var0, var2, var3);
-               var12 = class9.method120(var13);
-               if(var12.field941 != 0) {
-                  client.field340[var0].method2408(var2, var3, var14, var15, var12.field963);
+               var15 = class9.method120(var12);
+               if(var15.field941 != 0) {
+                  client.field340[var0].method2408(var2, var3, var13, var14, var15.field963);
                }
             }
 
@@ -118,20 +120,20 @@ public class class38 extends class207 {
 
             if(2 == var1) {
                client.field339.method1914(var0, var2, var3);
-               var12 = class9.method120(var13);
-               if(var2 + var12.field939 > 103 || var12.field939 + var3 > 103 || var2 + var12.field966 > 103 || var3 + var12.field966 > 103) {
+               var15 = class9.method120(var12);
+               if(var2 + var15.field939 > 103 || var15.field939 + var3 > 103 || var2 + var15.field966 > 103 || var3 + var15.field966 > 103) {
                   return;
                }
 
-               if(0 != var12.field941) {
-                  client.field340[var0].method2379(var2, var3, var12.field939, var12.field966, var15, var12.field963);
+               if(0 != var15.field941) {
+                  client.field340[var0].method2379(var2, var3, var15.field939, var15.field966, var14, var15.field963);
                }
             }
 
             if(3 == var1) {
                client.field339.method1915(var0, var2, var3);
-               var12 = class9.method120(var13);
-               if(1 == var12.field941) {
+               var15 = class9.method120(var12);
+               if(1 == var15.field941) {
                   client.field340[var0].method2381(var2, var3);
                }
             }

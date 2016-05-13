@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -90,6 +91,7 @@ public class class14 {
          class115.method2439(true);
          class31.field736 = false;
       }
+
    }
 
    @ObfuscatedName("x")
@@ -104,11 +106,13 @@ public class class14 {
       var3.field2713 = var1;
       var3.field2716 = var2;
       class199 var4 = class170.field2722;
+      class199 var5 = class170.field2722;
       synchronized(class170.field2722) {
          class170.field2722.method3807(var3);
       }
 
-      Object var9 = class170.field2723;
+      Object var10 = class170.field2723;
+      Object var6 = class170.field2723;
       synchronized(class170.field2723) {
          if(0 == class170.field2721) {
             class38.field878.method2862(new class170(), 5);
@@ -123,19 +127,18 @@ public class class14 {
       signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
       garbageValue = "2114216442"
    )
+   @Export("addMenuEntry")
    static final void method175(String var0, String var1, int var2, int var3, int var4, int var5) {
-      if(!client.field418) {
-         if(client.field496 < 500) {
-            client.field424[client.field496] = var0;
-            client.field425[client.field496] = var1;
-            client.field422[client.field496] = var2;
-            client.field378[client.field496] = var3;
-            client.field420[client.field496] = var4;
-            client.field421[client.field496] = var5;
-            ++client.field496;
-         }
-
+      if(!client.field418 && client.field496 < 500) {
+         client.field424[client.field496] = var0;
+         client.field425[client.field496] = var1;
+         client.field422[client.field496] = var2;
+         client.field378[client.field496] = var3;
+         client.field420[client.field496] = var4;
+         client.field421[client.field496] = var5;
+         ++client.field496;
       }
+
    }
 
    @ObfuscatedName("s")

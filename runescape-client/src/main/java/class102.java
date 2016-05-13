@@ -1,10 +1,12 @@
 import java.awt.Container;
 import java.awt.Insets;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cn")
+@Implements("FrameMap")
 public class class102 extends class208 {
    @ObfuscatedName("j")
    @ObfuscatedGetter(
@@ -32,15 +34,16 @@ public class class102 extends class208 {
    )
    static void method2268() {
       client var0 = client.field276;
+      client var1 = client.field276;
       synchronized(client.field276) {
-         Container var1 = client.field276.method2996();
-         if(null != var1) {
-            class32.field770 = Math.max(var1.getSize().width, class98.field1682);
-            class131.field2079 = Math.max(var1.getSize().height, class136.field2114);
-            if(class85.field1464 == var1) {
-               Insets var2 = class85.field1464.getInsets();
-               class32.field770 -= var2.left + var2.right;
-               class131.field2079 -= var2.bottom + var2.top;
+         Container var2 = client.field276.method2996();
+         if(null != var2) {
+            class32.field770 = Math.max(var2.getSize().width, class98.field1682);
+            class131.field2079 = Math.max(var2.getSize().height, class136.field2114);
+            if(class85.field1464 == var2) {
+               Insets var3 = class85.field1464.getInsets();
+               class32.field770 -= var3.left + var3.right;
+               class131.field2079 -= var3.bottom + var3.top;
             }
 
             if(class32.field770 <= 0) {
@@ -51,8 +54,8 @@ public class class102 extends class208 {
                class131.field2079 = 1;
             }
 
-            int var6 = client.field336?2:1;
-            if(var6 == 1) {
+            int var7 = client.field336?2:1;
+            if(var7 == 1) {
                class15.field214 = client.field492;
                class15.field215 = client.field341;
             } else {
@@ -64,9 +67,9 @@ public class class102 extends class208 {
             class144.field2211 = 0;
             class122.field2024.setSize(class15.field214, class15.field215);
             class135.field2094 = class109.method2415(class15.field214, class15.field215, class122.field2024);
-            if(class85.field1464 == var1) {
-               Insets var3 = class85.field1464.getInsets();
-               class122.field2024.setLocation(class144.field2210 + var3.left, class144.field2211 + var3.top);
+            if(class85.field1464 == var2) {
+               Insets var4 = class85.field1464.getInsets();
+               class122.field2024.setLocation(class144.field2210 + var4.left, class144.field2211 + var4.top);
             } else {
                class122.field2024.setLocation(class144.field2210, class144.field2211);
             }
@@ -78,6 +81,7 @@ public class class102 extends class208 {
 
             class0.method0();
          }
+
       }
    }
 
@@ -147,10 +151,10 @@ public class class102 extends class208 {
             client.field385 = -1;
             client.field386 = -1;
          }
-
       } else {
          client.field385 = -1;
          client.field386 = -1;
       }
+
    }
 }

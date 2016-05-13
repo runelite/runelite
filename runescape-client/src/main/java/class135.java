@@ -1,11 +1,13 @@
 import java.io.File;
 import java.util.Hashtable;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("eo")
 public class class135 {
    @ObfuscatedName("qa")
+   @Export("bufferProvider")
    public static class77 field2094;
    @ObfuscatedName("ac")
    @ObfuscatedGetter(

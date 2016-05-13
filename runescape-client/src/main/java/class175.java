@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -89,6 +90,7 @@ public class class175 extends class204 {
       signature = "(ZI)V",
       garbageValue = "0"
    )
+   @Export("xteaChanged")
    static final void method3431(boolean var0) {
       client.field471 = var0;
       int var1;
@@ -115,13 +117,13 @@ public class class175 extends class204 {
          class11.field172 = new int[var3];
          class20.field566 = new byte[var3][];
          class127.field2061 = new byte[var3][];
-         boolean var13 = false;
+         boolean var8 = false;
          if((48 == var2 / 8 || 49 == var2 / 8) && 48 == var1 / 8) {
-            var13 = true;
+            var8 = true;
          }
 
          if(var2 / 8 == 48 && var1 / 8 == 148) {
-            var13 = true;
+            var8 = true;
          }
 
          var3 = 0;
@@ -129,7 +131,7 @@ public class class175 extends class204 {
          for(var5 = (var2 - 6) / 8; var5 <= (var2 + 6) / 8; ++var5) {
             for(var6 = (var1 - 6) / 8; var6 <= (var1 + 6) / 8; ++var6) {
                var7 = var6 + (var5 << 8);
-               if(!var13 || 49 != var6 && 149 != var6 && var6 != 147 && var5 != 50 && (var5 != 49 || 47 != var6)) {
+               if(!var8 || 49 != var6 && 149 != var6 && var6 != 147 && var5 != 50 && (var5 != 49 || 47 != var6)) {
                   class144.field2220[var3] = var7;
                   class163.field2659[var3] = class7.field132.method3253("m" + var5 + "_" + var6);
                   class11.field172[var3] = class7.field132.method3253("l" + var5 + "_" + var6);
@@ -179,9 +181,9 @@ public class class175 extends class204 {
                for(var6 = 0; var6 < 13; ++var6) {
                   var7 = client.field278[var4][var5][var6];
                   if(var7 != -1) {
-                     int var8 = var7 >> 14 & 1023;
+                     int var13 = var7 >> 14 & 1023;
                      int var9 = var7 >> 3 & 2047;
-                     int var10 = (var8 / 8 << 8) + var9 / 8;
+                     int var10 = (var13 / 8 << 8) + var9 / 8;
 
                      int var11;
                      for(var11 = 0; var11 < var3; ++var11) {

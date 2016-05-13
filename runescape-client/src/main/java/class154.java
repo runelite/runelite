@@ -59,17 +59,17 @@ public class class154 implements class112 {
       if(!class35.method714(var0, var4, var5)) {
          var6 = null;
       } else {
-         byte[] var8 = var1.method3239(var4, var5);
-         class224 var7;
-         if(null == var8) {
-            var7 = null;
+         byte[] var7 = var1.method3239(var4, var5);
+         class224 var8;
+         if(null == var7) {
+            var8 = null;
          } else {
-            class224 var9 = new class224(var8, class76.field1387, class76.field1390, class76.field1389, class9.field159, class76.field1396, class21.field575);
+            class224 var9 = new class224(var7, class76.field1387, class76.field1390, class76.field1389, class9.field159, class76.field1396, class21.field575);
             class27.method633();
-            var7 = var9;
+            var8 = var9;
          }
 
-         var6 = var7;
+         var6 = var8;
       }
 
       return var6;

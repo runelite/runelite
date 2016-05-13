@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -71,8 +72,8 @@ public final class class29 extends class85 {
                break;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("p")
@@ -97,6 +98,7 @@ public final class class29 extends class85 {
       signature = "([Lclass173;IIIIIIIIB)V",
       garbageValue = "33"
    )
+   @Export("gameDraw")
    static final void method642(class173[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       class79.method1767(var2, var3, var4, var5);
       class91.method2070();
@@ -254,14 +256,15 @@ public final class class29 extends class85 {
                   int var33;
                   int var34;
                   int var35;
+                  boolean var43;
                   if(0 != var10.field2887) {
                      if(1336 == var10.field2887) {
                         if(client.field282) {
                            var13 += 15;
                            class181.field2945.method4003("Fps:" + class144.field2207, var12 + var10.field2886, var13, 16776960, -1);
                            var13 += 15;
-                           Runtime var57 = Runtime.getRuntime();
-                           var20 = (int)((var57.totalMemory() - var57.freeMemory()) / 1024L);
+                           Runtime var47 = Runtime.getRuntime();
+                           var20 = (int)((var47.totalMemory() - var47.freeMemory()) / 1024L);
                            var21 = 16776960;
                            if(var20 > '耀' && client.field493) {
                               var21 = 16711680;
@@ -277,6 +280,7 @@ public final class class29 extends class85 {
                         continue;
                      }
 
+                     int[] var63;
                      if(var10.field2887 == 1337) {
                         client.field426 = var12;
                         client.field443 = var13;
@@ -284,25 +288,25 @@ public final class class29 extends class85 {
                         var22 = var10.field2781;
                         ++client.field275;
                         class56.method1204(class33.field773);
-                        boolean var67 = false;
+                        var43 = false;
                         if(client.field409 >= 0) {
                            var24 = class32.field755;
-                           int[] var69 = class32.field756;
+                           var63 = class32.field756;
 
                            for(var26 = 0; var26 < var24; ++var26) {
-                              if(client.field409 == var69[var26]) {
-                                 var67 = true;
+                              if(client.field409 == var63[var26]) {
+                                 var43 = true;
                                  break;
                               }
                            }
                         }
 
-                        if(var67) {
+                        if(var43) {
                            class56.method1204(class33.field774);
                         }
 
                         class11.method138(true);
-                        class56.method1204(var67?class33.field778:class33.field771);
+                        class56.method1204(var43?class33.field778:class33.field771);
                         class11.method138(false);
                         class101.method2266();
                         class5.method87();
@@ -333,22 +337,22 @@ public final class class29 extends class85 {
                            var32 = 0;
                            var33 = 0;
                            var34 = var29;
-                           int var36;
-                           int var37;
+                           int var64;
+                           int var66;
                            if(0 != var30) {
                               var35 = class91.field1596[var30];
-                              var36 = class91.field1597[var30];
-                              var37 = var36 * var33 - var29 * var35 >> 16;
-                              var34 = var36 * var29 + var35 * var33 >> 16;
-                              var33 = var37;
+                              var66 = class91.field1597[var30];
+                              var64 = var66 * var33 - var29 * var35 >> 16;
+                              var34 = var66 * var29 + var35 * var33 >> 16;
+                              var33 = var64;
                            }
 
                            if(var31 != 0) {
                               var35 = class91.field1596[var31];
-                              var36 = class91.field1597[var31];
-                              var37 = var34 * var35 + var36 * var32 >> 16;
-                              var34 = var36 * var34 - var35 * var32 >> 16;
-                              var32 = var37;
+                              var66 = class91.field1597[var31];
+                              var64 = var34 * var35 + var66 * var32 >> 16;
+                              var34 = var66 * var34 - var35 * var32 >> 16;
+                              var32 = var64;
                            }
 
                            class77.field1404 = var26 - var32;
@@ -362,7 +366,7 @@ public final class class29 extends class85 {
                            if(class76.field1388.field148) {
                               var25 = class21.field581;
                            } else {
-                              label1727: {
+                              label1235: {
                                  var26 = 3;
                                  if(class59.field1222 < 310) {
                                     var27 = class77.field1404 >> 7;
@@ -371,7 +375,7 @@ public final class class29 extends class85 {
                                     var30 = class106.field1881.field813 >> 7;
                                     if(var27 < 0 || var28 < 0 || var27 >= 104 || var28 >= 104) {
                                        var25 = class21.field581;
-                                       break label1727;
+                                       break label1235;
                                     }
 
                                     if(0 != (class5.field90[class21.field581][var27][var28] & 4)) {
@@ -559,8 +563,8 @@ public final class class29 extends class85 {
                         class59.field1222 = var28;
                         class32.field750 = var29;
                         if(client.field287) {
-                           byte var70 = 0;
-                           var34 = var70 + class171.field2732 + class171.field2730;
+                           byte var68 = 0;
+                           var34 = var68 + class171.field2732 + class171.field2730;
                            if(var34 == 0) {
                               client.field287 = false;
                            }
@@ -576,22 +580,22 @@ public final class class29 extends class85 {
                         continue;
                      }
 
-                     class175 var54;
+                     class175 var45;
                      if(1338 == var10.field2887) {
                         class31.method677();
-                        var54 = var10.method3404(false);
-                        if(null != var54) {
-                           class79.method1767(var12, var13, var54.field2914 + var12, var13 + var54.field2909);
+                        var45 = var10.method3404(false);
+                        if(null != var45) {
+                           class79.method1767(var12, var13, var45.field2914 + var12, var13 + var45.field2909);
                            if(2 != client.field293 && 5 != client.field293) {
                               var20 = client.field364 + client.field410 & 2047;
                               var21 = 48 + class106.field1881.field823 / 32;
                               var22 = 464 - class106.field1881.field813 / 32;
-                              class74.field1370.method1687(var12, var13, var54.field2914, var54.field2909, var21, var22, var20, client.field353 + 256, var54.field2911, var54.field2910);
+                              class74.field1370.method1687(var12, var13, var45.field2914, var45.field2909, var21, var22, var20, client.field353 + 256, var45.field2911, var45.field2910);
 
                               for(var23 = 0; var23 < client.field508; ++var23) {
                                  var24 = 4 * client.field509[var23] + 2 - class106.field1881.field823 / 32;
                                  var25 = 2 + client.field522[var23] * 4 - class106.field1881.field813 / 32;
-                                 class13.method164(var12, var13, var24, var25, client.field511[var23], var54);
+                                 class13.method164(var12, var13, var24, var25, client.field511[var23], var45);
                               }
 
                               var23 = 0;
@@ -599,56 +603,57 @@ public final class class29 extends class85 {
                               while(true) {
                                  if(var23 >= 104) {
                                     for(var23 = 0; var23 < client.field317; ++var23) {
-                                       class34 var64 = client.field515[client.field318[var23]];
-                                       if(var64 != null && var64.vmethod727()) {
-                                          class39 var58 = var64.field782;
-                                          if(null != var58 && null != var58.field921) {
-                                             var58 = var58.method740();
+                                       class34 var61 = client.field515[client.field318[var23]];
+                                       if(var61 != null && var61.vmethod727()) {
+                                          class39 var55 = var61.field782;
+                                          if(null != var55 && null != var55.field921) {
+                                             var55 = var55.method740();
                                           }
 
-                                          if(null != var58 && var58.field903 && var58.field915) {
-                                             var26 = var64.field823 / 32 - class106.field1881.field823 / 32;
-                                             var27 = var64.field813 / 32 - class106.field1881.field813 / 32;
-                                             class13.method164(var12, var13, var26, var27, class138.field2146[1], var54);
+                                          if(null != var55 && var55.field903 && var55.field915) {
+                                             var26 = var61.field823 / 32 - class106.field1881.field823 / 32;
+                                             var27 = var61.field813 / 32 - class106.field1881.field813 / 32;
+                                             class13.method164(var12, var13, var26, var27, class138.field2146[1], var45);
                                           }
                                        }
                                     }
 
                                     var23 = class32.field755;
-                                    int[] var68 = class32.field756;
+                                    var63 = class32.field756;
 
+                                    class2 var60;
                                     for(var25 = 0; var25 < var23; ++var25) {
-                                       class2 var52 = client.field491[var68[var25]];
-                                       if(null != var52 && var52.vmethod727() && !var52.field58 && var52 != class106.field1881) {
-                                          var27 = var52.field823 / 32 - class106.field1881.field823 / 32;
-                                          var28 = var52.field813 / 32 - class106.field1881.field813 / 32;
-                                          boolean var66 = false;
-                                          if(class19.method241(var52.field59, true)) {
-                                             var66 = true;
+                                       var60 = client.field491[var63[var25]];
+                                       if(null != var60 && var60.vmethod727() && !var60.field58 && var60 != class106.field1881) {
+                                          var27 = var60.field823 / 32 - class106.field1881.field823 / 32;
+                                          var28 = var60.field813 / 32 - class106.field1881.field813 / 32;
+                                          boolean var67 = false;
+                                          if(class19.method241(var60.field59, true)) {
+                                             var67 = true;
                                           }
 
-                                          boolean var59 = false;
+                                          boolean var57 = false;
 
                                           for(var31 = 0; var31 < class110.field1959; ++var31) {
-                                             if(var52.field59.equals(class159.field2612[var31].field616)) {
-                                                var59 = true;
+                                             if(var60.field59.equals(class159.field2612[var31].field616)) {
+                                                var57 = true;
                                                 break;
                                              }
                                           }
 
-                                          boolean var63 = false;
-                                          if(class106.field1881.field53 != 0 && 0 != var52.field53 && var52.field53 == class106.field1881.field53) {
-                                             var63 = true;
+                                          boolean var41 = false;
+                                          if(class106.field1881.field53 != 0 && 0 != var60.field53 && var60.field53 == class106.field1881.field53) {
+                                             var41 = true;
                                           }
 
-                                          if(var66) {
-                                             class13.method164(var12, var13, var27, var28, class138.field2146[3], var54);
-                                          } else if(var63) {
-                                             class13.method164(var12, var13, var27, var28, class138.field2146[4], var54);
-                                          } else if(var59) {
-                                             class13.method164(var12, var13, var27, var28, class138.field2146[5], var54);
+                                          if(var67) {
+                                             class13.method164(var12, var13, var27, var28, class138.field2146[3], var45);
+                                          } else if(var41) {
+                                             class13.method164(var12, var13, var27, var28, class138.field2146[4], var45);
+                                          } else if(var57) {
+                                             class13.method164(var12, var13, var27, var28, class138.field2146[5], var45);
                                           } else {
-                                             class13.method164(var12, var13, var27, var28, class138.field2146[2], var54);
+                                             class13.method164(var12, var13, var27, var28, class138.field2146[2], var45);
                                           }
                                        }
                                     }
@@ -659,22 +664,22 @@ public final class class29 extends class85 {
                                           if(var62 != null) {
                                              var26 = var62.field823 / 32 - class106.field1881.field823 / 32;
                                              var27 = var62.field813 / 32 - class106.field1881.field813 / 32;
-                                             class41.method833(var12, var13, var26, var27, class90.field1570[1], var54);
+                                             class41.method833(var12, var13, var26, var27, class90.field1570[1], var45);
                                           }
                                        }
 
                                        if(2 == client.field476) {
                                           var25 = client.field299 * 4 - class22.field594 * 4 + 2 - class106.field1881.field823 / 32;
                                           var26 = client.field543 * 4 - class114.field1981 * 4 + 2 - class106.field1881.field813 / 32;
-                                          class41.method833(var12, var13, var25, var26, class90.field1570[1], var54);
+                                          class41.method833(var12, var13, var25, var26, class90.field1570[1], var45);
                                        }
 
                                        if(client.field476 == 10 && client.field298 >= 0 && client.field298 < client.field491.length) {
-                                          class2 var65 = client.field491[client.field298];
-                                          if(null != var65) {
-                                             var26 = var65.field823 / 32 - class106.field1881.field823 / 32;
-                                             var27 = var65.field813 / 32 - class106.field1881.field813 / 32;
-                                             class41.method833(var12, var13, var26, var27, class90.field1570[1], var54);
+                                          var60 = client.field491[client.field298];
+                                          if(null != var60) {
+                                             var26 = var60.field823 / 32 - class106.field1881.field823 / 32;
+                                             var27 = var60.field813 / 32 - class106.field1881.field813 / 32;
+                                             class41.method833(var12, var13, var26, var27, class90.field1570[1], var45);
                                           }
                                        }
                                     }
@@ -682,28 +687,28 @@ public final class class29 extends class85 {
                                     if(0 != client.field512) {
                                        var25 = 2 + client.field512 * 4 - class106.field1881.field823 / 32;
                                        var26 = 2 + client.field513 * 4 - class106.field1881.field813 / 32;
-                                       class13.method164(var12, var13, var25, var26, class90.field1570[0], var54);
+                                       class13.method164(var12, var13, var25, var26, class90.field1570[0], var45);
                                     }
 
                                     if(!class106.field1881.field58) {
-                                       class79.method1808(var54.field2914 / 2 + var12 - 1, var13 + var54.field2909 / 2 - 1, 3, 3, 16777215);
+                                       class79.method1808(var45.field2914 / 2 + var12 - 1, var13 + var45.field2909 / 2 - 1, 3, 3, 16777215);
                                     }
                                     break;
                                  }
 
                                  for(var24 = 0; var24 < 104; ++var24) {
-                                    class199 var56 = client.field345[class21.field581][var23][var24];
-                                    if(var56 != null) {
+                                    class199 var59 = client.field345[class21.field581][var23][var24];
+                                    if(var59 != null) {
                                        var26 = var23 * 4 + 2 - class106.field1881.field823 / 32;
                                        var27 = 2 + var24 * 4 - class106.field1881.field813 / 32;
-                                       class13.method164(var12, var13, var26, var27, class138.field2146[0], var54);
+                                       class13.method164(var12, var13, var26, var27, class138.field2146[0], var45);
                                     }
                                  }
 
                                  ++var23;
                               }
                            } else {
-                              class79.method1786(var12, var13, 0, var54.field2911, var54.field2910);
+                              class79.method1786(var12, var13, 0, var45.field2911, var45.field2910);
                            }
 
                            client.field483[var11] = true;
@@ -714,12 +719,12 @@ public final class class29 extends class85 {
                      }
 
                      if(var10.field2887 == 1339) {
-                        var54 = var10.method3404(false);
-                        if(null != var54) {
+                        var45 = var10.method3404(false);
+                        if(null != var45) {
                            if(client.field293 < 3) {
-                              class99.field1691.method1687(var12, var13, var54.field2914, var54.field2909, 25, 25, client.field364, 256, var54.field2911, var54.field2910);
+                              class99.field1691.method1687(var12, var13, var45.field2914, var45.field2909, 25, 25, client.field364, 256, var45.field2911, var45.field2910);
                            } else {
-                              class79.method1786(var12, var13, 0, var54.field2911, var54.field2910);
+                              class79.method1786(var12, var13, 0, var45.field2911, var45.field2910);
                            }
                         }
 
@@ -748,9 +753,9 @@ public final class class29 extends class85 {
                         method642(var10.field2847, var10.field2826, var15, var16, var17, var18, var12 - var10.field2786, var13 - var10.field2787, var11);
                      }
 
-                     class3 var38 = (class3)client.field308.method3777((long)var10.field2826);
-                     if(null != var38) {
-                        class59.method1241(var38.field69, var15, var16, var17, var18, var12, var13, var11);
+                     class3 var36 = (class3)client.field308.method3777((long)var10.field2826);
+                     if(null != var36) {
+                        class59.method1241(var36.field69, var15, var16, var17, var18, var12, var13, var11);
                      }
 
                      class79.method1767(var2, var3, var4, var5);
@@ -798,26 +803,26 @@ public final class class29 extends class85 {
 
                                  if(var10.field2883[var19] <= 0) {
                                     if(null != var10.field2861 && var19 < 20) {
-                                       class78 var60 = var10.method3374(var19);
-                                       if(var60 != null) {
-                                          var60.method1676(var22, var23);
+                                       class78 var44 = var10.method3374(var19);
+                                       if(var44 != null) {
+                                          var44.method1676(var22, var23);
                                        } else if(class173.field2866) {
                                           class34.method701(var10);
                                        }
                                     }
                                  } else {
-                                    boolean var55 = false;
-                                    boolean var48 = false;
+                                    var43 = false;
+                                    boolean var58 = false;
                                     var26 = var10.field2883[var19] - 1;
                                     if(32 + var22 > var2 && var22 < var4 && 32 + var23 > var3 && var23 < var5 || var10 == class25.field626 && client.field359 == var19) {
-                                       class78 var49;
+                                       class78 var53;
                                        if(client.field430 == 1 && var19 == class162.field2657 && class209.field3127 == var10.field2826) {
-                                          var49 = class3.method33(var26, var10.field2884[var19], 2, 0, 2, false);
+                                          var53 = class3.method33(var26, var10.field2884[var19], 2, 0, 2, false);
                                        } else {
-                                          var49 = class3.method33(var26, var10.field2884[var19], 1, 3153952, 2, false);
+                                          var53 = class3.method33(var26, var10.field2884[var19], 1, 3153952, 2, false);
                                        }
 
-                                       if(null != var49) {
+                                       if(null != var53) {
                                           if(class25.field626 == var10 && client.field359 == var19) {
                                              var24 = class140.field2162 - client.field394;
                                              var25 = class140.field2163 - client.field395;
@@ -834,43 +839,43 @@ public final class class29 extends class85 {
                                                 var25 = 0;
                                              }
 
-                                             var49.method1697(var22 + var24, var23 + var25, 128);
+                                             var53.method1697(var22 + var24, var23 + var25, 128);
                                              if(-1 != var1) {
-                                                class173 var53 = var0[var1 & '\uffff'];
-                                                if(var23 + var25 < class79.field1423 && var53.field2787 > 0) {
+                                                class173 var65 = var0[var1 & '\uffff'];
+                                                if(var23 + var25 < class79.field1423 && var65.field2787 > 0) {
                                                    var29 = (class79.field1423 - var23 - var25) * client.field356 / 3;
                                                    if(var29 > client.field356 * 10) {
                                                       var29 = client.field356 * 10;
                                                    }
 
-                                                   if(var29 > var53.field2787) {
-                                                      var29 = var53.field2787;
+                                                   if(var29 > var65.field2787) {
+                                                      var29 = var65.field2787;
                                                    }
 
-                                                   var53.field2787 -= var29;
+                                                   var65.field2787 -= var29;
                                                    client.field395 += var29;
-                                                   class34.method701(var53);
+                                                   class34.method701(var65);
                                                 }
 
-                                                if(32 + var25 + var23 > class79.field1421 && var53.field2787 < var53.field2858 - var53.field2781) {
+                                                if(32 + var25 + var23 > class79.field1421 && var65.field2787 < var65.field2858 - var65.field2781) {
                                                    var29 = client.field356 * (var25 + var23 + 32 - class79.field1421) / 3;
                                                    if(var29 > client.field356 * 10) {
                                                       var29 = client.field356 * 10;
                                                    }
 
-                                                   if(var29 > var53.field2858 - var53.field2781 - var53.field2787) {
-                                                      var29 = var53.field2858 - var53.field2781 - var53.field2787;
+                                                   if(var29 > var65.field2858 - var65.field2781 - var65.field2787) {
+                                                      var29 = var65.field2858 - var65.field2781 - var65.field2787;
                                                    }
 
-                                                   var53.field2787 += var29;
+                                                   var65.field2787 += var29;
                                                    client.field395 -= var29;
-                                                   class34.method701(var53);
+                                                   class34.method701(var65);
                                                 }
                                              }
                                           } else if(class19.field274 == var10 && client.field406 == var19) {
-                                             var49.method1697(var22, var23, 128);
+                                             var53.method1697(var22, var23, 128);
                                           } else {
-                                             var49.method1676(var22, var23);
+                                             var53.method1676(var22, var23);
                                           }
                                        } else {
                                           class34.method701(var10);
@@ -921,15 +926,15 @@ public final class class29 extends class85 {
                               class79.method1780(var12, var13, var10.field2886, var10.field2781, var19, 256 - (var14 & 255));
                            }
                         } else {
-                           class224 var39;
+                           class224 var42;
                            if(var10.field2767 == 4) {
-                              var39 = var10.method3410();
-                              if(var39 == null) {
+                              var42 = var10.method3410();
+                              if(var42 == null) {
                                  if(class173.field2866) {
                                     class34.method701(var10);
                                  }
                               } else {
-                                 String var51 = var10.field2825;
+                                 String var48 = var10.field2825;
                                  if(class127.method2809(var10)) {
                                     var20 = var10.field2791;
                                     if(var10 == class4.field78 && 0 != var10.field2797) {
@@ -937,7 +942,7 @@ public final class class29 extends class85 {
                                     }
 
                                     if(var10.field2778.length() > 0) {
-                                       var51 = var10.field2778;
+                                       var48 = var10.field2778;
                                     }
                                  } else {
                                     var20 = var10.field2790;
@@ -947,62 +952,62 @@ public final class class29 extends class85 {
                                  }
 
                                  if(var10.field2764 && -1 != var10.field2885) {
-                                    class51 var61 = class9.method128(var10.field2885);
-                                    var51 = var61.field1128;
-                                    if(var51 == null) {
-                                       var51 = "null";
+                                    class51 var51 = class9.method128(var10.field2885);
+                                    var48 = var51.field1128;
+                                    if(var48 == null) {
+                                       var48 = "null";
                                     }
 
-                                    if((var61.field1127 == 1 || 1 != var10.field2780) && -1 != var10.field2780) {
-                                       var51 = class12.method163(16748608) + var51 + "</col>" + " " + 'x' + class109.method2413(var10.field2780);
+                                    if((var51.field1127 == 1 || 1 != var10.field2780) && -1 != var10.field2780) {
+                                       var48 = class12.method163(16748608) + var48 + "</col>" + " " + 'x' + class109.method2413(var10.field2780);
                                     }
                                  }
 
                                  if(var10 == client.field441) {
-                                    class157 var10000 = (class157)null;
-                                    var51 = "Please wait...";
+                                    class157 var52 = (class157)null;
+                                    var48 = "Please wait...";
                                     var20 = var10.field2790;
                                  }
 
                                  if(!var10.field2764) {
-                                    var51 = client.method544(var51, var10);
+                                    var48 = client.method544(var48, var10);
                                  }
 
-                                 var39.method4005(var51, var12, var13, var10.field2886, var10.field2781, var20, var10.field2769?0:-1, var10.field2828, var10.field2829, var10.field2899);
+                                 var42.method4005(var48, var12, var13, var10.field2886, var10.field2781, var20, var10.field2769?0:-1, var10.field2828, var10.field2829, var10.field2899);
                               }
                            } else if(5 == var10.field2767) {
-                              class78 var42;
+                              class78 var46;
                               if(!var10.field2764) {
-                                 var42 = var10.method3372(class127.method2809(var10));
-                                 if(var42 != null) {
-                                    var42.method1676(var12, var13);
+                                 var46 = var10.method3372(class127.method2809(var10));
+                                 if(var46 != null) {
+                                    var46.method1676(var12, var13);
                                  } else if(class173.field2866) {
                                     class34.method701(var10);
                                  }
                               } else {
                                  if(-1 != var10.field2885) {
-                                    var42 = class3.method33(var10.field2885, var10.field2780, var10.field2804, var10.field2805, var10.field2823, false);
+                                    var46 = class3.method33(var10.field2885, var10.field2780, var10.field2804, var10.field2805, var10.field2823, false);
                                  } else {
-                                    var42 = var10.method3372(false);
+                                    var46 = var10.method3372(false);
                                  }
 
-                                 if(var42 == null) {
+                                 if(var46 == null) {
                                     if(class173.field2866) {
                                        class34.method701(var10);
                                     }
                                  } else {
-                                    var20 = var42.field1416;
-                                    var21 = var42.field1412;
+                                    var20 = var46.field1416;
+                                    var21 = var46.field1412;
                                     if(!var10.field2803) {
                                        var22 = var10.field2886 * 4096 / var20;
                                        if(var10.field2802 != 0) {
-                                          var42.method1689(var10.field2886 / 2 + var12, var10.field2781 / 2 + var13, var10.field2802, var22);
+                                          var46.method1689(var10.field2886 / 2 + var12, var10.field2781 / 2 + var13, var10.field2802, var22);
                                        } else if(var14 != 0) {
-                                          var42.method1695(var12, var13, var10.field2886, var10.field2781, 256 - (var14 & 255));
+                                          var46.method1695(var12, var13, var10.field2886, var10.field2781, 256 - (var14 & 255));
                                        } else if(var10.field2886 == var20 && var10.field2781 == var21) {
-                                          var42.method1676(var12, var13);
+                                          var46.method1676(var12, var13);
                                        } else {
-                                          var42.method1675(var12, var13, var10.field2886, var10.field2781);
+                                          var46.method1675(var12, var13, var10.field2886, var10.field2781);
                                        }
                                     } else {
                                        class79.method1768(var12, var13, var12 + var10.field2886, var13 + var10.field2781);
@@ -1012,11 +1017,11 @@ public final class class29 extends class85 {
                                        for(var24 = 0; var24 < var22; ++var24) {
                                           for(var25 = 0; var25 < var23; ++var25) {
                                              if(0 != var10.field2802) {
-                                                var42.method1689(var20 / 2 + var12 + var24 * var20, var21 / 2 + var21 * var25 + var13, var10.field2802, 4096);
+                                                var46.method1689(var20 / 2 + var12 + var24 * var20, var21 / 2 + var21 * var25 + var13, var10.field2802, 4096);
                                              } else if(var14 != 0) {
-                                                var42.method1697(var12 + var20 * var24, var25 * var21 + var13, 256 - (var14 & 255));
+                                                var46.method1697(var12 + var20 * var24, var25 * var21 + var13, 256 - (var14 & 255));
                                              } else {
-                                                var42.method1676(var20 * var24 + var12, var21 * var25 + var13);
+                                                var46.method1676(var20 * var24 + var12, var21 * var25 + var13);
                                              }
                                           }
                                        }
@@ -1026,44 +1031,44 @@ public final class class29 extends class85 {
                                  }
                               }
                            } else {
-                              class51 var43;
+                              class51 var37;
                               if(var10.field2767 == 6) {
-                                 boolean var41 = class127.method2809(var10);
-                                 if(var41) {
+                                 boolean var50 = class127.method2809(var10);
+                                 if(var50) {
                                     var20 = var10.field2813;
                                  } else {
                                     var20 = var10.field2812;
                                  }
 
-                                 class105 var47 = null;
+                                 class105 var54 = null;
                                  var22 = 0;
                                  if(var10.field2885 != -1) {
-                                    var43 = class9.method128(var10.field2885);
-                                    if(null != var43) {
-                                       var43 = var43.method992(var10.field2780);
-                                       var47 = var43.method1000(1);
-                                       if(null != var47) {
-                                          var47.method2287();
-                                          var22 = var47.field1465 / 2;
+                                    var37 = class9.method128(var10.field2885);
+                                    if(null != var37) {
+                                       var37 = var37.method992(var10.field2780);
+                                       var54 = var37.method1000(1);
+                                       if(null != var54) {
+                                          var54.method2287();
+                                          var22 = var54.field1465 / 2;
                                        } else {
                                           class34.method701(var10);
                                        }
                                     }
                                  } else if(var10.field2788 == 5) {
                                     if(0 == var10.field2830) {
-                                       var47 = client.field350.method3463((class42)null, -1, (class42)null, -1);
+                                       var54 = client.field350.method3463((class42)null, -1, (class42)null, -1);
                                     } else {
-                                       var47 = class106.field1881.vmethod1888();
+                                       var54 = class106.field1881.vmethod1888();
                                     }
                                  } else if(-1 == var20) {
-                                    var47 = var10.method3375((class42)null, -1, var41, class106.field1881.field34);
-                                    if(null == var47 && class173.field2866) {
+                                    var54 = var10.method3375((class42)null, -1, var50, class106.field1881.field34);
+                                    if(null == var54 && class173.field2866) {
                                        class34.method701(var10);
                                     }
                                  } else {
-                                    class42 var50 = class4.method42(var20);
-                                    var47 = var10.method3375(var50, var10.field2834, var41, class106.field1881.field34);
-                                    if(var47 == null && class173.field2866) {
+                                    class42 var56 = class4.method42(var20);
+                                    var54 = var10.method3375(var56, var10.field2834, var50, class106.field1881.field34);
+                                    if(var54 == null && class173.field2866) {
                                        class34.method701(var10);
                                     }
                                  }
@@ -1071,15 +1076,15 @@ public final class class29 extends class85 {
                                  class91.method2073(var10.field2886 / 2 + var12, var13 + var10.field2781 / 2);
                                  var23 = class91.field1596[var10.field2816] * var10.field2819 >> 16;
                                  var24 = var10.field2819 * class91.field1597[var10.field2816] >> 16;
-                                 if(null != var47) {
+                                 if(null != var54) {
                                     if(!var10.field2764) {
-                                       var47.method2299(0, var10.field2817, 0, var10.field2816, 0, var23, var24);
+                                       var54.method2299(0, var10.field2817, 0, var10.field2816, 0, var23, var24);
                                     } else {
-                                       var47.method2287();
+                                       var54.method2287();
                                        if(var10.field2822) {
-                                          var47.method2300(0, var10.field2817, var10.field2818, var10.field2816, var10.field2859, var10.field2815 + var22 + var23, var24 + var10.field2815, var10.field2819);
+                                          var54.method2300(0, var10.field2817, var10.field2818, var10.field2816, var10.field2859, var10.field2815 + var22 + var23, var24 + var10.field2815, var10.field2819);
                                        } else {
-                                          var47.method2299(0, var10.field2817, var10.field2818, var10.field2816, var10.field2859, var23 + var22 + var10.field2815, var10.field2815 + var24);
+                                          var54.method2299(0, var10.field2817, var10.field2818, var10.field2816, var10.field2859, var23 + var22 + var10.field2815, var10.field2815 + var24);
                                        }
                                     }
                                  }
@@ -1087,8 +1092,8 @@ public final class class29 extends class85 {
                                  class91.method2072();
                               } else {
                                  if(7 == var10.field2767) {
-                                    var39 = var10.method3410();
-                                    if(var39 == null) {
+                                    var42 = var10.method3410();
+                                    if(var42 == null) {
                                        if(class173.field2866) {
                                           class34.method701(var10);
                                        }
@@ -1100,22 +1105,22 @@ public final class class29 extends class85 {
                                     for(var21 = 0; var21 < var10.field2777; ++var21) {
                                        for(var22 = 0; var22 < var10.field2776; ++var22) {
                                           if(var10.field2883[var20] > 0) {
-                                             var43 = class9.method128(var10.field2883[var20] - 1);
-                                             String var46;
-                                             if(1 != var43.field1127 && var10.field2884[var20] == 1) {
-                                                var46 = class12.method163(16748608) + var43.field1128 + "</col>";
+                                             var37 = class9.method128(var10.field2883[var20] - 1);
+                                             String var38;
+                                             if(1 != var37.field1127 && var10.field2884[var20] == 1) {
+                                                var38 = class12.method163(16748608) + var37.field1128 + "</col>";
                                              } else {
-                                                var46 = class12.method163(16748608) + var43.field1128 + "</col>" + " " + 'x' + class109.method2413(var10.field2884[var20]);
+                                                var38 = class12.method163(16748608) + var37.field1128 + "</col>" + " " + 'x' + class109.method2413(var10.field2884[var20]);
                                              }
 
                                              var25 = var22 * (115 + var10.field2831) + var12;
                                              var26 = var13 + (12 + var10.field2832) * var21;
                                              if(var10.field2828 == 0) {
-                                                var39.method4002(var46, var25, var26, var10.field2790, var10.field2769?0:-1);
+                                                var42.method4002(var38, var25, var26, var10.field2790, var10.field2769?0:-1);
                                              } else if(var10.field2828 == 1) {
-                                                var39.method4004(var46, var10.field2886 / 2 + var25, var26, var10.field2790, var10.field2769?0:-1);
+                                                var42.method4004(var38, var10.field2886 / 2 + var25, var26, var10.field2790, var10.field2769?0:-1);
                                              } else {
-                                                var39.method4003(var46, var10.field2886 + var25 - 1, var26, var10.field2790, var10.field2769?0:-1);
+                                                var42.method4003(var38, var10.field2886 + var25 - 1, var26, var10.field2790, var10.field2769?0:-1);
                                              }
                                           }
 
@@ -1127,21 +1132,21 @@ public final class class29 extends class85 {
                                  if(var10.field2767 == 8 && var10 == class26.field664 && client.field428 == client.field429) {
                                     var19 = 0;
                                     var20 = 0;
-                                    class224 var40 = class181.field2945;
-                                    String var44 = var10.field2825;
+                                    class224 var49 = class181.field2945;
+                                    String var39 = var10.field2825;
 
-                                    String var45;
-                                    for(var44 = client.method544(var44, var10); var44.length() > 0; var20 += var40.field3189 + 1) {
-                                       var24 = var44.indexOf("<br>");
+                                    String var40;
+                                    for(var39 = client.method544(var39, var10); var39.length() > 0; var20 += var49.field3189 + 1) {
+                                       var24 = var39.indexOf("<br>");
                                        if(-1 != var24) {
-                                          var45 = var44.substring(0, var24);
-                                          var44 = var44.substring(var24 + 4);
+                                          var40 = var39.substring(0, var24);
+                                          var39 = var39.substring(var24 + 4);
                                        } else {
-                                          var45 = var44;
-                                          var44 = "";
+                                          var40 = var39;
+                                          var39 = "";
                                        }
 
-                                       var25 = var40.method3997(var45);
+                                       var25 = var49.method3997(var40);
                                        if(var25 > var19) {
                                           var19 = var25;
                                        }
@@ -1165,20 +1170,20 @@ public final class class29 extends class85 {
 
                                     class79.method1808(var24, var25, var19, var20, 16777120);
                                     class79.method1779(var24, var25, var19, var20, 0);
-                                    var44 = var10.field2825;
-                                    var26 = 2 + var25 + var40.field3189;
+                                    var39 = var10.field2825;
+                                    var26 = 2 + var25 + var49.field3189;
 
-                                    for(var44 = client.method544(var44, var10); var44.length() > 0; var26 += 1 + var40.field3189) {
-                                       var27 = var44.indexOf("<br>");
+                                    for(var39 = client.method544(var39, var10); var39.length() > 0; var26 += 1 + var49.field3189) {
+                                       var27 = var39.indexOf("<br>");
                                        if(-1 != var27) {
-                                          var45 = var44.substring(0, var27);
-                                          var44 = var44.substring(var27 + 4);
+                                          var40 = var39.substring(0, var27);
+                                          var39 = var39.substring(var27 + 4);
                                        } else {
-                                          var45 = var44;
-                                          var44 = "";
+                                          var40 = var39;
+                                          var39 = "";
                                        }
 
-                                       var40.method4002(var45, var24 + 3, var26, 0, -1);
+                                       var49.method4002(var40, var24 + 3, var26, 0, -1);
                                     }
                                  }
 

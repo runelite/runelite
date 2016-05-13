@@ -23,6 +23,7 @@ public class class179 {
    @ObfuscatedGetter(
       longValue = -931325731456578883L
    )
+   @Export("hash")
    long field2937;
    @ObfuscatedName("s")
    @Export("bodyParts")
@@ -80,18 +81,23 @@ public class class179 {
 
             class44 var4;
             do {
-               ++var3;
-               if(var3 >= class44.field1037) {
-                  var3 = 0;
-               }
+               do {
+                  do {
+                     ++var3;
+                     if(var3 >= class44.field1037) {
+                        var3 = 0;
+                     }
 
-               var4 = class13.method168(var3);
-            } while(null == var4 || var4.field1033 || (this.field2936?7:0) + var1 != var4.field1026);
+                     var4 = class13.method168(var3);
+                  } while(null == var4);
+               } while(var4.field1033);
+            } while((this.field2936?7:0) + var1 != var4.field1026);
 
             this.field2938[field2940[var1]] = 256 + var3;
             this.method3462();
          }
       }
+
    }
 
    @ObfuscatedName("x")
@@ -103,6 +109,7 @@ public class class179 {
       if(this.field2936 != var1) {
          this.method3457((int[])null, this.field2939, var1, -1);
       }
+
    }
 
    @ObfuscatedName("u")
@@ -182,14 +189,14 @@ public class class179 {
          if(var15 == null) {
             boolean var9 = false;
 
-            int var11;
-            for(int var10 = 0; var10 < 12; ++var10) {
-               var11 = var7[var10];
-               if(var11 >= 256 && var11 < 512 && !class13.method168(var11 - 256).method921()) {
+            int var10;
+            for(int var11 = 0; var11 < 12; ++var11) {
+               var10 = var7[var11];
+               if(var10 >= 256 && var10 < 512 && !class13.method168(var10 - 256).method921()) {
                   var9 = true;
                }
 
-               if(var11 >= 512 && !class9.method128(var11 - 512).method1002(this.field2936)) {
+               if(var10 >= 512 && !class9.method128(var10 - 512).method1002(this.field2936)) {
                   var9 = true;
                }
             }
@@ -206,36 +213,36 @@ public class class179 {
 
             if(null == var15) {
                class100[] var17 = new class100[12];
-               var11 = 0;
+               var10 = 0;
 
-               int var13;
-               for(int var12 = 0; var12 < 12; ++var12) {
-                  var13 = var7[var12];
+               int var12;
+               for(int var13 = 0; var13 < 12; ++var13) {
+                  var12 = var7[var13];
                   class100 var14;
-                  if(var13 >= 256 && var13 < 512) {
-                     var14 = class13.method168(var13 - 256).method899();
+                  if(var12 >= 256 && var12 < 512) {
+                     var14 = class13.method168(var12 - 256).method899();
                      if(var14 != null) {
-                        var17[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
 
-                  if(var13 >= 512) {
-                     var14 = class9.method128(var13 - 512).method1003(this.field2936);
+                  if(var12 >= 512) {
+                     var14 = class9.method128(var12 - 512).method1003(this.field2936);
                      if(var14 != null) {
-                        var17[var11++] = var14;
+                        var17[var10++] = var14;
                      }
                   }
                }
 
-               class100 var18 = new class100(var17, var11);
+               class100 var18 = new class100(var17, var10);
 
-               for(var13 = 0; var13 < 5; ++var13) {
-                  if(this.field2939[var13] < class166.field2673[var13].length) {
-                     var18.method2194(class177.field2925[var13], class166.field2673[var13][this.field2939[var13]]);
+               for(var12 = 0; var12 < 5; ++var12) {
+                  if(this.field2939[var12] < class166.field2673[var12].length) {
+                     var18.method2194(class177.field2925[var12], class166.field2673[var12][this.field2939[var12]]);
                   }
 
-                  if(this.field2939[var13] < class12.field190[var13].length) {
-                     var18.method2194(field2933[var13], class12.field190[var13][this.field2939[var13]]);
+                  if(this.field2939[var12] < class12.field190[var12].length) {
+                     var18.method2194(field2933[var12], class12.field190[var12][this.field2939[var12]]);
                   }
                }
 
@@ -325,14 +332,14 @@ public class class179 {
       } else {
          boolean var1 = false;
 
-         int var3;
-         for(int var2 = 0; var2 < 12; ++var2) {
-            var3 = this.field2938[var2];
-            if(var3 >= 256 && var3 < 512 && !class13.method168(var3 - 256).method900()) {
+         int var2;
+         for(int var3 = 0; var3 < 12; ++var3) {
+            var2 = this.field2938[var3];
+            if(var2 >= 256 && var2 < 512 && !class13.method168(var2 - 256).method900()) {
                var1 = true;
             }
 
-            if(var3 >= 512 && !class9.method128(var3 - 512).method1004(this.field2936)) {
+            if(var2 >= 512 && !class9.method128(var2 - 512).method1004(this.field2936)) {
                var1 = true;
             }
          }
@@ -341,36 +348,36 @@ public class class179 {
             return null;
          } else {
             class100[] var7 = new class100[12];
-            var3 = 0;
+            var2 = 0;
 
-            int var5;
-            for(int var4 = 0; var4 < 12; ++var4) {
-               var5 = this.field2938[var4];
+            int var4;
+            for(int var5 = 0; var5 < 12; ++var5) {
+               var4 = this.field2938[var5];
                class100 var6;
-               if(var5 >= 256 && var5 < 512) {
-                  var6 = class13.method168(var5 - 256).method919();
+               if(var4 >= 256 && var4 < 512) {
+                  var6 = class13.method168(var4 - 256).method919();
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
                   }
                }
 
-               if(var5 >= 512) {
-                  var6 = class9.method128(var5 - 512).method1006(this.field2936);
+               if(var4 >= 512) {
+                  var6 = class9.method128(var4 - 512).method1006(this.field2936);
                   if(var6 != null) {
-                     var7[var3++] = var6;
+                     var7[var2++] = var6;
                   }
                }
             }
 
-            class100 var8 = new class100(var7, var3);
+            class100 var8 = new class100(var7, var2);
 
-            for(var5 = 0; var5 < 5; ++var5) {
-               if(this.field2939[var5] < class166.field2673[var5].length) {
-                  var8.method2194(class177.field2925[var5], class166.field2673[var5][this.field2939[var5]]);
+            for(var4 = 0; var4 < 5; ++var4) {
+               if(this.field2939[var4] < class166.field2673[var4].length) {
+                  var8.method2194(class177.field2925[var4], class166.field2673[var4][this.field2939[var4]]);
                }
 
-               if(this.field2939[var5] < class12.field190[var5].length) {
-                  var8.method2194(field2933[var5], class12.field190[var5][this.field2939[var5]]);
+               if(this.field2939[var4] < class12.field190[var4].length) {
+                  var8.method2194(field2933[var4], class12.field190[var4][this.field2939[var4]]);
                }
             }
 

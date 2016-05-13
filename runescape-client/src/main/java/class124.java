@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -15,41 +16,42 @@ public class class124 {
       signature = "(II)Lclass103;",
       garbageValue = "1792718672"
    )
+   @Export("getFrames")
    static class103 method2777(int var0) {
       class103 var1 = (class103)class42.field982.method3743((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         class167 var3 = class90.field1568;
-         class167 var4 = class42.field983;
-         boolean var5 = true;
-         int[] var6 = var3.method3281(var0);
+         class167 var2 = class90.field1568;
+         class167 var3 = class42.field983;
+         boolean var4 = true;
+         int[] var5 = var2.method3281(var0);
 
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.method3283(var0, var6[var7]);
-            if(var8 == null) {
-               var5 = false;
+         for(int var6 = 0; var6 < var5.length; ++var6) {
+            byte[] var7 = var2.method3283(var0, var5[var6]);
+            if(var7 == null) {
+               var4 = false;
             } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.method3283(var9, 0);
-               if(var10 == null) {
-                  var5 = false;
+               int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+               byte[] var9 = var3.method3283(var8, 0);
+               if(var9 == null) {
+                  var4 = false;
                }
             }
          }
 
-         class103 var2;
-         if(!var5) {
-            var2 = null;
+         class103 var11;
+         if(!var4) {
+            var11 = null;
          } else {
             try {
-               var2 = new class103(var3, var4, var0, false);
-            } catch (Exception var11) {
-               var2 = null;
+               var11 = new class103(var2, var3, var0, false);
+            } catch (Exception var10) {
+               var11 = null;
             }
          }
 
-         return var2;
+         return var11;
       }
    }
 
@@ -59,28 +61,28 @@ public class class124 {
       garbageValue = "2123583412"
    )
    public static String method2781(byte[] var0) {
-      int var2 = var0.length;
-      StringBuilder var3 = new StringBuilder();
+      int var1 = var0.length;
+      StringBuilder var2 = new StringBuilder();
 
-      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class161.field2650[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class161.field2650[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class161.field2650[(var6 & 15) << 2 | var7 >>> 6]).append(class161.field2650[var7 & 63]);
+      for(int var3 = 0; var3 < var1 + 0; var3 += 3) {
+         int var4 = var0[var3] & 255;
+         var2.append(class161.field2650[var4 >>> 2]);
+         if(var3 < var1 - 1) {
+            int var5 = var0[var3 + 1] & 255;
+            var2.append(class161.field2650[(var4 & 3) << 4 | var5 >>> 4]);
+            if(var3 < var1 - 2) {
+               int var6 = var0[var3 + 2] & 255;
+               var2.append(class161.field2650[(var5 & 15) << 2 | var6 >>> 6]).append(class161.field2650[var6 & 63]);
             } else {
-               var3.append(class161.field2650[(var6 & 15) << 2]).append("=");
+               var2.append(class161.field2650[(var5 & 15) << 2]).append("=");
             }
          } else {
-            var3.append(class161.field2650[(var5 & 3) << 4]).append("==");
+            var2.append(class161.field2650[(var4 & 3) << 4]).append("==");
          }
       }
 
-      String var1 = var3.toString();
-      return var1;
+      String var7 = var2.toString();
+      return var7;
    }
 
    @ObfuscatedName("o")

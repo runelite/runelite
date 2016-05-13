@@ -3,6 +3,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -17,8 +18,10 @@ public class class140 implements MouseListener, MouseMotionListener, FocusListen
    @ObfuscatedGetter(
       intValue = 34427727
    )
+   @Export("mouseIdleTicks")
    public static volatile int field2157 = 0;
    @ObfuscatedName("s")
+   @Export("mouse")
    public static class140 field2158 = new class140();
    @ObfuscatedName("i")
    @ObfuscatedGetter(

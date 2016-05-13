@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -7,6 +8,7 @@ public class class49 extends class204 {
    @ObfuscatedName("s")
    public static class167 field1090;
    @ObfuscatedName("u")
+   @Export("isMembersWorld")
    public static boolean field1091;
    @ObfuscatedName("nr")
    @ObfuscatedGetter(

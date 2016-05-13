@@ -3,6 +3,7 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.image.PixelGrabber;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -13,14 +14,17 @@ public final class class78 extends class79 {
    @ObfuscatedName("d")
    public int field1406;
    @ObfuscatedName("j")
+   @Export("width")
    public int field1407;
    @ObfuscatedName("p")
+   @Export("height")
    public int field1408;
    @ObfuscatedName("x")
    public int field1410;
    @ObfuscatedName("o")
    public int field1412;
    @ObfuscatedName("s")
+   @Export("image")
    public int[] field1414;
    @ObfuscatedName("u")
    public int field1416;
@@ -148,6 +152,7 @@ public final class class78 extends class79 {
          this.field1410 = 0;
          this.field1406 = 0;
       }
+
    }
 
    @ObfuscatedName("u")
@@ -189,6 +194,7 @@ public final class class78 extends class79 {
          this.field1410 -= var2;
          this.field1406 -= var4;
       }
+
    }
 
    @ObfuscatedName("b")
@@ -294,6 +300,7 @@ public final class class78 extends class79 {
       if(var6 > 0 && var5 > 0) {
          method1663(class79.field1420, this.field1414, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("m")
@@ -358,6 +365,7 @@ public final class class78 extends class79 {
 
          method1712(class79.field1420, this.field1414, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
       }
+
    }
 
    @ObfuscatedName("i")
@@ -403,6 +411,7 @@ public final class class78 extends class79 {
       if(var6 > 0 && var5 > 0) {
          method1677(class79.field1420, this.field1414, 0, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("r")
@@ -539,11 +548,10 @@ public final class class78 extends class79 {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.field1408 <= var6?this.field1408:var6 - var2;
       int var11 = var1 < 0?-var1:0;
-      int var10000;
       if(var1 + this.field1407 <= var5) {
-         var10000 = this.field1407;
+         int var12 = this.field1407;
       } else {
-         var10000 = var5 - var1;
+         int var10000 = var5 - var1;
       }
 
       int var13 = var3 + var1 + var11 + (var4 + var2 + var9) * class79.field1419;
@@ -561,17 +569,17 @@ public final class class78 extends class79 {
             var19 = var11;
          }
 
-         int var12;
+         int var20;
          if(var1 + this.field1407 <= var16 + var17) {
-            var12 = this.field1407;
+            var20 = this.field1407;
          } else {
-            var12 = var16 + var17 - var1;
+            var20 = var16 + var17 - var1;
          }
 
-         for(int var20 = var19; var20 < var12; ++var20) {
-            int var21 = this.field1414[var20 + var15 * this.field1407];
-            if(var21 != 0) {
-               class79.field1420[var18++] = var21;
+         for(int var21 = var19; var21 < var20; ++var21) {
+            int var22 = this.field1414[var21 + var15 * this.field1407];
+            if(var22 != 0) {
+               class79.field1420[var18++] = var22;
             } else {
                ++var18;
             }
@@ -728,6 +736,7 @@ public final class class78 extends class79 {
 
          method1685(class79.field1420, this.field1414, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
       }
+
    }
 
    @ObfuscatedName("a")
@@ -773,6 +782,7 @@ public final class class78 extends class79 {
       if(var7 > 0 && var6 > 0) {
          method1683(class79.field1420, this.field1414, 0, var5, var4, var7, var6, var8, var9, var3);
       }
+
    }
 
    @ObfuscatedName("e")
@@ -847,6 +857,7 @@ public final class class78 extends class79 {
       if(var8 > 0 && var7 > 0) {
          method1681(class79.field1420, this.field1414, 0, var6, var5, var8, var7, var9, var10, var3, var4);
       }
+
    }
 
    @ObfuscatedName("ab")
@@ -1312,10 +1323,10 @@ public final class class78 extends class79 {
                      var31 += var27;
                   }
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("j")

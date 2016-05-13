@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -21,6 +22,7 @@ public class class13 implements Runnable {
    public void run() {
       for(; this.field193; class116.method2448(50L)) {
          Object var1 = this.field192;
+         Object var2 = this.field192;
          synchronized(this.field192) {
             if(this.field195 < 500) {
                this.field194[this.field195] = class140.field2162;
@@ -53,9 +55,9 @@ public class class13 implements Runnable {
             } else {
                var4.method1676(var10 + var0 + var5.field2914 / 2 - var4.field1416 / 2, var5.field2909 / 2 + var1 - var11 - var4.field1412 / 2);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("n")
@@ -64,24 +66,23 @@ public class class13 implements Runnable {
       garbageValue = "69"
    )
    static void method166(class42 var0, int var1, int var2, int var3) {
-      if(client.field521 < 50 && client.field520 != 0) {
-         if(null != var0.field989 && var1 < var0.field989.length) {
-            int var4 = var0.field989[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               client.field537[client.field521] = var5;
-               client.field523[client.field521] = var6;
-               client.field524[client.field521] = 0;
-               client.field526[client.field521] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               client.field407[client.field521] = (var8 << 16) + (var9 << 8) + var7;
-               ++client.field521;
-            }
+      if(client.field521 < 50 && client.field520 != 0 && null != var0.field989 && var1 < var0.field989.length) {
+         int var4 = var0.field989[var1];
+         if(var4 != 0) {
+            int var5 = var4 >> 8;
+            int var6 = var4 >> 4 & 7;
+            int var7 = var4 & 15;
+            client.field537[client.field521] = var5;
+            client.field523[client.field521] = var6;
+            client.field524[client.field521] = 0;
+            client.field526[client.field521] = null;
+            int var8 = (var2 - 64) / 128;
+            int var9 = (var3 - 64) / 128;
+            client.field407[client.field521] = (var8 << 16) + (var9 << 8) + var7;
+            ++client.field521;
          }
       }
+
    }
 
    @ObfuscatedName("j")
@@ -89,6 +90,7 @@ public class class13 implements Runnable {
       signature = "(II)Lclass44;",
       garbageValue = "1214886182"
    )
+   @Export("getKitDefinition")
    public static class44 method168(int var0) {
       class44 var1 = (class44)class44.field1025.method3743((long)var0);
       if(var1 != null) {
@@ -121,6 +123,7 @@ public class class13 implements Runnable {
       signature = "(IIIILjava/lang/String;Ljava/lang/String;IIS)V",
       garbageValue = "2527"
    )
+   @Export("menuAction")
    static final void method171(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
       if(var2 >= 2000) {
          var2 -= 2000;
@@ -150,18 +153,19 @@ public class class13 implements Runnable {
          }
       }
 
+      int var11;
       if(var2 == 25) {
          var8 = class45.method932(var1, var0);
          if(null != var8) {
             class22.method571();
-            int var12 = class48.method962(var8);
-            int var21 = var12 >> 11 & 63;
-            class41.method835(var1, var0, var21, var8.field2885);
+            int var14 = class48.method962(var8);
+            int var10 = var14 >> 11 & 63;
+            class41.method835(var1, var0, var10, var8.field2885);
             client.field430 = 0;
-            int var15 = class48.method962(var8);
-            int var14 = var15 >> 11 & 63;
+            var11 = class48.method962(var8);
+            int var12 = var11 >> 11 & 63;
             String var13;
-            if(0 == var14) {
+            if(0 == var12) {
                var13 = null;
             } else if(null != var8.field2844 && var8.field2844.trim().length() != 0) {
                var13 = var8.field2844;
@@ -180,12 +184,11 @@ public class class13 implements Runnable {
                client.field436 = class12.method163('\uff00') + var8.field2881 + class12.method163(16777215);
             }
          }
-
       } else {
-         class34 var16;
+         class34 var15;
          if(10 == var2) {
-            var16 = client.field515[var3];
-            if(var16 != null) {
+            var15 = client.field515[var3];
+            if(var15 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -204,10 +207,10 @@ public class class13 implements Runnable {
             class34.method701(client.field441);
          }
 
-         class2 var17;
+         class2 var16;
          if(var2 == 47) {
-            var17 = client.field491[var3];
-            if(null != var17) {
+            var16 = client.field491[var3];
+            if(null != var16) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -244,8 +247,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 15) {
-            var17 = client.field491[var3];
-            if(null != var17) {
+            var16 = client.field491[var3];
+            if(null != var16) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -303,15 +306,14 @@ public class class13 implements Runnable {
             client.field322.method2557(var1 + class114.field1981);
          }
 
-         int var18;
          if(28 == var2) {
             client.field322.method2737(69);
             client.field322.method2480(var1);
             var8 = class29.method645(var1);
             if(var8.field2809 != null && var8.field2809[0][0] == 5) {
-               var18 = var8.field2809[0][1];
-               class176.field2920[var18] = 1 - class176.field2920[var18];
-               class52.method1069(var18);
+               var11 = var8.field2809[0][1];
+               class176.field2920[var11] = 1 - class176.field2920[var11];
+               class52.method1069(var11);
             }
          }
 
@@ -340,8 +342,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 50) {
-            var17 = client.field491[var3];
-            if(var17 != null) {
+            var16 = client.field491[var3];
+            if(var16 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -379,8 +381,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 44) {
-            var17 = client.field491[var3];
-            if(var17 != null) {
+            var16 = client.field491[var3];
+            if(var16 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -398,16 +400,16 @@ public class class13 implements Runnable {
             client.field539 = var7;
             client.field390 = 2;
             client.field389 = 0;
-            var16 = client.field515[var3];
-            if(null != var16) {
-               class39 var19 = var16.field782;
-               if(null != var19.field921) {
-                  var19 = var19.method740();
+            var15 = client.field515[var3];
+            if(null != var15) {
+               class39 var17 = var15.field782;
+               if(null != var17.field921) {
+                  var17 = var17.method740();
                }
 
-               if(null != var19) {
+               if(null != var17) {
                   client.field322.method2737(177);
-                  client.field322.method2557(var19.field886);
+                  client.field322.method2557(var17.field886);
                }
             }
          }
@@ -475,8 +477,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 48) {
-            var17 = client.field491[var3];
-            if(var17 != null) {
+            var16 = client.field491[var3];
+            if(var16 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -512,8 +514,8 @@ public class class13 implements Runnable {
          }
 
          if(51 == var2) {
-            var17 = client.field491[var3];
-            if(var17 != null) {
+            var16 = client.field491[var3];
+            if(var16 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -527,8 +529,8 @@ public class class13 implements Runnable {
          }
 
          if(11 == var2) {
-            var16 = client.field515[var3];
-            if(var16 != null) {
+            var15 = client.field515[var3];
+            if(var15 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -542,8 +544,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 8) {
-            var16 = client.field515[var3];
-            if(null != var16) {
+            var15 = client.field515[var3];
+            if(null != var15) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -569,8 +571,8 @@ public class class13 implements Runnable {
          }
 
          if(7 == var2) {
-            var16 = client.field515[var3];
-            if(null != var16) {
+            var15 = client.field515[var3];
+            if(null != var15) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -587,8 +589,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 46) {
-            var17 = client.field491[var3];
-            if(var17 != null) {
+            var16 = client.field491[var3];
+            if(var16 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -618,8 +620,8 @@ public class class13 implements Runnable {
          }
 
          if(var2 == 9) {
-            var16 = client.field515[var3];
-            if(var16 != null) {
+            var15 = client.field515[var3];
+            if(var15 != null) {
                client.field387 = var6;
                client.field539 = var7;
                client.field390 = 2;
@@ -658,7 +660,6 @@ public class class13 implements Runnable {
             if(client.field431 == null) {
                client.field431 = "null";
             }
-
          } else {
             if(var2 == 43) {
                client.field322.method2737(187);
@@ -688,8 +689,8 @@ public class class13 implements Runnable {
             }
 
             if(var2 == 13) {
-               var16 = client.field515[var3];
-               if(null != var16) {
+               var15 = client.field515[var3];
+               if(null != var15) {
                   client.field387 = var6;
                   client.field539 = var7;
                   client.field390 = 2;
@@ -703,8 +704,8 @@ public class class13 implements Runnable {
             }
 
             if(14 == var2) {
-               var17 = client.field491[var3];
-               if(var17 != null) {
+               var16 = client.field491[var3];
+               if(var16 != null) {
                   client.field387 = var6;
                   client.field539 = var7;
                   client.field390 = 2;
@@ -723,92 +724,92 @@ public class class13 implements Runnable {
             if(var2 == 57 || var2 == 1007) {
                var8 = class45.method932(var1, var0);
                if(var8 != null) {
-                  var18 = var8.field2885;
-                  class173 var10 = class45.method932(var1, var0);
-                  if(var10 != null) {
-                     if(null != var10.field2865) {
-                        class0 var11 = new class0();
-                        var11.field8 = var10;
-                        var11.field5 = var3;
-                        var11.field9 = var5;
-                        var11.field12 = var10.field2865;
-                        class16.method197(var11);
+                  var11 = var8.field2885;
+                  class173 var18 = class45.method932(var1, var0);
+                  if(var18 != null) {
+                     if(null != var18.field2865) {
+                        class0 var20 = new class0();
+                        var20.field8 = var18;
+                        var20.field5 = var3;
+                        var20.field9 = var5;
+                        var20.field12 = var18.field2865;
+                        class16.method197(var20);
                      }
 
-                     boolean var20 = true;
-                     if(var10.field2887 > 0) {
-                        var20 = class43.method891(var10);
+                     boolean var21 = true;
+                     if(var18.field2887 > 0) {
+                        var21 = class43.method891(var18);
                      }
 
-                     if(var20 && class6.method97(class48.method962(var10), var3 - 1)) {
+                     if(var21 && class6.method97(class48.method962(var18), var3 - 1)) {
                         if(1 == var3) {
                            client.field322.method2737(147);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(2 == var3) {
                            client.field322.method2737(163);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(var3 == 3) {
                            client.field322.method2737(10);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(4 == var3) {
                            client.field322.method2737(202);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(5 == var3) {
                            client.field322.method2737(204);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(var3 == 6) {
                            client.field322.method2737(94);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(7 == var3) {
                            client.field322.method2737(129);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(var3 == 8) {
                            client.field322.method2737(139);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(9 == var3) {
                            client.field322.method2737(135);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
 
                         if(var3 == 10) {
                            client.field322.method2737(62);
                            client.field322.method2480(var1);
                            client.field322.method2661(var0);
-                           client.field322.method2661(var18);
+                           client.field322.method2661(var11);
                         }
                      }
                   }
@@ -834,8 +835,8 @@ public class class13 implements Runnable {
             }
 
             if(49 == var2) {
-               var17 = client.field491[var3];
-               if(null != var17) {
+               var16 = client.field491[var3];
+               if(null != var16) {
                   client.field387 = var6;
                   client.field539 = var7;
                   client.field390 = 2;
@@ -849,8 +850,8 @@ public class class13 implements Runnable {
             }
 
             if(45 == var2) {
-               var17 = client.field491[var3];
-               if(var17 != null) {
+               var16 = client.field491[var3];
+               if(var16 != null) {
                   client.field387 = var6;
                   client.field539 = var7;
                   client.field390 = 2;
@@ -904,32 +905,38 @@ public class class13 implements Runnable {
                client.field322.method2480(var1);
                var8 = class29.method645(var1);
                if(null != var8.field2809 && 5 == var8.field2809[0][0]) {
-                  var18 = var8.field2809[0][1];
-                  if(var8.field2879[0] != class176.field2920[var18]) {
-                     class176.field2920[var18] = var8.field2879[0];
-                     class52.method1069(var18);
+                  var11 = var8.field2809[0][1];
+                  if(var8.field2879[0] != class176.field2920[var11]) {
+                     class176.field2920[var11] = var8.field2879[0];
+                     class52.method1069(var11);
                   }
                }
             }
 
             if(var2 == 26) {
                client.field322.method2737(224);
+               class3 var19 = (class3)client.field308.method3780();
 
-               for(class3 var22 = (class3)client.field308.method3780(); null != var22; var22 = (class3)client.field308.method3781()) {
-                  if(var22.field62 == 0 || var22.field62 == 3) {
-                     class38.method737(var22, true);
+               while(true) {
+                  if(null == var19) {
+                     if(client.field441 != null) {
+                        class34.method701(client.field441);
+                        client.field441 = null;
+                     }
+                     break;
                   }
-               }
 
-               if(client.field441 != null) {
-                  class34.method701(client.field441);
-                  client.field441 = null;
+                  if(var19.field62 == 0 || var19.field62 == 3) {
+                     class38.method737(var19, true);
+                  }
+
+                  var19 = (class3)client.field308.method3781();
                }
             }
 
             if(12 == var2) {
-               var16 = client.field515[var3];
-               if(null != var16) {
+               var15 = client.field515[var3];
+               if(null != var15) {
                   client.field387 = var6;
                   client.field539 = var7;
                   client.field390 = 2;
@@ -1005,8 +1012,8 @@ public class class13 implements Runnable {
             if(class19.field274 != null && 0 == client.field391) {
                class34.method701(class19.field274);
             }
-
          }
       }
+
    }
 }

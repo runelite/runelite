@@ -22,6 +22,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = 1944410881
    )
+   @Export("angle")
    int field814;
    @ObfuscatedName("an")
    boolean field815 = false;
@@ -34,6 +35,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = 703836113
    )
+   @Export("idlePoseAnimation")
    int field817 = -1;
    @ObfuscatedName("bu")
    @ObfuscatedGetter(
@@ -99,6 +101,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedName("ag")
    int[] field831 = new int[4];
    @ObfuscatedName("ac")
+   @Export("hitDamages")
    int[] field832 = new int[4];
    @ObfuscatedName("ak")
    @Export("hitSplats")
@@ -131,6 +134,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = -1445623689
    )
+   @Export("poseAnimation")
    int field840 = -1;
    @ObfuscatedName("ci")
    @ObfuscatedGetter(
@@ -152,6 +156,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = 1554635389
    )
+   @Export("actionFrame")
    int field844 = 0;
    @ObfuscatedName("bx")
    @ObfuscatedGetter(
@@ -173,6 +178,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = -993690757
    )
+   @Export("graphic")
    int field848 = -1;
    @ObfuscatedName("bn")
    @ObfuscatedGetter(
@@ -188,6 +194,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = -1465507073
    )
+   @Export("actionAnimationDisable")
    int field851 = 0;
    @ObfuscatedName("cj")
    @ObfuscatedGetter(
@@ -238,6 +245,7 @@ public abstract class class37 extends class85 {
    @ObfuscatedGetter(
       intValue = 1634167037
    )
+   @Export("poseFrame")
    int field861 = 0;
    @ObfuscatedName("cs")
    @ObfuscatedGetter(
@@ -245,6 +253,7 @@ public abstract class class37 extends class85 {
    )
    int field862;
    @ObfuscatedName("co")
+   @Export("pathY")
    int[] field863 = new int[10];
    @ObfuscatedName("bm")
    @ObfuscatedGetter(
@@ -255,6 +264,7 @@ public abstract class class37 extends class85 {
    @Export("inSequence")
    boolean field865 = false;
    @ObfuscatedName("cb")
+   @Export("pathX")
    int[] field866 = new int[10];
    @ObfuscatedName("av")
    @ObfuscatedGetter(

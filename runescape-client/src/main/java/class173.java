@@ -21,6 +21,7 @@ public class class173 extends class208 {
    @ObfuscatedName("dc")
    public int[] field2758;
    @ObfuscatedName("o")
+   @Export("spriteCache")
    public static class193 field2759 = new class193(200);
    @ObfuscatedName("b")
    public static class193 field2760 = new class193(50);
@@ -50,6 +51,7 @@ public class class173 extends class208 {
    @ObfuscatedGetter(
       intValue = 608655201
    )
+   @Export("type")
    public int field2767;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
@@ -106,6 +108,7 @@ public class class173 extends class208 {
    @ObfuscatedGetter(
       intValue = -1693737355
    )
+   @Export("stackSize")
    public int field2780;
    @ObfuscatedName("an")
    @ObfuscatedGetter(
@@ -213,6 +216,7 @@ public class class173 extends class208 {
    @ObfuscatedGetter(
       intValue = -346105557
    )
+   @Export("sprite2")
    public int field2805;
    @ObfuscatedName("ep")
    @ObfuscatedGetter(
@@ -220,6 +224,7 @@ public class class173 extends class208 {
    )
    public int field2806;
    @ObfuscatedName("bq")
+   @Export("flippedHorizontally")
    public boolean field2807;
    @ObfuscatedName("dh")
    public Object[] field2808;
@@ -367,6 +372,7 @@ public class class173 extends class208 {
    @Export("actions")
    public String[] field2839;
    @ObfuscatedName("bt")
+   @Export("flippedVertically")
    public boolean field2840;
    @ObfuscatedName("ct")
    @ObfuscatedGetter(
@@ -393,6 +399,7 @@ public class class173 extends class208 {
    @ObfuscatedGetter(
       intValue = -247825173
    )
+   @Export("scrollWidth")
    public int field2848 = 0;
    @ObfuscatedName("cl")
    public Object[] field2849;
@@ -416,6 +423,7 @@ public class class173 extends class208 {
    @ObfuscatedGetter(
       intValue = 1493143255
    )
+   @Export("scrollHeight")
    public int field2858 = 0;
    @ObfuscatedName("bx")
    @ObfuscatedGetter(
@@ -468,6 +476,7 @@ public class class173 extends class208 {
    @ObfuscatedName("dw")
    public String field2881;
    @ObfuscatedName("do")
+   @Export("tooltip")
    public String field2882;
    @ObfuscatedName("ei")
    @Export("itemIds")
@@ -479,7 +488,7 @@ public class class173 extends class208 {
    @ObfuscatedGetter(
       intValue = -423471487
    )
-   @Export("type")
+   @Export("item")
    public int field2885;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
@@ -600,60 +609,60 @@ public class class173 extends class208 {
          if(null != var5) {
             return var5;
          } else {
-            class167 var7 = field2757;
-            class78 var6;
-            if(!class35.method714(var7, var2, 0)) {
-               var6 = null;
+            class167 var6 = field2757;
+            class78 var7;
+            if(!class35.method714(var6, var2, 0)) {
+               var7 = null;
             } else {
-               class78 var9 = new class78();
-               var9.field1416 = class226.field3214;
-               var9.field1412 = class76.field1386;
-               var9.field1410 = class76.field1387[0];
-               var9.field1406 = class76.field1390[0];
-               var9.field1407 = class76.field1389[0];
-               var9.field1408 = class9.field159[0];
-               int var10 = var9.field1408 * var9.field1407;
-               byte[] var11 = class21.field575[0];
-               var9.field1414 = new int[var10];
+               class78 var8 = new class78();
+               var8.field1416 = class226.field3214;
+               var8.field1412 = class76.field1386;
+               var8.field1410 = class76.field1387[0];
+               var8.field1406 = class76.field1390[0];
+               var8.field1407 = class76.field1389[0];
+               var8.field1408 = class9.field159[0];
+               int var9 = var8.field1408 * var8.field1407;
+               byte[] var10 = class21.field575[0];
+               var8.field1414 = new int[var9];
 
-               for(int var12 = 0; var12 < var10; ++var12) {
-                  var9.field1414[var12] = class76.field1396[var11[var12] & 255];
+               for(int var11 = 0; var11 < var9; ++var11) {
+                  var8.field1414[var11] = class76.field1396[var10[var11] & 255];
                }
 
                class27.method633();
-               var6 = var9;
+               var7 = var8;
             }
 
-            if(null == var6) {
+            if(null == var7) {
                field2866 = true;
                return null;
             } else {
                if(this.field2840) {
-                  var6.method1671();
+                  var7.method1671();
                }
 
                if(this.field2807) {
-                  var6.method1755();
+                  var7.method1755();
                }
 
                if(this.field2804 > 0) {
-                  var6.method1669(this.field2804);
+                  var7.method1669(this.field2804);
                }
 
                if(this.field2804 >= 1) {
-                  var6.method1672(1);
+                  var7.method1672(1);
                }
 
                if(this.field2804 >= 2) {
-                  var6.method1672(16777215);
+                  var7.method1672(16777215);
                }
 
                if(this.field2805 != 0) {
-                  var6.method1673(this.field2805);
+                  var7.method1673(this.field2805);
                }
 
-               field2759.method3745(var6, var3);
-               return var6;
+               field2759.method3745(var7, var3);
+               return var7;
             }
          }
       }
@@ -675,37 +684,37 @@ public class class173 extends class208 {
             if(null != var3) {
                return var3;
             } else {
-               class167 var5 = field2757;
-               class78 var4;
-               if(!class35.method714(var5, var2, 0)) {
-                  var4 = null;
+               class167 var4 = field2757;
+               class78 var5;
+               if(!class35.method714(var4, var2, 0)) {
+                  var5 = null;
                } else {
-                  class78 var7 = new class78();
-                  var7.field1416 = class226.field3214;
-                  var7.field1412 = class76.field1386;
-                  var7.field1410 = class76.field1387[0];
-                  var7.field1406 = class76.field1390[0];
-                  var7.field1407 = class76.field1389[0];
-                  var7.field1408 = class9.field159[0];
-                  int var8 = var7.field1408 * var7.field1407;
-                  byte[] var9 = class21.field575[0];
-                  var7.field1414 = new int[var8];
+                  class78 var6 = new class78();
+                  var6.field1416 = class226.field3214;
+                  var6.field1412 = class76.field1386;
+                  var6.field1410 = class76.field1387[0];
+                  var6.field1406 = class76.field1390[0];
+                  var6.field1407 = class76.field1389[0];
+                  var6.field1408 = class9.field159[0];
+                  int var7 = var6.field1408 * var6.field1407;
+                  byte[] var8 = class21.field575[0];
+                  var6.field1414 = new int[var7];
 
-                  for(int var10 = 0; var10 < var8; ++var10) {
-                     var7.field1414[var10] = class76.field1396[var9[var10] & 255];
+                  for(int var9 = 0; var9 < var7; ++var9) {
+                     var6.field1414[var9] = class76.field1396[var8[var9] & 255];
                   }
 
                   class27.method633();
-                  var4 = var7;
+                  var5 = var6;
                }
 
-               if(null != var4) {
-                  field2759.method3745(var4, (long)var2);
+               if(null != var5) {
+                  field2759.method3745(var5, (long)var2);
                } else {
                   field2866 = true;
                }
 
-               return var4;
+               return var5;
             }
          }
       } else {
@@ -1373,28 +1382,28 @@ public class class173 extends class208 {
          if(null != var1) {
             return var1;
          } else {
-            class167 var3 = field2757;
-            class167 var4 = field2864;
-            int var5 = this.field2824;
-            class224 var2;
-            if(!class35.method714(var3, var5, 0)) {
-               var2 = null;
+            class167 var2 = field2757;
+            class167 var3 = field2864;
+            int var4 = this.field2824;
+            class224 var5;
+            if(!class35.method714(var2, var4, 0)) {
+               var5 = null;
             } else {
-               byte[] var7 = var4.method3239(var5, 0);
-               class224 var6;
-               if(var7 == null) {
-                  var6 = null;
+               byte[] var6 = var3.method3239(var4, 0);
+               class224 var7;
+               if(var6 == null) {
+                  var7 = null;
                } else {
-                  class224 var8 = new class224(var7, class76.field1387, class76.field1390, class76.field1389, class9.field159, class76.field1396, class21.field575);
+                  class224 var8 = new class224(var6, class76.field1387, class76.field1390, class76.field1389, class9.field159, class76.field1396, class21.field575);
                   class27.method633();
-                  var6 = var8;
+                  var7 = var8;
                }
 
-               var2 = var6;
+               var5 = var7;
             }
 
             field2866 = true;
-            return var2;
+            return var5;
          }
       }
    }

@@ -64,6 +64,7 @@ public final class class143 implements Runnable {
 
          this.field2197 = null;
       }
+
    }
 
    protected void finalize() {
@@ -86,8 +87,8 @@ public final class class143 implements Runnable {
             var2 += var4;
             var3 -= var4;
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -120,28 +121,29 @@ public final class class143 implements Runnable {
          if(this.field2196) {
             this.field2196 = false;
             throw new IOException();
-         } else {
-            if(null == this.field2189) {
-               this.field2189 = new byte[5000];
+         }
+
+         if(null == this.field2189) {
+            this.field2189 = new byte[5000];
+         }
+
+         synchronized(this) {
+            for(int var5 = 0; var5 < var3; ++var5) {
+               this.field2189[this.field2192] = var1[var2 + var5];
+               this.field2192 = (this.field2192 + 1) % 5000;
+               if(this.field2192 == (4900 + this.field2194) % 5000) {
+                  throw new IOException();
+               }
             }
 
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.field2189[this.field2192] = var1[var2 + var5];
-                  this.field2192 = (this.field2192 + 1) % 5000;
-                  if(this.field2192 == (4900 + this.field2194) % 5000) {
-                     throw new IOException();
-                  }
-               }
-
-               if(null == this.field2197) {
-                  this.field2197 = this.field2191.method2862(this, 3);
-               }
-
-               this.notifyAll();
+            if(null == this.field2197) {
+               this.field2197 = this.field2191.method2862(this, 3);
             }
+
+            this.notifyAll();
          }
       }
+
    }
 
    public void run() {
@@ -248,62 +250,62 @@ public final class class143 implements Runnable {
          var3 = class114.field1981;
 
          int var6;
-         int var8;
+         int var7;
          for(var6 = 0; var6 < '耀'; ++var6) {
-            class34 var7 = client.field515[var6];
-            if(null != var7) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var7.field866[var8] -= var4;
-                  var7.field863[var8] -= var5;
+            class34 var8 = client.field515[var6];
+            if(null != var8) {
+               for(var7 = 0; var7 < 10; ++var7) {
+                  var8.field866[var7] -= var4;
+                  var8.field863[var7] -= var5;
                }
 
-               var7.field823 -= var4 * 128;
-               var7.field813 -= 128 * var5;
+               var8.field823 -= var4 * 128;
+               var8.field813 -= 128 * var5;
             }
          }
 
          for(var6 = 0; var6 < 2048; ++var6) {
-            class2 var18 = client.field491[var6];
-            if(var18 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var18.field866[var8] -= var4;
-                  var18.field863[var8] -= var5;
+            class2 var19 = client.field491[var6];
+            if(var19 != null) {
+               for(var7 = 0; var7 < 10; ++var7) {
+                  var19.field866[var7] -= var4;
+                  var19.field863[var7] -= var5;
                }
 
-               var18.field823 -= 128 * var4;
-               var18.field813 -= 128 * var5;
+               var19.field823 -= 128 * var4;
+               var19.field813 -= 128 * var5;
             }
          }
 
-         byte var17 = 0;
-         byte var19 = 104;
-         byte var20 = 1;
+         byte var20 = 0;
+         byte var9 = 104;
+         byte var10 = 1;
          if(var4 < 0) {
-            var17 = 103;
-            var19 = -1;
-            var20 = -1;
-         }
-
-         byte var9 = 0;
-         byte var10 = 104;
-         byte var11 = 1;
-         if(var5 < 0) {
-            var9 = 103;
+            var20 = 103;
+            var9 = -1;
             var10 = -1;
-            var11 = -1;
          }
 
-         int var13;
-         for(int var12 = var17; var19 != var12; var12 += var20) {
-            for(var13 = var9; var10 != var13; var13 += var11) {
-               int var14 = var12 + var4;
-               int var15 = var5 + var13;
+         byte var11 = 0;
+         byte var12 = 104;
+         byte var13 = 1;
+         if(var5 < 0) {
+            var11 = 103;
+            var12 = -1;
+            var13 = -1;
+         }
 
-               for(int var16 = 0; var16 < 4; ++var16) {
-                  if(var14 >= 0 && var15 >= 0 && var14 < 104 && var15 < 104) {
-                     client.field345[var16][var12][var13] = client.field345[var16][var14][var15];
+         int var14;
+         for(int var15 = var20; var9 != var15; var15 += var10) {
+            for(var14 = var11; var12 != var14; var14 += var13) {
+               int var16 = var15 + var4;
+               int var17 = var5 + var14;
+
+               for(int var18 = 0; var18 < 4; ++var18) {
+                  if(var16 >= 0 && var17 >= 0 && var16 < 104 && var17 < 104) {
+                     client.field345[var18][var15][var14] = client.field345[var18][var16][var17];
                   } else {
-                     client.field345[var16][var12][var13] = null;
+                     client.field345[var18][var15][var14] = null;
                   }
                }
             }
@@ -328,10 +330,10 @@ public final class class143 implements Runnable {
          client.field413.method3806();
          client.field414.method3806();
 
-         for(var13 = 0; var13 < 4; ++var13) {
-            client.field340[var13].method2374();
+         for(var14 = 0; var14 < 4; ++var14) {
+            client.field340[var14].method2374();
          }
-
       }
+
    }
 }

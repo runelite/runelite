@@ -45,26 +45,27 @@ public class class69 extends class56 {
          this.field1290.start();
          this.field1291 = var1;
       } catch (LineUnavailableException var7) {
-         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var4 = (var4 & 858993459) + (var4 >>> 2 & 858993459);
-         var4 = var4 + (var4 >>> 4) & 252645135;
-         var4 += var4 >>> 8;
-         var4 += var4 >>> 16;
-         int var3 = var4 & 255;
-         if(var3 != 1) {
-            int var6 = var1 - 1;
-            var6 |= var6 >>> 1;
-            var6 |= var6 >>> 2;
-            var6 |= var6 >>> 4;
-            var6 |= var6 >>> 8;
-            var6 |= var6 >>> 16;
-            int var5 = var6 + 1;
-            this.vmethod1493(var5);
-         } else {
+         int var3 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var3 = (var3 & 858993459) + (var3 >>> 2 & 858993459);
+         var3 = var3 + (var3 >>> 4) & 252645135;
+         var3 += var3 >>> 8;
+         var3 += var3 >>> 16;
+         int var4 = var3 & 255;
+         if(var4 == 1) {
             this.field1290 = null;
             throw var7;
          }
+
+         int var5 = var1 - 1;
+         var5 |= var5 >>> 1;
+         var5 |= var5 >>> 2;
+         var5 |= var5 >>> 4;
+         var5 |= var5 >>> 8;
+         var5 |= var5 >>> 16;
+         int var6 = var5 + 1;
+         this.vmethod1493(var6);
       }
+
    }
 
    @ObfuscatedName("x")

@@ -45,6 +45,7 @@ public final class class224 extends class223 {
       if(var4 > 0 && var5 > 0) {
          class223.method4088(class79.field1420, var1, var6, var10, var7, var4, var5, var8, var9);
       }
+
    }
 
    @ObfuscatedName("f")
@@ -86,6 +87,7 @@ public final class class224 extends class223 {
       if(var4 > 0 && var5 > 0) {
          class223.method4020(class79.field1420, var1, var6, var11, var8, var4, var5, var9, var10, var7);
       }
+
    }
 
    public class224(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {

@@ -1,9 +1,11 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gk")
 public class class183 {
    @ObfuscatedName("dq")
+   @Export("xteaKeys")
    static int[][] field2970;
    @ObfuscatedName("k")
    @ObfuscatedGetter(

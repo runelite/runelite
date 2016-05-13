@@ -167,9 +167,9 @@ public final class class110 {
             }
          }
 
-         int[] var8 = class27.field670;
+         int[] var6 = class27.field670;
          class27.field670 = class178.field2932;
-         class178.field2932 = var8;
+         class178.field2932 = var6;
       }
 
       if(null != var0) {
@@ -179,8 +179,8 @@ public final class class110 {
             for(var4 = 0; var4 < var0.field1427; ++var4) {
                if(var0.field1430[var2++] != 0) {
                   var5 = var0.field1428 + 16 + var4;
-                  int var6 = 16 + var3 + var0.field1431;
-                  int var7 = var5 + (var6 << 7);
+                  int var8 = 16 + var3 + var0.field1431;
+                  int var7 = var5 + (var8 << 7);
                   class27.field670[var7] = 0;
                }
             }
@@ -218,27 +218,27 @@ public final class class110 {
          class25.field636[var1] = var8;
 
          for(int var9 = var0; var9 < var1; ++var9) {
-            class25 var11 = class25.field636[var9];
-            int var12 = class56.method1195(var11, var8, var2, var3);
-            int var10;
-            if(var12 != 0) {
+            class25 var10 = class25.field636[var9];
+            int var11 = class56.method1195(var10, var8, var2, var3);
+            int var12;
+            if(var11 != 0) {
                if(var3) {
-                  var10 = -var12;
+                  var12 = -var11;
                } else {
-                  var10 = var12;
+                  var12 = var11;
                }
             } else if(-1 == var4) {
-               var10 = 0;
+               var12 = 0;
             } else {
-               int var13 = class56.method1195(var11, var8, var4, var5);
+               int var13 = class56.method1195(var10, var8, var4, var5);
                if(var5) {
-                  var10 = -var13;
+                  var12 = -var13;
                } else {
-                  var10 = var13;
+                  var12 = var13;
                }
             }
 
-            if(var10 <= 0) {
+            if(var12 <= 0) {
                class25 var14 = class25.field636[var9];
                class25.field636[var9] = class25.field636[var7];
                class25.field636[var7++] = var14;

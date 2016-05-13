@@ -1,20 +1,26 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gi")
+@Implements("NodeCache")
 public final class class193 {
    @ObfuscatedName("s")
    class204 field3088 = new class204();
    @ObfuscatedName("j")
    int field3089;
    @ObfuscatedName("x")
+   @Export("table")
    class196 field3090;
    @ObfuscatedName("p")
    int field3091;
    @ObfuscatedName("d")
+   @Export("list")
    class203 field3092 = new class203();
 
    @ObfuscatedName("j")
+   @Export("remove")
    public void method3742(long var1) {
       class204 var3 = (class204)this.field3090.method3777(var1);
       if(var3 != null) {
@@ -26,6 +32,7 @@ public final class class193 {
    }
 
    @ObfuscatedName("s")
+   @Export("get")
    public class204 method3743(long var1) {
       class204 var3 = (class204)this.field3090.method3777(var1);
       if(var3 != null) {
@@ -52,6 +59,7 @@ public final class class193 {
    }
 
    @ObfuscatedName("p")
+   @Export("put")
    public void method3745(class204 var1, long var2) {
       if(this.field3091 == 0) {
          class204 var4 = this.field3092.method3871();
@@ -71,6 +79,7 @@ public final class class193 {
    }
 
    @ObfuscatedName("x")
+   @Export("reset")
    public void method3750() {
       this.field3092.method3864();
       this.field3090.method3779();

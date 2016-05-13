@@ -102,61 +102,63 @@ public class class32 {
             --var3;
          }
 
-         int var12 = var3 - var2;
-         if(var12 >= 1 && var12 <= class21.method558(var1)) {
-            StringBuilder var13 = new StringBuilder(var12);
+         int var6 = var3 - var2;
+         if(var6 >= 1 && var6 <= class21.method558(var1)) {
+            StringBuilder var7 = new StringBuilder(var6);
 
-            for(int var6 = var2; var6 < var3; ++var6) {
-               char var7 = var0.charAt(var6);
-               boolean var8;
-               if(Character.isISOControl(var7)) {
-                  var8 = false;
-               } else if(class33.method694(var7)) {
-                  var8 = true;
+            for(int var8 = var2; var8 < var3; ++var8) {
+               char var9 = var0.charAt(var8);
+               boolean var10;
+               if(Character.isISOControl(var9)) {
+                  var10 = false;
+               } else if(class33.method694(var9)) {
+                  var10 = true;
                } else {
-                  char[] var9 = class164.field2664;
-                  int var10 = 0;
+                  label126: {
+                     char[] var11 = class164.field2664;
 
-                  label113:
-                  while(true) {
-                     char var11;
-                     if(var10 >= var9.length) {
-                        var9 = class164.field2662;
+                     int var12;
+                     char var13;
+                     for(var12 = 0; var12 < var11.length; ++var12) {
+                        var13 = var11[var12];
+                        if(var13 == var9) {
+                           var10 = true;
+                           break label126;
+                        }
+                     }
 
-                        for(var10 = 0; var10 < var9.length; ++var10) {
-                           var11 = var9[var10];
-                           if(var11 == var7) {
-                              var8 = true;
-                              break label113;
-                           }
+                     var11 = class164.field2662;
+                     var12 = 0;
+
+                     while(true) {
+                        if(var12 >= var11.length) {
+                           var10 = false;
+                           break;
                         }
 
-                        var8 = false;
-                        break;
-                     }
+                        var13 = var11[var12];
+                        if(var13 == var9) {
+                           var10 = true;
+                           break;
+                        }
 
-                     var11 = var9[var10];
-                     if(var11 == var7) {
-                        var8 = true;
-                        break;
+                        ++var12;
                      }
-
-                     ++var10;
                   }
                }
 
-               if(var8) {
-                  char var14 = class156.method3145(var7);
+               if(var10) {
+                  char var14 = class156.method3145(var9);
                   if(0 != var14) {
-                     var13.append(var14);
+                     var7.append(var14);
                   }
                }
             }
 
-            if(var13.length() == 0) {
+            if(var7.length() == 0) {
                return null;
             } else {
-               return var13.toString();
+               return var7.toString();
             }
          } else {
             return null;
@@ -170,24 +172,24 @@ public class class32 {
       garbageValue = "-54"
    )
    public static int method691(int var0) {
-      class47 var2 = (class47)class47.field1065.method3743((long)var0);
-      class47 var1;
-      if(null != var2) {
-         var1 = var2;
+      class47 var1 = (class47)class47.field1065.method3743((long)var0);
+      class47 var2;
+      if(null != var1) {
+         var2 = var1;
       } else {
          byte[] var3 = class47.field1070.method3239(14, var0);
-         var2 = new class47();
+         var1 = new class47();
          if(null != var3) {
-            var2.method955(new class119(var3));
+            var1.method955(new class119(var3));
          }
 
-         class47.field1065.method3745(var2, (long)var0);
-         var1 = var2;
+         class47.field1065.method3745(var1, (long)var0);
+         var2 = var1;
       }
 
-      int var7 = var1.field1066;
-      int var4 = var1.field1064;
-      int var5 = var1.field1068;
+      int var7 = var2.field1066;
+      int var4 = var2.field1064;
+      int var5 = var2.field1068;
       int var6 = class176.field2919[var5 - var4];
       return class176.field2920[var7] >> var4 & var6;
    }

@@ -110,25 +110,25 @@ public class class160 extends class208 {
    )
    public int method3156() {
       byte var1 = 38;
-      String var4 = this.field2617;
-      int var3 = var4.length() + 2;
-      int var20 = var3 + var1;
-      String var7 = this.field2635;
-      int var6 = var7.length() + 2;
-      var20 += var6;
-      String var10 = this.field2636;
-      int var9 = var10.length() + 2;
-      var20 += var9;
-      String var13 = this.field2637;
-      int var12 = var13.length() + 2;
-      var20 += var12;
-      String var16 = this.field2642;
-      int var15 = var16.length() + 2;
-      var20 += var15;
-      String var19 = this.field2643;
-      int var18 = var19.length() + 2;
-      var20 += var18;
-      return var20;
+      String var2 = this.field2617;
+      int var3 = var2.length() + 2;
+      int var4 = var3 + var1;
+      String var5 = this.field2635;
+      int var6 = var5.length() + 2;
+      var4 += var6;
+      String var7 = this.field2636;
+      int var8 = var7.length() + 2;
+      var4 += var8;
+      String var9 = this.field2637;
+      int var10 = var9.length() + 2;
+      var4 += var10;
+      String var11 = this.field2642;
+      int var12 = var11.length() + 2;
+      var4 += var12;
+      String var13 = this.field2643;
+      int var14 = var13.length() + 2;
+      var4 += var14;
+      return var4;
    }
 
    @ObfuscatedName("s")
@@ -210,14 +210,14 @@ public class class160 extends class208 {
       String var2;
       try {
          var2 = System.getProperty("os.arch").toLowerCase();
-      } catch (Exception var11) {
+      } catch (Exception var12) {
          var2 = "";
       }
 
       String var3;
       try {
          var3 = System.getProperty("os.version").toLowerCase();
-      } catch (Exception var10) {
+      } catch (Exception var11) {
          var3 = "";
       }
 
@@ -227,7 +227,7 @@ public class class160 extends class208 {
       try {
          var4 = System.getProperty("java.vendor");
          var5 = System.getProperty("java.version");
-      } catch (Exception var9) {
+      } catch (Exception var10) {
          ;
       }
 
@@ -303,7 +303,7 @@ public class class160 extends class208 {
             var7 = var7 * 10 + (var8 - 48);
             ++var6;
          }
-      } catch (Exception var14) {
+      } catch (Exception var15) {
          ;
       }
 
@@ -321,7 +321,7 @@ public class class160 extends class208 {
             var7 = var8 - 48 + var7 * 10;
             ++var6;
          }
-      } catch (Exception var13) {
+      } catch (Exception var14) {
          ;
       }
 
@@ -339,7 +339,7 @@ public class class160 extends class208 {
             var7 = var7 * 10 + (var8 - 48);
             ++var6;
          }
-      } catch (Exception var12) {
+      } catch (Exception var13) {
          ;
       }
 

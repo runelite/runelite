@@ -8,10 +8,6 @@ public class class109 {
    @ObfuscatedName("cg")
    public static char field1917;
 
-   static {
-      new HashMap();
-   }
-
    @ObfuscatedName("ck")
    @ObfuscatedSignature(
       signature = "(IS)Ljava/lang/String;",
@@ -73,5 +69,9 @@ public class class109 {
          var4.vmethod1852(var0, var1, var2);
          return var4;
       }
+   }
+
+   static {
+      new HashMap();
    }
 }

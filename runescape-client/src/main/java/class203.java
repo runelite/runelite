@@ -1,8 +1,12 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ge")
+@Implements("Node2LinkedList")
 public final class class203 {
    @ObfuscatedName("s")
+   @Export("sentinel")
    class204 field3113 = new class204();
 
    @ObfuscatedName("s")

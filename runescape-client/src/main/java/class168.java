@@ -44,15 +44,15 @@ public class class168 extends class167 {
       this.field2699 = var2;
       this.field2700 = var3;
       this.field2709 = var6;
-      int var8 = this.field2700;
+      int var7 = this.field2700;
       if(class171.field2742 != null) {
-         class171.field2742.field2005 = var8 * 8 + 5;
+         class171.field2742.field2005 = var7 * 8 + 5;
+         int var8 = class171.field2742.method2497();
          int var9 = class171.field2742.method2497();
-         int var10 = class171.field2742.method2497();
-         this.method3313(var9, var10);
+         this.method3313(var8, var9);
       } else {
          class94.method2146((class168)null, 255, 255, 0, (byte)0, true);
-         class171.field2746[var8] = this;
+         class171.field2746[var7] = this;
       }
 
    }
@@ -106,11 +106,13 @@ public class class168 extends class167 {
             var7.field2714 = var2;
             var7.field2713 = var6;
             class199 var8 = class170.field2722;
+            class199 var9 = class170.field2722;
             synchronized(class170.field2722) {
                class170.field2722.method3807(var7);
             }
 
-            Object var13 = class170.field2723;
+            Object var14 = class170.field2723;
+            Object var10 = class170.field2723;
             synchronized(class170.field2723) {
                if(class170.field2721 == 0) {
                   class38.field878.method2862(new class170(), 5);
@@ -153,8 +155,8 @@ public class class168 extends class167 {
          if(-1 == this.field2707) {
             this.field2701 = true;
          }
-
       }
+
    }
 
    @ObfuscatedName("cm")
@@ -177,17 +179,17 @@ public class class168 extends class167 {
       } else if(super.field2687 != null) {
          return 99;
       } else {
-         int var2 = this.field2700;
-         long var3 = (long)(16711680 + var2);
-         int var1;
-         if(null != class124.field2045 && var3 == class124.field2045.field3125) {
-            var1 = class171.field2735.field2005 * 99 / (class171.field2735.field2007.length - class124.field2045.field2750) + 1;
+         int var1 = this.field2700;
+         long var2 = (long)(16711680 + var1);
+         int var4;
+         if(null != class124.field2045 && var2 == class124.field2045.field3125) {
+            var4 = class171.field2735.field2005 * 99 / (class171.field2735.field2007.length - class124.field2045.field2750) + 1;
          } else {
-            var1 = 0;
+            var4 = 0;
          }
 
-         int var5 = var1;
-         if(var1 >= 100) {
+         int var5 = var4;
+         if(var4 >= 100) {
             var5 = 99;
          }
 
@@ -258,67 +260,61 @@ public class class168 extends class167 {
       if(var1 == this.field2699) {
          if(this.field2701) {
             throw new RuntimeException();
-         }
-
-         if(null == var3) {
+         } else if(null == var3) {
             class94.method2146(this, 255, this.field2700, this.field2705, (byte)0, true);
-            return;
-         }
+         } else {
+            field2704.reset();
+            field2704.update(var3, 0, var3.length);
+            var5 = (int)field2704.getValue();
+            class119 var9 = new class119(class17.method205(var3));
+            int var7 = var9.method2492();
+            if(5 != var7 && 6 != var7) {
+               throw new RuntimeException(var7 + "," + this.field2700 + "," + var2);
+            } else {
+               int var8 = 0;
+               if(var7 >= 6) {
+                  var8 = var9.method2497();
+               }
 
-         field2704.reset();
-         field2704.update(var3, 0, var3.length);
-         var5 = (int)field2704.getValue();
-         class119 var6 = new class119(class17.method205(var3));
-         int var7 = var6.method2492();
-         if(5 != var7 && 6 != var7) {
-            throw new RuntimeException(var7 + "," + this.field2700 + "," + var2);
+               if(this.field2705 != var5 || this.field2706 != var8) {
+                  class94.method2146(this, 255, this.field2700, this.field2705, (byte)0, true);
+               } else {
+                  this.method3279(var3);
+                  this.method3316();
+               }
+            }
          }
-
-         int var8 = 0;
-         if(var7 >= 6) {
-            var8 = var6.method2497();
-         }
-
-         if(this.field2705 != var5 || this.field2706 != var8) {
-            class94.method2146(this, 255, this.field2700, this.field2705, (byte)0, true);
-            return;
-         }
-
-         this.method3279(var3);
-         this.method3316();
       } else {
          if(!var4 && this.field2707 == var2) {
             this.field2701 = true;
          }
 
-         if(var3 == null || var3.length <= 2) {
+         if(var3 != null && var3.length > 2) {
+            field2704.reset();
+            field2704.update(var3, 0, var3.length - 2);
+            var5 = (int)field2704.getValue();
+            int var6 = (var3[var3.length - 1] & 255) + ((var3[var3.length - 2] & 255) << 8);
+            if(var5 == super.field2684[var2] && var6 == super.field2682[var2]) {
+               this.field2703[var2] = true;
+               if(var4) {
+                  super.field2687[var2] = class148.method3115(var3, false);
+               }
+
+            } else {
+               this.field2703[var2] = false;
+               if(this.field2709 || var4) {
+                  class94.method2146(this, this.field2700, var2, super.field2684[var2], (byte)2, var4);
+               }
+
+            }
+         } else {
             this.field2703[var2] = false;
             if(this.field2709 || var4) {
                class94.method2146(this, this.field2700, var2, super.field2684[var2], (byte)2, var4);
             }
 
-            return;
-         }
-
-         field2704.reset();
-         field2704.update(var3, 0, var3.length - 2);
-         var5 = (int)field2704.getValue();
-         int var9 = (var3[var3.length - 1] & 255) + ((var3[var3.length - 2] & 255) << 8);
-         if(var5 != super.field2684[var2] || var9 != super.field2682[var2]) {
-            this.field2703[var2] = false;
-            if(this.field2709 || var4) {
-               class94.method2146(this, this.field2700, var2, super.field2684[var2], (byte)2, var4);
-            }
-
-            return;
-         }
-
-         this.field2703[var2] = true;
-         if(var4) {
-            super.field2687[var2] = class148.method3115(var3, false);
          }
       }
-
    }
 
    @ObfuscatedName("cj")

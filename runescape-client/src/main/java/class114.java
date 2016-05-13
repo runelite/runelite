@@ -59,15 +59,15 @@ public class class114 {
             int var5 = var3.read(var4.field2007, var4.field2005, 1000 - var4.field2005);
             if(-1 == var5) {
                var4.field2005 = 0;
-               long var8 = var4.method2498();
-               return var8;
+               long var6 = var4.method2498();
+               return var6;
             }
 
             var4.field2005 += var5;
          } while(var4.field2005 < 1000);
 
          return 0L;
-      } catch (Exception var7) {
+      } catch (Exception var8) {
          return 0L;
       }
    }

@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -27,50 +28,50 @@ public class class90 {
       try {
          String var2 = "";
          if(null != var1) {
-            Throwable var4 = var1;
-            String var5;
+            Throwable var3 = var1;
+            String var4;
             if(var1 instanceof class148) {
-               class148 var6 = (class148)var1;
-               var5 = var6.field2234 + " | ";
-               var4 = var6.field2235;
+               class148 var5 = (class148)var1;
+               var4 = var5.field2234 + " | ";
+               var3 = var5.field2235;
             } else {
-               var5 = "";
+               var4 = "";
             }
 
-            StringWriter var18 = new StringWriter();
-            PrintWriter var7 = new PrintWriter(var18);
-            var4.printStackTrace(var7);
-            var7.close();
-            String var8 = var18.toString();
-            BufferedReader var9 = new BufferedReader(new StringReader(var8));
-            String var10 = var9.readLine();
+            StringWriter var17 = new StringWriter();
+            PrintWriter var6 = new PrintWriter(var17);
+            var3.printStackTrace(var6);
+            var6.close();
+            String var7 = var17.toString();
+            BufferedReader var8 = new BufferedReader(new StringReader(var7));
+            String var9 = var8.readLine();
 
             while(true) {
-               String var11 = var9.readLine();
-               if(null == var11) {
-                  var5 = var5 + "| " + var10;
-                  var2 = var5;
+               String var10 = var8.readLine();
+               if(null == var10) {
+                  var4 = var4 + "| " + var9;
+                  var2 = var4;
                   break;
                }
 
-               int var12 = var11.indexOf(40);
-               int var13 = var11.indexOf(41, 1 + var12);
-               if(var12 >= 0 && var13 >= 0) {
-                  String var14 = var11.substring(var12 + 1, var13);
-                  int var15 = var14.indexOf(".java:");
-                  if(var15 >= 0) {
-                     var14 = var14.substring(0, var15) + var14.substring(5 + var15);
-                     var5 = var5 + var14 + ' ';
+               int var11 = var10.indexOf(40);
+               int var12 = var10.indexOf(41, 1 + var11);
+               if(var11 >= 0 && var12 >= 0) {
+                  String var13 = var10.substring(var11 + 1, var12);
+                  int var14 = var13.indexOf(".java:");
+                  if(var14 >= 0) {
+                     var13 = var13.substring(0, var14) + var13.substring(5 + var14);
+                     var4 = var4 + var13 + ' ';
                      continue;
                   }
 
-                  var11 = var11.substring(0, var12);
+                  var10 = var10.substring(0, var11);
                }
 
-               var11 = var11.trim();
-               var11 = var11.substring(var11.lastIndexOf(32) + 1);
-               var11 = var11.substring(var11.lastIndexOf(9) + 1);
-               var5 = var5 + var11 + ' ';
+               var10 = var10.trim();
+               var10 = var10.substring(var10.lastIndexOf(32) + 1);
+               var10 = var10.substring(var10.lastIndexOf(9) + 1);
+               var4 = var4 + var10 + ' ';
             }
          }
 
@@ -91,11 +92,11 @@ public class class90 {
             return;
          }
 
-         URL var3 = new URL(class126.field2052.getCodeBase(), "clienterror.ws?c=" + class148.field2236 + "&u=" + class148.field2233 + "&v1=" + class136.field2115 + "&v2=" + class124.field2046 + "&e=" + var2);
-         DataInputStream var17 = new DataInputStream(var3.openStream());
-         var17.read();
-         var17.close();
-      } catch (Exception var16) {
+         URL var16 = new URL(class126.field2052.getCodeBase(), "clienterror.ws?c=" + class148.field2236 + "&u=" + class148.field2233 + "&v1=" + class136.field2115 + "&v2=" + class124.field2046 + "&e=" + var2);
+         DataInputStream var18 = new DataInputStream(var16.openStream());
+         var18.read();
+         var18.close();
+      } catch (Exception var15) {
          ;
       }
 
@@ -106,6 +107,7 @@ public class class90 {
       signature = "(Lclass25;I)V",
       garbageValue = "1547722373"
    )
+   @Export("selectWorld")
    static void method2068(class25 var0) {
       if(var0.method580() != client.field447) {
          client.field447 = var0.method580();

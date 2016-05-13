@@ -1,5 +1,6 @@
 import java.io.File;
 import java.math.BigInteger;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import netscape.javascript.JSObject;
@@ -26,7 +27,7 @@ public class class4 {
       if(var0 == null) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
+         byte[] var3 = (byte[])((byte[])((byte[])var0));
          return var3;
       } else if(var0 instanceof class125) {
          class125 var2 = (class125)var0;
@@ -84,6 +85,7 @@ public class class4 {
       signature = "(II)Lclass42;",
       garbageValue = "398113809"
    )
+   @Export("getAnimation")
    public static class42 method42(int var0) {
       class42 var1 = (class42)class42.field984.method3743((long)var0);
       if(var1 != null) {

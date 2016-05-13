@@ -110,7 +110,7 @@ public class class18 {
          if(client.field524[var0] >= -10) {
             class58 var10 = client.field526[var0];
             if(var10 == null) {
-               class58 var10000 = (class58)null;
+               class58 var2 = (class58)null;
                var10 = class58.method1228(class28.field682, client.field537[var0], 0);
                if(var10 == null) {
                   continue;
@@ -121,7 +121,7 @@ public class class18 {
             }
 
             if(client.field524[var0] < 0) {
-               int var2;
+               int var11;
                if(client.field407[var0] != 0) {
                   int var3 = (client.field407[var0] & 255) * 128;
                   int var4 = client.field407[var0] >> 16 & 255;
@@ -146,16 +146,16 @@ public class class18 {
                      var8 = 0;
                   }
 
-                  var2 = client.field520 * (var3 - var8) / var3;
+                  var11 = client.field520 * (var3 - var8) / var3;
                } else {
-                  var2 = client.field519;
+                  var11 = client.field519;
                }
 
-               if(var2 > 0) {
-                  class62 var11 = var10.method1222().method1256(class110.field1960);
-                  class64 var12 = class64.method1280(var11, 100, var2);
-                  var12.method1428(client.field523[var0] - 1);
-                  class114.field1978.method1127(var12);
+               if(var11 > 0) {
+                  class62 var12 = var10.method1222().method1256(class110.field1960);
+                  class64 var13 = class64.method1280(var12, 100, var11);
+                  var13.method1428(client.field523[var0] - 1);
+                  class114.field1978.method1127(var13);
                }
 
                client.field524[var0] = -100;

@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -24,6 +25,7 @@ public class class52 extends class204 {
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "42387916"
    )
+   @Export("addChatMessage")
    static void method1050(int var0, String var1, String var2, String var3) {
       class27 var4 = (class27)class11.field168.get(Integer.valueOf(var0));
       if(var4 == null) {
@@ -84,48 +86,48 @@ public class class52 extends class204 {
       int var4 = 0;
       int var5 = var1;
 
-      int var8;
-      for(int var6 = var1 + var2; var5 < var6; var3[var4++] = (char)var8) {
-         int var7 = var0[var5++] & 255;
-         if(var7 < 128) {
-            if(var7 == 0) {
-               var8 = '�';
+      int var6;
+      for(int var7 = var1 + var2; var5 < var7; var3[var4++] = (char)var6) {
+         int var8 = var0[var5++] & 255;
+         if(var8 < 128) {
+            if(var8 == 0) {
+               var6 = '�';
             } else {
-               var8 = var7;
+               var6 = var8;
             }
-         } else if(var7 < 192) {
-            var8 = '�';
-         } else if(var7 < 224) {
-            if(var5 < var6 && 128 == (var0[var5] & 192)) {
-               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
-               if(var8 < 128) {
-                  var8 = '�';
+         } else if(var8 < 192) {
+            var6 = '�';
+         } else if(var8 < 224) {
+            if(var5 < var7 && 128 == (var0[var5] & 192)) {
+               var6 = (var8 & 31) << 6 | var0[var5++] & 63;
+               if(var6 < 128) {
+                  var6 = '�';
                }
             } else {
-               var8 = '�';
+               var6 = '�';
             }
-         } else if(var7 < 240) {
-            if(var5 + 1 < var6 && 128 == (var0[var5] & 192) && 128 == (var0[1 + var5] & 192)) {
-               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 < 2048) {
-                  var8 = '�';
+         } else if(var8 < 240) {
+            if(var5 + 1 < var7 && 128 == (var0[var5] & 192) && 128 == (var0[1 + var5] & 192)) {
+               var6 = (var8 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var6 < 2048) {
+                  var6 = '�';
                }
             } else {
-               var8 = '�';
+               var6 = '�';
             }
-         } else if(var7 < 248) {
-            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[2 + var5] & 192) == 128) {
-               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = '�';
+         } else if(var8 < 248) {
+            if(var5 + 2 < var7 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[2 + var5] & 192) == 128) {
+               var6 = (var8 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var6 >= 65536 && var6 <= 1114111) {
+                  var6 = '�';
                } else {
-                  var8 = '�';
+                  var6 = '�';
                }
             } else {
-               var8 = '�';
+               var6 = '�';
             }
          } else {
-            var8 = '�';
+            var6 = '�';
          }
       }
 
@@ -413,7 +415,7 @@ public class class52 extends class204 {
                client.field305 = class20.field571;
             }
          }
-
       }
+
    }
 }

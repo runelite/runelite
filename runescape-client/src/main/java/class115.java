@@ -40,8 +40,8 @@ public class class115 {
             ++class171.field2741;
             class171.field2731 = null;
          }
-
       }
+
    }
 
    @ObfuscatedName("s")
@@ -103,6 +103,7 @@ public class class115 {
          client.field562 = class167.field2697;
          class167.field2697 = null;
       }
+
    }
 
    @ObfuscatedName("s")

@@ -37,6 +37,7 @@ public class class3 extends class208 {
       signature = "(IIIIIZS)Lclass78;",
       garbageValue = "21362"
    )
+   @Export("createSprite")
    public static final class78 method33(int var0, int var1, int var2, int var3, int var4, boolean var5) {
       if(-1 == var1) {
          var4 = 0;
@@ -198,15 +199,15 @@ public class class3 extends class208 {
          var2.method11(var7);
       }
 
-      int var13;
+      int var14;
       if(0 != (var3 & 16)) {
          var5 = var0.method2584();
          if(var5 == '\uffff') {
             var5 = -1;
          }
 
-         var13 = var0.method2492();
-         class17.method204(var2, var5, var13);
+         var14 = var0.method2492();
+         class17.method204(var2, var5, var14);
       }
 
       if(0 != (var3 & 64)) {
@@ -233,8 +234,8 @@ public class class3 extends class208 {
 
       if((var3 & 128) != 0) {
          var5 = var0.method2584();
-         var13 = var0.method2492();
-         var2.method729(var5, var13, client.field335);
+         var14 = var0.method2492();
+         var2.method729(var5, var14, client.field335);
          var2.field867 = 300 + client.field335;
          var2.field846 = var0.method2492();
          var2.field835 = var0.method2492();
@@ -250,43 +251,43 @@ public class class3 extends class208 {
 
       if(0 != (var3 & 4)) {
          var5 = var0.method2584();
-         class152 var14 = (class152)class75.method1616(class115.method2441(), var0.method2492());
-         boolean var15 = var0.method2492() == 1;
-         int var8 = var0.method2492();
-         int var9 = var0.field2005;
+         class152 var15 = (class152)class75.method1616(class115.method2441(), var0.method2492());
+         boolean var8 = var0.method2492() == 1;
+         int var9 = var0.method2492();
+         int var10 = var0.field2005;
          if(var2.field59 != null && null != var2.field34) {
-            boolean var10 = false;
-            if(var14.field2271 && class16.method196(var2.field59)) {
-               var10 = true;
+            boolean var11 = false;
+            if(var15.field2271 && class16.method196(var2.field59)) {
+               var11 = true;
             }
 
-            if(!var10 && 0 == client.field358 && !var2.field58) {
+            if(!var11 && 0 == client.field358 && !var2.field58) {
                class32.field758.field2005 = 0;
-               var0.method2503(class32.field758.field2007, 0, var8);
+               var0.method2503(class32.field758.field2007, 0, var9);
                class32.field758.field2005 = 0;
-               String var11 = class223.method4001(class34.method711(class152.method3131(class32.field758)));
-               var2.field819 = var11.trim();
+               String var12 = class223.method4001(class34.method711(class152.method3131(class32.field758)));
+               var2.field819 = var12.trim();
                var2.field829 = var5 >> 8;
                var2.field830 = var5 & 255;
                var2.field828 = 150;
-               var2.field827 = var15;
-               var2.field865 = var2 != class106.field1881 && var14.field2271 && "" != client.field393 && var11.toLowerCase().indexOf(client.field393) == -1;
-               int var12;
-               if(var14.field2280) {
-                  var12 = var15?91:1;
+               var2.field827 = var8;
+               var2.field865 = var2 != class106.field1881 && var15.field2271 && "" != client.field393 && var12.toLowerCase().indexOf(client.field393) == -1;
+               int var13;
+               if(var15.field2280) {
+                  var13 = var8?91:1;
                } else {
-                  var12 = var15?90:2;
+                  var13 = var8?90:2;
                }
 
-               if(var14.field2283 != -1) {
-                  class125.method2783(var12, class156.method3146(var14.field2283) + var2.field59, var11);
+               if(var15.field2283 != -1) {
+                  class125.method2783(var13, class156.method3146(var15.field2283) + var2.field59, var12);
                } else {
-                  class125.method2783(var12, var2.field59, var11);
+                  class125.method2783(var13, var2.field59, var12);
                }
             }
          }
 
-         var0.field2005 = var8 + var9;
+         var0.field2005 = var9 + var10;
       }
 
       if(0 != (var3 & 1024)) {
@@ -332,8 +333,8 @@ public class class3 extends class208 {
 
       if(0 != (var3 & 256)) {
          var5 = var0.method2584();
-         var13 = var0.method2492();
-         var2.method729(var5, var13, client.field335);
+         var14 = var0.method2492();
+         var2.method729(var5, var14, client.field335);
          var2.field867 = 300 + client.field335;
          var2.field846 = var0.method2492();
          var2.field835 = var0.method2492();
