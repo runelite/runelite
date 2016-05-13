@@ -27,69 +27,69 @@ public abstract class class133 {
       garbageValue = "-1762213950"
    )
    public static boolean method2844(CharSequence var0) {
+      boolean var1 = false;
       boolean var2 = false;
-      boolean var3 = false;
-      int var4 = 0;
-      int var5 = var0.length();
-      int var6 = 0;
+      int var3 = 0;
+      int var4 = var0.length();
+      int var5 = 0;
 
-      boolean var1;
+      boolean var6;
       while(true) {
-         if(var6 >= var5) {
-            var1 = var3;
+         if(var5 >= var4) {
+            var6 = var2;
             break;
          }
 
-         label93: {
-            char var7 = var0.charAt(var6);
-            if(var6 == 0) {
+         label73: {
+            char var7 = var0.charAt(var5);
+            if(var5 == 0) {
                if(45 == var7) {
-                  var2 = true;
-                  break label93;
+                  var1 = true;
+                  break label73;
                }
 
                if(43 == var7) {
-                  break label93;
+                  break label73;
                }
             }
 
-            int var9;
+            int var8;
             if(var7 >= 48 && var7 <= 57) {
-               var9 = var7 - 48;
+               var8 = var7 - 48;
             } else if(var7 >= 65 && var7 <= 90) {
-               var9 = var7 - 55;
+               var8 = var7 - 55;
             } else {
                if(var7 < 97 || var7 > 122) {
-                  var1 = false;
+                  var6 = false;
                   break;
                }
 
-               var9 = var7 - 87;
+               var8 = var7 - 87;
             }
 
-            if(var9 >= 10) {
-               var1 = false;
+            if(var8 >= 10) {
+               var6 = false;
                break;
             }
 
-            if(var2) {
-               var9 = -var9;
+            if(var1) {
+               var8 = -var8;
             }
 
-            int var8 = var9 + 10 * var4;
-            if(var4 != var8 / 10) {
-               var1 = false;
+            int var9 = var8 + 10 * var3;
+            if(var3 != var9 / 10) {
+               var6 = false;
                break;
             }
 
-            var4 = var8;
-            var3 = true;
+            var3 = var9;
+            var2 = true;
          }
 
-         ++var6;
+         ++var5;
       }
 
-      return var1;
+      return var6;
    }
 
    @ObfuscatedName("qh")

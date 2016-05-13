@@ -24,13 +24,6 @@ public class class221 {
    @ObfuscatedName("p")
    public static Comparator field3185;
 
-   static {
-      new class219();
-      field3185 = new class217();
-      field3182 = new class213();
-      field3180 = new class216();
-   }
-
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZS)V",
@@ -66,5 +59,12 @@ public class class221 {
          this.field3183.add(new class214(var1, var5, var3));
       }
 
+   }
+
+   static {
+      new class219();
+      field3185 = new class217();
+      field3182 = new class213();
+      field3180 = new class216();
    }
 }

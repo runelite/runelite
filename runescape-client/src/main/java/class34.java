@@ -10,6 +10,7 @@ public final class class34 extends class37 {
    @Export("composition")
    class39 field782;
    @ObfuscatedName("kp")
+   @Export("chatMessages")
    static class19 field784;
 
    @ObfuscatedName("s")
@@ -104,7 +105,7 @@ public final class class34 extends class37 {
          return null;
       } else {
          class42 var1 = super.field843 != -1 && 0 == super.field851?class4.method42(super.field843):null;
-         class42 var2 = super.field840 == -1 || super.field840 == super.field817 && null != var1?null:class4.method42(super.field840);
+         class42 var2 = super.field840 != -1 && (super.field840 != super.field817 || null == var1)?class4.method42(super.field840):null;
          class105 var3 = this.field782.method742(var1, super.field844, var2, super.field861);
          if(var3 == null) {
             return null;
@@ -186,22 +187,22 @@ public final class class34 extends class37 {
                ++var2;
             }
 
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-               long var6 = var0;
+            char var4;
+            StringBuilder var8;
+            for(var8 = new StringBuilder(var2); var0 != 0L; var8.append(var4)) {
+               long var5 = var0;
                var0 /= 37L;
-               var8 = class162.field2652[(int)(var6 - var0 * 37L)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
+               var4 = class162.field2652[(int)(var5 - var0 * 37L)];
+               if(var4 == 95) {
+                  int var7 = var8.length() - 1;
+                  var8.setCharAt(var7, Character.toUpperCase(var8.charAt(var7)));
+                  var4 = 160;
                }
             }
 
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
+            var8.reverse();
+            var8.setCharAt(0, Character.toUpperCase(var8.charAt(0)));
+            return var8.toString();
          }
       } else {
          return null;

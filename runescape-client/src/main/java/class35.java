@@ -20,16 +20,19 @@ public class class35 extends class204 {
    @ObfuscatedGetter(
       intValue = 1726307555
    )
+   @Export("id")
    int field789 = class177.method3442();
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -245454633
    )
+   @Export("tick")
    int field790;
    @ObfuscatedName("u")
    @Export("value")
    String field791;
    @ObfuscatedName("x")
+   @Export("name")
    String field795;
 
    @ObfuscatedName("s")

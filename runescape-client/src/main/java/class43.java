@@ -195,18 +195,18 @@ public class class43 extends class204 {
             var7 = var0.method2492();
             if(var7 == 0) {
                if(0 == var1) {
-                  int[] var14 = class5.field93[0][var2];
-                  int var11 = 932731 + var2 + var4;
-                  int var12 = 556238 + var3 + var5;
-                  int var13 = class42.method875(var11 + '넵', 91923 + var12, 4) - 128 + (class42.method875(var11 + 10294, var12 + '鎽', 2) - 128 >> 1) + (class42.method875(var11, var12, 1) - 128 >> 2);
-                  var13 = 35 + (int)((double)var13 * 0.3D);
-                  if(var13 < 10) {
-                     var13 = 10;
-                  } else if(var13 > 60) {
-                     var13 = 60;
+                  int[] var12 = class5.field93[0][var2];
+                  int var9 = 932731 + var2 + var4;
+                  int var10 = 556238 + var3 + var5;
+                  int var11 = class42.method875(var9 + '넵', 91923 + var10, 4) - 128 + (class42.method875(var9 + 10294, var10 + '鎽', 2) - 128 >> 1) + (class42.method875(var9, var10, 1) - 128 >> 2);
+                  var11 = 35 + (int)((double)var11 * 0.3D);
+                  if(var11 < 10) {
+                     var11 = 10;
+                  } else if(var11 > 60) {
+                     var11 = 60;
                   }
 
-                  var14[var3] = -var13 * 8;
+                  var12[var3] = -var11 * 8;
                } else {
                   class5.field93[var1][var2][var3] = class5.field93[var1 - 1][var2][var3] - 240;
                }
@@ -307,17 +307,18 @@ public class class43 extends class204 {
    )
    public static void method892() {
       while(true) {
-         class199 var1 = class170.field2722;
-         class169 var0;
+         class199 var0 = class170.field2722;
+         class199 var2 = class170.field2722;
+         class169 var1;
          synchronized(class170.field2722) {
-            var0 = (class169)class170.field2720.method3810();
+            var1 = (class169)class170.field2720.method3810();
          }
 
-         if(var0 == null) {
+         if(var1 == null) {
             return;
          }
 
-         var0.field2716.method3333(var0.field2713, (int)var0.field3125, var0.field2714, false);
+         var1.field2716.method3333(var1.field2713, (int)var1.field3125, var1.field2714, false);
       }
    }
 

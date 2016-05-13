@@ -1,7 +1,9 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cl")
+@Implements("VertexNormal")
 public class class96 {
    @ObfuscatedName("p")
    @ObfuscatedGetter(

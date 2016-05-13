@@ -180,14 +180,14 @@ public class class48 extends class204 {
             if(var15 == -1) {
                var13.close();
                var14.close();
-               String var17 = new String(var9.field2007);
-               if(var17.startsWith("OFFLINE")) {
+               String var16 = new String(var9.field2007);
+               if(var16.startsWith("OFFLINE")) {
                   return 4;
-               } else if(var17.startsWith("WRONG")) {
+               } else if(var16.startsWith("WRONG")) {
                   return 7;
-               } else if(var17.startsWith("RELOAD")) {
+               } else if(var16.startsWith("RELOAD")) {
                   return 3;
-               } else if(var17.startsWith("Not permitted for social network accounts.")) {
+               } else if(var16.startsWith("Not permitted for social network accounts.")) {
                   return 6;
                } else {
                   var9.method2543(var6);
@@ -196,9 +196,9 @@ public class class48 extends class204 {
                      --var9.field2005;
                   }
 
-                  var17 = new String(var9.field2007, 0, var9.field2005);
-                  if(class142.method2958(var17)) {
-                     class103.method2275(var17, true, "openjs", false);
+                  var16 = new String(var9.field2007, 0, var9.field2005);
+                  if(class142.method2958(var16)) {
+                     class103.method2275(var16, true, "openjs", false);
                      return 2;
                   } else {
                      return 5;
@@ -210,8 +210,8 @@ public class class48 extends class204 {
          } while(var9.field2005 < 1000);
 
          return 5;
-      } catch (Throwable var16) {
-         var16.printStackTrace();
+      } catch (Throwable var17) {
+         var17.printStackTrace();
          return 5;
       }
    }

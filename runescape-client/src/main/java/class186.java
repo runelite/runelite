@@ -72,22 +72,22 @@ public class class186 extends class66 {
    protected void vmethod3706(int[] var1, int var2, int var3) {
       this.field3022.vmethod3706(var1, var2, var3);
 
-      for(class187 var6 = (class187)this.field3024.method3812(); var6 != null; var6 = (class187)this.field3024.method3817()) {
-         if(!this.field3025.method3611(var6)) {
-            int var4 = var2;
-            int var5 = var3;
+      for(class187 var4 = (class187)this.field3024.method3812(); var4 != null; var4 = (class187)this.field3024.method3817()) {
+         if(!this.field3025.method3611(var4)) {
+            int var5 = var2;
+            int var6 = var3;
 
             do {
-               if(var5 <= var6.field3030) {
-                  this.method3708(var6, var1, var4, var5, var5 + var4);
-                  var6.field3030 -= var5;
+               if(var6 <= var4.field3030) {
+                  this.method3708(var4, var1, var5, var6, var6 + var5);
+                  var4.field3030 -= var6;
                   break;
                }
 
-               this.method3708(var6, var1, var4, var6.field3030, var5 + var4);
-               var4 += var6.field3030;
-               var5 -= var6.field3030;
-            } while(!this.field3025.method3640(var6, var1, var4, var5));
+               this.method3708(var4, var1, var5, var4.field3030, var6 + var5);
+               var5 += var4.field3030;
+               var6 -= var4.field3030;
+            } while(!this.field3025.method3640(var4, var1, var5, var6));
          }
       }
 
@@ -97,20 +97,20 @@ public class class186 extends class66 {
    protected void vmethod3707(int var1) {
       this.field3022.vmethod3707(var1);
 
-      for(class187 var3 = (class187)this.field3024.method3812(); null != var3; var3 = (class187)this.field3024.method3817()) {
-         if(!this.field3025.method3611(var3)) {
-            int var2 = var1;
+      for(class187 var2 = (class187)this.field3024.method3812(); null != var2; var2 = (class187)this.field3024.method3817()) {
+         if(!this.field3025.method3611(var2)) {
+            int var3 = var1;
 
             do {
-               if(var2 <= var3.field3030) {
-                  this.method3703(var3, var2);
-                  var3.field3030 -= var2;
+               if(var3 <= var2.field3030) {
+                  this.method3703(var2, var3);
+                  var2.field3030 -= var3;
                   break;
                }
 
-               this.method3703(var3, var3.field3030);
-               var2 -= var3.field3030;
-            } while(!this.field3025.method3640(var3, (int[])null, 0, var2));
+               this.method3703(var2, var2.field3030);
+               var3 -= var2.field3030;
+            } while(!this.field3025.method3640(var2, (int[])null, 0, var3));
          }
       }
 

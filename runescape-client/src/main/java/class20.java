@@ -59,6 +59,7 @@ public class class20 implements class112 {
    )
    public static final boolean method551() {
       class137 var0 = class137.field2119;
+      class137 var1 = class137.field2119;
       synchronized(class137.field2119) {
          if(class137.field2143 == class137.field2141) {
             return false;

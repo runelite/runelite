@@ -35,8 +35,9 @@ public class class24 extends class208 {
       int var7;
       int var8;
       int var9;
+      int var10;
       int var11;
-      int var12;
+      class80 var14;
       if(var5 != 0) {
          var6 = client.field339.method1925(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
@@ -46,12 +47,12 @@ public class class24 extends class208 {
             var9 = var4;
          }
 
-         int[] var10 = class74.field1370.field1414;
-         var11 = 2048 * (103 - var2) + 24624 + 4 * var1;
-         var12 = var5 >> 14 & 32767;
-         class40 var13 = class9.method120(var12);
+         int[] var12 = class74.field1370.field1414;
+         var10 = 2048 * (103 - var2) + 24624 + 4 * var1;
+         var11 = var5 >> 14 & 32767;
+         class40 var13 = class9.method120(var11);
          if(var13.field953 != -1) {
-            class80 var14 = class2.field60[var13.field953];
+            var14 = class2.field60[var13.field953];
             if(null != var14) {
                int var15 = (var13.field939 * 4 - var14.field1427) / 2;
                int var16 = (var13.field966 * 4 - var14.field1429) / 2;
@@ -60,99 +61,100 @@ public class class24 extends class208 {
          } else {
             if(var8 == 0 || 2 == var8) {
                if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[512 + var11] = var9;
-                  var10[1024 + var11] = var9;
-                  var10[var11 + 1536] = var9;
+                  var12[var10] = var9;
+                  var12[512 + var10] = var9;
+                  var12[1024 + var10] = var9;
+                  var12[var10 + 1536] = var9;
                } else if(var7 == 1) {
-                  var10[var11] = var9;
-                  var10[1 + var11] = var9;
-                  var10[2 + var11] = var9;
-                  var10[var11 + 3] = var9;
+                  var12[var10] = var9;
+                  var12[1 + var10] = var9;
+                  var12[2 + var10] = var9;
+                  var12[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[3 + var11] = var9;
-                  var10[512 + var11 + 3] = var9;
-                  var10[var11 + 3 + 1024] = var9;
-                  var10[1536 + 3 + var11] = var9;
+                  var12[3 + var10] = var9;
+                  var12[512 + var10 + 3] = var9;
+                  var12[var10 + 3 + 1024] = var9;
+                  var12[1539 + var10] = var9;
                } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
-                  var10[1 + 1536 + var11] = var9;
-                  var10[2 + var11 + 1536] = var9;
-                  var10[3 + 1536 + var11] = var9;
+                  var12[var10 + 1536] = var9;
+                  var12[1537 + var10] = var9;
+                  var12[2 + var10 + 1536] = var9;
+                  var12[1539 + var10] = var9;
                }
             }
 
             if(3 == var8) {
                if(0 == var7) {
-                  var10[var11] = var9;
+                  var12[var10] = var9;
                } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
+                  var12[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 3 + 1536] = var9;
+                  var12[var10 + 3 + 1536] = var9;
                } else if(3 == var7) {
-                  var10[var11 + 1536] = var9;
+                  var12[var10 + 1536] = var9;
                }
             }
 
             if(2 == var8) {
                if(var7 == 3) {
-                  var10[var11] = var9;
-                  var10[512 + var11] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[1536 + var11] = var9;
+                  var12[var10] = var9;
+                  var12[512 + var10] = var9;
+                  var12[var10 + 1024] = var9;
+                  var12[1536 + var10] = var9;
                } else if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[2 + var11] = var9;
-                  var10[3 + var11] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 1] = var9;
+                  var12[2 + var10] = var9;
+                  var12[3 + var10] = var9;
                } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
-                  var10[512 + var11 + 3] = var9;
-                  var10[1024 + var11 + 3] = var9;
-                  var10[1536 + 3 + var11] = var9;
+                  var12[var10 + 3] = var9;
+                  var12[512 + var10 + 3] = var9;
+                  var12[1024 + var10 + 3] = var9;
+                  var12[1539 + var10] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 1536] = var9;
-                  var10[1 + 1536 + var11] = var9;
-                  var10[var11 + 1536 + 2] = var9;
-                  var10[1536 + var11 + 3] = var9;
+                  var12[var10 + 1536] = var9;
+                  var12[1537 + var10] = var9;
+                  var12[var10 + 1536 + 2] = var9;
+                  var12[1536 + var10 + 3] = var9;
                }
             }
          }
       }
 
       var5 = client.field339.method1944(var0, var1, var2);
+      class40 var17;
       if(var5 != 0) {
          var6 = client.field339.method1925(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var5 >> 14 & 32767;
-         class40 var19 = class9.method120(var9);
-         int var23;
-         if(-1 != var19.field953) {
-            class80 var21 = class2.field60[var19.field953];
-            if(var21 != null) {
-               var12 = (var19.field939 * 4 - var21.field1427) / 2;
-               var23 = (var19.field966 * 4 - var21.field1429) / 2;
-               var21.method1841(48 + 4 * var1 + var12, 48 + 4 * (104 - var2 - var19.field966) + var23);
+         var17 = class9.method120(var9);
+         int var18;
+         if(-1 != var17.field953) {
+            var14 = class2.field60[var17.field953];
+            if(var14 != null) {
+               var11 = (var17.field939 * 4 - var14.field1427) / 2;
+               var18 = (var17.field966 * 4 - var14.field1429) / 2;
+               var14.method1841(48 + 4 * var1 + var11, 48 + 4 * (104 - var2 - var17.field966) + var18);
             }
          } else if(9 == var8) {
-            var11 = 15658734;
+            var10 = 15658734;
             if(var5 > 0) {
-               var11 = 15597568;
+               var10 = 15597568;
             }
 
-            int[] var22 = class74.field1370.field1414;
-            var23 = (103 - var2) * 2048 + var1 * 4 + 24624;
+            int[] var20 = class74.field1370.field1414;
+            var18 = (103 - var2) * 2048 + var1 * 4 + 24624;
             if(0 != var7 && var7 != 2) {
-               var22[var23] = var11;
-               var22[var23 + 512 + 1] = var11;
-               var22[2 + 1024 + var23] = var11;
-               var22[1536 + var23 + 3] = var11;
+               var20[var18] = var10;
+               var20[var18 + 512 + 1] = var10;
+               var20[1026 + var18] = var10;
+               var20[1536 + var18 + 3] = var10;
             } else {
-               var22[var23 + 1536] = var11;
-               var22[var23 + 1024 + 1] = var11;
-               var22[512 + var23 + 2] = var11;
-               var22[3 + var23] = var11;
+               var20[var18 + 1536] = var10;
+               var20[var18 + 1024 + 1] = var10;
+               var20[512 + var18 + 2] = var10;
+               var20[3 + var18] = var10;
             }
          }
       }
@@ -160,13 +162,13 @@ public class class24 extends class208 {
       var5 = client.field339.method1924(var0, var1, var2);
       if(0 != var5) {
          var6 = var5 >> 14 & 32767;
-         class40 var17 = class9.method120(var6);
+         var17 = class9.method120(var6);
          if(var17.field953 != -1) {
-            class80 var18 = class2.field60[var17.field953];
-            if(var18 != null) {
-               var9 = (var17.field939 * 4 - var18.field1427) / 2;
-               int var20 = (var17.field966 * 4 - var18.field1429) / 2;
-               var18.method1841(var9 + var1 * 4 + 48, var20 + 48 + (104 - var2 - var17.field966) * 4);
+            class80 var19 = class2.field60[var17.field953];
+            if(var19 != null) {
+               var9 = (var17.field939 * 4 - var19.field1427) / 2;
+               int var21 = (var17.field966 * 4 - var19.field1429) / 2;
+               var19.method1841(var9 + var1 * 4 + 48, var21 + 48 + (104 - var2 - var17.field966) * 4);
             }
          }
       }

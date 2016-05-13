@@ -14,21 +14,25 @@ public class class108 {
    @ObfuscatedGetter(
       intValue = -1741280729
    )
+   @Export("height")
    int field1903;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = -1504866459
    )
+   @Export("x")
    public int field1907 = 0;
    @ObfuscatedName("as")
    @ObfuscatedGetter(
       intValue = 1210124951
    )
+   @Export("y")
    public int field1908 = 0;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
       intValue = -1714619317
    )
+   @Export("width")
    int field1909;
    @ObfuscatedName("ax")
    @Export("flags")
@@ -299,21 +303,21 @@ public class class108 {
       garbageValue = "0"
    )
    static final void method2382(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, class108[] var8) {
-      int var10;
-      for(int var9 = 0; var9 < 8; ++var9) {
-         for(var10 = 0; var10 < 8; ++var10) {
-            if(var2 + var9 > 0 && var9 + var2 < 103 && var10 + var3 > 0 && var10 + var3 < 103) {
-               var8[var1].field1911[var9 + var2][var3 + var10] &= -16777217;
+      int var9;
+      for(int var10 = 0; var10 < 8; ++var10) {
+         for(var9 = 0; var9 < 8; ++var9) {
+            if(var2 + var10 > 0 && var10 + var2 < 103 && var9 + var3 > 0 && var9 + var3 < 103) {
+               var8[var1].field1911[var10 + var2][var3 + var9] &= -16777217;
             }
          }
       }
 
       class119 var13 = new class119(var0);
 
-      for(var10 = 0; var10 < 4; ++var10) {
+      for(var9 = 0; var9 < 4; ++var9) {
          for(int var11 = 0; var11 < 64; ++var11) {
             for(int var12 = 0; var12 < 64; ++var12) {
-               if(var10 == var4 && var11 >= var5 && var11 < 8 + var5 && var12 >= var6 && var12 < var6 + 8) {
+               if(var9 == var4 && var11 >= var5 && var11 < 8 + var5 && var12 >= var6 && var12 < var6 + 8) {
                   class43.method890(var13, var1, var2 + class115.method2443(var11 & 7, var12 & 7, var7), var3 + class45.method925(var11 & 7, var12 & 7, var7), 0, 0, var7);
                } else {
                   class43.method890(var13, 0, -1, -1, 0, 0, 0);
@@ -581,14 +585,14 @@ public class class108 {
          int var1;
          int var2;
          if(5 == client.field311) {
-            int[] var8 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D)};
+            int[] var3 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D)};
             client.field322.field2005 = 0;
             client.field322.method2477(1);
             client.field322.method2477(class31.field719.vmethod3150());
-            client.field322.method2480(var8[0]);
-            client.field322.method2480(var8[1]);
-            client.field322.method2480(var8[2]);
-            client.field322.method2480(var8[3]);
+            client.field322.method2480(var3[0]);
+            client.field322.method2480(var3[1]);
+            client.field322.method2480(var3[2]);
+            client.field322.method2480(var3[3]);
             switch(class31.field719.field2609) {
             case 0:
                client.field322.method2480(((Integer)class76.field1388.field146.get(Integer.valueOf(class36.method715(class31.field737)))).intValue());
@@ -624,9 +628,9 @@ public class class108 {
             class101.method2267(client.field546);
             client.field546.method2483(class10.field164);
             client.field546.method2480(class15.field207);
-            class119 var3 = new class119(class179.field2942.method3156());
-            class179.field2942.method3158(var3);
-            client.field546.method2486(var3.field2007, 0, var3.field2007.length);
+            class119 var4 = new class119(class179.field2942.method3156());
+            class179.field2942.method3158(var4);
+            client.field546.method2486(var4.field2007, 0, var4.field2007.length);
             client.field546.method2477(class15.field208);
             client.field546.method2480(class14.field199.field2690);
             client.field546.method2480(class115.field1988.field2690);
@@ -644,16 +648,16 @@ public class class108 {
             client.field546.method2480(class8.field147.field2690);
             client.field546.method2480(client.field334.field2690);
             client.field546.method2480(class4.field75.field2690);
-            client.field546.method2653(var8, var2, client.field546.field2005);
+            client.field546.method2653(var3, var2, client.field546.field2005);
             client.field546.method2524(client.field546.field2005 - var1);
             class167.field2697.method2964(client.field546.field2007, 0, client.field546.field2005);
-            client.field322.method2736(var8);
+            client.field322.method2736(var3);
 
-            for(int var4 = 0; var4 < 4; ++var4) {
-               var8[var4] += 50;
+            for(int var5 = 0; var5 < 4; ++var5) {
+               var3[var5] += 50;
             }
 
-            client.field324.method2736(var8);
+            client.field324.method2736(var3);
             client.field311 = 6;
          }
 
@@ -690,13 +694,12 @@ public class class108 {
             if(--client.field314 <= 0) {
                client.field311 = 0;
             }
-
          } else {
             if(client.field311 == 9 && class167.field2697.method2962() >= 13) {
                boolean var9 = class167.field2697.method2979() == 1;
                class167.field2697.method2961(client.field324.field2007, 0, 4);
                client.field324.field2005 = 0;
-               boolean var10 = false;
+               boolean var12 = false;
                if(var9) {
                   var1 = client.field324.method2738() << 24;
                   var1 |= client.field324.method2738() << 16;
@@ -704,9 +707,9 @@ public class class108 {
                   var1 |= client.field324.method2738();
                   var2 = class36.method715(class31.field737);
                   if(class76.field1388.field146.size() >= 10 && !class76.field1388.field146.containsKey(Integer.valueOf(var2))) {
-                     Iterator var15 = class76.field1388.field146.entrySet().iterator();
-                     var15.next();
-                     var15.remove();
+                     Iterator var14 = class76.field1388.field146.entrySet().iterator();
+                     var14.next();
+                     var14.remove();
                   }
 
                   class76.field1388.field146.put(Integer.valueOf(var2), Integer.valueOf(var1));
@@ -728,13 +731,13 @@ public class class108 {
                if(1 == client.field402) {
                   try {
                      class132.method2835(client.field276, "zap");
-                  } catch (Throwable var6) {
+                  } catch (Throwable var7) {
                      ;
                   }
                } else {
                   try {
                      class132.method2835(client.field276, "unzap");
-                  } catch (Throwable var5) {
+                  } catch (Throwable var6) {
                      ;
                   }
                }
@@ -752,7 +755,6 @@ public class class108 {
                   class175.method3431(false);
                   client.field326 = -1;
                }
-
             } else {
                if(client.field311 == 11 && class167.field2697.method2962() >= 2) {
                   client.field324.field2005 = 0;
@@ -766,10 +768,10 @@ public class class108 {
                   client.field324.field2005 = 0;
                   class167.field2697.method2961(client.field324.field2007, 0, class213.field3158);
                   client.field324.field2005 = 0;
-                  String var11 = client.field324.method2500();
+                  String var10 = client.field324.method2500();
                   String var13 = client.field324.method2500();
-                  String var12 = client.field324.method2500();
-                  class8.method107(var11, var13, var12);
+                  String var15 = client.field324.method2500();
+                  class8.method107(var10, var13, var15);
                   class15.method188(10);
                }
 
@@ -825,10 +827,10 @@ public class class108 {
                      class106.field1881 = null;
 
                      for(var1 = 0; var1 < client.field515.length; ++var1) {
-                        class34 var14 = client.field515[var1];
-                        if(var14 != null) {
-                           var14.field837 = -1;
-                           var14.field838 = false;
+                        class34 var11 = client.field515[var1];
+                        if(var11 != null) {
+                           var11.field837 = -1;
+                           var11.field838 = false;
                         }
                      }
 
@@ -848,7 +850,7 @@ public class class108 {
                }
             }
          }
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          if(client.field313 < 1) {
             if(class59.field1223 == class52.field1170) {
                class52.field1170 = class176.field2922;
@@ -862,5 +864,6 @@ public class class108 {
             class133.method2846(-2);
          }
       }
+
    }
 }

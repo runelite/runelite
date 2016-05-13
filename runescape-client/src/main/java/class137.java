@@ -3,6 +3,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -15,6 +16,7 @@ public final class class137 implements KeyListener, FocusListener {
    )
    static int field2118 = 0;
    @ObfuscatedName("s")
+   @Export("keyboard")
    public static class137 field2119 = new class137();
    @ObfuscatedName("ck")
    public static boolean[] field2120 = new boolean[112];
@@ -60,6 +62,7 @@ public final class class137 implements KeyListener, FocusListener {
    @ObfuscatedGetter(
       intValue = -1092083941
    )
+   @Export("keyboardIdleTicks")
    static volatile int field2144 = 0;
    @ObfuscatedName("cq")
    public static int[] field2145 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
@@ -133,7 +136,7 @@ public final class class137 implements KeyListener, FocusListener {
             if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
                var3 = true;
             } else {
-               label71: {
+               label56: {
                   if(0 != var2) {
                      char[] var4 = class165.field2669;
 
@@ -141,7 +144,7 @@ public final class class137 implements KeyListener, FocusListener {
                         char var6 = var4[var5];
                         if(var2 == var6) {
                            var3 = true;
-                           break label71;
+                           break label56;
                         }
                      }
                   }
@@ -202,9 +205,9 @@ public final class class137 implements KeyListener, FocusListener {
                   break;
                }
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("j")
@@ -241,17 +244,17 @@ public final class class137 implements KeyListener, FocusListener {
       if(!class35.method714(var0, var3, var4)) {
          var5 = null;
       } else {
-         class80 var7 = new class80();
-         var7.field1425 = class226.field3214;
-         var7.field1432 = class76.field1386;
-         var7.field1428 = class76.field1387[0];
-         var7.field1431 = class76.field1390[0];
-         var7.field1427 = class76.field1389[0];
-         var7.field1429 = class9.field159[0];
-         var7.field1426 = class76.field1396;
-         var7.field1430 = class21.field575[0];
+         class80 var6 = new class80();
+         var6.field1425 = class226.field3214;
+         var6.field1432 = class76.field1386;
+         var6.field1428 = class76.field1387[0];
+         var6.field1431 = class76.field1390[0];
+         var6.field1427 = class76.field1389[0];
+         var6.field1429 = class9.field159[0];
+         var6.field1426 = class76.field1396;
+         var6.field1430 = class21.field575[0];
          class27.method633();
-         var5 = var7;
+         var5 = var6;
       }
 
       return var5;

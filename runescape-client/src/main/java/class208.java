@@ -16,11 +16,13 @@ public class class208 {
    class208 field3126;
 
    @ObfuscatedName("iq")
+   @Export("linked")
    public boolean method3897() {
       return this.field3126 != null;
    }
 
    @ObfuscatedName("ia")
+   @Export("unlink")
    public void method3898() {
       if(this.field3126 != null) {
          this.field3126.field3124 = this.field3124;
@@ -28,5 +30,6 @@ public class class208 {
          this.field3124 = null;
          this.field3126 = null;
       }
+
    }
 }

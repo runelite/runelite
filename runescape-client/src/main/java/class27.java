@@ -1,8 +1,11 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ad")
+@Implements("ChatLineBuffer")
 public class class27 {
    @ObfuscatedName("ab")
    static int[] field665;
@@ -10,10 +13,12 @@ public class class27 {
    @ObfuscatedGetter(
       intValue = -1962396899
    )
+   @Export("length")
    int field667;
    @ObfuscatedName("n")
    static int[] field670;
    @ObfuscatedName("j")
+   @Export("lines")
    class35[] field673 = new class35[100];
    @ObfuscatedName("c")
    static class80 field678;
@@ -168,6 +173,6 @@ public class class27 {
       class76.field1389 = null;
       class9.field159 = null;
       class76.field1396 = null;
-      class21.field575 = (byte[][])null;
+      class21.field575 = (byte[][])((byte[][])null);
    }
 }

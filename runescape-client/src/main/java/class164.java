@@ -78,45 +78,45 @@ public class class164 {
          char var9;
          if(0 != var7) {
             var9 = (char)var7;
-            boolean var14 = false;
+            boolean var10 = false;
          } else {
             var9 = var0.charAt(var5++);
          }
 
-         char var10;
+         char var14;
          if(var8 != 0) {
-            var10 = (char)var8;
-            boolean var15 = false;
+            var14 = (char)var8;
+            boolean var11 = false;
          } else {
-            var10 = var1.charAt(var6++);
+            var14 = var1.charAt(var6++);
          }
 
-         byte var11;
+         byte var16;
          if(198 == var9) {
-            var11 = 69;
+            var16 = 69;
          } else if(var9 == 230) {
-            var11 = 101;
+            var16 = 101;
          } else if(var9 == 223) {
-            var11 = 115;
+            var16 = 115;
          } else if(var9 == 338) {
-            var11 = 69;
+            var16 = 69;
          } else if(339 == var9) {
-            var11 = 101;
+            var16 = 101;
          } else {
-            var11 = 0;
+            var16 = 0;
          }
 
-         var7 = var11;
+         var7 = var16;
          byte var12;
-         if(198 == var10) {
+         if(198 == var14) {
             var12 = 69;
-         } else if(230 == var10) {
+         } else if(230 == var14) {
             var12 = 101;
-         } else if(223 == var10) {
+         } else if(223 == var14) {
             var12 = 115;
-         } else if(var10 == 338) {
+         } else if(var14 == 338) {
             var12 = 69;
-         } else if(339 == var10) {
+         } else if(339 == var14) {
             var12 = 101;
          } else {
             var12 = 0;
@@ -124,28 +124,28 @@ public class class164 {
 
          var8 = var12;
          var9 = class171.method3363(var9, var2);
-         var10 = class171.method3363(var10, var2);
-         if(var9 != var10 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+         var14 = class171.method3363(var14, var2);
+         if(var9 != var14 && Character.toUpperCase(var9) != Character.toUpperCase(var14)) {
             var9 = Character.toLowerCase(var9);
-            var10 = Character.toLowerCase(var10);
-            if(var10 != var9) {
-               return class102.method2269(var9, var2) - class102.method2269(var10, var2);
+            var14 = Character.toLowerCase(var14);
+            if(var14 != var9) {
+               return class102.method2269(var9, var2) - class102.method2269(var14, var2);
             }
          }
       }
 
-      int var16 = Math.min(var3, var4);
+      int var15 = Math.min(var3, var4);
 
       int var17;
-      char var20;
-      for(var17 = 0; var17 < var16; ++var17) {
-         char var18 = var0.charAt(var17);
-         var20 = var1.charAt(var17);
-         if(var18 != var20 && Character.toUpperCase(var18) != Character.toUpperCase(var20)) {
+      char var18;
+      for(var17 = 0; var17 < var15; ++var17) {
+         char var19 = var0.charAt(var17);
+         var18 = var1.charAt(var17);
+         if(var19 != var18 && Character.toUpperCase(var19) != Character.toUpperCase(var18)) {
+            var19 = Character.toLowerCase(var19);
             var18 = Character.toLowerCase(var18);
-            var20 = Character.toLowerCase(var20);
-            if(var20 != var18) {
-               return class102.method2269(var18, var2) - class102.method2269(var20, var2);
+            if(var18 != var19) {
+               return class102.method2269(var19, var2) - class102.method2269(var18, var2);
             }
          }
       }
@@ -154,11 +154,11 @@ public class class164 {
       if(var17 != 0) {
          return var17;
       } else {
-         for(int var19 = 0; var19 < var16; ++var19) {
-            var20 = var0.charAt(var19);
-            char var13 = var1.charAt(var19);
-            if(var13 != var20) {
-               return class102.method2269(var20, var2) - class102.method2269(var13, var2);
+         for(int var20 = 0; var20 < var15; ++var20) {
+            var18 = var0.charAt(var20);
+            char var13 = var1.charAt(var20);
+            if(var13 != var18) {
+               return class102.method2269(var18, var2) - class102.method2269(var13, var2);
             }
          }
 

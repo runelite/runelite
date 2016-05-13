@@ -1,6 +1,8 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ct")
+@Implements("Frame")
 public class class88 {
    @ObfuscatedName("k")
    int[] field1544;

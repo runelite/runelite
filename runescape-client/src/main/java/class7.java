@@ -19,6 +19,7 @@ public class class7 {
    @ObfuscatedGetter(
       intValue = 1532048865
    )
+   @Export("menuY")
    static int field136;
    @ObfuscatedName("fd")
    @ObfuscatedGetter(

@@ -68,33 +68,33 @@ public class class121 {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
+               var9 = var8 - 48;
             } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
+               var9 = var8 - 55;
             } else {
                if(var8 < 97 || var8 > 122) {
                   throw new NumberFormatException();
                }
 
-               var10 = var8 - 87;
+               var9 = var8 - 87;
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                throw new NumberFormatException();
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var10 + var5 * var1;
-            if(var5 != var9 / var1) {
+            int var10 = var9 + var5 * var1;
+            if(var5 != var10 / var1) {
                throw new NumberFormatException();
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 
@@ -232,8 +232,8 @@ public class class121 {
 
                if(13 == var6) {
                   var9 = class176.field2920[var2[var4++]];
-                  int var14 = var2[var4++];
-                  var7 = 0 != (var9 & 1 << var14)?1:0;
+                  int var13 = var2[var4++];
+                  var7 = 0 != (var9 & 1 << var13)?1:0;
                }
 
                if(14 == var6) {
@@ -287,7 +287,7 @@ public class class121 {
                   var5 = var8;
                }
             }
-         } catch (Exception var13) {
+         } catch (Exception var14) {
             return -1;
          }
       } else {

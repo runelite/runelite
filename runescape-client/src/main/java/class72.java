@@ -52,22 +52,22 @@ public class class72 implements Runnable {
       int var2;
       int var3;
       int var4;
-      class42 var11;
+      class42 var5;
       if(var0.field857 > client.field335) {
          class11.method153(var0);
       } else {
-         int var5;
+         int var6;
          int var7;
          if(var0.field812 >= client.field335) {
             if(client.field335 == var0.field812 || -1 == var0.field843 || var0.field851 != 0 || var0.field845 + 1 > class4.method42(var0.field843).field999[var0.field844]) {
                var2 = var0.field812 - var0.field857;
                var3 = client.field335 - var0.field857;
                var4 = var0.field872 * 64 + var0.field853 * 128;
-               var5 = var0.field872 * 64 + var0.field818 * 128;
-               int var6 = var0.field854 * 128 + var0.field872 * 64;
+               var6 = var0.field872 * 64 + var0.field818 * 128;
+               int var8 = var0.field854 * 128 + var0.field872 * 64;
                var7 = var0.field856 * 128 + var0.field872 * 64;
-               var0.field823 = (var3 * var6 + var4 * (var2 - var3)) / var2;
-               var0.field813 = (var5 * (var2 - var3) + var7 * var3) / var2;
+               var0.field823 = (var3 * var8 + var4 * (var2 - var3)) / var2;
+               var0.field813 = (var6 * (var2 - var3) + var7 * var3) / var2;
             }
 
             var0.field869 = 0;
@@ -78,140 +78,140 @@ public class class72 implements Runnable {
             if(var0.field841 == 0) {
                var0.field869 = 0;
             } else {
-               label599: {
+               label425: {
                   if(-1 != var0.field843 && var0.field851 == 0) {
-                     var11 = class4.method42(var0.field843);
-                     if(var0.field870 > 0 && var11.field997 == 0) {
+                     var5 = class4.method42(var0.field843);
+                     if(var0.field870 > 0 && var5.field997 == 0) {
                         ++var0.field869;
-                        break label599;
+                        break label425;
                      }
 
-                     if(var0.field870 <= 0 && var11.field1001 == 0) {
+                     if(var0.field870 <= 0 && var5.field1001 == 0) {
                         ++var0.field869;
-                        break label599;
+                        break label425;
                      }
                   }
 
                   var2 = var0.field823;
                   var3 = var0.field813;
                   var4 = var0.field866[var0.field841 - 1] * 128 + var0.field872 * 64;
-                  var5 = var0.field872 * 64 + var0.field863[var0.field841 - 1] * 128;
+                  var6 = var0.field872 * 64 + var0.field863[var0.field841 - 1] * 128;
                   if(var2 < var4) {
-                     if(var3 < var5) {
+                     if(var3 < var6) {
                         var0.field862 = 1280;
-                     } else if(var3 > var5) {
+                     } else if(var3 > var6) {
                         var0.field862 = 1792;
                      } else {
                         var0.field862 = 1536;
                      }
                   } else if(var2 > var4) {
-                     if(var3 < var5) {
+                     if(var3 < var6) {
                         var0.field862 = 768;
-                     } else if(var3 > var5) {
+                     } else if(var3 > var6) {
                         var0.field862 = 256;
                      } else {
                         var0.field862 = 512;
                      }
-                  } else if(var3 < var5) {
+                  } else if(var3 < var6) {
                      var0.field862 = 1024;
-                  } else if(var3 > var5) {
+                  } else if(var3 > var6) {
                      var0.field862 = 0;
                   }
 
-                  byte var15 = var0.field868[var0.field841 - 1];
-                  if(var4 - var2 <= 256 && var4 - var2 >= -256 && var5 - var3 <= 256 && var5 - var3 >= -256) {
+                  byte var14 = var0.field868[var0.field841 - 1];
+                  if(var4 - var2 <= 256 && var4 - var2 >= -256 && var6 - var3 <= 256 && var6 - var3 >= -256) {
                      var7 = var0.field862 - var0.field814 & 2047;
                      if(var7 > 1024) {
                         var7 -= 2048;
                      }
 
-                     int var8 = var0.field821;
+                     int var9 = var0.field821;
                      if(var7 >= -256 && var7 <= 256) {
-                        var8 = var0.field820;
+                        var9 = var0.field820;
                      } else if(var7 >= 256 && var7 < 768) {
-                        var8 = var0.field855;
+                        var9 = var0.field855;
                      } else if(var7 >= -768 && var7 <= -256) {
-                        var8 = var0.field847;
+                        var9 = var0.field847;
                      }
 
-                     if(-1 == var8) {
-                        var8 = var0.field820;
+                     if(-1 == var9) {
+                        var9 = var0.field820;
                      }
 
-                     var0.field840 = var8;
-                     int var9 = 4;
-                     boolean var10 = true;
+                     var0.field840 = var9;
+                     int var10 = 4;
+                     boolean var11 = true;
                      if(var0 instanceof class34) {
-                        var10 = ((class34)var0).field782.field916;
+                        var11 = ((class34)var0).field782.field916;
                      }
 
-                     if(var10) {
+                     if(var11) {
                         if(var0.field862 != var0.field814 && var0.field837 == -1 && var0.field852 != 0) {
-                           var9 = 2;
+                           var10 = 2;
                         }
 
                         if(var0.field841 > 2) {
-                           var9 = 6;
+                           var10 = 6;
                         }
 
                         if(var0.field841 > 3) {
-                           var9 = 8;
+                           var10 = 8;
                         }
 
                         if(var0.field869 > 0 && var0.field841 > 1) {
-                           var9 = 8;
+                           var10 = 8;
                            --var0.field869;
                         }
                      } else {
                         if(var0.field841 > 1) {
-                           var9 = 6;
+                           var10 = 6;
                         }
 
                         if(var0.field841 > 2) {
-                           var9 = 8;
+                           var10 = 8;
                         }
 
                         if(var0.field869 > 0 && var0.field841 > 1) {
-                           var9 = 8;
+                           var10 = 8;
                            --var0.field869;
                         }
                      }
 
-                     if(var15 == 2) {
-                        var9 <<= 1;
+                     if(var14 == 2) {
+                        var10 <<= 1;
                      }
 
-                     if(var9 >= 8 && var0.field840 == var0.field820 && -1 != var0.field850) {
+                     if(var10 >= 8 && var0.field840 == var0.field820 && -1 != var0.field850) {
                         var0.field840 = var0.field850;
                      }
 
-                     if(var2 != var4 || var5 != var3) {
+                     if(var2 != var4 || var6 != var3) {
                         if(var2 < var4) {
-                           var0.field823 += var9;
+                           var0.field823 += var10;
                            if(var0.field823 > var4) {
                               var0.field823 = var4;
                            }
                         } else if(var2 > var4) {
-                           var0.field823 -= var9;
+                           var0.field823 -= var10;
                            if(var0.field823 < var4) {
                               var0.field823 = var4;
                            }
                         }
 
-                        if(var3 < var5) {
-                           var0.field813 += var9;
-                           if(var0.field813 > var5) {
-                              var0.field813 = var5;
+                        if(var3 < var6) {
+                           var0.field813 += var10;
+                           if(var0.field813 > var6) {
+                              var0.field813 = var6;
                            }
-                        } else if(var3 > var5) {
-                           var0.field813 -= var9;
-                           if(var0.field813 < var5) {
-                              var0.field813 = var5;
+                        } else if(var3 > var6) {
+                           var0.field813 -= var10;
+                           if(var0.field813 < var6) {
+                              var0.field813 = var6;
                            }
                         }
                      }
 
-                     if(var4 == var0.field823 && var5 == var0.field813) {
+                     if(var4 == var0.field823 && var6 == var0.field813) {
                         --var0.field841;
                         if(var0.field870 > 0) {
                            --var0.field870;
@@ -219,7 +219,7 @@ public class class72 implements Runnable {
                      }
                   } else {
                      var0.field823 = var4;
-                     var0.field813 = var5;
+                     var0.field813 = var6;
                      --var0.field841;
                      if(var0.field870 > 0) {
                         --var0.field870;
@@ -325,19 +325,19 @@ public class class72 implements Runnable {
 
       var0.field815 = false;
       if(var0.field840 != -1) {
-         var11 = class4.method42(var0.field840);
-         if(var11 != null && var11.field986 != null) {
+         var5 = class4.method42(var0.field840);
+         if(var5 != null && var5.field986 != null) {
             ++var0.field842;
-            if(var0.field861 < var11.field986.length && var0.field842 > var11.field999[var0.field861]) {
+            if(var0.field861 < var5.field986.length && var0.field842 > var5.field999[var0.field861]) {
                var0.field842 = 1;
                ++var0.field861;
-               class13.method166(var11, var0.field861, var0.field823, var0.field813);
+               class13.method166(var5, var0.field861, var0.field823, var0.field813);
             }
 
-            if(var0.field861 >= var11.field986.length) {
+            if(var0.field861 >= var5.field986.length) {
                var0.field842 = 0;
                var0.field861 = 0;
-               class13.method166(var11, var0.field861, var0.field823, var0.field813);
+               class13.method166(var5, var0.field861, var0.field823, var0.field813);
             }
          } else {
             var0.field840 = -1;
@@ -351,16 +351,16 @@ public class class72 implements Runnable {
 
          var2 = class179.method3492(var0.field848).field1008;
          if(var2 != -1) {
-            class42 var14 = class4.method42(var2);
-            if(null != var14 && null != var14.field986) {
+            class42 var15 = class4.method42(var2);
+            if(null != var15 && null != var15.field986) {
                ++var0.field822;
-               if(var0.field849 < var14.field986.length && var0.field822 > var14.field999[var0.field849]) {
+               if(var0.field849 < var15.field986.length && var0.field822 > var15.field999[var0.field849]) {
                   var0.field822 = 1;
                   ++var0.field849;
-                  class13.method166(var14, var0.field849, var0.field823, var0.field813);
+                  class13.method166(var15, var0.field849, var0.field823, var0.field813);
                }
 
-               if(var0.field849 >= var14.field986.length && (var0.field849 < 0 || var0.field849 >= var14.field986.length)) {
+               if(var0.field849 >= var15.field986.length && (var0.field849 < 0 || var0.field849 >= var15.field986.length)) {
                   var0.field848 = -1;
                }
             } else {
@@ -372,36 +372,36 @@ public class class72 implements Runnable {
       }
 
       if(-1 != var0.field843 && var0.field851 <= 1) {
-         var11 = class4.method42(var0.field843);
-         if(1 == var11.field997 && var0.field870 > 0 && var0.field857 <= client.field335 && var0.field812 < client.field335) {
+         var5 = class4.method42(var0.field843);
+         if(1 == var5.field997 && var0.field870 > 0 && var0.field857 <= client.field335 && var0.field812 < client.field335) {
             var0.field851 = 1;
             return;
          }
       }
 
       if(-1 != var0.field843 && 0 == var0.field851) {
-         var11 = class4.method42(var0.field843);
-         if(null != var11 && null != var11.field986) {
+         var5 = class4.method42(var0.field843);
+         if(null != var5 && null != var5.field986) {
             ++var0.field845;
-            if(var0.field844 < var11.field986.length && var0.field845 > var11.field999[var0.field844]) {
+            if(var0.field844 < var5.field986.length && var0.field845 > var5.field999[var0.field844]) {
                var0.field845 = 1;
                ++var0.field844;
-               class13.method166(var11, var0.field844, var0.field823, var0.field813);
+               class13.method166(var5, var0.field844, var0.field823, var0.field813);
             }
 
-            if(var0.field844 >= var11.field986.length) {
-               var0.field844 -= var11.field991;
+            if(var0.field844 >= var5.field986.length) {
+               var0.field844 -= var5.field991;
                ++var0.field826;
-               if(var0.field826 >= var11.field996) {
+               if(var0.field826 >= var5.field996) {
                   var0.field843 = -1;
-               } else if(var0.field844 >= 0 && var0.field844 < var11.field986.length) {
-                  class13.method166(var11, var0.field844, var0.field823, var0.field813);
+               } else if(var0.field844 >= 0 && var0.field844 < var5.field986.length) {
+                  class13.method166(var5, var0.field844, var0.field823, var0.field813);
                } else {
                   var0.field843 = -1;
                }
             }
 
-            var0.field815 = var11.field992;
+            var0.field815 = var5.field992;
          } else {
             var0.field843 = -1;
          }

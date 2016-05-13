@@ -46,6 +46,7 @@ public class class15 extends class208 {
       signature = "(II)V",
       garbageValue = "1954210062"
    )
+   @Export("setGameState")
    static void method188(int var0) {
       if(client.field286 != var0) {
          if(client.field286 == 0) {
@@ -87,6 +88,7 @@ public class class15 extends class208 {
 
          client.field286 = var0;
       }
+
    }
 
    @ObfuscatedName("an")

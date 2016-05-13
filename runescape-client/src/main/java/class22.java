@@ -136,5 +136,6 @@ public class class22 extends class204 {
          client.field432 = false;
          class34.method701(var0);
       }
+
    }
 }

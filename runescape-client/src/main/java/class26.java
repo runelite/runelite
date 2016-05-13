@@ -15,19 +15,19 @@ public class class26 {
       if(client.field496 >= 2 || client.field430 != 0 || client.field432) {
          String var2;
          if(client.field430 == 1 && client.field496 < 2) {
-            var2 = "Use" + " " + client.field431 + " " + "->";
+            var2 = "Use " + client.field431 + " " + "->";
          } else if(client.field432 && client.field496 < 2) {
             var2 = client.field435 + " " + client.field436 + " " + "->";
          } else {
-            int var4 = client.field496 - 1;
-            String var3;
-            if(client.field425[var4].length() > 0) {
-               var3 = client.field424[var4] + " " + client.field425[var4];
+            int var3 = client.field496 - 1;
+            String var4;
+            if(client.field425[var3].length() > 0) {
+               var4 = client.field424[var3] + " " + client.field425[var3];
             } else {
-               var3 = client.field424[var4];
+               var4 = client.field424[var3];
             }
 
-            var2 = var3;
+            var2 = var4;
          }
 
          if(client.field496 > 2) {
@@ -36,6 +36,7 @@ public class class26 {
 
          class164.field2665.method4009(var2, var0 + 4, 15 + var1, 16777215, 0, client.field335 / 1000);
       }
+
    }
 
    @ObfuscatedName("b")
@@ -67,21 +68,21 @@ public class class26 {
                var4 /= var1;
             }
 
-            char[] var5 = new char[var3];
-            var5[0] = 43;
+            char[] var8 = new char[var3];
+            var8[0] = 43;
 
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
+            for(int var5 = var3 - 1; var5 > 0; --var5) {
+               int var6 = var0;
                var0 /= var1;
-               int var8 = var7 - var1 * var0;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
+               int var7 = var6 - var1 * var0;
+               if(var7 >= 10) {
+                  var8[var5] = (char)(var7 + 87);
                } else {
-                  var5[var6] = (char)(var8 + 48);
+                  var8[var5] = (char)(var7 + 48);
                }
             }
 
-            return new String(var5);
+            return new String(var8);
          } else {
             return Integer.toString(var0, var1);
          }

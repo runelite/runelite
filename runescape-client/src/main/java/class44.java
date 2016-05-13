@@ -1,9 +1,12 @@
 import java.awt.Image;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("at")
+@Implements("KitDefinition")
 public class class44 extends class204 {
    @ObfuscatedName("u")
    int[] field1022;
@@ -31,6 +34,7 @@ public class class44 extends class204 {
    @ObfuscatedName("s")
    static class167 field1034;
    @ObfuscatedName("aw")
+   @Export("authCode")
    static String field1035;
    @ObfuscatedName("q")
    static class13 field1036;
@@ -63,6 +67,7 @@ public class class44 extends class204 {
       signature = "(B)Lclass100;",
       garbageValue = "99"
    )
+   @Export("getModelData")
    public class100 method899() {
       if(null == this.field1022) {
          return null;
@@ -242,6 +247,7 @@ public class class44 extends class204 {
       signature = "(B)Z",
       garbageValue = "0"
    )
+   @Export("ready")
    public boolean method921() {
       if(null == this.field1022) {
          return true;

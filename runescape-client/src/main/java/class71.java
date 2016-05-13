@@ -131,13 +131,13 @@ public class class71 {
             this.field1333.method1210();
             this.field1331.method1210();
             var11 = 0;
-            boolean var19 = false;
-            boolean var20 = true;
+            boolean var17 = false;
+            boolean var18 = true;
 
             for(var14 = 0; var14 < var1; ++var14) {
                var15 = this.field1333.method1211(var1);
                var16 = this.field1331.method1211(var1);
-               if(var20) {
+               if(var18) {
                   var12 = this.field1333.field1208 + ((this.field1333.field1209 - this.field1333.field1208) * var15 >> 8);
                } else {
                   var12 = this.field1333.field1208 + ((this.field1333.field1209 - this.field1333.field1208) * var16 >> 8);
@@ -146,10 +146,10 @@ public class class71 {
                var11 += 256;
                if(var11 >= var12) {
                   var11 = 0;
-                  var20 = !var20;
+                  var18 = !var18;
                }
 
-               if(var20) {
+               if(var18) {
                   field1344[var14] = 0;
                }
             }
@@ -175,16 +175,16 @@ public class class71 {
                   var15 = var1 - var12;
                }
 
-               int var17;
+               int var19;
                while(var14 < var15) {
                   var16 = (int)((long)field1344[var14 + var12] * (long)class63.field1249 >> 16);
 
-                  for(var17 = 0; var17 < var12; ++var17) {
-                     var16 += (int)((long)field1344[var14 + var12 - 1 - var17] * (long)class63.field1247[0][var17] >> 16);
+                  for(var19 = 0; var19 < var12; ++var19) {
+                     var16 += (int)((long)field1344[var14 + var12 - 1 - var19] * (long)class63.field1247[0][var19] >> 16);
                   }
 
-                  for(var17 = 0; var17 < var14; ++var17) {
-                     var16 -= (int)((long)field1344[var14 - 1 - var17] * (long)class63.field1247[1][var17] >> 16);
+                  for(var19 = 0; var19 < var14; ++var19) {
+                     var16 -= (int)((long)field1344[var14 - 1 - var19] * (long)class63.field1247[1][var19] >> 16);
                   }
 
                   field1344[var14] = var16;
@@ -199,36 +199,36 @@ public class class71 {
                      var15 = var1 - var12;
                   }
 
-                  int var18;
+                  int var20;
                   while(var14 < var15) {
-                     var17 = (int)((long)field1344[var14 + var12] * (long)class63.field1249 >> 16);
+                     var19 = (int)((long)field1344[var14 + var12] * (long)class63.field1249 >> 16);
 
-                     for(var18 = 0; var18 < var12; ++var18) {
-                        var17 += (int)((long)field1344[var14 + var12 - 1 - var18] * (long)class63.field1247[0][var18] >> 16);
+                     for(var20 = 0; var20 < var12; ++var20) {
+                        var19 += (int)((long)field1344[var14 + var12 - 1 - var20] * (long)class63.field1247[0][var20] >> 16);
                      }
 
-                     for(var18 = 0; var18 < var13; ++var18) {
-                        var17 -= (int)((long)field1344[var14 - 1 - var18] * (long)class63.field1247[1][var18] >> 16);
+                     for(var20 = 0; var20 < var13; ++var20) {
+                        var19 -= (int)((long)field1344[var14 - 1 - var20] * (long)class63.field1247[1][var20] >> 16);
                      }
 
-                     field1344[var14] = var17;
+                     field1344[var14] = var19;
                      var11 = this.field1341.method1211(var1 + 1);
                      ++var14;
                   }
 
                   if(var14 >= var1 - var12) {
                      while(var14 < var1) {
-                        var17 = 0;
+                        var19 = 0;
 
-                        for(var18 = var14 + var12 - var1; var18 < var12; ++var18) {
-                           var17 += (int)((long)field1344[var14 + var12 - 1 - var18] * (long)class63.field1247[0][var18] >> 16);
+                        for(var20 = var14 + var12 - var1; var20 < var12; ++var20) {
+                           var19 += (int)((long)field1344[var14 + var12 - 1 - var20] * (long)class63.field1247[0][var20] >> 16);
                         }
 
-                        for(var18 = 0; var18 < var13; ++var18) {
-                           var17 -= (int)((long)field1344[var14 - 1 - var18] * (long)class63.field1247[1][var18] >> 16);
+                        for(var20 = 0; var20 < var13; ++var20) {
+                           var19 -= (int)((long)field1344[var14 - 1 - var20] * (long)class63.field1247[1][var20] >> 16);
                         }
 
-                        field1344[var14] = var17;
+                        field1344[var14] = var19;
                         this.field1341.method1211(var1 + 1);
                         ++var14;
                      }

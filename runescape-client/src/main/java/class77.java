@@ -2,25 +2,31 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bo")
+@Implements("BufferProvider")
 public abstract class class77 {
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -1711997781
    )
+   @Export("width")
    public int field1397;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 1974777839
    )
+   @Export("height")
    int field1398;
    @ObfuscatedName("u")
+   @Export("image")
    public Image field1400;
    @ObfuscatedName("p")
+   @Export("pixels")
    public int[] field1401;
    @ObfuscatedName("az")
    static class80[] field1403;
@@ -98,16 +104,16 @@ public abstract class class77 {
          }
 
          try {
-            class69 var7 = new class69();
-            var7.field1200 = new int[(class56.field1180?2:1) * 256];
-            var7.field1189 = var3;
-            var7.vmethod1492(var1);
-            var7.field1179 = 1024 + (var3 & -1024);
-            if(var7.field1179 > 16384) {
-               var7.field1179 = 16384;
+            class69 var4 = new class69();
+            var4.field1200 = new int[(class56.field1180?2:1) * 256];
+            var4.field1189 = var3;
+            var4.vmethod1492(var1);
+            var4.field1179 = 1024 + (var3 & -1024);
+            if(var4.field1179 > 16384) {
+               var4.field1179 = 16384;
             }
 
-            var7.vmethod1493(var7.field1179);
+            var4.vmethod1493(var4.field1179);
             if(class56.field1194 > 0 && null == class56.field1182) {
                class56.field1182 = new class72();
                class56.field1182.field1354 = var0;
@@ -119,18 +125,18 @@ public abstract class class77 {
                   throw new IllegalArgumentException();
                }
 
-               class56.field1182.field1357[var2] = var7;
+               class56.field1182.field1357[var2] = var4;
             }
 
-            return var7;
-         } catch (Throwable var6) {
+            return var4;
+         } catch (Throwable var7) {
             try {
-               class54 var4 = new class54(var0, var2);
-               var4.field1200 = new int[(class56.field1180?2:1) * 256];
-               var4.field1189 = var3;
-               var4.vmethod1492(var1);
-               var4.field1179 = 16384;
-               var4.vmethod1493(var4.field1179);
+               class54 var5 = new class54(var0, var2);
+               var5.field1200 = new int[(class56.field1180?2:1) * 256];
+               var5.field1189 = var3;
+               var5.vmethod1492(var1);
+               var5.field1179 = 16384;
+               var5.vmethod1493(var5.field1179);
                if(class56.field1194 > 0 && null == class56.field1182) {
                   class56.field1182 = new class72();
                   class56.field1182.field1354 = var0;
@@ -142,11 +148,11 @@ public abstract class class77 {
                      throw new IllegalArgumentException();
                   }
 
-                  class56.field1182.field1357[var2] = var4;
+                  class56.field1182.field1357[var2] = var5;
                }
 
-               return var4;
-            } catch (Throwable var5) {
+               return var5;
+            } catch (Throwable var6) {
                return new class56();
             }
          }

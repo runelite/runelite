@@ -187,7 +187,7 @@ public class class46 extends class204 {
       class119 var4 = new class119(var0);
       int var5 = -1;
 
-      label84:
+      label71:
       while(true) {
          int var6 = var4.method2505();
          if(var6 == 0) {
@@ -199,38 +199,50 @@ public class class46 extends class204 {
          boolean var8 = false;
 
          while(true) {
-            int var9;
-            while(!var8) {
-               var9 = var4.method2505();
-               if(var9 == 0) {
-                  continue label84;
-               }
+            int var12;
+            class40 var15;
+            do {
+               int var13;
+               int var14;
+               do {
+                  do {
+                     do {
+                        do {
+                           int var9;
+                           while(var8) {
+                              var9 = var4.method2505();
+                              if(0 == var9) {
+                                 continue label71;
+                              }
 
-               var7 += var9 - 1;
-               int var10 = var7 & 63;
-               int var11 = var7 >> 6 & 63;
-               int var12 = var4.method2492() >> 2;
-               int var13 = var11 + var1;
-               int var14 = var2 + var10;
-               if(var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
-                  class40 var15 = class9.method120(var5);
-                  if(22 != var12 || !client.field493 || var15.field943 != 0 || var15.field941 == 1 || var15.field944) {
-                     if(!var15.method808()) {
-                        ++client.field561;
-                        var3 = false;
-                     }
+                              var4.method2492();
+                           }
 
-                     var8 = true;
-                  }
-               }
+                           var9 = var4.method2505();
+                           if(var9 == 0) {
+                              continue label71;
+                           }
+
+                           var7 += var9 - 1;
+                           int var10 = var7 & 63;
+                           int var11 = var7 >> 6 & 63;
+                           var12 = var4.method2492() >> 2;
+                           var13 = var11 + var1;
+                           var14 = var2 + var10;
+                        } while(var13 <= 0);
+                     } while(var14 <= 0);
+                  } while(var13 >= 103);
+               } while(var14 >= 103);
+
+               var15 = class9.method120(var5);
+            } while(22 == var12 && client.field493 && var15.field943 == 0 && var15.field941 != 1 && !var15.field944);
+
+            if(!var15.method808()) {
+               ++client.field561;
+               var3 = false;
             }
 
-            var9 = var4.method2505();
-            if(0 == var9) {
-               break;
-            }
-
-            var4.method2492();
+            var8 = true;
          }
       }
    }

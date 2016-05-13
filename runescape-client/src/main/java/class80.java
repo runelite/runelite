@@ -1,22 +1,33 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cj")
+@Implements("ModIcon")
 public final class class80 extends class79 {
    @ObfuscatedName("o")
+   @Export("width")
    public int field1425;
    @ObfuscatedName("j")
+   @Export("palette")
    public int[] field1426;
    @ObfuscatedName("p")
+   @Export("originalWidth")
    public int field1427;
    @ObfuscatedName("d")
+   @Export("offsetX")
    public int field1428;
    @ObfuscatedName("x")
+   @Export("height")
    public int field1429;
    @ObfuscatedName("s")
+   @Export("pixels")
    public byte[] field1430;
    @ObfuscatedName("u")
+   @Export("offsetY")
    public int field1431;
    @ObfuscatedName("b")
+   @Export("originalHeight")
    public int field1432;
 
    @ObfuscatedName("j")
@@ -94,6 +105,7 @@ public final class class80 extends class79 {
       if(var6 > 0 && var5 > 0) {
          method1842(class79.field1420, this.field1430, this.field1426, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("x")
@@ -167,5 +179,6 @@ public final class class80 extends class79 {
          this.field1428 = 0;
          this.field1431 = 0;
       }
+
    }
 }

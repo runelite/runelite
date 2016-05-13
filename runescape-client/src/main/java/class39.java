@@ -11,6 +11,7 @@ public class class39 extends class204 {
    @ObfuscatedGetter(
       intValue = 1240433461
    )
+   @Export("menuX")
    static int field882;
    @ObfuscatedName("ae")
    @ObfuscatedGetter(
@@ -20,6 +21,7 @@ public class class39 extends class204 {
    @ObfuscatedName("s")
    public static class167 field884;
    @ObfuscatedName("x")
+   @Export("npcModelCache")
    static class193 field885 = new class193(50);
    @ObfuscatedName("d")
    @ObfuscatedGetter(
@@ -328,33 +330,33 @@ public class class39 extends class204 {
                return null;
             }
 
-            class100[] var8 = new class100[this.field889.length];
+            class100[] var12 = new class100[this.field889.length];
 
-            int var9;
-            for(var9 = 0; var9 < this.field889.length; ++var9) {
-               var8[var9] = class100.method2181(field912, this.field889[var9], 0);
+            int var8;
+            for(var8 = 0; var8 < this.field889.length; ++var8) {
+               var12[var8] = class100.method2181(field912, this.field889[var8], 0);
             }
 
-            class100 var12;
-            if(var8.length == 1) {
-               var12 = var8[0];
+            class100 var9;
+            if(var12.length == 1) {
+               var9 = var12[0];
             } else {
-               var12 = new class100(var8, var8.length);
+               var9 = new class100(var12, var12.length);
             }
 
             if(null != this.field898) {
-               for(var9 = 0; var9 < this.field898.length; ++var9) {
-                  var12.method2194(this.field898[var9], this.field911[var9]);
+               for(var8 = 0; var8 < this.field898.length; ++var8) {
+                  var9.method2194(this.field898[var8], this.field911[var8]);
                }
             }
 
             if(null != this.field891) {
-               for(var9 = 0; var9 < this.field891.length; ++var9) {
-                  var12.method2195(this.field891[var9], this.field901[var9]);
+               for(var8 = 0; var8 < this.field891.length; ++var8) {
+                  var9.method2195(this.field891[var8], this.field901[var8]);
                }
             }
 
-            var5 = var12.method2202(64 + this.field908, 850 + this.field904, -30, -50, -30);
+            var5 = var9.method2202(64 + this.field908, 850 + this.field904, -30, -50, -30);
             field885.method3745(var5, (long)this.field886);
          }
 

@@ -1,8 +1,11 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cu")
+@Implements("TextureProvider")
 public class class95 implements class92 {
    @ObfuscatedName("u")
    @ObfuscatedGetter(
@@ -38,6 +41,7 @@ public class class95 implements class92 {
       signature = "(IS)[I",
       garbageValue = "26066"
    )
+   @Export("load")
    public int[] vmethod2149(int var1) {
       class83 var2 = this.field1635[var1];
       if(null != var2) {

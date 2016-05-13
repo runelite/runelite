@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Insets;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -12,6 +13,7 @@ public class class0 extends class208 {
    @ObfuscatedGetter(
       intValue = -71399369
    )
+   @Export("menuHeight")
    static int field0;
    @ObfuscatedName("j")
    boolean field1;

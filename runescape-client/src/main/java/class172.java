@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -13,6 +14,7 @@ public class class172 extends class204 {
    @ObfuscatedGetter(
       intValue = -1593339429
    )
+   @Export("menuWidth")
    static int field2749;
    @ObfuscatedName("p")
    byte field2750;
@@ -29,15 +31,15 @@ public class class172 extends class204 {
       if(class31.field737.length() == 0) {
          class8.method107("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1 = class114.method2437();
-         int var0;
-         if(var1 == 0L) {
-            var0 = 5;
+         long var0 = class114.method2437();
+         int var2;
+         if(var0 == 0L) {
+            var2 = 5;
          } else {
-            var0 = class48.method965(var1, class31.field737);
+            var2 = class48.method965(var0, class31.field737);
          }
 
-         switch(var0) {
+         switch(var2) {
          case 2:
             class8.method107("", "Page has opened in a new window.", "(Please check your popup blocker.)");
             class31.field732 = 6;
@@ -57,8 +59,8 @@ public class class172 extends class204 {
          case 7:
             class8.method107("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 
    @ObfuscatedName("aa")
@@ -94,9 +96,9 @@ public class class172 extends class204 {
       int var1;
       int var2;
       int var3;
+      int var4;
       int var5;
       int var6;
-      int var7;
       if(!client.field418) {
          if(-1 != client.field426) {
             class26.method615(client.field426, client.field443);
@@ -106,27 +108,27 @@ public class class172 extends class204 {
          var1 = class7.field136;
          var2 = field2749;
          var3 = class0.field0;
-         int var4 = 6116423;
-         class79.method1808(var0, var1, var2, var3, var4);
+         int var7 = 6116423;
+         class79.method1808(var0, var1, var2, var3, var7);
          class79.method1808(var0 + 1, 1 + var1, var2 - 2, 16, 0);
          class79.method1779(1 + var0, 18 + var1, var2 - 2, var3 - 19, 0);
-         class164.field2665.method4002("Choose Option", var0 + 3, 14 + var1, var4, -1);
-         var5 = class140.field2162;
-         var6 = class140.field2163;
+         class164.field2665.method4002("Choose Option", var0 + 3, 14 + var1, var7, -1);
+         var4 = class140.field2162;
+         var5 = class140.field2163;
 
-         for(var7 = 0; var7 < client.field496; ++var7) {
-            int var8 = 31 + var1 + 15 * (client.field496 - 1 - var7);
+         for(var6 = 0; var6 < client.field496; ++var6) {
+            int var8 = 31 + var1 + 15 * (client.field496 - 1 - var6);
             int var9 = 16777215;
-            if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < 3 + var8) {
+            if(var4 > var0 && var4 < var0 + var2 && var5 > var8 - 13 && var5 < 3 + var8) {
                var9 = 16776960;
             }
 
             class224 var10 = class164.field2665;
             String var11;
-            if(client.field425[var7].length() > 0) {
-               var11 = client.field424[var7] + " " + client.field425[var7];
+            if(client.field425[var6].length() > 0) {
+               var11 = client.field424[var6] + " " + client.field425[var6];
             } else {
-               var11 = client.field424[var7];
+               var11 = client.field424[var6];
             }
 
             var10.method4002(var11, 3 + var0, var8, var9, 0);
@@ -152,59 +154,62 @@ public class class172 extends class204 {
 
       for(class23 var12 = (class23)class23.field615.method3812(); null != var12; var12 = (class23)class23.field615.method3817()) {
          if(-1 != var12.field604 || var12.field608 != null) {
-            var5 = 0;
+            var4 = 0;
             if(var1 > var12.field601) {
-               var5 += var1 - var12.field601;
+               var4 += var1 - var12.field601;
             } else if(var1 < var12.field599) {
-               var5 += var12.field599 - var1;
+               var4 += var12.field599 - var1;
             }
 
             if(var2 > var12.field602) {
-               var5 += var2 - var12.field602;
+               var4 += var2 - var12.field602;
             } else if(var2 < var12.field600) {
-               var5 += var12.field600 - var2;
+               var4 += var12.field600 - var2;
             }
 
-            if(var5 - 64 <= var12.field603 && 0 != client.field520 && var12.field606 == var0) {
-               var5 -= 64;
-               if(var5 < 0) {
-                  var5 = 0;
+            if(var4 - 64 <= var12.field603 && 0 != client.field520 && var12.field606 == var0) {
+               var4 -= 64;
+               if(var4 < 0) {
+                  var4 = 0;
                }
 
-               var6 = (var12.field603 - var5) * client.field520 / var12.field603;
-               class58 var10000;
+               var5 = (var12.field603 - var4) * client.field520 / var12.field603;
+               class58 var13;
+               class58 var14;
+               class62 var15;
+               class64 var16;
                if(var12.field598 == null) {
                   if(var12.field604 >= 0) {
-                     var10000 = (class58)null;
-                     class58 var13 = class58.method1228(class28.field682, var12.field604, 0);
-                     if(null != var13) {
-                        class62 var14 = var13.method1222().method1256(class110.field1960);
-                        class64 var16 = class64.method1280(var14, 100, var6);
+                     var13 = (class58)null;
+                     var14 = class58.method1228(class28.field682, var12.field604, 0);
+                     if(null != var14) {
+                        var15 = var14.method1222().method1256(class110.field1960);
+                        var16 = class64.method1280(var15, 100, var5);
                         var16.method1428(-1);
                         class114.field1978.method1127(var16);
                         var12.field598 = var16;
                      }
                   }
                } else {
-                  var12.field598.method1284(var6);
+                  var12.field598.method1284(var5);
                }
 
                if(null == var12.field610) {
                   if(var12.field608 != null && (var12.field609 -= var3) <= 0) {
-                     var7 = (int)(Math.random() * (double)var12.field608.length);
-                     var10000 = (class58)null;
-                     class58 var15 = class58.method1228(class28.field682, var12.field608[var7], 0);
-                     if(var15 != null) {
-                        class62 var17 = var15.method1222().method1256(class110.field1960);
-                        class64 var18 = class64.method1280(var17, 100, var6);
-                        var18.method1428(0);
-                        class114.field1978.method1127(var18);
-                        var12.field610 = var18;
+                     var6 = (int)(Math.random() * (double)var12.field608.length);
+                     var13 = (class58)null;
+                     var14 = class58.method1228(class28.field682, var12.field608[var6], 0);
+                     if(var14 != null) {
+                        var15 = var14.method1222().method1256(class110.field1960);
+                        var16 = class64.method1280(var15, 100, var5);
+                        var16.method1428(0);
+                        class114.field1978.method1127(var16);
+                        var12.field610 = var16;
                         var12.field609 = var12.field597 + (int)(Math.random() * (double)(var12.field607 - var12.field597));
                      }
                   }
                } else {
-                  var12.field610.method1284(var6);
+                  var12.field610.method1284(var5);
                   if(!var12.field610.method3897()) {
                      var12.field610 = null;
                   }

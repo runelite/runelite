@@ -13,7 +13,6 @@ final class class21 implements Comparator {
    public static class167 field574;
    @ObfuscatedName("k")
    public static byte[][] field575;
-   // $FF: synthetic field
    final boolean val$preferOwnWorld;
    @ObfuscatedName("gp")
    @ObfuscatedGetter(
@@ -126,10 +125,10 @@ final class class21 implements Comparator {
             } else if(!var0.startsWith("http://") && !var0.startsWith("https://")) {
                throw new Exception();
             } else {
-               String var13 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
+               String var11 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789?&=,.%+-_#:/*";
 
-               for(int var14 = 0; var14 < var0.length(); ++var14) {
-                  if(var13.indexOf(var0.charAt(var14)) == -1) {
+               for(int var12 = 0; var12 < var0.length(); ++var12) {
+                  if(var11.indexOf(var0.charAt(var12)) == -1) {
                      throw new Exception();
                   }
                }
@@ -137,41 +136,44 @@ final class class21 implements Comparator {
                Runtime.getRuntime().exec("cmd /c start \"j\" \"" + var0 + "\"");
                return true;
             }
-         } catch (Throwable var7) {
-            return false;
-         }
-      } else if(1 == var1) {
-         try {
-            Applet var4 = class138.field2148;
-            Object[] var5 = new Object[]{(new URL(class138.field2148.getCodeBase(), var0)).toString()};
-            Object var12 = JSObject.getWindow(var4).call(var2, var5);
-            return null != var12;
-         } catch (Throwable var8) {
-            return false;
-         }
-      } else if(var1 == 2) {
-         try {
-            class138.field2148.getAppletContext().showDocument(new URL(class138.field2148.getCodeBase(), var0), "_blank");
-            return true;
-         } catch (Exception var9) {
-            return false;
-         }
-      } else if(3 == var1) {
-         try {
-            Applet var3 = class138.field2148;
-            JSObject.getWindow(var3).call("loggedout", (Object[])null);
-         } catch (Throwable var11) {
-            ;
-         }
-
-         try {
-            class138.field2148.getAppletContext().showDocument(new URL(class138.field2148.getCodeBase(), var0), "_top");
-            return true;
-         } catch (Exception var10) {
+         } catch (Throwable var6) {
             return false;
          }
       } else {
-         throw new IllegalArgumentException();
+         Applet var3;
+         if(1 == var1) {
+            try {
+               var3 = class138.field2148;
+               Object[] var4 = new Object[]{(new URL(class138.field2148.getCodeBase(), var0)).toString()};
+               Object var5 = JSObject.getWindow(var3).call(var2, var4);
+               return null != var5;
+            } catch (Throwable var7) {
+               return false;
+            }
+         } else if(var1 == 2) {
+            try {
+               class138.field2148.getAppletContext().showDocument(new URL(class138.field2148.getCodeBase(), var0), "_blank");
+               return true;
+            } catch (Exception var8) {
+               return false;
+            }
+         } else if(3 == var1) {
+            try {
+               var3 = class138.field2148;
+               JSObject.getWindow(var3).call("loggedout", (Object[])null);
+            } catch (Throwable var10) {
+               ;
+            }
+
+            try {
+               class138.field2148.getAppletContext().showDocument(new URL(class138.field2148.getCodeBase(), var0), "_top");
+               return true;
+            } catch (Exception var9) {
+               return false;
+            }
+         } else {
+            throw new IllegalArgumentException();
+         }
       }
    }
 

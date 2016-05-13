@@ -134,17 +134,14 @@ public class class59 {
             class29.method642(class99.field1689, -1412584499, var1, var2, var3, var4, class154.field2291, class25.field630, var7);
             class99.field1689 = null;
          }
-
+      } else if(-1 != var7) {
+         client.field482[var7] = true;
       } else {
-         if(-1 != var7) {
-            client.field482[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               client.field482[var8] = true;
-            }
+         for(int var8 = 0; var8 < 100; ++var8) {
+            client.field482[var8] = true;
          }
-
       }
+
    }
 
    public class59(class167 var1, class167 var2) {

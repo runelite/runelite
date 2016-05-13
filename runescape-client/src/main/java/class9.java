@@ -1,5 +1,6 @@
 import java.applet.Applet;
 import java.math.BigInteger;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -49,6 +50,7 @@ public class class9 {
       signature = "(II)Lclass40;",
       garbageValue = "-968168982"
    )
+   @Export("getObjectDefinition")
    public static class40 method120(int var0) {
       class40 var1 = (class40)class40.field926.method3743((long)var0);
       if(null != var1) {
@@ -108,23 +110,24 @@ public class class9 {
          int var10 = class32.field755;
          int[] var7 = class32.field756;
          int var8;
+         class39 var9;
          if(var1 < var10) {
             var8 = 30;
-            class2 var9 = (class2)var0;
-            if(var9.field58) {
+            class2 var11 = (class2)var0;
+            if(var11.field58) {
                return;
             }
 
-            if(var9.field35 != -1 || var9.field49 != -1) {
+            if(var11.field35 != -1 || var11.field49 != -1) {
                class8.method115(var0, var0.field816 + 15);
                if(client.field385 > -1) {
-                  if(var9.field35 != -1) {
-                     class210.field3141[var9.field35].method1676(client.field385 + var2 - 12, client.field386 + var3 - var8);
+                  if(var11.field35 != -1) {
+                     class210.field3141[var11.field35].method1676(client.field385 + var2 - 12, client.field386 + var3 - var8);
                      var8 += 25;
                   }
 
-                  if(var9.field49 != -1) {
-                     class164.field2668[var9.field49].method1676(var2 + client.field385 - 12, client.field386 + var3 - var8);
+                  if(var11.field49 != -1) {
+                     class164.field2668[var11.field49].method1676(var2 + client.field385 - 12, client.field386 + var3 - var8);
                      var8 += 25;
                   }
                }
@@ -137,15 +140,15 @@ public class class9 {
                }
             }
          } else {
-            class39 var12 = ((class34)var0).field782;
-            if(null != var12.field921) {
-               var12 = var12.method740();
+            var9 = ((class34)var0).field782;
+            if(null != var9.field921) {
+               var9 = var9.method740();
             }
 
-            if(var12.field910 >= 0 && var12.field910 < class164.field2668.length) {
+            if(var9.field910 >= 0 && var9.field910 < class164.field2668.length) {
                class8.method115(var0, var0.field816 + 15);
                if(client.field385 > -1) {
-                  class164.field2668[var12.field910].method1676(client.field385 + var2 - 12, var3 + client.field386 - 30);
+                  class164.field2668[var9.field910].method1676(client.field385 + var2 - 12, var3 + client.field386 - 30);
                }
             }
 
@@ -178,19 +181,19 @@ public class class9 {
                if(var1 < var10) {
                   var8 = 30;
                } else {
-                  class39 var11 = ((class34)var0).field782;
-                  var8 = var11.field917;
+                  var9 = ((class34)var0).field782;
+                  var8 = var9.field917;
                }
 
-               int var13 = var0.field846 * var8 / var0.field835;
-               if(var13 > var8) {
-                  var13 = var8;
-               } else if(var13 == 0 && var0.field846 > 0) {
-                  var13 = 1;
+               int var12 = var0.field846 * var8 / var0.field835;
+               if(var12 > var8) {
+                  var12 = var8;
+               } else if(var12 == 0 && var0.field846 > 0) {
+                  var12 = 1;
                }
 
-               class79.method1808(client.field385 + var2 - var8 / 2, client.field386 + var3 - 3, var13, 5, '\uff00');
-               class79.method1808(var2 + client.field385 - var8 / 2 + var13, client.field386 + var3 - 3, var8 - var13, 5, 16711680);
+               class79.method1808(client.field385 + var2 - var8 / 2, client.field386 + var3 - 3, var12, 5, '\uff00');
+               class79.method1808(var2 + client.field385 - var8 / 2 + var12, client.field386 + var3 - 3, var8 - var12, 5, 16711680);
             }
          }
 
@@ -217,8 +220,8 @@ public class class9 {
                }
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("ao")
@@ -247,6 +250,7 @@ public class class9 {
       signature = "(II)Lclass51;",
       garbageValue = "1310796580"
    )
+   @Export("getItemDefinition")
    public static class51 method128(int var0) {
       class51 var1 = (class51)class51.field1140.method3743((long)var0);
       if(null != var1) {
