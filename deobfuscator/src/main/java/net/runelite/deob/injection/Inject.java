@@ -233,10 +233,20 @@ public class Inject
 				
 				ClassFile targetClass = f.isStatic() ? vanilla.findClass("client") : other; // target class for getter
 				java.lang.Class targetApiClass = f.isStatic() ? clientClass : implementingClass; // target api class for getter
-				assert targetApiClass != null;
+				if (targetApiClass == null)
+				{
+					assert !f.isStatic();
+					System.out.println("Non static exported field " + exportedName + " on non exported interface");
+					// non static field exported on non exported interface
+					continue;
+				}
 				
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName);
-				assert apiMethod != null;
+				if (apiMethod == null)
+				{
+					System.out.println("Unable to find import method on api class " + targetApiClass + " with exported name " + exportedName + ", not injecting getter");
+					continue;
+				}
 				
 				injectGetter(targetClass, apiMethod, otherf, getter);
 			}
@@ -284,11 +294,24 @@ public class Inject
 
 				assert otherm != null;
 				assert m.isStatic() == otherm.isStatic();
-				assert m.isStatic() || implementingClass != null;
 
 				ClassFile targetClass = m.isStatic() ? vanilla.findClass("client") : other;
-				java.lang.reflect.Method apiMethod = findImportMethodOnApi(m.isStatic() ? clientClass : implementingClass, exportedName); // api method to invoke 'otherm'
-				assert apiMethod != null;
+				java.lang.Class<?> targetClassJava = m.isStatic() ? clientClass : implementingClass;
+				
+				if (targetClassJava == null)
+				{
+					assert !m.isStatic();
+					System.out.println("Non static exported method " + exportedName + " on non exported interface");
+					// non static exported method on non exported interface, weird.
+					continue;
+				}
+				
+				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetClassJava, exportedName); // api method to invoke 'otherm'
+				if (apiMethod == null)
+				{
+					System.out.println("Unable to find api method on " + targetClassJava + " for exported name " + exportedName + ", not injecting invoker");
+					continue;
+				}
 
 				injectInvoker(targetClass, apiMethod, m, otherm, garbage);
 			}
@@ -319,7 +342,6 @@ public class Inject
 		}
 		catch (ClassNotFoundException ex)
 		{
-			ex.printStackTrace();
 			return null;
 		}
 	}
