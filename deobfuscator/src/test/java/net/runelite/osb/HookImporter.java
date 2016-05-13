@@ -56,6 +56,7 @@ import net.runelite.deob.util.JarUtil;
 import net.runelite.osb.inject.FieldHook;
 import net.runelite.osb.inject.MethodHook;
 import org.junit.After;
+import org.junit.Ignore;
 
 public class HookImporter
 {
@@ -90,6 +91,7 @@ public class HookImporter
 	}
 	
 	@Test
+	@Ignore
 	public void importHooks()
 	{
 		int classes = 0, fields = 0, methods = 0, callbacks = 0;
