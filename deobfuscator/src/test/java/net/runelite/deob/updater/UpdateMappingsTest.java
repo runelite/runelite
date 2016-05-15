@@ -54,8 +54,6 @@ public class UpdateMappingsTest
 		JAR2 = "d:/rs/07/gamepack_114_deobfuscated.jar",
 		OUT = "d:/rs/07/adamout.jar";
 
-	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
-
 	@Test
 	//@Ignore
 	public void testRun() throws IOException
