@@ -33,13 +33,14 @@ package net.runelite.asm.attributes.code.instructions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ConversionInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 
 
-public class I2S extends Instruction
+public class I2S extends Instruction implements ConversionInstruction
 {
 	public I2S(Instructions instructions, InstructionType type, int pc)
 	{
