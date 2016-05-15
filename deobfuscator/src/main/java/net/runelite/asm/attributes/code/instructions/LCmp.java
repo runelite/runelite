@@ -125,6 +125,21 @@ public class LCmp extends Instruction implements MappableInstruction
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
+		List<Field> f1s = getComparedFields(thisIc), f2s = getComparedFields(otherIc);
+
+		if (f1s == null || f2s == null || f1s.size() != f2s.size())
+			return false;
+
+		for (int i = 0; i < f1s.size(); ++i)
+		{
+			Field f1 = f1s.get(i), f2 = f2s.get(i);
+
+			if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+				|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType())
+				|| f1.isStatic() != f2.isStatic())
+				return false;
+		}
+
 		return true;
 	}
 
