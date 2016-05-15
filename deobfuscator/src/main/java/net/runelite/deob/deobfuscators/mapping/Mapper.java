@@ -72,6 +72,8 @@ public class Mapper
 		
 		finalm.buildClasses();
 
+		mapConstructors(finalm);
+
 		mapping = finalm;
 	}
 
@@ -131,6 +133,32 @@ public class Mapper
 			finalm.merge(pme);
 
 		return finalm;
+	}
+
+	private void mapConstructors(ParallelExecutorMapping mapping)
+	{
+		for (ClassFile cf : source.getClasses())
+		{
+			ClassFile other = (ClassFile) mapping.get(cf);
+
+			if (other == null)
+				continue;
+
+			for (Method m : cf.getMethods().getMethods())
+			{
+				if (!m.getName().equals("<init>"))
+					continue;
+
+				Method m2 = other.findMethod(m.getNameAndType());
+				if (m2 == null)
+					continue;
+
+				ParallelExecutorMapping p = MappingExecutorUtil.map(m, m2);
+				p.map(m, m2);
+
+				mapping.merge(p);
+			}
+		}
 	}
 
 	private ParallelExecutorMapping mapPackets(ParallelExecutorMapping pem, ClassGroup group1, ClassGroup group2)
