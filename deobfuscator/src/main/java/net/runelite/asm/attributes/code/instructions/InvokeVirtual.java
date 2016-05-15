@@ -212,12 +212,37 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		for (int i = 0; i < myMethods.size(); ++i)
 		{
-			net.runelite.asm.Method m1 = myMethods.get(i);
-			net.runelite.asm.Method m2 = otherMethods.get(i);
+			net.runelite.asm.Method m1 = myMethods.get(i), otherMethod = null;
+			ClassFile c1 = m1.getMethods().getClassFile();
 
-			assert MappingExecutorUtil.isMaybeEqual(m1.getMethods().getClassFile(), m2.getMethods().getClassFile());
-			
-			mapping.map(m1, m2);
+			if (myMethods.size() == 1)
+			{
+				otherMethod = otherMethods.get(0);
+			}
+			else
+			{
+				for (int j = 0; j < myMethods.size(); ++j)
+				{
+					net.runelite.asm.Method m2 = otherMethods.get(j);
+					ClassFile c2 = m2.getMethods().getClassFile();
+
+					if (MappingExecutorUtil.isMaybeEqual(c1, c2))
+					{
+						if (otherMethod != null)
+						{
+							otherMethod = null;
+							break;
+						}
+
+						otherMethod = m2;
+					}
+				}
+			}
+
+			if (otherMethod != null)
+			{
+				mapping.map(m1, otherMethod);
+			}
 		}
 		
 		/* map arguments */
@@ -292,11 +317,13 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			net.runelite.asm.Method m1 = thisMethods.get(i);
 			net.runelite.asm.Method m2 = otherMethods.get(i);
 
-			if (!MappingExecutorUtil.isMaybeEqual(m1.getMethods().getClassFile(), m2.getMethods().getClassFile()))
-				return false;
+			// order of methods in thisMethods/otherMethods depends on order classes
+			// were loaded, which might not be the same
 
 			if (!MappingExecutorUtil.isMaybeEqual(m1.getNameAndType().getDescriptor(), m2.getNameAndType().getDescriptor()))
 				return false;
+
+			break; // descriptors for all methods must be the same
 		}
 		
 		return true;
