@@ -42,9 +42,13 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ParallelExecutorMapping
 {
+	private static final Logger logger = LoggerFactory.getLogger(ParallelExecutorMapping.class);
+	
 	private ClassGroup group, group2;
 	private Multimap<Object, Mapping> map = HashMultimap.create();
 	public Method m1, m2;
@@ -174,6 +178,8 @@ public class ParallelExecutorMapping
 			mapClass(key, value);
 		}
 
+		map = getMap(); // rebuild map now we've inserted classes...
+
 		/* get leftover classes, they usually contain exclusively static
 		 * fields and methods so they're hard to pinpoint
 		*/
@@ -186,11 +192,16 @@ public class ParallelExecutorMapping
 				ClassFile other = m.get(cf);
 				if (other == null)
 				{
-					System.out.println("Unable to map class " + cf);
+					logger.info("Unable to map class {}", cf);
 				}
 				else
 				{
-					System.out.println("Build classes fallback " + cf + " -> " + other);
+					// these are both probably very small
+					long nonStaticFields = cf.getFields().getFields().stream().filter(f -> !f.isStatic()).count(),
+						nonStaticMethods = cf.getMethods().getMethods().stream().filter(m2 -> !m2.isStatic()).count();
+
+					logger.info("Build classes fallback {} -> {}, non static fields: {}, non static methods: {}",
+						cf, other, nonStaticFields, nonStaticMethods);
 
 					Mapping ma = getMapping(cf, other);
 					ma.inc();

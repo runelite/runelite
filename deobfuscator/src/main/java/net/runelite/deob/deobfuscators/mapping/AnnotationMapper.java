@@ -34,13 +34,18 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AnnotationMapper
 {
+	private static final Logger logger = LoggerFactory.getLogger(AnnotationMapper.class);
+	
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
 	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
@@ -63,13 +68,6 @@ public class AnnotationMapper
 		for (ClassFile c : source.getClasses())
 		{
 			ClassFile other = (ClassFile) mapping.get(c);
-			System.out.println(c + " -> " + other);
-
-			if (other == null)
-			{
-				System.out.println("Unable to map class " + c); // XXX if this has any mappings it won't be reported below.
-				continue;
-			}
 
 			count += run(c, other);
 		}
@@ -81,7 +79,17 @@ public class AnnotationMapper
 	{
 		int count = 0;
 
-		count += copyAnnotations(from.getAttributes(), to.getAttributes());
+		if (hasCopyableAnnotation(from.getAttributes()))
+		{
+			if (to != null)
+			{
+				count += copyAnnotations(from.getAttributes(), to.getAttributes());
+			}
+			else
+			{
+				logger.warn("Class {} has copyable annotations but there is no mapped class", from);
+			}
+		}
 
 		for (Field f : from.getFields().getFields())
 		{
@@ -91,9 +99,8 @@ public class AnnotationMapper
 			Field other = (Field) mapping.get(f);
 			if (other == null)
 			{
-				System.out.println("UNABLE TO MAP " + f);
+				logger.warn("Unable to map annotated field {} named {}", f, getExport(f.getAttributes().getAnnotations()));
 				continue;
-				//assert false;
 			}
 
 			count += copyAnnotations(f.getAttributes(), other.getAttributes());
@@ -107,9 +114,8 @@ public class AnnotationMapper
 			Method other = (Method) mapping.get(m);
 			if (other == null)
 			{
-				System.out.println("UNABLE TO MAP " + m);
+				logger.warn("Unable to map annotated method {} named {}", m, getExport(m.getAttributes().getAnnotations()));
 				continue;
-				//assert false;
 			}
 
 			count += copyAnnotations(m.getAttributes(), other.getAttributes());
@@ -155,5 +161,17 @@ public class AnnotationMapper
 	private boolean isCopyable(Annotation a)
 	{
 		return a.getType().equals(EXPORT) || a.getType().equals(IMPLEMENTS) || a.getType().equals(REPLACE) || a.getType().equals(OBFUSCATED_OVERRIDE);
+	}
+
+	private String getExport(Annotations an)
+	{
+		if (an == null)
+			return null;
+
+		Annotation a = an.find(EXPORT);
+		if (a == null)
+			return null;
+
+		return a.getElement().getString();
 	}
 }

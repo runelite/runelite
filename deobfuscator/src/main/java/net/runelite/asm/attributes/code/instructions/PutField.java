@@ -143,10 +143,25 @@ public class PutField extends Instruction implements SetFieldInstruction
 		
 		StackContext object1 = ctx.getPops().get(1),
 			object2 = other.getPops().get(1);
-		
+
 		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
 		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
 
+		mapGetFieldInstructrions(mapping, base1, base2);
+
+		// map value
+
+		object1 = ctx.getPops().get(0);
+		object2 = other.getPops().get(0);
+
+		base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		mapGetFieldInstructrions(mapping, base1, base2);
+	}
+
+	private void mapGetFieldInstructrions(ParallelExecutorMapping mapping, InstructionContext base1, InstructionContext base2)
+	{
 		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
 		{
 			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
@@ -160,8 +175,6 @@ public class PutField extends Instruction implements SetFieldInstruction
 				mapping.map(f1, f2);
 			}
 		}
-
-		// XXX also map value here?
 	}
 
 	@Override
