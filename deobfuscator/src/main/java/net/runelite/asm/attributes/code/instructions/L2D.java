@@ -33,13 +33,14 @@ package net.runelite.asm.attributes.code.instructions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.ConversionInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 
 
-public class L2D extends Instruction
+public class L2D extends Instruction implements ConversionInstruction
 {
 	public L2D(Instructions instructions, InstructionType type, int pc)
 	{

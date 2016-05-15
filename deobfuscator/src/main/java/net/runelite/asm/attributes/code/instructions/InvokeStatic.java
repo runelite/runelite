@@ -246,9 +246,6 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		if (thisMethods.size() != otherMethods.size())
 			return false;
 		
-		assert thisMethods.size() == 1;
-		assert otherMethods.size() == 1;
-		
 		for (int i = 0; i < thisMethods.size(); ++i)
 		{
 			net.runelite.asm.Method m1 = thisMethods.get(i);

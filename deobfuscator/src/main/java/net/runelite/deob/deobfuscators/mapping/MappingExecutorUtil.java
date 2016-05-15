@@ -36,6 +36,7 @@ import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.ArrayLoad;
+import net.runelite.asm.attributes.code.instruction.types.ConversionInstruction;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
@@ -230,7 +231,7 @@ public class MappingExecutorUtil
 			return false;
 		}
 
-		if (className.startsWith("java/lang/reflect/") || className.startsWith("java/io/"))
+		if (className.startsWith("java/lang/reflect/") || className.startsWith("java/io/") || className.startsWith("java/util/"))
 			return true;
 		
 		if (className.startsWith("java/") || className.startsWith("netscape/") || className.startsWith("javax/"))
@@ -241,7 +242,13 @@ public class MappingExecutorUtil
 	
 	public static boolean isInlineable(Instruction i)
 	{
-		return i instanceof InvokeStatic && isMappable((InvokeStatic) i);
+		if (!(i instanceof InvokeStatic))
+			return false;
+
+		InvokeStatic is = (InvokeStatic) i;
+		net.runelite.asm.pool.Method m = (net.runelite.asm.pool.Method) is.getMethod();
+
+		return m.getClassEntry().getName().contains("/") == false; // hack to find my classes
 	}
 	
 	public static InstructionContext resolve(
@@ -251,6 +258,13 @@ public class MappingExecutorUtil
 	{
 		if (ctx.getInstruction() instanceof SetFieldInstruction)
 		{
+			StackContext s = ctx.getPops().get(0);
+			return resolve(s.getPushed(), s);
+		}
+
+		if (ctx.getInstruction() instanceof ConversionInstruction)
+		{
+			// assume it pops one and pushes one
 			StackContext s = ctx.getPops().get(0);
 			return resolve(s.getPushed(), s);
 		}
