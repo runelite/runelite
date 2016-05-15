@@ -34,7 +34,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite.rs</groupId>
@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>deob</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.1.0-SNAPSHOT</version>
 			<classifier>jar-with-dependencies</classifier>
 		</dependency>
 		<dependency>
