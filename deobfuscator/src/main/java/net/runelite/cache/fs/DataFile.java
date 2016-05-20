@@ -299,7 +299,7 @@ public class DataFile implements Closeable
 		res.sector = startSector;
 		res.compressedLength = compressedData.length;
 		res.crc = CRC32HGenerator.getHash(compressedData, compressedData.length - 2);
-		res.whirlpool = Whirlpool.getHash(compressedData, 0, compressedData.length - 2);
+		res.whirlpool = Whirlpool.getHash(compressedData, compressedData.length - 2);
 		return res;
 	}
 	
@@ -345,7 +345,7 @@ public class DataFile implements Closeable
 		res.data = data;
 		res.revision = revision;
 		res.crc = CRC32HGenerator.getHash(b, b.length - 2);
-		res.whirlpool = Whirlpool.getHash(b, 0, b.length - 2);
+		res.whirlpool = Whirlpool.getHash(b, b.length - 2);
 		return res;
 	}
 	

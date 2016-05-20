@@ -44,6 +44,12 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>api</artifactId>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.0</version>
@@ -74,9 +80,9 @@
 			<version>5.0.4</version>
 		</dependency>
 		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>api</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
+			<groupId>org.gnu</groupId>
+			<artifactId>gnu-crypto</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 		
 		<dependency>
