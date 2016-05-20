@@ -41,7 +41,8 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GZip {
+public class GZip
+{
 	private static final Logger logger = LoggerFactory.getLogger(GZip.class);
 
 	public static byte[] compress(byte[] bytes)
@@ -64,11 +65,10 @@ public class GZip {
 
 	public static byte[] decompress(byte[] bytes)
 	{
-		ByteArrayOutputStream os;
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		
 		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes)))
 		{
-			os = new ByteArrayOutputStream();
 			IOUtils.copy(is, os);
 		}
 		catch (IOException ex)
