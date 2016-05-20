@@ -37,9 +37,9 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import net.runelite.cache.fs.util.BZip2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
-import net.runelite.cache.fs.util.BZipDecompressor;
 import net.runelite.cache.fs.util.CRC32HGenerator;
 import net.runelite.cache.fs.util.GZip;
 import net.runelite.cache.fs.util.Whirlpool;
@@ -324,18 +324,21 @@ public class DataFile implements Closeable
 			case CompressionType.BZ2:
 			{
 				int length = stream.readInt();
-				data = new byte[length];
 				revision = this.checkRevision(stream, compressedLength);
-				BZipDecompressor.decompress(data, b, compressedLength, 9);
+				data = BZip2.decompress(stream.getReaminingBuffer());
+				assert data.length == length;
 				break;
 			}
-			default:
+			case CompressionType.GZ:
 			{
 				int length = stream.readInt();
 				revision = this.checkRevision(stream, compressedLength);
 				data = GZip.decompress(stream.getReaminingBuffer());
 				assert data.length == length;
+				break;
 			}
+			default:
+				throw new RuntimeException("Unknown decompression type");
 		}
 		
 		DataFileReadResult res = new DataFileReadResult();
@@ -358,13 +361,19 @@ public class DataFile implements Closeable
 				stream.writeInt(data.length);
 				break;
 			case CompressionType.BZ2:
-				// bzip1?
-				throw new UnsupportedOperationException();
-			default:
+				compressedData = BZip2.compress(data);
+
+				stream.writeInt(compressedData.length);
+				stream.writeInt(data.length);
+				break;
+			case CompressionType.GZ:
 				compressedData = GZip.compress(data);
 				
 				stream.writeInt(compressedData.length);
 				stream.writeInt(data.length);
+				break;
+			default:
+				throw new RuntimeException("Unknown compression type");
 		}
 
 		stream.writeBytes(compressedData);
