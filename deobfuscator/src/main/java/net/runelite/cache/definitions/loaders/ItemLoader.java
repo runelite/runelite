@@ -35,7 +35,6 @@ import java.util.List;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.io.InputStream;
-import net.runelite.cache.utils.StringUtilities;
 
 public class ItemLoader
 {
@@ -73,7 +72,7 @@ public class ItemLoader
 		}
 		else if (opcode == 2)
 		{
-			def.name = StringUtilities.readString_2(stream);
+			def.name = stream.readString();
 		}
 		else if (opcode == 4)
 		{
@@ -135,7 +134,7 @@ public class ItemLoader
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			def.options[opcode - 30] = StringUtilities.readString_2(stream);
+			def.options[opcode - 30] = stream.readString();
 			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
 				def.options[opcode - 30] = null;
@@ -143,7 +142,7 @@ public class ItemLoader
 		}
 		else if (opcode >= 35 && opcode < 40)
 		{
-			def.interfaceOptions[opcode - 35] = StringUtilities.readString_2(stream);
+			def.interfaceOptions[opcode - 35] = stream.readString();
 		}
 		else
 		{
