@@ -68,7 +68,7 @@ public class SpriteLoaderTest
 		{
 			store.load();
 			
-			Index index = store.getIndex(IndexType.SPRITE);
+			Index index = store.getIndex(IndexType.SPRITES);
 			
 			for (Archive a : index.getArchives())
 			{
