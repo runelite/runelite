@@ -55,7 +55,7 @@ public class UpdateMappingsTest
 		OUT = "d:/rs/07/adamout.jar";
 
 	@Test
-	//@Ignore
+	@Ignore
 	public void testRun() throws IOException
 	{
 		ClassGroup group1 = JarUtil.loadJar(new File(JAR1));
