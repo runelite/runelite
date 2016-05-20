@@ -30,14 +30,12 @@
 
 package net.runelite.cache.fs;
 
-import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Objects;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
@@ -45,7 +43,6 @@ import net.runelite.cache.fs.util.BZipDecompressor;
 import net.runelite.cache.fs.util.CRC32HGenerator;
 import net.runelite.cache.fs.util.GZip;
 import net.runelite.cache.fs.util.Whirlpool;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -319,12 +316,12 @@ public class DataFile implements Closeable
 		int revision;
 		switch (compression)
 		{
-			case 0:
+			case CompressionType.NONE:
 				data = new byte[compressedLength];
 				revision = this.checkRevision(stream, compressedLength);
 				stream.readBytes(data, 0, compressedLength);
 				break;
-			case 1:
+			case CompressionType.BZ2:
 			{
 				int length = stream.readInt();
 				data = new byte[length];
@@ -335,9 +332,9 @@ public class DataFile implements Closeable
 			default:
 			{
 				int length = stream.readInt();
-				data = new byte[length];
 				revision = this.checkRevision(stream, compressedLength);
-				GZip.decompress(stream, data);
+				data = GZip.decompress(stream.getReaminingBuffer());
+				assert data.length == length;
 			}
 		}
 		
@@ -356,25 +353,15 @@ public class DataFile implements Closeable
 		byte[] compressedData;
 		switch (compression)
 		{
-			case 0:
+			case CompressionType.NONE:
 				compressedData = data;
 				stream.writeInt(data.length);
 				break;
-			case 1:
+			case CompressionType.BZ2:
 				// bzip1?
 				throw new UnsupportedOperationException();
 			default:
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				try (GzipCompressorOutputStream out = new GzipCompressorOutputStream(bout))
-				{
-					out.write(data);
-				}
-				compressedData = bout.toByteArray();
-				
-				// check it with the old compressor
-				byte[] data2 = new byte[data.length];
-				GZip.decompress(new InputStream(compressedData), data2);
-				assert Arrays.equals(data, data2);
+				compressedData = GZip.compress(data);
 				
 				stream.writeInt(compressedData.length);
 				stream.writeInt(data.length);

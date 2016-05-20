@@ -30,6 +30,8 @@
 
 package net.runelite.cache.io;
 
+import java.util.Arrays;
+
 public abstract class Stream {
    protected int offset;
    protected int length;
@@ -46,6 +48,10 @@ public abstract class Stream {
 
    public int getOffset() {
       return this.offset;
+   }
+
+   public byte[] getReaminingBuffer() {
+	   return Arrays.copyOfRange(buffer, offset, length);
    }
 
    public void decodeXTEA(int[] keys) {
