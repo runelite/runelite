@@ -35,7 +35,6 @@ import java.util.List;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.io.InputStream;
-import net.runelite.cache.utils.StringUtilities;
 
 public class NpcLoader
 {
@@ -82,7 +81,7 @@ public class NpcLoader
 		}
 		else if (2 == opcode)
 		{
-			def.name = StringUtilities.readString_2(stream);
+			def.name = stream.readString();
 		}
 		else if (12 == opcode)
 		{
@@ -113,7 +112,7 @@ public class NpcLoader
 		}
 		else if (opcode >= 30 && opcode < 35)
 		{
-			def.options[opcode - 30] = StringUtilities.readString_2(stream);
+			def.options[opcode - 30] = stream.readString();
 			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
 			{
 				def.options[opcode - 30] = null;
