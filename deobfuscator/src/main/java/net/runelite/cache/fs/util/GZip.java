@@ -30,58 +30,53 @@
 
 package net.runelite.cache.fs.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import java.util.zip.Inflater;
-import net.runelite.cache.io.Stream;
+import org.apache.commons.compress.utils.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GZip {
-	private static final Inflater inflaterInstance = new Inflater(true);
+	private static final Logger logger = LoggerFactory.getLogger(GZip.class);
 
-//	public static final byte[] compress(byte[] data)
-//	{
-//		ByteArrayOutputStream compressedBytes = new ByteArrayOutputStream();
-//
-//		try
-//		{
-//			GZIPOutputStream e = new GZIPOutputStream(compressedBytes);
-//			e.write(data);
-//			e.finish();
-//			e.close();
-//			return compressedBytes.toByteArray();
-//		}
-//		catch (IOException var3)
-//		{
-//			var3.printStackTrace();
-//			return null;
-//		}
-//	}
-
-	public static final void decompress(Stream stream, byte[] data)
+	public static byte[] compress(byte[] bytes)
 	{
-		Inflater var2 = inflaterInstance;
-		synchronized (inflaterInstance)
-		{
-			if (stream.getBuffer()[stream.getOffset()] == 31 && stream.getBuffer()[stream.getOffset() + 1] == -117)
-			{
-				try
-				{
-					inflaterInstance.setInput(stream.getBuffer(), stream.getOffset() + 10, -stream.getOffset() - 18 + stream.getBuffer().length);
-					inflaterInstance.inflate(data);
-				}
-				catch (Exception var4)
-				{
-					inflaterInstance.reset();
-					data = (byte[]) null;
-				}
+		InputStream is = new ByteArrayInputStream(bytes);
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 
-				inflaterInstance.reset();
-			}
-			else
-			{
-				data = (byte[]) null;
-			}
+		try (OutputStream os = new GZIPOutputStream(bout))
+		{
+			IOUtils.copy(is, os);
 		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
+		}
+		
+		return bout.toByteArray();
+	}
+
+	public static byte[] decompress(byte[] bytes)
+	{
+		ByteArrayOutputStream os;
+		
+		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes)))
+		{
+			os = new ByteArrayOutputStream();
+			IOUtils.copy(is, os);
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
+		}
+
+		return os.toByteArray();
 	}
 }
