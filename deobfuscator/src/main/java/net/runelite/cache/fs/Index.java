@@ -268,7 +268,7 @@ public class Index implements Closeable
 			
 			assert this.index.getIndexFileId() == this.id;
 			assert entry.getId() == a.getArchiveId();
-			DataFileReadResult res = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength()); // needs decompress etc...
+			DataFileReadResult res = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength());
 			byte[] data = res.data;
 			
 			if (a.getCrc() != res.crc)
