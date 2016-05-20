@@ -39,7 +39,7 @@ import net.runelite.cache.utils.StringUtilities;
 
 public class ItemLoader
 {
-	public static final IndexType INDEX_TYPE = IndexType.TWO;
+	public static final IndexType INDEX_TYPE = IndexType.CONFIGS;
 	public static final int ARCHIVE_ID = 10;
 
 	private final List<ItemDefinition> items = new ArrayList<>();
