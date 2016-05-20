@@ -32,9 +32,22 @@ package net.runelite.cache;
 
 public enum IndexType
 {
-	TWO(2),
+	// names from https://github.com/im-frizzy/OpenRS/blob/master/source/net/openrs/cache/type/CacheIndex.java
+	SKINS(1),
+	CONFIGS(2),
+	INTERFACES(3),
+	SOUNDEFFECTS(4),
+	LANDSCAPES(5),
+	TRACK1(6),
 	MODELS(7),
-	SPRITE(8);
+	SPRITES(8),
+	TEXTURES(9),
+	BINARY(10),
+	TRACK2(11),
+	CLIENTSCRIPT(12),
+	FONTS(13),
+	VORBIS(14),
+	INSTRUMENTS(15);
 
 	private int id;
 	
