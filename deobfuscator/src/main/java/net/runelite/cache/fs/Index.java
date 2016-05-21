@@ -69,7 +69,6 @@ public class Index implements Closeable
 	public int hashCode()
 	{
 		int hash = 3;
-		hash = 97 * hash + Objects.hashCode(this.index);
 		hash = 97 * hash + this.id;
 		hash = 97 * hash + this.revision;
 		hash = 97 * hash + Objects.hashCode(this.archives);
@@ -88,10 +87,6 @@ public class Index implements Closeable
 			return false;
 		}
 		final Index other = (Index) obj;
-		if (!Objects.equals(this.index, other.index))
-		{
-			return false;
-		}
 		if (this.id != other.id)
 		{
 			return false;
@@ -145,6 +140,8 @@ public class Index implements Closeable
 		IndexEntry entry = index255.read(id);
 		DataFileReadResult res = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
 		byte[] data = res.data;
+
+		archives.clear();
 		
 		readIndexData(data);
 		

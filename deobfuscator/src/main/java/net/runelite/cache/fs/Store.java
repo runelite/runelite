@@ -75,9 +75,6 @@ public class Store implements Closeable
 	public int hashCode()
 	{
 		int hash = 5;
-		hash = 79 * hash + Objects.hashCode(this.folder);
-		hash = 79 * hash + Objects.hashCode(this.data);
-		hash = 79 * hash + Objects.hashCode(this.index255);
 		hash = 79 * hash + Objects.hashCode(this.indexes);
 		return hash;
 	}
@@ -94,18 +91,6 @@ public class Store implements Closeable
 			return false;
 		}
 		final Store other = (Store) obj;
-		if (!Objects.equals(this.folder, other.folder))
-		{
-			return false;
-		}
-		if (!Objects.equals(this.data, other.data))
-		{
-			return false;
-		}
-		if (!Objects.equals(this.index255, other.index255))
-		{
-			return false;
-		}
 		if (!Objects.equals(this.indexes, other.indexes))
 		{
 			return false;
@@ -132,8 +117,10 @@ public class Store implements Closeable
 		for (Index i : indexes)
 		{
 			int id = i.getIndex().getIndexFileId();
-			if (id == 5)
+			if (id == 5) // XXX maps, XTEA encrypted, can't decompress
 				continue;
+			if (id == 6 || id == 14)
+				continue; // XXX I get more Indexes than there is length of the index file for these
 			i.load();
 		}
 	}
