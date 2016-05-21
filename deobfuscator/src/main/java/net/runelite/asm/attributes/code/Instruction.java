@@ -58,8 +58,15 @@ public abstract class Instruction implements Cloneable
 	@Override
 	public String toString()
 	{
-		Method m = this.getInstructions().getCode().getAttributes().getMethod();
-		return super.toString() + " in " + m + " at pc 0x" + Integer.toHexString(this.getPc());
+		if (this.getInstructions() != null)
+		{
+			Method m = this.getInstructions().getCode().getAttributes().getMethod();
+			return super.toString() + " in " + m + " at pc 0x" + Integer.toHexString(this.getPc());
+		}
+		else
+		{
+			return super.toString() + " <unattached>";
+		}
 	}
 	
 	@Override

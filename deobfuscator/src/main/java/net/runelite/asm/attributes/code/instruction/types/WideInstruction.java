@@ -30,10 +30,16 @@
 
 package net.runelite.asm.attributes.code.instruction.types;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.asm.attributes.code.Instruction;
 
 public interface WideInstruction
 {
-	public void writeWide(DataOutputStream out) throws IOException;
+	void loadWide(DataInputStream is) throws IOException;
+
+	void writeWide(DataOutputStream out) throws IOException;
+
+	Instruction makeSpecific();
 }

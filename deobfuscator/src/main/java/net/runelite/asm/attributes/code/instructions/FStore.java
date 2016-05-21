@@ -70,6 +70,12 @@ public class FStore extends Instruction implements LVTInstruction, WideInstructi
 	}
 
 	@Override
+	public void loadWide(DataInputStream is) throws IOException
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
 		super.write(out);
@@ -131,7 +137,10 @@ public class FStore extends Instruction implements LVTInstruction, WideInstructi
 			case 3:
 				return new FStore_3(this.getInstructions());
 			default:
-				return this;
+				if (index < Byte.MIN_VALUE || index > Byte.MAX_VALUE)
+					return new Wide(this.getInstructions(), this);
+				else
+					return this;
 		}
 	}
 }
