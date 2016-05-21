@@ -29,7 +29,10 @@
  */
 package net.runelite.cache.io;
 
-public final class InputStream extends Stream
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+public class InputStream extends java.io.InputStream
 {
 	private static final char[] CHARACTERS = new char[]
 	{
@@ -41,26 +44,11 @@ public final class InputStream extends Stream
 		'\u017e', '\u0178'
 	};
 
-	public InputStream(int capacity)
-	{
-		this.buffer = new byte[capacity];
-	}
+	private final ByteBuffer buffer;
 
 	public InputStream(byte[] buffer)
 	{
-		this.buffer = buffer;
-		this.length = buffer.length;
-	}
-
-	public void checkCapacity(int length)
-	{
-		if (this.offset + length >= this.buffer.length)
-		{
-			byte[] newBuffer = new byte[(this.offset + length) * 2];
-			System.arraycopy(this.buffer, 0, newBuffer, 0, this.buffer.length);
-			this.buffer = newBuffer;
-		}
-
+		this.buffer = ByteBuffer.wrap(buffer);
 	}
 
 	public int read24BitInt()
@@ -70,100 +58,111 @@ public final class InputStream extends Stream
 
 	public void skip(int length)
 	{
-		this.offset += length;
-	}
-
-	public void setLength(int length)
-	{
-		this.length = length;
+		int pos = buffer.position();
+		pos += length;
+		buffer.position(pos);
 	}
 
 	public void setOffset(int offset)
 	{
-		this.offset = offset;
+		buffer.position(offset);
 	}
 
-	public int getRemaining()
+	public int getOffset()
 	{
-		return this.offset < this.length ? this.length - this.offset : 0;
+		return buffer.position();
+	}
+
+	public int getLength()
+	{
+		return buffer.limit();
 	}
 
 	public int readByte()
 	{
-		return this.getRemaining() > 0 ? this.buffer[this.offset++] : 0;
+		return buffer.get();
 	}
 
 	public void readBytes(byte[] buffer, int off, int len)
 	{
-		for (int k = off; k < len + off; ++k)
-		{
-			buffer[k] = (byte) this.readByte();
-		}
-
+		this.buffer.get(buffer, off, len);
 	}
 
 	public void readBytes(byte[] buffer)
 	{
-		this.readBytes(buffer, 0, buffer.length);
+		this.buffer.get(buffer);
 	}
 
 	public int readUnsignedByte()
 	{
-		return this.readByte() & 255;
+		return this.readByte() & 0xFF;
 	}
 
 	public int readUnsignedShort()
 	{
-		return (this.readUnsignedByte() << 8) + this.readUnsignedByte();
+		return buffer.getShort() & 0xFFFF;
 	}
 
 	public int readInt()
 	{
-		return (this.readUnsignedByte() << 24) + (this.readUnsignedByte() << 16) + (this.readUnsignedByte() << 8) + this.readUnsignedByte();
+		return buffer.getInt();
+	}
+
+	public byte peek()
+	{
+		int position = buffer.position();
+		try
+		{
+			return buffer.get();
+		}
+		finally
+		{
+			buffer.position(position);
+		}
 	}
 
 	public int readBigSmart()
 	{
-		return this.buffer[this.offset] >= 0 ? this.readUnsignedShort() : Integer.MAX_VALUE & this.readInt();
+		return peek() >= 0 ? this.readUnsignedShort() : Integer.MAX_VALUE & this.readInt();
 	}
 
 	public String readString()
 	{
-		int startIdx = this.getOffset();
-
-		while (this.readByte() != 0)
-		{
-			;
-		}
-
-		int length = this.getOffset() - startIdx - 1;
-		return length == 0 ? "" : readString(this.getBuffer(), startIdx, length);
-	}
-
-	private static String readString(byte[] buffer, int startIdx, int length)
-	{
 		StringBuilder sb = new StringBuilder();
 
-		for (int i = 0; i < length; ++i)
+		for (;;)
 		{
-			int ch = buffer[startIdx + i] & 255;
-			if (ch != 0)
-			{
-				if (ch >= 128 && ch < 160)
-				{
-					char var7 = CHARACTERS[ch - 128];
-					if (0 == var7)
-					{
-						var7 = 63;
-					}
+			int ch = this.readByte();
 
-					ch = var7;
+			if (ch == 0)
+				break;
+
+			if (ch >= 128 && ch < 160)
+			{
+				char var7 = CHARACTERS[ch - 128];
+				if (0 == var7)
+				{
+					var7 = 63;
 				}
 
-				sb.append((char) ch);
+				ch = var7;
 			}
-		}
 
+			sb.append((char) ch);
+		}
 		return sb.toString();
+	}
+
+	public byte[] getRemaining()
+	{
+		byte[] b = new byte[buffer.remaining()];
+		buffer.get(b);
+		return b;
+	}
+
+	@Override
+	public int read() throws IOException
+	{
+		return this.readUnsignedByte();
 	}
 }

@@ -29,117 +29,101 @@
  */
 package net.runelite.cache.io;
 
-public final class OutputStream extends Stream
+import java.io.IOException;
+import java.nio.ByteBuffer;
+
+public final class OutputStream extends java.io.OutputStream
 {
+	private ByteBuffer buffer;
+	
 	public OutputStream(int capacity)
 	{
-		this.setBuffer(new byte[capacity]);
+		buffer = ByteBuffer.allocate(capacity);
 	}
 
 	public OutputStream()
 	{
-		this.setBuffer(new byte[16]);
+		this(16);
 	}
 
-	public OutputStream(byte[] buffer)
+	private void ensureRemaining(int remaining)
 	{
-		this.setBuffer(buffer);
-		this.offset = buffer.length;
-		this.length = buffer.length;
-	}
-
-	public OutputStream(int[] buffer)
-	{
-		this.setBuffer(new byte[buffer.length]);
-		int[] var5 = buffer;
-		int var4 = buffer.length;
-
-		for (int var3 = 0; var3 < var4; ++var3)
+		while (remaining > buffer.remaining())
 		{
-			int value = var5[var3];
-			this.writeByte(value);
+			int newCapacity = buffer.capacity() * 2;
+
+			ByteBuffer old = buffer;
+			old.flip();
+
+			buffer = ByteBuffer.allocate(newCapacity);
+
+			buffer.put(old);
 		}
-
-	}
-
-	public void checkCapacityPosition(int position)
-	{
-		if (position >= this.getBuffer().length)
-		{
-			byte[] newBuffer = new byte[position + 16];
-			System.arraycopy(this.getBuffer(), 0, newBuffer, 0, this.getBuffer().length);
-			this.setBuffer(newBuffer);
-		}
-
 	}
 
 	public void skip(int length)
 	{
-		this.setOffset(this.getOffset() + length);
+		int pos = buffer.position();
+		pos += length;
+		buffer.position(pos);
 	}
 
 	public void setOffset(int offset)
 	{
-		this.offset = offset;
-	}
-
-	public void writeBytes(byte[] b, int offset, int length)
-	{
-		this.checkCapacityPosition(this.getOffset() + length - offset);
-		System.arraycopy(b, offset, this.getBuffer(), this.getOffset(), length);
-		this.setOffset(this.getOffset() + (length - offset));
+		buffer.position(offset);
 	}
 
 	public void writeBytes(byte[] b)
 	{
-		byte offset = 0;
-		int length = b.length;
-		this.checkCapacityPosition(this.getOffset() + length - offset);
-		System.arraycopy(b, offset, this.getBuffer(), this.getOffset(), length);
-		this.setOffset(this.getOffset() + (length - offset));
+		ensureRemaining(b.length);
+		buffer.put(b);
 	}
-
+	
 	public void writeByte(int i)
 	{
-		this.writeByte(i, this.offset++);
-	}
-
-	public void writeByte(int i, int position)
-	{
-		this.checkCapacityPosition(position);
-		this.getBuffer()[position] = (byte) i;
+		ensureRemaining(1);
+		buffer.put((byte) i);
 	}
 
 	public void writeBigSmart(int value)
 	{
 		if (value >= 65536)
 		{
+			ensureRemaining(5);
 			this.writeByte(-1);
 			this.writeInt(Integer.MAX_VALUE & value);
 		}
 		else
 		{
+			ensureRemaining(2);
 			this.writeShort(value);
 		}
 	}
 
 	public void writeShort(int i)
 	{
-		this.writeByte(i >> 8);
-		this.writeByte(i);
+		ensureRemaining(2);
+		buffer.putShort((short) i);
 	}
 
 	public void writeInt(int i)
 	{
-		this.writeByte(i >> 24);
-		this.writeByte(i >> 16);
-		this.writeByte(i >> 8);
-		this.writeByte(i);
+		ensureRemaining(4);
+		buffer.putInt(i);
 	}
 
-	public void setBuffer(byte[] buffer)
+	public byte[] flip()
 	{
-		this.buffer = buffer;
+		buffer.flip();
+		byte[] b = new byte[buffer.limit()];
+		buffer.get(b);
+		return b;
+	}
+
+	@Override
+	public void write(int b) throws IOException
+	{
+		buffer.put((byte) b);
 	}
 
 }

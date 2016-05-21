@@ -205,7 +205,7 @@ public class Index implements Closeable
 				for (index = 0; index < validArchivesCount; ++index)
 				{
 					byte[] var13 = new byte[64];
-					stream.getBytes(var13, 0, 64);
+					stream.readBytes(var13);
 
 					Archive a = this.archives.get(index);
 					a.setWhirlpool(var13);
@@ -377,9 +377,7 @@ public class Index implements Closeable
 				stream.writeByte(1); // number of loops
 			}
 			
-			byte[] fileData = new byte[stream.getOffset()];
-			stream.setOffset(0);
-			stream.getBytes(fileData, 0, fileData.length);
+			byte[] fileData = stream.flip();
 			
 			assert this.index.getIndexFileId() == this.id;
 			DataFile data = store.getData();
@@ -523,9 +521,6 @@ public class Index implements Closeable
 			}
 		}
 
-		byte[] indexData = new byte[stream.getOffset()];
-		stream.setOffset(0);
-		stream.getBytes(indexData, 0, indexData.length);
-		return indexData;
+		return stream.flip();
 	}
 }

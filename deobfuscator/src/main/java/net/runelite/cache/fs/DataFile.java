@@ -325,7 +325,7 @@ public class DataFile implements Closeable
 			{
 				int length = stream.readInt();
 				revision = this.checkRevision(stream, compressedLength);
-				data = BZip2.decompress(stream.getReaminingBuffer());
+				data = BZip2.decompress(stream.getRemaining());
 				assert data.length == length;
 				break;
 			}
@@ -333,7 +333,7 @@ public class DataFile implements Closeable
 			{
 				int length = stream.readInt();
 				revision = this.checkRevision(stream, compressedLength);
-				data = GZip.decompress(stream.getReaminingBuffer());
+				data = GZip.decompress(stream.getRemaining());
 				assert data.length == length;
 				break;
 			}
@@ -378,11 +378,8 @@ public class DataFile implements Closeable
 
 		stream.writeBytes(compressedData);
 		stream.writeShort(revision);
-		
-		byte[] compressed = new byte[stream.getOffset()];
-		stream.setOffset(0);
-		stream.getBytes(compressed, 0, compressed.length);
-		return compressed;
+
+		return stream.flip();
 	}
 	
 	private int checkRevision(InputStream stream, int compressedLength)
