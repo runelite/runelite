@@ -37,12 +37,11 @@ import java.lang.reflect.Constructor;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 
-public class Wide extends Instruction implements LVTInstruction
+public class Wide extends Instruction
 {
 	private Instruction ins;
 
@@ -50,13 +49,18 @@ public class Wide extends Instruction implements LVTInstruction
 	{
 		super(instructions, type, pc);
 	}
+
+	public Wide(Instructions instructions, Instruction ins)
+	{
+		super(instructions, InstructionType.WIDE, -1);
+		this.ins = ins;
+		length += ins.getLength();
+	}
 	
 	@Override
 	public Instruction clone()
 	{
-		Wide wide = (Wide) super.clone();
-		wide.ins = ins.clone();
-		return wide;
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override
@@ -69,7 +73,7 @@ public class Wide extends Instruction implements LVTInstruction
 		{
 			Constructor<? extends Instruction> con = op.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, Instruction.class, int.class);
 			ins = con.newInstance(this.getInstructions(), op, this, this.getPc());
-			ins.load(is);
+			((WideInstruction) ins).loadWide(is);
 			length += ins.getLength();
 		}
 		catch (Exception ex)
@@ -90,31 +94,18 @@ public class Wide extends Instruction implements LVTInstruction
 	@Override
 	public InstructionContext execute(Frame frame)
 	{
-		return ins.execute(frame);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void replace(Instruction oldi, Instruction newi)
 	{
-		assert oldi != ins;
+		assert ins != oldi || this == newi;
 	}
 
 	@Override
-	public int getVariableIndex()
+	public Instruction makeGeneric()
 	{
-		return ((LVTInstruction) ins).getVariableIndex();
-	}
-
-	@Override
-	public Instruction setVariableIndex(int idx)
-	{
-		ins = ((LVTInstruction) ins).setVariableIndex(idx);
-		return this;
-	}
-
-	@Override
-	public boolean store()
-	{
-		return ((LVTInstruction) ins).store();
+		return ins;
 	}
 }

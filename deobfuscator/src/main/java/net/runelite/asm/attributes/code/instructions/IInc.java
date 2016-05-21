@@ -65,18 +65,17 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{
-		if (wide)
-		{
-			index = is.readShort();
-			inc = is.readShort();
-			length += 4;
-		}
-		else
-		{
-			index = is.readByte();
-			inc = is.readByte();
-			length += 2;
-		}
+		index = is.readByte();
+		inc = is.readByte();
+		length += 2;
+	}
+
+	@Override
+	public void loadWide(DataInputStream is) throws IOException
+	{
+		index = is.readShort();
+		inc = is.readShort();
+		length += 4;
 	}
 	
 	@Override
@@ -136,5 +135,14 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 	{
 		index = (short) idx;
 		return this;
+	}
+
+	@Override
+	public Instruction makeSpecific()
+	{
+		if (index < Byte.MIN_VALUE || index > Byte.MAX_VALUE || inc < Byte.MIN_VALUE || inc > Byte.MAX_VALUE)
+			return new Wide(this.getInstructions(), this);
+		else
+			return this;
 	}
 }

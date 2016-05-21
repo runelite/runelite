@@ -271,7 +271,7 @@ public class Frame
 				throw ex;
 			}
 			
-			assert ictx.getInstruction() == oldCur || oldCur instanceof Wide;
+			assert ictx.getInstruction() == oldCur;
 			ctx.contexts.put(oldCur, ictx);
 			
 			execution.executed.add(oldCur);

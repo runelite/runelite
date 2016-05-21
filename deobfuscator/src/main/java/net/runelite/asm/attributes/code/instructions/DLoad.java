@@ -73,16 +73,15 @@ public class DLoad extends Instruction implements LVTInstruction, WideInstructio
 	@Override
 	public void load(DataInputStream is) throws IOException
 	{
-		if (wide)
-		{
-			index = is.readShort();
-			length += 2;
-		}
-		else
-		{
-			index = is.readByte();
-			length += 1;
-		}
+		index = is.readByte();
+		length += 1;
+	}
+
+	@Override
+	public void loadWide(DataInputStream is) throws IOException
+	{
+		index = is.readShort();
+		length += 2;
 	}
 	
 	@Override
@@ -151,7 +150,10 @@ public class DLoad extends Instruction implements LVTInstruction, WideInstructio
 			case 3:
 				return new DLoad_3(this.getInstructions());
 			default:
-				return this;
+				if (index < Byte.MIN_VALUE || index > Byte.MAX_VALUE)
+					return new Wide(this.getInstructions(), this);
+				else
+					return this;
 		}
 	}
 }
