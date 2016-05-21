@@ -35,9 +35,13 @@ import java.util.List;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.io.InputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NpcLoader
 {
+	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
+	
 	public static final IndexType INDEX_TYPE = IndexType.CONFIGS;
 	public static final int ARCHIVE_ID = 9;
 
@@ -85,7 +89,7 @@ public class NpcLoader
 		}
 		else if (12 == opcode)
 		{
-			def.tileSpacesOccupied = stream.readUnsignedShort();
+			def.tileSpacesOccupied = stream.readUnsignedByte();
 		}
 		else if (opcode == 13)
 		{
@@ -144,89 +148,7 @@ public class NpcLoader
 			}
 
 		}
-		else if (60 != opcode)
-		{
-			if (opcode == 93)
-			{
-				def.renderOnMinimap = false;
-			}
-			else if (95 == opcode)
-			{
-				def.combatLevel = stream.readUnsignedShort();
-			}
-			else if (97 == opcode)
-			{
-				def.resizeX = stream.readUnsignedShort();
-			}
-			else if (98 == opcode)
-			{
-				def.resizeY = stream.readUnsignedShort();
-			}
-			else if (opcode == 99)
-			{
-				def.hasRenderPriority = true;
-			}
-			else if (100 == opcode)
-			{
-				def.ambient = stream.readByte();
-			}
-			else if (101 == opcode)
-			{
-				def.contrast = stream.readByte();
-			}
-			else if (opcode == 102)
-			{
-				def.headIcon = stream.readUnsignedShort();
-			}
-			else if (103 == opcode)
-			{
-				def.anInt2156 = stream.readUnsignedShort();
-			}
-			else if (opcode == 106)
-			{
-				def.anInt2174 = stream.readUnsignedShort();
-				if ('\uffff' == def.anInt2174)
-				{
-					def.anInt2174 = -1;
-				}
-
-				def.anInt2187 = stream.readUnsignedShort();
-				if ('\uffff' == def.anInt2187)
-				{
-					def.anInt2187 = -40212193;
-				}
-
-				length = stream.readUnsignedByte();
-				def.anIntArray2185 = new int[length + 1];
-
-				for (index = 0; index <= length; ++index)
-				{
-					def.anIntArray2185[index] = stream.readUnsignedShort();
-					if (def.anIntArray2185[index] == '\uffff')
-					{
-						def.anIntArray2185[index] = -1;
-					}
-				}
-
-			}
-			else if (107 == opcode)
-			{
-				def.isClickable = false;
-			}
-			else if (opcode == 109)
-			{
-				def.aBool2170 = false;
-			}
-			else if (opcode == 111)
-			{
-				def.aBool2190 = true;
-			}
-			else if (opcode == 112)
-			{
-				def.anInt2184 = stream.readUnsignedByte();
-			}
-		}
-		else
+		else if (60 == opcode)
 		{
 			length = stream.readUnsignedByte();
 			def.models_2 = new int[length];
@@ -236,6 +158,89 @@ public class NpcLoader
 				def.models_2[index] = stream.readUnsignedShort();
 			}
 
+		}
+		else if (opcode == 93)
+		{
+			def.renderOnMinimap = false;
+		}
+		else if (95 == opcode)
+		{
+			def.combatLevel = stream.readUnsignedShort();
+		}
+		else if (97 == opcode)
+		{
+			def.resizeX = stream.readUnsignedShort();
+		}
+		else if (98 == opcode)
+		{
+			def.resizeY = stream.readUnsignedShort();
+		}
+		else if (opcode == 99)
+		{
+			def.hasRenderPriority = true;
+		}
+		else if (100 == opcode)
+		{
+			def.ambient = stream.readByte();
+		}
+		else if (101 == opcode)
+		{
+			def.contrast = stream.readByte();
+		}
+		else if (opcode == 102)
+		{
+			def.headIcon = stream.readUnsignedShort();
+		}
+		else if (103 == opcode)
+		{
+			def.anInt2156 = stream.readUnsignedShort();
+		}
+		else if (opcode == 106)
+		{
+			def.anInt2174 = stream.readUnsignedShort();
+			if ('\uffff' == def.anInt2174)
+			{
+				def.anInt2174 = -1;
+			}
+
+			def.anInt2187 = stream.readUnsignedShort();
+			if ('\uffff' == def.anInt2187)
+			{
+				def.anInt2187 = -40212193;
+			}
+
+			length = stream.readUnsignedByte();
+			def.anIntArray2185 = new int[length + 1];
+
+			for (index = 0; index <= length; ++index)
+			{
+				def.anIntArray2185[index] = stream.readUnsignedShort();
+				if (def.anIntArray2185[index] == '\uffff')
+				{
+					def.anIntArray2185[index] = -1;
+				}
+			}
+
+		}
+		else if (107 == opcode)
+		{
+			def.isClickable = false;
+		}
+		else if (opcode == 109)
+		{
+			def.aBool2170 = false;
+		}
+		else if (opcode == 111)
+		{
+			def.aBool2190 = true;
+		}
+		else if (opcode == 112)
+		{
+			def.anInt2184 = stream.readUnsignedByte();
+		}
+		else
+		{
+			logger.warn("Unrecognized opcode {}", opcode);
 		}
 	}
 }
