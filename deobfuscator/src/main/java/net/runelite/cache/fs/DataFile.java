@@ -36,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.util.Objects;
 import net.runelite.cache.fs.util.BZip2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
@@ -68,33 +67,6 @@ public class DataFile implements Closeable
 	public void close() throws IOException
 	{
 		dat.close();
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 71 * hash + Objects.hashCode(this.file);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final DataFile other = (DataFile) obj;
-		if (!Objects.equals(this.file, other.file))
-		{
-			return false;
-		}
-		return true;
 	}
 	
 	/**
