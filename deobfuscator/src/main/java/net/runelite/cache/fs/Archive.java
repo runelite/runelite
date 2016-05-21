@@ -58,8 +58,6 @@ public class Archive
 		int hash = 7;
 		hash = 47 * hash + this.archiveId;
 		hash = 47 * hash + this.nameHash;
-		hash = 47 * hash + Arrays.hashCode(this.whirlpool);
-		hash = 47 * hash + this.crc;
 		hash = 47 * hash + this.revision;
 		hash = 47 * hash + Objects.hashCode(this.files);
 		return hash;
@@ -85,14 +83,7 @@ public class Archive
 		{
 			return false;
 		}
-		if (this.whirlpool != null && other.whirlpool != null && !Arrays.equals(this.whirlpool, other.whirlpool))
-		{
-			return false;
-		}
-		if (this.crc != other.crc)
-		{
-			return false;
-		}
+		// crc is of the file data, we always rewrite in one loop, so iti is different
 		if (this.revision != other.revision)
 		{
 			return false;
