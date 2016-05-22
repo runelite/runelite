@@ -98,12 +98,6 @@ public class Wide extends Instruction
 	}
 
 	@Override
-	public void replace(Instruction oldi, Instruction newi)
-	{
-		assert ins != oldi || this == newi;
-	}
-
-	@Override
 	public Instruction makeGeneric()
 	{
 		return ins;

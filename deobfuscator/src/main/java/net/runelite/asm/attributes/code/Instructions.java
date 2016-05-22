@@ -212,11 +212,5 @@ public class Instructions
 		instructions.remove(oldi);
 		oldi.setInstructions(null);
 		instructions.add(i, newi);
-
-		for (Instruction ins : instructions)
-			ins.replace(oldi, newi);
-		
-		for (net.runelite.asm.attributes.code.Exception e : code.getExceptions().getExceptions())
-			e.replace(oldi, newi);
 	}
 }
