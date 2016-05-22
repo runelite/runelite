@@ -30,22 +30,22 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.asm.execution.Frame;
-import net.runelite.asm.execution.InstructionContext;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
+import net.runelite.asm.execution.Frame;
+import net.runelite.asm.execution.InstructionContext;
 
 public class GotoW extends Instruction implements JumpingInstruction
 {
-	private Instruction to;
+	private Label to;
 	private int offset;
 
 	public GotoW(Instructions instructions, InstructionType type, int pc)
@@ -63,14 +63,17 @@ public class GotoW extends Instruction implements JumpingInstruction
 	@Override
 	public void resolve()
 	{
-		to = this.getInstructions().findInstruction(this.getPc() + offset);
+		Instructions ins = this.getInstructions();
+
+		Instruction i = ins.findInstruction(this.getPc() + offset);
+		to = ins.createLabelFor(i);
 	}
 	
 	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
 		super.write(out);
-		out.writeInt(to.getPc() - this.getPc());
+		out.writeInt(to.next().getPc() - this.getPc());
 	}
 	
 	@Override
@@ -90,14 +93,7 @@ public class GotoW extends Instruction implements JumpingInstruction
 	}
 	
 	@Override
-	public void replace(Instruction oldi, Instruction newi)
-	{
-		if (to == oldi)
-			to = newi;
-	}
-	
-	@Override
-	public List<Instruction> getJumps()
+	public List<Label> getJumps()
 	{
 		return Arrays.asList(to);
 	}

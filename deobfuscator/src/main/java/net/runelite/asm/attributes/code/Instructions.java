@@ -86,10 +86,36 @@ public class Instructions
 
 		assert pc == length;
 		
-		for (Instruction i : instructions)
+		for (Instruction i : new ArrayList<>(instructions))
 			i.resolve();
 	}
-	
+
+	public Label createLabelFor(Instruction target)
+	{
+		assert target.getInstructions() == this;
+		assert instructions.contains(target);
+
+		if (target instanceof Label)
+		{
+			return (Label) target;
+		}
+
+		int i = instructions.indexOf(target);
+		if (i > 0)
+		{
+			Instruction before = instructions.get(i - 1);
+
+			if (before instanceof Label)
+			{
+				return (Label) before;
+			}
+		}
+
+		Label label = new Label(this);
+		instructions.add(i, label);
+		return label;
+	}
+
 	public List<Instruction> getInstructions()
 	{
 		return instructions;

@@ -46,7 +46,7 @@ public class NOP extends Instruction
 	
 	public NOP(Instructions instructions)
 	{
-		super(instructions, InstructionType.NOP, 0);
+		super(instructions, InstructionType.NOP, -1);
 	}
 
 	@Override

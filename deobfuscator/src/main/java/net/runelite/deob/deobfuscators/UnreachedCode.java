@@ -39,6 +39,7 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.execution.Execution;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.attributes.code.Label;
 
 public class UnreachedCode implements Deobfuscator
 {
@@ -60,21 +61,24 @@ public class UnreachedCode implements Deobfuscator
 				// if this is an exception handler, the exception handler is never used...
 				for (net.runelite.asm.attributes.code.Exception e : new ArrayList<>(m.getCode().getExceptions().getExceptions()))
 				{
-					if (e.getStart() == i)
+					if (e.getStart().next() == i)
 					{
-						e.setStart(insCopy.get(j + 1));
-						
-						if (e.getStart() == e.getEnd())
+						e.setStart(ins.createLabelFor(insCopy.get(j + 1)));
+
+						if (e.getStart().next() == e.getEnd().next())
 						{
 							m.getCode().getExceptions().remove(e);
 							continue;
 						}
 					}
-					if (e.getHandler() == i)
+					if (e.getHandler().next() == i)
 					{
 						m.getCode().getExceptions().remove(e);
 					}
 				}
+
+				if (i instanceof Label)
+					continue;
 				
 				ins.remove(i);
 				++count;

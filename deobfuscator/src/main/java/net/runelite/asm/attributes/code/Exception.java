@@ -42,7 +42,7 @@ public class Exception implements Cloneable
 {
 	private Exceptions exceptions;
 
-	private Instruction start, end, handler;
+	private Label start, end, handler;
 	private Class catchType;
 
 	public Exception(Exceptions exceptions, DataInputStream is) throws IOException
@@ -57,9 +57,9 @@ public class Exception implements Cloneable
 		catchType = pool.getClass(is.readUnsignedShort());
 		
 		Instructions instructions = exceptions.getCode().getInstructions();
-		start = instructions.findInstruction(startPc);
-		end = instructions.findInstruction(endPc);
-		handler = instructions.findInstruction(handlerPc);
+		start = instructions.createLabelFor(instructions.findInstruction(startPc));
+		end = instructions.createLabelFor(instructions.findInstruction(endPc));
+		handler = instructions.createLabelFor(instructions.findInstruction(handlerPc));
 		
 		assert start != null;
 		assert end != null;
@@ -91,9 +91,9 @@ public class Exception implements Cloneable
 		assert end.getInstructions().getInstructions().contains(end);
 		assert handler.getInstructions().getInstructions().contains(handler);
 		
-		out.writeShort(start.getPc());
-		out.writeShort(end.getPc());
-		out.writeShort(handler.getPc());
+		out.writeShort(start.next().getPc());
+		out.writeShort(end.next().getPc());
+		out.writeShort(handler.next().getPc());
 		out.writeShort(catchType == null ? 0 : pool.make(catchType));
 	}
 	
@@ -107,36 +107,36 @@ public class Exception implements Cloneable
 		this.exceptions = exceptions;
 	}
 	
-	public Instruction getStart()
+	public Label getStart()
 	{
 		return start;
 	}
 	
-	public void setStart(Instruction ins)
+	public void setStart(Label ins)
 	{
 		start = ins;
 	}
 	
-	public Instruction getEnd()
+	public Label getEnd()
 	{
 		return end;
 	}
 	
-	public Instruction getHandler()
+	public Label getHandler()
 	{
 		return handler;
 	}
 	
 	public void replace(Instruction oldi, Instruction newi)
 	{
-		if (start == oldi)
-			start = newi;
-		
-		if (end == oldi)
-			end = newi;
-		
-		if (handler == oldi)
-			handler = newi;
+//		if (start == oldi)
+//			start = newi;
+//
+//		if (end == oldi)
+//			end = newi;
+//
+//		if (handler == oldi)
+//			handler = newi;
 	}
 	
 	public Class getCatchType()
