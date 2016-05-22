@@ -38,6 +38,7 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exception;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
@@ -229,7 +230,7 @@ public class Frame
 		return ctx;
 	}
 	
-	public void addInstructionContext(InstructionContext i)
+	private void addInstructionContext(InstructionContext i)
 	{
 		instructions.add(i);
 	}
@@ -328,7 +329,7 @@ public class Frame
 		
 		for (Exception e : code.getExceptions().getExceptions())
 		{
-			if (e.getStart() == ictx.getInstruction())
+			if (e.getStart().next() == ictx.getInstruction())
 			{				
 				Frame f = dup();
 				Stack stack = f.getStack();
@@ -347,7 +348,7 @@ public class Frame
 		}
 	}
 	
-	public void jump(InstructionContext from, Instruction to)
+	public void jump(InstructionContext from, Label to)
 	{
 		assert to != null;
 		assert to.getInstructions() == method.getCode().getInstructions();
@@ -359,6 +360,6 @@ public class Frame
 			return;
 		}
 		
-		cur = to;
+		cur = to.next();
 	}
 }

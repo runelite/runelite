@@ -36,6 +36,7 @@ import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.IConst_1;
 import net.runelite.asm.attributes.code.instructions.IConst_2;
@@ -49,7 +50,6 @@ import net.runelite.asm.attributes.code.instructions.IStore_1;
 import net.runelite.asm.attributes.code.instructions.IfEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
-import net.runelite.asm.attributes.code.instructions.NOP;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
@@ -76,8 +76,8 @@ public class MultiplyOneDeobfuscatorTest
 		for (Instruction i : prepareVariables)
 			ins.addInstruction(i);
 		
-		NOP label = new NOP(ins),
-		    label2 = new NOP(ins);
+		Label label = new Label(ins),
+		    label2 = new Label(ins);
 		
 		IConst_1 one = new IConst_1(ins);
 		
@@ -131,8 +131,8 @@ public class MultiplyOneDeobfuscatorTest
 		for (Instruction i : prepareVariables)
 			ins.addInstruction(i);
 		
-		NOP label = new NOP(ins),
-		    label2 = new NOP(ins);
+		Label label = new Label(ins),
+		    label2 = new Label(ins);
 		
 		IConst_1 one = new IConst_1(ins);
 		IMul mul = new IMul(ins);
@@ -213,9 +213,9 @@ public class MultiplyOneDeobfuscatorTest
 		for (Instruction i : prepareVariables)
 			ins.addInstruction(i);
 		
-		NOP label = new NOP(ins),
-		    label2 = new NOP(ins),
-		    label3 = new NOP(ins);
+		Label label = new Label(ins),
+		    label2 = new Label(ins),
+		    label3 = new Label(ins);
 		
 		IConst_1 one = new IConst_1(ins);
 		IMul mul = new IMul(ins);

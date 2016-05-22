@@ -40,6 +40,7 @@ import net.runelite.asm.Field;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
@@ -55,7 +56,7 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public abstract class If extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
-	private Instruction to;
+	private Label to;
 	private short offset;
 
 	public If(Instructions instructions, InstructionType type, int pc)
@@ -63,18 +64,17 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		super(instructions, type, pc);
 	}
 	
-	public If(Instructions instructions, InstructionType type, Instruction to)
+	public If(Instructions instructions, InstructionType type, Label to)
 	{
 		super(instructions, type, -1);
 		
 		this.to = to;
 	}
 	
-	public If(Instructions instructions, Instruction to)
+	public If(Instructions instructions, Label to)
 	{
 		super(instructions, InstructionType.IF_ICMPNE, -1);
 		
-		assert this != to;
 		assert to.getInstructions() == this.getInstructions();
 		
 		this.to = to;
@@ -90,14 +90,17 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	@Override
 	public void resolve()
 	{
-		to = this.getInstructions().findInstruction(this.getPc() + offset);
+		Instructions ins = this.getInstructions();
+
+		Instruction i = ins.findInstruction(this.getPc() + offset);
+		to = ins.createLabelFor(i);
 	}
 	
 	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
 		super.write(out);
-		out.writeShort(to.getPc() - this.getPc());
+		out.writeShort(to.next().getPc() - this.getPc());
 	}
 	
 	@Override
@@ -120,14 +123,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	}
 	
 	@Override
-	public void replace(Instruction oldi, Instruction newi)
-	{
-		if (to == oldi)
-			to = newi;
-	}
-	
-	@Override
-	public List<Instruction> getJumps()
+	public List<Label> getJumps()
 	{
 		return Arrays.asList(to);
 	}

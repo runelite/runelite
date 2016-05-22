@@ -32,6 +32,7 @@ package net.runelite.deob.deobfuscators.mapping;
 
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.IfICmpEq;
 import net.runelite.asm.attributes.code.instructions.IfICmpNe;
@@ -74,9 +75,9 @@ public class PacketHandler
 		}
 		else if (branchInstruction instanceof IfICmpEq)
 		{
-			List<Instruction> jumps = branchInstruction.getJumps();
+			List<Label> jumps = branchInstruction.getJumps();
 			assert jumps.size() == 1;
-			return jumps.get(0);
+			return jumps.get(0).next();
 		}
 		else
 		{

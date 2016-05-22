@@ -28,96 +28,45 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.asm.attributes.code.instructions;
+package net.runelite.asm.attributes.code;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.Label;
-import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
-import net.runelite.asm.execution.Frame;
-import net.runelite.asm.execution.InstructionContext;
+import net.runelite.asm.attributes.code.instructions.NOP;
 
-public class Goto extends Instruction implements JumpingInstruction
+public class Label extends NOP
 {
-	private Label to;
-	private short offset;
-
-	public Goto(Instructions instructions, InstructionType type, int pc)
+	public Label(Instructions instructions)
 	{
-		super(instructions, type, pc);
-	}
-
-	public Goto(Instructions instructions, Label to)
-	{
-		super(instructions, InstructionType.GOTO, -1);
-		
-		this.to = to;
-		length += 2;
+		super(instructions);
+		length = 0;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "goto " + to + " (at pc " + (this.getPc() + offset) + ")";
+		return "label " + next().toString();
 	}
-	
-	@Override
-	public void load(DataInputStream is) throws IOException
-	{
-		offset = is.readShort();
-		length += 2;
-	}
-	
-	@Override
-	public void resolve()
+
+	public Instruction next()
 	{
 		Instructions ins = this.getInstructions();
+		int i = ins.getInstructions().indexOf(this);
+		assert i != -1;
 
-		Instruction i = ins.findInstruction(this.getPc() + offset);
-		to = ins.createLabelFor(i);
+		Instruction next;
+		do
+		{
+			next = ins.getInstructions().get(i + 1);
+			++i;
+		}
+		while (next instanceof Label);
+
+		return next;
 	}
-	
+
 	@Override
 	public void write(DataOutputStream out) throws IOException
 	{
-		super.write(out);
-		
-		int offset = to.next().getPc() - this.getPc();
-		
-		assert offset <= Short.MAX_VALUE;
-		assert offset >= Short.MIN_VALUE;
-		
-		assert to.next().getInstructions() == this.getInstructions();
-		assert to.next().getInstructions().getInstructions().contains(to.next());
-		
-		out.writeShort(offset);
-	}
-	
-	@Override
-	public InstructionContext execute(Frame frame)
-	{
-		InstructionContext ctx = new InstructionContext(this, frame);
-		
-		frame.jump(ctx, to);
-
-		return ctx;
-	}
-	
-	@Override
-	public boolean isTerminal()
-	{
-		return true;
-	}
-
-	@Override
-	public List<Label> getJumps()
-	{
-		return Arrays.asList(to);
 	}
 }

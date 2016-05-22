@@ -30,9 +30,9 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.asm.execution.InstructionContext;
@@ -45,7 +45,7 @@ public class IfICmpEq extends If
 		super(instructions, type, pc);
 	}
 	
-	public IfICmpEq(Instructions instructions, Instruction to)
+	public IfICmpEq(Instructions instructions, Label to)
 	{
 		super(instructions, InstructionType.IF_ICMPEQ, to);
 	}

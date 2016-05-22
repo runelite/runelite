@@ -408,7 +408,7 @@ public class ConstantParameter implements Deobfuscator
 				
 				if (branch)
 				{
-					Goto gotoins = new Goto(instructions, to);
+					Goto gotoins = new Goto(instructions, instructions.createLabelFor(to));
 					
 					// insert goto
 					instructions.getInstructions().add(idx, gotoins);

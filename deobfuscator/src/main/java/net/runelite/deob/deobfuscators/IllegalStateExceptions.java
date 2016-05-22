@@ -151,7 +151,7 @@ public class IllegalStateExceptions implements Deobfuscator
 
 		// insert goto
 		assert ilist.contains(to);
-		Goto g = new Goto(instructions, to);
+		Goto g = new Goto(instructions, instructions.createLabelFor(to));
 		ilist.add(i, g);
 
 		++count;
