@@ -395,13 +395,6 @@ public class ConstantParameter implements Deobfuscator
 				assert ins != to;
 				assert instructions.getInstructions().contains(to);
 				
-				// move things that jump here to instead jump to 'to'
-				for (Instruction i : instructions.getInstructions())
-					i.replace(ins, to);
-
-				for (net.runelite.asm.attributes.code.Exception e : instructions.getCode().getExceptions().getExceptions())
-					e.replace(ins, to);
-				
 				instructions.remove(ins);
 				
 				assert instructions.getInstructions().contains(to);

@@ -135,13 +135,6 @@ public class IllegalStateExceptions implements Deobfuscator
 		// remove up to athrow
 		while (!(ins instanceof AThrow))
 		{
-			// modify instructions which jump to here to instead jump to 'to'
-
-			for (Instruction from : ilist)
-			{
-				from.replace(ins, to);
-			}
-
 			instructions.remove(ins);
 			ins = ilist.get(i); // don't need to ++i because
 		}
