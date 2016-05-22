@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import net.runelite.cache.fs.util.Djb2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 import org.slf4j.Logger;
@@ -128,6 +129,15 @@ public class Index implements Closeable
 	{
 		for (Archive a : archives)
 			if (a.getArchiveId() == id)
+				return a;
+		return null;
+	}
+
+	public Archive findArchiveByName(String name)
+	{
+		int hash = Djb2.hash(name);
+		for (Archive a : archives)
+			if (a.getNameHash() == hash)
 				return a;
 		return null;
 	}
