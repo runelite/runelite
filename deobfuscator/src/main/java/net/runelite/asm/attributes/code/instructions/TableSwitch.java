@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
@@ -47,8 +48,8 @@ import net.runelite.asm.execution.StackContext;
 
 public class TableSwitch extends Instruction implements JumpingInstruction
 {
-	private List<Instruction> branchi = new ArrayList<>();
-	private Instruction defi;
+	private List<Label> branchi = new ArrayList<>();
+	private Label defi;
 	
 	private int def;
 	private int low;
@@ -104,9 +105,16 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	@Override
 	public void resolve()
 	{
+		Instructions ins = this.getInstructions();
+
 		for (int i : jumps)
-			branchi.add(this.getInstructions().findInstruction(this.getPc() + i));
-		defi = this.getInstructions().findInstruction(this.getPc() + def);
+		{
+			Instruction in = ins.findInstruction(this.getPc() + i);
+			branchi.add(ins.createLabelFor(in));
+		}
+
+		Instruction in = ins.findInstruction(this.getPc() + def);
+		defi = ins.createLabelFor(in);
 	}
 	
 	@Override
@@ -118,12 +126,12 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		if (tableSkip == 4) tableSkip = 0;
 		if (tableSkip > 0) out.write(new byte[tableSkip]);
 		
-		out.writeInt(defi.getPc() - this.getPc());
+		out.writeInt(defi.next().getPc() - this.getPc());
 		out.writeInt(low);
 		out.writeInt(high);
 		
-		for (Instruction i : branchi)
-			out.writeInt(i.getPc() - this.getPc());
+		for (Label i : branchi)
+			out.writeInt(i.next().getPc() - this.getPc());
 	}
 
 	@Override
@@ -137,7 +145,7 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	
 		if (!frame.getExecution().step)
 		{
-			for (Instruction i : branchi)
+			for (Label i : branchi)
 			{
 				Frame other = frame.dup();
 				other.jump(ins, i);
@@ -158,21 +166,10 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 	}
 	
 	@Override
-	public void replace(Instruction oldi, Instruction newi)
+	public List<Label> getJumps()
 	{
-		if (defi == oldi)
-			defi = newi;
-		
-		for (int i = 0; i < branchi.size(); ++i)
-			if (branchi.get(i) == oldi)
-				branchi.set(i, newi);
-	}
-	
-	@Override
-	public List<Instruction> getJumps()
-	{
-		List<Instruction> list = new ArrayList<>();
-		for (Instruction i : branchi)
+		List<Label> list = new ArrayList<>();
+		for (Label i : branchi)
 			list.add(i);
 		list.add(defi);
 		return list.stream().distinct().collect(Collectors.toList());

@@ -36,6 +36,7 @@ import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instructions.Dup2_X1;
 import net.runelite.asm.attributes.code.instructions.Dup_X1;
 import net.runelite.asm.attributes.code.instructions.Goto;
@@ -56,7 +57,6 @@ import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.LStore_0;
-import net.runelite.asm.attributes.code.instructions.NOP;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
@@ -228,7 +228,7 @@ public class MultiplicationDeobfuscatorTest
 		      constant4 = new LDC_W(ins, 1807370871),
 		      constant5 = new LDC_W(ins, 981643079);
 		
-		NOP label1 = new NOP(ins);
+		Label label1 = new Label(ins);
 		
 		Instruction body[] = {
 			constant4,
@@ -297,7 +297,7 @@ public class MultiplicationDeobfuscatorTest
 		LDC_W constant1 = new LDC_W(ins, 1807370871),
 		      constant2 = new LDC_W(ins, 981643079);
 		
-		NOP label1 = new NOP(ins);
+		Label label1 = new Label(ins);
 		
 		Instruction body[] = {
 			new ILoad(ins, 0),
@@ -516,9 +516,9 @@ public class MultiplicationDeobfuscatorTest
 		LDC_W constant1 = new LDC_W(ins, -1616202347),
 		      constant2 = new LDC_W(ins, 2747837);
 		
-		NOP label1 = new NOP(ins),
-		    label2 = new NOP(ins),
-		    label3 = new NOP(ins);
+		Label label1 = new Label(ins),
+		    label2 = new Label(ins),
+		    label3 = new Label(ins);
 		
 		Instruction body[] = {
 			constant1,

@@ -113,6 +113,8 @@ public abstract class Instruction implements Cloneable
 		assert this != other;
 		assert ins.contains(this);
 		assert !ins.contains(other);
+
+		// XXX now that there are labels, most of this can go away?
 		
 		// is this really the right place for this?
 		for (Instruction i : ins)
