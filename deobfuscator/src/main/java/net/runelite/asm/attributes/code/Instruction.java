@@ -106,54 +106,10 @@ public abstract class Instruction implements Cloneable
 		//		assert ((JumpingInstruction) i).getJumps().contains(this) == false;
 	}
 	
-	public void replace(Instruction other)
-	{
-		List<Instruction> ins = instructions.getInstructions();
-		
-		assert this != other;
-		assert ins.contains(this);
-		assert !ins.contains(other);
-
-		// XXX now that there are labels, most of this can go away?
-		
-		// is this really the right place for this?
-		for (Instruction i : ins)
-		{
-			i.replace(this, other);
-		}
-		
-		Exceptions exceptions = instructions.getCode().getExceptions();
-		for (Exception e : exceptions.getExceptions())
-		{
-			e.replace(this, other);
-		}
-		
-		// replace ins
-		int index = ins.indexOf(this);
-		ins.remove(this);
-		ins.add(index, other);
-		
-		assert other.getInstructions() == this.instructions;
-		this.instructions = null;
-	}
-	
 	public boolean removeStack()
 	{
 		assert instructions != null;
-		
-		// update instructions which jump here to jump to the next instruction
-		List<Instruction> ins = instructions.getInstructions();
-		Instruction next = ins.get(ins.indexOf(this) + 1);
-		assert next != null;
-		
-		for (Instruction i : ins)
-		{
-			i.replace(this, next);
-		}
-		
-		for (Exception e : instructions.getCode().getExceptions().getExceptions())
-			e.replace(this, next);
-		
+
 		this.getInstructions().remove(this); // calls remove()
 		
 		return true;
@@ -220,10 +176,6 @@ public abstract class Instruction implements Cloneable
 	public boolean isTerminal()
 	{
 		return false;
-	}
-	
-	public void replace(Instruction oldi, Instruction newi)
-	{
 	}
 	
 	// look up symbols from pool

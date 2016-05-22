@@ -129,22 +129,10 @@ public class FieldInliner implements Deobfuscator
 				
 				fields.add(f);
 				
-				// nop
-				NOP nop1 = new NOP(instructions), nop2 = new NOP(instructions);
-
-				for (Instruction i : instructions.getInstructions())
-					i.replace(prev, nop1);
-
-				for (Instruction i : instructions.getInstructions())
-					i.replace(ins, nop1);
-				
 				boolean b = instructions.getInstructions().remove(prev);
 				assert b;
 				b = instructions.getInstructions().remove(ins);
 				assert b;
-				
-				instructions.getInstructions().add(idx - 1, nop1);
-				instructions.getInstructions().add(idx, nop2);
 			}
 		}
 	}
@@ -170,10 +158,6 @@ public class FieldInliner implements Deobfuscator
 				
 				int idx = instructions.indexOf(i);
 				assert idx != -1;
-				
-				// move jumps to i to pushIns
-				for (Instruction i2 : instructions)
-					i2.replace(i, pushIns);
 				
 				i.getInstructions().remove(i);
 				instructions.add(idx, pushIns);
