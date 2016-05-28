@@ -71,6 +71,7 @@
 		<module>runelite-client</module>
 		<module>runelite-api</module>
 		<module>model-viewer</module>
+		<module>cache</module>
 	</modules>
 
 	<profiles>
