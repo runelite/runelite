@@ -31,84 +31,66 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>net.runelite</groupId>
+		<artifactId>runelite-parent</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+	</parent>
+
 	<groupId>net.runelite</groupId>
-	<artifactId>runelite-parent</artifactId>
-	<version>1.1.0-SNAPSHOT</version>
-	<name>Runelite</name>
-	<packaging>pom</packaging>
+	<artifactId>modelviewer</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>Model Viewer</name>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<dependencies>
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>deob</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
 
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
-	</properties>
+		<dependency>
+			<groupId>org.lwjgl.lwjgl</groupId>
+			<artifactId>lwjgl</artifactId>
+			<version>2.9.3</version>
+		</dependency>
 
-	<scm>
-		<url>https://github.com/runelite/runelite</url>
-		<connection>scm:git:git://github.com/runelite/runelite</connection>
-		<developerConnection>scm:git:git@github.com:runelite/runelite</developerConnection>
-	</scm>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.12</version>
+		</dependency>
 
-	<distributionManagement>
-		<repository>
-			<id>runelite</id>
-			<url>${runelite.repository.url}</url>
-		</repository>
-	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>runelite</id>
-			<name>Runelite</name>
-			<url>https://repo.runelite.net</url>
-		</repository>
-	</repositories>
-
-	<modules>
-		<module>deobfuscator</module>
-		<module>runescape-client</module>
-		<module>runelite-client</module>
-		<module>runelite-api</module>
-		<module>model-viewer</module>
-	</modules>
-
-	<profiles>
-		<profile>
-			<id>Linux</id>
-			<activation>
-				<os>
-					<family>unix</family>
-				</os>
-			</activation>
-			<modules>
-				<module>runescape-client-injector</module>
-			</modules>
-		</profile>
-	</profiles>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19</version>
-				<configuration>
-					<argLine>-Xmx512m</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
+				<groupId>com.googlecode.mavennatives</groupId>
+				<artifactId>maven-nativedependencies-plugin</artifactId>
+				<version>0.0.6</version>
+				<executions>
+					<execution>
+						<id>unpacknatives</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<!--suppress MavenModelInspection (this line is for IDEA)-->
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
-		<extensions>
-			<extension>
-				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.10</version>
-			</extension>
-		</extensions>
 	</build>
 </project>
