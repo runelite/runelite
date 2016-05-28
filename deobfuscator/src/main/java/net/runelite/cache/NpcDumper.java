@@ -86,7 +86,7 @@ public class NpcDumper
 			store.load();
 
 			Index index = store.getIndex(NpcLoader.INDEX_TYPE);
-			Archive archive = index.getArchive(NpcLoader.ARCHIVE_ID);
+			Archive archive = index.getArchive(NpcLoader.ARCHIVE_INDEX.getId());
 
 			for (net.runelite.cache.fs.File f : archive.getFiles())
 			{
