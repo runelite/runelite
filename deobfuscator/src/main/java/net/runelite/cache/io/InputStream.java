@@ -78,7 +78,7 @@ public class InputStream extends java.io.InputStream
 		return buffer.limit();
 	}
 
-	public int readByte()
+	public byte readByte()
 	{
 		return buffer.get();
 	}
@@ -124,6 +124,12 @@ public class InputStream extends java.io.InputStream
 	public int readBigSmart()
 	{
 		return peek() >= 0 ? this.readUnsignedShort() : Integer.MAX_VALUE & this.readInt();
+	}
+
+	public int readShortSmart()
+	{
+		int var2 = this.peek() & 0xFF;
+		return var2 < 128 ? this.readUnsignedByte() - 64 : this.readUnsignedShort() - 0xc000;
 	}
 
 	public String readString()
