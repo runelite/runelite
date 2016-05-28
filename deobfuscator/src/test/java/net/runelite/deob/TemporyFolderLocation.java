@@ -28,45 +28,38 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob.deobfuscators;
+package net.runelite.deob;
 
 import java.io.File;
-import java.io.IOException;
-import net.runelite.asm.ClassGroup;
-import net.runelite.deob.TemporyFolderLocation;
-import net.runelite.deob.util.JarUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Rule;
+import java.net.URISyntaxException;
 import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class ExprArgOrderTest
+public class TemporyFolderLocation
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
+	private static final Logger logger = LoggerFactory.getLogger(TemporyFolderLocation.class);
 
-	@Rule
-	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
+	public static File LOCATION;
 
-	private ClassGroup group;
-
-	@Before
-	public void before() throws IOException
+	static
 	{
-		group = JarUtil.loadJar(GAMEPACK);
+		try
+		{
+			LOCATION = new File(TemporyFolderLocation.class.getResource("/cache").toURI());
+		}
+		catch (URISyntaxException ex)
+		{
+			logger.error(null, ex);
+		}
+
+		File tmp = new File("d:/temp");
+		if (tmp.exists() || tmp.mkdir())
+			System.setProperty("java.io.tmpdir", "d:/temp");
 	}
 
-	@After
-	public void after() throws IOException
+	public static TemporaryFolder getTemporaryFolder()
 	{
-		JarUtil.saveJar(group, folder.newFile());
+		return new TemporaryFolder();
 	}
-
-	@Test
-	public void testRun()
-	{
-		ExprArgOrder e = new ExprArgOrder();
-		e.run(group);
-	}
-
 }
