@@ -86,7 +86,7 @@ public class ItemDumper
 			store.load();
 
 			Index index = store.getIndex(ItemLoader.INDEX_TYPE);
-			Archive archive = index.getArchive(ItemLoader.ARCHIVE_ID);
+			Archive archive = index.getArchive(ItemLoader.ARCHIVE_INDEX.getId());
 
 			for (net.runelite.cache.fs.File f : archive.getFiles())
 			{

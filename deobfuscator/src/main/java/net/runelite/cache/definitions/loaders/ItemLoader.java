@@ -32,6 +32,7 @@ package net.runelite.cache.definitions.loaders;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.cache.ConfigType;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.io.InputStream;
@@ -43,7 +44,7 @@ public class ItemLoader
 	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
 	
 	public static final IndexType INDEX_TYPE = IndexType.CONFIGS;
-	public static final int ARCHIVE_ID = 10;
+	public static final ConfigType ARCHIVE_INDEX = ConfigType.ITEM;
 
 	private final List<ItemDefinition> items = new ArrayList<>();
 
