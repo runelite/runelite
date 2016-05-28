@@ -164,6 +164,20 @@ public class InputStream extends java.io.InputStream
 		return sb.toString();
 	}
 
+
+	public String readStringOrNull()
+	{
+		if (this.peek() != 0)
+		{
+			return readString();
+		}
+		else
+		{
+			this.readByte(); // discard
+			return null;
+		}
+	}
+
 	public byte[] getRemaining()
 	{
 		byte[] b = new byte[buffer.remaining()];
