@@ -103,6 +103,11 @@ public class InputStream extends java.io.InputStream
 		return buffer.getShort() & 0xFFFF;
 	}
 
+	public short readShort()
+	{
+		return buffer.getShort();
+	}
+
 	public int readInt()
 	{
 		return buffer.getInt();
