@@ -28,60 +28,96 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache;
+package net.runelite.cache.definitions;
 
-
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import java.io.IOException;
-import net.runelite.cache.definitions.loaders.ModelLoader;
-import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
-import net.runelite.cache.fs.Index;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ModelDumperTest
+public class ScriptDefinition
 {
-	private static final Logger logger = LoggerFactory.getLogger(ModelDumperTest.class);
+	private int id;
+        private int anInt2269;
+        private int[] instructions;
+        private int[] intOperands;
+        private String[] aStringArray2272;
+        private int localStringCount;
+        private int anInt2276;
+        private int localIntCount;
 
-	private Gson gson = new Gson();
-
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void test() throws IOException
+	public int getId()
 	{
-		java.io.File modelDir = folder.newFolder("models");
-		int count = 0;
+		return id;
+	}
 
-		try (Store store = new Store(StoreLocation.LOCATION))
-		{
-			store.load();
+	public void setId(int id)
+	{
+		this.id = id;
+	}
 
-			Index index = store.getIndex(IndexType.MODELS);
+	public int getAnInt2269()
+	{
+		return anInt2269;
+	}
 
-			for (Archive archive : index.getArchives())
-			{
-				assert archive.getFiles().size() == 1;
+	public void setAnInt2269(int anInt2269)
+	{
+		this.anInt2269 = anInt2269;
+	}
 
-				File file = archive.getFiles().get(0);
-				byte[] contents = file.getContents();
+	public int[] getInstructions()
+	{
+		return instructions;
+	}
 
-				ModelLoader loader = new ModelLoader();
-				loader.load(contents);
+	public void setInstructions(int[] instructions)
+	{
+		this.instructions = instructions;
+	}
 
-				Files.write(contents, new java.io.File(modelDir, archive.getArchiveId() + ".model"));
-				//Files.write(gson.toJson(loader), new java.io.File(modelDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
-				++count;
-			}
-		}
+	public int[] getIntOperands()
+	{
+		return intOperands;
+	}
 
-		logger.info("Dumped {} models to {}", count, modelDir);
+	public void setIntOperands(int[] intOperands)
+	{
+		this.intOperands = intOperands;
+	}
+
+	public String[] getaStringArray2272()
+	{
+		return aStringArray2272;
+	}
+
+	public void setaStringArray2272(String[] aStringArray2272)
+	{
+		this.aStringArray2272 = aStringArray2272;
+	}
+
+	public int getLocalStringCount()
+	{
+		return localStringCount;
+	}
+
+	public void setLocalStringCount(int localStringCount)
+	{
+		this.localStringCount = localStringCount;
+	}
+
+	public int getAnInt2276()
+	{
+		return anInt2276;
+	}
+
+	public void setAnInt2276(int anInt2276)
+	{
+		this.anInt2276 = anInt2276;
+	}
+
+	public int getLocalIntCount()
+	{
+		return localIntCount;
+	}
+
+	public void setLocalIntCount(int localIntCount)
+	{
+		this.localIntCount = localIntCount;
 	}
 }

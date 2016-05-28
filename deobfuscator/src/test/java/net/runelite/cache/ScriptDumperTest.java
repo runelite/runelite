@@ -30,11 +30,12 @@
 
 package net.runelite.cache;
 
-
 import com.google.common.io.Files;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
-import net.runelite.cache.definitions.loaders.ModelLoader;
+import net.runelite.cache.definitions.ScriptDefinition;
+import net.runelite.cache.definitions.loaders.ScriptLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;
@@ -45,11 +46,11 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ModelDumperTest
+public class ScriptDumperTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(ModelDumperTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(ScriptDumperTest.class);
 
-	private Gson gson = new Gson();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
@@ -57,14 +58,15 @@ public class ModelDumperTest
 	@Test
 	public void test() throws IOException
 	{
-		java.io.File modelDir = folder.newFolder("models");
+		java.io.File outDir = folder.newFolder();
 		int count = 0;
 
 		try (Store store = new Store(StoreLocation.LOCATION))
 		{
 			store.load();
 
-			Index index = store.getIndex(IndexType.MODELS);
+			Index index = store.getIndex(IndexType.CLIENTSCRIPT);
+			ScriptLoader loader = new ScriptLoader();
 
 			for (Archive archive : index.getArchives())
 			{
@@ -73,15 +75,13 @@ public class ModelDumperTest
 				File file = archive.getFiles().get(0);
 				byte[] contents = file.getContents();
 
-				ModelLoader loader = new ModelLoader();
-				loader.load(contents);
+				ScriptDefinition script = loader.load(file.getFileId(), contents);
 
-				Files.write(contents, new java.io.File(modelDir, archive.getArchiveId() + ".model"));
-				//Files.write(gson.toJson(loader), new java.io.File(modelDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
+				Files.write(contents, new java.io.File(outDir, archive.getArchiveId() + ".script"));
 				++count;
 			}
 		}
 
-		logger.info("Dumped {} models to {}", count, modelDir);
+		logger.info("Dumped {} scripts to {}", count, outDir);
 	}
 }
