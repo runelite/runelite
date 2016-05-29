@@ -34,6 +34,7 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.loaders.ScriptLoader;
 import net.runelite.cache.fs.Archive;
@@ -77,7 +78,8 @@ public class ScriptDumperTest
 
 				ScriptDefinition script = loader.load(file.getFileId(), contents);
 
-				Files.write(contents, new java.io.File(outDir, archive.getArchiveId() + ".script"));
+				String str = gson.toJson(script);
+				Files.write(str, new java.io.File(outDir, archive.getArchiveId() + ".script"), Charset.defaultCharset());
 				++count;
 			}
 		}
