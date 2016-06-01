@@ -58,12 +58,18 @@ public class BZip2
 		{
 			InputStream is = new ByteArrayInputStream(bytes);
 			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			try (OutputStream os = new BZip2CompressorOutputStream(bout))
+			try (OutputStream os = new BZip2CompressorOutputStream(bout, 1))
 			{
 				IOUtils.copy(is, os);
 			}
 
 			byte[] out = bout.toByteArray();
+
+			assert BZIP_HEADER[0] == out[0];
+			assert BZIP_HEADER[1] == out[1];
+			assert BZIP_HEADER[2] == out[2];
+			assert BZIP_HEADER[3] == out[3];
+
 			return Arrays.copyOfRange(out, BZIP_HEADER.length, out.length); // remove header..
 		}
 		catch (IOException ex)
@@ -73,15 +79,15 @@ public class BZip2
 		}
 	}
 
-	public static byte[] decompress(byte[] bytes)
+	public static byte[] decompress(byte[] bytes, int len)
 	{
 		try
 		{
-			byte[] data = new byte[bytes.length + BZIP_HEADER.length];
+			byte[] data = new byte[len + BZIP_HEADER.length];
 
 			// add header
 			System.arraycopy(BZIP_HEADER, 0, data, 0, BZIP_HEADER.length);
-			System.arraycopy(bytes, 0, data, BZIP_HEADER.length, bytes.length);
+			System.arraycopy(bytes, 0, data, BZIP_HEADER.length, len);
 
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 

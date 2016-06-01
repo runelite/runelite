@@ -75,8 +75,13 @@ public final class OutputStream extends java.io.OutputStream
 
 	public void writeBytes(byte[] b)
 	{
-		ensureRemaining(b.length);
-		buffer.put(b);
+		writeBytes(b, 0, b.length);
+	}
+
+	public void writeBytes(byte[] b, int offset, int length)
+	{
+		ensureRemaining(length);
+		buffer.put(b, offset, length);
 	}
 	
 	public void writeByte(int i)
