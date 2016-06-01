@@ -50,7 +50,12 @@ public class Index implements Closeable
 	private final Store store;
 	private final IndexFile index;
 	private final int id;
+	private int protocol = 7;
+	private boolean named = true, usesWhirpool;
 	private int revision;
+	private int crc;
+	private byte[] whirlpool;
+	private int compression; // compression method of this index's data in 255
 	private final List<Archive> archives = new ArrayList<>();
 	
 	public Index(Store store, IndexFile index, int id)
@@ -108,6 +113,21 @@ public class Index implements Closeable
 		return id;
 	}
 
+	public int getRevision()
+	{
+		return revision;
+	}
+
+	public int getCrc()
+	{
+		return crc;
+	}
+
+	public byte[] getWhirlpool()
+	{
+		return whirlpool;
+	}
+
 	public IndexFile getIndex()
 	{
 		return index;
@@ -154,6 +174,11 @@ public class Index implements Closeable
 		archives.clear();
 		
 		readIndexData(data);
+
+		this.crc = res.crc;
+		this.whirlpool = res.whirlpool;
+		this.compression = res.compression;
+		assert res.revision == -1;
 		
 		this.loadFiles();
 	}
@@ -167,14 +192,17 @@ public class Index implements Closeable
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
 		
-		DataFileWriteResult res = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(data), 0, this.revision);
+		DataFileWriteResult res = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(data), this.compression, -1); // index data revision is always -1
 		index255.write(new IndexEntry(index255, id, res.sector, res.compressedLength));
+
+		this.crc = res.crc;
+		this.whirlpool = res.whirlpool;
 	}
 	
-	private void readIndexData(byte[] data)
+	public void readIndexData(byte[] data)
 	{
 		InputStream stream = new InputStream(data);
-		int protocol = stream.readUnsignedByte();
+		protocol = stream.readUnsignedByte();
 		if (protocol >= 5 && protocol <= 7)
 		{
 			if (protocol >= 6)
@@ -183,8 +211,9 @@ public class Index implements Closeable
 			}
 
 			int hash = stream.readUnsignedByte();
-			boolean named = (1 & hash) != 0;
-			boolean usesWhirpool = (2 & hash) != 0;
+			named = (1 & hash) != 0;
+			usesWhirpool = (2 & hash) != 0;
+			assert (hash & ~3) == 0;
 			int validArchivesCount = protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
 			int lastArchiveId = 0;
 
@@ -288,65 +317,14 @@ public class Index implements Closeable
 				logger.warn("whirlpool mismatch for archive {}", a);
 			}
 
-			if (a.getFiles().size() == 1)
+			if (a.getRevision() != res.revision)
 			{
-				a.getFiles().get(0).setContents(data);
-				continue;
+				logger.warn("revision mismatch for archive {}", a);
 			}
+
+			a.setCompression(res.compression);
 			
-			final int filesCount = a.getFiles().size();
-			
-			int readPosition = data.length;
-			--readPosition;
-			int amtOfLoops = data[readPosition] & 255;
-			readPosition -= amtOfLoops * filesCount * 4;
-			InputStream stream = new InputStream(data);
-			stream.setOffset(readPosition);
-			int[] filesSize = new int[filesCount];
-
-			int sourceOffset;
-			int count;
-			for (int filesData = 0; filesData < amtOfLoops; ++filesData)
-			{
-				sourceOffset = 0;
-
-				for (count = 0; count < filesCount; ++count)
-				{
-					filesSize[count] += sourceOffset += stream.readInt();
-				}
-			}
-
-			byte[][] var18 = new byte[filesCount][];
-
-			for (sourceOffset = 0; sourceOffset < filesCount; ++sourceOffset)
-			{
-				var18[sourceOffset] = new byte[filesSize[sourceOffset]];
-				filesSize[sourceOffset] = 0;
-			}
-
-			stream.setOffset(readPosition);
-			sourceOffset = 0;
-
-			int fileId;
-			int i;
-			for (count = 0; count < amtOfLoops; ++count)
-			{
-				fileId = 0;
-
-				for (i = 0; i < filesCount; ++i)
-				{
-					fileId += stream.readInt();
-					System.arraycopy(data, sourceOffset, var18[i], filesSize[i], fileId);
-					sourceOffset += fileId;
-					filesSize[i] += fileId;
-				}
-			}
-			
-			for (i = 0; i < filesCount; ++i)
-			{
-				File f = a.getFiles().get(i);
-				f.setContents(var18[i]);
-			}
+			a.loadContents(data);
 		}
 	}
 	
@@ -354,43 +332,12 @@ public class Index implements Closeable
 	{
 		for (Archive a : archives)
 		{
-			OutputStream stream = new OutputStream();
-			
-			int sourceOffset = 0;
-			final int filesCount = a.getFiles().size();
-			
-			if (filesCount == 1)
-			{
-				File file = a.getFiles().get(0);
-				stream.writeBytes(file.getContents());
-			}
-			else
-			{
-				for (int i = 0; i < filesCount; ++i)
-				{
-					File file = a.getFiles().get(i);
-					stream.writeBytes(file.getContents());
-				}
-			
-				for (int count = 0; count < filesCount; ++count)
-				{
-					File file = a.getFiles().get(count);
-
-					int sz = file.getSize() - sourceOffset;
-					sourceOffset = file.getSize();
-					stream.writeInt(sz);
-				}
-
-				stream.writeByte(1); // number of loops
-			}
-			
-			byte[] fileData = stream.flip();
+			byte[] fileData = a.saveContents();
 			
 			assert this.index.getIndexFileId() == this.id;
 			DataFile data = store.getData();
 			
-			// XXX old data is just left there in the file?
-			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(fileData), 0, this.revision);
+			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(fileData), a.getCompression(), a.getRevision());
 			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
 			
 			a.setCrc(res.crc);
@@ -401,14 +348,12 @@ public class Index implements Closeable
 	public byte[] writeIndexData()
 	{
 		OutputStream stream = new OutputStream();
-		int protocol = 7;//this.getProtocol();
 		stream.writeByte(protocol);
 		if (protocol >= 6)
 		{
 			stream.writeInt(this.revision);
 		}
 
-		boolean named = true, usesWhirpool = false;
 		stream.writeByte((named ? 1 : 0) | (usesWhirpool ? 2 : 0));
 		if (protocol >= 7)
 		{

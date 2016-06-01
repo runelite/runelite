@@ -36,4 +36,5 @@ public class DataFileReadResult
 	public int revision;
 	public int crc; // crc of compressed data
 	public byte[] whirlpool;
+	public int compression; // compression method data was compressed with
 }

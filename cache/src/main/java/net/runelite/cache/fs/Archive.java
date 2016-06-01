@@ -31,10 +31,10 @@
 package net.runelite.cache.fs;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.io.InputStream;
+import net.runelite.cache.io.OutputStream;
 
 public class Archive
 {
@@ -44,6 +44,7 @@ public class Archive
 	private byte[] whirlpool;
 	private int crc;
 	private int revision;
+	private int compression;
 	private List<File> files = new ArrayList<>();
 	
 	public Archive(Index index, int id)
@@ -83,7 +84,6 @@ public class Archive
 		{
 			return false;
 		}
-		// crc is of the file data, we always rewrite in one loop, so iti is different
 		if (this.revision != other.revision)
 		{
 			return false;
@@ -113,6 +113,106 @@ public class Archive
 			File file = new File(this, fileId);
 			this.files.add(file);
 		}
+	}
+	
+	public void loadContents(byte[] data)
+	{
+		if (this.getFiles().size() == 1)
+		{
+			this.getFiles().get(0).setContents(data);
+			return;
+		}
+
+		int filesCount = this.getFiles().size();
+
+		InputStream stream = new InputStream(data);
+		stream.setOffset(stream.getLength() - 1);
+		int chunks = stream.readUnsignedByte();
+
+		// -1 for chunks count + one int per file slot per chunk
+		stream.setOffset(stream.getLength() - 1 - chunks * filesCount * 4);
+		int[][] chunkSizes = new int[filesCount][chunks];
+		int[] filesSize = new int[filesCount];
+
+		for (int chunk = 0; chunk < chunks; ++chunk)
+		{
+			int chunkSize = 0;
+
+			for (int id = 0; id < filesCount; ++id)
+			{
+				int delta = stream.readInt();
+				chunkSize += delta; // size of this chunk
+
+				chunkSizes[id][chunk] = chunkSize; // store size of chunk
+
+				filesSize[id] += chunkSize; // add chunk size to file size
+			}
+		}
+
+		byte[][] fileContents = new byte[filesCount][];
+		int[] fileOffsets = new int[filesCount];
+
+		for (int i = 0; i < filesCount; ++i)
+		{
+			fileContents[i] = new byte[filesSize[i]];
+		}
+
+		// the file data is at the beginning of the stream
+		stream.setOffset(0);
+
+		for (int chunk = 0; chunk < chunks; ++chunk)
+		{
+			for (int id = 0; id < filesCount; ++id)
+			{
+				int chunkSize = chunkSizes[id][chunk];
+				
+				stream.readBytes(fileContents[id], fileOffsets[id], chunkSize);
+				
+				fileOffsets[id] += chunkSize;
+			}
+		}
+
+		for (int i = 0; i < filesCount; ++i)
+		{
+			File f = this.getFiles().get(i);
+			f.setContents(fileContents[i]);
+		}
+	}
+
+	public byte[] saveContents()
+	{
+		OutputStream stream = new OutputStream();
+
+		int filesCount = this.getFiles().size();
+
+		if (filesCount == 1)
+		{
+			File file = this.getFiles().get(0);
+			stream.writeBytes(file.getContents());
+		}
+		else
+		{
+			for (File file : this.getFiles())
+			{
+				stream.writeBytes(file.getContents());
+			}
+
+			int offset = 0;
+
+			for (File file : this.getFiles())
+			{
+				int chunkSize = file.getSize();
+
+				int sz = chunkSize - offset;
+				offset = chunkSize;
+				stream.writeInt(sz);
+			}
+
+			stream.writeByte(1); // chunks
+		}
+
+		byte[] fileData = stream.flip();
+		return fileData;
 	}
 	
 	public void loadNames(InputStream stream, int numberOfFiles)
@@ -168,6 +268,16 @@ public class Archive
 	public void setRevision(int revision)
 	{
 		this.revision = revision;
+	}
+
+	public int getCompression()
+	{
+		return compression;
+	}
+
+	public void setCompression(int compression)
+	{
+		this.compression = compression;
 	}
 
 	public List<File> getFiles()

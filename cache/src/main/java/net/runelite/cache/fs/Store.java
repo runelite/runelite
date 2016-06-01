@@ -98,7 +98,7 @@ public class Store implements Closeable
 		return true;
 	}
 	
-	public final Index addIndex(int id) throws FileNotFoundException
+	public Index addIndex(int id) throws FileNotFoundException
 	{
 		for (Index i : indexes)
 			if (i.getIndex().getIndexFileId() == id)
@@ -110,6 +110,12 @@ public class Store implements Closeable
 		this.indexes.add(index);
 		
 		return index;
+	}
+
+	public void removeIndex(Index index)
+	{
+		assert indexes.contains(index);
+		indexes.remove(index);
 	}
 	
 	public void load() throws IOException
@@ -149,5 +155,13 @@ public class Store implements Closeable
 	public Index getIndex(IndexType type)
 	{
 		return indexes.get(type.getNumber());
+	}
+
+	public Index findIndex(int id)
+	{
+		for (Index i : indexes)
+			if (i.getId() == id)
+				return i;
+		return null;
 	}
 }
