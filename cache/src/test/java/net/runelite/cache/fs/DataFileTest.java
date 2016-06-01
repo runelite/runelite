@@ -68,7 +68,7 @@ public class DataFileTest
 		File file = folder.newFile();
 		Store store = new Store(folder.getRoot());
 		DataFile df = new DataFile(store, file);
-		DataFileWriteResult res = df.write(42, 0x1FFFF, ByteBuffer.wrap(b), CompressionType.NONE, 0);
+		DataFileWriteResult res = df.write(42, 0x1FFFF, ByteBuffer.wrap(b), CompressionType.BZ2, 42);
 		DataFileReadResult res2 = df.read(42, 0x1FFFF, res.sector, res.compressedLength);
 		byte[] buf = res2.data;
 		Assert.assertArrayEquals(b, buf);
@@ -95,11 +95,27 @@ public class DataFileTest
 		try (Store store = new Store(folder.getRoot()))
 		{
 			DataFile df = new DataFile(store, folder.newFile());
-			DataFileWriteResult res = df.write(41, 4, ByteBuffer.wrap("test".getBytes()), CompressionType.BZ2, 0);
+			DataFileWriteResult res = df.write(41, 4, ByteBuffer.wrap("test".getBytes()), CompressionType.BZ2, 5);
 			DataFileReadResult res2 = df.read(41, 4, res.sector, res.compressedLength);
 			byte[] buf = res2.data;
 			String str = new String(buf);
 			Assert.assertEquals("test", str);
 		}
+	}
+
+	@Test
+	public void testCrc() throws IOException
+	{
+		File file = folder.newFile();
+		Store store = new Store(folder.getRoot());
+		DataFile df = new DataFile(store, file);
+		DataFileWriteResult res = df.write(42, 3, ByteBuffer.wrap("test".getBytes()), CompressionType.NONE, 42);
+		DataFileReadResult res2 = df.read(42, 3, res.sector, res.compressedLength);
+		byte[] buf = res2.data;
+		String str = new String(buf);
+		Assert.assertEquals("test", str);
+		Assert.assertEquals(res.crc, res2.crc);
+		Assert.assertEquals(42, res2.revision);
+		file.delete();
 	}
 }

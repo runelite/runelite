@@ -27,22 +27,34 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs.util;
 
-public class Whirlpool {
-	private static gnu.crypto.hash.Whirlpool whirlpool = new gnu.crypto.hash.Whirlpool();
-	
-	public static synchronized byte[] getHash(byte[] data, int len)
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+public class Whirlpool
+{
+	private static MessageDigest messageDigest;
+
+	static
 	{
-		whirlpool.update(data, 0, len);
+		Security.addProvider(new BouncyCastleProvider());
+
 		try
 		{
-			return whirlpool.digest();
+			messageDigest = MessageDigest.getInstance("Whirlpool");
 		}
-		finally
+		catch (NoSuchAlgorithmException ex)
 		{
-			whirlpool.reset();
+			throw new RuntimeException(ex);
 		}
+	}
+
+	public static synchronized byte[] getHash(byte[] data, int len)
+	{
+		messageDigest.update(data, 0, len);
+		return messageDigest.digest();
 	}
 }

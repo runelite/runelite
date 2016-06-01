@@ -80,7 +80,7 @@ public class DataFile implements Closeable
 	 */
 	public synchronized DataFileReadResult read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
-		if (sector <= 0L || dat.length() / 520L < (long) sector)
+		if (sector <= 0L || dat.length() / SECTOR_SIZE < (long) sector)
 		{
 			logger.warn("bad read, dat length {}, requested sector {}", dat.length(), sector);
 			return null;
@@ -171,7 +171,7 @@ public class DataFile implements Closeable
 				
 		//XTEA decrypt here?
 		
-		return this.decompress(buffer.array());
+		return decompress(buffer.array());
 	}
 	
 	public synchronized DataFileWriteResult write(int indexId, int archiveId, ByteBuffer data, int compression, int revision) throws IOException
@@ -270,12 +270,13 @@ public class DataFile implements Closeable
 		DataFileWriteResult res = new DataFileWriteResult();
 		res.sector = startSector;
 		res.compressedLength = compressedData.length;
-		res.crc = CRC32HGenerator.getHash(compressedData, compressedData.length - 2);
-		res.whirlpool = Whirlpool.getHash(compressedData, compressedData.length - 2);
+		int length = revision != -1 ? compressedData.length - 2 : compressedData.length;
+		res.crc = CRC32HGenerator.getHash(compressedData, length);
+		res.whirlpool = Whirlpool.getHash(compressedData, length);
 		return res;
 	}
 	
-	private DataFileReadResult decompress(byte[] b)
+	public static DataFileReadResult decompress(byte[] b)
 	{
 		InputStream stream = new InputStream(b);
 		
@@ -290,22 +291,22 @@ public class DataFile implements Closeable
 		{
 			case CompressionType.NONE:
 				data = new byte[compressedLength];
-				revision = this.checkRevision(stream, compressedLength);
+				revision = checkRevision(stream, compressedLength);
 				stream.readBytes(data, 0, compressedLength);
 				break;
 			case CompressionType.BZ2:
 			{
 				int length = stream.readInt();
-				revision = this.checkRevision(stream, compressedLength);
-				data = BZip2.decompress(stream.getRemaining());
+				revision = checkRevision(stream, compressedLength);
+				data = BZip2.decompress(stream.getRemaining(), compressedLength);
 				assert data.length == length;
 				break;
 			}
 			case CompressionType.GZ:
 			{
 				int length = stream.readInt();
-				revision = this.checkRevision(stream, compressedLength);
-				data = GZip.decompress(stream.getRemaining());
+				revision = checkRevision(stream, compressedLength);
+				data = GZip.decompress(stream.getRemaining(), compressedLength);
 				assert data.length == length;
 				break;
 			}
@@ -316,8 +317,10 @@ public class DataFile implements Closeable
 		DataFileReadResult res = new DataFileReadResult();
 		res.data = data;
 		res.revision = revision;
-		res.crc = CRC32HGenerator.getHash(b, b.length - 2);
-		res.whirlpool = Whirlpool.getHash(b, b.length - 2);
+		int length = revision != -1 ? b.length - 2 : b.length;
+		res.crc = CRC32HGenerator.getHash(b, length);
+		res.whirlpool = Whirlpool.getHash(b, length);
+		res.compression = compression;
 		return res;
 	}
 	
@@ -349,12 +352,13 @@ public class DataFile implements Closeable
 		}
 
 		stream.writeBytes(compressedData);
-		stream.writeShort(revision);
+		if (revision != -1)
+			stream.writeShort(revision);
 
 		return stream.flip();
 	}
 	
-	private int checkRevision(InputStream stream, int compressedLength)
+	private static int checkRevision(InputStream stream, int compressedLength)
 	{
 		int offset = stream.getOffset();
 		int revision;
@@ -362,6 +366,7 @@ public class DataFile implements Closeable
 		{
 			stream.setOffset(stream.getLength() - 2);
 			revision = stream.readUnsignedShort();
+			assert revision != -1;
 			stream.setOffset(offset);
 		}
 		else
