@@ -136,6 +136,10 @@ public class ParallellMappingExecutor
 		{
 			if (stepInto(f1) == null)
 			{
+				// ensure this is stopped or else on the
+				// next step the frame is reused
+				// and the other side is stepped
+				f1.stop();
 				return step();
 			}
 			
@@ -146,6 +150,7 @@ public class ParallellMappingExecutor
 		{
 			if (stepInto(f2) == null)
 			{
+				f2.stop();
 				return step();
 			}
 
@@ -158,7 +163,14 @@ public class ParallellMappingExecutor
 			Frame stepf2 = stepInto(f2);
 			
 			if (stepf1 == null || stepf2 == null)
+			{
+				if (stepf1 == null)
+					// move to next frame
+					f1.stop();
+				if (stepf2 == null)
+					f2.stop();
 				return step();
+			}
 			
 			stepf1.otherStatic = stepf2;
 			stepf2.otherStatic = stepf1;
