@@ -123,9 +123,19 @@ public class Index implements Closeable
 		return crc;
 	}
 
+	public void setCrc(int crc)
+	{
+		this.crc = crc;
+	}
+
 	public byte[] getWhirlpool()
 	{
 		return whirlpool;
+	}
+
+	public void setWhirlpool(byte[] whirlpool)
+	{
+		this.whirlpool = whirlpool;
 	}
 
 	public IndexFile getIndex()
