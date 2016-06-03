@@ -79,6 +79,11 @@
 			<artifactId>bcprov-ext-jdk14</artifactId>
 			<version>1.54</version>
 		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.0.Final</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>junit</groupId>
