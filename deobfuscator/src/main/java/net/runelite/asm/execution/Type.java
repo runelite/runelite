@@ -30,6 +30,8 @@
 
 package net.runelite.asm.execution;
 
+import java.util.Objects;
+
 public class Type
 {
 	public String type;
@@ -90,6 +92,12 @@ public class Type
 				return type.replace("/", ".");
 		}
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Type{" + "type=" + type + '}';
+	}
 	
 	@Override
 	public boolean equals(Object other)
@@ -99,6 +107,14 @@ public class Type
 		
 		Type t = (Type) other;
 		return type.equals(t.type);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 53 * hash + Objects.hashCode(this.type);
+		return hash;
 	}
 	
 	public Type getSubtype()
