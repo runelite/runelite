@@ -31,13 +31,11 @@
 package net.runelite.asm.attributes.code;
 
 import java.io.DataInputStream;
-import net.runelite.asm.ConstantPool;
-import net.runelite.asm.execution.Frame;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.List;
+import net.runelite.asm.ConstantPool;
 import net.runelite.asm.Method;
+import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 
 public abstract class Instruction implements Cloneable

@@ -34,7 +34,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
@@ -58,6 +57,7 @@ import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import net.runelite.deob.Deobfuscator;
 
 public class MultiplicationDeobfuscator implements Deobfuscator
 {

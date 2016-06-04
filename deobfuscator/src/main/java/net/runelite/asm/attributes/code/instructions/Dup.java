@@ -35,11 +35,11 @@ import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 
 public class Dup extends Instruction implements DupInstruction
 {

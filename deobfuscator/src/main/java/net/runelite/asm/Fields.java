@@ -30,13 +30,12 @@
 
 package net.runelite.asm;
 
-import net.runelite.asm.pool.NameAndType;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.pool.NameAndType;
 
 public class Fields
 {

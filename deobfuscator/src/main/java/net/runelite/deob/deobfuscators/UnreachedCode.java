@@ -30,16 +30,16 @@
 
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.execution.Execution;
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.execution.Execution;
+import net.runelite.deob.Deobfuscator;
 
 public class UnreachedCode implements Deobfuscator
 {

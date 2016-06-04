@@ -30,10 +30,14 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
@@ -41,11 +45,6 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 
 public class IStore extends Instruction implements LVTInstruction, WideInstruction
 {

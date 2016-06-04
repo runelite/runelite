@@ -37,7 +37,6 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
-
 import net.runelite.asm.execution.Value;
 
 public class DCmpG extends Instruction

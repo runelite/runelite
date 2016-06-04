@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Set;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
@@ -50,6 +49,7 @@ import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
+import net.runelite.deob.Deobfuscator;
 
 public class IllegalStateExceptions implements Deobfuscator
 {

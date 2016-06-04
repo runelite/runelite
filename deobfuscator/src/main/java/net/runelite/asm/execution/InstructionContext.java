@@ -32,10 +32,9 @@ package net.runelite.asm.execution;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Objects;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
-import java.util.Objects;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;

@@ -32,7 +32,6 @@ package net.runelite.asm.pool;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-
 import net.runelite.asm.ConstantPool;
 import net.runelite.asm.execution.Type;
 

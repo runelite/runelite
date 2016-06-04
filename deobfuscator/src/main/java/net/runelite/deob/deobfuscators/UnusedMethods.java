@@ -30,14 +30,13 @@
 
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deob;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.execution.Execution;
-
-import java.util.ArrayList;
+import net.runelite.deob.Deob;
+import net.runelite.deob.Deobfuscator;
 
 public class UnusedMethods implements Deobfuscator
 {

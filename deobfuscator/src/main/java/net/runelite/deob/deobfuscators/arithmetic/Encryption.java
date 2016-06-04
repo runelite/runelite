@@ -30,10 +30,6 @@
 
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import com.google.gson.Gson;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.asm.pool.Field;
