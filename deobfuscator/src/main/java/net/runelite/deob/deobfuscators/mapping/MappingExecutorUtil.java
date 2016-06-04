@@ -342,11 +342,11 @@ public class MappingExecutorUtil
 
 	public static boolean isMaybeEqual(Type t1, Type t2)
 	{
-		if (t1.isPrimitive() != t2.isPrimitive())
-			return false;
-
 		if (t1.getArrayDims() != t2.getArrayDims())
 			return false;
+
+		if (t1.isPrimitive() || t2.isPrimitive())
+			return t1.equals(t2);
 
 		return true;
 	}
