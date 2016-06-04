@@ -46,6 +46,7 @@ import net.runelite.asm.execution.Variables;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 
 public class FLoad extends Instruction implements LVTInstruction, WideInstruction
 {
@@ -155,5 +156,11 @@ public class FLoad extends Instruction implements LVTInstruction, WideInstructio
 				else
 					return this;
 		}
+	}
+
+	@Override
+	public LVTInstructionType type()
+	{
+		return LVTInstructionType.FLOAT;
 	}
 }
