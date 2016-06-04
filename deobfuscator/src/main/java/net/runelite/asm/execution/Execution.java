@@ -33,15 +33,14 @@ package net.runelite.asm.execution;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deob;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.deob.Deob;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 public class Execution

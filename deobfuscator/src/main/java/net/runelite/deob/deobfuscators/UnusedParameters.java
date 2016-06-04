@@ -40,8 +40,6 @@ import java.util.List;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deob;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
@@ -55,6 +53,8 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
+import net.runelite.deob.Deob;
+import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
 
 public class UnusedParameters implements Deobfuscator

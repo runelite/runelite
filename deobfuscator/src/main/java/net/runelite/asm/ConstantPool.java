@@ -30,18 +30,17 @@
 
 package net.runelite.asm;
 
-import net.runelite.asm.pool.ConstantType;
-import net.runelite.asm.pool.InterfaceMethod;
-import net.runelite.asm.pool.NameAndType;
-import net.runelite.asm.pool.PoolEntry;
-import net.runelite.asm.pool.UTF8;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.pool.ConstantType;
+import net.runelite.asm.pool.InterfaceMethod;
+import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.pool.PoolEntry;
+import net.runelite.asm.pool.UTF8;
 
 public class ConstantPool
 {

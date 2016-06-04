@@ -30,13 +30,12 @@
 
 package net.runelite.asm;
 
-import net.runelite.asm.attributes.Attributes;
-import net.runelite.asm.signature.Type;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.signature.Type;
 
 public class Field
 {

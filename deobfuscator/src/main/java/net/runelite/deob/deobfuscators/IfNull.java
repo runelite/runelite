@@ -30,12 +30,11 @@
 
 package net.runelite.deob.deobfuscators;
 
-import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.Instructions;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.If0;
@@ -45,6 +44,7 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
+import net.runelite.deob.Deobfuscator;
 
 public class IfNull implements Deobfuscator
 {

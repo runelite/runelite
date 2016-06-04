@@ -31,11 +31,11 @@
 package net.runelite.deob;
 
 import net.runelite.asm.ClassFile;
-import net.runelite.asm.Methods;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
 import net.runelite.asm.Fields;
 import net.runelite.asm.Method;
-import net.runelite.asm.Field;
-import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Methods;
 import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instructions;

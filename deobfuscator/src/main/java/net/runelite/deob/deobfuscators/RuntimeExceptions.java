@@ -30,13 +30,12 @@
 
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
-
-import java.util.ArrayList;
+import net.runelite.deob.Deobfuscator;
 
 public class RuntimeExceptions implements Deobfuscator
 {

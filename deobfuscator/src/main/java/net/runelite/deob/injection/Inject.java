@@ -61,10 +61,10 @@ import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
-import net.runelite.asm.signature.Type;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.mapping.Import;
 
 public class Inject

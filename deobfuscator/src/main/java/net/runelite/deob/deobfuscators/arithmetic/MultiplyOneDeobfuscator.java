@@ -32,7 +32,6 @@ package net.runelite.deob.deobfuscators.arithmetic;
 
 import java.util.List;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
@@ -43,6 +42,7 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.deob.Deobfuscator;
 
 public class MultiplyOneDeobfuscator implements Deobfuscator
 {

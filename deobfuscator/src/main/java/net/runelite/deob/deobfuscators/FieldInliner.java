@@ -32,9 +32,11 @@ package net.runelite.deob.deobfuscators;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.AttributeType;
@@ -44,14 +46,11 @@ import net.runelite.asm.attributes.ConstantValue;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
+import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
-import net.runelite.asm.attributes.code.instructions.NOP;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
+import net.runelite.deob.Deobfuscator;
 
 public class FieldInliner implements Deobfuscator
 {

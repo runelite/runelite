@@ -36,10 +36,10 @@ import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.ArrayStoreInstruction;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
-import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
-import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public abstract class ArrayStore extends Instruction implements ArrayStoreInstruction
 {

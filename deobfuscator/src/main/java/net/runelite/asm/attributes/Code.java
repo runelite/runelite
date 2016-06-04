@@ -30,15 +30,14 @@
 
 package net.runelite.asm.attributes;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.signature.Signature;
 
 public class Code extends Attribute

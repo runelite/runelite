@@ -30,12 +30,11 @@
 
 package net.runelite.asm.attributes;
 
-import net.runelite.asm.pool.PoolEntry;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Objects;
+import net.runelite.asm.pool.PoolEntry;
 
 public class ConstantValue extends Attribute
 {

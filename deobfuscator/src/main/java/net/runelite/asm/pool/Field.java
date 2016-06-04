@@ -30,11 +30,10 @@
 
 package net.runelite.asm.pool;
 
-import net.runelite.asm.ConstantPool;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.asm.ConstantPool;
 
 public class Field extends PoolEntry
 {

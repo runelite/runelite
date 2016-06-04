@@ -30,6 +30,11 @@
 
 package net.runelite.asm;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.asm.attributes.AttributeType;
 import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
@@ -38,12 +43,6 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Method
 {
