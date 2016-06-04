@@ -38,10 +38,15 @@ import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.signature.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AnnotationIntegrityChecker
 {
+	private static final Logger logger = LoggerFactory.getLogger(AnnotationIntegrityChecker.class);
+	
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	
 	private ClassGroup one, two;
@@ -72,7 +77,9 @@ public class AnnotationIntegrityChecker
 
 				if (f2 == null)
 				{
-					System.out.println("Missing exported field on " + other + " named " + getExportedName(f1.getAttributes()));
+					logger.warn("Missing exported field on {} named {}",
+						other,
+						getExportedName(f1.getAttributes()));
 				}
 			}
 
@@ -85,7 +92,32 @@ public class AnnotationIntegrityChecker
 
 				if (m2 == null)
 				{
-					System.out.println("Missing exported method on " + other + " named " + getExportedName(m1.getAttributes()));
+					logger.warn("Missing exported method on {} named {}",
+						other,
+						getExportedName(m1.getAttributes()));
+				}
+			}
+		}
+
+		for (ClassFile cf : two.getClasses())
+		{
+			for (Field f : cf.getFields().getFields())
+			{
+				int num = this.getNumberOfExports(f.getAttributes());
+
+				if (num > 1)
+				{
+					logger.warn("Field {} has more than 1 export", f);
+				}
+			}
+
+			for (Method m : cf.getMethods().getMethods())
+			{
+				int num = this.getNumberOfExports(m.getAttributes());
+
+				if (num > 1)
+				{
+					logger.warn("Method {} has more than 1 export", m);
 				}
 			}
 		}
@@ -123,6 +155,22 @@ public class AnnotationIntegrityChecker
 		}
 
 		return an.find(EXPORT).getElement().getString();
+	}
+
+	private int getNumberOfExports(Attributes attr)
+	{
+		Annotations an = attr.getAnnotations();
+
+		if (an == null)
+			return 0;
+
+		int count = 0;
+
+		for (Annotation a : an.getAnnotations())
+			if (a.getType().equals(EXPORT))
+				++count;
+
+		return count;
 	}
 
 	private Field findExportedField(ClassFile clazz, String name)
