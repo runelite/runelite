@@ -30,9 +30,17 @@
 
 package net.runelite.deob.deobfuscators;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.ComparisonInstruction;
@@ -45,18 +53,10 @@ import net.runelite.asm.attributes.code.instructions.If;
 import net.runelite.asm.attributes.code.instructions.If0;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.StackContext;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
-import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Attributes;
-import net.runelite.asm.attributes.annotation.Annotation;
-import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.execution.MethodContext;
+import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.signature.Type;
+import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 class ConstantMethodParameter

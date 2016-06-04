@@ -30,14 +30,13 @@
 
 package net.runelite.asm;
 
-import net.runelite.asm.pool.Class;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import net.runelite.asm.pool.Class;
 
 public class Interfaces
 {

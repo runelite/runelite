@@ -33,7 +33,6 @@ package net.runelite.deob.deobfuscators;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
@@ -43,6 +42,7 @@ import net.runelite.asm.pool.UTF8;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
+import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.util.NameMappings;
 
 public class Renamer implements Deobfuscator

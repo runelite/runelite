@@ -30,18 +30,16 @@
 
 package net.runelite.deob.deobfuscators;
 
+import java.util.Collection;
+import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.map.MultiValueMap;
 
 // find static methods that are only called from non-static methods of one class

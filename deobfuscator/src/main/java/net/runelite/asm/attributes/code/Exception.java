@@ -30,13 +30,12 @@
 
 package net.runelite.asm.attributes.code;
 
-import net.runelite.asm.ClassFile;
-import net.runelite.asm.ConstantPool;
-import net.runelite.asm.pool.Class;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ConstantPool;
+import net.runelite.asm.pool.Class;
 
 public class Exception implements Cloneable
 {

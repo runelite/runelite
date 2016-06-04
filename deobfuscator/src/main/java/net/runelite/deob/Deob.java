@@ -30,11 +30,14 @@
 
 package net.runelite.deob;
 
-import net.runelite.asm.ClassGroup;
 import java.io.File;
 import java.io.IOException;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.execution.Execution;
 import net.runelite.deob.deobfuscators.ConstantParameter;
+import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;
+import net.runelite.deob.deobfuscators.IfNull;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
@@ -47,9 +50,6 @@ import net.runelite.deob.deobfuscators.arithmetic.ModArith;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplicationDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
-import net.runelite.asm.execution.Execution;
-import net.runelite.deob.deobfuscators.ExprArgOrder;
-import net.runelite.deob.deobfuscators.IfNull;
 import net.runelite.deob.util.JarUtil;
 
 public class Deob

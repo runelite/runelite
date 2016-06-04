@@ -35,12 +35,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.deob.Deobfuscator;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -38,10 +38,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
-import net.runelite.osb.inject.ClassHook;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
@@ -53,10 +49,14 @@ import net.runelite.asm.pool.UTF8;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.util.JarUtil;
+import net.runelite.osb.inject.ClassHook;
 import net.runelite.osb.inject.FieldHook;
 import net.runelite.osb.inject.MethodHook;
 import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
+import org.junit.Test;
 
 public class HookImporter
 {

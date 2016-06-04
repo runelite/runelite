@@ -35,9 +35,9 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isOne;
 import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isZero;
-import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfEq extends If0
 {

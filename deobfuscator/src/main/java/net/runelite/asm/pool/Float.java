@@ -30,12 +30,11 @@
 
 package net.runelite.asm.pool;
 
-import net.runelite.asm.ConstantPool;
-import net.runelite.asm.execution.Type;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import net.runelite.asm.ConstantPool;
+import net.runelite.asm.execution.Type;
 
 public class Float extends PoolEntry
 {

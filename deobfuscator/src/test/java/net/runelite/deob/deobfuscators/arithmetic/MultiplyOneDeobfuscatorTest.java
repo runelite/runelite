@@ -31,8 +31,6 @@
 package net.runelite.deob.deobfuscators.arithmetic;
 
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.ClassGroupFactory;
-import net.runelite.deob.Deobfuscator;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
@@ -53,6 +51,8 @@ import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.ClassGroupFactory;
+import net.runelite.deob.Deobfuscator;
 import org.junit.Assert;
 import org.junit.Test;
 

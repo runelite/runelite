@@ -39,11 +39,10 @@ import net.runelite.asm.attributes.code.Exception;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
-import net.runelite.asm.attributes.code.instructions.Wide;
+import net.runelite.asm.pool.NameAndType;
 
 public class Frame
 {

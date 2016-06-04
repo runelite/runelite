@@ -30,16 +30,15 @@
 
 package net.runelite.asm;
 
-import net.runelite.asm.attributes.Attributes;
-import net.runelite.asm.pool.Class;
-import net.runelite.asm.pool.NameAndType;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.pool.Class;
+import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
 
 public class ClassFile

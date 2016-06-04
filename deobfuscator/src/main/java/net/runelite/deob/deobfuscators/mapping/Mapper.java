@@ -30,12 +30,9 @@
 
 package net.runelite.deob.deobfuscators.mapping;
 
-import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -44,7 +41,6 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.execution.ParallellMappingExecutor;
 import net.runelite.asm.signature.Type;
-import net.runelite.deob.deobfuscators.mapping.ExecutionMapper;
 
 public class Mapper
 {
