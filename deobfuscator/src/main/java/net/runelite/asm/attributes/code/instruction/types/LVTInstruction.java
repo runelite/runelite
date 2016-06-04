@@ -34,9 +34,11 @@ import net.runelite.asm.attributes.code.Instruction;
 
 public interface LVTInstruction
 {
-	public int getVariableIndex();
+	int getVariableIndex();
 	
-	public Instruction setVariableIndex(int idx);
+	Instruction setVariableIndex(int idx);
 	
-	public boolean store();
+	boolean store();
+
+	LVTInstructionType type();
 }
