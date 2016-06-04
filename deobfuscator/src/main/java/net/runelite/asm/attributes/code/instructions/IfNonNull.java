@@ -52,7 +52,7 @@ public class IfNonNull extends If0
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
 		
-		if (otherIc.getInstruction() instanceof IfACmpNe)
+		if (otherIc.getInstruction() instanceof IfACmpEq || otherIc.getInstruction() instanceof IfACmpNe)
 		{
 			StackContext s1 = otherIc.getPops().get(0),
 				s2 = otherIc.getPops().get(1);
@@ -77,7 +77,7 @@ public class IfNonNull extends If0
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfNull)
+		if (other.getInstruction() instanceof IfNull || other.getInstruction() instanceof IfACmpEq)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}

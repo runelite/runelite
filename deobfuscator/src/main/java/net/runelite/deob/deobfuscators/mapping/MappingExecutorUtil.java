@@ -99,8 +99,11 @@ public class MappingExecutorUtil
 			
 			MappableInstruction mi1 = (MappableInstruction) p1.getInstruction(),
 				mi2 = (MappableInstruction) p2.getInstruction();
+
+			boolean isSame = mi1.isSame(p1, p2);
+			assert isSame == mi2.isSame(p2, p1);
 			
-			if (!mi1.isSame(p1, p2))
+			if (!isSame)
 			{
 				mappings.crashed = true;
 				p1.getFrame().stop();
