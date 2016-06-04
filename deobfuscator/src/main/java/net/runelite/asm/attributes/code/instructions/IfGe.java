@@ -33,6 +33,7 @@ package net.runelite.asm.attributes.code.instructions;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.execution.InstructionContext;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfGe extends If0
 {
@@ -49,8 +50,25 @@ public class IfGe extends If0
 		
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
+
+		if (otherIc.getInstruction() instanceof IfLt)
+		{
+			return true;
+		}
 		
 		return false;
 	}
 
+	@Override
+	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
+	{
+		if (other.getInstruction() instanceof IfLt)
+		{
+			super.mapOtherBranch(mapping, ctx, other);
+		}
+		else
+		{
+			super.map(mapping, ctx, other);
+		}
+	}
 }

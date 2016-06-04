@@ -33,6 +33,8 @@ package net.runelite.asm.attributes.code.instructions;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
+import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isOne;
+import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isZero;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
@@ -58,29 +60,12 @@ public class IfNe extends If0
 			// check for one side being 0
 			StackContext s1 = otherIc.getPops().get(0),
 				s2 = otherIc.getPops().get(1);
-			
-			if (s1.getPushed().getInstruction() instanceof PushConstantInstruction)
-			{
-				PushConstantInstruction pci = (PushConstantInstruction) s1.getPushed().getInstruction();
-				Object o = pci.getConstant().getObject();
-				
-				if (o.equals(0))
-				{
-					return true;
-				}
-			}
-			if (s2.getPushed().getInstruction() instanceof PushConstantInstruction)
-			{
-				PushConstantInstruction pci = (PushConstantInstruction) s2.getPushed().getInstruction();
-				Object o = pci.getConstant().getObject();
-				
-				if (o.equals(0))
-				{
-					return true;
-				}
-			}
+
+			if (isZero(s1) || isZero(s2) || isOne(s1) || isOne(s2))
+				return true;
 		}
-		else if (otherIc.getInstruction() instanceof IfEq)
+
+		if (otherIc.getInstruction() instanceof IfEq)
 		{
 			return true;
 		}
@@ -91,7 +76,31 @@ public class IfNe extends If0
 	@Override
 	public void map(ParallelExecutorMapping mapping, InstructionContext ctx, InstructionContext other)
 	{
-		if (other.getInstruction() instanceof IfEq || other.getInstruction() instanceof IfICmpEq)
+		if (other.getInstruction() instanceof IfICmpEq)
+		{
+			StackContext s1 = other.getPops().get(0),
+				s2 = other.getPops().get(1);
+
+			if (isZero(s1) || isZero(s2)) // isne vs ificmpeq 0
+				super.mapOtherBranch(mapping, ctx, other);
+			else if (isOne(s1) || isOne(s2)) // isne vs isicmpeq 1
+				super.map(mapping, ctx, other);
+			else
+				assert false;
+		}
+		else if (other.getInstruction() instanceof IfICmpNe)
+		{
+			StackContext s1 = other.getPops().get(0),
+				s2 = other.getPops().get(1);
+
+			if (isZero(s1) || isZero(s2))
+				super.map(mapping, ctx, other); // ifne 0 vs ificmpne 0
+			else if (isOne(s1) || isOne(s2))
+				super.mapOtherBranch(mapping, ctx, other); // ifne 0 vs ificmpne 1
+			else
+				assert false;
+		}
+		else if (other.getInstruction() instanceof IfEq)
 		{
 			super.mapOtherBranch(mapping, ctx, other);
 		}
