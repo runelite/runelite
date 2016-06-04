@@ -262,7 +262,7 @@ public class ParallellMappingExecutor
 	}
 
 	public static boolean enable = true;
-	public static List<StackContext> returnStacks = new ArrayList<>();
+
 	private Frame popStack(Frame f)
 	{
 		Execution e = f.getExecution();
