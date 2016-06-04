@@ -34,6 +34,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
@@ -96,5 +97,11 @@ public class FLoad_0 extends Instruction implements LVTInstruction
 	public Instruction makeGeneric()
 	{
 		return new FLoad(this.getInstructions(), 0);
+	}
+
+	@Override
+	public LVTInstructionType type()
+	{
+		return LVTInstructionType.FLOAT;
 	}
 }

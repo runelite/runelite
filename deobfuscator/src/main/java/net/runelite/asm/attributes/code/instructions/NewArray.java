@@ -111,7 +111,7 @@ public class NewArray extends Instruction
 				throw new IllegalStateException("unknown array type " + type);
 		}
 		
-		StackContext ctx = new StackContext(ins, new Type(t.getName()), Value.newArray(count.getValue()));
+		StackContext ctx = new StackContext(ins, new Type(t.getName() + "[]"), Value.newArray(count.getValue()));
 		stack.push(ctx);
 		
 		ins.push(ctx);

@@ -27,80 +27,100 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.deob.deobfuscators;
 
-package net.runelite.asm.attributes.code.instructions;
-
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
-import net.runelite.asm.execution.Frame;
-import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.Stack;
-import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Type;
-import net.runelite.asm.execution.VariableContext;
-import net.runelite.asm.execution.Variables;
+import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class LLoad_3 extends Instruction implements LVTInstruction
+class Mappings
 {
-	public LLoad_3(Instructions instructions, InstructionType type, int pc)
+	int maxVariables;
+	int offset;
+	Map<Integer, LVTInstructionType> map = new HashMap<>();
+	Map<Integer, Integer> newIdxMap = new HashMap<>();
+
+	static boolean isSame(LVTInstructionType one, LVTInstructionType two)
 	{
-		super(instructions, type, pc);
+		return (one == LVTInstructionType.OBJECT) == (two == LVTInstructionType.OBJECT);
 	}
 
-	public LLoad_3(Instructions instructions)
+	Integer remap(int idx, LVTInstructionType type)
 	{
-		super(instructions, InstructionType.LLOAD_3, -1);
-	}
+		LVTInstructionType seen = map.get(idx);
 
-	@Override
-	public InstructionContext execute(Frame frame)
-	{
-		InstructionContext ins = new InstructionContext(this, frame);
-		Stack stack = frame.getStack();
-		Variables variables = frame.getVariables();
-		
-		VariableContext vctx = variables.get(3);
-		assert vctx.getType().equals(new Type(long.class.getName()));
-		ins.read(vctx);
-		
-		StackContext ctx = new StackContext(ins, vctx);
-		stack.push(ctx);
-		
-		ins.push(ctx);
-		
-		return ins;
+		if (seen == null)
+		{
+			map.put(idx, type);
+		}
+		else if (!isSame(type, seen))
+		{
+			Integer newIdx = newIdxMap.get(idx);
+			if (newIdx == null)
+			{
+				newIdx = maxVariables + offset++;
+				newIdxMap.put(idx, newIdx);
+			}
+
+			return newIdx;
+		}
+
+		return null;
 	}
+}
+
+public class Lvt implements Deobfuscator
+{
+	private static final Logger logger = LoggerFactory.getLogger(Lvt.class);
 	
-	@Override
-	public int getVariableIndex()
+	private int count = 0;
+
+	private void process(Method method)
 	{
-		return 3;
-	}
-	
-	@Override
-	public Instruction setVariableIndex(int idx)
-	{
-		return new LLoad(this.getInstructions(), idx);
+		Code code = method.getCode();
+		if (code == null)
+			return;
+
+		Mappings mappings = new Mappings();
+		mappings.maxVariables = code.getMaxLocals();
+
+		for (Instruction ins : code.getInstructions().getInstructions())
+		{
+			if (!(ins instanceof LVTInstruction))
+				continue;
+
+			LVTInstruction lv = (LVTInstruction) ins;
+			Integer newIdx = mappings.remap(lv.getVariableIndex(), lv.type());
+
+			if (newIdx == null)
+				continue;
+
+			assert newIdx != lv.getVariableIndex();
+
+			Instruction newIns = lv.setVariableIndex(newIdx);
+			assert ins == newIns;
+
+			++count;
+		}
 	}
 
 	@Override
-	public boolean store()
+	public void run(ClassGroup group)
 	{
-		return false;
-	}
-	
-	@Override
-	public Instruction makeGeneric()
-	{
-		return new LLoad(this.getInstructions(), 3);
+		for (ClassFile cf : group.getClasses())
+			for (Method m : cf.getMethods().getMethods())
+				process(m);
+
+		logger.info("Remapped {} lvt indexes", count);
 	}
 
-	@Override
-	public LVTInstructionType type()
-	{
-		return LVTInstructionType.LONG;
-	}
 }

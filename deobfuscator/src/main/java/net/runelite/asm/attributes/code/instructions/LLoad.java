@@ -37,6 +37,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
@@ -154,5 +155,11 @@ public class LLoad extends Instruction implements LVTInstruction, WideInstructio
 				else
 					return this;
 		}
+	}
+
+	@Override
+	public LVTInstructionType type()
+	{
+		return LVTInstructionType.LONG;
 	}
 }

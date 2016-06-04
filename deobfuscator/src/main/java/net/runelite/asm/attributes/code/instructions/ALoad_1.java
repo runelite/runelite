@@ -27,20 +27,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
-
 
 public class ALoad_1 extends Instruction implements LVTInstruction
 {
@@ -60,18 +59,18 @@ public class ALoad_1 extends Instruction implements LVTInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		Variables var = frame.getVariables();
-		
+
 		VariableContext vctx = var.get(1);
 		ins.read(vctx);
-		
+
 		StackContext ctx = new StackContext(ins, vctx);
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public int getVariableIndex()
 	{
@@ -89,10 +88,16 @@ public class ALoad_1 extends Instruction implements LVTInstruction
 	{
 		return new ALoad(this.getInstructions(), idx);
 	}
-	
+
 	@Override
 	public Instruction makeGeneric()
 	{
 		return new ALoad(this.getInstructions(), 1);
+	}
+
+	@Override
+	public LVTInstructionType type()
+	{
+		return LVTInstructionType.OBJECT;
 	}
 }
