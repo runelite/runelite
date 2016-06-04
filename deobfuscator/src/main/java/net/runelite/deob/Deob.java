@@ -39,6 +39,7 @@ import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;
 import net.runelite.deob.deobfuscators.IfNull;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
+import net.runelite.deob.deobfuscators.Lvt;
 import net.runelite.deob.deobfuscators.RenameUnique;
 import net.runelite.deob.deobfuscators.RuntimeExceptions;
 import net.runelite.deob.deobfuscators.UnreachedCode;
@@ -114,6 +115,8 @@ public class Deob
 		mod.annotateEncryption();
 
 		run(group, new ExprArgOrder());
+
+		run(group, new Lvt());
 
 		JarUtil.saveJar(group, new File(args[1]));
 		
