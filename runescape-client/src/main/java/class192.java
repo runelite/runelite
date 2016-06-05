@@ -1,8 +1,8 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gy")
+@ObfuscatedName("ga")
 public class class192 {
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    int[] field3087;
 
    public class192(int[] var1) {
@@ -29,8 +29,8 @@ public class class192 {
 
    }
 
-   @ObfuscatedName("s")
-   public int method3740(int var1) {
+   @ObfuscatedName("t")
+   public int method3710(int var1) {
       int var2 = (this.field3087.length >> 1) - 1;
       int var3 = var1 & var2;
 

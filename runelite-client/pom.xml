@@ -71,7 +71,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>client</artifactId>
-			<version>114.2-SNAPSHOT</version> <!-- rs version -->
+			<version>115.1-SNAPSHOT</version> <!-- rs version -->
 		</dependency>
 		
 		<dependency>

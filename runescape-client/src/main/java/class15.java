@@ -1,170 +1,73 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("e")
+@ObfuscatedName("j")
 @Implements("XItemContainer")
 public class class15 extends class208 {
-   @ObfuscatedName("s")
-   @Export("itemContainers")
-   static class196 field204 = new class196(32);
-   @ObfuscatedName("p")
-   @Export("stackSizes")
-   int[] field206 = new int[]{0};
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -859553877
-   )
-   static int field207;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 239798243
-   )
-   static int field208;
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @Export("itemIds")
-   int[] field210 = new int[]{-1};
-   @ObfuscatedName("c")
-   static int[] field211;
-   @ObfuscatedName("br")
-   static class168 field212;
-   @ObfuscatedName("qt")
-   @ObfuscatedGetter(
-      intValue = 1843657849
-   )
-   public static int field214;
-   @ObfuscatedName("qm")
-   @ObfuscatedGetter(
-      intValue = 398942675
-   )
-   protected static int field215;
+   int[] field220 = new int[]{-1};
+   @ObfuscatedName("g")
+   @Export("stackSizes")
+   int[] field221 = new int[]{0};
+   @ObfuscatedName("t")
+   @Export("itemContainers")
+   static class196 field222 = new class196(32);
+   @ObfuscatedName("az")
+   static class168 field223;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("cw")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1954210062"
+      signature = "(Lclass173;I)V",
+      garbageValue = "1170772956"
    )
-   @Export("setGameState")
-   static void method188(int var0) {
-      if(client.field286 != var0) {
-         if(client.field286 == 0) {
-            class44.field1030 = null;
-            class99.field1695 = null;
-            class123.field2039 = null;
-         }
-
-         if(var0 == 20 || 40 == var0 || var0 == 45) {
-            client.field311 = 0;
-            client.field312 = 0;
-            client.field313 = 0;
-         }
-
-         if(var0 != 20 && 40 != var0 && client.field562 != null) {
-            client.field562.method2960();
-            client.field562 = null;
-         }
-
-         if(25 == client.field286) {
-            client.field338 = 0;
-            client.field473 = 0;
-            client.field525 = 1;
-            client.field561 = 0;
-            client.field444 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               class123.method2776(class122.field2024, class164.field2663, class127.field2058, true, client.field286 == 11?4:0);
-            } else if(var0 == 11) {
-               class123.method2776(class122.field2024, class164.field2663, class127.field2058, false, 4);
-            } else {
-               class14.method173();
-            }
-         } else {
-            class123.method2776(class122.field2024, class164.field2663, class127.field2058, true, 0);
-         }
-
-         client.field286 = var0;
+   static void method159(class173 var0) {
+      class173 var1 = var0.field2795 == -1?null:class170.method3344(var0.field2795);
+      int var2;
+      int var3;
+      if(null == var1) {
+         var2 = class10.field162;
+         var3 = class41.field966;
+      } else {
+         var2 = var1.field2791;
+         var3 = var1.field2792;
       }
 
+      class191.method3708(var0, var2, var3, false);
+      class173.method3410(var0, var2, var3);
    }
 
-   @ObfuscatedName("an")
+   @ObfuscatedName("dq")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-75"
+      signature = "(I)V",
+      garbageValue = "-1909321381"
    )
-   static final void method191() {
-      int[] var0 = class32.field756;
+   static void method160() {
+      for(class3 var0 = (class3)client.field443.method3751(); var0 != null; var0 = (class3)client.field443.method3752()) {
+         int var1 = var0.field65;
+         if(class173.method3380(var1)) {
+            boolean var2 = true;
+            class173[] var3 = class216.field3168[var1];
 
-      int var1;
-      for(var1 = 0; var1 < class32.field755; ++var1) {
-         class2 var2 = client.field491[var0[var1]];
-         if(null != var2 && var2.field828 > 0) {
-            --var2.field828;
-            if(0 == var2.field828) {
-               var2.field819 = null;
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(null != var3[var4]) {
+                  var2 = var3[var4].field2775;
+                  break;
+               }
+            }
+
+            if(!var2) {
+               var4 = (int)var0.field3125;
+               class173 var5 = class170.method3344(var4);
+               if(var5 != null) {
+                  class20.method547(var5);
+               }
             }
          }
       }
 
-      for(var1 = 0; var1 < client.field317; ++var1) {
-         int var4 = client.field318[var1];
-         class34 var3 = client.field515[var4];
-         if(var3 != null && var3.field828 > 0) {
-            --var3.field828;
-            if(0 == var3.field828) {
-               var3.field819 = null;
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("dl")
-   @ObfuscatedSignature(
-      signature = "(Lclass173;II)Ljava/lang/String;",
-      garbageValue = "978854663"
-   )
-   static String method192(class173 var0, int var1) {
-      return !class6.method97(class48.method962(var0), var1) && null == var0.field2865?null:(var0.field2839 != null && var0.field2839.length > var1 && null != var0.field2839[var1] && var0.field2839[var1].trim().length() != 0?var0.field2839[var1]:null);
-   }
-
-   @ObfuscatedName("j")
-   static final void method193(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
-      garbageValue = "1350223790"
-   )
-   static final void method194(class122 var0, int var1) {
-      int var2 = var0.field2005;
-      class32.field762 = 0;
-      class52.method1068(var0);
-
-      for(int var3 = 0; var3 < class32.field762; ++var3) {
-         int var4 = class32.field764[var3];
-         class2 var5 = client.field491[var4];
-         int var6 = var0.method2492();
-         if(0 != (var6 & 1)) {
-            var6 += var0.method2492() << 8;
-         }
-
-         class3.method36(var0, var4, var5, var6);
-      }
-
-      if(var1 != var0.field2005 - var2) {
-         throw new RuntimeException(var0.field2005 - var2 + " " + var1);
-      }
    }
 }

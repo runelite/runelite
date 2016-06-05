@@ -1,14 +1,21 @@
-import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("da")
+@ObfuscatedName("dh")
 public class class126 {
-   @ObfuscatedName("s")
-   static Applet field2052;
-   @ObfuscatedName("j")
+   @ObfuscatedName("qu")
    @ObfuscatedGetter(
-      intValue = 869497305
+      intValue = -422901581
    )
-   public static int field2053;
+   protected static int field2049;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-2105656008"
+   )
+   public static int method2782(int var0) {
+      return var0 > 0?1:(var0 < 0?-1:0);
+   }
 }

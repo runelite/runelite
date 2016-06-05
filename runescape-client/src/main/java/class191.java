@@ -1,50 +1,74 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gu")
+@ObfuscatedName("gy")
 public class class191 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("cl")
    @ObfuscatedSignature(
-      signature = "(IIIII)I",
-      garbageValue = "-1482121214"
+      signature = "(Lclass173;IIZI)V",
+      garbageValue = "427077988"
    )
-   static final int method3736(int var0, int var1, int var2, int var3) {
-      int var4 = 65536 - class91.field1597[1024 * var2 / var3] >> 1;
-      return (var1 * var4 >> 16) + (var0 * (65536 - var4) >> 16);
-   }
+   static void method3708(class173 var0, int var1, int var2, boolean var3) {
+      int var4 = var0.field2791;
+      int var5 = var0.field2792;
+      if(var0.field2783 == 0) {
+         var0.field2791 = var0.field2787;
+      } else if(var0.field2783 == 1) {
+         var0.field2791 = var1 - var0.field2787;
+      } else if(var0.field2783 == 2) {
+         var0.field2791 = var0.field2787 * var1 >> 14;
+      }
 
-   @ObfuscatedName("cr")
-   @ObfuscatedSignature(
-      signature = "([Lclass173;IIIZB)V",
-      garbageValue = "1"
-   )
-   static void method3737(class173[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         class173 var6 = var0[var5];
-         if(var6 != null && var1 == var6.field2784) {
-            class99.method2180(var6, var2, var3, var4);
-            class72.method1553(var6, var2, var3);
-            if(var6.field2786 > var6.field2848 - var6.field2886) {
-               var6.field2786 = var6.field2848 - var6.field2886;
+      if(var0.field2784 == 0) {
+         var0.field2792 = var0.field2788;
+      } else if(var0.field2784 == 1) {
+         var0.field2792 = var2 - var0.field2788;
+      } else if(var0.field2784 == 2) {
+         var0.field2792 = var2 * var0.field2788 >> 14;
+      }
+
+      if(var0.field2783 == 4) {
+         var0.field2791 = var0.field2793 * var0.field2792 / var0.field2794;
+      }
+
+      if(var0.field2784 == 4) {
+         var0.field2792 = var0.field2794 * var0.field2791 / var0.field2793;
+      }
+
+      if(client.field452 && var0.field2778 == 0) {
+         if(var0.field2792 < 5 && var0.field2791 < 5) {
+            var0.field2792 = 5;
+            var0.field2791 = 5;
+         } else {
+            if(var0.field2792 <= 0) {
+               var0.field2792 = 5;
             }
 
-            if(var6.field2786 < 0) {
-               var6.field2786 = 0;
-            }
-
-            if(var6.field2787 > var6.field2858 - var6.field2781) {
-               var6.field2787 = var6.field2858 - var6.field2781;
-            }
-
-            if(var6.field2787 < 0) {
-               var6.field2787 = 0;
-            }
-
-            if(0 == var6.field2767) {
-               class125.method2796(var0, var6, var4);
+            if(var0.field2791 <= 0) {
+               var0.field2791 = 5;
             }
          }
       }
 
+      if(var0.field2780 == 1337) {
+         client.field454 = var0;
+      }
+
+      if(var3 && var0.field2885 != null && (var0.field2791 != var4 || var0.field2792 != var5)) {
+         class0 var6 = new class0();
+         var6.field2 = var0;
+         var6.field5 = var0.field2885;
+         client.field395.method3771(var6);
+      }
+
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass119;I)Ljava/lang/String;",
+      garbageValue = "917751295"
+   )
+   public static String method3709(class119 var0) {
+      return class115.method2410(var0, 32767);
    }
 }

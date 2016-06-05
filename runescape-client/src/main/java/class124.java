@@ -1,97 +1,98 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("df")
+@ObfuscatedName("do")
 public class class124 {
-   @ObfuscatedName("r")
-   public static class172 field2045;
-   @ObfuscatedName("j")
-   static String field2046;
-   @ObfuscatedName("rq")
-   protected static String field2047;
+   @ObfuscatedName("q")
+   public static String field2040;
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(II)Lclass103;",
-      garbageValue = "1792718672"
+      signature = "(I)J",
+      garbageValue = "-128944158"
    )
-   @Export("getFrames")
-   static class103 method2777(int var0) {
-      class103 var1 = (class103)class42.field982.method3743((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         class167 var2 = class90.field1568;
-         class167 var3 = class42.field983;
-         boolean var4 = true;
-         int[] var5 = var2.method3281(var0);
+   public static synchronized long method2746() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class115.field1979) {
+         class115.field1978 += class115.field1979 - var0;
+      }
 
-         for(int var6 = 0; var6 < var5.length; ++var6) {
-            byte[] var7 = var2.method3283(var0, var5[var6]);
-            if(var7 == null) {
-               var4 = false;
-            } else {
-               int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-               byte[] var9 = var3.method3283(var8, 0);
-               if(var9 == null) {
-                  var4 = false;
+      class115.field1979 = var0;
+      return class115.field1978 + var0;
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "4"
+   )
+   static final int method2748(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = class8.method97(var3, var5);
+      int var8 = class8.method97(1 + var3, var5);
+      int var9 = class8.method97(var3, 1 + var5);
+      int var10 = class8.method97(var3 + 1, 1 + var5);
+      int var11 = class25.method615(var7, var8, var4, var2);
+      int var12 = class25.method615(var9, var10, var4, var2);
+      return class25.method615(var11, var12, var6, var2);
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Lclass168;IIIBZI)V",
+      garbageValue = "2"
+   )
+   static void method2749(class168 var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)(var2 + (var1 << 16));
+      class172 var8 = (class172)class171.field2753.method3748(var6);
+      if(var8 == null) {
+         var8 = (class172)class171.field2745.method3748(var6);
+         if(null == var8) {
+            var8 = (class172)class171.field2748.method3748(var6);
+            if(null != var8) {
+               if(var5) {
+                  var8.method3844();
+                  class171.field2753.method3749(var8, var6);
+                  --class171.field2749;
+                  ++class171.field2750;
                }
-            }
-         }
 
-         class103 var11;
-         if(!var4) {
-            var11 = null;
-         } else {
-            try {
-               var11 = new class103(var2, var3, var0, false);
-            } catch (Exception var10) {
-               var11 = null;
-            }
-         }
-
-         return var11;
-      }
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "([BI)Ljava/lang/String;",
-      garbageValue = "2123583412"
-   )
-   public static String method2781(byte[] var0) {
-      int var1 = var0.length;
-      StringBuilder var2 = new StringBuilder();
-
-      for(int var3 = 0; var3 < var1 + 0; var3 += 3) {
-         int var4 = var0[var3] & 255;
-         var2.append(class161.field2650[var4 >>> 2]);
-         if(var3 < var1 - 1) {
-            int var5 = var0[var3 + 1] & 255;
-            var2.append(class161.field2650[(var4 & 3) << 4 | var5 >>> 4]);
-            if(var3 < var1 - 2) {
-               int var6 = var0[var3 + 2] & 255;
-               var2.append(class161.field2650[(var5 & 15) << 2 | var6 >>> 6]).append(class161.field2650[var6 & 63]);
             } else {
-               var2.append(class161.field2650[(var5 & 15) << 2]).append("=");
+               if(!var5) {
+                  var8 = (class172)class171.field2754.method3748(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new class172();
+               var8.field2762 = var0;
+               var8.field2764 = var3;
+               var8.field2763 = var4;
+               if(var5) {
+                  class171.field2753.method3749(var8, var6);
+                  ++class171.field2750;
+               } else {
+                  class171.field2747.method3837(var8);
+                  class171.field2748.method3749(var8, var6);
+                  ++class171.field2749;
+               }
+
             }
-         } else {
-            var2.append(class161.field2650[(var4 & 3) << 4]).append("==");
          }
       }
-
-      String var7 = var2.toString();
-      return var7;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1763870863"
+      signature = "(Lclass167;Lclass167;I)V",
+      garbageValue = "774960583"
    )
-   static int method2782(int var0) {
-      class35 var1 = (class35)class11.field167.method3794((long)var0);
-      return var1 == null?-1:(class11.field171.field3110 == var1.field3115?-1:((class35)var1.field3115).field789);
+   public static void method2751(class167 var0, class167 var1) {
+      class177.field2928 = var0;
+      class43.field1018 = var1;
    }
 }
