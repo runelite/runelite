@@ -66,9 +66,13 @@ import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.mapping.Import;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Inject
 {
+	private static final Logger logger = LoggerFactory.getLogger(Inject.class);
+	
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
@@ -329,21 +333,27 @@ public class Inject
 			return null;
 		
 		String ifaceName = API_PACKAGE_BASE + a.getElement().getString();
-		String ifaceNameInternal = ifaceName.replace('.', '/'); // to internal name
-
-		Class clazz = new Class(ifaceNameInternal);
-		
-		Interfaces interfaces = other.getInterfaces();
-		interfaces.addInterface(clazz);
+		java.lang.Class<?> apiClass;
 		
 		try
 		{
-			return java.lang.Class.forName(ifaceName);
+			apiClass = java.lang.Class.forName(ifaceName);
 		}
 		catch (ClassNotFoundException ex)
 		{
+			logger.warn("Class {} implements nonexistent interface {}, skipping interface injection",
+				cf.getName(),
+				ifaceName);
 			return null;
 		}
+
+		String ifaceNameInternal = ifaceName.replace('.', '/'); // to internal name
+		Class clazz = new Class(ifaceNameInternal);
+
+		Interfaces interfaces = other.getInterfaces();
+		interfaces.addInterface(clazz);
+
+		return apiClass;
 	}
 
 	private java.lang.reflect.Method findImportMethodOnApi(java.lang.Class<?> clazz, String name)
