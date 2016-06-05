@@ -47,17 +47,20 @@
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>rs-client</artifactId>
 			<version>115.2-SNAPSHOT</version> <!-- rs version -->
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>deob</artifactId>
 			<version>1.2.1-SNAPSHOT</version>
 			<classifier>jar-with-dependencies</classifier>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>vanilla</artifactId>
 			<version>115</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
