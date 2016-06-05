@@ -1,175 +1,175 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("v")
+@ObfuscatedName("e")
 @Implements("World")
 public class class25 {
-   @ObfuscatedName("go")
-   static class173 field626;
-   @ObfuscatedName("b")
-   static int[] field627 = new int[]{1, 1, 1, 1};
-   @ObfuscatedName("u")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 461641839
-   )
-   static int field628 = 0;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1379399327
+      intValue = 550327905
    )
    static int field629 = 0;
-   @ObfuscatedName("kc")
+   @ObfuscatedName("b")
+   @Export("activity")
+   String field633;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1781143875
+      intValue = -18862175
    )
-   static int field630;
-   @ObfuscatedName("k")
-   static int[] field631 = new int[]{0, 1, 2, 3};
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1608703037
-   )
-   @Export("id")
-   int field632;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -208410285
-   )
-   @Export("mask")
-   int field633;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 983285275
-   )
-   @Export("playerCount")
-   int field634;
-   @ObfuscatedName("r")
-   @Export("address")
-   String field635;
-   @ObfuscatedName("d")
+   static int field634 = 0;
+   @ObfuscatedName("s")
+   static int[] field635 = new int[]{1, 1, 1, 1};
+   @ObfuscatedName("z")
    @Export("worldList")
    static class25[] field636;
-   @ObfuscatedName("e")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -306769651
+      intValue = 2108923343
    )
-   @Export("location")
+   @Export("id")
    int field637;
-   @ObfuscatedName("h")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -463347633
+      intValue = -2089398517
    )
    @Export("index")
    int field638;
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 194074901
-   )
-   static int field640;
-   @ObfuscatedName("m")
-   @Export("activity")
-   String field641;
-   @ObfuscatedName("gr")
-   static class173 field642;
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "19136830"
-   )
-   boolean method580() {
-      return (1 & this.field633) != 0;
-   }
-
    @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1828245919
+   )
+   @Export("playerCount")
+   int field639;
+   @ObfuscatedName("o")
+   @Export("address")
+   String field640;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1971901061
+   )
+   @Export("location")
+   int field642;
+   @ObfuscatedName("d")
+   static int[] field643 = new int[]{0, 1, 2, 3};
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 196210463
+   )
+   @Export("mask")
+   int field645;
+
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1166502066"
+      garbageValue = "19847864"
    )
-   boolean method581() {
-      return (2 & this.field633) != 0;
+   boolean method579() {
+      return (1 & this.field645) != 0;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "-2"
+      garbageValue = "59"
    )
-   boolean method582() {
-      return (4 & this.field633) != 0;
+   boolean method580() {
+      return (2 & this.field645) != 0;
    }
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1112892779"
+      signature = "(B)Z",
+      garbageValue = "-50"
    )
-   boolean method583() {
-      return (8 & this.field633) != 0;
+   boolean method581() {
+      return (4 & this.field645) != 0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "69021914"
+      garbageValue = "1204104545"
    )
-   boolean method584() {
-      return (536870912 & this.field633) != 0;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1728387776"
-   )
-   boolean method585() {
-      return (33554432 & this.field633) != 0;
+   boolean method582() {
+      return (8 & this.field645) != 0;
    }
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lclass227;",
-      garbageValue = "815089600"
+      signature = "(I)Z",
+      garbageValue = "-2142182539"
    )
-   public static class227 method614(String var0, String var1, boolean var2) {
-      File var3 = new File(class4.field72, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            class227 var11 = new class227(var3, "rw", 10000L);
-            return var11;
-         } catch (IOException var10) {
-            ;
-         }
-      }
+   boolean method583() {
+      return (536870912 & this.field645) != 0;
+   }
 
-      String var4 = "";
-      if(33 == class149.field2245) {
-         var4 = "_rc";
-      } else if(34 == class149.field2245) {
-         var4 = "_wip";
-      }
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-981867147"
+   )
+   static void method590() {
+      class227 var0 = null;
 
-      File var5 = new File(class18.field258, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      class227 var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new class227(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var9) {
-            ;
-         }
+      try {
+         var0 = class17.method170("", class214.field3158.field2316, true);
+         class119 var1 = class116.field1988.method93();
+         var0.method4073(var1.field2001, 0, var1.field2000);
+      } catch (Exception var3) {
+         ;
       }
 
       try {
-         var6 = new class227(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var8) {
-         throw new RuntimeException();
+         if(var0 != null) {
+            var0.method4074();
+         }
+      } catch (Exception var2) {
+         ;
       }
+
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "185407629"
+   )
+   boolean method601() {
+      return (33554432 & this.field645) != 0;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "922889538"
+   )
+   public static int method613(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 *= var0;
+         }
+
+         var0 *= var0;
+      }
+
+      if(var1 == 1) {
+         return var2 * var0;
+      } else {
+         return var2;
+      }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIIII)I",
+      garbageValue = "-465491387"
+   )
+   static final int method615(int var0, int var1, int var2, int var3) {
+      int var4 = 65536 - class91.field1603[var2 * 1024 / var3] >> 1;
+      return (var1 * var4 >> 16) + ((65536 - var4) * var0 >> 16);
    }
 }

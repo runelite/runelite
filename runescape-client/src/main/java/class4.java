@@ -1,105 +1,53 @@
-import java.io.File;
 import java.math.BigInteger;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("d")
+@ObfuscatedName("z")
 public class class4 {
-   @ObfuscatedName("j")
-   static final BigInteger field71 = new BigInteger("9d6d215cde69efde241cf9cb97d74972d3abebc62c80e55c72d1e0ba8d8cecbadfe65c2cd2fa1207f450e5d9126c8c613dd2e5d960c7eeba305b67dd15e512776b7954087fa0f8b196fe41bf3016d1c766c7f5e4e933440540b917d315dd9bb1debf23dbe78cf47ca7d712c5a74625fdd651178fb13dde9ec72f41be77dd68bd", 16);
-   @ObfuscatedName("d")
-   public static File field72;
-   @ObfuscatedName("s")
-   static final BigInteger field74 = new BigInteger("10001", 16);
-   @ObfuscatedName("bn")
-   static class168 field75;
-   @ObfuscatedName("iq")
-   static class173 field78;
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZS)[B",
-      garbageValue = "0"
+   @ObfuscatedName("i")
+   static final BigInteger field70 = new BigInteger("94b842c3a4a0e8dd4cb66cc0232095eb512ca6304a76eaa0b9d27de9b8ae61d8c7e057d562f58fcd5dd8ff0a4b47570f1f724edd280679e3060c345ce26ff52b30ce8650a0d10d2390fd6b2b0e90026c70840750ce8d8a922981c6460405c16db423100d5aa7738558e5816758ee3172ee23944620c2abd62a532b31313f95c9", 16);
+   @ObfuscatedName("l")
+   static class80 field71;
+   @ObfuscatedName("bu")
+   static class168 field76;
+   @ObfuscatedName("t")
+   static final BigInteger field77 = new BigInteger("10001", 16);
+   @ObfuscatedName("cz")
+   static class224 field79;
+   @ObfuscatedName("fx")
+   @ObfuscatedGetter(
+      intValue = -1679592569
    )
-   public static byte[] method39(Object var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])((byte[])var0));
-         return var3;
-      } else if(var0 instanceof class125) {
-         class125 var2 = (class125)var0;
-         return var2.vmethod2795();
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
+   @Export("cameraY")
+   static int field81;
 
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ac")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "7"
+      signature = "(I)V",
+      garbageValue = "-1181006855"
    )
-   static void method40() {
-      int var0 = class15.field214;
-      int var1 = class15.field215;
-      if(class32.field770 < var0) {
-         var0 = class32.field770;
+   static void method36() {
+      int var0 = class10.field162;
+      int var1 = class41.field966;
+      if(class126.field2049 < var0) {
+         var0 = class126.field2049;
       }
 
-      if(class131.field2079 < var1) {
-         var1 = class131.field2079;
+      if(class109.field1915 < var1) {
+         var1 = class109.field1915;
       }
 
-      if(class76.field1388 != null) {
+      if(class116.field1988 != null) {
          try {
-            client var2 = client.field276;
-            int var3 = client.field336?2:1;
-            Object[] var4 = new Object[]{Integer.valueOf(var3)};
-            JSObject.getWindow(var2).call("resize", var4);
-         } catch (Throwable var5) {
+            client var2 = client.field280;
+            int var3 = client.field496?2:1;
+            class132.method2822(var2, "resize", new Object[]{Integer.valueOf(var3)});
+         } catch (Throwable var4) {
             ;
          }
       }
 
-   }
-
-   @ObfuscatedName("bn")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "82"
-   )
-   static final void method41(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < client.field480; ++var4) {
-         if(client.field485[var4] + client.field477[var4] > var0 && client.field485[var4] < var0 + var2 && client.field488[var4] + client.field486[var4] > var1 && client.field486[var4] < var1 + var3) {
-            client.field482[var4] = true;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass42;",
-      garbageValue = "398113809"
-   )
-   @Export("getAnimation")
-   public static class42 method42(int var0) {
-      class42 var1 = (class42)class42.field984.method3743((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class42.field985.method3239(12, var0);
-         var1 = new class42();
-         if(var2 != null) {
-            var1.method838(new class119(var2));
-         }
-
-         var1.method868();
-         class42.field984.method3745(var1, (long)var0);
-         return var1;
-      }
    }
 }

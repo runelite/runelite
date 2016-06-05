@@ -1,49 +1,49 @@
 import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bq")
+@ObfuscatedName("br")
 public class class54 extends class56 {
-   @ObfuscatedName("j")
-   int field1173;
-   @ObfuscatedName("s")
-   static class53 field1174;
+   @ObfuscatedName("i")
+   int field1177;
+   @ObfuscatedName("t")
+   static class53 field1178;
 
-   @ObfuscatedName("s")
-   void vmethod1492(Component var1) throws Exception {
-      field1174.method1085(var1, class56.field1186, class56.field1180, 1388610464);
+   @ObfuscatedName("r")
+   void vmethod1469() {
+      field1178.method1069(this.field1177, (byte)1);
    }
 
-   @ObfuscatedName("j")
-   void vmethod1493(int var1) throws Exception {
-      if(var1 > '耀') {
-         throw new IllegalArgumentException();
-      } else {
-         field1174.method1086(this.field1173, var1, 1539237816);
-      }
+   @ObfuscatedName("t")
+   void vmethod1466(Component var1) throws Exception {
+      field1178.method1063(var1, class56.field1194, class21.field575, -1136173707);
+   }
+
+   @ObfuscatedName("g")
+   int vmethod1468() {
+      return field1178.method1060(this.field1177, 1137861106);
+   }
+
+   @ObfuscatedName("h")
+   void vmethod1470() {
+      field1178.method1070(this.field1177, super.field1197, (byte)0);
+   }
+
+   @ObfuscatedName("z")
+   void vmethod1471() {
+      field1178.method1062(this.field1177, 632341725);
    }
 
    class54(class136 var1, int var2) {
-      field1174 = var1.method2868();
-      this.field1173 = var2;
+      field1178 = var1.method2859();
+      this.field1177 = var2;
    }
 
-   @ObfuscatedName("d")
-   void vmethod1491() {
-      field1174.method1074(this.field1173, 1757810835);
-   }
-
-   @ObfuscatedName("u")
-   void vmethod1503() {
-      field1174.method1072(this.field1173, 2063515680);
-   }
-
-   @ObfuscatedName("x")
-   void vmethod1495() {
-      field1174.method1071(this.field1173, super.field1200, 1951552826);
-   }
-
-   @ObfuscatedName("p")
-   int vmethod1510() {
-      return field1174.method1073(this.field1173, (byte)-58);
+   @ObfuscatedName("i")
+   void vmethod1476(int var1) throws Exception {
+      if(var1 > '耀') {
+         throw new IllegalArgumentException();
+      } else {
+         field1178.method1059(this.field1177, var1, (byte)83);
+      }
    }
 }

@@ -7,94 +7,80 @@ import javax.sound.sampled.DataLine.Info;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("by")
+@ObfuscatedName("bv")
 public class class69 extends class56 {
-   @ObfuscatedName("s")
-   AudioFormat field1289;
-   @ObfuscatedName("j")
-   SourceDataLine field1290;
-   @ObfuscatedName("au")
+   @ObfuscatedName("al")
    @ObfuscatedGetter(
-      intValue = 946388125
+      intValue = -545583909
    )
-   int field1291;
-   @ObfuscatedName("ap")
-   byte[] field1292;
+   int field1287;
+   @ObfuscatedName("i")
+   SourceDataLine field1288;
+   @ObfuscatedName("t")
+   AudioFormat field1289;
+   @ObfuscatedName("av")
+   byte[] field1290;
 
-   @ObfuscatedName("d")
-   void vmethod1491() {
-      if(null != this.field1290) {
-         this.field1290.close();
-         this.field1290 = null;
-      }
-
+   @ObfuscatedName("t")
+   void vmethod1466(Component var1) {
+      this.field1289 = new AudioFormat((float)class56.field1194, 16, class21.field575?2:1, true, false);
+      this.field1290 = new byte[256 << (class21.field575?2:1)];
    }
 
-   @ObfuscatedName("s")
-   void vmethod1492(Component var1) {
-      this.field1289 = new AudioFormat((float)class56.field1186, 16, class56.field1180?2:1, true, false);
-      this.field1292 = new byte[256 << (class56.field1180?2:1)];
+   @ObfuscatedName("g")
+   int vmethod1468() {
+      return this.field1287 - (this.field1288.available() >> (class21.field575?2:1));
    }
 
-   @ObfuscatedName("j")
-   void vmethod1493(int var1) throws LineUnavailableException {
-      try {
-         Info var2 = new Info(SourceDataLine.class, this.field1289, var1 << (class56.field1180?2:1));
-         this.field1290 = (SourceDataLine)AudioSystem.getLine(var2);
-         this.field1290.open();
-         this.field1290.start();
-         this.field1291 = var1;
-      } catch (LineUnavailableException var7) {
-         int var3 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
-         var3 = (var3 & 858993459) + (var3 >>> 2 & 858993459);
-         var3 = var3 + (var3 >>> 4) & 252645135;
-         var3 += var3 >>> 8;
-         var3 += var3 >>> 16;
-         int var4 = var3 & 255;
-         if(var4 == 1) {
-            this.field1290 = null;
-            throw var7;
-         }
-
-         int var5 = var1 - 1;
-         var5 |= var5 >>> 1;
-         var5 |= var5 >>> 2;
-         var5 |= var5 >>> 4;
-         var5 |= var5 >>> 8;
-         var5 |= var5 >>> 16;
-         int var6 = var5 + 1;
-         this.vmethod1493(var6);
-      }
-
+   @ObfuscatedName("r")
+   void vmethod1469() {
+      this.field1288.flush();
    }
 
-   @ObfuscatedName("x")
-   void vmethod1495() {
+   @ObfuscatedName("h")
+   void vmethod1470() {
       int var1 = 256;
-      if(class56.field1180) {
+      if(class21.field575) {
          var1 <<= 1;
       }
 
       for(int var2 = 0; var2 < var1; ++var2) {
-         int var3 = super.field1200[var2];
+         int var3 = super.field1197[var2];
          if((8388608 + var3 & -16777216) != 0) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
-         this.field1292[var2 * 2] = (byte)(var3 >> 8);
-         this.field1292[2 * var2 + 1] = (byte)(var3 >> 16);
+         this.field1290[2 * var2] = (byte)(var3 >> 8);
+         this.field1290[2 * var2 + 1] = (byte)(var3 >> 16);
       }
 
-      this.field1290.write(this.field1292, 0, var1 << 1);
+      this.field1288.write(this.field1290, 0, var1 << 1);
    }
 
-   @ObfuscatedName("u")
-   void vmethod1503() {
-      this.field1290.flush();
+   @ObfuscatedName("z")
+   void vmethod1471() {
+      if(null != this.field1288) {
+         this.field1288.close();
+         this.field1288 = null;
+      }
+
    }
 
-   @ObfuscatedName("p")
-   int vmethod1510() {
-      return this.field1291 - (this.field1290.available() >> (class56.field1180?2:1));
+   @ObfuscatedName("i")
+   void vmethod1476(int var1) throws LineUnavailableException {
+      try {
+         Info var2 = new Info(SourceDataLine.class, this.field1289, var1 << (class21.field575?2:1));
+         this.field1288 = (SourceDataLine)AudioSystem.getLine(var2);
+         this.field1288.open();
+         this.field1288.start();
+         this.field1287 = var1;
+      } catch (LineUnavailableException var3) {
+         if(class56.method1133(var1) != 1) {
+            this.vmethod1476(class24.method575(var1));
+         } else {
+            this.field1288 = null;
+            throw var3;
+         }
+      }
    }
 }

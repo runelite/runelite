@@ -1,52 +1,46 @@
-import net.runelite.mapping.Export;
+import java.awt.Image;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fx")
 public class class159 implements class112 {
-   @ObfuscatedName("j")
-   public static final class159 field2607 = new class159(3, 1);
-   @ObfuscatedName("p")
-   public static final class159 field2608 = new class159(1, 2);
-   @ObfuscatedName("d")
+   @ObfuscatedName("g")
+   public static final class159 field2625 = new class159(3, 2);
+   @ObfuscatedName("qp")
+   protected static Image field2626;
+   @ObfuscatedName("h")
+   public static final class159 field2628 = new class159(2, 3);
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1479026497
+      intValue = -1820807673
    )
-   public final int field2609;
-   @ObfuscatedName("s")
-   public static final class159 field2610 = new class159(0, 0);
-   @ObfuscatedName("u")
+   public final int field2629;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 696913241
+      intValue = -738484643
    )
-   final int field2611;
-   @ObfuscatedName("me")
-   @Export("clanMembers")
-   static class24[] field2612;
-   @ObfuscatedName("iv")
-   @ObfuscatedGetter(
-      intValue = -1108436255
+   final int field2630;
+   @ObfuscatedName("t")
+   public static final class159 field2632 = new class159(0, 0);
+   @ObfuscatedName("i")
+   public static final class159 field2634 = new class159(1, 1);
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-59"
    )
-   static int field2613;
-   @ObfuscatedName("x")
-   public static final class159 field2614 = new class159(2, 3);
+   public int vmethod3145() {
+      return this.field2630;
+   }
 
    @ObfuscatedSignature(
       signature = "(II)V",
       garbageValue = "0"
    )
    class159(int var1, int var2) {
-      this.field2609 = var1;
-      this.field2611 = var2;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "693017402"
-   )
-   public int vmethod3150() {
-      return this.field2611;
+      this.field2629 = var1;
+      this.field2630 = var2;
    }
 }

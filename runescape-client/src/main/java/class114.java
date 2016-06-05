@@ -1,74 +1,123 @@
-import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("db")
+@ObfuscatedName("de")
 public class class114 {
-   @ObfuscatedName("aa")
-   static class146 field1975;
-   @ObfuscatedName("x")
-   public static File field1977;
-   @ObfuscatedName("ng")
-   static class55 field1978;
-   @ObfuscatedName("dh")
-   @ObfuscatedGetter(
-      intValue = -1191397665
-   )
-   @Export("baseY")
-   static int field1981;
+   @ObfuscatedName("p")
+   static int[] field1974;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)Lclass133;",
-      garbageValue = "1560389661"
+      signature = "(Lclass122;II)Z",
+      garbageValue = "-2016288174"
    )
-   static class133 method2436() {
-      try {
-         return new class147();
-      } catch (Throwable var1) {
-         return new class141();
-      }
-   }
+   static boolean method2406(class122 var0, int var1) {
+      int var2 = var0.method2713(2);
+      int var3;
+      int var4;
+      int var7;
+      int var8;
+      int var9;
+      int var10;
+      if(var2 == 0) {
+         if(var0.method2713(1) != 0) {
+            method2406(var0, var1);
+         }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "-105"
-   )
-   static long method2437() {
-      try {
-         URL var0 = new URL(class122.method2758("services", false) + "m=accountappeal/login.ws");
-         URLConnection var1 = var0.openConnection();
-         var1.setRequestProperty("connection", "close");
-         var1.setDoInput(true);
-         var1.setDoOutput(true);
-         var1.setConnectTimeout(5000);
-         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
-         var2.write("data1=req");
-         var2.flush();
-         InputStream var3 = var1.getInputStream();
-         class119 var4 = new class119(new byte[1000]);
+         var3 = var0.method2713(6);
+         var4 = var0.method2713(6);
+         boolean var12 = var0.method2713(1) == 1;
+         if(var12) {
+            class32.field749[++class32.field748 - 1] = var1;
+         }
 
-         do {
-            int var5 = var3.read(var4.field2007, var4.field2005, 1000 - var4.field2005);
-            if(-1 == var5) {
-               var4.field2005 = 0;
-               long var6 = var4.method2498();
-               return var6;
+         if(null != client.field405[var1]) {
+            throw new RuntimeException();
+         } else {
+            class2 var6 = client.field405[var1] = new class2();
+            var6.field58 = var1;
+            if(null != class32.field736[var1]) {
+               var6.method12(class32.field736[var1]);
             }
 
-            var4.field2005 += var5;
-         } while(var4.field2005 < 1000);
+            var6.field831 = class32.field747[var1];
+            var6.field828 = class32.field740[var1];
+            var7 = class32.field756[var1];
+            var8 = var7 >> 28;
+            var9 = var7 >> 14 & 255;
+            var10 = var7 & 255;
+            var6.field859[0] = class32.field739[var1];
+            var6.field57 = (byte)var8;
+            var6.method29(var3 + (var9 << 6) - class89.field1565, var4 + (var10 << 6) - client.field358);
+            var6.field48 = false;
+            return true;
+         }
+      } else if(var2 == 1) {
+         var3 = var0.method2713(2);
+         var4 = class32.field756[var1];
+         class32.field756[var1] = (((var4 >> 28) + var3 & 3) << 28) + (var4 & 268435455);
+         return false;
+      } else {
+         int var5;
+         int var11;
+         if(var2 == 2) {
+            var3 = var0.method2713(5);
+            var4 = var3 >> 3;
+            var5 = var3 & 7;
+            var11 = class32.field756[var1];
+            var7 = (var11 >> 28) + var4 & 3;
+            var8 = var11 >> 14 & 255;
+            var9 = var11 & 255;
+            if(var5 == 0) {
+               --var8;
+               --var9;
+            }
 
-         return 0L;
-      } catch (Exception var8) {
-         return 0L;
+            if(var5 == 1) {
+               --var9;
+            }
+
+            if(var5 == 2) {
+               ++var8;
+               --var9;
+            }
+
+            if(var5 == 3) {
+               --var8;
+            }
+
+            if(var5 == 4) {
+               ++var8;
+            }
+
+            if(var5 == 5) {
+               --var8;
+               ++var9;
+            }
+
+            if(var5 == 6) {
+               ++var9;
+            }
+
+            if(var5 == 7) {
+               ++var8;
+               ++var9;
+            }
+
+            class32.field756[var1] = (var8 << 14) + (var7 << 28) + var9;
+            return false;
+         } else {
+            var3 = var0.method2713(18);
+            var4 = var3 >> 16;
+            var5 = var3 >> 8 & 255;
+            var11 = var3 & 255;
+            var7 = class32.field756[var1];
+            var8 = var4 + (var7 >> 28) & 3;
+            var9 = var5 + (var7 >> 14) & 255;
+            var10 = var7 + var11 & 255;
+            class32.field756[var1] = (var8 << 28) + (var9 << 14) + var10;
+            return false;
+         }
       }
    }
 }

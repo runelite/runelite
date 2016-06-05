@@ -1,69 +1,67 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dz")
+@ObfuscatedName("dt")
 public class class106 {
-   @ObfuscatedName("u")
+   @ObfuscatedName("g")
+   static int[][] field1873 = new int[128][128];
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1971304089
+      intValue = -1083348849
    )
-   public static int field1875;
-   @ObfuscatedName("p")
-   public static int[][] field1876 = new int[128][128];
-   @ObfuscatedName("b")
-   public static int[] field1880 = new int[4096];
-   @ObfuscatedName("hl")
-   @Export("localPlayer")
-   static class2 field1881;
-   @ObfuscatedName("k")
-   public static int[] field1886 = new int[4096];
-   @ObfuscatedName("x")
-   public static int[][] field1888 = new int[128][128];
+   static int field1875;
+   @ObfuscatedName("d")
+   static int[] field1876 = new int[4096];
+   @ObfuscatedName("h")
+   static int[][] field1877 = new int[128][128];
+   @ObfuscatedName("bw")
+   static class168 field1878;
+   @ObfuscatedName("kn")
+   @Export("chatMessages")
+   static class19 field1879;
+   @ObfuscatedName("s")
+   static int[] field1881 = new int[4096];
 
-   @ObfuscatedName("cp")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass173;IIIIIII)V",
-      garbageValue = "964677959"
+      signature = "(II)Z",
+      garbageValue = "1013174962"
    )
-   static final void method2367(class173 var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(client.field361) {
-         client.field362 = 32;
-      } else {
-         client.field362 = 0;
-      }
+   public static boolean method2335(int var0) {
+      return (var0 >> 20 & 1) != 0;
+   }
 
-      client.field361 = false;
-      int var7;
-      if(1 == class140.field2161 || !class89.field1563 && 4 == class140.field2161) {
-         if(var5 >= var1 && var5 < 16 + var1 && var6 >= var2 && var6 < 16 + var2) {
-            var0.field2787 -= 4;
-            class34.method701(var0);
-         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var2 + var3) {
-            var0.field2787 += 4;
-            class34.method701(var0);
-         } else if(var5 >= var1 - client.field362 && var5 < client.field362 + 16 + var1 && var6 >= var2 + 16 && var6 < var2 + var3 - 16) {
-            var7 = (var3 - 32) * var3 / var4;
-            if(var7 < 8) {
-               var7 = 8;
-            }
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "-729424280"
+   )
+   public static void method2342(Component var0) {
+      var0.addMouseListener(class140.field2186);
+      var0.addMouseMotionListener(class140.field2186);
+      var0.addFocusListener(class140.field2186);
+   }
 
-            int var8 = var6 - var2 - 16 - var7 / 2;
-            int var9 = var3 - 32 - var7;
-            var0.field2787 = var8 * (var4 - var3) / var9;
-            class34.method701(var0);
-            client.field361 = true;
+   @ObfuscatedName("ct")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1621073986"
+   )
+   static void method2343() {
+      if(client.field437) {
+         class173 var0 = class74.method1561(class27.field669, client.field342);
+         if(null != var0 && null != var0.field2825) {
+            class0 var1 = new class0();
+            var1.field2 = var0;
+            var1.field5 = var0.field2825;
+            class171.method3363(var1);
          }
-      }
 
-      if(client.field475 != 0) {
-         var7 = var0.field2886;
-         if(var5 >= var1 - var7 && var6 >= var2 && var5 < 16 + var1 && var6 <= var3 + var2) {
-            var0.field2787 += client.field475 * 45;
-            class34.method701(var0);
-         }
+         client.field437 = false;
+         class20.method547(var0);
       }
-
    }
 }
