@@ -1,15 +1,23 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gn")
+@ObfuscatedName("gz")
 public class class200 implements Iterable {
-   @ObfuscatedName("s")
+   @ObfuscatedName("t")
    public class204 field3110 = new class204();
 
-   @ObfuscatedName("j")
-   public void method3841(class204 var1) {
+   @ObfuscatedName("t")
+   public void method3806() {
+      while(this.field3110.field3114 != this.field3110) {
+         this.field3110.field3114.method3844();
+      }
+
+   }
+
+   @ObfuscatedName("i")
+   public void method3808(class204 var1) {
       if(var1.field3115 != null) {
-         var1.method3876();
+         var1.method3844();
       }
 
       var1.field3115 = this.field3110.field3115;
@@ -18,20 +26,12 @@ public class class200 implements Iterable {
       var1.field3114.field3115 = var1;
    }
 
-   public Iterator iterator() {
-      return new class206(this);
-   }
-
-   @ObfuscatedName("s")
-   public void method3846() {
-      while(this.field3110.field3114 != this.field3110) {
-         this.field3110.field3114.method3876();
-      }
-
-   }
-
    public class200() {
       this.field3110.field3114 = this.field3110;
       this.field3110.field3115 = this.field3110;
+   }
+
+   public Iterator iterator() {
+      return new class206(this);
    }
 }

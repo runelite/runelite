@@ -5,598 +5,354 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("dr")
 @Implements("Buffer")
 public class class119 extends class208 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
+   static int[] field1999 = new int[256];
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -431058323
+      intValue = -516453963
    )
    @Export("offset")
-   public int field2005;
-   @ObfuscatedName("ns")
-   @ObfuscatedGetter(
-      intValue = -909767373
-   )
-   static int field2006;
-   @ObfuscatedName("s")
-   @Export("payload")
-   public byte[] field2007;
-   @ObfuscatedName("d")
-   static long[] field2008;
-   @ObfuscatedName("p")
-   static int[] field2010 = new int[256];
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "-30078"
-   )
-   public void method2477(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1935049392"
-   )
-   public void method2480(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 24);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 16);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-   }
-
-   @ObfuscatedName("o")
-   public void method2482(long var1) {
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 56));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 48));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 40));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 32));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 24));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 16));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 8));
-      this.field2007[++this.field2005 - 1] = (byte)((int)var1);
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1809579595"
-   )
-   public void method2483(String var1) {
-      int var2 = var1.indexOf(0);
-      if(var2 >= 0) {
-         throw new IllegalArgumentException("");
-      } else {
-         this.field2005 += class22.method569(var1, 0, var1.length(), this.field2007, this.field2005);
-         this.field2007[++this.field2005 - 1] = 0;
-      }
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)V",
-      garbageValue = "-7"
-   )
-   public void method2485(CharSequence var1) {
-      int var2 = class125.method2797(var1);
-      this.field2007[++this.field2005 - 1] = 0;
-      this.method2622(var2);
-      this.field2005 += class51.method1045(this.field2007, this.field2005, var1);
-   }
-
+   public int field2000;
    @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "0"
-   )
-   public void method2486(byte[] var1, int var2, int var3) {
-      for(int var4 = var2; var4 < var2 + var3; ++var4) {
-         this.field2007[++this.field2005 - 1] = var1[var4];
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1151793311"
-   )
-   public void method2487(int var1) {
-      this.field2007[this.field2005 - var1 - 4] = (byte)(var1 >> 24);
-      this.field2007[this.field2005 - var1 - 3] = (byte)(var1 >> 16);
-      this.field2007[this.field2005 - var1 - 2] = (byte)(var1 >> 8);
-      this.field2007[this.field2005 - var1 - 1] = (byte)var1;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-537135616"
-   )
-   public void method2489(String var1) {
-      int var2 = var1.indexOf(0);
-      if(var2 >= 0) {
-         throw new IllegalArgumentException("");
-      } else {
-         this.field2007[++this.field2005 - 1] = 0;
-         this.field2005 += class22.method569(var1, 0, var1.length(), this.field2007, this.field2005);
-         this.field2007[++this.field2005 - 1] = 0;
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1161494271"
-   )
-   public void method2490(int var1) {
-      if(var1 >= 0 && var1 < 128) {
-         this.method2477(var1);
-      } else {
-         if(var1 < 0 || var1 >= '耀') {
-            throw new IllegalArgumentException();
-         }
-
-         this.method2661('耀' + var1);
-      }
-
-   }
-
+   @Export("payload")
+   public byte[] field2001;
    @ObfuscatedName("z")
+   static long[] field2003;
+   @ObfuscatedName("n")
+   static int[] field2005;
+
+   public class119(int var1) {
+      this.field2001 = class121.method2703(var1);
+      this.field2000 = 0;
+   }
+
+   @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1190689390"
+      garbageValue = "1144929751"
    )
-   public int method2492() {
-      return this.field2007[++this.field2005 - 1] & 255;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)B",
-      garbageValue = "-91"
-   )
-   public byte method2493() {
-      return this.field2007[++this.field2005 - 1];
-   }
-
-   @ObfuscatedName("bh")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1135213794"
-   )
-   public void method2494(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 24);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 16);
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-82"
-   )
-   public int method2495() {
-      this.field2005 += 2;
-      int var1 = ((this.field2007[this.field2005 - 2] & 255) << 8) + (this.field2007[this.field2005 - 1] & 255);
-      if(var1 > 32767) {
-         var1 -= 65536;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1865340488"
-   )
-   public int method2497() {
-      this.field2005 += 4;
-      return ((this.field2007[this.field2005 - 4] & 255) << 24) + ((this.field2007[this.field2005 - 3] & 255) << 16) + ((this.field2007[this.field2005 - 2] & 255) << 8) + (this.field2007[this.field2005 - 1] & 255);
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "1747885348"
-   )
-   public long method2498() {
-      long var1 = (long)this.method2497() & 4294967295L;
-      long var3 = (long)this.method2497() & 4294967295L;
-      return var3 + (var1 << 32);
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "-108"
-   )
-   public String method2500() {
-      int var1 = this.field2005;
-
-      while(this.field2007[++this.field2005 - 1] != 0) {
-         ;
-      }
-
-      int var2 = this.field2005 - var1 - 1;
-      return 0 == var2?"":class21.method567(this.field2007, var1, var2);
-   }
-
-   @ObfuscatedName("ab")
-   @ObfuscatedSignature(
-      signature = "(S)Ljava/lang/String;",
-      garbageValue = "18309"
-   )
-   public String method2501() {
-      byte var1 = this.field2007[++this.field2005 - 1];
-      if(0 != var1) {
-         throw new IllegalStateException("");
-      } else {
-         int var2 = this.field2005;
-
-         while(this.field2007[++this.field2005 - 1] != 0) {
-            ;
-         }
-
-         int var3 = this.field2005 - var2 - 1;
-         return var3 == 0?"":class21.method567(this.field2007, var2, var3);
-      }
-   }
-
-   @ObfuscatedName("ad")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "401224884"
-   )
-   public String method2502() {
-      byte var1 = this.field2007[++this.field2005 - 1];
-      if(0 != var1) {
-         throw new IllegalStateException("");
-      } else {
-         int var2 = this.method2507();
-         if(this.field2005 + var2 > this.field2007.length) {
-            throw new IllegalStateException("");
-         } else {
-            String var3 = class52.method1061(this.field2007, this.field2005, var2);
-            this.field2005 += var2;
-            return var3;
-         }
-      }
-   }
-
-   @ObfuscatedName("an")
-   @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "0"
-   )
-   public void method2503(byte[] var1, int var2, int var3) {
-      for(int var4 = var2; var4 < var2 + var3; ++var4) {
-         var1[var4] = this.field2007[++this.field2005 - 1];
-      }
-
-   }
-
-   @ObfuscatedName("ap")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "837059700"
-   )
-   public int method2505() {
-      int var1 = this.field2007[this.field2005] & 255;
-      return var1 < 128?this.method2492():this.method2584() - '耀';
-   }
-
-   @ObfuscatedName("am")
-   @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "32546"
-   )
-   public int method2506() {
-      return this.field2007[this.field2005] < 0?this.method2497() & Integer.MAX_VALUE:this.method2584();
-   }
-
-   @ObfuscatedName("ae")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "116"
-   )
-   public int method2507() {
-      byte var1 = this.field2007[++this.field2005 - 1];
+   public int method2452() {
+      byte var1 = this.field2001[++this.field2000 - 1];
 
       int var2;
-      for(var2 = 0; var1 < 0; var1 = this.field2007[++this.field2005 - 1]) {
+      for(var2 = 0; var1 < 0; var1 = this.field2001[++this.field2000 - 1]) {
          var2 = (var2 | var1 & 127) << 7;
       }
 
       return var2 | var1;
    }
 
-   @ObfuscatedName("ao")
-   @ObfuscatedSignature(
-      signature = "([II)V",
-      garbageValue = "-628971320"
-   )
-   public void method2508(int[] var1) {
-      int var2 = this.field2005 / 8;
-      this.field2005 = 0;
-
-      for(int var3 = 0; var3 < var2; ++var3) {
-         int var4 = this.method2497();
-         int var5 = this.method2497();
-         int var6 = 0;
-         int var7 = -1640531527;
-
-         for(int var8 = 32; var8-- > 0; var5 += (var4 << 4 ^ var4 >>> 5) + var4 ^ var6 + var1[var6 >>> 11 & 3]) {
-            var4 += (var5 << 4 ^ var5 >>> 5) + var5 ^ var6 + var1[var6 & 3];
-            var6 += var7;
-         }
-
-         this.field2005 -= 8;
-         this.method2480(var4);
-         this.method2480(var5);
-      }
-
-   }
-
-   @ObfuscatedName("ax")
-   @ObfuscatedSignature(
-      signature = "(Ljava/math/BigInteger;Ljava/math/BigInteger;I)V",
-      garbageValue = "-1231394442"
-   )
-   public void method2512(BigInteger var1, BigInteger var2) {
-      int var3 = this.field2005;
-      this.field2005 = 0;
-      byte[] var4 = new byte[var3];
-      this.method2503(var4, 0, var3);
-      BigInteger var5 = new BigInteger(var4);
-      BigInteger var6 = var5.modPow(var1, var2);
-      byte[] var7 = var6.toByteArray();
-      this.field2005 = 0;
-      this.method2661(var7.length);
-      this.method2486(var7, 0, var7.length);
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "10"
-   )
-   public int method2513() {
-      this.field2005 += 3;
-      return ((this.field2007[this.field2005 - 2] & 255) << 8) + ((this.field2007[this.field2005 - 3] & 255) << 16) + (this.field2007[this.field2005 - 1] & 255);
-   }
-
-   @ObfuscatedName("aq")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "622889475"
-   )
-   public boolean method2514() {
-      this.field2005 -= 4;
-      int var1 = class14.method176(this.field2007, 0, this.field2005);
-      int var2 = this.method2497();
-      return var2 == var1;
-   }
-
-   @ObfuscatedName("bf")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "983538500"
+      garbageValue = "704335335"
    )
-   public void method2515(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 16);
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
+   public void method2453(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("aj")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "2135891259"
+      garbageValue = "-624930457"
    )
-   public void method2516(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(0 - var1);
+   public void method2454(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+      this.field2001[++this.field2000 - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1312336086"
+      signature = "(II)V",
+      garbageValue = "1670959379"
    )
-   public int method2518() {
-      return this.field2007[++this.field2005 - 1] - 128 & 255;
+   public void method2455(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 16);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+      this.field2001[++this.field2000 - 1] = (byte)var1;
    }
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(B)I",
+      signature = "(IB)V",
       garbageValue = "1"
    )
-   public int method2520() {
-      return 128 - this.field2007[++this.field2005 - 1] & 255;
-   }
-
-   @ObfuscatedName("al")
-   @ObfuscatedSignature(
-      signature = "(I)B",
-      garbageValue = "1939503322"
-   )
-   public byte method2521() {
-      return (byte)(this.field2007[++this.field2005 - 1] - 128);
-   }
-
-   @ObfuscatedName("ag")
-   @ObfuscatedSignature(
-      signature = "(I)B",
-      garbageValue = "-1133939523"
-   )
-   public byte method2522() {
-      return (byte)(0 - this.field2007[++this.field2005 - 1]);
+   public void method2456(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 24);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 16);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+      this.field2001[++this.field2000 - 1] = (byte)var1;
    }
 
    @ObfuscatedName("r")
+   public void method2457(long var1) {
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 40));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 32));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 24));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 16));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 8));
+      this.field2001[++this.field2000 - 1] = (byte)((int)var1);
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "-18119"
+      signature = "(Ljava/lang/CharSequence;I)V",
+      garbageValue = "1087108841"
    )
-   public void method2524(int var1) {
-      this.field2007[this.field2005 - var1 - 2] = (byte)(var1 >> 8);
-      this.field2007[this.field2005 - var1 - 1] = (byte)var1;
+   public void method2461(CharSequence var1) {
+      int var3 = var1.length();
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var1.charAt(var5);
+         if(var6 <= 127) {
+            ++var4;
+         } else if(var6 <= 2047) {
+            var4 += 2;
+         } else {
+            var4 += 3;
+         }
+      }
+
+      this.field2001[++this.field2000 - 1] = 0;
+      this.method2467(var4);
+      this.field2000 += class12.method139(this.field2001, this.field2000, var1);
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "24"
+      signature = "([BIII)V",
+      garbageValue = "0"
    )
-   public void method2525(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(128 + var1);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
+   public void method2462(byte[] var1, int var2, int var3) {
+      for(int var4 = var2; var4 < var3 + var2; ++var4) {
+         this.field2001[++this.field2000 - 1] = var1[var4];
+      }
+
    }
 
-   public class119(byte[] var1) {
-      this.field2007 = var1;
-      this.field2005 = 0;
+   @ObfuscatedName("f")
+   public void method2463(long var1) {
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 56));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 48));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 40));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 32));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 24));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 16));
+      this.field2001[++this.field2000 - 1] = (byte)((int)(var1 >> 8));
+      this.field2001[++this.field2000 - 1] = (byte)((int)var1);
    }
 
-   @ObfuscatedName("bt")
+   @ObfuscatedName("bn")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1249240630"
+      garbageValue = "1814747791"
    )
-   public int method2526() {
-      this.field2005 += 2;
-      return (this.field2007[this.field2005 - 1] - 128 & 255) + ((this.field2007[this.field2005 - 2] & 255) << 8);
+   public int method2464() {
+      this.field2000 += 3;
+      return ((this.field2001[this.field2000 - 1] & 255) << 8) + ((this.field2001[this.field2000 - 3] & 255) << 16) + (this.field2001[this.field2000 - 2] & 255);
    }
 
-   @ObfuscatedName("bq")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1012443155"
+      signature = "(II)V",
+      garbageValue = "-898535725"
    )
-   public int method2527() {
-      this.field2005 += 2;
-      return ((this.field2007[this.field2005 - 1] & 255) << 8) + (this.field2007[this.field2005 - 2] - 128 & 255);
+   public void method2465(int var1) {
+      this.field2001[this.field2000 - var1 - 1] = (byte)var1;
    }
 
    @ObfuscatedName("u")
-   public void method2528(long var1) {
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 40));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 32));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 24));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 16));
-      this.field2007[++this.field2005 - 1] = (byte)((int)(var1 >> 8));
-      this.field2007[++this.field2005 - 1] = (byte)((int)var1);
-   }
-
-   @ObfuscatedName("bj")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1346795046"
-   )
-   public int method2529() {
-      this.field2005 += 2;
-      int var1 = ((this.field2007[this.field2005 - 1] & 255) << 8) + (this.field2007[this.field2005 - 2] - 128 & 255);
-      if(var1 > 32767) {
-         var1 -= 65536;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("br")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1777946019"
-   )
-   public int method2530() {
-      this.field2005 += 3;
-      return ((this.field2007[this.field2005 - 2] & 255) << 8) + ((this.field2007[this.field2005 - 1] & 255) << 16) + (this.field2007[this.field2005 - 3] & 255);
-   }
-
-   @ObfuscatedName("bi")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "1743800239"
+      garbageValue = "-784748577"
    )
-   public void method2531(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 16);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 24);
-   }
+   public void method2467(int var1) {
+      if((var1 & -128) != 0) {
+         if((var1 & -16384) != 0) {
+            if((var1 & -2097152) != 0) {
+               if((var1 & -268435456) != 0) {
+                  this.method2453(var1 >>> 28 | 128);
+               }
 
-   @ObfuscatedName("bd")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "125"
-   )
-   public int method2533() {
-      this.field2005 += 2;
-      return (this.field2007[this.field2005 - 2] & 255) + ((this.field2007[this.field2005 - 1] & 255) << 8);
-   }
+               this.method2453(var1 >>> 21 | 128);
+            }
 
-   @ObfuscatedName("bx")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "11"
-   )
-   public int method2534() {
-      this.field2005 += 4;
-      return (this.field2007[this.field2005 - 4] & 255) + ((this.field2007[this.field2005 - 3] & 255) << 8) + ((this.field2007[this.field2005 - 2] & 255) << 16) + ((this.field2007[this.field2005 - 1] & 255) << 24);
-   }
+            this.method2453(var1 >>> 14 | 128);
+         }
 
-   @ObfuscatedName("ba")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "58"
-   )
-   public int method2535() {
-      this.field2005 += 4;
-      return (this.field2007[this.field2005 - 3] & 255) + ((this.field2007[this.field2005 - 2] & 255) << 24) + ((this.field2007[this.field2005 - 1] & 255) << 16) + ((this.field2007[this.field2005 - 4] & 255) << 8);
-   }
+         this.method2453(var1 >>> 7 | 128);
+      }
 
-   @ObfuscatedName("bs")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "55"
-   )
-   public int method2536() {
-      this.field2005 += 4;
-      return (this.field2007[this.field2005 - 2] & 255) + ((this.field2007[this.field2005 - 1] & 255) << 8) + ((this.field2007[this.field2005 - 3] & 255) << 24) + ((this.field2007[this.field2005 - 4] & 255) << 16);
+      this.method2453(var1 & 127);
    }
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "1511180369"
+      signature = "(I)B",
+      garbageValue = "-2035347508"
    )
-   public String method2539() {
-      if(this.field2007[this.field2005] == 0) {
-         ++this.field2005;
-         return null;
-      } else {
-         return this.method2500();
+   public byte method2469() {
+      return this.field2001[++this.field2000 - 1];
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "601309731"
+   )
+   public int method2470() {
+      this.field2000 += 2;
+      return (this.field2001[this.field2000 - 1] & 255) + ((this.field2001[this.field2000 - 2] & 255) << 8);
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "1"
+   )
+   public void method2471(int var1) {
+      this.field2001[this.field2000 - var1 - 2] = (byte)(var1 >> 8);
+      this.field2001[this.field2000 - var1 - 1] = (byte)var1;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1629333345"
+   )
+   public int method2472() {
+      this.field2000 += 3;
+      return ((this.field2001[this.field2000 - 3] & 255) << 16) + ((this.field2001[this.field2000 - 2] & 255) << 8) + (this.field2001[this.field2000 - 1] & 255);
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "743509642"
+   )
+   public long method2474() {
+      long var1 = (long)this.method2505() & 4294967295L;
+      long var3 = (long)this.method2505() & 4294967295L;
+      return (var1 << 32) + var3;
+   }
+
+   @ObfuscatedName("ad")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "2029140431"
+   )
+   public String method2476() {
+      int var1 = this.field2000;
+
+      while(this.field2001[++this.field2000 - 1] != 0) {
+         ;
       }
+
+      int var2 = this.field2000 - var1 - 1;
+      return var2 == 0?"":class141.method2946(this.field2001, var1, var2);
    }
 
    @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "([IS)V",
-      garbageValue = "15899"
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "1"
    )
-   public void method2543(int[] var1) {
-      int var2 = this.field2005 / 8;
-      this.field2005 = 0;
+   public String method2477() {
+      byte var1 = this.field2001[++this.field2000 - 1];
+      if(var1 != 0) {
+         throw new IllegalStateException("");
+      } else {
+         int var2 = this.field2000;
+
+         while(this.field2001[++this.field2000 - 1] != 0) {
+            ;
+         }
+
+         int var3 = this.field2000 - var2 - 1;
+         return var3 == 0?"":class141.method2946(this.field2001, var2, var3);
+      }
+   }
+
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "637505676"
+   )
+   public String method2478() {
+      byte var1 = this.field2001[++this.field2000 - 1];
+      if(var1 != 0) {
+         throw new IllegalStateException("");
+      } else {
+         int var2 = this.method2452();
+         if(var2 + this.field2000 > this.field2001.length) {
+            throw new IllegalStateException("");
+         } else {
+            String var3 = class102.method2239(this.field2001, this.field2000, var2);
+            this.field2000 += var2;
+            return var3;
+         }
+      }
+   }
+
+   @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "([BIIB)V",
+      garbageValue = "0"
+   )
+   public void method2479(byte[] var1, int var2, int var3) {
+      for(int var4 = var2; var4 < var2 + var3; ++var4) {
+         var1[var4] = this.field2001[++this.field2000 - 1];
+      }
+
+   }
+
+   @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "(S)I",
+      garbageValue = "14634"
+   )
+   public int method2481() {
+      int var1 = this.field2001[this.field2000] & 255;
+      return var1 < 128?this.method2494():this.method2470() - '耀';
+   }
+
+   @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1779337025"
+   )
+   public int method2482() {
+      return this.field2001[this.field2000] < 0?this.method2505() & Integer.MAX_VALUE:this.method2470();
+   }
+
+   @ObfuscatedName("bw")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "108"
+   )
+   public void method2483(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 16);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 24);
+      this.field2001[++this.field2000 - 1] = (byte)var1;
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+   }
+
+   @ObfuscatedName("an")
+   @ObfuscatedSignature(
+      signature = "([II)V",
+      garbageValue = "-1318505086"
+   )
+   public void method2485(int[] var1) {
+      int var2 = this.field2000 / 8;
+      this.field2000 = 0;
 
       for(int var3 = 0; var3 < var2; ++var3) {
-         int var4 = this.method2497();
-         int var5 = this.method2497();
+         int var4 = this.method2505();
+         int var5 = this.method2505();
          int var6 = -957401312;
          int var7 = -1640531527;
 
@@ -605,386 +361,696 @@ public class class119 extends class208 {
             var6 -= var7;
          }
 
-         this.field2005 -= 8;
-         this.method2480(var4);
-         this.method2480(var5);
+         this.field2000 -= 8;
+         this.method2456(var4);
+         this.method2456(var5);
       }
 
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("aw")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "447496554"
+      signature = "([IIII)V",
+      garbageValue = "1886891873"
    )
-   public void method2557(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 + 128);
+   public void method2486(int[] var1, int var2, int var3) {
+      int var4 = this.field2000;
+      this.field2000 = var2;
+      int var5 = (var3 - var2) / 8;
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         int var7 = this.method2505();
+         int var8 = this.method2505();
+         int var9 = 0;
+         int var10 = -1640531527;
+
+         for(int var11 = 32; var11-- > 0; var8 += (var7 << 4 ^ var7 >>> 5) + var7 ^ var1[var9 >>> 11 & 3] + var9) {
+            var7 += (var8 << 4 ^ var8 >>> 5) + var8 ^ var1[var9 & 3] + var9;
+            var9 += var10;
+         }
+
+         this.field2000 -= 8;
+         this.method2456(var7);
+         this.method2456(var8);
+      }
+
+      this.field2000 = var4;
    }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-2050872712"
-   )
-   public void method2562(int var1) {
-      this.field2007[this.field2005 - var1 - 1] = (byte)var1;
-   }
-
-   @ObfuscatedName("ah")
+   @ObfuscatedName("ap")
    @ObfuscatedSignature(
       signature = "([IIII)V",
       garbageValue = "5"
    )
-   public void method2581(int[] var1, int var2, int var3) {
-      int var4 = this.field2005;
-      this.field2005 = var2;
+   public void method2487(int[] var1, int var2, int var3) {
+      int var4 = this.field2000;
+      this.field2000 = var2;
       int var5 = (var3 - var2) / 8;
 
       for(int var6 = 0; var6 < var5; ++var6) {
-         int var7 = this.method2497();
-         int var8 = this.method2497();
+         int var7 = this.method2505();
+         int var8 = this.method2505();
          int var9 = -957401312;
          int var10 = -1640531527;
 
          for(int var11 = 32; var11-- > 0; var7 -= var8 + (var8 << 4 ^ var8 >>> 5) ^ var9 + var1[var9 & 3]) {
-            var8 -= var7 + (var7 << 4 ^ var7 >>> 5) ^ var1[var9 >>> 11 & 3] + var9;
+            var8 -= var7 + (var7 << 4 ^ var7 >>> 5) ^ var9 + var1[var9 >>> 11 & 3];
             var9 -= var10;
          }
 
-         this.field2005 -= 8;
-         this.method2480(var7);
-         this.method2480(var8);
+         this.field2000 -= 8;
+         this.method2456(var7);
+         this.method2456(var8);
       }
 
-      this.field2005 = var4;
+      this.field2000 = var4;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "2121740947"
+   )
+   public void method2488(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(128 - var1);
+   }
+
+   @ObfuscatedName("ac")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "376839997"
+   )
+   public int method2489(int var1) {
+      int var2 = class155.method3131(this.field2001, var1, this.field2000);
+      this.method2456(var2);
+      return var2;
+   }
+
+   @ObfuscatedName("ao")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1316135230"
+   )
+   public boolean method2490() {
+      this.field2000 -= 4;
+      int var1 = class155.method3131(this.field2001, 0, this.field2000);
+      int var2 = this.method2505();
+      return var2 == var1;
+   }
+
+   @ObfuscatedName("ah")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "0"
+   )
+   public void method2492(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(0 - var1);
+   }
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-74576439"
+      garbageValue = "1359961004"
    )
-   public int method2584() {
-      this.field2005 += 2;
-      return (this.field2007[this.field2005 - 1] & 255) + ((this.field2007[this.field2005 - 2] & 255) << 8);
+   public int method2494() {
+      return this.field2001[++this.field2000 - 1] & 255;
    }
 
    @ObfuscatedName("au")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "-589452998"
+      garbageValue = "486674232"
    )
-   public int method2585() {
-      int var1 = this.field2007[this.field2005] & 255;
-      return var1 < 128?this.method2492() - 64:this.method2584() - '쀀';
+   public int method2495() {
+      return 0 - this.field2001[++this.field2000 - 1] & 255;
    }
 
-   @ObfuscatedName("bv")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "15"
-   )
-   public void method2587(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 16);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 24);
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-   }
-
-   @ObfuscatedName("ay")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "97751864"
-   )
-   public void method2590(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(128 + var1);
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1517189121"
-   )
-   public void method2606(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 16);
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-   }
-
-   public class119(int var1) {
-      this.field2007 = class121.method2730(var1);
-      this.field2005 = 0;
-   }
-
-   @ObfuscatedName("at")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-465386436"
-   )
-   public int method2613() {
-      return 0 - this.field2007[++this.field2005 - 1] & 255;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-249317256"
-   )
-   public void method2622(int var1) {
-      if(0 != (var1 & -128)) {
-         if(0 != (var1 & -16384)) {
-            if(0 != (var1 & -2097152)) {
-               if((var1 & -268435456) != 0) {
-                  this.method2477(var1 >>> 28 | 128);
-               }
-
-               this.method2477(var1 >>> 21 | 128);
-            }
-
-            this.method2477(var1 >>> 14 | 128);
-         }
-
-         this.method2477(var1 >>> 7 | 128);
-      }
-
-      this.method2477(var1 & 127);
-   }
-
-   @ObfuscatedName("ak")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1931618279"
-   )
-   public void method2624(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Lclass122;II)Z",
-      garbageValue = "-1772326423"
-   )
-   static boolean method2638(class122 var0, int var1) {
-      int var2 = var0.method2750(2);
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      if(0 == var2) {
-         if(var0.method2750(1) != 0) {
-            method2638(var0, var1);
-         }
-
-         var3 = var0.method2750(6);
-         var4 = var0.method2750(6);
-         boolean var11 = var0.method2750(1) == 1;
-         if(var11) {
-            class32.field764[++class32.field762 - 1] = var1;
-         }
-
-         if(client.field491[var1] != null) {
-            throw new RuntimeException();
-         } else {
-            class2 var12 = client.field491[var1] = new class2();
-            var12.field42 = var1;
-            if(class32.field768[var1] != null) {
-               var12.method11(class32.field768[var1]);
-            }
-
-            var12.field862 = class32.field760[var1];
-            var12.field837 = class32.field761[var1];
-            var5 = class32.field759[var1];
-            var6 = var5 >> 28;
-            var7 = var5 >> 14 & 255;
-            var8 = var5 & 255;
-            var12.field868[0] = class32.field753[var1];
-            var12.field55 = (byte)var6;
-            var12.method15(var3 + (var7 << 6) - class22.field594, var4 + (var8 << 6) - class114.field1981);
-            var12.field36 = false;
-            return true;
-         }
-      } else if(var2 == 1) {
-         var3 = var0.method2750(2);
-         var4 = class32.field759[var1];
-         class32.field759[var1] = ((var3 + (var4 >> 28) & 3) << 28) + (var4 & 268435455);
-         return false;
-      } else {
-         int var9;
-         int var10;
-         if(var2 == 2) {
-            var3 = var0.method2750(5);
-            var4 = var3 >> 3;
-            var9 = var3 & 7;
-            var10 = class32.field759[var1];
-            var5 = (var10 >> 28) + var4 & 3;
-            var6 = var10 >> 14 & 255;
-            var7 = var10 & 255;
-            if(0 == var9) {
-               --var6;
-               --var7;
-            }
-
-            if(1 == var9) {
-               --var7;
-            }
-
-            if(var9 == 2) {
-               ++var6;
-               --var7;
-            }
-
-            if(var9 == 3) {
-               --var6;
-            }
-
-            if(var9 == 4) {
-               ++var6;
-            }
-
-            if(var9 == 5) {
-               --var6;
-               ++var7;
-            }
-
-            if(var9 == 6) {
-               ++var7;
-            }
-
-            if(7 == var9) {
-               ++var6;
-               ++var7;
-            }
-
-            class32.field759[var1] = var7 + (var5 << 28) + (var6 << 14);
-            return false;
-         } else {
-            var3 = var0.method2750(18);
-            var4 = var3 >> 16;
-            var9 = var3 >> 8 & 255;
-            var10 = var3 & 255;
-            var5 = class32.field759[var1];
-            var6 = var4 + (var5 >> 28) & 3;
-            var7 = var9 + (var5 >> 14) & 255;
-            var8 = var5 + var10 & 255;
-            class32.field759[var1] = var8 + (var7 << 14) + (var6 << 28);
-            return false;
-         }
-      }
-   }
-
-   @ObfuscatedName("aa")
-   @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "48"
-   )
-   public int method2651(int var1) {
-      int var2 = class14.method176(this.field2007, var1, this.field2005);
-      this.method2480(var2);
-      return var2;
-   }
-
-   @ObfuscatedName("ai")
-   @ObfuscatedSignature(
-      signature = "([IIII)V",
-      garbageValue = "887297863"
-   )
-   public void method2653(int[] var1, int var2, int var3) {
-      int var4 = this.field2005;
-      this.field2005 = var2;
-      int var5 = (var3 - var2) / 8;
-
-      for(int var6 = 0; var6 < var5; ++var6) {
-         int var7 = this.method2497();
-         int var8 = this.method2497();
-         int var9 = 0;
-         int var10 = -1640531527;
-
-         for(int var11 = 32; var11-- > 0; var8 += var7 + (var7 << 4 ^ var7 >>> 5) ^ var9 + var1[var9 >>> 11 & 3]) {
-            var7 += (var8 << 4 ^ var8 >>> 5) + var8 ^ var1[var9 & 3] + var9;
-            var9 += var10;
-         }
-
-         this.field2005 -= 8;
-         this.method2480(var7);
-         this.method2480(var8);
-      }
-
-      this.field2005 = var4;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "157821004"
-   )
-   public void method2661(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(var1 >> 8);
-      this.field2007[++this.field2005 - 1] = (byte)var1;
-   }
-
-   @ObfuscatedName("ar")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1370787243"
-   )
-   public void method2681(int var1) {
-      this.field2007[++this.field2005 - 1] = (byte)(128 - var1);
-   }
-
-   @ObfuscatedName("ac")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "(I)B",
-      garbageValue = "-139392124"
+      garbageValue = "1497851666"
    )
-   public byte method2684() {
-      return (byte)(128 - this.field2007[++this.field2005 - 1]);
+   public byte method2497() {
+      return (byte)(this.field2001[++this.field2000 - 1] - 128);
    }
 
-   @ObfuscatedName("di")
+   @ObfuscatedName("af")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1751549879"
+      signature = "(II)V",
+      garbageValue = "425927101"
    )
-   static final void method2694() {
-      client.field322.method2737(21);
-      client.field322.method2477(0);
+   public void method2500(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)var1;
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+   }
+
+   @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1676714364"
+   )
+   public void method2501(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 + 128);
+   }
+
+   @ObfuscatedName("bf")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-249640358"
+   )
+   public void method2502(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(128 + var1);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+   }
+
+   @ObfuscatedName("br")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-68"
+   )
+   public int method2504() {
+      this.field2000 += 2;
+      return (this.field2001[this.field2000 - 1] - 128 & 255) + ((this.field2001[this.field2000 - 2] & 255) << 8);
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1913369820"
+   )
+   public int method2505() {
+      this.field2000 += 4;
+      return ((this.field2001[this.field2000 - 2] & 255) << 8) + ((this.field2001[this.field2000 - 4] & 255) << 24) + ((this.field2001[this.field2000 - 3] & 255) << 16) + (this.field2001[this.field2000 - 1] & 255);
+   }
+
+   @ObfuscatedName("bh")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "920569878"
+   )
+   public void method2507(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 16);
+      this.field2001[++this.field2000 - 1] = (byte)var1;
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+   }
+
+   @ObfuscatedName("bb")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "55"
+   )
+   public void method2509(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)var1;
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 16);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 24);
+   }
+
+   @ObfuscatedName("ba")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1590439513"
+   )
+   public void method2510(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 8);
+      this.field2001[++this.field2000 - 1] = (byte)var1;
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 24);
+      this.field2001[++this.field2000 - 1] = (byte)(var1 >> 16);
+   }
+
+   @ObfuscatedName("bl")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1917877199"
+   )
+   public int method2512() {
+      this.field2000 += 4;
+      return ((this.field2001[this.field2000 - 3] & 255) << 8) + ((this.field2001[this.field2000 - 2] & 255) << 16) + ((this.field2001[this.field2000 - 1] & 255) << 24) + (this.field2001[this.field2000 - 4] & 255);
+   }
+
+   @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "2145708252"
+   )
+   public int method2513() {
+      this.field2000 += 4;
+      return ((this.field2001[this.field2000 - 4] & 255) << 8) + ((this.field2001[this.field2000 - 1] & 255) << 16) + ((this.field2001[this.field2000 - 2] & 255) << 24) + (this.field2001[this.field2000 - 3] & 255);
+   }
+
+   @ObfuscatedName("bx")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-119"
+   )
+   public int method2514() {
+      this.field2000 += 4;
+      return (this.field2001[this.field2000 - 2] & 255) + ((this.field2001[this.field2000 - 1] & 255) << 8) + ((this.field2001[this.field2000 - 4] & 255) << 16) + ((this.field2001[this.field2000 - 3] & 255) << 24);
    }
 
    static {
-      int var0;
+      int var2;
       for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = var1;
+         int var0 = var1;
 
-         for(var0 = 0; var0 < 8; ++var0) {
-            if((var2 & 1) == 1) {
-               var2 = var2 >>> 1 ^ -306674912;
+         for(var2 = 0; var2 < 8; ++var2) {
+            if((var0 & 1) == 1) {
+               var0 = var0 >>> 1 ^ -306674912;
             } else {
-               var2 >>>= 1;
+               var0 >>>= 1;
             }
          }
 
-         field2010[var1] = var2;
+         field1999[var1] = var0;
       }
 
-      field2008 = new long[256];
+      field2003 = new long[256];
 
-      for(var0 = 0; var0 < 256; ++var0) {
-         long var4 = (long)var0;
+      for(var2 = 0; var2 < 256; ++var2) {
+         long var4 = (long)var2;
 
          for(int var3 = 0; var3 < 8; ++var3) {
-            if(1L == (var4 & 1L)) {
+            if((var4 & 1L) == 1L) {
                var4 = var4 >>> 1 ^ -3932672073523589310L;
             } else {
                var4 >>>= 1;
             }
          }
 
-         field2008[var0] = var4;
+         field2003[var2] = var4;
       }
 
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "1088501391"
+   )
+   public void method2535(String var1) {
+      int var2 = var1.indexOf(0);
+      if(var2 >= 0) {
+         throw new IllegalArgumentException("");
+      } else {
+         this.field2001[++this.field2000 - 1] = 0;
+         this.field2000 += class103.method2248(var1, 0, var1.length(), this.field2001, this.field2000);
+         this.field2001[++this.field2000 - 1] = 0;
+      }
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1249333067"
+   )
+   public void method2537(int var1) {
+      this.field2001[this.field2000 - var1 - 4] = (byte)(var1 >> 24);
+      this.field2001[this.field2000 - var1 - 3] = (byte)(var1 >> 16);
+      this.field2001[this.field2000 - var1 - 2] = (byte)(var1 >> 8);
+      this.field2001[this.field2000 - var1 - 1] = (byte)var1;
+   }
+
+   @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1510380427"
+   )
+   public int method2545() {
+      this.field2000 += 2;
+      return (this.field2001[this.field2000 - 2] & 255) + ((this.field2001[this.field2000 - 1] & 255) << 8);
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-2114758451"
+   )
+   public void method2546(int var1) {
+      if(var1 >= 0 && var1 < 128) {
+         this.method2453(var1);
+      } else if(var1 >= 0 && var1 < '耀') {
+         this.method2454('耀' + var1);
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
+
+   @ObfuscatedName("bg")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-39"
+   )
+   public int method2547() {
+      this.field2000 += 2;
+      int var1 = (this.field2001[this.field2000 - 2] & 255) + ((this.field2001[this.field2000 - 1] & 255) << 8);
+      if(var1 > 32767) {
+         var1 -= 65536;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "(S)I",
+      garbageValue = "-6735"
+   )
+   public int method2565() {
+      int var1 = this.field2001[this.field2000] & 255;
+      return var1 < 128?this.method2494() - 64:this.method2470() - '쀀';
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "-104"
+   )
+   public String method2566() {
+      if(this.field2001[this.field2000] == 0) {
+         ++this.field2000;
+         return null;
+      } else {
+         return this.method2476();
+      }
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "22"
+   )
+   public void method2586(String var1) {
+      int var2 = var1.indexOf(0);
+      if(var2 >= 0) {
+         throw new IllegalArgumentException("");
+      } else {
+         this.field2000 += class103.method2248(var1, 0, var1.length(), this.field2001, this.field2000);
+         this.field2001[++this.field2000 - 1] = 0;
+      }
+   }
+
+   @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1369586997"
+   )
+   public void method2594(int var1) {
+      this.field2001[++this.field2000 - 1] = (byte)(var1 + 128);
+   }
+
+   @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "(I)B",
+      garbageValue = "-69046514"
+   )
+   public byte method2601() {
+      return (byte)(128 - this.field2001[++this.field2000 - 1]);
+   }
+
+   @ObfuscatedName("ab")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-513092357"
+   )
+   public int method2613() {
+      return 128 - this.field2001[++this.field2000 - 1] & 255;
+   }
+
+   @ObfuscatedName("aa")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-774632992"
+   )
+   public int method2623() {
+      return this.field2001[++this.field2000 - 1] - 128 & 255;
+   }
+
+   public class119(byte[] var1) {
+      this.field2001 = var1;
+      this.field2000 = 0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1369555393"
+   )
+   public int method2638() {
+      this.field2000 += 2;
+      int var1 = (this.field2001[this.field2000 - 1] & 255) + ((this.field2001[this.field2000 - 2] & 255) << 8);
+      if(var1 > 32767) {
+         var1 -= 65536;
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("ak")
+   @ObfuscatedSignature(
+      signature = "(Ljava/math/BigInteger;Ljava/math/BigInteger;B)V",
+      garbageValue = "1"
+   )
+   public void method2640(BigInteger var1, BigInteger var2) {
+      int var3 = this.field2000;
+      this.field2000 = 0;
+      byte[] var4 = new byte[var3];
+      this.method2479(var4, 0, var3);
+      BigInteger var5 = new BigInteger(var4);
+      BigInteger var6 = var5.modPow(var1, var2);
+      byte[] var7 = var6.toByteArray();
+      this.field2000 = 0;
+      this.method2454(var7.length);
+      this.method2462(var7, 0, var7.length);
+   }
+
+   @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1331781148"
+   )
+   public int method2646() {
+      this.field2000 += 2;
+      return ((this.field2001[this.field2000 - 1] & 255) << 8) + (this.field2001[this.field2000 - 2] - 128 & 255);
+   }
+
+   @ObfuscatedName("at")
+   @ObfuscatedSignature(
+      signature = "(B)B",
+      garbageValue = "0"
+   )
+   public byte method2659() {
+      return (byte)(0 - this.field2001[++this.field2000 - 1]);
+   }
+
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "([II)V",
+      garbageValue = "-1448733797"
+   )
+   public void method2660(int[] var1) {
+      int var2 = this.field2000 / 8;
+      this.field2000 = 0;
+
+      for(int var3 = 0; var3 < var2; ++var3) {
+         int var4 = this.method2505();
+         int var5 = this.method2505();
+         int var6 = 0;
+         int var7 = -1640531527;
+
+         for(int var8 = 32; var8-- > 0; var5 += var4 + (var4 << 4 ^ var4 >>> 5) ^ var6 + var1[var6 >>> 11 & 3]) {
+            var4 += (var5 << 4 ^ var5 >>> 5) + var5 ^ var6 + var1[var6 & 3];
+            var6 += var7;
+         }
+
+         this.field2000 -= 8;
+         this.method2456(var4);
+         this.method2456(var5);
+      }
+
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-968693317"
+   )
+   public static int method2666(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
+      }
+
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
+      }
+
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
+      }
+
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-2088518975"
+   )
+   public static int method2667(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class13.method143(var0.charAt(var3));
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "747785516"
+   )
+   public static boolean method2668() {
+      try {
+         if(class183.field2981 == 2) {
+            if(null == class183.field2974) {
+               class183.field2974 = class180.method3464(class24.field614, class142.field2204, class183.field2977);
+               if(null == class183.field2974) {
+                  return false;
+               }
+            }
+
+            if(class22.field590 == null) {
+               class22.field590 = new class59(class183.field2975, class90.field1572);
+            }
+
+            if(class183.field2976.method3549(class183.field2974, class183.field2978, class22.field590, 22050)) {
+               class183.field2976.method3656();
+               class183.field2976.method3613(class151.field2286);
+               class183.field2976.method3599(class183.field2974, class29.field694);
+               class183.field2981 = 0;
+               class183.field2974 = null;
+               class22.field590 = null;
+               class24.field614 = null;
+               return true;
+            }
+         }
+      } catch (Exception var1) {
+         var1.printStackTrace();
+         class183.field2976.method3574();
+         class183.field2981 = 0;
+         class183.field2974 = null;
+         class22.field590 = null;
+         class24.field614 = null;
+      }
+
+      return false;
+   }
+
+   @ObfuscatedName("cm")
+   @ObfuscatedSignature(
+      signature = "(Lclass2;IIII)V",
+      garbageValue = "-2023800031"
+   )
+   @Export("generateMenuActionsForPlayer")
+   static final void method2669(class2 var0, int var1, int var2, int var3) {
+      if(class152.field2301 != var0) {
+         if(client.field294 < 400) {
+            String var4;
+            int var7;
+            if(var0.field54 == 0) {
+               String var5 = var0.field40[0] + var0.field39 + var0.field40[1];
+               var7 = var0.field41;
+               int var8 = class152.field2301.field41;
+               int var9 = var8 - var7;
+               String var6;
+               if(var9 < -9) {
+                  var6 = class155.method3132(16711680);
+               } else if(var9 < -6) {
+                  var6 = class155.method3132(16723968);
+               } else if(var9 < -3) {
+                  var6 = class155.method3132(16740352);
+               } else if(var9 < 0) {
+                  var6 = class155.method3132(16756736);
+               } else if(var9 > 9) {
+                  var6 = class155.method3132('\uff00');
+               } else if(var9 > 6) {
+                  var6 = class155.method3132(4259584);
+               } else if(var9 > 3) {
+                  var6 = class155.method3132(8453888);
+               } else if(var9 > 0) {
+                  var6 = class155.method3132(12648192);
+               } else {
+                  var6 = class155.method3132(16776960);
+               }
+
+               var4 = var5 + var6 + " " + " (" + "level-" + var0.field41 + ")" + var0.field40[2];
+            } else {
+               var4 = var0.field40[0] + var0.field39 + var0.field40[1] + " " + " (" + "skill-" + var0.field54 + ")" + var0.field40[2];
+            }
+
+            int var11;
+            if(client.field379 == 1) {
+               class2.method33("Use", client.field463 + " " + "->" + " " + class155.method3132(16777215) + var4, 14, var1, var2, var3);
+            } else if(client.field437) {
+               if((class3.field69 & 8) == 8) {
+                  class2.method33(client.field432, client.field441 + " " + "->" + " " + class155.method3132(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var11 = 7; var11 >= 0; --var11) {
+                  if(null != client.field461[var11]) {
+                     short var10 = 0;
+                     if(client.field461[var11].equalsIgnoreCase("Attack")) {
+                        if(class20.field570 == client.field309) {
+                           continue;
+                        }
+
+                        if(client.field309 == class20.field571 || client.field309 == class20.field569 && var0.field41 > class152.field2301.field41) {
+                           var10 = 2000;
+                        }
+
+                        if(class152.field2301.field55 != 0 && var0.field55 != 0) {
+                           if(class152.field2301.field55 == var0.field55) {
+                              var10 = 2000;
+                           } else {
+                              var10 = 0;
+                           }
+                        }
+                     } else if(client.field412[var11]) {
+                        var10 = 2000;
+                     }
+
+                     boolean var12 = false;
+                     var7 = client.field410[var11] + var10;
+                     class2.method33(client.field461[var11], class155.method3132(16777215) + var4, var7, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var11 = 0; var11 < client.field294; ++var11) {
+               if(client.field392[var11] == 23) {
+                  client.field337[var11] = class155.method3132(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
+      }
    }
 }

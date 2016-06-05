@@ -2,120 +2,111 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gz")
+@ObfuscatedName("gw")
 public class class187 extends class208 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 141673441
-   )
-   int field3026;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 573978767
+      intValue = 1757801505
    )
    int field3027;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -53613307
-   )
-   int field3028;
-   @ObfuscatedName("x")
-   class185 field3029;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 635989283
-   )
-   int field3030;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1349306167
-   )
-   int field3031;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 2128505971
-   )
-   int field3032;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1456450097
-   )
-   int field3033;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 790474009
-   )
-   int field3034;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1279065079
-   )
-   int field3035;
+   @ObfuscatedName("i")
+   class181 field3028;
+   @ObfuscatedName("g")
+   class62 field3029;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 402395289
+      intValue = -1418119053
    )
-   int field3036;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -116686409
-   )
-   int field3037;
-   @ObfuscatedName("j")
-   class181 field3038;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1594238689
-   )
-   int field3039;
-   @ObfuscatedName("p")
-   class62 field3041;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -454405913
-   )
-   int field3042;
+   int field3030;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -415258441
+      intValue = 1212634989
    )
-   int field3043;
-   @ObfuscatedName("i")
+   int field3031;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 976661817
+      intValue = 1278089405
    )
-   int field3044;
-   @ObfuscatedName("a")
-   class64 field3045;
+   int field3032;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1373971513
+      intValue = 1180608835
    )
-   int field3046;
+   int field3034;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -352964207
+   )
+   int field3035;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1113262957
+   )
+   int field3036;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1038490009
+      intValue = -199446237
+   )
+   int field3037;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1662530161
+   )
+   int field3038;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1043500217
+   )
+   int field3039;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1383971983
+   )
+   int field3040;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1374032621
+   )
+   int field3041;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -36309373
+   )
+   int field3042;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 409616271
+   )
+   int field3043;
+   @ObfuscatedName("h")
+   class185 field3044;
+   @ObfuscatedName("c")
+   class64 field3045;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 352237205
+   )
+   int field3046;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1875863939
    )
    int field3047;
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-353124121"
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1336618645
    )
-   void method3724() {
-      this.field3038 = null;
-      this.field3041 = null;
-      this.field3029 = null;
-      this.field3045 = null;
-   }
+   int field3048;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "63"
+      garbageValue = "68"
    )
-   public static void method3730() {
-      class51.field1113.method3750();
+   void method3701() {
+      this.field3028 = null;
+      this.field3029 = null;
+      this.field3044 = null;
+      this.field3045 = null;
    }
 }

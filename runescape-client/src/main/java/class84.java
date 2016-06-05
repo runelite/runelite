@@ -3,43 +3,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("ch")
 @Implements("FaceNormal")
 public class class84 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1584606117
+      intValue = 214322857
+   )
+   int field1458;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1551157057
    )
    int field1459;
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 873110803
+      intValue = -1544574945
    )
    int field1460;
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
+   static String[] field1461;
+   @ObfuscatedName("nr")
    @ObfuscatedGetter(
-      intValue = -2146782431
+      intValue = -1350765729
    )
-   int field1462;
+   static int field1464;
+   @ObfuscatedName("y")
+   static class80 field1465;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("em")
    @ObfuscatedSignature(
-      signature = "(II)Lclass48;",
-      garbageValue = "-805650761"
+      signature = "(Lclass173;IB)Ljava/lang/String;",
+      garbageValue = "3"
    )
-   public static class48 method1884(int var0) {
-      class48 var1 = (class48)class48.field1073.method3743((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class48.field1084.method3239(8, var0);
-         var1 = new class48();
-         if(null != var2) {
-            var1.method963(new class119(var2));
-         }
+   static String method1858(class173 var0, int var1) {
+      int var3 = class138.method2906(var0);
+      boolean var2 = (var3 >> var1 + 1 & 1) != 0;
+      return !var2 && null == var0.field2847?null:(var0.field2850 != null && var0.field2850.length > var1 && var0.field2850[var1] != null && var0.field2850[var1].trim().length() != 0?var0.field2850[var1]:null);
+   }
 
-         class48.field1073.method3745(var1, (long)var0);
-         return var1;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "746337925"
+   )
+   static void method1859() {
+      for(class23 var0 = (class23)class23.field599.method3797(); null != var0; var0 = (class23)class23.field599.method3779()) {
+         if(null != var0.field598) {
+            var0.method564();
+         }
       }
+
    }
 }
