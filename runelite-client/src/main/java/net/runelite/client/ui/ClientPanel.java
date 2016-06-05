@@ -39,9 +39,13 @@ import javax.swing.JPanel;
 import net.runelite.api.Client;
 import net.runelite.client.ClientLoader;
 import net.runelite.client.RuneLite;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 final class ClientPanel extends JPanel implements ComponentListener
 {
+	private static final Logger logger = LoggerFactory.getLogger(ClientPanel.class);
+	
 	public static final int PANEL_WIDTH = 765, PANEL_HEIGHT = 503;
 	
 	private Applet rs;
@@ -62,7 +66,18 @@ final class ClientPanel extends JPanel implements ComponentListener
 		rs.start();
 		this.add(rs);
 
-		RuneLite.setClient(new Client((net.runelite.rs.api.Client) rs));
+		Client client = null;
+		try
+		{
+			client = new Client((net.runelite.rs.api.Client) rs);
+		}
+		catch (Exception ex)
+		{
+			logger.warn("Unable to create client", ex);
+			System.exit(-1);
+		}
+
+		RuneLite.setClient(client);
 	}
 
 	@Override
