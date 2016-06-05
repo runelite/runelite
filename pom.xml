@@ -62,7 +62,7 @@
 		<repository>
 			<id>runelite</id>
 			<name>Runelite</name>
-			<url>https://repo.runelite.net</url>
+			<url>http://repo.runelite.net</url>
 		</repository>
 	</repositories>
 
