@@ -32,26 +32,31 @@ package net.runelite.cache.downloader.requests;
 
 public class ConnectionInfo
 {
-	private byte var1 = 3; // I don't know what this is
-	private int var2;
+	//login state of client
+	//  2 - logged in (in-game)
+	//  3 - logged out (not in-game)
+	private byte type = 3;
 
-	public byte getVar1()
+	//padding to make packet size == 4
+	private int padding;
+
+	public byte getType()
 	{
-		return var1;
+		return type;
 	}
 
-	public void setVar1(byte var1)
+	public void setType(byte type)
 	{
-		this.var1 = var1;
+		this.type = type;
 	}
 
-	public int getVar2()
+	public int getPadding()
 	{
-		return var2;
+		return padding;
 	}
 
-	public void setVar2(int var2)
+	public void setPadding(int padding)
 	{
-		this.var2 = var2;
+		this.padding = padding;
 	}
 }

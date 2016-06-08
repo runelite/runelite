@@ -35,7 +35,7 @@ public class HelloHandshake
 	public static final int RESPONSE_OK = 0;
 	public static final int RESPONSE_OUTDATED = 6;
 
-	private byte version = 15; // handshake type
+	private byte type = 15; // handshake type
 	private int revision;
 
 	public int getRevision()
@@ -47,14 +47,14 @@ public class HelloHandshake
 	{
 		this.revision = revision;
 	}
-	public byte getVersion()
+	public byte getType()
 	{
-		return version;
+		return type;
 	}
 
-	public void setVersion(byte version)
+	public void setType(byte type)
 	{
-		this.version = version;
+		this.type = type;
 	}
 
 }
