@@ -62,7 +62,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 		msg.setRevision(client.getClientRevision());
 
 		ByteBuf message = Unpooled.buffer(5);
-		message.writeByte(msg.getVersion()); // handshake type
+		message.writeByte(msg.getType()); // handshake type
 		message.writeInt(msg.getRevision()); // client revision
 
 		ctx.writeAndFlush(message);
@@ -97,10 +97,8 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 
 			ConnectionInfo cinfo = new ConnectionInfo();
 			ByteBuf outbuf = Unpooled.buffer(4);
-			outbuf.writeByte(cinfo.getVar1());
-			outbuf.writeByte(cinfo.getVar2() >> 16);
-			outbuf.writeByte(cinfo.getVar2() >> 8);
-			outbuf.writeByte(cinfo.getVar2());
+			outbuf.writeByte(cinfo.getType());
+			outbuf.writeMedium(cinfo.getPadding());
 
 			ctx.writeAndFlush(outbuf);
 			state = ClientState.CONNECTED;
@@ -110,7 +108,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 			ByteBuf copy = buffer.slice();
 
 			int index = copy.readUnsignedByte();
-			int file = copy.readShort();
+			int file = copy.readUnsignedShort();
 			// decompress() starts reading here
 			int compression = copy.readUnsignedByte();
 			int compressedFileSize = copy.readInt();
