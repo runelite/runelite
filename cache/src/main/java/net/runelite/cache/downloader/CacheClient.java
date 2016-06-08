@@ -110,7 +110,18 @@ public class CacheClient
 
 	public void stop()
 	{
-		group.shutdownGracefully();
+		try
+		{
+			channel.closeFuture().sync();
+		}
+		catch (InterruptedException e)
+		{
+			logger.warn(null, e);
+		}
+		finally
+		{
+			group.shutdownGracefully();
+		}
 	}
 
 	public int getClientRevision()
@@ -224,9 +235,7 @@ public class CacheClient
 
 		buf.writeByte(request.getIndex() == 255 ? 1 : 0);
 		int hash = pf.computeHash();
-		buf.writeByte(hash >> 16);
-		buf.writeByte(hash >> 8);
-		buf.writeByte(hash);
+		buf.writeMedium(hash);
 
 		logger.trace("Sending request for {}/{}", index, fileId);
 
