@@ -39,7 +39,8 @@ public class SpriteDefinition
 	private int offsetY;
 	private int width;
 	private int height;
-	private byte[] pixels;
+	private byte[] pixels; // indexes into palette
+	private byte[] alphas;
 	private int maxWidth;
 	private int maxHeight;
 
@@ -106,6 +107,16 @@ public class SpriteDefinition
 	public void setPixels(byte[] pixels)
 	{
 		this.pixels = pixels;
+	}
+
+	public byte[] getAlphas()
+	{
+		return alphas;
+	}
+
+	public void setAlphas(byte[] alphas)
+	{
+		this.alphas = alphas;
 	}
 
 	public int getMaxWidth()

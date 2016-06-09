@@ -35,88 +35,140 @@ import net.runelite.cache.io.InputStream;
 
 public class SpriteLoader
 {
+	public static final int FLAG_VERTICAL = 0b01;
+	public static final int FLAG_ALPHA    = 0b10;
+
 	private SpriteDefinition[] sprites;
 
 	private int[] loadedPalette;
-	private int loadedSpriteMaxWidth;
-	private int loadedSpriteMaxHeight;
+	private int width;
+	private int height;
 
 	public void load(InputStream stream)
 	{
 		stream.setOffset(stream.getLength() - 2);
-		int paletteChildCount = stream.readUnsignedShort();
-		sprites = new SpriteDefinition[paletteChildCount];
-		for (int i = 0; i < paletteChildCount; ++i)
+		int spriteCount = stream.readUnsignedShort();
+
+		sprites = new SpriteDefinition[spriteCount];
+		for (int i = 0; i < spriteCount; ++i)
 		{
 			sprites[i] = new SpriteDefinition(this);
 		}
-		stream.setOffset(stream.getLength() - 7 - paletteChildCount * 8);
-		loadedSpriteMaxWidth = stream.readUnsignedShort();
-		loadedSpriteMaxHeight = stream.readUnsignedShort();
-		int var3 = (stream.readUnsignedByte() & 255) + 1;
 
-		int spriteIndex;
-		for (spriteIndex = 0; spriteIndex < paletteChildCount; ++spriteIndex)
+		// 2 for size
+		// 5 for width, height, palette length
+		// + 8 bytes per sprite for offset x/y, width, and height
+		stream.setOffset(stream.getLength() - 7 - spriteCount * 8);
+
+		width = stream.readUnsignedShort();
+		height = stream.readUnsignedShort();
+		int paletteLength = (stream.readUnsignedByte() & 255) + 1;
+
+		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[spriteIndex].setOffsetX(stream.readUnsignedShort());
+			sprites[i].setOffsetX(stream.readUnsignedShort());
 		}
 
-		for (spriteIndex = 0; spriteIndex < paletteChildCount; ++spriteIndex)
+		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[spriteIndex].setOffsetY(stream.readUnsignedShort());
+			sprites[i].setOffsetY(stream.readUnsignedShort());
 		}
 
-		for (spriteIndex = 0; spriteIndex < paletteChildCount; ++spriteIndex)
+		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[spriteIndex].setWidth(stream.readUnsignedShort());
+			sprites[i].setWidth(stream.readUnsignedShort());
 		}
 
-		for (spriteIndex = 0; spriteIndex < paletteChildCount; ++spriteIndex)
+		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[spriteIndex].setHeight(stream.readUnsignedShort());
+			sprites[i].setHeight(stream.readUnsignedShort());
 		}
 
-		stream.setOffset(stream.getLength() - 7 - paletteChildCount * 8 - (var3 - 1) * 3);
-		loadedPalette = new int[var3];
+		// same as above + 3 bytes for each palette entry, except for the first one (which is transparent)
+		stream.setOffset(stream.getLength() - 7 - spriteCount * 8 - (paletteLength - 1) * 3);
+		loadedPalette = new int[paletteLength];
 
-		for (spriteIndex = 1; spriteIndex < var3; ++spriteIndex)
+		for (int i = 1; i < paletteLength; ++i)
 		{
-			loadedPalette[spriteIndex] = stream.read24BitInt();
-			if (0 == loadedPalette[spriteIndex])
+			loadedPalette[i] = stream.read24BitInt();
+
+			if (loadedPalette[i] == 0)
 			{
-				loadedPalette[spriteIndex] = 1;
+				loadedPalette[i] = 1;
 			}
 		}
 
 		stream.setOffset(0);
 
-		for (spriteIndex = 0; spriteIndex < paletteChildCount; ++spriteIndex)
+		for (int i = 0; i < spriteCount; ++i)
 		{
-			SpriteDefinition def = sprites[spriteIndex];
+			SpriteDefinition def = sprites[i];
 			int width = def.getWidth();
 			int height = def.getHeight();
-			int dimmension = width * height;
-			byte[] loadPixels = new byte[dimmension];
-			int var4 = stream.readUnsignedByte();
-			int var5;
-			if (var4 == 0)
+			// XXX OFFSETS
+			int dimension = width * height;
+			byte[] pixelPaletteIndicies = new byte[dimension];
+			byte[] pixelAlphas = new byte[dimension];
+
+			int flags = stream.readUnsignedByte();
+
+			if ((flags & FLAG_VERTICAL) == 0)
 			{
-				for (var5 = 0; var5 < dimmension; ++var5)
+				// read horizontally
+				for (int j = 0; j < dimension; ++j)
 				{
-					loadPixels[var5] = (byte) stream.readByte();
+					pixelPaletteIndicies[j] = stream.readByte();
 				}
 			}
-			else if (1 == var4)
+			else
 			{
-				for (var5 = 0; var5 < width; ++var5)
+				// read vertically
+				for (int j = 0; j < width; ++j)
 				{
-					for (int var8 = 0; var8 < height; ++var8)
+					for (int k = 0; k < height; ++k)
 					{
-						loadPixels[width * var8 + var5] = (byte) stream.readByte();
+						pixelPaletteIndicies[width * k + j] = stream.readByte();
 					}
 				}
 			}
-			def.setPixels(loadPixels);
+
+			// read alphas
+			if ((flags & FLAG_ALPHA) != 0)
+			{
+				if ((flags & FLAG_VERTICAL) == 0)
+				{
+					// read horizontally
+					for (int j = 0; j < dimension; ++j)
+					{
+						pixelAlphas[j] = stream.readByte();
+					}
+				}
+				else
+				{
+					// read vertically
+					for (int j = 0; j < width; ++j)
+					{
+						for (int k = 0; k < height; ++k)
+						{
+							pixelAlphas[width * k + j] = stream.readByte();
+						}
+					}
+				}
+			}
+			else
+			{
+				// everything non-zero is opaque
+				for (int j = 0; j < dimension; ++j)
+				{
+					int index = pixelPaletteIndicies[j];
+
+					if (index != 0)
+						pixelAlphas[j] = (byte) 0xFF;
+				}
+			}
+
+			def.setPixels(pixelPaletteIndicies);
+			def.setAlphas(pixelAlphas);
 		}
 	}
 

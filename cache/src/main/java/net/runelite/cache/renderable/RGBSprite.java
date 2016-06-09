@@ -30,8 +30,7 @@
 
 package net.runelite.cache.renderable;
 
-import java.awt.*;
-import java.awt.image.*;
+import java.awt.image.BufferedImage;
 import net.runelite.cache.definitions.SpriteDefinition;
 
 public class RGBSprite
@@ -94,15 +93,19 @@ public class RGBSprite
 		sprite.spriteWidth = def.getWidth();
 		sprite.spriteHeight = def.getHeight();
 
-		int dimmension = sprite.spriteWidth * sprite.spriteHeight;
+		int dimension = sprite.spriteWidth * sprite.spriteHeight;
 		byte[] pixels = def.getPixels();
+
 		int[] palette = def.getLoader().getLoadedPalette();
+		byte[] alphas = def.getAlphas();
 
-		sprite.pixels = new int[dimmension];
+		sprite.pixels = new int[dimension];
 
-		for (int pos = 0; pos < dimmension; ++pos)
+		for (int pos = 0; pos < dimension; ++pos)
 		{
-			sprite.pixels[pos] = palette[pixels[pos] & 255];
+			int index = pixels[pos] & 0xff;
+			
+			sprite.pixels[pos] = palette[index] | (alphas[pos] << 24);
 		}
 
 		return sprite;
@@ -110,43 +113,8 @@ public class RGBSprite
 
 	public BufferedImage getBufferedImage()
 	{
-		BufferedImage bi = new BufferedImage(spriteWidth, spriteHeight, BufferedImage.TYPE_INT_RGB);
+		BufferedImage bi = new BufferedImage(spriteWidth, spriteHeight, BufferedImage.TYPE_INT_ARGB);
 		bi.setRGB(0, 0, spriteWidth, spriteHeight, pixels, 0, spriteWidth);
-		Image img = makeColorTransparent(bi, new Color(0, 0, 0));
-		BufferedImage trans = imageToBufferedImage(img);
-		return trans;
-	}
-
-	private static Image makeColorTransparent(BufferedImage im, final Color color)
-	{
-		final int markerRGB = color.getRGB() | 0xFF000000;
-
-		RGBImageFilter filter = new RGBImageFilter()
-		{
-			@Override
-			public final int filterRGB(int x, int y, int rgb)
-			{
-				if ((rgb | 0xFF000000) == markerRGB)
-				{
-					return 0x00FFFFFF & rgb;
-				}
-				else
-				{
-					return rgb;
-				}
-			}
-		};
-		
-		ImageProducer ip = new FilteredImageSource(im.getSource(), filter);
-		return Toolkit.getDefaultToolkit().createImage(ip);
-	}
-
-	private static BufferedImage imageToBufferedImage(Image image)
-	{
-		BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g2 = bufferedImage.createGraphics();
-		g2.drawImage(image, 0, 0, null);
-		g2.dispose();
-		return bufferedImage;
+		return bi;
 	}
 }
