@@ -30,34 +30,15 @@
 
 package net.runelite.cache.definitions;
 
-import net.runelite.cache.definitions.loaders.SpriteLoader;
-
 public class SpriteDefinition
 {
-	private SpriteLoader loader;
 	private int offsetX;
 	private int offsetY;
 	private int width;
 	private int height;
-	private byte[] pixels; // indexes into palette
-	private byte[] alphas;
+	private int[] pixels;
 	private int maxWidth;
 	private int maxHeight;
-
-	public SpriteDefinition(SpriteLoader loader)
-	{
-		this.loader = loader;
-	}
-
-	public SpriteLoader getLoader()
-	{
-		return loader;
-	}
-
-	public void setLoader(SpriteLoader loader)
-	{
-		this.loader = loader;
-	}
 
 	public int getOffsetX()
 	{
@@ -99,24 +80,14 @@ public class SpriteDefinition
 		this.height = height;
 	}
 
-	public byte[] getPixels()
+	public int[] getPixels()
 	{
 		return pixels;
 	}
 
-	public void setPixels(byte[] pixels)
+	public void setPixels(int[] pixels)
 	{
 		this.pixels = pixels;
-	}
-
-	public byte[] getAlphas()
-	{
-		return alphas;
-	}
-
-	public void setAlphas(byte[] alphas)
-	{
-		this.alphas = alphas;
 	}
 
 	public int getMaxWidth()
