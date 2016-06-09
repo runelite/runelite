@@ -64,6 +64,8 @@ public class SpriteLoaderTest
 		java.io.File base = StoreLocation.LOCATION,
 			outDir = folder.newFolder();
 
+		int count = 0;
+
 		try (Store store = new Store(base))
 		{
 			store.load();
@@ -96,10 +98,14 @@ public class SpriteLoaderTest
 					java.io.File targ = new java.io.File(outDir, a.getArchiveId() + "-" + i + ".png");
 					targ.mkdirs();
 					ImageIO.write(image, "png", targ);
+
+					++count;
 				}
 			}
 		}
 
-		logger.info("Dumped to {}", outDir);
+		Assert.assertTrue(count > 3000);
+
+		logger.info("Dumped {} sprites to {}", count, outDir);
 	}
 }
