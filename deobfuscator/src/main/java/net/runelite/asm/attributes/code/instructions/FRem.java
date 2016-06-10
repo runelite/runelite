@@ -60,10 +60,11 @@ public class FRem extends Instruction
 		Value result = Value.UNKNOWN;
 		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
 		{
-			float d2 = (float) two.getValue().getValue(),
-				d1 = (float) one.getValue().getValue();
+			float f2 = (float) two.getValue().getValue(),
+				f1 = (float) one.getValue().getValue();
 			
-			result = new Value(d1 % d2);
+			if (f2 != 0.0f)
+				result = new Value(f1 % f2);
 		}
 		
 		StackContext ctx = new StackContext(ins, float.class, result);

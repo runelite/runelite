@@ -64,7 +64,8 @@ public class FDiv extends Instruction implements DivisionInstruction
 			float f2 = (float) two.getValue().getValue(),
 				f1 = (float) one.getValue().getValue();
 			
-			result = new Value(f1 / f2);
+			if (f2 != 0.0f)
+				result = new Value(f1 / f2);
 		}
 		
 		StackContext ctx = new StackContext(ins, float.class, result);

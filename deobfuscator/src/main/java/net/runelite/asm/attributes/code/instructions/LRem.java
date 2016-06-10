@@ -63,7 +63,8 @@ public class LRem extends Instruction
 			long l2 = (long) two.getValue().getValue(),
 				l1 = (long) one.getValue().getValue();
 			
-			result = new Value(l1 % l2);
+			if (l2 != 0L)
+				result = new Value(l1 % l2);
 		}
 		
 		StackContext ctx = new StackContext(ins, long.class, result);
