@@ -28,24 +28,55 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache.fs.util;
+package net.runelite.cache.util;
 
-import java.util.zip.CRC32;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+import org.apache.commons.compress.utils.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public final class CRC32HGenerator
+public class GZip
 {
-	public static final CRC32 CRC32Instance = new CRC32();
+	private static final Logger logger = LoggerFactory.getLogger(GZip.class);
 
-	public static synchronized int getHash(byte[] data, int len)
+	public static byte[] compress(byte[] bytes)
 	{
-		CRC32Instance.update(data, 0, len);
-		try
+		InputStream is = new ByteArrayInputStream(bytes);
+		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+		try (OutputStream os = new GZIPOutputStream(bout))
 		{
-			return (int) CRC32Instance.getValue();
+			IOUtils.copy(is, os);
 		}
-		finally
+		catch (IOException ex)
 		{
-			CRC32Instance.reset();
+			logger.warn(null, ex);
+			return null;
 		}
+		
+		return bout.toByteArray();
+	}
+
+	public static byte[] decompress(byte[] bytes, int len)
+	{
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		
+		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes, 0, len)))
+		{
+			IOUtils.copy(is, os);
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
+		}
+
+		return os.toByteArray();
 	}
 }

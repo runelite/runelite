@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import net.runelite.cache.fs.util.Djb2;
+import net.runelite.cache.util.Djb2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 import org.slf4j.Logger;
