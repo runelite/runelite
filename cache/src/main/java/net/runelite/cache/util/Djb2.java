@@ -1,4 +1,4 @@
-package net.runelite.cache.fs.util;
+package net.runelite.cache.util;
 
 /**
  * An implementation of the {@code djb2} hash function.

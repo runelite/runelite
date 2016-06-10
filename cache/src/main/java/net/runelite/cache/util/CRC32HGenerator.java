@@ -27,32 +27,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache.fs.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+package net.runelite.cache.util;
 
-public class WhirlpoolTest
+import java.util.zip.CRC32;
+
+public final class CRC32HGenerator
 {
-	private static final byte[] result =
-	{
-		92, -33, 60, 4, -28, 24, 54, -39,
-		-11, -85, -123, -74, 6, -107, 32, 36,
-		108, 104, -82, 108, 36, -53, -95, 123,
-		-84, -86, -13, 107, -110, 27, 35, -78,
-		-60, -122, 36, 56, 86, 73, -9, -70,
-		-35, 58, -43, 82, -36, -53, -107, -9,
-		-21, 6, -43, 14, 109, -26, -115, 67,
-		64, 116, 107, 18, 12, 46, -64, 63
-	};
+	public static final CRC32 CRC32Instance = new CRC32();
 
-	@Test
-	public void testGetHash()
+	public static synchronized int getHash(byte[] data, int len)
 	{
-		byte[] data = "runelite".getBytes();
-		byte[] out = Whirlpool.getHash(data, data.length);
-
-		Assert.assertArrayEquals(out, result);
+		CRC32Instance.update(data, 0, len);
+		try
+		{
+			return (int) CRC32Instance.getValue();
+		}
+		finally
+		{
+			CRC32Instance.reset();
+		}
 	}
-
 }

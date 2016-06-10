@@ -36,12 +36,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import net.runelite.cache.fs.util.BZip2;
+import net.runelite.cache.util.BZip2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
-import net.runelite.cache.fs.util.CRC32HGenerator;
-import net.runelite.cache.fs.util.GZip;
-import net.runelite.cache.fs.util.Whirlpool;
+import net.runelite.cache.util.CRC32HGenerator;
+import net.runelite.cache.util.GZip;
+import net.runelite.cache.util.Whirlpool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
