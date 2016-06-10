@@ -64,7 +64,8 @@ public class DDiv extends Instruction implements DivisionInstruction
 			double d2 = (double) two.getValue().getValue(),
 				d1 = (double) one.getValue().getValue();
 			
-			result = new Value(d1 / d2);
+			if (d2 != 0.0d)
+				result = new Value(d1 / d2);
 		}
 		
 		StackContext ctx = new StackContext(ins, double.class, result);
