@@ -45,7 +45,7 @@ public class XteaTest
 	@Test
 	public void test() throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, NoSuchPaddingException
 	{
-		byte[] data = new byte[1024];
+		byte[] data = new byte[1027];
 		random.nextBytes(data);
 		
 		int[] key = new int[] { 4, 8, 15, 16 };
