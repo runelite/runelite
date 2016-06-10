@@ -27,56 +27,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.util;
 
-package net.runelite.cache.fs.util;
+import net.runelite.cache.util.Whirlpool;
+import org.junit.Assert;
+import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-import org.apache.commons.compress.utils.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class GZip
+public class WhirlpoolTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(GZip.class);
-
-	public static byte[] compress(byte[] bytes)
+	private static final byte[] result =
 	{
-		InputStream is = new ByteArrayInputStream(bytes);
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
+		92, -33, 60, 4, -28, 24, 54, -39,
+		-11, -85, -123, -74, 6, -107, 32, 36,
+		108, 104, -82, 108, 36, -53, -95, 123,
+		-84, -86, -13, 107, -110, 27, 35, -78,
+		-60, -122, 36, 56, 86, 73, -9, -70,
+		-35, 58, -43, 82, -36, -53, -107, -9,
+		-21, 6, -43, 14, 109, -26, -115, 67,
+		64, 116, 107, 18, 12, 46, -64, 63
+	};
 
-		try (OutputStream os = new GZIPOutputStream(bout))
-		{
-			IOUtils.copy(is, os);
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
-		
-		return bout.toByteArray();
+	@Test
+	public void testGetHash()
+	{
+		byte[] data = "runelite".getBytes();
+		byte[] out = Whirlpool.getHash(data, data.length);
+
+		Assert.assertArrayEquals(out, result);
 	}
 
-	public static byte[] decompress(byte[] bytes, int len)
-	{
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		
-		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes, 0, len)))
-		{
-			IOUtils.copy(is, os);
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
-
-		return os.toByteArray();
-	}
 }
