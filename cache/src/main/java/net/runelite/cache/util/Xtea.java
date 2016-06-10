@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache.fs.util;
+package net.runelite.cache.util;
 
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
