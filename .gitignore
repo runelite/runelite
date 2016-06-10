@@ -2,3 +2,4 @@ target
 nbactions.xml
 nb-configuration.xml
 /nbproject/
+project.properties
