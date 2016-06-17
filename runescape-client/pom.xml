@@ -39,7 +39,7 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>rs-client</artifactId>
-	<version>115.3-SNAPSHOT</version> <!-- rs version -->
+	<version>116.1-SNAPSHOT</version> <!-- rs version -->
 	<name>RuneScape Client</name>
 
 	<dependencies>

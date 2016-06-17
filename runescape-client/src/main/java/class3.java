@@ -4,80 +4,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("d")
 @Implements("WidgetNode")
 public class class3 extends class208 {
-   @ObfuscatedName("i")
+   @ObfuscatedName("j")
+   boolean field53 = false;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -682391945
+      intValue = -1785055765
    )
-   int field64;
-   @ObfuscatedName("t")
+   int field54;
+   @ObfuscatedName("ib")
    @ObfuscatedGetter(
-      intValue = 361493473
+      intValue = 1110564343
+   )
+   static int field56;
+   @ObfuscatedName("pb")
+   static short[] field57;
+   @ObfuscatedName("pk")
+   @ObfuscatedGetter(
+      intValue = 709291077
+   )
+   static int field58;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -66676423
    )
    @Export("id")
-   int field65;
-   @ObfuscatedName("g")
-   boolean field66 = false;
-   @ObfuscatedName("bx")
-   static class168 field67;
-   @ObfuscatedName("ix")
-   @ObfuscatedGetter(
-      intValue = -1046349523
-   )
-   static int field69;
+   int field60;
 
-   @ObfuscatedName("bt")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "38"
+      signature = "(Lclass37;IB)V",
+      garbageValue = "60"
    )
-   @Export("groundItemSpawned")
-   static final void method35(int var0, int var1) {
-      class199 var2 = client.field415[class32.field754][var0][var1];
-      if(var2 == null) {
-         class214.field3161.method1961(class32.field754, var0, var1);
-      } else {
-         long var3 = -99999999L;
-         class28 var5 = null;
-
-         class28 var6;
-         for(var6 = (class28)var2.method3797(); null != var6; var6 = (class28)var2.method3779()) {
-            class51 var7 = class123.method2743(var6.field677);
-            long var8 = (long)var7.field1117;
-            if(var7.field1131 == 1) {
-               var8 *= (long)(1 + var6.field671);
-            }
-
-            if(var8 > var3) {
-               var3 = var8;
-               var5 = var6;
-            }
-         }
-
-         if(var5 == null) {
-            class214.field3161.method1961(class32.field754, var0, var1);
-         } else {
-            var2.method3788(var5);
-            class28 var11 = null;
-            class28 var10 = null;
-
-            for(var6 = (class28)var2.method3797(); null != var6; var6 = (class28)var2.method3779()) {
-               if(var6.field677 != var5.field677) {
-                  if(null == var11) {
-                     var11 = var6;
-                  }
-
-                  if(var11.field677 != var6.field677 && var10 == null) {
-                     var10 = var6;
-                  }
-               }
-            }
-
-            int var9 = (var1 << 7) + var0 + 1610612736;
-            class214.field3161.method1988(class32.field754, var0, var1, class14.method147(64 + 128 * var0, 64 + 128 * var1, class32.field754), var5, var9, var11, var10);
-         }
-      }
+   static final void method36(class37 var0, int var1) {
+      class94.method2172(var0.field813, var0.field791, var1);
    }
 }

@@ -1,31 +1,40 @@
 import java.applet.Applet;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("ee")
 public class class138 {
-   @ObfuscatedName("i")
-   public static String field2155 = null;
-   @ObfuscatedName("t")
-   public static Applet field2156 = null;
-   @ObfuscatedName("ba")
-   static class168 field2161;
-   @ObfuscatedName("fn")
+   @ObfuscatedName("g")
+   static String field2112 = null;
+   @ObfuscatedName("ig")
    @ObfuscatedGetter(
-      intValue = 1478573917
+      intValue = 1345145921
    )
-   @Export("cameraPitch")
-   static int field2164;
+   static int field2115;
+   @ObfuscatedName("b")
+   static Applet field2122 = null;
 
-   @ObfuscatedName("eg")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass173;I)I",
-      garbageValue = "1267763830"
+      signature = "(I)I",
+      garbageValue = "-337114912"
    )
-   static int method2906(class173 var0) {
-      class201 var1 = (class201)client.field428.method3748(((long)var0.field2776 << 32) + (long)var0.field2777);
-      return null != var1?var1.field3111:var0.field2817;
+   static int method2962() {
+      return 9;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "663569718"
+   )
+   public static void method2967(int var0) {
+      if(class183.field2953 != 0) {
+         class181.field2929 = var0;
+      } else {
+         class183.field2952.method3608(var0);
+      }
+
    }
 }

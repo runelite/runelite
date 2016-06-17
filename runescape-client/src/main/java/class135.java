@@ -1,82 +1,109 @@
+import java.awt.Component;
 import java.io.File;
 import java.util.Hashtable;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("ef")
 public class class135 {
-   @ObfuscatedName("s")
-   static class80 field2101;
-   @ObfuscatedName("i")
-   static File field2103;
-   @ObfuscatedName("d")
-   public static short[] field2106;
-   @ObfuscatedName("t")
-   static boolean field2107 = false;
    @ObfuscatedName("g")
-   static Hashtable field2109 = new Hashtable(16);
+   static File field2062;
+   @ObfuscatedName("j")
+   static Hashtable field2065 = new Hashtable(16);
+   @ObfuscatedName("bt")
+   static class168 field2069;
+   @ObfuscatedName("b")
+   static boolean field2071 = false;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "500"
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "117"
    )
-   static final void method2845() {
-      if(null != client.field331) {
-         client.field331.method1186();
-      }
-
-      if(class17.field247 != null) {
-         class17.field247.method1186();
-      }
-
+   public static void method2907(Component var0) {
+      var0.removeMouseListener(class140.field2131);
+      var0.removeMouseMotionListener(class140.field2131);
+      var0.removeFocusListener(class140.field2131);
+      class140.field2130 = 0;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZI)V",
-      garbageValue = "0"
+      signature = "([BB)V",
+      garbageValue = "-77"
    )
-   public static void method2850(String var0, boolean var1, boolean var2) {
-      class158.method3142(var0, var1, "openjs", var2);
-   }
+   static void method2911(byte[] var0) {
+      class119 var1 = new class119(var0);
+      var1.field1976 = var0.length - 2;
+      class76.field1361 = var1.method2516();
+      class76.field1353 = new int[class76.field1361];
+      class131.field2048 = new int[class76.field1361];
+      class76.field1354 = new int[class76.field1361];
+      class28.field674 = new int[class76.field1361];
+      class76.field1355 = new byte[class76.field1361][];
+      var1.field1976 = var0.length - 7 - class76.field1361 * 8;
+      class109.field1890 = var1.method2516();
+      class76.field1351 = var1.method2516();
+      int var2 = (var1.method2514() & 255) + 1;
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)Ljava/lang/String;",
-      garbageValue = "50"
-   )
-   public static String method2851(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
+      int var3;
+      for(var3 = 0; var3 < class76.field1361; ++var3) {
+         class76.field1353[var3] = var1.method2516();
+      }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
-               var2.append('+');
-            } else {
-               byte var5 = class13.method143(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(55 + var6));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
+      for(var3 = 0; var3 < class76.field1361; ++var3) {
+         class131.field2048[var3] = var1.method2516();
+      }
 
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(55 + var6));
-               } else {
-                  var2.append((char)(48 + var6));
-               }
-            }
-         } else {
-            var2.append(var4);
+      for(var3 = 0; var3 < class76.field1361; ++var3) {
+         class76.field1354[var3] = var1.method2516();
+      }
+
+      for(var3 = 0; var3 < class76.field1361; ++var3) {
+         class28.field674[var3] = var1.method2516();
+      }
+
+      var1.field1976 = var0.length - 7 - class76.field1361 * 8 - (var2 - 1) * 3;
+      class8.field135 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         class8.field135[var3] = var1.method2518();
+         if(class8.field135[var3] == 0) {
+            class8.field135[var3] = 1;
          }
       }
 
-      return var2.toString();
+      var1.field1976 = 0;
+
+      for(var3 = 0; var3 < class76.field1361; ++var3) {
+         int var4 = class76.field1354[var3];
+         int var5 = class28.field674[var3];
+         int var6 = var4 * var5;
+         byte[] var7 = new byte[var6];
+         class76.field1355[var3] = var7;
+         int var8 = var1.method2514();
+         int var9;
+         if(var8 == 0) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.method2515();
+            }
+         } else if(var8 == 1) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var9 + var4 * var10] = var1.method2515();
+               }
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;II)I",
+      garbageValue = "16"
+   )
+   public static int method2912(CharSequence var0, int var1) {
+      return class9.method117(var0, var1, true);
    }
 }

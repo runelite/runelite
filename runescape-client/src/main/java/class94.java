@@ -1,114 +1,99 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Insets;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("ct")
 @Implements("DecorativeObject")
 public final class class94 {
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 968174999
-   )
-   @Export("floor")
-   int field1613;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1447335613
-   )
-   @Export("x")
-   int field1614;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -38505297
+      intValue = 63240791
    )
    @Export("y")
-   int field1615;
+   int field1576;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1442348565
+   )
+   @Export("floor")
+   int field1577;
    @ObfuscatedName("d")
-   @Export("renderable2")
-   public class85 field1616;
-   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 807137529
+      intValue = -841303921
    )
-   int field1617;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1390120507
-   )
-   int field1618;
+   int field1578;
    @ObfuscatedName("l")
+   @Export("renderable2")
+   public class85 field1579;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 9519993
+      intValue = -1522978385
    )
-   @Export("hash")
-   public int field1619 = 0;
-   @ObfuscatedName("s")
-   @Export("renderable1")
-   public class85 field1620;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1604663101
-   )
-   int field1621;
+   int field1580;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -480786221
+      intValue = 1454491793
    )
-   int field1623 = 0;
-   @ObfuscatedName("h")
+   int field1581;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 972478267
+      intValue = 113938791
    )
-   int field1625;
+   int field1582;
+   @ObfuscatedName("c")
+   @Export("renderable1")
+   public class85 field1583;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1999045951
+   )
+   @Export("hash")
+   public int field1584 = 0;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1041135011
+   )
+   @Export("x")
+   int field1585;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -173765407
+   )
+   int field1586 = 0;
 
    @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-2"
+      signature = "(IIII)V",
+      garbageValue = "-241188776"
    )
-   static void method2124() {
-      int var0 = class144.field2226;
-      int var1 = class144.field2242;
-      int var2 = class126.field2049 - class10.field162 - var0;
-      int var3 = class109.field1915 - class41.field966 - var1;
-      if(var0 > 0 || var2 > 0 || var1 > 0 || var3 > 0) {
-         try {
-            Container var4 = client.field280.method3051();
-            int var5 = 0;
-            int var6 = 0;
-            if(class43.field1022 == var4) {
-               Insets var7 = class43.field1022.getInsets();
-               var5 = var7.left;
-               var6 = var7.top;
-            }
-
-            Graphics var9 = var4.getGraphics();
-            var9.setColor(Color.black);
-            if(var0 > 0) {
-               var9.fillRect(var5, var6, var0, class109.field1915);
-            }
-
-            if(var1 > 0) {
-               var9.fillRect(var5, var6, class126.field2049, var1);
-            }
-
-            if(var2 > 0) {
-               var9.fillRect(var5 + class126.field2049 - var2, var6, var2, class109.field1915);
-            }
-
-            if(var3 > 0) {
-               var9.fillRect(var5, var6 + class109.field1915 - var3, class126.field2049, var3);
-            }
-         } catch (Exception var8) {
-            ;
+   static final void method2172(int var0, int var1, int var2) {
+      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+         int var3 = class108.method2413(var0, var1, class144.field2193) - var2;
+         var0 -= class28.field670;
+         var3 -= class59.field1188;
+         var1 -= client.field478;
+         int var4 = class91.field1563[class156.field2286];
+         int var5 = class91.field1564[class156.field2286];
+         int var6 = class91.field1563[class149.field2224];
+         int var7 = class91.field1564[class149.field2224];
+         int var8 = var7 * var0 + var1 * var6 >> 16;
+         var1 = var7 * var1 - var6 * var0 >> 16;
+         var0 = var8;
+         var8 = var3 * var5 - var4 * var1 >> 16;
+         var1 = var3 * var4 + var1 * var5 >> 16;
+         if(var1 >= 50) {
+            client.field395 = client.field553 * var0 / var1 + client.field551 / 2;
+            client.field544 = client.field552 / 2 + client.field553 * var8 / var1;
+         } else {
+            client.field395 = -1;
+            client.field544 = -1;
          }
-      }
 
+      } else {
+         client.field395 = -1;
+         client.field544 = -1;
+      }
    }
 }

@@ -7,80 +7,80 @@ import javax.sound.sampled.DataLine.Info;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bv")
+@ObfuscatedName("bq")
 public class class69 extends class56 {
-   @ObfuscatedName("al")
+   @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = -545583909
+      intValue = -968159409
    )
-   int field1287;
-   @ObfuscatedName("i")
-   SourceDataLine field1288;
-   @ObfuscatedName("t")
-   AudioFormat field1289;
-   @ObfuscatedName("av")
-   byte[] field1290;
-
-   @ObfuscatedName("t")
-   void vmethod1466(Component var1) {
-      this.field1289 = new AudioFormat((float)class56.field1194, 16, class21.field575?2:1, true, false);
-      this.field1290 = new byte[256 << (class21.field575?2:1)];
-   }
+   int field1251;
+   @ObfuscatedName("b")
+   AudioFormat field1252;
+   @ObfuscatedName("g")
+   SourceDataLine field1253;
+   @ObfuscatedName("aj")
+   byte[] field1254;
 
    @ObfuscatedName("g")
-   int vmethod1468() {
-      return this.field1287 - (this.field1288.available() >> (class21.field575?2:1));
+   void vmethod1517(int var1) throws LineUnavailableException {
+      try {
+         Info var2 = new Info(SourceDataLine.class, this.field1252, var1 << (class21.field581?2:1));
+         this.field1253 = (SourceDataLine)AudioSystem.getLine(var2);
+         this.field1253.open();
+         this.field1253.start();
+         this.field1251 = var1;
+      } catch (LineUnavailableException var3) {
+         if(class48.method991(var1) != 1) {
+            this.vmethod1517(class46.method967(var1));
+         } else {
+            this.field1253 = null;
+            throw var3;
+         }
+      }
    }
 
-   @ObfuscatedName("r")
-   void vmethod1469() {
-      this.field1288.flush();
+   @ObfuscatedName("j")
+   int vmethod1518() {
+      return this.field1251 - (this.field1253.available() >> (class21.field581?2:1));
    }
 
-   @ObfuscatedName("h")
-   void vmethod1470() {
+   @ObfuscatedName("d")
+   void vmethod1519() {
       int var1 = 256;
-      if(class21.field575) {
+      if(class21.field581) {
          var1 <<= 1;
       }
 
       for(int var2 = 0; var2 < var1; ++var2) {
-         int var3 = super.field1197[var2];
+         int var3 = super.field1148[var2];
          if((8388608 + var3 & -16777216) != 0) {
             var3 = 8388607 ^ var3 >> 31;
          }
 
-         this.field1290[2 * var2] = (byte)(var3 >> 8);
-         this.field1290[2 * var2 + 1] = (byte)(var3 >> 16);
+         this.field1254[var2 * 2] = (byte)(var3 >> 8);
+         this.field1254[1 + var2 * 2] = (byte)(var3 >> 16);
       }
 
-      this.field1288.write(this.field1290, 0, var1 << 1);
+      this.field1253.write(this.field1254, 0, var1 << 1);
    }
 
-   @ObfuscatedName("z")
-   void vmethod1471() {
-      if(null != this.field1288) {
-         this.field1288.close();
-         this.field1288 = null;
+   @ObfuscatedName("x")
+   void vmethod1520() {
+      if(this.field1253 != null) {
+         this.field1253.close();
+         this.field1253 = null;
       }
 
    }
 
-   @ObfuscatedName("i")
-   void vmethod1476(int var1) throws LineUnavailableException {
-      try {
-         Info var2 = new Info(SourceDataLine.class, this.field1289, var1 << (class21.field575?2:1));
-         this.field1288 = (SourceDataLine)AudioSystem.getLine(var2);
-         this.field1288.open();
-         this.field1288.start();
-         this.field1287 = var1;
-      } catch (LineUnavailableException var3) {
-         if(class56.method1133(var1) != 1) {
-            this.vmethod1476(class24.method575(var1));
-         } else {
-            this.field1288 = null;
-            throw var3;
-         }
-      }
+   @ObfuscatedName("y")
+   void vmethod1521() {
+      this.field1253.flush();
+   }
+
+   @ObfuscatedName("b")
+   void vmethod1535(Component var1) {
+      this.field1252 = new AudioFormat((float)class56.field1153, 16, class21.field581?2:1, true, false);
+      this.field1254 = new byte[256 << (class21.field581?2:1)];
    }
 }
