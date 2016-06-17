@@ -36,8 +36,10 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
+import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.If0;
+import net.runelite.asm.attributes.code.instructions.IfACmpEq;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
@@ -59,9 +61,30 @@ public class IfNull implements Deobfuscator
 			nonInteresting.addAll(interesting);
 			interesting.clear();
 		}
-		
-		if (!(ictx.getInstruction() instanceof net.runelite.asm.attributes.code.instructions.IfNull))
+
+		if (ictx.getInstruction() instanceof net.runelite.asm.attributes.code.instructions.IfNull)
+		{
+			// ok
+		}
+		else if (ictx.getInstruction() instanceof IfACmpEq)
+		{
+			StackContext s1 = ictx.getPops().get(0),
+				s2 = ictx.getPops().get(1);
+
+			if (s1.getPushed().getInstruction() instanceof AConstNull
+				|| s2.getPushed().getInstruction() instanceof AConstNull)
+			{
+				// ok
+			}
+			else
+			{
+				return;
+			}
+		}
+		else
+		{
 			return;
+		}
 
 		StackContext s = ictx.getPops().get(0);
 		if (s.getValue() != Value.NULL)
@@ -103,14 +126,34 @@ public class IfNull implements Deobfuscator
 		for (Instruction i : interesting)
 		{
 			Instructions ins = i.getInstructions();
-			If0 if0 = (If0) i;
 
-			int idx = ins.getInstructions().indexOf(i);
-			assert idx != -1;
+			if (i instanceof net.runelite.asm.attributes.code.instructions.IfNull)
+			{
+				If0 if0 = (If0) i;
 
-			ins.replace(i, new Pop(ins));
-			ins.getInstructions().add(idx + 1, new Goto(ins, if0.getJumps().get(0)));
-			++count;
+				int idx = ins.getInstructions().indexOf(i);
+				assert idx != -1;
+
+				ins.replace(i, new Pop(ins));
+				ins.getInstructions().add(idx + 1, new Goto(ins, if0.getJumps().get(0)));
+				++count;
+			}
+			else if (i instanceof IfACmpEq)
+			{
+				IfACmpEq icmpeq = (IfACmpEq) i;
+
+				int idx = ins.getInstructions().indexOf(i);
+				assert idx != -1;
+
+				ins.replace(i, new Pop(ins));
+				ins.getInstructions().add(idx + 1, new Pop(ins)); // null
+				ins.getInstructions().add(idx + 2, new Goto(ins, icmpeq.getJumps().get(0)));
+				++count;
+			}
+			else
+			{
+				throw new RuntimeException("?");
+			}
 		}
 
 		interesting.clear();
