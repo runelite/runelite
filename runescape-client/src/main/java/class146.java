@@ -1,21 +1,21 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("ea")
 public class class146 {
-   @ObfuscatedName("t")
-   class146 field2245;
-   @ObfuscatedName("d")
-   public volatile Object field2246;
-   @ObfuscatedName("z")
-   public volatile int field2249 = 0;
-   @ObfuscatedName("r")
+   @ObfuscatedName("b")
+   class146 field2195;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -2135219527
+      intValue = -388252903
    )
-   int field2250;
-   @ObfuscatedName("f")
-   public int field2251;
-   @ObfuscatedName("s")
-   Object field2252;
+   int field2197;
+   @ObfuscatedName("x")
+   public volatile int field2199 = 0;
+   @ObfuscatedName("r")
+   public int field2200;
+   @ObfuscatedName("l")
+   public volatile Object field2201;
+   @ObfuscatedName("c")
+   Object field2202;
 }

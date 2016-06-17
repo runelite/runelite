@@ -7,148 +7,64 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("eb")
 public final class class143 implements Runnable {
-   @ObfuscatedName("iy")
-   @ObfuscatedGetter(
-      intValue = 553166441
-   )
-   static int field2208;
-   @ObfuscatedName("i")
-   OutputStream field2209;
+   @ObfuscatedName("y")
+   class146 field2159;
    @ObfuscatedName("g")
-   Socket field2210;
-   @ObfuscatedName("h")
-   boolean field2211 = false;
-   @ObfuscatedName("r")
-   class146 field2213;
-   @ObfuscatedName("f")
-   byte[] field2214;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1588420585
-   )
-   int field2215 = 0;
-   @ObfuscatedName("z")
-   class136 field2216;
-   @ObfuscatedName("l")
-   boolean field2217 = false;
+   OutputStream field2160;
+   @ObfuscatedName("j")
+   Socket field2161;
    @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 851178089
-   )
-   int field2218 = 0;
-   @ObfuscatedName("t")
-   InputStream field2220;
-   @ObfuscatedName("do")
-   @ObfuscatedGetter(
-      intValue = 786468261
-   )
-   static int field2222;
-
+   boolean field2162 = false;
+   @ObfuscatedName("x")
+   class136 field2163;
+   @ObfuscatedName("b")
+   InputStream field2164;
    @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Lclass80;B)V",
-      garbageValue = "2"
+   byte[] field2166;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 107708935
    )
-   static final void method2959(class80 var0) {
-      short var1 = 256;
-
-      int var2;
-      for(var2 = 0; var2 < class162.field2678.length; ++var2) {
-         class162.field2678[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         class162.field2678[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class30.field700[var5] = (class162.field2678[var5 + 128] + class162.field2678[var5 - 128] + class162.field2678[var5 - 1] + class162.field2678[var5 + 1]) / 4;
-            }
-         }
-
-         int[] var8 = class162.field2678;
-         class162.field2678 = class30.field700;
-         class30.field700 = var8;
-      }
-
-      if(null != var0) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.field1425; ++var3) {
-            for(var4 = 0; var4 < var0.field1424; ++var4) {
-               if(var0.field1428[var2++] != 0) {
-                  var5 = var0.field1429 + var4 + 16;
-                  int var6 = var3 + 16 + var0.field1427;
-                  int var7 = var5 + (var6 << 7);
-                  class162.field2678[var7] = 0;
-               }
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-619005041"
+   int field2167 = 0;
+   @ObfuscatedName("u")
+   boolean field2168 = false;
+   @ObfuscatedName("qv")
+   @ObfuscatedGetter(
+      intValue = 745720803
    )
-   public void method2960() {
-      if(!this.field2211) {
-         synchronized(this) {
-            this.field2211 = true;
-            this.notifyAll();
-         }
-
-         if(this.field2213 != null) {
-            while(this.field2213.field2249 == 0) {
-               class45.method926(1L);
-            }
-
-            if(this.field2213.field2249 == 1) {
-               try {
-                  ((Thread)this.field2213.field2246).join();
-               } catch (InterruptedException var3) {
-                  ;
-               }
-            }
-         }
-
-         this.field2213 = null;
-      }
-   }
+   protected static int field2169;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1098267027
+   )
+   int field2170 = 0;
+   @ObfuscatedName("pe")
+   static class221 field2172;
 
    protected void finalize() {
-      this.method2960();
+      this.method3025();
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1548443866"
+      signature = "(B)I",
+      garbageValue = "-74"
    )
-   public int method2961() throws IOException {
-      return this.field2211?0:this.field2220.read();
+   public int method3018() throws IOException {
+      return this.field2162?0:this.field2164.available();
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "39"
+      signature = "([BIII)V",
+      garbageValue = "-1250404651"
    )
-   public void method2963(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2211) {
+   public void method3019(byte[] var1, int var2, int var3) throws IOException {
+      if(!this.field2162) {
          while(var3 > 0) {
-            int var4 = this.field2220.read(var1, var2, var3);
+            int var4 = this.field2164.read(var1, var2, var3);
             if(var4 <= 0) {
                throw new EOFException();
             }
@@ -160,32 +76,32 @@ public final class class143 implements Runnable {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "([BIII)V",
       garbageValue = "0"
    )
-   public void method2964(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2211) {
-         if(this.field2217) {
-            this.field2217 = false;
+   public void method3020(byte[] var1, int var2, int var3) throws IOException {
+      if(!this.field2162) {
+         if(this.field2168) {
+            this.field2168 = false;
             throw new IOException();
          } else {
-            if(this.field2214 == null) {
-               this.field2214 = new byte[5000];
+            if(null == this.field2166) {
+               this.field2166 = new byte[5000];
             }
 
             synchronized(this) {
                for(int var5 = 0; var5 < var3; ++var5) {
-                  this.field2214[this.field2218] = var1[var2 + var5];
-                  this.field2218 = (this.field2218 + 1) % 5000;
-                  if((this.field2215 + 4900) % 5000 == this.field2218) {
+                  this.field2166[this.field2167] = var1[var5 + var2];
+                  this.field2167 = (this.field2167 + 1) % 5000;
+                  if(this.field2167 == (4900 + this.field2170) % 5000) {
                      throw new IOException();
                   }
                }
 
-               if(this.field2213 == null) {
-                  this.field2213 = this.field2216.method2868(this, 3);
+               if(null == this.field2159) {
+                  this.field2159 = this.field2163.method2917(this, 3);
                }
 
                this.notifyAll();
@@ -201,8 +117,8 @@ public final class class143 implements Runnable {
                int var1;
                int var2;
                synchronized(this) {
-                  if(this.field2218 == this.field2215) {
-                     if(this.field2211) {
+                  if(this.field2167 == this.field2170) {
+                     if(this.field2162) {
                         break label84;
                      }
 
@@ -213,11 +129,11 @@ public final class class143 implements Runnable {
                      }
                   }
 
-                  var2 = this.field2215;
-                  if(this.field2218 >= this.field2215) {
-                     var1 = this.field2218 - this.field2215;
+                  var2 = this.field2170;
+                  if(this.field2167 >= this.field2170) {
+                     var1 = this.field2167 - this.field2170;
                   } else {
-                     var1 = 5000 - this.field2215;
+                     var1 = 5000 - this.field2170;
                   }
                }
 
@@ -226,65 +142,139 @@ public final class class143 implements Runnable {
                }
 
                try {
-                  this.field2209.write(this.field2214, var2, var1);
+                  this.field2160.write(this.field2166, var2, var1);
                } catch (IOException var9) {
-                  this.field2217 = true;
+                  this.field2168 = true;
                }
 
-               this.field2215 = (var1 + this.field2215) % 5000;
+               this.field2170 = (this.field2170 + var1) % 5000;
 
                try {
-                  if(this.field2215 == this.field2218) {
-                     this.field2209.flush();
+                  if(this.field2170 == this.field2167) {
+                     this.field2160.flush();
                   }
                } catch (IOException var8) {
-                  this.field2217 = true;
+                  this.field2168 = true;
                }
                continue;
             }
 
             try {
-               if(this.field2220 != null) {
-                  this.field2220.close();
+               if(null != this.field2164) {
+                  this.field2164.close();
                }
 
-               if(null != this.field2209) {
-                  this.field2209.close();
+               if(null != this.field2160) {
+                  this.field2160.close();
                }
 
-               if(null != this.field2210) {
-                  this.field2210.close();
+               if(this.field2161 != null) {
+                  this.field2161.close();
                }
             } catch (IOException var7) {
                ;
             }
 
-            this.field2214 = null;
+            this.field2166 = null;
             break;
          }
       } catch (Exception var12) {
-         class30.method654((String)null, var12);
+         class7.method94((String)null, var12);
       }
 
    }
 
-   public class143(Socket var1, class136 var2) throws IOException {
-      this.field2216 = var2;
-      this.field2210 = var1;
-      this.field2210.setSoTimeout(30000);
-      this.field2210.setTcpNoDelay(true);
-      this.field2210.setReceiveBufferSize(16384);
-      this.field2210.setSendBufferSize(16384);
-      this.field2220 = this.field2210.getInputStream();
-      this.field2209 = this.field2210.getOutputStream();
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lclass167;III)Lclass78;",
+      garbageValue = "-2146826988"
+   )
+   public static class78 method3022(class167 var0, int var1, int var2) {
+      if(!class38.method766(var0, var1, var2)) {
+         return null;
+      } else {
+         class78 var4 = new class78();
+         var4.field1370 = class109.field1890;
+         var4.field1372 = class76.field1351;
+         var4.field1369 = class76.field1353[0];
+         var4.field1373 = class131.field2048[0];
+         var4.field1374 = class76.field1354[0];
+         var4.field1371 = class28.field674[0];
+         int var5 = var4.field1374 * var4.field1371;
+         byte[] var6 = class76.field1355[0];
+         var4.field1380 = new int[var5];
+
+         for(int var7 = 0; var7 < var5; ++var7) {
+            var4.field1380[var7] = class8.field135[var6[var7] & 255];
+         }
+
+         class7.method95();
+         return var4;
+      }
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-95899752"
+   )
+   public void method3025() {
+      if(!this.field2162) {
+         synchronized(this) {
+            this.field2162 = true;
+            this.notifyAll();
+         }
+
+         if(this.field2159 != null) {
+            while(this.field2159.field2199 == 0) {
+               class116.method2459(1L);
+            }
+
+            if(this.field2159.field2199 == 1) {
+               try {
+                  ((Thread)this.field2159.field2201).join();
+               } catch (InterruptedException var3) {
+                  ;
+               }
+            }
+         }
+
+         this.field2159 = null;
+      }
+   }
+
+   public class143(Socket var1, class136 var2) throws IOException {
+      this.field2163 = var2;
+      this.field2161 = var1;
+      this.field2161.setSoTimeout(30000);
+      this.field2161.setTcpNoDelay(true);
+      this.field2161.setReceiveBufferSize(16384);
+      this.field2161.setSendBufferSize(16384);
+      this.field2164 = this.field2161.getInputStream();
+      this.field2160 = this.field2161.getOutputStream();
+   }
+
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1932588230"
+      garbageValue = "855540005"
    )
-   public int method2980() throws IOException {
-      return this.field2211?0:this.field2220.available();
+   public int method3026() throws IOException {
+      return this.field2162?0:this.field2164.read();
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lclass167;II)Z",
+      garbageValue = "-1197240254"
+   )
+   public static boolean method3041(class167 var0, int var1) {
+      byte[] var2 = var0.method3271(var1);
+      if(var2 == null) {
+         return false;
+      } else {
+         class135.method2911(var2);
+         return true;
+      }
    }
 }

@@ -1,4 +1,5 @@
 import java.applet.Applet;
+import java.awt.Canvas;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -15,89 +16,537 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("eq")
 @Implements("GameEngine")
 public abstract class class144 extends Applet implements Runnable, FocusListener, WindowListener {
-   @ObfuscatedName("pr")
-   static class144 field2223 = null;
-   @ObfuscatedName("qd")
+   @ObfuscatedName("pp")
+   boolean field2174;
+   @ObfuscatedName("pg")
    @ObfuscatedGetter(
-      intValue = -1273464943
+      intValue = 1174250019
+   )
+   static int field2175 = 0;
+   @ObfuscatedName("pl")
+   @ObfuscatedGetter(
+      longValue = 2728430322233500821L
+   )
+   static long field2176 = 0L;
+   @ObfuscatedName("pa")
+   static boolean field2177 = false;
+   @ObfuscatedName("qf")
+   protected static long[] field2178 = new long[32];
+   @ObfuscatedName("rl")
+   @ObfuscatedGetter(
+      longValue = 2132254675372668091L
+   )
+   static volatile long field2179 = 0L;
+   @ObfuscatedName("qt")
+   @ObfuscatedGetter(
+      intValue = 877725383
+   )
+   static int field2180 = 1;
+   @ObfuscatedName("qx")
+   @ObfuscatedGetter(
+      intValue = -1356472227
    )
    @Export("FPS")
-   protected static int field2224 = 0;
-   @ObfuscatedName("pp")
-   @ObfuscatedGetter(
-      longValue = -7341805179402415213L
-   )
-   static long field2225 = 0L;
-   @ObfuscatedName("qw")
-   @ObfuscatedGetter(
-      intValue = 1288724561
-   )
-   protected static int field2226 = 0;
-   @ObfuscatedName("pd")
-   boolean field2227;
-   @ObfuscatedName("qe")
-   @ObfuscatedGetter(
-      intValue = -1790660477
-   )
-   static int field2228 = 20;
+   protected static int field2181 = 0;
    @ObfuscatedName("qy")
    @ObfuscatedGetter(
-      intValue = -729976239
+      intValue = 785928665
    )
-   static int field2229 = 1;
-   @ObfuscatedName("nk")
+   protected static int field2182 = 0;
+   @ObfuscatedName("qj")
+   protected static long[] field2183 = new long[32];
+   @ObfuscatedName("qr")
    @ObfuscatedGetter(
-      intValue = -947565607
+      intValue = -2085652269
    )
-   static int field2230;
-   @ObfuscatedName("qt")
-   static long[] field2231 = new long[32];
+   protected static int field2184 = 0;
+   @ObfuscatedName("ap")
+   static class168 field2185;
+   @ObfuscatedName("qd")
+   protected static volatile boolean field2186 = true;
    @ObfuscatedName("qo")
-   static long[] field2232 = new long[32];
-   @ObfuscatedName("pl")
-   static boolean field2233 = false;
-   @ObfuscatedName("qi")
-   protected static volatile boolean field2234 = false;
-   @ObfuscatedName("qg")
-   protected static volatile boolean field2235 = true;
+   @ObfuscatedGetter(
+      intValue = -252052447
+   )
+   static int field2187 = 500;
    @ObfuscatedName("ql")
-   @ObfuscatedGetter(
-      intValue = -521570403
-   )
-   static int field2236 = 500;
+   protected static boolean field2188 = false;
    @ObfuscatedName("qn")
-   protected static boolean field2237 = false;
-   @ObfuscatedName("ph")
+   protected static volatile boolean field2189 = false;
+   @ObfuscatedName("qb")
    @ObfuscatedGetter(
-      intValue = 1144987821
+      intValue = -480093129
    )
-   static int field2238 = 0;
-   @ObfuscatedName("rb")
+   static int field2190 = 20;
+   @ObfuscatedName("rj")
+   static volatile boolean field2191 = true;
+   @ObfuscatedName("pw")
+   static class144 field2192 = null;
+   @ObfuscatedName("gm")
    @ObfuscatedGetter(
-      longValue = 3253811240007369959L
+      intValue = 1115293753
    )
-   static volatile long field2239 = 0L;
-   @ObfuscatedName("re")
-   static volatile boolean field2240 = true;
-   @ObfuscatedName("ax")
-   static class168 field2241;
-   @ObfuscatedName("qq")
-   @ObfuscatedGetter(
-      intValue = 214088377
-   )
-   protected static int field2242 = 0;
-   @ObfuscatedName("en")
-   static class80[] field2243;
+   @Export("plane")
+   static int field2193;
 
-   @ObfuscatedName("rb")
+   public final void focusGained(FocusEvent var1) {
+      field2191 = true;
+      field2186 = true;
+   }
+
+   public final void focusLost(FocusEvent var1) {
+      field2191 = false;
+   }
+
+   @ObfuscatedName("qa")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "19465"
+   )
+   void method3045() {
+      long var1 = class90.method2090();
+      long var3 = field2183[class39.field897];
+      field2183[class39.field897] = var1;
+      class39.field897 = class39.field897 + 1 & 31;
+      if(0L != var3 && var1 > var3) {
+         ;
+      }
+
+      synchronized(this) {
+         class108.field1871 = field2191;
+      }
+
+      this.vmethod3054();
+   }
+
+   @ObfuscatedName("qr")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1109286927"
+   )
+   void method3046() {
+      Container var1 = this.method3057();
+      long var2 = class90.method2090();
+      long var4 = field2178[class101.field1739];
+      field2178[class101.field1739] = var2;
+      class101.field1739 = class101.field1739 + 1 & 31;
+      if(var4 != 0L && var2 > var4) {
+         int var7 = (int)(var2 - var4);
+         field2181 = ((var7 >> 1) + 32000) / var7;
+      }
+
+      if(++field2187 - 1 > 50) {
+         field2187 -= 50;
+         field2186 = true;
+         class46.field1040.setSize(class45.field1026, class143.field2169);
+         class46.field1040.setVisible(true);
+         if(class75.field1346 == var1) {
+            Insets var6 = class75.field1346.getInsets();
+            class46.field1040.setLocation(var6.left + field2184, var6.top + field2182);
+         } else {
+            class46.field1040.setLocation(field2184, field2182);
+         }
+      }
+
+      this.vmethod3055();
+   }
+
+   @ObfuscatedName("qy")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-71"
+   )
+   final synchronized void method3047() {
+      if(!field2177) {
+         field2177 = true;
+
+         try {
+            class46.field1040.removeFocusListener(this);
+         } catch (Exception var5) {
+            ;
+         }
+
+         try {
+            this.vmethod3077();
+         } catch (Exception var4) {
+            ;
+         }
+
+         if(null != class75.field1346) {
+            try {
+               System.exit(0);
+            } catch (Throwable var3) {
+               ;
+            }
+         }
+
+         if(class40.field924 != null) {
+            try {
+               class40.field924.method2914();
+            } catch (Exception var2) {
+               ;
+            }
+         }
+
+         this.vmethod3059();
+      }
+   }
+
+   public void start() {
+      if(this == field2192 && !field2177) {
+         field2176 = 0L;
+      }
+   }
+
+   public abstract void init();
+
+   public void destroy() {
+      if(this == field2192 && !field2177) {
+         field2176 = class90.method2090();
+         class116.method2459(5000L);
+         this.method3047();
+      }
+   }
+
+   public final void update(Graphics var1) {
+      this.paint(var1);
+   }
+
+   public final synchronized void paint(Graphics var1) {
+      if(this == field2192 && !field2177) {
+         field2186 = true;
+         if(class136.field2079 != null && class136.field2079.startsWith("1.5") && class90.method2090() - field2179 > 1000L) {
+            Rectangle var2 = var1.getClipBounds();
+            if(var2 == null || var2.width >= class45.field1026 && var2.height >= class143.field2169) {
+               field2189 = true;
+            }
+         }
+
+      }
+   }
+
+   public final void windowClosed(WindowEvent var1) {
+   }
+
+   public final void windowClosing(WindowEvent var1) {
+      this.destroy();
+   }
+
+   public final void windowDeactivated(WindowEvent var1) {
+   }
+
+   public final void windowDeiconified(WindowEvent var1) {
+   }
+
+   public final void windowIconified(WindowEvent var1) {
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1714457839"
+   )
+   protected abstract void vmethod3053();
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-614007547"
+   )
+   protected abstract void vmethod3054();
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "14"
+   )
+   protected abstract void vmethod3055();
+
+   public void run() {
+      try {
+         if(null != class26.field659) {
+            String var1 = class26.field659.toLowerCase();
+            if(var1.indexOf("sun") != -1 || var1.indexOf("apple") != -1) {
+               String var2 = class136.field2079;
+               if(var2.equals("1.1") || var2.startsWith("1.1.") || var2.equals("1.2") || var2.startsWith("1.2.") || var2.equals("1.3") || var2.startsWith("1.3.") || var2.equals("1.4") || var2.startsWith("1.4.") || var2.equals("1.5") || var2.startsWith("1.5.") || var2.equals("1.6.0")) {
+                  this.method3056("wrongjava");
+                  return;
+               }
+
+               if(var2.startsWith("1.6.0_")) {
+                  int var3;
+                  for(var3 = 6; var3 < var2.length(); ++var3) {
+                     char var5 = var2.charAt(var3);
+                     boolean var4 = var5 >= 48 && var5 <= 57;
+                     if(!var4) {
+                        break;
+                     }
+                  }
+
+                  String var6 = var2.substring(6, var3);
+                  if(class154.method3171(var6)) {
+                     int var11 = class9.method117(var6, 10, true);
+                     if(var11 < 10) {
+                        this.method3056("wrongjava");
+                        return;
+                     }
+                  }
+               }
+
+               field2180 = 5;
+            }
+         }
+
+         this.setFocusCycleRoot(true);
+         this.method3083();
+         this.vmethod3053();
+
+         Object var10;
+         try {
+            var10 = new class147();
+         } catch (Throwable var8) {
+            var10 = new class141();
+         }
+
+         class109.field1888 = (class133)var10;
+
+         while(field2176 == 0L || class90.method2090() < field2176) {
+            class17.field253 = class109.field1888.vmethod3123(field2190, field2180);
+
+            for(int var7 = 0; var7 < class17.field253; ++var7) {
+               this.method3045();
+            }
+
+            this.method3046();
+            class129.method2857(class40.field924, class46.field1040);
+         }
+      } catch (Exception var9) {
+         class7.method94((String)null, var9);
+         this.method3056("crash");
+      }
+
+      this.method3047();
+   }
+
+   @ObfuscatedName("qh")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "3"
+   )
+   protected void method3056(String var1) {
+      if(!this.field2174) {
+         this.field2174 = true;
+         System.out.println("error_game_" + var1);
+
+         try {
+            this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
+         } catch (Exception var3) {
+            ;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("qv")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/awt/Container;",
+      garbageValue = "-1008722212"
+   )
+   protected Container method3057() {
+      return (Container)(class75.field1346 != null?class75.field1346:this);
+   }
+
+   @ObfuscatedName("qi")
+   @ObfuscatedSignature(
+      signature = "(B)Ljava/awt/Dimension;",
+      garbageValue = "-58"
+   )
+   protected Dimension method3058() {
+      Container var1 = this.method3057();
+      int var2 = Math.max(var1.getWidth(), class104.field1782);
+      int var3 = Math.max(var1.getHeight(), class9.field150);
+      if(null != class75.field1346) {
+         Insets var4 = class75.field1346.getInsets();
+         var2 -= var4.right + var4.left;
+         var3 -= var4.top + var4.bottom;
+      }
+
+      return new Dimension(var2, var3);
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-114"
+   )
+   protected abstract void vmethod3059();
+
+   public void stop() {
+      if(this == field2192 && !field2177) {
+         field2176 = class90.method2090() + 4000L;
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(CII)C",
+      garbageValue = "-99828191"
+   )
+   static char method3064(char var0, int var1) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
+         }
+
+         if(var0 == 199) {
+            return 'C';
+         }
+
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
+         }
+
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
+         }
+
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
+         }
+
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
+         }
+
+         if(var0 == 221) {
+            return 'Y';
+         }
+
+         if(var0 == 223) {
+            return 's';
+         }
+
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
+         }
+
+         if(var0 == 231) {
+            return 'c';
+         }
+
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
+         }
+
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
+         }
+
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
+         }
+
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
+         }
+
+         if(var0 == 253 || var0 == 255) {
+            return 'y';
+         }
+      }
+
+      if(var0 == 338) {
+         return 'O';
+      } else if(var0 == 339) {
+         return 'o';
+      } else if(var0 == 376) {
+         return 'Y';
+      } else {
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "8"
+   )
+   protected abstract void vmethod3077();
+
+   public final void windowActivated(WindowEvent var1) {
+   }
+
+   @ObfuscatedName("qs")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1643740393"
+   )
+   protected final synchronized void method3083() {
+      Container var1 = this.method3057();
+      if(null != class46.field1040) {
+         class46.field1040.removeFocusListener(this);
+         var1.remove(class46.field1040);
+      }
+
+      class45.field1026 = Math.max(var1.getWidth(), class104.field1782);
+      class143.field2169 = Math.max(var1.getHeight(), class9.field150);
+      Insets var2;
+      if(null != class75.field1346) {
+         var2 = class75.field1346.getInsets();
+         class45.field1026 -= var2.right + var2.left;
+         class143.field2169 -= var2.bottom + var2.top;
+      }
+
+      class46.field1040 = new class139(this);
+      var1.add(class46.field1040);
+      class46.field1040.setSize(class45.field1026, class143.field2169);
+      class46.field1040.setVisible(true);
+      if(class75.field1346 == var1) {
+         var2 = class75.field1346.getInsets();
+         class46.field1040.setLocation(var2.left + field2184, field2182 + var2.top);
+      } else {
+         class46.field1040.setLocation(field2184, field2182);
+      }
+
+      class46.field1040.addFocusListener(this);
+      class46.field1040.requestFocus();
+      field2186 = true;
+      int var3 = class45.field1026;
+      int var4 = class143.field2169;
+      Canvas var5 = class46.field1040;
+
+      Object var9;
+      try {
+         class81 var6 = new class81();
+         var6.vmethod1878(var3, var4, var5);
+         var9 = var6;
+      } catch (Throwable var8) {
+         class75 var7 = new class75();
+         var7.vmethod1878(var3, var4, var5);
+         var9 = var7;
+      }
+
+      if(null != class48.field1049) {
+         class48.field1049.vmethod1887(((class77)var9).field1362.getGraphics(), 0, 0);
+      }
+
+      class48.field1049 = (class77)var9;
+      field2189 = false;
+      field2179 = class90.method2090();
+   }
+
+   public final void windowOpened(WindowEvent var1) {
+   }
+
+   @ObfuscatedName("qc")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "-23"
+      garbageValue = "-124"
    )
-   protected final boolean method2981() {
+   protected final boolean method3104() {
       String var1 = this.getDocumentBase().getHost().toLowerCase();
       if(!var1.equals("jagex.com") && !var1.endsWith(".jagex.com")) {
          if(!var1.equals("runescape.com") && !var1.endsWith(".runescape.com")) {
@@ -112,7 +561,7 @@ public abstract class class144 extends Applet implements Runnable, FocusListener
                   if(var1.endsWith("192.168.1.")) {
                      return true;
                   } else {
-                     this.method2997("invalidhost");
+                     this.method3056("invalidhost");
                      return false;
                   }
                }
@@ -127,236 +576,17 @@ public abstract class class144 extends Applet implements Runnable, FocusListener
       }
    }
 
-   public void run() {
-      try {
-         if(null != class136.field2114) {
-            String var1 = class136.field2114.toLowerCase();
-            if(var1.indexOf("sun") != -1 || var1.indexOf("apple") != -1) {
-               String var2 = class136.field2124;
-               if(var2.equals("1.1") || var2.startsWith("1.1.") || var2.equals("1.2") || var2.startsWith("1.2.") || var2.equals("1.3") || var2.startsWith("1.3.") || var2.equals("1.4") || var2.startsWith("1.4.") || var2.equals("1.5") || var2.startsWith("1.5.") || var2.equals("1.6.0")) {
-                  this.method2997("wrongjava");
-                  return;
-               }
-
-               if(var2.startsWith("1.6.0_")) {
-                  int var3;
-                  for(var3 = 6; var3 < var2.length(); ++var3) {
-                     char var5 = var2.charAt(var3);
-                     boolean var4 = var5 >= 48 && var5 <= 57;
-                     if(!var4) {
-                        break;
-                     }
-                  }
-
-                  String var14 = var2.substring(6, var3);
-                  boolean var7 = false;
-                  boolean var8 = false;
-                  int var9 = 0;
-                  int var10 = var14.length();
-                  int var11 = 0;
-
-                  boolean var6;
-                  while(true) {
-                     if(var11 >= var10) {
-                        var6 = var8;
-                        break;
-                     }
-
-                     label184: {
-                        char var12 = var14.charAt(var11);
-                        if(var11 == 0) {
-                           if(var12 == 45) {
-                              var7 = true;
-                              break label184;
-                           }
-
-                           if(var12 == 43) {
-                              break label184;
-                           }
-                        }
-
-                        int var19;
-                        if(var12 >= 48 && var12 <= 57) {
-                           var19 = var12 - 48;
-                        } else if(var12 >= 65 && var12 <= 90) {
-                           var19 = var12 - 55;
-                        } else {
-                           if(var12 < 97 || var12 > 122) {
-                              var6 = false;
-                              break;
-                           }
-
-                           var19 = var12 - 87;
-                        }
-
-                        if(var19 >= 10) {
-                           var6 = false;
-                           break;
-                        }
-
-                        if(var7) {
-                           var19 = -var19;
-                        }
-
-                        int var13 = var19 + var9 * 10;
-                        if(var9 != var13 / 10) {
-                           var6 = false;
-                           break;
-                        }
-
-                        var9 = var13;
-                        var8 = true;
-                     }
-
-                     ++var11;
-                  }
-
-                  if(var6 && class77.method1660(var14) < 10) {
-                     this.method2997("wrongjava");
-                     return;
-                  }
-               }
-
-               field2229 = 5;
-            }
-         }
-
-         this.setFocusCycleRoot(true);
-         this.method2992();
-         this.vmethod2993();
-
-         Object var18;
-         try {
-            var18 = new class147();
-         } catch (Throwable var16) {
-            var18 = new class141();
-         }
-
-         class190.field3081 = (class133)var18;
-
-         while(0L == field2225 || class124.method2746() < field2225) {
-            class44.field1038 = class190.field3081.vmethod3083(field2228, field2229);
-
-            for(int var15 = 0; var15 < class44.field1038; ++var15) {
-               this.method3028();
-            }
-
-            this.method2985();
-            class122.method2718(class77.field1400, class59.field1221);
-         }
-      } catch (Exception var17) {
-         class30.method654((String)null, var17);
-         this.method2997("crash");
-      }
-
-      this.method3004();
-   }
-
-   public void destroy() {
-      if(field2223 == this && !field2233) {
-         field2225 = class124.method2746();
-         class45.method926(5000L);
-         this.method3004();
-      }
-   }
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("qj")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1817936179"
-   )
-   protected abstract void vmethod2984();
-
-   @ObfuscatedName("re")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "35"
-   )
-   void method2985() {
-      Container var1 = this.method3051();
-      long var2 = class124.method2746();
-      long var4 = field2231[class131.field2077];
-      field2231[class131.field2077] = var2;
-      class131.field2077 = 1 + class131.field2077 & 31;
-      if(0L != var4 && var2 > var4) {
-         int var7 = (int)(var2 - var4);
-         field2224 = ((var7 >> 1) + 32000) / var7;
-      }
-
-      if(++field2236 - 1 > 50) {
-         field2236 -= 50;
-         field2235 = true;
-         class59.field1221.setSize(class10.field162, class41.field966);
-         class59.field1221.setVisible(true);
-         if(var1 == class43.field1022) {
-            Insets var6 = class43.field1022.getInsets();
-            class59.field1221.setLocation(var6.left + field2226, field2242 + var6.top);
-         } else {
-            class59.field1221.setLocation(field2226, field2242);
-         }
-      }
-
-      this.vmethod2995();
-   }
-
-   public void stop() {
-      if(field2223 == this && !field2233) {
-         field2225 = class124.method2746() + 4000L;
-      }
-   }
-
-   public void start() {
-      if(field2223 == this && !field2233) {
-         field2225 = 0L;
-      }
-   }
-
-   public final synchronized void paint(Graphics var1) {
-      if(this == field2223 && !field2233) {
-         field2235 = true;
-         if(null != class136.field2124 && class136.field2124.startsWith("1.5") && class124.method2746() - field2239 > 1000L) {
-            Rectangle var2 = var1.getClipBounds();
-            if(null == var2 || var2.width >= class10.field162 && var2.height >= class41.field966) {
-               field2234 = true;
-            }
-         }
-
-      }
-   }
-
-   public final void focusGained(FocusEvent var1) {
-      field2240 = true;
-      field2235 = true;
-   }
-
-   public final void focusLost(FocusEvent var1) {
-      field2240 = false;
-   }
-
-   public final void windowClosed(WindowEvent var1) {
-   }
-
-   public final void windowClosing(WindowEvent var1) {
-      this.destroy();
-   }
-
-   public final void windowDeiconified(WindowEvent var1) {
-   }
-
-   public final void windowIconified(WindowEvent var1) {
-   }
-
-   @ObfuscatedName("qn")
-   @ObfuscatedSignature(
-      signature = "(IIIB)V",
+      signature = "(IIII)V",
       garbageValue = "765"
    )
-   protected final void method2991(int var1, int var2, int var3) {
+   protected final void method3110(int var1, int var2, int var3) {
       try {
-         if(null != field2223) {
-            ++field2238;
-            if(field2238 >= 3) {
-               this.method2997("alreadyloaded");
+         if(field2192 != null) {
+            ++field2175;
+            if(field2175 >= 3) {
+               this.method3056("alreadyloaded");
                return;
             }
 
@@ -364,216 +594,20 @@ public abstract class class144 extends Applet implements Runnable, FocusListener
             return;
          }
 
-         field2223 = this;
-         class10.field162 = var1;
-         class41.field966 = var2;
-         class163.field2680 = var3;
-         class148.field2257 = this;
-         if(class77.field1400 == null) {
-            class77.field1400 = new class136();
+         field2192 = this;
+         class45.field1026 = var1;
+         class143.field2169 = var2;
+         class148.field2206 = var3;
+         class148.field2210 = this;
+         if(class40.field924 == null) {
+            class40.field924 = new class136();
          }
 
-         class77.field1400.method2868(this, 1);
+         class40.field924.method2917(this, 1);
       } catch (Exception var5) {
-         class30.method654((String)null, var5);
-         this.method2997("crash");
+         class7.method94((String)null, var5);
+         this.method3056("crash");
       }
 
-   }
-
-   @ObfuscatedName("qi")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-52"
-   )
-   protected final synchronized void method2992() {
-      Container var1 = this.method3051();
-      if(class59.field1221 != null) {
-         class59.field1221.removeFocusListener(this);
-         var1.remove(class59.field1221);
-      }
-
-      class10.field162 = Math.max(var1.getWidth(), class43.field1016);
-      class41.field966 = Math.max(var1.getHeight(), class29.field690);
-      Insets var2;
-      if(null != class43.field1022) {
-         var2 = class43.field1022.getInsets();
-         class10.field162 -= var2.left + var2.right;
-         class41.field966 -= var2.top + var2.bottom;
-      }
-
-      class59.field1221 = new class139(this);
-      var1.add(class59.field1221);
-      class59.field1221.setSize(class10.field162, class41.field966);
-      class59.field1221.setVisible(true);
-      if(class43.field1022 == var1) {
-         var2 = class43.field1022.getInsets();
-         class59.field1221.setLocation(var2.left + field2226, field2242 + var2.top);
-      } else {
-         class59.field1221.setLocation(field2226, field2242);
-      }
-
-      class59.field1221.addFocusListener(this);
-      class59.field1221.requestFocus();
-      field2235 = true;
-      class77 var3 = class12.method138(class10.field162, class41.field966, class59.field1221);
-      if(class96.field1646 != null) {
-         class96.field1646.vmethod1829(var3.field1395.getGraphics(), 0, 0);
-      }
-
-      class96.field1646 = var3;
-      field2234 = false;
-      field2239 = class124.method2746();
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "36418783"
-   )
-   protected abstract void vmethod2993();
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-65"
-   )
-   protected abstract void vmethod2994();
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "50269187"
-   )
-   protected abstract void vmethod2995();
-
-   @ObfuscatedName("ri")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1989162552"
-   )
-   protected void method2997(String var1) {
-      if(!this.field2227) {
-         this.field2227 = true;
-         System.out.println("error_game_" + var1);
-
-         try {
-            this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
-         } catch (Exception var3) {
-            ;
-         }
-
-      }
-   }
-
-   @ObfuscatedName("rd")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/awt/Dimension;",
-      garbageValue = "1233172868"
-   )
-   protected Dimension method2999() {
-      Container var1 = this.method3051();
-      int var2 = Math.max(var1.getWidth(), class43.field1016);
-      int var3 = Math.max(var1.getHeight(), class29.field690);
-      if(null != class43.field1022) {
-         Insets var4 = class43.field1022.getInsets();
-         var2 -= var4.left + var4.right;
-         var3 -= var4.bottom + var4.top;
-      }
-
-      return new Dimension(var2, var3);
-   }
-
-   @ObfuscatedName("rn")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-1"
-   )
-   final synchronized void method3004() {
-      if(!field2233) {
-         field2233 = true;
-
-         try {
-            class59.field1221.removeFocusListener(this);
-         } catch (Exception var5) {
-            ;
-         }
-
-         try {
-            this.vmethod3030();
-         } catch (Exception var4) {
-            ;
-         }
-
-         if(class43.field1022 != null) {
-            try {
-               System.exit(0);
-            } catch (Throwable var3) {
-               ;
-            }
-         }
-
-         if(null != class77.field1400) {
-            try {
-               class77.field1400.method2861();
-            } catch (Exception var2) {
-               ;
-            }
-         }
-
-         this.vmethod2984();
-      }
-   }
-
-   public abstract void init();
-
-   public final void update(Graphics var1) {
-      this.paint(var1);
-   }
-
-   public final void windowDeactivated(WindowEvent var1) {
-   }
-
-   @ObfuscatedName("rz")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-386760230"
-   )
-   void method3028() {
-      long var1 = class124.method2746();
-      long var3 = field2232[class133.field2086];
-      field2232[class133.field2086] = var1;
-      class133.field2086 = class133.field2086 + 1 & 31;
-      if(0L != var3 && var1 > var3) {
-         ;
-      }
-
-      synchronized(this) {
-         class28.field670 = field2240;
-      }
-
-      this.vmethod2994();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-905979487"
-   )
-   protected abstract void vmethod3030();
-
-   public final void windowActivated(WindowEvent var1) {
-   }
-
-   public final void windowOpened(WindowEvent var1) {
-   }
-
-   @ObfuscatedName("ru")
-   @ObfuscatedSignature(
-      signature = "(B)Ljava/awt/Container;",
-      garbageValue = "36"
-   )
-   protected Container method3051() {
-      return (Container)(null != class43.field1022?class43.field1022:this);
    }
 }

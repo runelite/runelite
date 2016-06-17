@@ -1,158 +1,176 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("ar")
 public class class36 {
-   @ObfuscatedName("z")
-   static int[] field785 = new int[5];
-   @ObfuscatedName("r")
-   static int[][] field788 = new int[5][5000];
-   @ObfuscatedName("f")
-   static int[] field789 = new int[1000];
    @ObfuscatedName("l")
-   static class14[] field792 = new class14[50];
-   @ObfuscatedName("y")
-   static class173 field793;
-   @ObfuscatedName("k")
-   static Calendar field794 = Calendar.getInstance();
-   @ObfuscatedName("o")
-   static final String[] field795 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-   @ObfuscatedName("s")
-   @Export("chatboxSegments")
-   static String[] field796 = new String[1000];
-   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 11000289
+      intValue = -747703339
    )
-   static int field799 = 0;
+   static int field774 = 0;
+   @ObfuscatedName("j")
+   static int[] field776;
    @ObfuscatedName("d")
+   static String[] field778;
+   @ObfuscatedName("y")
+   static int[][] field779 = new int[5][5000];
+   @ObfuscatedName("r")
+   static int[] field780 = new int[1000];
+   @ObfuscatedName("p")
+   static class173 field781;
+   @ObfuscatedName("x")
+   static int[] field782 = new int[5];
+   @ObfuscatedName("u")
+   static class14[] field783 = new class14[50];
+   @ObfuscatedName("w")
+   static Calendar field785 = Calendar.getInstance();
+   @ObfuscatedName("z")
+   static final String[] field786 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1373277177
+      intValue = -1500883233
    )
-   static int field802 = 0;
+   static int field787 = 0;
+   @ObfuscatedName("aw")
+   static int[] field788;
+   @ObfuscatedName("c")
+   @Export("chatboxSegments")
+   static String[] field789 = new String[1000];
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lclass212;I)Ljava/lang/String;",
-      garbageValue = "191739212"
+      signature = "(Ljava/lang/String;Ljava/lang/String;II)Ljava/io/File;",
+      garbageValue = "635550662"
    )
-   public static String method723(CharSequence var0, class212 var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         int var2 = 0;
+   static File method751(String var0, String var1, int var2) {
+      String var3 = var2 == 0?"":"" + var2;
+      class219.field3171 = new File(class119.field1985, "jagex_cl_" + var0 + "_" + var1 + var3 + ".dat");
+      String var4 = null;
+      String var5 = null;
+      boolean var6 = false;
+      class119 var8;
+      File var23;
+      if(class219.field3171.exists()) {
+         try {
+            class227 var7 = new class227(class219.field3171, "rw", 10000L);
 
-         int var3;
-         for(var3 = var0.length(); var2 < var3 && class39.method783(var0.charAt(var2)); ++var2) {
-            ;
-         }
-
-         while(var3 > var2 && class39.method783(var0.charAt(var3 - 1))) {
-            --var3;
-         }
-
-         int var4 = var3 - var2;
-         if(var4 >= 1 && var4 <= class185.method3674(var1)) {
-            StringBuilder var5 = new StringBuilder(var4);
-
-            for(int var6 = var2; var6 < var3; ++var6) {
-               char var7 = var0.charAt(var6);
-               boolean var8;
-               if(Character.isISOControl(var7)) {
-                  var8 = false;
-               } else {
-                  boolean var9 = var7 >= 48 && var7 <= 57 || var7 >= 65 && var7 <= 90 || var7 >= 97 && var7 <= 122;
-                  if(var9) {
-                     var8 = true;
-                  } else {
-                     char[] var10 = class164.field2686;
-                     int var11 = 0;
-
-                     label98:
-                     while(true) {
-                        char var12;
-                        if(var11 >= var10.length) {
-                           var10 = class164.field2687;
-
-                           for(var11 = 0; var11 < var10.length; ++var11) {
-                              var12 = var10[var11];
-                              if(var12 == var7) {
-                                 var8 = true;
-                                 break label98;
-                              }
-                           }
-
-                           var8 = false;
-                           break;
-                        }
-
-                        var12 = var10[var11];
-                        if(var12 == var7) {
-                           var8 = true;
-                           break;
-                        }
-
-                        ++var11;
-                     }
-                  }
-               }
-
-               if(var8) {
-                  char var13 = class156.method3137(var7);
-                  if(var13 != 0) {
-                     var5.append(var13);
-                  }
+            int var9;
+            for(var8 = new class119((int)var7.method4113()); var8.field1976 < var8.field1982.length; var8.field1976 += var9) {
+               var9 = var7.method4118(var8.field1982, var8.field1976, var8.field1982.length - var8.field1976);
+               if(var9 == -1) {
+                  throw new IOException();
                }
             }
 
-            if(var5.length() == 0) {
-               return null;
+            var8.field1976 = 0;
+            var9 = var8.method2514();
+            if(var9 < 1 || var9 > 3) {
+               throw new IOException("" + var9);
+            }
+
+            int var10 = 0;
+            if(var9 > 1) {
+               var10 = var8.method2514();
+            }
+
+            if(var9 <= 2) {
+               var4 = var8.method2527();
+               if(var10 == 1) {
+                  var5 = var8.method2527();
+               }
             } else {
-               return var5.toString();
+               var4 = var8.method2640();
+               if(var10 == 1) {
+                  var5 = var8.method2640();
+               }
             }
-         } else {
-            return null;
+
+            var7.method4116();
+         } catch (IOException var21) {
+            var21.printStackTrace();
          }
-      }
-   }
 
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "1148223924"
-   )
-   public static void method731(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var2 + var3) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
-
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(null == var6 || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
+         if(var4 != null) {
+            var23 = new File(var4);
+            if(!var23.exists()) {
+               var4 = null;
             }
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method731(var0, var1, var2, var5 - 1);
-         method731(var0, var1, 1 + var5, var3);
+         if(null != var4) {
+            var23 = new File(var4, "test.dat");
+            if(!class125.method2830(var23, true)) {
+               var4 = null;
+            }
+         }
       }
 
+      if(var4 == null && var2 == 0) {
+         label139:
+         for(int var15 = 0; var15 < class121.field1993.length; ++var15) {
+            for(int var16 = 0; var16 < class149.field2222.length; ++var16) {
+               File var17 = new File(class149.field2222[var16] + class121.field1993[var15] + File.separatorChar + var0 + File.separatorChar);
+               if(var17.exists() && class125.method2830(new File(var17, "test.dat"), true)) {
+                  var4 = var17.toString();
+                  var6 = true;
+                  break label139;
+               }
+            }
+         }
+      }
+
+      if(null == var4) {
+         var4 = class119.field1985 + File.separatorChar + "jagexcache" + var3 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
+         var6 = true;
+      }
+
+      File var22;
+      if(var5 != null) {
+         var22 = new File(var5);
+         var23 = new File(var4);
+
+         try {
+            File[] var24 = var22.listFiles();
+            File[] var18 = var24;
+
+            for(int var11 = 0; var11 < var18.length; ++var11) {
+               File var12 = var18[var11];
+               File var13 = new File(var23, var12.getName());
+               boolean var14 = var12.renameTo(var13);
+               if(!var14) {
+                  throw new IOException();
+               }
+            }
+         } catch (Exception var20) {
+            var20.printStackTrace();
+         }
+
+         var6 = true;
+      }
+
+      if(var6) {
+         var22 = new File(var4);
+         var8 = null;
+
+         try {
+            class227 var25 = new class227(class219.field3171, "rw", 10000L);
+            class119 var26 = new class119(500);
+            var26.method2650(3);
+            var26.method2650(var8 != null?1:0);
+            var26.method2507(var22.getPath());
+            Object var10000 = null;
+            var25.method4127(var26.field1982, 0, var26.field1976);
+            var25.method4116();
+         } catch (IOException var19) {
+            var19.printStackTrace();
+         }
+      }
+
+      return new File(var4);
    }
 }
