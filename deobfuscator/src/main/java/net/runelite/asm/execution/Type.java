@@ -34,6 +34,9 @@ import java.util.Objects;
 
 public class Type
 {
+	
+	public static final Type RET_ADDRESS = new Type("returnAddress");
+	
 	public String type;
 	
 	public Type(String type)
