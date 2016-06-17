@@ -10,7 +10,6 @@ if [ "${TRAVIS_PULL_REQUEST}" = "false" ]; then
 	mvn clean deploy --settings travis/settings.xml | sed "s/$RUNELITE_BACKEND/REDACTED/g"
 	exit
 else
-	set -o pipefail
-	mvn clean verify --settings travis/settings.xml | sed "s/$RUNELITE_BACKEND/REDACTED/g"
+	mvn clean verify --settings travis/settings.xml
 	exit
 fi
