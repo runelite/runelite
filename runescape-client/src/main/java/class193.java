@@ -3,40 +3,69 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gv")
+@ObfuscatedName("gi")
 @Implements("NodeCache")
 public final class class193 {
+   @ObfuscatedName("j")
+   int field3077;
    @ObfuscatedName("g")
-   int field3088;
-   @ObfuscatedName("i")
-   int field3089;
-   @ObfuscatedName("h")
+   int field3078;
+   @ObfuscatedName("d")
    @Export("table")
-   class196 field3090;
-   @ObfuscatedName("t")
-   class204 field3091 = new class204();
-   @ObfuscatedName("z")
+   class196 field3079;
+   @ObfuscatedName("b")
+   class204 field3080 = new class204();
+   @ObfuscatedName("x")
    @Export("list")
-   class203 field3092 = new class203();
+   class203 field3081 = new class203();
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
+   @Export("reset")
+   public void method3755() {
+      this.field3081.method3877();
+      this.field3079.method3798();
+      this.field3080 = new class204();
+      this.field3077 = this.field3078;
+   }
+
+   @ObfuscatedName("g")
    @Export("remove")
-   public void method3715(long var1) {
-      class204 var3 = (class204)this.field3090.method3748(var1);
+   public void method3757(long var1) {
+      class204 var3 = (class204)this.field3079.method3807(var1);
       if(var3 != null) {
-         var3.method3870();
-         var3.method3844();
-         ++this.field3088;
+         var3.method3916();
+         var3.method3889();
+         ++this.field3077;
       }
 
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
+   @Export("put")
+   public void method3759(class204 var1, long var2) {
+      if(this.field3077 == 0) {
+         class204 var4 = this.field3081.method3886();
+         var4.method3916();
+         var4.method3889();
+         if(var4 == this.field3080) {
+            var4 = this.field3081.method3886();
+            var4.method3916();
+            var4.method3889();
+         }
+      } else {
+         --this.field3077;
+      }
+
+      this.field3079.method3797(var1, var2);
+      this.field3081.method3873(var1);
+   }
+
+   @ObfuscatedName("b")
    @Export("get")
-   public class204 method3716(long var1) {
-      class204 var3 = (class204)this.field3090.method3748(var1);
+   public class204 method3764(long var1) {
+      class204 var3 = (class204)this.field3079.method3807(var1);
       if(var3 != null) {
-         this.field3092.method3837(var3);
+         this.field3081.method3873(var3);
       }
 
       return var3;
@@ -47,43 +76,14 @@ public final class class193 {
       garbageValue = "128"
    )
    public class193(int var1) {
-      this.field3089 = var1;
-      this.field3088 = var1;
+      this.field3078 = var1;
+      this.field3077 = var1;
 
       int var2;
       for(var2 = 1; var2 + var2 < var1; var2 += var2) {
          ;
       }
 
-      this.field3090 = new class196(var2);
-   }
-
-   @ObfuscatedName("h")
-   @Export("reset")
-   public void method3717() {
-      this.field3092.method3835();
-      this.field3090.method3750();
-      this.field3091 = new class204();
-      this.field3088 = this.field3089;
-   }
-
-   @ObfuscatedName("g")
-   @Export("put")
-   public void method3724(class204 var1, long var2) {
-      if(this.field3088 == 0) {
-         class204 var4 = this.field3092.method3830();
-         var4.method3870();
-         var4.method3844();
-         if(var4 == this.field3091) {
-            var4 = this.field3092.method3830();
-            var4.method3870();
-            var4.method3844();
-         }
-      } else {
-         --this.field3088;
-      }
-
-      this.field3090.method3749(var1, var2);
-      this.field3092.method3837(var1);
+      this.field3079 = new class196(var2);
    }
 }

@@ -1,134 +1,150 @@
-import java.net.MalformedURLException;
-import java.net.URL;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("ao")
 public class class49 extends class204 {
    @ObfuscatedName("g")
-   public boolean field1097 = false;
-   @ObfuscatedName("i")
-   public static class193 field1098 = new class193(64);
-   @ObfuscatedName("t")
-   public static class167 field1099;
+   public static class193 field1061 = new class193(64);
+   @ObfuscatedName("j")
+   public boolean field1062 = false;
+   @ObfuscatedName("b")
+   public static class167 field1066;
    @ObfuscatedName("r")
-   static class78 field1100;
-   @ObfuscatedName("jc")
-   @ObfuscatedGetter(
-      intValue = 82289813
-   )
-   static int field1102;
+   static byte[][][] field1067;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass167;Ljava/lang/String;Ljava/lang/String;B)[Lclass78;",
-      garbageValue = "63"
+      signature = "(Lclass119;I)V",
+      garbageValue = "-1966459629"
    )
-   public static class78[] method973(class167 var0, String var1, String var2) {
-      int var3 = var0.method3236(var1);
-      int var4 = var0.method3237(var3, var2);
-      return class28.method640(var0, var3, var4);
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Lclass119;B)V",
-      garbageValue = "5"
-   )
-   public void method974(class119 var1) {
+   public void method997(class119 var1) {
       while(true) {
-         int var2 = var1.method2494();
+         int var2 = var1.method2514();
          if(var2 == 0) {
             return;
          }
 
-         this.method981(var1, var2);
+         this.method998(var1, var2);
       }
    }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Z",
-      garbageValue = "1647107247"
-   )
-   static boolean method975(String var0) {
-      if(var0 == null) {
-         return false;
-      } else {
-         try {
-            new URL(var0);
-            return true;
-         } catch (MalformedURLException var2) {
-            return false;
-         }
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass40;",
-      garbageValue = "-2046825951"
-   )
-   @Export("getObjectDefinition")
-   public static class40 method980(int var0) {
-      class40 var1 = (class40)class40.field932.method3716((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class211.field3140.method3221(6, var0);
-         var1 = new class40();
-         var1.field921 = var0;
-         if(null != var2) {
-            var1.method790(new class119(var2));
-         }
-
-         var1.method789();
-         if(var1.field953) {
-            var1.field931 = 0;
-            var1.field937 = false;
-         }
-
-         class40.field932.method3724(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Lclass119;II)V",
-      garbageValue = "348264135"
+      garbageValue = "-1795732625"
    )
-   void method981(class119 var1, int var2) {
+   void method998(class119 var1, int var2) {
       if(var2 == 2) {
-         this.field1097 = true;
+         this.field1062 = true;
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("bc")
    @ObfuscatedSignature(
-      signature = "(I)Lclass78;",
-      garbageValue = "-1404442038"
+      signature = "(III)V",
+      garbageValue = "475830183"
    )
-   static class78 method982() {
-      class78 var0 = new class78();
-      var0.field1408 = class76.field1386;
-      var0.field1411 = class76.field1392;
-      var0.field1406 = class76.field1388[0];
-      var0.field1407 = class165.field2689[0];
-      var0.field1404 = class76.field1385[0];
-      var0.field1405 = class14.field209[0];
-      int var1 = var0.field1405 * var0.field1404;
-      byte[] var2 = class45.field1045[0];
-      var0.field1409 = new int[var1];
+   static final void method1006(int var0, int var1) {
+      if(var0 != class153.field2265 || client.field371 != var1) {
+         class153.field2265 = var0;
+         client.field371 = var1;
+         class43.method919(25);
+         class47.method972("Loading - please wait.", true);
+         int var2 = class4.field62;
+         int var3 = class85.field1434;
+         class4.field62 = (var0 - 6) * 8;
+         class85.field1434 = (var1 - 6) * 8;
+         int var4 = class4.field62 - var2;
+         int var5 = class85.field1434 - var3;
+         var2 = class4.field62;
+         var3 = class85.field1434;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.field1409[var3] = class14.field213[var2[var3] & 255];
+         int var6;
+         int var8;
+         for(var6 = 0; var6 < '耀'; ++var6) {
+            class34 var7 = client.field326[var6];
+            if(null != var7) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var7.field844[var8] -= var4;
+                  var7.field831[var8] -= var5;
+               }
+
+               var7.field813 -= var4 * 128;
+               var7.field791 -= 128 * var5;
+            }
+         }
+
+         for(var6 = 0; var6 < 2048; ++var6) {
+            class2 var20 = client.field410[var6];
+            if(null != var20) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var20.field844[var8] -= var4;
+                  var20.field831[var8] -= var5;
+               }
+
+               var20.field813 -= 128 * var4;
+               var20.field791 -= 128 * var5;
+            }
+         }
+
+         byte var19 = 0;
+         byte var18 = 104;
+         byte var21 = 1;
+         if(var4 < 0) {
+            var19 = 103;
+            var18 = -1;
+            var21 = -1;
+         }
+
+         byte var9 = 0;
+         byte var10 = 104;
+         byte var11 = 1;
+         if(var5 < 0) {
+            var9 = 103;
+            var10 = -1;
+            var11 = -1;
+         }
+
+         int var13;
+         for(int var17 = var19; var18 != var17; var17 += var21) {
+            for(var13 = var9; var10 != var13; var13 += var11) {
+               int var14 = var17 + var4;
+               int var15 = var5 + var13;
+
+               for(int var16 = 0; var16 < 4; ++var16) {
+                  if(var14 >= 0 && var15 >= 0 && var14 < 104 && var15 < 104) {
+                     client.field420[var16][var17][var13] = client.field420[var16][var14][var15];
+                  } else {
+                     client.field420[var16][var17][var13] = null;
+                  }
+               }
+            }
+         }
+
+         for(class16 var12 = (class16)client.field421.method3844(); null != var12; var12 = (class16)client.field421.method3834()) {
+            var12.field225 -= var4;
+            var12.field223 -= var5;
+            if(var12.field225 < 0 || var12.field223 < 0 || var12.field225 >= 104 || var12.field223 >= 104) {
+               var12.method3916();
+            }
+         }
+
+         if(client.field521 != 0) {
+            client.field521 -= var4;
+            client.field522 -= var5;
+         }
+
+         client.field504 = 0;
+         client.field535 = false;
+         client.field303 = -1;
+         client.field423.method3823();
+         client.field422.method3823();
+
+         for(var13 = 0; var13 < 4; ++var13) {
+            client.field291[var13].method2419();
+         }
+
       }
-
-      class16.method164();
-      return var0;
    }
 }

@@ -1,49 +1,49 @@
 import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bs")
 public class class54 extends class56 {
-   @ObfuscatedName("i")
-   int field1177;
-   @ObfuscatedName("t")
-   static class53 field1178;
-
-   @ObfuscatedName("r")
-   void vmethod1469() {
-      field1178.method1069(this.field1177, (byte)1);
-   }
-
-   @ObfuscatedName("t")
-   void vmethod1466(Component var1) throws Exception {
-      field1178.method1063(var1, class56.field1194, class21.field575, -1136173707);
-   }
-
+   @ObfuscatedName("b")
+   static class53 field1139;
    @ObfuscatedName("g")
-   int vmethod1468() {
-      return field1178.method1060(this.field1177, 1137861106);
+   int field1140;
+
+   @ObfuscatedName("b")
+   void vmethod1535(Component var1) throws Exception {
+      field1139.method1098(var1, class56.field1153, class21.field581, (byte)26);
    }
 
-   @ObfuscatedName("h")
-   void vmethod1470() {
-      field1178.method1070(this.field1177, super.field1197, (byte)0);
+   @ObfuscatedName("d")
+   void vmethod1519() {
+      field1139.method1096(this.field1140, super.field1148, (byte)81);
    }
 
-   @ObfuscatedName("z")
-   void vmethod1471() {
-      field1178.method1062(this.field1177, 632341725);
+   @ObfuscatedName("x")
+   void vmethod1520() {
+      field1139.method1092(this.field1140, -312531127);
+   }
+
+   @ObfuscatedName("y")
+   void vmethod1521() {
+      field1139.method1087(this.field1140, (short)10896);
    }
 
    class54(class136 var1, int var2) {
-      field1178 = var1.method2859();
-      this.field1177 = var2;
+      field1139 = var1.method2920();
+      this.field1140 = var2;
    }
 
-   @ObfuscatedName("i")
-   void vmethod1476(int var1) throws Exception {
+   @ObfuscatedName("g")
+   void vmethod1517(int var1) throws Exception {
       if(var1 > '耀') {
          throw new IllegalArgumentException();
       } else {
-         field1178.method1059(this.field1177, var1, (byte)83);
+         field1139.method1083(this.field1140, var1, -819287642);
       }
+   }
+
+   @ObfuscatedName("j")
+   int vmethod1518() {
+      return field1139.method1084(this.field1140, 2097522949);
    }
 }

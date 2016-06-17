@@ -2,44 +2,37 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("eu")
 public class class154 implements class112 {
-   @ObfuscatedName("r")
-   public static final class154 field2310 = new class154("oldscape", "RuneScape 2007", 5);
-   @ObfuscatedName("t")
-   public static final class154 field2311 = new class154("runescape", "RuneScape", 0);
+   @ObfuscatedName("b")
+   public static final class154 field2268 = new class154("runescape", "RuneScape", 0);
    @ObfuscatedName("g")
-   public static final class154 field2312 = new class154("game3", "Game 3", 2);
-   @ObfuscatedName("h")
-   public static final class154 field2313 = new class154("game4", "Game 4", 3);
-   @ObfuscatedName("z")
-   public static final class154 field2314 = new class154("game5", "Game 5", 4);
-   @ObfuscatedName("s")
+   public static final class154 field2269 = new class154("stellardawn", "Stellar Dawn", 1);
+   @ObfuscatedName("j")
+   public static final class154 field2270 = new class154("game3", "Game 3", 2);
+   @ObfuscatedName("d")
+   public static final class154 field2271 = new class154("game4", "Game 4", 3);
+   @ObfuscatedName("x")
+   public static final class154 field2272 = new class154("game5", "Game 5", 4);
+   @ObfuscatedName("r")
+   public final String field2274;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -969750947
+      intValue = -1612024779
    )
-   final int field2315;
-   @ObfuscatedName("f")
-   public final String field2316;
-   @ObfuscatedName("i")
-   public static final class154 field2319 = new class154("stellardawn", "Stellar Dawn", 1);
+   final int field2275;
+   @ObfuscatedName("y")
+   public static final class154 field2277 = new class154("oldscape", "RuneScape 2007", 5);
+   @ObfuscatedName("ek")
+   static class78[] field2279;
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-59"
+      signature = "(Ljava/lang/CharSequence;I)Z",
+      garbageValue = "635328182"
    )
-   public int vmethod3145() {
-      return this.field2315;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IZB)Ljava/lang/String;",
-      garbageValue = "1"
-   )
-   public static String method3130(int var0, boolean var1) {
-      return var0 < 0?Integer.toString(var0):class163.method3185(var0, 10, var1);
+   public static boolean method3171(CharSequence var0) {
+      return class24.method591(var0, 10, true);
    }
 
    @ObfuscatedSignature(
@@ -47,7 +40,25 @@ public class class154 implements class112 {
       garbageValue = "0"
    )
    class154(String var1, String var2, int var3) {
-      this.field2316 = var1;
-      this.field2315 = var3;
+      this.field2274 = var1;
+      this.field2275 = var3;
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(IS)Z",
+      garbageValue = "4104"
+   )
+   public static boolean method3174(int var0) {
+      return (var0 >> 30 & 1) != 0;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "977914203"
+   )
+   public int vmethod3185() {
+      return this.field2275;
    }
 }

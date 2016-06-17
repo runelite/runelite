@@ -2,67 +2,75 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gd")
+@ObfuscatedName("go")
 public class class183 {
-   @ObfuscatedName("p")
-   public static class180 field2974;
    @ObfuscatedName("g")
-   public static class167 field2975;
-   @ObfuscatedName("h")
-   public static class184 field2976;
-   @ObfuscatedName("s")
+   public static class167 field2950;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1287090851
+      intValue = 1258707167
    )
-   static int field2977;
-   @ObfuscatedName("t")
-   public static class167 field2978;
-   @ObfuscatedName("l")
+   public static int field2951;
+   @ObfuscatedName("d")
+   public static class184 field2952;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 367291591
+      intValue = -1006930145
    )
-   public static int field2980;
-   @ObfuscatedName("z")
+   public static int field2953 = 0;
+   @ObfuscatedName("di")
+   static byte[][] field2954;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -866986341
+      intValue = 450939023
    )
-   public static int field2981 = 0;
+   public static int field2955;
+   @ObfuscatedName("p")
+   public static boolean field2956;
+   @ObfuscatedName("j")
+   public static class167 field2957;
+   @ObfuscatedName("b")
+   public static class167 field2958;
 
-   @ObfuscatedName("bu")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Lclass16;I)V",
-      garbageValue = "787089150"
+      signature = "([BILjava/lang/CharSequence;I)I",
+      garbageValue = "-1584965238"
    )
-   static final void method3545(class16 var0) {
-      int var1 = 0;
-      int var2 = -1;
-      int var3 = 0;
-      int var4 = 0;
-      if(var0.field230 == 0) {
-         var1 = class214.field3161.method1990(var0.field229, var0.field226, var0.field227);
+   public static int method3597(byte[] var0, int var1, CharSequence var2) {
+      int var3 = var2.length();
+      int var4 = var1;
+
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var2.charAt(var5);
+         if(var6 <= 127) {
+            var0[var4++] = (byte)var6;
+         } else if(var6 <= 2047) {
+            var0[var4++] = (byte)(192 | var6 >> 6);
+            var0[var4++] = (byte)(128 | var6 & 63);
+         } else {
+            var0[var4++] = (byte)(224 | var6 >> 12);
+            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+            var0[var4++] = (byte)(128 | var6 & 63);
+         }
       }
 
-      if(var0.field230 == 1) {
-         var1 = class214.field3161.method1897(var0.field229, var0.field226, var0.field227);
+      return var4 - var1;
+   }
+
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1823751864"
+   )
+   static final void method3606() {
+      for(int var0 = 0; var0 < client.field449; ++var0) {
+         int var1 = client.field318[var0];
+         class34 var2 = client.field326[var1];
+         if(var2 != null) {
+            class98.method2199(var2, var2.field762.field865);
+         }
       }
 
-      if(var0.field230 == 2) {
-         var1 = class214.field3161.method1914(var0.field229, var0.field226, var0.field227);
-      }
-
-      if(var0.field230 == 3) {
-         var1 = class214.field3161.method1899(var0.field229, var0.field226, var0.field227);
-      }
-
-      if(var1 != 0) {
-         int var5 = class214.field3161.method1994(var0.field229, var0.field226, var0.field227, var1);
-         var2 = var1 >> 14 & 32767;
-         var3 = var5 & 31;
-         var4 = var5 >> 6 & 3;
-      }
-
-      var0.field224 = var2;
-      var0.field228 = var3;
-      var0.field233 = var4;
    }
 }
