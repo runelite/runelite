@@ -71,7 +71,7 @@ public class class106 {
    @ObfuscatedName("ay")
    @ObfuscatedSignature(
       signature = "(IIIIZB)V",
-      garbageValue = "0"
+      garbageValue = "-32"
    )
    static final void method2383(int var0, int var1, int var2, int var3, boolean var4) {
       if(var2 < 1) {
@@ -101,6 +101,12 @@ public class class106 {
             var6 = client.field546;
             var8 = var3 * var6 * 512 / (334 * var15);
             var9 = (var2 - var8) / 2;
+            if(var4) {
+               class79.method1827();
+               class79.method1865(var0, var1, var9, var3, -16777216);
+               class79.method1865(var0 + var2 - var9, var1, var9, var3, -16777216);
+            }
+
             var0 += var9;
             var2 -= var9 * 2;
          }
@@ -111,6 +117,12 @@ public class class106 {
             var6 = client.field547;
             var8 = var2 * var15 * 334 / (var6 * 512);
             var9 = (var3 - var8) / 2;
+            if(var4) {
+               class79.method1827();
+               class79.method1865(var0, var1, var2, var9, -16777216);
+               class79.method1865(var0, var1 + var3 - var9, var2, var9, -16777216);
+            }
+
             var1 += var9;
             var3 -= 2 * var9;
          }

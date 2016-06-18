@@ -93,7 +93,7 @@ public class class113 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "([BI[BIII)I",
-      garbageValue = "0"
+      garbageValue = "-1010289306"
    )
    public int method2448(byte[] var1, int var2, byte[] var3, int var4, int var5) {
       if(var5 == 0) {

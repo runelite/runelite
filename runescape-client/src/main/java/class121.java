@@ -31,7 +31,7 @@ public class class121 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/CharSequence;II[BII)I",
-      garbageValue = "0"
+      garbageValue = "-1843994206"
    )
    public static int method2776(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
       int var5 = var2 - var1;
@@ -131,7 +131,7 @@ public class class121 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Lclass168;IIIBZI)V",
-      garbageValue = "0"
+      garbageValue = "-2147483647"
    )
    static void method2779(class168 var0, int var1, int var2, int var3, byte var4, boolean var5) {
       long var6 = (long)(var2 + (var1 << 16));

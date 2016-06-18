@@ -28,7 +28,7 @@ public class class47 extends class204 {
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;ZB)V",
-      garbageValue = "1"
+      garbageValue = "-66"
    )
    static final void method972(String var0, boolean var1) {
       byte var2 = 4;
@@ -40,12 +40,24 @@ public class class47 extends class204 {
       class79.method1852(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
       class44.field1021.method4036(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
       class168.method3374(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var6 + var2);
+      if(var1) {
+         try {
+            Graphics var7 = class46.field1040.getGraphics();
+            class48.field1049.vmethod1887(var7, 0, 0);
+         } catch (Exception var13) {
+            class46.field1040.repaint();
+         }
+      } else {
+         int var12 = var3;
+         int var8 = var4;
+         int var9 = var5;
+         int var10 = var6;
 
-      try {
-         Graphics var7 = class46.field1040.getGraphics();
-         class48.field1049.vmethod1887(var7, 0, 0);
-      } catch (Exception var8) {
-         class46.field1040.repaint();
+         for(int var11 = 0; var11 < client.field490; ++var11) {
+            if(client.field495[var11] + client.field497[var11] > var12 && client.field495[var11] < var12 + var9 && client.field496[var11] + client.field498[var11] > var8 && client.field496[var11] < var8 + var10) {
+               client.field283[var11] = true;
+            }
+         }
       }
 
    }

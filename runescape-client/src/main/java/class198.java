@@ -1,6 +1,5 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gd")
 public final class class198 implements Iterable {
@@ -11,10 +10,6 @@ public final class class198 implements Iterable {
    @ObfuscatedName("b")
    int field3096;
 
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1024"
-   )
    public class198(int var1) {
       this.field3096 = var1;
       this.field3094 = new class208[var1];

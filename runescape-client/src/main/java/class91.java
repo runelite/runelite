@@ -537,10 +537,6 @@ public class class91 extends class79 {
    }
 
    @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(DII)V",
-      garbageValue = "0"
-   )
    static final void method2099(double var0, int var2, int var3) {
       var0 += Math.random() * 0.03D - 0.015D;
       int var4 = var2 * 128;
@@ -1147,10 +1143,6 @@ public class class91 extends class79 {
    }
 
    @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "([IIIIIIII)V",
-      garbageValue = "0"
-   )
    static final void method2103(int[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(field1553) {
          if(var5 > field1552) {
@@ -3296,10 +3288,6 @@ public class class91 extends class79 {
    }
 
    @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "([IIIIII)V",
-      garbageValue = "0"
-   )
    static final void method2155(int[] var0, int var1, int var2, int var3, int var4, int var5) {
       if(field1553) {
          if(var5 > field1552) {

@@ -252,7 +252,7 @@ public final class class99 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "0"
+      garbageValue = "-1945538247"
    )
    static void method2206(int var0, int var1) {
       int[] var2 = new int[4];

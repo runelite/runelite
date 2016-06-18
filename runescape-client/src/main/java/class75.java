@@ -55,7 +55,7 @@ public final class class75 extends class77 implements ImageProducer, ImageObserv
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "0"
+      garbageValue = "94"
    )
    @Export("draw")
    public final void vmethod1887(Graphics var1, int var2, int var3) {

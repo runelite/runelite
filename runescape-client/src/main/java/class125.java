@@ -25,7 +25,7 @@ public abstract class class125 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Ljava/io/File;ZI)Z",
-      garbageValue = "0"
+      garbageValue = "1107248231"
    )
    static boolean method2830(File var0, boolean var1) {
       try {
@@ -35,6 +35,10 @@ public abstract class class125 {
          var2.write(var3);
          var2.seek(0L);
          var2.close();
+         if(var1) {
+            var0.delete();
+         }
+
          return true;
       } catch (Exception var4) {
          return false;

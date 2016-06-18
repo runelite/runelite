@@ -57,10 +57,15 @@ public class class26 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Component;Lclass167;Lclass167;ZII)V",
-      garbageValue = "1"
+      garbageValue = "-2050757607"
    )
    static void method636(Component var0, class167 var1, class167 var2, boolean var3, int var4) {
-      if(!class31.field701) {
+      if(class31.field701) {
+         if(var4 == 4) {
+            class31.field715 = 4;
+         }
+
+      } else {
          class31.field715 = var4;
          class79.method1850();
          byte[] var5 = var1.method3294("title.jpg", "");
@@ -139,8 +144,11 @@ public class class26 {
          class150.method3153((class80)null);
          class36.field788 = new int['耀'];
          class98.field1633 = new int['耀'];
-         class31.field726 = "";
-         class31.field716 = "";
+         if(var3) {
+            class31.field726 = "";
+            class31.field716 = "";
+         }
+
          class38.field854 = 0;
          class170.field2705 = "";
          class31.field723 = true;

@@ -61,7 +61,7 @@ public class class158 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)Ljava/lang/String;",
-      garbageValue = "16748608"
+      garbageValue = "-1914487"
    )
    static String method3184(int var0) {
       return "<col=" + Integer.toHexString(var0) + ">";

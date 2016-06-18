@@ -871,7 +871,7 @@ public class class184 extends class66 {
    @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(IIB)V",
-      garbageValue = "9"
+      garbageValue = "31"
    )
    public synchronized void method3694(int var1, int var2) {
       this.method3703(var1, var2);
@@ -949,7 +949,7 @@ public class class184 extends class66 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(Lclass180;Lclass167;Lclass59;IB)Z",
-      garbageValue = "22050"
+      garbageValue = "48"
    )
    synchronized boolean method3711(class180 var1, class167 var2, class59 var3, int var4) {
       var1.method3524();
@@ -993,12 +993,12 @@ public class class184 extends class66 {
    @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(Lclass187;ZB)V",
-      garbageValue = "1"
+      garbageValue = "-128"
    )
    void method3717(class187 var1, boolean var2) {
       int var3 = var1.field3017.field1198.length;
       int var4;
-      if(var1.field3017.field1202) {
+      if(var2 && var1.field3017.field1202) {
          int var5 = var3 + var3 - var1.field3017.field1200;
          var4 = (int)((long)var5 * (long)this.field2982[var1.field3014] >> 6);
          var3 <<= 8;

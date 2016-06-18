@@ -9,11 +9,9 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.mapping.Replace;
 
 @ObfuscatedName("ey")
 @Implements("RSCanvas")
-@Replace("net.runelite.inject.RSCanvas")
 public final class class139 extends Canvas {
    @ObfuscatedName("kl")
    @Export("chatMessages")
@@ -152,13 +150,16 @@ public final class class139 extends Canvas {
    @ObfuscatedName("dl")
    @ObfuscatedSignature(
       signature = "(Lclass3;ZI)V",
-      garbageValue = "1"
+      garbageValue = "2047463932"
    )
    static final void method2971(class3 var0, boolean var1) {
       int var2 = var0.field60;
       int var3 = (int)var0.field3113;
       var0.method3916();
-      class50.method1007(var2);
+      if(var1) {
+         class50.method1007(var2);
+      }
+
       class217.method3975(var2);
       class173 var4 = class161.method3205(var3);
       if(var4 != null) {
@@ -175,7 +176,7 @@ public final class class139 extends Canvas {
    @ObfuscatedName("bb")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "1"
+      garbageValue = "-1246487085"
    )
    static final void method2973(boolean var0) {
       client.field344 = 0;
@@ -199,9 +200,17 @@ public final class class139 extends Canvas {
          client.field318[++client.field449 - 1] = var1;
          var3.field838 = client.field296;
          var3.field762 = class176.method3460(client.field332.method2784(14));
-         int var4 = client.field332.method2784(8);
-         if(var4 > 127) {
-            var4 -= 256;
+         int var4;
+         if(var0) {
+            var4 = client.field332.method2784(8);
+            if(var4 > 127) {
+               var4 -= 256;
+            }
+         } else {
+            var4 = client.field332.method2784(5);
+            if(var4 > 15) {
+               var4 -= 32;
+            }
          }
 
          int var5 = client.field418[client.field332.method2784(3)];
@@ -209,9 +218,17 @@ public final class class139 extends Canvas {
             var3.field840 = var3.field792 = var5;
          }
 
-         int var6 = client.field332.method2784(8);
-         if(var6 > 127) {
-            var6 -= 256;
+         int var6;
+         if(var0) {
+            var6 = client.field332.method2784(8);
+            if(var6 > 127) {
+               var6 -= 256;
+            }
+         } else {
+            var6 = client.field332.method2784(5);
+            if(var6 > 15) {
+               var6 -= 32;
+            }
          }
 
          int var7 = client.field332.method2784(1);

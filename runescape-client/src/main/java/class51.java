@@ -411,11 +411,11 @@ public class class51 extends class204 {
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(II)Lclass100;",
-      garbageValue = "10"
+      garbageValue = "1334317167"
    )
    public final class100 method1023(int var1) {
       int var3;
-      if(null != this.field1113) {
+      if(null != this.field1113 && var1 > 1) {
          int var2 = -1;
 
          for(var3 = 0; var3 < 10; ++var3) {
