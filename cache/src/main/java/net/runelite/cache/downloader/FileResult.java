@@ -30,6 +30,7 @@
 
 package net.runelite.cache.downloader;
 
+import java.io.IOException;
 import net.runelite.cache.fs.DataFile;
 import net.runelite.cache.fs.DataFileReadResult;
 
@@ -67,7 +68,7 @@ public class FileResult
 		return compressedData;
 	}
 
-	public void decompress(int[] keys)
+	public void decompress(int[] keys) throws IOException
 	{
 		DataFileReadResult res = DataFile.decompress(compressedData, keys);
 
