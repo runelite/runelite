@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
 import java.io.File;
@@ -43,60 +42,86 @@ public class DataFileTest
 {
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-  
+
 	@Test
 	public void test1() throws IOException
 	{
 		File file = folder.newFile();
-		Store store = new Store(folder.getRoot());
-		DataFile df = new DataFile(store, file);
-		DataFileWriteResult res = df.write(42, 3, ByteBuffer.wrap("test".getBytes()), CompressionType.NONE, 0);
-		DataFileReadResult res2 = df.read(42, 3, res.sector, res.compressedLength);
-		byte[] buf = res2.data;
-		String str = new String(buf);
-		Assert.assertEquals("test", str);
-		file.delete();
+
+		try (Store store = new Store(folder.getRoot()))
+		{
+			DataFile df = new DataFile(store, file);
+
+			byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.NONE, 0, null);
+			DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+
+			compressedData = df.read(42, 3, res.sector, res.compressedLength);
+			DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+
+			byte[] buf = res2.data;
+			String str = new String(buf);
+			Assert.assertEquals("test", str);
+		}
 	}
-	
+
 	@Test
 	public void test2() throws IOException
 	{
 		byte[] b = new byte[1024];
 		for (int i = 0; i < 1024; ++i)
+		{
 			b[i] = (byte) i;
-		
+		}
+
 		File file = folder.newFile();
-		Store store = new Store(folder.getRoot());
-		DataFile df = new DataFile(store, file);
-		DataFileWriteResult res = df.write(42, 0x1FFFF, ByteBuffer.wrap(b), CompressionType.BZ2, 42);
-		DataFileReadResult res2 = df.read(42, 0x1FFFF, res.sector, res.compressedLength);
-		byte[] buf = res2.data;
-		Assert.assertArrayEquals(b, buf);
-		file.delete();
+
+		try (Store store = new Store(folder.getRoot()))
+		{
+			DataFile df = new DataFile(store, file);
+
+			byte[] compressedData = DataFile.compress(b, CompressionType.BZ2, 42, null);
+			DataFileWriteResult res = df.write(42, 0x1FFFF, compressedData, 42);
+
+			compressedData = df.read(42, 0x1FFFF, res.sector, res.compressedLength);
+			DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+
+			byte[] buf = res2.data;
+			Assert.assertArrayEquals(b, buf);
+		}
 	}
-	
+
 	@Test
 	public void testGZipCompression() throws IOException
 	{
 		try (Store store = new Store(folder.getRoot()))
 		{
 			DataFile df = new DataFile(store, folder.newFile());
-			DataFileWriteResult res = df.write(41, 4, ByteBuffer.wrap("test".getBytes()), CompressionType.GZ, 0);
-			DataFileReadResult res2 = df.read(41, 4, res.sector, res.compressedLength);
+
+			byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.GZ, 0, null);
+			DataFileWriteResult res = df.write(41, 4, compressedData, 0);
+
+			compressedData = df.read(41, 4, res.sector, res.compressedLength);
+			DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+
 			byte[] buf = res2.data;
 			String str = new String(buf);
 			Assert.assertEquals("test", str);
 		}
 	}
-	
+
 	@Test
 	public void testBZip2Compression() throws IOException
 	{
 		try (Store store = new Store(folder.getRoot()))
 		{
 			DataFile df = new DataFile(store, folder.newFile());
-			DataFileWriteResult res = df.write(41, 4, ByteBuffer.wrap("test".getBytes()), CompressionType.BZ2, 5);
-			DataFileReadResult res2 = df.read(41, 4, res.sector, res.compressedLength);
+
+			byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.BZ2, 5, null);
+			DataFileWriteResult res = df.write(41, 4, compressedData, 0);
+
+			compressedData = df.read(41, 4, res.sector, res.compressedLength);
+			DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+
 			byte[] buf = res2.data;
 			String str = new String(buf);
 			Assert.assertEquals("test", str);
@@ -107,15 +132,22 @@ public class DataFileTest
 	public void testCrc() throws IOException
 	{
 		File file = folder.newFile();
-		Store store = new Store(folder.getRoot());
-		DataFile df = new DataFile(store, file);
-		DataFileWriteResult res = df.write(42, 3, ByteBuffer.wrap("test".getBytes()), CompressionType.NONE, 42);
-		DataFileReadResult res2 = df.read(42, 3, res.sector, res.compressedLength);
-		byte[] buf = res2.data;
-		String str = new String(buf);
-		Assert.assertEquals("test", str);
-		Assert.assertEquals(res.crc, res2.crc);
-		Assert.assertEquals(42, res2.revision);
-		file.delete();
+
+		try (Store store = new Store(folder.getRoot()))
+		{
+			DataFile df = new DataFile(store, file);
+			
+			byte[] compressedData = DataFile.compress("test".getBytes(), CompressionType.NONE, 42, null);
+			DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+
+			compressedData = df.read(42, 3, res.sector, res.compressedLength);
+			DataFileReadResult res2 = DataFile.decompress(compressedData, null);
+
+			byte[] buf = res2.data;
+			String str = new String(buf);
+			Assert.assertEquals("test", str);
+			Assert.assertEquals(res.crc, res2.crc);
+			Assert.assertEquals(42, res2.revision);
+		}
 	}
 }

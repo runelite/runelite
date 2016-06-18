@@ -37,7 +37,7 @@ public enum IndexType
 	CONFIGS(2),
 	INTERFACES(3),
 	SOUNDEFFECTS(4),
-	LANDSCAPES(5),
+	MAPS(5),
 	TRACK1(6),
 	MODELS(7),
 	SPRITES(8),

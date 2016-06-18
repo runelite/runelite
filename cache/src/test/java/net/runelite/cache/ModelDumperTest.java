@@ -57,7 +57,7 @@ public class ModelDumperTest
 	@Test
 	public void test() throws IOException
 	{
-		java.io.File modelDir = folder.newFolder("models");
+		java.io.File modelDir = new java.io.File("d:/rs/07/cache/models");//folder.newFolder("models");
 		int count = 0;
 
 		try (Store store = new Store(StoreLocation.LOCATION))

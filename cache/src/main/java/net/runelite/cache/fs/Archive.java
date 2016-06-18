@@ -31,20 +31,29 @@
 package net.runelite.cache.fs;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Archive
 {
+	private static final Logger logger = LoggerFactory.getLogger(Archive.class);
+	
 	private Index index; // member of this index
+	
+	private byte[] data; // raw data from the datafile, compressed/encrypted
+
 	private int archiveId;
 	private int nameHash;
 	private byte[] whirlpool;
 	private int crc;
 	private int revision;
 	private int compression;
+
 	private List<File> files = new ArrayList<>();
 	
 	public Archive(Index index, int id)
@@ -94,6 +103,16 @@ public class Archive
 		}
 		return true;
 	}
+
+	public byte[] getData()
+	{
+		return data;
+	}
+
+	public void setData(byte[] data)
+	{
+		this.data = data;
+	}
 	
 	public File addFile(int id)
 	{
@@ -113,6 +132,40 @@ public class Archive
 			File file = new File(this, fileId);
 			this.files.add(file);
 		}
+	}
+
+	public void decompressAndLoad(int[] keys)
+	{
+		byte[] encryptedData = this.getData();
+
+		DataFileReadResult res = DataFile.decompress(encryptedData, keys);
+		if (res == null)
+		{
+			logger.warn("Unable to decrypt archive {}", this);
+			return;
+		}
+		
+		byte[] decompressedData = res.data;
+
+		if (this.crc != res.crc)
+		{
+			logger.warn("crc mismatch for archive {}", this);
+		}
+
+		if (this.getWhirlpool() != null && !Arrays.equals(this.getWhirlpool(), res.whirlpool))
+		{
+			logger.warn("whirlpool mismatch for archive {}", this);
+		}
+
+		if (this.getRevision() != res.revision)
+		{
+			logger.warn("revision mismatch for archive {}", this);
+		}
+
+		setCompression(res.compression);
+
+		loadContents(decompressedData);
+		this.setData(null); // now that we've loaded it, clean it so it doesn't get written back
 	}
 	
 	public void loadContents(byte[] data)
@@ -181,6 +234,11 @@ public class Archive
 
 	public byte[] saveContents()
 	{
+		if (data != null)
+		{
+			return data;
+		}
+		
 		OutputStream stream = new OutputStream();
 
 		int filesCount = this.getFiles().size();
