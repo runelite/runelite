@@ -36,12 +36,18 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import net.runelite.cache.util.BZip2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
-import net.runelite.cache.util.CRC32HGenerator;
+import net.runelite.cache.util.Crc32;
 import net.runelite.cache.util.GZip;
 import net.runelite.cache.util.Whirlpool;
+import net.runelite.cache.util.Xtea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,14 +77,14 @@ public class DataFile implements Closeable
 	
 	/**
 	 * 
-	 * @param indexId
-	 * @param archiveId
+	 * @param indexId expected index of archive of contents being read
+	 * @param archiveId expected archive of contents being read
 	 * @param sector sector to start reading at
-	 * @param size expected size of file
+	 * @param size size of file
 	 * @return
 	 * @throws IOException 
 	 */
-	public synchronized DataFileReadResult read(int indexId, int archiveId, int sector, int size) throws IOException
+	public synchronized byte[] read(int indexId, int archiveId, int sector, int size) throws IOException
 	{
 		if (sector <= 0L || dat.length() / SECTOR_SIZE < (long) sector)
 		{
@@ -94,7 +100,7 @@ public class DataFile implements Closeable
 		{
 			if (sector == 0)
 			{
-				logger.warn("sector == 0");
+				logger.warn("Unexpected end of file");
 				return null;
 			}
 
@@ -105,7 +111,7 @@ public class DataFile implements Closeable
 			int currentIndex;
 			int currentPart;
 			int currentArchive;
-			if (0xFFFF < archiveId)
+			if (archiveId > 0xFFFF)
 			{
 				headerSize = 10;
 				if (dataBlockSize > SECTOR_SIZE - headerSize)
@@ -116,7 +122,7 @@ public class DataFile implements Closeable
 				int i = dat.read(this.readCachedBuffer, 0, headerSize + dataBlockSize);
 				if (i != headerSize + dataBlockSize)
 				{
-					logger.warn("short read");
+					logger.warn("Short read when reading file data for {}/{}", indexId, archiveId);
 					return null;
 				}
 				
@@ -168,21 +174,15 @@ public class DataFile implements Closeable
 		}
 
 		buffer.flip();
-				
-		//XTEA decrypt here?
-		
-		return decompress(buffer.array());
+		return buffer.array();
 	}
 	
-	public synchronized DataFileWriteResult write(int indexId, int archiveId, ByteBuffer data, int compression, int revision) throws IOException
+	public synchronized DataFileWriteResult write(int indexId, int archiveId, byte[] compressedData, int revision) throws IOException
 	{
 		int sector;
 		int startSector;
-		
-		byte[] compressedData = this.compress(data.array(), compression, revision);
-		data = ByteBuffer.wrap(compressedData);
-		
-		//XTEA encrypt here?
+
+		ByteBuffer data = ByteBuffer.wrap(compressedData);
 		
 		sector = (int) ((dat.length() + (long) (SECTOR_SIZE - 1)) / (long) SECTOR_SIZE);
 		if (sector == 0)
@@ -270,13 +270,17 @@ public class DataFile implements Closeable
 		DataFileWriteResult res = new DataFileWriteResult();
 		res.sector = startSector;
 		res.compressedLength = compressedData.length;
+
 		int length = revision != -1 ? compressedData.length - 2 : compressedData.length;
-		res.crc = CRC32HGenerator.getHash(compressedData, length);
+		Crc32 crc32 = new Crc32();
+		crc32.update(compressedData, 0, length);
+		res.crc = crc32.getHash();
+
 		res.whirlpool = Whirlpool.getHash(compressedData, length);
 		return res;
 	}
 	
-	public static DataFileReadResult decompress(byte[] b)
+	public static DataFileReadResult decompress(byte[] b, int[] keys)
 	{
 		InputStream stream = new InputStream(b);
 		
@@ -284,30 +288,86 @@ public class DataFile implements Closeable
 		int compressedLength = stream.readInt();
 		if (compressedLength < 0 || compressedLength > 1000000)
 			throw new RuntimeException("Invalid data");
+
+		Crc32 crc32 = new Crc32();
+		crc32.update(b, 0, 5); // compression + length
 		
 		byte[] data;
-		int revision;
+		int revision = -1;
 		switch (compression)
 		{
 			case CompressionType.NONE:
-				data = new byte[compressedLength];
-				revision = checkRevision(stream, compressedLength);
-				stream.readBytes(data, 0, compressedLength);
+			{
+				byte[] encryptedData = new byte[compressedLength];
+				stream.readBytes(encryptedData, 0, compressedLength);
+
+				crc32.update(encryptedData, 0, compressedLength);
+				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
+
+				if (stream.remaining() >= 2)
+				{
+					revision = stream.readUnsignedShort();
+					assert revision != -1;
+				}
+
+				data = decryptedData;
+				
 				break;
+			}
 			case CompressionType.BZ2:
 			{
-				int length = stream.readInt();
-				revision = checkRevision(stream, compressedLength);
+				byte[] encryptedData = new byte[compressedLength + 4];
+				stream.readBytes(encryptedData);
+
+				crc32.update(encryptedData, 0, encryptedData.length);
+				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
+
+				if (stream.remaining() >= 2)
+				{
+					revision = stream.readUnsignedShort();
+					assert revision != -1;
+				}
+
+				stream = new InputStream(decryptedData);
+
+				int decompressedLength = stream.readInt();
 				data = BZip2.decompress(stream.getRemaining(), compressedLength);
-				assert data.length == length;
+
+				if (data == null)
+				{
+					return null;
+				}
+
+				assert data.length == decompressedLength;
+				
 				break;
 			}
 			case CompressionType.GZ:
 			{
-				int length = stream.readInt();
-				revision = checkRevision(stream, compressedLength);
+				byte[] encryptedData = new byte[compressedLength + 4];
+				stream.readBytes(encryptedData);
+
+				crc32.update(encryptedData, 0, encryptedData.length);
+				byte[] decryptedData = decrypt(encryptedData, encryptedData.length, keys);
+
+				if (stream.remaining() >= 2)
+				{
+					revision = stream.readUnsignedShort();
+					assert revision != -1;
+				}
+
+				stream = new InputStream(decryptedData);
+
+				int decompressedLength = stream.readInt();
 				data = GZip.decompress(stream.getRemaining(), compressedLength);
-				assert data.length == length;
+
+				if (data == null)
+				{
+					return null;
+				}
+
+				assert data.length == decompressedLength;
+				
 				break;
 			}
 			default:
@@ -317,14 +377,14 @@ public class DataFile implements Closeable
 		DataFileReadResult res = new DataFileReadResult();
 		res.data = data;
 		res.revision = revision;
-		int length = revision != -1 ? b.length - 2 : b.length;
-		res.crc = CRC32HGenerator.getHash(b, length);
+		int length = revision != -1 ? b.length - 2 : b.length;;
+		res.crc = crc32.getHash();
 		res.whirlpool = Whirlpool.getHash(b, length);
 		res.compression = compression;
 		return res;
 	}
 	
-	private byte[] compress(byte[] data, int compression, int revision) throws IOException
+	public static byte[] compress(byte[] data, int compression, int revision, int[] keys) throws IOException
 	{
 		OutputStream stream = new OutputStream();
 		stream.writeByte(compression);
@@ -333,16 +393,19 @@ public class DataFile implements Closeable
 		{
 			case CompressionType.NONE:
 				compressedData = data;
+				compressedData = encrypt(compressedData, compressedData.length, keys);
 				stream.writeInt(data.length);
 				break;
 			case CompressionType.BZ2:
 				compressedData = BZip2.compress(data);
+				compressedData = encrypt(compressedData, compressedData.length, keys);
 
 				stream.writeInt(compressedData.length);
 				stream.writeInt(data.length);
 				break;
 			case CompressionType.GZ:
 				compressedData = GZip.compress(data);
+				compressedData = encrypt(compressedData, compressedData.length, keys);
 				
 				stream.writeInt(compressedData.length);
 				stream.writeInt(data.length);
@@ -374,5 +437,39 @@ public class DataFile implements Closeable
 			revision = -1;
 		}
 		return revision;
+	}
+
+	private static byte[] decrypt(byte[] data, int length, int[] keys)
+	{
+		if (keys == null)
+			return data;
+
+		try
+		{
+			Xtea xtea = new Xtea(keys);
+			return xtea.decrypt(data, length);
+		}
+		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex)
+		{
+			logger.warn("unable to xtea decrypt", ex);
+			return null;
+		}
+	}
+
+	private static byte[] encrypt(byte[] data, int length, int[] keys)
+	{
+		if (keys == null)
+			return data;
+
+		try
+		{
+			Xtea xtea = new Xtea(keys);
+			return xtea.encrypt(data, length);
+		}
+		catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex)
+		{
+			logger.warn("unable to xtea encrypt", ex);
+			return null;
+		}
 	}
 }

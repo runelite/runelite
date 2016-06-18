@@ -32,20 +32,17 @@ package net.runelite.cache.util;
 
 import java.util.zip.CRC32;
 
-public final class CRC32HGenerator
+public class Crc32
 {
-	public static final CRC32 CRC32Instance = new CRC32();
+	private final CRC32 crc32 = new CRC32();
 
-	public static synchronized int getHash(byte[] data, int len)
+	public void update(byte[] data, int offset, int length)
 	{
-		CRC32Instance.update(data, 0, len);
-		try
-		{
-			return (int) CRC32Instance.getValue();
-		}
-		finally
-		{
-			CRC32Instance.reset();
-		}
+		crc32.update(data, offset, length);
+	}
+
+	public int getHash()
+	{
+		return (int) crc32.getValue();
 	}
 }
