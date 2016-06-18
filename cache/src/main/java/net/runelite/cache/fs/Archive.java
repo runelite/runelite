@@ -30,6 +30,7 @@
 
 package net.runelite.cache.fs;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -134,7 +135,7 @@ public class Archive
 		}
 	}
 
-	public void decompressAndLoad(int[] keys)
+	public void decompressAndLoad(int[] keys) throws IOException
 	{
 		byte[] encryptedData = this.getData();
 
