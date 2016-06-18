@@ -32,7 +32,6 @@ package net.runelite.cache.fs;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,6 +39,7 @@ import java.util.Objects;
 import net.runelite.cache.util.Djb2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
+import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,12 +50,16 @@ public class Index implements Closeable
 	private final Store store;
 	private final IndexFile index;
 	private final int id;
+	
+	private XteaKeyManager xteaManager;
+
 	private int protocol = 7;
 	private boolean named = true, usesWhirpool;
 	private int revision;
 	private int crc;
 	private byte[] whirlpool;
 	private int compression; // compression method of this index's data in 255
+
 	private final List<Archive> archives = new ArrayList<>();
 	
 	public Index(Store store, IndexFile index, int id)
@@ -106,6 +110,16 @@ public class Index implements Closeable
 			return false;
 		}
 		return true;
+	}
+
+	public XteaKeyManager getXteaManager()
+	{
+		return xteaManager;
+	}
+
+	public void setXteaManager(XteaKeyManager xteaManager)
+	{
+		this.xteaManager = xteaManager;
 	}
 
 	public int getId()
@@ -178,7 +192,8 @@ public class Index implements Closeable
 		IndexFile index255 = store.getIndex255();
 		
 		IndexEntry entry = index255.read(id);
-		DataFileReadResult res = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
+		byte[] indexData = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
+		DataFileReadResult res = DataFile.decompress(indexData, null);
 		byte[] data = res.data;
 
 		archives.clear();
@@ -189,8 +204,8 @@ public class Index implements Closeable
 		this.whirlpool = res.whirlpool;
 		this.compression = res.compression;
 		assert res.revision == -1;
-		
-		this.loadFiles();
+
+		this.loadArchives();
 	}
 	
 	public void save() throws IOException
@@ -201,8 +216,10 @@ public class Index implements Closeable
 
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
-		
-		DataFileWriteResult res = dataFile.write(index255.getIndexFileId(), this.id, ByteBuffer.wrap(data), this.compression, -1); // index data revision is always -1
+
+		byte[] compressedData = DataFile.compress(data, this.compression, -1, null); // index data revision is always -1
+		DataFileWriteResult res = dataFile.write(index255.getIndexFileId(), this.id, compressedData, revision);
+
 		index255.write(new IndexEntry(index255, id, res.sector, res.compressedLength));
 
 		this.crc = res.crc;
@@ -300,41 +317,31 @@ public class Index implements Closeable
 		}
 	}
 	
-	private void loadFiles() throws IOException
+	private void loadArchives() throws IOException
 	{
 		// get data from index file
-		for (Archive a : archives)
+		for (Archive a : new ArrayList<>(archives))
 		{
 			IndexEntry entry = this.index.read(a.getArchiveId());
 			if (entry == null)
 			{
 				logger.debug("can't read archive " + a.getArchiveId() + " from index " + this.id);
+				archives.remove(a); // is this the correct behavior?
 				continue;
 			}
 			
 			assert this.index.getIndexFileId() == this.id;
 			assert entry.getId() == a.getArchiveId();
-			DataFileReadResult res = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength());
-			byte[] data = res.data;
-			
-			if (a.getCrc() != res.crc)
+
+			byte[] archiveData = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength());
+			a.setData(archiveData);
+
+			if (this.xteaManager != null)
 			{
-				logger.warn("crc mismatch for archive {}", a);
-			}
-			
-			if (a.getWhirlpool() != null && !Arrays.equals(a.getWhirlpool(), res.whirlpool))
-			{
-				logger.warn("whirlpool mismatch for archive {}", a);
+				continue; // can't decrypt this yet
 			}
 
-			if (a.getRevision() != res.revision)
-			{
-				logger.warn("revision mismatch for archive {}", a);
-			}
-
-			a.setCompression(res.compression);
-			
-			a.loadContents(data);
+			a.decompressAndLoad(null);
 		}
 	}
 	
@@ -346,8 +353,10 @@ public class Index implements Closeable
 			
 			assert this.index.getIndexFileId() == this.id;
 			DataFile data = store.getData();
-			
-			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), ByteBuffer.wrap(fileData), a.getCompression(), a.getRevision());
+
+			byte[] compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
+
+			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), compressedData, a.getRevision());
 			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
 			
 			a.setCrc(res.crc);

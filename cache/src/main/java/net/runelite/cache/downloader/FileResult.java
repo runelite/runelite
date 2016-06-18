@@ -30,25 +30,26 @@
 
 package net.runelite.cache.downloader;
 
+import net.runelite.cache.fs.DataFile;
+import net.runelite.cache.fs.DataFileReadResult;
+
 public class FileResult
 {
 	private final int index;
 	private final int fileId;
-	private final byte[] contents;
-	private final int revision;
-	private final int crc;
-	private final byte[] whirlpool;
-	private final int compression; // compression method used by archive data
+	private final byte[] compressedData;
 
-	public FileResult(int index, int fileId, byte[] contents, int revision, int crc, byte[] whirlpool, int compression)
+	private byte[] contents;
+	private int revision;
+	private int crc;
+	private byte[] whirlpool;
+	private int compression; // compression method used by archive data
+
+	public FileResult(int index, int fileId, byte[] compressedData)
 	{
 		this.index = index;
 		this.fileId = fileId;
-		this.contents = contents;
-		this.revision = revision;
-		this.crc = crc;
-		this.whirlpool = whirlpool;
-		this.compression = compression;
+		this.compressedData = compressedData;
 	}
 
 	public int getIndex()
@@ -59,6 +60,22 @@ public class FileResult
 	public int getFileId()
 	{
 		return fileId;
+	}
+
+	public byte[] getCompressedData()
+	{
+		return compressedData;
+	}
+
+	public void decompress(int[] keys)
+	{
+		DataFileReadResult res = DataFile.decompress(compressedData, keys);
+
+		contents = res.data;
+		revision = res.revision;
+		crc = res.crc;
+		whirlpool = res.whirlpool;
+		compression = res.compression;
 	}
 
 	public byte[] getContents()

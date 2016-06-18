@@ -52,7 +52,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import net.runelite.cache.downloader.requests.FileRequest;
 import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.DataFileReadResult;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import org.slf4j.Logger;
@@ -132,6 +131,8 @@ public class CacheClient
 	public void download() throws InterruptedException, ExecutionException, FileNotFoundException
 	{
 		FileResult result = requestFile(255, 255).get();
+		result.decompress(null);
+		
 		ByteBuf buffer = Unpooled.wrappedBuffer(result.getContents());
 
 		int indexCount = result.getContents().length / 8;
@@ -140,9 +141,6 @@ public class CacheClient
 		{
 			int crc = buffer.readInt();
 			int revision = buffer.readInt();
-
-			if (i == 5)
-				continue; // XXX maps are xtea encrypted
 
 			Index index = store.findIndex(i);
 
@@ -163,6 +161,7 @@ public class CacheClient
 			logger.info("Downloading index {}", i);
 
 			FileResult indexFileResult = requestFile(255, i).get();
+			indexFileResult.decompress(null);
 
 			logger.info("Downloaded index {}", i);
 
@@ -196,11 +195,9 @@ public class CacheClient
 					logger.info("Archive {} in index {} is out of date, downloading", archive.getArchiveId(), index.getId());
 
 					FileResult archiveFileResult = requestFile(index.getId(), archive.getArchiveId()).get();
+					byte[] compressedContents = archiveFileResult.getCompressedData();
 
-					byte[] contents = archiveFileResult.getContents();
-
-					archive.loadContents(contents);
-					archive.setCompression(archiveFileResult.getCompression());
+					archive.setData(compressedContents);
 				}
 				else
 				{
@@ -258,7 +255,7 @@ public class CacheClient
 		return null;
 	}
 
-	protected synchronized void onFileFinish(int index, int file, DataFileReadResult dresult)
+	protected synchronized void onFileFinish(int index, int file, byte[] compressedData)
 	{
 		PendingFileRequest pr = findRequest(index, file);
 
@@ -270,9 +267,9 @@ public class CacheClient
 
 		requests.remove(pr);
 
-		FileResult result = new FileResult(index, file, dresult.data, dresult.revision, dresult.crc, dresult.whirlpool, dresult.compression);
+		FileResult result = new FileResult(index, file, compressedData);
 
-		logger.debug("File download finished for index {} file {}, length {}", index, file, result.getContents().length);
+		logger.debug("File download finished for index {} file {}, length {}", index, file, compressedData.length);
 
 		pr.getFuture().complete(result);
 	}

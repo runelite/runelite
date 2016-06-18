@@ -42,7 +42,7 @@ public class CacheClientTest
 	@Before
 	public void before()
 	{
-		 System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
+		System.setProperty(SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
 	}
 
 	@Test

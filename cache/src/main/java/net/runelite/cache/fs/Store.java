@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.IndexType;
+import net.runelite.cache.util.XteaKeyManager;
 
 public class Store implements Closeable
 {
@@ -59,6 +60,14 @@ public class Store implements Closeable
 		for (int i = 0; i < index255.getIndexCount(); ++i)
 		{
 			this.addIndex(i);
+		}
+
+		Index maps = this.findIndex(IndexType.MAPS.getNumber());
+		if (maps != null)
+		{
+			XteaKeyManager mapKeys = new XteaKeyManager();
+			mapKeys.loadKeys();
+			maps.setXteaManager(mapKeys);
 		}
 	}
 
@@ -98,7 +107,7 @@ public class Store implements Closeable
 		return true;
 	}
 	
-	public Index addIndex(int id) throws FileNotFoundException
+	public final Index addIndex(int id) throws FileNotFoundException
 	{
 		for (Index i : indexes)
 			if (i.getIndex().getIndexFileId() == id)
@@ -121,14 +130,7 @@ public class Store implements Closeable
 	public void load() throws IOException
 	{
 		for (Index i : indexes)
-		{
-			int id = i.getIndex().getIndexFileId();
-			if (id == 5) // XXX maps, XTEA encrypted, can't decompress
-				continue;
-			if (id == 6 || id == 14)
-				continue; // XXX I get more Indexes than there is length of the index file for these
 			i.load();
-		}
 	}
 	
 	public void save() throws IOException
@@ -157,7 +159,7 @@ public class Store implements Closeable
 		return indexes.get(type.getNumber());
 	}
 
-	public Index findIndex(int id)
+	public final Index findIndex(int id)
 	{
 		for (Index i : indexes)
 			if (i.getId() == id)
