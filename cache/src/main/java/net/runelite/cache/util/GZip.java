@@ -45,7 +45,7 @@ public class GZip
 {
 	private static final Logger logger = LoggerFactory.getLogger(GZip.class);
 
-	public static byte[] compress(byte[] bytes)
+	public static byte[] compress(byte[] bytes) throws IOException
 	{
 		InputStream is = new ByteArrayInputStream(bytes);
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
@@ -54,27 +54,17 @@ public class GZip
 		{
 			IOUtils.copy(is, os);
 		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
-		}
 		
 		return bout.toByteArray();
 	}
 
-	public static byte[] decompress(byte[] bytes, int len)
+	public static byte[] decompress(byte[] bytes, int len) throws IOException
 	{
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		
 		try (InputStream is = new GZIPInputStream(new ByteArrayInputStream(bytes, 0, len)))
 		{
 			IOUtils.copy(is, os);
-		}
-		catch (IOException ex)
-		{
-			logger.warn(null, ex);
-			return null;
 		}
 
 		return os.toByteArray();

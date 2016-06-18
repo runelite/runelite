@@ -280,7 +280,7 @@ public class DataFile implements Closeable
 		return res;
 	}
 	
-	public static DataFileReadResult decompress(byte[] b, int[] keys)
+	public static DataFileReadResult decompress(byte[] b, int[] keys) throws IOException
 	{
 		InputStream stream = new InputStream(b);
 		
@@ -419,24 +419,6 @@ public class DataFile implements Closeable
 			stream.writeShort(revision);
 
 		return stream.flip();
-	}
-	
-	private static int checkRevision(InputStream stream, int compressedLength)
-	{
-		int offset = stream.getOffset();
-		int revision;
-		if (stream.getLength() - (compressedLength + stream.getOffset()) >= 2)
-		{
-			stream.setOffset(stream.getLength() - 2);
-			revision = stream.readUnsignedShort();
-			assert revision != -1;
-			stream.setOffset(offset);
-		}
-		else
-		{
-			revision = -1;
-		}
-		return revision;
 	}
 
 	private static byte[] decrypt(byte[] data, int length, int[] keys)
