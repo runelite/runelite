@@ -128,7 +128,7 @@ public class CacheClient
 		return clientRevision;
 	}
 
-	public void download() throws InterruptedException, ExecutionException, FileNotFoundException
+	public void download() throws InterruptedException, ExecutionException, FileNotFoundException, IOException
 	{
 		FileResult result = requestFile(255, 255).get();
 		result.decompress(null);

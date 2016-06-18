@@ -150,4 +150,28 @@ public class DataFileTest
 			Assert.assertEquals(42, res2.revision);
 		}
 	}
+
+	@Test
+	public void testKeys() throws IOException
+	{
+		File file = folder.newFile();
+		int[] keys = new int[] { 4, 8, 15, 16 };
+
+		try (Store store = new Store(folder.getRoot()))
+		{
+			DataFile df = new DataFile(store, file);
+
+			byte[] compressedData = DataFile.compress("testtesttesttest1".getBytes(), CompressionType.NONE, 42, keys);
+			DataFileWriteResult res = df.write(42, 3, compressedData, 0);
+
+			compressedData = df.read(42, 3, res.sector, res.compressedLength);
+			DataFileReadResult res2 = DataFile.decompress(compressedData, keys);
+
+			byte[] buf = res2.data;
+			String str = new String(buf);
+			Assert.assertEquals("testtesttesttest1", str);
+			Assert.assertEquals(res.crc, res2.crc);
+			Assert.assertEquals(42, res2.revision);
+		}
+	}
 }
