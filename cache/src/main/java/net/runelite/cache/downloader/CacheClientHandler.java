@@ -37,8 +37,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import net.runelite.cache.downloader.requests.ConnectionInfo;
 import net.runelite.cache.downloader.requests.HelloHandshake;
-import net.runelite.cache.fs.DataFile;
-import net.runelite.cache.fs.DataFileReadResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -166,9 +164,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 				buffer.readableBytes());
 			buffer.clear();
 
-			DataFileReadResult result = DataFile.decompress(compressedData);
-
-			client.onFileFinish(index, file, result);
+			client.onFileFinish(index, file, compressedData);
 		}
 
 		buffer.discardReadBytes();

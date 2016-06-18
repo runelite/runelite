@@ -51,6 +51,12 @@ public class InputStream extends java.io.InputStream
 		this.buffer = ByteBuffer.wrap(buffer);
 	}
 
+	@Override
+	public String toString()
+	{
+		return "InputStream{" + "buffer=" + buffer + '}';
+	}
+
 	public int read24BitInt()
 	{
 		return (this.readUnsignedByte() << 16) + (this.readUnsignedByte() << 8) + this.readUnsignedByte();
@@ -76,6 +82,11 @@ public class InputStream extends java.io.InputStream
 	public int getLength()
 	{
 		return buffer.limit();
+	}
+
+	public int remaining()
+	{
+		return buffer.remaining();
 	}
 
 	public byte readByte()

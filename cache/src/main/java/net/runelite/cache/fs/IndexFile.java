@@ -122,7 +122,7 @@ public class IndexFile implements Closeable
 		int i = idx.read(buffer);
 		if (i != INDEX_ENTRY_LEN)
 		{
-			logger.warn("short read for id {} on index {}: {}", id, indexFileId, i);
+			logger.debug("short read for id {} on index {}: {}", id, indexFileId, i);
 			return null;
 		}
 		
