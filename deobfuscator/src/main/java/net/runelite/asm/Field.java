@@ -133,6 +133,11 @@ public class Field
 		this.type = type;
 	}
 
+	public NameAndType getNameAndType()
+	{
+		return new NameAndType(name, type);
+	}
+
 	public Attributes getAttributes()
 	{
 		return attributes;
