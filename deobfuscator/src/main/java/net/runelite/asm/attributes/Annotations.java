@@ -56,6 +56,16 @@ public class Annotations extends Attribute
 	{
 		annotations.add(annotation);
 	}
+
+	public void removeAnnotation(Annotation annotation)
+	{
+		annotations.remove(annotation);
+	}
+
+	public void clearAnnotations()
+	{
+		annotations.clear();
+	}
 	
 	public Annotation find(Type type)
 	{
