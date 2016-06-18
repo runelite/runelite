@@ -152,12 +152,14 @@ public class class168 extends class167 {
    @ObfuscatedName("cm")
    @ObfuscatedSignature(
       signature = "(I[BZZI)V",
-      garbageValue = "1"
+      garbageValue = "-223238983"
    )
    void method3351(int var1, byte[] var2, boolean var3, boolean var4) {
-      if(this.field2683) {
-         throw new RuntimeException();
-      } else {
+      if(var3) {
+         if(this.field2683) {
+            throw new RuntimeException();
+         }
+
          if(null != this.field2682) {
             int var5 = this.field2687;
             class134 var6 = this.field2682;
@@ -171,7 +173,7 @@ public class class168 extends class167 {
                class170.field2704.method3819(var7);
             }
 
-            Object var13 = class170.field2706;
+            Object var21 = class170.field2706;
             synchronized(class170.field2706) {
                if(class170.field2701 == 0) {
                   class40.field924.method2917(new class170(), 5);
@@ -183,7 +185,38 @@ public class class168 extends class167 {
 
          this.method3324(var2);
          this.method3353();
+      } else {
+         var2[var2.length - 2] = (byte)(super.field2668[var1] >> 8);
+         var2[var2.length - 1] = (byte)super.field2668[var1];
+         if(this.field2686 != null) {
+            class134 var13 = this.field2686;
+            class169 var18 = new class169();
+            var18.field2698 = 0;
+            var18.field3113 = (long)var1;
+            var18.field2694 = var2;
+            var18.field2695 = var13;
+            class199 var19 = class170.field2704;
+            synchronized(class170.field2704) {
+               class170.field2704.method3819(var18);
+            }
+
+            Object var20 = class170.field2706;
+            synchronized(class170.field2706) {
+               if(class170.field2701 == 0) {
+                  class40.field924.method2917(new class170(), 5);
+               }
+
+               class170.field2701 = 600;
+            }
+
+            this.field2691[var1] = true;
+         }
+
+         if(var4) {
+            super.field2663[var1] = class109.method2426(var2, false);
+         }
       }
+
    }
 
    @ObfuscatedName("cb")

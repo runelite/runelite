@@ -579,7 +579,7 @@ public abstract class class144 extends Applet implements Runnable, FocusListener
    @ObfuscatedName("qj")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "765"
+      garbageValue = "-2092409514"
    )
    protected final void method3110(int var1, int var2, int var3) {
       try {

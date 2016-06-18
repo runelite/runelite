@@ -6,7 +6,7 @@ public class class126 {
    @ObfuscatedName("dw")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;ZS)V",
-      garbageValue = "0"
+      garbageValue = "-1960"
    )
    static final void method2844(String var0, boolean var1) {
       if(var0 != null) {

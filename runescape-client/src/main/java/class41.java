@@ -158,7 +158,7 @@ public class class41 extends class204 {
    @ObfuscatedName("bt")
    @ObfuscatedSignature(
       signature = "(Lclass2;IIBI)V",
-      garbageValue = "2"
+      garbageValue = "-2072227561"
    )
    static final void method861(class2 var0, int var1, int var2, byte var3) {
       int var4 = var0.field844[0];

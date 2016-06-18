@@ -415,7 +415,7 @@ public final class class2 extends class37 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;III)V",
-      garbageValue = "16"
+      garbageValue = "-669595725"
    )
    public static void method35(String var0, String var1, int var2, int var3) throws IOException {
       class149.field2216 = var3;

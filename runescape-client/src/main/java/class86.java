@@ -140,10 +140,6 @@ public class class86 {
    }
 
    @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "2"
-   )
    public static void method1928(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       class104 var8 = new class104();
       var8.field1777 = var2 / 128;
@@ -386,10 +382,6 @@ public class class86 {
    }
 
    @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIILclass85;IZII)Z",
-      garbageValue = "0"
-   )
    boolean method1938(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class85 var9, int var10, boolean var11, int var12, int var13) {
       int var15;
       for(int var14 = var2; var14 < var2 + var4; ++var14) {
@@ -450,6 +442,10 @@ public class class86 {
             var18.field1725 |= var17;
             ++var18.field1732;
          }
+      }
+
+      if(var11) {
+         this.field1445[this.field1450++] = var20;
       }
 
       return true;
@@ -516,10 +512,6 @@ public class class86 {
    }
 
    @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IIIIIILclass85;III)Z",
-      garbageValue = "0"
-   )
    public boolean method1945(int var1, int var2, int var3, int var4, int var5, int var6, class85 var7, int var8, int var9, int var10) {
       if(var7 == null) {
          return true;
@@ -531,10 +523,6 @@ public class class86 {
    }
 
    @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIIIILclass85;IIIIII)Z",
-      garbageValue = "60"
-   )
    public boolean method1946(int var1, int var2, int var3, int var4, int var5, class85 var6, int var7, int var8, int var9, int var10, int var11, int var12) {
       return var6 == null?true:this.method1938(var1, var9, var10, var11 - var9 + 1, var12 - var10 + 1, var2, var3, var4, var6, var7, true, var8, 0);
    }
@@ -1936,10 +1924,6 @@ public class class86 {
    }
 
    @ObfuscatedName("ac")
-   @ObfuscatedSignature(
-      signature = "([IIIII)V",
-      garbageValue = "500"
-   )
    public static void method1992(int[] var0, int var1, int var2, int var3, int var4) {
       field1495 = 0;
       field1496 = 0;
@@ -2224,10 +2208,6 @@ public class class86 {
       }
    }
 
-   @ObfuscatedSignature(
-      signature = "(III[[[I)V",
-      garbageValue = "4"
-   )
    public class86(int var1, int var2, int var3, int[][][] var4) {
       this.field1447 = var1;
       this.field1439 = var2;
@@ -2302,10 +2282,6 @@ public class class86 {
    }
 
    @ObfuscatedName("ax")
-   @ObfuscatedSignature(
-      signature = "([IIIIII)V",
-      garbageValue = "512"
-   )
    public void method2065(int[] var1, int var2, int var3, int var4, int var5, int var6) {
       class101 var7 = this.field1442[var4][var5][var6];
       if(var7 != null) {

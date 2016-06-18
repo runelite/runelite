@@ -709,10 +709,6 @@ public class class100 extends class85 {
    }
 
    @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "([[IIIIZI)Lclass100;",
-      garbageValue = "1"
-   )
    public class100 method2214(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
       this.method2237();
       int var7 = var2 + this.field1674;
@@ -1338,11 +1334,43 @@ public class class100 extends class85 {
       this.field1703 = var1.field1703;
       this.field1669 = var1.field1669;
       this.field1680 = var1.field1680;
-      this.field1685 = var1.field1685;
-      this.field1709 = var1.field1709;
-      this.field1666 = var1.field1666;
-      this.field1679 = var1.field1679;
-      this.field1678 = var1.field1678;
+      int var6;
+      if(var2) {
+         this.field1685 = var1.field1685;
+         this.field1709 = var1.field1709;
+         this.field1666 = var1.field1666;
+      } else {
+         this.field1685 = new int[this.field1703];
+         this.field1709 = new int[this.field1703];
+         this.field1666 = new int[this.field1703];
+
+         for(var6 = 0; var6 < this.field1703; ++var6) {
+            this.field1685[var6] = var1.field1685[var6];
+            this.field1709[var6] = var1.field1709[var6];
+            this.field1666[var6] = var1.field1666[var6];
+         }
+      }
+
+      if(var3) {
+         this.field1679 = var1.field1679;
+      } else {
+         this.field1679 = new short[this.field1669];
+
+         for(var6 = 0; var6 < this.field1669; ++var6) {
+            this.field1679[var6] = var1.field1679[var6];
+         }
+      }
+
+      if(!var4 && var1.field1678 != null) {
+         this.field1678 = new short[this.field1669];
+
+         for(var6 = 0; var6 < this.field1669; ++var6) {
+            this.field1678[var6] = var1.field1678[var6];
+         }
+      } else {
+         this.field1678 = var1.field1678;
+      }
+
       this.field1675 = var1.field1675;
       this.field1670 = var1.field1670;
       this.field1671 = var1.field1671;

@@ -1,6 +1,5 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hr")
 public class class212 {
@@ -30,19 +29,11 @@ public class class212 {
    @ObfuscatedName("b")
    public static final class212 field3142 = new class212(5, 0, "", "");
 
-   @ObfuscatedSignature(
-      signature = "(IILjava/lang/String;Ljava/lang/String;)V",
-      garbageValue = "5"
-   )
    class212(int var1, int var2, String var3, String var4) {
       this.field3134 = var1;
       this.field3140 = var4;
    }
 
-   @ObfuscatedSignature(
-      signature = "(IILjava/lang/String;Ljava/lang/String;Z[Lclass212;)V",
-      garbageValue = "6"
-   )
    class212(int var1, int var2, String var3, String var4, boolean var5, class212[] var6) {
       this.field3134 = var1;
       this.field3140 = var4;

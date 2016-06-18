@@ -30,14 +30,21 @@ public class class30 {
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "0"
+      garbageValue = "-887890181"
    )
    public static byte[] method663(Object var0, boolean var1) {
       if(null == var0) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
-         return var3;
+         byte[] var6 = (byte[])((byte[])var0);
+         if(var1) {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
+            return var5;
+         } else {
+            return var6;
+         }
       } else if(var0 instanceof class125) {
          class125 var2 = (class125)var0;
          return var2.vmethod2826();

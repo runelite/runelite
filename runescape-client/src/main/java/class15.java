@@ -45,7 +45,7 @@ public class class15 extends class208 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "8"
+      garbageValue = "-126826117"
    )
    static final void method175(int var0, int var1, int var2, int var3) {
       for(int var4 = var1; var4 <= var3 + var1; ++var4) {

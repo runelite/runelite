@@ -34,7 +34,7 @@ public final class class122 extends class119 {
    @ObfuscatedName("il")
    @ObfuscatedSignature(
       signature = "(IB)V",
-      garbageValue = "174"
+      garbageValue = "-39"
    )
    public void method2781(int var1) {
       super.field1982[++super.field1976 - 1] = (byte)(var1 + this.field2003.method2811());

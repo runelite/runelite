@@ -52,7 +52,7 @@ public final class class34 extends class37 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(IBS)V",
-      garbageValue = "2"
+      garbageValue = "-12637"
    )
    final void method722(int var1, byte var2) {
       int var3 = super.field844[0];
@@ -115,11 +115,32 @@ public final class class34 extends class37 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIZB)V",
-      garbageValue = "1"
+      garbageValue = "-95"
    )
    final void method724(int var1, int var2, boolean var3) {
       if(super.field801 != -1 && class17.method178(super.field801).field978 == 1) {
          super.field801 = -1;
+      }
+
+      if(!var3) {
+         int var4 = var1 - super.field844[0];
+         int var5 = var2 - super.field831[0];
+         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
+            if(super.field808 < 9) {
+               ++super.field808;
+            }
+
+            for(int var6 = super.field808; var6 > 0; --var6) {
+               super.field844[var6] = super.field844[var6 - 1];
+               super.field831[var6] = super.field831[var6 - 1];
+               super.field846[var6] = super.field846[var6 - 1];
+            }
+
+            super.field844[0] = var1;
+            super.field831[0] = var2;
+            super.field846[0] = 1;
+            return;
+         }
       }
 
       super.field808 = 0;
@@ -219,7 +240,7 @@ public final class class34 extends class37 {
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(IIIB)I",
-      garbageValue = "4"
+      garbageValue = "1"
    )
    static final int method735(int var0, int var1, int var2) {
       int var3 = var0 / var2;

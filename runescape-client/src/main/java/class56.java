@@ -126,7 +126,7 @@ public class class56 {
    @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "256"
+      garbageValue = "-2143547587"
    )
    final void method1176(int var1) {
       this.field1163 -= var1;

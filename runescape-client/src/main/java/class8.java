@@ -100,7 +100,7 @@ public class class8 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "1"
+      garbageValue = "-1741228735"
    )
    void method97(boolean var1) {
    }
@@ -374,7 +374,7 @@ public class class8 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
-      garbageValue = "0"
+      garbageValue = "-522074323"
    )
    public static void method111(String var0, boolean var1, String var2, boolean var3) {
       if(var1) {
@@ -418,7 +418,7 @@ public class class8 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "([BIIB)I",
-      garbageValue = "0"
+      garbageValue = "-104"
    )
    public static int method114(byte[] var0, int var1, int var2) {
       int var3 = -1;

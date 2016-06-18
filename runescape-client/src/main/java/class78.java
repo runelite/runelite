@@ -116,7 +116,7 @@ public final class class78 extends class79 {
    @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(IIIIIIDI)V",
-      garbageValue = "20"
+      garbageValue = "256"
    )
    public void method1707(int var1, int var2, int var3, int var4, int var5, int var6, double var7, int var9) {
       try {
@@ -251,10 +251,6 @@ public final class class78 extends class79 {
    }
 
    @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "([I[IIIIIIII)V",
-      garbageValue = "0"
-   )
    static void method1715(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = -(var5 >> 2);
       var5 = -(var5 & 3);
@@ -400,7 +396,7 @@ public final class class78 extends class79 {
    @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(IIII)V",
-      garbageValue = "128"
+      garbageValue = "16777215"
    )
    public void method1718(int var1, int var2, int var3, int var4) {
       var1 += this.field1369;

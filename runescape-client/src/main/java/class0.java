@@ -56,7 +56,7 @@ public class class0 extends class208 {
    @ObfuscatedName("ap")
    @ObfuscatedSignature(
       signature = "(ZB)V",
-      garbageValue = "1"
+      garbageValue = "71"
    )
    @Export("xteaChanged")
    static final void method0(boolean var0) {

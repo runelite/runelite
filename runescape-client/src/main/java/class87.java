@@ -58,7 +58,7 @@ public final class class87 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "14500"
+      garbageValue = "2033834914"
    )
    public static void method2087(int var0) {
       class140.field2129 = var0;

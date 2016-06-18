@@ -32,7 +32,7 @@ public class class24 extends class208 {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/CharSequence;IZS)Z",
-      garbageValue = "1"
+      garbageValue = "-11813"
    )
    static boolean method591(CharSequence var0, int var1, boolean var2) {
       if(var1 >= 2 && var1 <= 36) {

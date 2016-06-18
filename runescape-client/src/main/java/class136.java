@@ -100,7 +100,7 @@ public class class136 implements Runnable {
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(IIILjava/lang/Object;I)Lclass146;",
-      garbageValue = "2"
+      garbageValue = "-164308039"
    )
    final class146 method2915(int var1, int var2, int var3, Object var4) {
       class146 var5 = new class146();

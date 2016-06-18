@@ -73,7 +73,7 @@ public class class17 {
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "(IZII)V",
-      garbageValue = "1"
+      garbageValue = "1883535768"
    )
    public static final void method179(int var0, boolean var1, int var2) {
       if(var0 >= 8000 && var0 <= '뮀') {

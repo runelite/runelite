@@ -21,7 +21,7 @@ public class class109 {
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "([BZI)Ljava/lang/Object;",
-      garbageValue = "0"
+      garbageValue = "-373845613"
    )
    public static Object method2426(byte[] var0, boolean var1) {
       if(var0 == null) {

@@ -28,7 +28,7 @@ public class class19 {
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(ZI)Lclass227;",
-      garbageValue = "1"
+      garbageValue = "1523142093"
    )
    class227 method191(boolean var1) {
       return class139.method2974("2", client.field570.field2274, var1);
@@ -273,67 +273,58 @@ public class class19 {
    void method212() {
       class227 var1 = this.method191(false);
 
-      label191: {
-         try {
-            byte[] var2 = new byte[(int)var1.method4113()];
+      try {
+         byte[] var2 = new byte[(int)var1.method4113()];
 
-            int var4;
-            for(int var3 = 0; var3 < var2.length; var3 += var4) {
-               var4 = var1.method4118(var2, var3, var2.length - var3);
-               if(var4 == -1) {
-                  throw new EOFException();
-               }
+         int var4;
+         for(int var3 = 0; var3 < var2.length; var3 += var4) {
+            var4 = var1.method4118(var2, var3, var2.length - var3);
+            if(var4 == -1) {
+               throw new EOFException();
             }
-
-            class119 var13 = new class119(var2);
-            if(var13.field1982.length - var13.field1976 < 1) {
-               return;
-            }
-
-            int var14 = var13.method2514();
-            if(var14 >= 0 && var14 <= 1) {
-               int var15 = var13.method2516();
-
-               int var7;
-               int var8;
-               int var9;
-               for(var7 = 0; var7 < var15; ++var7) {
-                  var8 = var13.method2516();
-                  var9 = var13.method2519();
-                  if(this.field272[var8]) {
-                     this.field276[var8] = var9;
-                  }
-               }
-
-               var7 = var13.method2516();
-               var8 = 0;
-
-               while(true) {
-                  if(var8 >= var7) {
-                     break label191;
-                  }
-
-                  var9 = var13.method2516();
-                  String var10 = var13.method2522();
-                  if(this.field282[var9]) {
-                     this.field277[var9] = var10;
-                  }
-
-                  ++var8;
-               }
-            }
-         } catch (Exception var24) {
-            break label191;
-         } finally {
-            try {
-               var1.method4116();
-            } catch (Exception var23) {
-               ;
-            }
-
          }
 
-         return;
+         class119 var13 = new class119(var2);
+         if(var13.field1982.length - var13.field1976 < 1) {
+            return;
+         }
+
+         int var14 = var13.method2514();
+         if(var14 < 0 || var14 > 1) {
+            return;
+         }
+
+         int var15 = var13.method2516();
+
+         int var7;
+         int var8;
+         int var9;
+         for(var7 = 0; var7 < var15; ++var7) {
+            var8 = var13.method2516();
+            var9 = var13.method2519();
+            if(this.field272[var8]) {
+               this.field276[var8] = var9;
+            }
+         }
+
+         var7 = var13.method2516();
+
+         for(var8 = 0; var8 < var7; ++var8) {
+            var9 = var13.method2516();
+            String var10 = var13.method2522();
+            if(this.field282[var9]) {
+               this.field277[var9] = var10;
+            }
+         }
+      } catch (Exception var24) {
+         ;
+      } finally {
+         try {
+            var1.method4116();
+         } catch (Exception var23) {
+            ;
+         }
+
       }
 
       this.field278 = false;
