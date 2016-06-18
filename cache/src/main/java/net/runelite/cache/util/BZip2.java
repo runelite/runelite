@@ -48,7 +48,7 @@ public class BZip2
 	private static final byte[] BZIP_HEADER = new byte[]
 	{
 		'B', 'Z', // magic
-		'h', // 'h' for Bzip2 ('H'uffman coding)
+		'h',      // 'h' for Bzip2 ('H'uffman coding)
 		'1'       // block size
 	};
 
