@@ -1,7 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dd")
 @Implements("Model")
@@ -151,10 +150,6 @@ public class class105 extends class85 {
       this.field1845 = 0;
    }
 
-   @ObfuscatedSignature(
-      signature = "([Lclass105;I)V",
-      garbageValue = "2"
-   )
    public class105(class105[] var1, int var2) {
       boolean var3 = false;
       boolean var4 = false;
@@ -296,11 +291,11 @@ public class class105 extends class85 {
    }
 
    @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Z)Lclass105;",
-      garbageValue = "1"
-   )
    public class105 method2297(boolean var1) {
+      if(!var1 && field1788.length < this.field1791) {
+         field1788 = new byte[this.field1791 + 100];
+      }
+
       return this.method2298(var1, field1824, field1788);
    }
 
@@ -803,10 +798,6 @@ public class class105 extends class85 {
    }
 
    @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "0"
-   )
    public final void method2312(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       field1827[0] = -1;
       if(this.field1845 != 2 && this.field1845 != 1) {
@@ -992,10 +983,6 @@ public class class105 extends class85 {
    }
 
    @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(IIIIIII)V",
-      garbageValue = "0"
-   )
    public final void method2314(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       field1827[0] = -1;
       if(this.field1845 != 2 && this.field1845 != 1) {
@@ -1391,10 +1378,6 @@ public class class105 extends class85 {
    }
 
    @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "([[IIIIZI)Lclass105;",
-      garbageValue = "1"
-   )
    public class105 method2372(int[][] var1, int var2, int var3, int var4, boolean var5, int var6) {
       this.method2323();
       int var7 = var2 - this.field1814;
@@ -1409,30 +1392,36 @@ public class class105 extends class85 {
          if(var1[var7][var9] == var3 && var1[var8][var9] == var3 && var1[var7][var10] == var3 && var1[var8][var10] == var3) {
             return this;
          } else {
-            class105 var11 = new class105();
-            var11.field1793 = this.field1793;
-            var11.field1791 = this.field1791;
-            var11.field1805 = this.field1805;
-            var11.field1790 = this.field1790;
-            var11.field1809 = this.field1809;
-            var11.field1794 = this.field1794;
-            var11.field1795 = this.field1795;
-            var11.field1815 = this.field1815;
-            var11.field1797 = this.field1797;
-            var11.field1799 = this.field1799;
-            var11.field1785 = this.field1785;
-            var11.field1807 = this.field1807;
-            var11.field1835 = this.field1835;
-            var11.field1802 = this.field1802;
-            var11.field1803 = this.field1803;
-            var11.field1804 = this.field1804;
-            var11.field1806 = this.field1806;
-            var11.field1789 = this.field1789;
-            var11.field1808 = this.field1808;
-            var11.field1801 = this.field1801;
-            var11.field1810 = this.field1810;
-            var11.field1811 = this.field1811;
-            var11.field1812 = new int[var11.field1793];
+            class105 var11;
+            if(var5) {
+               var11 = new class105();
+               var11.field1793 = this.field1793;
+               var11.field1791 = this.field1791;
+               var11.field1805 = this.field1805;
+               var11.field1790 = this.field1790;
+               var11.field1809 = this.field1809;
+               var11.field1794 = this.field1794;
+               var11.field1795 = this.field1795;
+               var11.field1815 = this.field1815;
+               var11.field1797 = this.field1797;
+               var11.field1799 = this.field1799;
+               var11.field1785 = this.field1785;
+               var11.field1807 = this.field1807;
+               var11.field1835 = this.field1835;
+               var11.field1802 = this.field1802;
+               var11.field1803 = this.field1803;
+               var11.field1804 = this.field1804;
+               var11.field1806 = this.field1806;
+               var11.field1789 = this.field1789;
+               var11.field1808 = this.field1808;
+               var11.field1801 = this.field1801;
+               var11.field1810 = this.field1810;
+               var11.field1811 = this.field1811;
+               var11.field1812 = new int[var11.field1793];
+            } else {
+               var11 = this;
+            }
+
             int var12;
             int var13;
             int var14;

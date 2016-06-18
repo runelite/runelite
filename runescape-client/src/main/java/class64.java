@@ -70,10 +70,6 @@ public class class64 extends class66 {
    }
 
    @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Lclass62;II)Lclass64;",
-      garbageValue = "100"
-   )
    public static class64 method1311(class62 var0, int var1, int var2) {
       return var0.field1198 != null && var0.field1198.length != 0?new class64(var0, (int)((long)var0.field1199 * 256L * (long)var1 / (long)(class56.field1153 * 100)), var2 << 6):null;
    }

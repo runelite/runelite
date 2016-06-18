@@ -49,7 +49,7 @@ public class class116 {
 
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-1"
+      garbageValue = "1000000"
    )
    class116(int var1, int var2, int var3) {
    }

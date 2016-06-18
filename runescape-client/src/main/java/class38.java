@@ -31,7 +31,7 @@ public class class38 extends class207 {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(ZZS)I",
-      garbageValue = "1"
+      garbageValue = "-3166"
    )
    public static int method765(boolean var0, boolean var1) {
       byte var2 = 0;

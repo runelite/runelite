@@ -52,10 +52,6 @@ public abstract class class223 extends class79 {
    static String[] field3208 = new String[100];
 
    @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIIII)V",
-      garbageValue = "16777215"
-   )
    public void method4024(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.method4041(var4, var5);
@@ -440,10 +436,6 @@ public abstract class class223 extends class79 {
    }
 
    @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIIIIIIII)I",
-      garbageValue = "-1"
-   )
    public int method4036(String var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
       if(var1 == null) {
          return 0;
@@ -504,10 +496,6 @@ public abstract class class223 extends class79 {
    }
 
    @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIIII)V",
-      garbageValue = "0"
-   )
    public void method4037(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.method4041(var4, var5);
@@ -522,10 +510,6 @@ public abstract class class223 extends class79 {
    }
 
    @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIIII)V",
-      garbageValue = "0"
-   )
    public void method4038(String var1, int var2, int var3, int var4, int var5, int var6) {
       if(var1 != null) {
          this.method4041(var4, var5);
@@ -905,10 +889,6 @@ public abstract class class223 extends class79 {
    abstract void vmethod4106(byte[] var1, int var2, int var3, int var4, int var5, int var6);
 
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IIIIII)V",
-      garbageValue = "0"
-   )
    public void method4070(String var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       if(var1 != null) {
          this.method4041(var4, var5);

@@ -341,13 +341,11 @@ public class class228 {
 
    @ObfuscatedSignature(
       signature = "(Lclass227;II)V",
-      garbageValue = "24"
+      garbageValue = "0"
    )
    public class228(class227 var1, int var2, int var3) throws IOException {
       this.field3224 = var1;
-      long var10003 = var1.method4113();
-      this.field3225 = var10003 * 1577957268646545397L;
-      this.field3223 = var10003;
+      this.field3223 = this.field3225 = var1.method4113();
       this.field3220 = new byte[var2];
       this.field3217 = new byte[var3];
       this.field3226 = 0L;

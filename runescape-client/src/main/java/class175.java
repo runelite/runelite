@@ -445,7 +445,7 @@ public class class175 extends class204 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(Lclass119;II)Ljava/lang/String;",
-      garbageValue = "32767"
+      garbageValue = "-351105800"
    )
    public static String method3455(class119 var0, int var1) {
       try {

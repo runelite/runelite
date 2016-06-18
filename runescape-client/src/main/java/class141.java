@@ -123,7 +123,7 @@ public class class141 extends class133 {
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(IZZZI)Lclass168;",
-      garbageValue = "0"
+      garbageValue = "466008793"
    )
    static class168 method3010(int var0, boolean var1, boolean var2, boolean var3) {
       class134 var4 = null;

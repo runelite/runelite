@@ -122,7 +122,7 @@ public class class95 implements class92 {
 
    @ObfuscatedSignature(
       signature = "(Lclass167;Lclass167;IDI)V",
-      garbageValue = "20"
+      garbageValue = "64"
    )
    public class95(class167 var1, class167 var2, int var3, double var4, int var6) {
       this.field1599 = var2;

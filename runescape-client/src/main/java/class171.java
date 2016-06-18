@@ -71,7 +71,7 @@ public class class171 {
    @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(Lclass167;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "255"
+      garbageValue = "-1790957668"
    )
    public static void method3388(class167 var0, String var1, String var2, int var3, boolean var4) {
       int var5 = var0.method3281(var1);

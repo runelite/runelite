@@ -1,5 +1,4 @@
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bh")
 public class class62 extends class65 {
@@ -39,10 +38,6 @@ public class class62 extends class65 {
       this.field1202 = var5;
    }
 
-   @ObfuscatedSignature(
-      signature = "(I[BII)V",
-      garbageValue = "22050"
-   )
    class62(int var1, byte[] var2, int var3, int var4) {
       this.field1199 = var1;
       this.field1198 = var2;

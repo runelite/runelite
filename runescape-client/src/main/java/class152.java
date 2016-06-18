@@ -40,7 +40,7 @@ public class class152 implements class112 {
 
    @ObfuscatedSignature(
       signature = "(IIZZZ)V",
-      garbageValue = "0"
+      garbageValue = "1"
    )
    class152(int var1, int var2, boolean var3, boolean var4, boolean var5) {
       this.field2245 = var1;

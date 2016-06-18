@@ -1,7 +1,6 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gi")
 @Implements("NodeCache")
@@ -71,10 +70,6 @@ public final class class193 {
       return var3;
    }
 
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "128"
-   )
    public class193(int var1) {
       this.field3078 = var1;
       this.field3077 = var1;

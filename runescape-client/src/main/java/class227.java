@@ -77,10 +77,6 @@ public final class class227 {
 
    }
 
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;Ljava/lang/String;J)V",
-      garbageValue = "10000"
-   )
    public class227(File var1, String var2, long var3) throws IOException {
       if(var3 == -1L) {
          var3 = Long.MAX_VALUE;

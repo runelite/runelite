@@ -111,7 +111,7 @@ public class class119 extends class208 {
    @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "0"
+      garbageValue = "807855895"
    )
    public void method2508(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var2 + var3; ++var4) {
@@ -287,7 +287,7 @@ public class class119 extends class208 {
    @ObfuscatedName("ae")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "0"
+      garbageValue = "438697735"
    )
    public void method2525(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var3 + var2; ++var4) {
@@ -419,7 +419,7 @@ public class class119 extends class208 {
    @ObfuscatedName("aq")
    @ObfuscatedSignature(
       signature = "([IIII)V",
-      garbageValue = "5"
+      garbageValue = "1750545092"
    )
    public void method2533(int[] var1, int var2, int var3) {
       int var4 = this.field1976;

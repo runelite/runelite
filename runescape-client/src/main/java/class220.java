@@ -97,7 +97,7 @@ public class class220 {
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(IS)V",
-      garbageValue = "2"
+      garbageValue = "-22139"
    )
    void method3999(int var1) {
       this.field3176 &= -8;

@@ -101,7 +101,7 @@ public class class135 {
    @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/CharSequence;II)I",
-      garbageValue = "16"
+      garbageValue = "-987112589"
    )
    public static int method2912(CharSequence var0, int var1) {
       return class9.method117(var0, var1, true);

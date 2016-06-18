@@ -347,7 +347,7 @@ public class class90 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(Lclass0;IB)V",
-      garbageValue = "200000"
+      garbageValue = "-24"
    )
    static void method2092(class0 var0, int var1) {
       Object[] var2 = var0.field12;
@@ -3005,19 +3005,19 @@ public class class90 {
                                              var28 = class36.field780[var5];
                                              var69 = var28 == 1;
                                              var17 = var93.toLowerCase();
-                                             short[] var78 = new short[16];
+                                             short[] var80 = new short[16];
                                              var20 = 0;
                                              var21 = 0;
 
                                              while(true) {
                                                 if(var21 >= class51.field1078) {
-                                                   class3.field57 = var78;
+                                                   class3.field57 = var80;
                                                    class16.field229 = 0;
                                                    class3.field58 = var20;
                                                    String[] var77 = new String[class3.field58];
 
                                                    for(var22 = 0; var22 < class3.field58; ++var22) {
-                                                      var77[var22] = class35.method741(var78[var22]).field1090;
+                                                      var77[var22] = class35.method741(var80[var22]).field1090;
                                                    }
 
                                                    short[] var86 = class3.field57;
@@ -3033,17 +3033,17 @@ public class class90 {
                                                       break;
                                                    }
 
-                                                   if(var20 >= var78.length) {
-                                                      short[] var23 = new short[var78.length * 2];
+                                                   if(var20 >= var80.length) {
+                                                      short[] var23 = new short[var80.length * 2];
 
                                                       for(int var24 = 0; var24 < var20; ++var24) {
-                                                         var23[var24] = var78[var24];
+                                                         var23[var24] = var80[var24];
                                                       }
 
-                                                      var78 = var23;
+                                                      var80 = var23;
                                                    }
 
-                                                   var78[var20++] = (short)var21;
+                                                   var80[var20++] = (short)var21;
                                                 }
 
                                                 ++var21;
@@ -3278,11 +3278,11 @@ public class class90 {
                                              client.field331.method2650(var28);
                                              client.field331.method2650(var88);
                                              client.field331.method2650(var72);
-                                             class122 var80 = client.field331;
-                                             var22 = var80.field1976;
+                                             class122 var78 = client.field331;
+                                             var22 = var78.field1976;
                                              byte[] var60 = class45.method954(var93);
-                                             var80.method2512(var60.length);
-                                             var80.field1976 += class209.field3118.method2443(var60, 0, var60.length, var80.field1982, var80.field1976);
+                                             var78.method2512(var60.length);
+                                             var78.field1976 += class209.field3118.method2443(var60, 0, var60.length, var78.field1982, var78.field1976);
                                              client.field331.method2511(client.field331.field1976 - var20);
                                              continue;
                                           }

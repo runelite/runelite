@@ -25,7 +25,7 @@ public abstract class class85 extends class204 {
    @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(IIZB)Ljava/lang/String;",
-      garbageValue = "1"
+      garbageValue = "30"
    )
    public static String method1911(int var0, int var1, boolean var2) {
       if(var1 >= 2 && var1 <= 36) {

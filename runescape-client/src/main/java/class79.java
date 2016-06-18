@@ -391,7 +391,7 @@ public class class79 extends class204 {
    @ObfuscatedName("co")
    @ObfuscatedSignature(
       signature = "(IIIIII)V",
-      garbageValue = "12425273"
+      garbageValue = "9135624"
    )
    public static void method1804(int var0, int var1, int var2, int var3, int var4, int var5) {
       int var6 = 0;
@@ -694,10 +694,6 @@ public class class79 extends class204 {
    }
 
    @ObfuscatedName("dl")
-   @ObfuscatedSignature(
-      signature = "(III[I[I)V",
-      garbageValue = "0"
-   )
    public static void method1858(int var0, int var1, int var2, int[] var3, int[] var4) {
       int var5 = var0 + var1 * field1382;
 

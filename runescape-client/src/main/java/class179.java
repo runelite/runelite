@@ -46,7 +46,7 @@ public class class179 {
    @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IZB)V",
-      garbageValue = "1"
+      garbageValue = "0"
    )
    public void method3487(int var1, boolean var2) {
       if(var1 != 1 || !this.field2913) {
@@ -56,9 +56,16 @@ public class class179 {
 
             class44 var4;
             do {
-               ++var3;
-               if(var3 >= class44.field1010) {
-                  var3 = 0;
+               if(!var2) {
+                  --var3;
+                  if(var3 < 0) {
+                     var3 = class44.field1010 - 1;
+                  }
+               } else {
+                  ++var3;
+                  if(var3 >= class44.field1010) {
+                     var3 = 0;
+                  }
                }
 
                var4 = class85.method1919(var3);
@@ -73,24 +80,38 @@ public class class179 {
    @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(IZB)V",
-      garbageValue = "1"
+      garbageValue = "-52"
    )
    public void method3488(int var1, boolean var2) {
       int var3 = this.field2912[var1];
-
       boolean var4;
-      do {
-         ++var3;
-         if(var3 >= class34.field760[var1].length) {
-            var3 = 0;
-         }
+      if(!var2) {
+         do {
+            --var3;
+            if(var3 < 0) {
+               var3 = class34.field760[var1].length - 1;
+            }
 
-         if(var1 == 4 && var3 >= 8) {
-            var4 = false;
-         } else {
-            var4 = true;
-         }
-      } while(!var4);
+            if(var1 == 4 && var3 >= 8) {
+               var4 = false;
+            } else {
+               var4 = true;
+            }
+         } while(!var4);
+      } else {
+         do {
+            ++var3;
+            if(var3 >= class34.field760[var1].length) {
+               var3 = 0;
+            }
+
+            if(var1 == 4 && var3 >= 8) {
+               var4 = false;
+            } else {
+               var4 = true;
+            }
+         } while(!var4);
+      }
 
       this.field2912[var1] = var3;
       this.method3491();
@@ -381,7 +402,7 @@ public class class179 {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "0"
+      garbageValue = "328753219"
    )
    public void method3520(boolean var1) {
       if(this.field2913 != var1) {

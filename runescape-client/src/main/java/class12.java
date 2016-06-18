@@ -173,7 +173,7 @@ public class class12 extends class85 {
    @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(ILclass167;IIIZI)V",
-      garbageValue = "2"
+      garbageValue = "1727055340"
    )
    public static void method155(int var0, class167 var1, int var2, int var3, int var4, boolean var5) {
       class183.field2953 = 1;
@@ -185,10 +185,6 @@ public class class12 extends class85 {
       class183.field2955 = var0;
    }
 
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIZLclass85;)V",
-      garbageValue = "0"
-   )
    class12(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, class85 var9) {
       this.field188 = var1;
       this.field174 = var2;
@@ -207,6 +203,11 @@ public class class12 extends class85 {
                this.field175 = var10.field175;
                return;
             }
+         }
+
+         if(var8 && this.field173.field966 != -1) {
+            this.field179 = (int)(Math.random() * (double)this.field173.field965.length);
+            this.field175 -= (int)(Math.random() * (double)this.field173.field983[this.field179]);
          }
       }
 

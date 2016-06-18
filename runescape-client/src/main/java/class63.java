@@ -1,5 +1,4 @@
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bt")
 public class class63 {
@@ -35,15 +34,15 @@ public class class63 {
    }
 
    @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IF)I",
-      garbageValue = "0"
-   )
    int method1293(int var1, float var2) {
-      float var3 = (float)this.field1207[0] + (float)(this.field1207[1] - this.field1207[0]) * var2;
-      var3 *= 0.0030517578F;
-      field1205 = (float)Math.pow(0.1D, (double)(var3 / 20.0F));
-      field1211 = (int)(field1205 * 65536.0F);
+      float var3;
+      if(var1 == 0) {
+         var3 = (float)this.field1207[0] + (float)(this.field1207[1] - this.field1207[0]) * var2;
+         var3 *= 0.0030517578F;
+         field1205 = (float)Math.pow(0.1D, (double)(var3 / 20.0F));
+         field1211 = (int)(field1205 * 65536.0F);
+      }
+
       if(this.field1204[var1] == 0) {
          return 0;
       } else {
@@ -67,8 +66,10 @@ public class class63 {
             field1208[var1][0] += var5;
          }
 
-         for(var4 = 0; var4 < this.field1204[0] * 2; ++var4) {
-            field1208[0][var4] *= field1205;
+         if(var1 == 0) {
+            for(var4 = 0; var4 < this.field1204[0] * 2; ++var4) {
+               field1208[0][var4] *= field1205;
+            }
          }
 
          for(var4 = 0; var4 < this.field1204[var1] * 2; ++var4) {

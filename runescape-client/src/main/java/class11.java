@@ -55,7 +55,7 @@ public class class11 {
    @ObfuscatedName("de")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;ZB)Z",
-      garbageValue = "0"
+      garbageValue = "-83"
    )
    static boolean method147(String var0, boolean var1) {
       if(var0 == null) {
@@ -64,7 +64,7 @@ public class class11 {
          String var2 = class39.method796(var0, client.field289);
 
          for(int var3 = 0; var3 < client.field340; ++var3) {
-            if(var2.equalsIgnoreCase(class39.method796(client.field556[var3].field243, client.field289))) {
+            if(var2.equalsIgnoreCase(class39.method796(client.field556[var3].field243, client.field289)) && (!var1 || client.field556[var3].field249 != 0)) {
                return true;
             }
          }

@@ -15,10 +15,10 @@ public class class174 {
    @ObfuscatedName("dp")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;ZS)Ljava/lang/String;",
-      garbageValue = "1"
+      garbageValue = "30180"
    )
    static String method3451(String var0, boolean var1) {
-      String var2 = "https://";
+      String var2 = var1?"https://":"http://";
       if(client.field548 == 1) {
          var0 = var0 + "-wtrc";
       } else if(client.field548 == 2) {

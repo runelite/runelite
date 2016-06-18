@@ -79,7 +79,7 @@ public final class class143 implements Runnable {
    @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "0"
+      garbageValue = "2081290589"
    )
    public void method3020(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field2162) {

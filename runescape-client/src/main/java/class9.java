@@ -22,7 +22,7 @@ public class class9 {
    @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/CharSequence;IZB)I",
-      garbageValue = "1"
+      garbageValue = "53"
    )
    public static int method117(CharSequence var0, int var1, boolean var2) {
       if(var1 >= 2 && var1 <= 36) {

@@ -35,7 +35,7 @@ public class class10 extends class107 {
    @ObfuscatedName("ak")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "1"
+      garbageValue = "443601066"
    )
    static final void method127(boolean var0) {
       for(int var1 = 0; var1 < client.field449; ++var1) {

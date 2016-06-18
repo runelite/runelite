@@ -54,12 +54,12 @@ public class class13 implements Runnable {
    @ObfuscatedName("bj")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "0"
+      garbageValue = "-1003953566"
    )
    static final void method159(boolean var0) {
       class124.method2824();
       ++client.field337;
-      if(client.field337 >= 50) {
+      if(client.field337 >= 50 || var0) {
          client.field337 = 0;
          if(!client.field342 && null != field195) {
             client.field331.method2781(210);

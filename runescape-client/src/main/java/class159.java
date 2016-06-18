@@ -34,7 +34,7 @@ public class class159 implements class112 {
 
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "1"
+      garbageValue = "0"
    )
    class159(int var1, int var2) {
       this.field2593 = var1;
