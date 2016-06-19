@@ -30,199 +30,7 @@
 
 package net.runelite.asm.attributes.code;
 
-import net.runelite.asm.attributes.code.instructions.AALoad;
-import net.runelite.asm.attributes.code.instructions.AAStore;
-import net.runelite.asm.attributes.code.instructions.AConstNull;
-import net.runelite.asm.attributes.code.instructions.ALoad;
-import net.runelite.asm.attributes.code.instructions.ALoad_0;
-import net.runelite.asm.attributes.code.instructions.ALoad_1;
-import net.runelite.asm.attributes.code.instructions.ALoad_2;
-import net.runelite.asm.attributes.code.instructions.ALoad_3;
-import net.runelite.asm.attributes.code.instructions.ANewArray;
-import net.runelite.asm.attributes.code.instructions.AStore;
-import net.runelite.asm.attributes.code.instructions.AStore_0;
-import net.runelite.asm.attributes.code.instructions.AStore_1;
-import net.runelite.asm.attributes.code.instructions.AStore_2;
-import net.runelite.asm.attributes.code.instructions.AStore_3;
-import net.runelite.asm.attributes.code.instructions.AThrow;
-import net.runelite.asm.attributes.code.instructions.ArrayLength;
-import net.runelite.asm.attributes.code.instructions.BALoad;
-import net.runelite.asm.attributes.code.instructions.BAStore;
-import net.runelite.asm.attributes.code.instructions.BiPush;
-import net.runelite.asm.attributes.code.instructions.CALoad;
-import net.runelite.asm.attributes.code.instructions.CAStore;
-import net.runelite.asm.attributes.code.instructions.CheckCast;
-import net.runelite.asm.attributes.code.instructions.D2F;
-import net.runelite.asm.attributes.code.instructions.D2I;
-import net.runelite.asm.attributes.code.instructions.D2L;
-import net.runelite.asm.attributes.code.instructions.DALoad;
-import net.runelite.asm.attributes.code.instructions.DAStore;
-import net.runelite.asm.attributes.code.instructions.DAdd;
-import net.runelite.asm.attributes.code.instructions.DCmpG;
-import net.runelite.asm.attributes.code.instructions.DCmpL;
-import net.runelite.asm.attributes.code.instructions.DConst_0;
-import net.runelite.asm.attributes.code.instructions.DConst_1;
-import net.runelite.asm.attributes.code.instructions.DDiv;
-import net.runelite.asm.attributes.code.instructions.DLoad;
-import net.runelite.asm.attributes.code.instructions.DLoad_0;
-import net.runelite.asm.attributes.code.instructions.DLoad_1;
-import net.runelite.asm.attributes.code.instructions.DLoad_2;
-import net.runelite.asm.attributes.code.instructions.DLoad_3;
-import net.runelite.asm.attributes.code.instructions.DMul;
-import net.runelite.asm.attributes.code.instructions.DNeg;
-import net.runelite.asm.attributes.code.instructions.DRem;
-import net.runelite.asm.attributes.code.instructions.DStore;
-import net.runelite.asm.attributes.code.instructions.DStore_0;
-import net.runelite.asm.attributes.code.instructions.DStore_1;
-import net.runelite.asm.attributes.code.instructions.DStore_2;
-import net.runelite.asm.attributes.code.instructions.DStore_3;
-import net.runelite.asm.attributes.code.instructions.DSub;
-import net.runelite.asm.attributes.code.instructions.Dup;
-import net.runelite.asm.attributes.code.instructions.Dup2;
-import net.runelite.asm.attributes.code.instructions.Dup2_X1;
-import net.runelite.asm.attributes.code.instructions.Dup2_X2;
-import net.runelite.asm.attributes.code.instructions.Dup_X1;
-import net.runelite.asm.attributes.code.instructions.Dup_X2;
-import net.runelite.asm.attributes.code.instructions.F2D;
-import net.runelite.asm.attributes.code.instructions.F2I;
-import net.runelite.asm.attributes.code.instructions.F2L;
-import net.runelite.asm.attributes.code.instructions.FALoad;
-import net.runelite.asm.attributes.code.instructions.FAStore;
-import net.runelite.asm.attributes.code.instructions.FAdd;
-import net.runelite.asm.attributes.code.instructions.FCmpG;
-import net.runelite.asm.attributes.code.instructions.FCmpL;
-import net.runelite.asm.attributes.code.instructions.FConst_0;
-import net.runelite.asm.attributes.code.instructions.FConst_1;
-import net.runelite.asm.attributes.code.instructions.FConst_2;
-import net.runelite.asm.attributes.code.instructions.FDiv;
-import net.runelite.asm.attributes.code.instructions.FLoad;
-import net.runelite.asm.attributes.code.instructions.FLoad_0;
-import net.runelite.asm.attributes.code.instructions.FLoad_1;
-import net.runelite.asm.attributes.code.instructions.FLoad_2;
-import net.runelite.asm.attributes.code.instructions.FLoad_3;
-import net.runelite.asm.attributes.code.instructions.FMul;
-import net.runelite.asm.attributes.code.instructions.FNeg;
-import net.runelite.asm.attributes.code.instructions.FRem;
-import net.runelite.asm.attributes.code.instructions.FStore;
-import net.runelite.asm.attributes.code.instructions.FStore_0;
-import net.runelite.asm.attributes.code.instructions.FStore_1;
-import net.runelite.asm.attributes.code.instructions.FStore_2;
-import net.runelite.asm.attributes.code.instructions.FStore_3;
-import net.runelite.asm.attributes.code.instructions.FSub;
-import net.runelite.asm.attributes.code.instructions.GetField;
-import net.runelite.asm.attributes.code.instructions.GetStatic;
-import net.runelite.asm.attributes.code.instructions.Goto;
-import net.runelite.asm.attributes.code.instructions.GotoW;
-import net.runelite.asm.attributes.code.instructions.I2B;
-import net.runelite.asm.attributes.code.instructions.I2C;
-import net.runelite.asm.attributes.code.instructions.I2D;
-import net.runelite.asm.attributes.code.instructions.I2F;
-import net.runelite.asm.attributes.code.instructions.I2L;
-import net.runelite.asm.attributes.code.instructions.I2S;
-import net.runelite.asm.attributes.code.instructions.IALoad;
-import net.runelite.asm.attributes.code.instructions.IAStore;
-import net.runelite.asm.attributes.code.instructions.IAdd;
-import net.runelite.asm.attributes.code.instructions.IAnd;
-import net.runelite.asm.attributes.code.instructions.IConst_0;
-import net.runelite.asm.attributes.code.instructions.IConst_1;
-import net.runelite.asm.attributes.code.instructions.IConst_2;
-import net.runelite.asm.attributes.code.instructions.IConst_3;
-import net.runelite.asm.attributes.code.instructions.IConst_4;
-import net.runelite.asm.attributes.code.instructions.IConst_5;
-import net.runelite.asm.attributes.code.instructions.IConst_M1;
-import net.runelite.asm.attributes.code.instructions.IDiv;
-import net.runelite.asm.attributes.code.instructions.IInc;
-import net.runelite.asm.attributes.code.instructions.ILoad;
-import net.runelite.asm.attributes.code.instructions.ILoad_0;
-import net.runelite.asm.attributes.code.instructions.ILoad_1;
-import net.runelite.asm.attributes.code.instructions.ILoad_2;
-import net.runelite.asm.attributes.code.instructions.ILoad_3;
-import net.runelite.asm.attributes.code.instructions.IMul;
-import net.runelite.asm.attributes.code.instructions.INeg;
-import net.runelite.asm.attributes.code.instructions.IOr;
-import net.runelite.asm.attributes.code.instructions.IRem;
-import net.runelite.asm.attributes.code.instructions.IShL;
-import net.runelite.asm.attributes.code.instructions.IShR;
-import net.runelite.asm.attributes.code.instructions.IStore;
-import net.runelite.asm.attributes.code.instructions.IStore_0;
-import net.runelite.asm.attributes.code.instructions.IStore_1;
-import net.runelite.asm.attributes.code.instructions.IStore_2;
-import net.runelite.asm.attributes.code.instructions.IStore_3;
-import net.runelite.asm.attributes.code.instructions.ISub;
-import net.runelite.asm.attributes.code.instructions.IUShR;
-import net.runelite.asm.attributes.code.instructions.IXor;
-import net.runelite.asm.attributes.code.instructions.IfACmpEq;
-import net.runelite.asm.attributes.code.instructions.IfACmpNe;
-import net.runelite.asm.attributes.code.instructions.IfCmpGe;
-import net.runelite.asm.attributes.code.instructions.IfCmpGt;
-import net.runelite.asm.attributes.code.instructions.IfCmpLe;
-import net.runelite.asm.attributes.code.instructions.IfCmpLt;
-import net.runelite.asm.attributes.code.instructions.IfEq;
-import net.runelite.asm.attributes.code.instructions.IfGe;
-import net.runelite.asm.attributes.code.instructions.IfGt;
-import net.runelite.asm.attributes.code.instructions.IfICmpEq;
-import net.runelite.asm.attributes.code.instructions.IfICmpNe;
-import net.runelite.asm.attributes.code.instructions.IfLe;
-import net.runelite.asm.attributes.code.instructions.IfLt;
-import net.runelite.asm.attributes.code.instructions.IfNe;
-import net.runelite.asm.attributes.code.instructions.IfNonNull;
-import net.runelite.asm.attributes.code.instructions.IfNull;
-import net.runelite.asm.attributes.code.instructions.InstanceOf;
-import net.runelite.asm.attributes.code.instructions.InvokeInterface;
-import net.runelite.asm.attributes.code.instructions.InvokeSpecial;
-import net.runelite.asm.attributes.code.instructions.InvokeStatic;
-import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
-import net.runelite.asm.attributes.code.instructions.L2D;
-import net.runelite.asm.attributes.code.instructions.L2F;
-import net.runelite.asm.attributes.code.instructions.L2I;
-import net.runelite.asm.attributes.code.instructions.LALoad;
-import net.runelite.asm.attributes.code.instructions.LAStore;
-import net.runelite.asm.attributes.code.instructions.LAdd;
-import net.runelite.asm.attributes.code.instructions.LAnd;
-import net.runelite.asm.attributes.code.instructions.LCmp;
-import net.runelite.asm.attributes.code.instructions.LConst_0;
-import net.runelite.asm.attributes.code.instructions.LConst_1;
-import net.runelite.asm.attributes.code.instructions.LDC2_W;
-import net.runelite.asm.attributes.code.instructions.LDC_W;
-import net.runelite.asm.attributes.code.instructions.LDiv;
-import net.runelite.asm.attributes.code.instructions.LLoad;
-import net.runelite.asm.attributes.code.instructions.LLoad_0;
-import net.runelite.asm.attributes.code.instructions.LLoad_1;
-import net.runelite.asm.attributes.code.instructions.LLoad_2;
-import net.runelite.asm.attributes.code.instructions.LLoad_3;
-import net.runelite.asm.attributes.code.instructions.LMul;
-import net.runelite.asm.attributes.code.instructions.LNeg;
-import net.runelite.asm.attributes.code.instructions.LOr;
-import net.runelite.asm.attributes.code.instructions.LRem;
-import net.runelite.asm.attributes.code.instructions.LShL;
-import net.runelite.asm.attributes.code.instructions.LShR;
-import net.runelite.asm.attributes.code.instructions.LStore;
-import net.runelite.asm.attributes.code.instructions.LStore_0;
-import net.runelite.asm.attributes.code.instructions.LStore_1;
-import net.runelite.asm.attributes.code.instructions.LStore_2;
-import net.runelite.asm.attributes.code.instructions.LStore_3;
-import net.runelite.asm.attributes.code.instructions.LSub;
-import net.runelite.asm.attributes.code.instructions.LUShR;
-import net.runelite.asm.attributes.code.instructions.LXor;
-import net.runelite.asm.attributes.code.instructions.LookupSwitch;
-import net.runelite.asm.attributes.code.instructions.MonitorEnter;
-import net.runelite.asm.attributes.code.instructions.MonitorExit;
-import net.runelite.asm.attributes.code.instructions.MultiANewArray;
-import net.runelite.asm.attributes.code.instructions.NOP;
-import net.runelite.asm.attributes.code.instructions.New;
-import net.runelite.asm.attributes.code.instructions.NewArray;
-import net.runelite.asm.attributes.code.instructions.Pop;
-import net.runelite.asm.attributes.code.instructions.Pop2;
-import net.runelite.asm.attributes.code.instructions.PutField;
-import net.runelite.asm.attributes.code.instructions.PutStatic;
-import net.runelite.asm.attributes.code.instructions.Return;
-import net.runelite.asm.attributes.code.instructions.SALoad;
-import net.runelite.asm.attributes.code.instructions.SAStore;
-import net.runelite.asm.attributes.code.instructions.SiPush;
-import net.runelite.asm.attributes.code.instructions.Swap;
-import net.runelite.asm.attributes.code.instructions.TableSwitch;
-import net.runelite.asm.attributes.code.instructions.VReturn;
-import net.runelite.asm.attributes.code.instructions.Wide;
+import net.runelite.asm.attributes.code.instructions.*;
 
 public enum InstructionType
 {
@@ -394,6 +202,8 @@ public enum InstructionType
 	IF_ACMPEQ(0xa5, "if_acmpeq", IfACmpEq.class),
 	IF_ACMPNE(0xa6, "if_acmpne", IfACmpNe.class),
 	GOTO(0xa7, "goto", Goto.class),
+	JSR(0xa8, "jsr", Jsr.class),
+	RET(0xa9, "ret", Ret.class),
 	TABLESWITCH(0xaa, "tableswitch", TableSwitch.class),
 	LOOKUPSWITCH(0xab, "lookupswitch", LookupSwitch.class),
 	IRETURN(0xac, "ireturn", Return.class),
@@ -410,6 +220,7 @@ public enum InstructionType
 	INVOKESPECIAL(0xb7, "invokespecial", InvokeSpecial.class),
 	INVOKESTATIC(0xb8, "invokestatic", InvokeStatic.class),
 	INVOKEINTERFACE(0xb9, "invokeinterface", InvokeInterface.class),
+	INVOKEDYNAMIC(0xba, "invokedynamic", InvokeDynamic.class),
 	NEW(0xbb, "new", New.class),
 	NEWARRAY(0xbc, "newarray", NewArray.class),
 	ANEWARRAY(0xbd, "anewarray", ANewArray.class),
@@ -423,7 +234,8 @@ public enum InstructionType
 	MULTIANEWARRAY(0xc5, "multianewarray", MultiANewArray.class),
 	IFNULL(0xc6, "ifnull", IfNull.class),
 	IFNONNULL(0xc7, "ifnonnull", IfNonNull.class),
-	GOTO_W(0xc8, "goto_w", GotoW.class);
+	GOTO_W(0xc8, "goto_w", GotoW.class),
+	JSR_W(0xc9, "jsr_w", JsrW.class);
 
 	private byte code;
 	private String name;
