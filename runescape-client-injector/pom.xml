@@ -34,25 +34,25 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.3-SNAPSHOT</version>
+		<version>1.1.3</version>
 	</parent>
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>client</artifactId>
-	<version>117.1-SNAPSHOT</version> <!-- rs version -->
+	<version>117.1</version> <!-- rs version -->
 	<name>Injector</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>rs-client</artifactId>
-			<version>117.1-SNAPSHOT</version> <!-- rs version -->
+			<version>117.1</version> <!-- rs version -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>deob</artifactId>
-			<version>1.2.3-SNAPSHOT</version>
+			<version>1.2.3</version>
 			<classifier>jar-with-dependencies</classifier>
 			<scope>provided</scope>
 		</dependency>
