@@ -1,66 +1,20 @@
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gw")
+@ObfuscatedName("gk")
 public class class188 {
-   @ObfuscatedName("gt")
-   public static final int[] field3045 = new int[]{-2, 0, 2, 2, 0, 0, 0, 0, 0, 0, -2, 10, -1, 0, 8, 0, 4, 0, 0, 0, -1, 0, 0, 0, 6, 0, -1, 0, 0, 0, 0, 0, 0, 0, 6, 6, 0, -2, 2, 0, 6, -2, 0, -2, -2, 5, 0, 0, 0, 0, 0, 0, -2, 0, 8, 0, 0, 0, 0, 3, 0, 0, 7, 2, 4, 0, 0, 0, 0, 2, 0, 15, -1, 0, 0, 0, 0, 3, 0, 0, 0, -2, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 4, 0, -2, 0, 0, 0, 6, 0, 0, 0, 14, 0, 0, 0, -2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, -2, 0, 0, 0, 8, 0, 28, 4, 0, 2, -2, 0, 0, 0, -1, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 6, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 12, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 5, -2, 0, 10, -2, 0, 0, -2, 0, 0, 0, 0, 0, 7, 0, 0, 4, 0, 6, 0, 1, 0, 0, 2, 0, 6, -2, 0, -1, 0, 2, 0, 8, 0, 0, 0, 0, -2, 6, 0, 0, 0, 0, 1, 4, 0, 0};
+   @ObfuscatedName("gh")
+   public static final int[] field3039 = new int[]{0, 0, 0, 2, 0, 0, 0, 0, 12, 0, 5, 0, 0, 0, 4, 0, 4, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 1, 2, -2, 2, 0, 2, 0, 2, 0, 0, 0, -2, 4, -2, 0, 7, 3, -2, 0, 0, 2, 0, 0, 0, -2, 6, 0, 0, 0, 0, 0, 0, 0, -2, -2, -1, 0, 0, -2, 0, 2, 0, 20, -2, 0, 0, 0, 0, 0, 0, -2, 1, 0, -2, 0, 0, 0, 0, 0, 3, 0, 7, 0, 0, 6, 2, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8, -2, 0, 0, 0, 0, 8, -2, 0, 0, 6, 0, -1, 5, 0, 6, 0, 0, 0, 0, 0, 0, 8, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 8, 5, 0, 0, 0, 2, 0, 0, -2, 4, 2, 6, 4, 0, -1, 0, 0, 6, 0, 0, 0, 0, 0, -2, 0, 0, 0, 6, 0, 10, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 28, 0, -2, 10, 0, 0, -2, 0, 0, 0, -1, 0, 0, 0, 5, 0, 0, 0, 6, 15, -2, 6, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0};
+   @ObfuscatedName("pd")
+   static GarbageCollectorMXBean field3049;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
-      signature = "([BIIB)Ljava/lang/String;",
-      garbageValue = "57"
+      signature = "(Lclass37;IB)V",
+      garbageValue = "-118"
    )
-   public static String method3752(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-      int var5 = var1;
-
-      int var8;
-      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
-         int var7 = var0[var5++] & 255;
-         if(var7 < 128) {
-            if(var7 == 0) {
-               var8 = '�';
-            } else {
-               var8 = var7;
-            }
-         } else if(var7 < 192) {
-            var8 = '�';
-         } else if(var7 < 224) {
-            if(var5 < var6 && (var0[var5] & 192) == 128) {
-               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
-               if(var8 < 128) {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else if(var7 < 240) {
-            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[1 + var5] & 192) == 128) {
-               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 < 2048) {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else if(var7 < 248) {
-            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
-               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = '�';
-               } else {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else {
-            var8 = '�';
-         }
-      }
-
-      return new String(var3, 0, var4);
+   static final void method3779(class37 var0, int var1) {
+      class98.method2263(var0.field837, var0.field880, var1);
    }
 }

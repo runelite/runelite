@@ -3,69 +3,59 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fu")
+@ObfuscatedName("fb")
 public class class172 extends class204 {
-   @ObfuscatedName("ia")
-   static class173 field2732;
-   @ObfuscatedName("b")
-   class168 field2733;
-   @ObfuscatedName("j")
-   byte field2734;
-   @ObfuscatedName("bl")
-   static class168 field2735;
-   @ObfuscatedName("g")
+   @ObfuscatedName("dh")
    @ObfuscatedGetter(
-      intValue = -1426165551
+      intValue = 241426479
    )
-   int field2736;
+   @Export("baseX")
+   static int field2734;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 2007373375
+   )
+   public int field2735;
+   @ObfuscatedName("x")
+   public byte field2737;
+   @ObfuscatedName("n")
+   static class78 field2738;
+   @ObfuscatedName("f")
+   public class168 field2741;
+   @ObfuscatedName("cm")
+   static class143 field2742;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2146240875"
+      signature = "(II)Lclass39;",
+      garbageValue = "422821408"
    )
-   static void method3398() {
-      class5.field70 = 99;
-      class5.field71 = new byte[4][104][104];
-      class5.field72 = new byte[4][104][104];
-      class5.field73 = new byte[4][104][104];
-      class49.field1067 = new byte[4][104][104];
-      class149.field2225 = new int[4][105][105];
-      class5.field91 = new byte[4][105][105];
-      class41.field957 = new int[105][105];
-      class9.field144 = new int[104];
-      class14.field212 = new int[104];
-      class41.field954 = new int[104];
-      class76.field1356 = new int[104];
-      class10.field161 = new int[104];
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass40;",
-      garbageValue = "1672084312"
-   )
-   @Export("getObjectDefinition")
-   public static class40 method3399(int var0) {
-      class40 var1 = (class40)class40.field902.method3764((long)var0);
+   @Export("getNpcDefinition")
+   public static class39 method3424(int var0) {
+      class39 var1 = (class39)class39.field895.method3797((long)var0);
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = class40.field900.method3266(6, var0);
-         var1 = new class40();
-         var1.field907 = var0;
-         if(var2 != null) {
-            var1.method842(new class119(var2));
+         byte[] var2 = class39.field893.method3286(9, var0);
+         var1 = new class39();
+         var1.field899 = var0;
+         if(null != var2) {
+            var1.method808(new class119(var2));
          }
 
-         var1.method806();
-         if(var1.field939) {
-            var1.field917 = 0;
-            var1.field918 = false;
-         }
-
-         class40.field902.method3759(var1, (long)var0);
+         var1.method817();
+         class39.field895.method3788(var1, (long)var0);
          return var1;
       }
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(III)Lclass173;",
+      garbageValue = "539233104"
+   )
+   public static class173 method3425(int var0, int var1) {
+      class173 var2 = class153.method3177(var0);
+      return var1 == -1?var2:(var2 != null && var2.field2767 != null && var1 < var2.field2767.length?var2.field2767[var1]:null);
    }
 }

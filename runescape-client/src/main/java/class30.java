@@ -6,50 +6,63 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class30 {
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1528305963
+      intValue = -148430261
    )
-   int field688;
-   @ObfuscatedName("d")
+   int field703;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -232155067
+      intValue = 700151743
    )
-   int field689;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 2124896505
-   )
-   int field690;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1353113041
-   )
-   int field691;
+   int field704;
    @ObfuscatedName("x")
-   String field692;
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "-887890181"
+   @ObfuscatedGetter(
+      intValue = 859618559
    )
-   public static byte[] method663(Object var0, boolean var1) {
-      if(null == var0) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
-         }
-      } else if(var0 instanceof class125) {
-         class125 var2 = (class125)var0;
-         return var2.vmethod2826();
+   int field705;
+   @ObfuscatedName("l")
+   String field707;
+   @ObfuscatedName("qy")
+   @ObfuscatedGetter(
+      intValue = 599022613
+   )
+   public static int field708;
+   @ObfuscatedName("rb")
+   protected static boolean field709;
+   @ObfuscatedName("ex")
+   static class78[] field711;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1178748921
+   )
+   int field712;
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass45;",
+      garbageValue = "1619460073"
+   )
+   public static class45 method708(int var0) {
+      class45 var1 = (class45)class45.field1056.method3797((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         throw new IllegalArgumentException();
+         byte[] var2 = class213.field3144.method3286(19, var0);
+         var1 = new class45();
+         if(null != var2) {
+            var1.method997(new class119(var2));
+         }
+
+         class45.field1056.method3788(var1, (long)var0);
+         return var1;
       }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IS)I",
+      garbageValue = "128"
+   )
+   public static int method709(int var0) {
+      return var0 > 0?1:(var0 < 0?-1:0);
    }
 }
