@@ -1,35 +1,113 @@
+import java.awt.Canvas;
+import java.awt.Container;
+import java.awt.Insets;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("fi")
 public class class159 implements class112 {
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -342460055
-   )
-   final int field2589;
-   @ObfuscatedName("g")
-   public static final class159 field2590 = new class159(3, 1);
-   @ObfuscatedName("b")
-   public static final class159 field2591 = new class159(1, 0);
-   @ObfuscatedName("d")
-   public static final class159 field2592 = new class159(0, 3);
    @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1725265289
-   )
-   public final int field2593;
-   @ObfuscatedName("j")
-   public static final class159 field2594 = new class159(2, 2);
-
+   public static final class159 field2593 = new class159(1, 2);
    @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "977914203"
+   public static final class159 field2594 = new class159(0, 3);
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 221274881
    )
-   public int vmethod3185() {
-      return this.field2589;
+   public final int field2596;
+   @ObfuscatedName("ec")
+   static class80[] field2597;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 50647893
+   )
+   final int field2598;
+   @ObfuscatedName("f")
+   public static final class159 field2600 = new class159(2, 0);
+   @ObfuscatedName("u")
+   public static final class159 field2603 = new class159(3, 1);
+   @ObfuscatedName("m")
+   static class80 field2605;
+
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "117"
+   )
+   static void method3193() {
+      client var0 = client.field530;
+      synchronized(client.field530) {
+         Container var1 = client.field530.method3061();
+         if(var1 != null) {
+            class41.field995 = Math.max(var1.getSize().width, class31.field749);
+            class45.field1055 = Math.max(var1.getSize().height, class123.field2032);
+            if(class102.field1764 == var1) {
+               Insets var2 = class102.field1764.getInsets();
+               class41.field995 -= var2.right + var2.left;
+               class45.field1055 -= var2.top + var2.bottom;
+            }
+
+            if(class41.field995 <= 0) {
+               class41.field995 = 1;
+            }
+
+            if(class45.field1055 <= 0) {
+               class45.field1055 = 1;
+            }
+
+            int var10 = client.field501?2:1;
+            if(var10 == 1) {
+               class30.field708 = client.field502;
+               class153.field2274 = client.field381;
+            } else {
+               class30.field708 = Math.min(class41.field995, 7680);
+               class153.field2274 = Math.min(class45.field1055, 2160);
+            }
+
+            class144.field2200 = (class41.field995 - class30.field708) / 2;
+            class144.field2190 = 0;
+            class89.field1567.setSize(class30.field708, class153.field2274);
+            int var4 = class30.field708;
+            int var5 = class153.field2274;
+            Canvas var6 = class89.field1567;
+
+            Object var3;
+            try {
+               class81 var7 = new class81();
+               var7.vmethod1929(var4, var5, var6);
+               var3 = var7;
+            } catch (Throwable var11) {
+               class75 var8 = new class75();
+               var8.vmethod1929(var4, var5, var6);
+               var3 = var8;
+            }
+
+            class12.field196 = (class77)var3;
+            if(class102.field1764 == var1) {
+               Insets var13 = class102.field1764.getInsets();
+               class89.field1567.setLocation(var13.left + class144.field2200, class144.field2190 + var13.top);
+            } else {
+               class89.field1567.setLocation(class144.field2200, class144.field2190);
+            }
+
+            class19.method244();
+            if(client.field391 != -1) {
+               class37.method805(true);
+            }
+
+            class0.method2();
+         }
+      }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "69"
+   )
+   public int vmethod3194() {
+      return this.field2598;
    }
 
    @ObfuscatedSignature(
@@ -37,101 +115,23 @@ public class class159 implements class112 {
       garbageValue = "0"
    )
    class159(int var1, int var2) {
-      this.field2593 = var1;
-      this.field2589 = var2;
+      this.field2596 = var1;
+      this.field2598 = var2;
    }
 
-   @ObfuscatedName("dh")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "([Lclass173;II)V",
-      garbageValue = "1198922324"
+      signature = "(Ljava/lang/CharSequence;S)I",
+      garbageValue = "-500"
    )
-   static final void method3188(class173[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         class173 var3 = var0[var2];
-         if(var3 != null && var1 == var3.field2777 && (!var3.field2741 || !class12.method150(var3))) {
-            if(var3.field2833 == 0) {
-               if(!var3.field2741 && class12.method150(var3) && class172.field2732 != var3) {
-                  continue;
-               }
+   public static int method3197(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
 
-               method3188(var0, var3.field2748);
-               if(var3.field2872 != null) {
-                  method3188(var3.field2872, var3.field2748);
-               }
-
-               class3 var7 = (class3)client.field448.method3807((long)var3.field2748);
-               if(null != var7) {
-                  class142.method3014(var7.field60);
-               }
-            }
-
-            if(var3.field2833 == 6) {
-               int var5;
-               if(var3.field2752 != -1 || var3.field2845 != -1) {
-                  boolean var4 = class95.method2186(var3);
-                  if(var4) {
-                     var5 = var3.field2845;
-                  } else {
-                     var5 = var3.field2752;
-                  }
-
-                  if(var5 != -1) {
-                     class42 var6 = class17.method178(var5);
-
-                     for(var3.field2855 += client.field538; var3.field2855 > var6.field983[var3.field2870]; class4.method37(var3)) {
-                        var3.field2855 -= var6.field983[var3.field2870];
-                        ++var3.field2870;
-                        if(var3.field2870 >= var6.field965.length) {
-                           var3.field2870 -= var6.field966;
-                           if(var3.field2870 < 0 || var3.field2870 >= var6.field965.length) {
-                              var3.field2870 = 0;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               if(var3.field2779 != 0 && !var3.field2741) {
-                  int var8 = var3.field2779 >> 16;
-                  var5 = var3.field2779 << 16 >> 16;
-                  var8 *= client.field538;
-                  var5 *= client.field538;
-                  var3.field2839 = var3.field2839 + var8 & 2047;
-                  var3.field2800 = var3.field2800 + var5 & 2047;
-                  class4.method37(var3);
-               }
-            }
-         }
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
       }
 
-   }
-
-   @ObfuscatedName("dx")
-   @ObfuscatedSignature(
-      signature = "(IIII)Lclass3;",
-      garbageValue = "-1301168929"
-   )
-   static final class3 method3189(int var0, int var1, int var2) {
-      class3 var3 = new class3();
-      var3.field60 = var1;
-      var3.field54 = var2;
-      client.field448.method3797(var3, (long)var0);
-      class14.method164(var1);
-      class173 var4 = class161.method3205(var0);
-      class4.method37(var4);
-      if(client.field451 != null) {
-         class4.method37(client.field451);
-         client.field451 = null;
-      }
-
-      class26.method635();
-      class9.method121(class173.field2750[var0 >> 16], var4, false);
-      class32.method711(var1);
-      if(client.field456 != -1) {
-         class32.method720(client.field456, 1);
-      }
-
-      return var3;
+      return var2;
    }
 }

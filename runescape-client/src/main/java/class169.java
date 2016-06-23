@@ -2,26 +2,28 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fu")
 public class class169 extends class208 {
-   @ObfuscatedName("d")
-   public class168 field2693;
-   @ObfuscatedName("g")
-   public byte[] field2694;
-   @ObfuscatedName("j")
-   public class134 field2695;
-   @ObfuscatedName("b")
+   @ObfuscatedName("u")
+   byte[] field2696;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1514128847
+      intValue = -821067021
    )
-   int field2698;
+   int field2697;
+   @ObfuscatedName("x")
+   class134 field2698;
+   @ObfuscatedName("b")
+   class168 field2699;
+   @ObfuscatedName("m")
+   public static short[][] field2701;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass82;",
-      garbageValue = "681342900"
+      signature = "(Ljava/lang/CharSequence;IB)I",
+      garbageValue = "-96"
    )
-   public static class82[] method3375() {
-      return new class82[]{class82.field1401, class82.field1402, class82.field1404, class82.field1400, class82.field1399};
+   public static int method3393(CharSequence var0, int var1) {
+      return class107.method2430(var0, var1, true);
    }
 }

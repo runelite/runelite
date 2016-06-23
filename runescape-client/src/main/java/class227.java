@@ -8,71 +8,71 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hy")
+@ObfuscatedName("hz")
 @Implements("FileOnDisk")
 public final class class227 {
-   @ObfuscatedName("j")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      longValue = 1681701827320478825L
+      longValue = 4284189128816177877L
    )
    @Export("position")
-   long field3213;
-   @ObfuscatedName("b")
-   @Export("file")
-   RandomAccessFile field3214;
-   @ObfuscatedName("g")
+   long field3216;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      longValue = 3325446795323353145L
+      longValue = 2780304371522943709L
    )
    @Export("length")
-   long field3216;
+   long field3217;
+   @ObfuscatedName("f")
+   @Export("file")
+   RandomAccessFile field3218;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-38829410"
+      signature = "([BIII)I",
+      garbageValue = "929609060"
    )
-   public final long method4113() throws IOException {
-      return this.field3214.length();
-   }
-
-   @ObfuscatedName("b")
-   final void method4114(long var1) throws IOException {
-      this.field3214.seek(var1);
-      this.field3213 = var1;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-710440513"
-   )
-   public final void method4116() throws IOException {
-      if(null != this.field3214) {
-         this.field3214.close();
-         this.field3214 = null;
-      }
-
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "([BIIB)I",
-      garbageValue = "52"
-   )
-   public final int method4118(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.field3214.read(var1, var2, var3);
+   public final int method4146(byte[] var1, int var2, int var3) throws IOException {
+      int var4 = this.field3218.read(var1, var2, var3);
       if(var4 > 0) {
-         this.field3213 += (long)var4;
+         this.field3216 += (long)var4;
       }
 
       return var4;
    }
 
+   @ObfuscatedName("f")
+   final void method4147(long var1) throws IOException {
+      this.field3218.seek(var1);
+      this.field3216 = var1;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-1"
+   )
+   public final void method4149() throws IOException {
+      if(this.field3218 != null) {
+         this.field3218.close();
+         this.field3218 = null;
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "789911199"
+   )
+   public final long method4150() throws IOException {
+      return this.field3218.length();
+   }
+
    protected void finalize() throws Throwable {
-      if(this.field3214 != null) {
+      if(this.field3218 != null) {
          System.out.println("");
-         this.method4116();
+         this.method4149();
       }
 
    }
@@ -86,31 +86,31 @@ public final class class227 {
          var1.delete();
       }
 
-      this.field3214 = new RandomAccessFile(var1, var2);
-      this.field3216 = var3;
-      this.field3213 = 0L;
-      int var5 = this.field3214.read();
+      this.field3218 = new RandomAccessFile(var1, var2);
+      this.field3217 = var3;
+      this.field3216 = 0L;
+      int var5 = this.field3218.read();
       if(var5 != -1 && !var2.equals("r")) {
-         this.field3214.seek(0L);
-         this.field3214.write(var5);
+         this.field3218.seek(0L);
+         this.field3218.write(var5);
       }
 
-      this.field3214.seek(0L);
+      this.field3218.seek(0L);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "1984178371"
+      garbageValue = "656219749"
    )
-   public final void method4127(byte[] var1, int var2, int var3) throws IOException {
-      if((long)var3 + this.field3213 > this.field3216) {
-         this.field3214.seek(this.field3216 + 1L);
-         this.field3214.write(1);
+   public final void method4158(byte[] var1, int var2, int var3) throws IOException {
+      if((long)var3 + this.field3216 > this.field3217) {
+         this.field3218.seek(1L + this.field3217);
+         this.field3218.write(1);
          throw new EOFException();
       } else {
-         this.field3214.write(var1, var2, var3);
-         this.field3213 += (long)var3;
+         this.field3218.write(var1, var2, var3);
+         this.field3216 += (long)var3;
       }
    }
 }

@@ -1,40 +1,44 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gm")
+@ObfuscatedName("gq")
 public class class206 implements Iterator {
-   @ObfuscatedName("g")
-   class204 field3108;
-   @ObfuscatedName("b")
-   class200 field3109;
-   @ObfuscatedName("j")
-   class204 field3110 = null;
-
-   class206(class200 var1) {
-      this.field3109 = var1;
-      this.field3108 = this.field3109.field3099.field3103;
-      this.field3110 = null;
-   }
+   @ObfuscatedName("f")
+   class200 field3110;
+   @ObfuscatedName("u")
+   class204 field3111;
+   @ObfuscatedName("x")
+   class204 field3112 = null;
 
    public Object next() {
-      class204 var1 = this.field3108;
-      if(var1 == this.field3109.field3099) {
+      class204 var1 = this.field3111;
+      if(var1 == this.field3110.field3101) {
          var1 = null;
-         this.field3108 = null;
+         this.field3111 = null;
       } else {
-         this.field3108 = var1.field3103;
+         this.field3111 = var1.field3105;
       }
 
-      this.field3110 = var1;
+      this.field3112 = var1;
       return var1;
    }
 
    public boolean hasNext() {
-      return this.field3108 != this.field3109.field3099;
+      return this.field3111 != this.field3110.field3101;
    }
 
    public void remove() {
-      this.field3110.method3889();
-      this.field3110 = null;
+      if(this.field3112 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field3112.method3922();
+         this.field3112 = null;
+      }
+   }
+
+   class206(class200 var1) {
+      this.field3110 = var1;
+      this.field3111 = this.field3110.field3101.field3105;
+      this.field3112 = null;
    }
 }

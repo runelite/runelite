@@ -1,57 +1,83 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fv")
 public final class class162 {
-   @ObfuscatedName("cw")
-   static class224 field2636;
-   @ObfuscatedName("pv")
-   static class8 field2637;
-   @ObfuscatedName("b")
-   public static final char[] field2639 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+   @ObfuscatedName("f")
+   static final char[] field2646 = new char[]{'_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
-   @ObfuscatedName("bi")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIIIIIIIII)V",
-      garbageValue = "155292312"
+      signature = "(III)I",
+      garbageValue = "-926668952"
    )
-   static final void method3211(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
-      class16 var9 = null;
+   static final int method3211(int var0, int var1) {
+      int var2 = class154.method3183(var0 + '넵', var1 + 91923, 4) - 128 + (class154.method3183(10294 + var0, '鎽' + var1, 2) - 128 >> 1) + (class154.method3183(var0, var1, 1) - 128 >> 2);
+      var2 = 35 + (int)(0.3D * (double)var2);
+      if(var2 < 10) {
+         var2 = 10;
+      } else if(var2 > 60) {
+         var2 = 60;
+      }
 
-      for(class16 var10 = (class16)client.field421.method3844(); null != var10; var10 = (class16)client.field421.method3834()) {
-         if(var0 == var10.field232 && var1 == var10.field225 && var2 == var10.field223 && var3 == var10.field224) {
-            var9 = var10;
-            break;
+      return var2;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "([BIII)Ljava/lang/String;",
+      garbageValue = "247152681"
+   )
+   public static String method3219(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+      int var5 = var1;
+
+      int var8;
+      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
+         int var7 = var0[var5++] & 255;
+         if(var7 < 128) {
+            if(var7 == 0) {
+               var8 = '�';
+            } else {
+               var8 = var7;
+            }
+         } else if(var7 < 192) {
+            var8 = '�';
+         } else if(var7 < 224) {
+            if(var5 < var6 && (var0[var5] & 192) == 128) {
+               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
+               if(var8 < 128) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 240) {
+            if(1 + var5 < var6 && (var0[var5] & 192) == 128 && (var0[1 + var5] & 192) == 128) {
+               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 < 2048) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 248) {
+            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[1 + var5] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
+               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 >= 65536 && var8 <= 1114111) {
+                  var8 = '�';
+               } else {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else {
+            var8 = '�';
          }
       }
 
-      if(var9 == null) {
-         var9 = new class16();
-         var9.field232 = var0;
-         var9.field224 = var3;
-         var9.field225 = var1;
-         var9.field223 = var2;
-         class21.method558(var9);
-         client.field421.method3819(var9);
-      }
-
-      var9.field230 = var4;
-      var9.field235 = var5;
-      var9.field231 = var6;
-      var9.field241 = var7;
-      var9.field233 = var8;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)Lclass131;",
-      garbageValue = "-1099774951"
-   )
-   public static class131 method3213() {
-      try {
-         return new class145();
-      } catch (Throwable var1) {
-         return null;
-      }
+      return new String(var3, 0, var4);
    }
 }

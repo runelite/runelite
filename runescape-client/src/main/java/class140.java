@@ -8,103 +8,108 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("em")
 public class class140 implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 15364851
-   )
-   public static volatile int field2128 = 0;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 238535171
-   )
-   @Export("mouseIdleTicks")
-   public static volatile int field2129 = 0;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1640480455
-   )
-   public static volatile int field2130 = 0;
-   @ObfuscatedName("b")
-   @Export("mouse")
-   public static class140 field2131 = new class140();
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1630499649
-   )
-   public static volatile int field2132 = -1;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1417574723
-   )
-   public static int field2133 = 0;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1347180707
-   )
-   public static int field2134 = 0;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 694427091
-   )
-   public static int field2135 = 0;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 535594031
-   )
-   public static volatile int field2136 = -1;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1327786957
-   )
-   public static volatile int field2137 = 0;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1820906897
-   )
-   public static volatile int field2138 = 0;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      longValue = 4168244488976569193L
+      intValue = 975889837
    )
-   public static volatile long field2139 = 0L;
-   @ObfuscatedName("w")
+   public static int field2144 = 0;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -951049823
+      intValue = 602068609
    )
-   public static int field2140 = 0;
-   @ObfuscatedName("z")
+   @Export("mouseIdleTicks")
+   public static volatile int field2145 = 0;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1951140247
+      intValue = -802366445
    )
-   public static int field2141 = 0;
+   public static int field2146 = 0;
+   @ObfuscatedName("f")
+   @Export("mouse")
+   public static class140 field2147 = new class140();
+   @ObfuscatedName("qk")
+   @ObfuscatedGetter(
+      intValue = -864740639
+   )
+   static int field2148;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -209582203
+   )
+   public static volatile int field2149 = -1;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1699530949
+   )
+   public static volatile int field2150 = -1;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -161869087
+   )
+   public static int field2151 = 0;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -897992063
+   )
+   public static volatile int field2152 = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1405193985
+   )
+   public static volatile int field2153 = 0;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1312140499
+   )
+   public static volatile int field2154 = 0;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -20301083
+      longValue = 2967234535569701361L
    )
-   public static int field2142 = 0;
+   public static volatile long field2155 = 0L;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      longValue = 2735764516096252043L
+      intValue = 539472283
    )
-   public static long field2143 = 0L;
+   public static int field2156 = 0;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 63792933
+   )
+   public static volatile int field2157 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -2127917129
+   )
+   public static int field2158 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      longValue = 2534691362631492207L
+   )
+   public static long field2159 = 0L;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1617077177
+   )
+   public static int field2161 = 0;
 
    public final synchronized void mousePressed(MouseEvent var1) {
-      if(null != field2131) {
-         field2129 = 0;
-         field2137 = var1.getX();
-         field2138 = var1.getY();
-         field2139 = class90.method2090();
+      if(null != field2147) {
+         field2145 = 0;
+         field2153 = var1.getX();
+         field2157 = var1.getY();
+         field2155 = class130.method2846();
          if(var1.isAltDown()) {
-            field2128 = 4;
-            field2130 = 4;
+            field2152 = 4;
+            field2154 = 4;
          } else if(var1.isMetaDown()) {
-            field2128 = 2;
-            field2130 = 2;
+            field2152 = 2;
+            field2154 = 2;
          } else {
-            field2128 = 1;
-            field2130 = 1;
+            field2152 = 1;
+            field2154 = 1;
          }
       }
 
@@ -115,9 +120,9 @@ public class class140 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseReleased(MouseEvent var1) {
-      if(field2131 != null) {
-         field2129 = 0;
-         field2130 = 0;
+      if(field2147 != null) {
+         field2145 = 0;
+         field2154 = 0;
       }
 
       if(var1.isPopupTrigger()) {
@@ -127,40 +132,28 @@ public class class140 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseEntered(MouseEvent var1) {
-      if(field2131 != null) {
-         field2129 = 0;
-         field2132 = var1.getX();
-         field2136 = var1.getY();
+      if(field2147 != null) {
+         field2145 = 0;
+         field2149 = var1.getX();
+         field2150 = var1.getY();
       }
 
    }
 
    public final synchronized void mouseExited(MouseEvent var1) {
-      if(null != field2131) {
-         field2129 = 0;
-         field2132 = -1;
-         field2136 = -1;
+      if(field2147 != null) {
+         field2145 = 0;
+         field2149 = -1;
+         field2150 = -1;
       }
 
-   }
-
-   public final synchronized void mouseDragged(MouseEvent var1) {
-      if(null != field2131) {
-         field2129 = 0;
-         field2132 = var1.getX();
-         field2136 = var1.getY();
-      }
-
-   }
-
-   public final void focusGained(FocusEvent var1) {
    }
 
    public final synchronized void mouseMoved(MouseEvent var1) {
-      if(null != field2131) {
-         field2129 = 0;
-         field2132 = var1.getX();
-         field2136 = var1.getY();
+      if(field2147 != null) {
+         field2145 = 0;
+         field2149 = var1.getX();
+         field2150 = var1.getY();
       }
 
    }
@@ -172,210 +165,101 @@ public class class140 implements MouseListener, MouseMotionListener, FocusListen
 
    }
 
+   public final void focusGained(FocusEvent var1) {
+   }
+
    public final synchronized void focusLost(FocusEvent var1) {
-      if(field2131 != null) {
-         field2130 = 0;
+      if(null != field2147) {
+         field2154 = 0;
       }
 
    }
 
-   @ObfuscatedName("y")
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(null != field2147) {
+         field2145 = 0;
+         field2149 = var1.getX();
+         field2150 = var1.getY();
+      }
+
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lclass122;B)V",
-      garbageValue = "94"
+      signature = "(CIB)C",
+      garbageValue = "0"
    )
-   static final void method2999(class122 var0) {
-      for(int var1 = 0; var1 < class32.field745; ++var1) {
-         int var2 = class32.field746[var1];
-         class2 var3 = client.field410[var2];
-         int var4 = var0.method2514();
-         if((var4 & 4) != 0) {
-            var4 += var0.method2514() << 8;
+   static char method3000(char var0, int var1) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
          }
 
-         byte var5 = -1;
-         int var6;
-         if((var4 & 1) != 0) {
-            var6 = var0.method2514();
-            byte[] var7 = new byte[var6];
-            class119 var8 = new class119(var7);
-            var0.method2525(var7, 0, var6);
-            class32.field737[var2] = var8;
-            var3.method13(var8);
+         if(var0 == 199) {
+            return 'C';
          }
 
-         int var16;
-         if((var4 & 64) != 0) {
-            var6 = var0.method2516();
-            if(var6 == '\uffff') {
-               var6 = -1;
-            }
-
-            var16 = var0.method2514();
-            class153.method3164(var3, var6, var16);
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
          }
 
-         if((var4 & 8) != 0) {
-            var3.field815 = var0.method2516();
-            if(var3.field815 == '\uffff') {
-               var3.field815 = -1;
-            }
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
          }
 
-         if((var4 & 16) != 0) {
-            var3.field803 = var0.method2522();
-            if(var3.field803.charAt(0) == 126) {
-               var3.field803 = var3.field803.substring(1);
-               class45.method955(2, var3.field26, var3.field803);
-            } else if(var3 == class153.field2262) {
-               class45.method955(2, var3.field26, var3.field803);
-            }
-
-            var3.field841 = false;
-            var3.field807 = 0;
-            var3.field804 = 0;
-            var3.field806 = 150;
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
          }
 
-         if((var4 & 128) != 0) {
-            var6 = var0.method2516();
-            var16 = var0.method2514();
-            var3.method754(var6, var16, client.field296);
-            var3.field812 = 300 + client.field296;
-            var3.field794 = var0.method2514();
-            var3.field814 = var0.method2514();
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
          }
 
-         if((var4 & 32) != 0) {
-            var3.field817 = var0.method2516();
-            if(var3.field808 == 0) {
-               var3.field840 = var3.field817;
-               var3.field817 = -1;
-            }
+         if(var0 == 221) {
+            return 'Y';
          }
 
-         if((var4 & 2) != 0) {
-            var6 = var0.method2516();
-            class152 var18 = (class152)class157.method3181(class4.method39(), var0.method2514());
-            boolean var17 = var0.method2514() == 1;
-            int var9 = var0.method2514();
-            int var10 = var0.field1976;
-            if(var3.field26 != null && null != var3.field49) {
-               boolean var11 = false;
-               if(var18.field2252 && class45.method953(var3.field26)) {
-                  var11 = true;
-               }
-
-               if(!var11 && client.field409 == 0 && !var3.field40) {
-                  class32.field740.field1976 = 0;
-                  var0.method2525(class32.field740.field1982, 0, var9);
-                  class32.field740.field1976 = 0;
-                  class119 var13 = class32.field740;
-                  String var12 = class175.method3455(var13, 32767);
-                  String var14 = class223.method4032(class82.method1896(var12));
-                  var3.field803 = var14.trim();
-                  var3.field807 = var6 >> 8;
-                  var3.field804 = var6 & 255;
-                  var3.field806 = 150;
-                  var3.field841 = var17;
-                  var3.field805 = class153.field2262 != var3 && var18.field2252 && "" != client.field503 && var14.toLowerCase().indexOf(client.field503) == -1;
-                  int var15;
-                  if(var18.field2250) {
-                     var15 = var17?91:1;
-                  } else {
-                     var15 = var17?90:2;
-                  }
-
-                  if(var18.field2249 != -1) {
-                     class45.method955(var15, class56.method1172(var18.field2249) + var3.field26, var14);
-                  } else {
-                     class45.method955(var15, var3.field26, var14);
-                  }
-               }
-            }
-
-            var0.field1976 = var9 + var10;
+         if(var0 == 223) {
+            return 's';
          }
 
-         if((var4 & 256) != 0) {
-            var3.field835 = var0.method2516();
-            var6 = var0.method2519();
-            var3.field834 = var6 >> 16;
-            var3.field829 = client.field296 + (var6 & '\uffff');
-            var3.field811 = 0;
-            var3.field828 = 0;
-            if(var3.field829 > client.field296) {
-               var3.field811 = -1;
-            }
-
-            if(var3.field835 == '\uffff') {
-               var3.field835 = -1;
-            }
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
          }
 
-         if((var4 & 1024) != 0) {
-            var3.field837 = var0.method2515();
-            var3.field833 = var0.method2515();
-            var3.field824 = var0.method2515();
-            var3.field799 = var0.method2515();
-            var3.field843 = var0.method2516() + client.field296;
-            var3.field845 = var0.method2516() + client.field296;
-            var3.field826 = var0.method2516();
-            if(var3.field29) {
-               var3.field837 += var3.field50;
-               var3.field833 += var3.field51;
-               var3.field824 += var3.field50;
-               var3.field799 += var3.field51;
-               var3.field808 = 0;
-            } else {
-               var3.field837 += var3.field844[0];
-               var3.field833 += var3.field831[0];
-               var3.field824 += var3.field844[0];
-               var3.field799 += var3.field831[0];
-               var3.field808 = 1;
-            }
-
-            var3.field836 = 0;
+         if(var0 == 231) {
+            return 'c';
          }
 
-         if((var4 & 512) != 0) {
-            var6 = var0.method2516();
-            var16 = var0.method2514();
-            var3.method754(var6, var16, client.field296);
-            var3.field812 = client.field296 + 300;
-            var3.field794 = var0.method2514();
-            var3.field814 = var0.method2514();
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
          }
 
-         if((var4 & 2048) != 0) {
-            class32.field736[var2] = var0.method2515();
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
          }
 
-         if((var4 & 8192) != 0) {
-            var5 = var0.method2515();
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
          }
 
-         if((var4 & 4096) != 0) {
-            for(var6 = 0; var6 < 3; ++var6) {
-               var3.field30[var6] = var0.method2522();
-            }
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
          }
 
-         if(var3.field29) {
-            if(var5 == 127) {
-               var3.method17(var3.field50, var3.field51);
-            } else {
-               byte var19;
-               if(var5 != -1) {
-                  var19 = var5;
-               } else {
-                  var19 = class32.field736[var2];
-               }
-
-               var3.method16(var3.field50, var3.field51, var19);
-            }
+         if(var0 == 253 || var0 == 255) {
+            return 'y';
          }
       }
 
+      if(var0 == 338) {
+         return 'O';
+      } else if(var0 == 339) {
+         return 'o';
+      } else if(var0 == 376) {
+         return 'Y';
+      } else {
+         return var0;
+      }
    }
 }
