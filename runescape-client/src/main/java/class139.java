@@ -4,9 +4,11 @@ import java.awt.Graphics;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.mapping.Replace;
 
 @ObfuscatedName("eb")
 @Implements("RSCanvas")
+@Replace("net.runelite.inject.RSCanvas")
 public final class class139 extends Canvas {
    @ObfuscatedName("f")
    Component field2141;
