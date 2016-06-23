@@ -71,6 +71,7 @@ public class AnnotationCopierTest
 {
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
+	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
 	
 	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\116.2-SNAPSHOT\\in.jar",
 		JAR2 = "d:/rs/07/gamepack_116_deobfuscated.jar",
@@ -94,7 +95,7 @@ public class AnnotationCopierTest
 	//@Test
 	public void testCopy()
 	{
-		AnnotationCopier ac = new AnnotationCopier(group1, group2, EXPORT, IMPLEMENTS);
+		AnnotationCopier ac = new AnnotationCopier(group1, group2, EXPORT, IMPLEMENTS, REPLACE);
 		ac.copy();
 	}
 
