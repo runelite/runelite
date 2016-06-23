@@ -1,69 +1,45 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("fk")
 public class class158 {
-   @ObfuscatedName("by")
-   @ObfuscatedGetter(
-      intValue = 2112549197
-   )
-   static int field2587;
-
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2068311457"
+      signature = "(II)Lclass52;",
+      garbageValue = "1163727902"
    )
-   static final void method3182() {
-      if(null != class13.field195) {
-         class13.field195.method3025();
-         class13.field195 = null;
-      }
-
-      class99.method2203();
-      class150.field2230.method2006();
-
-      for(int var0 = 0; var0 < 4; ++var0) {
-         client.field291[var0].method2419();
-      }
-
-      System.gc();
-      class183.field2953 = 1;
-      class50.field1075 = null;
-      class177.field2903 = -1;
-      class183.field2951 = -1;
-      class181.field2929 = 0;
-      class183.field2956 = false;
-      class183.field2955 = 2;
-      client.field525 = -1;
-      client.field526 = false;
-      class99.method2201();
-      class43.method919(10);
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "27"
-   )
-   static void method3183() {
-      Object var0 = class170.field2706;
-      synchronized(class170.field2706) {
-         if(class170.field2701 == 0) {
-            class40.field924.method2917(new class170(), 5);
+   public static class52 method3191(int var0) {
+      class52 var1 = (class52)class52.field1168.method3797((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class217.field3163.method3286(16, var0);
+         var1 = new class52();
+         if(null != var2) {
+            var1.method1136(new class119(var2));
          }
 
-         class170.field2701 = 600;
+         class52.field1168.method3788(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1914487"
+      signature = "(I)Lclass80;",
+      garbageValue = "-538047208"
    )
-   static String method3184(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
+   static class80 method3192() {
+      class80 var0 = new class80();
+      var0.field1426 = class76.field1396;
+      var0.field1432 = class76.field1398;
+      var0.field1433 = class76.field1397[0];
+      var0.field1431 = class52.field1178[0];
+      var0.field1428 = class28.field690[0];
+      var0.field1429 = class31.field744[0];
+      var0.field1427 = class7.field135;
+      var0.field1430 = class76.field1400[0];
+      class33.method749();
+      return var0;
    }
 }

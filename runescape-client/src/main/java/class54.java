@@ -1,49 +1,49 @@
 import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bf")
 public class class54 extends class56 {
-   @ObfuscatedName("b")
-   static class53 field1139;
-   @ObfuscatedName("g")
-   int field1140;
+   @ObfuscatedName("u")
+   int field1180;
+   @ObfuscatedName("f")
+   static class53 field1181;
 
-   @ObfuscatedName("b")
-   void vmethod1535(Component var1) throws Exception {
-      field1139.method1098(var1, class56.field1153, class21.field581, (byte)26);
-   }
-
-   @ObfuscatedName("d")
-   void vmethod1519() {
-      field1139.method1096(this.field1140, super.field1148, (byte)81);
+   @ObfuscatedName("f")
+   void vmethod1576(Component var1) throws Exception {
+      field1181.method1156(var1, class56.field1196, class56.field1200, (byte)1);
    }
 
    @ObfuscatedName("x")
-   void vmethod1520() {
-      field1139.method1092(this.field1140, -312531127);
+   int vmethod1585() {
+      return field1181.method1155(this.field1180, (byte)-69);
    }
 
-   @ObfuscatedName("y")
-   void vmethod1521() {
-      field1139.method1087(this.field1140, (short)10896);
+   @ObfuscatedName("l")
+   void vmethod1567() {
+      field1181.method1151(this.field1180, (byte)10);
    }
 
-   class54(class136 var1, int var2) {
-      field1139 = var1.method2920();
-      this.field1140 = var2;
+   @ObfuscatedName("d")
+   void vmethod1562() {
+      field1181.method1149(this.field1180, 1851962248);
    }
 
-   @ObfuscatedName("g")
-   void vmethod1517(int var1) throws Exception {
+   @ObfuscatedName("u")
+   void vmethod1575(int var1) throws Exception {
       if(var1 > '耀') {
          throw new IllegalArgumentException();
       } else {
-         field1139.method1083(this.field1140, var1, -819287642);
+         field1181.method1150(this.field1180, var1, -1069426097);
       }
    }
 
-   @ObfuscatedName("j")
-   int vmethod1518() {
-      return field1139.method1084(this.field1140, 2097522949);
+   @ObfuscatedName("b")
+   void vmethod1566() {
+      field1181.method1152(this.field1180, super.field1191, (byte)19);
+   }
+
+   class54(class136 var1, int var2) {
+      field1181 = var1.method2906();
+      this.field1180 = var2;
    }
 }

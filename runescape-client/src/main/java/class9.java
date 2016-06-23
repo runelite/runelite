@@ -3,108 +3,67 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("s")
 public class class9 {
-   @ObfuscatedName("u")
-   static int[] field144;
-   @ObfuscatedName("x")
-   static final BigInteger field146 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
-   @ObfuscatedName("y")
-   static final BigInteger field147 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
-   @ObfuscatedName("qu")
+   @ObfuscatedName("l")
+   static final BigInteger field155 = new BigInteger("80782894952180643741752986186714059433953886149239752893425047584684715842049");
+   @ObfuscatedName("co")
+   static class143 field158;
+   @ObfuscatedName("d")
+   static final BigInteger field160 = new BigInteger("7237300117305667488707183861728052766358166655052137727439795191253340127955075499635575104901523446809299097934591732635674173519120047404024393881551683");
+   @ObfuscatedName("fs")
    @ObfuscatedGetter(
-      intValue = -1044107651
+      intValue = -785470337
    )
-   protected static int field150;
-   @ObfuscatedName("at")
-   static class146 field153;
+   static int field161;
+   @ObfuscatedName("el")
+   static class78[] field164;
+   @ObfuscatedName("et")
+   static class78 field165;
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("bp")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;IZB)I",
-      garbageValue = "53"
+      signature = "(IIIIIII)V",
+      garbageValue = "801403665"
    )
-   public static int method117(CharSequence var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         boolean var3 = false;
-         boolean var4 = false;
-         int var5 = 0;
-         int var6 = var0.length();
-
-         for(int var7 = 0; var7 < var6; ++var7) {
-            char var8 = var0.charAt(var7);
-            if(var7 == 0) {
-               if(var8 == 45) {
-                  var3 = true;
-                  continue;
-               }
-
-               if(var8 == 43) {
-                  continue;
-               }
-            }
-
-            int var10;
-            if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
-            } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
-            } else {
-               if(var8 < 97 || var8 > 122) {
-                  throw new NumberFormatException();
-               }
-
-               var10 = var8 - 87;
-            }
-
-            if(var10 >= var1) {
-               throw new NumberFormatException();
-            }
-
-            if(var3) {
-               var10 = -var10;
-            }
-
-            int var9 = var10 + var1 * var5;
-            if(var9 / var1 != var5) {
-               throw new NumberFormatException();
-            }
-
-            var5 = var9;
-            var4 = true;
-         }
-
-         if(!var4) {
-            throw new NumberFormatException();
-         } else {
-            return var5;
-         }
-      } else {
-         throw new IllegalArgumentException("");
+   static final void method132(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = 2048 - var3 & 2047;
+      int var7 = 2048 - var4 & 2047;
+      int var8 = 0;
+      int var9 = 0;
+      int var10 = var5;
+      int var11;
+      int var12;
+      int var13;
+      if(var6 != 0) {
+         var11 = class91.field1597[var6];
+         var12 = class91.field1577[var6];
+         var13 = var12 * var9 - var5 * var11 >> 16;
+         var10 = var5 * var12 + var9 * var11 >> 16;
+         var9 = var13;
       }
+
+      if(var7 != 0) {
+         var11 = class91.field1597[var7];
+         var12 = class91.field1577[var7];
+         var13 = var10 * var11 + var12 * var8 >> 16;
+         var10 = var12 * var10 - var11 * var8 >> 16;
+         var8 = var13;
+      }
+
+      class216.field3160 = var0 - var8;
+      class1.field27 = var1 - var9;
+      class26.field665 = var2 - var10;
+      class134.field2082 = var3;
+      class42.field1018 = var4;
    }
 
-   @ObfuscatedName("ci")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "([Lclass173;Lclass173;ZI)V",
-      garbageValue = "-2078822482"
+      signature = "(B)[Lclass152;",
+      garbageValue = "100"
    )
-   static void method121(class173[] var0, class173 var1, boolean var2) {
-      int var3 = var1.field2771 != 0?var1.field2771:var1.field2763;
-      int var4 = var1.field2772 != 0?var1.field2772:var1.field2764;
-      class52.method1074(var0, var1.field2748, var3, var4, var2);
-      if(null != var1.field2872) {
-         class52.method1074(var1.field2872, var1.field2748, var3, var4, var2);
-      }
-
-      class3 var5 = (class3)client.field448.method3807((long)var1.field2748);
-      if(var5 != null) {
-         class85.method1921(var5.field60, var3, var4, var2);
-      }
-
-      if(var1.field2768 == 1337) {
-         ;
-      }
-
+   public static class152[] method135() {
+      return new class152[]{class152.field2256, class152.field2258, class152.field2263, class152.field2254, class152.field2255};
    }
 }
