@@ -27,13 +27,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.util;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,7 +40,10 @@ import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.objectwebasm.AsmUtils;
+import net.runelite.asm.objectwebasm.NonloadingClassWriter;
+import net.runelite.asm.visitors.ClassFileVisitor;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 
 public class JarUtil
 {
@@ -58,20 +56,28 @@ public class JarUtil
 			for (Enumeration<JarEntry> it = jar.entries(); it.hasMoreElements();)
 			{
 				JarEntry entry = it.nextElement();
-				
+
 				if (!entry.getName().endsWith(".class"))
+				{
 					continue;
-				
+				}
+
 				InputStream is = jar.getInputStream(entry);
-				group.addClass(entry.getName(), new DataInputStream(is));
+
+				ClassReader reader = new ClassReader(is);
+				ClassFileVisitor cv = new ClassFileVisitor();
+
+				reader.accept(cv, ClassReader.SKIP_FRAMES);
+
+				group.addClass(cv.getClassFile());
 			}
 		}
-		
+
 		group.initialize();
-		
+
 		return group;
 	}
-	
+
 	public static void saveJar(ClassGroup group, File jarfile) throws IOException
 	{
 		try (JarOutputStream jout = new JarOutputStream(new FileOutputStream(jarfile), new Manifest()))
@@ -80,15 +86,14 @@ public class JarUtil
 			{
 				JarEntry entry = new JarEntry(cf.getName() + ".class");
 				jout.putNextEntry(entry);
-				
-				ByteArrayOutputStream bout = new ByteArrayOutputStream();
-				cf.write(new DataOutputStream(bout));
 
-				// run through asm to generate stackmaps
-				byte[] b = AsmUtils.rebuildWithStackmaps(group, new ByteArrayInputStream(bout.toByteArray()));
+				ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
 
-				jout.write(b);
-				
+				cf.accept(writer);
+
+				byte[] data = writer.toByteArray();
+
+				jout.write(data);
 				jout.closeEntry();
 			}
 		}

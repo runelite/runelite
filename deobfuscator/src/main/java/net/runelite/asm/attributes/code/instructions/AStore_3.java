@@ -41,18 +41,26 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 
 public class AStore_3 extends Instruction implements LVTInstruction
 {
-	public AStore_3(Instructions instructions, InstructionType type, int pc)
+	public AStore_3(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public AStore_3(Instructions instructions)
 	{
-		super(instructions, InstructionType.ASTORE_3, -1);
+		super(instructions, InstructionType.ASTORE_3);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitVarInsn(Opcodes.ASTORE, this.getVariableIndex());
 	}
 
 	@Override

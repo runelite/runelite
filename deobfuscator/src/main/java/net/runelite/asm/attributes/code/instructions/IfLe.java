@@ -37,9 +37,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfLe extends If0
 {
-	public IfLe(Instructions instructions, InstructionType type, int pc)
+	public IfLe(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

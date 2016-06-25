@@ -38,7 +38,6 @@ import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
@@ -62,7 +61,6 @@ import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.pool.Class;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.mapping.Import;
@@ -117,7 +115,7 @@ public class Inject
 		ClassFile cf = deobfuscated.findClass(className);
 		assert cf != null;
 		
-		Annotations an = cf.getAttributes().getAnnotations();
+		Annotations an = cf.getAnnotations();
 		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
 	}
@@ -184,7 +182,7 @@ public class Inject
 	{
 		for (ClassFile cf : deobfuscated.getClasses())
 		{
-			Annotations an = cf.getAttributes().getAnnotations();
+			Annotations an = cf.getAnnotations();
 
 			if (an == null)
 				continue;
@@ -214,7 +212,7 @@ public class Inject
 			
 			for (Field f : cf.getFields().getFields())
 			{
-				an = f.getAttributes().getAnnotations();
+				an = f.getAnnotations();
 				
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported field
@@ -225,12 +223,12 @@ public class Inject
 				Annotation getterAnnotation = an.find(OBFUSCATED_GETTER);
 				Number getter = null;
 				if (getterAnnotation != null)
-					getter = (Number) getterAnnotation.getElement().getValue().getObject();
+					getter = (Number) getterAnnotation.getElement().getValue();
 				
 				// the ob jar is the same as the vanilla so this field must exist in this class.
 
 				Type obType = toObType(f.getType());
-				Field otherf = other.findField(new NameAndType(obfuscatedName, obType));
+				Field otherf = other.findField(obfuscatedName, obType);
 				assert otherf != null;
 				
 				assert f.isStatic() == otherf.isStatic();
@@ -257,7 +255,7 @@ public class Inject
 			
 			for (Method m : cf.getMethods().getMethods())
 			{
-				an = m.getAttributes().getAnnotations();
+				an = m.getAnnotations();
 				
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported method
@@ -287,13 +285,13 @@ public class Inject
 
 					// The obfuscated signature annotation is generated post rename unique, so class
 					// names in the signature match our class names and not theirs, so we toObSignature() it
-					otherm = other.findMethod(new NameAndType(obfuscatedName, toObSignature(signature)));
+					otherm = other.findMethod(obfuscatedName, toObSignature(signature));
 				}
 				else
 				{
 					// No obfuscated signature annotation, so the annotation wasn't changed during deobfuscation.
 					// We should be able to just find it normally.
-					otherm = other.findMethod(new NameAndType(obfuscatedName, toObSignature(m.getDescriptor())));
+					otherm = other.findMethod(obfuscatedName, toObSignature(m.getDescriptor()));
 				}
 
 				assert otherm != null;
@@ -324,7 +322,7 @@ public class Inject
 	
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
 	{
-		Annotations an = cf.getAttributes().getAnnotations();
+		Annotations an = cf.getAnnotations();
 		if (an == null)
 			return null;
 		
@@ -386,11 +384,9 @@ public class Inject
 		Method getterMethod = new Method(clazz.getMethods(), method.getName(), sig);
 		getterMethod.setAccessFlags(Method.ACC_PUBLIC);
 		
-		Attributes methodAttributes = getterMethod.getAttributes();
-
-		// create code attribute
-		Code code = new Code(methodAttributes);
-		methodAttributes.addAttribute(code);
+		// create code
+		Code code = new Code(getterMethod);
+		getterMethod.setCode(code);
 		
 		Instructions instructions = code.getInstructions();
 		List<Instruction> ins = instructions.getInstructions();
@@ -491,11 +487,9 @@ public class Inject
 		Method invokerMethodSignature = new Method(clazz.getMethods(), method.getName(), deobfuscatedMethod.getDescriptor());
 		invokerMethodSignature.setAccessFlags(Method.ACC_PUBLIC);
 
-		Attributes methodAttributes = invokerMethodSignature.getAttributes();
-
 		// create code attribute
-		Code code = new Code(methodAttributes);
-		methodAttributes.addAttribute(code);
+		Code code = new Code(invokerMethodSignature);
+		invokerMethodSignature.setCode(code);
 
 		Instructions instructions = code.getInstructions();
 		List<Instruction> ins = instructions.getInstructions();

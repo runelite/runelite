@@ -40,9 +40,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfICmpNe extends If
 {
-	public IfICmpNe(Instructions instructions, InstructionType type, int pc)
+	public IfICmpNe(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	@Override

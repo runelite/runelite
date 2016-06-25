@@ -30,22 +30,44 @@
 
 package net.runelite.asm.attributes.code;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.attributes.code.instructions.NOP;
+import org.objectweb.asm.MethodVisitor;
 
 public class Label extends NOP
 {
+	private org.objectweb.asm.Label label;
+	
 	public Label(Instructions instructions)
 	{
 		super(instructions);
-		length = 0;
+	}
+
+	public Label(Instructions instructions, org.objectweb.asm.Label label)
+	{
+		super(instructions);
+		this.label = label;
 	}
 
 	@Override
 	public String toString()
 	{
 		return "label " + next().toString();
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitLabel(label);
+	}
+
+	public org.objectweb.asm.Label getLabel()
+	{
+		return label;
+	}
+
+	public void setLabel(org.objectweb.asm.Label label)
+	{
+		this.label = label;
 	}
 
 	public Instruction next()
@@ -63,10 +85,5 @@ public class Label extends NOP
 		while (next instanceof Label);
 
 		return next;
-	}
-
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
 	}
 }

@@ -30,57 +30,23 @@
 
 package net.runelite.asm.pool;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.ConstantPool;
 import net.runelite.asm.execution.Type;
 
-public class Class extends PoolEntry
+public class Class
 {
-	private int index;
 	private java.lang.String name;
-
-	public Class(ConstantPool pool, DataInputStream is) throws IOException
-	{
-		super(ConstantType.CLASS);
-
-		index = is.readUnsignedShort();
-	}
 	
 	public Class(java.lang.String name)
 	{
-		super(ConstantType.CLASS);
-		
 		this.name = name;
 	}
 	
 	public Class(java.lang.String name, int dimms)
 	{
-		super(ConstantType.CLASS);
-		
 		while (dimms-- > 0)
 			name = "[" + name;
 		
 		this.name = name;
-	}
-
-	@Override
-	public Class copy()
-	{
-		return new Class(name);
-	}
-	
-	@Override
-	public void resolve(ConstantPool pool)
-	{
-		name = pool.getUTF8(index);
-	}
-	
-	@Override
-	public void prime(ConstantPool pool)
-	{
-		index = pool.makeUTF8(name);
 	}
 
 	@Override
@@ -105,20 +71,8 @@ public class Class extends PoolEntry
 		return name.hashCode();
 	}
 
-	public java.lang.String getName()
+	public String getName()
 	{
 		return name;
-	}
-
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		out.writeShort(index);
-	}
-	
-	@Override
-	public Type getTypeClass()
-	{
-		return new Type(name);
 	}
 }

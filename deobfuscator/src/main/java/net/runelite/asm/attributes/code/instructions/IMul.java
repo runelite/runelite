@@ -41,14 +41,14 @@ import net.runelite.asm.execution.Value;
 
 public class IMul extends Instruction
 {
-	public IMul(Instructions instructions, InstructionType type, int pc)
+	public IMul(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public IMul(Instructions instructions)
 	{
-		super(instructions, InstructionType.IMUL, 0);
+		super(instructions, InstructionType.IMUL);
 	}
 
 	@Override

@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class DCmpG extends Instruction
 {
-	public DCmpG(Instructions instructions, InstructionType type, int pc)
+	public DCmpG(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

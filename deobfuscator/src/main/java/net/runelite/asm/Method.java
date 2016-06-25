@@ -30,19 +30,17 @@
 
 package net.runelite.asm;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.asm.attributes.AttributeType;
-import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.Exceptions;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.MethodVisitor;
 
 public class Method
 {
@@ -58,30 +56,20 @@ public class Method
 	
 	private Methods methods;
 
-	private short accessFlags;
+	private int accessFlags;
 	private String name;
-	public Signature arguments;
-	private Attributes attributes;
+	private Signature arguments;
+	private Exceptions exceptions;
+	private Annotations annotations;
+	private Code code;
 
-	Method(Methods methods, DataInputStream is) throws IOException
-	{
-		this.methods = methods;
-
-		ConstantPool pool = methods.getClassFile().getPool();
-
-		accessFlags = is.readShort();
-		name = pool.getUTF8(is.readUnsignedShort());
-		arguments = new Signature(pool.getUTF8(is.readUnsignedShort()));
-		attributes = new Attributes(this);
-		attributes.load(is);
-	}
-	
 	public Method(Methods methods, String name, Signature signature)
 	{
 		this.methods = methods;
 		this.name = name;
 		this.arguments = signature;
-		attributes = new Attributes(this);
+		exceptions = new Exceptions();
+		annotations = new Annotations();
 	}
 	
 	@Override
@@ -89,17 +77,48 @@ public class Method
 	{
 		return (this.isStatic() ? "static " : "") + this.getMethods().getClassFile().getName() + "." + this.name + this.arguments;
 	}
-	
-	public void write(DataOutputStream out) throws IOException
+
+	public void accept(MethodVisitor visitor)
 	{
-		assert methods.getMethods().contains(this);
+		for (Annotation annotation : annotations.getAnnotations())
+		{
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			annotation.accept(av);
+		}
 		
-		ConstantPool pool = methods.getClassFile().getPool();
-		
-		out.writeShort(accessFlags);
-		out.writeShort(pool.makeUTF8(name));
-		out.writeShort(pool.makeUTF8(arguments.toString()));
-		attributes.write(out);
+		if (code != null)
+		{
+			visitor.visitCode();
+
+			net.runelite.asm.attributes.code.Exceptions exceptions = code.getExceptions();
+			for (net.runelite.asm.attributes.code.Exception exception : exceptions.getExceptions())
+			{
+				assert exception.getStart().getLabel() != null;
+				assert exception.getEnd().getLabel() != null;
+				assert exception.getHandler().getLabel() != null;
+
+				assert code.getInstructions().getInstructions().contains(exception.getStart());
+				assert code.getInstructions().getInstructions().contains(exception.getEnd());
+				assert code.getInstructions().getInstructions().contains(exception.getHandler());
+
+				visitor.visitTryCatchBlock(
+					exception.getStart().getLabel(),
+					exception.getEnd().getLabel(),
+					exception.getHandler().getLabel(),
+					exception.getCatchType() != null ? exception.getCatchType().getName() : null
+				);
+			}
+
+			for (Instruction i : code.getInstructions().getInstructions())
+			{
+				i = i.makeSpecific();
+				i.accept(visitor);
+			}
+
+			visitor.visitMaxs(code.getMaxStack(), code.getMaxLocals());
+		}
+
+		visitor.visitEnd();
 	}
 
 	public Methods getMethods()
@@ -111,23 +130,13 @@ public class Method
 	{
 		this.methods = methods;
 	}
-	
-	public Attributes getAttributes()
-	{
-		return attributes;
-	}
-	
-	public void setAttributes(Attributes a)
-	{
-		this.attributes = a;
-	}
 
-	public short getAccessFlags()
+	public int getAccessFlags()
 	{
 		return accessFlags;
 	}
 
-	public void setAccessFlags(short accessFlags)
+	public void setAccessFlags(int accessFlags)
 	{
 		this.accessFlags = accessFlags;
 	}
@@ -146,10 +155,10 @@ public class Method
 	{
 		return arguments;
 	}
-	
-	public NameAndType getNameAndType()
+
+	public void setDescriptor(Signature signature)
 	{
-		return new NameAndType(name, arguments);
+		this.arguments = signature;
 	}
 	
 	public boolean isStatic()
@@ -197,12 +206,22 @@ public class Method
 	
 	public Exceptions getExceptions()
 	{
-		return (Exceptions) attributes.findType(AttributeType.EXCEPTIONS);
+		return exceptions;
 	}
 
 	public Code getCode()
 	{
-		return (Code) attributes.findType(AttributeType.CODE);
+		return code;
+	}
+
+	public void setCode(Code code)
+	{
+		this.code = code;
+	}
+	
+	public Annotations getAnnotations()
+	{
+		return annotations;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -231,15 +250,8 @@ public class Method
 	{
 		return new net.runelite.asm.pool.Method(
 			new net.runelite.asm.pool.Class(this.getMethods().getClassFile().getName()),
-			new NameAndType(this.getName(), new Signature(this.getDescriptor()))
-		);
-	}
-	
-	public net.runelite.asm.pool.InterfaceMethod getPoolInterfaceMethod()
-	{
-		return new net.runelite.asm.pool.InterfaceMethod(
-			new net.runelite.asm.pool.Class(this.getMethods().getClassFile().getName()),
-			new NameAndType(this.getName(), new Signature(this.getDescriptor()))
+			name,
+			arguments
 		);
 	}
 }

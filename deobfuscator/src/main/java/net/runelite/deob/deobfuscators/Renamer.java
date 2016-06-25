@@ -38,15 +38,18 @@ import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Exceptions;
-import net.runelite.asm.pool.UTF8;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.util.NameMappings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Renamer implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(Renamer.class);
+
 	private static final Type OBFUSCATED_NAME_TYPE = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 
 	private final NameMappings mappings;
@@ -115,7 +118,7 @@ public class Renamer implements Deobfuscator
 					field.setType(new Type("L" + name + ";", field.getType().getArrayDims()));
 		}
 		
-		cf.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, "value", new UTF8(cf.getName()));
+		cf.getAnnotations().addAnnotation(OBFUSCATED_NAME_TYPE, "value", cf.getName());
 		cf.setName(name);
 	}
 	
@@ -147,8 +150,8 @@ public class Renamer implements Deobfuscator
 				String newName = mappings.get(field.getPoolField());
 				if (newName == null)
 					continue;
-				
-				field.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, "value", new UTF8(field.getName()));
+
+				field.getAnnotations().addAnnotation(OBFUSCATED_NAME_TYPE, "value", field.getName());
 				field.setName(newName);
 				++fields;
 			}
@@ -160,13 +163,13 @@ public class Renamer implements Deobfuscator
 				String newName = mappings.get(method.getPoolMethod());
 				if (newName == null)
 					continue;
-				
+
 				List<Method> virtualMethods = VirtualMethods.getVirutalMethods(method);
 				assert !virtualMethods.isEmpty();
-				
+
 				for (Method m : virtualMethods)
 				{
-					m.getAttributes().addAnnotation(OBFUSCATED_NAME_TYPE, "value", new UTF8(m.getName()));
+					m.getAnnotations().addAnnotation(OBFUSCATED_NAME_TYPE, "value", m.getName());
 					m.setName(newName);
 				}
 				methods += virtualMethods.size();
@@ -177,13 +180,13 @@ public class Renamer implements Deobfuscator
 			String newName = mappings.get(cf.getPoolClass());
 			if (newName == null)
 				continue;
-			
+
 			renameClass(group, cf, newName);
 			++classes;
 		}
 		
 		this.regeneratePool(group);
-		
-		System.out.println("Renamed " + classes + " classes, " + fields + " fields, and " + methods + " methods");
+
+		logger.info("Renamed {} classes, {} fields, and {} methods", classes, fields, methods);
 	}
 }

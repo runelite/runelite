@@ -27,18 +27,18 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instruction.types;
 
 import java.util.List;
 import net.runelite.asm.Method;
-import net.runelite.asm.pool.PoolEntry;
 
 public interface InvokeInstruction extends MappableInstruction
 {
-	public void removeParameter(int idx);
-	
-	public PoolEntry getMethod();
-	
-	public List<Method> getMethods();
+	void removeParameter(int idx);
+
+	net.runelite.asm.pool.Method getMethod();
+
+	void setMethod(net.runelite.asm.pool.Method method);
+
+	List<Method> getMethods();
 }

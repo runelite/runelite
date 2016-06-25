@@ -27,14 +27,15 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instruction.types;
 
 import net.runelite.asm.pool.Field;
 
 public interface FieldInstruction
 {
-	public Field getField();
-	
-	public net.runelite.asm.Field getMyField();
+	Field getField();
+
+	void setField(Field field);
+
+	net.runelite.asm.Field getMyField();
 }

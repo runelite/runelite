@@ -42,18 +42,26 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 
 public class DLoad_2 extends Instruction implements LVTInstruction
 {
-	public DLoad_2(Instructions instructions, InstructionType type, int pc)
+	public DLoad_2(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public DLoad_2(Instructions instructions)
 	{
-		super(instructions, InstructionType.DLOAD_2, -1);
+		super(instructions, InstructionType.DLOAD_2);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitVarInsn(Opcodes.DLOAD, this.getVariableIndex());
 	}
 
 	@Override

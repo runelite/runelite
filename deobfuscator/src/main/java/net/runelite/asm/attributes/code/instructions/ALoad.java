@@ -30,64 +30,38 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
-import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
 
-public class ALoad extends Instruction implements LVTInstruction, WideInstruction
+public class ALoad extends Instruction implements LVTInstruction
 {
 	private int index;
-	private boolean wide;
 	
 	public ALoad(Instructions instructions, int index)
 	{
-		super(instructions, InstructionType.ALOAD, 0);
+		super(instructions, InstructionType.ALOAD);
 		this.index = index;
-		++length;
 	}
 
-	public ALoad(Instructions instructions, InstructionType type, int pc)
+	public ALoad(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
-	}
-	
-	public ALoad(Instructions instructions, InstructionType type, Instruction instruction, int pc)
-	{
-		super(instructions, type, pc);
-		wide = true;
-	}
-	
-	@Override
-	public void load(DataInputStream is) throws IOException
-	{
-		index = is.readByte();
-		length += 1;
+		super(instructions, type);
 	}
 
 	@Override
-	public void loadWide(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		index = is.readShort();
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeByte(index);
+		visitor.visitVarInsn(this.getType().getCode(), this.getVariableIndex());
 	}
 
 	@Override
@@ -119,13 +93,6 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 	{
 		return false;
 	}
-	
-	@Override
-	public void writeWide(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(index);
-	}
 
 	@Override
 	public Instruction setVariableIndex(int idx)
@@ -148,10 +115,7 @@ public class ALoad extends Instruction implements LVTInstruction, WideInstructio
 			case 3:
 				return new ALoad_3(this.getInstructions());
 			default:
-				if (index < Byte.MIN_VALUE || index > Byte.MAX_VALUE)
-					return new Wide(this.getInstructions(), this);
-				else
-					return this;
+				return this;
 		}
 	}
 

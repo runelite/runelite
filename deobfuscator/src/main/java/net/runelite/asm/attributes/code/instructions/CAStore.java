@@ -39,9 +39,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class CAStore extends ArrayStore
 {
-	public CAStore(Instructions instructions, InstructionType type, int pc)
+	public CAStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

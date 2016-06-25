@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class LAdd extends Instruction
 {
-	public LAdd(Instructions instructions, InstructionType type, int pc)
+	public LAdd(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

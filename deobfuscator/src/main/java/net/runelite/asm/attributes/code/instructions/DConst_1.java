@@ -39,13 +39,19 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import net.runelite.asm.pool.PoolEntry;
+import org.objectweb.asm.MethodVisitor;
 
 public class DConst_1 extends Instruction implements PushConstantInstruction
 {
-	public DConst_1(Instructions instructions, InstructionType type, int pc)
+	public DConst_1(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitInsn(this.getType().getCode());
 	}
 
 	@Override
@@ -63,13 +69,13 @@ public class DConst_1 extends Instruction implements PushConstantInstruction
 	}
 	
 	@Override
-	public PoolEntry getConstant()
+	public Object getConstant()
 	{
-		return new net.runelite.asm.pool.Double(1.0d);
+		return 1.0d;
 	}
 
 	@Override
-	public Instruction setConstant(PoolEntry entry)
+	public Instruction setConstant(Object entry)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
 	}

@@ -40,9 +40,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfICmpEq extends If
 {
-	public IfICmpEq(Instructions instructions, InstructionType type, int pc)
+	public IfICmpEq(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public IfICmpEq(Instructions instructions, Label to)
@@ -55,7 +55,7 @@ public class IfICmpEq extends If
 		if (s.getPushed().getInstruction() instanceof PushConstantInstruction)
 		{
 			PushConstantInstruction pc = (PushConstantInstruction) s.getPushed().getInstruction();
-			Object o = pc.getConstant().getObject();
+			Object o = pc.getConstant();
 			
 			if (o instanceof Integer && (int) o == val)
 				return true;

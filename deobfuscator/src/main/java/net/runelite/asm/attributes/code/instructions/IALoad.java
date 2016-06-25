@@ -41,9 +41,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class IALoad extends Instruction implements ArrayLoad
 {
-	public IALoad(Instructions instructions, InstructionType type, int pc)
+	public IALoad(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

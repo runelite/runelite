@@ -41,14 +41,14 @@ import net.runelite.asm.execution.Value;
 
 public class AConstNull extends Instruction
 {
-	public AConstNull(Instructions instructions, InstructionType type, int pc)
+	public AConstNull(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public AConstNull(Instructions instructions)
 	{
-		super(instructions, InstructionType.ACONST_NULL, -1);
+		super(instructions, InstructionType.ACONST_NULL);
 	}
 
 	@Override

@@ -41,14 +41,14 @@ import net.runelite.asm.execution.StackContext;
 
 public class Dup_X1 extends Instruction implements DupInstruction
 {
-	public Dup_X1(Instructions instructions, InstructionType type, int pc)
+	public Dup_X1(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public Dup_X1(Instructions instructions)
 	{
-		super(instructions, InstructionType.DUP_X1, -1);
+		super(instructions, InstructionType.DUP_X1);
 	}
 
 	@Override

@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instruction.types;
 
 import net.runelite.asm.attributes.code.Instruction;
@@ -35,9 +34,9 @@ import net.runelite.asm.attributes.code.Instruction;
 public interface LVTInstruction
 {
 	int getVariableIndex();
-	
+
 	Instruction setVariableIndex(int idx);
-	
+
 	boolean store();
 
 	LVTInstructionType type();

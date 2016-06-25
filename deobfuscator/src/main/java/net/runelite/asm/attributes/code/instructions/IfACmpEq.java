@@ -38,9 +38,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfACmpEq extends If
 {
-	public IfACmpEq(Instructions instructions, InstructionType type, int pc)
+	public IfACmpEq(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	@Override

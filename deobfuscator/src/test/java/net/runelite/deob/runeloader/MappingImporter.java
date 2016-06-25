@@ -36,11 +36,8 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.AttributeType;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
-import net.runelite.asm.pool.UTF8;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.runeloader.inject.AddInterfaceInstruction;
 import net.runelite.deob.runeloader.inject.GetterInjectInstruction;
@@ -89,7 +86,7 @@ public class MappingImporter
 			{
 				for (Element e : a.getElements())
 				{
-					String str = (String) e.getValue().getObject();
+					String str = (String) e.getValue();
 					if (str.equals(name))
 					{
 						return true;
@@ -108,7 +105,7 @@ public class MappingImporter
 			if (c.getName().equals(name))
 				return c;
 			
-			Annotations an = (Annotations) c.getAttributes().findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+			Annotations an = c.getAnnotations();
 			if (this.hasObfuscatedName(an, name))
 				return c;
 		}
@@ -119,7 +116,7 @@ public class MappingImporter
 	{
 		for (Field f : c.getFields().getFields())
 		{
-			Annotations an = (Annotations) f.getAttributes().findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+			Annotations an = f.getAnnotations();
 			if (this.hasObfuscatedName(an, name))
 				return f;
 		}
@@ -145,8 +142,7 @@ public class MappingImporter
 			String attrName = gii.getGetterName();
 			attrName = Utils.toExportedName(attrName);
 
-			Attributes attr = f.getAttributes();
-			Annotations an = attr.getAnnotations();
+			Annotations an = f.getAnnotations();
 
 			Annotation a = an.find(EXPORT);
 			if (a != null)
@@ -160,7 +156,7 @@ public class MappingImporter
 			}
 			else
 			{
-				attr.addAnnotation(EXPORT, "value", new UTF8(attrName));
+				an.addAnnotation(EXPORT, "value", attrName);
 			}
 		}
 		
@@ -173,8 +169,7 @@ public class MappingImporter
 			
 			iface = iface.replace("com/runeloader/api/bridge/os/accessor/", "");
 
-			Attributes attr = cf.getAttributes();
-			Annotations an = attr.getAnnotations();
+			Annotations an = cf.getAnnotations();
 
 			Annotation a = an.find(IMPLEMENTS);
 			if (a != null)
@@ -188,7 +183,7 @@ public class MappingImporter
 			}
 			else
 			{
-				attr.addAnnotation(IMPLEMENTS, "value", new UTF8(iface));
+				an.addAnnotation(IMPLEMENTS, "value", iface);
 			}
 		}
 	}

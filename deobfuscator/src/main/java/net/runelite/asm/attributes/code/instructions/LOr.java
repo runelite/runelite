@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class LOr extends Instruction
 {
-	public LOr(Instructions instructions, InstructionType type, int pc)
+	public LOr(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

@@ -42,9 +42,9 @@ import net.runelite.asm.execution.Type;
 
 public class Dup_X2 extends Instruction implements DupInstruction
 {
-	public Dup_X2(Instructions instructions, InstructionType type, int pc)
+	public Dup_X2(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

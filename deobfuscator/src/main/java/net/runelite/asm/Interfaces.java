@@ -30,9 +30,6 @@
 
 package net.runelite.asm;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,16 +40,6 @@ public class Interfaces
 	private ClassFile classFile;
 
 	private List<Class> interfaces = new ArrayList<Class>();
-
-	Interfaces(ClassFile c, DataInputStream is) throws IOException
-	{
-		classFile = c;
-
-		int count = is.readUnsignedShort();
-
-		for (int i = 0; i < count; ++i)
-			interfaces.add(c.getPool().getClass(is.readUnsignedShort()));
-	}
 	
 	Interfaces(ClassFile c)
 	{
@@ -90,13 +77,6 @@ public class Interfaces
 	public List<Class> getNonMyInterfaces()
 	{
 		return interfaces.stream().filter(clazz -> classFile.getGroup().findClass(clazz.getName()) == null).collect(Collectors.toList());
-	}
-	
-	public void write(DataOutputStream out) throws IOException
-	{
-		out.writeShort(interfaces.size());
-		for (Class clazz : interfaces)
-			out.writeShort(classFile.getPool().make(clazz));
 	}
 	
 	public boolean instanceOf(ClassFile cf)

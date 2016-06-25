@@ -30,14 +30,12 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.TypeInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
@@ -45,29 +43,22 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Class;
+import org.objectweb.asm.MethodVisitor;
 
-public class New extends Instruction
+public class New extends Instruction implements TypeInstruction
 {
 	private Class clazz;
 	private ClassFile myClass;
 
-	public New(Instructions instructions, InstructionType type, int pc)
+	public New(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		clazz = this.getPool().getClass(is.readUnsignedShort());
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(clazz));
+		visitor.visitTypeInsn(this.getType().getCode(), this.getType_().getFullType());
 	}
 
 	@Override
@@ -98,7 +89,7 @@ public class New extends Instruction
 	@Override
 	public void lookup()
 	{
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		myClass = group.findClass(clazz.getName());
 	}
 	
@@ -107,5 +98,17 @@ public class New extends Instruction
 	{
 		if (myClass != null)
 			clazz = myClass.getPoolClass();
+	}
+
+	@Override
+	public net.runelite.asm.signature.Type getType_()
+	{
+		return new net.runelite.asm.signature.Type(clazz.getName());
+	}
+
+	@Override
+	public void setType(net.runelite.asm.signature.Type type)
+	{
+		clazz = new Class(type.getFullType());
 	}
 }

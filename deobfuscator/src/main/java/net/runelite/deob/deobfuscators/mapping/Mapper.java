@@ -145,7 +145,7 @@ public class Mapper
 				if (!m.getName().equals("<init>"))
 					continue;
 
-				Method m2 = other.findMethod(m.getNameAndType());
+				Method m2 = other.findMethod(m.getName(), m.getDescriptor());
 				if (m2 == null)
 					continue;
 
@@ -238,7 +238,7 @@ public class Mapper
 		{
 			for (Field f : cf.getFields().getFields())
 			{
-				Annotations an = f.getAttributes().getAnnotations();
+				Annotations an = f.getAnnotations();
 
 				if (an == null || an.find(OBFUSCATED_NAME) == null)
 					continue;
@@ -254,7 +254,7 @@ public class Mapper
 	{
 		for (Method m : source.findClass("client").getMethods().getMethods())
 		{
-			Annotations an = m.getAttributes().getAnnotations();
+			Annotations an = m.getAnnotations();
 
 			if (an == null || an.find(OBFUSCATED_NAME) == null)
 				continue;

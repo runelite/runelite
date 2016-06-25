@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class DNeg extends Instruction
 {
-	public DNeg(Instructions instructions, InstructionType type, int pc)
+	public DNeg(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

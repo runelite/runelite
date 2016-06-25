@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.ClassFile;
@@ -47,15 +44,7 @@ public class Exceptions
 	{
 		this.code = code;
 	}
-	
-	public void load(DataInputStream is) throws IOException
-	{
-		int count = is.readUnsignedShort();
 
-		for (int i = 0; i < count; ++i)
-			exceptions.add(new Exception(this, is));
-	}
-	
 	public void add(Exception e)
 	{
 		exceptions.add(e);
@@ -66,16 +55,6 @@ public class Exceptions
 		exceptions.remove(e);
 	}
 	
-	public void write(DataOutputStream out) throws IOException
-	{
-		out.writeShort(exceptions.size());
-		for (Exception e : exceptions)
-		{
-			assert e.getExceptions() == this;
-			e.write(out);
-		}
-	}
-
 	public Code getCode()
 	{
 		return code;

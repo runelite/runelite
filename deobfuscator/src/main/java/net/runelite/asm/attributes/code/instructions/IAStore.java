@@ -39,9 +39,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class IAStore extends ArrayStore
 {
-	public IAStore(Instructions instructions, InstructionType type, int pc)
+	public IAStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

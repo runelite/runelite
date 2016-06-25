@@ -39,10 +39,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.AttributeType;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
-import net.runelite.asm.attributes.ConstantValue;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.FieldInstruction;
@@ -96,8 +93,7 @@ public class FieldInliner implements Deobfuscator
 				if (!f.isStatic() || !f.getType().getFullType().equals("Ljava/lang/String;"))
 					continue;
 				
-				Attributes attributes = f.getAttributes();
-				ConstantValue constantValue = (ConstantValue) attributes.findType(AttributeType.CONSTANT_VALUE);
+				Object constantValue = f.getValue();
 				if (constantValue != null)
 					continue;
 
@@ -108,7 +104,7 @@ public class FieldInliner implements Deobfuscator
 				SetFieldInstruction sfi = (SetFieldInstruction) sfis.get(0);
 				Instruction ins = (Instruction) sfi;
 				
-				Method mOfSet = ins.getInstructions().getCode().getAttributes().getMethod();
+				Method mOfSet = ins.getInstructions().getCode().getMethod();
 				if (!mOfSet.getName().equals("<clinit>"))
 					continue;
 				
@@ -123,8 +119,8 @@ public class FieldInliner implements Deobfuscator
 				
 				PushConstantInstruction pci = (PushConstantInstruction) prev;
 				
-				constantValue = new ConstantValue(attributes, pci.getConstant());
-				attributes.addAttribute(constantValue);
+				constantValue = pci.getConstant();
+				f.setValue(constantValue);
 				
 				fields.add(f);
 				
@@ -144,14 +140,14 @@ public class FieldInliner implements Deobfuscator
 		{
 			// replace getfield with constant push
 			List<FieldInstruction> fins = fieldInstructions.get(f).stream().filter(f2 -> f2 instanceof GetFieldInstruction).collect(Collectors.toList());
-			ConstantValue value = (ConstantValue) f.getAttributes().findType(AttributeType.CONSTANT_VALUE);
+			Object value = f.getValue();
 			
 			for (FieldInstruction fin : fins)
 			{
 				// remove fin, add push constant
 				Instruction i = (Instruction) fin;
 				
-				Instruction pushIns = new LDC_W(i.getInstructions(), value.getValue());
+				Instruction pushIns = new LDC_W(i.getInstructions(), value);
 				
 				List<Instruction> instructions = i.getInstructions().getInstructions();
 				

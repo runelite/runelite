@@ -34,7 +34,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import org.objectweb.asm.ClassWriter;
 
-class NonloadingClassWriter extends ClassWriter
+public class NonloadingClassWriter extends ClassWriter
 {
 	private final ClassGroup group;
 

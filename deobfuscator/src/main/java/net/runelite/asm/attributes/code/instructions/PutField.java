@@ -30,10 +30,8 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -47,39 +45,34 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Field;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import org.objectweb.asm.MethodVisitor;
 
 public class PutField extends Instruction implements SetFieldInstruction
 {
 	private Field field;
 	private net.runelite.asm.Field myField;
 
-	public PutField(Instructions instructions, InstructionType type, int pc)
+	public PutField(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override
 	public String toString()
 	{
-		Method m = this.getInstructions().getCode().getAttributes().getMethod();
+		Method m = this.getInstructions().getCode().getMethod();
 		return "putfield " + myField + " in " + m;
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		field = this.getPool().getField(is.readUnsignedShort());
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(field));
+		visitor.visitFieldInsn(this.getType().getCode(),
+			field.getClazz().getName(),
+			field.getName(),
+			field.getType().getFullType());
 	}
 
 	@Override
@@ -104,14 +97,14 @@ public class PutField extends Instruction implements SetFieldInstruction
 	@Override
 	public net.runelite.asm.Field getMyField()
 	{
-		Class clazz = field.getClassEntry();
-		NameAndType nat = field.getNameAndType();
+		Class clazz = field.getClazz();
 
-		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+		ClassFile cf = group.findClass(clazz.getName());
 		if (cf == null)
 			return null;
 
-		net.runelite.asm.Field f2 = cf.findFieldDeep(nat);
+		net.runelite.asm.Field f2 = cf.findFieldDeep(field.getName(), field.getType());
 		return f2;
 	}
 	
@@ -205,5 +198,11 @@ public class PutField extends Instruction implements SetFieldInstruction
 			if (i instanceof PushConstantInstruction || i instanceof AConstNull)
 				return false;
 		return true;
+	}
+
+	@Override
+	public void setField(Field field)
+	{
+		this.field = field;
 	}
 }

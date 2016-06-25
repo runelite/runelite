@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class FRem extends Instruction
 {
-	public FRem(Instructions instructions, InstructionType type, int pc)
+	public FRem(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

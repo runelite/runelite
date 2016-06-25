@@ -39,19 +39,25 @@ import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import net.runelite.asm.pool.PoolEntry;
+import org.objectweb.asm.MethodVisitor;
 
 
 public class IConst_2 extends Instruction implements PushConstantInstruction
 {
-	public IConst_2(Instructions instructions, InstructionType type, int pc)
+	public IConst_2(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public IConst_2(Instructions instructions)
 	{
-		super(instructions, InstructionType.ICONST_2, -1);
+		super(instructions, InstructionType.ICONST_2);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitInsn(this.getType().getCode());
 	}
 
 	@Override
@@ -69,13 +75,13 @@ public class IConst_2 extends Instruction implements PushConstantInstruction
 	}
 	
 	@Override
-	public PoolEntry getConstant()
+	public Object getConstant()
 	{
-		return new net.runelite.asm.pool.Integer(2);
+		return 2;
 	}
 
 	@Override
-	public Instruction setConstant(PoolEntry entry)
+	public Instruction setConstant(Object entry)
 	{
 		return new LDC_W(this.getInstructions(), entry);
 	}

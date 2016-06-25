@@ -30,39 +30,24 @@
 
 package net.runelite.asm;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.signature.Type;
+import org.objectweb.asm.ClassVisitor;
 
 public class Fields
 {
-	private ClassFile classFile;
+	private final ClassFile classFile;
 
-	private List<Field> fields = new ArrayList<>();
-
-	Fields(ClassFile c, DataInputStream is) throws IOException
-	{
-		classFile = c;
-
-		int count = is.readUnsignedShort();
-
-		for (int i = 0; i < count; ++i)
-			fields.add(new Field(this, is));
-	}
+	private final List<Field> fields = new ArrayList<>();
 	
 	Fields(ClassFile c)
 	{
 		classFile = c;
 	}
-	
-	public void write(DataOutputStream out) throws IOException
+
+	public void accept(ClassVisitor visitor)
 	{
-		out.writeShort(fields.size());
-		for (Field f : fields)
-			f.write(out);
 	}
 
 	public ClassFile getClassFile()
@@ -80,10 +65,10 @@ public class Fields
 		return fields;
 	}
 
-	public Field findField(NameAndType nat)
+	public Field findField(String name, Type type)
 	{
 		for (Field f : fields)
-			if (f.getName().equals(nat.getName()) && f.getType().equals(nat.getDescriptorType()))
+			if (f.getName().equals(name) && f.getType().equals(type))
 				return f;
 		return null;
 	}

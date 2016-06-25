@@ -41,9 +41,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfEq extends If0
 {
-	public IfEq(Instructions instructions, InstructionType type, int pc)
+	public IfEq(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public IfEq(Instructions instructions, Label to)

@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.ClassFile;
@@ -51,48 +48,42 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Method;
-import net.runelite.asm.pool.NameAndType;
-import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Signature;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import org.objectweb.asm.MethodVisitor;
 
 public class InvokeStatic extends Instruction implements InvokeInstruction
 {
 	private Method method;
 	private net.runelite.asm.Method myMethod;
 
-	public InvokeStatic(Instructions instructions, InstructionType type, int pc)
+	public InvokeStatic(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public InvokeStatic(Instructions instructions, Method method)
 	{
-		super(instructions, InstructionType.INVOKESTATIC, -1);
+		super(instructions, InstructionType.INVOKESTATIC);
 		
 		this.method = method;
-		length += 2;
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitMethodInsn(this.getType().getCode(),
+			method.getClazz().getName(),
+			method.getName(),
+			method.getType().toString(),
+			false);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "invokestatic " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod() + " at pc 0x" + Integer.toHexString(this.getPc());
-	}
-	
-	@Override
-	public void load(DataInputStream is) throws IOException
-	{
-		method = this.getPool().getMethod(is.readUnsignedShort());
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(method));
+		return "invokestatic " + method + " in " + this.getInstructions().getCode().getMethod();// + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
 	
 	@Override
@@ -107,7 +98,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		int count = method.getNameAndType().getNumberOfArgs();
+		int count = method.getType().size();
 		
 		for (int i = 0; i < count; ++i)
 		{
@@ -115,10 +106,10 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			ins.pop(arg);
 		}
 		
-		if (!method.getNameAndType().isVoid())
+		if (!method.getType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins,
-				new Type(method.getNameAndType().getDescriptor().getReturnValue()),
+				new Type(method.getType().getReturnValue()),
 				Value.UNKNOWN
 			);
 			stack.push(ctx);
@@ -147,32 +138,31 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	@Override
 	public void removeParameter(int idx)
 	{
-		net.runelite.asm.pool.Class clazz = method.getClassEntry();
-		NameAndType nat = method.getNameAndType();
-		
+		net.runelite.asm.pool.Class clazz = method.getClazz();
+
 		// create new signature
-		Signature sig = new Signature(nat.getDescriptor());
+		Signature sig = new Signature(method.getType());
 		sig.remove(idx);
-		
+
 		// create new method pool object
-		method = new Method(clazz, new NameAndType(nat.getName(), sig));
+		method = new Method(clazz, method.getName(), sig);
 	}
 	
 	@Override
-	public PoolEntry getMethod()
+	public Method getMethod()
 	{
 		return method;
 	}
 	
 	private net.runelite.asm.Method lookupMethod()
 	{
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		
-		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
+		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)
 			return null; // not our class
 		
-		net.runelite.asm.Method other = otherClass.findMethodDeepStatic(method.getNameAndType());
+		net.runelite.asm.Method other = otherClass.findMethod(method.getName(), method.getType());
 		if (other == null)
 			return null; // when regenerating the pool after renaming the method this can be null.
 		
@@ -237,7 +227,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		InvokeStatic thisIi = (InvokeStatic) thisIc.getInstruction(),
 			otherIi = (InvokeStatic) otherIc.getInstruction();
 
-		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getNameAndType().getDescriptor(), otherIi.method.getNameAndType().getDescriptor()))
+		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getType(), otherIi.method.getType()))
 			return false;
 		
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),
@@ -253,7 +243,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 			
 			/* The class names are random */
 			
-			if (!m1.getNameAndType().getDescriptor().equals(m2.getNameAndType().getDescriptor()))
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getDescriptor(), m2.getDescriptor()))
 				return false;
 		}
 		
@@ -264,5 +254,11 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 	public boolean canMap(InstructionContext thisIc)
 	{
 		return MappingExecutorUtil.isMappable(this);
+	}
+
+	@Override
+	public void setMethod(Method method)
+	{
+		this.method = method;
 	}
 }
