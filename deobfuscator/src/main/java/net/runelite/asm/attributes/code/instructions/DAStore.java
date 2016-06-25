@@ -39,9 +39,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class DAStore extends ArrayStore
 {
-	public DAStore(Instructions instructions, InstructionType type, int pc)
+	public DAStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

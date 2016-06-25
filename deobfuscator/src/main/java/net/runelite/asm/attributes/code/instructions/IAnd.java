@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class IAnd extends Instruction
 {
-	public IAnd(Instructions instructions, InstructionType type, int pc)
+	public IAnd(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

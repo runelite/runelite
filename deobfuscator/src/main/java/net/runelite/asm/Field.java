@@ -30,12 +30,11 @@
 
 package net.runelite.asm;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.attributes.Attributes;
-import net.runelite.asm.pool.NameAndType;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.signature.Type;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.FieldVisitor;
 
 public class Field
 {
@@ -51,23 +50,12 @@ public class Field
 
 	private Fields fields;
 
-	private short accessFlags;
+	private int accessFlags;
 	private String name;
 	private Type type;
-	private Attributes attributes;
+	private Object value; // ConstantValue
+	private Annotations annotations;
 	public boolean packetHandler;
-
-	Field(Fields fields, DataInputStream is) throws IOException
-	{
-		this.fields = fields;
-
-		ConstantPool pool = fields.getClassFile().getPool();
-
-		accessFlags = is.readShort();
-		name = pool.getUTF8(is.readUnsignedShort());
-		type = new Type(pool.getUTF8(is.readUnsignedShort()));
-		attributes = new Attributes(this, is);
-	}
 	
 	public Field(Fields fields, String name, Type type)
 	{
@@ -75,17 +63,18 @@ public class Field
 		this.name = name;
 		this.type = type;
 		
-		attributes = new Attributes(this);
+		annotations = new Annotations();
 	}
-	
-	public void write(DataOutputStream out) throws IOException
+
+	public void accept(FieldVisitor visitor)
 	{
-		ConstantPool pool = fields.getClassFile().getPool();
+		for (Annotation annotation : annotations.getAnnotations())
+		{
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			annotation.accept(av);
+		}
 		
-		out.writeShort(accessFlags);
-		out.writeShort(pool.makeUTF8(name));
-		out.writeShort(pool.makeUTF8(type.getFullType()));
-		attributes.write(out);
+		visitor.visitEnd();
 	}
 
 	public Fields getFields()
@@ -98,9 +87,14 @@ public class Field
 		this.fields = fields;
 	}
 
-	public short getAccessFlags()
+	public int getAccessFlags()
 	{
 		return accessFlags;
+	}
+
+	public void setAccessFlags(int accessFlags)
+	{
+		this.accessFlags = accessFlags;
 	}
 	
 	public boolean isStatic()
@@ -133,21 +127,27 @@ public class Field
 		this.type = type;
 	}
 
-	public NameAndType getNameAndType()
+	public Object getValue()
 	{
-		return new NameAndType(name, type);
+		return value;
 	}
 
-	public Attributes getAttributes()
+	public void setValue(Object value)
 	{
-		return attributes;
+		this.value = value;
+	}
+	
+	public Annotations getAnnotations()
+	{
+		return annotations;
 	}
 	
 	public net.runelite.asm.pool.Field getPoolField()
 	{
 		return new net.runelite.asm.pool.Field(
 			new net.runelite.asm.pool.Class(this.getFields().getClassFile().getName()),
-			new NameAndType(this.getName(), this.getType())
+			this.getName(),
+			this.getType()
 		);
 	}
 	

@@ -41,9 +41,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class ArrayLength extends Instruction
 {
-	public ArrayLength(Instructions instructions, InstructionType type, int pc)
+	public ArrayLength(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

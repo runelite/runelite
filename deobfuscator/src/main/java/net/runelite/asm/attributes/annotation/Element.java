@@ -30,18 +30,13 @@
 
 package net.runelite.asm.attributes.annotation;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.ConstantPool;
-import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Type;
 
 public class Element
 {
 	private final Annotation annotation;
-	private Type type;
-	private PoolEntry value;
+	private String name;
+	private Object value;
 	
 	public Element(Annotation annotation)
 	{
@@ -53,69 +48,28 @@ public class Element
 		return annotation;
 	}
 
-	public Type getType()
+	public String getName()
 	{
-		return type;
+		return name;
 	}
 
-	public void setType(Type type)
+	public void setName(String name)
 	{
-		this.type = type;
+		this.name = name;
 	}
 
-	public PoolEntry getValue()
+	public Object getValue()
 	{
 		return value;
 	}
 
-	public void setValue(PoolEntry value)
+	public void setValue(Object value)
 	{
 		this.value = value;
 	}
 	
 	public String getString()
 	{
-		return (String) value.getObject();
-	}
-	
-	public void load(DataInputStream is) throws IOException
-	{
-		ConstantPool pool = annotation.getAnnotations().getAttributes().getClassFile().getPool();
-		
-		int typeIndex = is.readShort();
-		type = new Type(pool.getUTF8(typeIndex));
-		
-		byte type = is.readByte();
-		
-		if (type != 's' && type != 'I' && type != 'J')
-			throw new RuntimeException("can't parse annotation element type " + type);
-		
-		int index = is.readShort(); // pool index to String
-		
-		value = pool.getEntry(index);
-	}
-	
-	public void write(DataOutputStream out) throws IOException
-	{
-		ConstantPool pool = annotation.getAnnotations().getAttributes().getClassFile().getPool();
-
-		out.writeShort(pool.makeUTF8(type.getFullType()));
-		byte type;
-		switch (value.getType())
-		{
-			case UTF8:
-				type = 's';
-				break;
-			case INTEGER:
-				type = 'I';
-				break;
-			case LONG:
-				type = 'J';
-				break;
-			default:
-				throw new RuntimeException("can't write annotation type " + value);
-		}
-		out.write(type);
-		out.writeShort(pool.make(value));
+		return value.toString();
 	}
 }

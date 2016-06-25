@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class IShR extends Instruction
 {
-	public IShR(Instructions instructions, InstructionType type, int pc)
+	public IShR(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

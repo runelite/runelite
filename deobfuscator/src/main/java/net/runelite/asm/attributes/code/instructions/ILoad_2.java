@@ -41,18 +41,26 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 
 public class ILoad_2 extends Instruction implements LVTInstruction
 {
-	public ILoad_2(Instructions instructions, InstructionType type, int pc)
+	public ILoad_2(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public ILoad_2(Instructions instructions)
 	{
-		super(instructions, InstructionType.ILOAD_2, -1);
+		super(instructions, InstructionType.ILOAD_2);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitVarInsn(Opcodes.ILOAD, this.getVariableIndex());
 	}
 
 	@Override

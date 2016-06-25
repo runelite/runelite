@@ -42,9 +42,9 @@ import net.runelite.asm.execution.Value;
 
 public class DDiv extends Instruction implements DivisionInstruction
 {
-	public DDiv(Instructions instructions, InstructionType type, int pc)
+	public DDiv(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

@@ -30,49 +30,38 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.IntInstruction;
 import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Value;
-import net.runelite.asm.pool.PoolEntry;
+import org.objectweb.asm.MethodVisitor;
 
-public class SiPush extends Instruction implements PushConstantInstruction
+public class SiPush extends Instruction implements PushConstantInstruction, IntInstruction
 {
 	private short s;
 
-	public SiPush(Instructions instructions, InstructionType type, int pc)
+	public SiPush(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public SiPush(Instructions instructions, short value)
 	{
-		super(instructions, InstructionType.SIPUSH, -1);
+		super(instructions, InstructionType.SIPUSH);
 
 		s = value;
-		length += 2;
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		s = is.readShort();
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(s);
+		visitor.visitIntInsn(this.getType().getCode(), s & 0xFFFF);
 	}
 
 	@Override
@@ -90,14 +79,26 @@ public class SiPush extends Instruction implements PushConstantInstruction
 	}
 
 	@Override
-	public PoolEntry getConstant()
+	public Object getConstant()
 	{
-		return new net.runelite.asm.pool.Integer(s);
+		return s;
 	}
 
 	@Override
-	public Instruction setConstant(PoolEntry entry)
+	public Instruction setConstant(Object entry)
 	{
 		throw new UnsupportedOperationException("Not supported yet.");
+	}
+
+	@Override
+	public int getOperand()
+	{
+		return s & 0xFFFF;
+	}
+
+	@Override
+	public void setOperand(int operand)
+	{
+		s = (short) operand;
 	}
 }

@@ -39,9 +39,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class LAStore extends ArrayStore
 {
-	public LAStore(Instructions instructions, InstructionType type, int pc)
+	public LAStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

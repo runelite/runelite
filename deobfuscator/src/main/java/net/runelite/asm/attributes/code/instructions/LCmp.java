@@ -48,9 +48,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class LCmp extends Instruction implements MappableInstruction
 {
-	public LCmp(Instructions instructions, InstructionType type, int pc)
+	public LCmp(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

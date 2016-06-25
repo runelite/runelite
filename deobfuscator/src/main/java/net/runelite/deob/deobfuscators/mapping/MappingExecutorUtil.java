@@ -126,14 +126,14 @@ public class MappingExecutorUtil
 	{
 		Execution e = new Execution(group1);
 		e.step = true;
-		Frame frame = new Frame(e, i1.getInstructions().getCode().getAttributes().getMethod(), i1);
+		Frame frame = new Frame(e, i1.getInstructions().getCode().getMethod(), i1);
 		//frame.initialize();
 		e.frames.add(frame);
 
 		Execution e2 = new Execution(group2);
 		e2.step = true;
 		//Frame frame2 = new Frame(e2, m2);
-		Frame frame2 = new Frame(e2, i2.getInstructions().getCode().getAttributes().getMethod(), i2);
+		Frame frame2 = new Frame(e2, i2.getInstructions().getCode().getMethod(), i2);
 		//frame2.initialize();
 		e2.frames.add(frame2);
 
@@ -194,7 +194,7 @@ public class MappingExecutorUtil
 					Instruction sfii = p1.getPops().get(0).getPushed().getInstruction();
 					if (sfii instanceof PushConstantInstruction)
 					{
-						Object o = ((PushConstantInstruction) sfii).getConstant().getObject();
+						Object o = ((PushConstantInstruction) sfii).getConstant();
 						if (o.equals(-1))
 						{
 							p1.getFrame().stop();
@@ -213,21 +213,8 @@ public class MappingExecutorUtil
 	{
 		String className;
 		
-		if (ii.getMethod() instanceof net.runelite.asm.pool.Method)
-		{
-			net.runelite.asm.pool.Method m = (net.runelite.asm.pool.Method) ii.getMethod();
-			className = m.getClassEntry().getName();
-		}
-		else if (ii.getMethod() instanceof net.runelite.asm.pool.InterfaceMethod)
-		{
-			net.runelite.asm.pool.InterfaceMethod m = (net.runelite.asm.pool.InterfaceMethod) ii.getMethod();
-			className = m.getClassEntry().getName();	
-		}
-		else
-		{
-			assert false;
-			return false;
-		}
+		net.runelite.asm.pool.Method m = ii.getMethod();
+		className = m.getClazz().getName();
 
 		if (className.startsWith("java/lang/reflect/") || className.startsWith("java/io/") || className.startsWith("java/util/"))
 			return true;
@@ -244,9 +231,9 @@ public class MappingExecutorUtil
 			return false;
 
 		InvokeStatic is = (InvokeStatic) i;
-		net.runelite.asm.pool.Method m = (net.runelite.asm.pool.Method) is.getMethod();
+		net.runelite.asm.pool.Method m = is.getMethod();
 
-		return m.getClassEntry().getName().contains("/") == false; // hack to find my classes
+		return m.getClazz().getName().contains("/") == false; // hack to find my classes
 	}
 	
 	public static InstructionContext resolve(

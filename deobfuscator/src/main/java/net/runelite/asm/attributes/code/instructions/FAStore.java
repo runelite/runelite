@@ -39,9 +39,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class FAStore extends ArrayStore
 {
-	public FAStore(Instructions instructions, InstructionType type, int pc)
+	public FAStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

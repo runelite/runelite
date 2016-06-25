@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class IOr extends Instruction
 {
-	public IOr(Instructions instructions, InstructionType type, int pc)
+	public IOr(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

@@ -67,7 +67,6 @@ import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
 import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.Deobfuscator;
 import org.apache.commons.collections4.CollectionUtils;
@@ -125,9 +124,9 @@ public class ModArith implements Deobfuscator
 				if (pushedsfi.getInstruction() instanceof LDC_W || pushedsfi.getInstruction() instanceof LDC2_W)
 				{
 					PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
-					if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
+					if (ldc.getConstant() instanceof Integer || ldc.getConstant() instanceof Long)
 					{
-						Number it = (Number) ldc.getConstant().getObject();
+						Number it = (Number) ldc.getConstant();
 						if (DMath.isBig(it))
 							// field = constant
 							this.obfuscatedFields.add(sfi.getMyField());
@@ -163,9 +162,9 @@ public class ModArith implements Deobfuscator
 							continue;
 					}
 
-					if (pci.getConstant().getObject() instanceof Integer || pci.getConstant().getObject() instanceof Long)
+					if (pci.getConstant() instanceof Integer || pci.getConstant() instanceof Long)
 					{
-						Number i = (Number) pci.getConstant().getObject();
+						Number i = (Number) pci.getConstant();
 						if (DMath.isBig(i))
 							// field = constant * not other field
 							this.obfuscatedFields.add(sfi.getMyField());
@@ -198,10 +197,10 @@ public class ModArith implements Deobfuscator
 				continue;
 			}
 
-			if (!(pc.getConstant().getObject() instanceof Integer) && !(pc.getConstant().getObject() instanceof Long))
+			if (!(pc.getConstant() instanceof Integer) && !(pc.getConstant() instanceof Long))
 				continue;
 
-			Number ivalue = (Number) pc.getConstant().getObject();
+			Number ivalue = (Number) pc.getConstant();
 			if (!DMath.isBig(ivalue))
 				continue;
 
@@ -250,12 +249,12 @@ public class ModArith implements Deobfuscator
 				if (fi.getMyField() == null)
 					continue;
 
-				if ((!fi.getField().getNameAndType().getDescriptorType().getType().equals("I")
-					&& !fi.getField().getNameAndType().getDescriptorType().getType().equals("J"))
-					|| fi.getField().getNameAndType().getDescriptorType().getArrayDims() != 0)
+				if ((!fi.getField().getType().getType().equals("I")
+					&& !fi.getField().getType().getType().equals("J"))
+					|| fi.getField().getType().getArrayDims() != 0)
 					continue;
 
-				List<InstructionContext> l = this.getInsInExpr(ctx, new HashSet());
+				List<InstructionContext> l = getInsInExpr(ctx, new HashSet());
 				boolean other = false; // check if this contains another field
 				for (InstructionContext i : l)
 				{
@@ -292,10 +291,10 @@ public class ModArith implements Deobfuscator
 					if (i.getInstruction() instanceof LDC_W || i.getInstruction() instanceof LDC2_W)
 					{
 						PushConstantInstruction w = (PushConstantInstruction) i.getInstruction();
-						if (w.getConstant().getObject() instanceof Integer || w.getConstant().getObject() instanceof Long)
+						if (w.getConstant() instanceof Integer || w.getConstant() instanceof Long)
 						{
 							AssociatedConstant n = new AssociatedConstant();
-							n.value = (Number) w.getConstant().getObject();
+							n.value = (Number) w.getConstant();
 							n.other = other;
 							n.constant = constant;
 							constants.put(fi.getMyField(), n);
@@ -335,13 +334,14 @@ public class ModArith implements Deobfuscator
 				if (field == null)
 					continue;
 
-				Number value = (Number) pc.getConstant().getObject();
+				Number value = (Number) pc.getConstant();
 
 				if (DMath.equals(value, 1) || DMath.equals(value, 0))
 					continue;
 
 				// field * constant
-				constantGetters.put(field, value);
+				if (value instanceof Integer || value instanceof Long)
+					constantGetters.put(field, value);
 			}
 			else if (ctx.getInstruction() instanceof SetFieldInstruction)
 			{
@@ -361,9 +361,9 @@ public class ModArith implements Deobfuscator
 					{
 						PushConstantInstruction ldc = (PushConstantInstruction) pushedsfi.getInstruction();
 
-						if (ldc.getConstant().getObject() instanceof Integer || ldc.getConstant().getObject() instanceof Long)
+						if (ldc.getConstant() instanceof Integer || ldc.getConstant() instanceof Long)
 						{
-							Number i = (Number) ldc.getConstant().getObject();
+							Number i = (Number) ldc.getConstant();
 
 							if (DMath.isBig(i))
 								// field = constant
@@ -392,7 +392,7 @@ public class ModArith implements Deobfuscator
 				if (pc == null)
 					continue;
 
-				Number value2 = (Number) pc.getConstant().getObject();
+				Number value2 = (Number) pc.getConstant();
 
 				if (DMath.equals(value2, 1) || DMath.equals(value2, 0))
 					continue;
@@ -404,7 +404,8 @@ public class ModArith implements Deobfuscator
 				}
 
 				// field = something * constant
-				constantSetters.put(field, value2);
+				if (value2 instanceof Integer || value2 instanceof Long)
+					constantSetters.put(field, value2);
 			}
 		}
 	}
@@ -680,7 +681,7 @@ public class ModArith implements Deobfuscator
 
 						if (p.getType() == Integer.class)
 						{
-							ilist.add(i++, new LDC_W(ins, new net.runelite.asm.pool.Integer((int) p.getter)));
+							ilist.add(i++, new LDC_W(ins, (int) p.getter));
 							ilist.add(i++, new IMul(ins));
 						}
 						else if (p.getType() == Long.class)
@@ -741,16 +742,13 @@ public class ModArith implements Deobfuscator
 		execution.populateInitialMethods();
 		execution.run();
 		
-//		findObfuscatedFields();
-//		findUses();
-//		findUses2();
 		reduce2();
 
 		int i = 0;
 		Encryption encr = new Encryption();
 		for (Pair pair : pairs)
 		{
-			System.out.println("Processing " + pair.field.getNameAndType().getName() + " getter " + pair.getter + " setter " + pair.setter);
+			System.out.println("Processing " + pair.field.getName() + " getter " + pair.getter + " setter " + pair.setter);
 
 			encr.addPair(pair);
 			encryption.addPair(pair); // sum total
@@ -776,13 +774,10 @@ public class ModArith implements Deobfuscator
 				if (pair == null)
 					continue;
 				
-				PoolEntry value = pair.getType() == Long.class ?
-					new net.runelite.asm.pool.Long((long) pair.getter) :
-					new net.runelite.asm.pool.Integer((int) pair.getter);
 				String ename = pair.getType() == Long.class ?
 					"longValue" :
 					"intValue";
-				f.getAttributes().addAnnotation(OBFUSCATED_GETTER, ename, value);
+				f.getAnnotations().addAnnotation(OBFUSCATED_GETTER, ename, pair.getter);
 			}
 		}
 	}

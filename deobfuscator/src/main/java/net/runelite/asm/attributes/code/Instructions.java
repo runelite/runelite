@@ -30,13 +30,10 @@
 
 package net.runelite.asm.attributes.code;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import net.runelite.asm.attributes.Code;
 
 public class Instructions
@@ -47,46 +44,6 @@ public class Instructions
 	public Instructions(Code code)
 	{
 		this.code = code;
-	}
-	
-	public void load(DataInputStream is) throws IOException
-	{
-		int length = is.readInt();
-
-		int pc;
-		for (pc = 0; pc < length;)
-		{
-			byte opcode = is.readByte();
-
-			InstructionType type = InstructionType.findInstructionFromCode(opcode);
-
-			try
-			{
-				Constructor<? extends Instruction> con = type.getInstructionClass().getConstructor(Instructions.class, InstructionType.class, int.class);
-				Instruction ins = con.newInstance(this, type, pc);
-				ins.load(is);
-				
-				Instruction genericIns = ins.makeGeneric();
-				if (genericIns != ins)
-				{
-					genericIns.setPc(ins.getPc());
-				}
-
-				instructions.add(genericIns);
-
-				int len = ins.getLength();
-				pc += len;
-			}
-			catch (java.lang.Exception ex)
-			{
-				throw new IOException(ex);
-			}
-		}
-
-		assert pc == length;
-		
-		for (Instruction i : new ArrayList<>(instructions))
-			i.resolve();
 	}
 
 	public Label createLabelFor(Instruction target)
@@ -111,7 +68,29 @@ public class Instructions
 		}
 
 		Label label = new Label(this);
+		label.setLabel(new org.objectweb.asm.Label());
 		instructions.add(i, label);
+		return label;
+	}
+
+	private Map<org.objectweb.asm.Label, Label> labelMap = new HashMap<>();
+
+	public Label findLabel(org.objectweb.asm.Label l)
+	{
+		Label label = labelMap.get(l);
+		assert label != null;
+		return label;
+	}
+
+	public Label findOrCreateLabel(org.objectweb.asm.Label l)
+	{
+		Label label = labelMap.get(l);
+		if (label != null)
+			return label;
+
+		label = new Label(this, l);
+		labelMap.put(l, label);
+
 		return label;
 	}
 
@@ -133,56 +112,9 @@ public class Instructions
 		ins.setInstructions(null);
 	}
 	
-	public void write(DataOutputStream out) throws IOException
-	{
-		this.regeneratePool();
-		
-		// translate instructions to specific
-		for (Instruction i : new ArrayList<>(instructions))
-		{
-			Instruction specific = i.makeSpecific();
-			if (i != specific)
-			{
-				replace(i, specific);
-			}
-		}
-		
-		// generate pool indexes
-		for (Instruction i : new ArrayList<>(instructions))
-			i.prime();
-		
-		// rebuild pc
-		int pc = 0;
-		for (Instruction i : instructions)
-		{
-			i.setPc(pc);
-			pc += i.getLength();
-		}
-		
-		ByteArrayOutputStream b = new ByteArrayOutputStream();
-		DataOutputStream o = new DataOutputStream(b);
-		for (Instruction i : instructions)
-		{
-			assert o.size() == i.getPc();
-			i.write(o);
-			assert o.size() == i.getPc() + i.getLength();
-		}
-		byte[] ba = b.toByteArray();
-		out.writeInt(ba.length);
-		out.write(ba);
-	}
-	
 	public Code getCode()
 	{
 		return code;
-	}
-	
-	public Instruction findInstruction(int pc)
-	{
-		for (Instruction i : instructions)
-			if (i.getPc() == pc)
-				return i;
-		return null;
 	}
 	
 	public void lookup()

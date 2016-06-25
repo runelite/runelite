@@ -42,14 +42,14 @@ import net.runelite.asm.execution.Type;
 
 public class Dup2_X1 extends Instruction implements DupInstruction
 {
-	public Dup2_X1(Instructions instructions, InstructionType type, int pc)
+	public Dup2_X1(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public Dup2_X1(Instructions instructions)
 	{
-		super(instructions, InstructionType.DUP2_X1, -1);
+		super(instructions, InstructionType.DUP2_X1);
 	}
 
 	@Override
@@ -165,7 +165,9 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 			}
 		}
 		else
+		{
 			throw new IllegalStateException();
+		}
 				
 		return ctx.getPops().get(orig);
 	}
@@ -218,7 +220,9 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 			}
 		}
 		else
+		{
 			throw new IllegalStateException();
+		}
 				
 		return ctx.getPushes().get(other);
 	}

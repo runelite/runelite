@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -41,56 +38,33 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
+import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
-import net.runelite.asm.pool.ConstantType;
-import net.runelite.asm.pool.PoolEntry;
+import org.objectweb.asm.MethodVisitor;
 
 public class LDC2_W extends Instruction implements PushConstantInstruction
 {
-	private PoolEntry value;
+	private Object value;
 
-	public LDC2_W(Instructions instructions, InstructionType type, int pc)
+	public LDC2_W(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
-	public LDC2_W(Instructions instructions, long value)
+	public LDC2_W(Instructions instructions, Object value)
 	{
-		super(instructions, InstructionType.LDC2_W, -1);
-		this.value = new net.runelite.asm.pool.Long(value);
-		length += 2;
-	}
-
-	public LDC2_W(Instructions instructions, double value)
-	{
-		super(instructions, InstructionType.LDC2_W, -1);
-		this.value = new net.runelite.asm.pool.Double(value);
-		length += 2;
-	}
-	
-	public LDC2_W(Instructions instructions, PoolEntry value)
-	{
-		super(instructions, InstructionType.LDC2_W, -1);
+		super(instructions, InstructionType.LDC2_W);
 		
-		assert value.getType() == ConstantType.LONG || value.getType() == ConstantType.DOUBLE;
+		assert value instanceof Long || value instanceof Double;
 		
 		this.value = value;
-		length += 2;
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		value = this.getPool().getEntry(is.readUnsignedShort());
-		assert value.getType() == ConstantType.LONG || value.getType() == ConstantType.DOUBLE;
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(value));
+		Object object = getConstant();
+		visitor.visitLdcInsn(object);
 	}
 
 	@Override
@@ -99,7 +73,7 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		StackContext ctx = new StackContext(ins, value.getTypeClass(), new Value(value.getObject()));
+		StackContext ctx = new StackContext(ins, Type.fromBoxedPrimitive(value), new Value(value));
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -108,43 +82,42 @@ public class LDC2_W extends Instruction implements PushConstantInstruction
 	}
 	
 	@Override
-	public PoolEntry getConstant()
+	public Object getConstant()
 	{
 		return value;
 	}
 	
 	@Override
-	public Instruction setConstant(PoolEntry entry)
+	public Instruction setConstant(Object entry)
 	{
-		assert entry.getType() == ConstantType.LONG || entry.getType() == ConstantType.DOUBLE;
+		assert entry instanceof Long || entry instanceof Double;
 		value = entry;
 		return this;
 	}
 	
 	public long getConstantAsLong()
 	{
-		return (long) value.getObject();
+		return (long) value;
 	}
 
 	@Override
 	public Instruction makeSpecific()
 	{
-		switch (value.getType())
+		if (value instanceof Long)
 		{
-			case LONG:
+			long l = (long) value;
+
+			if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE)
 			{
-				long l = (long) value.getObject();
+				return super.makeSpecific();
+			}
 
-				if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE)
-					break;
-
-				switch ((int) l)
-				{
-					case 0:
-						return new LConst_0(this.getInstructions());
-					case 1:
-						return new LConst_1(this.getInstructions());
-				}
+			switch ((int) l)
+			{
+				case 0:
+					return new LConst_0(this.getInstructions());
+				case 1:
+					return new LConst_1(this.getInstructions());
 			}
 		}
 

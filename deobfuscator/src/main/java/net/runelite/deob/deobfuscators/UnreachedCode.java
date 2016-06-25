@@ -40,9 +40,13 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UnreachedCode implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(UnreachedCode.class);
+
 	private Execution execution;
 	
 	private int removeUnused(Method m)
@@ -108,7 +112,7 @@ public class UnreachedCode implements Deobfuscator
 				count += removeUnused(m);
 			}
 		}
-		
-		System.out.println("Removed " + count + " unused instructions");
+
+		logger.info("Removed {} unused instructions", count);
 	}
 }

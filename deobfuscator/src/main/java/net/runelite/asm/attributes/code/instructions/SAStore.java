@@ -39,9 +39,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class SAStore extends ArrayStore
 {
-	public SAStore(Instructions instructions, InstructionType type, int pc)
+	public SAStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

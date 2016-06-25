@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instruction.types;
 
 import java.util.List;
@@ -36,4 +35,6 @@ import net.runelite.asm.attributes.code.Label;
 public interface JumpingInstruction
 {
 	List<Label> getJumps();
+
+	void setLabel(org.objectweb.asm.Label label);
 }

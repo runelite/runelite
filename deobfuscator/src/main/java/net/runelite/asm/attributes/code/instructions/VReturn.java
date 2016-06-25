@@ -40,14 +40,14 @@ import net.runelite.asm.execution.InstructionContext;
 
 public class VReturn extends Instruction implements ReturnInstruction
 {
-	public VReturn(Instructions instructions, InstructionType type, int pc)
+	public VReturn(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public VReturn(Instructions instructions)
 	{
-		super(instructions, InstructionType.RETURN, -1);
+		super(instructions, InstructionType.RETURN);
 	}
 
 	@Override

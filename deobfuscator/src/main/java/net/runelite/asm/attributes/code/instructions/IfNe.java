@@ -32,7 +32,6 @@ package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isOne;
 import static net.runelite.asm.attributes.code.instructions.IfICmpEq.isZero;
 import net.runelite.asm.execution.InstructionContext;
@@ -41,9 +40,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfNe extends If0
 {
-	public IfNe(Instructions instructions, InstructionType type, int pc)
+	public IfNe(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

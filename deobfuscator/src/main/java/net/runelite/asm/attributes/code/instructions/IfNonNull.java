@@ -38,9 +38,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfNonNull extends If0
 {
-	public IfNonNull(Instructions instructions, InstructionType type, int pc)
+	public IfNonNull(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

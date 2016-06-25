@@ -47,8 +47,8 @@ import org.junit.Test;
 
 public class UpdateMappingsTest
 {
-	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\114.2-SNAPSHOT\\rs-client-114.2-SNAPSHOT.jar",
-		JAR2 = "d:/rs/07/gamepack_114_deobfuscated.jar",
+	private static final String JAR1 = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\116.2-SNAPSHOT\\rs-client-116.2-SNAPSHOT.jar",
+		JAR2 = "d:/rs/07/gamepack_117_deobfuscated.jar",
 		OUT = "d:/rs/07/adamout.jar";
 
 	@Test

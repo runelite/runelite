@@ -30,16 +30,12 @@
 
 package net.runelite.deob.injection;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.security.SecureClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.objectwebasm.AsmUtils;
+import net.runelite.asm.ClassUtil;
 
 public class TestingClassLoader extends SecureClassLoader
 {
@@ -62,7 +58,7 @@ public class TestingClassLoader extends SecureClassLoader
 		if (c != null)
 			return c;
 
-		return defineClass(name, classToBytes(cf));
+		return defineClass(name, ClassUtil.saveClass(group, cf));
 	}
 
 	private Class<?> defineClass(String name, byte[] b)
@@ -70,22 +66,5 @@ public class TestingClassLoader extends SecureClassLoader
 		Class<?> c = super.defineClass(name.replace('/', '.'), b, 0, b.length);
 		classes.put(name, c);
 		return c;
-	}
-
-	private byte[] classToBytes(ClassFile cf)
-	{
-		try
-		{
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			cf.write(new DataOutputStream(bout));
-
-			// run through asm to generate stackmaps
-			return AsmUtils.rebuildWithStackmaps(group, new ByteArrayInputStream(bout.toByteArray()));
-		}
-		catch (IOException ex)
-		{
-			ex.printStackTrace();
-			return null;
-		}
 	}
 }

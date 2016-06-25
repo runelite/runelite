@@ -42,9 +42,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class L2I extends Instruction implements ConversionInstruction
 {
-	public L2I(Instructions instructions, InstructionType type, int pc)
+	public L2I(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.ClassFile;
@@ -51,58 +48,52 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Method;
-import net.runelite.asm.pool.NameAndType;
-import net.runelite.asm.pool.PoolEntry;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.util.VirtualMethods;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import org.objectweb.asm.MethodVisitor;
 
 public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
 	private Method method;
 	private List<net.runelite.asm.Method> myMethods;
 
-	public InvokeVirtual(Instructions instructions, InstructionType type, int pc)
+	public InvokeVirtual(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public InvokeVirtual(Instructions instructions, Method method)
 	{
-		super(instructions, InstructionType.INVOKEVIRTUAL, -1);
+		super(instructions, InstructionType.INVOKEVIRTUAL);
 
 		this.method = method;
-		length += 2;
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitMethodInsn(this.getType().getCode(),
+			method.getClazz().getName(),
+			method.getName(),
+			method.getType().toString(),
+			false);
 	}
 	
 	@Override
 	public String toString()
 	{
-		return "invokevirtual " + method + " in " + this.getInstructions().getCode().getAttributes().getMethod() + " at pc 0x" + Integer.toHexString(this.getPc());
+		return "invokevirtual " + method + " in " + this.getInstructions().getCode().getMethod();// + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
 	
-	@Override
-	public void load(DataInputStream is) throws IOException
-	{
-		method = this.getPool().getMethod(is.readUnsignedShort());
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(method));
-	}
-
 	@Override
 	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
 		
-		int count = method.getNameAndType().getNumberOfArgs();
+		int count = method.getType().size();
 		
 		for (int i = 0; i < count; ++i)
 		{
@@ -113,10 +104,10 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		if (!method.getNameAndType().isVoid())
+		if (!method.getType().isVoid())
 		{
 			StackContext ctx = new StackContext(ins,
-				new Type(method.getNameAndType().getDescriptor().getReturnValue()),
+				new Type(method.getType().getReturnValue()),
 				Value.UNKNOWN
 			);
 			stack.push(ctx);
@@ -151,34 +142,33 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	@Override
 	public void removeParameter(int idx)
 	{
-		net.runelite.asm.pool.Class clazz = method.getClassEntry();
-		NameAndType nat = method.getNameAndType();
+		net.runelite.asm.pool.Class clazz = method.getClazz();
 		
 		// create new signature
-		Signature sig = new Signature(nat.getDescriptor());
+		Signature sig = new Signature(method.getType());
 		sig.remove(idx);
 		
 		// create new method pool object
-		method = new Method(clazz, new NameAndType(nat.getName(), sig));
+		method = new Method(clazz, method.getName(), sig);
 	}
 	
 	@Override
-	public PoolEntry getMethod()
+	public Method getMethod()
 	{
 		return method;
 	}
 	
 	private List<net.runelite.asm.Method> lookupMethods()
 	{
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		
-		ClassFile otherClass = group.findClass(method.getClassEntry().getName());
+		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)
 			return null; // not our class
 		
 		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
 		
-		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getNameAndType());
+		net.runelite.asm.Method m = otherClass.findMethod(method.getName(), method.getType());
 		if (m == null)
 			return null;
 
@@ -207,7 +197,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		List<net.runelite.asm.Method> myMethods = this.getMethods(),
 			otherMethods = otherIv.getMethods();
 
-		assert MappingExecutorUtil.isMaybeEqual(method.getNameAndType().getDescriptor(), otherIv.method.getNameAndType().getDescriptor());
+		assert MappingExecutorUtil.isMaybeEqual(method.getType(), otherIv.method.getType());
 		assert myMethods.size() == otherMethods.size();
 		
 		for (int i = 0; i < myMethods.size(); ++i)
@@ -273,8 +263,8 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		/* map field that was invoked on */
 		
-		StackContext object1 = ctx.getPops().get(method.getNameAndType().getNumberOfArgs()),
-			object2 = other.getPops().get(otherIv.method.getNameAndType().getNumberOfArgs());
+		StackContext object1 = ctx.getPops().get(method.getType().size()),
+			object2 = other.getPops().get(otherIv.method.getType().size());
 		
 		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
 		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
@@ -303,7 +293,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		InvokeVirtual thisIi = (InvokeVirtual) thisIc.getInstruction(),
 			otherIi = (InvokeVirtual) otherIc.getInstruction();
 
-		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getNameAndType().getDescriptor(), otherIi.method.getNameAndType().getDescriptor()))
+		if (!MappingExecutorUtil.isMaybeEqual(thisIi.method.getType(), otherIi.method.getType()))
 			return false;
 		
 		List<net.runelite.asm.Method> thisMethods = thisIi.getMethods(),
@@ -320,7 +310,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			// order of methods in thisMethods/otherMethods depends on order classes
 			// were loaded, which might not be the same
 
-			if (!MappingExecutorUtil.isMaybeEqual(m1.getNameAndType().getDescriptor(), m2.getNameAndType().getDescriptor()))
+			if (!MappingExecutorUtil.isMaybeEqual(m1.getDescriptor(), m2.getDescriptor()))
 				return false;
 
 			break; // descriptors for all methods must be the same
@@ -333,5 +323,11 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	public boolean canMap(InstructionContext thisIc)
 	{
 		return MappingExecutorUtil.isMappable(this);
+	}
+
+	@Override
+	public void setMethod(Method method)
+	{
+		this.method = method;
 	}
 }

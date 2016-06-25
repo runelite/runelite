@@ -77,7 +77,7 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 			if (ione instanceof PushConstantInstruction)
 			{
 				PushConstantInstruction pci = (PushConstantInstruction) ione;
-				Number value = (Number) pci.getConstant().getObject();
+				Number value = (Number) pci.getConstant();
 
 				if (DMath.equals(value, 0))
 				{
@@ -87,7 +87,7 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 			if (itwo instanceof PushConstantInstruction)
 			{
 				PushConstantInstruction pci = (PushConstantInstruction) itwo;
-				Number value = (Number) pci.getConstant().getObject();
+				Number value = (Number) pci.getConstant();
 
 				if (DMath.equals(value, 0))
 				{
@@ -115,7 +115,7 @@ public class MultiplyZeroDeobfuscator implements Deobfuscator
 
 			if (instruction instanceof IMul)
 			{
-				ins.replace(instruction, new LDC_W(ins, new net.runelite.asm.pool.Integer(0)));
+				ins.replace(instruction, new LDC_W(ins, 0));
 			}
 			else if (instruction instanceof LMul)
 			{

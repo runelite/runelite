@@ -30,45 +30,36 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.IntInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
+import org.objectweb.asm.MethodVisitor;
 
-public class NewArray extends Instruction
+public class NewArray extends Instruction implements IntInstruction
 {
 	private int type;
 
-	public NewArray(Instructions instructions, InstructionType type, int pc)
+	public NewArray(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public int getArrayType()
 	{
 		return type;
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		this.type = is.readUnsignedByte();
-		length += 1;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeByte(type);
+		visitor.visitIntInsn(this.getType().getCode(), type & 0xFF);
 	}
 
 	@Override
@@ -117,6 +108,18 @@ public class NewArray extends Instruction
 		ins.push(ctx);
 		
 		return ins;
+	}
+
+	@Override
+	public int getOperand()
+	{
+		return type;
+	}
+
+	@Override
+	public void setOperand(int operand)
+	{
+		type = operand;
 	}
 
 }

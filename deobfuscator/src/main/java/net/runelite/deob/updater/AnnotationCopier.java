@@ -36,7 +36,6 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Type;
@@ -61,53 +60,42 @@ public class AnnotationCopier
 
 			assert cf2 != null;
 
-			copy(cf1.getAttributes(), cf2.getAttributes());
+			copy(cf1.getAnnotations(), cf2.getAnnotations());
 
 			for (Field f : cf1.getFields().getFields())
 			{
-				Field f2 = cf2.findField(f.getNameAndType());
+				Field f2 = cf2.findField(f.getName(), f.getType());
 
-				assert f2 != null || f.getAttributes().getAnnotations() == null;
+				assert f2 != null || f.getAnnotations() == null;
 
 				if (f2 == null)
 					continue;
 
-				copy(f.getAttributes(), f2.getAttributes());
+				copy(f.getAnnotations(), f2.getAnnotations());
 			}
 
 			for (Method m : cf1.getMethods().getMethods())
 			{
-				Method m2 = cf2.findMethod(m.getNameAndType());
+				Method m2 = cf2.findMethod(m.getName(), m.getDescriptor());
 
-				assert m2 != null || m.getAttributes().getAnnotations() == null;
+				assert m2 != null || m.getAnnotations() == null;
 
 				if (m2 == null)
 					continue;
 
-				copy(m.getAttributes(), m2.getAttributes());
+				copy(m.getAnnotations(), m2.getAnnotations());
 			}
 		}
 	}
 
-	private void copy(Attributes attr1, Attributes attr2)
+	private void copy(Annotations an, Annotations an2)
 	{
-		Annotations an = attr1.getAnnotations();
-		if (an == null)
-			return;
-
-		Annotations an2 = attr2.getAnnotations();
-		if (an2 != null)
+		for (Annotation a : an2.getAnnotations())
 		{
-			for (Annotation a : an2.getAnnotations())
+			if (isType(a.getType()))
 			{
-				if (isType(a.getType()))
-					an2.removeAnnotation(a);
+				an2.removeAnnotation(a);
 			}
-		}
-		else
-		{
-			an2 = new Annotations(attr2);
-			attr2.addAttribute(an2);
 		}
 
 		for (Annotation a : an.getAnnotations())
@@ -121,7 +109,7 @@ public class AnnotationCopier
 			for (Element element : a.getElements())
 			{
 				Element element2 = new Element(a2);
-				element2.setType(element.getType());
+				element2.setName(element.getName());
 				element2.setValue(element.getValue());
 				a2.addElement(element2);
 			}

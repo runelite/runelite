@@ -124,4 +124,22 @@ public class Type
 		
 		return new Type(type.substring(0, type.length() - 2));
 	}
+	
+	public static Type fromBoxedPrimitive(Object value)
+	{
+		if (value instanceof Double)
+			return new Type(double.class.getCanonicalName());
+		else if (value instanceof Float)
+			return new Type(float.class.getCanonicalName());
+		else if (value instanceof Integer)
+			return new Type(int.class.getCanonicalName());
+		else if (value instanceof Long)
+			return new Type(long.class.getCanonicalName());
+		else if (value instanceof String)
+			return new Type(java.lang.String.class.getCanonicalName());
+		else if (value instanceof net.runelite.asm.pool.Class)
+			return new Type(((net.runelite.asm.pool.Class) value).getName());
+		else
+			throw new RuntimeException();
+	}
 }
