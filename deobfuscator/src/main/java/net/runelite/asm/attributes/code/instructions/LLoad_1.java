@@ -43,17 +43,25 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class LLoad_1 extends Instruction implements LVTInstruction
 {
-	public LLoad_1(Instructions instructions, InstructionType type, int pc) throws IOException
+	public LLoad_1(Instructions instructions, InstructionType type) throws IOException
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public LLoad_1(Instructions instructions)
 	{
-		super(instructions, InstructionType.LLOAD_1, -1);
+		super(instructions, InstructionType.LLOAD_1);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitVarInsn(Opcodes.LLOAD, this.getVariableIndex());
 	}
 
 	@Override

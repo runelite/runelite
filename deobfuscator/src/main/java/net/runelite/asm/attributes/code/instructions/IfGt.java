@@ -37,9 +37,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfGt extends If0
 {
-	public IfGt(Instructions instructions, InstructionType type, int pc)
+	public IfGt(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

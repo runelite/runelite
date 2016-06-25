@@ -30,15 +30,14 @@
 
 package net.runelite.deob.injection;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
 import net.runelite.asm.Methods;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
@@ -59,9 +58,10 @@ import net.runelite.asm.attributes.code.instructions.New;
 import net.runelite.asm.attributes.code.instructions.Pop;
 import net.runelite.asm.attributes.code.instructions.Return;
 import net.runelite.asm.attributes.code.instructions.SiPush;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
+import net.runelite.asm.visitors.ClassFileVisitor;
+import org.objectweb.asm.ClassReader;
 
 public class InjectReplace
 {
@@ -81,7 +81,7 @@ public class InjectReplace
 
 	public void run() throws ClassNotFoundException, IOException
 	{
-		Annotations an = cf.getAttributes().getAnnotations();
+		Annotations an = cf.getAnnotations();
 		if (an == null)
 			return;
 
@@ -104,9 +104,15 @@ public class InjectReplace
 
 		Class<?> c = Class.forName(a.getElement().getString());
 		ClassFile classToInject;
-		try (DataInputStream dis = new DataInputStream(c.getClassLoader().getResourceAsStream(c.getName().replace('.', '/') + ".class")))
+		try (InputStream is = c.getClassLoader().getResourceAsStream(c.getName().replace('.', '/') + ".class"))
 		{
-			classToInject = new ClassFile(vanilla.getGroup(), dis);
+			ClassReader reader = new ClassReader(is);
+			ClassFileVisitor cv = new ClassFileVisitor();
+
+			reader.accept(cv, 0);
+
+			classToInject = cv.getClassFile();
+
 			vanilla.getGroup().addClass(classToInject);
 		}
 
@@ -156,8 +162,8 @@ public class InjectReplace
 						continue;
 
 					InvokeSpecial is = (InvokeSpecial) i;
-					net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
-					assert method.getNameAndType().getDescriptor().size() == 0; // Replace classes must extend Object so this must be Object.init()
+					net.runelite.asm.pool.Method method = is.getMethod();
+					assert method.getType().size() == 0; // Replace classes must extend Object so this must be Object.init()
 
 					instructions.replace(i, new Pop(instructions)); // pop this
 
@@ -180,11 +186,9 @@ public class InjectReplace
 				// ensure vanilla ctor is public too
 				m.setAccessFlags(Method.ACC_PUBLIC);
 
-				Attributes methodAttributes = constructor.getAttributes();
-
-				// create code attribute
-				Code code = new Code(methodAttributes);
-				methodAttributes.addAttribute(code);
+				// create code
+				Code code = new Code(constructor);
+				constructor.setCode(code);
 
 				Instructions instructions = code.getInstructions();
 				List<Instruction> ins = instructions.getInstructions();
@@ -253,8 +257,7 @@ public class InjectReplace
 
 		for (Method m : methods.getMethods())
 		{
-			Attributes attributes = m.getAttributes();
-			Annotations annotations = attributes.getAnnotations();
+			Annotations annotations = m.getAnnotations();
 
 			if (annotations == null || annotations.find(OBFUSCATED_OVERRIDE) == null)
 				continue;
@@ -265,7 +268,8 @@ public class InjectReplace
 			// Find method with exported name on 'cf'
 			Method obfuscatedMethodToOverride = findMethodByExportedName(overridenMethod); // this is from the deobfuscated jar
 			Method vanillaMethodToOverride = findVanillaMethodFromDeobfuscatedMethod(obfuscatedMethodToOverride);
-			NameAndType deobfuscatedNat = m.getNameAndType();
+			String deobfuscatedName = m.getName();
+			Signature deobfuscatedSignature = m.getDescriptor();
 			
 			assert obfuscatedMethodToOverride != null;
 			assert vanillaMethodToOverride != null;
@@ -288,7 +292,7 @@ public class InjectReplace
 
 				originalSignature = m.getDescriptor();
 
-				m.arguments = vanillaMethodToOverride.getDescriptor(); // is this right?
+				m.setDescriptor(vanillaMethodToOverride.getDescriptor()); // is this right?
 
 				garbageValue = this.getGarbage(obfuscatedMethodToOverride);
 			}
@@ -361,15 +365,15 @@ public class InjectReplace
 
 				InvokeSpecial is = (InvokeSpecial) i;
 
-				net.runelite.asm.pool.Method invokedMethod = (net.runelite.asm.pool.Method) is.getMethod();
+				net.runelite.asm.pool.Method invokedMethod = is.getMethod();
 
-				if (invokedMethod.getNameAndType().equals(deobfuscatedNat))
+				if (invokedMethod.getName().equals(deobfuscatedName) && invokedMethod.getType().equals(deobfuscatedSignature))
 				{
 					is.setMethod(new net.runelite.asm.pool.Method(
-							classToInject.getParentClass(), // invokedMethod.getClassEntry() is probably our dummy class
-							m.getNameAndType() // set to obfuscated name
-						)
-					);
+						classToInject.getParentClass(), // invokedMethod.getClassEntry() is probably our dummy class
+						m.getName(), // set to obfuscated name
+						m.getDescriptor()
+					));
 				}
 			}
 		}
@@ -379,8 +383,7 @@ public class InjectReplace
 	{
 		for (Method m : cf.getMethods().getMethods())
 		{
-			Attributes attributes = m.getAttributes();
-			Annotations annotations = attributes.getAnnotations();
+			Annotations annotations = m.getAnnotations();
 
 			if (annotations == null || annotations.find(EXPORT) == null)
 				continue;
@@ -404,7 +407,7 @@ public class InjectReplace
 
 	private String getObfuscatedName(Method method)
 	{
-		Annotations an = method.getAttributes().getAnnotations();
+		Annotations an = method.getAnnotations();
 		if (an == null)
 			return method.getName();
 
@@ -417,7 +420,7 @@ public class InjectReplace
 
 	private Signature getObfuscatedSignature(Method method)
 	{
-		Annotations an = method.getAttributes().getAnnotations();
+		Annotations an = method.getAnnotations();
 		if (an == null)
 		{
 			return method.getDescriptor();
@@ -434,7 +437,7 @@ public class InjectReplace
 
 	private String getGarbage(Method method)
 	{
-		Annotations an = method.getAttributes().getAnnotations();
+		Annotations an = method.getAnnotations();
 		if (an == null)
 		{
 			return null;
@@ -477,14 +480,14 @@ public class InjectReplace
 						// The super constructor invokespecial will be the first invokespecial instruction encountered
 						InvokeSpecial is = (InvokeSpecial) i;
 
-						net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
-						assert method.getClassEntry().equals(vanilla.getPoolClass());
-						assert method.getNameAndType().getName().equals("<init>");
+						net.runelite.asm.pool.Method method = is.getMethod();
+						assert method.getClazz().equals(vanilla.getPoolClass());
+						assert method.getName().equals("<init>");
 
 						is.setMethod(new net.runelite.asm.pool.Method(
-								classToInject.getPoolClass(),
-								method.getNameAndType()
-							)
+							classToInject.getPoolClass(),
+							method.getName(),
+							method.getType())
 						);
 
 						break;
@@ -536,15 +539,15 @@ public class InjectReplace
 						}
 
 						InvokeSpecial is = (InvokeSpecial) i;
-						net.runelite.asm.pool.Method method = (net.runelite.asm.pool.Method) is.getMethod();
+						net.runelite.asm.pool.Method method = is.getMethod();
 
-						if (!method.getNameAndType().getName().equals("<init>") || !method.getClassEntry().equals(vanilla.getPoolClass()))
+						if (!method.getName().equals("<init>") || !method.getClazz().equals(vanilla.getPoolClass()))
 							continue;
 
 						is.setMethod(new net.runelite.asm.pool.Method(
-								classToInject.getPoolClass(),
-								method.getNameAndType()
-							)
+							classToInject.getPoolClass(),
+							method.getName(),
+							method.getType())
 						);
 					}
 				}

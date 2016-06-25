@@ -30,11 +30,11 @@
 
 package net.runelite.deob.deobfuscators.arithmetic;
 
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.ClassUtil;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
@@ -128,7 +128,7 @@ public class SimpleModArithTest
 
 		ClassGroup group = new ClassGroup();
 
-		ClassFile cf = new ClassFile(group, new DataInputStream(in));
+		ClassFile cf = ClassUtil.loadClass(in);
 		group.addClass(cf);
 
 		ModArith d1 = new ModArith();
@@ -149,7 +149,7 @@ public class SimpleModArithTest
 
 		ClassGroup group = new ClassGroup();
 
-		ClassFile cf = new ClassFile(group, new DataInputStream(in));
+		ClassFile cf = ClassUtil.loadClass(in);
 		group.addClass(cf);
 
 		ModArith d1 = new ModArith();

@@ -40,9 +40,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class AThrow extends Instruction
 {
-	public AThrow(Instructions instructions, InstructionType type, int pc)
+	public AThrow(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

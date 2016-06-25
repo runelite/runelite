@@ -27,86 +27,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.asm.attributes.code.instruction.types;
 
-package net.runelite.asm.pool;
+import net.runelite.asm.signature.Type;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Objects;
-import net.runelite.asm.ConstantPool;
-import net.runelite.asm.execution.Type;
-
-public class String extends PoolEntry
+public interface TypeInstruction
 {
-	private int stringIndex;
-	private java.lang.String string;
+	Type getType_();
 
-	public String(ConstantPool pool, DataInputStream is) throws IOException
-	{
-		super(ConstantType.STRING);
-
-		stringIndex = is.readUnsignedShort();
-	}
-	
-	public String(java.lang.String str)
-	{
-		super(ConstantType.STRING);
-		
-		string = str;
-	}
-
-	@Override
-	public String copy()
-	{
-		return new String(string);
-	}
-	
-	@Override
-	public void resolve(ConstantPool pool)
-	{
-		string = pool.getUTF8(stringIndex);
-	}
-	
-	@Override
-	public void prime(ConstantPool pool)
-	{
-		stringIndex = pool.makeUTF8(string);
-	}
-	
-	@Override
-	public Type getTypeClass()
-	{
-		return new Type(java.lang.String.class.getCanonicalName());
-	}
-	
-	@Override
-	public boolean equals(Object other)
-	{
-		if (!(other instanceof String))
-			return false;
-		
-		String s = (String) other;
-		return string.equals(s.string);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 5;
-		hash = 83 * hash + Objects.hashCode(this.string);
-		return hash;
-	}
-
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		out.writeShort(stringIndex);
-	}
-
-	@Override
-	public Object getObject()
-	{
-		return string;
-	}
+	void setType(Type type);
 }

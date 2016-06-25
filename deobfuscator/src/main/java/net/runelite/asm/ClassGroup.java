@@ -30,29 +30,22 @@
 
 package net.runelite.asm;
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.attributes.Code;
 
 public class ClassGroup
 {
-	private List<ClassFile> classes = new ArrayList<>();
+	private final List<ClassFile> classes = new ArrayList<>();
 
 	public ClassGroup()
 	{
 	}
 
-	public ClassFile addClass(String name, DataInputStream is) throws IOException
-	{
-		ClassFile cf = new ClassFile(this, is);
-		classes.add(cf);
-		return cf;
-	}
-	
 	public void addClass(ClassFile cf)
 	{
+		assert cf.getGroup() == this || cf.getGroup() == null;
+		cf.setGroup(this);
 		classes.add(cf);
 	}
 	

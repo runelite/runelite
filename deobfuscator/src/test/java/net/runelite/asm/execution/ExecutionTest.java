@@ -49,7 +49,7 @@ public class ExecutionTest
 		e.run();
 	}
 	
-	@Test
+	//@Test
 	public void test2() throws Exception
 	{
 		ClassGroup group2 = JarUtil.loadJar(new File(JAR2));

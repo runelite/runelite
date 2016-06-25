@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
@@ -42,22 +39,24 @@ import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
+import org.objectweb.asm.MethodVisitor;
 
 public class GotoW extends Instruction implements JumpingInstruction
 {
+	private org.objectweb.asm.Label asmlabel;
 	private Label to;
-	private int offset;
 
-	public GotoW(Instructions instructions, InstructionType type, int pc)
+	public GotoW(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		offset = is.readInt();
-		length += 4;
+		assert getJumps().size() == 1;
+
+		visitor.visitJumpInsn(this.getType().getCode(), getJumps().get(0).getLabel());
 	}
 	
 	@Override
@@ -65,15 +64,8 @@ public class GotoW extends Instruction implements JumpingInstruction
 	{
 		Instructions ins = this.getInstructions();
 
-		Instruction i = ins.findInstruction(this.getPc() + offset);
-		to = ins.createLabelFor(i);
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeInt(to.next().getPc() - this.getPc());
+		to = ins.findLabel(asmlabel);
+		assert to != null;
 	}
 	
 	@Override
@@ -96,5 +88,11 @@ public class GotoW extends Instruction implements JumpingInstruction
 	public List<Label> getJumps()
 	{
 		return Arrays.asList(to);
+	}
+
+	@Override
+	public void setLabel(org.objectweb.asm.Label label)
+	{
+		asmlabel = label;
 	}
 }

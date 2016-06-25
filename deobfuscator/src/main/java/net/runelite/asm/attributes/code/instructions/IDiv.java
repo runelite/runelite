@@ -42,14 +42,14 @@ import net.runelite.asm.execution.Value;
 
 public class IDiv extends Instruction implements DivisionInstruction
 {
-	public IDiv(Instructions instructions, InstructionType type, int pc)
+	public IDiv(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public IDiv(Instructions instructions)
 	{
-		super(instructions, InstructionType.IDIV, -1);
+		super(instructions, InstructionType.IDIV);
 	}
 
 	@Override

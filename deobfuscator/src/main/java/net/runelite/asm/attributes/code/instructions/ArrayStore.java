@@ -43,9 +43,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public abstract class ArrayStore extends Instruction implements ArrayStoreInstruction
 {
-	public ArrayStore(Instructions instructions, InstructionType type, int pc)
+	public ArrayStore(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	private Field getMyField(InstructionContext thisIc)

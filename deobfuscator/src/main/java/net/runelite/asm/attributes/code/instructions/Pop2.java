@@ -42,9 +42,9 @@ import net.runelite.asm.execution.Type;
 
 public class Pop2 extends Instruction
 {
-	public Pop2(Instructions instructions, InstructionType type, int pc)
+	public Pop2(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

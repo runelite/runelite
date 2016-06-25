@@ -40,9 +40,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class Swap extends Instruction
 {
-	public Swap(Instructions instructions, InstructionType type, int pc)
+	public Swap(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

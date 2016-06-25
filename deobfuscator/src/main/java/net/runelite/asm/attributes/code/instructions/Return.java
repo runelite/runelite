@@ -42,14 +42,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class Return extends Instruction implements ReturnInstruction
 {
-	public Return(Instructions instructions, InstructionType type, int pc)
-	{
-		super(instructions, type, pc);
-	}
-	
 	public Return(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, -1);
+		super(instructions, type);
 	}
 
 	@Override

@@ -30,7 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.IOException;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -43,9 +42,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class Dup extends Instruction implements DupInstruction
 {
-	public Dup(Instructions instructions, InstructionType type, int pc) throws IOException
+	public Dup(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

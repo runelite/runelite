@@ -42,18 +42,26 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 
 public class FLoad_0 extends Instruction implements LVTInstruction
 {
-	public FLoad_0(Instructions instructions, InstructionType type, int pc)
+	public FLoad_0(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public FLoad_0(Instructions instructions)
 	{
-		super(instructions, InstructionType.FLOAD_0, -1);
+		super(instructions, InstructionType.FLOAD_0);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
+		visitor.visitVarInsn(Opcodes.FLOAD, this.getVariableIndex());
 	}
 
 	@Override

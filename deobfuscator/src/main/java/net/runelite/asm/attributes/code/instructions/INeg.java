@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class INeg extends Instruction
 {
-	public INeg(Instructions instructions, InstructionType type, int pc)
+	public INeg(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

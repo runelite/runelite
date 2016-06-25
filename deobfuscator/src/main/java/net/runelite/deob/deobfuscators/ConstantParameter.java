@@ -38,7 +38,6 @@ import java.util.Objects;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.attributes.code.Instruction;
@@ -178,17 +177,17 @@ public class ConstantParameter implements Deobfuscator
 			{
 				PushConstantInstruction pc = (PushConstantInstruction) ctx.getPushed().getInstruction();
 
-				if (!(pc.getConstant().getObject() instanceof Number))
+				if (!(pc.getConstant() instanceof Number))
 				{
 					cmp.invalid = true;
 					continue;
 				}
 
-				Number number = (Number) pc.getConstant().getObject();
+				Number number = (Number) pc.getConstant();
 
 				if (!cmp.values.contains(number))
 				{
-					cmp.values.add((Number) pc.getConstant().getObject());
+					cmp.values.add((Number) pc.getConstant());
 				}
 			}
 			else
@@ -296,7 +295,7 @@ public class ConstantParameter implements Deobfuscator
 				continue;
 			}
 
-			Object otherValue = null;
+			Number otherValue = null;
 
 			if (two != null) // two is null for if0
 			{
@@ -307,7 +306,7 @@ public class ConstantParameter implements Deobfuscator
 				}
 
 				PushConstantInstruction pc = (PushConstantInstruction) other.getPushed().getInstruction();
-				otherValue = pc.getConstant().getObject();
+				otherValue = (Number) pc.getConstant();
 			}
 
 			for (Number value : parameter.values)
@@ -328,12 +327,11 @@ public class ConstantParameter implements Deobfuscator
 		}
 	}
 
-	private boolean doLogicalComparison(Object value, ComparisonInstruction comparison, Object otherValue)
+	private boolean doLogicalComparison(Number value, ComparisonInstruction comparison, Number otherValue)
 	{
 		Instruction ins = (Instruction) comparison;
 
 		assert (comparison instanceof If0) == (otherValue == null);
-		assert otherValue == null || otherValue instanceof Integer;
 
 		switch (ins.getType())
 		{
@@ -342,25 +340,25 @@ public class ConstantParameter implements Deobfuscator
 			case IFNE:
 				return !value.equals(0);
 			case IFLT:
-				return (int) value < 0;
+				return value.intValue() < 0;
 			case IFGE:
-				return (int) value >= 0;
+				return value.intValue() >= 0;
 			case IFGT:
-				return (int) value > 0;
+				return value.intValue() > 0;
 			case IFLE:
-				return (int) value <= 0;
+				return value.intValue() <= 0;
 			case IF_ICMPEQ:
 				return value.equals(otherValue);
 			case IF_ICMPNE:
 				return !value.equals(otherValue);
 			case IF_ICMPLT:
-				return (int) value < (int) otherValue;
+				return value.intValue() < otherValue.intValue();
 			case IF_ICMPGE:
-				return (int) value >= (int) otherValue;
+				return value.intValue() >= otherValue.intValue();
 			case IF_ICMPGT:
-				return (int) value > (int) otherValue;
+				return value.intValue() > otherValue.intValue();
 			case IF_ICMPLE:
-				return (int) value <= (int) otherValue;
+				return value.intValue() <= otherValue.intValue();
 			default:
 				throw new RuntimeException("Unknown constant comparison instructuction");
 		}
@@ -388,7 +386,7 @@ public class ConstantParameter implements Deobfuscator
 
 			for (Instruction ins : cmp.operations) // comparisons
 			{
-				if (ins.getInstructions() == null || ins.getInstructions().getCode().getAttributes().getMethod() != mctx.getMethod())
+				if (ins.getInstructions() == null || ins.getInstructions().getCode().getMethod() != mctx.getMethod())
 				{
 					continue;
 				}
@@ -456,19 +454,18 @@ public class ConstantParameter implements Deobfuscator
 		{
 			Object value = parameter.values.get(0);
 
-			Attributes attributes = m.getAttributes();
-			Annotations annotations = attributes.getAnnotations();
+			Annotations annotations = m.getAnnotations();
 
 			if (annotations != null && annotations.find(OBFUSCATED_SIGNATURE) != null)
 			{
 				return;
 			}
 
-			Annotation annotation = attributes.addAnnotation(OBFUSCATED_SIGNATURE, "signature", new net.runelite.asm.pool.UTF8(m.getDescriptor().toString()));
+			Annotation annotation = annotations.addAnnotation(OBFUSCATED_SIGNATURE, "signature", m.getDescriptor().toString());
 
 			Element element = new Element(annotation);
-			element.setType(new Type("garbageValue"));
-			element.setValue(new net.runelite.asm.pool.UTF8(value.toString()));
+			element.setName("garbageValue");
+			element.setValue(value);
 			annotation.addElement(element);
 		}
 	}

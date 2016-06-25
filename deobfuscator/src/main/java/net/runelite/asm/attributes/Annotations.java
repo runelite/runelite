@@ -30,22 +30,15 @@
 
 package net.runelite.asm.attributes;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Type;
 
-public class Annotations extends Attribute
+public class Annotations
 {
 	private final List<Annotation> annotations = new ArrayList<>();
-	
-	public Annotations(Attributes attributes)
-	{
-		super(attributes, AttributeType.RUNTIMEVISIBLEANNOTATIONS);
-	}
 
 	public List<Annotation> getAnnotations()
 	{
@@ -75,26 +68,17 @@ public class Annotations extends Attribute
 		return null;
 	}
 	
-	@Override
-	public void loadAttribute(DataInputStream is) throws IOException
+	public Annotation addAnnotation(Type type, String name, Object value)
 	{
-		int num_annotations = is.readUnsignedShort();
-		for (int i = 0; i < num_annotations; ++i)
-		{
-			Annotation a = new Annotation(this);
-			a.load(is);
-			annotations.add(a);
-		}
-	}
+		Annotation annotation = new Annotation(this);
+		annotation.setType(type);
+		addAnnotation(annotation);
+		
+		Element element = new Element(annotation);
+		element.setName(name);
+		element.setValue(value);
+		annotation.addElement(element);
 
-	@Override
-	public void writeAttr(DataOutputStream out) throws IOException
-	{
-		out.writeShort(annotations.size());
-		for (Annotation a : annotations)
-		{
-			a.write(out);
-		}
+		return annotation;
 	}
-
 }

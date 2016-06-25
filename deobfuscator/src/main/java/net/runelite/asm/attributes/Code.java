@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Exceptions;
 import net.runelite.asm.attributes.code.Instruction;
@@ -40,47 +37,24 @@ import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.signature.Signature;
 
-public class Code extends Attribute
+public class Code
 {
+	private Method method;
 	private int maxStack;
 	private Instructions instructions;
-	private Exceptions exceptions;
-	private Attributes attributes;
-
-	public Code(Attributes attributes)
+	private final Exceptions exceptions;
+	
+	public Code(Method method)
 	{
-		super(attributes, AttributeType.CODE);
+		this.method = method;
 		
 		exceptions = new Exceptions(this);
-		this.attributes = new Attributes(this);
 		instructions = new Instructions(this);
 	}
-	
-	@Override
-	public void loadAttribute(DataInputStream is) throws IOException
-	{
-		maxStack = is.readUnsignedShort();
-		is.skip(2); // max locals
 
-		instructions = new Instructions(this);
-		instructions.load(is);
-
-		exceptions = new Exceptions(this);
-		exceptions.load(is);
-		
-		this.attributes = new Attributes(this);
-		this.attributes.load(is);
-	}
-	
-	@Override
-	public void writeAttr(DataOutputStream out) throws IOException
+	public Method getMethod()
 	{
-		out.writeShort(maxStack);
-		out.writeShort(getMaxLocals());
-		
-		instructions.write(out);
-		exceptions.write(out);
-		attributes.write(out);
+		return method;
 	}
 
 	public int getMaxStack()
@@ -95,7 +69,7 @@ public class Code extends Attribute
 	
 	private int getMaxLocalsFromSig()
 	{
-		Method m = super.getAttributes().getMethod();
+		Method m = getMethod();
 		int num = m.isStatic() ? -1 : 0;
 		Signature sig = m.getDescriptor();
 		for (int i = 0; i < sig.size(); ++i)
@@ -133,10 +107,5 @@ public class Code extends Attribute
 	public Instructions getInstructions()
 	{
 		return instructions;
-	}
-	
-	public void setInstructions(Instructions instructions)
-	{
-		this.instructions = instructions;
 	}
 }

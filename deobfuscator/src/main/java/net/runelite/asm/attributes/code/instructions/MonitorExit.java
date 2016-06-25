@@ -40,9 +40,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class MonitorExit extends Instruction
 {
-	public MonitorExit(Instructions instructions, InstructionType type, int pc)
+	public MonitorExit(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

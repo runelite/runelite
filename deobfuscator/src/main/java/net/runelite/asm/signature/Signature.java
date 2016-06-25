@@ -143,4 +143,10 @@ public class Signature
 	{
 		return arguments;
 	}
+
+
+	public boolean isVoid()
+	{
+		return rv.getFullType().equals("V");
+	}
 }

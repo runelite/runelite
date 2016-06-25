@@ -30,21 +30,20 @@
 
 package net.runelite.asm;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.asm.attributes.Attributes;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.pool.Class;
-import net.runelite.asm.pool.NameAndType;
 import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
 
 public class ClassFile
 {
-	private static final int MAGIC = 0xcafebabe;
-
 	private static final short ACC_FINAL = 0x0010;
 	private static final short ACC_ABSTRACT = 0x0400;
 	
@@ -53,42 +52,15 @@ public class ClassFile
 	private ClassFile parent; // super class
 	private List<ClassFile> children = new ArrayList<>(); // classes which inherit from this
 
-	private short minor_version;
-	private short major_version;
-	private ConstantPool pool;
-	private short access_flags;
+	private int version;
+	private int access;
 	private Class name;
 	private Class super_class;
+	private String source;
 	private Interfaces interfaces;
 	private Fields fields;
 	private Methods methods;
-	private Attributes attributes;
-
-	public ClassFile(ClassGroup group, DataInputStream is) throws IOException
-	{
-		this.group = group;
-
-		int magic = is.readInt();
-		if (magic != MAGIC)
-			throw new IOException("File is not a java class file.");
-
-		minor_version = is.readShort();
-		major_version = is.readShort();
-
-		pool = new ConstantPool(this, is);
-
-		access_flags = is.readShort();
-		name = pool.getClass(is.readUnsignedShort());
-		super_class = pool.getClass(is.readUnsignedShort());
-
-		interfaces = new Interfaces(this, is);
-
-		fields = new Fields(this, is);
-
-		methods = new Methods(this, is);
-
-		attributes = new Attributes(this, is);
-	}
+	private Annotations annotations;
 	
 	public ClassFile(ClassGroup group)
 	{
@@ -97,7 +69,15 @@ public class ClassFile
 		interfaces = new Interfaces(this);
 		fields = new Fields(this);
 		methods = new Methods(this);
-		attributes = new Attributes(this);
+		annotations = new Annotations();
+	}
+
+	public ClassFile()
+	{
+		interfaces = new Interfaces(this);
+		fields = new Fields(this);
+		methods = new Methods(this);
+		annotations = new Annotations();
 	}
 
 	@Override
@@ -105,45 +85,67 @@ public class ClassFile
 	{
 		return "ClassFile{" + "name=" + name + '}';
 	}
-	
-	public void write(DataOutputStream out) throws IOException
+
+	public int getVersion()
 	{
-		out.writeInt(MAGIC);
+		return version;
+	}
+
+	public void setVersion(int version)
+	{
+		this.version = version;
+	}
+
+	public int getAccess()
+	{
+		return access;
+	}
+
+	public void setAccess(int access)
+	{
+		this.access = access;
+	}
+
+	public void accept(ClassVisitor visitor)
+	{
+		String[] ints = interfaces.getInterfaces().stream().map(i -> i.getName()).toArray(String[]::new);
 		
-		out.writeShort(minor_version);
-		out.writeShort(major_version);
+		visitor.visit(version, access, name.getName(), null, super_class.getName(), ints);
+		visitor.visitSource(source, null);
 		
-		/* constant pool will be rebuilt now */
-		pool.reset();
-		
-		ByteArrayOutputStream bout = new ByteArrayOutputStream();
-		DataOutputStream rest = new DataOutputStream(bout);
-		rest.writeShort(access_flags);
-		rest.writeShort(pool.make(name));
-		rest.writeShort(pool.make(super_class));
-		
-		interfaces.write(rest);
-		
-		fields.write(rest);
-		
-		methods.write(rest);
-		
-		attributes.write(rest);
-		
-		// Now the pool is created
-		
-		pool.write(out);
-		out.write(bout.toByteArray());
+		for (Annotation annotation : annotations.getAnnotations())
+		{
+			AnnotationVisitor av = visitor.visitAnnotation(annotation.getType().getFullType(), true);
+			annotation.accept(av);
+		}
+
+		for (Field field : fields.getFields())
+		{
+			FieldVisitor fv = visitor.visitField(field.getAccessFlags(), field.getName(), field.getType().getFullType(), null, field.getValue());
+			field.accept(fv);
+		}
+
+		for (Method method : methods.getMethods())
+		{
+			String[] exceptions = method.getExceptions().getExceptions().stream().map(cl -> cl.getName()).toArray(String[]::new);
+			if (exceptions.length == 0)
+				exceptions = null;
+
+			MethodVisitor mv = visitor.visitMethod(method.getAccessFlags(), method.getName(), method.getDescriptor().toString(), null, exceptions);
+			method.accept(mv);
+		}
+
+		visitor.visitEnd();
 	}
 
 	public ClassGroup getGroup()
 	{
 		return group;
 	}
-	
-	public ConstantPool getPool()
+
+	public void setGroup(ClassGroup group)
 	{
-		return pool;
+		this.group = group;
 	}
 	
 	public Interfaces getInterfaces()
@@ -160,10 +162,10 @@ public class ClassFile
 	{
 		return methods;
 	}
-
-	public Attributes getAttributes()
+	
+	public Annotations getAnnotations()
 	{
-		return attributes;
+		return annotations;
 	}
 
 	public String getName()
@@ -192,6 +194,16 @@ public class ClassFile
 	{
 		super_class = new Class(name);
 	}
+
+	public String getSource()
+	{
+		return source;
+	}
+
+	public void setSource(String source)
+	{
+		this.source = source;
+	}
 	
 	public Class getParentClass()
 	{
@@ -218,9 +230,9 @@ public class ClassFile
 		return fields.findField(name);
 	}
 	
-	public Field findField(NameAndType nat)
+	public Field findField(String name, Type type)
 	{
-		return fields.findField(nat);
+		return fields.findField(name, type);
 	}
 	
 	public Class getPoolClass()
@@ -228,58 +240,53 @@ public class ClassFile
 		return name;
 	}
 
-	public Field findFieldDeep(NameAndType nat)
+	public Field findFieldDeep(String name, Type type)
 	{
-		Field f = fields.findField(nat);
+		Field f = fields.findField(name, type);
 		if (f != null)
 			return f;
 
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findFieldDeep(nat);
+			return parent.findFieldDeep(name, type);
 
 		return null;
 	}
 	
-	public Method findMethodDeep(NameAndType nat)
+	public Method findMethodDeep(String name, Signature type)
 	{
-		Method m = methods.findMethod(nat);
+		Method m = methods.findMethod(name, type);
 		if (m != null)
 			return m;
 
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findMethodDeep(nat);
+			return parent.findMethodDeep(name, type);
 
 		return null;
 	}
 	
-	public Method findMethodDeepStatic(NameAndType nat)
+	public Method findMethodDeepStatic(String name, Signature type)
 	{
-		Method m = methods.findMethod(nat);
+		Method m = methods.findMethod(name, type);
 		if (m != null && m.isStatic())
 			return m;
 
 		ClassFile parent = getParent();
 		if (parent != null)
-			return parent.findMethodDeepStatic(nat);
+			return parent.findMethodDeepStatic(name, type);
 
 		return null;
 	}
 	
-	public Method findMethod(NameAndType nat)
+	public Method findMethod(String name, Signature type)
 	{
-		return methods.findMethod(nat);
+		return methods.findMethod(name, type);
 	}
 	
 	public Method findMethod(String name)
 	{
 		return methods.findMethod(name);
-	}
-
-	public Method findMethod(String name, Signature signature)
-	{
-		return methods.findMethod(new NameAndType(name, signature));
 	}
 	
 	public Method findMethodDeep(String name)
@@ -323,21 +330,21 @@ public class ClassFile
 
 	public boolean isAbstract()
 	{
-		return (this.access_flags & ACC_ABSTRACT) != 0;
+		return (this.access & ACC_ABSTRACT) != 0;
 	}
 
 	public boolean isFinal()
 	{
-		return (this.access_flags & ACC_FINAL) != 0;
+		return (this.access & ACC_FINAL) != 0;
 	}
 
 	public void clearFinal()
 	{
-		this.access_flags &= ~ACC_FINAL;
+		this.access &= ~ACC_FINAL;
 	}
 
 	public void clearAbstract()
 	{
-		this.access_flags &= ~ACC_ABSTRACT;
+		this.access &= ~ACC_ABSTRACT;
 	}
 }

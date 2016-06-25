@@ -36,9 +36,13 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RuntimeExceptions implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(RuntimeExceptions.class);
+	
 	@Override
 	public void run(ClassGroup group)
 	{
@@ -61,6 +65,7 @@ public class RuntimeExceptions implements Deobfuscator
 				}
 			}
 		}
-		System.out.println("Removed " + i + " exception handlers");
+
+		logger.info("Remove {} exception handlers", i);
 	}
 }

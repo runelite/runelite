@@ -39,14 +39,14 @@ import net.runelite.asm.execution.InstructionContext;
 
 public class NOP extends Instruction
 {
-	public NOP(Instructions instructions, InstructionType type, int pc)
+	public NOP(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public NOP(Instructions instructions)
 	{
-		super(instructions, InstructionType.NOP, -1);
+		super(instructions, InstructionType.NOP);
 	}
 
 	@Override

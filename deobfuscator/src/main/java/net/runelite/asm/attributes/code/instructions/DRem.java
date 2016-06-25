@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class DRem extends Instruction
 {
-	public DRem(Instructions instructions, InstructionType type, int pc)
+	public DRem(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

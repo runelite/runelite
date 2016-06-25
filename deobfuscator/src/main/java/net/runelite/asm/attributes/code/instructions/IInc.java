@@ -30,61 +30,33 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
-import net.runelite.asm.attributes.code.instruction.types.WideInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
+import org.objectweb.asm.MethodVisitor;
 
-public class IInc extends Instruction implements LVTInstruction, WideInstruction
+public class IInc extends Instruction implements LVTInstruction
 {
 	private short index;
 	private short inc;
-	private boolean wide;
 
-	public IInc(Instructions instructions, InstructionType type, int pc)
+	public IInc(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
-	}
-	
-	public IInc(Instructions instructions, InstructionType type, Instruction instruction, int pc)
-	{
-		super(instructions, type, pc);
-		wide = true;
-	}
-	
-	@Override
-	public void load(DataInputStream is) throws IOException
-	{
-		index = is.readByte();
-		inc = is.readByte();
-		length += 2;
+		super(instructions, type);
 	}
 
 	@Override
-	public void loadWide(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		index = is.readShort();
-		inc = is.readShort();
-		length += 4;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeByte(index);
-		out.writeByte(inc);
+		visitor.visitIincInsn(index, inc);
 	}
 
 	@Override
@@ -124,27 +96,15 @@ public class IInc extends Instruction implements LVTInstruction, WideInstruction
 	}
 
 	@Override
-	public void writeWide(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(index);
-		out.writeShort(inc);
-	}
-
-	@Override
 	public Instruction setVariableIndex(int idx)
 	{
 		index = (short) idx;
 		return this;
 	}
 
-	@Override
-	public Instruction makeSpecific()
+	public void setIncrement(int inc)
 	{
-		if (index < Byte.MIN_VALUE || index > Byte.MAX_VALUE || inc < Byte.MIN_VALUE || inc > Byte.MAX_VALUE)
-			return new Wide(this.getInstructions(), this);
-		else
-			return this;
+		this.inc = (short) inc;
 	}
 
 	@Override

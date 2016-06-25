@@ -30,83 +30,75 @@
 
 package net.runelite.asm.pool;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.ConstantPool;
+import java.util.Objects;
+import net.runelite.asm.signature.Type;
 
-public class Field extends PoolEntry
+public class Field
 {
-	private int classIndex, natIndex;
-	private Class clazz;
-	private NameAndType nat;
+	private final Class clazz;
+	private final String name;
+	private final Type type;
 
-	public Field(ConstantPool pool, DataInputStream is) throws IOException
+	public Field(Class clazz, String name, Type type)
 	{
-		super(ConstantType.FIELDREF);
-
-		classIndex = is.readUnsignedShort();
-		natIndex = is.readUnsignedShort();
-	}
-	
-	public Field(Class clazz, NameAndType nat)
-	{
-		super(ConstantType.FIELDREF);
-		
 		this.clazz = clazz;
-		this.nat = nat;
+		this.name = name;
+		this.type = type;
 	}
 
-	@Override
-	public Field copy()
-	{
-		return new Field(clazz.copy(), nat.copy());
-	}
-	
-	@Override
-	public void resolve(ConstantPool pool)
-	{
-		clazz = pool.getClass(classIndex);
-		nat = pool.getNameAndType(natIndex);		
-	}
-	
-	@Override
-	public void prime(ConstantPool pool)
-	{
-		classIndex = pool.make(clazz);
-		natIndex = pool.make(nat);
-	}
-	
-	@Override
-	public boolean equals(Object other)
-	{
-		if (!(other instanceof Field))
-			return false;
-		
-		Field f = (Field) other;
-		return clazz.equals(f.clazz) && nat.equals(f.nat);
-	}
-	
 	@Override
 	public int hashCode()
 	{
-		return clazz.hashCode() ^ nat.hashCode();
+		int hash = 3;
+		hash = 97 * hash + Objects.hashCode(this.clazz);
+		hash = 97 * hash + Objects.hashCode(this.name);
+		hash = 97 * hash + Objects.hashCode(this.type);
+		return hash;
 	}
 
-	public Class getClassEntry()
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Field other = (Field) obj;
+		if (!Objects.equals(this.name, other.name))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clazz, other.clazz))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.type, other.type))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public Class getClazz()
 	{
 		return clazz;
 	}
 
-	public NameAndType getNameAndType()
+	public String getName()
 	{
-		return nat;
+		return name;
 	}
 
-	@Override
-	public void write(DataOutputStream out) throws IOException
+	public Type getType()
 	{
-		out.writeShort(classIndex);
-		out.writeShort(natIndex);
+		return type;
 	}
 }

@@ -42,9 +42,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class F2D extends Instruction implements ConversionInstruction
 {
-	public F2D(Instructions instructions, InstructionType type, int pc)
+	public F2D(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

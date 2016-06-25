@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.attributes.code.Instruction;
@@ -45,6 +42,7 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Class;
+import org.objectweb.asm.MethodVisitor;
 
 public class MultiANewArray extends Instruction
 {
@@ -52,25 +50,15 @@ public class MultiANewArray extends Instruction
 	private int dimensions;
 	private ClassFile myClass;
 
-	public MultiANewArray(Instructions instructions, InstructionType type, int pc)
+	public MultiANewArray(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		clazz = this.getPool().getClass(is.readUnsignedShort());
-		dimensions = is.readUnsignedByte();
-		length += 3;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(clazz));
-		out.writeByte(dimensions);
+		visitor.visitMultiANewArrayInsn(clazz.getName(), dimensions);
 	}
 	
 	@Override
@@ -104,7 +92,7 @@ public class MultiANewArray extends Instruction
 		String name = t.getType();
 		if (name.startsWith("L") && name.endsWith(";"))
 			name = name.substring(1, name.length() - 1);
-		ClassGroup group = this.getInstructions().getCode().getAttributes().getClassFile().getGroup();
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
 		myClass = group.findClass(name);
 	}
 	
@@ -122,5 +110,25 @@ public class MultiANewArray extends Instruction
 				sb.append(myClass.getName());
 			clazz = new Class(sb.toString());
 		}
+	}
+
+	public Class getClass_()
+	{
+		return clazz;
+	}
+
+	public void setClass(Class c)
+	{
+		clazz = c;
+	}
+
+	public int getDimensions()
+	{
+		return this.dimensions;
+	}
+
+	public void setDimensions(int dimensions)
+	{
+		this.dimensions = dimensions;
 	}
 }

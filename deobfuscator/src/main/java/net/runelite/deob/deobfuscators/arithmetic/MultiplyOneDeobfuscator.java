@@ -76,12 +76,12 @@ public class MultiplyOneDeobfuscator implements Deobfuscator
 
 			int removeIdx = -1;
 			if (one.getPushed().getInstruction() instanceof PushConstantInstruction
-				&& DMath.equals((Number) ((PushConstantInstruction) one.getPushed().getInstruction()).getConstant().getObject(), 1))
+				&& DMath.equals((Number) ((PushConstantInstruction) one.getPushed().getInstruction()).getConstant(), 1))
 			{
 				removeIdx = 0;
 			}
 			else if (two.getPushed().getInstruction() instanceof PushConstantInstruction
-				&& DMath.equals((Number) ((PushConstantInstruction) two.getPushed().getInstruction()).getConstant().getObject(), 1))
+				&& DMath.equals((Number) ((PushConstantInstruction) two.getPushed().getInstruction()).getConstant(), 1))
 			{
 				removeIdx = 1;
 			}

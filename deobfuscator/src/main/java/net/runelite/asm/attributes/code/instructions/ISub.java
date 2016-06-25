@@ -42,9 +42,9 @@ import net.runelite.asm.execution.Value;
 
 public class ISub extends Instruction implements SubtractionInstruction
 {
-	public ISub(Instructions instructions, InstructionType type, int pc)
+	public ISub(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

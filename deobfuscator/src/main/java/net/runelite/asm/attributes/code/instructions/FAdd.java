@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class FAdd extends Instruction
 {
-	public FAdd(Instructions instructions, InstructionType type, int pc)
+	public FAdd(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

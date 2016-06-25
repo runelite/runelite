@@ -41,14 +41,14 @@ import net.runelite.asm.execution.Value;
 
 public class LMul extends Instruction
 {
-	public LMul(Instructions instructions, InstructionType type, int pc)
+	public LMul(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public LMul(Instructions instructions)
 	{
-		super(instructions, InstructionType.LMUL, -1);
+		super(instructions, InstructionType.LMUL);
 	}
 
 

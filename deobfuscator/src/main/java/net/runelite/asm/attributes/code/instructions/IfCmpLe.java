@@ -37,9 +37,9 @@ import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
 public class IfCmpLe extends If
 {
-	public IfCmpLe(Instructions instructions, InstructionType type, int pc)
+	public IfCmpLe(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

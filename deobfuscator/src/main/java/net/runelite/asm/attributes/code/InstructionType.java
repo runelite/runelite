@@ -222,7 +222,6 @@ import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.attributes.code.instructions.Swap;
 import net.runelite.asm.attributes.code.instructions.TableSwitch;
 import net.runelite.asm.attributes.code.instructions.VReturn;
-import net.runelite.asm.attributes.code.instructions.Wide;
 
 public enum InstructionType
 {
@@ -419,24 +418,23 @@ public enum InstructionType
 	INSTANCEOf(0xc1, "instanceof", InstanceOf.class),
 	MONITORENTER(0xc2, "monitorenter", MonitorEnter.class),
 	MONITOREXIT(0xc3, "monitorexit", MonitorExit.class),
-	WIDE(0xc4, "wide", Wide.class),
 	MULTIANEWARRAY(0xc5, "multianewarray", MultiANewArray.class),
 	IFNULL(0xc6, "ifnull", IfNull.class),
 	IFNONNULL(0xc7, "ifnonnull", IfNonNull.class),
 	GOTO_W(0xc8, "goto_w", GotoW.class);
 
-	private byte code;
-	private String name;
-	private Class<? extends Instruction> clazz;
+	private final int code;
+	private final String name;
+	private final Class<? extends Instruction> clazz;
 
 	InstructionType(int op, String name, Class<? extends Instruction> clazz)
 	{
-		this.code = (byte) op;
+		this.code = op;
 		this.name = name;
 		this.clazz = clazz;
 	}
 
-	public byte getCode()
+	public int getCode()
 	{
 		return code;
 	}
@@ -451,7 +449,7 @@ public enum InstructionType
 		return clazz;
 	}
 
-	public static InstructionType findInstructionFromCode(byte code)
+	public static InstructionType findInstructionFromCode(int code)
 	{
 		for (InstructionType t : InstructionType.values())
 			if (t.getCode() == code)

@@ -35,7 +35,6 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Type;
@@ -79,11 +78,11 @@ public class AnnotationMapper
 	{
 		int count = 0;
 
-		if (hasCopyableAnnotation(from.getAttributes()))
+		if (hasCopyableAnnotation(from.getAnnotations()))
 		{
 			if (to != null)
 			{
-				count += copyAnnotations(from.getAttributes(), to.getAttributes());
+				count += copyAnnotations(from.getAnnotations(), to.getAnnotations());
 			}
 			else
 			{
@@ -93,52 +92,52 @@ public class AnnotationMapper
 
 		for (Field f : from.getFields().getFields())
 		{
-			if (!hasCopyableAnnotation(f.getAttributes()))
+			if (!hasCopyableAnnotation(f.getAnnotations()))
 				continue;
 
 			Field other = (Field) mapping.get(f);
 			if (other == null)
 			{
-				logger.warn("Unable to map annotated field {} named {}", f, getExport(f.getAttributes().getAnnotations()));
+				logger.warn("Unable to map annotated field {} named {}", f, getExport(f.getAnnotations()));
 				continue;
 			}
 
-			count += copyAnnotations(f.getAttributes(), other.getAttributes());
+			count += copyAnnotations(f.getAnnotations(), other.getAnnotations());
 		}
 
 		for (Method m : from.getMethods().getMethods())
 		{
-			if (!hasCopyableAnnotation(m.getAttributes()))
+			if (!hasCopyableAnnotation(m.getAnnotations()))
 				continue;
 
 			Method other = (Method) mapping.get(m);
 			if (other == null)
 			{
-				logger.warn("Unable to map annotated method {} named {}", m, getExport(m.getAttributes().getAnnotations()));
+				logger.warn("Unable to map annotated method {} named {}", m, getExport(m.getAnnotations()));
 				continue;
 			}
 
-			count += copyAnnotations(m.getAttributes(), other.getAttributes());
+			count += copyAnnotations(m.getAnnotations(), other.getAnnotations());
 		}
 
 		return count;
 	}
 
-	private int copyAnnotations(Attributes from, Attributes to)
+	private int copyAnnotations(Annotations from, Annotations to)
 	{
 		int count = 0;
 
 		if (from.getAnnotations() == null)
 			return count;
 		
-		for (Annotation a : from.getAnnotations().getAnnotations())
+		for (Annotation a : from.getAnnotations())
 		{
 			if (isCopyable(a))
 			{
 				assert a.getElements().size() == 1;
 				Element e = a.getElements().get(0);
 
-				to.addAnnotation(a.getType(), e.getType().toString(), e.getValue().copy());
+				to.addAnnotation(a.getType(), e.getName(), e.getValue());
 				++count;
 			}
 		}
@@ -146,12 +145,9 @@ public class AnnotationMapper
 		return count;
 	}
 
-	private boolean hasCopyableAnnotation(Attributes a)
+	private boolean hasCopyableAnnotation(Annotations a)
 	{
-		if (a.getAnnotations() == null)
-			return false;
-
-		for (Annotation an : a.getAnnotations().getAnnotations())
+		for (Annotation an : a.getAnnotations())
 			if (isCopyable(an))
 				return true;
 

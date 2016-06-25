@@ -41,14 +41,14 @@ import net.runelite.asm.execution.Value;
 
 public class IAdd extends Instruction
 {
-	public IAdd(Instructions instructions, InstructionType type, int pc)
+	public IAdd(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public IAdd(Instructions instructions)
 	{
-		super(instructions, InstructionType.IADD, -1);
+		super(instructions, InstructionType.IADD);
 	}
 
 	@Override

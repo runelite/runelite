@@ -40,14 +40,14 @@ import net.runelite.asm.execution.StackContext;
 
 public class Pop extends Instruction
 {
-	public Pop(Instructions instructions, InstructionType type, int pc)
+	public Pop(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public Pop(Instructions instructions)
 	{
-		super(instructions, InstructionType.POP, -1);
+		super(instructions, InstructionType.POP);
 	}
 
 	@Override

@@ -42,7 +42,6 @@ import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
-import net.runelite.asm.pool.NameAndType;
 
 public class Frame
 {
@@ -101,11 +100,11 @@ public class Frame
 		if (!method.isStatic())
 			variables.set(pos++, new VariableContext(new Type(method.getMethods().getClassFile().getName())).markParameter());
 		
-		NameAndType nat = method.getNameAndType();
-		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
+		//NameAndType nat = method.getNameAndType();
+		for (int i = 0; i < method.getDescriptor().size(); ++i)
 		{
-			variables.set(pos, new VariableContext(new Type(nat.getDescriptor().getTypeOfArg(i))).markParameter());
-			pos += nat.getDescriptor().getTypeOfArg(i).getSlots();
+			variables.set(pos, new VariableContext(new Type(method.getDescriptor().getTypeOfArg(i))).markParameter());
+			pos += method.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		
 		Code code = method.getCode();
@@ -145,9 +144,7 @@ public class Frame
 			}
 		}
 
-		NameAndType nat = method.getNameAndType();
-		
-		for (int i = 0; i < nat.getNumberOfArgs(); ++i)
+		for (int i = 0; i < method.getDescriptor().size(); ++i)
 		{
 			StackContext argument = pops.remove(0);
 
@@ -155,7 +152,7 @@ public class Frame
 			vctx.markParameter();
 
 			variables.set(lvtOffset, vctx);
-			lvtOffset += nat.getDescriptor().getTypeOfArg(i).getSlots();
+			lvtOffset += method.getDescriptor().getTypeOfArg(i).getSlots();
 		}
 		
 		assert pops.isEmpty();
@@ -209,11 +206,6 @@ public class Frame
 		return method;
 	}
 	
-	public int getPc()
-	{
-		return cur.getPc();
-	}
-
 	public Stack getStack()
 	{
 		return stack;

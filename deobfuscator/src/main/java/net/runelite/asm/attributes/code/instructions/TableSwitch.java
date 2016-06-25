@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,20 +42,19 @@ import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
+import org.objectweb.asm.MethodVisitor;
 
 public class TableSwitch extends Instruction implements JumpingInstruction
 {
 	private List<Label> branchi = new ArrayList<>();
 	private Label defi;
 	
-	private int def;
 	private int low;
 	private int high;
-	private int[] jumps;
 
-	public TableSwitch(Instructions instructions, InstructionType type, int pc)
+	public TableSwitch(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	@Override
@@ -68,70 +64,12 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		i.branchi = new ArrayList<>(branchi);
 		return i;
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		int pc = this.getPc();
-		int tableSkip = 4 - (pc + 1) % 4;
-		if (tableSkip == 4) tableSkip = 0;
-		if (tableSkip > 0) is.skip(tableSkip);
-
-		def = is.readInt();
-		low = is.readInt();
-		high = is.readInt();
-
-		int count = high - low + 1;
-		jumps = new int[count];
-
-		for (int i = 0; i < count; ++i)
-			jumps[i] = is.readInt();
-
-		length += tableSkip + 12 + (count * 4);
-	}
-	
-	// changing the pc changes the instruction length due to padding
-	@Override
-	public void setPc(int pc)
-	{
-		super.setPc(pc);
-		
-		int tableSkip = 4 - (pc + 1) % 4;
-		if (tableSkip == 4) tableSkip = 0;
-		
-		length = 1 + tableSkip + 12 + (jumps.length * 4);
-	}
-	
-	@Override
-	public void resolve()
-	{
-		Instructions ins = this.getInstructions();
-
-		for (int i : jumps)
-		{
-			Instruction in = ins.findInstruction(this.getPc() + i);
-			branchi.add(ins.createLabelFor(in));
-		}
-
-		Instruction in = ins.findInstruction(this.getPc() + def);
-		defi = ins.createLabelFor(in);
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		
-		int tableSkip = 4 - (this.getPc() + 1) % 4;
-		if (tableSkip == 4) tableSkip = 0;
-		if (tableSkip > 0) out.write(new byte[tableSkip]);
-		
-		out.writeInt(defi.next().getPc() - this.getPc());
-		out.writeInt(low);
-		out.writeInt(high);
-		
-		for (Label i : branchi)
-			out.writeInt(i.next().getPc() - this.getPc());
+		visitor.visitTableSwitchInsn(low, high, defi.getLabel(),
+			branchi.stream().map(l -> l.getLabel()).toArray(org.objectweb.asm.Label[]::new));
 	}
 
 	@Override
@@ -174,4 +112,52 @@ public class TableSwitch extends Instruction implements JumpingInstruction
 		list.add(defi);
 		return list.stream().distinct().collect(Collectors.toList());
 	}
+
+	@Override
+	public void setLabel(org.objectweb.asm.Label label)
+	{
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public int getLow()
+	{
+		return low;
+	}
+
+	public void setLow(int low)
+	{
+		this.low = low;
+	}
+
+	public int getHigh()
+	{
+		return high;
+	}
+
+	public void setHigh(int high)
+	{
+		this.high = high;
+	}
+
+	public List<Label> getBranchi()
+	{
+		return branchi;
+	}
+
+	public void setBranchi(List<Label> branchi)
+	{
+		this.branchi = branchi;
+	}
+
+	public Label getDefi()
+	{
+		return defi;
+	}
+
+	public void setDefi(Label defi)
+	{
+		this.defi = defi;
+	}
+
+
 }

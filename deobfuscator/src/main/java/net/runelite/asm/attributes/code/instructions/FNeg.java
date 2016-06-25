@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class FNeg extends Instruction
 {
-	public FNeg(Instructions instructions, InstructionType type, int pc)
+	public FNeg(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

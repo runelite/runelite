@@ -30,14 +30,11 @@
 
 package net.runelite.asm.attributes.annotation;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.asm.ConstantPool;
 import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.signature.Type;
+import org.objectweb.asm.AnnotationVisitor;
 
 public class Annotation
 {
@@ -80,31 +77,10 @@ public class Annotation
 		elements.add(element);
 	}
 	
-	public void load(DataInputStream is) throws IOException
+	public void accept(AnnotationVisitor visitor)
 	{
-		ConstantPool pool = annotations.getAttributes().getClassFile().getPool();
-		
-		int typeIndex = is.readUnsignedShort();
-		type = new Type(pool.getUTF8(typeIndex));
-		
-		int pairs = is.readUnsignedShort();
-		for (int i = 0; i < pairs; ++i)
-		{
-			Element e = new Element(this);
-			e.load(is);
-			elements.add(e);
-		}
-	}
-	
-	public void write(DataOutputStream out) throws IOException
-	{
-		ConstantPool pool = annotations.getAttributes().getClassFile().getPool();
-		
-		out.writeShort(pool.makeUTF8(type.getFullType()));
-		out.writeShort(elements.size());
-		for (Element e : elements)
-		{
-			e.write(out);
-		}
+		for (Element element : elements)
+			visitor.visit(element.getName(), element.getValue());
+		visitor.visitEnd();
 	}
 }

@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class DMul extends Instruction
 {
-	public DMul(Instructions instructions, InstructionType type, int pc)
+	public DMul(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

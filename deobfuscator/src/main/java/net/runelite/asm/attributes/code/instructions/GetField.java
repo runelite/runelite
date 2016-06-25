@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
@@ -47,45 +44,40 @@ import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Field;
-import net.runelite.asm.pool.NameAndType;
+import org.objectweb.asm.MethodVisitor;
 
 public class GetField extends Instruction implements GetFieldInstruction
 {
 	private Field field;
 	private net.runelite.asm.Field myField;
 
-	public GetField(Instructions instructions, InstructionType type, int pc)
+	public GetField(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public GetField(Instructions instructions, Field field)
 	{
-		super(instructions, InstructionType.GETFIELD, -1);
+		super(instructions, InstructionType.GETFIELD);
 		
 		this.field = field;
-		length += 2;
 	}
 	
 	@Override
 	public String toString()
 	{
-		Method m = this.getInstructions().getCode().getAttributes().getMethod();
-		return "getfield " + myField + " in " + m + " at pc 0x" + Integer.toHexString(this.getPc());
+		Method m = this.getInstructions().getCode().getMethod();
+		return "getfield " + myField + " in " + m;// + " at pc 0x" + Integer.toHexString(this.getPc());
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		field = this.getPool().getField(is.readUnsignedShort());
-		length += 2;
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(this.getPool().make(field));
+		visitor.visitFieldInsn(this.getType().getCode(),
+			field.getClazz().getName(),
+			field.getName(),
+			field.getType().getFullType()
+		);
 	}
 
 	@Override
@@ -97,7 +89,7 @@ public class GetField extends Instruction implements GetFieldInstruction
 		StackContext object = stack.pop();
 		ins.pop(object);
 		
-		StackContext ctx = new StackContext(ins, new Type(field.getNameAndType().getDescriptorType()), Value.UNKNOWN);
+		StackContext ctx = new StackContext(ins, new Type(field.getType()), Value.UNKNOWN);
 		stack.push(ctx);
 		
 		ins.push(ctx);
@@ -114,14 +106,13 @@ public class GetField extends Instruction implements GetFieldInstruction
 	@Override
 	public net.runelite.asm.Field getMyField()
 	{
-		Class clazz = field.getClassEntry();
-		NameAndType nat = field.getNameAndType();
+		Class clazz = field.getClazz();
 
-		ClassFile cf = this.getInstructions().getCode().getAttributes().getClassFile().getGroup().findClass(clazz.getName());
+		ClassFile cf = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup().findClass(clazz.getName());
 		if (cf == null)
 			return null;
 
-		net.runelite.asm.Field f2 = cf.findFieldDeep(nat);
+		net.runelite.asm.Field f2 = cf.findFieldDeep(field.getName(), field.getType());
 		return f2;
 	}
 	
@@ -140,5 +131,11 @@ public class GetField extends Instruction implements GetFieldInstruction
 			// different if the field was deep
 			if (getMyField() != myField)
 				field = myField.getPoolField();
+	}
+
+	@Override
+	public void setField(Field field)
+	{
+		this.field = field;
 	}
 }

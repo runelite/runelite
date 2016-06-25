@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
@@ -42,61 +39,47 @@ import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
+import org.objectweb.asm.MethodVisitor;
 
 public class Goto extends Instruction implements JumpingInstruction
 {
+	private org.objectweb.asm.Label asmlabel;
 	private Label to;
-	private short offset;
 
-	public Goto(Instructions instructions, InstructionType type, int pc)
+	public Goto(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	public Goto(Instructions instructions, Label to)
 	{
-		super(instructions, InstructionType.GOTO, -1);
-		
+		super(instructions, InstructionType.GOTO);
+
+		assert to != null;
 		this.to = to;
-		length += 2;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "goto " + to + " (at pc " + (this.getPc() + offset) + ")";
+		return "goto " + to;// + " (at pc " + (this.getPc() + offset) + ")";
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		offset = is.readShort();
-		length += 2;
+		assert getJumps().size() == 1;
+
+		visitor.visitJumpInsn(this.getType().getCode(), getJumps().get(0).getLabel());
 	}
-	
+
 	@Override
 	public void resolve()
 	{
 		Instructions ins = this.getInstructions();
 
-		Instruction i = ins.findInstruction(this.getPc() + offset);
-		to = ins.createLabelFor(i);
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		
-		int offset = to.next().getPc() - this.getPc();
-		
-		assert offset <= Short.MAX_VALUE;
-		assert offset >= Short.MIN_VALUE;
-		
-		assert to.next().getInstructions() == this.getInstructions();
-		assert to.next().getInstructions().getInstructions().contains(to.next());
-		
-		out.writeShort(offset);
+		to = ins.findLabel(asmlabel);
+		assert to != null;
 	}
 	
 	@Override
@@ -119,5 +102,12 @@ public class Goto extends Instruction implements JumpingInstruction
 	public List<Label> getJumps()
 	{
 		return Arrays.asList(to);
+	}
+
+	@Override
+	public void setLabel(org.objectweb.asm.Label label)
+	{
+		assert label != null;
+		asmlabel = label;
 	}
 }

@@ -41,7 +41,6 @@ import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Instruction;
@@ -95,11 +94,7 @@ public class UnusedParameters implements Deobfuscator
 	
 	private Signature getObfuscatedSignature(Method m)
 	{
-		Annotations an = m.getAttributes().getAnnotations();
-		if (an == null)
-			return null;
-		
-		Annotation a = an.find(OBFUSCATED_SIGNATURE);
+		Annotation a = m.getAnnotations().find(OBFUSCATED_SIGNATURE);
 		if (a == null)
 			return null;
 
@@ -149,7 +144,7 @@ public class UnusedParameters implements Deobfuscator
 	public List<Integer> findUnusedParameters(Method method)
 	{
 		int offset = method.isStatic() ? 0 : 1;
-		Signature signature = method.getNameAndType().getDescriptor();
+		Signature signature = method.getDescriptor();
 		List<Integer> unusedParams = new ArrayList<>();
 		
 		for (int variableIndex = 0, lvtIndex = offset;
@@ -262,7 +257,7 @@ public class UnusedParameters implements Deobfuscator
 				}
 		
 		for (Method method : methods)
-			method.arguments.remove(paramIndex);
+			method.getDescriptor().remove(paramIndex);
 	}
 
 	private int count;

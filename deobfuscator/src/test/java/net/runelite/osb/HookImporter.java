@@ -42,10 +42,8 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.AttributeType;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
-import net.runelite.asm.pool.UTF8;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.deob.util.JarUtil;
@@ -103,10 +101,10 @@ public class HookImporter
 			
 			assert cf != null;
 			
-			String implementsName = getAnnotation(cf.getAttributes().getAnnotations(), IMPLEMENTS);
+			String implementsName = getAnnotation(cf.getAnnotations(), IMPLEMENTS);
 			if (implementsName.isEmpty())
 			{
-				cf.getAttributes().addAnnotation(IMPLEMENTS, "value", new UTF8(deobfuscatedClassName));
+				cf.getAnnotations().addAnnotation(IMPLEMENTS, "value", deobfuscatedClassName);
 				++classes;
 			}
 			
@@ -135,10 +133,10 @@ public class HookImporter
 				
 				assert f != null;
 				
-				String exportedName = getAnnotation(f.getAttributes().getAnnotations(), EXPORT);
+				String exportedName = getAnnotation(f.getAnnotations(), EXPORT);
 				if (exportedName.isEmpty())
 				{
-					f.getAttributes().addAnnotation(EXPORT, "value", new UTF8(deobfuscatedFieldName));
+					f.getAnnotations().addAnnotation(EXPORT, "value", deobfuscatedFieldName);
 					++fields;
 				}
 			}
@@ -168,10 +166,10 @@ public class HookImporter
 				
 				assert m != null;
 				
-				String exportedName = getAnnotation(m.getAttributes().getAnnotations(), EXPORT);
+				String exportedName = getAnnotation(m.getAnnotations(), EXPORT);
 				if (exportedName.isEmpty())
 				{
-					m.getAttributes().addAnnotation(EXPORT, "value", new UTF8(deobfuscatedMethodName));
+					m.getAnnotations().addAnnotation(EXPORT, "value", deobfuscatedMethodName);
 					++methods;
 				}
 			}
@@ -201,10 +199,10 @@ public class HookImporter
 				
 				assert m != null;
 				
-				String exportedName = getAnnotation(m.getAttributes().getAnnotations(), EXPORT);
+				String exportedName = getAnnotation(m.getAnnotations(), EXPORT);
 				if (exportedName.isEmpty())
 				{
-					m.getAttributes().addAnnotation(EXPORT, "value", new UTF8(deobfuscatedMethodName));
+					m.getAnnotations().addAnnotation(EXPORT, "value", deobfuscatedMethodName);
 					++callbacks;
 				}
 			}
@@ -220,7 +218,7 @@ public class HookImporter
 			if (c.getName().equals(name))
 				return c;
 			
-			Annotations an = (Annotations) c.getAttributes().findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+			Annotations an = c.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
 				return c;
 		}
@@ -231,7 +229,7 @@ public class HookImporter
 	{
 		for (Field f : c.getFields().getFields())
 		{
-			Annotations an = (Annotations) f.getAttributes().findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+			Annotations an = f.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
 				return f;
 		}
@@ -244,7 +242,7 @@ public class HookImporter
 		
 		for (Method m : c.getMethods().getMethods())
 		{
-			Annotations an = (Annotations) m.getAttributes().findType(AttributeType.RUNTIMEVISIBLEANNOTATIONS);
+			Annotations an = m.getAnnotations();
 			if (getAnnotation(an, OBFUSCATED_NAME).equals(name))
 			{
 				Signature methodSig = getObfuscatedMethodSignature(m);
@@ -276,7 +274,7 @@ public class HookImporter
 			{
 				for (Element e : a.getElements())
 				{
-					String str = (String) e.getValue().getObject();
+					String str = (String) e.getValue();
 					return str;
 				}
 			}
@@ -287,7 +285,7 @@ public class HookImporter
 	
 	private Signature getObfuscatedMethodSignature(Method method)
 	{
-		String sig = getAnnotation(method.getAttributes().getAnnotations(), OBFUSCATED_SIGNATURE);
+		String sig = getAnnotation(method.getAnnotations(), OBFUSCATED_SIGNATURE);
 		if (sig.isEmpty() == false)
 			return toObSignature(new Signature(sig)); // if it is annoted, use that
 		else
@@ -307,7 +305,7 @@ public class HookImporter
 		ClassFile cf = group.findClass(className);
 		assert cf != null;
 		
-		Annotations an = cf.getAttributes().getAnnotations();
+		Annotations an = cf.getAnnotations();
 		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
 	}

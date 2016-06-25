@@ -42,9 +42,9 @@ import net.runelite.asm.execution.StackContext;
 
 public class D2F extends Instruction implements ConversionInstruction
 {
-	public D2F(Instructions instructions, InstructionType type, int pc)
+	public D2F(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

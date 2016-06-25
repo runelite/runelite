@@ -55,7 +55,7 @@ public class MultiplicationExpression
 		for (InstructionContext i : instructions)
 		{
 			PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-			Number value = (Number) pci.getConstant().getObject();
+			Number value = (Number) pci.getConstant();
 
 			result = DMath.multiply(result, value);
 		}
@@ -65,17 +65,17 @@ public class MultiplicationExpression
 			// mul dupmagic by result of dup ins?
 			
 			PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
-			Number value = (Number) pci.getConstant().getObject();
+			Number value = (Number) pci.getConstant();
 			
 			for (InstructionContext ic : dupedInstructions)
 			{
 				PushConstantInstruction pci2 = (PushConstantInstruction) ic.getInstruction();
-				Number value2 = (Number) pci2.getConstant().getObject();
+				Number value2 = (Number) pci2.getConstant();
 				
 				value = DMath.multiply(value, value2);
 			}
 			
-			Instruction newIns = pci.setConstant(DMath.toPool(value));
+			Instruction newIns = pci.setConstant(value);
 			assert newIns == (Instruction) pci;
 		}
 		
@@ -90,11 +90,11 @@ public class MultiplicationExpression
 			if (dupmagic != null)
 			{
 				PushConstantInstruction pci = (PushConstantInstruction) dupmagic.getInstruction();
-				Number value = (Number) pci.getConstant().getObject();
+				Number value = (Number) pci.getConstant();
 				
 				value = DMath.multiply(value, DMath.modInverse(result));
 				
-				pci.setConstant(DMath.toPool(value));
+				pci.setConstant(value);
 			}
 			
 			// constant has been distributed, outer numbers all go to 1
@@ -108,7 +108,7 @@ public class MultiplicationExpression
 		for (InstructionContext i : instructions)
 		{
 			PushConstantInstruction pci = (PushConstantInstruction) i.getInstruction();
-			Instruction newIns = pci.setConstant(DMath.toPool(result));
+			Instruction newIns = pci.setConstant(result);
 			++count;
 			assert newIns == pci;
 			// rest of the results go to 1

@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class DAdd extends Instruction
 {
-	public DAdd(Instructions instructions, InstructionType type, int pc)
+	public DAdd(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

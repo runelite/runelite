@@ -65,7 +65,6 @@ import net.runelite.asm.signature.Type;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 public class AnnotationCopierTest
 {

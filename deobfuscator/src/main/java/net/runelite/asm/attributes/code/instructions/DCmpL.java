@@ -41,9 +41,9 @@ import net.runelite.asm.execution.Value;
 
 public class DCmpL extends Instruction
 {
-	public DCmpL(Instructions instructions, InstructionType type, int pc)
+	public DCmpL(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 
 	@Override

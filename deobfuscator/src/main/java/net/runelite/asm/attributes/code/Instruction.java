@@ -30,27 +30,20 @@
 
 package net.runelite.asm.attributes.code;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import net.runelite.asm.ConstantPool;
 import net.runelite.asm.Method;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
+import org.objectweb.asm.MethodVisitor;
 
 public abstract class Instruction implements Cloneable
 {
 	private Instructions instructions;
 	private InstructionType type;
 
-	private int pc; // offset into method this instructions resides at
-	protected int length = 1; // length of this instruction
-
-	public Instruction(Instructions instructions, InstructionType type, int pc)
+	public Instruction(Instructions instructions, InstructionType type)
 	{
 		this.instructions = instructions;
 		this.type = type;
-		this.pc = pc;
 	}
 	
 	@Override
@@ -58,8 +51,8 @@ public abstract class Instruction implements Cloneable
 	{
 		if (this.getInstructions() != null)
 		{
-			Method m = this.getInstructions().getCode().getAttributes().getMethod();
-			return super.toString() + " in " + m + " at pc 0x" + Integer.toHexString(this.getPc());
+			Method m = this.getInstructions().getCode().getMethod();
+			return super.toString() + " in " + m;// + " at pc 0x" + Integer.toHexString(this.getPc());
 		}
 		else
 		{
@@ -77,14 +70,10 @@ public abstract class Instruction implements Cloneable
 		}
 		catch (CloneNotSupportedException ex)
 		{
-			throw new RuntimeException();
+			throw new RuntimeException(ex);
 		}
 		
 		return i;
-	}
-	
-	public void load(DataInputStream is) throws IOException
-	{
 	}
 	
 	protected void remove()
@@ -117,15 +106,10 @@ public abstract class Instruction implements Cloneable
 	public void resolve()
 	{
 	}
-	
-	// initialize constant pool to see if instruction u/g is required 
-	public void prime()
-	{
-	}
 
-	public void write(DataOutputStream out) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		out.writeByte(type.getCode());
+		visitor.visitInsn(this.getType().getCode());
 	}
 
 	public Instructions getInstructions()
@@ -146,26 +130,6 @@ public abstract class Instruction implements Cloneable
 	protected void setType(InstructionType type)
 	{
 		this.type = type;
-	}
-	
-	public ConstantPool getPool()
-	{
-		return instructions.getCode().getAttributes().getClassFile().getPool();
-	}
-
-	public int getPc()
-	{
-		return pc;
-	}
-	
-	public void setPc(int pc)
-	{
-		this.pc = pc;
-	}
-
-	public int getLength()
-	{
-		return length;
 	}
 
 	public abstract InstructionContext execute(Frame e);

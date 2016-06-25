@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob;
 
 import net.runelite.asm.ClassFile;
@@ -36,7 +35,6 @@ import net.runelite.asm.Field;
 import net.runelite.asm.Fields;
 import net.runelite.asm.Method;
 import net.runelite.asm.Methods;
-import net.runelite.asm.attributes.Attributes;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instructions.VReturn;
@@ -51,10 +49,8 @@ public class ClassGroupFactory
 		method.setStatic();
 		methods.addMethod(method);
 
-		Attributes methodAttributes = method.getAttributes();
-
-		Code code = new Code(methodAttributes);
-		methodAttributes.addAttribute(code);
+		Code code = new Code(method);
+		method.setCode(code);
 
 		Instructions ins = code.getInstructions();
 		ins.addInstruction(new VReturn(ins));
@@ -79,25 +75,21 @@ public class ClassGroupFactory
 		method.setStatic();
 		methods.addMethod(method);
 
-		Attributes methodAttributes = method.getAttributes();
-
-		Code code = new Code(methodAttributes);
-		methodAttributes.addAttribute(code);
+		Code code = new Code(method);
+		method.setCode(code);
 
 		{
 			method = new Method(methods, "func2", new Signature("(III)V"));
 			method.setStatic();
 			methods.addMethod(method);
 
-			methodAttributes = method.getAttributes();
-
-			code = new Code(methodAttributes);
-			methodAttributes.addAttribute(code);
+			code = new Code(method);
+			method.setCode(code);
 
 			Instructions ins = code.getInstructions();
 			ins.addInstruction(new VReturn(ins));
 		}
-		
+
 		addVoidMethod(methods, "void1");
 		addVoidMethod(methods, "void2");
 		addVoidMethod(methods, "void3");

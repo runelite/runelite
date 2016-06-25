@@ -30,93 +30,81 @@
 
 package net.runelite.asm.pool;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.Objects;
-import net.runelite.asm.ConstantPool;
+import net.runelite.asm.signature.Signature;
 
-public class Method extends PoolEntry
+public class Method
 {
-	private int classIndex, natIndex;
 	private Class clazz;
-	private NameAndType nat;
-	
-	public Method(Class clazz, NameAndType nat)
+	private String name;
+	private Signature type;
+
+	public Method(Class clazz, String name, Signature type)
 	{
-		super(ConstantType.METHODREF);
-		
 		this.clazz = clazz;
-		this.nat = nat;
-	}
-
-	public Method(ConstantPool pool, DataInputStream is) throws IOException
-	{
-		super(ConstantType.METHODREF);
-
-		classIndex = is.readUnsignedShort();
-		natIndex = is.readUnsignedShort();
+		this.name = name;
+		this.type = type;
 	}
 
 	@Override
-	public Method copy()
+	public String toString()
 	{
-		return new Method(clazz.copy(), nat.copy());
-	}
-
-	@Override
-	public java.lang.String toString()
-	{
-		return clazz + "." + nat;
-	}
-	
-	@Override
-	public void resolve(ConstantPool pool)
-	{
-		clazz = pool.getClass(classIndex);
-		nat = pool.getNameAndType(natIndex);
-	}
-	
-	@Override
-	public void prime(ConstantPool pool)
-	{
-		classIndex = pool.make(clazz);
-		natIndex = pool.make(nat);		
-	}
-	
-	@Override
-	public boolean equals(Object other)
-	{
-		if (!(other instanceof Method))
-			return false;
-		
-		Method m = (Method) other;
-		return clazz.equals(m.clazz) && nat.equals(m.nat);
+		return clazz + "." + name + type;
 	}
 
 	@Override
 	public int hashCode()
 	{
 		int hash = 7;
-		hash = 67 * hash + Objects.hashCode(this.clazz);
-		hash = 67 * hash + Objects.hashCode(this.nat);
+		hash = 59 * hash + Objects.hashCode(this.clazz);
+		hash = 59 * hash + Objects.hashCode(this.name);
+		hash = 59 * hash + Objects.hashCode(this.type);
 		return hash;
 	}
-	
-	public Class getClassEntry()
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Method other = (Method) obj;
+		if (!Objects.equals(this.name, other.name))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.clazz, other.clazz))
+		{
+			return false;
+		}
+		if (!Objects.equals(this.type, other.type))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public Class getClazz()
 	{
 		return clazz;
 	}
 
-	public NameAndType getNameAndType()
+	public String getName()
 	{
-		return nat;
+		return name;
 	}
 
-	@Override
-	public void write(DataOutputStream out) throws IOException
+	public Signature getType()
 	{
-		out.writeShort(classIndex);
-		out.writeShort(natIndex);
+		return type;
 	}
 }

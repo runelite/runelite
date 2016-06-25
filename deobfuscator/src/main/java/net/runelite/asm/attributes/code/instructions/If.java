@@ -30,9 +30,6 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,38 +50,40 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
 import net.runelite.deob.deobfuscators.mapping.PacketHandler;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
+import org.objectweb.asm.MethodVisitor;
 
 public abstract class If extends Instruction implements JumpingInstruction, ComparisonInstruction, MappableInstruction
 {
+	private org.objectweb.asm.Label asmlabel;
 	private Label to;
-	private short offset;
 
-	public If(Instructions instructions, InstructionType type, int pc)
+	public If(Instructions instructions, InstructionType type)
 	{
-		super(instructions, type, pc);
+		super(instructions, type);
 	}
 	
 	public If(Instructions instructions, InstructionType type, Label to)
 	{
-		super(instructions, type, -1);
+		super(instructions, type);
 		
 		this.to = to;
 	}
 	
 	public If(Instructions instructions, Label to)
 	{
-		super(instructions, InstructionType.IF_ICMPNE, -1);
+		super(instructions, InstructionType.IF_ICMPNE);
 		
 		assert to.getInstructions() == this.getInstructions();
 		
 		this.to = to;
 	}
-	
+
 	@Override
-	public void load(DataInputStream is) throws IOException
+	public void accept(MethodVisitor visitor)
 	{
-		offset = is.readShort();
-		length += 2;
+		assert getJumps().size() == 1;
+
+		visitor.visitJumpInsn(this.getType().getCode(), getJumps().get(0).getLabel());
 	}
 	
 	@Override
@@ -92,15 +91,8 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	{
 		Instructions ins = this.getInstructions();
 
-		Instruction i = ins.findInstruction(this.getPc() + offset);
-		to = ins.createLabelFor(i);
-	}
-	
-	@Override
-	public void write(DataOutputStream out) throws IOException
-	{
-		super.write(out);
-		out.writeShort(to.next().getPc() - this.getPc());
+		to = ins.findLabel(asmlabel);
+		assert to != null;
 	}
 	
 	@Override
@@ -268,7 +260,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			}
 		}
 
-		return (Integer) gfi.getConstant().getObject();
+		return ((Number) gfi.getConstant()).intValue();
 	}
 	
 	private boolean couldBeSame(Field f1, Field f2)
@@ -326,5 +318,11 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 	public boolean canMap(InstructionContext thisIc)
 	{
 		return true;
+	}
+
+	@Override
+	public void setLabel(org.objectweb.asm.Label label)
+	{
+		asmlabel = label;
 	}
 }

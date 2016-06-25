@@ -30,11 +30,7 @@
 
 package net.runelite.asm.attributes.code;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import net.runelite.asm.ClassFile;
-import net.runelite.asm.ConstantPool;
 import net.runelite.asm.pool.Class;
 
 public class Exception implements Cloneable
@@ -44,25 +40,9 @@ public class Exception implements Cloneable
 	private Label start, end, handler;
 	private Class catchType;
 
-	public Exception(Exceptions exceptions, DataInputStream is) throws IOException
+	public Exception(Exceptions exceptions)
 	{
 		this.exceptions = exceptions;
-
-		ConstantPool pool = exceptions.getCode().getAttributes().getClassFile().getPool();
-
-		int startPc = is.readUnsignedShort();
-		int endPc = is.readUnsignedShort();
-		int handlerPc = is.readUnsignedShort();
-		catchType = pool.getClass(is.readUnsignedShort());
-		
-		Instructions instructions = exceptions.getCode().getInstructions();
-		start = instructions.createLabelFor(instructions.findInstruction(startPc));
-		end = instructions.createLabelFor(instructions.findInstruction(endPc));
-		handler = instructions.createLabelFor(instructions.findInstruction(handlerPc));
-		
-		assert start != null;
-		assert end != null;
-		assert handler != null;
 	}
 	
 	@Override
@@ -76,24 +56,6 @@ public class Exception implements Cloneable
 		{
 			throw new RuntimeException();
 		}
-	}
-	
-	public void write(DataOutputStream out) throws IOException
-	{
-		ConstantPool pool = exceptions.getCode().getAttributes().getClassFile().getPool();
-		
-		assert start.getInstructions() == exceptions.getCode().getInstructions();
-		assert end.getInstructions() == exceptions.getCode().getInstructions();
-		assert handler.getInstructions() == exceptions.getCode().getInstructions();
-		
-		assert start.getInstructions().getInstructions().contains(start);
-		assert end.getInstructions().getInstructions().contains(end);
-		assert handler.getInstructions().getInstructions().contains(handler);
-		
-		out.writeShort(start.next().getPc());
-		out.writeShort(end.next().getPc());
-		out.writeShort(handler.next().getPc());
-		out.writeShort(catchType == null ? 0 : pool.make(catchType));
 	}
 	
 	public Exceptions getExceptions()
@@ -120,27 +82,30 @@ public class Exception implements Cloneable
 	{
 		return end;
 	}
+
+	public void setEnd(Label end)
+	{
+		this.end = end;
+	}
 	
 	public Label getHandler()
 	{
 		return handler;
 	}
-	
-	public void replace(Instruction oldi, Instruction newi)
+
+	public void setHandler(Label handler)
 	{
-//		if (start == oldi)
-//			start = newi;
-//
-//		if (end == oldi)
-//			end = newi;
-//
-//		if (handler == oldi)
-//			handler = newi;
+		this.handler = handler;
 	}
 	
 	public Class getCatchType()
 	{
 		return catchType;
+	}
+
+	public void setCatchType(Class catchType)
+	{
+		this.catchType = catchType;
 	}
 	
 	public void renameClass(ClassFile cf, String name)

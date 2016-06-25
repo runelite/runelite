@@ -30,40 +30,23 @@
 
 package net.runelite.asm.attributes;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.pool.Class;
 
-public class Exceptions extends Attribute
+public class Exceptions
 {
-	private List<Class> classes = new ArrayList<>();
-	
-	public Exceptions(Attributes attributes)
+	private final List<Class> classes = new ArrayList<>();
+
+	public void addException(Class cl)
 	{
-		super(attributes, AttributeType.EXCEPTIONS);
-	}
-	
-	@Override
-	public void loadAttribute(DataInputStream is) throws IOException
-	{
-		int count = is.readUnsignedShort();
-		for (int i = 0; i < count; ++i)
-		{
-			Class clazz = this.getAttributes().getClassFile().getPool().getClass(is.readUnsignedShort());
-			classes.add(clazz);
-		}
+		classes.add(cl);
 	}
 
-	@Override
-	public void writeAttr(DataOutputStream out) throws IOException
+	public List<Class> getExceptions()
 	{
-		out.writeShort(classes.size());
-		for (Class c : classes)
-			out.writeShort(this.getAttributes().getClassFile().getPool().make(c));
+		return classes;
 	}
 	
 	public void renameClass(ClassFile cf, String name)
