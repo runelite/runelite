@@ -67,6 +67,11 @@ public class Annotations
 				return a;
 		return null;
 	}
+
+	public int size()
+	{
+		return annotations.size();
+	}
 	
 	public Annotation addAnnotation(Type type, String name, Object value)
 	{

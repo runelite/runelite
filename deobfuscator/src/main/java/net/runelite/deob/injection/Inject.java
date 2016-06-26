@@ -184,7 +184,7 @@ public class Inject
 		{
 			Annotations an = cf.getAnnotations();
 
-			if (an == null)
+			if (an == null || an.size() == 0)
 				continue;
 
 			String obfuscatedName = cf.getName();
