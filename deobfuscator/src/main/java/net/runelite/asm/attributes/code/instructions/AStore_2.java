@@ -47,7 +47,7 @@ import org.objectweb.asm.Opcodes;
 
 public class AStore_2 extends Instruction implements LVTInstruction
 {
-	public AStore_2(Instructions instructions, InstructionType type, int pc)
+	public AStore_2(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
 	}
