@@ -54,7 +54,7 @@ public class VirtualMethods
 		List<Method> parentMethods = findBaseMethods(new ArrayList<>(), cf.getParent(), name, type);
 		
 		for (ClassFile inter : cf.getInterfaces().getMyInterfaces())
-			findBaseMethods(parentMethods, inter, name, type);
+			parentMethods.addAll(findBaseMethods(new ArrayList<>(), inter, name, type));
 		
 		// parentMethods take precedence over our methods
 		return parentMethods.isEmpty() ? methods : parentMethods;
