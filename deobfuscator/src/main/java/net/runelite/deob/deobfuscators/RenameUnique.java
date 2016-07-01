@@ -36,6 +36,7 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
 import net.runelite.asm.signature.util.VirtualMethods;
+import net.runelite.deob.Deob;
 import net.runelite.deob.Deobfuscator;
 import net.runelite.deob.util.NameMappings;
 
@@ -49,7 +50,7 @@ public class RenameUnique implements Deobfuscator
 		
 		for (ClassFile cf : group.getClasses())
 		{
-			if (cf.getName().length() > 2)
+			if (cf.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
 				continue;
 			
 			map.map(cf.getPoolClass(), "class" + i++);
@@ -63,7 +64,7 @@ public class RenameUnique implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 			for (Field field : cf.getFields().getFields())
 			{
-				if (field.getName().length() > 2)
+				if (field.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
 					continue;
 				
 				map.map(field.getPoolField(), "field" + i++);
@@ -77,7 +78,7 @@ public class RenameUnique implements Deobfuscator
 		for (ClassFile cf : group.getClasses())
 			for (Method method : cf.getMethods().getMethods())
 			{
-				if (method.getName().length() > 2)
+				if (method.getName().length() > Deob.OBFUSCATED_NAME_MAX_LEN)
 					continue;
 				
 				List<Method> virtualMethods = VirtualMethods.getVirutalMethods(method);
