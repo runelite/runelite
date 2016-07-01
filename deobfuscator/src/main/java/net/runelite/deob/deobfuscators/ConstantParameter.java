@@ -465,7 +465,7 @@ public class ConstantParameter implements Deobfuscator
 
 			Element element = new Element(annotation);
 			element.setName("garbageValue");
-			element.setValue(value);
+			element.setValue(value.toString());
 			annotation.addElement(element);
 		}
 	}
