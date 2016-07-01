@@ -142,7 +142,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 		sig.remove(idx);
 		
 		// create new method pool object
-		method = new Method(clazz, clazz.getName(), sig);
+		method = new Method(clazz, method.getName(), sig);
 	}
 
 	@Override
