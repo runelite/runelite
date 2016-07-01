@@ -71,7 +71,7 @@ public class RenameUniqueTest
 	}
 	
 	@Test
-	public void testRun() throws IOException
+	public void testRun()
 	{
 		RenameUnique renameUnique = new RenameUnique();
 		renameUnique.run(group);
