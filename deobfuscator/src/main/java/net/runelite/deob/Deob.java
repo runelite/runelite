@@ -123,10 +123,12 @@ public class Deob
 		long end = System.currentTimeMillis();
 		System.out.println("Done in " + ((end - start) / 1000L) + "s");
 	}
+
+	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
 	
 	public static boolean isObfuscated(String name)
 	{
-		return name.length() <= 2 || name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
+		return name.length() <= OBFUSCATED_NAME_MAX_LEN || name.startsWith("method") || name.startsWith("vmethod") || name.startsWith("field") || name.startsWith("class");
 	}
 	
 	private static void run(ClassGroup group, Deobfuscator deob)
