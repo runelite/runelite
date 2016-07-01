@@ -35,6 +35,7 @@ import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.signature.Type;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class Field
 {
@@ -45,7 +46,6 @@ public class Field
 	public static int ACC_FINAL = 0x0010;
 	public static int ACC_VOLATILE = 0x0040;
 	public static int ACC_TRANSIENT = 0x0080;
-	public static int ACC_SYNTHETIC = 0x1000;
 	public static int ACC_ENUM = 0x4000;
 
 	private Fields fields;
@@ -105,6 +105,11 @@ public class Field
 	public void setStatic()
 	{
 		accessFlags |= ACC_STATIC;
+	}
+
+	public boolean isSynthetic()
+	{
+		return (accessFlags & Opcodes.ACC_SYNTHETIC) != 0;
 	}
 
 	public String getName()

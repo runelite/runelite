@@ -168,7 +168,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		
 		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
 		
-		net.runelite.asm.Method m = otherClass.findMethod(method.getName(), method.getType());
+		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getName(), method.getType());
 		if (m == null)
 			return null;
 
