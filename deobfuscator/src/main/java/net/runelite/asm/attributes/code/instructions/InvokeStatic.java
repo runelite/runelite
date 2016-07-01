@@ -162,7 +162,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		if (otherClass == null)
 			return null; // not our class
 		
-		net.runelite.asm.Method other = otherClass.findMethod(method.getName(), method.getType());
+		net.runelite.asm.Method other = otherClass.findMethodDeepStatic(method.getName(), method.getType());
 		if (other == null)
 			return null; // when regenerating the pool after renaming the method this can be null.
 		
