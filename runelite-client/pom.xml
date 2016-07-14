@@ -64,7 +64,7 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>net.runelite.rs</groupId>
+			<groupId>net.runelite</groupId>
 			<artifactId>api</artifactId>
 			<version>1.0.5-SNAPSHOT</version>
 		</dependency>
