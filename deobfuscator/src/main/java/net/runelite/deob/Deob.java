@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.deobfuscators.CastNull;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;
@@ -117,6 +118,8 @@ public class Deob
 		run(group, new ExprArgOrder());
 
 		run(group, new Lvt());
+		
+		run(group, new CastNull());
 
 		JarUtil.saveJar(group, new File(args[1]));
 		
