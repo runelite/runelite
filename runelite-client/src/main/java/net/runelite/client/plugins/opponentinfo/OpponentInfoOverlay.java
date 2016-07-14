@@ -80,8 +80,9 @@ class OpponentInfoOverlay extends Overlay
 		if (opponent == null)
 			return null;
 
-		int cur = opponent.getHealth();
-		int max = opponent.getMaxHealth();
+//		int cur = opponent.getHealth();
+//		int max = opponent.getMaxHealth();
+		int cur = 0, max = 0; // XXX
 
 		FontMetrics fm = graphics.getFontMetrics();
 
