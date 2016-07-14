@@ -243,7 +243,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		return fields.isEmpty() ? null : fields;
 	}
 
-	private Integer getConstantInstruction(InstructionContext ctx)
+	protected Integer getConstantInstruction(InstructionContext ctx)
 	{
 		PushConstantInstruction gfi = null;
 
@@ -259,6 +259,9 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 				gfi = (PushConstantInstruction) base.getInstruction();
 			}
 		}
+		
+		if (gfi == null)
+			return null;
 
 		return ((Number) gfi.getConstant()).intValue();
 	}

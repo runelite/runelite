@@ -51,6 +51,12 @@ public class IfICmpNe extends If
 		if (!this.isSameField(thisIc, otherIc))
 			return false;
 		
+		Integer i1 = this.getConstantInstruction(thisIc);
+		Integer i2 = this.getConstantInstruction(otherIc);
+		
+		if (i1 != null && i2 != null && (int) i1 != (int) i2)
+			return false;
+		
 		if (thisIc.getInstruction().getClass() == otherIc.getInstruction().getClass())
 			return true;
 		
