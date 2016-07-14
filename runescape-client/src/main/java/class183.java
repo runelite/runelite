@@ -76,7 +76,6 @@ public class class183 {
          if(client.field533[var0] >= -10) {
             class58 var9 = client.field392[var0];
             if(var9 == null) {
-               class58 var10000 = (class58)null;
                var9 = class58.method1314(class136.field2101, client.field531[var0], 0);
                if(null == var9) {
                   continue;

@@ -1195,7 +1195,6 @@ public class class46 extends class204 {
                                  }
 
                                  if(var10 == client.field312) {
-                                    class157 var10000 = (class157)null;
                                     var68 = "Please wait...";
                                     var20 = var10.field2779;
                                  }
