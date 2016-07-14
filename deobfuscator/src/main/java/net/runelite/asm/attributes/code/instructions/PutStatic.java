@@ -128,7 +128,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 
 		assert MappingExecutorUtil.isMaybeEqual(myField.getType(), otherField.getType());
 		
-		mapping.map(myField, otherField);
+		mapping.map(this, myField, otherField);
 		
 		StackContext object1 = ctx.getPops().get(0),
 			object2 = other.getPops().get(0);
@@ -146,7 +146,7 @@ public class PutStatic extends Instruction implements SetFieldInstruction
 
 			if (f1 != null && f2 != null)
 			{
-				mapping.map(f1, f2);
+				mapping.map(this, f1, f2);
 			}
 		}
 	}

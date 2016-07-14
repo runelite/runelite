@@ -221,7 +221,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 
 			if (otherMethod != null)
 			{
-				mapping.map(m1, otherMethod);
+				mapping.map(this, m1, otherMethod);
 			}
 		}
 		
@@ -243,7 +243,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 				
 				if (f1 != null && f2 != null)
 				{
-					mapping.map(f1, f2);
+					mapping.map(this, f1, f2);
 				}
 			}
 		}
@@ -266,7 +266,7 @@ public class InvokeInterface extends Instruction implements InvokeInstruction
 
 			if (f1 != null && f2 != null)
 			{
-				mapping.map(f1, f2);
+				mapping.map(this, f1, f2);
 			}
 		}
 	}

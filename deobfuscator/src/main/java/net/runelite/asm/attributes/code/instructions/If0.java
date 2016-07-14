@@ -159,7 +159,7 @@ public abstract class If0 extends Instruction implements JumpingInstruction, Com
 
 		assert MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 		
-		mapping.map(f1, f2);
+		mapping.map(this, f1, f2);
 	}
 	
 	private Field getComparedField(InstructionContext ctx)
