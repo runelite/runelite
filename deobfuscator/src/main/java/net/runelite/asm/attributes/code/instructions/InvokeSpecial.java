@@ -201,7 +201,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 		assert myMethods.size() == otherMethods.size();
 		
 		for (int i = 0; i < myMethods.size(); ++i)
-			mapping.map(myMethods.get(i), otherMethods.get(i));
+			mapping.map(this, myMethods.get(i), otherMethods.get(i));
 		
 		for (int i = 0; i < ctx.getPops().size(); ++i)
 		{
@@ -221,7 +221,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 				
 				if (f1 != null && f2 != null)
 				{
-					mapping.map(f1, f2);
+					mapping.map(this, f1, f2);
 				}
 			}
 		}
@@ -244,7 +244,7 @@ public class InvokeSpecial extends Instruction implements InvokeInstruction
 
 			if (f1 != null && f2 != null)
 			{
-				mapping.map(f1, f2);
+				mapping.map(this, f1, f2);
 			}
 		}
 	}

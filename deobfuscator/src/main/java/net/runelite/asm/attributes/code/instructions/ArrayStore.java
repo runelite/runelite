@@ -77,7 +77,7 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 		Field myField = this.getMyField(ctx),
 			otherField = ((ArrayStore) other.getInstruction()).getMyField(other);
 		
-		mapping.map(myField, otherField);
+		mapping.map(this, myField, otherField);
 		
 		// map value
 
@@ -97,7 +97,7 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 
 			if (f1 != null && f2 != null)
 			{
-				mapping.map(f1, f2);
+				mapping.map(this, f1, f2);
 			}
 		}
 	}

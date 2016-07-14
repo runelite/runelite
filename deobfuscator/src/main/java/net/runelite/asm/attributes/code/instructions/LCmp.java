@@ -98,7 +98,7 @@ public class LCmp extends Instruction implements MappableInstruction
 		{
 			Field f1 = f1s.get(i), f2 = f2s.get(i);
 
-			mappings.map(f1, f2);
+			mappings.map(this, f1, f2);
 		}
 	}
 

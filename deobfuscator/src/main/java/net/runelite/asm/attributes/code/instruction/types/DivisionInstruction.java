@@ -31,6 +31,7 @@
 package net.runelite.asm.attributes.code.instruction.types;
 
 import net.runelite.asm.Field;
+import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.deob.deobfuscators.mapping.MappingExecutorUtil;
@@ -61,7 +62,7 @@ public interface DivisionInstruction extends MappableInstruction
 			Field fi1 = f1.getMyField(), fi2 = f2.getMyField();
 
 			if (fi1 != null && fi2 != null)
-				mappings.map(fi1, fi2);
+				mappings.map((Instruction) this, fi1, fi2);
 		}
 
 		if (i2.getInstruction() instanceof GetFieldInstruction && io2.getInstruction() instanceof GetFieldInstruction)
@@ -72,7 +73,7 @@ public interface DivisionInstruction extends MappableInstruction
 			Field fi1 = f1.getMyField(), fi2 = f2.getMyField();
 
 			if (fi1 != null && fi2 != null)
-				mappings.map(fi1, fi2);
+				mappings.map((Instruction) this, fi1, fi2);
 		}
 	}
 

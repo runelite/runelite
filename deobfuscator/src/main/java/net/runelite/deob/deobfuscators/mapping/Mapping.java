@@ -30,10 +30,15 @@
 
 package net.runelite.deob.deobfuscators.mapping;
 
+import java.util.ArrayList;
+import java.util.List;
+import net.runelite.asm.attributes.code.Instruction;
+
 public class Mapping
 {
 	private Object object;
 	private int count;
+	private List<Instruction> ins = new ArrayList<>();
 
 	public Mapping(Object object)
 	{
@@ -65,5 +70,13 @@ public class Mapping
 	{
 		assert object == other.object;
 		count += other.count;
+		for (Instruction i : other.ins)
+			addInstruction(i);
+	}
+	
+	public void addInstruction(Instruction i)
+	{
+		if (!ins.contains(i))
+			ins.add(i);
 	}
 }
