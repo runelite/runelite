@@ -73,12 +73,13 @@
 	</repositories>
 
 	<modules>
-		<module>deobfuscator</module>
-		<module>runescape-client</module>
-		<module>runelite-client</module>
-		<module>runelite-api</module>
-		<module>model-viewer</module>
 		<module>cache</module>
+		<module>deobfuscator</module>
+		<module>model-viewer</module>
+		<module>runelite-api</module>
+		<module>runelite-client</module>
+		<module>runescape-client</module>
+		<module>runescape-api</module>
 	</modules>
 
 	<profiles>
