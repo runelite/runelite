@@ -90,7 +90,7 @@ public class Mapper
 			if (mapping == null)
 				continue;
 
-			mapping.map(mapping.m1, mapping.m2);
+			mapping.map(null, mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
 		}
@@ -119,7 +119,7 @@ public class Mapper
 			if (mapping == null)
 				continue;
 			
-			mapping.map(mapping.m1, mapping.m2);
+			mapping.map(null, mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
 		}
@@ -150,7 +150,7 @@ public class Mapper
 					continue;
 
 				ParallelExecutorMapping p = MappingExecutorUtil.map(m, m2);
-				p.map(m, m2);
+				p.map(null, m, m2);
 
 				mapping.merge(p);
 			}

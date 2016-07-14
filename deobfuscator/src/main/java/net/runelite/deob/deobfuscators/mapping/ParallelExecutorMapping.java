@@ -33,6 +33,7 @@ package net.runelite.deob.deobfuscators.mapping;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +43,7 @@ import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
 import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,7 +69,7 @@ public class ParallelExecutorMapping
 	@Override
 	public String toString()
 	{
-		return "ParallelExecutorMapping{size = " + map.keySet().size() + ", crashed = " + crashed + ", same = " + same + "}";
+		return "ParallelExecutorMapping{size = " + map.keySet().size() + ", crashed = " + crashed + ", same = " + same + ", m1 = " + m1 + ", m2 = " + m2 + "}";
 	}
 
 	private Mapping getMapping(Object from, Object to)
@@ -104,9 +106,12 @@ public class ParallelExecutorMapping
 		}
 	}
 	
-	public void map(Object one, Object two)
+	public void map(Instruction mapper, Object one, Object two)
 	{
 		Mapping m = getMapping(one, two);
+		
+		if (mapper != null)
+			m.addInstruction(mapper);
 		
 		belongs(one, group);
 		belongs(two, group2);
@@ -212,6 +217,11 @@ public class ParallelExecutorMapping
 	public Object get(Object o)
 	{
 		return highest(o);
+	}
+	
+	public Collection<Mapping> getMappings(Object o)
+	{
+		return map.get(o);
 	}
 	
 	public Map<Object, Object> getMap()

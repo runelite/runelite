@@ -179,7 +179,7 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 
 			assert MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 
-			mapping.map(f1, f2);
+			mapping.map(this, f1, f2);
 
 			if (f1.packetHandler && f2.packetHandler)
 			{
@@ -209,14 +209,14 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2))
 			{
-				mapping.map(f1, f2);
-				mapping.map(j1, j2);
+				mapping.map(this, f1, f2);
+				mapping.map(this, j1, j2);
 			}
 			
 			if (couldBeSame(f1, j2) && couldBeSame(j1, f2))
 			{
-				mapping.map(f1, j2);
-				mapping.map(j1, f2);
+				mapping.map(this, f1, j2);
+				mapping.map(this, j1, f2);
 			}
 		}
 		else

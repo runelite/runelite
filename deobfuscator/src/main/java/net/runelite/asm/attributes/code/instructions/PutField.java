@@ -130,7 +130,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 		
 		assert MappingExecutorUtil.isMaybeEqual(myField.getType(), otherField.getType());
 		
-		mapping.map(myField, otherField);
+		mapping.map(this, myField, otherField);
 		
 		// map assignment
 		
@@ -165,7 +165,7 @@ public class PutField extends Instruction implements SetFieldInstruction
 
 			if (f1 != null && f2 != null)
 			{
-				mapping.map(f1, f2);
+				mapping.map(this, f1, f2);
 			}
 		}
 	}

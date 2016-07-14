@@ -106,7 +106,7 @@ public class ParallellMappingExecutor
 		if (oldf1 != f1 && oldf2 != f2)
 			if (oldf1.otherStatic == oldf2 && oldf2.otherStatic == oldf1)
 			{
-				mappings.map(oldf1.getMethod(), oldf2.getMethod());
+				mappings.map(null, oldf1.getMethod(), oldf2.getMethod());
 			//	System.out.println("STEP OUT " + oldf1.getMethod() + " <-> " + oldf2.getMethod());
 			}
 		

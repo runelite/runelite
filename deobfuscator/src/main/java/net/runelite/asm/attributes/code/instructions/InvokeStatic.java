@@ -40,6 +40,7 @@ import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.instruction.types.GetFieldInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
@@ -192,7 +193,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 		assert myMethods.size() == otherMethods.size();
 		
 		for (int i = 0; i < myMethods.size(); ++i)
-			mapping.map(myMethods.get(i), otherMethods.get(i));
+			mapping.map(this, myMethods.get(i), otherMethods.get(i));
 		
 		for (int i = 0; i < ctx.getPops().size(); ++i)
 		{
@@ -212,7 +213,7 @@ public class InvokeStatic extends Instruction implements InvokeInstruction
 				
 				if (f1 != null && f2 != null)
 				{
-					mapping.map(f1, f2);
+					mapping.map(this, f1, f2);
 				}
 			}
 		}
