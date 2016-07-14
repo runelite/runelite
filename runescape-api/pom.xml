@@ -37,49 +37,8 @@
 		<version>1.1.4-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.runelite</groupId>
-	<artifactId>client</artifactId>
-	<version>1.0.5-SNAPSHOT</version>
-	<name>Runelite Client</name>
-
-	<properties>
-		<slf4j.version>1.7.12</slf4j.version>
-	</properties>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.jopt-simple</groupId>
-			<artifactId>jopt-simple</artifactId>
-			<version>5.0.1</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>api</artifactId>
-			<version>1.0.5-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>client</artifactId>
-			<version>117.2-SNAPSHOT</version> <!-- rs version -->
-			<scope>runtime</scope>
-		</dependency>
-		
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+	<groupId>net.runelite.rs</groupId>
+	<artifactId>api</artifactId>
+	<version>117.2-SNAPSHOT</version> <!-- rs version -->
+	<name>RuneScape API</name>
 </project>
