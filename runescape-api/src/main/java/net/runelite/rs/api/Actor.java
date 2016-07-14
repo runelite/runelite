@@ -46,15 +46,6 @@ public interface Actor extends Renderable
 	@Import("overhead")
 	String getOverhead();
 
-	@Import("loopCycle")
-	int getLoopCycle();
-
-	@Import("health")
-	int getHealth();
-
-	@Import("maxHealth")
-	int getMaxHealth();
-
 	@Import("x")
 	int getX();
 
@@ -63,7 +54,4 @@ public interface Actor extends Renderable
 
 	@Import("animation")
 	int getAnimation();
-
-	@Import("hitSplats")
-	int[] getHitSplats();
 }

@@ -63,14 +63,4 @@ public abstract class Actor extends Renderable
 		i = i - 32767 - 1;
 		return client.getPlayers()[i];
 	}
-
-	public int getHealth()
-	{
-		return actor.getHealth();
-	}
-
-	public int getMaxHealth()
-	{
-		return actor.getMaxHealth();
-	}
 }
