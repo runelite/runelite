@@ -1,229 +1,202 @@
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
-public final class class143 implements Runnable {
-   @ObfuscatedName("n")
-   byte[] field2177;
-   @ObfuscatedName("u")
-   OutputStream field2178;
-   @ObfuscatedName("x")
-   Socket field2179;
-   @ObfuscatedName("b")
-   boolean field2180 = false;
-   @ObfuscatedName("l")
-   class136 field2181;
-   @ObfuscatedName("d")
-   class146 field2182;
-   @ObfuscatedName("m")
+@ObfuscatedName("es")
+public class class143 implements MouseListener, MouseMotionListener, FocusListener {
+   @ObfuscatedName("e")
+   @Export("mouse")
+   public static class143 field2194 = new class143();
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 18319765
+      intValue = -1706928853
    )
-   int field2184 = 0;
+   public static volatile int field2196 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1116759599
+   )
+   static volatile int field2197 = -1;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -120531411
+   )
+   public static int field2198 = 0;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -907835521
+   )
+   public static int field2199 = 0;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -209294319
+   )
+   @Export("mouseIdleTicks")
+   public static volatile int field2200 = 0;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 93185481
+   )
+   public static int field2201 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1720644071
+   )
+   static volatile int field2203 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 930461619
+   )
+   static volatile int field2204 = 0;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      longValue = 7742943097353478567L
+   )
+   static volatile long field2205 = 0L;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -441347367
+   )
+   static volatile int field2206 = 0;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1537050835
+   )
+   public static int field2207 = 0;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1398318017
+      intValue = -669248693
    )
-   int field2185 = 0;
+   public static int field2208 = 0;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      longValue = -684925489863418469L
+   )
+   public static long field2209 = 0L;
    @ObfuscatedName("s")
-   boolean field2186 = false;
-   @ObfuscatedName("f")
-   InputStream field2188;
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1707770328"
+   static int[] field2210;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 378875483
    )
-   public int method3012() throws IOException {
-      return this.field2180?0:this.field2188.available();
+   static volatile int field2211 = -1;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1242929943
+   )
+   public static int field2213 = 0;
+
+   public final synchronized void mousePressed(MouseEvent var1) {
+      if(null != field2194) {
+         field2200 = 0;
+         field2203 = var1.getX();
+         field2204 = var1.getY();
+         field2205 = client.method424();
+         if(var1.isAltDown()) {
+            field2206 = 4;
+            field2196 = 4;
+         } else if(var1.isMetaDown()) {
+            field2206 = 2;
+            field2196 = 2;
+         } else {
+            field2206 = 1;
+            field2196 = 1;
+         }
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
    }
 
-   @ObfuscatedName("d")
+   public final synchronized void mouseReleased(MouseEvent var1) {
+      if(field2194 != null) {
+         field2200 = 0;
+         field2196 = 0;
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
+
+   public final void mouseClicked(MouseEvent var1) {
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
+
+   public final synchronized void mouseExited(MouseEvent var1) {
+      if(null != field2194) {
+         field2200 = 0;
+         field2197 = -1;
+         field2211 = -1;
+      }
+
+   }
+
+   public final synchronized void mouseMoved(MouseEvent var1) {
+      if(null != field2194) {
+         field2200 = 0;
+         field2197 = var1.getX();
+         field2211 = var1.getY();
+      }
+
+   }
+
+   public final void focusGained(FocusEvent var1) {
+   }
+
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(field2194 != null) {
+         field2196 = 0;
+      }
+
+   }
+
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(null != field2194) {
+         field2200 = 0;
+         field2197 = var1.getX();
+         field2211 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mouseEntered(MouseEvent var1) {
+      if(field2194 != null) {
+         field2200 = 0;
+         field2197 = var1.getX();
+         field2211 = var1.getY();
+      }
+
+   }
+
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "15"
+      garbageValue = "-9"
    )
-   public void method3013() {
-      if(!this.field2180) {
-         synchronized(this) {
-            this.field2180 = true;
-            this.notifyAll();
-         }
-
-         if(this.field2182 != null) {
-            while(this.field2182.field2214 == 0) {
-               class98.method2264(1L);
-            }
-
-            if(this.field2182.field2214 == 1) {
-               try {
-                  ((Thread)this.field2182.field2216).join();
-               } catch (InterruptedException var3) {
-                  ;
-               }
-            }
-         }
-
-         this.field2182 = null;
-      }
+   public static void method3070() {
+      class44.field1021.method3835();
+      class44.field1022.method3835();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-500540860"
+      signature = "(Lclass0;I)V",
+      garbageValue = "1020870884"
    )
-   public int method3015() throws IOException {
-      return this.field2180?0:this.field2188.read();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-1856079456"
-   )
-   public void method3018(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2180) {
-         if(this.field2186) {
-            this.field2186 = false;
-            throw new IOException();
-         } else {
-            if(this.field2177 == null) {
-               this.field2177 = new byte[5000];
-            }
-
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.field2177[this.field2185] = var1[var5 + var2];
-                  this.field2185 = (1 + this.field2185) % 5000;
-                  if((4900 + this.field2184) % 5000 == this.field2185) {
-                     throw new IOException();
-                  }
-               }
-
-               if(null == this.field2182) {
-                  this.field2182 = this.field2181.method2903(this, 3);
-               }
-
-               this.notifyAll();
-            }
-         }
-      }
-   }
-
-   public void run() {
-      try {
-         while(true) {
-            label84: {
-               int var1;
-               int var2;
-               synchronized(this) {
-                  if(this.field2185 == this.field2184) {
-                     if(this.field2180) {
-                        break label84;
-                     }
-
-                     try {
-                        this.wait();
-                     } catch (InterruptedException var10) {
-                        ;
-                     }
-                  }
-
-                  var2 = this.field2184;
-                  if(this.field2185 >= this.field2184) {
-                     var1 = this.field2185 - this.field2184;
-                  } else {
-                     var1 = 5000 - this.field2184;
-                  }
-               }
-
-               if(var1 <= 0) {
-                  continue;
-               }
-
-               try {
-                  this.field2178.write(this.field2177, var2, var1);
-               } catch (IOException var9) {
-                  this.field2186 = true;
-               }
-
-               this.field2184 = (var1 + this.field2184) % 5000;
-
-               try {
-                  if(this.field2184 == this.field2185) {
-                     this.field2178.flush();
-                  }
-               } catch (IOException var8) {
-                  this.field2186 = true;
-               }
-               continue;
-            }
-
-            try {
-               if(null != this.field2188) {
-                  this.field2188.close();
-               }
-
-               if(this.field2178 != null) {
-                  this.field2178.close();
-               }
-
-               if(this.field2179 != null) {
-                  this.field2179.close();
-               }
-            } catch (IOException var7) {
-               ;
-            }
-
-            this.field2177 = null;
-            break;
-         }
-      } catch (Exception var12) {
-         class45.method984((String)null, var12);
-      }
-
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "1461295401"
-   )
-   public void method3036(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field2180) {
-         while(var3 > 0) {
-            int var4 = this.field2188.read(var1, var2, var3);
-            if(var4 <= 0) {
-               throw new EOFException();
-            }
-
-            var2 += var4;
-            var3 -= var4;
-         }
-
-      }
-   }
-
-   public class143(Socket var1, class136 var2) throws IOException {
-      this.field2181 = var2;
-      this.field2179 = var1;
-      this.field2179.setSoTimeout(30000);
-      this.field2179.setTcpNoDelay(true);
-      this.field2179.setReceiveBufferSize(16384);
-      this.field2179.setSendBufferSize(16384);
-      this.field2188 = this.field2179.getInputStream();
-      this.field2178 = this.field2179.getOutputStream();
-   }
-
-   protected void finalize() {
-      this.method3013();
+   static void method3071(class0 var0) {
+      class39.method803(var0, 200000);
    }
 }

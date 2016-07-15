@@ -1,201 +1,158 @@
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Shape;
-import java.awt.image.ColorModel;
-import java.awt.image.DirectColorModel;
-import java.awt.image.ImageConsumer;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
-import java.util.Hashtable;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
+import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bu")
-@Implements("SecondaryBufferProvider")
-public final class class75 extends class77 implements ImageProducer, ImageObserver {
-   @ObfuscatedName("u")
-   ImageConsumer field1389;
-   @ObfuscatedName("f")
-   ColorModel field1395;
-
-   public synchronized boolean isConsumer(ImageConsumer var1) {
-      return var1 == this.field1389;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;B)V",
-      garbageValue = "-41"
-   )
-   public final void vmethod1929(int var1, int var2, Component var3) {
-      super.field1402 = var1;
-      super.field1404 = var2;
-      super.field1406 = new int[1 + var2 * var1];
-      this.field1395 = new DirectColorModel(32, 16711680, '\uff00', 255);
-      super.field1405 = var3.createImage(this);
-      this.method1682();
-      var3.prepareImage(super.field1405, this);
-      this.method1682();
-      var3.prepareImage(super.field1405, this);
-      this.method1682();
-      var3.prepareImage(super.field1405, this);
-      this.method1733();
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "-1142358962"
-   )
-   @Export("draw")
-   public final void vmethod1939(Graphics var1, int var2, int var3) {
-      this.method1682();
-      var1.drawImage(super.field1405, var2, var3, this);
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "-1276226507"
-   )
-   @Export("drawSub")
-   public final void vmethod1931(Graphics var1, int var2, int var3, int var4, int var5) {
-      this.method1667(var2, var3, var4, var5);
-      Shape var6 = var1.getClip();
-      var1.clipRect(var2, var3, var4, var5);
-      var1.drawImage(super.field1405, 0, 0, this);
-      var1.setClip(var6);
-   }
-
-   public synchronized void addConsumer(ImageConsumer var1) {
-      this.field1389 = var1;
-      var1.setDimensions(super.field1402, super.field1404);
-      var1.setProperties((Hashtable)null);
-      var1.setColorModel(this.field1395);
-      var1.setHints(14);
-   }
-
-   public void requestTopDownLeftRightResend(ImageConsumer var1) {
-   }
-
-   public boolean imageUpdate(Image var1, int var2, int var3, int var4, int var5, int var6) {
-      return true;
-   }
-
+@ObfuscatedName("bz")
+public class class75 implements Runnable {
+   @ObfuscatedName("h")
+   volatile boolean field1417 = false;
    @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "-92"
-   )
-   synchronized void method1667(int var1, int var2, int var3, int var4) {
-      if(null != this.field1389) {
-         this.field1389.setPixels(var1, var2, var3, var4, this.field1395, super.field1406, var1 + var2 * super.field1402, super.field1402);
-         this.field1389.imageComplete(2);
-      }
-   }
+   volatile class59[] field1418 = new class59[2];
+   @ObfuscatedName("c")
+   volatile boolean field1419 = false;
+   @ObfuscatedName("e")
+   class139 field1423;
 
-   public void startProduction(ImageConsumer var1) {
-      this.addConsumer(var1);
-   }
+   public void run() {
+      this.field1417 = true;
 
-   public synchronized void removeConsumer(ImageConsumer var1) {
-      if(var1 == this.field1389) {
-         this.field1389 = null;
-      }
+      try {
+         while(!this.field1419) {
+            class59 var2;
+            for(int var1 = 0; var1 < 2; ++var1) {
+               var2 = this.field1418[var1];
+               if(var2 != null) {
+                  var2.method1277();
+               }
+            }
 
-   }
+            class125.method2881(10L);
+            class139 var5 = this.field1423;
+            var2 = null;
+            if(null != var5.field2144) {
+               for(int var3 = 0; var3 < 50 && var5.field2144.peekEvent() != null; ++var3) {
+                  class125.method2881(1L);
+               }
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1851782589"
-   )
-   synchronized void method1682() {
-      if(null != this.field1389) {
-         this.field1389.setPixels(0, 0, super.field1402, super.field1404, this.field1395, super.field1406, 0, super.field1402);
-         this.field1389.imageComplete(2);
-      }
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lclass167;I)V",
-      garbageValue = "65280"
-   )
-   public static void method1697(class167 var0) {
-      class217.field3163 = var0;
-      class129.field2054 = class217.field3163.method3321(16);
-   }
-
-   @ObfuscatedName("cb")
-   @ObfuscatedSignature(
-      signature = "([Lclass173;Lclass173;ZI)V",
-      garbageValue = "1664682832"
-   )
-   static void method1698(class173[] var0, class173 var1, boolean var2) {
-      int var3 = var1.field2777 != 0?var1.field2777:var1.field2769;
-      int var4 = var1.field2778 != 0?var1.field2778:var1.field2888;
-      class183.method3633(var0, var1.field2869, var3, var4, var2);
-      if(null != var1.field2767) {
-         class183.method3633(var1.field2767, var1.field2869, var3, var4, var2);
-      }
-
-      class3 var5 = (class3)client.field448.method3822((long)var1.field2869);
-      if(null != var5) {
-         int var6 = var5.field64;
-         if(class135.method2897(var6)) {
-            class183.method3633(class173.field2770[var6], -1, var3, var4, var2);
+               if(null != var2) {
+                  var5.field2144.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               }
+            }
          }
-      }
-
-      if(var1.field2758 == 1337) {
-         ;
+      } catch (Exception var8) {
+         class46.method1008((String)null, var8);
+      } finally {
+         this.field1417 = false;
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("dc")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-143037715"
+   )
+   static void method1663(int var0, int var1) {
+      class32 var2 = class11.field189;
+      class25.method587(var2.field749, var2.field746, var2.field748, var2.field747, var2.field750, var2.field750, var0, var1);
+      class11.field189 = null;
+   }
+
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-2043680265"
+      garbageValue = "465203058"
    )
-   static final int method1699(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
+   static final int method1668(int var0, int var1) {
+      int var2 = class2.method14(var0 - 1, var1 - 1) + class2.method14(var0 + 1, var1 - 1) + class2.method14(var0 - 1, var1 + 1) + class2.method14(1 + var0, 1 + var1);
+      int var3 = class2.method14(var0 - 1, var1) + class2.method14(1 + var0, var1) + class2.method14(var0, var1 - 1) + class2.method14(var0, 1 + var1);
+      int var4 = class2.method14(var0, var1);
+      return var4 / 4 + var3 / 8 + var2 / 16;
+   }
 
-         return var1;
+   @ObfuscatedName("dx")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)Z",
+      garbageValue = "-936741152"
+   )
+   static boolean method1669(String var0, boolean var1) {
+      if(null == var0) {
+         return false;
       } else {
-         var1 = var1 * (var0 & 127) / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
+         String var2 = class17.method167(var0, client.field296);
+
+         for(int var3 = 0; var3 < client.field511; ++var3) {
+            if(var2.equalsIgnoreCase(class17.method167(client.field564[var3].field253, client.field296)) && (!var1 || client.field564[var3].field249 != 0)) {
+               return true;
+            }
          }
 
-         return var1 + (var0 & 'ﾀ');
+         if(var2.equalsIgnoreCase(class17.method167(class118.field2035.field52, client.field296))) {
+            return true;
+         } else {
+            return false;
+         }
       }
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("du")
    @ObfuscatedSignature(
-      signature = "(IZZZS)Lclass168;",
-      garbageValue = "6567"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1452515303"
    )
-   static class168 method1700(int var0, boolean var1, boolean var2, boolean var3) {
-      class134 var4 = null;
-      if(class149.field2237 != null) {
-         var4 = new class134(var0, class149.field2237, class17.field257[var0], 1000000);
-      }
+   static final void method1670(String var0) {
+      if(var0 != null) {
+         if((client.field511 < 200 || client.field418 == 1) && client.field511 < 400) {
+            String var1 = class17.method167(var0, client.field296);
+            if(var1 != null) {
+               int var2;
+               String var4;
+               String var5;
+               for(var2 = 0; var2 < client.field511; ++var2) {
+                  class17 var3 = client.field564[var2];
+                  var4 = class17.method167(var3.field253, client.field296);
+                  if(var4 != null && var4.equals(var1)) {
+                     class25.method586(30, "", var0 + " is already on your friend list");
+                     return;
+                  }
 
-      return new class168(var4, client.field566, var0, var1, var2, var3);
+                  if(null != var3.field257) {
+                     var5 = class17.method167(var3.field257, client.field296);
+                     if(null != var5 && var5.equals(var1)) {
+                        class25.method586(30, "", var0 + " is already on your friend list");
+                        return;
+                     }
+                  }
+               }
+
+               for(var2 = 0; var2 < client.field346; ++var2) {
+                  class7 var6 = client.field560[var2];
+                  var4 = class17.method167(var6.field141, client.field296);
+                  if(null != var4 && var4.equals(var1)) {
+                     class25.method586(30, "", "Please remove " + var0 + " from your ignore list first");
+                     return;
+                  }
+
+                  if(var6.field131 != null) {
+                     var5 = class17.method167(var6.field131, client.field296);
+                     if(null != var5 && var5.equals(var1)) {
+                        class25.method586(30, "", "Please remove " + var0 + " from your ignore list first");
+                        return;
+                     }
+                  }
+               }
+
+               if(class17.method167(class118.field2035.field52, client.field296).equals(var1)) {
+                  class25.method586(30, "", "You can\'t add yourself to your own friend list");
+               } else {
+                  client.field336.method2854(98);
+                  client.field336.method2795(class29.method650(var0));
+                  client.field336.method2601(var0);
+               }
+            }
+         } else {
+            class25.method586(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
+         }
+      }
    }
 }

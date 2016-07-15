@@ -2,137 +2,107 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gh")
-@Implements("Deque")
-public class class199 {
-   @ObfuscatedName("u")
-   @Export("current")
-   class208 field3099;
-   @ObfuscatedName("f")
-   @Export("head")
-   public class208 field3100 = new class208();
+@ObfuscatedName("ge")
+@Implements("XHashTable")
+public final class class199 {
+   @ObfuscatedName("h")
+   class211 field3135;
+   @ObfuscatedName("l")
+   @Export("buckets")
+   class211[] field3136;
+   @ObfuscatedName("e")
+   @Export("size")
+   int field3137;
+   @ObfuscatedName("c")
+   class211 field3138;
+   @ObfuscatedName("r")
+   int field3139 = 0;
 
-   @ObfuscatedName("f")
-   public void method3849() {
-      while(true) {
-         class208 var1 = this.field3100.field3116;
-         if(var1 == this.field3100) {
-            this.field3099 = null;
-            return;
+   @ObfuscatedName("e")
+   public class211 method3864(long var1) {
+      class211 var3 = this.field3136[(int)(var1 & (long)(this.field3137 - 1))];
+
+      for(this.field3138 = var3.field3162; this.field3138 != var3; this.field3138 = this.field3138.field3162) {
+         if(this.field3138.field3161 == var1) {
+            class211 var4 = this.field3138;
+            this.field3138 = this.field3138.field3162;
+            return var4;
          }
-
-         var1.method3946();
-      }
-   }
-
-   @ObfuscatedName("d")
-   public class208 method3850() {
-      class208 var1 = this.field3100.field3117;
-      if(var1 == this.field3100) {
-         return null;
-      } else {
-         var1.method3946();
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("x")
-   public void method3851(class208 var1) {
-      if(var1.field3117 != null) {
-         var1.method3946();
       }
 
-      var1.field3117 = this.field3100;
-      var1.field3116 = this.field3100.field3116;
-      var1.field3117.field3116 = var1;
-      var1.field3116.field3117 = var1;
-   }
-
-   @ObfuscatedName("n")
-   public class208 method3852() {
-      class208 var1 = this.field3100.field3116;
-      if(var1 == this.field3100) {
-         this.field3099 = null;
-         return null;
-      } else {
-         this.field3099 = var1.field3116;
-         return var1;
-      }
+      this.field3138 = null;
+      return null;
    }
 
    @ObfuscatedName("l")
-   public class208 method3853() {
-      class208 var1 = this.field3100.field3116;
-      if(var1 == this.field3100) {
-         return null;
+   public void method3865(class211 var1, long var2) {
+      if(var1.field3163 != null) {
+         var1.method4000();
+      }
+
+      class211 var4 = this.field3136[(int)(var2 & (long)(this.field3137 - 1))];
+      var1.field3163 = var4.field3163;
+      var1.field3162 = var4;
+      var1.field3163.field3162 = var1;
+      var1.field3162.field3163 = var1;
+      var1.field3161 = var2;
+   }
+
+   @ObfuscatedName("h")
+   public class211 method3867() {
+      this.field3139 = 0;
+      return this.method3868();
+   }
+
+   @ObfuscatedName("r")
+   public class211 method3868() {
+      class211 var1;
+      if(this.field3139 > 0 && this.field3135 != this.field3136[this.field3139 - 1]) {
+         var1 = this.field3135;
+         this.field3135 = var1.field3162;
+         return var1;
       } else {
-         var1.method3946();
+         do {
+            if(this.field3139 >= this.field3137) {
+               return null;
+            }
+
+            var1 = this.field3136[this.field3139++].field3162;
+         } while(var1 == this.field3136[this.field3139 - 1]);
+
+         this.field3135 = var1.field3162;
          return var1;
       }
    }
 
-   @ObfuscatedName("m")
-   public class208 method3856() {
-      class208 var1 = this.field3100.field3117;
-      if(var1 == this.field3100) {
-         this.field3099 = null;
-         return null;
-      } else {
-         this.field3099 = var1.field3117;
-         return var1;
-      }
-   }
+   public class199(int var1) {
+      this.field3137 = var1;
+      this.field3136 = new class211[var1];
 
-   @ObfuscatedName("g")
-   public class208 method3857() {
-      class208 var1 = this.field3099;
-      if(var1 == this.field3100) {
-         this.field3099 = null;
-         return null;
-      } else {
-         this.field3099 = var1.field3116;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("s")
-   public class208 method3858() {
-      class208 var1 = this.field3099;
-      if(var1 == this.field3100) {
-         this.field3099 = null;
-         return null;
-      } else {
-         this.field3099 = var1.field3117;
-         return var1;
-      }
-   }
-
-   public class199() {
-      this.field3100.field3116 = this.field3100;
-      this.field3100.field3117 = this.field3100;
-   }
-
-   @ObfuscatedName("b")
-   public static void method3872(class208 var0, class208 var1) {
-      if(var0.field3117 != null) {
-         var0.method3946();
+      for(int var2 = 0; var2 < var1; ++var2) {
+         class211 var3 = this.field3136[var2] = new class211();
+         var3.field3162 = var3;
+         var3.field3163 = var3;
       }
 
-      var0.field3117 = var1.field3117;
-      var0.field3116 = var1;
-      var0.field3117.field3116 = var0;
-      var0.field3116.field3117 = var0;
    }
 
-   @ObfuscatedName("u")
-   public void method3877(class208 var1) {
-      if(var1.field3117 != null) {
-         var1.method3946();
+   @ObfuscatedName("c")
+   void method3877() {
+      for(int var1 = 0; var1 < this.field3137; ++var1) {
+         class211 var2 = this.field3136[var1];
+
+         while(true) {
+            class211 var3 = var2.field3162;
+            if(var3 == var2) {
+               break;
+            }
+
+            var3.method4000();
+         }
       }
 
-      var1.field3117 = this.field3100.field3117;
-      var1.field3116 = this.field3100;
-      var1.field3117.field3116 = var1;
-      var1.field3116.field3117 = var1;
+      this.field3138 = null;
+      this.field3135 = null;
    }
 }

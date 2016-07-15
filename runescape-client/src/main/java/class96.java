@@ -1,173 +1,98 @@
+import java.awt.Graphics;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
-@Implements("VertexNormal")
-public class class96 {
-   @ObfuscatedName("u")
+@ObfuscatedName("ce")
+@Implements("GroundObject")
+public final class class96 {
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1086283585
+      intValue = -605462743
    )
-   int field1632;
-   @ObfuscatedName("f")
+   int field1658;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 882170309
+      intValue = 2009493337
    )
-   int field1634;
-   @ObfuscatedName("b")
+   @Export("y")
+   int field1659;
+   @ObfuscatedName("h")
+   @Export("renderable")
+   public class88 field1660;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 2127040129
+      intValue = 152061983
    )
-   int field1635;
-   @ObfuscatedName("ml")
+   @Export("hash")
+   public int field1661;
+   @ObfuscatedName("dy")
+   static byte[][] field1662;
+   @ObfuscatedName("nk")
    @ObfuscatedGetter(
-      intValue = -1436704075
+      intValue = -1490173559
    )
-   static int field1636;
-   @ObfuscatedName("x")
+   static int field1663;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1435100875
+      intValue = -1995059607
    )
-   int field1637;
+   @Export("floor")
+   int field1665;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 813545765
+   )
+   @Export("x")
+   int field1668;
 
-   class96() {
-   }
-
-   class96(class96 var1) {
-      this.field1634 = var1.field1634;
-      this.field1632 = var1.field1632;
-      this.field1637 = var1.field1637;
-      this.field1635 = var1.field1635;
-   }
-
-   @ObfuscatedName("ci")
+   @ObfuscatedName("ef")
    @ObfuscatedSignature(
-      signature = "(IIIILjava/lang/String;I)V",
-      garbageValue = "1740438949"
+      signature = "(Lclass176;IB)Ljava/lang/String;",
+      garbageValue = "-68"
    )
-   static void method2260(int var0, int var1, int var2, int var3, String var4) {
-      class173 var5 = class172.method3425(var1, var2);
-      if(var5 != null) {
-         if(null != var5.field2859) {
-            class0 var6 = new class0();
-            var6.field1 = var5;
-            var6.field2 = var0;
-            var6.field9 = var4;
-            var6.field0 = var5.field2859;
-            class31.method737(var6, 200000);
-         }
-
-         boolean var7 = true;
-         if(var5.field2758 > 0) {
-            var7 = class11.method150(var5);
-         }
-
-         if(var7) {
-            if(class167.method3361(class18.method205(var5), var0 - 1)) {
-               if(var0 == 1) {
-                  client.field333.method2773(121);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 2) {
-                  client.field333.method2773(5);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 3) {
-                  client.field333.method2773(175);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 4) {
-                  client.field333.method2773(23);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 5) {
-                  client.field333.method2773(42);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 6) {
-                  client.field333.method2773(202);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 7) {
-                  client.field333.method2773(69);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 8) {
-                  client.field333.method2773(174);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 9) {
-                  client.field333.method2773(210);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-               if(var0 == 10) {
-                  client.field333.method2773(192);
-                  client.field333.method2539(var1);
-                  client.field333.method2540(var2);
-                  client.field333.method2540(var3);
-               }
-
-            }
-         }
-      }
+   static String method2258(class176 var0, int var1) {
+      return !class54.method1150(class27.method644(var0), var1) && null == var0.field2894?null:(null != var0.field2868 && var0.field2868.length > var1 && var0.field2868[var1] != null && var0.field2868[var1].trim().length() != 0?var0.field2868[var1]:null);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lclass167;IIIZI)V",
-      garbageValue = "-1648075804"
+      signature = "(Lclass170;Lclass170;Lclass170;I)V",
+      garbageValue = "831668466"
    )
-   public static void method2261(class167 var0, int var1, int var2, int var3, boolean var4) {
-      class183.field2953 = 1;
-      class20.field582 = var0;
-      class21.field589 = var1;
-      class213.field3145 = var2;
-      class183.field2956 = var3;
-      class20.field583 = var4;
-      class183.field2957 = 10000;
+   public static void method2259(class170 var0, class170 var1, class170 var2) {
+      class44.field1031 = var0;
+      class44.field1020 = var1;
+      class44.field1026 = var2;
    }
 
-   @ObfuscatedName("cv")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "2128275727"
+      signature = "(Ljava/lang/String;ZI)V",
+      garbageValue = "-1984683139"
    )
-   static final String method2262(int var0) {
-      String var1 = Integer.toString(var0);
-
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+   static final void method2260(String var0, boolean var1) {
+      byte var2 = 4;
+      int var3 = var2 + 6;
+      int var4 = var2 + 6;
+      int var5 = class104.field1834.method4109(var0, 250);
+      int var6 = class104.field1834.method4110(var0, 250) * 13;
+      class82.method1911(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 0);
+      class82.method1925(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6, 16777215);
+      class104.field1834.method4116(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
+      class8.method104(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2);
+      if(var1) {
+         try {
+            Graphics var7 = class158.field2346.getGraphics();
+            class44.field1039.vmethod1975(var7, 0, 0);
+         } catch (Exception var8) {
+            class158.field2346.repaint();
+         }
+      } else {
+         class26.method600(var3, var4, var5, var6);
       }
 
-      return var1.length() > 9?" " + class164.method3251('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class164.method3251(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class164.method3251(16776960) + var1 + "</col>");
    }
 }
