@@ -1,88 +1,113 @@
+import java.awt.Component;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.DataLine.Info;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
-public class class72 implements Runnable {
-   @ObfuscatedName("u")
-   volatile class56[] field1364 = new class56[2];
-   @ObfuscatedName("x")
-   volatile boolean field1365 = false;
-   @ObfuscatedName("jp")
+@ObfuscatedName("bi")
+public class class72 extends class59 {
+   @ObfuscatedName("ae")
    @ObfuscatedGetter(
-      intValue = 224597987
+      intValue = 1630836203
    )
-   static int field1367;
-   @ObfuscatedName("b")
-   volatile boolean field1369 = false;
-   @ObfuscatedName("f")
-   class136 field1370;
+   int field1353;
+   @ObfuscatedName("as")
+   SourceDataLine field1354;
+   @ObfuscatedName("ak")
+   AudioFormat field1355;
+   @ObfuscatedName("ao")
+   byte[] field1356;
 
-   public void run() {
-      this.field1369 = true;
-
-      try {
-         while(!this.field1365) {
-            for(int var1 = 0; var1 < 2; ++var1) {
-               class56 var2 = this.field1364[var1];
-               if(null != var2) {
-                  var2.method1251();
-               }
-            }
-
-            class98.method2264(10L);
-            class164.method3257(this.field1370, (Object)null);
-         }
-      } catch (Exception var7) {
-         class45.method984((String)null, var7);
-      } finally {
-         this.field1369 = false;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2010510773"
+   )
+   void vmethod1600() {
+      if(this.field1354 != null) {
+         this.field1354.close();
+         this.field1354 = null;
       }
 
    }
 
-   @ObfuscatedName("et")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-8188704"
+      signature = "(II)V",
+      garbageValue = "1465181803"
    )
-   static void method1636(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < class3.field73; ++var4) {
-         class51 var5 = class141.method3001(var4);
-         if((!var1 || var5.field1160) && var5.field1153 == -1 && var5.field1128.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               class24.field625 = -1;
-               class106.field1874 = null;
-               return;
-            }
-
-            if(var3 >= var2.length) {
-               short[] var6 = new short[2 * var2.length];
-
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
-               }
-
-               var2 = var6;
-            }
-
-            var2[var3++] = (short)var4;
+   void vmethod1602(int var1) throws LineUnavailableException {
+      try {
+         Info var2 = new Info(SourceDataLine.class, this.field1355, var1 << (class59.field1242?2:1));
+         this.field1354 = (SourceDataLine)AudioSystem.getLine(var2);
+         this.field1354.open();
+         this.field1354.start();
+         this.field1353 = var1;
+      } catch (LineUnavailableException var5) {
+         int var4 = (var1 >>> 1 & 1431655765) + (var1 & 1431655765);
+         var4 = (var4 & 858993459) + (var4 >>> 2 & 858993459);
+         var4 = (var4 >>> 4) + var4 & 252645135;
+         var4 += var4 >>> 8;
+         var4 += var4 >>> 16;
+         int var3 = var4 & 255;
+         if(var3 != 1) {
+            this.vmethod1602(class48.method1033(var1));
+         } else {
+            this.field1354 = null;
+            throw var5;
          }
       }
+   }
 
-      class106.field1874 = var2;
-      class163.field2647 = 0;
-      class24.field625 = var3;
-      String[] var8 = new String[class24.field625];
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1337764375"
+   )
+   int vmethod1603() {
+      return this.field1353 - (this.field1354.available() >> (class59.field1242?2:1));
+   }
 
-      for(int var9 = 0; var9 < class24.field625; ++var9) {
-         var8[var9] = class141.method3001(var2[var9]).field1128;
+   @ObfuscatedName("j")
+   void vmethod1604() {
+      int var1 = 256;
+      if(class59.field1242) {
+         var1 <<= 1;
       }
 
-      class16.method192(var8, class106.field1874);
+      for(int var2 = 0; var2 < var1; ++var2) {
+         int var3 = super.field1247[var2];
+         if((8388608 + var3 & -16777216) != 0) {
+            var3 = 8388607 ^ var3 >> 31;
+         }
+
+         this.field1356[var2 * 2] = (byte)(var3 >> 8);
+         this.field1356[1 + var2 * 2] = (byte)(var3 >> 16);
+      }
+
+      this.field1354.write(this.field1356, 0, var1 << 1);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "117"
+   )
+   void vmethod1610(Component var1) {
+      this.field1355 = new AudioFormat((float)class59.field1260, 16, class59.field1242?2:1, true, false);
+      this.field1356 = new byte[256 << (class59.field1242?2:1)];
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-43"
+   )
+   void vmethod1620() {
+      this.field1354.flush();
    }
 }

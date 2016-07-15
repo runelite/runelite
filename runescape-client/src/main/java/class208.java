@@ -1,34 +1,44 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hf")
-@Implements("Node")
-public class class208 {
-   @ObfuscatedName("ex")
-   @Export("hash")
-   public long field3115;
-   @ObfuscatedName("en")
-   @Export("next")
-   public class208 field3116;
-   @ObfuscatedName("ec")
-   @Export("previous")
-   class208 field3117;
+@ObfuscatedName("hj")
+public class class208 implements Iterator {
+   @ObfuscatedName("e")
+   class205 field3153;
+   @ObfuscatedName("l")
+   class211 field3154;
+   @ObfuscatedName("c")
+   class211 field3155 = null;
 
-   @ObfuscatedName("ha")
-   @Export("linked")
-   public boolean method3942() {
-      return this.field3117 != null;
+   public Object next() {
+      class211 var1 = this.field3154;
+      if(var1 == this.field3153.field3149) {
+         var1 = null;
+         this.field3154 = null;
+      } else {
+         this.field3154 = var1.field3162;
+      }
+
+      this.field3155 = var1;
+      return var1;
    }
 
-   @ObfuscatedName("hj")
-   @Export("unlink")
-   public void method3946() {
-      if(this.field3117 != null) {
-         this.field3117.field3116 = this.field3116;
-         this.field3116.field3117 = this.field3117;
-         this.field3116 = null;
-         this.field3117 = null;
+   class208(class205 var1) {
+      this.field3153 = var1;
+      this.field3154 = this.field3153.field3149.field3162;
+      this.field3155 = null;
+   }
+
+   public void remove() {
+      if(this.field3155 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field3155.method4000();
+         this.field3155 = null;
       }
+   }
+
+   public boolean hasNext() {
+      return this.field3154 != this.field3153.field3149;
    }
 }

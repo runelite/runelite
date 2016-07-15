@@ -1,16 +1,12 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
-public class class115 {
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      longValue = -1680031037428390493L
+@ObfuscatedName("dp")
+public interface class115 {
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2010364784"
    )
-   static long field1979;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      longValue = 1355003503367995881L
-   )
-   static long field1981;
+   int vmethod3262();
 }

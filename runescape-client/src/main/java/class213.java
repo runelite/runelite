@@ -1,34 +1,46 @@
-import java.util.Comparator;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hd")
-final class class213 implements Comparator {
+@ObfuscatedName("hc")
+@Implements("ClassInfo")
+public class class213 extends class211 {
    @ObfuscatedName("l")
-   static class167 field3143;
-   @ObfuscatedName("f")
-   static class167 field3144;
-   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -851880725
+      intValue = -1911117073
    )
-   public static int field3145;
+   int field3169;
+   @ObfuscatedName("u")
+   @Export("args")
+   byte[][][] field3170;
+   @ObfuscatedName("c")
+   int[] field3171;
+   @ObfuscatedName("h")
+   int[] field3172;
+   @ObfuscatedName("r")
+   @Export("fields")
+   Field[] field3173;
+   @ObfuscatedName("a")
+   int[] field3174;
+   @ObfuscatedName("b")
+   @Export("methods")
+   Method[] field3175;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 2110143683
+   )
+   int field3176;
 
-   public int compare(Object var1, Object var2) {
-      return this.method3968((class214)var1, (class214)var2);
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lclass214;Lclass214;I)I",
-      garbageValue = "1984566612"
+      signature = "(Ljava/lang/String;B)Ljava/lang/Class;",
+      garbageValue = "23"
    )
-   int method3968(class214 var1, class214 var2) {
-      return var1.method3974().compareTo(var2.method3974());
-   }
-
-   public boolean equals(Object var1) {
-      return super.equals(var1);
+   static Class method4010(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Class.forName(var0)))))))));
    }
 }
