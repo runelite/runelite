@@ -1,265 +1,182 @@
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
-public class class140 implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("n")
+@ObfuscatedName("eo")
+public final class class140 implements KeyListener, FocusListener {
+   @ObfuscatedName("e")
+   @Export("keyboard")
+   public static class140 field2155 = new class140();
+   @ObfuscatedName("cz")
    @ObfuscatedGetter(
-      intValue = 975889837
-   )
-   public static int field2144 = 0;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 602068609
-   )
-   @Export("mouseIdleTicks")
-   public static volatile int field2145 = 0;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -802366445
-   )
-   public static int field2146 = 0;
-   @ObfuscatedName("f")
-   @Export("mouse")
-   public static class140 field2147 = new class140();
-   @ObfuscatedName("qk")
-   @ObfuscatedGetter(
-      intValue = -864740639
-   )
-   static int field2148;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -209582203
-   )
-   public static volatile int field2149 = -1;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1699530949
-   )
-   public static volatile int field2150 = -1;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -161869087
-   )
-   public static int field2151 = 0;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -897992063
-   )
-   public static volatile int field2152 = 0;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1405193985
-   )
-   public static volatile int field2153 = 0;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 1312140499
-   )
-   public static volatile int field2154 = 0;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      longValue = 2967234535569701361L
-   )
-   public static volatile long field2155 = 0L;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 539472283
+      intValue = 787907137
    )
    public static int field2156 = 0;
-   @ObfuscatedName("r")
+   @ObfuscatedName("ct")
+   public static boolean[] field2160 = new boolean[112];
+   @ObfuscatedName("cq")
+   public static int[] field2166 = new int[128];
+   @ObfuscatedName("cm")
    @ObfuscatedGetter(
-      intValue = 63792933
+      intValue = 618097437
    )
-   public static volatile int field2157 = 0;
-   @ObfuscatedName("p")
+   public static int field2167 = 0;
+   @ObfuscatedName("ci")
+   static char[] field2169 = new char[128];
+   @ObfuscatedName("cw")
+   static int[] field2170 = new int[128];
+   @ObfuscatedName("cy")
+   public static int[] field2171 = new int[128];
+   @ObfuscatedName("cd")
    @ObfuscatedGetter(
-      intValue = -2127917129
+      intValue = 1807967917
    )
-   public static int field2158 = 0;
-   @ObfuscatedName("h")
+   public static int field2172 = 0;
+   @ObfuscatedName("ce")
    @ObfuscatedGetter(
-      longValue = 2534691362631492207L
+      intValue = -1979343357
    )
-   public static long field2159 = 0L;
-   @ObfuscatedName("q")
+   public static int field2173 = 0;
+   @ObfuscatedName("co")
    @ObfuscatedGetter(
-      intValue = -1617077177
+      intValue = -993330811
    )
-   public static int field2161 = 0;
+   public static int field2174 = 0;
+   @ObfuscatedName("ch")
+   @ObfuscatedGetter(
+      intValue = -830113675
+   )
+   public static int field2175 = 0;
+   @ObfuscatedName("cx")
+   @ObfuscatedGetter(
+      intValue = 957177751
+   )
+   @Export("keyboardIdleTicks")
+   public static volatile int field2176 = 0;
+   @ObfuscatedName("cj")
+   static int[] field2177 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
 
-   public final synchronized void mousePressed(MouseEvent var1) {
-      if(null != field2147) {
-         field2145 = 0;
-         field2153 = var1.getX();
-         field2157 = var1.getY();
-         field2155 = class130.method2846();
-         if(var1.isAltDown()) {
-            field2152 = 4;
-            field2154 = 4;
-         } else if(var1.isMetaDown()) {
-            field2152 = 2;
-            field2154 = 2;
+   public final synchronized void keyPressed(KeyEvent var1) {
+      if(null != field2155) {
+         field2176 = 0;
+         int var2 = var1.getKeyCode();
+         if(var2 >= 0 && var2 < field2177.length) {
+            var2 = field2177[var2];
+            if((var2 & 128) != 0) {
+               var2 = -1;
+            }
          } else {
-            field2152 = 1;
-            field2154 = 1;
+            var2 = -1;
+         }
+
+         if(field2156 >= 0 && var2 >= 0) {
+            field2166[field2156] = var2;
+            field2156 = 1 + field2156 & 127;
+            if(field2167 == field2156) {
+               field2156 = -1;
+            }
+         }
+
+         int var3;
+         if(var2 >= 0) {
+            var3 = 1 + field2174 & 127;
+            if(field2173 != var3) {
+               field2170[field2174] = var2;
+               field2169[field2174] = 0;
+               field2174 = var3;
+            }
+         }
+
+         var3 = var1.getModifiers();
+         if((var3 & 10) != 0 || var2 == 85 || var2 == 10) {
+            var1.consume();
          }
       }
 
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
    }
 
-   public final synchronized void mouseReleased(MouseEvent var1) {
-      if(field2147 != null) {
-         field2145 = 0;
-         field2154 = 0;
+   public final synchronized void keyReleased(KeyEvent var1) {
+      if(null != field2155) {
+         field2176 = 0;
+         int var2 = var1.getKeyCode();
+         if(var2 >= 0 && var2 < field2177.length) {
+            var2 = field2177[var2] & -129;
+         } else {
+            var2 = -1;
+         }
+
+         if(field2156 >= 0 && var2 >= 0) {
+            field2166[field2156] = ~var2;
+            field2156 = 1 + field2156 & 127;
+            if(field2156 == field2167) {
+               field2156 = -1;
+            }
+         }
       }
 
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   public final synchronized void mouseEntered(MouseEvent var1) {
-      if(field2147 != null) {
-         field2145 = 0;
-         field2149 = var1.getX();
-         field2150 = var1.getY();
-      }
-
-   }
-
-   public final synchronized void mouseExited(MouseEvent var1) {
-      if(field2147 != null) {
-         field2145 = 0;
-         field2149 = -1;
-         field2150 = -1;
-      }
-
-   }
-
-   public final synchronized void mouseMoved(MouseEvent var1) {
-      if(field2147 != null) {
-         field2145 = 0;
-         field2149 = var1.getX();
-         field2150 = var1.getY();
-      }
-
-   }
-
-   public final void mouseClicked(MouseEvent var1) {
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
+      var1.consume();
    }
 
    public final void focusGained(FocusEvent var1) {
    }
 
    public final synchronized void focusLost(FocusEvent var1) {
-      if(null != field2147) {
-         field2154 = 0;
+      if(null != field2155) {
+         field2156 = -1;
       }
 
    }
 
-   public final synchronized void mouseDragged(MouseEvent var1) {
-      if(null != field2147) {
-         field2145 = 0;
-         field2149 = var1.getX();
-         field2150 = var1.getY();
+   public final void keyTyped(KeyEvent var1) {
+      if(null != field2155) {
+         char var2 = var1.getKeyChar();
+         if(var2 != 0 && var2 != '\uffff') {
+            boolean var3;
+            if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
+               var3 = true;
+            } else {
+               label71: {
+                  if(var2 != 0) {
+                     char[] var7 = class168.field2699;
+
+                     for(int var5 = 0; var5 < var7.length; ++var5) {
+                        char var6 = var7[var5];
+                        if(var2 == var6) {
+                           var3 = true;
+                           break label71;
+                        }
+                     }
+                  }
+
+                  var3 = false;
+               }
+            }
+
+            if(var3) {
+               int var4 = field2174 + 1 & 127;
+               if(var4 != field2173) {
+                  field2170[field2174] = -1;
+                  field2169[field2174] = var2;
+                  field2174 = var4;
+               }
+            }
+         }
       }
 
+      var1.consume();
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(CIB)C",
-      garbageValue = "0"
+      signature = "(CI)Z",
+      garbageValue = "413715547"
    )
-   static char method3000(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
-      }
-
-      if(var0 == 338) {
-         return 'O';
-      } else if(var0 == 339) {
-         return 'o';
-      } else if(var0 == 376) {
-         return 'Y';
-      } else {
-         return var0;
-      }
+   public static boolean method3024(char var0) {
+      return var0 >= 48 && var0 <= 57;
    }
 }

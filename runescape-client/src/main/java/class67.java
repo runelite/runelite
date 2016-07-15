@@ -1,305 +1,1495 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bv")
-public class class67 {
-   @ObfuscatedName("m")
-   int[] field1283;
-   @ObfuscatedName("n")
-   int[] field1284;
-   @ObfuscatedName("x")
-   int[] field1285;
-   @ObfuscatedName("b")
-   int field1286;
+@ObfuscatedName("bk")
+public class class67 extends class69 {
+   @ObfuscatedName("q")
+   int field1317;
    @ObfuscatedName("l")
-   int[] field1287;
-   @ObfuscatedName("f")
-   static final int[] field1288 = new int[]{256, 128, 86, 64};
-   @ObfuscatedName("u")
-   static final float[] field1289 = new float[]{1.0649863E-7F, 1.1341951E-7F, 1.2079015E-7F, 1.2863978E-7F, 1.369995E-7F, 1.459025E-7F, 1.5538409E-7F, 1.6548181E-7F, 1.7623574E-7F, 1.8768856E-7F, 1.998856E-7F, 2.128753E-7F, 2.2670913E-7F, 2.4144197E-7F, 2.5713223E-7F, 2.7384212E-7F, 2.9163792E-7F, 3.1059022E-7F, 3.307741E-7F, 3.5226967E-7F, 3.7516213E-7F, 3.995423E-7F, 4.255068E-7F, 4.5315863E-7F, 4.8260745E-7F, 5.1397E-7F, 5.4737063E-7F, 5.829419E-7F, 6.208247E-7F, 6.611694E-7F, 7.041359E-7F, 7.4989464E-7F, 7.98627E-7F, 8.505263E-7F, 9.057983E-7F, 9.646621E-7F, 1.0273513E-6F, 1.0941144E-6F, 1.1652161E-6F, 1.2409384E-6F, 1.3215816E-6F, 1.4074654E-6F, 1.4989305E-6F, 1.5963394E-6F, 1.7000785E-6F, 1.8105592E-6F, 1.9282195E-6F, 2.053526E-6F, 2.1869757E-6F, 2.3290977E-6F, 2.4804558E-6F, 2.6416496E-6F, 2.813319E-6F, 2.9961443E-6F, 3.1908505E-6F, 3.39821E-6F, 3.619045E-6F, 3.8542307E-6F, 4.1047006E-6F, 4.371447E-6F, 4.6555283E-6F, 4.958071E-6F, 5.280274E-6F, 5.623416E-6F, 5.988857E-6F, 6.3780467E-6F, 6.7925284E-6F, 7.2339453E-6F, 7.704048E-6F, 8.2047E-6F, 8.737888E-6F, 9.305725E-6F, 9.910464E-6F, 1.0554501E-5F, 1.1240392E-5F, 1.1970856E-5F, 1.2748789E-5F, 1.3577278E-5F, 1.4459606E-5F, 1.5399271E-5F, 1.6400005E-5F, 1.7465769E-5F, 1.8600793E-5F, 1.9809577E-5F, 2.1096914E-5F, 2.2467912E-5F, 2.3928002E-5F, 2.5482977E-5F, 2.7139005E-5F, 2.890265E-5F, 3.078091E-5F, 3.2781227E-5F, 3.4911533E-5F, 3.718028E-5F, 3.9596467E-5F, 4.2169668E-5F, 4.491009E-5F, 4.7828602E-5F, 5.0936775E-5F, 5.424693E-5F, 5.7772202E-5F, 6.152657E-5F, 6.552491E-5F, 6.9783084E-5F, 7.4317984E-5F, 7.914758E-5F, 8.429104E-5F, 8.976875E-5F, 9.560242E-5F, 1.0181521E-4F, 1.0843174E-4F, 1.1547824E-4F, 1.2298267E-4F, 1.3097477E-4F, 1.3948625E-4F, 1.4855085E-4F, 1.5820454E-4F, 1.6848555E-4F, 1.7943469E-4F, 1.9109536E-4F, 2.0351382E-4F, 2.167393E-4F, 2.3082423E-4F, 2.4582449E-4F, 2.6179955E-4F, 2.7881275E-4F, 2.9693157E-4F, 3.1622787E-4F, 3.3677815E-4F, 3.5866388E-4F, 3.8197188E-4F, 4.0679457E-4F, 4.3323037E-4F, 4.613841E-4F, 4.913675E-4F, 5.2329927E-4F, 5.573062E-4F, 5.935231E-4F, 6.320936E-4F, 6.731706E-4F, 7.16917E-4F, 7.635063E-4F, 8.1312325E-4F, 8.6596457E-4F, 9.2223985E-4F, 9.821722E-4F, 0.0010459992F, 0.0011139743F, 0.0011863665F, 0.0012634633F, 0.0013455702F, 0.0014330129F, 0.0015261382F, 0.0016253153F, 0.0017309374F, 0.0018434235F, 0.0019632196F, 0.0020908006F, 0.0022266726F, 0.0023713743F, 0.0025254795F, 0.0026895993F, 0.0028643848F, 0.0030505287F, 0.003248769F, 0.0034598925F, 0.0036847359F, 0.0039241905F, 0.0041792067F, 0.004450795F, 0.004740033F, 0.005048067F, 0.0053761187F, 0.005725489F, 0.0060975635F, 0.0064938175F, 0.0069158226F, 0.0073652514F, 0.007843887F, 0.008353627F, 0.008896492F, 0.009474637F, 0.010090352F, 0.01074608F, 0.011444421F, 0.012188144F, 0.012980198F, 0.013823725F, 0.014722068F, 0.015678791F, 0.016697686F, 0.017782796F, 0.018938422F, 0.020169148F, 0.021479854F, 0.022875736F, 0.02436233F, 0.025945531F, 0.027631618F, 0.029427277F, 0.031339627F, 0.03337625F, 0.035545226F, 0.037855156F, 0.0403152F, 0.042935107F, 0.045725275F, 0.048696756F, 0.05186135F, 0.05523159F, 0.05882085F, 0.062643364F, 0.06671428F, 0.07104975F, 0.075666964F, 0.08058423F, 0.08582105F, 0.09139818F, 0.097337745F, 0.1036633F, 0.11039993F, 0.11757434F, 0.12521498F, 0.13335215F, 0.14201812F, 0.15124726F, 0.16107617F, 0.1715438F, 0.18269168F, 0.19456401F, 0.20720787F, 0.22067343F, 0.23501402F, 0.25028655F, 0.26655158F, 0.28387362F, 0.3023213F, 0.32196787F, 0.34289113F, 0.36517414F, 0.3889052F, 0.41417846F, 0.44109413F, 0.4697589F, 0.50028646F, 0.53279793F, 0.5674221F, 0.6042964F, 0.64356697F, 0.6853896F, 0.72993004F, 0.777365F, 0.8278826F, 0.88168305F, 0.9389798F, 1.0F};
-   @ObfuscatedName("k")
-   static boolean[] field1290;
-   @ObfuscatedName("g")
-   int[][] field1291;
-   @ObfuscatedName("s")
-   static int[] field1292;
+   int field1318;
+   @ObfuscatedName("c")
+   int field1319;
+   @ObfuscatedName("e")
+   int field1320;
    @ObfuscatedName("r")
-   static int[] field1293;
-   @ObfuscatedName("d")
-   int[] field1294;
-
-   @ObfuscatedName("f")
-   static int method1542(int[] var0, int var1) {
-      int var2 = var0[var1];
-      int var3 = -1;
-      int var4 = Integer.MIN_VALUE;
-
-      for(int var5 = 0; var5 < var1; ++var5) {
-         int var6 = var0[var5];
-         if(var6 < var2 && var6 > var4) {
-            var3 = var5;
-            var4 = var6;
-         }
-      }
-
-      return var3;
-   }
-
+   int field1321;
+   @ObfuscatedName("a")
+   int field1322;
    @ObfuscatedName("x")
-   int method1544(int var1, int var2, int var3, int var4, int var5) {
-      int var6 = var4 - var2;
-      int var7 = var3 - var1;
-      int var8 = var6 < 0?-var6:var6;
-      int var9 = var8 * (var5 - var1);
-      int var10 = var9 / var7;
-      return var6 < 0?var2 - var10:var2 + var10;
-   }
-
+   int field1323;
+   @ObfuscatedName("o")
+   int field1324;
+   @ObfuscatedName("h")
+   int field1325;
+   @ObfuscatedName("u")
+   int field1326;
+   @ObfuscatedName("i")
+   boolean field1327;
    @ObfuscatedName("b")
-   void method1545(int var1, int var2, int var3, int var4, float[] var5, int var6) {
-      int var7 = var4 - var2;
-      int var8 = var3 - var1;
-      int var9 = var7 < 0?-var7:var7;
-      int var10 = var7 / var8;
-      int var11 = var2;
-      int var12 = 0;
-      int var13 = var7 < 0?var10 - 1:var10 + 1;
-      var9 -= (var10 < 0?-var10:var10) * var8;
-      var5[var1] *= field1289[var2];
-      if(var3 > var6) {
-         var3 = var6;
-      }
-
-      for(int var14 = var1 + 1; var14 < var3; ++var14) {
-         var12 += var9;
-         if(var12 >= var8) {
-            var12 -= var8;
-            var11 += var13;
-         } else {
-            var11 += var10;
-         }
-
-         var5[var14] *= field1289[var11];
-      }
-
-   }
+   int field1328;
+   @ObfuscatedName("g")
+   int field1329;
+   @ObfuscatedName("p")
+   int field1330;
+   @ObfuscatedName("j")
+   int field1331;
 
    @ObfuscatedName("l")
-   void method1546(int var1, int var2) {
-      if(var1 < var2) {
-         int var3 = var1;
-         int var4 = field1292[var1];
-         int var5 = field1293[var1];
-         boolean var6 = field1290[var1];
+   static int method1405(int var0, int var1) {
+      return var1 < 0?-var0:(int)((double)var0 * Math.sqrt((double)var1 * 1.220703125E-4D) + 0.5D);
+   }
 
-         for(int var7 = var1 + 1; var7 <= var2; ++var7) {
-            int var8 = field1292[var7];
-            if(var8 < var4) {
-               field1292[var3] = var8;
-               field1293[var3] = field1293[var7];
-               field1290[var3] = field1290[var7];
-               ++var3;
-               field1292[var7] = field1292[var3];
-               field1293[var7] = field1293[var3];
-               field1290[var7] = field1290[var3];
+   class67(class65 var1, int var2, int var3) {
+      super.field1333 = var1;
+      this.field1324 = var1.field1302;
+      this.field1330 = var1.field1303;
+      this.field1327 = var1.field1300;
+      this.field1318 = var2;
+      this.field1319 = var3;
+      this.field1325 = 8192;
+      this.field1320 = 0;
+      this.method1499();
+   }
+
+   @ObfuscatedName("i")
+   public synchronized void vmethod3807(int var1) {
+      if(this.field1317 > 0) {
+         if(var1 >= this.field1317) {
+            if(this.field1319 == Integer.MIN_VALUE) {
+               this.field1319 = 0;
+               this.field1328 = 0;
+               this.field1322 = 0;
+               this.field1321 = 0;
+               this.method4000();
+               var1 = this.field1317;
+            }
+
+            this.field1317 = 0;
+            this.method1499();
+         } else {
+            this.field1321 += this.field1329 * var1;
+            this.field1322 += this.field1331 * var1;
+            this.field1328 += this.field1323 * var1;
+            this.field1317 -= var1;
+         }
+      }
+
+      class65 var2 = (class65)super.field1333;
+      int var3 = this.field1324 << 8;
+      int var4 = this.field1330 << 8;
+      int var5 = var2.field1304.length << 8;
+      int var6 = var4 - var3;
+      if(var6 <= 0) {
+         this.field1326 = 0;
+      }
+
+      if(this.field1320 < 0) {
+         if(this.field1318 <= 0) {
+            this.method1419();
+            this.method4000();
+            return;
+         }
+
+         this.field1320 = 0;
+      }
+
+      if(this.field1320 >= var5) {
+         if(this.field1318 >= 0) {
+            this.method1419();
+            this.method4000();
+            return;
+         }
+
+         this.field1320 = var5 - 1;
+      }
+
+      this.field1320 += this.field1318 * var1;
+      if(this.field1326 < 0) {
+         if(!this.field1327) {
+            if(this.field1318 < 0) {
+               if(this.field1320 >= var3) {
+                  return;
+               }
+
+               this.field1320 = var4 - 1 - (var4 - 1 - this.field1320) % var6;
+            } else {
+               if(this.field1320 < var4) {
+                  return;
+               }
+
+               this.field1320 = var3 + (this.field1320 - var3) % var6;
+            }
+
+         } else {
+            if(this.field1318 < 0) {
+               if(this.field1320 >= var3) {
+                  return;
+               }
+
+               this.field1320 = var3 + var3 - 1 - this.field1320;
+               this.field1318 = -this.field1318;
+            }
+
+            while(this.field1320 >= var4) {
+               this.field1320 = var4 + var4 - 1 - this.field1320;
+               this.field1318 = -this.field1318;
+               if(this.field1320 >= var3) {
+                  return;
+               }
+
+               this.field1320 = var3 + var3 - 1 - this.field1320;
+               this.field1318 = -this.field1318;
+            }
+
+         }
+      } else {
+         if(this.field1326 > 0) {
+            if(this.field1327) {
+               label163: {
+                  if(this.field1318 < 0) {
+                     if(this.field1320 >= var3) {
+                        return;
+                     }
+
+                     this.field1320 = var3 + var3 - 1 - this.field1320;
+                     this.field1318 = -this.field1318;
+                     if(--this.field1326 == 0) {
+                        break label163;
+                     }
+                  }
+
+                  do {
+                     if(this.field1320 < var4) {
+                        return;
+                     }
+
+                     this.field1320 = var4 + var4 - 1 - this.field1320;
+                     this.field1318 = -this.field1318;
+                     if(--this.field1326 == 0) {
+                        break;
+                     }
+
+                     if(this.field1320 >= var3) {
+                        return;
+                     }
+
+                     this.field1320 = var3 + var3 - 1 - this.field1320;
+                     this.field1318 = -this.field1318;
+                  } while(--this.field1326 != 0);
+               }
+            } else {
+               label195: {
+                  int var7;
+                  if(this.field1318 < 0) {
+                     if(this.field1320 >= var3) {
+                        return;
+                     }
+
+                     var7 = (var4 - 1 - this.field1320) / var6;
+                     if(var7 >= this.field1326) {
+                        this.field1320 += var6 * this.field1326;
+                        this.field1326 = 0;
+                        break label195;
+                     }
+
+                     this.field1320 += var6 * var7;
+                     this.field1326 -= var7;
+                  } else {
+                     if(this.field1320 < var4) {
+                        return;
+                     }
+
+                     var7 = (this.field1320 - var3) / var6;
+                     if(var7 >= this.field1326) {
+                        this.field1320 -= var6 * this.field1326;
+                        this.field1326 = 0;
+                        break label195;
+                     }
+
+                     this.field1320 -= var6 * var7;
+                     this.field1326 -= var7;
+                  }
+
+                  return;
+               }
             }
          }
 
-         field1292[var3] = var4;
-         field1293[var3] = var5;
-         field1290[var3] = var6;
-         this.method1546(var1, var3 - 1);
-         this.method1546(var3 + 1, var2);
+         if(this.field1318 < 0) {
+            if(this.field1320 < 0) {
+               this.field1320 = -1;
+               this.method1419();
+               this.method4000();
+            }
+         } else if(this.field1320 >= var5) {
+            this.field1320 = var5;
+            this.method1419();
+            this.method4000();
+         }
+
       }
    }
 
-   class67() {
-      int var1 = class70.method1596(16);
-      if(var1 != 1) {
-         throw new RuntimeException();
-      } else {
-         int var2 = class70.method1596(5);
-         int var3 = 0;
-         this.field1287 = new int[var2];
+   @ObfuscatedName("h")
+   public static class67 method1409(class65 var0, int var1, int var2, int var3) {
+      return var0.field1304 != null && var0.field1304.length != 0?new class67(var0, var1, var2, var3):null;
+   }
 
-         int var4;
-         int var5;
-         for(var4 = 0; var4 < var2; ++var4) {
-            var5 = class70.method1596(4);
-            this.field1287[var4] = var5;
-            if(var5 >= var3) {
-               var3 = var5 + 1;
-            }
-         }
+   @ObfuscatedName("p")
+   public synchronized void method1411(int var1) {
+      this.field1326 = var1;
+   }
 
-         this.field1294 = new int[var3];
-         this.field1284 = new int[var3];
-         this.field1283 = new int[var3];
-         this.field1291 = new int[var3][];
+   @ObfuscatedName("j")
+   synchronized void method1414(int var1, int var2) {
+      this.field1319 = var1;
+      this.field1325 = var2;
+      this.field1317 = 0;
+      this.method1499();
+   }
 
-         int var7;
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field1294[var4] = class70.method1596(3) + 1;
-            var5 = this.field1284[var4] = class70.method1596(2);
-            if(var5 != 0) {
-               this.field1283[var4] = class70.method1596(8);
-            }
-
-            var5 = 1 << var5;
-            int[] var9 = new int[var5];
-            this.field1291[var4] = var9;
-
-            for(var7 = 0; var7 < var5; ++var7) {
-               var9[var7] = class70.method1596(8) - 1;
-            }
-         }
-
-         this.field1286 = class70.method1596(2) + 1;
-         var4 = class70.method1596(4);
-         var5 = 2;
-
-         int var6;
-         for(var6 = 0; var6 < var2; ++var6) {
-            var5 += this.field1294[this.field1287[var6]];
-         }
-
-         this.field1285 = new int[var5];
-         this.field1285[0] = 0;
-         this.field1285[1] = 1 << var4;
-         var5 = 2;
-
-         for(var6 = 0; var6 < var2; ++var6) {
-            var7 = this.field1287[var6];
-
-            for(int var8 = 0; var8 < this.field1294[var7]; ++var8) {
-               this.field1285[var5++] = class70.method1596(var4);
-            }
-         }
-
-         if(field1292 == null || field1292.length < var5) {
-            field1292 = new int[var5];
-            field1293 = new int[var5];
-            field1290 = new boolean[var5];
-         }
-
+   @ObfuscatedName("at")
+   int vmethod1568() {
+      int var1 = this.field1321 * 3 >> 6;
+      var1 = (var1 ^ var1 >> 31) + (var1 >>> 31);
+      if(this.field1326 == 0) {
+         var1 -= var1 * this.field1320 / (((class65)super.field1333).field1304.length << 8);
+      } else if(this.field1326 >= 0) {
+         var1 -= var1 * this.field1324 / ((class65)super.field1333).field1304.length;
       }
+
+      return var1 > 255?255:var1;
+   }
+
+   @ObfuscatedName("f")
+   public synchronized void method1417(int var1) {
+      int var2 = ((class65)super.field1333).field1304.length << 8;
+      if(var1 < -1) {
+         var1 = -1;
+      }
+
+      if(var1 > var2) {
+         var1 = var2;
+      }
+
+      this.field1320 = var1;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Z)V",
+      garbageValue = "1"
+   )
+   public synchronized void method1418() {
+      this.field1318 = (this.field1318 ^ this.field1318 >> 31) + (this.field1318 >>> 31);
+      this.field1318 = -this.field1318;
+   }
+
+   @ObfuscatedName("z")
+   void method1419() {
+      if(this.field1317 != 0) {
+         if(this.field1319 == Integer.MIN_VALUE) {
+            this.field1319 = 0;
+         }
+
+         this.field1317 = 0;
+         this.method1499();
+      }
+
+   }
+
+   @ObfuscatedName("y")
+   public synchronized void method1420(int var1, int var2) {
+      this.method1489(var1, var2, this.method1453());
+   }
+
+   @ObfuscatedName("k")
+   public synchronized void method1423(int var1) {
+      if(this.field1318 < 0) {
+         this.field1318 = -var1;
+      } else {
+         this.field1318 = var1;
+      }
+
    }
 
    @ObfuscatedName("n")
-   void method1547(float[] var1, int var2) {
-      int var3 = this.field1285.length;
-      int var4 = field1288[this.field1286 - 1];
-      boolean[] var5 = field1290;
-      field1290[1] = true;
-      var5[0] = true;
+   public synchronized int method1424() {
+      return this.field1318 < 0?-this.field1318:this.field1318;
+   }
 
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var10;
-      for(var6 = 2; var6 < var3; ++var6) {
-         var7 = method1542(field1292, var6);
-         var8 = method1555(field1292, var6);
-         var9 = this.method1544(field1292[var7], field1293[var7], field1292[var8], field1293[var8], field1292[var6]);
-         var10 = field1293[var6];
-         int var11 = var4 - var9;
-         int var13 = (var11 < var9?var11:var9) << 1;
-         if(var10 != 0) {
-            boolean[] var14 = field1290;
-            field1290[var8] = true;
-            var14[var7] = true;
-            field1290[var6] = true;
-            if(var10 >= var13) {
-               field1293[var6] = var11 > var9?var10 - var9 + var9:var9 - var10 + var11 - 1;
-            } else {
-               field1293[var6] = (var10 & 1) != 0?var9 - (var10 + 1) / 2:var9 + var10 / 2;
-            }
-         } else {
-            field1290[var6] = false;
-            field1293[var6] = var9;
-         }
+   @ObfuscatedName("ar")
+   static int method1425(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class67 var11, int var12, int var13) {
+      if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12 - 257) / var12) > var9) {
+         var8 = var9;
       }
 
-      this.method1546(0, var3 - 1);
-      var6 = 0;
-      var7 = field1293[0] * this.field1286;
+      var5 <<= 1;
 
-      for(var8 = 1; var8 < var3; ++var8) {
-         if(field1290[var8]) {
-            var9 = field1292[var8];
-            var10 = field1293[var8] * this.field1286;
-            this.method1545(var6, var7, var9, var10, var1, var2);
-            if(var9 >= var2) {
+      byte var14;
+      int var10001;
+      for(var8 <<= 1; var5 < var8; var4 += var12) {
+         var1 = var4 >> 8;
+         var14 = var2[var1];
+         var0 = (var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+      }
+
+      if(var12 == 0 || (var8 = (var5 >> 1) + (var10 - var4 + var12 - 1) / var12) > var9) {
+         var8 = var9;
+      }
+
+      var8 <<= 1;
+
+      for(var1 = var13; var5 < var8; var4 += var12) {
+         var14 = var2[var4 >> 8];
+         var0 = (var14 << 8) + (var1 - var14) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+      }
+
+      var11.field1320 = var4;
+      return var5 >> 1;
+   }
+
+   @ObfuscatedName("s")
+   public boolean method1426() {
+      return this.field1317 != 0;
+   }
+
+   @ObfuscatedName("v")
+   public synchronized void method1428(int var1) {
+      if(var1 == 0) {
+         this.method1473(0);
+         this.method4000();
+      } else if(this.field1322 == 0 && this.field1328 == 0) {
+         this.field1317 = 0;
+         this.field1319 = 0;
+         this.field1321 = 0;
+         this.method4000();
+      } else {
+         int var2 = -this.field1321;
+         if(this.field1321 > var2) {
+            var2 = this.field1321;
+         }
+
+         if(-this.field1322 > var2) {
+            var2 = -this.field1322;
+         }
+
+         if(this.field1322 > var2) {
+            var2 = this.field1322;
+         }
+
+         if(-this.field1328 > var2) {
+            var2 = -this.field1328;
+         }
+
+         if(this.field1328 > var2) {
+            var2 = this.field1328;
+         }
+
+         if(var1 > var2) {
+            var1 = var2;
+         }
+
+         this.field1317 = var1;
+         this.field1319 = Integer.MIN_VALUE;
+         this.field1329 = -this.field1321 / var1;
+         this.field1331 = -this.field1322 / var1;
+         this.field1323 = -this.field1328 / var1;
+      }
+   }
+
+   @ObfuscatedName("u")
+   protected int vmethod3805() {
+      return this.field1319 == 0 && this.field1317 == 0?0:1;
+   }
+
+   @ObfuscatedName("o")
+   public synchronized void vmethod3806(int[] var1, int var2, int var3) {
+      if(this.field1319 == 0 && this.field1317 == 0) {
+         this.vmethod3807(var3);
+      } else {
+         class65 var4 = (class65)super.field1333;
+         int var5 = this.field1324 << 8;
+         int var6 = this.field1330 << 8;
+         int var7 = var4.field1304.length << 8;
+         int var8 = var6 - var5;
+         if(var8 <= 0) {
+            this.field1326 = 0;
+         }
+
+         int var9 = var2;
+         var3 += var2;
+         if(this.field1320 < 0) {
+            if(this.field1318 <= 0) {
+               this.method1419();
+               this.method4000();
                return;
             }
 
-            var6 = var9;
-            var7 = var10;
+            this.field1320 = 0;
+         }
+
+         if(this.field1320 >= var7) {
+            if(this.field1318 >= 0) {
+               this.method1419();
+               this.method4000();
+               return;
+            }
+
+            this.field1320 = var7 - 1;
+         }
+
+         if(this.field1326 < 0) {
+            if(this.field1327) {
+               if(this.field1318 < 0) {
+                  var9 = this.method1433(var1, var2, var5, var3, var4.field1304[this.field1324]);
+                  if(this.field1320 >= var5) {
+                     return;
+                  }
+
+                  this.field1320 = var5 + var5 - 1 - this.field1320;
+                  this.field1318 = -this.field1318;
+               }
+
+               while(true) {
+                  var9 = this.method1432(var1, var9, var6, var3, var4.field1304[this.field1330 - 1]);
+                  if(this.field1320 < var6) {
+                     return;
+                  }
+
+                  this.field1320 = var6 + var6 - 1 - this.field1320;
+                  this.field1318 = -this.field1318;
+                  var9 = this.method1433(var1, var9, var5, var3, var4.field1304[this.field1324]);
+                  if(this.field1320 >= var5) {
+                     return;
+                  }
+
+                  this.field1320 = var5 + var5 - 1 - this.field1320;
+                  this.field1318 = -this.field1318;
+               }
+            } else if(this.field1318 < 0) {
+               while(true) {
+                  var9 = this.method1433(var1, var9, var5, var3, var4.field1304[this.field1330 - 1]);
+                  if(this.field1320 >= var5) {
+                     return;
+                  }
+
+                  this.field1320 = var6 - 1 - (var6 - 1 - this.field1320) % var8;
+               }
+            } else {
+               while(true) {
+                  var9 = this.method1432(var1, var9, var6, var3, var4.field1304[this.field1324]);
+                  if(this.field1320 < var6) {
+                     return;
+                  }
+
+                  this.field1320 = var5 + (this.field1320 - var5) % var8;
+               }
+            }
+         } else {
+            if(this.field1326 > 0) {
+               if(this.field1327) {
+                  label181: {
+                     if(this.field1318 < 0) {
+                        var9 = this.method1433(var1, var2, var5, var3, var4.field1304[this.field1324]);
+                        if(this.field1320 >= var5) {
+                           return;
+                        }
+
+                        this.field1320 = var5 + var5 - 1 - this.field1320;
+                        this.field1318 = -this.field1318;
+                        if(--this.field1326 == 0) {
+                           break label181;
+                        }
+                     }
+
+                     do {
+                        var9 = this.method1432(var1, var9, var6, var3, var4.field1304[this.field1330 - 1]);
+                        if(this.field1320 < var6) {
+                           return;
+                        }
+
+                        this.field1320 = var6 + var6 - 1 - this.field1320;
+                        this.field1318 = -this.field1318;
+                        if(--this.field1326 == 0) {
+                           break;
+                        }
+
+                        var9 = this.method1433(var1, var9, var5, var3, var4.field1304[this.field1324]);
+                        if(this.field1320 >= var5) {
+                           return;
+                        }
+
+                        this.field1320 = var5 + var5 - 1 - this.field1320;
+                        this.field1318 = -this.field1318;
+                     } while(--this.field1326 != 0);
+                  }
+               } else {
+                  int var10;
+                  if(this.field1318 < 0) {
+                     while(true) {
+                        var9 = this.method1433(var1, var9, var5, var3, var4.field1304[this.field1330 - 1]);
+                        if(this.field1320 >= var5) {
+                           return;
+                        }
+
+                        var10 = (var6 - 1 - this.field1320) / var8;
+                        if(var10 >= this.field1326) {
+                           this.field1320 += var8 * this.field1326;
+                           this.field1326 = 0;
+                           break;
+                        }
+
+                        this.field1320 += var8 * var10;
+                        this.field1326 -= var10;
+                     }
+                  } else {
+                     while(true) {
+                        var9 = this.method1432(var1, var9, var6, var3, var4.field1304[this.field1324]);
+                        if(this.field1320 < var6) {
+                           return;
+                        }
+
+                        var10 = (this.field1320 - var5) / var8;
+                        if(var10 >= this.field1326) {
+                           this.field1320 -= var8 * this.field1326;
+                           this.field1326 = 0;
+                           break;
+                        }
+
+                        this.field1320 -= var8 * var10;
+                        this.field1326 -= var10;
+                     }
+                  }
+               }
+            }
+
+            if(this.field1318 < 0) {
+               this.method1433(var1, var9, 0, var3, 0);
+               if(this.field1320 < 0) {
+                  this.field1320 = -1;
+                  this.method1419();
+                  this.method4000();
+               }
+            } else {
+               this.method1432(var1, var9, var7, var3, 0);
+               if(this.field1320 >= var7) {
+                  this.field1320 = var7;
+                  this.method1419();
+                  this.method4000();
+               }
+            }
+
          }
       }
-
-      float var16 = field1289[var7];
-
-      for(var9 = var6; var9 < var2; ++var9) {
-         var1[var9] *= var16;
-      }
-
    }
 
-   @ObfuscatedName("u")
-   static int method1555(int[] var0, int var1) {
-      int var2 = var0[var1];
-      int var3 = -1;
-      int var4 = Integer.MAX_VALUE;
+   @ObfuscatedName("ap")
+   int method1432(int[] var1, int var2, int var3, int var4, int var5) {
+      while(true) {
+         if(this.field1317 > 0) {
+            int var6 = var2 + this.field1317;
+            if(var6 > var4) {
+               var6 = var4;
+            }
 
-      for(int var5 = 0; var5 < var1; ++var5) {
-         int var6 = var0[var5];
-         if(var6 > var2 && var6 < var4) {
-            var3 = var5;
-            var4 = var6;
+            this.field1317 += var2;
+            if(this.field1318 == 256 && (this.field1320 & 255) == 0) {
+               if(class59.field1242) {
+                  var2 = method1470(0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, this.field1331, this.field1323, 0, var6, var3, this);
+               } else {
+                  var2 = method1443(((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, this.field1329, 0, var6, var3, this);
+               }
+            } else if(class59.field1242) {
+               var2 = method1476(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, this.field1331, this.field1323, 0, var6, var3, this, this.field1318, var5);
+            } else {
+               var2 = method1540(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, this.field1329, 0, var6, var3, this, this.field1318, var5);
+            }
+
+            this.field1317 -= var2;
+            if(this.field1317 != 0) {
+               return var2;
+            }
+
+            if(!this.method1434()) {
+               continue;
+            }
+
+            return var4;
          }
+
+         if(this.field1318 == 256 && (this.field1320 & 255) == 0) {
+            if(class59.field1242) {
+               return method1436(0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, 0, var4, var3, this);
+            }
+
+            return method1435(((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, 0, var4, var3, this);
+         }
+
+         if(class59.field1242) {
+            return method1425(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, 0, var4, var3, this, this.field1318, var5);
+         }
+
+         return method1439(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, 0, var4, var3, this, this.field1318, var5);
+      }
+   }
+
+   @ObfuscatedName("an")
+   int method1433(int[] var1, int var2, int var3, int var4, int var5) {
+      while(true) {
+         if(this.field1317 > 0) {
+            int var6 = var2 + this.field1317;
+            if(var6 > var4) {
+               var6 = var4;
+            }
+
+            this.field1317 += var2;
+            if(this.field1318 == -256 && (this.field1320 & 255) == 0) {
+               if(class59.field1242) {
+                  var2 = method1446(0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, this.field1331, this.field1323, 0, var6, var3, this);
+               } else {
+                  var2 = method1445(((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, this.field1329, 0, var6, var3, this);
+               }
+            } else if(class59.field1242) {
+               var2 = method1450(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, this.field1331, this.field1323, 0, var6, var3, this, this.field1318, var5);
+            } else {
+               var2 = method1449(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, this.field1329, 0, var6, var3, this, this.field1318, var5);
+            }
+
+            this.field1317 -= var2;
+            if(this.field1317 != 0) {
+               return var2;
+            }
+
+            if(!this.method1434()) {
+               continue;
+            }
+
+            return var4;
+         }
+
+         if(this.field1318 == -256 && (this.field1320 & 255) == 0) {
+            if(class59.field1242) {
+               return method1438(0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, 0, var4, var3, this);
+            }
+
+            return method1437(((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, 0, var4, var3, this);
+         }
+
+         if(class59.field1242) {
+            return method1502(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1322, this.field1328, 0, var4, var3, this, this.field1318, var5);
+         }
+
+         return method1441(0, 0, ((class65)super.field1333).field1304, var1, this.field1320, var2, this.field1321, 0, var4, var3, this, this.field1318, var5);
+      }
+   }
+
+   @ObfuscatedName("aa")
+   boolean method1434() {
+      int var1 = this.field1319;
+      int var2;
+      int var3;
+      if(var1 == Integer.MIN_VALUE) {
+         var3 = 0;
+         var2 = 0;
+         var1 = 0;
+      } else {
+         var2 = method1493(var1, this.field1325);
+         var3 = method1405(var1, this.field1325);
       }
 
+      if(this.field1321 == var1 && this.field1322 == var2 && this.field1328 == var3) {
+         if(this.field1319 == Integer.MIN_VALUE) {
+            this.field1319 = 0;
+            this.field1328 = 0;
+            this.field1322 = 0;
+            this.field1321 = 0;
+            this.method4000();
+            return true;
+         } else {
+            this.method1499();
+            return false;
+         }
+      } else {
+         if(this.field1321 < var1) {
+            this.field1329 = 1;
+            this.field1317 = var1 - this.field1321;
+         } else if(this.field1321 > var1) {
+            this.field1329 = -1;
+            this.field1317 = this.field1321 - var1;
+         } else {
+            this.field1329 = 0;
+         }
+
+         if(this.field1322 < var2) {
+            this.field1331 = 1;
+            if(this.field1317 == 0 || this.field1317 > var2 - this.field1322) {
+               this.field1317 = var2 - this.field1322;
+            }
+         } else if(this.field1322 > var2) {
+            this.field1331 = -1;
+            if(this.field1317 == 0 || this.field1317 > this.field1322 - var2) {
+               this.field1317 = this.field1322 - var2;
+            }
+         } else {
+            this.field1331 = 0;
+         }
+
+         if(this.field1328 < var3) {
+            this.field1323 = 1;
+            if(this.field1317 == 0 || this.field1317 > var3 - this.field1328) {
+               this.field1317 = var3 - this.field1328;
+            }
+         } else if(this.field1328 > var3) {
+            this.field1323 = -1;
+            if(this.field1317 == 0 || this.field1317 > this.field1328 - var3) {
+               this.field1317 = this.field1328 - var3;
+            }
+         } else {
+            this.field1323 = 0;
+         }
+
+         return false;
+      }
+   }
+
+   @ObfuscatedName("ag")
+   static int method1435(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, class67 var8) {
+      var2 >>= 8;
+      var7 >>= 8;
+      var4 <<= 2;
+      if((var5 = var3 + var7 - var2) > var6) {
+         var5 = var6;
+      }
+
+      int var10001;
+      for(var5 -= 3; var3 < var5; var1[var10001] += var0[var2++] * var4) {
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+         var10001 = var3++;
+      }
+
+      for(var5 += 3; var3 < var5; var1[var10001] += var0[var2++] * var4) {
+         var10001 = var3++;
+      }
+
+      var8.field1320 = var2 << 8;
       return var3;
    }
 
-   @ObfuscatedName("d")
-   boolean method1561() {
-      boolean var1 = class70.method1588() != 0;
-      if(!var1) {
-         return false;
-      } else {
-         int var2 = this.field1285.length;
-
-         int var3;
-         for(var3 = 0; var3 < var2; ++var3) {
-            field1292[var3] = this.field1285[var3];
-         }
-
-         var3 = field1288[this.field1286 - 1];
-         int var4 = class15.method190(var3 - 1);
-         field1293[0] = class70.method1596(var4);
-         field1293[1] = class70.method1596(var4);
-         int var5 = 2;
-
-         for(int var6 = 0; var6 < this.field1287.length; ++var6) {
-            int var7 = this.field1287[var6];
-            int var8 = this.field1294[var7];
-            int var9 = this.field1284[var7];
-            int var10 = (1 << var9) - 1;
-            int var11 = 0;
-            if(var9 > 0) {
-               var11 = class70.field1331[this.field1283[var7]].method1637();
-            }
-
-            for(int var12 = 0; var12 < var8; ++var12) {
-               int var13 = this.field1291[var7][var11 & var10];
-               var11 >>>= var9;
-               field1293[var5++] = var13 >= 0?class70.field1331[var13].method1637():0;
-            }
-         }
-
-         return true;
+   @ObfuscatedName("aq")
+   static int method1436(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, class67 var10) {
+      var3 >>= 8;
+      var9 >>= 8;
+      var5 <<= 2;
+      var6 <<= 2;
+      if((var7 = var4 + var9 - var3) > var8) {
+         var7 = var8;
       }
+
+      var4 <<= 1;
+      var7 <<= 1;
+
+      int var10001;
+      byte var11;
+      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+      }
+
+      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+      }
+
+      var10.field1320 = var3 << 8;
+      return var4 >> 1;
+   }
+
+   @ObfuscatedName("af")
+   static int method1437(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, class67 var8) {
+      var2 >>= 8;
+      var7 >>= 8;
+      var4 <<= 2;
+      if((var5 = var3 + var2 - (var7 - 1)) > var6) {
+         var5 = var6;
+      }
+
+      int var10001;
+      for(var5 -= 3; var3 < var5; var1[var10001] += var0[var2--] * var4) {
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+         var10001 = var3++;
+      }
+
+      for(var5 += 3; var3 < var5; var1[var10001] += var0[var2--] * var4) {
+         var10001 = var3++;
+      }
+
+      var8.field1320 = var2 << 8;
+      return var3;
+   }
+
+   @ObfuscatedName("ax")
+   static int method1438(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, class67 var10) {
+      var3 >>= 8;
+      var9 >>= 8;
+      var5 <<= 2;
+      var6 <<= 2;
+      if((var7 = var4 + var3 - (var9 - 1)) > var8) {
+         var7 = var8;
+      }
+
+      var4 <<= 1;
+      var7 <<= 1;
+
+      int var10001;
+      byte var11;
+      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+         var2[var10001] += var11 * var6;
+         var11 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+      }
+
+      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
+         var11 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var11 * var5;
+         var10001 = var4++;
+      }
+
+      var10.field1320 = var3 << 8;
+      return var4 >> 1;
+   }
+
+   @ObfuscatedName("ai")
+   static int method1439(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class67 var10, int var11, int var12) {
+      if(var11 == 0 || (var7 = var5 + (var9 - var4 + var11 - 257) / var11) > var8) {
+         var7 = var8;
+      }
+
+      byte var13;
+      int var10001;
+      while(var5 < var7) {
+         var1 = var4 >> 8;
+         var13 = var2[var1];
+         var10001 = var5++;
+         var3[var10001] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
+         var4 += var11;
+      }
+
+      if(var11 == 0 || (var7 = var5 + (var9 - var4 + var11 - 1) / var11) > var8) {
+         var7 = var8;
+      }
+
+      for(var1 = var12; var5 < var7; var4 += var11) {
+         var13 = var2[var4 >> 8];
+         var10001 = var5++;
+         var3[var10001] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
+      }
+
+      var10.field1320 = var4;
+      return var5;
+   }
+
+   @ObfuscatedName("c")
+   public static class67 method1440(class65 var0, int var1, int var2) {
+      return var0.field1304 != null && var0.field1304.length != 0?new class67(var0, (int)((long)var0.field1301 * 256L * (long)var1 / (long)(class59.field1260 * 100)), var2 << 6):null;
+   }
+
+   @ObfuscatedName("ab")
+   static int method1441(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, class67 var10, int var11, int var12) {
+      if(var11 == 0 || (var7 = var5 + (var9 + 256 - var4 + var11) / var11) > var8) {
+         var7 = var8;
+      }
+
+      int var10001;
+      while(var5 < var7) {
+         var1 = var4 >> 8;
+         byte var13 = var2[var1 - 1];
+         var10001 = var5++;
+         var3[var10001] += ((var13 << 8) + (var2[var1] - var13) * (var4 & 255)) * var6 >> 6;
+         var4 += var11;
+      }
+
+      if(var11 == 0 || (var7 = var5 + (var9 - var4 + var11) / var11) > var8) {
+         var7 = var8;
+      }
+
+      var0 = var12;
+
+      for(var1 = var11; var5 < var7; var4 += var1) {
+         var10001 = var5++;
+         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+      }
+
+      var10.field1320 = var4;
+      return var5;
+   }
+
+   @ObfuscatedName("w")
+   public synchronized int method1442() {
+      return this.field1319 == Integer.MIN_VALUE?0:this.field1319;
+   }
+
+   @ObfuscatedName("au")
+   static int method1443(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class67 var9) {
+      var2 >>= 8;
+      var8 >>= 8;
+      var4 <<= 2;
+      var5 <<= 2;
+      if((var6 = var3 + var8 - var2) > var7) {
+         var6 = var7;
+      }
+
+      var9.field1322 += var9.field1331 * (var6 - var3);
+      var9.field1328 += var9.field1323 * (var6 - var3);
+
+      int var10001;
+      for(var6 -= 3; var3 < var6; var4 += var5) {
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+         var4 += var5;
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+         var4 += var5;
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+         var4 += var5;
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+      }
+
+      for(var6 += 3; var3 < var6; var4 += var5) {
+         var10001 = var3++;
+         var1[var10001] += var0[var2++] * var4;
+      }
+
+      var9.field1321 = var4 >> 2;
+      var9.field1320 = var2 << 8;
+      return var3;
+   }
+
+   @ObfuscatedName("az")
+   static int method1445(byte[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, class67 var9) {
+      var2 >>= 8;
+      var8 >>= 8;
+      var4 <<= 2;
+      var5 <<= 2;
+      if((var6 = var3 + var2 - (var8 - 1)) > var7) {
+         var6 = var7;
+      }
+
+      var9.field1322 += var9.field1331 * (var6 - var3);
+      var9.field1328 += var9.field1323 * (var6 - var3);
+
+      int var10001;
+      for(var6 -= 3; var3 < var6; var4 += var5) {
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+         var4 += var5;
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+         var4 += var5;
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+         var4 += var5;
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+      }
+
+      for(var6 += 3; var3 < var6; var4 += var5) {
+         var10001 = var3++;
+         var1[var10001] += var0[var2--] * var4;
+      }
+
+      var9.field1321 = var4 >> 2;
+      var9.field1320 = var2 << 8;
+      return var3;
+   }
+
+   @ObfuscatedName("ay")
+   static int method1446(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, class67 var12) {
+      var3 >>= 8;
+      var11 >>= 8;
+      var5 <<= 2;
+      var6 <<= 2;
+      var7 <<= 2;
+      var8 <<= 2;
+      if((var9 = var4 + var3 - (var11 - 1)) > var10) {
+         var9 = var10;
+      }
+
+      var12.field1321 += var12.field1329 * (var9 - var4);
+      var4 <<= 1;
+      var9 <<= 1;
+
+      byte var13;
+      int var10001;
+      for(var9 -= 6; var4 < var9; var6 += var8) {
+         var13 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+         var6 += var8;
+         var13 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+         var6 += var8;
+         var13 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+         var6 += var8;
+         var13 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+      }
+
+      for(var9 += 6; var4 < var9; var6 += var8) {
+         var13 = var1[var3--];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+      }
+
+      var12.field1322 = var5 >> 2;
+      var12.field1328 = var6 >> 2;
+      var12.field1320 = var3 << 8;
+      return var4 >> 1;
+   }
+
+   @ObfuscatedName("bu")
+   static int method1449(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class67 var11, int var12, int var13) {
+      var11.field1322 -= var11.field1331 * var5;
+      var11.field1328 -= var11.field1323 * var5;
+      if(var12 == 0 || (var8 = var5 + (var10 + 256 - var4 + var12) / var12) > var9) {
+         var8 = var9;
+      }
+
+      int var10001;
+      while(var5 < var8) {
+         var1 = var4 >> 8;
+         byte var14 = var2[var1 - 1];
+         var10001 = var5++;
+         var3[var10001] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
+         var6 += var7;
+         var4 += var12;
+      }
+
+      if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12) / var12) > var9) {
+         var8 = var9;
+      }
+
+      var0 = var13;
+
+      for(var1 = var12; var5 < var8; var4 += var1) {
+         var10001 = var5++;
+         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var6 += var7;
+      }
+
+      var11.field1322 += var11.field1331 * var5;
+      var11.field1328 += var11.field1323 * var5;
+      var11.field1321 = var6;
+      var11.field1320 = var4;
+      return var5;
+   }
+
+   @ObfuscatedName("bl")
+   static int method1450(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, class67 var13, int var14, int var15) {
+      var13.field1321 -= var13.field1329 * var5;
+      if(var14 == 0 || (var10 = var5 + (var12 + 256 - var4 + var14) / var14) > var11) {
+         var10 = var11;
+      }
+
+      var5 <<= 1;
+
+      int var10001;
+      for(var10 <<= 1; var5 < var10; var4 += var14) {
+         var1 = var4 >> 8;
+         byte var16 = var2[var1 - 1];
+         var0 = (var16 << 8) + (var2[var1] - var16) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var6 += var8;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+         var7 += var9;
+      }
+
+      if(var14 == 0 || (var10 = (var5 >> 1) + (var12 - var4 + var14) / var14) > var11) {
+         var10 = var11;
+      }
+
+      var10 <<= 1;
+
+      for(var1 = var15; var5 < var10; var4 += var14) {
+         var0 = (var1 << 8) + (var2[var4 >> 8] - var1) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var6 += var8;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+         var7 += var9;
+      }
+
+      var5 >>= 1;
+      var13.field1321 += var13.field1329 * var5;
+      var13.field1322 = var6;
+      var13.field1328 = var7;
+      var13.field1320 = var4;
+      return var5;
+   }
+
+   @ObfuscatedName("x")
+   public synchronized int method1453() {
+      return this.field1325 < 0?-1:this.field1325;
+   }
+
+   @ObfuscatedName("d")
+   public boolean method1454() {
+      return this.field1320 < 0 || this.field1320 >= ((class65)super.field1333).field1304.length << 8;
+   }
+
+   @ObfuscatedName("a")
+   protected class69 vmethod3803() {
+      return null;
+   }
+
+   @ObfuscatedName("am")
+   static int method1470(int var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, class67 var12) {
+      var3 >>= 8;
+      var11 >>= 8;
+      var5 <<= 2;
+      var6 <<= 2;
+      var7 <<= 2;
+      var8 <<= 2;
+      if((var9 = var4 + var11 - var3) > var10) {
+         var9 = var10;
+      }
+
+      var12.field1321 += var12.field1329 * (var9 - var4);
+      var4 <<= 1;
+      var9 <<= 1;
+
+      byte var13;
+      int var10001;
+      for(var9 -= 6; var4 < var9; var6 += var8) {
+         var13 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+         var6 += var8;
+         var13 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+         var6 += var8;
+         var13 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+         var6 += var8;
+         var13 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+      }
+
+      for(var9 += 6; var4 < var9; var6 += var8) {
+         var13 = var1[var3++];
+         var10001 = var4++;
+         var2[var10001] += var13 * var5;
+         var5 += var7;
+         var10001 = var4++;
+         var2[var10001] += var13 * var6;
+      }
+
+      var12.field1322 = var5 >> 2;
+      var12.field1328 = var6 >> 2;
+      var12.field1320 = var3 << 8;
+      return var4 >> 1;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "0"
+   )
+   synchronized void method1473(int var1) {
+      this.method1414(var1, this.method1453());
+   }
+
+   @ObfuscatedName("bw")
+   static int method1476(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, class67 var13, int var14, int var15) {
+      var13.field1321 -= var13.field1329 * var5;
+      if(var14 == 0 || (var10 = var5 + (var12 - var4 + var14 - 257) / var14) > var11) {
+         var10 = var11;
+      }
+
+      var5 <<= 1;
+
+      byte var16;
+      int var10001;
+      for(var10 <<= 1; var5 < var10; var4 += var14) {
+         var1 = var4 >> 8;
+         var16 = var2[var1];
+         var0 = (var16 << 8) + (var2[var1 + 1] - var16) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var6 += var8;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+         var7 += var9;
+      }
+
+      if(var14 == 0 || (var10 = (var5 >> 1) + (var12 - var4 + var14 - 1) / var14) > var11) {
+         var10 = var11;
+      }
+
+      var10 <<= 1;
+
+      for(var1 = var15; var5 < var10; var4 += var14) {
+         var16 = var2[var4 >> 8];
+         var0 = (var16 << 8) + (var1 - var16) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var6 += var8;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+         var7 += var9;
+      }
+
+      var5 >>= 1;
+      var13.field1321 += var13.field1329 * var5;
+      var13.field1322 = var6;
+      var13.field1328 = var7;
+      var13.field1320 = var4;
+      return var5;
+   }
+
+   @ObfuscatedName("m")
+   public synchronized void method1489(int var1, int var2, int var3) {
+      if(var1 == 0) {
+         this.method1414(var2, var3);
+      } else {
+         int var4 = method1493(var2, var3);
+         int var5 = method1405(var2, var3);
+         if(this.field1322 == var4 && this.field1328 == var5) {
+            this.field1317 = 0;
+         } else {
+            int var6 = var2 - this.field1321;
+            if(this.field1321 - var2 > var6) {
+               var6 = this.field1321 - var2;
+            }
+
+            if(var4 - this.field1322 > var6) {
+               var6 = var4 - this.field1322;
+            }
+
+            if(this.field1322 - var4 > var6) {
+               var6 = this.field1322 - var4;
+            }
+
+            if(var5 - this.field1328 > var6) {
+               var6 = var5 - this.field1328;
+            }
+
+            if(this.field1328 - var5 > var6) {
+               var6 = this.field1328 - var5;
+            }
+
+            if(var1 > var6) {
+               var1 = var6;
+            }
+
+            this.field1317 = var1;
+            this.field1319 = var2;
+            this.field1325 = var3;
+            this.field1329 = (var2 - this.field1321) / var1;
+            this.field1331 = (var4 - this.field1322) / var1;
+            this.field1323 = (var5 - this.field1328) / var1;
+         }
+      }
+   }
+
+   class67(class65 var1, int var2, int var3, int var4) {
+      super.field1333 = var1;
+      this.field1324 = var1.field1302;
+      this.field1330 = var1.field1303;
+      this.field1327 = var1.field1300;
+      this.field1318 = var2;
+      this.field1319 = var3;
+      this.field1325 = var4;
+      this.field1320 = 0;
+      this.method1499();
+   }
+
+   @ObfuscatedName("e")
+   static int method1493(int var0, int var1) {
+      return var1 < 0?var0:(int)((double)var0 * Math.sqrt((double)(16384 - var1) * 1.220703125E-4D) + 0.5D);
+   }
+
+   @ObfuscatedName("b")
+   protected class69 vmethod3804() {
+      return null;
+   }
+
+   @ObfuscatedName("r")
+   void method1499() {
+      this.field1321 = this.field1319;
+      this.field1322 = method1493(this.field1319, this.field1325);
+      this.field1328 = method1405(this.field1319, this.field1325);
+   }
+
+   @ObfuscatedName("aj")
+   static int method1502(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class67 var11, int var12, int var13) {
+      if(var12 == 0 || (var8 = var5 + (var10 + 256 - var4 + var12) / var12) > var9) {
+         var8 = var9;
+      }
+
+      var5 <<= 1;
+
+      int var10001;
+      for(var8 <<= 1; var5 < var8; var4 += var12) {
+         var1 = var4 >> 8;
+         byte var14 = var2[var1 - 1];
+         var0 = (var14 << 8) + (var2[var1] - var14) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+      }
+
+      if(var12 == 0 || (var8 = (var5 >> 1) + (var10 - var4 + var12) / var12) > var9) {
+         var8 = var9;
+      }
+
+      var8 <<= 1;
+
+      for(var1 = var13; var5 < var8; var4 += var12) {
+         var0 = (var1 << 8) + (var2[var4 >> 8] - var1) * (var4 & 255);
+         var10001 = var5++;
+         var3[var10001] += var0 * var6 >> 6;
+         var10001 = var5++;
+         var3[var10001] += var0 * var7 >> 6;
+      }
+
+      var11.field1320 = var4;
+      return var5 >> 1;
+   }
+
+   @ObfuscatedName("q")
+   public synchronized void method1530(int var1) {
+      this.method1414(var1 << 6, this.method1453());
+   }
+
+   @ObfuscatedName("ac")
+   static int method1540(int var0, int var1, byte[] var2, int[] var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, class67 var11, int var12, int var13) {
+      var11.field1322 -= var11.field1331 * var5;
+      var11.field1328 -= var11.field1323 * var5;
+      if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12 - 257) / var12) > var9) {
+         var8 = var9;
+      }
+
+      byte var14;
+      int var10001;
+      while(var5 < var8) {
+         var1 = var4 >> 8;
+         var14 = var2[var1];
+         var10001 = var5++;
+         var3[var10001] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
+         var6 += var7;
+         var4 += var12;
+      }
+
+      if(var12 == 0 || (var8 = var5 + (var10 - var4 + var12 - 1) / var12) > var9) {
+         var8 = var9;
+      }
+
+      for(var1 = var13; var5 < var8; var4 += var12) {
+         var14 = var2[var4 >> 8];
+         var10001 = var5++;
+         var3[var10001] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
+         var6 += var7;
+      }
+
+      var11.field1322 += var11.field1331 * var5;
+      var11.field1328 += var11.field1323 * var5;
+      var11.field1321 = var6;
+      var11.field1320 = var4;
+      return var5;
    }
 }

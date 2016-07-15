@@ -1,54 +1,70 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
-public class class153 {
-   @ObfuscatedName("b")
-   static final class153 field2265 = new class153("WIP", 2);
-   @ObfuscatedName("u")
-   static final class153 field2266 = new class153("BUILDLIVE", 3);
-   @ObfuscatedName("x")
-   static final class153 field2267 = new class153("RC", 1);
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -406772093
-   )
-   final int field2270;
-   @ObfuscatedName("f")
-   static final class153 field2272 = new class153("LIVE", 0);
-   @ObfuscatedName("qg")
-   @ObfuscatedGetter(
-      intValue = 2051271317
-   )
-   public static int field2274;
-   @ObfuscatedName("l")
-   public final String field2275;
-
+@ObfuscatedName("ej")
+public final class class153 {
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "0"
+      signature = "(Ljava/lang/CharSequence;IZS)I",
+      garbageValue = "-12635"
    )
-   class153(String var1, int var2) {
-      this.field2275 = var1;
-      this.field2270 = var2;
-   }
+   static int method3230(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass173;",
-      garbageValue = "-121520415"
-   )
-   public static class173 method3177(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(class173.field2770[var1] == null || class173.field2770[var1][var2] == null) {
-         boolean var3 = class135.method2897(var1);
-         if(!var3) {
-            return null;
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == 43) {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= 48 && var8 <= 57) {
+               var10 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var10 = var8 - 55;
+            } else {
+               if(var8 < 97 || var8 > 122) {
+                  throw new NumberFormatException();
+               }
+
+               var10 = var8 - 87;
+            }
+
+            if(var10 >= var1) {
+               throw new NumberFormatException();
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var5 * var1 + var10;
+            if(var5 != var9 / var1) {
+               throw new NumberFormatException();
+            }
+
+            var5 = var9;
+            var4 = true;
          }
-      }
 
-      return class173.field2770[var1][var2];
+         if(!var4) {
+            throw new NumberFormatException();
+         } else {
+            return var5;
+         }
+      } else {
+         throw new IllegalArgumentException("");
+      }
    }
 }

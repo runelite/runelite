@@ -1,22 +1,28 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
-public abstract class class133 {
-   @ObfuscatedName("k")
-   public static class180 field2072;
+@ObfuscatedName("ek")
+public class class133 {
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1714067091
+   )
+   public final int field2111;
+   @ObfuscatedName("c")
+   static final class133 field2112 = new class133(2);
+   @ObfuscatedName("l")
+   public static final class133 field2113 = new class133(1);
+   @ObfuscatedName("e")
+   static final class133 field2116 = new class133(0);
+   @ObfuscatedName("w")
+   static int[][][] field2117;
 
-   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1973561307"
+      garbageValue = "0"
    )
-   abstract void vmethod3146();
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1829064411"
-   )
-   abstract int vmethod3147(int var1, int var2);
+   class133(int var1) {
+      this.field2111 = var1;
+   }
 }

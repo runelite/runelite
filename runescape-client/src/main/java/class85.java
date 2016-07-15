@@ -1,44 +1,122 @@
 import net.runelite.mapping.Export;
-import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cm")
-@Implements("Renderable")
-public abstract class class85 extends class204 {
-   @ObfuscatedName("cg")
+@ObfuscatedName("cn")
+public class class85 implements class115 {
+   @ObfuscatedName("e")
+   public static final class85 field1493 = new class85(0, 0);
+   @ObfuscatedName("c")
+   public static final class85 field1495 = new class85(2, 2);
+   @ObfuscatedName("l")
+   public static final class85 field1496 = new class85(1, 1);
+   @ObfuscatedName("r")
+   public static final class85 field1497 = new class85(4, 4);
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -374201515
+      intValue = -1997071289
    )
-   @Export("modelHeight")
-   public int field1468 = 1000;
+   public final int field1498;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -209637091
+   )
+   final int field1499;
+   @ObfuscatedName("fh")
+   @ObfuscatedGetter(
+      intValue = -1130103051
+   )
+   @Export("cameraX")
+   static int field1500;
+   @ObfuscatedName("h")
+   public static final class85 field1504 = new class85(3, 3);
 
-   @ObfuscatedName("eh")
    @ObfuscatedSignature(
-      signature = "(Lclass173;IB)Ljava/lang/String;",
-      garbageValue = "74"
+      signature = "(II)V",
+      garbageValue = "0"
    )
-   static String method1967(class173 var0, int var1) {
-      return !class167.method3361(class18.method205(var0), var1) && null == var0.field2859?null:(null != var0.field2854 && var0.field2854.length > var1 && null != var0.field2854[var1] && var0.field2854[var1].trim().length() != 0?var0.field2854[var1]:null);
+   class85(int var1, int var2) {
+      this.field1498 = var1;
+      this.field1499 = var2;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(S)Lclass105;",
-      garbageValue = "1006"
+      signature = "(I)I",
+      garbageValue = "-2010364784"
    )
-   @Export("getModel")
-   protected class105 vmethod1968() {
-      return null;
+   public int vmethod3262() {
+      return this.field1499;
    }
 
-   @ObfuscatedName("ai")
-   void vmethod2396(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      class105 var10 = this.vmethod1968();
-      if(var10 != null) {
-         this.field1468 = var10.field1468;
-         var10.vmethod2396(var1, var2, var3, var4, var5, var6, var7, var8, var9);
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(Lclass170;Ljava/lang/String;Ljava/lang/String;S)[Lclass81;",
+      garbageValue = "11053"
+   )
+   public static class81[] method1983(class170 var0, String var1, String var2) {
+      int var3 = var0.method3342(var1);
+      int var4 = var0.method3357(var3, var2);
+      return class33.method720(var0, var3, var4);
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lclass171;IIIBZI)V",
+      garbageValue = "629385719"
+   )
+   static void method1984(class171 var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)(var2 + (var1 << 16));
+      class175 var8 = (class175)class174.field2759.method3864(var6);
+      if(null == var8) {
+         var8 = (class175)class174.field2768.method3864(var6);
+         if(var8 == null) {
+            var8 = (class175)class174.field2772.method3864(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.method3978();
+                  class174.field2759.method3865(var8, var6);
+                  --class174.field2765;
+                  ++class174.field2761;
+               }
+
+            } else {
+               if(!var5) {
+                  var8 = (class175)class174.field2766.method3864(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new class175();
+               var8.field2777 = var0;
+               var8.field2778 = var3;
+               var8.field2779 = var4;
+               if(var5) {
+                  class174.field2759.method3865(var8, var6);
+                  ++class174.field2761;
+               } else {
+                  class174.field2764.method3963(var8);
+                  class174.field2772.method3865(var8, var6);
+                  ++class174.field2765;
+               }
+
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "534401513"
+   )
+   public static void method1985(int var0) {
+      if(class186.field2993 != 0) {
+         class28.field695 = var0;
+      } else {
+         class186.field2996.method3683(var0);
       }
 
    }

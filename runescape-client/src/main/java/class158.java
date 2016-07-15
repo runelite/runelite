@@ -1,45 +1,38 @@
+import java.awt.Canvas;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fu")
 public class class158 {
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass52;",
-      garbageValue = "1163727902"
-   )
-   public static class52 method3191(int var0) {
-      class52 var1 = (class52)class52.field1168.method3797((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class217.field3163.method3286(16, var0);
-         var1 = new class52();
-         if(null != var2) {
-            var1.method1136(new class119(var2));
-         }
+   @ObfuscatedName("c")
+   public static int[] field2343 = new int[99];
+   @ObfuscatedName("l")
+   public static final boolean[] field2344 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
+   @ObfuscatedName("qw")
+   @Export("canvas")
+   public static Canvas field2346;
+   @ObfuscatedName("qf")
+   protected static class136 field2347;
 
-         class52.field1168.method3788(var1, (long)var0);
-         return var1;
+   static {
+      int var0 = 0;
+
+      for(int var1 = 0; var1 < 99; ++var1) {
+         int var2 = 1 + var1;
+         int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
+         var0 += var3;
+         field2343[var1] = var0 / 4;
       }
+
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)Lclass80;",
-      garbageValue = "-538047208"
+      signature = "(I)V",
+      garbageValue = "-1259954598"
    )
-   static class80 method3192() {
-      class80 var0 = new class80();
-      var0.field1426 = class76.field1396;
-      var0.field1432 = class76.field1398;
-      var0.field1433 = class76.field1397[0];
-      var0.field1431 = class52.field1178[0];
-      var0.field1428 = class28.field690[0];
-      var0.field1429 = class31.field744[0];
-      var0.field1427 = class7.field135;
-      var0.field1430 = class76.field1400[0];
-      class33.method749();
-      return var0;
+   public static void method3258() {
+      class56.field1232.method3835();
    }
 }

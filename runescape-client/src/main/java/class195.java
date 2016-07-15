@@ -1,50 +1,50 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("gj")
 public class class195 {
-   @ObfuscatedName("f")
-   class207 field3088 = new class207();
-   @ObfuscatedName("u")
-   class207 field3089;
+   @ObfuscatedName("e")
+   int[] field3123;
 
-   public class195() {
-      this.field3088.field3114 = this.field3088;
-      this.field3088.field3113 = this.field3088;
-   }
+   @ObfuscatedName("e")
+   public int method3830(int var1) {
+      int var2 = (this.field3123.length >> 1) - 1;
+      int var3 = var1 & var2;
 
-   @ObfuscatedName("f")
-   public void method3809(class207 var1) {
-      if(var1.field3113 != null) {
-         var1.method3936();
-      }
+      while(true) {
+         int var4 = this.field3123[var3 + var3 + 1];
+         if(var4 == -1) {
+            return -1;
+         }
 
-      var1.field3113 = this.field3088.field3113;
-      var1.field3114 = this.field3088;
-      var1.field3113.field3114 = var1;
-      var1.field3114.field3113 = var1;
-   }
+         if(this.field3123[var3 + var3] == var1) {
+            return var4;
+         }
 
-   @ObfuscatedName("u")
-   public class207 method3810() {
-      class207 var1 = this.field3088.field3114;
-      if(var1 == this.field3088) {
-         this.field3089 = null;
-         return null;
-      } else {
-         this.field3089 = var1.field3114;
-         return var1;
+         var3 = var3 + 1 & var2;
       }
    }
 
-   @ObfuscatedName("x")
-   public class207 method3817() {
-      class207 var1 = this.field3089;
-      if(var1 == this.field3088) {
-         this.field3089 = null;
-         return null;
-      } else {
-         this.field3089 = var1.field3114;
-         return var1;
+   public class195(int[] var1) {
+      int var2;
+      for(var2 = 1; var2 <= var1.length + (var1.length >> 1); var2 <<= 1) {
+         ;
       }
+
+      this.field3123 = new int[var2 + var2];
+
+      int var3;
+      for(var3 = 0; var3 < var2 + var2; ++var3) {
+         this.field3123[var3] = -1;
+      }
+
+      int var4;
+      for(var3 = 0; var3 < var1.length; this.field3123[var4 + var4 + 1] = var3++) {
+         for(var4 = var1[var3] & var2 - 1; this.field3123[var4 + var4 + 1] != -1; var4 = var4 + 1 & var2 - 1) {
+            ;
+         }
+
+         this.field3123[var4 + var4] = var1[var3];
+      }
+
    }
 }

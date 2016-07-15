@@ -2,45 +2,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
-public class class175 extends class204 {
-   @ObfuscatedName("dd")
-   static int[] field2897;
-   @ObfuscatedName("b")
-   public final int[] field2898;
-   @ObfuscatedName("x")
-   public final int[] field2899;
-   @ObfuscatedName("f")
+@ObfuscatedName("ff")
+public class class175 extends class207 {
+   @ObfuscatedName("e")
+   public class171 field2777;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -2079172787
+      intValue = 646839473
    )
-   public final int field2900;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -465395487
-   )
-   public final int field2901;
+   public int field2778;
+   @ObfuscatedName("c")
+   public byte field2779;
+   @ObfuscatedName("n")
+   static class13 field2782;
 
-   class175(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2900 = var1;
-      this.field2901 = var2;
-      this.field2899 = var3;
-      this.field2898 = var4;
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("bo")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-92"
+      signature = "(I)V",
+      garbageValue = "2126426816"
    )
-   public boolean method3475(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2898.length) {
-         int var3 = this.field2898[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2899[var2]) {
-            return true;
+   static final void method3483() {
+      for(class16 var0 = (class16)client.field427.method3899(); var0 != null; var0 = (class16)client.field427.method3918()) {
+         if(var0.field230 == -1) {
+            var0.field239 = 0;
+            class5.method53(var0);
+         } else {
+            var0.method4000();
          }
       }
 
-      return false;
    }
 }
