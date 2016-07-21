@@ -33,6 +33,7 @@ package net.runelite.deob.deobfuscators.mapping;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Field;
@@ -41,9 +42,13 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.execution.ParallellMappingExecutor;
 import net.runelite.asm.signature.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Mapper
 {
+	private static final Logger logger = LoggerFactory.getLogger(Mapper.class);
+	
 	private final ClassGroup source, target;
 	private ParallelExecutorMapping mapping;
 	
@@ -69,6 +74,8 @@ public class Mapper
 		finalm.reduce();
 		
 		finalm.buildClasses();
+		
+		mapMemberMethods(finalm);
 
 		new ConstructorMapper(source, target, finalm).mapConstructors();
 
@@ -240,5 +247,51 @@ public class Mapper
 		}
 
 		return null;
+	}
+	
+	private void mapMemberMethods(ParallelExecutorMapping mapping)
+	{
+		// pass #2 at method mapping, can use class file mappings learned
+		
+		for (ClassFile cf : source.getClasses())
+		{
+			ClassFile other = (ClassFile) mapping.get(cf);
+			if (other == null)
+				continue;
+			
+			List<Method> methods1 = cf.getMethods().getMethods().stream()
+				.filter(m -> !m.isStatic())
+				.filter(m -> !m.getName().equals("<init>"))
+				.filter(m -> m.getCode() != null)
+				.collect(Collectors.toList());
+			
+			List<Method> methods2 = other.getMethods().getMethods().stream()
+				.filter(m -> !m.isStatic())
+				.filter(m -> !m.getName().equals("<init>"))
+				.filter(m -> m.getCode() != null)
+				.collect(Collectors.toList());
+			
+			for (Method method : methods1)
+			{
+				if (mapping.get(method) != null) // already mapped
+					continue;
+				
+				List<Method> possible = methods2.stream()
+					.filter(m -> MappingExecutorUtil.isMaybeEqual(m.getDescriptor(), method.getDescriptor()))
+					.collect(Collectors.toList());
+				
+				// Run over execution mapper
+				ExecutionMapper em = new ExecutionMapper(method, possible);
+				ParallelExecutorMapping map = em.run();
+				if (map == null)
+					continue;
+				
+				map.map(null, map.m1, map.m2);
+				
+				logger.debug("Mapped {} -> {} based on exiting class mapping and method signatures", map.m1, map.m2);
+				
+				mapping.merge(map);
+			}
+		}
 	}
 }
