@@ -67,11 +67,14 @@ public class Mapper
 	{		
 		ParallelExecutorMapping finalm = new ParallelExecutorMapping(source, target);
 
-		finalm.merge(mapStaticMethods(source, target));
-		finalm.merge(mapMethods(source, target));
-		finalm.merge(mapPackets(finalm, source, target));
+		finalm.merge(mapStaticMethods());
+		finalm.merge(mapMethods());
+		finalm.merge(mapPackets(finalm));
 		
 		finalm.reduce();
+
+		// map unexecuted methods
+		mapUnexecutedMethods(finalm);
 		
 		finalm.buildClasses();
 		
@@ -82,10 +85,10 @@ public class Mapper
 		mapping = finalm;
 	}
 
-	private ParallelExecutorMapping mapMethods(ClassGroup one, ClassGroup two)
+	private ParallelExecutorMapping mapMethods()
 	{
 		MethodSignatureMapper msm = new MethodSignatureMapper();
-		msm.map(one, two);
+		msm.map(source, target);
 
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
 
@@ -99,22 +102,24 @@ public class Mapper
 			if (mapping == null)
 				continue;
 
-			mapping.map(null, mapping.m1, mapping.m2);
+			mapping.map(null, mapping.m1, mapping.m2).wasExecuted = true;
+
+			logger.debug("map methods mapped {} -> {}", mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
 		}
 
-		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
+		ParallelExecutorMapping finalm = new ParallelExecutorMapping(source, target);
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
 
 		return finalm;
 	}
 	
-	private ParallelExecutorMapping mapStaticMethods(ClassGroup one, ClassGroup two)
+	private ParallelExecutorMapping mapStaticMethods()
 	{
 		StaticMethodSignatureMapper smsm = new StaticMethodSignatureMapper();
-		smsm.map(one, two);
+		smsm.map(source, target);
 		
 		List<ParallelExecutorMapping> pmes = new ArrayList<>();
 		
@@ -128,19 +133,21 @@ public class Mapper
 			if (mapping == null)
 				continue;
 			
-			mapping.map(null, mapping.m1, mapping.m2);
+			mapping.map(null, mapping.m1, mapping.m2).wasExecuted = true;
+
+			logger.debug("map static methods mapped {} -> {}", mapping.m1, mapping.m2);
 
 			pmes.add(mapping);
 		}
 		
-		ParallelExecutorMapping finalm = new ParallelExecutorMapping(one, two);
+		ParallelExecutorMapping finalm = new ParallelExecutorMapping(source, target);
 		for (ParallelExecutorMapping pme : pmes)
 			finalm.merge(pme);
 
 		return finalm;
 	}
 
-	private ParallelExecutorMapping mapPackets(ParallelExecutorMapping pem, ClassGroup group1, ClassGroup group2)
+	private ParallelExecutorMapping mapPackets(ParallelExecutorMapping pem)
 	{
 		Method packetMethod = this.findPacketMethod();
 		Field packetField = this.findPacketField();
@@ -164,7 +171,7 @@ public class Mapper
 		assert mappings.packetHandler1.size() == mappings.packetHandler2.size();
 
 		ParallellMappingExecutor.enable = true;
-		ParallelExecutorMapping all = new ParallelExecutorMapping(group1, group2);
+		ParallelExecutorMapping all = new ParallelExecutorMapping(source, target);
 
 		for (int i = 0; i < mappings.packetHandler1.size(); ++i)
 		{
@@ -180,7 +187,7 @@ public class Mapper
 				Instruction i1 = if1.getFirstInsOfHandler(),
 					i2 = if2.getFirstInsOfHandler();
 
-				ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(group1, group2, i1, i2);
+				ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(source, target, i1, i2);
 
 				if (mapping.getMap().isEmpty())
 					continue;
@@ -292,6 +299,31 @@ public class Mapper
 				
 				mapping.merge(map);
 			}
+		}
+	}
+
+	private void mapUnexecutedMethods(ParallelExecutorMapping mapping)
+	{
+		// map has already been reduced
+		
+		for (Object o : mapping.getMap().keySet())
+		{
+			Mapping m = mapping.getMappings(o).iterator().next();
+
+			if (m.wasExecuted || !(m.getFrom() instanceof Method))
+				continue;
+
+			Method m1 = (Method) m.getFrom(), m2 = (Method) m.getObject();
+
+			if (m1.getCode() == null || m2.getCode() == null)
+				continue;
+
+			// m was picked up as an invoke instruction when mapping
+			// something else, but wasn't executed itself
+			logger.debug("Wasn't executed {}", m);
+
+			ParallelExecutorMapping ma = MappingExecutorUtil.map(m1, m2);
+			mapping.merge(ma);
 		}
 	}
 }
