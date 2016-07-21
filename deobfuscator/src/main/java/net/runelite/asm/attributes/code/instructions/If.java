@@ -297,6 +297,10 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 		{
 			Field f1 = f1s.get(0), f2 = f2s.get(0);
 			Field j1 = f1s.get(1), j2 = f2s.get(1);
+
+			if (!f1.isStatic() && !j1.isStatic() && !f2.isStatic() && !j2.isStatic())
+				if ((f1.getFields() == j1.getFields()) != (f2.getFields() == j2.getFields()))
+					return false;
 			
 			if (couldBeSame(f1, f2) && couldBeSame(j1, j2) && couldBeSame(f1, j2) && couldBeSame(j1, f2))
 				return true;
