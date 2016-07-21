@@ -34,6 +34,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -78,7 +79,7 @@ public class ParallelExecutorMapping
 			if (m.getObject() == to)
 				return m;
 
-		Mapping m = new Mapping(to);
+		Mapping m = new Mapping(from, to);
 		map.put(from, m);
 		return m;
 	}
@@ -167,6 +168,46 @@ public class ParallelExecutorMapping
 		Mapping m = getMapping(cf1, cf2);
 
 		m.inc();
+	}
+	
+	/**
+	 * makes the map one to one based on the weight of each mapping. If a mapping
+	 * is mapped from the same object multiple places, the highest is used, and the
+	 * other mappings are not considered when deducing the mappings of the other objects.
+	 */
+	public void reduce()
+	{
+		List<Mapping> sorted = new ArrayList<>(map.values());
+		
+		// sort by strength
+		Collections.sort(sorted, (m1, m2) -> Integer.compare(m1.getCount(), m2.getCount()));
+		
+		// reverse so highest is first
+		Collections.reverse(sorted);
+		
+		Multimap<Object, Mapping> reducedMap = HashMultimap.create();
+		Map<Object, Object> reverse = new HashMap<>();
+		
+		for (Mapping m : sorted)
+		{
+			if (reducedMap.containsKey(m.getFrom()))
+			{
+				logger.debug("Reduced out mapping {} because of {}", m, reducedMap.get(m.getFrom()).iterator().next());
+				continue;
+			}
+			
+			if (reverse.containsKey(m.getObject()))
+			{
+				logger.debug("Redudced out mapping {} because of {}", m, reducedMap.get(reverse.get(m.getObject())).iterator().next());
+				continue;
+			}
+			
+			reducedMap.put(m.getFrom(), m);
+			reverse.put(m.getObject(), m.getFrom());
+		}
+		
+		map = reducedMap;
+		// map is now one to one
 	}
 	
 	public void buildClasses()

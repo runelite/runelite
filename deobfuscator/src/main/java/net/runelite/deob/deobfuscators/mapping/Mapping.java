@@ -36,19 +36,26 @@ import net.runelite.asm.attributes.code.Instruction;
 
 public class Mapping
 {
+	private Object from;
 	private Object object;
 	private int count;
 	private List<Instruction> ins = new ArrayList<>();
 
-	public Mapping(Object object)
+	public Mapping(Object from, Object object)
 	{
+		this.from = from;
 		this.object = object;
 	}
 
 	@Override
 	public String toString()
 	{
-		return "Mapping{" + "object=" + object + ", count=" + count + '}';
+		return "Mapping{" + "from=" + from + ", object=" + object + ", count=" + count + '}';
+	}
+
+	public Object getFrom()
+	{
+		return from;
 	}
 
 	public Object getObject()

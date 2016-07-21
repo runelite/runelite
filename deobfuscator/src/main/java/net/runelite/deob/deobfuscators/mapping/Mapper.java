@@ -66,6 +66,8 @@ public class Mapper
 		finalm.merge(mapMethods(source, target));
 		finalm.merge(mapPackets(finalm, source, target));
 		
+		finalm.reduce();
+		
 		finalm.buildClasses();
 
 		mapConstructors(finalm);
