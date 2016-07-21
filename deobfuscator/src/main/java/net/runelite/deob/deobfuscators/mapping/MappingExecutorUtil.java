@@ -365,8 +365,17 @@ public class MappingExecutorUtil
 		if (cf1 == null || cf2 == null)
 			return false;
 		
-		if (!isMaybeEqual(cf1.getParent(), cf2.getParent()))
-			return false;
+		if (cf1.getParent() != null || cf2.getParent() != null)
+		{
+			if (!isMaybeEqual(cf1.getParent(), cf2.getParent()))
+				return false;
+		}
+		else
+		{
+			// otherwise parents are not our classes
+			if (!cf1.getParentClass().equals(cf2.getParentClass()))
+				return false;
+		}
 		
 		Interfaces i1 = cf1.getInterfaces(), i2 = cf2.getInterfaces();
 		if (i1.getInterfaces().size() != i2.getInterfaces().size())
