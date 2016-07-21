@@ -40,6 +40,7 @@ public class Mapping
 	private Object object;
 	private int count;
 	private List<Instruction> ins = new ArrayList<>();
+	public boolean wasExecuted;
 
 	public Mapping(Object from, Object object)
 	{
@@ -79,6 +80,7 @@ public class Mapping
 		count += other.count;
 		for (Instruction i : other.ins)
 			addInstruction(i);
+		wasExecuted |= other.wasExecuted;
 	}
 	
 	public void addInstruction(Instruction i)

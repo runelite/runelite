@@ -107,7 +107,7 @@ public class ParallelExecutorMapping
 		}
 	}
 	
-	public void map(Instruction mapper, Object one, Object two)
+	public Mapping map(Instruction mapper, Object one, Object two)
 	{
 		Mapping m = getMapping(one, two);
 		
@@ -118,6 +118,8 @@ public class ParallelExecutorMapping
 		belongs(two, group2);
 
 		m.inc();
+
+		return m;
 	}
 
 	private void mapClass(Object one, Object two)
