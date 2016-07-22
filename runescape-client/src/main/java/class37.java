@@ -4,82 +4,69 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("af")
 @Implements("MessageNode")
 public class class37 extends class207 {
-   @ObfuscatedName("r")
-   @Export("sender")
-   String field829;
-   @ObfuscatedName("c")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 2072427027
-   )
-   @Export("type")
-   int field830;
-   @ObfuscatedName("h")
-   @Export("name")
-   String field831;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1483808741
+      intValue = 2023452699
    )
    @Export("tick")
-   int field832;
+   int field805;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -496260323
+      intValue = 562872851
+   )
+   @Export("type")
+   int field806;
+   @ObfuscatedName("g")
+   @Export("sender")
+   String field808;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1546785459
    )
    @Export("id")
-   int field833 = class180.method3552();
-   @ObfuscatedName("a")
+   int field809;
+   @ObfuscatedName("o")
+   @Export("name")
+   String field811;
+   @ObfuscatedName("l")
    @Export("value")
-   String field835;
+   String field812;
 
-   class37(int var1, String var2, String var3, String var4) {
-      this.field832 = client.field567;
-      this.field830 = var1;
-      this.field831 = var2;
-      this.field829 = var3;
-      this.field835 = var4;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-642071360"
-   )
-   static final int method771(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = var2 / 2 + (var0 / 4 << 10) + (var1 / 32 << 7);
-      return var3;
-   }
-
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1037433379"
+      garbageValue = "-1815569340"
    )
-   void method773(int var1, String var2, String var3, String var4) {
-      this.field833 = class180.method3552();
-      this.field832 = client.field567;
-      this.field830 = var1;
-      this.field831 = var2;
-      this.field829 = var3;
-      this.field835 = var4;
+   void method755(int var1, String var2, String var3, String var4) {
+      int var5 = ++class11.field159 - 1;
+      this.field809 = var5;
+      this.field805 = client.field282;
+      this.field806 = var1;
+      this.field811 = var2;
+      this.field808 = var3;
+      this.field812 = var4;
+   }
+
+   class37(int var1, String var2, String var3, String var4) {
+      int var5 = ++class11.field159 - 1;
+      this.field809 = var5;
+      this.field805 = client.field282;
+      this.field806 = var1;
+      this.field811 = var2;
+      this.field808 = var3;
+      this.field812 = var4;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-284102665"
+   )
+   public static void method759() {
+      class49.field1088.method3814();
+      class49.field1098.method3814();
    }
 }

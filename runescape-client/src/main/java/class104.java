@@ -2,106 +2,174 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dw")
+@ObfuscatedName("dm")
 @Implements("Tile")
 public final class class104 extends class211 {
-   @ObfuscatedName("b")
-   @Export("wallObject")
-   class90 field1810;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1964420699
+      intValue = -145550553
    )
-   int field1811;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1471875475
-   )
-   @Export("y")
-   int field1812;
-   @ObfuscatedName("bg")
-   static class171 field1813;
-   @ObfuscatedName("r")
-   class92 field1814;
-   @ObfuscatedName("a")
-   class100 field1815;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -81399725
-   )
-   @Export("x")
-   int field1816;
-   @ObfuscatedName("u")
-   @Export("decorativeObject")
-   class97 field1817;
-   @ObfuscatedName("o")
-   @Export("groundObject")
-   class96 field1818;
-   @ObfuscatedName("p")
-   @Export("itemLayer")
-   class102 field1819;
-   @ObfuscatedName("k")
-   class104 field1820;
-   @ObfuscatedName("q")
-   @Export("objects")
-   class101[] field1821 = new class101[5];
-   @ObfuscatedName("g")
-   int[] field1822 = new int[5];
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 388724091
-   )
-   int field1823 = 0;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 679369127
-   )
-   int field1824;
-   @ObfuscatedName("x")
-   boolean field1825;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1489830075
-   )
-   int field1826;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1389201637
-   )
-   int field1827;
-   @ObfuscatedName("t")
-   boolean field1828;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -109504649
-   )
-   int field1829;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 407522393
-   )
-   @Export("plane")
-   int field1830;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -2115008237
-   )
-   int field1831;
-   @ObfuscatedName("f")
-   boolean field1832;
+   int field1803;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1100918163
+      intValue = 32708587
    )
-   int field1833;
-   @ObfuscatedName("cj")
-   static class227 field1834;
+   @Export("plane")
+   int field1804;
+   @ObfuscatedName("g")
+   class92 field1805;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -418343137
+   )
+   int field1806;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 979351643
+   )
+   @Export("x")
+   int field1807;
+   @ObfuscatedName("l")
+   class100 field1808;
+   @ObfuscatedName("j")
+   @Export("wallObject")
+   class90 field1809;
+   @ObfuscatedName("r")
+   @Export("decorativeObject")
+   class97 field1810;
+   @ObfuscatedName("x")
+   @Export("groundObject")
+   class96 field1811;
+   @ObfuscatedName("k")
+   @Export("itemLayer")
+   class102 field1812;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -1619955697
+   )
+   @Export("y")
+   int field1813;
+   @ObfuscatedName("n")
+   class104 field1814;
+   @ObfuscatedName("u")
+   int[] field1815 = new int[5];
+   @ObfuscatedName("h")
+   @Export("objects")
+   class101[] field1816 = new class101[5];
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -640044205
+   )
+   int field1817;
+   @ObfuscatedName("s")
+   boolean field1818;
+   @ObfuscatedName("f")
+   boolean field1819;
+   @ObfuscatedName("i")
+   boolean field1820;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -2092036835
+   )
+   int field1821;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1264901459
+   )
+   int field1822;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1635226497
+   )
+   int field1823;
+   @ObfuscatedName("qr")
+   @ObfuscatedGetter(
+      intValue = 1991404415
+   )
+   static int field1824;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 263797141
+   )
+   int field1825 = 0;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -800105403
+   )
+   int field1826;
+
+   @ObfuscatedName("dl")
+   @ObfuscatedSignature(
+      signature = "(Lclass176;I)Z",
+      garbageValue = "-1696359871"
+   )
+   static final boolean method2357(class176 var0) {
+      int var1 = var0.field2799;
+      if(var1 == 205) {
+         client.field323 = 250;
+         return true;
+      } else {
+         int var2;
+         int var3;
+         if(var1 >= 300 && var1 <= 313) {
+            var2 = (var1 - 300) / 2;
+            var3 = var1 & 1;
+            client.field516.method3535(var2, var3 == 1);
+         }
+
+         if(var1 >= 314 && var1 <= 323) {
+            var2 = (var1 - 314) / 2;
+            var3 = var1 & 1;
+            client.field516.method3556(var2, var3 == 1);
+         }
+
+         if(var1 == 324) {
+            client.field516.method3538(false);
+         }
+
+         if(var1 == 325) {
+            client.field516.method3538(true);
+         }
+
+         if(var1 == 326) {
+            client.field313.method2797(151);
+            client.field516.method3564(client.field313);
+            return true;
+         } else {
+            return false;
+         }
+      }
+   }
 
    class104(int var1, int var2, int var3) {
-      this.field1830 = var1 * 407522393;
-      this.field1827 = var1;
-      this.field1816 = var2;
-      this.field1812 = var3;
+      this.field1826 = this.field1804 = var1;
+      this.field1807 = var2;
+      this.field1813 = var3;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1999321066"
+   )
+   static void method2358(int var0) {
+      if(var0 != -1) {
+         if(class122.method2739(var0)) {
+            class176[] var1 = class176.field2814[var0];
+
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               class176 var3 = var1[var2];
+               if(var3.field2876 != null) {
+                  class0 var4 = new class0();
+                  var4.field3 = var3;
+                  var4.field1 = var3.field2876;
+                  class43.method884(var4, 2000000);
+               }
+            }
+
+         }
+      }
    }
 }

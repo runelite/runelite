@@ -1,158 +1,67 @@
-import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bb")
 public class class75 implements Runnable {
-   @ObfuscatedName("h")
-   volatile boolean field1417 = false;
-   @ObfuscatedName("l")
-   volatile class59[] field1418 = new class59[2];
-   @ObfuscatedName("c")
-   volatile boolean field1419 = false;
+   @ObfuscatedName("g")
+   static class83[] field1421;
+   @ObfuscatedName("w")
+   volatile class59[] field1422 = new class59[2];
    @ObfuscatedName("e")
-   class139 field1423;
+   volatile boolean field1423 = false;
+   @ObfuscatedName("m")
+   class139 field1425;
+   @ObfuscatedName("u")
+   public static boolean field1427;
+   @ObfuscatedName("ed")
+   static class81 field1428;
+   @ObfuscatedName("o")
+   volatile boolean field1429 = false;
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(CB)C",
+      garbageValue = "-51"
+   )
+   public static char method1660(char var0) {
+      return (char)(var0 == 198?'E':(var0 == 230?'e':(var0 == 223?'s':(var0 == 338?'E':(var0 == 339?'e':'\u0000')))));
+   }
 
    public void run() {
-      this.field1417 = true;
+      this.field1429 = true;
 
       try {
-         while(!this.field1419) {
-            class59 var2;
+         while(!this.field1423) {
             for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1418[var1];
-               if(var2 != null) {
-                  var2.method1277();
-               }
-            }
-
-            class125.method2881(10L);
-            class139 var5 = this.field1423;
-            var2 = null;
-            if(null != var5.field2144) {
-               for(int var3 = 0; var3 < 50 && var5.field2144.peekEvent() != null; ++var3) {
-                  class125.method2881(1L);
-               }
-
+               class59 var2 = this.field1422[var1];
                if(null != var2) {
-                  var5.field2144.postEvent(new ActionEvent(var2, 1001, "dummy"));
+                  var2.method1250();
                }
             }
+
+            class141.method2993(10L);
+            class113.method2488(this.field1425, (Object)null);
          }
-      } catch (Exception var8) {
-         class46.method1008((String)null, var8);
+      } catch (Exception var7) {
+         class54.method1130((String)null, var7);
       } finally {
-         this.field1417 = false;
+         this.field1429 = false;
       }
 
    }
 
-   @ObfuscatedName("dc")
+   @ObfuscatedName("cu")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-143037715"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "1"
    )
-   static void method1663(int var0, int var1) {
-      class32 var2 = class11.field189;
-      class25.method587(var2.field749, var2.field746, var2.field748, var2.field747, var2.field750, var2.field750, var0, var1);
-      class11.field189 = null;
-   }
+   static final String method1663(int var0) {
+      String var1 = Integer.toString(var0);
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "465203058"
-   )
-   static final int method1668(int var0, int var1) {
-      int var2 = class2.method14(var0 - 1, var1 - 1) + class2.method14(var0 + 1, var1 - 1) + class2.method14(var0 - 1, var1 + 1) + class2.method14(1 + var0, 1 + var1);
-      int var3 = class2.method14(var0 - 1, var1) + class2.method14(1 + var0, var1) + class2.method14(var0, var1 - 1) + class2.method14(var0, 1 + var1);
-      int var4 = class2.method14(var0, var1);
-      return var4 / 4 + var3 / 8 + var2 / 16;
-   }
-
-   @ObfuscatedName("dx")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Z",
-      garbageValue = "-936741152"
-   )
-   static boolean method1669(String var0, boolean var1) {
-      if(null == var0) {
-         return false;
-      } else {
-         String var2 = class17.method167(var0, client.field296);
-
-         for(int var3 = 0; var3 < client.field511; ++var3) {
-            if(var2.equalsIgnoreCase(class17.method167(client.field564[var3].field253, client.field296)) && (!var1 || client.field564[var3].field249 != 0)) {
-               return true;
-            }
-         }
-
-         if(var2.equalsIgnoreCase(class17.method167(class118.field2035.field52, client.field296))) {
-            return true;
-         } else {
-            return false;
-         }
+      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
+         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
       }
-   }
 
-   @ObfuscatedName("du")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1452515303"
-   )
-   static final void method1670(String var0) {
-      if(var0 != null) {
-         if((client.field511 < 200 || client.field418 == 1) && client.field511 < 400) {
-            String var1 = class17.method167(var0, client.field296);
-            if(var1 != null) {
-               int var2;
-               String var4;
-               String var5;
-               for(var2 = 0; var2 < client.field511; ++var2) {
-                  class17 var3 = client.field564[var2];
-                  var4 = class17.method167(var3.field253, client.field296);
-                  if(var4 != null && var4.equals(var1)) {
-                     class25.method586(30, "", var0 + " is already on your friend list");
-                     return;
-                  }
-
-                  if(null != var3.field257) {
-                     var5 = class17.method167(var3.field257, client.field296);
-                     if(null != var5 && var5.equals(var1)) {
-                        class25.method586(30, "", var0 + " is already on your friend list");
-                        return;
-                     }
-                  }
-               }
-
-               for(var2 = 0; var2 < client.field346; ++var2) {
-                  class7 var6 = client.field560[var2];
-                  var4 = class17.method167(var6.field141, client.field296);
-                  if(null != var4 && var4.equals(var1)) {
-                     class25.method586(30, "", "Please remove " + var0 + " from your ignore list first");
-                     return;
-                  }
-
-                  if(var6.field131 != null) {
-                     var5 = class17.method167(var6.field131, client.field296);
-                     if(null != var5 && var5.equals(var1)) {
-                        class25.method586(30, "", "Please remove " + var0 + " from your ignore list first");
-                        return;
-                     }
-                  }
-               }
-
-               if(class17.method167(class118.field2035.field52, client.field296).equals(var1)) {
-                  class25.method586(30, "", "You can\'t add yourself to your own friend list");
-               } else {
-                  client.field336.method2854(98);
-                  client.field336.method2795(class29.method650(var0));
-                  client.field336.method2601(var0);
-               }
-            }
-         } else {
-            class25.method586(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
-         }
-      }
+      return var1.length() > 9?" " + class51.method1096('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class51.method1096(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class51.method1096(16776960) + var1 + "</col>");
    }
 }
