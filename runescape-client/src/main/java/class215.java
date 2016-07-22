@@ -1,92 +1,49 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hd")
+@ObfuscatedName("hu")
 public class class215 {
-   @ObfuscatedName("c")
-   static final class215 field3179 = new class215(8, 2, "", "");
-   @ObfuscatedName("e")
-   public static final class215 field3180 = new class215(1, 0, "", "");
-   @ObfuscatedName("h")
-   static final class215 field3181 = new class215(3, 3, "", "");
+   @ObfuscatedName("g")
+   static final class215 field3183 = new class215(7, 4, "", "");
    @ObfuscatedName("l")
-   static final class215 field3182 = new class215(0, 1, "", "");
-   @ObfuscatedName("r")
-   static final class215 field3183 = new class215(2, 4, "", "");
-   @ObfuscatedName("a")
-   static final class215 field3184 = new class215(7, 5, "", "");
-   @ObfuscatedName("b")
-   static final class215 field3185 = new class215(6, 6, "", "");
-   @ObfuscatedName("u")
-   static final class215 field3186 = new class215(5, 7, "", "");
+   static final class215 field3184 = new class215(8, 5, "", "");
+   @ObfuscatedName("w")
+   static final class215 field3185 = new class215(5, 1, "", "");
    @ObfuscatedName("o")
+   static final class215 field3186 = new class215(0, 3, "", "");
+   @ObfuscatedName("x")
    public static final class215 field3187;
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
+   static final class215 field3188 = new class215(2, 7, "", "");
+   @ObfuscatedName("j")
+   static final class215 field3189 = new class215(4, 6, "", "");
+   @ObfuscatedName("e")
+   static final class215 field3190 = new class215(1, 2, "", "");
+   @ObfuscatedName("m")
+   public static final class215 field3191 = new class215(6, 0, "", "");
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1581399101
+      intValue = -1254955499
    )
-   public final int field3188;
-   @ObfuscatedName("i")
-   final String field3189;
-
-   public String toString() {
-      return this.field3189;
-   }
-
-   class215(int var1, int var2, String var3, String var4) {
-      this.field3188 = var1;
-      this.field3189 = var4;
-   }
+   public final int field3192;
+   @ObfuscatedName("v")
+   final String field3193;
 
    class215(int var1, int var2, String var3, String var4, boolean var5, class215[] var6) {
-      this.field3188 = var1;
-      this.field3189 = var4;
+      this.field3192 = var1;
+      this.field3193 = var4;
+   }
+
+   public String toString() {
+      return this.field3193;
    }
 
    static {
-      field3187 = new class215(4, -1, "", "", true, new class215[]{field3180, field3182, field3179, field3183, field3181});
+      field3187 = new class215(3, -1, "", "", true, new class215[]{field3191, field3185, field3190, field3183, field3186});
    }
 
-   @ObfuscatedName("cf")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;B)V",
-      garbageValue = "91"
-   )
-   static void method4022(int var0, String var1) {
-      int var2 = class34.field804;
-      int[] var3 = class34.field807;
-      boolean var4 = false;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         class2 var6 = client.field467[var3[var5]];
-         if(null != var6 && var6 != class118.field2035 && var6.field52 != null && var6.field52.equalsIgnoreCase(var1)) {
-            if(var0 == 1) {
-               client.field336.method2854(32);
-               client.field336.method2795(0);
-               client.field336.method2781(var3[var5]);
-            } else if(var0 == 4) {
-               client.field336.method2854(222);
-               client.field336.method2635(0);
-               client.field336.method2781(var3[var5]);
-            } else if(var0 == 6) {
-               client.field336.method2854(136);
-               client.field336.method2642(var3[var5]);
-               client.field336.method2635(0);
-            } else if(var0 == 7) {
-               client.field336.method2854(162);
-               client.field336.method2635(0);
-               client.field336.method2781(var3[var5]);
-            }
-
-            var4 = true;
-            break;
-         }
-      }
-
-      if(!var4) {
-         class25.method586(4, "", "Unable to find " + var1);
-      }
-
+   class215(int var1, int var2, String var3, String var4) {
+      this.field3192 = var1;
+      this.field3193 = var4;
    }
 }

@@ -1,152 +1,113 @@
-import java.awt.Image;
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.DataInputStream;
+import java.net.URL;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bx")
 public class class54 extends class207 {
-   @ObfuscatedName("l")
-   public static class196 field1165 = new class196(64);
-   @ObfuscatedName("c")
+   @ObfuscatedName("ej")
+   static class81[] field1165;
+   @ObfuscatedName("w")
+   public static class196 field1166 = new class196(64);
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -870286455
+      intValue = 738675249
    )
-   public int field1168 = 0;
-   @ObfuscatedName("e")
-   public static class170 field1169;
-   @ObfuscatedName("g")
-   public static boolean field1170;
-   @ObfuscatedName("qh")
-   protected static Image field1171;
+   public int field1167 = 0;
+   @ObfuscatedName("m")
+   public static class170 field1170;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/io/File;",
-      garbageValue = "987942792"
+      signature = "(Lclass122;IB)V",
+      garbageValue = "-87"
    )
-   public static File method1142(String var0) {
-      if(!class138.field2135) {
-         throw new RuntimeException("");
-      } else {
-         File var1 = (File)class138.field2138.get(var0);
-         if(null != var1) {
-            return var1;
-         } else {
-            File var2 = new File(class134.field2118, var0);
-            RandomAccessFile var3 = null;
-
-            try {
-               File var4 = new File(var2.getParent());
-               if(!var4.exists()) {
-                  throw new RuntimeException("");
-               } else {
-                  var3 = new RandomAccessFile(var2, "rw");
-                  int var5 = var3.read();
-                  var3.seek(0L);
-                  var3.write(var5);
-                  var3.seek(0L);
-                  var3.close();
-                  class138.field2138.put(var0, var2);
-                  return var2;
-               }
-            } catch (Exception var8) {
-               try {
-                  if(var3 != null) {
-                     var3.close();
-                     var3 = null;
-                  }
-               } catch (Exception var7) {
-                  ;
-               }
-
-               throw new RuntimeException();
-            }
-         }
-      }
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
-      garbageValue = "874850637"
-   )
-   void method1144(class122 var1, int var2) {
+   void method1125(class122 var1, int var2) {
       if(var2 == 2) {
-         this.field1168 = var1.method2612();
+         this.field1167 = var1.method2706();
       }
 
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "-124"
+      signature = "(Lclass122;I)V",
+      garbageValue = "494691559"
    )
-   public static boolean method1150(int var0, int var1) {
-      return (var0 >> 1 + var1 & 1) != 0;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass23;",
-      garbageValue = "1763052990"
-   )
-   static class23 method1158(int var0) {
-      class23 var1 = (class23)class23.field613.method3834((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class0.field11.method3340(var0, 0);
-         if(var2 == null) {
-            return null;
-         } else {
-            var1 = new class23();
-            class122 var3 = new class122(var2);
-            var3.field2061 = var3.field2054.length - 12;
-            int var4 = var3.method2614();
-            var1.field614 = var3.method2612();
-            var1.field615 = var3.method2612();
-            var1.field616 = var3.method2612();
-            var1.field617 = var3.method2612();
-            var3.field2061 = 0;
-            var3.method2620();
-            var1.field611 = new int[var4];
-            var1.field612 = new int[var4];
-            var1.field620 = new String[var4];
-
-            int var6;
-            for(int var5 = 0; var3.field2061 < var3.field2054.length - 12; var1.field611[var5++] = var6) {
-               var6 = var3.method2612();
-               if(var6 == 3) {
-                  var1.field620[var5] = var3.method2617();
-               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
-                  var1.field612[var5] = var3.method2614();
-               } else {
-                  var1.field612[var5] = var3.method2610();
-               }
-            }
-
-            class23.field613.method3836(var1, (long)var0);
-            return var1;
-         }
-      }
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Lclass122;B)V",
-      garbageValue = "-108"
-   )
-   public void method1159(class122 var1) {
+   public void method1129(class122 var1) {
       while(true) {
-         int var2 = var1.method2610();
+         int var2 = var1.method2556();
          if(var2 == 0) {
             return;
          }
 
-         this.method1144(var1, var2);
+         this.method1125(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/Throwable;B)V",
+      garbageValue = "8"
+   )
+   public static void method1130(String var0, Throwable var1) {
+      try {
+         String var2 = "";
+         if(null != var1) {
+            var2 = class6.method94(var1);
+         }
+
+         if(null != var0) {
+            if(var1 != null) {
+               var2 = var2 + " | ";
+            }
+
+            var2 = var2 + var0;
+         }
+
+         System.out.println("Error: " + var2);
+         var2 = var2.replace(':', '.');
+         var2 = var2.replace('@', '_');
+         var2 = var2.replace('&', '_');
+         var2 = var2.replace('#', '_');
+         if(null == class151.field2285) {
+            return;
+         }
+
+         URL var3 = new URL(class151.field2285.getCodeBase(), "clienterror.ws?c=" + class151.field2286 + "&u=" + class46.field1060 + "&v1=" + class139.field2147 + "&v2=" + class139.field2143 + "&e=" + var2);
+         DataInputStream var4 = new DataInputStream(var3.openStream());
+         var4.read();
+         var4.close();
+      } catch (Exception var5) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(ILclass137;Lclass171;I)V",
+      garbageValue = "-1929683128"
+   )
+   static void method1131(int var0, class137 var1, class171 var2) {
+      class172 var3 = new class172();
+      var3.field2753 = 1;
+      var3.field3167 = (long)var0;
+      var3.field2754 = var1;
+      var3.field2752 = var2;
+      class202 var4 = class173.field2759;
+      synchronized(class173.field2759) {
+         class173.field2759.method3877(var3);
+      }
+
+      Object var9 = class173.field2756;
+      synchronized(class173.field2756) {
+         if(class173.field2758 == 0) {
+            class40.field900.method2937(new class173(), 5);
+         }
+
+         class173.field2758 = 600;
       }
    }
 }

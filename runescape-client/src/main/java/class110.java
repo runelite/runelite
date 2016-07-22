@@ -1,106 +1,44 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("du")
 public abstract class class110 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1648799709
+      intValue = -363095359
    )
-   public int field1949;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -60112423
-   )
-   public int field1951;
+   public int field1938;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2020126685
+      intValue = -1906432509
    )
-   public int field1952;
-   @ObfuscatedName("z")
-   static int[] field1954;
-   @ObfuscatedName("c")
+   public int field1939;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -81078169
+      intValue = -1262588917
    )
-   public int field1955;
+   public int field1940;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1373725381
+   )
+   public int field1941;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IIILclass111;S)Z",
-      garbageValue = "-16645"
+      signature = "(IIILclass111;B)Z",
+      garbageValue = "-26"
    )
-   public abstract boolean vmethod2464(int var1, int var2, int var3, class111 var4);
+   protected abstract boolean vmethod2446(int var1, int var2, int var3, class111 var4);
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)Lclass230;",
-      garbageValue = "-1681339235"
+      signature = "(II)I",
+      garbageValue = "325919295"
    )
-   public static class230 method2465(String var0, String var1, boolean var2) {
-      File var3 = new File(class152.field2281, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            class230 var10 = new class230(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
-      }
-
-      String var4 = "";
-      if(class30.field726 == 33) {
-         var4 = "_rc";
-      } else if(class30.field726 == 34) {
-         var4 = "_wip";
-      }
-
-      File var5 = new File(class12.field197, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      class230 var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new class230(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new class230(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("l")
-   static final void method2467(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
-   )
-   static final void method2469() {
-      if(class31.field744 != null) {
-         class31.field744.method1277();
-      }
-
-      if(class34.field809 != null) {
-         class34.field809.method1277();
-      }
-
+   static int method2450(int var0) {
+      class37 var1 = (class37)class11.field157.method3864((long)var0);
+      return var1 == null?-1:(class11.field158.field3151 == var1.field3157?-1:((class37)var1.field3157).field809);
    }
 }

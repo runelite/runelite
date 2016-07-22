@@ -13,50 +13,50 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cr")
 @Implements("MainBufferProvider")
 public final class class84 extends class80 {
-   @ObfuscatedName("e")
-   Component field1492;
+   @ObfuscatedName("m")
+   Component field1502;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "2003148099"
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "85277585"
    )
-   @Export("init")
-   public final void vmethod1966(int var1, int var2, Component var3) {
-      super.field1459 = var1;
-      super.field1461 = var2;
-      super.field1464 = new int[var2 * var1 + 1];
-      DataBufferInt var4 = new DataBufferInt(super.field1464, super.field1464.length);
-      DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
-      WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.field1459, super.field1461), var4, (Point)null);
-      super.field1462 = new BufferedImage(var5, var6, false, new Hashtable());
-      this.field1492 = var3;
-      this.method1776();
+   @Export("draw")
+   public final void vmethod1959(Graphics var1, int var2, int var3) {
+      var1.drawImage(super.field1470, var2, var3, this.field1502);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIIB)V",
-      garbageValue = "30"
+      signature = "(Ljava/awt/Graphics;IIIIS)V",
+      garbageValue = "10294"
    )
    @Export("drawSub")
-   public final void vmethod1968(Graphics var1, int var2, int var3, int var4, int var5) {
+   public final void vmethod1960(Graphics var1, int var2, int var3, int var4, int var5) {
       Shape var6 = var1.getClip();
       var1.clipRect(var2, var3, var4, var5);
-      var1.drawImage(super.field1462, 0, 0, this.field1492);
+      var1.drawImage(super.field1470, 0, 0, this.field1502);
       var1.setClip(var6);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "462088111"
+      signature = "(IILjava/awt/Component;B)V",
+      garbageValue = "-60"
    )
-   @Export("draw")
-   public final void vmethod1975(Graphics var1, int var2, int var3) {
-      var1.drawImage(super.field1462, var2, var3, this.field1492);
+   @Export("init")
+   final void vmethod1969(int var1, int var2, Component var3) {
+      super.field1468 = var1;
+      super.field1469 = var2;
+      super.field1467 = new int[var1 * var2 + 1];
+      DataBufferInt var4 = new DataBufferInt(super.field1467, super.field1467.length);
+      DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
+      WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.field1468, super.field1469), var4, (Point)null);
+      super.field1470 = new BufferedImage(var5, var6, false, new Hashtable());
+      this.field1502 = var3;
+      this.method1782();
    }
 }

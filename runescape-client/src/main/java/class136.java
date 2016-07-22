@@ -1,28 +1,51 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ed")
+@ObfuscatedName("eh")
 public abstract class class136 {
-   @ObfuscatedName("et")
-   static class81[] field2122;
-   @ObfuscatedName("py")
-   @ObfuscatedGetter(
-      longValue = -6322268335169924973L
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "0"
    )
-   static long field2124;
+   public abstract void vmethod3165();
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1099668861"
+      garbageValue = "-1590628949"
    )
-   abstract int vmethod3207(int var1, int var2);
+   abstract int vmethod3166(int var1, int var2);
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;B)I",
+      garbageValue = "2"
+   )
+   public static int method2911(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if(var4 <= 127) {
+            ++var2;
+         } else if(var4 <= 2047) {
+            var2 += 2;
+         } else {
+            var2 += 3;
+         }
+      }
+
+      return var2;
+   }
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1910694462"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1466786186"
    )
-   public abstract void vmethod3206();
+   public static int method2912(CharSequence var0) {
+      return class98.method2274(var0, 10, true);
+   }
 }
