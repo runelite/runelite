@@ -90,9 +90,6 @@ public class MappingExecutorUtil
 		{
 			// get what each frame is paused/exited on
 			InstructionContext p1 = parallel.getP1(), p2 = parallel.getP2();
-			
-			assert e.paused;
-			assert e2.paused;
 
 			assert p1.getInstruction() instanceof MappableInstruction;
 			assert p2.getInstruction() instanceof MappableInstruction;
@@ -108,13 +105,11 @@ public class MappingExecutorUtil
 				mappings.crashed = true;
 				p1.getFrame().stop();
 				p2.getFrame().stop();
-				e.paused = e2.paused = false;
 				continue;
 			}
 
 			++same;
 			mi1.map(mappings, p1, p2);
-			e.paused = e2.paused = false;
 		}
 
 		mappings.same = same;
@@ -127,14 +122,12 @@ public class MappingExecutorUtil
 		Execution e = new Execution(group1);
 		e.step = true;
 		Frame frame = new Frame(e, i1.getInstructions().getCode().getMethod(), i1);
-		//frame.initialize();
 		e.frames.add(frame);
 
 		Execution e2 = new Execution(group2);
 		e2.step = true;
 		//Frame frame2 = new Frame(e2, m2);
 		Frame frame2 = new Frame(e2, i2.getInstructions().getCode().getMethod(), i2);
-		//frame2.initialize();
 		e2.frames.add(frame2);
 
 		frame.other = frame2;
@@ -143,12 +136,8 @@ public class MappingExecutorUtil
 		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
 		ParallelExecutorMapping mappings = new ParallelExecutorMapping(group1, group2);
 
-		//mappings.m1 = m1;
-		//mappings.m2 = m2;
-
 		parallel.mappings = mappings;
 
-		int compare = 0;
 		while (parallel.step())
 		{
 			// get what each frame is paused/exited on
@@ -156,12 +145,6 @@ public class MappingExecutorUtil
 
 			assert e.paused;
 			assert e2.paused;
-			++compare;
-
-			//System.out.println(p1.getInstruction() + " <-> " + p2.getInstruction());
-
-			//assert p1.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m1;
-			//assert p2.getInstruction().getInstructions().getCode().getAttributes().getMethod() == m2;
 
 			assert p1.getInstruction() instanceof MappableInstruction;
 			assert p2.getInstruction() instanceof MappableInstruction;
@@ -172,7 +155,6 @@ public class MappingExecutorUtil
 			if (!mi1.isSame(p1, p2))
 			{
 				mappings.crashed = true;
-				mi1.isSame(p1, p2);
 				p1.getFrame().stop();
 				p2.getFrame().stop();
 				e.paused = e2.paused = false;
