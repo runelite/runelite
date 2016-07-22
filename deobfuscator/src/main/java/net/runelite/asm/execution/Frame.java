@@ -236,6 +236,8 @@ public class Frame
 		Instructions ins = method.getCode().getInstructions();
 		List<Instruction> instructions = ins.getInstructions();
 		
+		assert !execution.paused;
+		
 		while (executing)
 		{
 			Instruction oldCur = cur;
@@ -273,7 +275,11 @@ public class Frame
 			processExceptions(ictx);
 			
 			if (!executing)
+			{
+				// this can be mappable, too, but we stop executing anyway
+				checkMappable(ictx); // to set paused
 				break;
+			}
 			
 			if (oldCur == cur)
 			{
@@ -284,16 +290,26 @@ public class Frame
 				/* jump */
 			}
 			
-			if (execution.step && oldCur instanceof MappableInstruction)
+			// it is important we move cur first as when the step executor
+			// resumes it will start there
+			if (checkMappable(ictx))
+				return;
+		}
+	}
+	
+	private boolean checkMappable(InstructionContext ictx)
+	{
+		if (execution.step && ictx.getInstruction() instanceof MappableInstruction)
+		{
+			MappableInstruction mi = (MappableInstruction) ictx.getInstruction();
+			if (mi.canMap(ictx))
 			{
-				MappableInstruction mi = (MappableInstruction) oldCur;
-				if (mi.canMap(ictx))
-				{
-					execution.paused = true;
-					return;
-				}
+				execution.paused = true;
+				return true;
 			}
 		}
+
+		return false;
 	}
 	
 	public void nextInstruction()
