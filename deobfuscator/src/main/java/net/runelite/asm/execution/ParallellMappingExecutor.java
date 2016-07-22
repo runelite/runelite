@@ -98,6 +98,35 @@ public class ParallellMappingExecutor
 		else
 			step2 = true;
 		
+		if (!f1.isExecuting() && !f2.isExecuting() && e.paused && e2.paused)
+		{
+			// this is a mappable return
+			
+			p1 = f1.getInstructions().get(f1.getInstructions().size() - 1);
+			p2 = f2.getInstructions().get(f2.getInstructions().size() - 1);
+			
+			// the only mappable returns are of objects
+			assert p1.getInstruction() instanceof Return;
+			assert p2.getInstruction() instanceof Return;
+			
+			// the only mappable returns are in non static methods
+			assert f1.getMethod().isStatic() == false;
+			assert f2.getMethod().isStatic() == false;
+			
+			// because this method isnt static theres nothing to return to
+			assert f1.returnTo == null;
+			assert f2.returnTo == null;
+			
+			// because theres nothing to return to, this will hit the !isExecuting check above
+			// next step, and move to the next frame
+			
+			e.paused = e2.paused = false;
+			
+			return true;
+		}
+		
+		e.paused = e2.paused = false;
+		
 		Frame oldf1 = f1, oldf2 = f2;
 		
 		f1 = popStack(f1);
@@ -178,9 +207,6 @@ public class ParallellMappingExecutor
 			
 			return step();
 		}
-
-		assert e.paused;
-		assert e2.paused;
 		
 		return true;
 	}
@@ -260,8 +286,6 @@ public class ParallellMappingExecutor
 		return f2;
 	}
 
-	public static boolean enable = true;
-
 	private Frame popStack(Frame f)
 	{
 		Execution e = f.getExecution();
@@ -273,20 +297,24 @@ public class ParallellMappingExecutor
 		if (!(i.getInstruction() instanceof ReturnInstruction))
 			return f;
 
-		StackContext returnValue = null;
-		if (enable&& i.getInstruction() instanceof Return)
+		StackContext returnValue = null; // the value returned by by the frame
+		if (i.getInstruction() instanceof Return)
 		{
 			assert i.getPops().size() == 1;
 			
 			returnValue = i.getPops().get(0);
 		}
+		else
+		{
+			assert i.getPops().isEmpty();
+		}
 		
-		Frame r = popStackForce(f);
+		Frame r = popStackForce(f); // we return to this frame
 		
 		f.returnTo = null;
 
 		// last ins must be an invokestatic
-		InstructionContext i2 = r.getInstructions().get(r.getInstructions().size() - 1);
+		InstructionContext i2 = r.getInstructions().get(r.getInstructions().size() - 1); // this was the ins which invoked frame f
 		assert i2.getInstruction() instanceof InvokeStatic;
 		if (returnValue != null)
 		{
@@ -295,6 +323,7 @@ public class ParallellMappingExecutor
 			
 			StackContext invokePushed = i2.getPushes().get(0);
 
+			// set the return value of the invokestatic ins
 			invokePushed.returnSource = returnValue;
 		}
 		
@@ -307,7 +336,6 @@ public class ParallellMappingExecutor
 		
 		assert f.returnTo != null;
 		
-		//assert e.frames.contains(f);
 		assert !e.frames.contains(f.returnTo);
 		
 		if (e.frames.contains(f))

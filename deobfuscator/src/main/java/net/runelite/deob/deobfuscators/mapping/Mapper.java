@@ -170,7 +170,6 @@ public class Mapper
 
 		assert mappings.packetHandler1.size() == mappings.packetHandler2.size();
 
-		ParallellMappingExecutor.enable = true;
 		ParallelExecutorMapping all = new ParallelExecutorMapping(source, target);
 
 		for (int i = 0; i < mappings.packetHandler1.size(); ++i)
@@ -215,7 +214,6 @@ public class Mapper
 			all.merge(highest);
 		}
 
-		ParallellMappingExecutor.enable = false;
 		return all;
 	}
 
