@@ -5,49 +5,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("h")
 public class class11 {
-   @ObfuscatedName("c")
-   static final class203 field184 = new class203();
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1853568791
-   )
-   static int field185 = 0;
-   @ObfuscatedName("kp")
-   @Export("chatMessages")
-   static class19 field187;
-   @ObfuscatedName("l")
-   static final class201 field188 = new class201(1024);
-   @ObfuscatedName("ih")
-   static class32 field189;
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("chatLineMap")
-   static final Map field191 = new HashMap();
-   @ObfuscatedName("r")
-   public static int[] field192;
-
-   @ObfuscatedName("co")
-   @ObfuscatedSignature(
-      signature = "([Lclass176;Lclass176;ZS)V",
-      garbageValue = "5379"
+   static final Map field156 = new HashMap();
+   @ObfuscatedName("w")
+   static final class201 field157 = new class201(1024);
+   @ObfuscatedName("e")
+   static final class203 field158 = new class203();
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1597432743
    )
-   static void method138(class176[] var0, class176 var1, boolean var2) {
-      int var3 = var1.field2817 != 0?var1.field2817:var1.field2866;
-      int var4 = var1.field2867 != 0?var1.field2867:var1.field2810;
-      class125.method2871(var0, var1.field2794, var3, var4, var2);
-      if(null != var1.field2827) {
-         class125.method2871(var1.field2827, var1.field2794, var3, var4, var2);
+   static int field159 = 0;
+   @ObfuscatedName("er")
+   static class81[] field161;
+
+   @ObfuscatedName("do")
+   @ObfuscatedSignature(
+      signature = "(Lclass176;I)Lclass176;",
+      garbageValue = "-2050729211"
+   )
+   static class176 method128(class176 var0) {
+      class176 var1 = class158.method3213(var0);
+      if(null == var1) {
+         var1 = var0.field2870;
       }
 
-      class3 var5 = (class3)client.field455.method3864((long)var1.field2794);
-      if(null != var5) {
-         class118.method2544(var5.field60, var3, var4, var2);
-      }
-
-      if(var1.field2916 == 1337) {
-         ;
-      }
-
+      return var1;
    }
 }

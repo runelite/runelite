@@ -1,84 +1,24 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fu")
 public class class160 {
-   @ObfuscatedName("h")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "1532849148"
+      signature = "(IIIB)I",
+      garbageValue = "5"
    )
-   static char method3259(char var0) {
-      switch(var0) {
-      case ' ':
-      case '-':
-      case '_':
-      case ' ':
-         return '_';
-      case '#':
-      case '[':
-      case ']':
-         return var0;
-      case 'À':
-      case 'Á':
-      case 'Â':
-      case 'Ã':
-      case 'Ä':
-      case 'à':
-      case 'á':
-      case 'â':
-      case 'ã':
-      case 'ä':
-         return 'a';
-      case 'Ç':
-      case 'ç':
-         return 'c';
-      case 'È':
-      case 'É':
-      case 'Ê':
-      case 'Ë':
-      case 'è':
-      case 'é':
-      case 'ê':
-      case 'ë':
-         return 'e';
-      case 'Í':
-      case 'Î':
-      case 'Ï':
-      case 'í':
-      case 'î':
-      case 'ï':
-         return 'i';
-      case 'Ñ':
-      case 'ñ':
-         return 'n';
-      case 'Ò':
-      case 'Ó':
-      case 'Ô':
-      case 'Õ':
-      case 'Ö':
-      case 'ò':
-      case 'ó':
-      case 'ô':
-      case 'õ':
-      case 'ö':
-         return 'o';
-      case 'Ù':
-      case 'Ú':
-      case 'Û':
-      case 'Ü':
-      case 'ù':
-      case 'ú':
-      case 'û':
-      case 'ü':
-         return 'u';
-      case 'ß':
-         return 'b';
-      case 'ÿ':
-      case 'Ÿ':
-         return 'y';
-      default:
-         return Character.toLowerCase(var0);
-      }
+   public static int method3215(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)[Lclass157;",
+      garbageValue = "-1663087003"
+   )
+   public static class157[] method3216() {
+      return new class157[]{class157.field2341, class157.field2342, class157.field2338, class157.field2339, class157.field2347, class157.field2340};
    }
 }
