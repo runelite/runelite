@@ -4,105 +4,140 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cn")
 @Implements("DecorativeObject")
 public final class class97 {
-   @ObfuscatedName("gw")
-   static class176 field1673;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1967600675
-   )
-   int field1674;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -303907287
-   )
-   @Export("y")
-   int field1675;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1818320707
-   )
-   int field1676;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -967729661
-   )
-   int field1677;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1119774505
-   )
-   @Export("floor")
-   int field1678;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1918413973
-   )
-   int field1679 = 0;
-   @ObfuscatedName("r")
-   @Export("renderable1")
-   public class88 field1680;
-   @ObfuscatedName("x")
-   @Export("renderable2")
-   public class88 field1681;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -911385773
-   )
-   @Export("x")
-   int field1682;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 1587375353
+      intValue = -957189935
+   )
+   int field1674;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1846326309
+   )
+   int field1675;
+   @ObfuscatedName("n")
+   @Export("renderable2")
+   public class88 field1676;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -721165147
+   )
+   int field1677;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -331467943
+   )
+   int field1678;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -74869437
+   )
+   @Export("floor")
+   int field1679;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -210082945
+   )
+   @Export("x")
+   int field1680;
+   @ObfuscatedName("u")
+   @Export("renderable1")
+   public class88 field1681;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -998956615
+   )
+   @Export("y")
+   int field1682;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -178524487
    )
    @Export("hash")
    public int field1683 = 0;
-   @ObfuscatedName("j")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 532021659
+      intValue = -1543314197
    )
-   int field1684;
+   int field1684 = 0;
+   @ObfuscatedName("nu")
+   @ObfuscatedGetter(
+      intValue = 304603217
+   )
+   static int field1687;
+   @ObfuscatedName("if")
+   @ObfuscatedGetter(
+      intValue = -1237554565
+   )
+   static int field1688;
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2144596704"
+      signature = "(Lclass170;Lclass170;IZI)Lclass106;",
+      garbageValue = "1352353564"
    )
-   @Export("widgetReset")
-   static final void method2249() {
-      class39.method771();
-      class43.field995.method3814();
-      class36.method753();
-      class42.field944.method3814();
-      class42.field945.method3814();
-      class42.field946.method3814();
-      class42.field947.method3814();
-      class34.method728();
-      class12.method150();
-      class20.method555();
-      class45.field1027.method3814();
-      class45.field1032.method3814();
-      class145.method3037();
-      class56.field1233.method3814();
-      class19.method197();
-      class37.method759();
-      class182.field2971.method3814();
-      class17.method187();
-      ((class98)class94.field1657).method2256();
-      class23.field599.method3814();
-      class22.field584.method3320();
-      class217.field3199.method3320();
-      class50.field1115.method3320();
-      class127.field2083.method3320();
-      class129.field2097.method3320();
-      class38.field814.method3320();
-      class184.field2985.method3320();
-      class42.field993.method3320();
-      class157.field2345.method3320();
-      class40.field895.method3320();
-      class139.field2155.method3320();
-      class182.field2967.method3320();
+   public static class106 method2255(class170 var0, class170 var1, int var2, boolean var3) {
+      boolean var4 = true;
+      int[] var5 = var0.method3395(var2);
+
+      for(int var6 = 0; var6 < var5.length; ++var6) {
+         byte[] var7 = var0.method3401(var2, var5[var6]);
+         if(var7 == null) {
+            var4 = false;
+         } else {
+            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+            byte[] var9 = var1.method3401(var8, 0);
+            if(null == var9) {
+               var4 = false;
+            }
+         }
+      }
+
+      if(!var4) {
+         return null;
+      } else {
+         try {
+            return new class106(var0, var1, var2, var3);
+         } catch (Exception var11) {
+            return null;
+         }
+      }
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "-1185823554"
+   )
+   static final void method2256(int var0, int var1, int var2) {
+      int var3;
+      for(var3 = 0; var3 < 8; ++var3) {
+         for(int var4 = 0; var4 < 8; ++var4) {
+            class5.field85[var0][var3 + var1][var2 + var4] = 0;
+         }
+      }
+
+      if(var1 > 0) {
+         for(var3 = 1; var3 < 8; ++var3) {
+            class5.field85[var0][var1][var3 + var2] = class5.field85[var0][var1 - 1][var3 + var2];
+         }
+      }
+
+      if(var2 > 0) {
+         for(var3 = 1; var3 < 8; ++var3) {
+            class5.field85[var0][var1 + var3][var2] = class5.field85[var0][var1 + var3][var2 - 1];
+         }
+      }
+
+      if(var1 > 0 && class5.field85[var0][var1 - 1][var2] != 0) {
+         class5.field85[var0][var1][var2] = class5.field85[var0][var1 - 1][var2];
+      } else if(var2 > 0 && class5.field85[var0][var1][var2 - 1] != 0) {
+         class5.field85[var0][var1][var2] = class5.field85[var0][var1][var2 - 1];
+      } else if(var1 > 0 && var2 > 0 && class5.field85[var0][var1 - 1][var2 - 1] != 0) {
+         class5.field85[var0][var1][var2] = class5.field85[var0][var1 - 1][var2 - 1];
+      }
+
    }
 }

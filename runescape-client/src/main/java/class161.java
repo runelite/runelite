@@ -1,17 +1,32 @@
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fk")
 public class class161 {
-   @ObfuscatedName("x")
-   static int[][] field2650;
-
-   @ObfuscatedName("o")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II)I",
-      garbageValue = "-650750352"
+      signature = "(ZS)V",
+      garbageValue = "255"
    )
-   public static int method3217(CharSequence var0, int var1) {
-      return class98.method2274(var0, var1, true);
+   public static void method3314(boolean var0) {
+      if(null != class174.field2790) {
+         try {
+            class122 var1 = new class122(4);
+            var1.method2783(var0?2:3);
+            var1.method2849(0);
+            class174.field2790.method3135(var1.field2051, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class174.field2790.method3131();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class174.field2787;
+            class174.field2790 = null;
+         }
+
+      }
    }
 }

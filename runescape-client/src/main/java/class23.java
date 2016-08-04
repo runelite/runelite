@@ -1,181 +1,119 @@
-import java.applet.Applet;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("y")
 public class class23 extends class207 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -343986001
+      intValue = -19694681
    )
-   int field590;
-   @ObfuscatedName("w")
-   int[] field591;
-   @ObfuscatedName("e")
-   int[] field592;
-   @ObfuscatedName("o")
-   String[] field593;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -1001173985
-   )
-   int field595;
+   int field606;
    @ObfuscatedName("g")
+   int[] field607;
+   @ObfuscatedName("r")
+   int[] field608;
+   @ObfuscatedName("e")
+   String[] field609;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 744877859
+      intValue = -1614349601
    )
-   int field596;
-   @ObfuscatedName("j")
+   int field610;
+   @ObfuscatedName("l")
+   static class196 field611 = new class196(128);
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 985639829
+      intValue = -1157917443
    )
-   int field597;
-   @ObfuscatedName("m")
-   static class196 field599 = new class196(128);
-   @ObfuscatedName("hr")
+   int field612;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -355720581
+      intValue = -1061318801
    )
-   @Export("menuWidth")
-   static int field600;
+   int field613;
+   @ObfuscatedName("gj")
+   static class176 field614;
+   @ObfuscatedName("im")
+   @ObfuscatedGetter(
+      intValue = 1318288997
+   )
+   static int field618;
+   @ObfuscatedName("mm")
+   static class81 field619;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/applet/Applet;Ljava/lang/String;B)V",
-      garbageValue = "57"
+      signature = "(Lclass170;Lclass170;Ljava/lang/String;Ljava/lang/String;I)Lclass227;",
+      garbageValue = "-1433800157"
    )
-   public static void method578(Applet var0, String var1) {
-      class141.field2197 = var0;
-      class141.field2194 = var1;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lclass215;I)Ljava/lang/String;",
-      garbageValue = "-1816850826"
-   )
-   public static String method579(CharSequence var0, class215 var1) {
-      if(var0 == null) {
-         return null;
+   public static class227 method596(class170 var0, class170 var1, String var2, String var3) {
+      int var4 = var0.method3410(var2);
+      int var5 = var0.method3459(var4, var3);
+      class227 var6;
+      if(!class4.method49(var0, var4, var5)) {
+         var6 = null;
       } else {
-         int var2 = 0;
-
-         int var3;
-         boolean var4;
-         char var5;
-         for(var3 = var0.length(); var2 < var3; ++var2) {
-            var5 = var0.charAt(var2);
-            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
-            if(!var4) {
-               break;
-            }
+         byte[] var8 = var1.method3411(var4, var5);
+         class227 var7;
+         if(var8 == null) {
+            var7 = null;
+         } else {
+            class227 var9 = new class227(var8, class79.field1457, class180.field2962, class192.field3106, class79.field1458, class79.field1459, class145.field2236);
+            class55.method1182();
+            var7 = var9;
          }
 
-         while(var3 > var2) {
-            var5 = var0.charAt(var3 - 1);
-            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
-            if(!var4) {
-               break;
-            }
-
-            --var3;
-         }
-
-         int var14 = var3 - var2;
-         if(var14 >= 1) {
-            byte var6;
-            if(null == var1) {
-               var6 = 12;
-            } else {
-               switch(var1.field3192) {
-               case 8:
-                  var6 = 20;
-                  break;
-               default:
-                  var6 = 12;
-               }
-            }
-
-            if(var14 <= var6) {
-               StringBuilder var12 = new StringBuilder(var14);
-
-               for(int var15 = var2; var15 < var3; ++var15) {
-                  char var7 = var0.charAt(var15);
-                  boolean var8;
-                  if(Character.isISOControl(var7)) {
-                     var8 = false;
-                  } else if(class24.method593(var7)) {
-                     var8 = true;
-                  } else {
-                     char[] var9 = class167.field2714;
-                     int var10 = 0;
-
-                     label122:
-                     while(true) {
-                        char var11;
-                        if(var10 >= var9.length) {
-                           var9 = class167.field2715;
-
-                           for(var10 = 0; var10 < var9.length; ++var10) {
-                              var11 = var9[var10];
-                              if(var7 == var11) {
-                                 var8 = true;
-                                 break label122;
-                              }
-                           }
-
-                           var8 = false;
-                           break;
-                        }
-
-                        var11 = var9[var10];
-                        if(var11 == var7) {
-                           var8 = true;
-                           break;
-                        }
-
-                        ++var10;
-                     }
-                  }
-
-                  if(var8) {
-                     char var13 = class137.method2920(var7);
-                     if(var13 != 0) {
-                        var12.append(var13);
-                     }
-                  }
-               }
-
-               if(var12.length() == 0) {
-                  return null;
-               }
-
-               return var12.toString();
-            }
-         }
-
-         return null;
+         var6 = var7;
       }
+
+      return var6;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "1"
+      signature = "(I)Lclass81;",
+      garbageValue = "-1904598155"
    )
-   @Export("addChatMessage")
-   static void method580(int var0, String var1, String var2, String var3) {
-      class29 var4 = (class29)class11.field156.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new class29();
-         class11.field156.put(Integer.valueOf(var0), var4);
+   static class81 method597() {
+      class81 var0 = new class81();
+      var0.field1484 = class79.field1454;
+      var0.field1483 = class79.field1456;
+      var0.field1480 = class79.field1457[0];
+      var0.field1478 = class180.field2962[0];
+      var0.field1482 = class192.field3106[0];
+      var0.field1479 = class79.field1458[0];
+      int var1 = var0.field1479 * var0.field1482;
+      byte[] var2 = class145.field2236[0];
+      var0.field1487 = new int[var1];
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var0.field1487[var3] = class79.field1459[var2[var3] & 255];
       }
 
-      class37 var5 = var4.method655(var0, var1, var2, var3);
-      class11.field157.method3861(var5, (long)var5.field809);
-      class11.field158.method3912(var5);
-      client.field462 = client.field455;
+      class55.method1182();
+      return var0;
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass43;",
+      garbageValue = "1641330043"
+   )
+   public static class43 method601(int var0) {
+      class43 var1 = (class43)class43.field1000.method3905((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = class43.field1007.method3411(1, var0);
+         var1 = new class43();
+         if(var2 != null) {
+            var1.method905(new class122(var2), var0);
+         }
+
+         var1.method889();
+         class43.field1000.method3907(var1, (long)var0);
+         return var1;
+      }
    }
 }

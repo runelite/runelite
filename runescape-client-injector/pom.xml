@@ -39,14 +39,14 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>client</artifactId>
-	<version>119.2-SNAPSHOT</version> <!-- rs version -->
+	<version>120.1-SNAPSHOT</version> <!-- rs version -->
 	<name>Injector</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>rs-client</artifactId>
-			<version>119.2-SNAPSHOT</version> <!-- rs version -->
+			<version>120.1-SNAPSHOT</version> <!-- rs version -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>vanilla</artifactId>
-			<version>119</version>
+			<version>120</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

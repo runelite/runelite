@@ -1,96 +1,91 @@
+import java.awt.Component;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("x")
 public class class21 implements class115 {
-   @ObfuscatedName("w")
-   static final class21 field568 = new class21(1);
-   @ObfuscatedName("e")
-   static final class21 field569 = new class21(2);
-   @ObfuscatedName("m")
-   static final class21 field570 = new class21(0);
    @ObfuscatedName("g")
+   static final class21 field587 = new class21(1);
+   @ObfuscatedName("r")
+   static final class21 field588 = new class21(2);
+   @ObfuscatedName("e")
+   static final class21 field589 = new class21(3);
+   @ObfuscatedName("l")
+   static final class21 field590 = new class21(0);
+   @ObfuscatedName("dj")
    @ObfuscatedGetter(
-      intValue = 1150475193
+      intValue = 192897651
    )
-   final int field571;
-   @ObfuscatedName("p")
+   @Export("baseY")
+   static int field592;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1069158987
+      intValue = -1863549427
    )
-   public static int field574;
-   @ObfuscatedName("pg")
-   static class163 field577;
-   @ObfuscatedName("o")
-   static final class21 field581 = new class21(3);
+   final int field594;
+
+   @ObfuscatedName("as")
+   @ObfuscatedSignature(
+      signature = "(IILjava/awt/Component;I)Lclass80;",
+      garbageValue = "1257736555"
+   )
+   public static class80 method573(int var0, int var1, Component var2) {
+      try {
+         class84 var3 = new class84();
+         var3.vmethod1964(var0, var1, var2);
+         return var3;
+      } catch (Throwable var5) {
+         class78 var4 = new class78();
+         var4.vmethod1964(var0, var1, var2);
+         return var4;
+      }
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1633970528"
+   )
+   public int vmethod3316() {
+      return this.field594;
+   }
 
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class21(int var1) {
-      this.field571 = var1;
+      this.field594 = var1;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1587180348"
+      signature = "(I)V",
+      garbageValue = "2009369946"
    )
-   public int vmethod3218() {
-      return this.field571;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass48;",
-      garbageValue = "-1758576558"
-   )
-   public static class48 method563(int var0) {
-      class48 var1 = (class48)class48.field1072.method3817((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class48.field1083.method3304(4, var0);
-         var1 = new class48();
-         if(null != var2) {
-            var1.method995(new class122(var2), var0);
-         }
-
-         var1.method994();
-         class48.field1072.method3823(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Lclass125;B)I",
-      garbageValue = "29"
-   )
-   static int method566(class125 var0) {
-      int var1 = var0.method2813(2);
-      int var2;
-      if(var1 == 0) {
-         var2 = 0;
-      } else if(var1 == 1) {
-         var2 = var0.method2813(5);
-      } else if(var1 == 2) {
-         var2 = var0.method2813(8);
-      } else {
-         var2 = var0.method2813(11);
-      }
-
-      return var2;
+   static void method581() {
+      class15.field225 = new class199(32);
    }
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "-1771181198"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "296466018"
    )
-   static Class method567(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Class.forName(var0)))))))));
+   public static void method582(Component var0) {
+      var0.removeKeyListener(class140.field2157);
+      var0.removeFocusListener(class140.field2157);
+      class140.field2168 = -1;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(IZI)Ljava/lang/String;",
+      garbageValue = "56448612"
+   )
+   public static String method583(int var0, boolean var1) {
+      return var1 && var0 >= 0?class114.method2539(var0, 10, var1):Integer.toString(var0);
    }
 }
