@@ -1,60 +1,31 @@
-import java.io.IOException;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("ds")
 public class class129 {
-   @ObfuscatedName("qa")
-   @ObfuscatedGetter(
-      intValue = 1671498257
-   )
-   static int field2094;
-   @ObfuscatedName("bx")
-   static class171 field2097;
-
-   @ObfuscatedName("m")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "([BIIB)I",
-      garbageValue = "2"
+      signature = "(I)V",
+      garbageValue = "1844817342"
    )
-   public static int method2868(byte[] var0, int var1, int var2) {
-      int var3 = -1;
-
-      for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ class122.field2046[(var3 ^ var0[var4]) & 255];
+   static final void method2964() {
+      if(class40.field904 != null) {
+         class40.field904.method3131();
+         class40.field904 = null;
       }
 
-      var3 = ~var3;
-      return var3;
-   }
+      class31.method693();
+      class136.field2126.method1992();
 
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lclass122;I)V",
-      garbageValue = "407408978"
-   )
-   public static void method2869(class122 var0) {
-      byte[] var1 = new byte[24];
-
-      try {
-         class152.field2295.method4227(0L);
-         class152.field2295.method4240(var1);
-
-         int var2;
-         for(var2 = 0; var2 < 24 && var1[var2] == 0; ++var2) {
-            ;
-         }
-
-         if(var2 >= 24) {
-            throw new IOException();
-         }
-      } catch (Exception var5) {
-         for(int var3 = 0; var3 < 24; ++var3) {
-            var1[var3] = -1;
-         }
+      for(int var0 = 0; var0 < 4; ++var0) {
+         client.field354[var0].method2493();
       }
 
-      var0.method2742(var1, 0, 24);
+      System.gc();
+      class34.method755(2);
+      client.field457 = -1;
+      client.field533 = false;
+      class142.method3089();
+      class138.method3024(10);
    }
 }

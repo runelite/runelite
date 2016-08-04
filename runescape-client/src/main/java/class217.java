@@ -2,61 +2,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("ha")
 public class class217 {
-   @ObfuscatedName("pi")
-   static class137 field3196;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      longValue = -2518772429720772909L
-   )
-   public final long field3197;
    @ObfuscatedName("e")
-   public final class223 field3198;
-   @ObfuscatedName("ak")
-   static class171 field3199;
-   @ObfuscatedName("g")
-   String field3200;
-   @ObfuscatedName("m")
+   String field3204;
+   @ObfuscatedName("h")
+   String field3205;
+   @ObfuscatedName("r")
+   public final class223 field3206;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -582058121
+      intValue = 1507614503
    )
-   public final int field3201;
-   @ObfuscatedName("o")
-   String field3202;
+   public final int field3208;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      longValue = -4699190258343518181L
+   )
+   public final long field3209;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1160358045"
+      garbageValue = "-1795962116"
    )
-   public String method4027() {
-      return this.field3200;
+   public String method4101() {
+      return this.field3205;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)Ljava/lang/String;",
-      garbageValue = "1973792254"
+      garbageValue = "2037462623"
    )
-   public String method4031() {
-      return this.field3202;
+   public String method4102() {
+      return this.field3204;
    }
 
    class217(class122 var1, byte var2, int var3) {
-      this.field3202 = var1.method2580();
-      this.field3200 = var1.method2580();
-      this.field3201 = var1.method2706();
-      this.field3197 = var1.method2578();
-      int var4 = var1.method2577();
-      int var5 = var1.method2577();
-      this.field3198 = new class223();
-      this.field3198.method4068(2);
-      this.field3198.method4069(var2);
-      this.field3198.field3217 = var4;
-      this.field3198.field3220 = var5;
-      this.field3198.field3221 = 0;
-      this.field3198.field3219 = 0;
-      this.field3198.field3218 = var3;
+      this.field3204 = var1.method2663();
+      this.field3205 = var1.method2663();
+      this.field3208 = var1.method2635();
+      this.field3209 = var1.method2649();
+      int var4 = var1.method2620();
+      int var5 = var1.method2620();
+      this.field3206 = new class223();
+      this.field3206.method4149(2);
+      this.field3206.method4150(var2);
+      this.field3206.field3216 = var4;
+      this.field3206.field3214 = var5;
+      this.field3206.field3218 = 0;
+      this.field3206.field3217 = 0;
+      this.field3206.field3215 = var3;
    }
 }

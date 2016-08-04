@@ -2,61 +2,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bn")
 public class class56 extends class207 {
-   @ObfuscatedName("ae")
-   static class171 field1231;
-   @ObfuscatedName("e")
-   public static class196 field1233 = new class196(64);
-   @ObfuscatedName("o")
+   @ObfuscatedName("r")
+   static class196 field1231 = new class196(64);
+   @ObfuscatedName("l")
+   static class170 field1232;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 720970751
+      intValue = -524708021
+   )
+   public static int field1233;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 130631835
    )
    public int field1234 = 0;
-   @ObfuscatedName("m")
-   static class170 field1235;
-   @ObfuscatedName("w")
+   @ObfuscatedName("bg")
    @ObfuscatedGetter(
-      intValue = -1926864461
+      intValue = 1435849663
    )
-   public static int field1239;
-   @ObfuscatedName("k")
-   static class157 field1240;
+   static int field1235;
+   @ObfuscatedName("an")
+   static class171 field1236;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(Lclass122;B)V",
-      garbageValue = "-5"
+      garbageValue = "98"
    )
-   void method1193(class122 var1) {
+   void method1236(class122 var1) {
       while(true) {
-         int var2 = var1.method2556();
+         int var2 = var1.method2633();
          if(var2 == 0) {
             return;
          }
 
-         this.method1194(var1, var2);
+         this.method1237(var1, var2);
       }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(Lclass122;II)V",
-      garbageValue = "2069578247"
+      garbageValue = "1549925229"
    )
-   void method1194(class122 var1, int var2) {
+   void method1237(class122 var1, int var2) {
       if(var2 == 5) {
-         this.field1234 = var1.method2706();
+         this.field1234 = var1.method2635();
       }
 
    }
 
-   @ObfuscatedName("bw")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(Lclass32;III)V",
-      garbageValue = "-656628900"
+      signature = "(I)J",
+      garbageValue = "1205067486"
    )
-   static final void method1198(class32 var0, int var1, int var2) {
-      class35.method729(var0.field725, var0.field720, var0.field722, var0.field724, var0.field723, var0.field723, var1, var2);
+   public static synchronized long method1249() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class118.field2031) {
+         class118.field2029 += class118.field2031 - var0;
+      }
+
+      class118.field2031 = var0;
+      return class118.field2029 + var0;
    }
 }

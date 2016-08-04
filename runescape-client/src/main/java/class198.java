@@ -1,50 +1,50 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gk")
+@ObfuscatedName("ge")
 public class class198 {
-   @ObfuscatedName("w")
-   class210 field3138;
-   @ObfuscatedName("m")
-   class210 field3139 = new class210();
+   @ObfuscatedName("l")
+   class210 field3145 = new class210();
+   @ObfuscatedName("g")
+   class210 field3146;
+
+   @ObfuscatedName("l")
+   public void method3926(class210 var1) {
+      if(var1.field3172 != null) {
+         var1.method4063();
+      }
+
+      var1.field3172 = this.field3145.field3172;
+      var1.field3171 = this.field3145;
+      var1.field3172.field3171 = var1;
+      var1.field3171.field3172 = var1;
+   }
+
+   @ObfuscatedName("g")
+   public class210 method3928() {
+      class210 var1 = this.field3145.field3171;
+      if(var1 == this.field3145) {
+         this.field3146 = null;
+         return null;
+      } else {
+         this.field3146 = var1.field3171;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("r")
+   public class210 method3933() {
+      class210 var1 = this.field3146;
+      if(var1 == this.field3145) {
+         this.field3146 = null;
+         return null;
+      } else {
+         this.field3146 = var1.field3171;
+         return var1;
+      }
+   }
 
    public class198() {
-      this.field3139.field3165 = this.field3139;
-      this.field3139.field3164 = this.field3139;
-   }
-
-   @ObfuscatedName("w")
-   public class210 method3841() {
-      class210 var1 = this.field3139.field3165;
-      if(var1 == this.field3139) {
-         this.field3138 = null;
-         return null;
-      } else {
-         this.field3138 = var1.field3165;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("e")
-   public class210 method3842() {
-      class210 var1 = this.field3138;
-      if(var1 == this.field3139) {
-         this.field3138 = null;
-         return null;
-      } else {
-         this.field3138 = var1.field3165;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("m")
-   public void method3845(class210 var1) {
-      if(var1.field3164 != null) {
-         var1.method3984();
-      }
-
-      var1.field3164 = this.field3139.field3164;
-      var1.field3165 = this.field3139;
-      var1.field3164.field3165 = var1;
-      var1.field3165.field3164 = var1;
+      this.field3145.field3171 = this.field3145;
+      this.field3145.field3172 = this.field3145;
    }
 }
