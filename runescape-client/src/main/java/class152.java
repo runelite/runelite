@@ -1,37 +1,29 @@
 import java.io.File;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ex")
+@ObfuscatedName("eb")
 public class class152 {
-   @ObfuscatedName("u")
-   public static class231 field2289 = null;
+   @ObfuscatedName("d")
+   public static String[] field2292;
+   @ObfuscatedName("q")
+   public static class231 field2296 = null;
+   @ObfuscatedName("p")
+   public static class231 field2297 = null;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1928615349
+   )
+   public static int field2298;
    @ObfuscatedName("h")
-   public static class231 field2290 = null;
-   @ObfuscatedName("g")
-   public static File field2291;
-   @ObfuscatedName("o")
-   static File field2292;
-   @ObfuscatedName("l")
+   public static File field2300;
+   @ObfuscatedName("m")
+   public static class231 field2301 = null;
+   @ObfuscatedName("km")
+   static class134 field2302;
+   @ObfuscatedName("np")
    @ObfuscatedGetter(
-      intValue = 870817463
+      intValue = -1300323821
    )
-   public static int field2294;
-   @ObfuscatedName("v")
-   public static class231 field2295 = null;
-   @ObfuscatedName("mh")
-   @ObfuscatedGetter(
-      intValue = -1145833475
-   )
-   static int field2300;
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-304844530"
-   )
-   public static boolean method3188() {
-      return class186.field3004 != 0?true:class186.field3007.method3660();
-   }
+   static int field2303;
 }

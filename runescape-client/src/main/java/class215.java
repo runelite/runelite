@@ -1,49 +1,59 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hu")
 public class class215 {
-   @ObfuscatedName("g")
-   static final class215 field3183 = new class215(7, 4, "", "");
    @ObfuscatedName("l")
-   static final class215 field3184 = new class215(8, 5, "", "");
-   @ObfuscatedName("w")
-   static final class215 field3185 = new class215(5, 1, "", "");
-   @ObfuscatedName("o")
-   static final class215 field3186 = new class215(0, 3, "", "");
-   @ObfuscatedName("x")
-   public static final class215 field3187;
+   public static final class215 field3190 = new class215(5, 0, "", "");
+   @ObfuscatedName("h")
+   static final class215 field3191 = new class215(8, 4, "", "");
    @ObfuscatedName("r")
-   static final class215 field3188 = new class215(2, 7, "", "");
-   @ObfuscatedName("j")
-   static final class215 field3189 = new class215(4, 6, "", "");
+   static final class215 field3192 = new class215(7, 2, "", "");
    @ObfuscatedName("e")
-   static final class215 field3190 = new class215(1, 2, "", "");
-   @ObfuscatedName("m")
-   public static final class215 field3191 = new class215(6, 0, "", "");
+   static final class215 field3193 = new class215(0, 3, "", "");
+   @ObfuscatedName("g")
+   static final class215 field3194 = new class215(1, 1, "", "");
+   @ObfuscatedName("s")
+   static final class215 field3195 = new class215(2, 5, "", "");
    @ObfuscatedName("k")
+   static final class215 field3196 = new class215(3, 6, "", "");
+   @ObfuscatedName("u")
+   static final class215 field3197 = new class215(4, 7, "", "");
+   @ObfuscatedName("n")
+   public static final class215 field3198;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1254955499
+      intValue = -1895180237
    )
-   public final int field3192;
-   @ObfuscatedName("v")
-   final String field3193;
+   public final int field3199;
+   @ObfuscatedName("m")
+   final String field3200;
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IB)I",
+      garbageValue = "68"
+   )
+   public static int method4089(int var0) {
+      return var0 >> 11 & 63;
+   }
 
    class215(int var1, int var2, String var3, String var4, boolean var5, class215[] var6) {
-      this.field3192 = var1;
-      this.field3193 = var4;
+      this.field3199 = var1;
+      this.field3200 = var4;
    }
 
    public String toString() {
-      return this.field3193;
-   }
-
-   static {
-      field3187 = new class215(3, -1, "", "", true, new class215[]{field3191, field3185, field3190, field3183, field3186});
+      return this.field3200;
    }
 
    class215(int var1, int var2, String var3, String var4) {
-      this.field3192 = var1;
-      this.field3193 = var4;
+      this.field3199 = var1;
+      this.field3200 = var4;
+   }
+
+   static {
+      field3198 = new class215(6, -1, "", "", true, new class215[]{field3190, field3194, field3192, field3191, field3193});
    }
 }

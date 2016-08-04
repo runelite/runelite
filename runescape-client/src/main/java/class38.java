@@ -1,75 +1,49 @@
 import java.util.Calendar;
+import java.util.Date;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("ao")
 public class class38 {
-   @ObfuscatedName("e")
-   static int[] field813;
-   @ObfuscatedName("bs")
-   static class171 field814;
-   @ObfuscatedName("g")
-   static int[] field815 = new int[5];
-   @ObfuscatedName("y")
-   static final String[] field816 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-   @ObfuscatedName("l")
-   static int[][] field817 = new int[5][5000];
-   @ObfuscatedName("r")
+   @ObfuscatedName("u")
    @Export("chatboxSegments")
    static String[] field818 = new String[1000];
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 814456023
-   )
-   static int field819 = 0;
-   @ObfuscatedName("k")
-   static class14[] field820 = new class14[50];
-   @ObfuscatedName("u")
-   static Calendar field822 = Calendar.getInstance();
-   @ObfuscatedName("j")
-   static int[] field823 = new int[1000];
+   @ObfuscatedName("r")
+   static int[] field820;
    @ObfuscatedName("h")
-   static class176 field825;
-   @ObfuscatedName("p")
+   static int[] field821 = new int[5];
+   @ObfuscatedName("s")
+   static int[][] field822 = new int[5][5000];
+   @ObfuscatedName("k")
+   static int[] field823 = new int[1000];
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 835433089
+      intValue = 2047441263
    )
-   static int field826 = 0;
-   @ObfuscatedName("cb")
-   static class146 field829;
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lclass170;I)V",
-      garbageValue = "-1454386548"
+   static int field825 = 0;
+   @ObfuscatedName("w")
+   static final String[] field826 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+   @ObfuscatedName("p")
+   static Calendar field827 = Calendar.getInstance();
+   @ObfuscatedName("b")
+   static class14[] field828 = new class14[50];
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1833282851
    )
-   public static void method762(class170 var0) {
-      class56.field1235 = var0;
-      class56.field1239 = class56.field1235.method3317(16);
-   }
+   static int field829 = 0;
 
-   @ObfuscatedName("bd")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "10"
-   )
-   static final void method767(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < client.field413; ++var4) {
-         if(client.field478[var4] + client.field359[var4] > var0 && client.field478[var4] < var0 + var2 && client.field495[var4] + client.field479[var4] > var1 && client.field479[var4] < var1 + var3) {
-            client.field476[var4] = true;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-84"
-   )
-   static int method768() {
-      return 9;
+   @ObfuscatedName("l")
+   public static String method791(long var0) {
+      class114.field2014.setTime(new Date(var0));
+      int var2 = class114.field2014.get(7);
+      int var3 = class114.field2014.get(5);
+      int var4 = class114.field2014.get(2);
+      int var5 = class114.field2014.get(1);
+      int var6 = class114.field2014.get(11);
+      int var7 = class114.field2014.get(12);
+      int var8 = class114.field2014.get(13);
+      return class114.field2015[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class114.field2017[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
    }
 }

@@ -1,50 +1,57 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("de")
 public class class117 {
-   @ObfuscatedName("s")
-   public static class122 field2020;
-   @ObfuscatedName("j")
-   static int[] field2021;
+   @ObfuscatedName("b")
+   @Export("worldServersDownload")
+   static class18 field2027;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "-28"
+      signature = "(III)I",
+      garbageValue = "620347252"
    )
-   static final int method2507(int var0, int var1) {
-      if(var0 == -1) {
-         return 12345678;
-      } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return var1 + (var0 & 'ﾀ');
+   public static int method2559(int var0, int var1) {
+      int var2;
+      if(var1 > var0) {
+         var2 = var0;
+         var0 = var1;
+         var1 = var2;
       }
+
+      while(var1 != 0) {
+         var2 = var0 % var1;
+         var0 = var1;
+         var1 = var2;
+      }
+
+      return var0;
    }
 
-   @ObfuscatedName("de")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "2070900772"
+      signature = "(ILclass137;Lclass171;B)V",
+      garbageValue = "-21"
    )
-   static final void method2508(int var0) {
-      if(class122.method2739(var0)) {
-         class176[] var1 = class176.field2814[var0];
-
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            class176 var3 = var1[var2];
-            if(null != var3) {
-               var3.field2917 = 0;
-               var3.field2864 = 0;
+   static void method2560(int var0, class137 var1, class171 var2) {
+      byte[] var3 = null;
+      class202 var4 = class173.field2765;
+      synchronized(class173.field2765) {
+         for(class172 var5 = (class172)class173.field2765.method3980(); null != var5; var5 = (class172)class173.field2765.method3970()) {
+            if((long)var0 == var5.field3175 && var5.field2759 == var1 && var5.field2757 == 0) {
+               var3 = var5.field2755;
+               break;
             }
          }
+      }
 
+      if(var3 != null) {
+         var2.method3483(var1, var0, var3, true);
+      } else {
+         byte[] var8 = var1.method3016(var0);
+         var2.method3483(var1, var0, var8, true);
       }
    }
 }

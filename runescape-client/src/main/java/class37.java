@@ -4,69 +4,92 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("af")
+@ObfuscatedName("ap")
 @Implements("MessageNode")
 public class class37 extends class207 {
-   @ObfuscatedName("w")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 2023452699
-   )
-   @Export("tick")
-   int field805;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 562872851
+      intValue = 676138825
    )
    @Export("type")
-   int field806;
+   int field805;
    @ObfuscatedName("g")
-   @Export("sender")
-   String field808;
-   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1546785459
+      intValue = 420119609
+   )
+   @Export("tick")
+   int field806;
+   @ObfuscatedName("s")
+   @Export("value")
+   String field807;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1163282247
    )
    @Export("id")
-   int field809;
-   @ObfuscatedName("o")
+   int field808 = class18.method213();
+   @ObfuscatedName("p")
+   static int[] field809;
+   @ObfuscatedName("e")
    @Export("name")
-   String field811;
-   @ObfuscatedName("l")
-   @Export("value")
-   String field812;
-
+   String field810;
+   @ObfuscatedName("h")
+   @Export("sender")
+   String field813;
    @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "-1815569340"
+   public static boolean field814;
+   @ObfuscatedName("fs")
+   @ObfuscatedGetter(
+      intValue = -305526007
    )
-   void method755(int var1, String var2, String var3, String var4) {
-      int var5 = ++class11.field159 - 1;
-      this.field809 = var5;
-      this.field805 = client.field282;
-      this.field806 = var1;
-      this.field811 = var2;
-      this.field808 = var3;
-      this.field812 = var4;
+   static int field817;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "10"
+   )
+   void method780(int var1, String var2, String var3, String var4) {
+      this.field808 = class18.method213();
+      this.field806 = client.field305;
+      this.field805 = var1;
+      this.field810 = var2;
+      this.field813 = var3;
+      this.field807 = var4;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "736617135"
+   )
+   static void method781(String var0, String var1, String var2) {
+      class33.field748 = var0;
+      class33.field762 = var1;
+      class33.field755 = var2;
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "([BIIB)I",
+      garbageValue = "110"
+   )
+   static int method784(byte[] var0, int var1, int var2) {
+      int var3 = -1;
+
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ class122.field2057[(var3 ^ var0[var4]) & 255];
+      }
+
+      var3 = ~var3;
+      return var3;
    }
 
    class37(int var1, String var2, String var3, String var4) {
-      int var5 = ++class11.field159 - 1;
-      this.field809 = var5;
-      this.field805 = client.field282;
-      this.field806 = var1;
-      this.field811 = var2;
-      this.field808 = var3;
-      this.field812 = var4;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-284102665"
-   )
-   public static void method759() {
-      class49.field1088.method3814();
-      class49.field1098.method3814();
+      this.field806 = client.field305;
+      this.field805 = var1;
+      this.field810 = var2;
+      this.field813 = var3;
+      this.field807 = var4;
    }
 }

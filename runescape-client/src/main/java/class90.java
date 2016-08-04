@@ -1,80 +1,79 @@
-import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("cb")
 @Implements("WallObject")
 public final class class90 {
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1893481543
-   )
-   int field1599;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1886146803
-   )
-   @Export("x")
-   int field1600;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1113690545
+      intValue = -1881120133
    )
-   int field1601;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1016002769
-   )
-   @Export("floor")
+   @Export("x")
    int field1603;
-   @ObfuscatedName("l")
-   @Export("renderable1")
-   public class88 field1604;
-   @ObfuscatedName("j")
-   @Export("renderable2")
-   public class88 field1605;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 398841471
-   )
-   @Export("hash")
-   public int field1606 = 0;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -804685195
-   )
-   int field1607 = 0;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -866522957
+      intValue = -365703295
    )
    @Export("y")
-   int field1609;
-   @ObfuscatedName("br")
-   static class83[] field1610;
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-171055632"
+   int field1604;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -910668779
    )
-   public static void method2159(Component var0) {
-      var0.setFocusTraversalKeysEnabled(false);
-      var0.addKeyListener(class140.field2189);
-      var0.addFocusListener(class140.field2189);
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-843654338"
+   int field1605;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1782156323
    )
-   public static void method2160(Component var0) {
-      var0.removeKeyListener(class140.field2189);
-      var0.removeFocusListener(class140.field2189);
-      class140.field2177 = -1;
+   int field1606;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -373816833
+   )
+   @Export("floor")
+   int field1608;
+   @ObfuscatedName("k")
+   @Export("renderable2")
+   public class88 field1609;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1919113747
+   )
+   int field1610 = 0;
+   @ObfuscatedName("ew")
+   static class83[] field1611;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -465064693
+   )
+   @Export("hash")
+   public int field1612 = 0;
+   @ObfuscatedName("s")
+   @Export("renderable1")
+   public class88 field1614;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "-4"
+   )
+   public static int method2159(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 *= var0;
+         }
+
+         var0 *= var0;
+      }
+
+      if(var1 == 1) {
+         return var2 * var0;
+      } else {
+         return var2;
+      }
    }
 }
