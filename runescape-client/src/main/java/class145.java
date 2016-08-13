@@ -17,15 +17,15 @@ public class class145 {
       if(var0 == null) {
          return false;
       } else {
-         String var2 = class156.method3300(var0, client.field518);
+         String var2 = class156.method3300(var0, Client.field518);
 
-         for(int var3 = 0; var3 < client.field391; ++var3) {
-            if(var2.equalsIgnoreCase(class156.method3300(client.field456[var3].field250, client.field518)) && (!var1 || client.field456[var3].field247 != 0)) {
+         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
+            if(var2.equalsIgnoreCase(class156.method3300(Client.friends[var3].name, Client.field518)) && (!var1 || Client.friends[var3].world != 0)) {
                return true;
             }
          }
 
-         if(var2.equalsIgnoreCase(class156.method3300(class3.field65.field58, client.field518))) {
+         if(var2.equalsIgnoreCase(class156.method3300(WidgetNode.localPlayer.name, Client.field518))) {
             return true;
          } else {
             return false;
@@ -46,47 +46,47 @@ public class class145 {
       int var4 = 1;
 
       for(int var5 = 0; var5 < 4; ++var5) {
-         if(class27.field666[var5] != var0) {
-            var2[var4] = class27.field666[var5];
-            var3[var4] = class27.field665[var5];
+         if(World.field666[var5] != var0) {
+            var2[var4] = World.field666[var5];
+            var3[var4] = World.field665[var5];
             ++var4;
          }
       }
 
-      class27.field666 = var2;
-      class27.field665 = var3;
-      class9.method133(class27.field662, 0, class27.field662.length - 1, class27.field666, class27.field665);
+      World.field666 = var2;
+      World.field665 = var3;
+      class9.method133(World.worldList, 0, World.worldList.length - 1, World.field666, World.field665);
    }
 
    @ObfuscatedName("dq")
    @ObfuscatedSignature(
-      signature = "(Lclass3;ZB)V",
+      signature = "(LWidgetNode;ZB)V",
       garbageValue = "70"
    )
-   static final void method3130(class3 var0, boolean var1) {
-      int var2 = var0.field70;
-      int var3 = (int)var0.field3175;
-      var0.method4067();
+   static final void method3130(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
       if(var1) {
          class163.method3329(var2);
       }
 
-      for(class204 var4 = (class204)client.field435.method3939(); null != var4; var4 = (class204)client.field435.method3935()) {
-         if((long)var2 == (var4.field3175 >> 48 & 65535L)) {
-            var4.method4067();
+      for(class204 var4 = (class204)Client.widgetFlags.method3939(); null != var4; var4 = (class204)Client.widgetFlags.method3935()) {
+         if((long)var2 == (var4.hash >> 48 & 65535L)) {
+            var4.unlink();
          }
       }
 
-      class176 var6 = class134.method2983(var3);
+      Widget var6 = class134.method2983(var3);
       if(var6 != null) {
          class79.method1777(var6);
       }
 
       class124.method2891();
-      if(client.field495 != -1) {
-         int var5 = client.field495;
+      if(Client.widgetRoot != -1) {
+         int var5 = Client.widgetRoot;
          if(class14.method179(var5)) {
-            class9.method134(class176.field2836[var5], 1);
+            class9.method134(Widget.widgets[var5], 1);
          }
       }
 

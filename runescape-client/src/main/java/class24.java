@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("a")
-public final class class24 extends class211 {
+public final class class24 extends Node {
    @ObfuscatedName("j")
    public static String field620;
    @ObfuscatedName("g")
@@ -46,7 +46,7 @@ public final class class24 extends class211 {
    @ObfuscatedName("p")
    int[] field629;
    @ObfuscatedName("l")
-   static class202 field630 = new class202();
+   static Deque field630 = new Deque();
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = -39442857
@@ -60,7 +60,7 @@ public final class class24 extends class211 {
    @ObfuscatedName("o")
    class67 field633;
    @ObfuscatedName("r")
-   class42 field634;
+   ObjectComposition field634;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1254681397
@@ -73,17 +73,17 @@ public final class class24 extends class211 {
       garbageValue = "-100"
    )
    public static class50 method602(int var0) {
-      class50 var1 = (class50)class50.field1117.method3905((long)var0);
+      class50 var1 = (class50)class50.field1117.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
          byte[] var2 = class50.field1125.method3411(14, var0);
          var1 = new class50();
          if(null != var2) {
-            var1.method1075(new class122(var2));
+            var1.method1075(new Buffer(var2));
          }
 
-         class50.field1117.method3907(var1, (long)var0);
+         class50.field1117.put(var1, (long)var0);
          return var1;
       }
    }
@@ -95,7 +95,7 @@ public final class class24 extends class211 {
    )
    void method603() {
       int var1 = this.field627;
-      class42 var2 = this.field634.method847();
+      ObjectComposition var2 = this.field634.getImpostor();
       if(var2 != null) {
          this.field627 = var2.field989;
          this.field626 = var2.field990 * 128;
@@ -148,7 +148,7 @@ public final class class24 extends class211 {
       if(null == var2) {
          return false;
       } else {
-         class2.method28(var2);
+         Player.method28(var2);
          return true;
       }
    }

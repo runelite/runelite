@@ -19,31 +19,31 @@ public class class35 {
    )
    static final void method756(int var0, int var1, int var2) {
       if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = class127.method2936(var0, var1, class99.field1701) - var2;
-         var0 -= class151.field2282;
-         var3 -= class8.field149;
-         var1 -= class96.field1670;
-         int var4 = class94.field1661[class102.field1759];
-         int var5 = class94.field1662[class102.field1759];
-         int var6 = class94.field1661[class59.field1255];
-         int var7 = class94.field1662[class59.field1255];
+         int var3 = class127.method2936(var0, var1, VertexNormal.plane) - var2;
+         var0 -= class151.cameraX;
+         var3 -= class8.cameraZ;
+         var1 -= GroundObject.cameraY;
+         int var4 = class94.field1661[ItemLayer.cameraPitch];
+         int var5 = class94.field1662[ItemLayer.cameraPitch];
+         int var6 = class94.field1661[class59.cameraYaw];
+         int var7 = class94.field1662[class59.cameraYaw];
          int var8 = var7 * var0 + var6 * var1 >> 16;
          var1 = var7 * var1 - var6 * var0 >> 16;
          var0 = var8;
          var8 = var5 * var3 - var1 * var4 >> 16;
          var1 = var5 * var1 + var3 * var4 >> 16;
          if(var1 >= 50) {
-            client.field401 = client.field558 / 2 + client.field392 * var0 / var1;
-            client.field402 = client.field392 * var8 / var1 + client.field559 / 2;
+            Client.field401 = Client.camera2 / 2 + Client.scale * var0 / var1;
+            Client.field402 = Client.scale * var8 / var1 + Client.camera3 / 2;
          } else {
-            client.field401 = -1;
-            client.field402 = -1;
+            Client.field401 = -1;
+            Client.field402 = -1;
          }
-
       } else {
-         client.field401 = -1;
-         client.field402 = -1;
+         Client.field401 = -1;
+         Client.field402 = -1;
       }
+
    }
 
    @ObfuscatedName("l")

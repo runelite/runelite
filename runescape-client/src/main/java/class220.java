@@ -10,7 +10,7 @@ final class class220 implements Comparator {
       garbageValue = "12"
    )
    int method4117(class217 var1, class217 var2) {
-      return var1.field3206.field3216 < var2.field3206.field3216?-1:(var2.field3206.field3216 == var1.field3206.field3216?0:1);
+      return var1.field3206.price < var2.field3206.price?-1:(var2.field3206.price == var1.field3206.price?0:1);
    }
 
    public int compare(Object var1, Object var2) {

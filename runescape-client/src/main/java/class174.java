@@ -20,9 +20,9 @@ public class class174 {
    )
    static long field2770;
    @ObfuscatedName("e")
-   static class199 field2771 = new class199(4096);
+   static XHashTable field2771 = new XHashTable(4096);
    @ObfuscatedName("u")
-   static class206 field2772 = new class206();
+   static Node2LinkedList field2772 = new Node2LinkedList();
    @ObfuscatedName("x")
    static byte field2773 = 0;
    @ObfuscatedName("k")
@@ -31,13 +31,13 @@ public class class174 {
    )
    static int field2774 = 0;
    @ObfuscatedName("o")
-   static class122 field2775 = new class122(8);
+   static Buffer field2775 = new Buffer(8);
    @ObfuscatedName("n")
-   static class199 field2776 = new class199(4096);
+   static XHashTable field2776 = new XHashTable(4096);
    @ObfuscatedName("s")
-   static class199 field2777 = new class199(32);
+   static XHashTable field2777 = new XHashTable(32);
    @ObfuscatedName("m")
-   static class199 field2778 = new class199(4096);
+   static XHashTable field2778 = new XHashTable(4096);
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -587500765
@@ -75,7 +75,7 @@ public class class174 {
    )
    static int field2788;
    @ObfuscatedName("aa")
-   static class83[] field2789;
+   static ModIcon[] field2789;
    @ObfuscatedName("l")
    static class146 field2790;
 }

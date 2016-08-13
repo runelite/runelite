@@ -3,11 +3,11 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ax")
-public class class48 extends class207 {
+public class class48 extends CacheableNode {
    @ObfuscatedName("h")
    public boolean field1077 = true;
    @ObfuscatedName("g")
-   public static class196 field1078 = new class196(64);
+   public static NodeCache field1078 = new NodeCache(64);
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1935056289
@@ -19,7 +19,7 @@ public class class48 extends class207 {
    )
    public int field1080;
    @ObfuscatedName("bq")
-   static class83[] field1081;
+   static ModIcon[] field1081;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1452288537
@@ -83,10 +83,10 @@ public class class48 extends class207 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
+      signature = "(LBuffer;II)V",
       garbageValue = "324348032"
    )
-   void method1014(class122 var1, int var2) {
+   void method1014(Buffer var1, int var2) {
       while(true) {
          int var3 = var1.method2633();
          if(var3 == 0) {
@@ -99,10 +99,10 @@ public class class48 extends class207 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lclass122;III)V",
+      signature = "(LBuffer;III)V",
       garbageValue = "1044780503"
    )
-   void method1015(class122 var1, int var2, int var3) {
+   void method1015(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
          this.field1079 = var1.method2637();
       } else if(var2 == 2) {

@@ -16,18 +16,18 @@ public class class181 {
 
    @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(II)Lclass106;",
+      signature = "(II)LFrames;",
       garbageValue = "1637661745"
    )
    @Export("getFrames")
-   static class106 method3632(int var0) {
-      class106 var1 = (class106)class44.field1015.method3905((long)var0);
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.field1015.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         var1 = class97.method2255(class44.field1012, class44.field1019, var0, false);
+         var1 = DecorativeObject.method2255(Sequence.field1012, Sequence.field1019, var0, false);
          if(null != var1) {
-            class44.field1015.method3907(var1, (long)var0);
+            Sequence.field1015.put(var1, (long)var0);
          }
 
          return var1;

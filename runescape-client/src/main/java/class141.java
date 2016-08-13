@@ -25,25 +25,24 @@ public class class141 {
    static void method3074(Component var0, class170 var1, class170 var2, boolean var3, int var4) {
       if(class33.field754) {
          if(var4 == 4) {
-            class33.field761 = 4;
+            class33.loginIndex = 4;
          }
-
       } else {
-         class33.field761 = var4;
+         class33.loginIndex = var4;
          class82.method1885();
          byte[] var5 = var1.method3412("title.jpg", "");
-         class33.field745 = new class81(var5, var0);
+         class33.field745 = new SpritePixels(var5, var0);
          class33.field746 = class33.field745.method1794();
-         if((client.field561 & 536870912) != 0) {
-            class106.field1847 = class137.method3010(var2, "logo_deadman_mode", "");
+         if((Client.flags & 536870912) != 0) {
+            Frames.field1847 = class137.method3010(var2, "logo_deadman_mode", "");
          } else {
-            class106.field1847 = class137.method3010(var2, "logo", "");
+            Frames.field1847 = class137.method3010(var2, "logo", "");
          }
 
          class33.field760 = class137.method3010(var2, "titlebox", "");
          class33.field763 = class137.method3010(var2, "titlebutton", "");
-         class33.field744 = class36.method773(var2, "runes", "");
-         class33.field747 = class36.method773(var2, "title_mute", "");
+         class33.field744 = NPC.method773(var2, "runes", "");
+         class33.field747 = NPC.method773(var2, "title_mute", "");
          class47.field1075 = class137.method3010(var2, "options_radio_buttons,0", "");
          class22.field596 = class137.method3010(var2, "options_radio_buttons,2", "");
          class153.field2310 = new int[256];
@@ -104,35 +103,36 @@ public class class141 {
          class138.field2141 = new int[256];
          class26.field649 = new int['耀'];
          class144.field2226 = new int['耀'];
-         class47.method998((class83)null);
-         class29.field699 = new int['耀'];
-         class182.field2970 = new int['耀'];
+         class47.method998((ModIcon)null);
+         ChatLineBuffer.field699 = new int['耀'];
+         PlayerComposition.field2970 = new int['耀'];
          if(var3) {
-            class33.field764 = "";
+            class33.username = "";
             class33.field765 = "";
          }
 
          class174.field2788 = 0;
-         class33.field767 = "";
+         class33.authCode = "";
          class33.field768 = true;
-         class33.field772 = false;
+         class33.worldSelectShown = false;
          if(!class136.field2123.field148) {
-            class171 var9 = class188.field3051;
-            int var7 = var9.method3410("scape main");
-            int var8 = var9.method3459(var7, "");
-            class167.method3374(2, var9, var7, var8, 255, false);
+            class171 var7 = class188.field3051;
+            int var8 = var7.method3410("scape main");
+            int var9 = var7.method3459(var8, "");
+            class167.method3374(2, var7, var8, var9, 255, false);
          } else {
             class34.method755(2);
          }
 
          class161.method3314(false);
          class33.field754 = true;
-         class33.field741 = (class189.field3056 - client.field508) / 2;
-         class33.field777 = 202 + class33.field741;
+         class33.field741 = (class189.field3056 - Client.field508) / 2;
+         class33.loginWindowX = 202 + class33.field741;
          class33.field745.method1851(class33.field741, 0);
          class33.field746.method1851(382 + class33.field741, 0);
-         class106.field1847.method1954(class33.field741 + 382 - class106.field1847.field1498 / 2, 18);
+         Frames.field1847.method1954(class33.field741 + 382 - Frames.field1847.originalWidth / 2, 18);
       }
+
    }
 
    @ObfuscatedName("ds")
@@ -144,8 +144,8 @@ public class class141 {
       class48.field1097 = var0;
 
       try {
-         String var1 = client.field477.getParameter(class193.field3110.field3123);
-         String var2 = client.field477.getParameter(class193.field3121.field3123);
+         String var1 = Client.field477.getParameter(class193.field3110.field3123);
+         String var2 = Client.field477.getParameter(class193.field3121.field3123);
          String var3 = var1 + "settings=" + var0 + "; version=1; path=/; domain=" + var2;
          if(var0.length() == 0) {
             var3 = var3 + "; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0";
@@ -153,7 +153,7 @@ public class class141 {
             var3 = var3 + "; Expires=" + class38.method791(class56.method1249() + 94608000000L) + "; Max-Age=" + 94608000L;
          }
 
-         client var4 = client.field477;
+         Client var4 = Client.field477;
          String var5 = "document.cookie=\"" + var3 + "\"";
          JSObject.getWindow(var4).eval(var5);
       } catch (Throwable var6) {
@@ -179,21 +179,21 @@ public class class141 {
          var2.write("data1=req");
          var2.flush();
          InputStream var3 = var1.getInputStream();
-         class122 var4 = new class122(new byte[1000]);
+         Buffer var4 = new Buffer(new byte[1000]);
 
          do {
-            int var5 = var3.read(var4.field2051, var4.field2050, 1000 - var4.field2050);
+            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
             if(var5 == -1) {
-               var4.field2050 = 0;
-               long var8 = var4.method2649();
-               return var8;
+               var4.offset = 0;
+               long var6 = var4.method2649();
+               return var6;
             }
 
-            var4.field2050 += var5;
-         } while(var4.field2050 < 1000);
+            var4.offset += var5;
+         } while(var4.offset < 1000);
 
          return 0L;
-      } catch (Exception var7) {
+      } catch (Exception var8) {
          return 0L;
       }
    }

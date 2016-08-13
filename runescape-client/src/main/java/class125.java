@@ -3,9 +3,9 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("du")
-public final class class125 extends class122 {
+public final class class125 extends Buffer {
    @ObfuscatedName("eh")
-   static class81[] field2066;
+   static SpritePixels[] field2066;
    @ObfuscatedName("b")
    static final int[] field2067 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    @ObfuscatedName("m")
@@ -35,7 +35,7 @@ public final class class125 extends class122 {
       garbageValue = "-23"
    )
    public int method2898() {
-      return super.field2051[++super.field2050 - 1] - this.field2074.method2927() & 255;
+      return super.payload[++super.offset - 1] - this.field2074.method2927() & 255;
    }
 
    @ObfuscatedName("iw")
@@ -44,7 +44,7 @@ public final class class125 extends class122 {
       garbageValue = "-1438605732"
    )
    public void method2899() {
-      this.field2068 = super.field2050 * 8;
+      this.field2068 = super.offset * 8;
    }
 
    @ObfuscatedName("iv")
@@ -53,7 +53,7 @@ public final class class125 extends class122 {
       garbageValue = "-329548918"
    )
    public void method2900() {
-      super.field2050 = (this.field2068 + 7) / 8;
+      super.offset = (this.field2068 + 7) / 8;
    }
 
    @ObfuscatedName("ir")
@@ -62,7 +62,7 @@ public final class class125 extends class122 {
       garbageValue = "-1963775429"
    )
    public void method2903(int var1) {
-      super.field2051[++super.field2050 - 1] = (byte)(var1 + this.field2074.method2927());
+      super.payload[++super.offset - 1] = (byte)(var1 + this.field2074.method2927());
    }
 
    @ObfuscatedSignature(
@@ -84,14 +84,14 @@ public final class class125 extends class122 {
       int var4 = 0;
 
       for(this.field2068 += var1; var1 > var3; var3 = 8) {
-         var4 += (super.field2051[var2++] & field2067[var3]) << var1 - var3;
+         var4 += (super.payload[var2++] & field2067[var3]) << var1 - var3;
          var1 -= var3;
       }
 
       if(var1 == var3) {
-         var4 += super.field2051[var2] & field2067[var3];
+         var4 += super.payload[var2] & field2067[var3];
       } else {
-         var4 += super.field2051[var2] >> var3 - var1 & field2067[var1];
+         var4 += super.payload[var2] >> var3 - var1 & field2067[var1];
       }
 
       return var4;

@@ -6,23 +6,23 @@ public class class209 implements Iterator {
    @ObfuscatedName("l")
    class203 field3168;
    @ObfuscatedName("g")
-   class207 field3169;
+   CacheableNode field3169;
    @ObfuscatedName("r")
-   class207 field3170 = null;
+   CacheableNode field3170 = null;
 
    class209(class203 var1) {
       this.field3168 = var1;
-      this.field3169 = this.field3168.field3158.field3164;
+      this.field3169 = this.field3168.field3158.previous;
       this.field3170 = null;
    }
 
    public Object next() {
-      class207 var1 = this.field3169;
+      CacheableNode var1 = this.field3169;
       if(var1 == this.field3168.field3158) {
          var1 = null;
          this.field3169 = null;
       } else {
-         this.field3169 = var1.field3164;
+         this.field3169 = var1.previous;
       }
 
       this.field3170 = var1;

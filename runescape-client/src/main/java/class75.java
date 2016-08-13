@@ -21,29 +21,29 @@ public class class75 implements Runnable {
 
       try {
          while(!this.field1420) {
-            class59 var2;
-            for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1424[var1];
-               if(var2 != null) {
-                  var2.method1294();
+            class59 var1;
+            for(int var2 = 0; var2 < 2; ++var2) {
+               var1 = this.field1424[var2];
+               if(var1 != null) {
+                  var1.method1294();
                }
             }
 
             class22.method594(10L);
-            class139 var5 = this.field1427;
-            var2 = null;
-            if(var5.field2151 != null) {
-               for(int var3 = 0; var3 < 50 && var5.field2151.peekEvent() != null; ++var3) {
+            class139 var9 = this.field1427;
+            var1 = null;
+            if(var9.field2151 != null) {
+               for(int var3 = 0; var3 < 50 && var9.field2151.peekEvent() != null; ++var3) {
                   class22.method594(1L);
                }
 
-               if(null != var2) {
-                  var5.field2151.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               if(null != var1) {
+                  var9.field2151.postEvent(new ActionEvent(var1, 1001, "dummy"));
                }
             }
          }
-      } catch (Exception var8) {
-         class13.method176((String)null, var8);
+      } catch (Exception var7) {
+         class13.method176((String)null, var7);
       } finally {
          this.field1421 = false;
       }

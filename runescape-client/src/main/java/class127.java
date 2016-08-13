@@ -12,7 +12,7 @@ public class class127 {
       garbageValue = "1842591018"
    )
    static final void method2930(int var0) {
-      int[] var1 = class23.field619.field1487;
+      int[] var1 = class23.field619.image;
       int var2 = var1.length;
 
       int var3;
@@ -26,12 +26,12 @@ public class class127 {
          var4 = 24628 + (103 - var3) * 2048;
 
          for(var5 = 1; var5 < 103; ++var5) {
-            if((class5.field80[var0][var5][var3] & 24) == 0) {
-               class136.field2126.method2025(var1, var4, 512, var0, var5, var3);
+            if((class5.tileSettings[var0][var5][var3] & 24) == 0) {
+               class136.region.method2025(var1, var4, 512, var0, var5, var3);
             }
 
-            if(var0 < 3 && (class5.field80[1 + var0][var5][var3] & 8) != 0) {
-               class136.field2126.method2025(var1, var4, 512, var0 + 1, var5, var3);
+            if(var0 < 3 && (class5.tileSettings[1 + var0][var5][var3] & 8) != 0) {
+               class136.region.method2025(var1, var4, 512, var0 + 1, var5, var3);
             }
 
             var4 += 4;
@@ -45,60 +45,60 @@ public class class127 {
       int var6;
       for(var5 = 1; var5 < 103; ++var5) {
          for(var6 = 1; var6 < 103; ++var6) {
-            if((class5.field80[var0][var6][var5] & 24) == 0) {
+            if((class5.tileSettings[var0][var6][var5] & 24) == 0) {
                class54.method1154(var0, var6, var5, var3, var4);
             }
 
-            if(var0 < 3 && (class5.field80[var0 + 1][var6][var5] & 8) != 0) {
+            if(var0 < 3 && (class5.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
                class54.method1154(var0 + 1, var6, var5, var3, var4);
             }
          }
       }
 
-      client.field524 = 0;
+      Client.field524 = 0;
 
       for(var5 = 0; var5 < 104; ++var5) {
          for(var6 = 0; var6 < 104; ++var6) {
-            int var7 = class136.field2126.method2014(class99.field1701, var5, var6);
+            int var7 = class136.region.method2014(VertexNormal.plane, var5, var6);
             if(var7 != 0) {
                var7 = var7 >> 14 & 32767;
-               int var8 = class160.method3312(var7).field957;
+               int var8 = class160.getObjectDefinition(var7).field957;
                if(var8 >= 0) {
                   int var9 = var5;
                   int var10 = var6;
                   if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                     int[][] var13 = client.field354[class99.field1701].field1969;
+                     int[][] var11 = Client.collisionMaps[VertexNormal.plane].flags;
 
-                     for(int var14 = 0; var14 < 10; ++var14) {
-                        int var15 = (int)(Math.random() * 4.0D);
-                        if(var15 == 0 && var9 > 0 && var9 > var5 - 3 && (var13[var9 - 1][var10] & 19136776) == 0) {
+                     for(int var12 = 0; var12 < 10; ++var12) {
+                        int var13 = (int)(Math.random() * 4.0D);
+                        if(var13 == 0 && var9 > 0 && var9 > var5 - 3 && (var11[var9 - 1][var10] & 19136776) == 0) {
                            --var9;
                         }
 
-                        if(var15 == 1 && var9 < 103 && var9 < 3 + var5 && (var13[1 + var9][var10] & 19136896) == 0) {
+                        if(var13 == 1 && var9 < 103 && var9 < 3 + var5 && (var11[1 + var9][var10] & 19136896) == 0) {
                            ++var9;
                         }
 
-                        if(var15 == 2 && var10 > 0 && var10 > var6 - 3 && (var13[var9][var10 - 1] & 19136770) == 0) {
+                        if(var13 == 2 && var10 > 0 && var10 > var6 - 3 && (var11[var9][var10 - 1] & 19136770) == 0) {
                            --var10;
                         }
 
-                        if(var15 == 3 && var10 < 103 && var10 < 3 + var6 && (var13[var9][var10 + 1] & 19136800) == 0) {
+                        if(var13 == 3 && var10 < 103 && var10 < 3 + var6 && (var11[var9][var10 + 1] & 19136800) == 0) {
                            ++var10;
                         }
                      }
                   }
 
-                  client.field453[client.field524] = class50.field1121[var8];
-                  client.field525[client.field524] = var9;
-                  client.field526[client.field524] = var10;
-                  ++client.field524;
+                  Client.field453[Client.field524] = class50.field1121[var8];
+                  Client.field525[Client.field524] = var9;
+                  Client.field526[Client.field524] = var10;
+                  ++Client.field524;
                }
             }
          }
       }
 
-      class54.field1173.method1787();
+      class54.bufferProvider.method1787();
    }
 
    @ObfuscatedName("r")
@@ -187,14 +187,14 @@ public class class127 {
       int var4 = var1 >> 7;
       if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
          int var5 = var2;
-         if(var2 < 3 && (class5.field80[1][var3][var4] & 2) == 2) {
+         if(var2 < 3 && (class5.tileSettings[1][var3][var4] & 2) == 2) {
             var5 = var2 + 1;
          }
 
          int var6 = var0 & 127;
          int var7 = var1 & 127;
-         int var8 = class5.field85[var5][1 + var3][var4] * var6 + class5.field85[var5][var3][var4] * (128 - var6) >> 7;
-         int var9 = class5.field85[var5][var3][1 + var4] * (128 - var6) + class5.field85[var5][var3 + 1][1 + var4] * var6 >> 7;
+         int var8 = class5.tileHeights[var5][1 + var3][var4] * var6 + class5.tileHeights[var5][var3][var4] * (128 - var6) >> 7;
+         int var9 = class5.tileHeights[var5][var3][1 + var4] * (128 - var6) + class5.tileHeights[var5][var3 + 1][1 + var4] * var6 >> 7;
          return var8 * (128 - var7) + var9 * var7 >> 7;
       } else {
          return 0;

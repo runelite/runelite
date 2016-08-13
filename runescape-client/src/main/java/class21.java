@@ -19,7 +19,7 @@ public class class21 implements class115 {
       intValue = 192897651
    )
    @Export("baseY")
-   static int field592;
+   static int baseY;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -1863549427
@@ -28,17 +28,17 @@ public class class21 implements class115 {
 
    @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;I)Lclass80;",
+      signature = "(IILjava/awt/Component;I)LBufferProvider;",
       garbageValue = "1257736555"
    )
-   public static class80 method573(int var0, int var1, Component var2) {
+   public static BufferProvider method573(int var0, int var1, Component var2) {
       try {
-         class84 var3 = new class84();
-         var3.vmethod1964(var0, var1, var2);
+         MainBufferProvider var3 = new MainBufferProvider();
+         var3.init(var0, var1, var2);
          return var3;
       } catch (Throwable var5) {
-         class78 var4 = new class78();
-         var4.vmethod1964(var0, var1, var2);
+         SecondaryBufferProvider var4 = new SecondaryBufferProvider();
+         var4.init(var0, var1, var2);
          return var4;
       }
    }
@@ -66,7 +66,7 @@ public class class21 implements class115 {
       garbageValue = "2009369946"
    )
    static void method581() {
-      class15.field225 = new class199(32);
+      XItemContainer.itemContainers = new XHashTable(32);
    }
 
    @ObfuscatedName("g")
@@ -75,8 +75,8 @@ public class class21 implements class115 {
       garbageValue = "296466018"
    )
    public static void method582(Component var0) {
-      var0.removeKeyListener(class140.field2157);
-      var0.removeFocusListener(class140.field2157);
+      var0.removeKeyListener(class140.keyboard);
+      var0.removeFocusListener(class140.keyboard);
       class140.field2168 = -1;
    }
 

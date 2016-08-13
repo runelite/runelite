@@ -18,7 +18,7 @@ public class class156 {
    )
    final int field2337;
    @ObfuscatedName("v")
-   static class122 field2338;
+   static Buffer field2338;
    @ObfuscatedName("e")
    static final class156 field2339 = new class156("WIP", 2);
 
@@ -43,84 +43,86 @@ public class class156 {
          int var2 = 0;
 
          int var3;
-         for(var3 = var0.length(); var2 < var3 && class27.method655(var0.charAt(var2)); ++var2) {
+         for(var3 = var0.length(); var2 < var3 && World.method655(var0.charAt(var2)); ++var2) {
             ;
          }
 
-         while(var3 > var2 && class27.method655(var0.charAt(var3 - 1))) {
+         while(var3 > var2 && World.method655(var0.charAt(var3 - 1))) {
             --var3;
          }
 
          int var4 = var3 - var2;
          if(var4 >= 1) {
-            byte var6;
+            byte var5;
             if(null == var1) {
-               var6 = 12;
+               var5 = 12;
             } else {
                switch(var1.field3199) {
                case 2:
-                  var6 = 20;
+                  var5 = 20;
                   break;
                default:
-                  var6 = 12;
+                  var5 = 12;
                }
             }
 
-            if(var4 <= var6) {
-               StringBuilder var12 = new StringBuilder(var4);
+            if(var4 <= var5) {
+               StringBuilder var6 = new StringBuilder(var4);
 
-               for(int var14 = var2; var14 < var3; ++var14) {
-                  char var7 = var0.charAt(var14);
-                  boolean var8;
-                  if(Character.isISOControl(var7)) {
-                     var8 = false;
-                  } else if(class102.method2290(var7)) {
-                     var8 = true;
+               for(int var7 = var2; var7 < var3; ++var7) {
+                  char var8 = var0.charAt(var7);
+                  boolean var9;
+                  if(Character.isISOControl(var8)) {
+                     var9 = false;
+                  } else if(ItemLayer.method2290(var8)) {
+                     var9 = true;
                   } else {
-                     char[] var13 = class167.field2713;
-                     int var10 = 0;
+                     label121: {
+                        char[] var10 = class167.field2713;
 
-                     label119:
-                     while(true) {
-                        char var11;
-                        if(var10 >= var13.length) {
-                           var13 = class167.field2712;
+                        int var11;
+                        char var12;
+                        for(var11 = 0; var11 < var10.length; ++var11) {
+                           var12 = var10[var11];
+                           if(var12 == var8) {
+                              var9 = true;
+                              break label121;
+                           }
+                        }
 
-                           for(var10 = 0; var10 < var13.length; ++var10) {
-                              var11 = var13[var10];
-                              if(var7 == var11) {
-                                 var8 = true;
-                                 break label119;
-                              }
+                        var10 = class167.field2712;
+                        var11 = 0;
+
+                        while(true) {
+                           if(var11 >= var10.length) {
+                              var9 = false;
+                              break;
                            }
 
-                           var8 = false;
-                           break;
-                        }
+                           var12 = var10[var11];
+                           if(var8 == var12) {
+                              var9 = true;
+                              break;
+                           }
 
-                        var11 = var13[var10];
-                        if(var11 == var7) {
-                           var8 = true;
-                           break;
+                           ++var11;
                         }
-
-                        ++var10;
                      }
                   }
 
-                  if(var8) {
-                     char var9;
-                     switch(var7) {
+                  if(var9) {
+                     char var13;
+                     switch(var8) {
                      case ' ':
                      case '-':
                      case '_':
                      case ' ':
-                        var9 = 95;
+                        var13 = 95;
                         break;
                      case '#':
                      case '[':
                      case ']':
-                        var9 = var7;
+                        var13 = var8;
                         break;
                      case 'À':
                      case 'Á':
@@ -132,11 +134,11 @@ public class class156 {
                      case 'â':
                      case 'ã':
                      case 'ä':
-                        var9 = 97;
+                        var13 = 97;
                         break;
                      case 'Ç':
                      case 'ç':
-                        var9 = 99;
+                        var13 = 99;
                         break;
                      case 'È':
                      case 'É':
@@ -146,7 +148,7 @@ public class class156 {
                      case 'é':
                      case 'ê':
                      case 'ë':
-                        var9 = 101;
+                        var13 = 101;
                         break;
                      case 'Í':
                      case 'Î':
@@ -154,11 +156,11 @@ public class class156 {
                      case 'í':
                      case 'î':
                      case 'ï':
-                        var9 = 105;
+                        var13 = 105;
                         break;
                      case 'Ñ':
                      case 'ñ':
-                        var9 = 110;
+                        var13 = 110;
                         break;
                      case 'Ò':
                      case 'Ó':
@@ -170,7 +172,7 @@ public class class156 {
                      case 'ô':
                      case 'õ':
                      case 'ö':
-                        var9 = 111;
+                        var13 = 111;
                         break;
                      case 'Ù':
                      case 'Ú':
@@ -180,30 +182,30 @@ public class class156 {
                      case 'ú':
                      case 'û':
                      case 'ü':
-                        var9 = 117;
+                        var13 = 117;
                         break;
                      case 'ß':
-                        var9 = 98;
+                        var13 = 98;
                         break;
                      case 'ÿ':
                      case 'Ÿ':
-                        var9 = 121;
+                        var13 = 121;
                         break;
                      default:
-                        var9 = Character.toLowerCase(var7);
+                        var13 = Character.toLowerCase(var8);
                      }
 
-                     if(var9 != 0) {
-                        var12.append(var9);
+                     if(var13 != 0) {
+                        var6.append(var13);
                      }
                   }
                }
 
-               if(var12.length() == 0) {
+               if(var6.length() == 0) {
                   return null;
                }
 
-               return var12.toString();
+               return var6.toString();
             }
          }
 

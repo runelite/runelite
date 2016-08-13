@@ -12,6 +12,19 @@ public class class164 {
    @ObfuscatedName("g")
    static char[] field2703;
 
+   @ObfuscatedName("bz")
+   @ObfuscatedSignature(
+      signature = "(III)Lclass110;",
+      garbageValue = "-653197386"
+   )
+   static class110 method3333(int var0, int var1) {
+      Client.field573.field1951 = var0;
+      Client.field573.field1948 = var1;
+      Client.field573.field1949 = 1;
+      Client.field573.field1950 = 1;
+      return Client.field573;
+   }
+
    static {
       int var0;
       for(var0 = 0; var0 < 26; ++var0) {
@@ -62,24 +75,11 @@ public class class164 {
          field2701[var0] = 52 + (var0 - 48);
       }
 
-      int[] var2 = field2701;
-      field2701[43] = 62;
-      var2[42] = 62;
       int[] var1 = field2701;
+      field2701[43] = 62;
+      var1[42] = 62;
+      int[] var2 = field2701;
       field2701[47] = 63;
-      var1[45] = 63;
-   }
-
-   @ObfuscatedName("bz")
-   @ObfuscatedSignature(
-      signature = "(III)Lclass110;",
-      garbageValue = "-653197386"
-   )
-   static class110 method3333(int var0, int var1) {
-      client.field573.field1951 = var0;
-      client.field573.field1948 = var1;
-      client.field573.field1949 = 1;
-      client.field573.field1950 = 1;
-      return client.field573;
+      var2[45] = 63;
    }
 }

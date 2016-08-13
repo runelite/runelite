@@ -78,12 +78,12 @@ public class class67 extends class69 {
    public synchronized void method1431(int var1) {
       if(var1 == 0) {
          this.method1561(0);
-         this.method4067();
+         this.unlink();
       } else if(this.field1318 == 0 && this.field1332 == 0) {
          this.field1329 = 0;
          this.field1320 = 0;
          this.field1322 = 0;
-         this.method4067();
+         this.unlink();
       } else {
          int var2 = -this.field1322;
          if(this.field1322 > var2) {
@@ -116,6 +116,7 @@ public class class67 extends class69 {
          this.field1328 = -this.field1318 / var1;
          this.field1330 = -this.field1332 / var1;
       }
+
    }
 
    @ObfuscatedName("w")
@@ -198,6 +199,7 @@ public class class67 extends class69 {
             this.field1330 = (var5 - this.field1332) / var1;
          }
       }
+
    }
 
    @ObfuscatedName("af")
@@ -239,7 +241,7 @@ public class class67 extends class69 {
                this.field1332 = 0;
                this.field1318 = 0;
                this.field1322 = 0;
-               this.method4067();
+               this.unlink();
                var1 = this.field1329;
             }
 
@@ -265,7 +267,7 @@ public class class67 extends class69 {
       if(this.field1319 < 0) {
          if(this.field1323 <= 0) {
             this.method1481();
-            this.method4067();
+            this.unlink();
             return;
          }
 
@@ -275,7 +277,7 @@ public class class67 extends class69 {
       if(this.field1319 >= var5) {
          if(this.field1323 >= 0) {
             this.method1481();
-            this.method4067();
+            this.unlink();
             return;
          }
 
@@ -298,7 +300,6 @@ public class class67 extends class69 {
 
                this.field1319 = var3 + (this.field1319 - var3) % var6;
             }
-
          } else {
             if(this.field1323 < 0) {
                if(this.field1319 >= var3) {
@@ -319,12 +320,11 @@ public class class67 extends class69 {
                this.field1319 = var3 + var3 - 1 - this.field1319;
                this.field1323 = -this.field1323;
             }
-
          }
       } else {
          if(this.field1325 > 0) {
             if(this.field1324) {
-               label171: {
+               label117: {
                   if(this.field1323 < 0) {
                      if(this.field1319 >= var3) {
                         return;
@@ -333,7 +333,7 @@ public class class67 extends class69 {
                      this.field1319 = var3 + var3 - 1 - this.field1319;
                      this.field1323 = -this.field1323;
                      if(--this.field1325 == 0) {
-                        break label171;
+                        break label117;
                      }
                   }
 
@@ -357,7 +357,7 @@ public class class67 extends class69 {
                   } while(--this.field1325 != 0);
                }
             } else {
-               label203: {
+               label149: {
                   int var7;
                   if(this.field1323 < 0) {
                      if(this.field1319 >= var3) {
@@ -368,7 +368,7 @@ public class class67 extends class69 {
                      if(var7 >= this.field1325) {
                         this.field1319 += var6 * this.field1325;
                         this.field1325 = 0;
-                        break label203;
+                        break label149;
                      }
 
                      this.field1319 += var6 * var7;
@@ -382,7 +382,7 @@ public class class67 extends class69 {
                      if(var7 >= this.field1325) {
                         this.field1319 -= var6 * this.field1325;
                         this.field1325 = 0;
-                        break label203;
+                        break label149;
                      }
 
                      this.field1319 -= var6 * var7;
@@ -398,15 +398,15 @@ public class class67 extends class69 {
             if(this.field1319 < 0) {
                this.field1319 = -1;
                this.method1481();
-               this.method4067();
+               this.unlink();
             }
          } else if(this.field1319 >= var5) {
             this.field1319 = var5;
             this.method1481();
-            this.method4067();
+            this.unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("at")
@@ -529,7 +529,7 @@ public class class67 extends class69 {
             this.field1332 = 0;
             this.field1318 = 0;
             this.field1322 = 0;
-            this.method4067();
+            this.unlink();
             return true;
          } else {
             this.method1524();
@@ -587,19 +587,19 @@ public class class67 extends class69 {
          var5 = var6;
       }
 
-      int var10001;
-      for(var5 -= 3; var3 < var5; var1[var10001] += var0[var2++] * var4) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
-         var10001 = var3++;
+      int var9;
+      for(var5 -= 3; var3 < var5; var1[var9] += var0[var2++] * var4) {
+         var9 = var3++;
+         var1[var9] += var0[var2++] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2++] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2++] * var4;
+         var9 = var3++;
       }
 
-      for(var5 += 3; var3 < var5; var1[var10001] += var0[var2++] * var4) {
-         var10001 = var3++;
+      for(var5 += 3; var3 < var5; var1[var9] += var0[var2++] * var4) {
+         var9 = var3++;
       }
 
       var8.field1319 = var2 << 8;
@@ -619,35 +619,35 @@ public class class67 extends class69 {
       var4 <<= 1;
       var7 <<= 1;
 
-      int var10001;
-      byte var11;
-      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      int var11;
+      byte var12;
+      for(var7 -= 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
-      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      for(var7 += 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3++];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
       var10.field1319 = var3 << 8;
@@ -663,19 +663,19 @@ public class class67 extends class69 {
          var5 = var6;
       }
 
-      int var10001;
-      for(var5 -= 3; var3 < var5; var1[var10001] += var0[var2--] * var4) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
-         var10001 = var3++;
+      int var9;
+      for(var5 -= 3; var3 < var5; var1[var9] += var0[var2--] * var4) {
+         var9 = var3++;
+         var1[var9] += var0[var2--] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2--] * var4;
+         var9 = var3++;
+         var1[var9] += var0[var2--] * var4;
+         var9 = var3++;
       }
 
-      for(var5 += 3; var3 < var5; var1[var10001] += var0[var2--] * var4) {
-         var10001 = var3++;
+      for(var5 += 3; var3 < var5; var1[var9] += var0[var2--] * var4) {
+         var9 = var3++;
       }
 
       var8.field1319 = var2 << 8;
@@ -695,35 +695,35 @@ public class class67 extends class69 {
       var4 <<= 1;
       var7 <<= 1;
 
-      int var10001;
-      byte var11;
-      for(var7 -= 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
-         var2[var10001] += var11 * var6;
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      int var11;
+      byte var12;
+      for(var7 -= 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
+         var2[var11] += var12 * var6;
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
-      for(var7 += 6; var4 < var7; var2[var10001] += var11 * var6) {
-         var11 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var11 * var5;
-         var10001 = var4++;
+      for(var7 += 6; var4 < var7; var2[var11] += var12 * var6) {
+         var12 = var1[var3--];
+         var11 = var4++;
+         var2[var11] += var12 * var5;
+         var11 = var4++;
       }
 
       var10.field1319 = var3 << 8;
@@ -737,12 +737,12 @@ public class class67 extends class69 {
       }
 
       byte var13;
-      int var10001;
+      int var14;
       while(var5 < var7) {
          var1 = var4 >> 8;
          var13 = var2[var1];
-         var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += ((var13 << 8) + (var2[var1 + 1] - var13) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -752,8 +752,8 @@ public class class67 extends class69 {
 
       for(var1 = var12; var5 < var7; var4 += var11) {
          var13 = var2[var4 >> 8];
-         var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += ((var13 << 8) + (var1 - var13) * (var4 & 255)) * var6 >> 6;
       }
 
       var10.field1319 = var4;
@@ -769,15 +769,15 @@ public class class67 extends class69 {
       var5 <<= 1;
 
       byte var14;
-      int var10001;
+      int var15;
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
          var14 = var2[var1];
          var0 = (var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var7 >> 6;
       }
 
       if(var12 == 0 || (var8 = (var5 >> 1) + (var10 - var4 + var12 - 1) / var12) > var9) {
@@ -789,10 +789,10 @@ public class class67 extends class69 {
       for(var1 = var13; var5 < var8; var4 += var12) {
          var14 = var2[var4 >> 8];
          var0 = (var14 << 8) + (var1 - var14) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += var0 * var7 >> 6;
       }
 
       var11.field1319 = var4;
@@ -807,15 +807,15 @@ public class class67 extends class69 {
 
       var5 <<= 1;
 
-      int var10001;
+      int var14;
       for(var8 <<= 1; var5 < var8; var4 += var12) {
          var1 = var4 >> 8;
-         byte var14 = var2[var1 - 1];
-         var0 = (var14 << 8) + (var2[var1] - var14) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         byte var15 = var2[var1 - 1];
+         var0 = (var15 << 8) + (var2[var1] - var15) * (var4 & 255);
+         var14 = var5++;
+         var3[var14] += var0 * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += var0 * var7 >> 6;
       }
 
       if(var12 == 0 || (var8 = (var5 >> 1) + (var10 - var4 + var12) / var12) > var9) {
@@ -826,10 +826,10 @@ public class class67 extends class69 {
 
       for(var1 = var13; var5 < var8; var4 += var12) {
          var0 = (var1 << 8) + (var2[var4 >> 8] - var1) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var14 = var5++;
+         var3[var14] += var0 * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += var0 * var7 >> 6;
       }
 
       var11.field1319 = var4;
@@ -849,24 +849,24 @@ public class class67 extends class69 {
       var9.field1318 += var9.field1328 * (var6 - var3);
       var9.field1332 += var9.field1330 * (var6 - var3);
 
-      int var10001;
+      int var10;
       for(var6 -= 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
       }
 
       for(var6 += 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2--] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2--] * var4;
       }
 
       var9.field1322 = var4 >> 2;
@@ -891,44 +891,44 @@ public class class67 extends class69 {
       var9 <<= 1;
 
       byte var13;
-      int var10001;
+      int var14;
       for(var9 -= 6; var4 < var9; var6 += var8) {
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       for(var9 += 6; var4 < var9; var6 += var8) {
          var13 = var1[var3--];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       var12.field1318 = var5 >> 2;
@@ -952,16 +952,16 @@ public class class67 extends class69 {
       var5 <<= 1;
 
       byte var16;
-      int var10001;
+      int var17;
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
          var16 = var2[var1];
          var0 = (var16 << 8) + (var2[var1 + 1] - var16) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -974,11 +974,11 @@ public class class67 extends class69 {
       for(var1 = var15; var5 < var10; var4 += var14) {
          var16 = var2[var4 >> 8];
          var0 = (var16 << 8) + (var1 - var16) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var17 = var5++;
+         var3[var17] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -999,16 +999,16 @@ public class class67 extends class69 {
 
       var5 <<= 1;
 
-      int var10001;
+      int var16;
       for(var10 <<= 1; var5 < var10; var4 += var14) {
          var1 = var4 >> 8;
-         byte var16 = var2[var1 - 1];
-         var0 = (var16 << 8) + (var2[var1] - var16) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         byte var17 = var2[var1 - 1];
+         var0 = (var17 << 8) + (var2[var1] - var17) * (var4 & 255);
+         var16 = var5++;
+         var3[var16] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var16 = var5++;
+         var3[var16] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -1020,11 +1020,11 @@ public class class67 extends class69 {
 
       for(var1 = var15; var5 < var10; var4 += var14) {
          var0 = (var1 << 8) + (var2[var4 >> 8] - var1) * (var4 & 255);
-         var10001 = var5++;
-         var3[var10001] += var0 * var6 >> 6;
+         var16 = var5++;
+         var3[var16] += var0 * var6 >> 6;
          var6 += var8;
-         var10001 = var5++;
-         var3[var10001] += var0 * var7 >> 6;
+         var16 = var5++;
+         var3[var16] += var0 * var7 >> 6;
          var7 += var9;
       }
 
@@ -1086,44 +1086,44 @@ public class class67 extends class69 {
       var9 <<= 1;
 
       byte var13;
-      int var10001;
+      int var14;
       for(var9 -= 6; var4 < var9; var6 += var8) {
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
          var6 += var8;
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       for(var9 += 6; var4 < var9; var6 += var8) {
          var13 = var1[var3++];
-         var10001 = var4++;
-         var2[var10001] += var13 * var5;
+         var14 = var4++;
+         var2[var14] += var13 * var5;
          var5 += var7;
-         var10001 = var4++;
-         var2[var10001] += var13 * var6;
+         var14 = var4++;
+         var2[var14] += var13 * var6;
       }
 
       var12.field1318 = var5 >> 2;
@@ -1145,24 +1145,24 @@ public class class67 extends class69 {
       var9.field1318 += var9.field1328 * (var6 - var3);
       var9.field1332 += var9.field1330 * (var6 - var3);
 
-      int var10001;
+      int var10;
       for(var6 -= 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
          var4 += var5;
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
       }
 
       for(var6 += 3; var3 < var6; var4 += var5) {
-         var10001 = var3++;
-         var1[var10001] += var0[var2++] * var4;
+         var10 = var3++;
+         var1[var10] += var0[var2++] * var4;
       }
 
       var9.field1322 = var4 >> 2;
@@ -1176,12 +1176,12 @@ public class class67 extends class69 {
          var7 = var8;
       }
 
-      int var10001;
+      int var13;
       while(var5 < var7) {
          var1 = var4 >> 8;
-         byte var13 = var2[var1 - 1];
-         var10001 = var5++;
-         var3[var10001] += ((var13 << 8) + (var2[var1] - var13) * (var4 & 255)) * var6 >> 6;
+         byte var14 = var2[var1 - 1];
+         var13 = var5++;
+         var3[var13] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
          var4 += var11;
       }
 
@@ -1192,8 +1192,8 @@ public class class67 extends class69 {
       var0 = var12;
 
       for(var1 = var11; var5 < var7; var4 += var1) {
-         var10001 = var5++;
-         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var13 = var5++;
+         var3[var13] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
       }
 
       var10.field1319 = var4;
@@ -1209,12 +1209,12 @@ public class class67 extends class69 {
       }
 
       byte var14;
-      int var10001;
+      int var15;
       while(var5 < var8) {
          var1 = var4 >> 8;
          var14 = var2[var1];
-         var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += ((var14 << 8) + (var2[var1 + 1] - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1225,8 +1225,8 @@ public class class67 extends class69 {
 
       for(var1 = var13; var5 < var8; var4 += var12) {
          var14 = var2[var4 >> 8];
-         var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
+         var15 = var5++;
+         var3[var15] += ((var14 << 8) + (var1 - var14) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
       }
 
@@ -1252,12 +1252,12 @@ public class class67 extends class69 {
          var8 = var9;
       }
 
-      int var10001;
+      int var14;
       while(var5 < var8) {
          var1 = var4 >> 8;
-         byte var14 = var2[var1 - 1];
-         var10001 = var5++;
-         var3[var10001] += ((var14 << 8) + (var2[var1] - var14) * (var4 & 255)) * var6 >> 6;
+         byte var15 = var2[var1 - 1];
+         var14 = var5++;
+         var3[var14] += ((var15 << 8) + (var2[var1] - var15) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
          var4 += var12;
       }
@@ -1269,8 +1269,8 @@ public class class67 extends class69 {
       var0 = var13;
 
       for(var1 = var12; var5 < var8; var4 += var1) {
-         var10001 = var5++;
-         var3[var10001] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
+         var14 = var5++;
+         var3[var14] += ((var0 << 8) + (var2[var4 >> 8] - var0) * (var4 & 255)) * var6 >> 6;
          var6 += var7;
       }
 
@@ -1317,7 +1317,7 @@ public class class67 extends class69 {
          if(this.field1319 < 0) {
             if(this.field1323 <= 0) {
                this.method1481();
-               this.method4067();
+               this.unlink();
                return;
             }
 
@@ -1327,7 +1327,7 @@ public class class67 extends class69 {
          if(this.field1319 >= var7) {
             if(this.field1323 >= 0) {
                this.method1481();
-               this.method4067();
+               this.unlink();
                return;
             }
 
@@ -1362,7 +1362,9 @@ public class class67 extends class69 {
                   this.field1319 = var5 + var5 - 1 - this.field1319;
                   this.field1323 = -this.field1323;
                }
-            } else if(this.field1323 < 0) {
+            }
+
+            if(this.field1323 < 0) {
                while(true) {
                   var9 = this.method1452(var1, var9, var5, var3, var4.field1304[this.field1327 - 1]);
                   if(this.field1319 >= var5) {
@@ -1371,112 +1373,112 @@ public class class67 extends class69 {
 
                   this.field1319 = var6 - 1 - (var6 - 1 - this.field1319) % var8;
                }
-            } else {
-               while(true) {
-                  var9 = this.method1451(var1, var9, var6, var3, var4.field1304[this.field1326]);
-                  if(this.field1319 < var6) {
-                     return;
-                  }
-
-                  this.field1319 = var5 + (this.field1319 - var5) % var8;
-               }
             }
-         } else {
-            if(this.field1325 > 0) {
-               if(this.field1324) {
-                  label178: {
-                     if(this.field1323 < 0) {
-                        var9 = this.method1452(var1, var2, var5, var3, var4.field1304[this.field1326]);
-                        if(this.field1319 >= var5) {
-                           return;
-                        }
 
-                        this.field1319 = var5 + var5 - 1 - this.field1319;
-                        this.field1323 = -this.field1323;
-                        if(--this.field1325 == 0) {
-                           break label178;
-                        }
+            while(true) {
+               var9 = this.method1451(var1, var9, var6, var3, var4.field1304[this.field1326]);
+               if(this.field1319 < var6) {
+                  return;
+               }
+
+               this.field1319 = var5 + (this.field1319 - var5) % var8;
+            }
+         }
+
+         if(this.field1325 > 0) {
+            if(this.field1324) {
+               label118: {
+                  if(this.field1323 < 0) {
+                     var9 = this.method1452(var1, var2, var5, var3, var4.field1304[this.field1326]);
+                     if(this.field1319 >= var5) {
+                        return;
                      }
 
-                     do {
-                        var9 = this.method1451(var1, var9, var6, var3, var4.field1304[this.field1327 - 1]);
-                        if(this.field1319 < var6) {
-                           return;
-                        }
+                     this.field1319 = var5 + var5 - 1 - this.field1319;
+                     this.field1323 = -this.field1323;
+                     if(--this.field1325 == 0) {
+                        break label118;
+                     }
+                  }
 
-                        this.field1319 = var6 + var6 - 1 - this.field1319;
-                        this.field1323 = -this.field1323;
-                        if(--this.field1325 == 0) {
-                           break;
-                        }
+                  do {
+                     var9 = this.method1451(var1, var9, var6, var3, var4.field1304[this.field1327 - 1]);
+                     if(this.field1319 < var6) {
+                        return;
+                     }
 
-                        var9 = this.method1452(var1, var9, var5, var3, var4.field1304[this.field1326]);
-                        if(this.field1319 >= var5) {
-                           return;
-                        }
+                     this.field1319 = var6 + var6 - 1 - this.field1319;
+                     this.field1323 = -this.field1323;
+                     if(--this.field1325 == 0) {
+                        break;
+                     }
 
-                        this.field1319 = var5 + var5 - 1 - this.field1319;
-                        this.field1323 = -this.field1323;
-                     } while(--this.field1325 != 0);
+                     var9 = this.method1452(var1, var9, var5, var3, var4.field1304[this.field1326]);
+                     if(this.field1319 >= var5) {
+                        return;
+                     }
+
+                     this.field1319 = var5 + var5 - 1 - this.field1319;
+                     this.field1323 = -this.field1323;
+                  } while(--this.field1325 != 0);
+               }
+            } else {
+               int var10;
+               if(this.field1323 < 0) {
+                  while(true) {
+                     var9 = this.method1452(var1, var9, var5, var3, var4.field1304[this.field1327 - 1]);
+                     if(this.field1319 >= var5) {
+                        return;
+                     }
+
+                     var10 = (var6 - 1 - this.field1319) / var8;
+                     if(var10 >= this.field1325) {
+                        this.field1319 += var8 * this.field1325;
+                        this.field1325 = 0;
+                        break;
+                     }
+
+                     this.field1319 += var8 * var10;
+                     this.field1325 -= var10;
                   }
                } else {
-                  int var10;
-                  if(this.field1323 < 0) {
-                     while(true) {
-                        var9 = this.method1452(var1, var9, var5, var3, var4.field1304[this.field1327 - 1]);
-                        if(this.field1319 >= var5) {
-                           return;
-                        }
-
-                        var10 = (var6 - 1 - this.field1319) / var8;
-                        if(var10 >= this.field1325) {
-                           this.field1319 += var8 * this.field1325;
-                           this.field1325 = 0;
-                           break;
-                        }
-
-                        this.field1319 += var8 * var10;
-                        this.field1325 -= var10;
+                  while(true) {
+                     var9 = this.method1451(var1, var9, var6, var3, var4.field1304[this.field1326]);
+                     if(this.field1319 < var6) {
+                        return;
                      }
-                  } else {
-                     while(true) {
-                        var9 = this.method1451(var1, var9, var6, var3, var4.field1304[this.field1326]);
-                        if(this.field1319 < var6) {
-                           return;
-                        }
 
-                        var10 = (this.field1319 - var5) / var8;
-                        if(var10 >= this.field1325) {
-                           this.field1319 -= var8 * this.field1325;
-                           this.field1325 = 0;
-                           break;
-                        }
-
-                        this.field1319 -= var8 * var10;
-                        this.field1325 -= var10;
+                     var10 = (this.field1319 - var5) / var8;
+                     if(var10 >= this.field1325) {
+                        this.field1319 -= var8 * this.field1325;
+                        this.field1325 = 0;
+                        break;
                      }
+
+                     this.field1319 -= var8 * var10;
+                     this.field1325 -= var10;
                   }
                }
             }
+         }
 
-            if(this.field1323 < 0) {
-               this.method1452(var1, var9, 0, var3, 0);
-               if(this.field1319 < 0) {
-                  this.field1319 = -1;
-                  this.method1481();
-                  this.method4067();
-               }
-            } else {
-               this.method1451(var1, var9, var7, var3, 0);
-               if(this.field1319 >= var7) {
-                  this.field1319 = var7;
-                  this.method1481();
-                  this.method4067();
-               }
+         if(this.field1323 < 0) {
+            this.method1452(var1, var9, 0, var3, 0);
+            if(this.field1319 < 0) {
+               this.field1319 = -1;
+               this.method1481();
+               this.unlink();
             }
-
+         } else {
+            this.method1451(var1, var9, var7, var3, 0);
+            if(this.field1319 >= var7) {
+               this.field1319 = var7;
+               this.method1481();
+               this.unlink();
+            }
          }
       }
+
    }
 
    @ObfuscatedName("p")

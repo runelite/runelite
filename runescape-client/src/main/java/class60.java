@@ -26,7 +26,7 @@ public class class60 {
    int field1279;
 
    @ObfuscatedName("g")
-   final void method1356(class122 var1) {
+   final void method1356(Buffer var1) {
       this.field1275 = var1.method2633();
       this.field1276 = new int[this.field1275];
       this.field1271 = new int[this.field1275];
@@ -74,7 +74,7 @@ public class class60 {
    }
 
    @ObfuscatedName("l")
-   final void method1361(class122 var1) {
+   final void method1361(Buffer var1) {
       this.field1274 = var1.method2633();
       this.field1272 = var1.method2620();
       this.field1273 = var1.method2620();

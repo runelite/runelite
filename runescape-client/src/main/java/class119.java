@@ -24,17 +24,17 @@ public class class119 {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(Lclass122;[BI)V",
+      signature = "(LBuffer;[BI)V",
       garbageValue = "1837323007"
    )
-   public void method2570(class122 var1, byte[] var2) {
-      if(var1.field2051[var1.field2050] == 31 && var1.field2051[1 + var1.field2050] == -117) {
+   public void method2570(Buffer var1, byte[] var2) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[1 + var1.offset] == -117) {
          if(null == this.field2036) {
             this.field2036 = new Inflater(true);
          }
 
          try {
-            this.field2036.setInput(var1.field2051, 10 + var1.field2050, var1.field2051.length - (10 + var1.field2050 + 8));
+            this.field2036.setInput(var1.payload, 10 + var1.offset, var1.payload.length - (10 + var1.offset + 8));
             this.field2036.inflate(var2);
          } catch (Exception var4) {
             this.field2036.reset();
@@ -49,24 +49,24 @@ public class class119 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lclass170;IB)Lclass83;",
+      signature = "(Lclass170;IB)LModIcon;",
       garbageValue = "-95"
    )
-   public static class83 method2573(class170 var0, int var1) {
+   public static ModIcon method2573(class170 var0, int var1) {
       if(!class24.method614(var0, var1)) {
          return null;
       } else {
-         class83 var3 = new class83();
-         var3.field1496 = class79.field1454;
-         var3.field1502 = class79.field1456;
-         var3.field1500 = class79.field1457[0];
-         var3.field1501 = class180.field2962[0];
-         var3.field1498 = class192.field3106[0];
-         var3.field1503 = class79.field1458[0];
-         var3.field1497 = class79.field1459;
-         var3.field1499 = class145.field2236[0];
-         class55.method1182();
-         return var3;
+         ModIcon var2 = new ModIcon();
+         var2.width = class79.field1454;
+         var2.originalHeight = class79.field1456;
+         var2.offsetX = class79.field1457[0];
+         var2.offsetY = class180.field2962[0];
+         var2.originalWidth = class192.field3106[0];
+         var2.height = class79.field1458[0];
+         var2.palette = class79.field1459;
+         var2.pixels = class145.field2236[0];
+         ItemComposition.method1182();
+         return var2;
       }
    }
 

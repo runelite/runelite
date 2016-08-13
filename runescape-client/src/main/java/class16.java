@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("f")
-public final class class16 extends class211 {
+public final class class16 extends Node {
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = -11393719
@@ -75,24 +75,24 @@ public final class class16 extends class211 {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(IB)Lclass41;",
+      signature = "(IB)LNPCComposition;",
       garbageValue = "8"
    )
    @Export("getNpcDefinition")
-   public static class41 method202(int var0) {
-      class41 var1 = (class41)class41.field929.method3905((long)var0);
+   public static NPCComposition getNpcDefinition(int var0) {
+      NPCComposition var1 = (NPCComposition)NPCComposition.field929.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class41.field921.method3411(9, var0);
-         var1 = new class41();
-         var1.field924 = var0;
+         byte[] var2 = NPCComposition.field921.method3411(9, var0);
+         var1 = new NPCComposition();
+         var1.id = var0;
          if(null != var2) {
-            var1.method838(new class122(var2));
+            var1.method838(new Buffer(var2));
          }
 
          var1.method815();
-         class41.field929.method3907(var1, (long)var0);
+         NPCComposition.field929.put(var1, (long)var0);
          return var1;
       }
    }
@@ -103,7 +103,7 @@ public final class class16 extends class211 {
       garbageValue = "65280"
    )
    static void method203(class0 var0) {
-      class98.method2282(var0, 200000);
+      TextureProvider.method2282(var0, 200000);
    }
 
    @ObfuscatedName("l")
@@ -112,18 +112,18 @@ public final class class16 extends class211 {
       garbageValue = "80"
    )
    public static class48 method204(int var0) {
-      class48 var1 = (class48)class48.field1078.method3905((long)var0);
+      class48 var1 = (class48)class48.field1078.get((long)var0);
       if(null != var1) {
          return var1;
       } else {
          byte[] var2 = class48.field1086.method3411(4, var0);
          var1 = new class48();
          if(var2 != null) {
-            var1.method1014(new class122(var2), var0);
+            var1.method1014(new Buffer(var2), var0);
          }
 
          var1.method1013();
-         class48.field1078.method3907(var1, (long)var0);
+         class48.field1078.put(var1, (long)var0);
          return var1;
       }
    }
@@ -143,26 +143,26 @@ public final class class16 extends class211 {
       garbageValue = "-1"
    )
    static final void method206(boolean var0) {
-      for(int var1 = 0; var1 < client.field486; ++var1) {
-         class36 var2 = client.field332[client.field334[var1]];
-         int var3 = (client.field334[var1] << 14) + 536870912;
-         if(null != var2 && var2.vmethod794() && var0 == var2.field803.field918 && var2.field803.method844()) {
-            int var4 = var2.field875 >> 7;
-            int var5 = var2.field832 >> 7;
+      for(int var1 = 0; var1 < Client.field486; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.field334[var1]];
+         int var3 = (Client.field334[var1] << 14) + 536870912;
+         if(null != var2 && var2.vmethod794() && var0 == var2.composition.isVisible && var2.composition.method844()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
             if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field877 == 1 && (var2.field875 & 127) == 64 && (var2.field832 & 127) == 64) {
-                  if(client.field400 == client.field560[var4][var5]) {
+               if(var2.field877 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field400 == Client.field560[var4][var5]) {
                      continue;
                   }
 
-                  client.field560[var4][var5] = client.field400;
+                  Client.field560[var4][var5] = Client.field400;
                }
 
-               if(!var2.field803.field940) {
+               if(!var2.composition.field940) {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class136.field2126.method2003(class99.field1701, var2.field875, var2.field832, class127.method2936(var2.field875 + (var2.field877 * 64 - 64), var2.field877 * 64 - 64 + var2.field832, class99.field1701), var2.field877 * 64 - 64 + 60, var2, var2.field857, var3, var2.field834);
+               class136.region.method2003(VertexNormal.plane, var2.x, var2.y, class127.method2936(var2.x + (var2.field877 * 64 - 64), var2.field877 * 64 - 64 + var2.y, VertexNormal.plane), var2.field877 * 64 - 64 + 60, var2, var2.angle, var3, var2.field834);
             }
          }
       }

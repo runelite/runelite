@@ -10,14 +10,14 @@ public abstract class class134 {
       garbageValue = "1569841920"
    )
    static void method2977(int var0) {
-      class15 var1 = (class15)class15.field225.method3936((long)var0);
+      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.method3936((long)var0);
       if(var1 != null) {
-         for(int var2 = 0; var2 < var1.field221.length; ++var2) {
-            var1.field221[var2] = -1;
-            var1.field224[var2] = 0;
+         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
+            var1.itemIds[var2] = -1;
+            var1.stackSizes[var2] = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("g")
@@ -43,20 +43,20 @@ public abstract class class134 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)Lclass176;",
+      signature = "(II)LWidget;",
       garbageValue = "1853592114"
    )
-   public static class176 method2983(int var0) {
+   public static Widget method2983(int var0) {
       int var1 = var0 >> 16;
       int var2 = var0 & '\uffff';
-      if(class176.field2836[var1] == null || class176.field2836[var1][var2] == null) {
+      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
          boolean var3 = class14.method179(var1);
          if(!var3) {
             return null;
          }
       }
 
-      return class176.field2836[var1][var2];
+      return Widget.widgets[var1][var2];
    }
 
    @ObfuscatedName("g")

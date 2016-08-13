@@ -31,7 +31,7 @@ public class class8 {
       intValue = -292844125
    )
    @Export("cameraZ")
-   static int field149;
+   static int cameraZ;
    @ObfuscatedName("pk")
    static short[] field151;
    @ObfuscatedName("w")
@@ -47,11 +47,11 @@ public class class8 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Lclass122;",
+      signature = "(I)LBuffer;",
       garbageValue = "-856932176"
    )
-   class122 method116() {
-      class122 var1 = new class122(100);
+   Buffer method116() {
+      Buffer var1 = new Buffer(100);
       var1.method2783(field145);
       var1.method2783(this.field143?1:0);
       var1.method2783(this.field148?1:0);
@@ -68,8 +68,8 @@ public class class8 {
       return var1;
    }
 
-   class8(class122 var1) {
-      if(var1 != null && var1.field2051 != null) {
+   class8(Buffer var1) {
+      if(var1 != null && var1.payload != null) {
          int var2 = var1.method2633();
          if(var2 >= 0 && var2 <= field145) {
             if(var1.method2633() == 1) {
@@ -104,23 +104,23 @@ public class class8 {
 
    @ObfuscatedName("cb")
    @ObfuscatedSignature(
-      signature = "(Lclass176;I)V",
+      signature = "(LWidget;I)V",
       garbageValue = "1481833034"
    )
-   static void method117(class176 var0) {
-      class176 var1 = var0.field2826 == -1?null:class134.method2983(var0.field2826);
+   static void method117(Widget var0) {
+      Widget var1 = var0.parentId == -1?null:class134.method2983(var0.parentId);
       int var2;
       int var3;
       if(null == var1) {
          var2 = class189.field3056;
-         var3 = class39.field892;
+         var3 = Actor.field892;
       } else {
-         var2 = var1.field2822;
-         var3 = var1.field2823;
+         var2 = var1.width;
+         var3 = var1.height;
       }
 
-      class101.method2286(var0, var2, var3, false);
-      class36.method772(var0, var2, var3);
+      GameObject.method2286(var0, var2, var3, false);
+      NPC.method772(var0, var2, var3);
    }
 
    class8() {
@@ -142,10 +142,10 @@ public class class8 {
       garbageValue = "-82"
    )
    public static void method123(class170 var0, class170 var1, boolean var2, class227 var3) {
-      class55.field1187 = var0;
-      class55.field1190 = var1;
-      class55.field1198 = var2;
-      class55.field1180 = class55.field1187.method3405(10);
+      ItemComposition.field1187 = var0;
+      ItemComposition.field1190 = var1;
+      ItemComposition.isMembersWorld = var2;
+      ItemComposition.field1180 = ItemComposition.field1187.method3405(10);
       class47.field1072 = var3;
    }
 

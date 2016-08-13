@@ -46,13 +46,13 @@ public class class70 {
          var9 = this.method1606(field1346[var7], field1339[var7], field1346[var8], field1339[var8], field1346[var6]);
          var10 = field1339[var6];
          int var11 = var4 - var9;
-         int var13 = (var11 < var9?var11:var9) << 1;
+         int var12 = (var11 < var9?var11:var9) << 1;
          if(var10 != 0) {
-            boolean[] var14 = field1349;
+            boolean[] var13 = field1349;
             field1349[var8] = true;
-            var14[var7] = true;
+            var13[var7] = true;
             field1349[var6] = true;
-            if(var10 >= var13) {
+            if(var10 >= var12) {
                field1339[var6] = var11 > var9?var10 - var9 + var9:var9 - var10 + var11 - 1;
             } else {
                field1339[var6] = (var10 & 1) != 0?var9 - (var10 + 1) / 2:var9 + var10 / 2;
@@ -81,10 +81,10 @@ public class class70 {
          }
       }
 
-      float var16 = field1338[var7];
+      float var14 = field1338[var7];
 
       for(var9 = var6; var9 < var2; ++var9) {
-         var1[var9] *= var16;
+         var1[var9] *= var14;
       }
 
    }
@@ -143,6 +143,7 @@ public class class70 {
          this.method1608(var1, var3 - 1);
          this.method1608(var3 + 1, var2);
       }
+
    }
 
    class70() {
@@ -169,7 +170,7 @@ public class class70 {
          this.field1345 = new int[var3];
          this.field1344 = new int[var3][];
 
-         int var7;
+         int var6;
          for(var4 = 0; var4 < var3; ++var4) {
             this.field1343[var4] = class73.method1668(3) + 1;
             var5 = this.field1348[var4] = class73.method1668(2);
@@ -178,11 +179,11 @@ public class class70 {
             }
 
             var5 = 1 << var5;
-            int[] var6 = new int[var5];
-            this.field1344[var4] = var6;
+            int[] var7 = new int[var5];
+            this.field1344[var4] = var7;
 
-            for(var7 = 0; var7 < var5; ++var7) {
-               var6[var7] = class73.method1668(8) - 1;
+            for(var6 = 0; var6 < var5; ++var6) {
+               var7[var6] = class73.method1668(8) - 1;
             }
          }
 
@@ -201,9 +202,9 @@ public class class70 {
          var5 = 2;
 
          for(var9 = 0; var9 < var2; ++var9) {
-            var7 = this.field1342[var9];
+            var6 = this.field1342[var9];
 
-            for(int var8 = 0; var8 < this.field1343[var7]; ++var8) {
+            for(int var8 = 0; var8 < this.field1343[var6]; ++var8) {
                this.field1340[var5++] = class73.method1668(var4);
             }
          }

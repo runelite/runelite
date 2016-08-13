@@ -6,8 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("t")
 final class class22 implements Comparator {
    @ObfuscatedName("m")
-   static class83 field596;
-   // $FF: synthetic field
+   static ModIcon field596;
    final boolean val$preferOwnWorld;
    @ObfuscatedName("av")
    static class146 field601;
@@ -18,23 +17,23 @@ final class class22 implements Comparator {
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(IB)Lclass44;",
+      signature = "(IB)LSequence;",
       garbageValue = "-93"
    )
    @Export("getAnimation")
-   public static class44 method585(int var0) {
-      class44 var1 = (class44)class44.field1014.method3905((long)var0);
+   public static Sequence getAnimation(int var0) {
+      Sequence var1 = (Sequence)Sequence.field1014.get((long)var0);
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = class44.field1013.method3411(12, var0);
-         var1 = new class44();
+         byte[] var2 = Sequence.field1013.method3411(12, var0);
+         var1 = new Sequence();
          if(null != var2) {
-            var1.method908(new class122(var2));
+            var1.method908(new Buffer(var2));
          }
 
          var1.method910();
-         class44.field1014.method3907(var1, (long)var0);
+         Sequence.field1014.put(var1, (long)var0);
          return var1;
       }
    }
@@ -57,11 +56,11 @@ final class class22 implements Comparator {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(client.field407 == var1.field3208) {
+            if(Client.world == var1.field3208) {
                return -1;
             }
 
-            if(client.field407 == var2.field3208) {
+            if(Client.world == var2.field3208) {
                return 1;
             }
          }
@@ -79,7 +78,7 @@ final class class22 implements Comparator {
          } else {
             class124.method2887(var0);
          }
-
       }
+
    }
 }

@@ -54,8 +54,8 @@ public abstract class class170 {
       garbageValue = "-866855828"
    )
    void method3393(byte[] var1) {
-      this.field2737 = class42.method885(var1, var1.length);
-      class122 var2 = new class122(class124.method2893(var1));
+      this.field2737 = ObjectComposition.method885(var1, var1.length);
+      Buffer var2 = new Buffer(class124.method2893(var1));
       int var3 = var2.method2633();
       if(var3 >= 5 && var3 <= 7) {
          if(var3 >= 6) {
@@ -234,18 +234,18 @@ public abstract class class170 {
    public byte[] method3401(int var1, int var2) {
       if(var1 >= 0 && var1 < this.field2735.length && null != this.field2735[var1] && var2 >= 0 && var2 < this.field2735[var1].length) {
          if(null == this.field2735[var1][var2]) {
-            boolean var4 = this.method3409(var1, (int[])null);
-            if(!var4) {
+            boolean var3 = this.method3409(var1, (int[])null);
+            if(!var3) {
                this.vmethod3508(var1);
-               var4 = this.method3409(var1, (int[])null);
-               if(!var4) {
+               var3 = this.method3409(var1, (int[])null);
+               if(!var3) {
                   return null;
                }
             }
          }
 
-         byte[] var3 = class47.method1004(this.field2735[var1][var2], false);
-         return var3;
+         byte[] var4 = class47.method1004(this.field2735[var1][var2], false);
+         return var4;
       } else {
          return null;
       }
@@ -349,67 +349,67 @@ public abstract class class170 {
                var18 = class47.method1004(this.field2734[var1], false);
             } else {
                var18 = class47.method1004(this.field2734[var1], true);
-               class122 var8 = new class122(var18);
-               var8.method2653(var2, 5, var8.field2051.length);
+               Buffer var8 = new Buffer(var18);
+               var8.method2653(var2, 5, var8.payload.length);
             }
 
-            byte[] var20 = class124.method2893(var18);
+            byte[] var19 = class124.method2893(var18);
             if(this.field2738) {
                this.field2734[var1] = null;
             }
 
             if(var3 > 1) {
-               int var9 = var20.length;
+               int var9 = var19.length;
                --var9;
-               int var10 = var20[var9] & 255;
+               int var10 = var19[var9] & 255;
                var9 -= var3 * var10 * 4;
-               class122 var11 = new class122(var20);
+               Buffer var11 = new Buffer(var19);
                int[] var12 = new int[var3];
-               var11.field2050 = var9;
+               var11.offset = var9;
 
+               int var13;
                int var14;
-               int var15;
-               for(int var13 = 0; var13 < var10; ++var13) {
-                  var14 = 0;
+               for(int var15 = 0; var15 < var10; ++var15) {
+                  var13 = 0;
 
-                  for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.method2620();
-                     var12[var15] += var14;
+                  for(var14 = 0; var14 < var3; ++var14) {
+                     var13 += var11.method2620();
+                     var12[var14] += var13;
                   }
                }
 
-               byte[][] var19 = new byte[var3][];
+               byte[][] var20 = new byte[var3][];
 
-               for(var14 = 0; var14 < var3; ++var14) {
-                  var19[var14] = new byte[var12[var14]];
-                  var12[var14] = 0;
+               for(var13 = 0; var13 < var3; ++var13) {
+                  var20[var13] = new byte[var12[var13]];
+                  var12[var13] = 0;
                }
 
-               var11.field2050 = var9;
-               var14 = 0;
+               var11.offset = var9;
+               var13 = 0;
 
-               for(var15 = 0; var15 < var10; ++var15) {
+               for(var14 = 0; var14 < var10; ++var14) {
                   int var16 = 0;
 
                   for(int var17 = 0; var17 < var3; ++var17) {
                      var16 += var11.method2620();
-                     System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
+                     System.arraycopy(var19, var13, var20[var17], var12[var17], var16);
                      var12[var17] += var16;
-                     var14 += var16;
+                     var13 += var16;
                   }
                }
 
-               for(var15 = 0; var15 < var3; ++var15) {
+               for(var14 = 0; var14 < var3; ++var14) {
                   if(!this.field2727) {
-                     var5[var4[var15]] = class52.method1131(var19[var15], false);
+                     var5[var4[var14]] = class52.method1131(var20[var14], false);
                   } else {
-                     var5[var4[var15]] = var19[var15];
+                     var5[var4[var14]] = var20[var14];
                   }
                }
             } else if(!this.field2727) {
-               var5[var4[0]] = class52.method1131(var20, false);
+               var5[var4[0]] = class52.method1131(var19, false);
             } else {
-               var5[var4[0]] = var20;
+               var5[var4[0]] = var19;
             }
 
             return true;
@@ -523,6 +523,7 @@ public abstract class class170 {
       if(var2 >= 0) {
          this.vmethod3485(var2);
       }
+
    }
 
    @ObfuscatedName("h")

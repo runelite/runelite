@@ -12,7 +12,7 @@ public class class13 implements Runnable {
       intValue = 1635200715
    )
    @Export("menuX")
-   static int field202;
+   static int menuX;
    @ObfuscatedName("g")
    Object field203 = new Object();
    @ObfuscatedName("r")
@@ -37,6 +37,7 @@ public class class13 implements Runnable {
    public void run() {
       for(; this.field206; class22.method594(50L)) {
          Object var1 = this.field203;
+         Object var2 = this.field203;
          synchronized(this.field203) {
             if(this.field204 < 500) {
                this.field210[this.field204] = class143.field2206;
@@ -50,30 +51,28 @@ public class class13 implements Runnable {
 
    @ObfuscatedName("cv")
    @ObfuscatedSignature(
-      signature = "(Lclass176;III)V",
+      signature = "(LWidget;III)V",
       garbageValue = "-1328107807"
    )
-   static final void method175(class176 var0, int var1, int var2) {
-      if(client.field466 == null && !client.field434) {
-         if(null != var0 && class101.method2287(var0) != null) {
-            client.field466 = var0;
-            client.field397 = class101.method2287(var0);
-            client.field387 = var1;
-            client.field472 = var2;
-            class188.field3055 = 0;
-            client.field390 = false;
-            if(client.field368 > 0) {
-               int var3 = client.field368 - 1;
-               class75.field1423 = new class32();
-               class75.field1423.field729 = client.field436[var3];
-               class75.field1423.field739 = client.field437[var3];
-               class75.field1423.field737 = client.field438[var3];
-               class75.field1423.field732 = client.field291[var3];
-               class75.field1423.field733 = client.field440[var3];
-            }
-
+   static final void method175(Widget var0, int var1, int var2) {
+      if(Client.field466 == null && !Client.isMenuOpen && null != var0 && GameObject.method2287(var0) != null) {
+         Client.field466 = var0;
+         Client.field397 = GameObject.method2287(var0);
+         Client.field387 = var1;
+         Client.field472 = var2;
+         class188.field3055 = 0;
+         Client.field390 = false;
+         if(Client.menuOptionCount > 0) {
+            int var3 = Client.menuOptionCount - 1;
+            class75.field1423 = new class32();
+            class75.field1423.field729 = Client.menuActionParams0[var3];
+            class75.field1423.field739 = Client.menuActionParams1[var3];
+            class75.field1423.field737 = Client.menuTypes[var3];
+            class75.field1423.field732 = Client.menuIdentifiers[var3];
+            class75.field1423.field733 = Client.menuOptions[var3];
          }
       }
+
    }
 
    @ObfuscatedName("l")
@@ -85,7 +84,7 @@ public class class13 implements Runnable {
       try {
          String var2 = "";
          if(var1 != null) {
-            var2 = class78.method1713(var1);
+            var2 = SecondaryBufferProvider.method1713(var1);
          }
 
          if(null != var0) {

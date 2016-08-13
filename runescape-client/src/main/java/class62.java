@@ -6,9 +6,9 @@ public class class62 {
    @ObfuscatedName("l")
    class170 field1285;
    @ObfuscatedName("r")
-   class199 field1286 = new class199(256);
+   XHashTable field1286 = new XHashTable(256);
    @ObfuscatedName("e")
-   class199 field1287 = new class199(256);
+   XHashTable field1287 = new XHashTable(256);
    @ObfuscatedName("g")
    class170 field1288;
 
@@ -41,7 +41,7 @@ public class class62 {
          if(var7 == null) {
             return null;
          } else {
-            var8.method4067();
+            var8.unlink();
             this.field1287.method3940(var7, var5);
             return var7;
          }
@@ -119,18 +119,18 @@ public class class62 {
       garbageValue = "1856162610"
    )
    static final void method1397() {
-      for(class31 var0 = (class31)client.field429.method3980(); var0 != null; var0 = (class31)client.field429.method3970()) {
-         if(var0.field718 == class99.field1701 && !var0.field725) {
-            if(client.field305 >= var0.field717) {
-               var0.method688(client.field370);
+      for(class31 var0 = (class31)Client.field429.method3980(); var0 != null; var0 = (class31)Client.field429.method3970()) {
+         if(var0.field718 == VertexNormal.plane && !var0.field725) {
+            if(Client.gameCycle >= var0.field717) {
+               var0.method688(Client.field370);
                if(var0.field725) {
-                  var0.method4067();
+                  var0.unlink();
                } else {
-                  class136.field2126.method2003(var0.field718, var0.field719, var0.field727, var0.field728, 60, var0, 0, -1, false);
+                  class136.region.method2003(var0.field718, var0.field719, var0.field727, var0.field728, 60, var0, 0, -1, false);
                }
             }
          } else {
-            var0.method4067();
+            var0.unlink();
          }
       }
 

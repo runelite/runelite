@@ -4,11 +4,11 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("fz")
 public class class173 implements Runnable {
    @ObfuscatedName("g")
-   static class202 field2761 = new class202();
+   static Deque field2761 = new Deque();
    @ObfuscatedName("e")
    public static Object field2763 = new Object();
    @ObfuscatedName("l")
-   static class202 field2765 = new class202();
+   static Deque field2765 = new Deque();
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1050549683
@@ -18,29 +18,35 @@ public class class173 implements Runnable {
    public void run() {
       try {
          while(true) {
-            class202 var2 = field2765;
-            class172 var1;
+            Deque var1 = field2765;
+            Deque var3 = field2765;
+            class172 var2;
             synchronized(field2765) {
-               var1 = (class172)field2765.method3980();
+               var2 = (class172)field2765.method3980();
             }
 
-            Object var14;
-            if(var1 != null) {
-               if(var1.field2757 == 0) {
-                  var1.field2759.method3004((int)var1.field3175, var1.field2755, var1.field2755.length);
-                  var2 = field2765;
+            Object var4;
+            Object var15;
+            if(var2 != null) {
+               Deque var16;
+               if(var2.field2757 == 0) {
+                  var2.field2759.method3004((int)var2.hash, var2.field2755, var2.field2755.length);
+                  var1 = field2765;
+                  var16 = field2765;
                   synchronized(field2765) {
-                     var1.method4067();
+                     var2.unlink();
                   }
-               } else if(var1.field2757 == 1) {
-                  var1.field2755 = var1.field2759.method3016((int)var1.field3175);
-                  var2 = field2765;
+               } else if(var2.field2757 == 1) {
+                  var2.field2755 = var2.field2759.method3016((int)var2.hash);
+                  var1 = field2765;
+                  var16 = field2765;
                   synchronized(field2765) {
-                     field2761.method3963(var1);
+                     field2761.method3963(var2);
                   }
                }
 
-               var14 = field2763;
+               var15 = field2763;
+               var4 = field2763;
                synchronized(field2763) {
                   if(field2767 <= 1) {
                      field2767 = 0;
@@ -52,7 +58,8 @@ public class class173 implements Runnable {
                }
             } else {
                class22.method594(100L);
-               var14 = field2763;
+               var15 = field2763;
+               var4 = field2763;
                synchronized(field2763) {
                   if(field2767 <= 1) {
                      field2767 = 0;
@@ -64,8 +71,8 @@ public class class173 implements Runnable {
                }
             }
          }
-      } catch (Exception var13) {
-         class13.method176((String)null, var13);
+      } catch (Exception var14) {
+         class13.method176((String)null, var14);
       }
    }
 }

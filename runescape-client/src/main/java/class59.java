@@ -57,7 +57,7 @@ public class class59 {
       intValue = 794988375
    )
    @Export("cameraYaw")
-   static int field1255;
+   static int cameraYaw;
    @ObfuscatedName("u")
    class69 field1256;
    @ObfuscatedName("d")
@@ -176,7 +176,7 @@ public class class59 {
             }
 
             this.field1262 = var3;
-         } catch (Exception var7) {
+         } catch (Exception var6) {
             this.vmethod1631();
             this.field1246 = var1 + 2000L;
          }
@@ -190,11 +190,11 @@ public class class59 {
                this.method1298(256);
                this.field1251 += (long)(256000 / field1254);
             }
-         } catch (Exception var6) {
+         } catch (Exception var5) {
             this.field1251 = var1;
          }
-
       }
+
    }
 
    @ObfuscatedName("l")
@@ -269,42 +269,42 @@ public class class59 {
       this.field1263 -= var2;
       if(this.field1256 != null && this.field1263 <= 0) {
          this.field1263 += field1254 >> 4;
-         class99.method2284(this.field1256);
+         VertexNormal.method2284(this.field1256);
          this.method1340(this.field1256, this.field1256.vmethod1597());
          int var4 = 0;
          int var5 = 255;
 
          int var6;
-         class69 var10;
-         label141:
+         class69 var7;
+         label106:
          for(var6 = 7; var5 != 0; --var6) {
-            int var7;
             int var8;
+            int var9;
             if(var6 < 0) {
-               var7 = var6 & 3;
-               var8 = -(var6 >> 2);
+               var8 = var6 & 3;
+               var9 = -(var6 >> 2);
             } else {
-               var7 = var6;
-               var8 = 0;
+               var8 = var6;
+               var9 = 0;
             }
 
-            for(int var9 = var5 >>> var7 & 286331153; var9 != 0; var9 >>>= 4) {
-               if((var9 & 1) != 0) {
-                  var5 &= ~(1 << var7);
-                  var10 = null;
-                  class69 var11 = this.field1265[var7];
+            for(int var10 = var5 >>> var8 & 286331153; var10 != 0; var10 >>>= 4) {
+               if((var10 & 1) != 0) {
+                  var5 &= ~(1 << var8);
+                  var7 = null;
+                  class69 var11 = this.field1265[var8];
 
-                  label135:
+                  label100:
                   while(true) {
                      while(true) {
                         if(var11 == null) {
-                           break label135;
+                           break label100;
                         }
 
                         class68 var12 = var11.field1334;
-                        if(var12 != null && var12.field1333 > var8) {
-                           var5 |= 1 << var7;
-                           var10 = var11;
+                        if(var12 != null && var12.field1333 > var9) {
+                           var5 |= 1 << var8;
+                           var7 = var11;
                            var11 = var11.field1337;
                         } else {
                            var11.field1336 = true;
@@ -315,47 +315,47 @@ public class class59 {
                            }
 
                            if(var4 >= this.field1250) {
-                              break label141;
+                              break label106;
                            }
 
                            class69 var14 = var11.vmethod3870();
                            if(null != var14) {
-                              for(int var17 = var11.field1335; var14 != null; var14 = var11.vmethod3871()) {
-                                 this.method1340(var14, var17 * var14.vmethod1597() >> 8);
+                              for(int var15 = var11.field1335; var14 != null; var14 = var11.vmethod3871()) {
+                                 this.method1340(var14, var15 * var14.vmethod1597() >> 8);
                               }
                            }
 
-                           class69 var15 = var11.field1337;
+                           class69 var18 = var11.field1337;
                            var11.field1337 = null;
-                           if(var10 == null) {
-                              this.field1265[var7] = var15;
+                           if(var7 == null) {
+                              this.field1265[var8] = var18;
                            } else {
-                              var10.field1337 = var15;
+                              var7.field1337 = var18;
                            }
 
-                           if(var15 == null) {
-                              this.field1243[var7] = var10;
+                           if(var18 == null) {
+                              this.field1243[var8] = var7;
                            }
 
-                           var11 = var15;
+                           var11 = var18;
                         }
                      }
                   }
                }
 
-               var7 += 4;
-               ++var8;
+               var8 += 4;
+               ++var9;
             }
          }
 
          for(var6 = 0; var6 < 8; ++var6) {
-            class69 var18 = this.field1265[var6];
-            class69[] var16 = this.field1265;
+            class69 var16 = this.field1265[var6];
+            class69[] var17 = this.field1265;
             this.field1243[var6] = null;
 
-            for(var16[var6] = null; var18 != null; var18 = var10) {
-               var10 = var18.field1337;
-               var18.field1337 = null;
+            for(var17[var6] = null; var16 != null; var16 = var7) {
+               var7 = var16.field1337;
+               var16.field1337 = null;
             }
          }
       }

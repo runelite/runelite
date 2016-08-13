@@ -103,12 +103,12 @@ public final class class165 {
    )
    static final void method3340(String var0) {
       if(var0 != null) {
-         String var1 = class156.method3300(var0, client.field518);
+         String var1 = class156.method3300(var0, Client.field518);
          if(var1 != null) {
-            for(int var2 = 0; var2 < client.field565; ++var2) {
-               class7 var3 = client.field566[var2];
-               String var4 = var3.field132;
-               String var5 = class156.method3300(var4, client.field518);
+            for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+               Ignore var3 = Client.ignores[var2];
+               String var4 = var3.name;
+               String var5 = class156.method3300(var4, Client.field518);
                boolean var6;
                if(null != var0 && null != var4) {
                   if(!var0.startsWith("#") && !var4.startsWith("#")) {
@@ -121,21 +121,21 @@ public final class class165 {
                }
 
                if(var6) {
-                  --client.field565;
+                  --Client.ignoreCount;
 
-                  for(int var7 = var2; var7 < client.field565; ++var7) {
-                     client.field566[var7] = client.field566[1 + var7];
+                  for(int var7 = var2; var7 < Client.ignoreCount; ++var7) {
+                     Client.ignores[var7] = Client.ignores[1 + var7];
                   }
 
-                  client.field385 = client.field478;
-                  client.field337.method2903(243);
-                  client.field337.method2783(class54.method1165(var0));
-                  client.field337.method2703(var0);
+                  Client.field385 = Client.field478;
+                  Client.field337.method2903(243);
+                  Client.field337.method2783(class54.method1165(var0));
+                  Client.field337.method2703(var0);
                   break;
                }
             }
-
          }
       }
+
    }
 }
