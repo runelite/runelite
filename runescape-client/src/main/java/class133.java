@@ -40,10 +40,10 @@ public class class133 {
       garbageValue = "-1342484159"
    )
    static final void method2976() {
-      int var0 = class13.field202;
-      int var1 = class14.field218;
-      int var2 = class30.field708;
-      int var3 = class77.field1442;
+      int var0 = class13.menuX;
+      int var1 = class14.menuY;
+      int var2 = Item.menuWidth;
+      int var3 = class77.menuHeight;
       int var4 = 6116423;
       class82.method1907(var0, var1, var2, var3, var4);
       class82.method1907(1 + var0, var1 + 1, var2 - 2, 16, 0);
@@ -52,16 +52,16 @@ public class class133 {
       int var5 = class143.field2206;
       int var6 = class143.field2209;
 
-      for(int var7 = 0; var7 < client.field368; ++var7) {
-         int var8 = (client.field368 - 1 - var7) * 15 + var1 + 31;
+      for(int var7 = 0; var7 < Client.menuOptionCount; ++var7) {
+         int var8 = (Client.menuOptionCount - 1 - var7) * 15 + var1 + 31;
          int var9 = 16777215;
          if(var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
             var9 = 16776960;
          }
 
-         class59.field1268.method4170(class104.method2382(var7), var0 + 3, var8, var9, 0);
+         class59.field1268.method4170(Tile.method2382(var7), var0 + 3, var8, var9, 0);
       }
 
-      class15.method187(class13.field202, class14.field218, class30.field708, class77.field1442);
+      XItemContainer.method187(class13.menuX, class14.menuY, Item.menuWidth, class77.menuHeight);
    }
 }

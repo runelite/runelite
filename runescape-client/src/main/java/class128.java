@@ -34,7 +34,7 @@ public abstract class class128 {
 
          class152.field2297.method4292();
          class152.field2301.method4292();
-      } catch (Exception var2) {
+      } catch (Exception var1) {
          ;
       }
 
@@ -58,52 +58,50 @@ public abstract class class128 {
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lclass176;III)V",
+      signature = "(LWidget;III)V",
       garbageValue = "-1497996566"
    )
-   static final void method2955(class176 var0, int var1, int var2) {
-      if(client.field530 == 0 || client.field530 == 3) {
-         if(class143.field2217 == 1 || !class214.field3188 && class143.field2217 == 4) {
-            class178 var3 = var0.method3557(true);
-            if(null == var3) {
-               return;
-            }
-
-            int var4 = class143.field2215 - var1;
-            int var5 = class143.field2216 - var2;
-            if(var3.method3599(var4, var5)) {
-               var4 -= var3.field2953 / 2;
-               var5 -= var3.field2950 / 2;
-               int var6 = client.field365 + client.field399 & 2047;
-               int var7 = class94.field1661[var6];
-               int var8 = class94.field1662[var6];
-               var7 = var7 * (client.field367 + 256) >> 8;
-               var8 = var8 * (client.field367 + 256) >> 8;
-               int var9 = var8 * var4 + var5 * var7 >> 11;
-               int var10 = var5 * var8 - var4 * var7 >> 11;
-               int var11 = var9 + class3.field65.field875 >> 7;
-               int var12 = class3.field65.field832 - var10 >> 7;
-               client.field337.method2903(53);
-               client.field337.method2783(18);
-               client.field337.method2619(class21.field592 + var12);
-               client.field337.method2668(class0.field11 + var11);
-               client.field337.method2783(class140.field2171[82]?(class140.field2171[81]?2:1):0);
-               client.field337.method2783(var4);
-               client.field337.method2783(var5);
-               client.field337.method2619(client.field399);
-               client.field337.method2783(57);
-               client.field337.method2783(client.field365);
-               client.field337.method2783(client.field367);
-               client.field337.method2783(89);
-               client.field337.method2619(class3.field65.field875);
-               client.field337.method2619(class3.field65.field832);
-               client.field337.method2783(63);
-               client.field371 = var11;
-               client.field529 = var12;
-            }
+   static final void method2955(Widget var0, int var1, int var2) {
+      if((Client.field530 == 0 || Client.field530 == 3) && (class143.field2217 == 1 || !class214.field3188 && class143.field2217 == 4)) {
+         class178 var3 = var0.method3557(true);
+         if(null == var3) {
+            return;
          }
 
+         int var4 = class143.field2215 - var1;
+         int var5 = class143.field2216 - var2;
+         if(var3.method3599(var4, var5)) {
+            var4 -= var3.field2953 / 2;
+            var5 -= var3.field2950 / 2;
+            int var6 = Client.mapScale + Client.mapAngle & 2047;
+            int var7 = class94.field1661[var6];
+            int var8 = class94.field1662[var6];
+            var7 = var7 * (Client.mapScaleDelta + 256) >> 8;
+            var8 = var8 * (Client.mapScaleDelta + 256) >> 8;
+            int var9 = var8 * var4 + var5 * var7 >> 11;
+            int var10 = var5 * var8 - var4 * var7 >> 11;
+            int var11 = var9 + WidgetNode.localPlayer.x >> 7;
+            int var12 = WidgetNode.localPlayer.y - var10 >> 7;
+            Client.field337.method2903(53);
+            Client.field337.method2783(18);
+            Client.field337.method2619(class21.baseY + var12);
+            Client.field337.method2668(class0.baseX + var11);
+            Client.field337.method2783(class140.field2171[82]?(class140.field2171[81]?2:1):0);
+            Client.field337.method2783(var4);
+            Client.field337.method2783(var5);
+            Client.field337.method2619(Client.mapAngle);
+            Client.field337.method2783(57);
+            Client.field337.method2783(Client.mapScale);
+            Client.field337.method2783(Client.mapScaleDelta);
+            Client.field337.method2783(89);
+            Client.field337.method2619(WidgetNode.localPlayer.x);
+            Client.field337.method2619(WidgetNode.localPlayer.y);
+            Client.field337.method2783(63);
+            Client.flagX = var11;
+            Client.flagY = var12;
+         }
       }
+
    }
 
    @ObfuscatedName("l")

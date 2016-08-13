@@ -42,20 +42,20 @@ public class class124 {
       garbageValue = "-2045349388"
    )
    static void method2891() {
-      for(int var0 = 0; var0 < client.field368; ++var0) {
-         if(class119.method2575(client.field438[var0])) {
-            if(var0 < client.field368 - 1) {
-               for(int var1 = var0; var1 < client.field368 - 1; ++var1) {
-                  client.field440[var1] = client.field440[var1 + 1];
-                  client.field510[var1] = client.field510[1 + var1];
-                  client.field438[var1] = client.field438[var1 + 1];
-                  client.field291[var1] = client.field291[var1 + 1];
-                  client.field436[var1] = client.field436[1 + var1];
-                  client.field437[var1] = client.field437[var1 + 1];
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(class119.method2575(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+                  Client.menuTargets[var1] = Client.menuTargets[1 + var1];
+                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[1 + var1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
                }
             }
 
-            --client.field368;
+            --Client.menuOptionCount;
          }
       }
 
@@ -67,31 +67,31 @@ public class class124 {
       garbageValue = "-1891703252"
    )
    public static void method2892(int var0, int var1) {
-      class50 var3 = (class50)class50.field1117.method3905((long)var0);
-      class50 var2;
-      if(var3 != null) {
-         var2 = var3;
+      class50 var2 = (class50)class50.field1117.get((long)var0);
+      class50 var3;
+      if(var2 != null) {
+         var3 = var2;
       } else {
          byte[] var4 = class50.field1125.method3411(14, var0);
-         var3 = new class50();
+         var2 = new class50();
          if(var4 != null) {
-            var3.method1075(new class122(var4));
+            var2.method1075(new Buffer(var4));
          }
 
-         class50.field1117.method3907(var3, (long)var0);
-         var2 = var3;
+         class50.field1117.put(var2, (long)var0);
+         var3 = var2;
       }
 
-      int var8 = var2.field1119;
-      int var5 = var2.field1120;
-      int var6 = var2.field1124;
+      int var8 = var3.field1119;
+      int var5 = var3.field1120;
+      int var6 = var3.field1124;
       int var7 = class179.field2959[var6 - var5];
       if(var1 < 0 || var1 > var7) {
          var1 = 0;
       }
 
       var7 <<= var5;
-      class179.field2958[var8] = class179.field2958[var8] & ~var7 | var1 << var5 & var7;
+      class179.widgetSettings[var8] = class179.widgetSettings[var8] & ~var7 | var1 << var5 & var7;
    }
 
    @ObfuscatedName("y")
@@ -100,31 +100,29 @@ public class class124 {
       garbageValue = "257273897"
    )
    static final byte[] method2893(byte[] var0) {
-      class122 var1 = new class122(var0);
+      Buffer var1 = new Buffer(var0);
       int var2 = var1.method2633();
       int var3 = var1.method2620();
-      if(var3 >= 0 && (class170.field2740 == 0 || var3 <= class170.field2740)) {
-         if(var2 == 0) {
-            byte[] var6 = new byte[var3];
-            var1.method2754(var6, 0, var3);
-            return var6;
-         } else {
-            int var4 = var1.method2620();
-            if(var4 < 0 || class170.field2740 != 0 && var4 > class170.field2740) {
-               throw new RuntimeException();
-            } else {
-               byte[] var5 = new byte[var4];
-               if(var2 == 1) {
-                  class120.method2577(var5, var4, var0, var3, 9);
-               } else {
-                  class170.field2724.method2570(var1, var5);
-               }
-
-               return var5;
-            }
-         }
-      } else {
+      if(var3 < 0 || class170.field2740 != 0 && var3 > class170.field2740) {
          throw new RuntimeException();
+      } else if(var2 == 0) {
+         byte[] var6 = new byte[var3];
+         var1.method2754(var6, 0, var3);
+         return var6;
+      } else {
+         int var4 = var1.method2620();
+         if(var4 < 0 || class170.field2740 != 0 && var4 > class170.field2740) {
+            throw new RuntimeException();
+         } else {
+            byte[] var5 = new byte[var4];
+            if(var2 == 1) {
+               class120.method2577(var5, var4, var0, var3, 9);
+            } else {
+               class170.field2724.method2570(var1, var5);
+            }
+
+            return var5;
+         }
       }
    }
 

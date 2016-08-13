@@ -96,7 +96,7 @@ public final class class107 {
    int field1866;
    @ObfuscatedName("qz")
    @Export("canvas")
-   public static Canvas field1867;
+   public static Canvas canvas;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -714216299
@@ -109,19 +109,17 @@ public final class class107 {
       garbageValue = "1465861288"
    )
    @Export("addMenuEntry")
-   static final void method2394(String var0, String var1, int var2, int var3, int var4, int var5) {
-      if(!client.field434) {
-         if(client.field368 < 500) {
-            client.field440[client.field368] = var0;
-            client.field510[client.field368] = var1;
-            client.field438[client.field368] = var2;
-            client.field291[client.field368] = var3;
-            client.field436[client.field368] = var4;
-            client.field437[client.field368] = var5;
-            ++client.field368;
-         }
-
+   static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
+      if(!Client.isMenuOpen && Client.menuOptionCount < 500) {
+         Client.menuOptions[Client.menuOptionCount] = var0;
+         Client.menuTargets[Client.menuOptionCount] = var1;
+         Client.menuTypes[Client.menuOptionCount] = var2;
+         Client.menuIdentifiers[Client.menuOptionCount] = var3;
+         Client.menuActionParams0[Client.menuOptionCount] = var4;
+         Client.menuActionParams1[Client.menuOptionCount] = var5;
+         ++Client.menuOptionCount;
       }
+
    }
 
    @ObfuscatedName("dh")
@@ -133,15 +131,15 @@ public final class class107 {
       if(var0 == null) {
          return false;
       } else {
-         String var1 = class156.method3300(var0, client.field518);
+         String var1 = class156.method3300(var0, Client.field518);
 
-         for(int var2 = 0; var2 < client.field565; ++var2) {
-            class7 var3 = client.field566[var2];
-            if(var1.equalsIgnoreCase(class156.method3300(var3.field132, client.field518))) {
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(class156.method3300(var3.name, Client.field518))) {
                return true;
             }
 
-            if(var1.equalsIgnoreCase(class156.method3300(var3.field131, client.field518))) {
+            if(var1.equalsIgnoreCase(class156.method3300(var3.previousName, Client.field518))) {
                return true;
             }
          }
@@ -152,11 +150,11 @@ public final class class107 {
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "([BIIIIIIILclass89;[Lclass111;S)V",
+      signature = "([BIIIIIIILRegion;[LCollisionData;S)V",
       garbageValue = "-24890"
    )
-   static final void method2396(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, class89 var8, class111[] var9) {
-      class122 var10 = new class122(var0);
+   static final void method2396(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, Region var8, CollisionData[] var9) {
+      Buffer var10 = new Buffer(var0);
       int var11 = -1;
 
       while(true) {
@@ -182,67 +180,67 @@ public final class class107 {
             int var19 = var18 >> 2;
             int var20 = var18 & 3;
             if(var17 == var4 && var16 >= var5 && var16 < 8 + var5 && var15 >= var6 && var15 < var6 + 8) {
-               class42 var21 = class160.method3312(var11);
-               int var24 = var16 & 7;
-               int var25 = var15 & 7;
-               int var27 = var21.field960;
-               int var28 = var21.field970;
-               int var29;
+               ObjectComposition var21 = class160.getObjectDefinition(var11);
+               int var22 = var16 & 7;
+               int var23 = var15 & 7;
+               int var24 = var21.field960;
+               int var25 = var21.field970;
+               int var26;
                if((var20 & 1) == 1) {
-                  var29 = var27;
-                  var27 = var28;
-                  var28 = var29;
+                  var26 = var24;
+                  var24 = var25;
+                  var25 = var26;
                }
 
-               int var26 = var7 & 3;
-               int var23;
-               if(var26 == 0) {
-                  var23 = var24;
-               } else if(var26 == 1) {
-                  var23 = var25;
-               } else if(var26 == 2) {
-                  var23 = 7 - var24 - (var27 - 1);
+               int var27 = var7 & 3;
+               int var28;
+               if(var27 == 0) {
+                  var28 = var22;
+               } else if(var27 == 1) {
+                  var28 = var23;
+               } else if(var27 == 2) {
+                  var28 = 7 - var22 - (var24 - 1);
                } else {
-                  var23 = 7 - var25 - (var28 - 1);
+                  var28 = 7 - var23 - (var25 - 1);
                }
 
-               var29 = var23 + var2;
-               int var32 = var16 & 7;
-               int var33 = var15 & 7;
-               int var35 = var21.field960;
-               int var36 = var21.field970;
-               int var37;
+               var26 = var28 + var2;
+               int var29 = var16 & 7;
+               int var30 = var15 & 7;
+               int var31 = var21.field960;
+               int var32 = var21.field970;
+               int var33;
                if((var20 & 1) == 1) {
-                  var37 = var35;
-                  var35 = var36;
-                  var36 = var37;
+                  var33 = var31;
+                  var31 = var32;
+                  var32 = var33;
                }
 
                int var34 = var7 & 3;
-               int var31;
+               int var35;
                if(var34 == 0) {
-                  var31 = var33;
+                  var35 = var30;
                } else if(var34 == 1) {
-                  var31 = 7 - var32 - (var35 - 1);
+                  var35 = 7 - var29 - (var31 - 1);
                } else if(var34 == 2) {
-                  var31 = 7 - var33 - (var36 - 1);
+                  var35 = 7 - var30 - (var32 - 1);
                } else {
-                  var31 = var32;
+                  var35 = var29;
                }
 
-               var37 = var3 + var31;
-               if(var29 > 0 && var37 > 0 && var29 < 103 && var37 < 103) {
-                  int var38 = var1;
-                  if((class5.field80[1][var29][var37] & 2) == 2) {
-                     var38 = var1 - 1;
+               var33 = var3 + var35;
+               if(var26 > 0 && var33 > 0 && var26 < 103 && var33 < 103) {
+                  int var36 = var1;
+                  if((class5.tileSettings[1][var26][var33] & 2) == 2) {
+                     var36 = var1 - 1;
                   }
 
-                  class111 var39 = null;
-                  if(var38 >= 0) {
-                     var39 = var9[var38];
+                  CollisionData var37 = null;
+                  if(var36 >= 0) {
+                     var37 = var9[var36];
                   }
 
-                  class177.method3597(var1, var29, var37, var11, var20 + var7 & 3, var19, var8, var39);
+                  class177.method3597(var1, var26, var33, var11, var20 + var7 & 3, var19, var8, var37);
                }
             }
          }

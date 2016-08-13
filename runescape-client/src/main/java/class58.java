@@ -5,9 +5,9 @@ public class class58 extends class69 {
    @ObfuscatedName("r")
    int field1239 = 0;
    @ObfuscatedName("g")
-   class202 field1240 = new class202();
+   Deque field1240 = new Deque();
    @ObfuscatedName("l")
-   class202 field1241 = new class202();
+   Deque field1241 = new Deque();
    @ObfuscatedName("e")
    int field1242 = -1;
 
@@ -30,21 +30,21 @@ public class class58 extends class69 {
    }
 
    @ObfuscatedName("e")
-   void method1254(class211 var1, class64 var2) {
-      while(var1 != this.field1240.field3157 && ((class64)var1).field1300 <= var2.field1300) {
-         var1 = var1.field3173;
+   void method1254(Node var1, class64 var2) {
+      while(var1 != this.field1240.head && ((class64)var1).field1300 <= var2.field1300) {
+         var1 = var1.next;
       }
 
-      class202.method3998(var2, var1);
-      this.field1242 = ((class64)this.field1240.field3157.field3173).field1300;
+      Deque.method3998(var2, var1);
+      this.field1242 = ((class64)this.field1240.head.next).field1300;
    }
 
    @ObfuscatedName("h")
    void method1255(class64 var1) {
-      var1.method4067();
+      var1.unlink();
       var1.method1406();
-      class211 var2 = this.field1240.field3157.field3173;
-      if(var2 == this.field1240.field3157) {
+      Node var2 = this.field1240.head.next;
+      if(var2 == this.field1240.head) {
          this.field1242 = -1;
       } else {
          this.field1242 = ((class64)var2).field1300;
@@ -90,7 +90,7 @@ public class class58 extends class69 {
                this.method1255(var5);
             } else {
                var5.field1300 = var7;
-               this.method1254(var5.field3173, var5);
+               this.method1254(var5.next, var5);
             }
          }
       } while(var3 != 0);
@@ -132,7 +132,7 @@ public class class58 extends class69 {
                this.method1255(var3);
             } else {
                var3.field1300 = var5;
-               this.method1254(var3.field3173, var3);
+               this.method1254(var3.next, var3);
             }
          }
       } while(var1 != 0);
@@ -154,6 +154,6 @@ public class class58 extends class69 {
 
    @ObfuscatedName("g")
    public final synchronized void method1285(class69 var1) {
-      var1.method4067();
+      var1.unlink();
    }
 }

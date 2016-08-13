@@ -36,25 +36,25 @@ public class class79 {
    static final void method1754(String var0) {
       if(var0.equalsIgnoreCase("toggleroof")) {
          class136.field2123.field143 = !class136.field2123.field143;
-         class42.method886();
+         ObjectComposition.method886();
          if(class136.field2123.field143) {
-            class78.method1721(99, "", "Roofs are now all hidden");
+            SecondaryBufferProvider.sendGameMessage(99, "", "Roofs are now all hidden");
          } else {
-            class78.method1721(99, "", "Roofs will only be removed selectively");
+            SecondaryBufferProvider.sendGameMessage(99, "", "Roofs will only be removed selectively");
          }
       }
 
       if(var0.equalsIgnoreCase("displayfps")) {
-         client.field433 = !client.field433;
+         Client.field433 = !Client.field433;
       }
 
-      if(client.field460 >= 2) {
+      if(Client.field460 >= 2) {
          if(var0.equalsIgnoreCase("fpson")) {
-            client.field433 = true;
+            Client.field433 = true;
          }
 
          if(var0.equalsIgnoreCase("fpsoff")) {
-            client.field433 = false;
+            Client.field433 = false;
          }
 
          if(var0.equalsIgnoreCase("gc")) {
@@ -62,33 +62,33 @@ public class class79 {
          }
 
          if(var0.equalsIgnoreCase("clientdrop")) {
-            if(client.field299 > 0) {
+            if(Client.field299 > 0) {
                class129.method2964();
             } else {
-               class138.method3024(40);
+               class138.setGameState(40);
                class52.field1153 = class40.field904;
                class40.field904 = null;
             }
          }
 
-         if(var0.equalsIgnoreCase("errortest") && client.field297 == 2) {
+         if(var0.equalsIgnoreCase("errortest") && Client.field297 == 2) {
             throw new RuntimeException();
          }
       }
 
-      client.field337.method2903(139);
-      client.field337.method2783(var0.length() + 1);
-      client.field337.method2703(var0);
+      Client.field337.method2903(139);
+      Client.field337.method2783(var0.length() + 1);
+      Client.field337.method2703(var0);
    }
 
    @ObfuscatedName("cc")
    @ObfuscatedSignature(
-      signature = "(Lclass176;I)V",
+      signature = "(LWidget;I)V",
       garbageValue = "-536155875"
    )
-   static void method1777(class176 var0) {
-      if(var0.field2829 == client.field497) {
-         client.field498[var0.field2938] = true;
+   static void method1777(Widget var0) {
+      if(var0.field2829 == Client.field497) {
+         Client.field498[var0.boundsIndex] = true;
       }
 
    }

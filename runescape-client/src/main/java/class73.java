@@ -2,7 +2,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("br")
-public class class73 extends class211 {
+public class class73 extends Node {
    @ObfuscatedName("aq")
    byte[] field1358;
    @ObfuscatedName("g")
@@ -106,7 +106,7 @@ public class class73 extends class211 {
 
    @ObfuscatedName("h")
    void method1648(byte[] var1) {
-      class122 var2 = new class122(var1);
+      Buffer var2 = new Buffer(var1);
       this.field1359 = var2.method2620();
       this.field1360 = var2.method2620();
       this.field1361 = var2.method2620();
@@ -154,51 +154,51 @@ public class class73 extends class211 {
          var5 = var2 >> 3;
          float[] var6 = new float[var3];
 
-         for(int var18 = 0; var18 < var4; ++var18) {
-            var6[2 * var18] = (float)Math.cos((double)(4 * var18) * 3.141592653589793D / (double)var2);
-            var6[2 * var18 + 1] = -((float)Math.sin((double)(4 * var18) * 3.141592653589793D / (double)var2));
+         for(int var7 = 0; var7 < var4; ++var7) {
+            var6[2 * var7] = (float)Math.cos((double)(4 * var7) * 3.141592653589793D / (double)var2);
+            var6[2 * var7 + 1] = -((float)Math.sin((double)(4 * var7) * 3.141592653589793D / (double)var2));
          }
 
-         float[] var7 = new float[var3];
+         float[] var16 = new float[var3];
 
          for(int var8 = 0; var8 < var4; ++var8) {
-            var7[2 * var8] = (float)Math.cos((double)(2 * var8 + 1) * 3.141592653589793D / (double)(2 * var2));
-            var7[2 * var8 + 1] = (float)Math.sin((double)(2 * var8 + 1) * 3.141592653589793D / (double)(2 * var2));
+            var16[2 * var8] = (float)Math.cos((double)(2 * var8 + 1) * 3.141592653589793D / (double)(2 * var2));
+            var16[2 * var8 + 1] = (float)Math.sin((double)(2 * var8 + 1) * 3.141592653589793D / (double)(2 * var2));
          }
 
-         float[] var21 = new float[var4];
+         float[] var17 = new float[var4];
 
          for(int var9 = 0; var9 < var5; ++var9) {
-            var21[2 * var9] = (float)Math.cos((double)(4 * var9 + 2) * 3.141592653589793D / (double)var2);
-            var21[2 * var9 + 1] = -((float)Math.sin((double)(4 * var9 + 2) * 3.141592653589793D / (double)var2));
+            var17[2 * var9] = (float)Math.cos((double)(4 * var9 + 2) * 3.141592653589793D / (double)var2);
+            var17[2 * var9 + 1] = -((float)Math.sin((double)(4 * var9 + 2) * 3.141592653589793D / (double)var2));
          }
 
-         int[] var20 = new int[var5];
+         int[] var18 = new int[var5];
          int var10 = class50.method1067(var5 - 1);
 
          for(int var11 = 0; var11 < var5; ++var11) {
-            int var15 = var11;
-            int var16 = var10;
+            int var12 = var11;
+            int var13 = var10;
 
-            int var17;
-            for(var17 = 0; var16 > 0; --var16) {
-               var17 = var17 << 1 | var15 & 1;
-               var15 >>>= 1;
+            int var14;
+            for(var14 = 0; var13 > 0; --var13) {
+               var14 = var14 << 1 | var12 & 1;
+               var12 >>>= 1;
             }
 
-            var20[var11] = var17;
+            var18[var11] = var14;
          }
 
          if(var1 != 0) {
             field1384 = var6;
-            field1390 = var7;
-            field1385 = var21;
-            field1388 = var20;
+            field1390 = var16;
+            field1385 = var17;
+            field1388 = var18;
          } else {
             field1372 = var6;
-            field1382 = var7;
-            field1383 = var21;
-            field1387 = var20;
+            field1382 = var16;
+            field1383 = var17;
+            field1387 = var18;
          }
       }
 
@@ -240,11 +240,11 @@ public class class73 extends class211 {
       field1373 = new boolean[var5];
       field1374 = new int[var5];
 
-      for(int var19 = 0; var19 < var5; ++var19) {
-         field1373[var19] = method1646() != 0;
+      for(int var15 = 0; var15 < var5; ++var15) {
+         field1373[var15] = method1646() != 0;
          method1668(16);
          method1668(16);
-         field1374[var19] = method1668(8);
+         field1374[var15] = method1668(8);
       }
 
    }
@@ -371,213 +371,213 @@ public class class73 extends class211 {
       }
 
       class71 var14 = field1375[field1374[var2]];
-      int var16 = var14.field1352;
-      int var17 = var14.field1353[var16];
-      boolean var15 = !field1362[var17].method1609();
-      boolean var45 = var15;
+      int var15 = var14.field1352;
+      int var16 = var14.field1353[var15];
+      boolean var17 = !field1362[var16].method1609();
+      boolean var18 = var17;
 
-      for(var17 = 0; var17 < var14.field1351; ++var17) {
-         class63 var18 = field1371[var14.field1350[var17]];
-         float[] var43 = field1366;
-         var18.method1398(var43, var4 >> 1, var45);
+      for(var16 = 0; var16 < var14.field1351; ++var16) {
+         class63 var19 = field1371[var14.field1350[var16]];
+         float[] var20 = field1366;
+         var19.method1398(var20, var4 >> 1, var18);
       }
 
-      int var40;
-      if(!var15) {
-         var17 = var14.field1352;
-         var40 = var14.field1353[var17];
-         field1362[var40].method1604(field1366, var4 >> 1);
+      int var48;
+      if(!var17) {
+         var16 = var14.field1352;
+         var48 = var14.field1353[var16];
+         field1362[var48].method1604(field1366, var4 >> 1);
       }
 
-      int var19;
-      if(var15) {
-         for(var17 = var4 >> 1; var17 < var4; ++var17) {
-            field1366[var17] = 0.0F;
+      float[] var21;
+      int var22;
+      int var49;
+      if(var17) {
+         for(var16 = var4 >> 1; var16 < var4; ++var16) {
+            field1366[var16] = 0.0F;
          }
       } else {
-         var17 = var4 >> 1;
-         var40 = var4 >> 2;
-         var19 = var4 >> 3;
-         float[] var20 = field1366;
+         var16 = var4 >> 1;
+         var48 = var4 >> 2;
+         var49 = var4 >> 3;
+         var21 = field1366;
 
-         int var21;
-         for(var21 = 0; var21 < var17; ++var21) {
-            var20[var21] *= 0.5F;
+         for(var22 = 0; var22 < var16; ++var22) {
+            var21[var22] *= 0.5F;
          }
 
-         for(var21 = var17; var21 < var4; ++var21) {
-            var20[var21] = -var20[var4 - var21 - 1];
+         for(var22 = var16; var22 < var4; ++var22) {
+            var21[var22] = -var21[var4 - var22 - 1];
          }
 
-         float[] var44 = var3?field1384:field1372;
-         float[] var22 = var3?field1390:field1382;
-         float[] var23 = var3?field1385:field1383;
-         int[] var24 = var3?field1388:field1387;
+         float[] var23 = var3?field1384:field1372;
+         float[] var24 = var3?field1390:field1382;
+         float[] var25 = var3?field1385:field1383;
+         int[] var26 = var3?field1388:field1387;
 
-         int var25;
-         float var26;
-         float var27;
+         int var27;
          float var28;
          float var29;
-         for(var25 = 0; var25 < var40; ++var25) {
-            var26 = var20[4 * var25] - var20[var4 - 4 * var25 - 1];
-            var27 = var20[4 * var25 + 2] - var20[var4 - 4 * var25 - 3];
-            var28 = var44[2 * var25];
-            var29 = var44[2 * var25 + 1];
-            var20[var4 - 4 * var25 - 1] = var26 * var28 - var27 * var29;
-            var20[var4 - 4 * var25 - 3] = var26 * var29 + var27 * var28;
-         }
-
          float var30;
          float var31;
-         for(var25 = 0; var25 < var19; ++var25) {
-            var26 = var20[var17 + 3 + 4 * var25];
-            var27 = var20[var17 + 1 + 4 * var25];
-            var28 = var20[4 * var25 + 3];
-            var29 = var20[4 * var25 + 1];
-            var20[var17 + 3 + 4 * var25] = var26 + var28;
-            var20[var17 + 1 + 4 * var25] = var27 + var29;
-            var30 = var44[var17 - 4 - 4 * var25];
-            var31 = var44[var17 - 3 - 4 * var25];
-            var20[4 * var25 + 3] = (var26 - var28) * var30 - (var27 - var29) * var31;
-            var20[4 * var25 + 1] = (var27 - var29) * var30 + (var26 - var28) * var31;
+         for(var27 = 0; var27 < var48; ++var27) {
+            var28 = var21[4 * var27] - var21[var4 - 4 * var27 - 1];
+            var29 = var21[4 * var27 + 2] - var21[var4 - 4 * var27 - 3];
+            var30 = var23[2 * var27];
+            var31 = var23[2 * var27 + 1];
+            var21[var4 - 4 * var27 - 1] = var28 * var30 - var29 * var31;
+            var21[var4 - 4 * var27 - 3] = var28 * var31 + var29 * var30;
          }
 
-         var25 = class50.method1067(var4 - 1);
+         float var32;
+         float var33;
+         for(var27 = 0; var27 < var49; ++var27) {
+            var28 = var21[var16 + 3 + 4 * var27];
+            var29 = var21[var16 + 1 + 4 * var27];
+            var30 = var21[4 * var27 + 3];
+            var31 = var21[4 * var27 + 1];
+            var21[var16 + 3 + 4 * var27] = var28 + var30;
+            var21[var16 + 1 + 4 * var27] = var29 + var31;
+            var32 = var23[var16 - 4 - 4 * var27];
+            var33 = var23[var16 - 3 - 4 * var27];
+            var21[4 * var27 + 3] = (var28 - var30) * var32 - (var29 - var31) * var33;
+            var21[4 * var27 + 1] = (var29 - var31) * var32 + (var28 - var30) * var33;
+         }
 
-         int var47;
-         int var48;
-         int var49;
-         int var50;
-         for(var47 = 0; var47 < var25 - 3; ++var47) {
-            var48 = var4 >> var47 + 2;
-            var49 = 8 << var47;
+         var27 = class50.method1067(var4 - 1);
 
-            for(var50 = 0; var50 < 2 << var47; ++var50) {
-               int var51 = var4 - var48 * 2 * var50;
-               int var52 = var4 - var48 * (2 * var50 + 1);
+         int var34;
+         int var35;
+         int var36;
+         int var37;
+         for(var34 = 0; var34 < var27 - 3; ++var34) {
+            var35 = var4 >> var34 + 2;
+            var36 = 8 << var34;
 
-               for(int var32 = 0; var32 < var4 >> var47 + 4; ++var32) {
-                  int var33 = 4 * var32;
-                  float var34 = var20[var51 - 1 - var33];
-                  float var35 = var20[var51 - 3 - var33];
-                  float var36 = var20[var52 - 1 - var33];
-                  float var37 = var20[var52 - 3 - var33];
-                  var20[var51 - 1 - var33] = var34 + var36;
-                  var20[var51 - 3 - var33] = var35 + var37;
-                  float var38 = var44[var32 * var49];
-                  float var39 = var44[var32 * var49 + 1];
-                  var20[var52 - 1 - var33] = (var34 - var36) * var38 - (var35 - var37) * var39;
-                  var20[var52 - 3 - var33] = (var35 - var37) * var38 + (var34 - var36) * var39;
+            for(var37 = 0; var37 < 2 << var34; ++var37) {
+               int var38 = var4 - var35 * 2 * var37;
+               int var39 = var4 - var35 * (2 * var37 + 1);
+
+               for(int var40 = 0; var40 < var4 >> var34 + 4; ++var40) {
+                  int var41 = 4 * var40;
+                  float var42 = var21[var38 - 1 - var41];
+                  float var43 = var21[var38 - 3 - var41];
+                  float var44 = var21[var39 - 1 - var41];
+                  float var45 = var21[var39 - 3 - var41];
+                  var21[var38 - 1 - var41] = var42 + var44;
+                  var21[var38 - 3 - var41] = var43 + var45;
+                  float var46 = var23[var40 * var36];
+                  float var47 = var23[var40 * var36 + 1];
+                  var21[var39 - 1 - var41] = (var42 - var44) * var46 - (var43 - var45) * var47;
+                  var21[var39 - 3 - var41] = (var43 - var45) * var46 + (var42 - var44) * var47;
                }
             }
          }
 
-         for(var47 = 1; var47 < var19 - 1; ++var47) {
-            var48 = var24[var47];
-            if(var47 < var48) {
-               var49 = 8 * var47;
-               var50 = 8 * var48;
-               var30 = var20[var49 + 1];
-               var20[var49 + 1] = var20[var50 + 1];
-               var20[var50 + 1] = var30;
-               var30 = var20[var49 + 3];
-               var20[var49 + 3] = var20[var50 + 3];
-               var20[var50 + 3] = var30;
-               var30 = var20[var49 + 5];
-               var20[var49 + 5] = var20[var50 + 5];
-               var20[var50 + 5] = var30;
-               var30 = var20[var49 + 7];
-               var20[var49 + 7] = var20[var50 + 7];
-               var20[var50 + 7] = var30;
+         for(var34 = 1; var34 < var49 - 1; ++var34) {
+            var35 = var26[var34];
+            if(var34 < var35) {
+               var36 = 8 * var34;
+               var37 = 8 * var35;
+               var32 = var21[var36 + 1];
+               var21[var36 + 1] = var21[var37 + 1];
+               var21[var37 + 1] = var32;
+               var32 = var21[var36 + 3];
+               var21[var36 + 3] = var21[var37 + 3];
+               var21[var37 + 3] = var32;
+               var32 = var21[var36 + 5];
+               var21[var36 + 5] = var21[var37 + 5];
+               var21[var37 + 5] = var32;
+               var32 = var21[var36 + 7];
+               var21[var36 + 7] = var21[var37 + 7];
+               var21[var37 + 7] = var32;
             }
          }
 
-         for(var47 = 0; var47 < var17; ++var47) {
-            var20[var47] = var20[2 * var47 + 1];
+         for(var34 = 0; var34 < var16; ++var34) {
+            var21[var34] = var21[2 * var34 + 1];
          }
 
-         for(var47 = 0; var47 < var19; ++var47) {
-            var20[var4 - 1 - 2 * var47] = var20[4 * var47];
-            var20[var4 - 2 - 2 * var47] = var20[4 * var47 + 1];
-            var20[var4 - var40 - 1 - 2 * var47] = var20[4 * var47 + 2];
-            var20[var4 - var40 - 2 - 2 * var47] = var20[4 * var47 + 3];
+         for(var34 = 0; var34 < var49; ++var34) {
+            var21[var4 - 1 - 2 * var34] = var21[4 * var34];
+            var21[var4 - 2 - 2 * var34] = var21[4 * var34 + 1];
+            var21[var4 - var48 - 1 - 2 * var34] = var21[4 * var34 + 2];
+            var21[var4 - var48 - 2 - 2 * var34] = var21[4 * var34 + 3];
          }
 
-         for(var47 = 0; var47 < var19; ++var47) {
-            var27 = var23[2 * var47];
-            var28 = var23[2 * var47 + 1];
-            var29 = var20[var17 + 2 * var47];
-            var30 = var20[var17 + 2 * var47 + 1];
-            var31 = var20[var4 - 2 - 2 * var47];
-            float var53 = var20[var4 - 1 - 2 * var47];
-            float var54 = var28 * (var29 - var31) + var27 * (var30 + var53);
-            var20[var17 + 2 * var47] = (var29 + var31 + var54) * 0.5F;
-            var20[var4 - 2 - 2 * var47] = (var29 + var31 - var54) * 0.5F;
-            var54 = var28 * (var30 + var53) - var27 * (var29 - var31);
-            var20[var17 + 2 * var47 + 1] = (var30 - var53 + var54) * 0.5F;
-            var20[var4 - 1 - 2 * var47] = (-var30 + var53 + var54) * 0.5F;
+         for(var34 = 0; var34 < var49; ++var34) {
+            var29 = var25[2 * var34];
+            var30 = var25[2 * var34 + 1];
+            var31 = var21[var16 + 2 * var34];
+            var32 = var21[var16 + 2 * var34 + 1];
+            var33 = var21[var4 - 2 - 2 * var34];
+            float var51 = var21[var4 - 1 - 2 * var34];
+            float var52 = var30 * (var31 - var33) + var29 * (var32 + var51);
+            var21[var16 + 2 * var34] = (var31 + var33 + var52) * 0.5F;
+            var21[var4 - 2 - 2 * var34] = (var31 + var33 - var52) * 0.5F;
+            var52 = var30 * (var32 + var51) - var29 * (var31 - var33);
+            var21[var16 + 2 * var34 + 1] = (var32 - var51 + var52) * 0.5F;
+            var21[var4 - 1 - 2 * var34] = (-var32 + var51 + var52) * 0.5F;
          }
 
-         for(var47 = 0; var47 < var40; ++var47) {
-            var20[var47] = var20[2 * var47 + var17] * var22[2 * var47] + var20[2 * var47 + 1 + var17] * var22[2 * var47 + 1];
-            var20[var17 - 1 - var47] = var20[2 * var47 + var17] * var22[2 * var47 + 1] - var20[2 * var47 + 1 + var17] * var22[2 * var47];
+         for(var34 = 0; var34 < var48; ++var34) {
+            var21[var34] = var21[2 * var34 + var16] * var24[2 * var34] + var21[2 * var34 + 1 + var16] * var24[2 * var34 + 1];
+            var21[var16 - 1 - var34] = var21[2 * var34 + var16] * var24[2 * var34 + 1] - var21[2 * var34 + 1 + var16] * var24[2 * var34];
          }
 
-         for(var47 = 0; var47 < var40; ++var47) {
-            var20[var4 - var40 + var47] = -var20[var47];
+         for(var34 = 0; var34 < var48; ++var34) {
+            var21[var4 - var48 + var34] = -var21[var34];
          }
 
-         for(var47 = 0; var47 < var40; ++var47) {
-            var20[var47] = var20[var40 + var47];
+         for(var34 = 0; var34 < var48; ++var34) {
+            var21[var34] = var21[var48 + var34];
          }
 
-         for(var47 = 0; var47 < var40; ++var47) {
-            var20[var40 + var47] = -var20[var40 - var47 - 1];
+         for(var34 = 0; var34 < var48; ++var34) {
+            var21[var48 + var34] = -var21[var48 - var34 - 1];
          }
 
-         for(var47 = 0; var47 < var40; ++var47) {
-            var20[var17 + var47] = var20[var4 - var47 - 1];
+         for(var34 = 0; var34 < var48; ++var34) {
+            var21[var16 + var34] = var21[var4 - var34 - 1];
          }
 
-         for(var47 = var8; var47 < var9; ++var47) {
-            var27 = (float)Math.sin(((double)(var47 - var8) + 0.5D) / (double)var10 * 0.5D * 3.141592653589793D);
-            field1366[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
+         for(var34 = var8; var34 < var9; ++var34) {
+            var29 = (float)Math.sin(((double)(var34 - var8) + 0.5D) / (double)var10 * 0.5D * 3.141592653589793D);
+            field1366[var34] *= (float)Math.sin(1.5707963267948966D * (double)var29 * (double)var29);
          }
 
-         for(var47 = var11; var47 < var12; ++var47) {
-            var27 = (float)Math.sin(((double)(var47 - var11) + 0.5D) / (double)var13 * 0.5D * 3.141592653589793D + 1.5707963267948966D);
-            field1366[var47] *= (float)Math.sin(1.5707963267948966D * (double)var27 * (double)var27);
+         for(var34 = var11; var34 < var12; ++var34) {
+            var29 = (float)Math.sin(((double)(var34 - var11) + 0.5D) / (double)var13 * 0.5D * 3.141592653589793D + 1.5707963267948966D);
+            field1366[var34] *= (float)Math.sin(1.5707963267948966D * (double)var29 * (double)var29);
          }
       }
 
-      float[] var41 = null;
+      var21 = null;
       if(this.field1370 > 0) {
-         var40 = this.field1370 + var4 >> 2;
-         var41 = new float[var40];
-         int var42;
+         var48 = this.field1370 + var4 >> 2;
+         var21 = new float[var48];
          if(!this.field1379) {
-            for(var19 = 0; var19 < this.field1378; ++var19) {
-               var42 = (this.field1370 >> 1) + var19;
-               var41[var19] += this.field1376[var42];
+            for(var49 = 0; var49 < this.field1378; ++var49) {
+               var22 = (this.field1370 >> 1) + var49;
+               var21[var49] += this.field1376[var22];
             }
          }
 
-         if(!var15) {
-            for(var19 = var8; var19 < var4 >> 1; ++var19) {
-               var42 = var41.length - (var4 >> 1) + var19;
-               var41[var42] += field1366[var19];
+         if(!var17) {
+            for(var49 = var8; var49 < var4 >> 1; ++var49) {
+               var22 = var21.length - (var4 >> 1) + var49;
+               var21[var22] += field1366[var49];
             }
          }
       }
 
-      float[] var46 = this.field1376;
+      float[] var50 = this.field1376;
       this.field1376 = field1366;
-      field1366 = var46;
+      field1366 = var50;
       this.field1370 = var4;
       this.field1378 = var12 - (var4 >> 1);
-      this.field1379 = var15;
-      return var41;
+      this.field1379 = var17;
+      return var21;
    }
 
    @ObfuscatedName("e")

@@ -15,17 +15,17 @@ public class class129 {
       }
 
       class31.method693();
-      class136.field2126.method1992();
+      class136.region.method1992();
 
       for(int var0 = 0; var0 < 4; ++var0) {
-         client.field354[var0].method2493();
+         Client.collisionMaps[var0].method2493();
       }
 
       System.gc();
       class34.method755(2);
-      client.field457 = -1;
-      client.field533 = false;
-      class142.method3089();
-      class138.method3024(10);
+      Client.field457 = -1;
+      Client.field533 = false;
+      RSCanvas.method3089();
+      class138.setGameState(10);
    }
 }

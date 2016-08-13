@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gr")
-public class class190 extends class211 {
+public class class190 extends Node {
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -418825959

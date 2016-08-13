@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedName;
 public class class38 {
    @ObfuscatedName("u")
    @Export("chatboxSegments")
-   static String[] field818 = new String[1000];
+   static String[] chatboxSegments = new String[1000];
    @ObfuscatedName("r")
    static int[] field820;
    @ObfuscatedName("h")

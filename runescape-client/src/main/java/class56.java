@@ -3,9 +3,9 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bn")
-public class class56 extends class207 {
+public class class56 extends CacheableNode {
    @ObfuscatedName("r")
-   static class196 field1231 = new class196(64);
+   static NodeCache field1231 = new NodeCache(64);
    @ObfuscatedName("l")
    static class170 field1232;
    @ObfuscatedName("g")
@@ -28,10 +28,10 @@ public class class56 extends class207 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass122;B)V",
+      signature = "(LBuffer;B)V",
       garbageValue = "98"
    )
-   void method1236(class122 var1) {
+   void method1236(Buffer var1) {
       while(true) {
          int var2 = var1.method2633();
          if(var2 == 0) {
@@ -44,10 +44,10 @@ public class class56 extends class207 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
+      signature = "(LBuffer;II)V",
       garbageValue = "1549925229"
    )
-   void method1237(class122 var1, int var2) {
+   void method1237(Buffer var1, int var2) {
       if(var2 == 5) {
          this.field1234 = var1.method2635();
       }

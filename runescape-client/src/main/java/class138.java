@@ -23,15 +23,15 @@ public class class138 {
       garbageValue = "80"
    )
    public static String method3018(CharSequence var0) {
-      int var2 = var0.length();
-      char[] var3 = new char[var2];
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
 
-      for(int var4 = 0; var4 < var2; ++var4) {
-         var3[var4] = 42;
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2[var3] = 42;
       }
 
-      String var1 = new String(var3);
-      return var1;
+      String var4 = new String(var2);
+      return var4;
    }
 
    @ObfuscatedName("dy")
@@ -41,15 +41,15 @@ public class class138 {
    )
    static String method3023(String var0, boolean var1) {
       String var2 = var1?"https://":"http://";
-      if(client.field297 == 1) {
+      if(Client.field297 == 1) {
          var0 = var0 + "-wtrc";
-      } else if(client.field297 == 2) {
+      } else if(Client.field297 == 2) {
          var0 = var0 + "-wtqa";
-      } else if(client.field297 == 3) {
+      } else if(Client.field297 == 3) {
          var0 = var0 + "-wtwip";
-      } else if(client.field297 == 5) {
+      } else if(Client.field297 == 5) {
          var0 = var0 + "-wti";
-      } else if(client.field297 == 4) {
+      } else if(Client.field297 == 4) {
          var0 = "local";
       }
 
@@ -59,7 +59,7 @@ public class class138 {
       }
 
       String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + client.field326 + "/a=" + class133.field2112 + var3 + "/";
+      return var2 + var0 + "." + var4 + "/l=" + Client.field326 + "/a=" + class133.field2112 + var3 + "/";
    }
 
    @ObfuscatedName("b")
@@ -68,16 +68,16 @@ public class class138 {
       garbageValue = "1046110870"
    )
    @Export("setGameState")
-   static void method3024(int var0) {
-      if(var0 != client.field303) {
-         if(client.field303 == 0) {
+   static void setGameState(int var0) {
+      if(var0 != Client.gameState) {
+         if(Client.gameState == 0) {
             class47.method1008();
          }
 
          if(var0 == 20 || var0 == 40 || var0 == 45) {
-            client.field349 = 0;
-            client.field411 = 0;
-            client.field308 = 0;
+            Client.field349 = 0;
+            Client.field411 = 0;
+            Client.field308 = 0;
          }
 
          if(var0 != 20 && var0 != 40 && class52.field1153 != null) {
@@ -85,27 +85,28 @@ public class class138 {
             class52.field1153 = null;
          }
 
-         if(client.field303 == 25) {
-            client.field527 = 0;
-            client.field342 = 0;
-            client.field350 = 1;
-            client.field493 = 0;
-            client.field534 = 1;
+         if(Client.gameState == 25) {
+            Client.field527 = 0;
+            Client.field342 = 0;
+            Client.field350 = 1;
+            Client.field493 = 0;
+            Client.field534 = 1;
          }
 
          if(var0 != 5 && var0 != 10) {
             if(var0 == 20) {
-               class141.method3074(class107.field1867, class25.field644, client.field451, true, client.field303 == 11?4:0);
+               class141.method3074(class107.canvas, XClanMember.field644, Client.field451, true, Client.gameState == 11?4:0);
             } else if(var0 == 11) {
-               class141.method3074(class107.field1867, class25.field644, client.field451, false, 4);
+               class141.method3074(class107.canvas, XClanMember.field644, Client.field451, false, 4);
             } else {
-               class19.method226();
+               ChatMessages.method226();
             }
          } else {
-            class141.method3074(class107.field1867, class25.field644, client.field451, true, 0);
+            class141.method3074(class107.canvas, XClanMember.field644, Client.field451, true, 0);
          }
 
-         client.field303 = var0;
+         Client.gameState = var0;
       }
+
    }
 }

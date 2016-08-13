@@ -20,7 +20,7 @@ public class class14 {
       intValue = 170834075
    )
    @Export("menuY")
-   static int field218;
+   static int menuY;
    @ObfuscatedName("l")
    class23 field219;
 
@@ -30,7 +30,7 @@ public class class14 {
       garbageValue = "120"
    )
    static int method177(int var0, int var1) {
-      class15 var2 = (class15)class15.field225.method3936((long)var0);
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method3936((long)var0);
       if(var2 == null) {
          return 0;
       } else if(var1 == -1) {
@@ -38,9 +38,9 @@ public class class14 {
       } else {
          int var3 = 0;
 
-         for(int var4 = 0; var4 < var2.field224.length; ++var4) {
-            if(var1 == var2.field221[var4]) {
-               var3 += var2.field224[var4];
+         for(int var4 = 0; var4 < var2.stackSizes.length; ++var4) {
+            if(var1 == var2.itemIds[var4]) {
+               var3 += var2.stackSizes[var4];
             }
          }
 
@@ -113,36 +113,36 @@ public class class14 {
       garbageValue = "-1588396508"
    )
    public static boolean method179(int var0) {
-      if(class176.field2797[var0]) {
+      if(Widget.validInterfaces[var0]) {
          return true;
-      } else if(!class176.field2798.method3421(var0)) {
+      } else if(!Widget.field2798.method3421(var0)) {
          return false;
       } else {
-         int var1 = class176.field2798.method3405(var0);
+         int var1 = Widget.field2798.method3405(var0);
          if(var1 == 0) {
-            class176.field2797[var0] = true;
+            Widget.validInterfaces[var0] = true;
             return true;
          } else {
-            if(class176.field2836[var0] == null) {
-               class176.field2836[var0] = new class176[var1];
+            if(Widget.widgets[var0] == null) {
+               Widget.widgets[var0] = new Widget[var1];
             }
 
             for(int var2 = 0; var2 < var1; ++var2) {
-               if(null == class176.field2836[var0][var2]) {
-                  byte[] var3 = class176.field2798.method3411(var0, var2);
+               if(null == Widget.widgets[var0][var2]) {
+                  byte[] var3 = Widget.field2798.method3411(var0, var2);
                   if(null != var3) {
-                     class176.field2836[var0][var2] = new class176();
-                     class176.field2836[var0][var2].field2807 = var2 + (var0 << 16);
+                     Widget.widgets[var0][var2] = new Widget();
+                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
                      if(var3[0] == -1) {
-                        class176.field2836[var0][var2].method3549(new class122(var3));
+                        Widget.widgets[var0][var2].method3549(new Buffer(var3));
                      } else {
-                        class176.field2836[var0][var2].method3548(new class122(var3));
+                        Widget.widgets[var0][var2].method3548(new Buffer(var3));
                      }
                   }
                }
             }
 
-            class176.field2797[var0] = true;
+            Widget.validInterfaces[var0] = true;
             return true;
          }
       }

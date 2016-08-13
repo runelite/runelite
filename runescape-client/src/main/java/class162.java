@@ -49,7 +49,7 @@ public class class162 implements class115 {
       garbageValue = "-1222081853"
    )
    static final void method3319() {
-      for(class16 var0 = (class16)client.field427.method3980(); null != var0; var0 = (class16)client.field427.method3970()) {
+      for(class16 var0 = (class16)Client.field427.method3980(); null != var0; var0 = (class16)Client.field427.method3970()) {
          if(var0.field237 > 0) {
             --var0.field237;
          }
@@ -57,7 +57,7 @@ public class class162 implements class115 {
          if(var0.field237 == 0) {
             if(var0.field232 < 0 || class53.method1150(var0.field232, var0.field228)) {
                class20.method572(var0.field239, var0.field229, var0.field238, var0.field231, var0.field232, var0.field233, var0.field228);
-               var0.method4067();
+               var0.unlink();
             }
          } else {
             if(var0.field241 > 0) {
@@ -68,9 +68,9 @@ public class class162 implements class115 {
                class20.method572(var0.field239, var0.field229, var0.field238, var0.field231, var0.field235, var0.field236, var0.field230);
                var0.field241 = -1;
                if(var0.field232 == var0.field235 && var0.field232 == -1) {
-                  var0.method4067();
+                  var0.unlink();
                } else if(var0.field235 == var0.field232 && var0.field233 == var0.field236 && var0.field228 == var0.field230) {
-                  var0.method4067();
+                  var0.unlink();
                }
             }
          }

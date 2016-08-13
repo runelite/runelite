@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fi")
-public class class163 extends class211 {
+public class class163 extends Node {
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 373940027
@@ -124,10 +124,10 @@ public class class163 extends class211 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass122;I)V",
+      signature = "(LBuffer;I)V",
       garbageValue = "1007770800"
    )
-   public void method3322(class122 var1) {
+   public void method3322(Buffer var1) {
       var1.method2783(6);
       var1.method2783(this.field2670);
       var1.method2783(this.field2677?1:0);
@@ -166,25 +166,25 @@ public class class163 extends class211 {
    )
    public int method3323() {
       byte var1 = 38;
-      String var4 = this.field2673;
-      int var3 = var4.length() + 2;
-      int var20 = var1 + var3;
-      String var7 = this.field2688;
-      int var6 = var7.length() + 2;
-      var20 += var6;
-      String var10 = this.field2689;
-      int var9 = var10.length() + 2;
-      var20 += var9;
-      String var13 = this.field2690;
-      int var12 = var13.length() + 2;
-      var20 += var12;
-      String var16 = this.field2695;
-      int var15 = var16.length() + 2;
-      var20 += var15;
-      String var19 = this.field2672;
-      int var18 = var19.length() + 2;
-      var20 += var18;
-      return var20;
+      String var2 = this.field2673;
+      int var3 = var2.length() + 2;
+      int var4 = var1 + var3;
+      String var5 = this.field2688;
+      int var6 = var5.length() + 2;
+      var4 += var6;
+      String var7 = this.field2689;
+      int var8 = var7.length() + 2;
+      var4 += var8;
+      String var9 = this.field2690;
+      int var10 = var9.length() + 2;
+      var4 += var10;
+      String var11 = this.field2695;
+      int var12 = var11.length() + 2;
+      var4 += var12;
+      String var13 = this.field2672;
+      int var14 = var13.length() + 2;
+      var4 += var14;
+      return var4;
    }
 
    @ObfuscatedSignature(
@@ -192,11 +192,11 @@ public class class163 extends class211 {
       garbageValue = "1"
    )
    public class163(boolean var1) {
-      if(class101.field1746.startsWith("win")) {
+      if(GameObject.field1746.startsWith("win")) {
          this.field2670 = 1;
-      } else if(class101.field1746.startsWith("mac")) {
+      } else if(GameObject.field1746.startsWith("mac")) {
          this.field2670 = 2;
-      } else if(class101.field1746.startsWith("linux")) {
+      } else if(GameObject.field1746.startsWith("linux")) {
          this.field2670 = 3;
       } else {
          this.field2670 = 4;
@@ -205,14 +205,14 @@ public class class163 extends class211 {
       String var2;
       try {
          var2 = System.getProperty("os.arch").toLowerCase();
-      } catch (Exception var13) {
+      } catch (Exception var12) {
          var2 = "";
       }
 
       String var3;
       try {
          var3 = System.getProperty("os.version").toLowerCase();
-      } catch (Exception var12) {
+      } catch (Exception var11) {
          var3 = "";
       }
 
@@ -222,7 +222,7 @@ public class class163 extends class211 {
       try {
          var4 = System.getProperty("java.vendor");
          var5 = System.getProperty("java.version");
-      } catch (Exception var11) {
+      } catch (Exception var10) {
          ;
       }
 
@@ -284,57 +284,57 @@ public class class163 extends class211 {
          this.field2678 = 4;
       }
 
-      int var9 = 2;
+      int var6 = 2;
       int var7 = 0;
 
       char var8;
       try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
             if(var8 < 48 || var8 > 57) {
                break;
             }
 
             var7 = 10 * var7 + (var8 - 48);
-            ++var9;
-         }
-      } catch (Exception var16) {
-         ;
-      }
-
-      this.field2679 = var7;
-      var9 = var5.indexOf(46, 2) + 1;
-      var7 = 0;
-
-      try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
-            if(var8 < 48 || var8 > 57) {
-               break;
-            }
-
-            var7 = var7 * 10 + (var8 - 48);
-            ++var9;
+            ++var6;
          }
       } catch (Exception var15) {
          ;
       }
 
-      this.field2693 = var7;
-      var9 = var5.indexOf(95, 4) + 1;
+      this.field2679 = var7;
+      var6 = var5.indexOf(46, 2) + 1;
       var7 = 0;
 
       try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
+            if(var8 < 48 || var8 > 57) {
+               break;
+            }
+
+            var7 = var7 * 10 + (var8 - 48);
+            ++var6;
+         }
+      } catch (Exception var14) {
+         ;
+      }
+
+      this.field2693 = var7;
+      var6 = var5.indexOf(95, 4) + 1;
+      var7 = 0;
+
+      try {
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
             if(var8 < 48 || var8 > 57) {
                break;
             }
 
             var7 = var8 - 48 + 10 * var7;
-            ++var9;
+            ++var6;
          }
-      } catch (Exception var14) {
+      } catch (Exception var13) {
          ;
       }
 
@@ -381,30 +381,29 @@ public class class163 extends class211 {
       garbageValue = "-22787"
    )
    public static void method3329(int var0) {
-      if(var0 != -1) {
-         if(class176.field2797[var0]) {
-            class176.field2798.method3407(var0);
-            if(class176.field2836[var0] != null) {
-               boolean var1 = true;
+      if(var0 != -1 && Widget.validInterfaces[var0]) {
+         Widget.field2798.method3407(var0);
+         if(Widget.widgets[var0] != null) {
+            boolean var1 = true;
 
-               for(int var2 = 0; var2 < class176.field2836[var0].length; ++var2) {
-                  if(class176.field2836[var0][var2] != null) {
-                     if(class176.field2836[var0][var2].field2910 != 2) {
-                        class176.field2836[var0][var2] = null;
-                     } else {
-                        var1 = false;
-                     }
+            for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+               if(Widget.widgets[var0][var2] != null) {
+                  if(Widget.widgets[var0][var2].type != 2) {
+                     Widget.widgets[var0][var2] = null;
+                  } else {
+                     var1 = false;
                   }
                }
-
-               if(var1) {
-                  class176.field2836[var0] = null;
-               }
-
-               class176.field2797[var0] = false;
             }
+
+            if(var1) {
+               Widget.widgets[var0] = null;
+            }
+
+            Widget.validInterfaces[var0] = false;
          }
       }
+
    }
 
    @ObfuscatedName("s")
@@ -413,6 +412,6 @@ public class class163 extends class211 {
       garbageValue = "-341510156"
    )
    public static void method3330() {
-      class43.field1000.method3910();
+      class43.field1000.reset();
    }
 }

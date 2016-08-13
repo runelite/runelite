@@ -8,7 +8,7 @@ public abstract class class136 {
    static class8 field2123;
    @ObfuscatedName("dd")
    @Export("region")
-   static class89 field2126;
+   static Region region;
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(

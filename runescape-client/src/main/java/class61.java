@@ -9,11 +9,11 @@ public class class61 {
    @ObfuscatedName("e")
    int field1283;
 
-   class61(class122 var1) {
+   class61(Buffer var1) {
       for(int var2 = 0; var2 < 10; ++var2) {
          int var3 = var1.method2633();
          if(var3 != 0) {
-            --var1.field2050;
+            --var1.offset;
             this.field1280[var2] = new class74();
             this.field1280[var2].method1676(var1);
          }
@@ -103,6 +103,6 @@ public class class61 {
    @ObfuscatedName("l")
    public static class61 method1380(class170 var0, int var1, int var2) {
       byte[] var3 = var0.method3411(var1, var2);
-      return var3 == null?null:new class61(new class122(var3));
+      return var3 == null?null:new class61(new Buffer(var3));
    }
 }

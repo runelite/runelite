@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class117 {
    @ObfuscatedName("b")
    @Export("worldServersDownload")
-   static class18 field2027;
+   static class18 worldServersDownload;
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
@@ -37,11 +37,12 @@ public class class117 {
    )
    static void method2560(int var0, class137 var1, class171 var2) {
       byte[] var3 = null;
-      class202 var4 = class173.field2765;
+      Deque var4 = class173.field2765;
+      Deque var5 = class173.field2765;
       synchronized(class173.field2765) {
-         for(class172 var5 = (class172)class173.field2765.method3980(); null != var5; var5 = (class172)class173.field2765.method3970()) {
-            if((long)var0 == var5.field3175 && var5.field2759 == var1 && var5.field2757 == 0) {
-               var3 = var5.field2755;
+         for(class172 var6 = (class172)class173.field2765.method3980(); null != var6; var6 = (class172)class173.field2765.method3970()) {
+            if((long)var0 == var6.hash && var6.field2759 == var1 && var6.field2757 == 0) {
+               var3 = var6.field2755;
                break;
             }
          }
@@ -50,8 +51,9 @@ public class class117 {
       if(var3 != null) {
          var2.method3483(var1, var0, var3, true);
       } else {
-         byte[] var8 = var1.method3016(var0);
-         var2.method3483(var1, var0, var8, true);
+         byte[] var9 = var1.method3016(var0);
+         var2.method3483(var1, var0, var9, true);
       }
+
    }
 }

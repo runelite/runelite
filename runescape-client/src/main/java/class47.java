@@ -2,24 +2,24 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("au")
-public class class47 extends class207 {
+public class class47 extends CacheableNode {
    @ObfuscatedName("r")
    public boolean field1071 = false;
    @ObfuscatedName("m")
    static class227 field1072;
    @ObfuscatedName("g")
-   static class196 field1073 = new class196(64);
+   static NodeCache field1073 = new NodeCache(64);
    @ObfuscatedName("b")
-   static class83 field1075;
+   static ModIcon field1075;
    @ObfuscatedName("l")
    public static class170 field1076;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Lclass83;I)V",
+      signature = "(LModIcon;I)V",
       garbageValue = "1690118408"
    )
-   static final void method998(class83 var0) {
+   static final void method998(ModIcon var0) {
       short var1 = 256;
 
       int var2;
@@ -27,36 +27,36 @@ public class class47 extends class207 {
          class26.field649[var2] = 0;
       }
 
-      int var8;
+      int var3;
       for(var2 = 0; var2 < 5000; ++var2) {
-         var8 = (int)(Math.random() * 128.0D * (double)var1);
-         class26.field649[var8] = (int)(Math.random() * 256.0D);
+         var3 = (int)(Math.random() * 128.0D * (double)var1);
+         class26.field649[var3] = (int)(Math.random() * 256.0D);
       }
 
       int var4;
       int var5;
       for(var2 = 0; var2 < 20; ++var2) {
-         for(var8 = 1; var8 < var1 - 1; ++var8) {
+         for(var3 = 1; var3 < var1 - 1; ++var3) {
             for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var8 << 7);
+               var5 = var4 + (var3 << 7);
                class144.field2226[var5] = (class26.field649[128 + var5] + class26.field649[var5 - 128] + class26.field649[var5 + 1] + class26.field649[var5 - 1]) / 4;
             }
          }
 
-         int[] var3 = class26.field649;
+         int[] var6 = class26.field649;
          class26.field649 = class144.field2226;
-         class144.field2226 = var3;
+         class144.field2226 = var6;
       }
 
       if(var0 != null) {
          var2 = 0;
 
-         for(var8 = 0; var8 < var0.field1503; ++var8) {
-            for(var4 = 0; var4 < var0.field1498; ++var4) {
-               if(var0.field1499[var2++] != 0) {
-                  var5 = 16 + var4 + var0.field1500;
-                  int var6 = var0.field1501 + var8 + 16;
-                  int var7 = var5 + (var6 << 7);
+         for(var3 = 0; var3 < var0.height; ++var3) {
+            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
+               if(var0.pixels[var2++] != 0) {
+                  var5 = 16 + var4 + var0.offsetX;
+                  int var8 = var0.offsetY + var3 + 16;
+                  int var7 = var5 + (var8 << 7);
                   class26.field649[var7] = 0;
                }
             }
@@ -67,10 +67,10 @@ public class class47 extends class207 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass122;I)V",
+      signature = "(LBuffer;I)V",
       garbageValue = "1196405378"
    )
-   void method999(class122 var1) {
+   void method999(Buffer var1) {
       while(true) {
          int var2 = var1.method2633();
          if(var2 == 0) {
@@ -83,10 +83,10 @@ public class class47 extends class207 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
+      signature = "(LBuffer;II)V",
       garbageValue = "-1673014659"
    )
-   void method1000(class122 var1, int var2) {
+   void method1000(Buffer var1, int var2) {
       if(var2 == 2) {
          this.field1071 = true;
       }
@@ -102,7 +102,7 @@ public class class47 extends class207 {
       if(null == var0) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])var0);
+         byte[] var3 = (byte[])((byte[])((byte[])var0));
          return var1?class118.method2561(var3):var3;
       } else if(var0 instanceof class128) {
          class128 var2 = (class128)var0;
@@ -133,8 +133,8 @@ public class class47 extends class207 {
          class125.field2069.method1294();
       }
 
-      if(class6.field127 != null) {
-         class6.field127.method1294();
+      if(Projectile.field127 != null) {
+         Projectile.field127.method1294();
       }
 
    }
@@ -145,6 +145,6 @@ public class class47 extends class207 {
       garbageValue = "-2130688362"
    )
    public static int method1011() {
-      return ++class143.field2203 - 1;
+      return ++class143.mouseIdleTicks - 1;
    }
 }

@@ -29,9 +29,9 @@ public class class167 {
       garbageValue = "1410938763"
    )
    public static void method3370(class125 var0) {
-      class213 var1 = (class213)class214.field3189.method4011();
+      ClassInfo var1 = (ClassInfo)class214.field3189.method4011();
       if(var1 != null) {
-         int var2 = var0.field2050;
+         int var2 = var0.offset;
          var0.method2728(var1.field3182);
 
          for(int var3 = 0; var3 < var1.field3177; ++var3) {
@@ -43,127 +43,127 @@ public class class167 {
                   Field var5;
                   int var6;
                   if(var4 == 0) {
-                     var5 = var1.field3181[var3];
+                     var5 = var1.fields[var3];
                      var6 = var5.getInt((Object)null);
                      var0.method2783(0);
                      var0.method2728(var6);
                   } else if(var4 == 1) {
-                     var5 = var1.field3181[var3];
+                     var5 = var1.fields[var3];
                      var5.setInt((Object)null, var1.field3178[var3]);
                      var0.method2783(0);
                   } else if(var4 == 2) {
-                     var5 = var1.field3181[var3];
+                     var5 = var1.fields[var3];
                      var6 = var5.getModifiers();
                      var0.method2783(0);
                      var0.method2728(var6);
                   }
 
-                  Method var25;
+                  Method var7;
                   if(var4 != 3) {
                      if(var4 == 4) {
-                        var25 = var1.field3183[var3];
-                        var6 = var25.getModifiers();
+                        var7 = var1.methods[var3];
+                        var6 = var7.getModifiers();
                         var0.method2783(0);
                         var0.method2728(var6);
                      }
                   } else {
-                     var25 = var1.field3183[var3];
-                     byte[][] var10 = var1.field3184[var3];
-                     Object[] var7 = new Object[var10.length];
+                     var7 = var1.methods[var3];
+                     byte[][] var8 = var1.args[var3];
+                     Object[] var9 = new Object[var8.length];
 
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
+                     for(int var10 = 0; var10 < var8.length; ++var10) {
+                        ObjectInputStream var11 = new ObjectInputStream(new ByteArrayInputStream(var8[var10]));
+                        var9[var10] = var11.readObject();
                      }
 
-                     Object var11 = var25.invoke((Object)null, var7);
-                     if(var11 == null) {
+                     Object var24 = var7.invoke((Object)null, var9);
+                     if(var24 == null) {
                         var0.method2783(0);
-                     } else if(var11 instanceof Number) {
+                     } else if(var24 instanceof Number) {
                         var0.method2783(1);
-                        var0.method2623(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
+                        var0.method2623(((Number)var24).longValue());
+                     } else if(var24 instanceof String) {
                         var0.method2783(2);
-                        var0.method2703((String)var11);
+                        var0.method2703((String)var24);
                      } else {
                         var0.method2783(4);
                      }
                   }
-               } catch (ClassNotFoundException var13) {
+               } catch (ClassNotFoundException var12) {
                   var0.method2783(-10);
-               } catch (InvalidClassException var14) {
+               } catch (InvalidClassException var13) {
                   var0.method2783(-11);
-               } catch (StreamCorruptedException var15) {
+               } catch (StreamCorruptedException var14) {
                   var0.method2783(-12);
-               } catch (OptionalDataException var16) {
+               } catch (OptionalDataException var15) {
                   var0.method2783(-13);
-               } catch (IllegalAccessException var17) {
+               } catch (IllegalAccessException var16) {
                   var0.method2783(-14);
-               } catch (IllegalArgumentException var18) {
+               } catch (IllegalArgumentException var17) {
                   var0.method2783(-15);
-               } catch (InvocationTargetException var19) {
+               } catch (InvocationTargetException var18) {
                   var0.method2783(-16);
-               } catch (SecurityException var20) {
+               } catch (SecurityException var19) {
                   var0.method2783(-17);
-               } catch (IOException var21) {
+               } catch (IOException var20) {
                   var0.method2783(-18);
-               } catch (NullPointerException var22) {
+               } catch (NullPointerException var21) {
                   var0.method2783(-19);
-               } catch (Exception var23) {
+               } catch (Exception var22) {
                   var0.method2783(-20);
-               } catch (Throwable var24) {
+               } catch (Throwable var23) {
                   var0.method2783(-21);
                }
             }
          }
 
          var0.method2773(var2);
-         var1.method4067();
+         var1.unlink();
       }
+
    }
 
    @ObfuscatedName("dn")
    @ObfuscatedSignature(
-      signature = "(Lclass176;B)V",
+      signature = "(LWidget;B)V",
       garbageValue = "82"
    )
-   static final void method3372(class176 var0) {
-      int var1 = var0.field2811;
+   static final void method3372(Widget var0) {
+      int var1 = var0.contentType;
       if(var1 == 324) {
-         if(client.field568 == -1) {
-            client.field568 = var0.field2842;
-            client.field569 = var0.field2843;
+         if(Client.field568 == -1) {
+            Client.field568 = var0.textureId;
+            Client.field569 = var0.field2843;
          }
 
-         if(client.field567.field2971) {
-            var0.field2842 = client.field568;
+         if(Client.field567.isFemale) {
+            var0.textureId = Client.field568;
          } else {
-            var0.field2842 = client.field569;
+            var0.textureId = Client.field569;
          }
-
       } else if(var1 == 325) {
-         if(client.field568 == -1) {
-            client.field568 = var0.field2842;
-            client.field569 = var0.field2843;
+         if(Client.field568 == -1) {
+            Client.field568 = var0.textureId;
+            Client.field569 = var0.field2843;
          }
 
-         if(client.field567.field2971) {
-            var0.field2842 = client.field569;
+         if(Client.field567.isFemale) {
+            var0.textureId = Client.field569;
          } else {
-            var0.field2842 = client.field568;
+            var0.textureId = Client.field568;
          }
-
       } else if(var1 == 327) {
-         var0.field2927 = 150;
-         var0.field2859 = (int)(Math.sin((double)client.field305 / 40.0D) * 256.0D) & 2047;
-         var0.field2800 = 5;
-         var0.field2851 = 0;
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 0;
       } else if(var1 == 328) {
-         var0.field2927 = 150;
-         var0.field2859 = (int)(Math.sin((double)client.field305 / 40.0D) * 256.0D) & 2047;
-         var0.field2800 = 5;
-         var0.field2851 = 1;
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 1;
       }
+
    }
 
    @ObfuscatedName("e")
@@ -182,11 +182,11 @@ public class class167 {
    )
    public static void method3374(int var0, class170 var1, int var2, int var3, int var4, boolean var5) {
       class186.field3010 = 1;
-      class111.field1970 = var1;
+      CollisionData.field1970 = var1;
       class140.field2184 = var2;
       class186.field3009 = var3;
       class11.field176 = var4;
-      class37.field814 = var5;
+      MessageNode.field814 = var5;
       class144.field2222 = var0;
    }
 }

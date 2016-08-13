@@ -6,7 +6,7 @@ public class class130 {
    @ObfuscatedName("f")
    public static String[] field2100;
    @ObfuscatedName("es")
-   static class81[] field2101;
+   static SpritePixels[] field2101;
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(

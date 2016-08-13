@@ -38,13 +38,13 @@ public class class180 {
                   class138.field2144.put(var0, var2);
                   return var2;
                }
-            } catch (Exception var8) {
+            } catch (Exception var7) {
                try {
                   if(var3 != null) {
                      var3.close();
                      var3 = null;
                   }
-               } catch (Exception var7) {
+               } catch (Exception var6) {
                   ;
                }
 
@@ -61,11 +61,11 @@ public class class180 {
    )
    public static void method3615(class170 var0, int var1, int var2, int var3, boolean var4) {
       class186.field3010 = 1;
-      class111.field1970 = var0;
+      CollisionData.field1970 = var0;
       class140.field2184 = var1;
       class186.field3009 = var2;
       class11.field176 = var3;
-      class37.field814 = var4;
+      MessageNode.field814 = var4;
       class144.field2222 = 10000;
    }
 }

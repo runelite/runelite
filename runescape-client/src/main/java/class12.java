@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("p")
-public class class12 extends class88 {
+public class class12 extends Renderable {
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1481582643
@@ -25,7 +25,7 @@ public class class12 extends class88 {
    )
    int field190;
    @ObfuscatedName("k")
-   class44 field192;
+   Sequence field192;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 1622408887
@@ -63,21 +63,21 @@ public class class12 extends class88 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(I)Lclass108;",
+      signature = "(I)LModel;",
       garbageValue = "503322838"
    )
-   protected final class108 vmethod1990() {
+   protected final Model getModel() {
       if(null != this.field192) {
-         int var1 = client.field305 - this.field194;
+         int var1 = Client.gameCycle - this.field194;
          if(var1 > 100 && this.field192.field1020 > 0) {
             var1 = 100;
          }
 
-         label68: {
+         label47: {
             do {
                do {
                   if(var1 <= this.field192.field1018[this.field193]) {
-                     break label68;
+                     break label47;
                   }
 
                   var1 -= this.field192.field1018[this.field193];
@@ -90,12 +90,12 @@ public class class12 extends class88 {
             this.field192 = null;
          }
 
-         this.field194 = client.field305 - var1;
+         this.field194 = Client.gameCycle - var1;
       }
 
-      class42 var12 = class160.method3312(this.field186);
-      if(var12.field986 != null) {
-         var12 = var12.method847();
+      ObjectComposition var12 = class160.getObjectDefinition(this.field186);
+      if(var12.impostorIds != null) {
+         var12 = var12.getImpostor();
       }
 
       if(null == var12) {
@@ -115,7 +115,7 @@ public class class12 extends class88 {
          int var5 = (1 + var2 >> 1) + this.field190;
          int var6 = this.field189 + (var3 >> 1);
          int var7 = (1 + var3 >> 1) + this.field189;
-         int[][] var8 = class5.field85[this.field200];
+         int[][] var8 = class5.tileHeights[this.field200];
          int var9 = var8[var5][var7] + var8[var4][var7] + var8[var4][var6] + var8[var5][var6] >> 2;
          int var10 = (this.field190 << 7) + (var2 << 6);
          int var11 = (var3 << 6) + (this.field189 << 7);
@@ -145,12 +145,12 @@ public class class12 extends class88 {
       int var5;
       int var6;
       for(var5 = 0; var5 < var4; ++var5) {
-         var6 = class29.field699[var2 + var3] - var0 * class26.field649[var2 + class33.field753 & class26.field649.length - 1] / 6;
+         var6 = ChatLineBuffer.field699[var2 + var3] - var0 * class26.field649[var2 + class33.field753 & class26.field649.length - 1] / 6;
          if(var6 < 0) {
             var6 = 0;
          }
 
-         class29.field699[var2++] = var6;
+         ChatLineBuffer.field699[var2++] = var6;
       }
 
       int var7;
@@ -161,9 +161,9 @@ public class class12 extends class88 {
          for(var7 = 0; var7 < 128; ++var7) {
             var8 = (int)(Math.random() * 100.0D);
             if(var8 < 50 && var7 > 10 && var7 < 118) {
-               class29.field699[var7 + var6] = 255;
+               ChatLineBuffer.field699[var7 + var6] = 255;
             } else {
-               class29.field699[var6 + var7] = 0;
+               ChatLineBuffer.field699[var6 + var7] = 0;
             }
          }
       }
@@ -197,12 +197,12 @@ public class class12 extends class88 {
       }
 
       class33.field759 += var0;
-      var5 = ((client.field305 & 1) + var0) / 2;
+      var5 = ((Client.gameCycle & 1) + var0) / 2;
       if(var5 > 0) {
          for(var6 = 0; var6 < class33.field759 * 100; ++var6) {
             var7 = (int)(Math.random() * 124.0D) + 2;
             var8 = (int)(Math.random() * 128.0D) + 128;
-            class29.field699[(var8 << 7) + var7] = 192;
+            ChatLineBuffer.field699[(var8 << 7) + var7] = 192;
          }
 
          class33.field759 = 0;
@@ -214,15 +214,15 @@ public class class12 extends class88 {
 
             for(var9 = -var5; var9 < 128; ++var9) {
                if(var5 + var9 < 128) {
-                  var7 += class29.field699[var5 + var8 + var9];
+                  var7 += ChatLineBuffer.field699[var5 + var8 + var9];
                }
 
                if(var9 - (var5 + 1) >= 0) {
-                  var7 -= class29.field699[var8 + var9 - (var5 + 1)];
+                  var7 -= ChatLineBuffer.field699[var8 + var9 - (var5 + 1)];
                }
 
                if(var9 >= 0) {
-                  class182.field2970[var8 + var9] = var7 / (1 + var5 * 2);
+                  PlayerComposition.field2970[var8 + var9] = var7 / (1 + var5 * 2);
                }
             }
          }
@@ -233,15 +233,15 @@ public class class12 extends class88 {
             for(var8 = -var5; var8 < var1; ++var8) {
                var9 = 128 * var8;
                if(var5 + var8 < var1) {
-                  var7 += class182.field2970[var9 + var6 + var5 * 128];
+                  var7 += PlayerComposition.field2970[var9 + var6 + var5 * 128];
                }
 
                if(var8 - (1 + var5) >= 0) {
-                  var7 -= class182.field2970[var6 + var9 - 128 * (var5 + 1)];
+                  var7 -= PlayerComposition.field2970[var6 + var9 - 128 * (var5 + 1)];
                }
 
                if(var8 >= 0) {
-                  class29.field699[var6 + var9] = var7 / (2 * var5 + 1);
+                  ChatLineBuffer.field699[var6 + var9] = var7 / (2 * var5 + 1);
                }
             }
          }
@@ -255,10 +255,10 @@ public class class12 extends class88 {
       garbageValue = "-232610020"
    )
    public static void method172(String[] var0, short[] var1) {
-      class96.method2254(var0, var1, 0, var0.length - 1);
+      GroundObject.method2254(var0, var1, 0, var0.length - 1);
    }
 
-   class12(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, class88 var9) {
+   class12(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
       this.field186 = var1;
       this.field188 = var2;
       this.field195 = var3;
@@ -266,10 +266,10 @@ public class class12 extends class88 {
       this.field190 = var5;
       this.field189 = var6;
       if(var7 != -1) {
-         this.field192 = class22.method585(var7);
+         this.field192 = class22.getAnimation(var7);
          this.field193 = 0;
-         this.field194 = client.field305 - 1;
-         if(this.field192.field1031 == 0 && null != var9 && var9 instanceof class12) {
+         this.field194 = Client.gameCycle - 1;
+         if(this.field192.replyMode == 0 && null != var9 && var9 instanceof class12) {
             class12 var10 = (class12)var9;
             if(this.field192 == var10.field192) {
                this.field193 = var10.field193;

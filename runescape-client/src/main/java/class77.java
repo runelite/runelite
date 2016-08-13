@@ -22,7 +22,7 @@ public class class77 {
       intValue = 1657076819
    )
    @Export("menuHeight")
-   static int field1442;
+   static int menuHeight;
    @ObfuscatedName("no")
    @ObfuscatedGetter(
       intValue = -1104710225
@@ -133,8 +133,8 @@ public class class77 {
                var5[var8] = (int)Math.floor(65536.0D * var14 + 0.5D);
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("g")

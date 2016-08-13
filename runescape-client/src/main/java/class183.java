@@ -1,18 +1,18 @@
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("gk")
-public class class183 extends class211 {
+public class class183 extends Node {
    @ObfuscatedName("l")
-   class199 field2982;
+   XHashTable field2982;
    @ObfuscatedName("g")
    byte[] field2983;
 
-   class183(class122 var1) {
-      var1.field2050 = var1.field2051.length - 3;
+   class183(Buffer var1) {
+      var1.offset = var1.payload.length - 3;
       int var2 = var1.method2633();
       int var3 = var1.method2635();
       int var4 = 14 + var2 * 10;
-      var1.field2050 = 0;
+      var1.offset = 0;
       int var5 = 0;
       int var6 = 0;
       int var7 = 0;
@@ -66,15 +66,15 @@ public class class183 extends class211 {
       var4 += 5 * var5;
       var4 += 2 * (var7 + var8 + var6 + var9 + var11);
       var4 += var10 + var12;
-      var13 = var1.field2050;
+      var13 = var1.offset;
       var14 = var2 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12;
 
       for(var15 = 0; var15 < var14; ++var15) {
          var1.method2832();
       }
 
-      var4 += var1.field2050 - var13;
-      var15 = var1.field2050;
+      var4 += var1.offset - var13;
+      var15 = var1.offset;
       int var16 = 0;
       int var17 = 0;
       int var18 = 0;
@@ -124,56 +124,56 @@ public class class183 extends class211 {
       }
 
       var29 = 0;
-      int var30 = var1.field2050;
-      var1.field2050 += var26;
-      int var31 = var1.field2050;
-      var1.field2050 += var11;
-      int var32 = var1.field2050;
-      var1.field2050 += var10;
-      int var33 = var1.field2050;
-      var1.field2050 += var9;
-      int var34 = var1.field2050;
-      var1.field2050 += var16;
-      int var35 = var1.field2050;
-      var1.field2050 += var18;
-      int var36 = var1.field2050;
-      var1.field2050 += var20;
-      int var37 = var1.field2050;
-      var1.field2050 += var7 + var8 + var11;
-      int var38 = var1.field2050;
-      var1.field2050 += var7;
-      int var39 = var1.field2050;
-      var1.field2050 += var27;
-      int var40 = var1.field2050;
-      var1.field2050 += var8;
-      int var41 = var1.field2050;
-      var1.field2050 += var17;
-      int var42 = var1.field2050;
-      var1.field2050 += var19;
-      int var43 = var1.field2050;
-      var1.field2050 += var21;
-      int var44 = var1.field2050;
-      var1.field2050 += var12;
-      int var45 = var1.field2050;
-      var1.field2050 += var9;
-      int var46 = var1.field2050;
-      var1.field2050 += var22;
-      int var47 = var1.field2050;
-      var1.field2050 += var23;
-      int var48 = var1.field2050;
-      var1.field2050 += var24;
-      int var49 = var1.field2050;
-      var1.field2050 += var25;
-      int var50 = var1.field2050;
-      var1.field2050 += var5 * 3;
+      int var30 = var1.offset;
+      var1.offset += var26;
+      int var31 = var1.offset;
+      var1.offset += var11;
+      int var32 = var1.offset;
+      var1.offset += var10;
+      int var33 = var1.offset;
+      var1.offset += var9;
+      int var34 = var1.offset;
+      var1.offset += var16;
+      int var35 = var1.offset;
+      var1.offset += var18;
+      int var36 = var1.offset;
+      var1.offset += var20;
+      int var37 = var1.offset;
+      var1.offset += var7 + var8 + var11;
+      int var38 = var1.offset;
+      var1.offset += var7;
+      int var39 = var1.offset;
+      var1.offset += var27;
+      int var40 = var1.offset;
+      var1.offset += var8;
+      int var41 = var1.offset;
+      var1.offset += var17;
+      int var42 = var1.offset;
+      var1.offset += var19;
+      int var43 = var1.offset;
+      var1.offset += var21;
+      int var44 = var1.offset;
+      var1.offset += var12;
+      int var45 = var1.offset;
+      var1.offset += var9;
+      int var46 = var1.offset;
+      var1.offset += var22;
+      int var47 = var1.offset;
+      var1.offset += var23;
+      int var48 = var1.offset;
+      var1.offset += var24;
+      int var49 = var1.offset;
+      var1.offset += var25;
+      int var50 = var1.offset;
+      var1.offset += var5 * 3;
       this.field2983 = new byte[var4];
-      class122 var51 = new class122(this.field2983);
+      Buffer var51 = new Buffer(this.field2983);
       var51.method2728(1297377380);
       var51.method2728(6);
       var51.method2619(var2 > 1?1:0);
       var51.method2619(var2);
       var51.method2619(var3);
-      var1.field2050 = var13;
+      var1.offset = var13;
       int var52 = 0;
       int var53 = 0;
       int var54 = 0;
@@ -184,18 +184,18 @@ public class class183 extends class211 {
       int[] var59 = new int[128];
       var28 = 0;
 
-      label351:
+      label222:
       for(int var60 = 0; var60 < var2; ++var60) {
          var51.method2728(1297379947);
-         var51.field2050 += 4;
-         int var61 = var51.field2050;
+         var51.offset += 4;
+         int var61 = var51.offset;
          int var62 = -1;
 
          while(true) {
             while(true) {
                int var63 = var1.method2832();
                var51.method2830(var63);
-               int var64 = var1.field2051[var29++] & 255;
+               int var64 = var1.payload[var29++] & 255;
                boolean var65 = var64 != var62;
                var62 = var64 & 15;
                if(var64 == 7) {
@@ -205,8 +205,8 @@ public class class183 extends class211 {
 
                   var51.method2783(47);
                   var51.method2783(0);
-                  var51.method2682(var51.field2050 - var61);
-                  continue label351;
+                  var51.method2682(var51.offset - var61);
+                  continue label222;
                }
 
                if(var64 == 23) {
@@ -216,9 +216,9 @@ public class class183 extends class211 {
 
                   var51.method2783(81);
                   var51.method2783(3);
-                  var51.method2783(var1.field2051[var50++]);
-                  var51.method2783(var1.field2051[var50++]);
-                  var51.method2783(var1.field2051[var50++]);
+                  var51.method2783(var1.payload[var50++]);
+                  var51.method2783(var1.payload[var50++]);
+                  var51.method2783(var1.payload[var50++]);
                } else {
                   var52 ^= var64 >> 4;
                   if(var62 == 0) {
@@ -226,8 +226,8 @@ public class class183 extends class211 {
                         var51.method2783(144 + var52);
                      }
 
-                     var53 += var1.field2051[var37++];
-                     var54 += var1.field2051[var38++];
+                     var53 += var1.payload[var37++];
+                     var54 += var1.payload[var38++];
                      var51.method2783(var53 & 127);
                      var51.method2783(var54 & 127);
                   } else if(var62 == 1) {
@@ -235,8 +235,8 @@ public class class183 extends class211 {
                         var51.method2783(128 + var52);
                      }
 
-                     var53 += var1.field2051[var37++];
-                     var55 += var1.field2051[var40++];
+                     var53 += var1.payload[var37++];
+                     var55 += var1.payload[var40++];
                      var51.method2783(var53 & 127);
                      var51.method2783(var55 & 127);
                   } else if(var62 == 2) {
@@ -244,37 +244,37 @@ public class class183 extends class211 {
                         var51.method2783(176 + var52);
                      }
 
-                     var28 = var28 + var1.field2051[var15++] & 127;
+                     var28 = var28 + var1.payload[var15++] & 127;
                      var51.method2783(var28);
                      byte var66;
                      if(var28 != 0 && var28 != 32) {
                         if(var28 == 1) {
-                           var66 = var1.field2051[var34++];
+                           var66 = var1.payload[var34++];
                         } else if(var28 == 33) {
-                           var66 = var1.field2051[var41++];
+                           var66 = var1.payload[var41++];
                         } else if(var28 == 7) {
-                           var66 = var1.field2051[var35++];
+                           var66 = var1.payload[var35++];
                         } else if(var28 == 39) {
-                           var66 = var1.field2051[var42++];
+                           var66 = var1.payload[var42++];
                         } else if(var28 == 10) {
-                           var66 = var1.field2051[var36++];
+                           var66 = var1.payload[var36++];
                         } else if(var28 == 42) {
-                           var66 = var1.field2051[var43++];
+                           var66 = var1.payload[var43++];
                         } else if(var28 == 99) {
-                           var66 = var1.field2051[var46++];
+                           var66 = var1.payload[var46++];
                         } else if(var28 == 98) {
-                           var66 = var1.field2051[var47++];
+                           var66 = var1.payload[var47++];
                         } else if(var28 == 101) {
-                           var66 = var1.field2051[var48++];
+                           var66 = var1.payload[var48++];
                         } else if(var28 == 100) {
-                           var66 = var1.field2051[var49++];
+                           var66 = var1.payload[var49++];
                         } else if(var28 != 64 && var28 != 65 && var28 != 120 && var28 != 121 && var28 != 123) {
-                           var66 = var1.field2051[var39++];
+                           var66 = var1.payload[var39++];
                         } else {
-                           var66 = var1.field2051[var30++];
+                           var66 = var1.payload[var30++];
                         }
                      } else {
-                        var66 = var1.field2051[var44++];
+                        var66 = var1.payload[var44++];
                      }
 
                      int var67 = var66 + var59[var28];
@@ -285,8 +285,8 @@ public class class183 extends class211 {
                         var51.method2783(224 + var52);
                      }
 
-                     var56 += var1.field2051[var45++];
-                     var56 += var1.field2051[var33++] << 7;
+                     var56 += var1.payload[var45++];
+                     var56 += var1.payload[var33++] << 7;
                      var51.method2783(var56 & 127);
                      var51.method2783(var56 >> 7 & 127);
                   } else if(var62 == 4) {
@@ -294,15 +294,15 @@ public class class183 extends class211 {
                         var51.method2783(208 + var52);
                      }
 
-                     var57 += var1.field2051[var32++];
+                     var57 += var1.payload[var32++];
                      var51.method2783(var57 & 127);
                   } else if(var62 == 5) {
                      if(var65) {
                         var51.method2783(160 + var52);
                      }
 
-                     var53 += var1.field2051[var37++];
-                     var58 += var1.field2051[var31++];
+                     var53 += var1.payload[var37++];
+                     var58 += var1.payload[var31++];
                      var51.method2783(var53 & 127);
                      var51.method2783(var58 & 127);
                   } else {
@@ -314,7 +314,7 @@ public class class183 extends class211 {
                         var51.method2783(192 + var52);
                      }
 
-                     var51.method2783(var1.field2051[var44++]);
+                     var51.method2783(var1.payload[var44++]);
                   }
                }
             }
@@ -326,7 +326,7 @@ public class class183 extends class211 {
    @ObfuscatedName("l")
    public static class183 method3669(class170 var0, int var1, int var2) {
       byte[] var3 = var0.method3411(var1, var2);
-      return var3 == null?null:new class183(new class122(var3));
+      return var3 == null?null:new class183(new Buffer(var3));
    }
 
    @ObfuscatedName("r")
@@ -337,81 +337,81 @@ public class class183 extends class211 {
    @ObfuscatedName("g")
    void method3674() {
       if(this.field2982 == null) {
-         this.field2982 = new class199(16);
+         this.field2982 = new XHashTable(16);
          int[] var1 = new int[16];
          int[] var2 = new int[16];
          var2[9] = 128;
          var1[9] = 128;
-         class185 var4 = new class185(this.field2983);
-         int var5 = var4.method3694();
+         class185 var3 = new class185(this.field2983);
+         int var4 = var3.method3694();
 
-         int var6;
-         for(var6 = 0; var6 < var5; ++var6) {
-            var4.method3732(var6);
-            var4.method3705(var6);
-            var4.method3695(var6);
+         int var5;
+         for(var5 = 0; var5 < var4; ++var5) {
+            var3.method3732(var5);
+            var3.method3705(var5);
+            var3.method3695(var5);
          }
 
-         label77:
+         label56:
          do {
             while(true) {
-               var6 = var4.method3702();
-               int var7 = var4.field2999[var6];
+               var5 = var3.method3702();
+               int var6 = var3.field2999[var5];
 
-               while(var4.field2999[var6] == var7) {
-                  var4.method3732(var6);
-                  int var8 = var4.method3698(var6);
-                  if(var8 == 1) {
-                     var4.method3697();
-                     var4.method3695(var6);
-                     continue label77;
+               while(var3.field2999[var5] == var6) {
+                  var3.method3732(var5);
+                  int var7 = var3.method3698(var5);
+                  if(var7 == 1) {
+                     var3.method3697();
+                     var3.method3695(var5);
+                     continue label56;
                   }
 
-                  int var9 = var8 & 240;
+                  int var8 = var7 & 240;
+                  int var9;
                   int var10;
                   int var11;
-                  int var12;
-                  if(var9 == 176) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var12 = var8 >> 16 & 127;
-                     if(var11 == 0) {
-                        var1[var10] = (var1[var10] & -2080769) + (var12 << 14);
+                  if(var8 == 176) {
+                     var9 = var7 & 15;
+                     var10 = var7 >> 8 & 127;
+                     var11 = var7 >> 16 & 127;
+                     if(var10 == 0) {
+                        var1[var9] = (var1[var9] & -2080769) + (var11 << 14);
                      }
 
-                     if(var11 == 32) {
-                        var1[var10] = (var1[var10] & -16257) + (var12 << 7);
+                     if(var10 == 32) {
+                        var1[var9] = (var1[var9] & -16257) + (var11 << 7);
                      }
                   }
 
-                  if(var9 == 192) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var2[var10] = var1[var10] + var11;
+                  if(var8 == 192) {
+                     var9 = var7 & 15;
+                     var10 = var7 >> 8 & 127;
+                     var2[var9] = var1[var9] + var10;
                   }
 
-                  if(var9 == 144) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var12 = var8 >> 16 & 127;
-                     if(var12 > 0) {
-                        int var13 = var2[var10];
-                        class200 var14 = (class200)this.field2982.method3936((long)var13);
-                        if(var14 == null) {
-                           var14 = new class200(new byte[128]);
-                           this.field2982.method3940(var14, (long)var13);
+                  if(var8 == 144) {
+                     var9 = var7 & 15;
+                     var10 = var7 >> 8 & 127;
+                     var11 = var7 >> 16 & 127;
+                     if(var11 > 0) {
+                        int var12 = var2[var9];
+                        class200 var13 = (class200)this.field2982.method3936((long)var12);
+                        if(var13 == null) {
+                           var13 = new class200(new byte[128]);
+                           this.field2982.method3940(var13, (long)var12);
                         }
 
-                        var14.field3152[var11] = 1;
+                        var13.field3152[var10] = 1;
                      }
                   }
 
-                  var4.method3705(var6);
-                  var4.method3695(var6);
+                  var3.method3705(var5);
+                  var3.method3695(var5);
                }
             }
-         } while(!var4.method3725());
-
+         } while(!var3.method3725());
       }
+
    }
 }

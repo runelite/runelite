@@ -38,7 +38,7 @@ public class class171 extends class170 {
    )
    int field2752 = -1;
    @ObfuscatedName("er")
-   static class81 field2754;
+   static SpritePixels field2754;
 
    @ObfuscatedName("ct")
    @ObfuscatedSignature(
@@ -50,67 +50,61 @@ public class class171 extends class170 {
       if(var1 == this.field2744) {
          if(this.field2747) {
             throw new RuntimeException();
-         }
-
-         if(null == var3) {
+         } else if(null == var3) {
             class126.method2919(this, 255, this.field2745, this.field2746, (byte)0, true);
-            return;
-         }
+         } else {
+            field2751.reset();
+            field2751.update(var3, 0, var3.length);
+            var5 = (int)field2751.getValue();
+            Buffer var9 = new Buffer(class124.method2893(var3));
+            int var7 = var9.method2633();
+            if(var7 != 5 && var7 != 6) {
+               throw new RuntimeException(var7 + "," + this.field2745 + "," + var2);
+            } else {
+               int var8 = 0;
+               if(var7 >= 6) {
+                  var8 = var9.method2620();
+               }
 
-         field2751.reset();
-         field2751.update(var3, 0, var3.length);
-         var5 = (int)field2751.getValue();
-         class122 var6 = new class122(class124.method2893(var3));
-         int var7 = var6.method2633();
-         if(var7 != 5 && var7 != 6) {
-            throw new RuntimeException(var7 + "," + this.field2745 + "," + var2);
+               if(var5 != this.field2746 || this.field2743 != var8) {
+                  class126.method2919(this, 255, this.field2745, this.field2746, (byte)0, true);
+               } else {
+                  this.method3393(var3);
+                  this.method3490();
+               }
+            }
          }
-
-         int var8 = 0;
-         if(var7 >= 6) {
-            var8 = var6.method2620();
-         }
-
-         if(var5 != this.field2746 || this.field2743 != var8) {
-            class126.method2919(this, 255, this.field2745, this.field2746, (byte)0, true);
-            return;
-         }
-
-         this.method3393(var3);
-         this.method3490();
       } else {
          if(!var4 && var2 == this.field2752) {
             this.field2747 = true;
          }
 
-         if(var3 == null || var3.length <= 2) {
+         if(var3 != null && var3.length > 2) {
+            field2751.reset();
+            field2751.update(var3, 0, var3.length - 2);
+            var5 = (int)field2751.getValue();
+            int var6 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
+            if(super.field2736[var2] == var5 && super.field2729[var2] == var6) {
+               this.field2748[var2] = true;
+               if(var4) {
+                  super.field2734[var2] = class52.method1131(var3, false);
+               }
+
+            } else {
+               this.field2748[var2] = false;
+               if(this.field2749 || var4) {
+                  class126.method2919(this, this.field2745, var2, super.field2736[var2], (byte)2, var4);
+               }
+
+            }
+         } else {
             this.field2748[var2] = false;
             if(this.field2749 || var4) {
                class126.method2919(this, this.field2745, var2, super.field2736[var2], (byte)2, var4);
             }
 
-            return;
-         }
-
-         field2751.reset();
-         field2751.update(var3, 0, var3.length - 2);
-         var5 = (int)field2751.getValue();
-         int var9 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
-         if(super.field2736[var2] != var5 || super.field2729[var2] != var9) {
-            this.field2748[var2] = false;
-            if(this.field2749 || var4) {
-               class126.method2919(this, this.field2745, var2, super.field2736[var2], (byte)2, var4);
-            }
-
-            return;
-         }
-
-         this.field2748[var2] = true;
-         if(var4) {
-            super.field2734[var2] = class52.method1131(var3, false);
          }
       }
-
    }
 
    @ObfuscatedName("g")
@@ -144,6 +138,8 @@ public class class171 extends class170 {
       garbageValue = "1946748906"
    )
    void method3488(int var1, byte[] var2, boolean var3, boolean var4) {
+      Deque var8;
+      Object var22;
       if(var3) {
          if(this.field2747) {
             throw new RuntimeException();
@@ -154,15 +150,17 @@ public class class171 extends class170 {
             class137 var6 = this.field2744;
             class172 var7 = new class172();
             var7.field2757 = 0;
-            var7.field3175 = (long)var5;
+            var7.hash = (long)var5;
             var7.field2755 = var2;
             var7.field2759 = var6;
-            class202 var8 = class173.field2765;
+            var8 = class173.field2765;
+            Deque var9 = class173.field2765;
             synchronized(class173.field2765) {
                class173.field2765.method3963(var7);
             }
 
-            Object var21 = class173.field2763;
+            var22 = class173.field2763;
+            Object var10 = class173.field2763;
             synchronized(class173.field2763) {
                if(class173.field2767 == 0) {
                   class125.field2070.method3029(new class173(), 5);
@@ -178,18 +176,20 @@ public class class171 extends class170 {
          var2[var2.length - 2] = (byte)(super.field2729[var1] >> 8);
          var2[var2.length - 1] = (byte)super.field2729[var1];
          if(this.field2750 != null) {
-            class137 var13 = this.field2750;
-            class172 var18 = new class172();
-            var18.field2757 = 0;
-            var18.field3175 = (long)var1;
-            var18.field2755 = var2;
-            var18.field2759 = var13;
-            class202 var19 = class173.field2765;
+            class137 var18 = this.field2750;
+            class172 var19 = new class172();
+            var19.field2757 = 0;
+            var19.hash = (long)var1;
+            var19.field2755 = var2;
+            var19.field2759 = var18;
+            Deque var20 = class173.field2765;
+            var8 = class173.field2765;
             synchronized(class173.field2765) {
-               class173.field2765.method3963(var18);
+               class173.field2765.method3963(var19);
             }
 
-            Object var20 = class173.field2763;
+            Object var21 = class173.field2763;
+            var22 = class173.field2763;
             synchronized(class173.field2763) {
                if(class173.field2767 == 0) {
                   class125.field2070.method3029(new class173(), 5);
@@ -229,17 +229,19 @@ public class class171 extends class170 {
          for(var1 = 0; var1 < this.field2748.length; ++var1) {
             if(super.field2742[var1] > 0) {
                class137 var2 = this.field2750;
-               class172 var4 = new class172();
-               var4.field2757 = 1;
-               var4.field3175 = (long)var1;
-               var4.field2759 = var2;
-               var4.field2758 = this;
-               class202 var5 = class173.field2765;
+               class172 var3 = new class172();
+               var3.field2757 = 1;
+               var3.hash = (long)var1;
+               var3.field2759 = var2;
+               var3.field2758 = this;
+               Deque var4 = class173.field2765;
+               Deque var5 = class173.field2765;
                synchronized(class173.field2765) {
-                  class173.field2765.method3963(var4);
+                  class173.field2765.method3963(var3);
                }
 
                Object var10 = class173.field2763;
+               Object var6 = class173.field2763;
                synchronized(class173.field2763) {
                   if(class173.field2767 == 0) {
                      class125.field2070.method3029(new class173(), 5);
@@ -255,8 +257,8 @@ public class class171 extends class170 {
          if(this.field2752 == -1) {
             this.field2747 = true;
          }
-
       }
+
    }
 
    @ObfuscatedName("cx")
@@ -270,16 +272,16 @@ public class class171 extends class170 {
       } else if(this.field2748[var1]) {
          return 100;
       } else {
-         int var3 = this.field2745;
-         long var4 = (long)((var3 << 16) + var1);
-         int var2;
-         if(class174.field2780 != null && class174.field2780.field3175 == var4) {
-            var2 = class159.field2368.field2050 * 99 / (class159.field2368.field2051.length - class174.field2780.field2793) + 1;
+         int var2 = this.field2745;
+         long var3 = (long)((var2 << 16) + var1);
+         int var5;
+         if(class174.field2780 != null && class174.field2780.hash == var3) {
+            var5 = class159.field2368.offset * 99 / (class159.field2368.payload.length - class174.field2780.field2793) + 1;
          } else {
-            var2 = 0;
+            var5 = 0;
          }
 
-         return var2;
+         return var5;
       }
    }
 

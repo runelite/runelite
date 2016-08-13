@@ -37,168 +37,168 @@ public class class109 {
       garbageValue = "-1399125549"
    )
    static void method2475() {
-      class33.field764 = class33.field764.trim();
-      if(class33.field764.length() == 0) {
-         class37.method781("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      class33.username = class33.username.trim();
+      if(class33.username.length() == 0) {
+         MessageNode.method781("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1 = class141.method3077();
-         byte var0;
-         if(0L == var1) {
-            var0 = 5;
+         long var0 = class141.method3077();
+         byte var2;
+         if(0L == var0) {
+            var2 = 5;
          } else {
-            String var4 = class33.field764;
-            Random var5 = new Random();
-            class122 var6 = new class122(128);
-            class122 var7 = new class122(128);
-            int[] var8 = new int[]{var5.nextInt(), var5.nextInt(), (int)(var1 >> 32), (int)var1};
+            String var3 = class33.username;
+            Random var4 = new Random();
+            Buffer var5 = new Buffer(128);
+            Buffer var6 = new Buffer(128);
+            int[] var7 = new int[]{var4.nextInt(), var4.nextInt(), (int)(var0 >> 32), (int)var0};
+            var5.method2783(10);
+
+            int var8;
+            for(var8 = 0; var8 < 4; ++var8) {
+               var5.method2728(var4.nextInt());
+            }
+
+            var5.method2728(var7[0]);
+            var5.method2728(var7[1]);
+            var5.method2623(var0);
+            var5.method2623(0L);
+
+            for(var8 = 0; var8 < 4; ++var8) {
+               var5.method2728(var4.nextInt());
+            }
+
+            var5.method2781(class9.field157, class9.field163);
             var6.method2783(10);
 
-            int var9;
-            for(var9 = 0; var9 < 4; ++var9) {
-               var6.method2728(var5.nextInt());
+            for(var8 = 0; var8 < 3; ++var8) {
+               var6.method2728(var4.nextInt());
             }
 
-            var6.method2728(var8[0]);
-            var6.method2728(var8[1]);
-            var6.method2623(var1);
-            var6.method2623(0L);
-
-            for(var9 = 0; var9 < 4; ++var9) {
-               var6.method2728(var5.nextInt());
-            }
-
-            var6.method2781(class9.field157, class9.field163);
-            var7.method2783(10);
-
-            for(var9 = 0; var9 < 3; ++var9) {
-               var7.method2728(var5.nextInt());
-            }
-
-            var7.method2623(var5.nextLong());
-            var7.method2622(var5.nextLong());
-            byte[] var18 = new byte[24];
+            var6.method2623(var4.nextLong());
+            var6.method2622(var4.nextLong());
+            byte[] var9 = new byte[24];
 
             try {
                class152.field2301.method4293(0L);
-               class152.field2301.method4297(var18);
+               class152.field2301.method4297(var9);
 
                int var10;
-               for(var10 = 0; var10 < 24 && var18[var10] == 0; ++var10) {
+               for(var10 = 0; var10 < 24 && var9[var10] == 0; ++var10) {
                   ;
                }
 
                if(var10 >= 24) {
                   throw new IOException();
                }
-            } catch (Exception var23) {
+            } catch (Exception var21) {
                for(int var11 = 0; var11 < 24; ++var11) {
-                  var18[var11] = -1;
+                  var9[var11] = -1;
                }
             }
 
-            var7.method2627(var18, 0, 24);
-            var7.method2623(var5.nextLong());
-            var7.method2781(class9.field157, class9.field163);
-            var9 = class54.method1165(var4);
-            if(var9 % 8 != 0) {
-               var9 += 8 - var9 % 8;
+            var6.method2627(var9, 0, 24);
+            var6.method2623(var4.nextLong());
+            var6.method2781(class9.field157, class9.field163);
+            var8 = class54.method1165(var3);
+            if(var8 % 8 != 0) {
+               var8 += 8 - var8 % 8;
             }
 
-            class122 var19 = new class122(var9);
-            var19.method2703(var4);
-            var19.field2050 = var9;
-            var19.method2650(var8);
-            class122 var20 = new class122(var7.field2050 + 5 + var6.field2050 + var19.field2050);
-            var20.method2783(2);
-            var20.method2783(var6.field2050);
-            var20.method2627(var6.field2051, 0, var6.field2050);
-            var20.method2783(var7.field2050);
-            var20.method2627(var7.field2051, 0, var7.field2050);
-            var20.method2619(var19.field2050);
-            var20.method2627(var19.field2051, 0, var19.field2050);
-            String var12 = class18.method218(var20.field2051);
+            Buffer var22 = new Buffer(var8);
+            var22.method2703(var3);
+            var22.offset = var8;
+            var22.method2650(var7);
+            Buffer var23 = new Buffer(var6.offset + 5 + var5.offset + var22.offset);
+            var23.method2783(2);
+            var23.method2783(var5.offset);
+            var23.method2627(var5.payload, 0, var5.offset);
+            var23.method2783(var6.offset);
+            var23.method2627(var6.payload, 0, var6.offset);
+            var23.method2619(var22.offset);
+            var23.method2627(var22.payload, 0, var22.offset);
+            String var12 = class18.method218(var23.payload);
 
-            byte var3;
+            byte var13;
             try {
-               URL var13 = new URL(class138.method3023("services", false) + "m=accountappeal/login.ws");
-               URLConnection var14 = var13.openConnection();
-               var14.setDoInput(true);
-               var14.setDoOutput(true);
-               var14.setConnectTimeout(5000);
-               OutputStreamWriter var15 = new OutputStreamWriter(var14.getOutputStream());
-               var15.write("data2=" + class130.method2971(var12) + "&dest=" + class130.method2971("passwordchoice.ws"));
-               var15.flush();
-               InputStream var16 = var14.getInputStream();
-               var20 = new class122(new byte[1000]);
+               URL var14 = new URL(class138.method3023("services", false) + "m=accountappeal/login.ws");
+               URLConnection var15 = var14.openConnection();
+               var15.setDoInput(true);
+               var15.setDoOutput(true);
+               var15.setConnectTimeout(5000);
+               OutputStreamWriter var16 = new OutputStreamWriter(var15.getOutputStream());
+               var16.write("data2=" + class130.method2971(var12) + "&dest=" + class130.method2971("passwordchoice.ws"));
+               var16.flush();
+               InputStream var17 = var15.getInputStream();
+               var23 = new Buffer(new byte[1000]);
 
                while(true) {
-                  int var17 = var16.read(var20.field2051, var20.field2050, 1000 - var20.field2050);
-                  if(var17 == -1) {
-                     var15.close();
+                  int var18 = var17.read(var23.payload, var23.offset, 1000 - var23.offset);
+                  if(var18 == -1) {
                      var16.close();
-                     String var21 = new String(var20.field2051);
-                     if(var21.startsWith("OFFLINE")) {
-                        var3 = 4;
-                     } else if(var21.startsWith("WRONG")) {
-                        var3 = 7;
-                     } else if(var21.startsWith("RELOAD")) {
-                        var3 = 3;
-                     } else if(var21.startsWith("Not permitted for social network accounts.")) {
-                        var3 = 6;
+                     var17.close();
+                     String var19 = new String(var23.payload);
+                     if(var19.startsWith("OFFLINE")) {
+                        var13 = 4;
+                     } else if(var19.startsWith("WRONG")) {
+                        var13 = 7;
+                     } else if(var19.startsWith("RELOAD")) {
+                        var13 = 3;
+                     } else if(var19.startsWith("Not permitted for social network accounts.")) {
+                        var13 = 6;
                      } else {
-                        var20.method2651(var8);
+                        var23.method2651(var7);
 
-                        while(var20.field2050 > 0 && var20.field2051[var20.field2050 - 1] == 0) {
-                           --var20.field2050;
+                        while(var23.offset > 0 && var23.payload[var23.offset - 1] == 0) {
+                           --var23.offset;
                         }
 
-                        var21 = new String(var20.field2051, 0, var20.field2050);
-                        if(class175.method3546(var21)) {
-                           class105.method2384(var21, true, false);
-                           var3 = 2;
+                        var19 = new String(var23.payload, 0, var23.offset);
+                        if(class175.method3546(var19)) {
+                           FrameMap.method2384(var19, true, false);
+                           var13 = 2;
                         } else {
-                           var3 = 5;
+                           var13 = 5;
                         }
                      }
                      break;
                   }
 
-                  var20.field2050 += var17;
-                  if(var20.field2050 >= 1000) {
-                     var3 = 5;
+                  var23.offset += var18;
+                  if(var23.offset >= 1000) {
+                     var13 = 5;
                      break;
                   }
                }
-            } catch (Throwable var22) {
-               var22.printStackTrace();
-               var3 = 5;
+            } catch (Throwable var20) {
+               var20.printStackTrace();
+               var13 = 5;
             }
 
-            var0 = var3;
+            var2 = var13;
          }
 
-         switch(var0) {
+         switch(var2) {
          case 2:
-            class37.method781("", "Page has opened in a new window.", "(Please check your popup blocker.)");
-            class33.field761 = 6;
+            MessageNode.method781("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class33.loginIndex = 6;
             break;
          case 3:
-            class37.method781("", "Error connecting to server.", "");
+            MessageNode.method781("", "Error connecting to server.", "");
             break;
          case 4:
-            class37.method781("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            MessageNode.method781("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
             break;
          case 5:
-            class37.method781("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            MessageNode.method781("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
             break;
          case 6:
-            class37.method781("", "Error connecting to server.", "");
+            MessageNode.method781("", "Error connecting to server.", "");
             break;
          case 7:
-            class37.method781("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+            MessageNode.method781("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 
    @ObfuscatedName("n")
@@ -219,8 +219,8 @@ public class class109 {
       garbageValue = "907128109"
    )
    public static void method2484() {
-      class51.field1128.method3910();
-      class51.field1129.method3910();
-      class51.field1138.method3910();
+      class51.field1128.reset();
+      class51.spriteCache.reset();
+      class51.field1138.reset();
    }
 }

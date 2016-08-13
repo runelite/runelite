@@ -13,13 +13,13 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class class143 implements MouseListener, MouseMotionListener, FocusListener {
    @ObfuscatedName("l")
    @Export("mouse")
-   public static class143 field2202 = new class143();
+   public static class143 mouse = new class143();
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 123866251
    )
    @Export("mouseIdleTicks")
-   public static volatile int field2203 = 0;
+   public static volatile int mouseIdleTicks = 0;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -28568323
@@ -92,8 +92,8 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    public static int field2217 = 0;
 
    public final synchronized void mouseMoved(MouseEvent var1) {
-      if(field2202 != null) {
-         field2203 = 0;
+      if(mouse != null) {
+         mouseIdleTicks = 0;
          field2205 = var1.getX();
          field2214 = var1.getY();
       }
@@ -101,8 +101,8 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseReleased(MouseEvent var1) {
-      if(null != field2202) {
-         field2203 = 0;
+      if(null != mouse) {
+         mouseIdleTicks = 0;
          field2204 = 0;
       }
 
@@ -120,8 +120,8 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseExited(MouseEvent var1) {
-      if(field2202 != null) {
-         field2203 = 0;
+      if(mouse != null) {
+         mouseIdleTicks = 0;
          field2205 = -1;
          field2214 = -1;
       }
@@ -129,8 +129,8 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mouseDragged(MouseEvent var1) {
-      if(field2202 != null) {
-         field2203 = 0;
+      if(mouse != null) {
+         mouseIdleTicks = 0;
          field2205 = var1.getX();
          field2214 = var1.getY();
       }
@@ -141,7 +141,7 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void focusLost(FocusEvent var1) {
-      if(null != field2202) {
+      if(null != mouse) {
          field2204 = 0;
       }
 
@@ -154,10 +154,10 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    )
    static final boolean method3111(byte[] var0, int var1, int var2) {
       boolean var3 = true;
-      class122 var4 = new class122(var0);
+      Buffer var4 = new Buffer(var0);
       int var5 = -1;
 
-      label81:
+      label71:
       while(true) {
          int var6 = var4.method2646();
          if(var6 == 0) {
@@ -169,45 +169,57 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
          boolean var8 = false;
 
          while(true) {
-            int var9;
-            while(!var8) {
-               var9 = var4.method2646();
-               if(var9 == 0) {
-                  continue label81;
-               }
+            int var12;
+            ObjectComposition var15;
+            do {
+               int var13;
+               int var14;
+               do {
+                  do {
+                     do {
+                        do {
+                           int var9;
+                           while(var8) {
+                              var9 = var4.method2646();
+                              if(var9 == 0) {
+                                 continue label71;
+                              }
 
-               var7 += var9 - 1;
-               int var10 = var7 & 63;
-               int var11 = var7 >> 6 & 63;
-               int var12 = var4.method2633() >> 2;
-               int var13 = var11 + var1;
-               int var14 = var10 + var2;
-               if(var13 > 0 && var14 > 0 && var13 < 103 && var14 < 103) {
-                  class42 var15 = class160.method3312(var5);
-                  if(var12 != 22 || !client.field301 || var15.field944 != 0 || var15.field998 == 1 || var15.field983) {
-                     if(!var15.method857()) {
-                        ++client.field493;
-                        var3 = false;
-                     }
+                              var4.method2633();
+                           }
 
-                     var8 = true;
-                  }
-               }
+                           var9 = var4.method2646();
+                           if(var9 == 0) {
+                              continue label71;
+                           }
+
+                           var7 += var9 - 1;
+                           int var10 = var7 & 63;
+                           int var11 = var7 >> 6 & 63;
+                           var12 = var4.method2633() >> 2;
+                           var13 = var11 + var1;
+                           var14 = var10 + var2;
+                        } while(var13 <= 0);
+                     } while(var14 <= 0);
+                  } while(var13 >= 103);
+               } while(var14 >= 103);
+
+               var15 = class160.getObjectDefinition(var5);
+            } while(var12 == 22 && Client.field301 && var15.field944 == 0 && var15.field998 != 1 && !var15.field983);
+
+            if(!var15.method857()) {
+               ++Client.field493;
+               var3 = false;
             }
 
-            var9 = var4.method2646();
-            if(var9 == 0) {
-               break;
-            }
-
-            var4.method2633();
+            var8 = true;
          }
       }
    }
 
    public final synchronized void mouseEntered(MouseEvent var1) {
-      if(null != field2202) {
-         field2203 = 0;
+      if(null != mouse) {
+         mouseIdleTicks = 0;
          field2205 = var1.getX();
          field2214 = var1.getY();
       }
@@ -215,8 +227,8 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    }
 
    public final synchronized void mousePressed(MouseEvent var1) {
-      if(null != field2202) {
-         field2203 = 0;
+      if(null != mouse) {
+         mouseIdleTicks = 0;
          field2211 = var1.getX();
          field2212 = var1.getY();
          field2213 = class56.method1249();
@@ -245,38 +257,38 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
    )
    static void method3118(class227 var0, class227 var1, class227 var2, boolean var3) {
       if(var3) {
-         class33.field741 = (class189.field3056 - client.field508) / 2;
-         class33.field777 = 202 + class33.field741;
+         class33.field741 = (class189.field3056 - Client.field508) / 2;
+         class33.loginWindowX = 202 + class33.field741;
       }
 
       byte var4;
       int var5;
+      int var6;
       int var7;
+      int var8;
+      int var9;
       int var10;
       int var11;
-      int var12;
+      Graphics var12;
       int var13;
       int var14;
-      Graphics var23;
-      int var29;
-      int var31;
-      int var32;
-      int var33;
-      if(class33.field772) {
+      int var15;
+      int var16;
+      if(class33.worldSelectShown) {
          if(null == class32.field731) {
-            class32.field731 = class54.method1167(client.field451, "sl_back", "");
+            class32.field731 = class54.method1167(Client.field451, "sl_back", "");
          }
 
          if(null == class174.field2789) {
-            class174.field2789 = class36.method773(client.field451, "sl_flags", "");
+            class174.field2789 = NPC.method773(Client.field451, "sl_flags", "");
          }
 
          if(class33.field773 == null) {
-            class33.field773 = class36.method773(client.field451, "sl_arrows", "");
+            class33.field773 = NPC.method773(Client.field451, "sl_arrows", "");
          }
 
          if(class48.field1081 == null) {
-            class48.field1081 = class36.method773(client.field451, "sl_stars", "");
+            class48.field1081 = NPC.method773(Client.field451, "sl_stars", "");
          }
 
          class82.method1907(class33.field741, 23, 765, 480, 0);
@@ -291,62 +303,62 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
          }
 
          if(null != class33.field773) {
-            var29 = 280 + class33.field741;
-            if(class27.field666[0] == 0 && class27.field665[0] == 0) {
-               class33.field773[2].method1954(var29, 4);
+            var13 = 280 + class33.field741;
+            if(World.field666[0] == 0 && World.field665[0] == 0) {
+               class33.field773[2].method1954(var13, 4);
             } else {
-               class33.field773[0].method1954(var29, 4);
+               class33.field773[0].method1954(var13, 4);
             }
 
-            if(class27.field666[0] == 0 && class27.field665[0] == 1) {
-               class33.field773[3].method1954(15 + var29, 4);
+            if(World.field666[0] == 0 && World.field665[0] == 1) {
+               class33.field773[3].method1954(15 + var13, 4);
             } else {
-               class33.field773[1].method1954(15 + var29, 4);
+               class33.field773[1].method1954(15 + var13, 4);
             }
 
-            var0.method4170("World", var29 + 32, 17, 16777215, -1);
+            var0.method4170("World", var13 + 32, 17, 16777215, -1);
             var5 = class33.field741 + 390;
-            if(class27.field666[0] == 1 && class27.field665[0] == 0) {
+            if(World.field666[0] == 1 && World.field665[0] == 0) {
                class33.field773[2].method1954(var5, 4);
             } else {
                class33.field773[0].method1954(var5, 4);
             }
 
-            if(class27.field666[0] == 1 && class27.field665[0] == 1) {
+            if(World.field666[0] == 1 && World.field665[0] == 1) {
                class33.field773[3].method1954(15 + var5, 4);
             } else {
                class33.field773[1].method1954(15 + var5, 4);
             }
 
             var0.method4170("Players", 32 + var5, 17, 16777215, -1);
-            var31 = 500 + class33.field741;
-            if(class27.field666[0] == 2 && class27.field665[0] == 0) {
-               class33.field773[2].method1954(var31, 4);
+            var14 = 500 + class33.field741;
+            if(World.field666[0] == 2 && World.field665[0] == 0) {
+               class33.field773[2].method1954(var14, 4);
             } else {
-               class33.field773[0].method1954(var31, 4);
+               class33.field773[0].method1954(var14, 4);
             }
 
-            if(class27.field666[0] == 2 && class27.field665[0] == 1) {
-               class33.field773[3].method1954(var31 + 15, 4);
+            if(World.field666[0] == 2 && World.field665[0] == 1) {
+               class33.field773[3].method1954(var14 + 15, 4);
             } else {
-               class33.field773[1].method1954(15 + var31, 4);
+               class33.field773[1].method1954(15 + var14, 4);
             }
 
-            var0.method4170("Location", var31 + 32, 17, 16777215, -1);
-            var7 = 610 + class33.field741;
-            if(class27.field666[0] == 3 && class27.field665[0] == 0) {
-               class33.field773[2].method1954(var7, 4);
+            var0.method4170("Location", var14 + 32, 17, 16777215, -1);
+            var6 = 610 + class33.field741;
+            if(World.field666[0] == 3 && World.field665[0] == 0) {
+               class33.field773[2].method1954(var6, 4);
             } else {
-               class33.field773[0].method1954(var7, 4);
+               class33.field773[0].method1954(var6, 4);
             }
 
-            if(class27.field666[0] == 3 && class27.field665[0] == 1) {
-               class33.field773[3].method1954(15 + var7, 4);
+            if(World.field666[0] == 3 && World.field665[0] == 1) {
+               class33.field773[3].method1954(15 + var6, 4);
             } else {
-               class33.field773[1].method1954(var7 + 15, 4);
+               class33.field773[1].method1954(var6 + 15, 4);
             }
 
-            var0.method4170("Type", var7 + 32, 17, 16777215, -1);
+            var0.method4170("Type", var6 + 32, 17, 16777215, -1);
          }
 
          class82.method1907(708 + class33.field741, 4, 50, 16, 0);
@@ -354,316 +366,320 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
          class33.field743 = -1;
          if(null != class32.field731) {
             var4 = 88;
-            byte var36 = 19;
-            var31 = 765 / (1 + var4);
-            var7 = 480 / (var36 + 1);
+            byte var17 = 19;
+            var14 = 765 / (1 + var4);
+            var6 = 480 / (var17 + 1);
 
-            do {
-               var32 = var7;
-               var33 = var31;
-               if((var31 - 1) * var7 >= class27.field663) {
-                  --var31;
+            while(true) {
+               var15 = var6;
+               var16 = var14;
+               if((var14 - 1) * var6 >= World.field663) {
+                  --var14;
                }
 
-               if((var7 - 1) * var31 >= class27.field663) {
-                  --var7;
+               if((var6 - 1) * var14 >= World.field663) {
+                  --var6;
                }
 
-               if(var31 * (var7 - 1) >= class27.field663) {
-                  --var7;
-               }
-            } while(var32 != var7 || var33 != var31);
-
-            var32 = (765 - var31 * var4) / (var31 + 1);
-            if(var32 > 5) {
-               var32 = 5;
-            }
-
-            var33 = (480 - var7 * var36) / (var7 + 1);
-            if(var33 > 5) {
-               var33 = 5;
-            }
-
-            var10 = (765 - var31 * var4 - var32 * (var31 - 1)) / 2;
-            var11 = (480 - var7 * var36 - var33 * (var7 - 1)) / 2;
-            var12 = 23 + var11;
-            var13 = var10 + class33.field741;
-            var14 = 0;
-            boolean var15 = false;
-
-            int var16;
-            for(var16 = 0; var16 < class27.field663; ++var16) {
-               class27 var17 = class27.field662[var16];
-               boolean var18 = true;
-               String var19 = Integer.toString(var17.field669);
-               if(var17.field669 == -1) {
-                  var19 = "OFF";
-                  var18 = false;
-               } else if(var17.field669 > 1980) {
-                  var19 = "FULL";
-                  var18 = false;
+               if(var14 * (var6 - 1) >= World.field663) {
+                  --var6;
                }
 
-               int var21 = 0;
-               byte var20;
-               if(var17.method637()) {
-                  if(var17.method632()) {
-                     var20 = 7;
-                  } else {
-                     var20 = 6;
+               if(var15 == var6 && var16 == var14) {
+                  var15 = (765 - var14 * var4) / (var14 + 1);
+                  if(var15 > 5) {
+                     var15 = 5;
                   }
-               } else if(var17.method636()) {
-                  var21 = 16711680;
-                  if(var17.method632()) {
-                     var20 = 5;
-                  } else {
-                     var20 = 4;
+
+                  var16 = (480 - var6 * var17) / (var6 + 1);
+                  if(var16 > 5) {
+                     var16 = 5;
                   }
-               } else if(var17.method634()) {
-                  if(var17.method632()) {
-                     var20 = 3;
-                  } else {
-                     var20 = 2;
+
+                  var7 = (765 - var14 * var4 - var15 * (var14 - 1)) / 2;
+                  var8 = (480 - var6 * var17 - var16 * (var6 - 1)) / 2;
+                  var9 = 23 + var8;
+                  var10 = var7 + class33.field741;
+                  var11 = 0;
+                  boolean var18 = false;
+
+                  int var19;
+                  for(var19 = 0; var19 < World.field663; ++var19) {
+                     World var20 = World.worldList[var19];
+                     boolean var21 = true;
+                     String var22 = Integer.toString(var20.playerCount);
+                     if(var20.playerCount == -1) {
+                        var22 = "OFF";
+                        var21 = false;
+                     } else if(var20.playerCount > 1980) {
+                        var22 = "FULL";
+                        var21 = false;
+                     }
+
+                     int var23 = 0;
+                     byte var24;
+                     if(var20.method637()) {
+                        if(var20.method632()) {
+                           var24 = 7;
+                        } else {
+                           var24 = 6;
+                        }
+                     } else if(var20.method636()) {
+                        var23 = 16711680;
+                        if(var20.method632()) {
+                           var24 = 5;
+                        } else {
+                           var24 = 4;
+                        }
+                     } else if(var20.method634()) {
+                        if(var20.method632()) {
+                           var24 = 3;
+                        } else {
+                           var24 = 2;
+                        }
+                     } else if(var20.method632()) {
+                        var24 = 1;
+                     } else {
+                        var24 = 0;
+                     }
+
+                     if(field2206 >= var10 && field2209 >= var9 && field2206 < var10 + var4 && field2209 < var17 + var9 && var21) {
+                        class33.field743 = var19;
+                        class32.field731[var24].method1810(var10, var9, 128, 16777215);
+                        var18 = true;
+                     } else {
+                        class32.field731[var24].method1851(var10, var9);
+                     }
+
+                     if(null != class174.field2789) {
+                        class174.field2789[(var20.method632()?8:0) + var20.location].method1954(var10 + 29, var9);
+                     }
+
+                     var0.method4173(Integer.toString(var20.id), 15 + var10, 5 + var17 / 2 + var9, var23, -1);
+                     var1.method4173(var22, var10 + 60, 5 + var17 / 2 + var9, 268435455, -1);
+                     var9 += var16 + var17;
+                     ++var11;
+                     if(var11 >= var6) {
+                        var9 = 23 + var8;
+                        var10 += var4 + var15;
+                        var11 = 0;
+                     }
                   }
-               } else if(var17.method632()) {
-                  var20 = 1;
-               } else {
-                  var20 = 0;
-               }
 
-               if(field2206 >= var13 && field2209 >= var12 && field2206 < var13 + var4 && field2209 < var36 + var12 && var18) {
-                  class33.field743 = var16;
-                  class32.field731[var20].method1810(var13, var12, 128, 16777215);
-                  var15 = true;
-               } else {
-                  class32.field731[var20].method1851(var13, var12);
+                  if(var18) {
+                     var19 = var1.method4165(World.worldList[class33.field743].activity) + 6;
+                     int var30 = 8 + var1.field3235;
+                     class82.method1907(field2206 - var19 / 2, 20 + field2209 + 5, var19, var30, 16777120);
+                     class82.method1893(field2206 - var19 / 2, field2209 + 20 + 5, var19, var30, 0);
+                     var1.method4173(World.worldList[class33.field743].activity, field2206, 4 + var1.field3235 + field2209 + 20 + 5, 0, -1);
+                  }
+                  break;
                }
-
-               if(null != class174.field2789) {
-                  class174.field2789[(var17.method632()?8:0) + var17.field672].method1954(var13 + 29, var12);
-               }
-
-               var0.method4173(Integer.toString(var17.field667), 15 + var13, 5 + var36 / 2 + var12, var21, -1);
-               var1.method4173(var19, var13 + 60, 5 + var36 / 2 + var12, 268435455, -1);
-               var12 += var33 + var36;
-               ++var14;
-               if(var14 >= var7) {
-                  var12 = 23 + var11;
-                  var13 += var4 + var32;
-                  var14 = 0;
-               }
-            }
-
-            if(var15) {
-               var16 = var1.method4165(class27.field662[class33.field743].field680) + 6;
-               int var22 = 8 + var1.field3235;
-               class82.method1907(field2206 - var16 / 2, 20 + field2209 + 5, var16, var22, 16777120);
-               class82.method1893(field2206 - var16 / 2, field2209 + 20 + 5, var16, var22, 0);
-               var1.method4173(class27.field662[class33.field743].field680, field2206, 4 + var1.field3235 + field2209 + 20 + 5, 0, -1);
             }
          }
 
          try {
-            var23 = class107.field1867.getGraphics();
-            class54.field1173.vmethod1965(var23, 0, 0);
+            var12 = class107.canvas.getGraphics();
+            class54.bufferProvider.draw(var12, 0, 0);
          } catch (Exception var26) {
-            class107.field1867.repaint();
+            class107.canvas.repaint();
          }
-
       } else {
          if(var3) {
             class33.field745.method1851(class33.field741, 0);
             class33.field746.method1851(382 + class33.field741, 0);
-            class106.field1847.method1954(382 + class33.field741 - class106.field1847.field1498 / 2, 18);
+            Frames.field1847.method1954(382 + class33.field741 - Frames.field1847.originalWidth / 2, 18);
          }
 
-         if(client.field303 == 0 || client.field303 == 5) {
+         if(Client.gameState == 0 || Client.gameState == 5) {
             var4 = 20;
-            var0.method4173("RuneScape is loading - please wait...", class33.field777 + 180, 245 - var4, 16777215, -1);
+            var0.method4173("RuneScape is loading - please wait...", class33.loginWindowX + 180, 245 - var4, 16777215, -1);
             var5 = 253 - var4;
-            class82.method1893(class33.field777 + 180 - 152, var5, 304, 34, 9179409);
-            class82.method1893(180 + class33.field777 - 151, var5 + 1, 302, 32, 0);
-            class82.method1907(class33.field777 + 180 - 150, var5 + 2, class33.field757 * 3, 30, 9179409);
-            class82.method1907(class33.field757 * 3 + (180 + class33.field777 - 150), var5 + 2, 300 - class33.field757 * 3, 30, 0);
-            var0.method4173(class33.field758, class33.field777 + 180, 276 - var4, 16777215, -1);
+            class82.method1893(class33.loginWindowX + 180 - 152, var5, 304, 34, 9179409);
+            class82.method1893(180 + class33.loginWindowX - 151, var5 + 1, 302, 32, 0);
+            class82.method1907(class33.loginWindowX + 180 - 150, var5 + 2, class33.field757 * 3, 30, 9179409);
+            class82.method1907(class33.field757 * 3 + (180 + class33.loginWindowX - 150), var5 + 2, 300 - class33.field757 * 3, 30, 0);
+            var0.method4173(class33.field758, class33.loginWindowX + 180, 276 - var4, 16777215, -1);
          }
 
-         String var24;
+         String var27;
          short var28;
-         short var30;
-         if(client.field303 == 20) {
-            class33.field760.method1954(class33.field777 + 180 - class33.field760.field1498 / 2, 271 - class33.field760.field1503 / 2);
+         short var29;
+         if(Client.gameState == 20) {
+            class33.field760.method1954(class33.loginWindowX + 180 - class33.field760.originalWidth / 2, 271 - class33.field760.height / 2);
             var28 = 211;
-            var0.method4173(class33.field748, class33.field777 + 180, var28, 16776960, 0);
-            var29 = var28 + 15;
-            var0.method4173(class33.field762, class33.field777 + 180, var29, 16776960, 0);
-            var29 += 15;
-            var0.method4173(class33.field755, 180 + class33.field777, var29, 16776960, 0);
-            var29 += 15;
-            var29 += 10;
-            if(class33.field761 != 4) {
-               var0.method4170("Login: ", 180 + class33.field777 - 110, var29, 16777215, 0);
-               var30 = 200;
+            var0.method4173(class33.loginMessage1, class33.loginWindowX + 180, var28, 16776960, 0);
+            var13 = var28 + 15;
+            var0.method4173(class33.loginMessage2, class33.loginWindowX + 180, var13, 16776960, 0);
+            var13 += 15;
+            var0.method4173(class33.loginMessage3, 180 + class33.loginWindowX, var13, 16776960, 0);
+            var13 += 15;
+            var13 += 10;
+            if(class33.loginIndex != 4) {
+               var0.method4170("Login: ", 180 + class33.loginWindowX - 110, var13, 16777215, 0);
+               var29 = 200;
 
-               for(var24 = class33.field764; var0.method4165(var24) > var30; var24 = var24.substring(0, var24.length() - 1)) {
+               for(var27 = class33.username; var0.method4165(var27) > var29; var27 = var27.substring(0, var27.length() - 1)) {
                   ;
                }
 
-               var0.method4170(class226.method4169(var24), class33.field777 + 180 - 70, var29, 16777215, 0);
-               var29 += 15;
-               var0.method4170("Password: " + class138.method3018(class33.field765), class33.field777 + 180 - 108, var29, 16777215, 0);
-               var29 += 15;
+               var0.method4170(class226.method4169(var27), class33.loginWindowX + 180 - 70, var13, 16777215, 0);
+               var13 += 15;
+               var0.method4170("Password: " + class138.method3018(class33.field765), class33.loginWindowX + 180 - 108, var13, 16777215, 0);
+               var13 += 15;
             }
          }
 
-         if(client.field303 == 10 || client.field303 == 11) {
-            class33.field760.method1954(class33.field777, 171);
-            short var6;
-            if(class33.field761 == 0) {
+         if(Client.gameState == 10 || Client.gameState == 11) {
+            class33.field760.method1954(class33.loginWindowX, 171);
+            short var31;
+            if(class33.loginIndex == 0) {
                var28 = 251;
-               var0.method4173("Welcome to RuneScape", class33.field777 + 180, var28, 16776960, 0);
-               var29 = var28 + 30;
-               var5 = 180 + class33.field777 - 80;
-               var6 = 291;
-               class33.field763.method1954(var5 - 73, var6 - 20);
-               var0.method4174("New User", var5 - 73, var6 - 20, 144, 40, 16777215, 0, 1, 1, 0);
-               var5 = 80 + 180 + class33.field777;
-               class33.field763.method1954(var5 - 73, var6 - 20);
-               var0.method4174("Existing User", var5 - 73, var6 - 20, 144, 40, 16777215, 0, 1, 1, 0);
-            } else if(class33.field761 == 1) {
-               var0.method4173(class33.field740, class33.field777 + 180, 211, 16776960, 0);
+               var0.method4173("Welcome to RuneScape", class33.loginWindowX + 180, var28, 16776960, 0);
+               var13 = var28 + 30;
+               var5 = 180 + class33.loginWindowX - 80;
+               var31 = 291;
+               class33.field763.method1954(var5 - 73, var31 - 20);
+               var0.method4174("New User", var5 - 73, var31 - 20, 144, 40, 16777215, 0, 1, 1, 0);
+               var5 = 260 + class33.loginWindowX;
+               class33.field763.method1954(var5 - 73, var31 - 20);
+               var0.method4174("Existing User", var5 - 73, var31 - 20, 144, 40, 16777215, 0, 1, 1, 0);
+            } else if(class33.loginIndex == 1) {
+               var0.method4173(class33.field740, class33.loginWindowX + 180, 211, 16776960, 0);
                var28 = 236;
-               var0.method4173(class33.field748, class33.field777 + 180, var28, 16777215, 0);
-               var29 = var28 + 15;
-               var0.method4173(class33.field762, 180 + class33.field777, var29, 16777215, 0);
-               var29 += 15;
-               var0.method4173(class33.field755, class33.field777 + 180, var29, 16777215, 0);
-               var29 += 15;
-               var5 = 180 + class33.field777 - 80;
-               var6 = 321;
-               class33.field763.method1954(var5 - 73, var6 - 20);
-               var0.method4173("Continue", var5, 5 + var6, 16777215, 0);
-               var5 = 180 + class33.field777 + 80;
-               class33.field763.method1954(var5 - 73, var6 - 20);
-               var0.method4173("Cancel", var5, 5 + var6, 16777215, 0);
+               var0.method4173(class33.loginMessage1, class33.loginWindowX + 180, var28, 16777215, 0);
+               var13 = var28 + 15;
+               var0.method4173(class33.loginMessage2, 180 + class33.loginWindowX, var13, 16777215, 0);
+               var13 += 15;
+               var0.method4173(class33.loginMessage3, class33.loginWindowX + 180, var13, 16777215, 0);
+               var13 += 15;
+               var5 = 180 + class33.loginWindowX - 80;
+               var31 = 321;
+               class33.field763.method1954(var5 - 73, var31 - 20);
+               var0.method4173("Continue", var5, 5 + var31, 16777215, 0);
+               var5 = 180 + class33.loginWindowX + 80;
+               class33.field763.method1954(var5 - 73, var31 - 20);
+               var0.method4173("Cancel", var5, 5 + var31, 16777215, 0);
             } else {
-               short var8;
-               if(class33.field761 == 2) {
+               short var32;
+               if(class33.loginIndex == 2) {
                   var28 = 211;
-                  var0.method4173(class33.field748, 180 + class33.field777, var28, 16776960, 0);
-                  var29 = var28 + 15;
-                  var0.method4173(class33.field762, class33.field777 + 180, var29, 16776960, 0);
-                  var29 += 15;
-                  var0.method4173(class33.field755, 180 + class33.field777, var29, 16776960, 0);
-                  var29 += 15;
-                  var29 += 10;
-                  var0.method4170("Login: ", 180 + class33.field777 - 110, var29, 16777215, 0);
-                  var30 = 200;
+                  var0.method4173(class33.loginMessage1, 180 + class33.loginWindowX, var28, 16776960, 0);
+                  var13 = var28 + 15;
+                  var0.method4173(class33.loginMessage2, class33.loginWindowX + 180, var13, 16776960, 0);
+                  var13 += 15;
+                  var0.method4173(class33.loginMessage3, 180 + class33.loginWindowX, var13, 16776960, 0);
+                  var13 += 15;
+                  var13 += 10;
+                  var0.method4170("Login: ", 180 + class33.loginWindowX - 110, var13, 16777215, 0);
+                  var29 = 200;
 
-                  for(var24 = class33.field764; var0.method4165(var24) > var30; var24 = var24.substring(1)) {
+                  for(var27 = class33.username; var0.method4165(var27) > var29; var27 = var27.substring(1)) {
                      ;
                   }
 
-                  var0.method4170(class226.method4169(var24) + (class33.field769 == 0 & client.field305 % 40 < 20?class16.method205(16776960) + "|":""), class33.field777 + 180 - 70, var29, 16777215, 0);
-                  var29 += 15;
-                  var0.method4170("Password: " + class138.method3018(class33.field765) + (class33.field769 == 1 & client.field305 % 40 < 20?class16.method205(16776960) + "|":""), 180 + class33.field777 - 108, var29, 16777215, 0);
-                  var29 += 15;
-                  var7 = class33.field777 + 180 - 80;
-                  var8 = 321;
-                  class33.field763.method1954(var7 - 73, var8 - 20);
-                  var0.method4173("Login", var7, var8 + 5, 16777215, 0);
-                  var7 = 80 + 180 + class33.field777;
-                  class33.field763.method1954(var7 - 73, var8 - 20);
-                  var0.method4173("Cancel", var7, var8 + 5, 16777215, 0);
+                  var0.method4170(class226.method4169(var27) + (class33.loginIndex2 == 0 & Client.gameCycle % 40 < 20?class16.method205(16776960) + "|":""), class33.loginWindowX + 180 - 70, var13, 16777215, 0);
+                  var13 += 15;
+                  var0.method4170("Password: " + class138.method3018(class33.field765) + (class33.loginIndex2 == 1 & Client.gameCycle % 40 < 20?class16.method205(16776960) + "|":""), 180 + class33.loginWindowX - 108, var13, 16777215, 0);
+                  var13 += 15;
+                  var6 = class33.loginWindowX + 180 - 80;
+                  var32 = 321;
+                  class33.field763.method1954(var6 - 73, var32 - 20);
+                  var0.method4173("Login", var6, var32 + 5, 16777215, 0);
+                  var6 = 260 + class33.loginWindowX;
+                  class33.field763.method1954(var6 - 73, var32 - 20);
+                  var0.method4173("Cancel", var6, var32 + 5, 16777215, 0);
                   var28 = 357;
-                  var1.method4173("Forgotten your password? <col=ffffff>Click here.", 180 + class33.field777, var28, 16776960, 0);
-               } else if(class33.field761 == 3) {
+                  var1.method4173("Forgotten your password? <col=ffffff>Click here.", 180 + class33.loginWindowX, var28, 16776960, 0);
+               } else if(class33.loginIndex == 3) {
                   var28 = 201;
-                  var0.method4173("Invalid username or password.", class33.field777 + 180, var28, 16776960, 0);
-                  var29 = var28 + 20;
-                  var1.method4173("For accounts created after 24th November 2010, please use your", class33.field777 + 180, var29, 16776960, 0);
-                  var29 += 15;
-                  var1.method4173("email address to login. Otherwise please login with your username.", class33.field777 + 180, var29, 16776960, 0);
-                  var29 += 15;
-                  var5 = 180 + class33.field777;
-                  var6 = 276;
-                  class33.field763.method1954(var5 - 73, var6 - 20);
-                  var2.method4173("Try again", var5, 5 + var6, 16777215, 0);
-                  var5 = 180 + class33.field777;
-                  var6 = 326;
-                  class33.field763.method1954(var5 - 73, var6 - 20);
-                  var2.method4173("Forgotten password?", var5, 5 + var6, 16777215, 0);
-               } else if(class33.field761 == 4) {
-                  var0.method4173("Authenticator", 180 + class33.field777, 211, 16776960, 0);
+                  var0.method4173("Invalid username or password.", class33.loginWindowX + 180, var28, 16776960, 0);
+                  var13 = var28 + 20;
+                  var1.method4173("For accounts created after 24th November 2010, please use your", class33.loginWindowX + 180, var13, 16776960, 0);
+                  var13 += 15;
+                  var1.method4173("email address to login. Otherwise please login with your username.", class33.loginWindowX + 180, var13, 16776960, 0);
+                  var13 += 15;
+                  var5 = 180 + class33.loginWindowX;
+                  var31 = 276;
+                  class33.field763.method1954(var5 - 73, var31 - 20);
+                  var2.method4173("Try again", var5, 5 + var31, 16777215, 0);
+                  var5 = 180 + class33.loginWindowX;
+                  var31 = 326;
+                  class33.field763.method1954(var5 - 73, var31 - 20);
+                  var2.method4173("Forgotten password?", var5, 5 + var31, 16777215, 0);
+               } else if(class33.loginIndex == 4) {
+                  var0.method4173("Authenticator", 180 + class33.loginWindowX, 211, 16776960, 0);
                   var28 = 236;
-                  var0.method4173(class33.field748, 180 + class33.field777, var28, 16777215, 0);
-                  var29 = var28 + 15;
-                  var0.method4173(class33.field762, class33.field777 + 180, var29, 16777215, 0);
-                  var29 += 15;
-                  var0.method4173(class33.field755, class33.field777 + 180, var29, 16777215, 0);
-                  var29 += 15;
-                  var0.method4170("PIN: " + class138.method3018(class33.field767) + (client.field305 % 40 < 20?class16.method205(16776960) + "|":""), 180 + class33.field777 - 108, var29, 16777215, 0);
-                  var29 -= 8;
-                  var0.method4170("Trust this computer", 180 + class33.field777 - 9, var29, 16776960, 0);
-                  var29 += 15;
-                  var0.method4170("for 30 days: ", 180 + class33.field777 - 9, var29, 16776960, 0);
-                  var5 = class33.field777 + 180 - 9 + var0.method4165("for 30 days: ") + 15;
-                  var31 = var29 - var0.field3235;
-                  class83 var25;
+                  var0.method4173(class33.loginMessage1, 180 + class33.loginWindowX, var28, 16777215, 0);
+                  var13 = var28 + 15;
+                  var0.method4173(class33.loginMessage2, class33.loginWindowX + 180, var13, 16777215, 0);
+                  var13 += 15;
+                  var0.method4173(class33.loginMessage3, class33.loginWindowX + 180, var13, 16777215, 0);
+                  var13 += 15;
+                  var0.method4170("PIN: " + class138.method3018(class33.authCode) + (Client.gameCycle % 40 < 20?class16.method205(16776960) + "|":""), 180 + class33.loginWindowX - 108, var13, 16777215, 0);
+                  var13 -= 8;
+                  var0.method4170("Trust this computer", 180 + class33.loginWindowX - 9, var13, 16776960, 0);
+                  var13 += 15;
+                  var0.method4170("for 30 days: ", 180 + class33.loginWindowX - 9, var13, 16776960, 0);
+                  var5 = class33.loginWindowX + 180 - 9 + var0.method4165("for 30 days: ") + 15;
+                  var14 = var13 - var0.field3235;
+                  ModIcon var35;
                   if(class33.field768) {
-                     var25 = class22.field596;
+                     var35 = class22.field596;
                   } else {
-                     var25 = class47.field1075;
+                     var35 = class47.field1075;
                   }
 
-                  var25.method1954(var5, var31);
-                  var29 += 15;
-                  var32 = 180 + class33.field777 - 80;
-                  short var9 = 321;
-                  class33.field763.method1954(var32 - 73, var9 - 20);
-                  var0.method4173("Continue", var32, var9 + 5, 16777215, 0);
-                  var32 = 80 + 180 + class33.field777;
-                  class33.field763.method1954(var32 - 73, var9 - 20);
-                  var0.method4173("Cancel", var32, var9 + 5, 16777215, 0);
-                  var1.method4173("<u=ff>Can\'t Log In?</u>", class33.field777 + 180, var9 + 36, 255, 0);
-               } else if(class33.field761 == 5) {
-                  var0.method4173("Forgotten your password?", 180 + class33.field777, 201, 16776960, 0);
+                  var35.method1954(var5, var14);
+                  var13 += 15;
+                  var15 = 180 + class33.loginWindowX - 80;
+                  short var36 = 321;
+                  class33.field763.method1954(var15 - 73, var36 - 20);
+                  var0.method4173("Continue", var15, var36 + 5, 16777215, 0);
+                  var15 = 260 + class33.loginWindowX;
+                  class33.field763.method1954(var15 - 73, var36 - 20);
+                  var0.method4173("Cancel", var15, var36 + 5, 16777215, 0);
+                  var1.method4173("<u=ff>Can\'t Log In?</u>", class33.loginWindowX + 180, var36 + 36, 255, 0);
+               } else if(class33.loginIndex != 5) {
+                  if(class33.loginIndex == 6) {
+                     var28 = 211;
+                     var0.method4173(class33.loginMessage1, 180 + class33.loginWindowX, var28, 16776960, 0);
+                     var13 = var28 + 15;
+                     var0.method4173(class33.loginMessage2, class33.loginWindowX + 180, var13, 16776960, 0);
+                     var13 += 15;
+                     var0.method4173(class33.loginMessage3, 180 + class33.loginWindowX, var13, 16776960, 0);
+                     var13 += 15;
+                     var5 = 180 + class33.loginWindowX;
+                     var31 = 321;
+                     class33.field763.method1954(var5 - 73, var31 - 20);
+                     var0.method4173("Back", var5, var31 + 5, 16777215, 0);
+                  }
+               } else {
+                  var0.method4173("Forgotten your password?", 180 + class33.loginWindowX, 201, 16776960, 0);
                   var28 = 221;
-                  var2.method4173(class33.field748, class33.field777 + 180, var28, 16776960, 0);
-                  var29 = var28 + 15;
-                  var2.method4173(class33.field762, class33.field777 + 180, var29, 16776960, 0);
-                  var29 += 15;
-                  var2.method4173(class33.field755, 180 + class33.field777, var29, 16776960, 0);
-                  var29 += 15;
-                  var29 += 14;
-                  var0.method4170("Username/email: ", class33.field777 + 180 - 145, var29, 16777215, 0);
-                  var30 = 174;
+                  var2.method4173(class33.loginMessage1, class33.loginWindowX + 180, var28, 16776960, 0);
+                  var13 = var28 + 15;
+                  var2.method4173(class33.loginMessage2, class33.loginWindowX + 180, var13, 16776960, 0);
+                  var13 += 15;
+                  var2.method4173(class33.loginMessage3, 180 + class33.loginWindowX, var13, 16776960, 0);
+                  var13 += 15;
+                  var13 += 14;
+                  var0.method4170("Username/email: ", class33.loginWindowX + 180 - 145, var13, 16777215, 0);
+                  var29 = 174;
 
-                  for(var24 = class33.field764; var0.method4165(var24) > var30; var24 = var24.substring(1)) {
+                  for(var27 = class33.username; var0.method4165(var27) > var29; var27 = var27.substring(1)) {
                      ;
                   }
 
-                  var0.method4170(class226.method4169(var24) + (client.field305 % 40 < 20?class16.method205(16776960) + "|":""), class33.field777 + 180 - 34, var29, 16777215, 0);
-                  var29 += 15;
-                  var7 = 180 + class33.field777 - 80;
-                  var8 = 321;
-                  class33.field763.method1954(var7 - 73, var8 - 20);
-                  var0.method4173("Recover", var7, var8 + 5, 16777215, 0);
-                  var7 = class33.field777 + 180 + 80;
-                  class33.field763.method1954(var7 - 73, var8 - 20);
-                  var0.method4173("Back", var7, 5 + var8, 16777215, 0);
-               } else if(class33.field761 == 6) {
-                  var28 = 211;
-                  var0.method4173(class33.field748, 180 + class33.field777, var28, 16776960, 0);
-                  var29 = var28 + 15;
-                  var0.method4173(class33.field762, class33.field777 + 180, var29, 16776960, 0);
-                  var29 += 15;
-                  var0.method4173(class33.field755, 180 + class33.field777, var29, 16776960, 0);
-                  var29 += 15;
-                  var5 = 180 + class33.field777;
-                  var6 = 321;
-                  class33.field763.method1954(var5 - 73, var6 - 20);
-                  var0.method4173("Back", var5, var6 + 5, 16777215, 0);
+                  var0.method4170(class226.method4169(var27) + (Client.gameCycle % 40 < 20?class16.method205(16776960) + "|":""), class33.loginWindowX + 180 - 34, var13, 16777215, 0);
+                  var13 += 15;
+                  var6 = 180 + class33.loginWindowX - 80;
+                  var32 = 321;
+                  class33.field763.method1954(var6 - 73, var32 - 20);
+                  var0.method4173("Recover", var6, var32 + 5, 16777215, 0);
+                  var6 = class33.loginWindowX + 180 + 80;
+                  class33.field763.method1954(var6 - 73, var32 - 20);
+                  var0.method4173("Back", var6, 5 + var32, 16777215, 0);
                }
             }
          }
@@ -704,87 +720,87 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
          class33.field745.method1851(class33.field741, 0);
          class82.method1880();
          var5 = 0;
-         var31 = class54.field1173.field1470 * 9 + class33.field741;
+         var14 = class54.bufferProvider.width * 9 + class33.field741;
 
-         for(var7 = 1; var7 < var28 - 1; ++var7) {
-            var32 = class33.field742[var7] * (var28 - var7) / var28;
-            var33 = var32 + 22;
-            if(var33 < 0) {
-               var33 = 0;
+         for(var6 = 1; var6 < var28 - 1; ++var6) {
+            var15 = class33.field742[var6] * (var28 - var6) / var28;
+            var16 = var15 + 22;
+            if(var16 < 0) {
+               var16 = 0;
             }
 
-            var5 += var33;
+            var5 += var16;
 
-            for(var10 = var33; var10 < 128; ++var10) {
-               var11 = class29.field699[var5++];
-               if(var11 != 0) {
-                  var12 = var11;
-                  var13 = 256 - var11;
-                  var11 = class138.field2141[var11];
-                  var14 = class54.field1173.field1474[var31];
-                  class54.field1173.field1474[var31++] = (var13 * (var14 & 16711935) + var12 * (var11 & 16711935) & -16711936) + (var12 * (var11 & '\uff00') + var13 * (var14 & '\uff00') & 16711680) >> 8;
+            for(var7 = var16; var7 < 128; ++var7) {
+               var8 = ChatLineBuffer.field699[var5++];
+               if(var8 != 0) {
+                  var9 = var8;
+                  var10 = 256 - var8;
+                  var8 = class138.field2141[var8];
+                  var11 = class54.bufferProvider.pixels[var14];
+                  class54.bufferProvider.pixels[var14++] = (var10 * (var11 & 16711935) + var9 * (var8 & 16711935) & -16711936) + (var9 * (var8 & '\uff00') + var10 * (var11 & '\uff00') & 16711680) >> 8;
                } else {
-                  ++var31;
+                  ++var14;
                }
             }
 
-            var31 += class54.field1173.field1470 + var33 - 128;
+            var14 += class54.bufferProvider.width + var16 - 128;
          }
 
          class82.method1908(765 + class33.field741 - 128, 9, class33.field741 + 765, 7 + var28);
          class33.field746.method1851(class33.field741 + 382, 0);
          class82.method1880();
          var5 = 0;
-         var31 = class33.field741 + 637 + class54.field1173.field1470 * 9 + 24;
+         var14 = class33.field741 + 637 + class54.bufferProvider.width * 9 + 24;
 
-         for(var7 = 1; var7 < var28 - 1; ++var7) {
-            var32 = class33.field742[var7] * (var28 - var7) / var28;
-            var33 = 103 - var32;
-            var31 += var32;
+         for(var6 = 1; var6 < var28 - 1; ++var6) {
+            var15 = class33.field742[var6] * (var28 - var6) / var28;
+            var16 = 103 - var15;
+            var14 += var15;
 
-            for(var10 = 0; var10 < var33; ++var10) {
-               var11 = class29.field699[var5++];
-               if(var11 != 0) {
-                  var12 = var11;
-                  var13 = 256 - var11;
-                  var11 = class138.field2141[var11];
-                  var14 = class54.field1173.field1474[var31];
-                  class54.field1173.field1474[var31++] = ((var14 & '\uff00') * var13 + var12 * (var11 & '\uff00') & 16711680) + (var13 * (var14 & 16711935) + (var11 & 16711935) * var12 & -16711936) >> 8;
+            for(var7 = 0; var7 < var16; ++var7) {
+               var8 = ChatLineBuffer.field699[var5++];
+               if(var8 != 0) {
+                  var9 = var8;
+                  var10 = 256 - var8;
+                  var8 = class138.field2141[var8];
+                  var11 = class54.bufferProvider.pixels[var14];
+                  class54.bufferProvider.pixels[var14++] = ((var11 & '\uff00') * var10 + var9 * (var8 & '\uff00') & 16711680) + (var10 * (var11 & 16711935) + (var8 & 16711935) * var9 & -16711936) >> 8;
                } else {
-                  ++var31;
+                  ++var14;
                }
             }
 
-            var5 += 128 - var33;
-            var31 += class54.field1173.field1470 - var33 - var32;
+            var5 += 128 - var16;
+            var14 += class54.bufferProvider.width - var16 - var15;
          }
 
          class33.field747[class136.field2123.field148?1:0].method1954(class33.field741 + 765 - 40, 463);
-         if(client.field303 > 5 && client.field326 == 0) {
+         if(Client.gameState > 5 && Client.field326 == 0) {
             if(null != class33.field774) {
-               var29 = class33.field741 + 5;
-               var30 = 463;
-               byte var35 = 100;
+               var13 = class33.field741 + 5;
+               var29 = 463;
+               byte var33 = 100;
                byte var34 = 35;
-               class33.field774.method1954(var29, var30);
-               var0.method4173("World" + " " + client.field407, var35 / 2 + var29, var34 / 2 + var30 - 2, 16777215, 0);
-               if(null != class117.field2027) {
-                  var1.method4173("Loading...", var35 / 2 + var29, 12 + var34 / 2 + var30, 16777215, 0);
+               class33.field774.method1954(var13, var29);
+               var0.method4173("World " + Client.world, var33 / 2 + var13, var34 / 2 + var29 - 2, 16777215, 0);
+               if(null != class117.worldServersDownload) {
+                  var1.method4173("Loading...", var33 / 2 + var13, 12 + var34 / 2 + var29, 16777215, 0);
                } else {
-                  var1.method4173("Click to switch", var35 / 2 + var29, 12 + var30 + var34 / 2, 16777215, 0);
+                  var1.method4173("Click to switch", var33 / 2 + var13, 12 + var29 + var34 / 2, 16777215, 0);
                }
             } else {
-               class33.field774 = class137.method3010(client.field451, "sl_button", "");
+               class33.field774 = class137.method3010(Client.field451, "sl_button", "");
             }
          }
 
          try {
-            var23 = class107.field1867.getGraphics();
-            class54.field1173.vmethod1965(var23, 0, 0);
-         } catch (Exception var27) {
-            class107.field1867.repaint();
+            var12 = class107.canvas.getGraphics();
+            class54.bufferProvider.draw(var12, 0, 0);
+         } catch (Exception var25) {
+            class107.canvas.repaint();
          }
-
       }
+
    }
 }

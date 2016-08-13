@@ -20,13 +20,6 @@ public class class224 {
    @ObfuscatedName("w")
    static int[] field3225;
 
-   static {
-      new class222();
-      field3222 = new class220();
-      field3223 = new class216();
-      field3224 = new class219();
-   }
-
    @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZI)V",
@@ -42,10 +35,10 @@ public class class224 {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lclass122;Z)V",
+      signature = "(LBuffer;Z)V",
       garbageValue = "1"
    )
-   public class224(class122 var1, boolean var2) {
+   public class224(Buffer var1, boolean var2) {
       int var3 = var1.method2635();
       boolean var4 = var1.method2633() == 1;
       byte var5;
@@ -62,5 +55,12 @@ public class class224 {
          this.field3220.add(new class217(var1, var5, var3));
       }
 
+   }
+
+   static {
+      new class222();
+      field3222 = new class220();
+      field3223 = new class216();
+      field3224 = new class219();
    }
 }
