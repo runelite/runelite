@@ -76,6 +76,9 @@ public class UpdateMappingsTest
 		AnnotationIntegrityChecker aic = new AnnotationIntegrityChecker(group1, group2, mapping);
 		aic.run();
 
+		AnnotationRenamer an = new AnnotationRenamer(group2);
+		an.run();
+
 		JarUtil.saveJar(group2, new File(OUT));
 	}
 

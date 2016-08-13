@@ -33,53 +33,35 @@ package net.runelite.deob.updater;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
-import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
-import net.runelite.deob.deobfuscators.mapping.Mapper;
-import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.deob.util.JarUtil;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-public class UpdateMappings
+public class AnnotationRenamerTest
 {
-	private final ClassGroup group1, group2;
+	private static final String JAR = "C:\\Users\\Adam\\.m2\\repository\\net\\runelite\\rs\\rs-client\\120.2-SNAPSHOT\\rs-client-120.2-SNAPSHOT.jar",
+		OUT = "d:/rs/07/adamout.jar";
 
-	public UpdateMappings(ClassGroup group1, ClassGroup group2)
+	private ClassGroup group;
+
+	@Before
+	public void before() throws IOException
 	{
-		this.group1 = group1;
-		this.group2 = group2;
+		group = JarUtil.loadJar(new File(JAR));
 	}
 
-	public void update()
+	@After
+	public void after() throws IOException
 	{
-		Mapper mapper = new Mapper(group1, group2);
-		mapper.run();
-		ParallelExecutorMapping mapping = mapper.getMapping();
-
-		AnnotationMapper amapper = new AnnotationMapper(group1, group2, mapping);
-		amapper.run();
-
-		AnnotationIntegrityChecker aic = new AnnotationIntegrityChecker(group1, group2, mapping);
-		aic.run();
-
-		AnnotationRenamer an = new AnnotationRenamer(group2);
-		an.run();
+		JarUtil.saveJar(group, new File(OUT));
 	}
 
-	public void save(File out) throws IOException
+	//@Test
+	public void testRename()
 	{
-		JarUtil.saveJar(group2, out);
+		AnnotationRenamer ar = new AnnotationRenamer(group);
+		ar.run();
 	}
 
-	public static void main(String[] args) throws IOException
-	{
-		if (args.length < 3)
-			System.exit(-1);
-
-		UpdateMappings u = new UpdateMappings(
-			JarUtil.loadJar(new File(args[0])),
-			JarUtil.loadJar(new File(args[1]))
-		);
-		u.update();
-		u.save(new File(args[2]));
-	}
 }
