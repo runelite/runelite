@@ -217,20 +217,24 @@ public class Renamer implements Deobfuscator
 
 	private Type renameType(Type t)
 	{
-                if (t.isPrimitive())
-                        return t;
+		if (t.isPrimitive())
+		{
+			return t;
+		}
 
-                String className = t.getType();
+		String className = t.getType();
 		assert className.startsWith("L");
 		assert className.endsWith(";");
-		
-                className = className.substring(1, className.length() - 1); // remove L ;
+
+		className = className.substring(1, className.length() - 1); // remove L ;
 
 		String newName = mappings.get(new net.runelite.asm.pool.Class(className));
 		if (newName == null)
+		{
 			return t;
+		}
 
-                Type type =  new Type("L" + newName + ";", t.getArrayDims());
+		Type type = new Type("L" + newName + ";", t.getArrayDims());
 
 		logger.debug("Renamed {} -> {}", t, type);
 
@@ -239,10 +243,12 @@ public class Renamer implements Deobfuscator
 
 	private Signature renameSignature(Signature s)
 	{
-                Signature sig = new Signature();
-                sig.setTypeOfReturnValue(renameType(s.getReturnValue()));
-                for (Type t : s.getArguments())
-                        sig.addArg(renameType(t));
-                return sig;
+		Signature sig = new Signature();
+		sig.setTypeOfReturnValue(renameType(s.getReturnValue()));
+		for (Type t : s.getArguments())
+		{
+			sig.addArg(renameType(t));
+		}
+		return sig;
 	}
 }
