@@ -30,56 +30,77 @@
 
 package net.runelite.deob.updater;
 
-import java.io.File;
-import java.io.IOException;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.deobfuscators.mapping.AnnotationIntegrityChecker;
-import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
-import net.runelite.deob.deobfuscators.mapping.Mapper;
-import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
-import net.runelite.deob.util.JarUtil;
+import net.runelite.asm.Field;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.Annotations;
+import net.runelite.asm.attributes.annotation.Annotation;
+import net.runelite.asm.signature.Type;
+import net.runelite.deob.deobfuscators.Renamer;
+import net.runelite.deob.util.NameMappings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class UpdateMappings
+public class AnnotationRenamer
 {
-	private final ClassGroup group1, group2;
+	private static final Logger logger = LoggerFactory.getLogger(AnnotationRenamer.class);
+	
+	private static final Type EXPORT_TYPE = new Type("Lnet/runelite/mapping/Export;");
+	private static final Type IMPLEMENTS_TYPE = new Type("Lnet/runelite/mapping/Implements;");
 
-	public UpdateMappings(ClassGroup group1, ClassGroup group2)
+	private ClassGroup group;
+
+	public AnnotationRenamer(ClassGroup group)
 	{
-		this.group1 = group1;
-		this.group2 = group2;
+		this.group = group;
 	}
 
-	public void update()
+	public void run()
 	{
-		Mapper mapper = new Mapper(group1, group2);
-		mapper.run();
-		ParallelExecutorMapping mapping = mapper.getMapping();
+		NameMappings mappings = buildMappings();
 
-		AnnotationMapper amapper = new AnnotationMapper(group1, group2, mapping);
-		amapper.run();
-
-		AnnotationIntegrityChecker aic = new AnnotationIntegrityChecker(group1, group2, mapping);
-		aic.run();
-
-		AnnotationRenamer an = new AnnotationRenamer(group2);
-		an.run();
+		Renamer renamer = new Renamer(mappings);
+		renamer.run(group);
 	}
 
-	public void save(File out) throws IOException
+	private NameMappings buildMappings()
 	{
-		JarUtil.saveJar(group2, out);
+		NameMappings mappings = new NameMappings();
+
+		for (ClassFile cf : group.getClasses())
+		{
+			String name = getImplements(cf.getAnnotations());
+			if (name != null)
+				mappings.map(cf.getPoolClass(), name);
+
+			for (Field f : cf.getFields().getFields())
+			{
+				name = getExport(f.getAnnotations());
+				if (name != null)
+					mappings.map(f.getPoolField(), name);
+			}
+
+			for (Method m : cf.getMethods().getMethods())
+			{
+				name = getExport(m.getAnnotations());
+				if (name != null)
+					mappings.map(m.getPoolMethod(), name);
+			}
+		}
+
+		return mappings;
 	}
 
-	public static void main(String[] args) throws IOException
+	private String getExport(Annotations annotations)
 	{
-		if (args.length < 3)
-			System.exit(-1);
+		Annotation an = annotations.find(EXPORT_TYPE);
+		return an != null ? an.getElement().getString() : null;
+	}
 
-		UpdateMappings u = new UpdateMappings(
-			JarUtil.loadJar(new File(args[0])),
-			JarUtil.loadJar(new File(args[1]))
-		);
-		u.update();
-		u.save(new File(args[2]));
+	private String getImplements(Annotations annotations)
+	{
+		Annotation an = annotations.find(IMPLEMENTS_TYPE);
+		return an != null ? an.getElement().getString() : null;
 	}
 }
