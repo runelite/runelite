@@ -107,13 +107,15 @@ public class Inject
 		if (t.isPrimitive())
 			return t;
 
-		if (!t.isObfuscatedType() && !t.getType().equals("client"))
-			return t;
-		
 		String className = t.getType();
+		assert className.startsWith("L");
+		assert className.endsWith(";");
+
 		className = className.substring(1, className.length() - 1); // remove L ;
+
 		ClassFile cf = deobfuscated.findClass(className);
-		assert cf != null;
+		if (cf == null)
+			return t;
 		
 		Annotations an = cf.getAnnotations();
 		String obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
@@ -193,7 +195,7 @@ public class Inject
 				obfuscatedName = obfuscatedNameAnnotation.getElement().getString();
 			
 			ClassFile other = vanilla.findClass(obfuscatedName);
-			assert other != null;
+			assert other != null : "unable to find vanilla class from obfuscated name: " + obfuscatedName;
 			
 			java.lang.Class implementingClass = injectInterface(cf, other);
 			// it can not implement an interface but still have exported static fields, which are
