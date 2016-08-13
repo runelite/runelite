@@ -40,7 +40,7 @@ import org.objectweb.asm.ClassReader;
 
 public class ClientVersion
 {
-	private File jar;
+	private final File jar;
 
 	public ClientVersion(File jar)
 	{

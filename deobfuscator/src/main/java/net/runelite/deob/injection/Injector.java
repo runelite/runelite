@@ -28,19 +28,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob.updater;
+package net.runelite.deob.injection;
 
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
-import net.runelite.deob.injection.Inject;
 import net.runelite.deob.util.JarUtil;
 
-public class UpdateInject
+public class Injector
 {
 	private final ClassGroup deobfuscated, vanilla;
 
-	public UpdateInject(ClassGroup deobfuscated, ClassGroup vanilla)
+	public Injector(ClassGroup deobfuscated, ClassGroup vanilla)
 	{
 		this.deobfuscated = deobfuscated;
 		this.vanilla = vanilla;
@@ -62,7 +61,7 @@ public class UpdateInject
 		if (args.length < 3)
 			System.exit(-1);
 		
-		UpdateInject u = new UpdateInject(
+		Injector u = new Injector(
 			JarUtil.loadJar(new File(args[0])),
 			JarUtil.loadJar(new File(args[1]))
 		);
