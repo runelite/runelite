@@ -45,19 +45,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>rs-client</artifactId>
-			<version>120.2-SNAPSHOT</version> <!-- rs version -->
-		</dependency>
-		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>deob</artifactId>
 			<version>1.2.7-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.runelite.rs</groupId>
-			<artifactId>vanilla</artifactId>
-			<version>120</version>
 		</dependency>
 		
 		<dependency>
