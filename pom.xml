@@ -78,23 +78,11 @@
 		<module>model-viewer</module>
 		<module>runelite-api</module>
 		<module>runelite-client</module>
-		<module>runescape-client</module>
 		<module>runescape-api</module>
+		<module>runescape-client</module>
+		<module>runescape-client-injector</module>
+		<module>runescape-client-injector-plugin</module>
 	</modules>
-
-	<profiles>
-		<profile>
-			<id>Linux</id>
-			<activation>
-				<os>
-					<family>unix</family>
-				</os>
-			</activation>
-			<modules>
-				<module>runescape-client-injector</module>
-			</modules>
-		</profile>
-	</profiles>
 
 	<build>
 		<plugins>
