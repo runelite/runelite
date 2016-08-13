@@ -14,16 +14,16 @@ public class class177 {
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(IIIIIILclass89;Lclass111;I)V",
+      signature = "(IIIIIILRegion;LCollisionData;I)V",
       garbageValue = "-977422388"
    )
-   static final void method3597(int var0, int var1, int var2, int var3, int var4, int var5, class89 var6, class111 var7) {
-      if(!client.field301 || (class5.field80[0][var1][var2] & 2) != 0 || (class5.field80[var0][var1][var2] & 16) == 0) {
+   static final void method3597(int var0, int var1, int var2, int var3, int var4, int var5, Region var6, CollisionData var7) {
+      if(!Client.field301 || (class5.tileSettings[0][var1][var2] & 2) != 0 || (class5.tileSettings[var0][var1][var2] & 16) == 0) {
          if(var0 < class5.field81) {
             class5.field81 = var0;
          }
 
-         class42 var8 = class160.method3312(var3);
+         ObjectComposition var8 = class160.getObjectDefinition(var3);
          int var9;
          int var10;
          if(var4 != 1 && var4 != 3) {
@@ -54,7 +54,7 @@ public class class177 {
             var14 = var2 + 1;
          }
 
-         int[][] var15 = class5.field85[var0];
+         int[][] var15 = class5.tileHeights[var0];
          int var16 = var15[var11][var13] + var15[var12][var13] + var15[var11][var14] + var15[var12][var14] >> 2;
          int var17 = (var9 << 6) + (var1 << 7);
          int var18 = (var10 << 6) + (var2 << 7);
@@ -72,48 +72,47 @@ public class class177 {
             class110.method2492(var0, var1, var2, var8, var4);
          }
 
-         Object var26;
+         Object var21;
          if(var5 == 22) {
-            if(!client.field301 || var8.field944 != 0 || var8.field998 == 1 || var8.field983) {
-               if(var8.field968 == -1 && var8.field986 == null) {
-                  var26 = var8.method851(22, var4, var15, var17, var16, var18);
+            if(!Client.field301 || var8.field944 != 0 || var8.field998 == 1 || var8.field983) {
+               if(var8.field968 == -1 && var8.impostorIds == null) {
+                  var21 = var8.method851(22, var4, var15, var17, var16, var18);
                } else {
-                  var26 = new class12(var3, 22, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                  var21 = new class12(var3, 22, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                }
 
-               var6.method2043(var0, var1, var2, var16, (class88)var26, var19, var20);
+               var6.groundObjectSpawned(var0, var1, var2, var16, (Renderable)var21, var19, var20);
                if(var8.field998 == 1 && null != var7) {
                   var7.method2513(var1, var2);
                }
-
             }
          } else {
             int var22;
+            int var23;
             if(var5 != 10 && var5 != 11) {
                if(var5 >= 12) {
-                  if(var8.field968 == -1 && null == var8.field986) {
-                     var26 = var8.method851(var5, var4, var15, var17, var16, var18);
+                  if(var8.field968 == -1 && null == var8.impostorIds) {
+                     var21 = var8.method851(var5, var4, var15, var17, var16, var18);
                   } else {
-                     var26 = new class12(var3, var5, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                     var21 = new class12(var3, var5, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                   }
 
-                  var6.method2002(var0, var1, var2, var16, 1, 1, (class88)var26, 0, var19, var20);
+                  var6.method2002(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
                   if(var5 >= 12 && var5 <= 17 && var5 != 13 && var0 > 0) {
-                     class99.field1704[var0][var1][var2] |= 2340;
+                     VertexNormal.field1704[var0][var1][var2] |= 2340;
                   }
 
                   if(var8.field998 != 0 && null != var7) {
                      var7.method2506(var1, var2, var9, var10, var8.field961);
                   }
-
                } else if(var5 == 0) {
-                  if(var8.field968 == -1 && null == var8.field986) {
-                     var26 = var8.method851(0, var4, var15, var17, var16, var18);
+                  if(var8.field968 == -1 && null == var8.impostorIds) {
+                     var21 = var8.method851(0, var4, var15, var17, var16, var18);
                   } else {
-                     var26 = new class12(var3, 0, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                     var21 = new class12(var3, 0, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                   }
 
-                  var6.method2000(var0, var1, var2, var16, (class88)var26, (class88)null, class5.field90[var4], 0, var19, var20);
+                  var6.method2000(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field90[var4], 0, var19, var20);
                   if(var4 == 0) {
                      if(var8.field976) {
                         class232.field3275[var0][var1][var2] = 50;
@@ -121,7 +120,7 @@ public class class177 {
                      }
 
                      if(var8.field953) {
-                        class99.field1704[var0][var1][var2] |= 585;
+                        VertexNormal.field1704[var0][var1][var2] |= 585;
                      }
                   } else if(var4 == 1) {
                      if(var8.field976) {
@@ -130,7 +129,7 @@ public class class177 {
                      }
 
                      if(var8.field953) {
-                        class99.field1704[var0][var1][var2 + 1] |= 1170;
+                        VertexNormal.field1704[var0][var1][var2 + 1] |= 1170;
                      }
                   } else if(var4 == 2) {
                      if(var8.field976) {
@@ -139,7 +138,7 @@ public class class177 {
                      }
 
                      if(var8.field953) {
-                        class99.field1704[var0][1 + var1][var2] |= 585;
+                        VertexNormal.field1704[var0][1 + var1][var2] |= 585;
                      }
                   } else if(var4 == 3) {
                      if(var8.field976) {
@@ -148,7 +147,7 @@ public class class177 {
                      }
 
                      if(var8.field953) {
-                        class99.field1704[var0][var1][var2] |= 1170;
+                        VertexNormal.field1704[var0][var1][var2] |= 1170;
                      }
                   }
 
@@ -159,15 +158,14 @@ public class class177 {
                   if(var8.field969 != 16) {
                      var6.method2127(var0, var1, var2, var8.field969);
                   }
-
                } else if(var5 == 1) {
-                  if(var8.field968 == -1 && null == var8.field986) {
-                     var26 = var8.method851(1, var4, var15, var17, var16, var18);
+                  if(var8.field968 == -1 && null == var8.impostorIds) {
+                     var21 = var8.method851(1, var4, var15, var17, var16, var18);
                   } else {
-                     var26 = new class12(var3, 1, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                     var21 = new class12(var3, 1, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                   }
 
-                  var6.method2000(var0, var1, var2, var16, (class88)var26, (class88)null, class5.field91[var4], 0, var19, var20);
+                  var6.method2000(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field91[var4], 0, var19, var20);
                   if(var8.field976) {
                      if(var4 == 0) {
                         class232.field3275[var0][var1][1 + var2] = 50;
@@ -183,35 +181,33 @@ public class class177 {
                   if(var8.field998 != 0 && var7 != null) {
                      var7.method2517(var1, var2, var5, var4, var8.field961);
                   }
-
                } else {
-                  int var21;
                   Object var27;
                   if(var5 == 2) {
-                     var21 = var4 + 1 & 3;
-                     Object var29;
-                     if(var8.field968 == -1 && null == var8.field986) {
-                        var29 = var8.method851(2, var4 + 4, var15, var17, var16, var18);
-                        var27 = var8.method851(2, var21, var15, var17, var16, var18);
+                     var23 = var4 + 1 & 3;
+                     Object var25;
+                     if(var8.field968 == -1 && null == var8.impostorIds) {
+                        var25 = var8.method851(2, var4 + 4, var15, var17, var16, var18);
+                        var27 = var8.method851(2, var23, var15, var17, var16, var18);
                      } else {
-                        var29 = new class12(var3, 2, 4 + var4, var0, var1, var2, var8.field968, true, (class88)null);
-                        var27 = new class12(var3, 2, var21, var0, var1, var2, var8.field968, true, (class88)null);
+                        var25 = new class12(var3, 2, 4 + var4, var0, var1, var2, var8.field968, true, (Renderable)null);
+                        var27 = new class12(var3, 2, var23, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2000(var0, var1, var2, var16, (class88)var29, (class88)var27, class5.field90[var4], class5.field90[var21], var19, var20);
+                     var6.method2000(var0, var1, var2, var16, (Renderable)var25, (Renderable)var27, class5.field90[var4], class5.field90[var23], var19, var20);
                      if(var8.field953) {
                         if(var4 == 0) {
-                           class99.field1704[var0][var1][var2] |= 585;
-                           class99.field1704[var0][var1][1 + var2] |= 1170;
+                           VertexNormal.field1704[var0][var1][var2] |= 585;
+                           VertexNormal.field1704[var0][var1][1 + var2] |= 1170;
                         } else if(var4 == 1) {
-                           class99.field1704[var0][var1][1 + var2] |= 1170;
-                           class99.field1704[var0][1 + var1][var2] |= 585;
+                           VertexNormal.field1704[var0][var1][1 + var2] |= 1170;
+                           VertexNormal.field1704[var0][1 + var1][var2] |= 585;
                         } else if(var4 == 2) {
-                           class99.field1704[var0][1 + var1][var2] |= 585;
-                           class99.field1704[var0][var1][var2] |= 1170;
+                           VertexNormal.field1704[var0][1 + var1][var2] |= 585;
+                           VertexNormal.field1704[var0][var1][var2] |= 1170;
                         } else if(var4 == 3) {
-                           class99.field1704[var0][var1][var2] |= 1170;
-                           class99.field1704[var0][var1][var2] |= 585;
+                           VertexNormal.field1704[var0][var1][var2] |= 1170;
+                           VertexNormal.field1704[var0][var1][var2] |= 585;
                         }
                      }
 
@@ -222,15 +218,14 @@ public class class177 {
                      if(var8.field969 != 16) {
                         var6.method2127(var0, var1, var2, var8.field969);
                      }
-
                   } else if(var5 == 3) {
-                     if(var8.field968 == -1 && null == var8.field986) {
-                        var26 = var8.method851(3, var4, var15, var17, var16, var18);
+                     if(var8.field968 == -1 && null == var8.impostorIds) {
+                        var21 = var8.method851(3, var4, var15, var17, var16, var18);
                      } else {
-                        var26 = new class12(var3, 3, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                        var21 = new class12(var3, 3, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2000(var0, var1, var2, var16, (class88)var26, (class88)null, class5.field91[var4], 0, var19, var20);
+                     var6.method2000(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field91[var4], 0, var19, var20);
                      if(var8.field976) {
                         if(var4 == 0) {
                            class232.field3275[var0][var1][1 + var2] = 50;
@@ -246,15 +241,14 @@ public class class177 {
                      if(var8.field998 != 0 && null != var7) {
                         var7.method2517(var1, var2, var5, var4, var8.field961);
                      }
-
                   } else if(var5 == 9) {
-                     if(var8.field968 == -1 && var8.field986 == null) {
-                        var26 = var8.method851(var5, var4, var15, var17, var16, var18);
+                     if(var8.field968 == -1 && var8.impostorIds == null) {
+                        var21 = var8.method851(var5, var4, var15, var17, var16, var18);
                      } else {
-                        var26 = new class12(var3, var5, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                        var21 = new class12(var3, var5, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2002(var0, var1, var2, var16, 1, 1, (class88)var26, 0, var19, var20);
+                     var6.method2002(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
                      if(var8.field998 != 0 && var7 != null) {
                         var7.method2506(var1, var2, var9, var10, var8.field961);
                      }
@@ -262,89 +256,88 @@ public class class177 {
                      if(var8.field969 != 16) {
                         var6.method2127(var0, var1, var2, var8.field969);
                      }
-
                   } else if(var5 == 4) {
-                     if(var8.field968 == -1 && null == var8.field986) {
-                        var26 = var8.method851(4, var4, var15, var17, var16, var18);
+                     if(var8.field968 == -1 && null == var8.impostorIds) {
+                        var21 = var8.method851(4, var4, var15, var17, var16, var18);
                      } else {
-                        var26 = new class12(var3, 4, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                        var21 = new class12(var3, 4, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2001(var0, var1, var2, var16, (class88)var26, (class88)null, class5.field90[var4], 0, 0, 0, var19, var20);
+                     var6.method2001(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field90[var4], 0, 0, 0, var19, var20);
                   } else if(var5 == 5) {
-                     var21 = 16;
+                     var23 = 16;
                      var22 = var6.method1998(var0, var1, var2);
                      if(var22 != 0) {
-                        var21 = class160.method3312(var22 >> 14 & 32767).field969;
+                        var23 = class160.getObjectDefinition(var22 >> 14 & 32767).field969;
                      }
 
-                     if(var8.field968 == -1 && null == var8.field986) {
+                     if(var8.field968 == -1 && null == var8.impostorIds) {
                         var27 = var8.method851(4, var4, var15, var17, var16, var18);
                      } else {
-                        var27 = new class12(var3, 4, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                        var27 = new class12(var3, 4, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2001(var0, var1, var2, var16, (class88)var27, (class88)null, class5.field90[var4], 0, class5.field92[var4] * var21, class5.field98[var4] * var21, var19, var20);
+                     var6.method2001(var0, var1, var2, var16, (Renderable)var27, (Renderable)null, class5.field90[var4], 0, class5.field92[var4] * var23, class5.field98[var4] * var23, var19, var20);
                   } else if(var5 == 6) {
-                     var21 = 8;
+                     var23 = 8;
                      var22 = var6.method1998(var0, var1, var2);
                      if(var22 != 0) {
-                        var21 = class160.method3312(var22 >> 14 & 32767).field969 / 2;
+                        var23 = class160.getObjectDefinition(var22 >> 14 & 32767).field969 / 2;
                      }
 
-                     if(var8.field968 == -1 && var8.field986 == null) {
+                     if(var8.field968 == -1 && var8.impostorIds == null) {
                         var27 = var8.method851(4, var4 + 4, var15, var17, var16, var18);
                      } else {
-                        var27 = new class12(var3, 4, var4 + 4, var0, var1, var2, var8.field968, true, (class88)null);
+                        var27 = new class12(var3, 4, var4 + 4, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2001(var0, var1, var2, var16, (class88)var27, (class88)null, 256, var4, var21 * class5.field94[var4], var21 * class5.field93[var4], var19, var20);
+                     var6.method2001(var0, var1, var2, var16, (Renderable)var27, (Renderable)null, 256, var4, var23 * class5.field94[var4], var23 * class5.field93[var4], var19, var20);
                   } else if(var5 == 7) {
                      var22 = 2 + var4 & 3;
-                     if(var8.field968 == -1 && null == var8.field986) {
-                        var26 = var8.method851(4, var22 + 4, var15, var17, var16, var18);
+                     if(var8.field968 == -1 && null == var8.impostorIds) {
+                        var21 = var8.method851(4, var22 + 4, var15, var17, var16, var18);
                      } else {
-                        var26 = new class12(var3, 4, 4 + var22, var0, var1, var2, var8.field968, true, (class88)null);
+                        var21 = new class12(var3, 4, 4 + var22, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2001(var0, var1, var2, var16, (class88)var26, (class88)null, 256, var22, 0, 0, var19, var20);
+                     var6.method2001(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, 256, var22, 0, 0, var19, var20);
                   } else if(var5 == 8) {
-                     var21 = 8;
+                     var23 = 8;
                      var22 = var6.method1998(var0, var1, var2);
                      if(var22 != 0) {
-                        var21 = class160.method3312(var22 >> 14 & 32767).field969 / 2;
+                        var23 = class160.getObjectDefinition(var22 >> 14 & 32767).field969 / 2;
                      }
 
-                     int var25 = 2 + var4 & 3;
-                     Object var28;
-                     if(var8.field968 == -1 && null == var8.field986) {
+                     int var28 = 2 + var4 & 3;
+                     Object var26;
+                     if(var8.field968 == -1 && null == var8.impostorIds) {
                         var27 = var8.method851(4, 4 + var4, var15, var17, var16, var18);
-                        var28 = var8.method851(4, 4 + var25, var15, var17, var16, var18);
+                        var26 = var8.method851(4, 4 + var28, var15, var17, var16, var18);
                      } else {
-                        var27 = new class12(var3, 4, 4 + var4, var0, var1, var2, var8.field968, true, (class88)null);
-                        var28 = new class12(var3, 4, 4 + var25, var0, var1, var2, var8.field968, true, (class88)null);
+                        var27 = new class12(var3, 4, 4 + var4, var0, var1, var2, var8.field968, true, (Renderable)null);
+                        var26 = new class12(var3, 4, 4 + var28, var0, var1, var2, var8.field968, true, (Renderable)null);
                      }
 
-                     var6.method2001(var0, var1, var2, var16, (class88)var27, (class88)var28, 256, var4, class5.field94[var4] * var21, class5.field93[var4] * var21, var19, var20);
+                     var6.method2001(var0, var1, var2, var16, (Renderable)var27, (Renderable)var26, 256, var4, class5.field94[var4] * var23, class5.field93[var4] * var23, var19, var20);
                   }
                }
             } else {
-               if(var8.field968 == -1 && null == var8.field986) {
-                  var26 = var8.method851(10, var4, var15, var17, var16, var18);
+               if(var8.field968 == -1 && null == var8.impostorIds) {
+                  var21 = var8.method851(10, var4, var15, var17, var16, var18);
                } else {
-                  var26 = new class12(var3, 10, var4, var0, var1, var2, var8.field968, true, (class88)null);
+                  var21 = new class12(var3, 10, var4, var0, var1, var2, var8.field968, true, (Renderable)null);
                }
 
-               if(var26 != null && var6.method2002(var0, var1, var2, var16, var9, var10, (class88)var26, var5 == 11?256:0, var19, var20) && var8.field976) {
+               if(var21 != null && var6.method2002(var0, var1, var2, var16, var9, var10, (Renderable)var21, var5 == 11?256:0, var19, var20) && var8.field976) {
                   var22 = 15;
-                  if(var26 instanceof class108) {
-                     var22 = ((class108)var26).method2458() / 4;
+                  if(var21 instanceof Model) {
+                     var22 = ((Model)var21).method2458() / 4;
                      if(var22 > 30) {
                         var22 = 30;
                      }
                   }
 
-                  for(int var23 = 0; var23 <= var9; ++var23) {
+                  for(var23 = 0; var23 <= var9; ++var23) {
                      for(int var24 = 0; var24 <= var10; ++var24) {
                         if(var22 > class232.field3275[var0][var1 + var23][var2 + var24]) {
                            class232.field3275[var0][var23 + var1][var2 + var24] = (byte)var22;
@@ -356,9 +349,9 @@ public class class177 {
                if(var8.field998 != 0 && null != var7) {
                   var7.method2506(var1, var2, var9, var10, var8.field961);
                }
-
             }
          }
       }
+
    }
 }

@@ -4,31 +4,31 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("gy")
 public class class203 implements Iterable {
    @ObfuscatedName("l")
-   public class207 field3158 = new class207();
+   public CacheableNode field3158 = new CacheableNode();
 
    @ObfuscatedName("g")
-   public void method4001(class207 var1) {
-      if(var1.field3163 != null) {
+   public void method4001(CacheableNode var1) {
+      if(var1.next != null) {
          var1.method4045();
       }
 
-      var1.field3163 = this.field3158.field3163;
-      var1.field3164 = this.field3158;
-      var1.field3163.field3164 = var1;
-      var1.field3164.field3163 = var1;
+      var1.next = this.field3158.next;
+      var1.previous = this.field3158;
+      var1.next.previous = var1;
+      var1.previous.next = var1;
    }
 
    @ObfuscatedName("l")
    public void method4002() {
-      while(this.field3158.field3164 != this.field3158) {
-         this.field3158.field3164.method4045();
+      while(this.field3158.previous != this.field3158) {
+         this.field3158.previous.method4045();
       }
 
    }
 
    public class203() {
-      this.field3158.field3164 = this.field3158;
-      this.field3158.field3163 = this.field3158;
+      this.field3158.previous = this.field3158;
+      this.field3158.next = this.field3158;
    }
 
    public Iterator iterator() {

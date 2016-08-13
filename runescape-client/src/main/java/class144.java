@@ -51,51 +51,52 @@ public class class144 extends class136 {
       garbageValue = "-1611700541"
    )
    @Export("groundItemSpawned")
-   static final void method3120(int var0, int var1) {
-      class202 var2 = client.field426[class99.field1701][var0][var1];
+   static final void groundItemSpawned(int var0, int var1) {
+      Deque var2 = Client.groundItemDeque[VertexNormal.plane][var0][var1];
       if(null == var2) {
-         class136.field2126.method2012(class99.field1701, var0, var1);
+         class136.region.method2012(VertexNormal.plane, var0, var1);
       } else {
          long var3 = -99999999L;
-         class30 var5 = null;
+         Item var5 = null;
 
-         class30 var6;
-         for(var6 = (class30)var2.method3980(); null != var6; var6 = (class30)var2.method3970()) {
-            class55 var7 = class1.method14(var6.field714);
-            long var10 = (long)var7.field1212;
-            if(var7.field1197 == 1) {
-               var10 *= (long)(var6.field709 + 1);
+         Item var6;
+         for(var6 = (Item)var2.method3980(); null != var6; var6 = (Item)var2.method3970()) {
+            ItemComposition var7 = class1.getItemDefinition(var6.id);
+            long var8 = (long)var7.price;
+            if(var7.isStackable == 1) {
+               var8 *= (long)(var6.quantity + 1);
             }
 
-            if(var10 > var3) {
-               var3 = var10;
+            if(var8 > var3) {
+               var3 = var8;
                var5 = var6;
             }
          }
 
          if(var5 == null) {
-            class136.field2126.method2012(class99.field1701, var0, var1);
+            class136.region.method2012(VertexNormal.plane, var0, var1);
          } else {
             var2.method3964(var5);
-            class30 var12 = null;
-            class30 var8 = null;
+            Item var10 = null;
+            Item var11 = null;
 
-            for(var6 = (class30)var2.method3980(); null != var6; var6 = (class30)var2.method3970()) {
-               if(var5.field714 != var6.field714) {
-                  if(var12 == null) {
-                     var12 = var6;
+            for(var6 = (Item)var2.method3980(); null != var6; var6 = (Item)var2.method3970()) {
+               if(var5.id != var6.id) {
+                  if(var10 == null) {
+                     var10 = var6;
                   }
 
-                  if(var12.field714 != var6.field714 && null == var8) {
-                     var8 = var6;
+                  if(var10.id != var6.id && null == var11) {
+                     var11 = var6;
                   }
                }
             }
 
             int var9 = var0 + (var1 << 7) + 1610612736;
-            class136.field2126.method2107(class99.field1701, var0, var1, class127.method2936(64 + 128 * var0, var1 * 128 + 64, class99.field1701), var5, var9, var12, var8);
+            class136.region.method2107(VertexNormal.plane, var0, var1, class127.method2936(64 + 128 * var0, var1 * 128 + 64, VertexNormal.plane), var5, var9, var10, var11);
          }
       }
+
    }
 
    @ObfuscatedName("g")
@@ -187,13 +188,13 @@ public class class144 extends class136 {
       int var8 = class170.method3482(var3 + 1, var5);
       int var9 = class170.method3482(var3, 1 + var5);
       int var10 = class170.method3482(var3 + 1, var5 + 1);
-      int var12 = 65536 - class94.field1662[1024 * var4 / var2] >> 1;
-      int var11 = (var8 * var12 >> 16) + ((65536 - var12) * var7 >> 16);
-      int var14 = 65536 - class94.field1662[1024 * var4 / var2] >> 1;
-      int var13 = (var9 * (65536 - var14) >> 16) + (var14 * var10 >> 16);
-      int var16 = 65536 - class94.field1662[var6 * 1024 / var2] >> 1;
-      int var15 = (var16 * var13 >> 16) + (var11 * (65536 - var16) >> 16);
-      return var15;
+      int var11 = 65536 - class94.field1662[1024 * var4 / var2] >> 1;
+      int var12 = (var8 * var11 >> 16) + ((65536 - var11) * var7 >> 16);
+      int var13 = 65536 - class94.field1662[1024 * var4 / var2] >> 1;
+      int var14 = (var9 * (65536 - var13) >> 16) + (var13 * var10 >> 16);
+      int var15 = 65536 - class94.field1662[var6 * 1024 / var2] >> 1;
+      int var16 = (var15 * var14 >> 16) + (var12 * (65536 - var15) >> 16);
+      return var16;
    }
 
    @ObfuscatedName("l")

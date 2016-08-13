@@ -29,7 +29,7 @@ public class class18 {
    )
    int field262;
    @ObfuscatedName("q")
-   static class176 field266;
+   static Widget field266;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 2130811343
@@ -70,7 +70,7 @@ public class class18 {
 
                this.field268 += this.field258.read(this.field261, this.field268, var1);
                if(this.field268 == 4) {
-                  int var2 = (new class122(this.field261)).method2620();
+                  int var2 = (new Buffer(this.field261)).method2620();
                   this.field272 = new byte[var2];
                   this.field262 = 2;
                }
@@ -106,10 +106,10 @@ public class class18 {
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Lclass147;B)V",
+      signature = "(LGameEngine;B)V",
       garbageValue = "17"
    )
-   static void method217(class147 var0) {
+   static void method217(GameEngine var0) {
       if(class143.field2217 == 1 || !class214.field3188 && class143.field2217 == 4) {
          int var1 = class33.field741 + 280;
          if(class143.field2215 >= var1 && class143.field2215 <= 14 + var1 && class143.field2216 >= 4 && class143.field2216 <= 18) {
@@ -156,20 +156,20 @@ public class class18 {
          }
 
          if(class143.field2215 >= class33.field741 + 708 && class143.field2216 >= 4 && class143.field2215 <= class33.field741 + 708 + 50 && class143.field2216 <= 20) {
-            class33.field772 = false;
+            class33.worldSelectShown = false;
             class33.field745.method1851(class33.field741, 0);
             class33.field746.method1851(class33.field741 + 382, 0);
-            class106.field1847.method1954(382 + class33.field741 - class106.field1847.field1498 / 2, 18);
+            Frames.field1847.method1954(382 + class33.field741 - Frames.field1847.originalWidth / 2, 18);
             return;
          }
 
          if(class33.field743 != -1) {
-            class27 var5 = class27.field662[class33.field743];
-            class157.method3303(var5);
-            class33.field772 = false;
+            World var5 = World.worldList[class33.field743];
+            class157.selectWorld(var5);
+            class33.worldSelectShown = false;
             class33.field745.method1851(class33.field741, 0);
             class33.field746.method1851(382 + class33.field741, 0);
-            class106.field1847.method1954(class33.field741 + 382 - class106.field1847.field1498 / 2, 18);
+            Frames.field1847.method1954(class33.field741 + 382 - Frames.field1847.originalWidth / 2, 18);
             return;
          }
       }

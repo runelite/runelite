@@ -3,7 +3,7 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("ff")
 public class class158 {
    @ObfuscatedName("ey")
-   static class81[] field2353;
+   static SpritePixels[] field2353;
    @ObfuscatedName("g")
    public static final boolean[] field2354 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
    @ObfuscatedName("r")

@@ -20,10 +20,10 @@ public class class11 {
    )
    public static int field176;
    @ObfuscatedName("iw")
-   static class176 field177;
+   static Widget field177;
    @ObfuscatedName("l")
    @Export("chatLineMap")
-   static final Map field182 = new HashMap();
+   static final Map chatLineMap = new HashMap();
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = 1492260681
@@ -36,7 +36,7 @@ public class class11 {
       garbageValue = "65280"
    )
    static class23 method165(int var0) {
-      class23 var1 = (class23)class23.field611.method3905((long)var0);
+      class23 var1 = (class23)class23.field611.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
@@ -45,32 +45,32 @@ public class class11 {
             return null;
          } else {
             var1 = new class23();
-            class122 var3 = new class122(var2);
-            var3.field2050 = var3.field2051.length - 12;
+            Buffer var3 = new Buffer(var2);
+            var3.offset = var3.payload.length - 12;
             int var4 = var3.method2620();
             var1.field610 = var3.method2635();
             var1.field606 = var3.method2635();
             var1.field612 = var3.method2635();
             var1.field613 = var3.method2635();
-            var3.field2050 = 0;
+            var3.offset = 0;
             var3.method2640();
             var1.field607 = new int[var4];
             var1.field608 = new int[var4];
             var1.field609 = new String[var4];
 
-            int var6;
-            for(int var5 = 0; var3.field2050 < var3.field2051.length - 12; var1.field607[var5++] = var6) {
-               var6 = var3.method2635();
-               if(var6 == 3) {
-                  var1.field609[var5] = var3.method2663();
-               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
-                  var1.field608[var5] = var3.method2620();
+            int var5;
+            for(int var6 = 0; var3.offset < var3.payload.length - 12; var1.field607[var6++] = var5) {
+               var5 = var3.method2635();
+               if(var5 == 3) {
+                  var1.field609[var6] = var3.method2663();
+               } else if(var5 < 100 && var5 != 21 && var5 != 38 && var5 != 39) {
+                  var1.field608[var6] = var3.method2620();
                } else {
-                  var1.field608[var5] = var3.method2633();
+                  var1.field608[var6] = var3.method2633();
                }
             }
 
-            class23.field611.method3907(var1, (long)var0);
+            class23.field611.put(var1, (long)var0);
             return var1;
          }
       }

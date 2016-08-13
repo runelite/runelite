@@ -4,7 +4,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("bj")
-public class class54 extends class207 {
+public class class54 extends CacheableNode {
    @ObfuscatedName("l")
    static class170 field1169;
    @ObfuscatedName("r")
@@ -13,19 +13,19 @@ public class class54 extends class207 {
    )
    public int field1170 = 0;
    @ObfuscatedName("g")
-   static class196 field1171 = new class196(64);
+   static NodeCache field1171 = new NodeCache(64);
    @ObfuscatedName("rq")
    protected static boolean field1172;
    @ObfuscatedName("qu")
    @Export("bufferProvider")
-   public static class80 field1173;
+   public static BufferProvider bufferProvider;
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass122;I)V",
+      signature = "(LBuffer;I)V",
       garbageValue = "1037792829"
    )
-   void method1152(class122 var1) {
+   void method1152(Buffer var1) {
       while(true) {
          int var2 = var1.method2633();
          if(var2 == 0) {
@@ -38,11 +38,11 @@ public class class54 extends class207 {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass170;III)[Lclass81;",
+      signature = "(Lclass170;III)[LSpritePixels;",
       garbageValue = "1386923093"
    )
-   static class81[] method1153(class170 var0, int var1, int var2) {
-      return !class4.method49(var0, var1, var2)?null:class7.method112();
+   static SpritePixels[] method1153(class170 var0, int var1, int var2) {
+      return !class4.method49(var0, var1, var2)?null:Ignore.method112();
    }
 
    @ObfuscatedName("bj")
@@ -51,15 +51,16 @@ public class class54 extends class207 {
       garbageValue = "-2092321833"
    )
    static final void method1154(int var0, int var1, int var2, int var3, int var4) {
-      int var5 = class136.field2126.method1998(var0, var1, var2);
+      int var5 = class136.region.method1998(var0, var1, var2);
       int var6;
       int var7;
       int var8;
       int var9;
+      int var10;
       int var11;
-      int var12;
+      ModIcon var14;
       if(var5 != 0) {
-         var6 = class136.field2126.method2081(var0, var1, var2, var5);
+         var6 = class136.region.method2081(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var3;
@@ -67,127 +68,128 @@ public class class54 extends class207 {
             var9 = var4;
          }
 
-         int[] var10 = class23.field619.field1487;
-         var11 = 24624 + var1 * 4 + 2048 * (103 - var2);
-         var12 = var5 >> 14 & 32767;
-         class42 var13 = class160.method3312(var12);
+         int[] var12 = class23.field619.image;
+         var10 = 24624 + var1 * 4 + 2048 * (103 - var2);
+         var11 = var5 >> 14 & 32767;
+         ObjectComposition var13 = class160.getObjectDefinition(var11);
          if(var13.field950 != -1) {
-            class83 var14 = class90.field1611[var13.field950];
+            var14 = WallObject.field1611[var13.field950];
             if(null != var14) {
-               int var15 = (var13.field960 * 4 - var14.field1498) / 2;
-               int var16 = (var13.field970 * 4 - var14.field1503) / 2;
+               int var15 = (var13.field960 * 4 - var14.originalWidth) / 2;
+               int var16 = (var13.field970 * 4 - var14.height) / 2;
                var14.method1954(48 + var1 * 4 + var15, 48 + 4 * (104 - var2 - var13.field970) + var16);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
                if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[512 + var11] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[var11 + 1536] = var9;
+                  var12[var10] = var9;
+                  var12[512 + var10] = var9;
+                  var12[var10 + 1024] = var9;
+                  var12[var10 + 1536] = var9;
                } else if(var7 == 1) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[3 + var11] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 1] = var9;
+                  var12[var10 + 2] = var9;
+                  var12[3 + var10] = var9;
                } else if(var7 == 2) {
-                  var10[var11 + 3] = var9;
-                  var10[512 + var11 + 3] = var9;
-                  var10[1024 + 3 + var11] = var9;
-                  var10[var11 + 3 + 1536] = var9;
+                  var12[var10 + 3] = var9;
+                  var12[512 + var10 + 3] = var9;
+                  var12[1027 + var10] = var9;
+                  var12[var10 + 3 + 1536] = var9;
                } else if(var7 == 3) {
-                  var10[1536 + var11] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[1536 + var11 + 2] = var9;
-                  var10[1536 + var11 + 3] = var9;
+                  var12[1536 + var10] = var9;
+                  var12[var10 + 1536 + 1] = var9;
+                  var12[1536 + var10 + 2] = var9;
+                  var12[1536 + var10 + 3] = var9;
                }
             }
 
             if(var8 == 3) {
                if(var7 == 0) {
-                  var10[var11] = var9;
+                  var12[var10] = var9;
                } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
+                  var12[var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[1536 + var11 + 3] = var9;
+                  var12[1536 + var10 + 3] = var9;
                } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
+                  var12[var10 + 1536] = var9;
                }
             }
 
             if(var8 == 2) {
                if(var7 == 3) {
-                  var10[var11] = var9;
-                  var10[var11 + 512] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[1536 + var11] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 512] = var9;
+                  var12[var10 + 1024] = var9;
+                  var12[1536 + var10] = var9;
                } else if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 1] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[3 + var11] = var9;
+                  var12[var10] = var9;
+                  var12[var10 + 1] = var9;
+                  var12[var10 + 2] = var9;
+                  var12[3 + var10] = var9;
                } else if(var7 == 1) {
-                  var10[3 + var11] = var9;
-                  var10[512 + var11 + 3] = var9;
-                  var10[3 + var11 + 1024] = var9;
-                  var10[1536 + var11 + 3] = var9;
+                  var12[3 + var10] = var9;
+                  var12[512 + var10 + 3] = var9;
+                  var12[3 + var10 + 1024] = var9;
+                  var12[1536 + var10 + 3] = var9;
                } else if(var7 == 2) {
-                  var10[1536 + var11] = var9;
-                  var10[1536 + var11 + 1] = var9;
-                  var10[2 + 1536 + var11] = var9;
-                  var10[var11 + 1536 + 3] = var9;
+                  var12[1536 + var10] = var9;
+                  var12[1536 + var10 + 1] = var9;
+                  var12[1538 + var10] = var9;
+                  var12[var10 + 1536 + 3] = var9;
                }
             }
          }
       }
 
-      var5 = class136.field2126.method2019(var0, var1, var2);
+      var5 = class136.region.method2019(var0, var1, var2);
+      ObjectComposition var17;
       if(var5 != 0) {
-         var6 = class136.field2126.method2081(var0, var1, var2, var5);
+         var6 = class136.region.method2081(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var5 >> 14 & 32767;
-         class42 var23 = class160.method3312(var9);
+         var17 = class160.getObjectDefinition(var9);
          int var18;
-         if(var23.field950 != -1) {
-            class83 var19 = class90.field1611[var23.field950];
-            if(var19 != null) {
-               var12 = (var23.field960 * 4 - var19.field1498) / 2;
-               var18 = (var23.field970 * 4 - var19.field1503) / 2;
-               var19.method1954(var12 + 48 + var1 * 4, (104 - var2 - var23.field970) * 4 + 48 + var18);
+         if(var17.field950 != -1) {
+            var14 = WallObject.field1611[var17.field950];
+            if(var14 != null) {
+               var11 = (var17.field960 * 4 - var14.originalWidth) / 2;
+               var18 = (var17.field970 * 4 - var14.height) / 2;
+               var14.method1954(var11 + 48 + var1 * 4, (104 - var2 - var17.field970) * 4 + 48 + var18);
             }
          } else if(var8 == 9) {
-            var11 = 15658734;
+            var10 = 15658734;
             if(var5 > 0) {
-               var11 = 15597568;
+               var10 = 15597568;
             }
 
-            int[] var17 = class23.field619.field1487;
+            int[] var20 = class23.field619.image;
             var18 = (103 - var2) * 2048 + 24624 + 4 * var1;
             if(var7 != 0 && var7 != 2) {
-               var17[var18] = var11;
-               var17[512 + var18 + 1] = var11;
-               var17[1024 + var18 + 2] = var11;
-               var17[3 + var18 + 1536] = var11;
+               var20[var18] = var10;
+               var20[512 + var18 + 1] = var10;
+               var20[1024 + var18 + 2] = var10;
+               var20[3 + var18 + 1536] = var10;
             } else {
-               var17[var18 + 1536] = var11;
-               var17[1 + var18 + 1024] = var11;
-               var17[512 + var18 + 2] = var11;
-               var17[var18 + 3] = var11;
+               var20[var18 + 1536] = var10;
+               var20[1 + var18 + 1024] = var10;
+               var20[512 + var18 + 2] = var10;
+               var20[var18 + 3] = var10;
             }
          }
       }
 
-      var5 = class136.field2126.method2014(var0, var1, var2);
+      var5 = class136.region.method2014(var0, var1, var2);
       if(var5 != 0) {
          var6 = var5 >> 14 & 32767;
-         class42 var21 = class160.method3312(var6);
-         if(var21.field950 != -1) {
-            class83 var20 = class90.field1611[var21.field950];
-            if(null != var20) {
-               var9 = (var21.field960 * 4 - var20.field1498) / 2;
-               int var22 = (var21.field970 * 4 - var20.field1503) / 2;
-               var20.method1954(var9 + 48 + 4 * var1, (104 - var2 - var21.field970) * 4 + 48 + var22);
+         var17 = class160.getObjectDefinition(var6);
+         if(var17.field950 != -1) {
+            ModIcon var19 = WallObject.field1611[var17.field950];
+            if(null != var19) {
+               var9 = (var17.field960 * 4 - var19.originalWidth) / 2;
+               int var21 = (var17.field970 * 4 - var19.height) / 2;
+               var19.method1954(var9 + 48 + 4 * var1, (104 - var2 - var17.field970) * 4 + 48 + var21);
             }
          }
       }
@@ -196,10 +198,10 @@ public class class54 extends class207 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
+      signature = "(LBuffer;II)V",
       garbageValue = "-2123186596"
    )
-   void method1162(class122 var1, int var2) {
+   void method1162(Buffer var1, int var2) {
       if(var2 == 2) {
          this.field1170 = var1.method2635();
       }
@@ -217,7 +219,7 @@ public class class54 extends class207 {
       int var3 = var1.field1120;
       int var4 = var1.field1124;
       int var5 = class179.field2959[var4 - var3];
-      return class179.field2958[var2] >> var3 & var5;
+      return class179.widgetSettings[var2] >> var3 & var5;
    }
 
    @ObfuscatedName("n")
@@ -231,10 +233,10 @@ public class class54 extends class207 {
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lclass170;Ljava/lang/String;Ljava/lang/String;I)[Lclass81;",
+      signature = "(Lclass170;Ljava/lang/String;Ljava/lang/String;I)[LSpritePixels;",
       garbageValue = "737334618"
    )
-   public static class81[] method1167(class170 var0, String var1, String var2) {
+   public static SpritePixels[] method1167(class170 var0, String var1, String var2) {
       int var3 = var0.method3410(var1);
       int var4 = var0.method3459(var3, var2);
       return method1153(var0, var3, var4);
@@ -246,6 +248,6 @@ public class class54 extends class207 {
       garbageValue = "1170310488"
    )
    public static void method1169() {
-      class182.field2978.method3910();
+      PlayerComposition.field2978.reset();
    }
 }

@@ -3,14 +3,14 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ar")
-public class class43 extends class207 {
+public class class43 extends CacheableNode {
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -1009411105
    )
    public int field999;
    @ObfuscatedName("g")
-   static class196 field1000 = new class196(64);
+   static NodeCache field1000 = new NodeCache(64);
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 9577149
@@ -51,10 +51,10 @@ public class class43 extends class207 {
       garbageValue = "-89"
    )
    static final void method890(String var0, int var1) {
-      client.field337.method2903(62);
-      client.field337.method2783(class54.method1165(var0) + 1);
-      client.field337.method2658(var1);
-      client.field337.method2703(var0);
+      Client.field337.method2903(62);
+      Client.field337.method2783(class54.method1165(var0) + 1);
+      Client.field337.method2658(var1);
+      Client.field337.method2703(var0);
    }
 
    @ObfuscatedName("h")
@@ -139,10 +139,11 @@ public class class43 extends class207 {
       garbageValue = "1101142759"
    )
    public static void method896() {
-      if(null != class143.field2202) {
-         class143 var0 = class143.field2202;
-         synchronized(class143.field2202) {
-            class143.field2202 = null;
+      if(null != class143.mouse) {
+         class143 var0 = class143.mouse;
+         class143 var1 = class143.mouse;
+         synchronized(class143.mouse) {
+            class143.mouse = null;
          }
       }
 
@@ -150,10 +151,10 @@ public class class43 extends class207 {
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lclass122;IIS)V",
+      signature = "(LBuffer;IIS)V",
       garbageValue = "22941"
    )
-   void method897(class122 var1, int var2, int var3) {
+   void method897(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
          this.field1001 = var1.method2637();
       }
@@ -162,10 +163,10 @@ public class class43 extends class207 {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass122;II)V",
+      signature = "(LBuffer;II)V",
       garbageValue = "-1929537231"
    )
-   void method905(class122 var1, int var2) {
+   void method905(Buffer var1, int var2) {
       while(true) {
          int var3 = var1.method2633();
          if(var3 == 0) {
@@ -191,7 +192,7 @@ public class class43 extends class207 {
          if(var3 == 0) {
             var5 = Character.toLowerCase(var5);
          } else if(var3 == 2 || Character.isUpperCase(var5)) {
-            var5 = class6.method108(var5);
+            var5 = Projectile.method108(var5);
          }
 
          if(Character.isLetter(var5)) {

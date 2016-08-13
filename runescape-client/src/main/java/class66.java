@@ -81,14 +81,14 @@ public class class66 {
    }
 
    @ObfuscatedName("h")
-   final void method1416(class122 var1, class60 var2) {
+   final void method1416(Buffer var1, class60 var2) {
       int var3 = var1.method2633();
       this.field1313[0] = var3 >> 4;
       this.field1313[1] = var3 & 15;
       if(var3 != 0) {
          this.field1306[0] = var1.method2635();
          this.field1306[1] = var1.method2635();
-         int var7 = var1.method2633();
+         int var4 = var1.method2633();
 
          int var5;
          int var6;
@@ -101,7 +101,7 @@ public class class66 {
 
          for(var5 = 0; var5 < 2; ++var5) {
             for(var6 = 0; var6 < this.field1313[var5]; ++var6) {
-               if((var7 & 1 << var5 * 4 << var6) != 0) {
+               if((var4 & 1 << var5 * 4 << var6) != 0) {
                   this.field1308[var5][1][var6] = var1.method2635();
                   this.field1309[var5][1][var6] = var1.method2635();
                } else {
@@ -111,13 +111,13 @@ public class class66 {
             }
          }
 
-         if(var7 != 0 || this.field1306[1] != this.field1306[0]) {
+         if(var4 != 0 || this.field1306[1] != this.field1306[0]) {
             var2.method1356(var1);
          }
       } else {
-         int[] var4 = this.field1306;
+         int[] var7 = this.field1306;
          this.field1306[1] = 0;
-         var4[0] = 0;
+         var7[0] = 0;
       }
 
    }

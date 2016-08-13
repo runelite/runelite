@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fl")
-public class class175 extends class207 {
+public class class175 extends CacheableNode {
    @ObfuscatedName("e")
    public static File field2791;
    @ObfuscatedName("g")

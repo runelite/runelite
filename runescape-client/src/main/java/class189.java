@@ -10,7 +10,7 @@ public class class189 extends class69 {
    )
    public static int field3056;
    @ObfuscatedName("g")
-   class202 field3057 = new class202();
+   Deque field3057 = new Deque();
    @ObfuscatedName("l")
    class187 field3058;
    @ObfuscatedName("r")
@@ -44,22 +44,22 @@ public class class189 extends class69 {
    protected void vmethod3873(int[] var1, int var2, int var3) {
       this.field3061.vmethod3873(var1, var2, var3);
 
-      for(class190 var6 = (class190)this.field3057.method3980(); null != var6; var6 = (class190)this.field3057.method3970()) {
-         if(!this.field3058.method3783(var6)) {
-            int var4 = var2;
-            int var5 = var3;
+      for(class190 var4 = (class190)this.field3057.method3980(); null != var4; var4 = (class190)this.field3057.method3970()) {
+         if(!this.field3058.method3783(var4)) {
+            int var5 = var2;
+            int var6 = var3;
 
             do {
-               if(var5 <= var6.field3073) {
-                  this.method3884(var6, var1, var4, var5, var5 + var4);
-                  var6.field3073 -= var5;
+               if(var6 <= var4.field3073) {
+                  this.method3884(var4, var1, var5, var6, var6 + var5);
+                  var4.field3073 -= var6;
                   break;
                }
 
-               this.method3884(var6, var1, var4, var6.field3073, var5 + var4);
-               var4 += var6.field3073;
-               var5 -= var6.field3073;
-            } while(!this.field3058.method3784(var6, var1, var4, var5));
+               this.method3884(var4, var1, var5, var4.field3073, var6 + var5);
+               var5 += var4.field3073;
+               var6 -= var4.field3073;
+            } while(!this.field3058.method3784(var4, var1, var5, var6));
          }
       }
 
@@ -69,20 +69,20 @@ public class class189 extends class69 {
    protected void vmethod3874(int var1) {
       this.field3061.vmethod3874(var1);
 
-      for(class190 var3 = (class190)this.field3057.method3980(); var3 != null; var3 = (class190)this.field3057.method3970()) {
-         if(!this.field3058.method3783(var3)) {
-            int var2 = var1;
+      for(class190 var2 = (class190)this.field3057.method3980(); var2 != null; var2 = (class190)this.field3057.method3970()) {
+         if(!this.field3058.method3783(var2)) {
+            int var3 = var1;
 
             do {
-               if(var2 <= var3.field3073) {
-                  this.method3875(var3, var2);
-                  var3.field3073 -= var2;
+               if(var3 <= var2.field3073) {
+                  this.method3875(var2, var3);
+                  var2.field3073 -= var3;
                   break;
                }
 
-               this.method3875(var3, var3.field3073);
-               var2 -= var3.field3073;
-            } while(!this.field3058.method3784(var3, (int[])null, 0, var2));
+               this.method3875(var2, var2.field3073);
+               var3 -= var2.field3073;
+            } while(!this.field3058.method3784(var2, (int[])null, 0, var3));
          }
       }
 

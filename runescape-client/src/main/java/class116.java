@@ -168,13 +168,13 @@ public class class116 {
                var5 += var4.field623 - var2;
             }
 
-            if(var5 - 64 <= var4.field626 && client.field535 != 0 && var4.field621 == var0) {
+            if(var5 - 64 <= var4.field626 && Client.field535 != 0 && var4.field621 == var0) {
                var5 -= 64;
                if(var5 < 0) {
                   var5 = 0;
                }
 
-               int var6 = client.field535 * (var4.field626 - var5) / var4.field626;
+               int var6 = Client.field535 * (var4.field626 - var5) / var4.field626;
                if(null == var4.field622) {
                   if(var4.field627 >= 0) {
                      class61 var7 = class61.method1380(class119.field2039, var4.field627, 0);
@@ -205,7 +205,7 @@ public class class116 {
                   }
                } else {
                   var4.field633.method1466(var6);
-                  if(!var4.field633.method4068()) {
+                  if(!var4.field633.linked()) {
                      var4.field633 = null;
                   }
                }
@@ -232,7 +232,7 @@ public class class116 {
    )
    static void method2555(class171 var0, int var1) {
       if(null != class156.field2338) {
-         class156.field2338.field2050 = var1 * 8 + 5;
+         class156.field2338.offset = var1 * 8 + 5;
          int var2 = class156.field2338.method2620();
          int var3 = class156.field2338.method2620();
          var0.method3487(var2, var3);
@@ -240,6 +240,7 @@ public class class116 {
          class126.method2919((class171)null, 255, 255, 0, (byte)0, true);
          class174.field2786[var1] = var0;
       }
+
    }
 
    @ObfuscatedName("qy")
@@ -249,15 +250,15 @@ public class class116 {
    )
    protected static final void method2556(int var0, String var1, Color var2, boolean var3) {
       try {
-         Graphics var4 = class107.field1867.getGraphics();
+         Graphics var4 = class107.canvas.getGraphics();
          if(class1.field18 == null) {
             class1.field18 = new Font("Helvetica", 1, 13);
-            class20.field584 = class107.field1867.getFontMetrics(class1.field18);
+            class20.field584 = class107.canvas.getFontMetrics(class1.field18);
          }
 
          if(var3) {
             var4.setColor(Color.black);
-            var4.fillRect(0, 0, class189.field3056, class39.field892);
+            var4.fillRect(0, 0, class189.field3056, Actor.field892);
          }
 
          if(null == var2) {
@@ -266,7 +267,7 @@ public class class116 {
 
          try {
             if(null == class137.field2129) {
-               class137.field2129 = class107.field1867.createImage(304, 34);
+               class137.field2129 = class107.canvas.createImage(304, 34);
             }
 
             Graphics var5 = class137.field2129.getGraphics();
@@ -279,10 +280,10 @@ public class class116 {
             var5.setFont(class1.field18);
             var5.setColor(Color.white);
             var5.drawString(var1, (304 - class20.field584.stringWidth(var1)) / 2, 22);
-            var4.drawImage(class137.field2129, class189.field3056 / 2 - 152, class39.field892 / 2 - 18, (ImageObserver)null);
+            var4.drawImage(class137.field2129, class189.field3056 / 2 - 152, Actor.field892 / 2 - 18, (ImageObserver)null);
          } catch (Exception var8) {
             int var6 = class189.field3056 / 2 - 152;
-            int var7 = class39.field892 / 2 - 18;
+            int var7 = Actor.field892 / 2 - 18;
             var4.setColor(var2);
             var4.drawRect(var6, var7, 303, 33);
             var4.fillRect(2 + var6, 2 + var7, 3 * var0, 30);
@@ -294,7 +295,7 @@ public class class116 {
             var4.drawString(var1, var6 + (304 - class20.field584.stringWidth(var1)) / 2, 22 + var7);
          }
       } catch (Exception var9) {
-         class107.field1867.repaint();
+         class107.canvas.repaint();
       }
 
    }

@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 public final class class5 {
    @ObfuscatedName("g")
    @Export("tileSettings")
-   static byte[][][] field80 = new byte[4][104][104];
+   static byte[][][] tileSettings = new byte[4][104][104];
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = -1822763461
@@ -24,7 +24,7 @@ public final class class5 {
    static int field84 = (int)(Math.random() * 17.0D) - 8;
    @ObfuscatedName("l")
    @Export("tileHeights")
-   static int[][][] field85 = new int[4][105][105];
+   static int[][][] tileHeights = new int[4][105][105];
    @ObfuscatedName("k")
    static byte[][][] field86;
    @ObfuscatedName("m")
@@ -57,17 +57,17 @@ public final class class5 {
       garbageValue = "-18"
    )
    public static class51 method52(int var0) {
-      class51 var1 = (class51)class51.field1128.method3905((long)var0);
+      class51 var1 = (class51)class51.field1128.get((long)var0);
       if(null != var1) {
          return var1;
       } else {
          byte[] var2 = class51.field1134.method3411(32, var0);
          var1 = new class51();
          if(var2 != null) {
-            var1.method1079(new class122(var2));
+            var1.method1079(new Buffer(var2));
          }
 
-         class51.field1128.method3907(var1, (long)var0);
+         class51.field1128.put(var1, (long)var0);
          return var1;
       }
    }
@@ -78,7 +78,7 @@ public final class class5 {
       garbageValue = "-6"
    )
    static void method89() {
-      class11.field182.clear();
+      class11.chatLineMap.clear();
       class11.field174.method3949();
       class11.field173.method4002();
       class11.field184 = 0;
@@ -109,33 +109,33 @@ public final class class5 {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
+               var9 = var8 - 48;
             } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
+               var9 = var8 - 55;
             } else {
                if(var8 < 97 || var8 > 122) {
                   throw new NumberFormatException();
                }
 
-               var10 = var8 - 87;
+               var9 = var8 - 87;
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                throw new NumberFormatException();
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var5 * var1 + var10;
-            if(var9 / var1 != var5) {
+            int var10 = var5 * var1 + var9;
+            if(var10 / var1 != var5) {
                throw new NumberFormatException();
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 

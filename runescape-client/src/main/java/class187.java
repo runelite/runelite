@@ -19,7 +19,7 @@ public class class187 extends class69 {
    @ObfuscatedName("ac")
    boolean field3017;
    @ObfuscatedName("l")
-   class199 field3018 = new class199(128);
+   XHashTable field3018 = new XHashTable(128);
    @ObfuscatedName("s")
    int[] field3019 = new int[16];
    @ObfuscatedName("q")
@@ -95,22 +95,22 @@ public class class187 extends class69 {
       var1.method3674();
       boolean var5 = true;
       Object var6 = null;
-      int[] var10 = new int[]{var4};
+      int[] var7 = new int[]{var4};
 
-      for(class200 var7 = (class200)var1.field2982.method3939(); null != var7; var7 = (class200)var1.field2982.method3935()) {
-         int var8 = (int)var7.field3175;
-         class184 var9 = (class184)this.field3018.method3936((long)var8);
-         if(var9 == null) {
-            var9 = class181.method3631(var2, var8);
-            if(null == var9) {
+      for(class200 var8 = (class200)var1.field2982.method3939(); null != var8; var8 = (class200)var1.field2982.method3935()) {
+         int var9 = (int)var8.hash;
+         class184 var10 = (class184)this.field3018.method3936((long)var9);
+         if(var10 == null) {
+            var10 = class181.method3631(var2, var9);
+            if(null == var10) {
                var5 = false;
                continue;
             }
 
-            this.field3018.method3940(var9, (long)var8);
+            this.field3018.method3940(var10, (long)var9);
          }
 
-         if(!var9.method3683(var3, var7.field3152, var10)) {
+         if(!var10.method3683(var3, var8.field3152, var7)) {
             var5 = false;
          }
       }
@@ -219,9 +219,9 @@ public class class187 extends class69 {
             if(var1 == var4.field3078 && var4.field3083 < 0) {
                this.field3034[var1][var4.field3081] = null;
                this.field3034[var1][var2] = var4;
-               int var8 = (var4.field3072 * var4.field3071 >> 12) + var4.field3070;
+               int var5 = (var4.field3072 * var4.field3071 >> 12) + var4.field3070;
                var4.field3070 += var2 - var4.field3081 << 8;
-               var4.field3071 = var8 - var4.field3070;
+               var4.field3071 = var5 - var4.field3070;
                var4.field3072 = 4096;
                var4.field3081 = var2;
                return;
@@ -229,33 +229,33 @@ public class class187 extends class69 {
          }
       }
 
-      class184 var9 = (class184)this.field3018.method3936((long)this.field3021[var1]);
-      if(var9 != null) {
-         class65 var5 = var9.field2985[var2];
-         if(null != var5) {
+      class184 var8 = (class184)this.field3018.method3936((long)this.field3021[var1]);
+      if(var8 != null) {
+         class65 var9 = var8.field2985[var2];
+         if(null != var9) {
             class190 var6 = new class190();
             var6.field3078 = var1;
-            var6.field3063 = var9;
-            var6.field3067 = var5;
-            var6.field3065 = var9.field2989[var2];
-            var6.field3066 = var9.field2984[var2];
+            var6.field3063 = var8;
+            var6.field3067 = var9;
+            var6.field3065 = var8.field2989[var2];
+            var6.field3066 = var8.field2984[var2];
             var6.field3081 = var2;
-            var6.field3068 = var9.field2991[var2] * var3 * var3 * var9.field2986 + 1024 >> 11;
-            var6.field3069 = var9.field2988[var2] & 255;
-            var6.field3070 = (var2 << 8) - (var9.field2987[var2] & 32767);
+            var6.field3068 = var8.field2991[var2] * var3 * var3 * var8.field2986 + 1024 >> 11;
+            var6.field3069 = var8.field2988[var2] & 255;
+            var6.field3070 = (var2 << 8) - (var8.field2987[var2] & 32767);
             var6.field3064 = 0;
             var6.field3080 = 0;
             var6.field3075 = 0;
             var6.field3083 = -1;
             var6.field3077 = 0;
             if(this.field3029[var1] == 0) {
-               var6.field3074 = class67.method1428(var5, this.method3774(var6), this.method3775(var6), this.method3829(var6));
+               var6.field3074 = class67.method1428(var9, this.method3774(var6), this.method3775(var6), this.method3829(var6));
             } else {
-               var6.field3074 = class67.method1428(var5, this.method3774(var6), 0, this.method3829(var6));
-               this.method3761(var6, var9.field2987[var2] < 0);
+               var6.field3074 = class67.method1428(var9, this.method3774(var6), 0, this.method3829(var6));
+               this.method3761(var6, var8.field2987[var2] < 0);
             }
 
-            if(var9.field2987[var2] < 0) {
+            if(var8.field2987[var2] < 0) {
                var6.field3074.method1430(-1);
             }
 
@@ -273,6 +273,7 @@ public class class187 extends class69 {
             this.field3034[var1][var2] = var6;
          }
       }
+
    }
 
    @ObfuscatedName("z")
@@ -317,8 +318,8 @@ public class class187 extends class69 {
          } else {
             var4.field3083 = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("v")
@@ -353,7 +354,6 @@ public class class187 extends class69 {
          } else {
             this.method3762(var3, var4, 64);
          }
-
       } else if(var2 == 160) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -495,7 +495,6 @@ public class class187 extends class69 {
          if(var4 == 49) {
             this.method3759(var3, var5 + (this.field3030[var3] & -128));
          }
-
       } else if(var2 == 192) {
          var3 = var1 & 15;
          var4 = var1 >> 8 & 127;
@@ -514,6 +513,7 @@ public class class187 extends class69 {
             this.method3769();
          }
       }
+
    }
 
    @ObfuscatedName("af")
@@ -537,7 +537,7 @@ public class class187 extends class69 {
                this.field3034[var2.field3078][var2.field3081] = null;
             }
 
-            var2.method4067();
+            var2.unlink();
          }
       }
 
@@ -567,8 +567,8 @@ public class class187 extends class69 {
          for(var1 = 0; var1 < 16; ++var1) {
             this.method3767(var1);
          }
-
       }
+
    }
 
    @ObfuscatedName("aj")
@@ -779,7 +779,7 @@ public class class187 extends class69 {
    )
    public synchronized void method3782() {
       for(class184 var1 = (class184)this.field3018.method3939(); var1 != null; var1 = (class184)this.field3018.method3935()) {
-         var1.method4067();
+         var1.unlink();
       }
 
    }
@@ -792,7 +792,7 @@ public class class187 extends class69 {
    boolean method3783(class190 var1) {
       if(var1.field3074 == null) {
          if(var1.field3083 >= 0) {
-            var1.method4067();
+            var1.unlink();
             if(var1.field3066 > 0 && this.field3033[var1.field3078][var1.field3066] == var1) {
                this.field3033[var1.field3078][var1.field3066] = null;
             }
@@ -882,7 +882,7 @@ public class class187 extends class69 {
 
             var1.method3895();
             if(var1.field3083 >= 0) {
-               var1.method4067();
+               var1.unlink();
                if(var1.field3066 > 0 && this.field3033[var1.field3078][var1.field3066] == var1) {
                   this.field3033[var1.field3078][var1.field3066] = null;
                }
@@ -895,7 +895,7 @@ public class class187 extends class69 {
          }
       } else {
          var1.method3895();
-         var1.method4067();
+         var1.unlink();
          if(var1.field3066 > 0 && this.field3033[var1.field3078][var1.field3066] == var1) {
             this.field3033[var1.field3078][var1.field3066] = null;
          }

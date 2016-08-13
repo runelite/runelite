@@ -13,7 +13,7 @@ public class class151 extends RuntimeException {
       intValue = 864506953
    )
    @Export("cameraX")
-   static int field2282;
+   static int cameraX;
    @ObfuscatedName("h")
    Throwable field2283;
    @ObfuscatedName("r")
@@ -30,12 +30,12 @@ public class class151 extends RuntimeException {
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(III)Lclass176;",
+      signature = "(III)LWidget;",
       garbageValue = "-778264089"
    )
-   public static class176 method3265(int var0, int var1) {
-      class176 var2 = class134.method2983(var0);
-      return var1 == -1?var2:(var2 != null && var2.field2931 != null && var1 < var2.field2931.length?var2.field2931[var1]:null);
+   public static Widget method3265(int var0, int var1) {
+      Widget var2 = class134.method2983(var0);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 
    @ObfuscatedName("g")
@@ -44,17 +44,17 @@ public class class151 extends RuntimeException {
       garbageValue = "993746220"
    )
    static void method3269() {
-      class5.field82 = null;
-      class75.field1422 = null;
-      class5.field88 = null;
-      class5.field86 = null;
-      class99.field1704 = null;
-      class232.field3275 = null;
-      class13.field207 = null;
+      class5.field82 = (byte[][][])null;
+      class75.field1422 = (byte[][][])null;
+      class5.field88 = (byte[][][])null;
+      class5.field86 = (byte[][][])null;
+      VertexNormal.field1704 = (int[][][])null;
+      class232.field3275 = (byte[][][])null;
+      class13.field207 = (int[][])null;
       class5.field83 = null;
       class5.field87 = null;
       class5.field96 = null;
-      class37.field809 = null;
+      MessageNode.field809 = null;
       class224.field3225 = null;
    }
 
@@ -91,19 +91,19 @@ public class class151 extends RuntimeException {
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Lclass122;IB)V",
+      signature = "(LBuffer;IB)V",
       garbageValue = "-81"
    )
-   public static void method3273(class122 var0, int var1) {
-      class213 var2 = new class213();
+   public static void method3273(Buffer var0, int var1) {
+      ClassInfo var2 = new ClassInfo();
       var2.field3177 = var0.method2633();
       var2.field3182 = var0.method2620();
       var2.field3179 = new int[var2.field3177];
       var2.field3180 = new int[var2.field3177];
-      var2.field3181 = new Field[var2.field3177];
+      var2.fields = new Field[var2.field3177];
       var2.field3178 = new int[var2.field3177];
-      var2.field3183 = new Method[var2.field3177];
-      var2.field3184 = new byte[var2.field3177][][];
+      var2.methods = new Method[var2.field3177];
+      var2.args = new byte[var2.field3177][][];
 
       for(int var3 = 0; var3 < var2.field3177; ++var3) {
          try {
@@ -122,54 +122,54 @@ public class class151 extends RuntimeException {
                      var8[var9] = var0.method2663();
                   }
 
-                  String var20 = var0.method2663();
+                  String var26 = var0.method2663();
                   byte[][] var10 = new byte[var7][];
-                  int var12;
+                  int var11;
                   if(var4 == 3) {
-                     for(int var11 = 0; var11 < var7; ++var11) {
-                        var12 = var0.method2620();
-                        var10[var11] = new byte[var12];
-                        var0.method2754(var10[var11], 0, var12);
+                     for(int var12 = 0; var12 < var7; ++var12) {
+                        var11 = var0.method2620();
+                        var10[var12] = new byte[var11];
+                        var0.method2754(var10[var12], 0, var11);
                      }
                   }
 
                   var2.field3179[var3] = var4;
-                  Class[] var21 = new Class[var7];
+                  Class[] var27 = new Class[var7];
 
-                  for(var12 = 0; var12 < var7; ++var12) {
-                     var21[var12] = class190.method3898(var8[var12]);
+                  for(var11 = 0; var11 < var7; ++var11) {
+                     var27[var11] = class190.method3898(var8[var11]);
                   }
 
-                  Class var22 = class190.method3898(var20);
+                  Class var13 = class190.method3898(var26);
                   if(class190.method3898(var5).getClassLoader() == null) {
                      throw new SecurityException();
                   }
 
-                  Method[] var13 = class190.method3898(var5).getDeclaredMethods();
-                  Method[] var14 = var13;
+                  Method[] var14 = class190.method3898(var5).getDeclaredMethods();
+                  Method[] var15 = var14;
 
-                  for(int var15 = 0; var15 < var14.length; ++var15) {
-                     Method var16 = var14[var15];
-                     if(var16.getName().equals(var6)) {
-                        Class[] var17 = var16.getParameterTypes();
-                        if(var17.length == var21.length) {
-                           boolean var18 = true;
+                  for(int var16 = 0; var16 < var15.length; ++var16) {
+                     Method var17 = var15[var16];
+                     if(var17.getName().equals(var6)) {
+                        Class[] var18 = var17.getParameterTypes();
+                        if(var18.length == var27.length) {
+                           boolean var19 = true;
 
-                           for(int var19 = 0; var19 < var21.length; ++var19) {
-                              if(var21[var19] != var17[var19]) {
-                                 var18 = false;
+                           for(int var20 = 0; var20 < var27.length; ++var20) {
+                              if(var27[var20] != var18[var20]) {
+                                 var19 = false;
                                  break;
                               }
                            }
 
-                           if(var18 && var22 == var16.getReturnType()) {
-                              var2.field3183[var3] = var16;
+                           if(var19 && var13 == var17.getReturnType()) {
+                              var2.methods[var3] = var17;
                            }
                         }
                      }
                   }
 
-                  var2.field3184[var3] = var10;
+                  var2.args[var3] = var10;
                }
             } else {
                var5 = var0.method2663();
@@ -185,17 +185,17 @@ public class class151 extends RuntimeException {
                   throw new SecurityException();
                }
 
-               var2.field3181[var3] = class190.method3898(var5).getDeclaredField(var6);
+               var2.fields[var3] = class190.method3898(var5).getDeclaredField(var6);
             }
-         } catch (ClassNotFoundException var24) {
+         } catch (ClassNotFoundException var21) {
             var2.field3180[var3] = -1;
-         } catch (SecurityException var25) {
+         } catch (SecurityException var22) {
             var2.field3180[var3] = -2;
-         } catch (NullPointerException var26) {
+         } catch (NullPointerException var23) {
             var2.field3180[var3] = -3;
-         } catch (Exception var27) {
+         } catch (Exception var24) {
             var2.field3180[var3] = -4;
-         } catch (Throwable var28) {
+         } catch (Throwable var25) {
             var2.field3180[var3] = -5;
          }
       }
@@ -235,12 +235,13 @@ public class class151 extends RuntimeException {
       garbageValue = "-1082303703"
    )
    public static final boolean method3275() {
-      class140 var0 = class140.field2157;
-      synchronized(class140.field2157) {
+      class140 var0 = class140.keyboard;
+      class140 var1 = class140.keyboard;
+      synchronized(class140.keyboard) {
          if(class140.field2179 == class140.field2159) {
             return false;
          } else {
-            class25.field643 = class140.field2155[class140.field2179];
+            XClanMember.field643 = class140.field2155[class140.field2179];
             class51.field1146 = class140.field2175[class140.field2179];
             class140.field2179 = class140.field2179 + 1 & 127;
             return true;

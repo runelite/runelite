@@ -12,10 +12,10 @@ public class class161 {
    public static void method3314(boolean var0) {
       if(null != class174.field2790) {
          try {
-            class122 var1 = new class122(4);
+            Buffer var1 = new Buffer(4);
             var1.method2783(var0?2:3);
             var1.method2849(0);
-            class174.field2790.method3135(var1.field2051, 0, 4);
+            class174.field2790.method3135(var1.payload, 0, 4);
          } catch (IOException var4) {
             try {
                class174.field2790.method3131();
@@ -26,7 +26,7 @@ public class class161 {
             ++class174.field2787;
             class174.field2790 = null;
          }
-
       }
+
    }
 }

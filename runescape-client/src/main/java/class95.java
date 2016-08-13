@@ -22,7 +22,7 @@ public interface class95 {
       signature = "(II)[I",
       garbageValue = "-1858605656"
    )
-   int[] vmethod2278(int var1);
+   int[] load(int var1);
 
    @ObfuscatedName("e")
    @ObfuscatedSignature(

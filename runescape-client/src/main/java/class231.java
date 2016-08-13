@@ -51,7 +51,7 @@ public class class231 {
    )
    long field3270;
    @ObfuscatedName("l")
-   class230 field3271;
+   FileOnDisk field3271;
 
    @ObfuscatedName("l")
    @ObfuscatedSignature(
@@ -90,86 +90,86 @@ public class class231 {
          }
 
          long var4 = this.field3268;
-         int var7 = var3;
-         int var8;
+         int var6 = var3;
+         int var7;
          if(this.field3268 >= this.field3263 && this.field3268 < (long)this.field3264 + this.field3263) {
-            var8 = (int)((long)this.field3264 - (this.field3268 - this.field3263));
-            if(var8 > var3) {
-               var8 = var3;
+            var7 = (int)((long)this.field3264 - (this.field3268 - this.field3263));
+            if(var7 > var3) {
+               var7 = var3;
             }
 
-            System.arraycopy(this.field3261, (int)(this.field3268 - this.field3263), var1, var2, var8);
-            this.field3268 += (long)var8;
-            var2 += var8;
-            var3 -= var8;
+            System.arraycopy(this.field3261, (int)(this.field3268 - this.field3263), var1, var2, var7);
+            this.field3268 += (long)var7;
+            var2 += var7;
+            var3 -= var7;
          }
 
          if(var3 > this.field3261.length) {
             this.field3271.method4271(this.field3268);
 
-            for(this.field3267 = this.field3268; var3 > 0; var3 -= var8) {
-               var8 = this.field3271.method4274(var1, var2, var3);
-               if(var8 == -1) {
+            for(this.field3267 = this.field3268; var3 > 0; var3 -= var7) {
+               var7 = this.field3271.method4274(var1, var2, var3);
+               if(var7 == -1) {
                   break;
                }
 
-               this.field3267 += (long)var8;
-               this.field3268 += (long)var8;
-               var2 += var8;
+               this.field3267 += (long)var7;
+               this.field3268 += (long)var7;
+               var2 += var7;
             }
          } else if(var3 > 0) {
             this.method4310();
-            var8 = var3;
+            var7 = var3;
             if(var3 > this.field3264) {
-               var8 = this.field3264;
+               var7 = this.field3264;
             }
 
-            System.arraycopy(this.field3261, 0, var1, var2, var8);
-            var2 += var8;
-            var3 -= var8;
-            this.field3268 += (long)var8;
+            System.arraycopy(this.field3261, 0, var1, var2, var7);
+            var2 += var7;
+            var3 -= var7;
+            this.field3268 += (long)var7;
          }
 
          if(-1L != this.field3265) {
             if(this.field3265 > this.field3268 && var3 > 0) {
-               var8 = var2 + (int)(this.field3265 - this.field3268);
-               if(var8 > var2 + var3) {
-                  var8 = var2 + var3;
+               var7 = var2 + (int)(this.field3265 - this.field3268);
+               if(var7 > var2 + var3) {
+                  var7 = var2 + var3;
                }
 
-               while(var2 < var8) {
+               while(var2 < var7) {
                   var1[var2++] = 0;
                   --var3;
                   ++this.field3268;
                }
             }
 
-            long var15 = -1L;
+            long var8 = -1L;
             long var10 = -1L;
-            if(this.field3265 >= var4 && this.field3265 < (long)var7 + var4) {
-               var15 = this.field3265;
+            if(this.field3265 >= var4 && this.field3265 < (long)var6 + var4) {
+               var8 = this.field3265;
             } else if(var4 >= this.field3265 && var4 < (long)this.field3262 + this.field3265) {
-               var15 = var4;
+               var8 = var4;
             }
 
-            if(this.field3265 + (long)this.field3262 > var4 && this.field3265 + (long)this.field3262 <= (long)var7 + var4) {
+            if(this.field3265 + (long)this.field3262 > var4 && this.field3265 + (long)this.field3262 <= (long)var6 + var4) {
                var10 = (long)this.field3262 + this.field3265;
-            } else if(var4 + (long)var7 > this.field3265 && var4 + (long)var7 <= this.field3265 + (long)this.field3262) {
-               var10 = var4 + (long)var7;
+            } else if(var4 + (long)var6 > this.field3265 && var4 + (long)var6 <= this.field3265 + (long)this.field3262) {
+               var10 = var4 + (long)var6;
             }
 
-            if(var15 > -1L && var10 > var15) {
-               int var12 = (int)(var10 - var15);
-               System.arraycopy(this.field3266, (int)(var15 - this.field3265), var1, var2 + (int)(var15 - var4), var12);
+            if(var8 > -1L && var10 > var8) {
+               int var12 = (int)(var10 - var8);
+               System.arraycopy(this.field3266, (int)(var8 - this.field3265), var1, var2 + (int)(var8 - var4), var12);
                if(var10 > this.field3268) {
                   var3 = (int)((long)var3 - (var10 - this.field3268));
                   this.field3268 = var10;
                }
             }
          }
-      } catch (IOException var14) {
+      } catch (IOException var13) {
          this.field3267 = -1L;
-         throw var14;
+         throw var13;
       }
 
       if(var3 > 0) {
@@ -222,7 +222,6 @@ public class class231 {
                if(this.field3268 - this.field3265 > (long)this.field3262) {
                   this.field3262 = (int)(this.field3268 - this.field3265);
                }
-
             }
          } else {
             if(this.field3268 != this.field3267) {
@@ -236,12 +235,12 @@ public class class231 {
                this.field3269 = this.field3267;
             }
 
-            long var11 = -1L;
+            long var10 = -1L;
             long var6 = -1L;
             if(this.field3268 >= this.field3263 && this.field3268 < (long)this.field3264 + this.field3263) {
-               var11 = this.field3268;
+               var10 = this.field3268;
             } else if(this.field3263 >= this.field3268 && this.field3263 < this.field3268 + (long)var3) {
-               var11 = this.field3263;
+               var10 = this.field3263;
             }
 
             if(this.field3268 + (long)var3 > this.field3263 && (long)var3 + this.field3268 <= (long)this.field3264 + this.field3263) {
@@ -250,16 +249,17 @@ public class class231 {
                var6 = (long)this.field3264 + this.field3263;
             }
 
-            if(var11 > -1L && var6 > var11) {
-               int var8 = (int)(var6 - var11);
-               System.arraycopy(var1, (int)(var11 + (long)var2 - this.field3268), this.field3261, (int)(var11 - this.field3263), var8);
+            if(var10 > -1L && var6 > var10) {
+               int var8 = (int)(var6 - var10);
+               System.arraycopy(var1, (int)(var10 + (long)var2 - this.field3268), this.field3261, (int)(var10 - this.field3263), var8);
             }
 
             this.field3268 += (long)var3;
          }
-      } catch (IOException var10) {
+
+      } catch (IOException var9) {
          this.field3267 = -1L;
-         throw var10;
+         throw var9;
       }
    }
 
@@ -316,14 +316,14 @@ public class class231 {
    }
 
    @ObfuscatedSignature(
-      signature = "(Lclass230;II)V",
+      signature = "(LFileOnDisk;II)V",
       garbageValue = "0"
    )
-   public class231(class230 var1, int var2, int var3) throws IOException {
+   public class231(FileOnDisk var1, int var2, int var3) throws IOException {
       this.field3271 = var1;
-      long var10003 = var1.method4273();
-      this.field3269 = var10003 * -7342760407355761393L;
-      this.field3270 = var10003;
+      long var4 = var1.method4273();
+      this.field3269 = var4 * -7342760407355761393L;
+      this.field3270 = var4;
       this.field3261 = new byte[var2];
       this.field3266 = new byte[var3];
       this.field3268 = 0L;

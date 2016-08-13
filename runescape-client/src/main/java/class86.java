@@ -1,7 +1,7 @@
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("cy")
-public class class86 extends class211 {
+public class class86 extends Node {
    @ObfuscatedName("p")
    int[] field1520;
    @ObfuscatedName("h")
@@ -38,10 +38,10 @@ public class class86 extends class211 {
       this.field1520 = new int[var5];
 
       for(int var6 = 0; var6 < this.field1524.length; ++var6) {
-         class83 var7 = class119.method2573(var4, this.field1524[var6]);
+         ModIcon var7 = class119.method2573(var4, this.field1524[var6]);
          var7.method1952();
-         byte[] var8 = var7.field1499;
-         int[] var9 = var7.field1497;
+         byte[] var8 = var7.pixels;
+         int[] var9 = var7.palette;
          int var10 = this.field1527[var6];
          if((var10 & -16777216) == 16777216) {
             ;
@@ -83,11 +83,11 @@ public class class86 extends class211 {
          }
 
          if(var11 == 0) {
-            if(var7.field1498 == var3) {
+            if(var7.originalWidth == var3) {
                for(var12 = 0; var12 < var5; ++var12) {
                   this.field1520[var12] = var9[var8[var12] & 255];
                }
-            } else if(var7.field1498 == 64 && var3 == 128) {
+            } else if(var7.originalWidth == 64 && var3 == 128) {
                var12 = 0;
 
                for(var13 = 0; var13 < var3; ++var13) {
@@ -96,7 +96,7 @@ public class class86 extends class211 {
                   }
                }
             } else {
-               if(var7.field1498 != 128 || var3 != 64) {
+               if(var7.originalWidth != 128 || var3 != 64) {
                   throw new RuntimeException();
                }
 
@@ -140,7 +140,7 @@ public class class86 extends class211 {
          int var5;
          int[] var6;
          int var7;
-         int var10;
+         int var8;
          if(this.field1528 == 1 || this.field1528 == 3) {
             if(field1532 == null || field1532.length < this.field1520.length) {
                field1532 = new int[this.field1520.length];
@@ -159,9 +159,9 @@ public class class86 extends class211 {
                var4 = -var4;
             }
 
-            for(var10 = 0; var10 < var3; ++var10) {
-               var7 = var10 + var4 & var5;
-               field1532[var10] = this.field1520[var7];
+            for(var8 = 0; var8 < var3; ++var8) {
+               var7 = var8 + var4 & var5;
+               field1532[var8] = this.field1520[var7];
             }
 
             var6 = this.field1520;
@@ -187,11 +187,11 @@ public class class86 extends class211 {
                var4 = -var4;
             }
 
-            for(var10 = 0; var10 < var3; var10 += var2) {
+            for(var8 = 0; var8 < var3; var8 += var2) {
                for(var7 = 0; var7 < var2; ++var7) {
-                  int var8 = var10 + var7;
-                  int var9 = var10 + (var7 + var4 & var5);
-                  field1532[var8] = this.field1520[var9];
+                  int var9 = var8 + var7;
+                  int var10 = var8 + (var7 + var4 & var5);
+                  field1532[var9] = this.field1520[var10];
                }
             }
 
@@ -199,11 +199,11 @@ public class class86 extends class211 {
             this.field1520 = field1532;
             field1532 = var6;
          }
-
       }
+
    }
 
-   class86(class122 var1) {
+   class86(Buffer var1) {
       this.field1522 = var1.method2635();
       this.field1523 = var1.method2633() == 1;
       int var2 = var1.method2633();

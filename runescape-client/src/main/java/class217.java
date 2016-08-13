@@ -9,7 +9,7 @@ public class class217 {
    @ObfuscatedName("h")
    String field3205;
    @ObfuscatedName("r")
-   public final class223 field3206;
+   public final XGrandExchangeOffer field3206;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = 1507614503
@@ -39,20 +39,20 @@ public class class217 {
       return this.field3204;
    }
 
-   class217(class122 var1, byte var2, int var3) {
+   class217(Buffer var1, byte var2, int var3) {
       this.field3204 = var1.method2663();
       this.field3205 = var1.method2663();
       this.field3208 = var1.method2635();
       this.field3209 = var1.method2649();
       int var4 = var1.method2620();
       int var5 = var1.method2620();
-      this.field3206 = new class223();
+      this.field3206 = new XGrandExchangeOffer();
       this.field3206.method4149(2);
       this.field3206.method4150(var2);
-      this.field3206.field3216 = var4;
-      this.field3206.field3214 = var5;
-      this.field3206.field3218 = 0;
-      this.field3206.field3217 = 0;
-      this.field3206.field3215 = var3;
+      this.field3206.price = var4;
+      this.field3206.totalQuantity = var5;
+      this.field3206.quantitySold = 0;
+      this.field3206.spent = 0;
+      this.field3206.itemId = var3;
    }
 }
