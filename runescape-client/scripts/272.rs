@@ -1,0 +1,22 @@
+0x021 33
+0x000
+0x008 8
+0x006 6
+0x003 3 Your coffer is protected by your Bank PIN. You can unlock it at the eastern side of the enclosure.
+0xc1c 3100
+0x006 6
+0x021 33
+0x000
+0x008 8
+0x006 6
+0x003 3 Your coffer is empty. You can deposit money into the pouch at the eastern side of the enclosure.
+0xc1c 3100
+0x006 6
+0x003 3 You have 
+0x021 33
+0x003 3 ,
+0x028 40
+0x003 3  coins in the coffer.
+0x025 37
+0xc1c 3100
+0x015 21

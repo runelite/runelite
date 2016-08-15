@@ -1,0 +1,6 @@
+0x003 3 -Attempting to kick player from friends chat...
+0x000
+0x028 40
+0x023 35
+0xe21 3617
+0x015 21
