@@ -27,14 +27,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache;
 
-import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import net.runelite.cache.definitions.ScriptDefinition;
 import net.runelite.cache.definitions.loaders.ScriptLoader;
 import net.runelite.cache.fs.Archive;
@@ -78,12 +77,38 @@ public class ScriptDumperTest
 
 				ScriptDefinition script = loader.load(file.getFileId(), contents);
 
-				String str = gson.toJson(script);
-				Files.write(str, new java.io.File(outDir, archive.getArchiveId() + ".script"), Charset.defaultCharset());
+				java.io.File outFile = new java.io.File(outDir, archive.getArchiveId() + ".rs");
+				writeScript(outFile, script);
+
 				++count;
 			}
 		}
 
 		logger.info("Dumped {} scripts to {}", count, outDir);
+	}
+
+	private void writeScript(java.io.File file, ScriptDefinition script) throws IOException
+	{
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
+		{
+			int length = script.getInstructions().length;
+
+			assert script.getIntOperands().length == length;
+			assert script.getStringOperands().length == length;
+
+			for (int i = 0; i < length; ++i)
+			{
+				int opcode = script.getInstructions()[i];
+				int iop = script.getInstructions()[i];
+				String sop = script.getStringOperands()[i];
+
+				writer.write(String.format("0x%03x", opcode));
+				if (iop != 0 || sop != null)
+					writer.write(" " + iop);
+				if (sop != null)
+					writer.write(" " + sop);
+				writer.write("\n");
+			}
+		}
 	}
 }

@@ -56,11 +56,11 @@ public class ScriptLoader
 
 		int[] instructions = new int[paramCount];
 		int[] intOperands = new int[paramCount];
-		String[] aStringArray2272 = new String[paramCount];
+		String[] stringOperands = new String[paramCount];
 
 		def.setInstructions(instructions);
 		def.setIntOperands(intOperands);
-		def.setaStringArray2272(aStringArray2272);
+		def.setStringOperands(stringOperands);
 
 		int var3;
 		for (int var6 = 0; in.getOffset() < in.getLength() - 12; instructions[var6++] = var3)
@@ -68,7 +68,7 @@ public class ScriptLoader
 			var3 = in.readUnsignedShort();
 			if (var3 == 3)
 			{
-				aStringArray2272[var6] = in.readString();
+				stringOperands[var6] = in.readString();
 			}
 			else if (var3 < 100 && 21 != var3 && 38 != var3 && 39 != var3)
 			{
