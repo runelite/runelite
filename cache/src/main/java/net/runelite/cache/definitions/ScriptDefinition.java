@@ -36,7 +36,7 @@ public class ScriptDefinition
         private int anInt2269;
         private int[] instructions;
         private int[] intOperands;
-        private String[] aStringArray2272;
+        private String[] stringOperands;
         private int localStringCount;
         private int anInt2276;
         private int localIntCount;
@@ -81,14 +81,14 @@ public class ScriptDefinition
 		this.intOperands = intOperands;
 	}
 
-	public String[] getaStringArray2272()
+	public String[] getStringOperands()
 	{
-		return aStringArray2272;
+		return stringOperands;
 	}
 
-	public void setaStringArray2272(String[] aStringArray2272)
+	public void setStringOperands(String[] stringOperands)
 	{
-		this.aStringArray2272 = aStringArray2272;
+		this.stringOperands = stringOperands;
 	}
 
 	public int getLocalStringCount()
