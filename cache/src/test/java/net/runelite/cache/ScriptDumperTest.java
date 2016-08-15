@@ -99,7 +99,7 @@ public class ScriptDumperTest
 			for (int i = 0; i < length; ++i)
 			{
 				int opcode = script.getInstructions()[i];
-				int iop = script.getInstructions()[i];
+				int iop = script.getIntOperands()[i];
 				String sop = script.getStringOperands()[i];
 
 				writer.write(String.format("0x%03x", opcode));
