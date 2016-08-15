@@ -1,155 +1,155 @@
 0x000
-0x022 34
+0x022 1
+0x000 14811140
+0x021 1
+0x0c8
+0x000 1
+0x008 1
+0x006 7
+0x000 1345
+0x451
+0x021 1
+0x000 2
+0xfa0
+0x022 1
+0x006 -13
+0x000 14811140
+0x021
+0x000 2
+0xfa2
+0x0c8
+0x000 1
+0x008 1
+0x006 2
+0x000 1344
+0x451
+0x021
+0x02b 139
+0x028 1277
+0x028 1280
+0x003 0 
+0x024
+0x021
 0x000
-0x021 33
-0x0c8 200
-0x000
-0x008 8
-0x006 6
-0x000
-0x451 1105
-0x021 33
-0x000
-0xfa0 4000
-0x022 34
-0x006 6
-0x000
-0x021 33
-0x000
-0xfa2 4002
-0x0c8 200
-0x000
-0x008 8
-0x006 6
-0x000
-0x451 1105
-0x021 33
-0x02b 43
-0x028 40
-0x028 40
-0x003 3 
-0x024 36
-0x021 33
-0x000
-0x008 8
-0x006 6
-0x003 3 In Deadman mode, when you die 
-0x003 3 <col=ffffff>
-0x003 3 unskulled
-0x003 3 </col>
-0x003 3  from 
-0x003 3 <col=ffffff>
-0x003 3 PvM combat
-0x003 3 </col>
-0x003 3 , you only lose the items you are carrying at the time. Your 3 most valuable items are protected. You do not lose any experience.
-0x003 3 <br>
-0x003 3 <br>
-0x003 3 You may lose more if you die from 
-0x003 3 <col=ffffff>
-0x003 3 PvP combat
-0x003 3 </col>
-0x003 3  or if you are 
-0x003 3 <col=ffffff>
-0x003 3 skulled
-0x003 3 </col>
-0x003 3  at the time.
-0x025 37
-0x024 36
-0x021 33
-0x000
-0x008 8
-0x006 6
-0x003 3 In Deadman mode, when you die from 
-0x003 3 <col=ffffff>
-0x003 3 PvP combat
-0x003 3 </col>
-0x003 3 , you lose the 
-0x003 3 <col=ffffff>
-0x003 3 10
-0x003 3 </col>
-0x003 3  most valuable stacks of items in your bank, as well as 
-0x003 3 <col=ffffff>
-0x003 3 all
-0x003 3 </col>
-0x003 3  of the items you are carrying at the time.
-0x003 3 <br>
-0x003 3 <br>
-0x003 3 Dependent on level difference, you may also lose 
-0x003 3 <col=ffffff>
-0x003 3 up to 25%
-0x003 3 </col>
-0x003 3  of your experience in any unprotected skills. You may lose even more if you are 
-0x003 3 <col=ffffff>
-0x003 3 skulled
-0x003 3 </col>
-0x003 3 .
-0x025 37
-0x024 36
-0x021 33
-0x000
-0x008 8
-0x006 6
-0x003 3 In Deadman mode, if you die whilst 
-0x003 3 <col=ffffff>
-0x003 3 skulled
-0x003 3 </col>
-0x003 3 , you lose the 
-0x003 3 <col=ffffff>
-0x003 3 10
-0x003 3 </col>
-0x003 3  most valuable stacks of items in your bank, as well as 
-0x003 3 <col=ffffff>
-0x003 3 all
-0x003 3 </col>
-0x003 3  of the items you are carrying at the time.
-0x003 3 <br>
-0x003 3 <br>
-0x003 3 Dependent on level difference, you may also lose 
-0x003 3 <col=ffffff>
-0x003 3 up to 50%
-0x003 3 </col>
-0x003 3  of your experience in any unprotected skills. You may lose even more in a 
-0x003 3 <col=ffffff>
-0x003 3 guarded
-0x003 3 </col>
-0x003 3  area.
-0x025 37
-0x024 36
-0x021 33
-0x000
-0x008 8
-0x006 6
-0x003 3 In Deadman mode, if you die in a 
-0x003 3 <col=ffffff>
-0x003 3 guarded
-0x003 3 </col>
-0x003 3  area whilst 
-0x003 3 <col=ffffff>
-0x003 3 skulled
-0x003 3 </col>
-0x003 3 , you lose the 
-0x003 3 <col=ffffff>
-0x003 3 10
-0x003 3 </col>
-0x003 3  most valuable stacks of items in your bank, as well as 
-0x003 3 <col=ffffff>
-0x003 3 all
-0x003 3 </col>
-0x003 3  of the items you are carrying at the time.
-0x003 3 <br>
-0x003 3 <br>
-0x003 3 Dependent on level difference, you may also lose 
-0x003 3 <col=ffffff>
-0x003 3 up to 10%
-0x003 3 </col>
-0x003 3  of your experience in any protected skills, and 
-0x003 3 <col=ffffff>
-0x003 3 up to 50%
-0x003 3 </col>
-0x003 3  in any unprotected skills.
-0x025 37
-0x024 36
-0x023 35
-0x000
-0x840 2112
-0x015 21
+0x008 1
+0x006 22
+0x003 0 In Deadman mode, when you die 
+0x003 0 <col=ffffff>
+0x003 0 unskulled
+0x003 0 </col>
+0x003 0  from 
+0x003 0 <col=ffffff>
+0x003 0 PvM combat
+0x003 0 </col>
+0x003 0 , you only lose the items you are carrying at the time. Your 3 most valuable items are protected. You do not lose any experience.
+0x003 0 <br>
+0x003 0 <br>
+0x003 0 You may lose more if you die from 
+0x003 0 <col=ffffff>
+0x003 0 PvP combat
+0x003 0 </col>
+0x003 0  or if you are 
+0x003 0 <col=ffffff>
+0x003 0 skulled
+0x003 0 </col>
+0x003 0  at the time.
+0x025 20
+0x024
+0x021
+0x000 1
+0x008 1
+0x006 26
+0x003 0 In Deadman mode, when you die from 
+0x003 0 <col=ffffff>
+0x003 0 PvP combat
+0x003 0 </col>
+0x003 0 , you lose the 
+0x003 0 <col=ffffff>
+0x003 0 10
+0x003 0 </col>
+0x003 0  most valuable stacks of items in your bank, as well as 
+0x003 0 <col=ffffff>
+0x003 0 all
+0x003 0 </col>
+0x003 0  of the items you are carrying at the time.
+0x003 0 <br>
+0x003 0 <br>
+0x003 0 Dependent on level difference, you may also lose 
+0x003 0 <col=ffffff>
+0x003 0 up to 25%
+0x003 0 </col>
+0x003 0  of your experience in any unprotected skills. You may lose even more if you are 
+0x003 0 <col=ffffff>
+0x003 0 skulled
+0x003 0 </col>
+0x003 0 .
+0x025 24
+0x024
+0x021
+0x000 2
+0x008 1
+0x006 26
+0x003 0 In Deadman mode, if you die whilst 
+0x003 0 <col=ffffff>
+0x003 0 skulled
+0x003 0 </col>
+0x003 0 , you lose the 
+0x003 0 <col=ffffff>
+0x003 0 10
+0x003 0 </col>
+0x003 0  most valuable stacks of items in your bank, as well as 
+0x003 0 <col=ffffff>
+0x003 0 all
+0x003 0 </col>
+0x003 0  of the items you are carrying at the time.
+0x003 0 <br>
+0x003 0 <br>
+0x003 0 Dependent on level difference, you may also lose 
+0x003 0 <col=ffffff>
+0x003 0 up to 50%
+0x003 0 </col>
+0x003 0  of your experience in any unprotected skills. You may lose even more in a 
+0x003 0 <col=ffffff>
+0x003 0 guarded
+0x003 0 </col>
+0x003 0  area.
+0x025 24
+0x024
+0x021
+0x000 3
+0x008 1
+0x006 30
+0x003 0 In Deadman mode, if you die in a 
+0x003 0 <col=ffffff>
+0x003 0 guarded
+0x003 0 </col>
+0x003 0  area whilst 
+0x003 0 <col=ffffff>
+0x003 0 skulled
+0x003 0 </col>
+0x003 0 , you lose the 
+0x003 0 <col=ffffff>
+0x003 0 10
+0x003 0 </col>
+0x003 0  most valuable stacks of items in your bank, as well as 
+0x003 0 <col=ffffff>
+0x003 0 all
+0x003 0 </col>
+0x003 0  of the items you are carrying at the time.
+0x003 0 <br>
+0x003 0 <br>
+0x003 0 Dependent on level difference, you may also lose 
+0x003 0 <col=ffffff>
+0x003 0 up to 10%
+0x003 0 </col>
+0x003 0  of your experience in any protected skills, and 
+0x003 0 <col=ffffff>
+0x003 0 up to 50%
+0x003 0 </col>
+0x003 0  in any unprotected skills.
+0x025 28
+0x024
+0x023
+0x000 14811141
+0x840
+0x015

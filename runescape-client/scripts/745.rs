@@ -1,4 +1,4 @@
-0x003 3 https://www.runescape.com/oldschool/bonds
-0x000
-0xc29 3113
-0x015 21
+0x003 0 https://www.runescape.com/oldschool/bonds
+0x000 1
+0xc29
+0x015
