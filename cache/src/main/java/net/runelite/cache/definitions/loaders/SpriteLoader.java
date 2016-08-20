@@ -38,7 +38,7 @@ public class SpriteLoader
 	public static final int FLAG_VERTICAL = 0b01;
 	public static final int FLAG_ALPHA    = 0b10;
 
-	public SpriteDefinition[] load(InputStream stream)
+	public SpriteDefinition[] load(int id, InputStream stream)
 	{
 		stream.setOffset(stream.getLength() - 2);
 		int spriteCount = stream.readUnsignedShort();
@@ -58,6 +58,8 @@ public class SpriteLoader
 		for (int i = 0; i < spriteCount; ++i)
 		{
 			sprites[i] = new SpriteDefinition();
+			sprites[i].setId(id);
+			sprites[i].setFrame(i);
 			sprites[i].setMaxWidth(width);
 			sprites[i].setMaxHeight(height);
 		}

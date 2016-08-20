@@ -27,45 +27,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
-import net.runelite.cache.fs.Index;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import net.runelite.cache.definitions.TextureDefinition;
+import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TitleDumper
+public class TextureLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(TitleDumper.class);
+	private static final Logger logger = LoggerFactory.getLogger(TextureLoader.class);
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void extract() throws IOException
+	public TextureDefinition load(int id, byte[] b)
 	{
-		java.io.File base = StoreLocation.LOCATION,
-			outFile = folder.newFile();
+		TextureDefinition def = new TextureDefinition();
+		InputStream is = new InputStream(b);
 
-		try (Store store = new Store(base))
-		{
-			store.load();
+		is.skip(3);
+		def.setId(id);
 
-			Index index = store.getIndex(IndexType.BINARY);
-			Archive a = index.findArchiveByName("title.jpg");
-			File file = a.getFiles().get(0);
+		int count = is.readUnsignedByte();
+		int[] files = new int[count];
 
-			Files.write(outFile.toPath(), file.getContents());
-		}
+		for (int i = 0; i < count; ++i)
+			files[i] = is.readUnsignedShort();
 
-		logger.info("Dumped to {}", outFile);
+		def.setFileIds(files);
+
+		return def;
 	}
 }
