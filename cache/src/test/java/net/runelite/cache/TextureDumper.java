@@ -27,85 +27,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache;
 
-import java.awt.image.BufferedImage;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
-import java.util.List;
-import javax.imageio.ImageIO;
-import net.runelite.cache.definitions.SpriteDefinition;
-import net.runelite.cache.definitions.loaders.SpriteLoader;
+import java.nio.charset.Charset;
+import net.runelite.cache.definitions.TextureDefinition;
+import net.runelite.cache.definitions.loaders.TextureLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.io.InputStream;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SpriteDumperTest
+public class TextureDumper
 {
-	private static final Logger logger = LoggerFactory.getLogger(SpriteDumperTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(TextureDumper.class);
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
+
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	@Test
 	public void extract() throws IOException
 	{
 		java.io.File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+			outDir = folder.newFile();
 
 		int count = 0;
 
 		try (Store store = new Store(base))
 		{
 			store.load();
-			
-			Index index = store.getIndex(IndexType.SPRITES);
-			
-			for (Archive a : index.getArchives())
+
+			Index index = store.getIndex(IndexType.TEXTURES);
+			Archive archive = index.getArchive(0);
+
+			for (File file : archive.getFiles())
 			{
-				List<File> files = a.getFiles();
-				
-				Assert.assertEquals(1, files.size());
-				
-				File file = files.get(0);
-				byte[] contents = file.getContents();
-				
-				SpriteLoader loader = new SpriteLoader();
-				SpriteDefinition[] sprites = loader.load(a.getArchiveId(), new InputStream(contents));
+				TextureLoader loader = new TextureLoader();
+				TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
 
-				for (SpriteDefinition def : sprites)
-				{
-					// I don't know why this happens
-					if (def.getHeight() <= 0 || def.getWidth() <= 0)
-						continue;
-
-					BufferedImage image = getBufferedImage(def);
-					java.io.File targ = new java.io.File(outDir, def.getId() + "-" + def.getFrame() + ".png");
-					targ.mkdirs();
-					ImageIO.write(image, "png", targ);
-
-					++count;
-				}
+				Files.write(gson.toJson(texture), new java.io.File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				++count;
 			}
 		}
 
-		Assert.assertTrue(count > 3000);
-
-		logger.info("Dumped {} sprites to {}", count, outDir);
-	}
-
-	private BufferedImage getBufferedImage(SpriteDefinition def)
-	{
-		BufferedImage bi = new BufferedImage(def.getWidth(), def.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		bi.setRGB(0, 0, def.getWidth(), def.getHeight(), def.getPixels(), 0, def.getWidth());
-		return bi;
+		logger.info("Dumped {} textures to {}", count, outDir);
 	}
 }

@@ -27,45 +27,53 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache.definitions.loaders;
 
-package net.runelite.cache;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
-import net.runelite.cache.fs.Index;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TitleDumper
+public class OverlayLoader
 {
-	private static final Logger logger = LoggerFactory.getLogger(TitleDumper.class);
+	private static final Logger logger = LoggerFactory.getLogger(OverlayLoader.class);
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void extract() throws IOException
+	public OverlayDefinition load(int id, byte[] b)
 	{
-		java.io.File base = StoreLocation.LOCATION,
-			outFile = folder.newFile();
+		OverlayDefinition def = new OverlayDefinition();
+		InputStream is = new InputStream(b);
 
-		try (Store store = new Store(base))
+		def.setId(id);
+
+		for (;;)
 		{
-			store.load();
+			int opcode = is.readUnsignedByte();
+			if (opcode == 0)
+			{
+				break;
+			}
 
-			Index index = store.getIndex(IndexType.BINARY);
-			Archive a = index.findArchiveByName("title.jpg");
-			File file = a.getFiles().get(0);
-
-			Files.write(outFile.toPath(), file.getContents());
+			if (opcode == 1)
+			{
+				int color = is.read24BitInt();
+				def.setRgbColor(color);
+			}
+			else if (opcode == 2)
+			{
+				int texture = is.readUnsignedByte();
+				def.setTexture(texture);
+			}
+			else if (opcode == 5)
+			{
+				def.setHideUnderlay(false);
+			}
+			else if (opcode == 7)
+			{
+				int secondaryColor = is.read24BitInt();
+				def.setSecondaryRgbColor(secondaryColor);
+			}
 		}
 
-		logger.info("Dumped to {}", outFile);
+		return def;
 	}
 }
