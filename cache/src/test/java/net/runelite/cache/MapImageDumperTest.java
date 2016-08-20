@@ -51,7 +51,7 @@ public class MapImageDumperTest
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-			outFile = folder.newFile();
+			outFile = folder.newFolder();
 
 		BufferedImage[] images;
 
