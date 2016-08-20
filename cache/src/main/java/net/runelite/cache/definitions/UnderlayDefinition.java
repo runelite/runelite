@@ -27,56 +27,12 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.definitions;
 
-public class SpriteDefinition
+public class UnderlayDefinition
 {
 	private int id;
-	private int frame;
-	private int offsetX;
-	private int offsetY;
-	private int width;
-	private int height;
-	private int[] pixels;
-	private int maxWidth;
-	private int maxHeight;
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 89 * hash + this.id;
-		hash = 89 * hash + this.frame;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final SpriteDefinition other = (SpriteDefinition) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.frame != other.frame)
-		{
-			return false;
-		}
-		return true;
-	}
+	private int color;
 
 	public int getId()
 	{
@@ -88,83 +44,13 @@ public class SpriteDefinition
 		this.id = id;
 	}
 
-	public int getFrame()
+	public int getColor()
 	{
-		return frame;
+		return color;
 	}
 
-	public void setFrame(int frame)
+	public void setColor(int color)
 	{
-		this.frame = frame;
-	}
-
-	public int getOffsetX()
-	{
-		return offsetX;
-	}
-
-	public void setOffsetX(int offsetX)
-	{
-		this.offsetX = offsetX;
-	}
-
-	public int getOffsetY()
-	{
-		return offsetY;
-	}
-
-	public void setOffsetY(int offsetY)
-	{
-		this.offsetY = offsetY;
-	}
-
-	public int getWidth()
-	{
-		return width;
-	}
-
-	public void setWidth(int width)
-	{
-		this.width = width;
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public void setHeight(int height)
-	{
-		this.height = height;
-	}
-
-	public int[] getPixels()
-	{
-		return pixels;
-	}
-
-	public void setPixels(int[] pixels)
-	{
-		this.pixels = pixels;
-	}
-
-	public int getMaxWidth()
-	{
-		return maxWidth;
-	}
-
-	public void setMaxWidth(int maxWidth)
-	{
-		this.maxWidth = maxWidth;
-	}
-
-	public int getMaxHeight()
-	{
-		return maxHeight;
-	}
-
-	public void setMaxHeight(int maxHeight)
-	{
-		this.maxHeight = maxHeight;
+		this.color = color;
 	}
 }

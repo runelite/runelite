@@ -30,53 +30,13 @@
 
 package net.runelite.cache.definitions;
 
-public class SpriteDefinition
+public class OverlayDefinition
 {
 	private int id;
-	private int frame;
-	private int offsetX;
-	private int offsetY;
-	private int width;
-	private int height;
-	private int[] pixels;
-	private int maxWidth;
-	private int maxHeight;
-
-	@Override
-	public int hashCode()
-	{
-		int hash = 7;
-		hash = 89 * hash + this.id;
-		hash = 89 * hash + this.frame;
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-		{
-			return true;
-		}
-		if (obj == null)
-		{
-			return false;
-		}
-		if (getClass() != obj.getClass())
-		{
-			return false;
-		}
-		final SpriteDefinition other = (SpriteDefinition) obj;
-		if (this.id != other.id)
-		{
-			return false;
-		}
-		if (this.frame != other.frame)
-		{
-			return false;
-		}
-		return true;
-	}
+	private int rgbColor = 0;
+	private int texture = -1;
+	private int secondaryRgbColor = -1;
+	private boolean hideUnderlay = true;
 
 	public int getId()
 	{
@@ -88,83 +48,43 @@ public class SpriteDefinition
 		this.id = id;
 	}
 
-	public int getFrame()
+	public int getRgbColor()
 	{
-		return frame;
+		return rgbColor;
 	}
 
-	public void setFrame(int frame)
+	public void setRgbColor(int rgbColor)
 	{
-		this.frame = frame;
+		this.rgbColor = rgbColor;
 	}
 
-	public int getOffsetX()
+	public int getTexture()
 	{
-		return offsetX;
+		return texture;
 	}
 
-	public void setOffsetX(int offsetX)
+	public void setTexture(int texture)
 	{
-		this.offsetX = offsetX;
+		this.texture = texture;
 	}
 
-	public int getOffsetY()
+	public int getSecondaryRgbColor()
 	{
-		return offsetY;
+		return secondaryRgbColor;
 	}
 
-	public void setOffsetY(int offsetY)
+	public void setSecondaryRgbColor(int secondaryRgbColor)
 	{
-		this.offsetY = offsetY;
+		this.secondaryRgbColor = secondaryRgbColor;
 	}
 
-	public int getWidth()
+	public boolean isHideUnderlay()
 	{
-		return width;
+		return hideUnderlay;
 	}
 
-	public void setWidth(int width)
+	public void setHideUnderlay(boolean hideUnderlay)
 	{
-		this.width = width;
-	}
-
-	public int getHeight()
-	{
-		return height;
-	}
-
-	public void setHeight(int height)
-	{
-		this.height = height;
-	}
-
-	public int[] getPixels()
-	{
-		return pixels;
-	}
-
-	public void setPixels(int[] pixels)
-	{
-		this.pixels = pixels;
-	}
-
-	public int getMaxWidth()
-	{
-		return maxWidth;
-	}
-
-	public void setMaxWidth(int maxWidth)
-	{
-		this.maxWidth = maxWidth;
-	}
-
-	public int getMaxHeight()
-	{
-		return maxHeight;
-	}
-
-	public void setMaxHeight(int maxHeight)
-	{
-		this.maxHeight = maxHeight;
+		this.hideUnderlay = hideUnderlay;
 	}
 }
