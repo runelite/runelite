@@ -27,49 +27,95 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import net.runelite.cache.fs.Store;
-import net.runelite.cache.region.Region;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package net.runelite.cache.region;
 
-public class MapImageDumperTest
+import java.util.Objects;
+
+public class Location
 {
-	private static final Logger logger = LoggerFactory.getLogger(MapImageDumperTest.class);
+	private final int id;
+	private final int type;
+	private final int orientation;
+	private final Position position;
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void extract() throws IOException
+	public Location(int id, int type, int orientation, Position position)
 	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+		this.id = id;
+		this.type = type;
+		this.orientation = orientation;
+		this.position = position;
+	}
 
-		try (Store store = new Store(base))
+	@Override
+	public String toString()
+	{
+		return "GamwObject{" + "id=" + id + ", type=" + type + ", orientation=" + orientation + ", position=" + position + '}';
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 83 * hash + this.id;
+		hash = 83 * hash + this.type;
+		hash = 83 * hash + this.orientation;
+		hash = 83 * hash + Objects.hashCode(this.position);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			store.load();
-
-			MapImageDumper dumper = new MapImageDumper(store);
-			dumper.load();
-
-			for (int i = 0; i < Region.Z; ++i)
-			{
-				BufferedImage image = dumper.drawMap(i);
-
-				File imageFile = new File(outDir, "img-" + i + ".png");
-
-				ImageIO.write(image, "png", imageFile);
-				logger.info("Wrote image {}", imageFile);
-			}
+			return true;
 		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Location other = (Location) obj;
+		if (this.id != other.id)
+		{
+			return false;
+		}
+		if (this.type != other.type)
+		{
+			return false;
+		}
+		if (this.orientation != other.orientation)
+		{
+			return false;
+		}
+		if (!Objects.equals(this.position, other.position))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public int getType()
+	{
+		return type;
+	}
+
+	public int getOrientation()
+	{
+		return orientation;
+	}
+
+	public Position getPosition()
+	{
+		return position;
 	}
 }

@@ -27,49 +27,81 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import net.runelite.cache.fs.Store;
-import net.runelite.cache.region.Region;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package net.runelite.cache.region;
 
-public class MapImageDumperTest
+public class Position
 {
-	private static final Logger logger = LoggerFactory.getLogger(MapImageDumperTest.class);
+	private final int x;
+	private final int y;
+	private final int z;
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void extract() throws IOException
+	public Position(int x, int y, int z)
 	{
-		File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
 
-		try (Store store = new Store(base))
+	@Override
+	public String toString()
+	{
+		return "Position{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 67 * hash + this.x;
+		hash = 67 * hash + this.y;
+		hash = 67 * hash + this.z;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			store.load();
-
-			MapImageDumper dumper = new MapImageDumper(store);
-			dumper.load();
-
-			for (int i = 0; i < Region.Z; ++i)
-			{
-				BufferedImage image = dumper.drawMap(i);
-
-				File imageFile = new File(outDir, "img-" + i + ".png");
-
-				ImageIO.write(image, "png", imageFile);
-				logger.info("Wrote image {}", imageFile);
-			}
+			return true;
 		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Position other = (Position) obj;
+		if (this.x != other.x)
+		{
+			return false;
+		}
+		if (this.y != other.y)
+		{
+			return false;
+		}
+		if (this.z != other.z)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public int getX()
+	{
+		return x;
+	}
+
+	public int getY()
+	{
+		return y;
+	}
+
+	public int getZ()
+	{
+		return z;
 	}
 }
