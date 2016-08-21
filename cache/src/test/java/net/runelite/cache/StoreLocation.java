@@ -56,7 +56,7 @@ public class StoreLocation
 			logger.error(null, ex);
 		}
 
-		File tmp = new File("d:/temp");
+		File tmp = new File(TMP_DIR);
 		if (tmp.exists() || tmp.mkdir())
 		{
 			System.setProperty("java.io.tmpdir", TMP_DIR);
