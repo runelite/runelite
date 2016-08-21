@@ -57,6 +57,7 @@ import net.runelite.cache.fs.Store;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
+import net.runelite.cache.util.Djb2;
 import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,6 @@ public class MapImageDumper
 	private static final Logger logger = LoggerFactory.getLogger(MapImageDumper.class);
 
 	private static final int MAX_REGION = 32768;
-	private static final int MAP_SCENE_SPRITE_ID = 317; // magic sprite id map icons are in
 	private static final int MAP_SCALE = 2; // this squared is the number of pixels per map square
 	private static final int MAPICON_MAX_WIDTH = 5; // scale minimap icons down to this size so they fit..
 	private static final int MAPICON_MAX_HEIGHT = 6;
@@ -78,7 +78,7 @@ public class MapImageDumper
 	private final List<TextureDefinition> textures = new ArrayList<>();
 	private final Multimap<Integer, SpriteDefinition> sprites = HashMultimap.create();
 	private final Map<SpriteDefinition, Integer> averageColors = new HashMap<>();
-	private final Map<SpriteDefinition, Image> scaledMapIcons = new HashMap<>();
+	private final Map<Integer, Image> scaledMapIcons = new HashMap<>();
 	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
 
 	private final List<Region> regions = new ArrayList<>();
@@ -243,16 +243,7 @@ public class MapImageDumper
 
 			if (od.getMapSceneID() != -1)
 			{
-				SpriteDefinition sprite = findSprite(MAP_SCENE_SPRITE_ID, od.getMapSceneID());
-
-				assert sprite != null;
-
-				if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
-				{
-					continue;
-				}
-
-				Image spriteImage = scaledMapIcons.get(sprite);
+				Image spriteImage = scaledMapIcons.get(od.getMapSceneID());
 				graphics.drawImage(spriteImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
 			}
 		}
@@ -421,6 +412,7 @@ public class MapImageDumper
 	private void loadSprites(Store store)
 	{
 		Index index = store.getIndex(IndexType.SPRITES);
+		final int mapsceneHash = Djb2.hash("mapscene");
 
 		for (Archive a : index.getArchives())
 		{
@@ -440,7 +432,7 @@ public class MapImageDumper
 
 				averageColors.put(sprite, getAverageColor(sprite.getPixels()));
 
-				if (sprite.getId() == MAP_SCENE_SPRITE_ID)
+				if (a.getNameHash() == mapsceneHash)
 				{
 					if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
 					{
@@ -453,7 +445,8 @@ public class MapImageDumper
 					// scale image down so it fits
 					Image scaledImage = spriteImage.getScaledInstance(MAPICON_MAX_WIDTH, MAPICON_MAX_HEIGHT, 0);
 
-					scaledMapIcons.put(sprite, scaledImage);
+					assert scaledMapIcons.containsKey(sprite.getFrame()) == false;
+					scaledMapIcons.put(sprite.getFrame(), scaledImage);
 				}
 			}
 		}
