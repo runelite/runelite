@@ -40,7 +40,10 @@ public class StoreLocation
 {
 	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
 
+	private static final String TMP_DIR = "d:/temp";
+
 	public static File LOCATION;
+	private static File TMP;
 
 	static
 	{
@@ -55,11 +58,23 @@ public class StoreLocation
 
 		File tmp = new File("d:/temp");
 		if (tmp.exists() || tmp.mkdir())
-			System.setProperty("java.io.tmpdir", "d:/temp");
+		{
+			System.setProperty("java.io.tmpdir", TMP_DIR);
+			TMP = tmp;
+		}
 	}
 
 	public static TemporaryFolder getTemporaryFolder()
 	{
-		return new TemporaryFolder();
+		return new TemporaryFolder()
+		{
+			@Override
+			public void after()
+			{
+				// don't cleanup if using local tmpdir
+				if (TMP == null)
+					super.after();
+			}
+		};
 	}
 }
