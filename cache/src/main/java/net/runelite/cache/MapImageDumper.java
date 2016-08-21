@@ -29,18 +29,23 @@
  */
 package net.runelite.cache;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.SpriteDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
+import net.runelite.cache.definitions.loaders.ObjectLoader;
 import net.runelite.cache.definitions.loaders.OverlayLoader;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.definitions.loaders.TextureLoader;
@@ -50,7 +55,9 @@ import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 import net.runelite.cache.io.InputStream;
+import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
+import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,14 +66,20 @@ public class MapImageDumper
 	private static final Logger logger = LoggerFactory.getLogger(MapImageDumper.class);
 
 	private static final int MAX_REGION = 32768;
+	private static final int MAP_SCENE_SPRITE_ID = 317; // magic sprite id map icons are in
+	private static final int MAP_SCALE = 2; // this squared is the number of pixels per map square
+	private static final int MAPICON_MAX_WIDTH = 5; // scale minimap icons down to this size so they fit..
+	private static final int MAPICON_MAX_HEIGHT = 6;
 
 	private final Store store;
 
 	private final List<UnderlayDefinition> underlays = new ArrayList<>();
 	private final List<OverlayDefinition> overlays = new ArrayList<>();
 	private final List<TextureDefinition> textures = new ArrayList<>();
-	private final List<SpriteDefinition> sprites = new ArrayList<>();
+	private final Multimap<Integer, SpriteDefinition> sprites = HashMultimap.create();
 	private final Map<SpriteDefinition, Integer> averageColors = new HashMap<>();
+	private final Map<SpriteDefinition, Image> scaledMapIcons = new HashMap<>();
+	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
 
 	private final List<Region> regions = new ArrayList<>();
 	private Region lowestX = null, lowestY = null;
@@ -80,17 +93,19 @@ public class MapImageDumper
 		this.store = store;
 	}
 
-	public BufferedImage[] buildImages() throws IOException
+	public void load() throws IOException
 	{
-		BufferedImage[] images = new BufferedImage[Region.Z];
-
 		loadUnderlays(store);
 		loadOverlays(store);
 		loadTextures(store);
 		loadSprites(store);
+		loadObjects(store);
 
 		loadRegions(store);
+	}
 
+	public BufferedImage drawMap(int z) throws IOException
+	{
 		int minX = lowestX.getBaseX();
 		int minY = lowestY.getBaseY();
 
@@ -100,12 +115,12 @@ public class MapImageDumper
 		int dimX = maxX - minX;
 		int dimY = maxY - minY;
 
-		logger.info("Map image dimensions: {}px x {}px", dimX, dimY);
+		dimX *= MAP_SCALE;
+		dimY *= MAP_SCALE;
 
-		for (int i = 0; i < images.length; ++i)
-		{
-			images[i] = new BufferedImage(dimX, dimY, BufferedImage.TYPE_INT_RGB);
-		}
+		logger.info("Map image dimensions: {}px x {}px, {}px per map square ({} MB)", dimX, dimY, MAP_SCALE, (dimX * dimY / 1024 / 1024));
+
+		BufferedImage image = new BufferedImage(dimX, dimY, BufferedImage.TYPE_INT_RGB);
 
 		for (Region region : regions)
 		{
@@ -119,101 +134,175 @@ public class MapImageDumper
 			// region has the greaters y, so invert
 			int drawBaseY = highestY.getBaseY() - baseY;
 
-			for (int z = 0; z < Region.Z; ++z)
+			Graphics2D graphics = image.createGraphics();
+
+			for (int x = 0; x < Region.X; ++x)
 			{
-				BufferedImage image = images[z];
-				Graphics2D graphics = image.createGraphics();
+				int drawX = drawBaseX + x;
 
-				for (int x = 0; x < Region.X; ++x)
+				for (int y = 0; y < Region.Y; ++y)
 				{
-					int drawX = drawBaseX + x;
+					int drawY = drawBaseY + (Region.Y - 1 - y);
 
-					for (int y = 0; y < Region.Y; ++y)
+					int overlayId = region.getOverlayId(z, x, y) - 1;
+					int underlayId = region.getUnderlayId(z, x, y) - 1;
+					int rgb = 0;
+
+					if (overlayId > -1)
 					{
-						int drawY = drawBaseY + (Region.Y - 1 - y);
-
-						int overlayId = region.getOverlayId(z, x, y) - 1;
-						int underlayId = region.getUnderlayId(z, x, y) - 1;
-						int rgb = 0;
-
-						if (overlayId > -1)
-						{
-							OverlayDefinition overlay = findOverlay(overlayId);
-							if (!overlay.isHideUnderlay() && underlayId > -1)
-							{
-								UnderlayDefinition underlay = findUnderlay(underlayId);
-								rgb = underlay.getColor();
-							}
-							else
-							{
-								rgb = overlay.getRgbColor();
-							}
-
-							if (overlay.getSecondaryRgbColor() > -1)
-							{
-								rgb = overlay.getSecondaryRgbColor();
-							}
-
-							if (overlay.getTexture() > -1)
-							{
-								TextureDefinition texture = findTexture(overlay.getTexture());
-								assert texture.getFileIds().length == 1;
-
-								SpriteDefinition sprite = findSprite(texture.getFileIds()[0], 0);
-								assert sprite != null;
-
-								rgb = averageColors.get(sprite);
-							}
-						}
-						else if (underlayId > -1)
+						OverlayDefinition overlay = findOverlay(overlayId);
+						if (!overlay.isHideUnderlay() && underlayId > -1)
 						{
 							UnderlayDefinition underlay = findUnderlay(underlayId);
 							rgb = underlay.getColor();
 						}
+						else
+						{
+							rgb = overlay.getRgbColor();
+						}
 
-						image.setRGB(drawX, drawY, rgb);
+						if (overlay.getSecondaryRgbColor() > -1)
+						{
+							rgb = overlay.getSecondaryRgbColor();
+						}
+
+						if (overlay.getTexture() > -1)
+						{
+							TextureDefinition texture = findTexture(overlay.getTexture());
+							assert texture.getFileIds().length == 1;
+
+							SpriteDefinition sprite = findSprite(texture.getFileIds()[0], 0);
+							assert sprite != null;
+
+							rgb = averageColors.get(sprite);
+						}
 					}
-				}
+					else if (underlayId > -1)
+					{
+						UnderlayDefinition underlay = findUnderlay(underlayId);
+						rgb = underlay.getColor();
+					}
 
-				if (labelRegions)
-				{
-					graphics.setColor(Color.WHITE);
-					graphics.drawString(baseX + "," + baseY, drawBaseX, drawBaseY + graphics.getFontMetrics().getHeight());
+					drawMapSquare(image, drawX, drawY, rgb);
 				}
-
-				if (outlineRegions)
-				{
-					graphics.setColor(Color.WHITE);
-					graphics.drawRect(drawBaseX, drawBaseY, Region.X, Region.Y);
-				}
-
-				graphics.dispose();
 			}
+
+			drawLocations(graphics, region, z, drawBaseX, drawBaseY);
+
+			if (labelRegions)
+			{
+				graphics.setColor(Color.WHITE);
+				graphics.drawString(baseX + "," + baseY, drawBaseX * MAP_SCALE, drawBaseY * MAP_SCALE + graphics.getFontMetrics().getHeight());
+			}
+
+			if (outlineRegions)
+			{
+				graphics.setColor(Color.WHITE);
+				graphics.drawRect(drawBaseX * MAP_SCALE, drawBaseY * MAP_SCALE, Region.X * MAP_SCALE, Region.Y * MAP_SCALE);
+			}
+
+			graphics.dispose();
 		}
 
-		return images;
+		return image;
+	}
+
+	private void drawMapSquare(BufferedImage image, int x, int y, int rgb)
+	{
+		x *= MAP_SCALE;
+		y *= MAP_SCALE;
+
+		for (int i = 0; i < MAP_SCALE; ++i)
+		{
+			for (int j = 0; j < MAP_SCALE; ++j)
+			{
+				image.setRGB(x + i, y + j, rgb);
+			}
+		}
+	}
+
+	private void drawLocations(Graphics2D graphics, Region region, int z, int drawBaseX, int drawBaseY)
+	{
+		for (Location location : region.getLocations())
+		{
+			// regions include locations on all planes, so check
+			if (location.getPosition().getZ() != z)
+			{
+				continue;
+			}
+
+			ObjectDefinition od = findObject(location.getId());
+
+			assert od != null;
+
+			int localX = location.getPosition().getX() - region.getBaseX();
+			int localY = location.getPosition().getY() - region.getBaseY();
+
+			int drawX = drawBaseX + localX;
+			int drawY = drawBaseY + (Region.Y - 1 - localY);
+
+			if (od.getMapSceneID() != -1)
+			{
+				SpriteDefinition sprite = findSprite(MAP_SCENE_SPRITE_ID, od.getMapSceneID());
+
+				assert sprite != null;
+
+				if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
+				{
+					continue;
+				}
+
+				Image spriteImage = scaledMapIcons.get(sprite);
+				graphics.drawImage(spriteImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
+			}
+		}
 	}
 
 	private void loadRegions(Store store) throws IOException
 	{
 		Index index = store.getIndex(IndexType.MAPS);
+		XteaKeyManager keyManager = index.getXteaManager();
 
 		for (int i = 0; i < MAX_REGION; ++i)
 		{
-			Region region = new Region(i);
+			int x = i >> 8;
+			int y = i & 0xFF;
 
-			Archive map = index.findArchiveByName("m" + (i >> 8) + "_" + (i & 0xFF));
-			if (map == null)
+			Archive map = index.findArchiveByName("m" + x + "_" + y);
+			Archive land = index.findArchiveByName("l" + x + "_" + y);
+
+			assert (map == null) == (land == null);
+
+			if (map == null || land == null)
 			{
 				continue;
 			}
 
 			assert map.getFiles().size() == 1;
+			assert land.getFiles().size() == 1;
 
 			map.decompressAndLoad(null);
 
 			byte[] data = map.getFiles().get(0).getContents();
+
+			Region region = new Region(i);
 			region.loadTerrain(data);
+
+			int[] keys = keyManager.getKeys(i);
+			if (keys != null)
+			{
+				try
+				{
+					land.decompressAndLoad(keys);
+
+					data = land.getFiles().get(0).getContents();
+					region.loadLocations(data);
+				}
+				catch (IOException ex)
+				{
+					logger.debug("Can't decrypt region " + i, ex);
+				}
+			}
 
 			regions.add(region);
 
@@ -347,18 +436,34 @@ public class MapImageDumper
 
 			for (SpriteDefinition sprite : sprites)
 			{
-				this.sprites.add(sprite);
+				this.sprites.put(sprite.getId(), sprite);
 
 				averageColors.put(sprite, getAverageColor(sprite.getPixels()));
+
+				if (sprite.getId() == MAP_SCENE_SPRITE_ID)
+				{
+					if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
+					{
+						continue;
+					}
+
+					BufferedImage spriteImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					spriteImage.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
+
+					// scale image down so it fits
+					Image scaledImage = spriteImage.getScaledInstance(MAPICON_MAX_WIDTH, MAPICON_MAX_HEIGHT, 0);
+
+					scaledMapIcons.put(sprite, scaledImage);
+				}
 			}
 		}
 	}
 
 	private SpriteDefinition findSprite(int id, int frame)
 	{
-		for (SpriteDefinition def : sprites)
+		for (SpriteDefinition def : sprites.get(id))
 		{
-			if (def.getId() == id && def.getFrame() == frame)
+			if (def.getFrame() == frame)
 			{
 				return def;
 			}
@@ -392,6 +497,25 @@ public class MapImageDumper
 
 		Color color = new Color(averageRed, averageGreen, averageBlue);
 		return color.getRGB();
+	}
+
+	private void loadObjects(Store store)
+	{
+		Index index = store.getIndex(IndexType.CONFIGS);
+		Archive archive = index.getArchive(ConfigType.OBJECT.getId());
+
+		ObjectLoader loader = new ObjectLoader();
+
+		for (File f : archive.getFiles())
+		{
+			ObjectDefinition def = loader.load(f.getFileId(), f.getContents());
+			objects.put(def.getId(), def);
+		}
+	}
+
+	private ObjectDefinition findObject(int id)
+	{
+		return objects.get(id);
 	}
 
 	public boolean isLabelRegions()
