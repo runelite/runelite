@@ -80,6 +80,7 @@ public class MapImageDumper
 	private final Map<SpriteDefinition, Integer> averageColors = new HashMap<>();
 	private final Map<Integer, Image> scaledMapIcons = new HashMap<>();
 	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
+	private final Map<Integer, Image> mapFunctions = new HashMap<>(); // quest, water, etc
 
 	private final List<Region> regions = new ArrayList<>();
 	private Region lowestX = null, lowestY = null;
@@ -122,6 +123,7 @@ public class MapImageDumper
 
 		BufferedImage image = new BufferedImage(dimX, dimY, BufferedImage.TYPE_INT_RGB);
 
+		// pass 1
 		for (Region region : regions)
 		{
 			int baseX = region.getBaseX();
@@ -133,8 +135,6 @@ public class MapImageDumper
 			// to pixel Y. top most y is 0, but the top most
 			// region has the greaters y, so invert
 			int drawBaseY = highestY.getBaseY() - baseY;
-
-			Graphics2D graphics = image.createGraphics();
 
 			for (int x = 0; x < Region.X; ++x)
 			{
@@ -186,8 +186,44 @@ public class MapImageDumper
 					drawMapSquare(image, drawX, drawY, rgb);
 				}
 			}
+		}
 
-			drawLocations(graphics, region, z, drawBaseX, drawBaseY);
+		// pass 2
+		for (Region region : regions)
+		{
+			int baseX = region.getBaseX();
+			int baseY = region.getBaseY();
+
+			// to pixel X
+			int drawBaseX = baseX - lowestX.getBaseX();
+
+			// to pixel Y. top most y is 0, but the top most
+			// region has the greaters y, so invert
+			int drawBaseY = highestY.getBaseY() - baseY;
+
+			Graphics2D graphics = image.createGraphics();
+			
+			drawObjects(graphics, region, z, drawBaseX, drawBaseY);
+
+			graphics.dispose();
+		}
+
+		// pass 3
+		for (Region region : regions)
+		{
+			int baseX = region.getBaseX();
+			int baseY = region.getBaseY();
+
+			// to pixel X
+			int drawBaseX = baseX - lowestX.getBaseX();
+
+			// to pixel Y. top most y is 0, but the top most
+			// region has the greaters y, so invert
+			int drawBaseY = highestY.getBaseY() - baseY;
+
+			Graphics2D graphics = image.createGraphics();
+
+			drawMapIcons(graphics, region, z, drawBaseX, drawBaseY);
 
 			if (labelRegions)
 			{
@@ -221,7 +257,7 @@ public class MapImageDumper
 		}
 	}
 
-	private void drawLocations(Graphics2D graphics, Region region, int z, int drawBaseX, int drawBaseY)
+	private void drawObjects(Graphics2D graphics, Region region, int z, int drawBaseX, int drawBaseY)
 	{
 		for (Location location : region.getLocations())
 		{
@@ -246,9 +282,40 @@ public class MapImageDumper
 				Image spriteImage = scaledMapIcons.get(od.getMapSceneID());
 				graphics.drawImage(spriteImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
 			}
+
+			if (od.getMapIconID() != -1)
+			{
+				Image iconImage = mapFunctions.get(od.getMapIconID());
+				graphics.drawImage(iconImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
+			}
 		}
 	}
 
+	private void drawMapIcons(Graphics2D graphics, Region region, int z, int drawBaseX, int drawBaseY)
+	{
+		for (Location location : region.getLocations())
+		{
+			// draw map icons from all planes
+			// regions include locations on all planes, so check
+
+			ObjectDefinition od = findObject(location.getId());
+
+			assert od != null;
+
+			int localX = location.getPosition().getX() - region.getBaseX();
+			int localY = location.getPosition().getY() - region.getBaseY();
+
+			int drawX = drawBaseX + localX;
+			int drawY = drawBaseY + (Region.Y - 1 - localY);
+
+			if (od.getMapIconID() != -1)
+			{
+				Image iconImage = mapFunctions.get(od.getMapIconID());
+				graphics.drawImage(iconImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
+			}
+		}
+	}
+	
 	private void loadRegions(Store store) throws IOException
 	{
 		Index index = store.getIndex(IndexType.MAPS);
@@ -413,6 +480,7 @@ public class MapImageDumper
 	{
 		Index index = store.getIndex(IndexType.SPRITES);
 		final int mapsceneHash = Djb2.hash("mapscene");
+		final int mapfunctionHash = Djb2.hash("mapfunction");
 
 		for (Archive a : index.getArchives())
 		{
@@ -428,17 +496,17 @@ public class MapImageDumper
 
 			for (SpriteDefinition sprite : sprites)
 			{
+				if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
+				{
+					continue;
+				}
+
 				this.sprites.put(sprite.getId(), sprite);
 
 				averageColors.put(sprite, getAverageColor(sprite.getPixels()));
 
 				if (a.getNameHash() == mapsceneHash)
 				{
-					if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
-					{
-						continue;
-					}
-
 					BufferedImage spriteImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
 					spriteImage.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
 
@@ -447,6 +515,14 @@ public class MapImageDumper
 
 					assert scaledMapIcons.containsKey(sprite.getFrame()) == false;
 					scaledMapIcons.put(sprite.getFrame(), scaledImage);
+				}
+				else if (a.getNameHash() == mapfunctionHash)
+				{
+					BufferedImage spriteImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					spriteImage.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
+
+					assert mapFunctions.containsKey(sprite.getFrame()) == false;
+					mapFunctions.put(sprite.getFrame(), spriteImage);
 				}
 			}
 		}
