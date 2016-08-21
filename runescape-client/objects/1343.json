@@ -1,0 +1,52 @@
+{
+  "id": 1343,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Tree stump",
+  "objectModels": [
+    1695
+  ],
+  "recolorToFind": [
+    5388
+  ],
+  "mapIconID": -1,
+  "sizeX": 2,
+  "sizeY": 2,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "actions": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": 6,
+  "recolorToReplace": [
+    5029
+  ],
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

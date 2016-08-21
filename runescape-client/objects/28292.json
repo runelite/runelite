@@ -1,0 +1,62 @@
+{
+  "id": 28292,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Bookshelf",
+  "objectModels": [
+    30774,
+    30807,
+    30812
+  ],
+  "recolorToFind": [
+    29615,
+    29495,
+    29376,
+    29512,
+    29648
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": 1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "actions": [
+    "Search",
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 1,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    17321,
+    16311,
+    15296,
+    15296,
+    15296
+  ],
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": 0,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

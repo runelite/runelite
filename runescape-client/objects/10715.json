@@ -1,0 +1,57 @@
+{
+  "id": 10715,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "null",
+  "objectModels": [
+    10617
+  ],
+  "objectTypes": [
+    4
+  ],
+  "recolorToFind": [
+    14633,
+    9542
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": 0,
+  "animationID": 3022,
+  "varpID": -1,
+  "ambient": 50,
+  "contrast": 50,
+  "actions": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    -27213,
+    -30403
+  ],
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

@@ -1,0 +1,52 @@
+{
+  "id": 4389,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Portal",
+  "objectModels": [
+    2318
+  ],
+  "recolorToFind": [
+    11218
+  ],
+  "mapIconID": -1,
+  "sizeX": 2,
+  "sizeY": 2,
+  "anInt2083": 3,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": 504,
+  "varpID": -1,
+  "ambient": 100,
+  "contrast": 100,
+  "actions": [
+    "Exit",
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    -25669
+  ],
+  "aBool2097": true,
+  "modelSizeX": 256,
+  "modelSizeHeight": 256,
+  "modelSizeY": 256,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": 3139,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": false
+}

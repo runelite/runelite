@@ -1,0 +1,56 @@
+{
+  "id": 23627,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Cadava bush",
+  "objectModels": [
+    7826
+  ],
+  "recolorToFind": [
+    14872,
+    8722,
+    6364
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 20,
+  "contrast": 0,
+  "actions": [
+    "Pick-from",
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 1,
+  "mapSceneID": 9,
+  "recolorToReplace": [
+    24873,
+    10520,
+    -11838
+  ],
+  "aBool2097": true,
+  "modelSizeX": 64,
+  "modelSizeHeight": 64,
+  "modelSizeY": 64,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": false
+}

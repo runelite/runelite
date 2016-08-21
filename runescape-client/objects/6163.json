@@ -1,0 +1,63 @@
+{
+  "id": 6163,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Bakery stall",
+  "objectModels": [
+    5879,
+    1445
+  ],
+  "recolorToFind": [
+    8107,
+    7987,
+    7876,
+    61,
+    8670,
+    8670
+  ],
+  "mapIconID": -1,
+  "sizeX": 2,
+  "sizeY": 2,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "actions": [
+    null,
+    "Steal-from",
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    7727,
+    6585,
+    6594,
+    10297,
+    12882,
+    5541
+  ],
+  "aBool2097": true,
+  "modelSizeX": 88,
+  "modelSizeHeight": 88,
+  "modelSizeY": 88,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

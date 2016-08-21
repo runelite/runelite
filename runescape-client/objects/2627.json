@@ -1,0 +1,51 @@
+{
+  "id": 2627,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Door",
+  "objectModels": [
+    9476,
+    9477
+  ],
+  "objectTypes": [
+    0,
+    9
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": 1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "actions": [
+    "Open",
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}
