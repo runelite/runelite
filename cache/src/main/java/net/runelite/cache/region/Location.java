@@ -28,53 +28,94 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache;
+package net.runelite.cache.region;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Objects;
 
-public class StoreLocation
+public class Location
 {
-	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
+	private final int id;
+	private final int type;
+	private final int orientation;
+	private final Position position;
 
-	private static final String TMP_DIR = "d:/temp";
-
-	public static File LOCATION;
-	private static File TMP;
-
-	static
+	public Location(int id, int type, int orientation, Position position)
 	{
-		try
-		{
-			LOCATION = new File(StoreLocation.class.getResource("/cache").toURI());
-		}
-		catch (URISyntaxException ex)
-		{
-			logger.error(null, ex);
-		}
-
-		File tmp = new File(TMP_DIR);
-		if (tmp.exists() || tmp.mkdir())
-		{
-			System.setProperty("java.io.tmpdir", TMP_DIR);
-			TMP = tmp;
-		}
+		this.id = id;
+		this.type = type;
+		this.orientation = orientation;
+		this.position = position;
 	}
 
-	public static TemporaryFolder getTemporaryFolder()
+	@Override
+	public String toString()
 	{
-		return new TemporaryFolder()
+		return "GamwObject{" + "id=" + id + ", type=" + type + ", orientation=" + orientation + ", position=" + position + '}';
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 5;
+		hash = 83 * hash + this.id;
+		hash = 83 * hash + this.type;
+		hash = 83 * hash + this.orientation;
+		hash = 83 * hash + Objects.hashCode(this.position);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			@Override
-			public void after()
-			{
-				// don't cleanup if using local tmpdir
-				if (TMP == null)
-					super.after();
-			}
-		};
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Location other = (Location) obj;
+		if (this.id != other.id)
+		{
+			return false;
+		}
+		if (this.type != other.type)
+		{
+			return false;
+		}
+		if (this.orientation != other.orientation)
+		{
+			return false;
+		}
+		if (!Objects.equals(this.position, other.position))
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public int getId()
+	{
+		return id;
+	}
+
+	public int getType()
+	{
+		return type;
+	}
+
+	public int getOrientation()
+	{
+		return orientation;
+	}
+
+	public Position getPosition()
+	{
+		return position;
 	}
 }

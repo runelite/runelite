@@ -126,15 +126,7 @@ public class InputStream extends java.io.InputStream
 
 	public byte peek()
 	{
-		int position = buffer.position();
-		try
-		{
-			return buffer.get();
-		}
-		finally
-		{
-			buffer.position(position);
-		}
+		return buffer.get(buffer.position());
 	}
 
 	public int readBigSmart()
@@ -144,8 +136,14 @@ public class InputStream extends java.io.InputStream
 
 	public int readShortSmart()
 	{
-		int var2 = this.peek() & 0xFF;
-		return var2 < 128 ? this.readUnsignedByte() - 64 : this.readUnsignedShort() - 0xc000;
+		int peek = this.peek() & 0xFF;
+		return peek < 128 ? this.readUnsignedByte() - 64 : this.readUnsignedShort() - 0xc000;
+	}
+
+	public int readUnsignedShortSmart()
+	{
+		int peek = this.peek() & 0xFF;
+		return peek < 128 ? this.readUnsignedByte() : this.readUnsignedShort() - 0x8000;
 	}
 
 	public String readString()

@@ -21,6 +21,8 @@
  */
 package net.runelite.cache.region;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.cache.io.InputStream;
 
 /**
@@ -45,6 +47,8 @@ public class Region
 	private final byte[][][] overlayPaths = new byte[Z][X][Y];
 	private final byte[][][] overlayRotations = new byte[Z][X][Y];
 	private final byte[][][] underlayIds = new byte[Z][X][Y];
+
+	private final List<Location> locations = new ArrayList<>();
 
 	public Region(int id)
 	{
@@ -118,6 +122,37 @@ public class Region
 		}
 	}
 
+	public void loadLocations(byte[] b)
+	{
+		InputStream buf = new InputStream(b);
+
+		int id = -1;
+		int idOffset;
+
+		while ((idOffset = buf.readUnsignedShortSmart()) != 0)
+		{
+			id += idOffset;
+
+			int position = 0;
+			int positionOffset;
+
+			while ((positionOffset = buf.readUnsignedShortSmart()) != 0)
+			{
+				position += positionOffset - 1;
+
+				int localY = position & 0x3F;
+				int localX = position >> 6 & 0x3F;
+				int height = position >> 12 & 0x3;
+
+				int attributes = buf.readUnsignedByte();
+				int type = attributes >> 2;
+				int orientation = attributes & 0x3;
+
+				locations.add(new Location(id, type, orientation, new Position(getBaseX() + localX, getBaseY() + localY, height)));
+			}
+		}
+	}
+
 	public int getRegionID()
 	{
 		return regionID;
@@ -161,5 +196,10 @@ public class Region
 	public int getUnderlayId(int z, int x, int y)
 	{
 		return underlayIds[z][x][y] & 0xFF;
+	}
+
+	public List<Location> getLocations()
+	{
+		return locations;
 	}
 }
