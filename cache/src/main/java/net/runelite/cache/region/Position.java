@@ -28,53 +28,80 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.cache;
+package net.runelite.cache.region;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class StoreLocation
+public class Position
 {
-	private static final Logger logger = LoggerFactory.getLogger(StoreLocation.class);
+	private final int x;
+	private final int y;
+	private final int z;
 
-	private static final String TMP_DIR = "d:/temp";
-
-	public static File LOCATION;
-	private static File TMP;
-
-	static
+	public Position(int x, int y, int z)
 	{
-		try
-		{
-			LOCATION = new File(StoreLocation.class.getResource("/cache").toURI());
-		}
-		catch (URISyntaxException ex)
-		{
-			logger.error(null, ex);
-		}
-
-		File tmp = new File(TMP_DIR);
-		if (tmp.exists() || tmp.mkdir())
-		{
-			System.setProperty("java.io.tmpdir", TMP_DIR);
-			TMP = tmp;
-		}
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
-	public static TemporaryFolder getTemporaryFolder()
+	@Override
+	public String toString()
 	{
-		return new TemporaryFolder()
+		return "Position{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
+	}
+
+	@Override
+	public int hashCode()
+	{
+		int hash = 7;
+		hash = 67 * hash + this.x;
+		hash = 67 * hash + this.y;
+		hash = 67 * hash + this.z;
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
 		{
-			@Override
-			public void after()
-			{
-				// don't cleanup if using local tmpdir
-				if (TMP == null)
-					super.after();
-			}
-		};
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Position other = (Position) obj;
+		if (this.x != other.x)
+		{
+			return false;
+		}
+		if (this.y != other.y)
+		{
+			return false;
+		}
+		if (this.z != other.z)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	public int getX()
+	{
+		return x;
+	}
+
+	public int getY()
+	{
+		return y;
+	}
+
+	public int getZ()
+	{
+		return z;
 	}
 }
