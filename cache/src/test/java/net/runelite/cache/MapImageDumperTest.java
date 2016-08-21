@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.region.Region;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -51,25 +52,24 @@ public class MapImageDumperTest
 	public void extract() throws IOException
 	{
 		File base = StoreLocation.LOCATION,
-			outFile = folder.newFolder();
-
-		BufferedImage[] images;
+			outDir = folder.newFolder();
 
 		try (Store store = new Store(base))
 		{
 			store.load();
 
 			MapImageDumper dumper = new MapImageDumper(store);
-			images = dumper.buildImages();
-		}
+			dumper.load();
 
-		int i = 0;
-		for (BufferedImage image : images)
-		{
-			File imageFile = new File(outFile, "img-" + i++ + ".png");
+			for (int i = 0; i < Region.Z; ++i)
+			{
+				BufferedImage image = dumper.drawMap(i);
 
-			ImageIO.write(image, "png", imageFile);
-			logger.info("Wrote image {}", imageFile);
+				File imageFile = new File(outDir, "img-" + i + ".png");
+
+				ImageIO.write(image, "png", imageFile);
+				logger.info("Wrote image {}", imageFile);
+			}
 		}
 	}
 }
