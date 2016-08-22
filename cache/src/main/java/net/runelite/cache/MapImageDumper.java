@@ -282,12 +282,6 @@ public class MapImageDumper
 				Image spriteImage = scaledMapIcons.get(od.getMapSceneID());
 				graphics.drawImage(spriteImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
 			}
-
-			if (od.getMapIconID() != -1)
-			{
-				Image iconImage = mapFunctions.get(od.getMapIconID());
-				graphics.drawImage(iconImage, drawX * MAP_SCALE, drawY * MAP_SCALE, null);
-			}
 		}
 	}
 
@@ -296,7 +290,6 @@ public class MapImageDumper
 		for (Location location : region.getLocations())
 		{
 			// draw map icons from all planes
-			// regions include locations on all planes, so check
 
 			ObjectDefinition od = findObject(location.getId());
 
