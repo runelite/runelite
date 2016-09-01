@@ -1,82 +1,158 @@
-import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("u")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("g")
+   @ObfuscatedName("r")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 2121713069
+      intValue = -2051765091
    )
    @Export("world")
    int world;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1053575117
+      intValue = 1484156943
    )
    @Export("rank")
    int rank;
-   @ObfuscatedName("h")
-   boolean field249;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @Export("name")
    String name;
-   @ObfuscatedName("s")
+   @ObfuscatedName("b")
    boolean field252;
+   @ObfuscatedName("ak")
+   static class149 field254;
+   @ObfuscatedName("bp")
+   static class171 field255;
+   @ObfuscatedName("i")
+   boolean field256;
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("bf")
    @ObfuscatedSignature(
-      signature = "(Lclass170;I)V",
-      garbageValue = "1958455949"
+      signature = "(III)V",
+      garbageValue = "-2135961560"
    )
-   public static void method207(class170 var0) {
-      class56.field1232 = var0;
-      class56.field1233 = class56.field1232.method3405(16);
-   }
+   static final void method192(int var0, int var1) {
+      if(var0 != Tile.field1789 || var1 != class191.field3084) {
+         Tile.field1789 = var0;
+         class191.field3084 = var1;
+         class130.setGameState(25);
+         KitDefinition.method941("Loading - please wait.", true);
+         int var2 = class28.baseX;
+         int var3 = class159.baseY;
+         class28.baseX = (var0 - 6) * 8;
+         class159.baseY = (var1 - 6) * 8;
+         int var4 = class28.baseX - var2;
+         int var5 = class159.baseY - var3;
+         var2 = class28.baseX;
+         var3 = class159.baseY;
 
-   @ObfuscatedName("ac")
-   @ObfuscatedSignature(
-      signature = "(LActor;I)V",
-      garbageValue = "-1538680373"
-   )
-   static final void method208(Actor var0) {
-      int var1 = var0.field891 - Client.gameCycle;
-      int var2 = var0.field873 * 128 + var0.field877 * 64;
-      int var3 = var0.field877 * 64 + var0.field856 * 128;
-      var0.x += (var2 - var0.x) / var1;
-      var0.y += (var3 - var0.y) / var1;
-      var0.field889 = 0;
-      var0.field882 = var0.field884;
-   }
+         int var6;
+         int var8;
+         for(var6 = 0; var6 < '耀'; ++var6) {
+            NPC var7 = Client.cachedNPCs[var6];
+            if(null != var7) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var7.pathX[var8] -= var4;
+                  var7.pathY[var8] -= var5;
+               }
 
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "109"
-   )
-   public static void method209() {
-      Sequence.field1014.reset();
-      Sequence.field1015.reset();
-   }
+               var7.x -= 128 * var4;
+               var7.y -= 128 * var5;
+            }
+         }
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;I)V",
-      garbageValue = "-1124102472"
-   )
-   public static void method210(File var0) {
-      class138.field2137 = var0;
-      if(!class138.field2137.exists()) {
-         throw new RuntimeException("");
-      } else {
-         class138.field2138 = true;
+         for(var6 = 0; var6 < 2048; ++var6) {
+            Player var20 = Client.cachedPlayers[var6];
+            if(var20 != null) {
+               for(var8 = 0; var8 < 10; ++var8) {
+                  var20.pathX[var8] -= var4;
+                  var20.pathY[var8] -= var5;
+               }
+
+               var20.x -= 128 * var4;
+               var20.y -= var5 * 128;
+            }
+         }
+
+         byte var19 = 0;
+         byte var17 = 104;
+         byte var21 = 1;
+         if(var4 < 0) {
+            var19 = 103;
+            var17 = -1;
+            var21 = -1;
+         }
+
+         byte var9 = 0;
+         byte var10 = 104;
+         byte var11 = 1;
+         if(var5 < 0) {
+            var9 = 103;
+            var10 = -1;
+            var11 = -1;
+         }
+
+         int var13;
+         for(int var12 = var19; var12 != var17; var12 += var21) {
+            for(var13 = var9; var13 != var10; var13 += var11) {
+               int var14 = var12 + var4;
+               int var15 = var13 + var5;
+
+               for(int var16 = 0; var16 < 4; ++var16) {
+                  if(var14 >= 0 && var15 >= 0 && var14 < 104 && var15 < 104) {
+                     Client.groundItemDeque[var16][var12][var13] = Client.groundItemDeque[var16][var14][var15];
+                  } else {
+                     Client.groundItemDeque[var16][var12][var13] = null;
+                  }
+               }
+            }
+         }
+
+         for(class16 var18 = (class16)Client.field413.method3850(); var18 != null; var18 = (class16)Client.field413.method3852()) {
+            var18.field244 -= var4;
+            var18.field235 -= var5;
+            if(var18.field244 < 0 || var18.field235 < 0 || var18.field244 >= 104 || var18.field235 >= 104) {
+               var18.unlink();
+            }
+         }
+
+         if(Client.flagX != 0) {
+            Client.flagX -= var4;
+            Client.flagY -= var5;
+         }
+
+         Client.field521 = 0;
+         Client.field418 = false;
+         Client.field435 = -1;
+         Client.field357.method3855();
+         Client.projectiles.method3855();
+
+         for(var13 = 0; var13 < 4; ++var13) {
+            Client.collisionMaps[var13].method2442();
+         }
+
       }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1192759151"
+   )
+   public static void method193() {
+      class79.field1421 = null;
+      class79.field1423 = null;
+      class20.field567 = null;
+      class79.field1424 = null;
+      class79.field1425 = null;
+      class13.field191 = null;
    }
 }

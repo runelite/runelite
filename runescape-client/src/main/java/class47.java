@@ -1,150 +1,126 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("au")
+@ObfuscatedName("av")
 public class class47 extends CacheableNode {
+   @ObfuscatedName("x")
+   static class170 field1046;
+   @ObfuscatedName("j")
+   public boolean field1047 = false;
    @ObfuscatedName("r")
-   public boolean field1071 = false;
-   @ObfuscatedName("m")
-   static class227 field1072;
-   @ObfuscatedName("g")
-   static NodeCache field1073 = new NodeCache(64);
-   @ObfuscatedName("b")
-   static ModIcon field1075;
-   @ObfuscatedName("l")
-   public static class170 field1076;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LModIcon;I)V",
-      garbageValue = "1690118408"
+   static NodeCache field1048 = new NodeCache(64);
+   @ObfuscatedName("qx")
+   @ObfuscatedGetter(
+      intValue = -375621455
    )
-   static final void method998(ModIcon var0) {
-      short var1 = 256;
+   protected static int field1050;
 
-      int var2;
-      for(var2 = 0; var2 < class26.field649.length; ++var2) {
-         class26.field649[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         class26.field649[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class144.field2226[var5] = (class26.field649[128 + var5] + class26.field649[var5 - 128] + class26.field649[var5 + 1] + class26.field649[var5 - 1]) / 4;
-            }
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass51;",
+      garbageValue = "407403932"
+   )
+   public static class51 method952(int var0) {
+      class51 var1 = (class51)class51.field1097.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = class51.field1110.method3290(32, var0);
+         var1 = new class51();
+         if(null != var2) {
+            var1.method1029(new Buffer(var2));
          }
 
-         int[] var6 = class26.field649;
-         class26.field649 = class144.field2226;
-         class144.field2226 = var6;
+         class51.field1097.put(var1, (long)var0);
+         return var1;
       }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = 16 + var4 + var0.offsetX;
-                  int var8 = var0.offsetY + var3 + 16;
-                  int var7 = var5 + (var8 << 7);
-                  class26.field649[var7] = 0;
-               }
-            }
-         }
-      }
-
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "1196405378"
+      garbageValue = "1715660044"
    )
-   void method999(Buffer var1) {
+   void method953(Buffer var1) {
       while(true) {
-         int var2 = var1.method2633();
+         int var2 = var1.method2556();
          if(var2 == 0) {
             return;
          }
 
-         this.method1000(var1, var2);
+         this.method954(var1, var2);
       }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "-1673014659"
+      garbageValue = "1506264636"
    )
-   void method1000(Buffer var1, int var2) {
+   void method954(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field1071 = true;
+         this.field1047 = true;
       }
 
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "-1376592207"
+      signature = "(IZZZB)Lclass171;",
+      garbageValue = "51"
    )
-   public static byte[] method1004(Object var0, boolean var1) {
-      if(null == var0) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var3 = (byte[])((byte[])((byte[])var0));
-         return var1?class118.method2561(var3):var3;
-      } else if(var0 instanceof class128) {
-         class128 var2 = (class128)var0;
-         return var2.vmethod2938();
-      } else {
-         throw new IllegalArgumentException();
+   static class171 method969(int var0, boolean var1, boolean var2, boolean var3) {
+      class137 var4 = null;
+      if(class152.field2288 != null) {
+         var4 = new class137(var0, class152.field2288, class35.field790[var0], 1000000);
       }
+
+      return new class171(var4, FaceNormal.field1501, var0, var1, var2, var3);
    }
 
-   @ObfuscatedName("qz")
+   @ObfuscatedName("py")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "424684931"
+      garbageValue = "1301755067"
    )
-   protected static final void method1008() {
-      class137.field2129 = null;
-      class1.field18 = null;
-      class20.field584 = null;
-   }
+   protected static final void method970() {
+      class138.field2133.vmethod3173();
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-540361836"
-   )
-   static final void method1009() {
-      if(null != class125.field2069) {
-         class125.field2069.method1294();
+      int var0;
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field2248[var0] = 0L;
       }
 
-      if(Projectile.field127 != null) {
-         Projectile.field127.method1294();
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field2246[var0] = 0L;
       }
 
+      class0.field13 = 0;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("br")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2130688362"
+      signature = "(B)V",
+      garbageValue = "127"
    )
-   public static int method1011() {
-      return ++class143.mouseIdleTicks - 1;
+   static void method971() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(class132.method2881(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[1 + var1];
+                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+                  Client.menuTypes[var1] = Client.menuTypes[1 + var1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[1 + var1];
+               }
+            }
+
+            --Client.menuOptionCount;
+         }
+      }
+
    }
 }

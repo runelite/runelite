@@ -1,15 +1,24 @@
 import java.util.zip.Inflater;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dd")
+@ObfuscatedName("dz")
 public class class119 {
-   @ObfuscatedName("l")
-   Inflater field2036;
-   @ObfuscatedName("db")
-   static int[] field2037;
-   @ObfuscatedName("bq")
-   static class171 field2039;
+   @ObfuscatedName("ft")
+   @ObfuscatedGetter(
+      intValue = -167259681
+   )
+   @Export("cameraZ")
+   static int cameraZ;
+   @ObfuscatedName("x")
+   Inflater field2039;
+   @ObfuscatedName("ix")
+   @ObfuscatedGetter(
+      intValue = 2097988503
+   )
+   static int field2040;
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -18,83 +27,84 @@ public class class119 {
    class119(int var1, int var2, int var3) {
    }
 
-   public class119() {
-      this(-1, 1000000, 1000000);
-   }
-
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(LBuffer;[BI)V",
-      garbageValue = "1837323007"
+      signature = "(LBuffer;[BB)V",
+      garbageValue = "0"
    )
-   public void method2570(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && var1.payload[1 + var1.offset] == -117) {
-         if(null == this.field2036) {
-            this.field2036 = new Inflater(true);
+   public void method2504(Buffer var1, byte[] var2) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
+         if(null == this.field2039) {
+            this.field2039 = new Inflater(true);
          }
 
          try {
-            this.field2036.setInput(var1.payload, 10 + var1.offset, var1.payload.length - (10 + var1.offset + 8));
-            this.field2036.inflate(var2);
+            this.field2039.setInput(var1.payload, var1.offset + 10, var1.payload.length - (10 + var1.offset + 8));
+            this.field2039.inflate(var2);
          } catch (Exception var4) {
-            this.field2036.reset();
+            this.field2039.reset();
             throw new RuntimeException("");
          }
 
-         this.field2036.reset();
+         this.field2039.reset();
       } else {
          throw new RuntimeException("");
       }
    }
 
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Lclass170;IB)LModIcon;",
-      garbageValue = "-95"
-   )
-   public static ModIcon method2573(class170 var0, int var1) {
-      if(!class24.method614(var0, var1)) {
-         return null;
-      } else {
-         ModIcon var2 = new ModIcon();
-         var2.width = class79.field1454;
-         var2.originalHeight = class79.field1456;
-         var2.offsetX = class79.field1457[0];
-         var2.offsetY = class180.field2962[0];
-         var2.originalWidth = class192.field3106[0];
-         var2.height = class79.field1458[0];
-         var2.palette = class79.field1459;
-         var2.pixels = class145.field2236[0];
-         ItemComposition.method1182();
-         return var2;
-      }
+   public class119() {
+      this(-1, 1000000, 1000000);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(II)Lclass156;",
-      garbageValue = "99649005"
+      signature = "(S)V",
+      garbageValue = "192"
    )
-   public static class156 method2574(int var0) {
-      class156[] var1 = new class156[]{class156.field2339, class156.field2334, class156.field2335, class156.field2333};
-      class156[] var2 = var1;
+   public static void method2507() {
+      ItemComposition.field1159.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
+   }
 
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class156 var4 = var2[var3];
-         if(var4.field2337 == var0) {
-            return var4;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass170;I)V",
+      garbageValue = "-1023718852"
+   )
+   public static void method2508(class170 var0) {
+      class47.field1046 = var0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;B)J",
+      garbageValue = "116"
+   )
+   public static long method2509(CharSequence var0) {
+      long var1 = 0L;
+      int var3 = var0.length();
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         var1 *= 37L;
+         char var5 = var0.charAt(var4);
+         if(var5 >= 65 && var5 <= 90) {
+            var1 += (long)(1 + var5 - 65);
+         } else if(var5 >= 97 && var5 <= 122) {
+            var1 += (long)(var5 + 1 - 97);
+         } else if(var5 >= 48 && var5 <= 57) {
+            var1 += (long)(var5 + 27 - 48);
+         }
+
+         if(var1 >= 177917621779460413L) {
+            break;
          }
       }
 
-      return null;
-   }
+      while(0L == var1 % 37L && var1 != 0L) {
+         var1 /= 37L;
+      }
 
-   @ObfuscatedName("cl")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-48"
-   )
-   static boolean method2575(int var0) {
-      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+      return var1;
    }
 }

@@ -2,73 +2,37 @@ import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("hs")
 final class class221 implements Comparator {
+   @ObfuscatedName("r")
+   public static class170 field3216;
+
+   public int compare(Object var1, Object var2) {
+      return this.method3997((class217)var1, (class217)var2);
+   }
+
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Lclass217;Lclass217;I)I",
-      garbageValue = "1706348395"
+      signature = "(Lclass217;Lclass217;B)I",
+      garbageValue = "37"
    )
-   int method4126(class217 var1, class217 var2) {
-      return var1.field3209 < var2.field3209?-1:(var1.field3209 == var2.field3209?0:1);
+   int method3997(class217 var1, class217 var2) {
+      return var1.field3206 < var2.field3206?-1:(var2.field3206 == var1.field3206?0:1);
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method4126((class217)var1, (class217)var2);
-   }
-
-   @ObfuscatedName("l")
+   @ObfuscatedName("ap")
    @ObfuscatedSignature(
-      signature = "(Lclass170;Lclass170;I)I",
-      garbageValue = "-892072893"
+      signature = "(I)V",
+      garbageValue = "-1821413466"
    )
-   static int method4133(class170 var0, class170 var1) {
-      int var2 = 0;
-      if(var0.method3413("title.jpg", "")) {
-         ++var2;
-      }
-
-      if(var1.method3413("logo", "")) {
-         ++var2;
-      }
-
-      if(var1.method3413("logo_deadman_mode", "")) {
-         ++var2;
-      }
-
-      if(var1.method3413("titlebox", "")) {
-         ++var2;
-      }
-
-      if(var1.method3413("titlebutton", "")) {
-         ++var2;
-      }
-
-      if(var1.method3413("runes", "")) {
-         ++var2;
-      }
-
-      if(var1.method3413("title_mute", "")) {
-         ++var2;
-      }
-
-      if(var1.method3414("options_radio_buttons,0")) {
-         ++var2;
-      }
-
-      if(var1.method3414("options_radio_buttons,2")) {
-         ++var2;
-      }
-
-      var1.method3413("sl_back", "");
-      var1.method3413("sl_flags", "");
-      var1.method3413("sl_arrows", "");
-      var1.method3413("sl_stars", "");
-      var1.method3413("sl_button", "");
-      return var2;
+   static void method4001() {
+      Client.field323.method2818(136);
+      Client.field323.method2715(class92.method2124());
+      Client.field323.method2542(FaceNormal.field1499);
+      Client.field323.method2542(class212.field3175);
    }
 }

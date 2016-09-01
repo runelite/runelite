@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.WindowEvent;
@@ -17,85 +16,85 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("ep")
 @Implements("GameEngine")
 public abstract class GameEngine extends Applet implements Runnable, FocusListener, WindowListener {
+   @ObfuscatedName("pc")
+   @ObfuscatedGetter(
+      intValue = 904977581
+   )
+   static int field2245 = 0;
+   @ObfuscatedName("qt")
+   static long[] field2246 = new long[32];
+   @ObfuscatedName("py")
+   @ObfuscatedGetter(
+      longValue = -4481068026636879335L
+   )
+   static long field2247 = 0L;
+   @ObfuscatedName("qd")
+   static long[] field2248 = new long[32];
+   @ObfuscatedName("pg")
+   boolean field2249;
    @ObfuscatedName("pi")
    @ObfuscatedGetter(
-      intValue = -1414177189
+      intValue = 1899867273
    )
-   static int field2251 = 20;
-   @ObfuscatedName("pl")
-   @ObfuscatedGetter(
-      intValue = 325039805
-   )
-   static int field2252 = 0;
-   @ObfuscatedName("pm")
-   @ObfuscatedGetter(
-      longValue = 2076138819687844761L
-   )
-   static long field2253 = 0L;
-   @ObfuscatedName("pg")
-   static boolean field2254 = false;
+   static int field2250 = 20;
    @ObfuscatedName("pd")
-   boolean field2255;
-   @ObfuscatedName("qm")
+   static boolean field2251 = false;
+   @ObfuscatedName("qc")
    @ObfuscatedGetter(
-      intValue = 9098071
-   )
-   static int field2256 = 1;
-   @ObfuscatedName("qj")
-   @ObfuscatedGetter(
-      intValue = 566740855
-   )
-   static int field2258 = 500;
-   @ObfuscatedName("qt")
-   protected static long[] field2259 = new long[32];
-   @ObfuscatedName("qd")
-   protected static long[] field2260 = new long[32];
-   @ObfuscatedName("rv")
-   static volatile boolean field2261 = true;
-   @ObfuscatedName("qf")
-   @ObfuscatedGetter(
-      intValue = 1189694439
-   )
-   protected static int field2262 = 0;
-   @ObfuscatedName("qe")
-   public static volatile boolean field2263 = true;
-   @ObfuscatedName("qg")
-   @ObfuscatedGetter(
-      intValue = -592561851
+      intValue = -864267149
    )
    @Export("FPS")
    protected static int FPS = 0;
-   @ObfuscatedName("qi")
-   protected static boolean field2265 = false;
-   @ObfuscatedName("qx")
-   protected static volatile boolean field2266 = false;
-   @ObfuscatedName("qv")
+   @ObfuscatedName("px")
+   static GameEngine field2254 = null;
+   @ObfuscatedName("qo")
    @ObfuscatedGetter(
-      longValue = -7721056355659316701L
+      intValue = -159760245
    )
-   static volatile long field2267 = 0L;
-   @ObfuscatedName("qw")
+   protected static int field2255 = 0;
+   @ObfuscatedName("ql")
    @ObfuscatedGetter(
-      intValue = -719269089
+      intValue = 274405691
    )
-   protected static int field2268 = 0;
-   @ObfuscatedName("pp")
-   static GameEngine field2270 = null;
+   protected static int field2256 = 0;
+   @ObfuscatedName("qp")
+   protected static volatile boolean field2257 = true;
+   @ObfuscatedName("qu")
+   @ObfuscatedGetter(
+      intValue = -1148468799
+   )
+   static int field2258 = 1;
+   @ObfuscatedName("qj")
+   protected static boolean field2259 = false;
+   @ObfuscatedName("qb")
+   protected static volatile boolean field2260 = false;
+   @ObfuscatedName("qr")
+   @ObfuscatedGetter(
+      longValue = -1770284704444766845L
+   )
+   static volatile long field2261 = 0L;
+   @ObfuscatedName("ry")
+   static volatile boolean field2262 = true;
+   @ObfuscatedName("qa")
+   @ObfuscatedGetter(
+      intValue = -1115992277
+   )
+   static int field2263 = 500;
 
-   @ObfuscatedName("qq")
+   @ObfuscatedName("pt")
    @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "53"
+      signature = "(IIII)V",
+      garbageValue = "122030146"
    )
-   protected final void method3155(int var1, int var2, int var3) {
+   protected final void method3062(int var1, int var2, int var3) {
       try {
-         if(field2270 != null) {
-            ++field2252;
-            if(field2252 >= 3) {
-               this.method3170("alreadyloaded");
+         if(field2254 != null) {
+            ++field2245;
+            if(field2245 >= 3) {
+               this.method3078("alreadyloaded");
                return;
             }
 
@@ -103,74 +102,88 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             return;
          }
 
-         field2270 = this;
-         class189.field3056 = var1;
-         Actor.field892 = var2;
-         class151.field2284 = var3;
-         class151.field2286 = this;
-         if(null == class125.field2070) {
-            class125.field2070 = new class139();
+         field2254 = this;
+         FaceNormal.field1499 = var1;
+         class212.field3175 = var2;
+         class192.field3104 = var3;
+         class151.field2280 = this;
+         if(class127.field2086 == null) {
+            class127.field2086 = new class139();
          }
 
-         class125.field2070.method3029(this, 1);
+         class127.field2086.method2927(this, 1);
       } catch (Exception var5) {
-         class13.method176((String)null, var5);
-         this.method3170("crash");
+         class107.method2357((String)null, var5);
+         this.method3078("crash");
       }
 
    }
 
-   @ObfuscatedName("qb")
+   @ObfuscatedName("pj")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1932774633"
+      garbageValue = "925199842"
    )
-   protected final synchronized void method3156() {
-      Container var1 = this.method3174();
-      if(class107.canvas != null) {
-         class107.canvas.removeFocusListener(this);
-         var1.remove(class107.canvas);
+   protected final synchronized void method3063() {
+      Container var1 = this.method3079();
+      if(class129.canvas != null) {
+         class129.canvas.removeFocusListener(this);
+         var1.remove(class129.canvas);
       }
 
-      class189.field3056 = Math.max(var1.getWidth(), ItemLayer.field1757);
-      Actor.field892 = Math.max(var1.getHeight(), class128.field2089);
+      FaceNormal.field1499 = Math.max(var1.getWidth(), ObjectComposition.field935);
+      class212.field3175 = Math.max(var1.getHeight(), ItemLayer.field1738);
       Insets var2;
-      if(class114.field2013 != null) {
-         var2 = class114.field2013.getInsets();
-         class189.field3056 -= var2.right + var2.left;
-         Actor.field892 -= var2.top + var2.bottom;
+      if(FaceNormal.field1496 != null) {
+         var2 = FaceNormal.field1496.getInsets();
+         FaceNormal.field1499 -= var2.left + var2.right;
+         class212.field3175 -= var2.top + var2.bottom;
       }
 
-      class107.canvas = new RSCanvas(this);
-      var1.add(class107.canvas);
-      class107.canvas.setSize(class189.field3056, Actor.field892);
-      class107.canvas.setVisible(true);
-      if(var1 == class114.field2013) {
-         var2 = class114.field2013.getInsets();
-         class107.canvas.setLocation(field2268 + var2.left, var2.top + field2262);
+      class129.canvas = new RSCanvas(this);
+      var1.add(class129.canvas);
+      class129.canvas.setSize(FaceNormal.field1499, class212.field3175);
+      class129.canvas.setVisible(true);
+      if(var1 == FaceNormal.field1496) {
+         var2 = FaceNormal.field1496.getInsets();
+         class129.canvas.setLocation(var2.left + field2255, var2.top + field2256);
       } else {
-         class107.canvas.setLocation(field2268, field2262);
+         class129.canvas.setLocation(field2255, field2256);
       }
 
-      class107.canvas.addFocusListener(this);
-      class107.canvas.requestFocus();
-      field2263 = true;
-      BufferProvider var3 = class21.method573(class189.field3056, Actor.field892, class107.canvas);
-      if(class54.bufferProvider != null) {
-         class54.bufferProvider.draw(var3.image.getGraphics(), 0, 0);
+      class129.canvas.addFocusListener(this);
+      class129.canvas.requestFocus();
+      field2257 = true;
+      int var3 = FaceNormal.field1499;
+      int var4 = class212.field3175;
+      Canvas var5 = class129.canvas;
+
+      Object var9;
+      try {
+         MainBufferProvider var6 = new MainBufferProvider();
+         var6.init(var3, var4, var5);
+         var9 = var6;
+      } catch (Throwable var8) {
+         SecondaryBufferProvider var7 = new SecondaryBufferProvider();
+         var7.init(var3, var4, var5);
+         var9 = var7;
       }
 
-      class54.bufferProvider = var3;
-      field2266 = false;
-      field2267 = class56.method1249();
+      if(class40.bufferProvider != null) {
+         class40.bufferProvider.draw(((BufferProvider)var9).image.getGraphics(), 0, 0);
+      }
+
+      class40.bufferProvider = (BufferProvider)var9;
+      field2260 = false;
+      field2261 = class34.method713();
    }
 
-   @ObfuscatedName("qp")
+   @ObfuscatedName("pl")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-124"
+      signature = "(I)Z",
+      garbageValue = "-1248269205"
    )
-   protected final boolean method3157() {
+   protected final boolean method3064() {
       String var1 = this.getDocumentBase().getHost().toLowerCase();
       if(!var1.equals("jagex.com") && !var1.endsWith(".jagex.com")) {
          if(!var1.equals("runescape.com") && !var1.endsWith(".runescape.com")) {
@@ -185,7 +198,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                   if(var1.endsWith("192.168.1.")) {
                      return true;
                   } else {
-                     this.method3170("invalidhost");
+                     this.method3078("invalidhost");
                      return false;
                   }
                }
@@ -200,221 +213,222 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       }
    }
 
-   public void run() {
-      try {
-         int var1;
-         if(null != class139.field2152) {
-            String var2 = class139.field2152.toLowerCase();
-            if(var2.indexOf("sun") != -1 || var2.indexOf("apple") != -1) {
-               String var3 = class139.field2146;
-               if(var3.equals("1.1") || var3.startsWith("1.1.") || var3.equals("1.2") || var3.startsWith("1.2.") || var3.equals("1.3") || var3.startsWith("1.3.") || var3.equals("1.4") || var3.startsWith("1.4.") || var3.equals("1.5") || var3.startsWith("1.5.") || var3.equals("1.6.0")) {
-                  this.method3170("wrongjava");
-                  return;
-               }
-
-               if(var3.startsWith("1.6.0_")) {
-                  for(var1 = 6; var1 < var3.length() && class40.method812(var3.charAt(var1)); ++var1) {
-                     ;
-                  }
-
-                  String var4 = var3.substring(6, var1);
-                  boolean var5 = false;
-                  boolean var6 = false;
-                  int var7 = 0;
-                  int var8 = var4.length();
-                  int var9 = 0;
-
-                  boolean var10;
-                  while(true) {
-                     if(var9 >= var8) {
-                        var10 = var6;
-                        break;
-                     }
-
-                     label186: {
-                        char var11 = var4.charAt(var9);
-                        if(var9 == 0) {
-                           if(var11 == 45) {
-                              var5 = true;
-                              break label186;
-                           }
-
-                           if(var11 == 43) {
-                              break label186;
-                           }
-                        }
-
-                        int var12;
-                        if(var11 >= 48 && var11 <= 57) {
-                           var12 = var11 - 48;
-                        } else if(var11 >= 65 && var11 <= 90) {
-                           var12 = var11 - 55;
-                        } else {
-                           if(var11 < 97 || var11 > 122) {
-                              var10 = false;
-                              break;
-                           }
-
-                           var12 = var11 - 87;
-                        }
-
-                        if(var12 >= 10) {
-                           var10 = false;
-                           break;
-                        }
-
-                        if(var5) {
-                           var12 = -var12;
-                        }
-
-                        int var13 = var12 + 10 * var7;
-                        if(var13 / 10 != var7) {
-                           var10 = false;
-                           break;
-                        }
-
-                        var7 = var13;
-                        var6 = true;
-                     }
-
-                     ++var9;
-                  }
-
-                  if(var10) {
-                     int var18 = class5.method91(var4, 10, true);
-                     if(var18 < 10) {
-                        this.method3170("wrongjava");
-                        return;
-                     }
-                  }
-               }
-
-               field2256 = 5;
-            }
-         }
-
-         this.setFocusCycleRoot(true);
-         this.method3156();
-         this.vmethod3166();
-         GroundObject.field1669 = class53.method1137();
-
-         label104:
-         while(true) {
-            class139 var15;
-            Canvas var16;
-            do {
-               if(0L != field2253 && class56.method1249() >= field2253) {
-                  break label104;
-               }
-
-               class45.field1050 = GroundObject.field1669.vmethod3261(field2251, field2256);
-
-               for(int var17 = 0; var17 < class45.field1050; ++var17) {
-                  this.method3158();
-               }
-
-               this.method3159();
-               var15 = class125.field2070;
-               var16 = class107.canvas;
-            } while(null == var15.field2151);
-
-            for(var1 = 0; var1 < 50 && var15.field2151.peekEvent() != null; ++var1) {
-               class22.method594(1L);
-            }
-
-            if(null != var16) {
-               var15.field2151.postEvent(new ActionEvent(var16, 1001, "dummy"));
-            }
-         }
-      } catch (Exception var14) {
-         class13.method176((String)null, var14);
-         this.method3170("crash");
-      }
-
-      this.method3189();
-   }
-
-   @ObfuscatedName("qk")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "230061674"
+      garbageValue = "115775272"
    )
-   void method3158() {
-      long var1 = class56.method1249();
-      long var3 = field2260[ChatMessages.field286];
-      field2260[ChatMessages.field286] = var1;
-      ChatMessages.field286 = 1 + ChatMessages.field286 & 31;
-      if(0L != var3 && var1 > var3) {
+   protected abstract void vmethod3065();
+
+   @ObfuscatedName("px")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "1701"
+   )
+   void method3067() {
+      Container var1 = this.method3079();
+      long var2 = class34.method713();
+      long var4 = field2248[CollisionData.field1965];
+      field2248[CollisionData.field1965] = var2;
+      CollisionData.field1965 = CollisionData.field1965 + 1 & 31;
+      if(0L != var4 && var2 > var4) {
+         int var7 = (int)(var2 - var4);
+         FPS = (32000 + (var7 >> 1)) / var7;
+      }
+
+      if(++field2263 - 1 > 50) {
+         field2263 -= 50;
+         field2257 = true;
+         class129.canvas.setSize(FaceNormal.field1499, class212.field3175);
+         class129.canvas.setVisible(true);
+         if(FaceNormal.field1496 == var1) {
+            Insets var6 = FaceNormal.field1496.getInsets();
+            class129.canvas.setLocation(var6.left + field2255, var6.top + field2256);
+         } else {
+            class129.canvas.setLocation(field2255, field2256);
+         }
+      }
+
+      this.vmethod3133();
+   }
+
+   @ObfuscatedName("pc")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1037982524"
+   )
+   final synchronized void method3068() {
+      if(!field2251) {
+         field2251 = true;
+
+         try {
+            class129.canvas.removeFocusListener(this);
+         } catch (Exception var5) {
+            ;
+         }
+
+         try {
+            this.vmethod3077();
+         } catch (Exception var4) {
+            ;
+         }
+
+         if(null != FaceNormal.field1496) {
+            try {
+               System.exit(0);
+            } catch (Throwable var3) {
+               ;
+            }
+         }
+
+         if(class127.field2086 != null) {
+            try {
+               class127.field2086.method2923();
+            } catch (Exception var2) {
+               ;
+            }
+         }
+
+         this.vmethod3065();
+      }
+   }
+
+   @ObfuscatedName("pq")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "813674026"
+   )
+   void method3069() {
+      long var1 = class34.method713();
+      long var3 = field2246[class134.field2116];
+      field2246[class134.field2116] = var1;
+      class134.field2116 = 1 + class134.field2116 & 31;
+      if(var3 != 0L && var1 > var3) {
          ;
       }
 
       synchronized(this) {
-         class54.field1172 = field2261;
+         class184.field2991 = field2262;
       }
 
       this.packetHandler();
    }
 
-   @ObfuscatedName("qc")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "485557939"
-   )
-   void method3159() {
-      Container var1 = this.method3174();
-      long var2 = class56.method1249();
-      long var4 = field2259[GameObject.field1745];
-      field2259[GameObject.field1745] = var2;
-      GameObject.field1745 = GameObject.field1745 + 1 & 31;
-      if(0L != var4 && var2 > var4) {
-         int var6 = (int)(var2 - var4);
-         FPS = ((var6 >> 1) + 32000) / var6;
-      }
-
-      if(++field2258 - 1 > 50) {
-         field2258 -= 50;
-         field2263 = true;
-         class107.canvas.setSize(class189.field3056, Actor.field892);
-         class107.canvas.setVisible(true);
-         if(class114.field2013 == var1) {
-            Insets var7 = class114.field2013.getInsets();
-            class107.canvas.setLocation(var7.left + field2268, field2262 + var7.top);
-         } else {
-            class107.canvas.setLocation(field2268, field2262);
-         }
-      }
-
-      this.vmethod3225();
-   }
-
    public void stop() {
-      if(this == field2270 && !field2254) {
-         field2253 = class56.method1249() + 4000L;
+      if(field2254 == this && !field2251) {
+         field2247 = class34.method713() + 4000L;
       }
-
    }
 
-   public final void windowActivated(WindowEvent var1) {
+   public void destroy() {
+      if(this == field2254 && !field2251) {
+         field2247 = class34.method713();
+         class125.method2820(5000L);
+         this.method3068();
+      }
    }
 
    public final synchronized void paint(Graphics var1) {
-      if(this == field2270 && !field2254) {
-         field2263 = true;
-         if(class139.field2146 != null && class139.field2146.startsWith("1.5") && class56.method1249() - field2267 > 1000L) {
+      if(field2254 == this && !field2251) {
+         field2257 = true;
+         if(null != class139.field2138 && class139.field2138.startsWith("1.5") && class34.method713() - field2261 > 1000L) {
             Rectangle var2 = var1.getClipBounds();
-            if(var2 == null || var2.width >= class189.field3056 && var2.height >= Actor.field892) {
-               field2266 = true;
+            if(null == var2 || var2.width >= FaceNormal.field1499 && var2.height >= class212.field3175) {
+               field2260 = true;
             }
          }
-      }
 
+      }
+   }
+
+   public final void focusGained(FocusEvent var1) {
+      field2262 = true;
+      field2257 = true;
    }
 
    public final void focusLost(FocusEvent var1) {
-      field2261 = false;
+      field2262 = false;
    }
 
-   public final void windowClosed(WindowEvent var1) {
+   public final void update(Graphics var1) {
+      this.paint(var1);
+   }
+
+   public final void windowDeiconified(WindowEvent var1) {
+   }
+
+   public final void windowIconified(WindowEvent var1) {
+   }
+
+   public final void windowOpened(WindowEvent var1) {
+   }
+
+   public abstract void init();
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "25292714"
+   )
+   protected abstract void packetHandler();
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-224721789"
+   )
+   protected abstract void vmethod3077();
+
+   @ObfuscatedName("pd")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "16711680"
+   )
+   protected void method3078(String var1) {
+      if(!this.field2249) {
+         this.field2249 = true;
+         System.out.println("error_game_" + var1);
+
+         try {
+            this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
+         } catch (Exception var3) {
+            ;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("pg")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/awt/Container;",
+      garbageValue = "-495080898"
+   )
+   protected Container method3079() {
+      return (Container)(null != FaceNormal.field1496?FaceNormal.field1496:this);
+   }
+
+   @ObfuscatedName("pw")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/awt/Dimension;",
+      garbageValue = "1042830557"
+   )
+   protected Dimension method3080() {
+      Container var1 = this.method3079();
+      int var2 = Math.max(var1.getWidth(), ObjectComposition.field935);
+      int var3 = Math.max(var1.getHeight(), ItemLayer.field1738);
+      if(null != FaceNormal.field1496) {
+         Insets var4 = FaceNormal.field1496.getInsets();
+         var2 -= var4.right + var4.left;
+         var3 -= var4.bottom + var4.top;
+      }
+
+      return new Dimension(var2, var3);
+   }
+
+   public void start() {
+      if(this == field2254 && !field2251) {
+         field2247 = 0L;
+      }
    }
 
    public final void windowClosing(WindowEvent var1) {
@@ -424,252 +438,450 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    public final void windowDeactivated(WindowEvent var1) {
    }
 
-   public final void windowDeiconified(WindowEvent var1) {
-   }
-
-   public final void windowOpened(WindowEvent var1) {
-   }
-
-   public abstract void init();
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-22"
-   )
-   protected abstract void vmethod3166();
-
-   @ObfuscatedName("qe")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1479444814"
-   )
-   protected void method3170(String var1) {
-      if(!this.field2255) {
-         this.field2255 = true;
-         System.out.println("error_game_" + var1);
-
-         try {
-            this.getAppletContext().showDocument(new URL(this.getCodeBase(), "error_game_" + var1 + ".ws"), "_self");
-         } catch (Exception var3) {
-            ;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("qj")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/awt/Dimension;",
-      garbageValue = "-1159034136"
-   )
-   protected Dimension method3172() {
-      Container var1 = this.method3174();
-      int var2 = Math.max(var1.getWidth(), ItemLayer.field1757);
-      int var3 = Math.max(var1.getHeight(), class128.field2089);
-      if(null != class114.field2013) {
-         Insets var4 = class114.field2013.getInsets();
-         var2 -= var4.left + var4.right;
-         var3 -= var4.top + var4.bottom;
-      }
-
-      return new Dimension(var2, var3);
-   }
-
-   @ObfuscatedName("r")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "265552880"
+      garbageValue = "1038456919"
    )
-   protected abstract void vmethod3173();
+   protected abstract void vmethod3133();
 
-   @ObfuscatedName("qn")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/awt/Container;",
-      garbageValue = "-1527425134"
-   )
-   protected Container method3174() {
-      return (Container)(class114.field2013 != null?class114.field2013:this);
-   }
-
-   public final void windowIconified(WindowEvent var1) {
-   }
-
-   public final void focusGained(FocusEvent var1) {
-      field2261 = true;
-      field2263 = true;
-   }
-
-   @ObfuscatedName("qu")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-824891580"
+      garbageValue = "-1659072882"
    )
-   final synchronized void method3189() {
-      if(!field2254) {
-         field2254 = true;
+   protected abstract void vmethod3140();
 
-         try {
-            class107.canvas.removeFocusListener(this);
-         } catch (Exception var5) {
-            ;
-         }
-
-         try {
-            this.vmethod3234();
-         } catch (Exception var4) {
-            ;
-         }
-
-         if(null != class114.field2013) {
-            try {
-               System.exit(0);
-            } catch (Throwable var3) {
-               ;
-            }
-         }
-
-         if(null != class125.field2070) {
-            try {
-               class125.field2070.method3026();
-            } catch (Exception var2) {
-               ;
-            }
-         }
-
-         this.vmethod3173();
-      }
-
-   }
-
-   public final void update(Graphics var1) {
-      this.paint(var1);
-   }
-
-   public void start() {
-      if(this == field2270 && !field2254) {
-         field2253 = 0L;
-      }
-
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "123"
-   )
-   protected abstract void vmethod3225();
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1575533843"
-   )
-   protected abstract void vmethod3234();
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IB)Lclass56;",
-      garbageValue = "-2"
-   )
-   public static class56 method3242(int var0) {
-      class56 var1 = (class56)class56.field1231.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class56.field1232.method3411(16, var0);
-         var1 = new class56();
-         if(null != var2) {
-            var1.method1236(new Buffer(var2));
-         }
-
-         class56.field1231.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   public void destroy() {
-      if(field2270 == this && !field2254) {
-         field2253 = class56.method1249();
-         class22.method594(5000L);
-         this.method3189();
-      }
-
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1031914960"
-   )
-   protected abstract void packetHandler();
-
-   @ObfuscatedName("dv")
-   @ObfuscatedSignature(
-      signature = "([LWidget;II)V",
-      garbageValue = "424460431"
-   )
-   static final void method3250(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(null != var3 && var3.parentId == var1 && (!var3.field2855 || !class9.method132(var3))) {
-            int var4;
-            if(var3.type == 0) {
-               if(!var3.field2855 && class9.method132(var3) && var3 != class11.field177) {
-                  continue;
+   public void run() {
+      try {
+         if(class139.field2141 != null) {
+            String var1 = class139.field2141.toLowerCase();
+            if(var1.indexOf("sun") != -1 || var1.indexOf("apple") != -1) {
+               String var2 = class139.field2138;
+               if(var2.equals("1.1") || var2.startsWith("1.1.") || var2.equals("1.2") || var2.startsWith("1.2.") || var2.equals("1.3") || var2.startsWith("1.3.") || var2.equals("1.4") || var2.startsWith("1.4.") || var2.equals("1.5") || var2.startsWith("1.5.") || var2.equals("1.6.0")) {
+                  this.method3078("wrongjava");
+                  return;
                }
 
-               method3250(var0, var3.id);
-               if(null != var3.children) {
-                  method3250(var3.children, var3.id);
-               }
+               if(var2.startsWith("1.6.0_")) {
+                  int var3;
+                  for(var3 = 6; var3 < var2.length() && class165.method3223(var2.charAt(var3)); ++var3) {
+                     ;
+                  }
 
-               WidgetNode var5 = (WidgetNode)Client.componentTable.method3936((long)var3.id);
-               if(null != var5) {
-                  var4 = var5.id;
-                  if(class14.method179(var4)) {
-                     method3250(Widget.widgets[var4], -1);
+                  String var4 = var2.substring(6, var3);
+                  if(VertexNormal.method2253(var4)) {
+                     int var5 = SecondaryBufferProvider.method1672(var4, 10, true);
+                     if(var5 < 10) {
+                        this.method3078("wrongjava");
+                        return;
+                     }
                   }
                }
+
+               field2258 = 5;
+            }
+         }
+
+         this.setFocusCycleRoot(true);
+         this.method3063();
+         this.vmethod3140();
+
+         Object var9;
+         try {
+            var9 = new class150();
+         } catch (Throwable var7) {
+            var9 = new class144();
+         }
+
+         class138.field2133 = (class136)var9;
+
+         while(field2247 == 0L || class34.method713() < field2247) {
+            class0.field13 = class138.field2133.vmethod3169(field2250, field2258);
+
+            for(int var6 = 0; var6 < class0.field13; ++var6) {
+               this.method3069();
             }
 
-            if(var3.type == 6) {
-               if(var3.field2854 != -1 || var3.field2923 != -1) {
-                  boolean var7 = class53.method1149(var3);
-                  if(var7) {
-                     var4 = var3.field2923;
+            this.method3067();
+            class128.method2861(class127.field2086, class129.canvas);
+         }
+      } catch (Exception var8) {
+         class107.method2357((String)null, var8);
+         this.method3078("crash");
+      }
+
+      this.method3068();
+   }
+
+   public final void windowActivated(WindowEvent var1) {
+   }
+
+   public final void windowClosed(WindowEvent var1) {
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(IIIIIILRegion;LCollisionData;I)V",
+      garbageValue = "-25210327"
+   )
+   static final void method3158(int var0, int var1, int var2, int var3, int var4, int var5, Region var6, CollisionData var7) {
+      if(!Client.field314 || (class5.tileSettings[0][var1][var2] & 2) != 0 || (class5.tileSettings[var0][var1][var2] & 16) == 0) {
+         if(var0 < class5.field73) {
+            class5.field73 = var0;
+         }
+
+         ObjectComposition var8 = class1.getObjectDefinition(var3);
+         int var9;
+         int var10;
+         if(var4 != 1 && var4 != 3) {
+            var9 = var8.field938;
+            var10 = var8.field939;
+         } else {
+            var9 = var8.field939;
+            var10 = var8.field938;
+         }
+
+         int var11;
+         int var12;
+         if(var9 + var1 <= 104) {
+            var11 = (var9 >> 1) + var1;
+            var12 = var1 + (1 + var9 >> 1);
+         } else {
+            var11 = var1;
+            var12 = var1 + 1;
+         }
+
+         int var13;
+         int var14;
+         if(var10 + var2 <= 104) {
+            var13 = var2 + (var10 >> 1);
+            var14 = (1 + var10 >> 1) + var2;
+         } else {
+            var13 = var2;
+            var14 = var2 + 1;
+         }
+
+         int[][] var15 = class5.tileHeights[var0];
+         int var16 = var15[var11][var14] + var15[var12][var13] + var15[var11][var13] + var15[var12][var14] >> 2;
+         int var17 = (var1 << 7) + (var9 << 6);
+         int var18 = (var2 << 7) + (var10 << 6);
+         int var19 = 1073741824 + (var3 << 14) + var1 + (var2 << 7);
+         if(var8.field966 == 0) {
+            var19 -= Integer.MIN_VALUE;
+         }
+
+         int var20 = (var4 << 6) + var5;
+         if(var8.field963 == 1) {
+            var20 += 256;
+         }
+
+         if(var8.method797()) {
+            class0.method2(var0, var1, var2, var8, var4);
+         }
+
+         Object var21;
+         if(var5 == 22) {
+            if(!Client.field314 || var8.field966 != 0 || var8.field940 == 1 || var8.field961) {
+               if(var8.field946 == -1 && var8.impostorIds == null) {
+                  var21 = var8.method803(22, var4, var15, var17, var16, var18);
+               } else {
+                  var21 = new class12(var3, 22, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+               }
+
+               var6.groundObjectSpawned(var0, var1, var2, var16, (Renderable)var21, var19, var20);
+               if(var8.field940 == 1 && var7 != null) {
+                  var7.method2446(var1, var2);
+               }
+
+            }
+         } else {
+            int var22;
+            if(var5 != 10 && var5 != 11) {
+               if(var5 >= 12) {
+                  if(var8.field946 == -1 && var8.impostorIds == null) {
+                     var21 = var8.method803(var5, var4, var15, var17, var16, var18);
                   } else {
-                     var4 = var3.field2854;
+                     var21 = new class12(var3, var5, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
                   }
 
-                  if(var4 != -1) {
-                     Sequence var6 = class22.getAnimation(var4);
+                  var6.method1958(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
+                  if(var5 >= 12 && var5 <= 17 && var5 != 13 && var0 > 0) {
+                     class220.field3214[var0][var1][var2] |= 2340;
+                  }
 
-                     for(var3.field2930 += Client.field370; var3.field2930 > var6.field1018[var3.field2929]; class79.method1777(var3)) {
-                        var3.field2930 -= var6.field1018[var3.field2929];
-                        ++var3.field2929;
-                        if(var3.field2929 >= var6.field1030.length) {
-                           var3.field2929 -= var6.field1020;
-                           if(var3.field2929 < 0 || var3.field2929 >= var6.field1030.length) {
-                              var3.field2929 = 0;
-                           }
+                  if(var8.field940 != 0 && null != var7) {
+                     var7.method2444(var1, var2, var9, var10, var8.field973);
+                  }
+
+               } else if(var5 == 0) {
+                  if(var8.field946 == -1 && var8.impostorIds == null) {
+                     var21 = var8.method803(0, var4, var15, var17, var16, var18);
+                  } else {
+                     var21 = new class12(var3, 0, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                  }
+
+                  var6.method2010(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field82[var4], 0, var19, var20);
+                  if(var4 == 0) {
+                     if(var8.field932) {
+                        class132.field2104[var0][var1][var2] = 50;
+                        class132.field2104[var0][var1][1 + var2] = 50;
+                     }
+
+                     if(var8.field945) {
+                        class220.field3214[var0][var1][var2] |= 585;
+                     }
+                  } else if(var4 == 1) {
+                     if(var8.field932) {
+                        class132.field2104[var0][var1][var2 + 1] = 50;
+                        class132.field2104[var0][1 + var1][1 + var2] = 50;
+                     }
+
+                     if(var8.field945) {
+                        class220.field3214[var0][var1][var2 + 1] |= 1170;
+                     }
+                  } else if(var4 == 2) {
+                     if(var8.field932) {
+                        class132.field2104[var0][1 + var1][var2] = 50;
+                        class132.field2104[var0][1 + var1][var2 + 1] = 50;
+                     }
+
+                     if(var8.field945) {
+                        class220.field3214[var0][var1 + 1][var2] |= 585;
+                     }
+                  } else if(var4 == 3) {
+                     if(var8.field932) {
+                        class132.field2104[var0][var1][var2] = 50;
+                        class132.field2104[var0][1 + var1][var2] = 50;
+                     }
+
+                     if(var8.field945) {
+                        class220.field3214[var0][var1][var2] |= 1170;
+                     }
+                  }
+
+                  if(var8.field940 != 0 && var7 != null) {
+                     var7.method2443(var1, var2, var5, var4, var8.field973);
+                  }
+
+                  if(var8.field976 != 16) {
+                     var6.method1964(var0, var1, var2, var8.field976);
+                  }
+
+               } else if(var5 == 1) {
+                  if(var8.field946 == -1 && var8.impostorIds == null) {
+                     var21 = var8.method803(1, var4, var15, var17, var16, var18);
+                  } else {
+                     var21 = new class12(var3, 1, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                  }
+
+                  var6.method2010(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field83[var4], 0, var19, var20);
+                  if(var8.field932) {
+                     if(var4 == 0) {
+                        class132.field2104[var0][var1][1 + var2] = 50;
+                     } else if(var4 == 1) {
+                        class132.field2104[var0][1 + var1][1 + var2] = 50;
+                     } else if(var4 == 2) {
+                        class132.field2104[var0][1 + var1][var2] = 50;
+                     } else if(var4 == 3) {
+                        class132.field2104[var0][var1][var2] = 50;
+                     }
+                  }
+
+                  if(var8.field940 != 0 && var7 != null) {
+                     var7.method2443(var1, var2, var5, var4, var8.field973);
+                  }
+
+               } else {
+                  Object var26;
+                  int var27;
+                  if(var5 == 2) {
+                     var27 = var4 + 1 & 3;
+                     Object var29;
+                     if(var8.field946 == -1 && var8.impostorIds == null) {
+                        var29 = var8.method803(2, 4 + var4, var15, var17, var16, var18);
+                        var26 = var8.method803(2, var27, var15, var17, var16, var18);
+                     } else {
+                        var29 = new class12(var3, 2, 4 + var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                        var26 = new class12(var3, 2, var27, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method2010(var0, var1, var2, var16, (Renderable)var29, (Renderable)var26, class5.field82[var4], class5.field82[var27], var19, var20);
+                     if(var8.field945) {
+                        if(var4 == 0) {
+                           class220.field3214[var0][var1][var2] |= 585;
+                           class220.field3214[var0][var1][var2 + 1] |= 1170;
+                        } else if(var4 == 1) {
+                           class220.field3214[var0][var1][1 + var2] |= 1170;
+                           class220.field3214[var0][var1 + 1][var2] |= 585;
+                        } else if(var4 == 2) {
+                           class220.field3214[var0][var1 + 1][var2] |= 585;
+                           class220.field3214[var0][var1][var2] |= 1170;
+                        } else if(var4 == 3) {
+                           class220.field3214[var0][var1][var2] |= 1170;
+                           class220.field3214[var0][var1][var2] |= 585;
+                        }
+                     }
+
+                     if(var8.field940 != 0 && var7 != null) {
+                        var7.method2443(var1, var2, var5, var4, var8.field973);
+                     }
+
+                     if(var8.field976 != 16) {
+                        var6.method1964(var0, var1, var2, var8.field976);
+                     }
+
+                  } else if(var5 == 3) {
+                     if(var8.field946 == -1 && null == var8.impostorIds) {
+                        var21 = var8.method803(3, var4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new class12(var3, 3, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method2010(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field83[var4], 0, var19, var20);
+                     if(var8.field932) {
+                        if(var4 == 0) {
+                           class132.field2104[var0][var1][var2 + 1] = 50;
+                        } else if(var4 == 1) {
+                           class132.field2104[var0][var1 + 1][var2 + 1] = 50;
+                        } else if(var4 == 2) {
+                           class132.field2104[var0][var1 + 1][var2] = 50;
+                        } else if(var4 == 3) {
+                           class132.field2104[var0][var1][var2] = 50;
+                        }
+                     }
+
+                     if(var8.field940 != 0 && var7 != null) {
+                        var7.method2443(var1, var2, var5, var4, var8.field973);
+                     }
+
+                  } else if(var5 == 9) {
+                     if(var8.field946 == -1 && null == var8.impostorIds) {
+                        var21 = var8.method803(var5, var4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new class12(var3, var5, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method1958(var0, var1, var2, var16, 1, 1, (Renderable)var21, 0, var19, var20);
+                     if(var8.field940 != 0 && var7 != null) {
+                        var7.method2444(var1, var2, var9, var10, var8.field973);
+                     }
+
+                     if(var8.field976 != 16) {
+                        var6.method1964(var0, var1, var2, var8.field976);
+                     }
+
+                  } else if(var5 == 4) {
+                     if(var8.field946 == -1 && var8.impostorIds == null) {
+                        var21 = var8.method803(4, var4, var15, var17, var16, var18);
+                     } else {
+                        var21 = new class12(var3, 4, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method1957(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, class5.field82[var4], 0, 0, 0, var19, var20);
+                  } else if(var5 == 5) {
+                     var27 = 16;
+                     var22 = var6.method1974(var0, var1, var2);
+                     if(var22 != 0) {
+                        var27 = class1.getObjectDefinition(var22 >> 14 & 32767).field976;
+                     }
+
+                     if(var8.field946 == -1 && null == var8.impostorIds) {
+                        var26 = var8.method803(4, var4, var15, var17, var16, var18);
+                     } else {
+                        var26 = new class12(var3, 4, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method1957(var0, var1, var2, var16, (Renderable)var26, (Renderable)null, class5.field82[var4], 0, class5.field84[var4] * var27, class5.field77[var4] * var27, var19, var20);
+                  } else if(var5 == 6) {
+                     var27 = 8;
+                     var22 = var6.method1974(var0, var1, var2);
+                     if(var22 != 0) {
+                        var27 = class1.getObjectDefinition(var22 >> 14 & 32767).field976 / 2;
+                     }
+
+                     if(var8.field946 == -1 && null == var8.impostorIds) {
+                        var26 = var8.method803(4, 4 + var4, var15, var17, var16, var18);
+                     } else {
+                        var26 = new class12(var3, 4, var4 + 4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method1957(var0, var1, var2, var16, (Renderable)var26, (Renderable)null, 256, var4, var27 * class5.field90[var4], var27 * class5.field87[var4], var19, var20);
+                  } else if(var5 == 7) {
+                     var22 = var4 + 2 & 3;
+                     if(var8.field946 == -1 && null == var8.impostorIds) {
+                        var21 = var8.method803(4, 4 + var22, var15, var17, var16, var18);
+                     } else {
+                        var21 = new class12(var3, 4, var22 + 4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method1957(var0, var1, var2, var16, (Renderable)var21, (Renderable)null, 256, var22, 0, 0, var19, var20);
+                  } else if(var5 == 8) {
+                     var27 = 8;
+                     var22 = var6.method1974(var0, var1, var2);
+                     if(var22 != 0) {
+                        var27 = class1.getObjectDefinition(var22 >> 14 & 32767).field976 / 2;
+                     }
+
+                     int var25 = 2 + var4 & 3;
+                     Object var28;
+                     if(var8.field946 == -1 && null == var8.impostorIds) {
+                        var26 = var8.method803(4, 4 + var4, var15, var17, var16, var18);
+                        var28 = var8.method803(4, var25 + 4, var15, var17, var16, var18);
+                     } else {
+                        var26 = new class12(var3, 4, var4 + 4, var0, var1, var2, var8.field946, true, (Renderable)null);
+                        var28 = new class12(var3, 4, 4 + var25, var0, var1, var2, var8.field946, true, (Renderable)null);
+                     }
+
+                     var6.method1957(var0, var1, var2, var16, (Renderable)var26, (Renderable)var28, 256, var4, class5.field90[var4] * var27, class5.field87[var4] * var27, var19, var20);
+                  }
+               }
+            } else {
+               if(var8.field946 == -1 && null == var8.impostorIds) {
+                  var21 = var8.method803(10, var4, var15, var17, var16, var18);
+               } else {
+                  var21 = new class12(var3, 10, var4, var0, var1, var2, var8.field946, true, (Renderable)null);
+               }
+
+               if(var21 != null && var6.method1958(var0, var1, var2, var16, var9, var10, (Renderable)var21, var5 == 11?256:0, var19, var20) && var8.field932) {
+                  var22 = 15;
+                  if(var21 instanceof Model) {
+                     var22 = ((Model)var21).method2365() / 4;
+                     if(var22 > 30) {
+                        var22 = 30;
+                     }
+                  }
+
+                  for(int var23 = 0; var23 <= var9; ++var23) {
+                     for(int var24 = 0; var24 <= var10; ++var24) {
+                        if(var22 > class132.field2104[var0][var23 + var1][var24 + var2]) {
+                           class132.field2104[var0][var23 + var1][var2 + var24] = (byte)var22;
                         }
                      }
                   }
                }
 
-               if(var3.field2863 != 0 && !var3.field2855) {
-                  int var8 = var3.field2863 >> 16;
-                  var4 = var3.field2863 << 16 >> 16;
-                  var8 *= Client.field370;
-                  var4 *= Client.field370;
-                  var3.rotationX = var3.rotationX + var8 & 2047;
-                  var3.rotationZ = var4 + var3.rotationZ & 2047;
-                  class79.method1777(var3);
+               if(var8.field940 != 0 && null != var7) {
+                  var7.method2444(var1, var2, var9, var10, var8.field973);
                }
+
             }
          }
       }
+   }
 
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "207753269"
+   )
+   public static int method3159(int var0, int var1) {
+      int var2;
+      for(var2 = 0; var1 > 0; --var1) {
+         var2 = var2 << 1 | var0 & 1;
+         var0 >>>= 1;
+      }
+
+      return var2;
    }
 }

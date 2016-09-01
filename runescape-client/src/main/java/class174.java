@@ -1,81 +1,101 @@
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fi")
 public class class174 {
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1535696155
-   )
-   static int field2768 = 0;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1094692761
-   )
-   static int field2769 = 0;
+   @ObfuscatedName("x")
+   public static class146 field2774;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      longValue = -5615974852887525949L
+      intValue = -1249029511
    )
-   static long field2770;
-   @ObfuscatedName("e")
-   static XHashTable field2771 = new XHashTable(4096);
-   @ObfuscatedName("u")
-   static Node2LinkedList field2772 = new Node2LinkedList();
-   @ObfuscatedName("x")
-   static byte field2773 = 0;
-   @ObfuscatedName("k")
+   public static int field2775 = 0;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1379086723
+      longValue = 3227155929691682237L
    )
-   static int field2774 = 0;
-   @ObfuscatedName("o")
-   static Buffer field2775 = new Buffer(8);
-   @ObfuscatedName("n")
-   static XHashTable field2776 = new XHashTable(4096);
-   @ObfuscatedName("s")
-   static XHashTable field2777 = new XHashTable(32);
+   public static long field2776;
+   @ObfuscatedName("z")
+   public static XHashTable field2777 = new XHashTable(4096);
+   @ObfuscatedName("b")
+   public static XHashTable field2779 = new XHashTable(32);
+   @ObfuscatedName("c")
+   public static class171[] field2781 = new class171[256];
+   @ObfuscatedName("p")
+   static XHashTable field2782 = new XHashTable(4096);
    @ObfuscatedName("m")
-   static XHashTable field2778 = new XHashTable(4096);
-   @ObfuscatedName("q")
+   public static Node2LinkedList field2783 = new Node2LinkedList();
+   @ObfuscatedName("d")
+   public static XHashTable field2784 = new XHashTable(4096);
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -587500765
-   )
-   static int field2779 = 0;
-   @ObfuscatedName("w")
-   static class175 field2780;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -337167539
-   )
-   static int field2781 = 0;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 954021779
-   )
-   static int field2782 = 0;
-   @ObfuscatedName("i")
-   static CRC32 field2783 = new CRC32();
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1987200417
+      intValue = 1759071437
    )
    public static int field2785 = 0;
-   @ObfuscatedName("j")
-   static class171[] field2786 = new class171[256];
-   @ObfuscatedName("y")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1677464163
+      intValue = -967715749
+   )
+   public static int field2786 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1423556589
    )
    public static int field2787 = 0;
-   @ObfuscatedName("ae")
+   @ObfuscatedName("a")
+   public static CRC32 field2788 = new CRC32();
+   @ObfuscatedName("g")
+   public static Buffer field2789 = new Buffer(8);
+   @ObfuscatedName("n")
+   public static byte field2790 = 0;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1739935467
+      intValue = -216302979
    )
-   static int field2788;
-   @ObfuscatedName("aa")
-   static ModIcon[] field2789;
-   @ObfuscatedName("l")
-   static class146 field2790;
+   public static int field2791 = 0;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1314118507
+   )
+   public static int field2792 = 0;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1457139611
+   )
+   public static int field2793 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1424190899
+   )
+   public static int field2794 = 0;
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "20"
+   )
+   static final int method3418(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1 + (var0 & 'ﾀ');
+      }
+   }
 }

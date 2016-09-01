@@ -1,45 +1,53 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eo")
+@ObfuscatedName("ea")
 public abstract class class136 {
-   @ObfuscatedName("pr")
-   static class8 field2123;
-   @ObfuscatedName("dd")
-   @Export("region")
-   static Region region;
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
+      signature = "(I)V",
+      garbageValue = "-1920699192"
    )
-   public abstract void vmethod3260();
+   abstract void vmethod3173();
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1964270008"
+      signature = "(IIB)I",
+      garbageValue = "10"
    )
-   abstract int vmethod3261(int var1, int var2);
+   abstract int vmethod3169(int var1, int var2);
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Z",
-      garbageValue = "-1378852005"
+      signature = "(Lclass170;Lclass170;Lclass170;Lclass170;I)V",
+      garbageValue = "-1831058410"
    )
-   static boolean method3002(String var0, int var1) {
-      return class14.method178(var0, var1, "openjs");
+   public static void method2910(class170 var0, class170 var1, class170 var2, class170 var3) {
+      class214.field3186 = var0;
+      class214.field3188 = var1;
+      class62.field1264 = var2;
+      class178.field2951 = var3;
+      Widget.widgets = new Widget[class214.field3186.method3300()][];
+      Widget.validInterfaces = new boolean[class214.field3186.method3300()];
    }
 
-   @ObfuscatedName("cm")
+   @ObfuscatedName("da")
    @ObfuscatedSignature(
-      signature = "(III)Ljava/lang/String;",
-      garbageValue = "1385391862"
+      signature = "(II)V",
+      garbageValue = "-320130459"
    )
-   static final String method3003(int var0, int var1) {
-      int var2 = var1 - var0;
-      return var2 < -9?class16.method205(16711680):(var2 < -6?class16.method205(16723968):(var2 < -3?class16.method205(16740352):(var2 < 0?class16.method205(16756736):(var2 > 9?class16.method205('\uff00'):(var2 > 6?class16.method205(4259584):(var2 > 3?class16.method205(8453888):(var2 > 0?class16.method205(12648192):class16.method205(16776960))))))));
+   static final void method2911(int var0) {
+      if(class175.method3419(var0)) {
+         Widget[] var1 = Widget.widgets[var0];
+
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(null != var3) {
+               var3.field2932 = 0;
+               var3.field2945 = 0;
+            }
+         }
+
+      }
    }
 }

@@ -1,60 +1,37 @@
-import java.io.IOException;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fm")
 public class class160 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)LObjectComposition;",
-      garbageValue = "578547655"
+      signature = "(IB)V",
+      garbageValue = "-58"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.field947.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = ObjectComposition.field945.method3411(6, var0);
-         var1 = new ObjectComposition();
-         var1.field952 = var0;
-         if(var2 != null) {
-            var1.method880(new Buffer(var2));
-         }
+   public static void method3204(int var0) {
+      if(var0 != -1) {
+         if(Widget.validInterfaces[var0]) {
+            class214.field3186.method3301(var0);
+            if(Widget.widgets[var0] != null) {
+               boolean var1 = true;
 
-         var1.method845();
-         if(var1.field984) {
-            var1.field998 = 0;
-            var1.field961 = false;
-         }
+               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+                  if(null != Widget.widgets[var0][var2]) {
+                     if(Widget.widgets[var0][var2].type != 2) {
+                        Widget.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
+                  }
+               }
 
-         ObjectComposition.field947.put(var1, (long)var0);
-         return var1;
-      }
-   }
+               if(var1) {
+                  Widget.widgets[var0] = null;
+               }
 
-   @ObfuscatedName("aa")
-   @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "1"
-   )
-   static final void method3313(boolean var0) {
-      class47.method1009();
-      ++Client.field343;
-      if(Client.field343 >= 50 || var0) {
-         Client.field343 = 0;
-         if(!Client.field348 && null != class40.field904) {
-            Client.field337.method2903(177);
-
-            try {
-               class40.field904.method3135(Client.field337.payload, 0, Client.field337.offset);
-               Client.field337.offset = 0;
-            } catch (IOException var2) {
-               Client.field348 = true;
+               Widget.validInterfaces[var0] = false;
             }
          }
       }
-
    }
 }

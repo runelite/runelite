@@ -1,78 +1,75 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fz")
+@ObfuscatedName("fy")
 public class class173 implements Runnable {
-   @ObfuscatedName("g")
-   static Deque field2761 = new Deque();
-   @ObfuscatedName("e")
-   public static Object field2763 = new Object();
-   @ObfuscatedName("l")
-   static Deque field2765 = new Deque();
+   @ObfuscatedName("f")
+   @Export("worldServersDownload")
+   static class18 worldServersDownload;
    @ObfuscatedName("r")
+   static Deque field2768 = new Deque();
+   @ObfuscatedName("x")
+   static Deque field2769 = new Deque();
+   @ObfuscatedName("z")
+   public static Object field2770 = new Object();
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1050549683
+      intValue = 1202884537
    )
-   public static int field2767 = 0;
+   public static int field2771 = 0;
 
    public void run() {
       try {
          while(true) {
-            Deque var1 = field2765;
-            Deque var3 = field2765;
-            class172 var2;
-            synchronized(field2765) {
-               var2 = (class172)field2765.method3980();
+            Deque var2 = field2769;
+            class172 var1;
+            synchronized(field2769) {
+               var1 = (class172)field2769.method3850();
             }
 
-            Object var4;
-            Object var15;
-            if(var2 != null) {
-               Deque var16;
-               if(var2.field2757 == 0) {
-                  var2.field2759.method3004((int)var2.hash, var2.field2755, var2.field2755.length);
-                  var1 = field2765;
-                  var16 = field2765;
-                  synchronized(field2765) {
-                     var2.unlink();
+            Object var14;
+            if(null != var1) {
+               if(var1.field2764 == 0) {
+                  var1.field2762.method2912((int)var1.hash, var1.field2763, var1.field2763.length);
+                  var2 = field2769;
+                  synchronized(field2769) {
+                     var1.unlink();
                   }
-               } else if(var2.field2757 == 1) {
-                  var2.field2755 = var2.field2759.method3016((int)var2.hash);
-                  var1 = field2765;
-                  var16 = field2765;
-                  synchronized(field2765) {
-                     field2761.method3963(var2);
+               } else if(var1.field2764 == 1) {
+                  var1.field2763 = var1.field2762.method2913((int)var1.hash);
+                  var2 = field2769;
+                  synchronized(field2769) {
+                     field2768.method3844(var1);
                   }
                }
 
-               var15 = field2763;
-               var4 = field2763;
-               synchronized(field2763) {
-                  if(field2767 <= 1) {
-                     field2767 = 0;
-                     field2763.notifyAll();
+               var14 = field2770;
+               synchronized(field2770) {
+                  if(field2771 <= 1) {
+                     field2771 = 0;
+                     field2770.notifyAll();
                      return;
                   }
 
-                  field2767 = 600;
+                  field2771 = 600;
                }
             } else {
-               class22.method594(100L);
-               var15 = field2763;
-               var4 = field2763;
-               synchronized(field2763) {
-                  if(field2767 <= 1) {
-                     field2767 = 0;
-                     field2763.notifyAll();
+               class125.method2820(100L);
+               var14 = field2770;
+               synchronized(field2770) {
+                  if(field2771 <= 1) {
+                     field2771 = 0;
+                     field2770.notifyAll();
                      return;
                   }
 
-                  --field2767;
+                  --field2771;
                }
             }
          }
-      } catch (Exception var14) {
-         class13.method176((String)null, var14);
+      } catch (Exception var13) {
+         class107.method2357((String)null, var13);
       }
    }
 }

@@ -2,287 +2,256 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("q")
 public class class12 extends Renderable {
-   @ObfuscatedName("l")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1481582643
+      intValue = -400085027
    )
-   int field186;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1625020031
-   )
-   int field188;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -961904025
-   )
-   int field189;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1593230715
-   )
-   int field190;
-   @ObfuscatedName("k")
-   Sequence field192;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1622408887
-   )
-   int field193;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -862625489
-   )
-   int field194;
+   int field176;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1953793259
+      intValue = -85521833
    )
-   int field195;
-   @ObfuscatedName("bb")
+   int field177;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1365484703
+      intValue = 1117905753
    )
-   static int field198;
-   @ObfuscatedName("e")
+   int field178;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -115062023
+      intValue = -1864244981
    )
-   int field200;
-
+   int field179;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1084612317
+   )
+   int field180;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -1877048029
+   )
+   int field181;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 560067181
+   )
+   int field183;
+   @ObfuscatedName("t")
+   static int[] field184;
+   @ObfuscatedName("f")
+   public static short[][] field185;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1247894753
+   )
+   int field187;
    @ObfuscatedName("l")
+   Sequence field189;
+
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass21;",
-      garbageValue = "2053515751"
+      signature = "(IZB)Ljava/lang/String;",
+      garbageValue = "0"
    )
-   static class21[] method166() {
-      return new class21[]{class21.field587, class21.field589, class21.field590, class21.field588};
+   public static String method147(int var0, boolean var1) {
+      if(var1 && var0 >= 0) {
+         int var3 = var0;
+         String var2;
+         if(var1 && var0 >= 0) {
+            int var4 = 2;
+
+            for(int var5 = var0 / 10; var5 != 0; ++var4) {
+               var5 /= 10;
+            }
+
+            char[] var6 = new char[var4];
+            var6[0] = 43;
+
+            for(int var7 = var4 - 1; var7 > 0; --var7) {
+               int var8 = var3;
+               var3 /= 10;
+               int var9 = var8 - 10 * var3;
+               if(var9 >= 10) {
+                  var6[var7] = (char)(var9 + 87);
+               } else {
+                  var6[var7] = (char)(48 + var9);
+               }
+            }
+
+            var2 = new String(var6);
+         } else {
+            var2 = Integer.toString(var0, 10);
+         }
+
+         return var2;
+      } else {
+         return Integer.toString(var0);
+      }
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(I)LModel;",
-      garbageValue = "503322838"
+      garbageValue = "-1904052091"
    )
    protected final Model getModel() {
-      if(null != this.field192) {
-         int var1 = Client.gameCycle - this.field194;
-         if(var1 > 100 && this.field192.field1020 > 0) {
+      if(null != this.field189) {
+         int var1 = Client.gameCycle - this.field179;
+         if(var1 > 100 && this.field189.field1002 > 0) {
             var1 = 100;
          }
 
-         label47: {
+         label68: {
             do {
                do {
-                  if(var1 <= this.field192.field1018[this.field193]) {
-                     break label47;
+                  if(var1 <= this.field189.field999[this.field183]) {
+                     break label68;
                   }
 
-                  var1 -= this.field192.field1018[this.field193];
-                  ++this.field193;
-               } while(this.field193 < this.field192.field1030.length);
+                  var1 -= this.field189.field999[this.field183];
+                  ++this.field183;
+               } while(this.field183 < this.field189.field1001.length);
 
-               this.field193 -= this.field192.field1020;
-            } while(this.field193 >= 0 && this.field193 < this.field192.field1030.length);
+               this.field183 -= this.field189.field1002;
+            } while(this.field183 >= 0 && this.field183 < this.field189.field1001.length);
 
-            this.field192 = null;
+            this.field189 = null;
          }
 
-         this.field194 = Client.gameCycle - var1;
+         this.field179 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = class160.getObjectDefinition(this.field186);
-      if(var12.impostorIds != null) {
+      ObjectComposition var12 = class1.getObjectDefinition(this.field187);
+      if(null != var12.impostorIds) {
          var12 = var12.getImpostor();
       }
 
-      if(null == var12) {
+      if(var12 == null) {
          return null;
       } else {
          int var2;
          int var3;
-         if(this.field195 != 1 && this.field195 != 3) {
-            var2 = var12.field960;
-            var3 = var12.field970;
+         if(this.field178 != 1 && this.field178 != 3) {
+            var2 = var12.field938;
+            var3 = var12.field939;
          } else {
-            var2 = var12.field970;
-            var3 = var12.field960;
+            var2 = var12.field939;
+            var3 = var12.field938;
          }
 
-         int var4 = this.field190 + (var2 >> 1);
-         int var5 = (1 + var2 >> 1) + this.field190;
-         int var6 = this.field189 + (var3 >> 1);
-         int var7 = (1 + var3 >> 1) + this.field189;
-         int[][] var8 = class5.tileHeights[this.field200];
+         int var4 = this.field180 + (var2 >> 1);
+         int var5 = (1 + var2 >> 1) + this.field180;
+         int var6 = (var3 >> 1) + this.field181;
+         int var7 = (var3 + 1 >> 1) + this.field181;
+         int[][] var8 = class5.tileHeights[this.field176];
          int var9 = var8[var5][var7] + var8[var4][var7] + var8[var4][var6] + var8[var5][var6] >> 2;
-         int var10 = (this.field190 << 7) + (var2 << 6);
-         int var11 = (var3 << 6) + (this.field189 << 7);
-         return var12.method870(this.field188, this.field195, var8, var10, var9, var11, this.field192, this.field193);
+         int var10 = (var2 << 6) + (this.field180 << 7);
+         int var11 = (var3 << 6) + (this.field181 << 7);
+         return var12.method805(this.field177, this.field178, var8, var10, var9, var11, this.field189, this.field183);
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("by")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1098425746"
+      signature = "(IIB)V",
+      garbageValue = "39"
    )
-   static final void method171(int var0) {
-      short var1 = 256;
-      class33.field753 += 128 * var0;
-      int var2;
-      if(class33.field753 > class26.field649.length) {
-         class33.field753 -= class26.field649.length;
-         var2 = (int)(Math.random() * 12.0D);
-         class47.method998(class33.field744[var2]);
-      }
-
-      var2 = 0;
-      int var3 = var0 * 128;
-      int var4 = (var1 - var0) * 128;
-
-      int var5;
-      int var6;
-      for(var5 = 0; var5 < var4; ++var5) {
-         var6 = ChatLineBuffer.field699[var2 + var3] - var0 * class26.field649[var2 + class33.field753 & class26.field649.length - 1] / 6;
-         if(var6 < 0) {
-            var6 = 0;
-         }
-
-         ChatLineBuffer.field699[var2++] = var6;
-      }
-
-      int var7;
-      int var8;
-      for(var5 = var1 - var0; var5 < var1; ++var5) {
-         var6 = var5 * 128;
-
-         for(var7 = 0; var7 < 128; ++var7) {
-            var8 = (int)(Math.random() * 100.0D);
-            if(var8 < 50 && var7 > 10 && var7 < 118) {
-               ChatLineBuffer.field699[var7 + var6] = 255;
-            } else {
-               ChatLineBuffer.field699[var6 + var7] = 0;
-            }
-         }
-      }
-
-      if(class33.field749 > 0) {
-         class33.field749 -= 4 * var0;
-      }
-
-      if(class33.field752 > 0) {
-         class33.field752 -= 4 * var0;
-      }
-
-      if(class33.field749 == 0 && class33.field752 == 0) {
-         var5 = (int)(Math.random() * (double)(2000 / var0));
-         if(var5 == 0) {
-            class33.field749 = 1024;
-         }
-
-         if(var5 == 1) {
-            class33.field752 = 1024;
-         }
-      }
-
-      for(var5 = 0; var5 < var1 - var0; ++var5) {
-         class33.field742[var5] = class33.field742[var0 + var5];
-      }
-
-      for(var5 = var1 - var0; var5 < var1; ++var5) {
-         class33.field742[var5] = (int)(Math.sin((double)class33.field756 / 14.0D) * 16.0D + Math.sin((double)class33.field756 / 15.0D) * 14.0D + Math.sin((double)class33.field756 / 16.0D) * 12.0D);
-         ++class33.field756;
-      }
-
-      class33.field759 += var0;
-      var5 = ((Client.gameCycle & 1) + var0) / 2;
-      if(var5 > 0) {
-         for(var6 = 0; var6 < class33.field759 * 100; ++var6) {
-            var7 = (int)(Math.random() * 124.0D) + 2;
-            var8 = (int)(Math.random() * 128.0D) + 128;
-            ChatLineBuffer.field699[(var8 << 7) + var7] = 192;
-         }
-
-         class33.field759 = 0;
-
-         int var9;
-         for(var6 = 0; var6 < var1; ++var6) {
-            var7 = 0;
-            var8 = 128 * var6;
-
-            for(var9 = -var5; var9 < 128; ++var9) {
-               if(var5 + var9 < 128) {
-                  var7 += ChatLineBuffer.field699[var5 + var8 + var9];
-               }
-
-               if(var9 - (var5 + 1) >= 0) {
-                  var7 -= ChatLineBuffer.field699[var8 + var9 - (var5 + 1)];
-               }
-
-               if(var9 >= 0) {
-                  PlayerComposition.field2970[var8 + var9] = var7 / (1 + var5 * 2);
-               }
-            }
-         }
-
-         for(var6 = 0; var6 < 128; ++var6) {
-            var7 = 0;
-
-            for(var8 = -var5; var8 < var1; ++var8) {
-               var9 = 128 * var8;
-               if(var5 + var8 < var1) {
-                  var7 += PlayerComposition.field2970[var9 + var6 + var5 * 128];
-               }
-
-               if(var8 - (1 + var5) >= 0) {
-                  var7 -= PlayerComposition.field2970[var6 + var9 - 128 * (var5 + 1)];
-               }
-
-               if(var8 >= 0) {
-                  ChatLineBuffer.field699[var6 + var9] = var7 / (2 * var5 + 1);
-               }
-            }
-         }
-      }
-
+   static void method152(int var0, int var1) {
+      Client.field323.method2818(48);
+      Client.field323.method2661(var1);
+      Client.field323.method2575(var0);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SI)V",
-      garbageValue = "-232610020"
+      signature = "(IS)Lclass23;",
+      garbageValue = "-1046"
    )
-   public static void method172(String[] var0, short[] var1) {
-      GroundObject.method2254(var0, var1, 0, var0.length - 1);
+   static class23 method153(int var0) {
+      class23 var1 = (class23)class23.field592.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class188.field3049.method3290(var0, 0);
+         if(var2 == null) {
+            return null;
+         } else {
+            var1 = new class23();
+            Buffer var3 = new Buffer(var2);
+            var3.offset = var3.payload.length - 12;
+            int var4 = var3.method2561();
+            var1.field595 = var3.method2551();
+            var1.field596 = var3.method2551();
+            var1.field597 = var3.method2551();
+            var1.field600 = var3.method2551();
+            var3.offset = 0;
+            var3.method2563();
+            var1.field591 = new int[var4];
+            var1.field598 = new int[var4];
+            var1.field594 = new String[var4];
+
+            int var6;
+            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.field591[var5++] = var6) {
+               var6 = var3.method2551();
+               if(var6 == 3) {
+                  var1.field594[var5] = var3.method2774();
+               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
+                  var1.field598[var5] = var3.method2561();
+               } else {
+                  var1.field598[var5] = var3.method2556();
+               }
+            }
+
+            class23.field592.put(var1, (long)var0);
+            return var1;
+         }
+      }
    }
 
    class12(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.field186 = var1;
-      this.field188 = var2;
-      this.field195 = var3;
-      this.field200 = var4;
-      this.field190 = var5;
-      this.field189 = var6;
+      this.field187 = var1;
+      this.field177 = var2;
+      this.field178 = var3;
+      this.field176 = var4;
+      this.field180 = var5;
+      this.field181 = var6;
       if(var7 != -1) {
-         this.field192 = class22.getAnimation(var7);
-         this.field193 = 0;
-         this.field194 = Client.gameCycle - 1;
-         if(this.field192.replyMode == 0 && null != var9 && var9 instanceof class12) {
+         this.field189 = class113.getAnimation(var7);
+         this.field183 = 0;
+         this.field179 = Client.gameCycle - 1;
+         if(this.field189.replyMode == 0 && var9 != null && var9 instanceof class12) {
             class12 var10 = (class12)var9;
-            if(this.field192 == var10.field192) {
-               this.field193 = var10.field193;
-               this.field194 = var10.field194;
+            if(var10.field189 == this.field189) {
+               this.field183 = var10.field183;
+               this.field179 = var10.field179;
                return;
             }
          }
 
-         if(var8 && this.field192.field1020 != -1) {
-            this.field193 = (int)(Math.random() * (double)this.field192.field1030.length);
-            this.field194 -= (int)(Math.random() * (double)this.field192.field1018[this.field193]);
+         if(var8 && this.field189.field1002 != -1) {
+            this.field183 = (int)(Math.random() * (double)this.field189.field1001.length);
+            this.field179 -= (int)(Math.random() * (double)this.field189.field999[this.field183]);
          }
       }
 
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "([BIIS)I",
+      garbageValue = "24883"
+   )
+   static int method154(byte[] var0, int var1, int var2) {
+      int var3 = -1;
+
+      for(int var4 = var1; var4 < var2; ++var4) {
+         var3 = var3 >>> 8 ^ Buffer.field2050[(var3 ^ var0[var4]) & 255];
+      }
+
+      var3 = ~var3;
+      return var3;
    }
 }
