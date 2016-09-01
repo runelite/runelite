@@ -1,41 +1,70 @@
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fx")
 public class class175 extends CacheableNode {
-   @ObfuscatedName("e")
-   public static File field2791;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1659724695
-   )
-   int field2792;
+   @ObfuscatedName("x")
+   public class171 field2797;
    @ObfuscatedName("r")
-   byte field2793;
-   @ObfuscatedName("u")
-   public static short[][] field2794;
-   @ObfuscatedName("l")
-   class171 field2795;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Z",
-      garbageValue = "182130360"
+   @ObfuscatedGetter(
+      intValue = -434961739
    )
-   static boolean method3546(String var0) {
-      if(var0 == null) {
+   public int field2798;
+   @ObfuscatedName("dq")
+   @Export("mapRegions")
+   static int[] mapRegions;
+   @ObfuscatedName("j")
+   public byte field2801;
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "58"
+   )
+   public static boolean method3419(int var0) {
+      if(Widget.validInterfaces[var0]) {
+         return true;
+      } else if(!class214.field3186.method3342(var0)) {
          return false;
       } else {
-         try {
-            new URL(var0);
+         int var1 = class214.field3186.method3299(var0);
+         if(var1 == 0) {
+            Widget.validInterfaces[var0] = true;
             return true;
-         } catch (MalformedURLException var2) {
-            return false;
+         } else {
+            if(null == Widget.widgets[var0]) {
+               Widget.widgets[var0] = new Widget[var1];
+            }
+
+            for(int var2 = 0; var2 < var1; ++var2) {
+               if(null == Widget.widgets[var0][var2]) {
+                  byte[] var3 = class214.field3186.method3290(var0, var2);
+                  if(var3 != null) {
+                     Widget.widgets[var0][var2] = new Widget();
+                     Widget.widgets[var0][var2].id = (var0 << 16) + var2;
+                     if(var3[0] == -1) {
+                        Widget.widgets[var0][var2].method3423(new Buffer(var3));
+                     } else {
+                        Widget.widgets[var0][var2].method3442(new Buffer(var3));
+                     }
+                  }
+               }
+            }
+
+            Widget.validInterfaces[var0] = true;
+            return true;
          }
       }
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)[Lclass156;",
+      garbageValue = "-120"
+   )
+   public static class156[] method3420() {
+      return new class156[]{class156.field2328, class156.field2329, class156.field2321, class156.field2324};
    }
 }

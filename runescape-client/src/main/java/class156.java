@@ -2,214 +2,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fq")
 public class class156 {
-   @ObfuscatedName("g")
-   static final class156 field2333 = new class156("BUILDLIVE", 3);
-   @ObfuscatedName("r")
-   static final class156 field2334 = new class156("RC", 1);
-   @ObfuscatedName("l")
-   static final class156 field2335 = new class156("LIVE", 0);
-   @ObfuscatedName("h")
-   public final String field2336;
-   @ObfuscatedName("s")
+   @ObfuscatedName("j")
+   static final class156 field2321 = new class156("RC", 1);
+   @ObfuscatedName("ai")
+   static SpritePixels[] field2322;
+   @ObfuscatedName("i")
+   public final String field2323;
+   @ObfuscatedName("z")
+   static final class156 field2324 = new class156("WIP", 2);
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1624633119
+      intValue = 542466727
    )
-   final int field2337;
-   @ObfuscatedName("v")
-   static Buffer field2338;
-   @ObfuscatedName("e")
-   static final class156 field2339 = new class156("WIP", 2);
+   public final int field2326;
+   @ObfuscatedName("r")
+   static final class156 field2328 = new class156("BUILDLIVE", 3);
+   @ObfuscatedName("x")
+   static final class156 field2329 = new class156("LIVE", 0);
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -152639883
+   )
+   public static int field2330;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "0"
    )
    class156(String var1, int var2) {
-      this.field2336 = var1;
-      this.field2337 = var2;
+      this.field2323 = var1;
+      this.field2326 = var2;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lclass215;I)Ljava/lang/String;",
-      garbageValue = "-1443945512"
+      signature = "([BIIIIIII[LCollisionData;S)V",
+      garbageValue = "512"
    )
-   public static String method3300(CharSequence var0, class215 var1) {
-      if(null == var0) {
-         return null;
-      } else {
-         int var2 = 0;
-
-         int var3;
-         for(var3 = var0.length(); var2 < var3 && World.method655(var0.charAt(var2)); ++var2) {
-            ;
-         }
-
-         while(var3 > var2 && World.method655(var0.charAt(var3 - 1))) {
-            --var3;
-         }
-
-         int var4 = var3 - var2;
-         if(var4 >= 1) {
-            byte var5;
-            if(null == var1) {
-               var5 = 12;
-            } else {
-               switch(var1.field3199) {
-               case 2:
-                  var5 = 20;
-                  break;
-               default:
-                  var5 = 12;
-               }
-            }
-
-            if(var4 <= var5) {
-               StringBuilder var6 = new StringBuilder(var4);
-
-               for(int var7 = var2; var7 < var3; ++var7) {
-                  char var8 = var0.charAt(var7);
-                  boolean var9;
-                  if(Character.isISOControl(var8)) {
-                     var9 = false;
-                  } else if(ItemLayer.method2290(var8)) {
-                     var9 = true;
-                  } else {
-                     label121: {
-                        char[] var10 = class167.field2713;
-
-                        int var11;
-                        char var12;
-                        for(var11 = 0; var11 < var10.length; ++var11) {
-                           var12 = var10[var11];
-                           if(var12 == var8) {
-                              var9 = true;
-                              break label121;
-                           }
-                        }
-
-                        var10 = class167.field2712;
-                        var11 = 0;
-
-                        while(true) {
-                           if(var11 >= var10.length) {
-                              var9 = false;
-                              break;
-                           }
-
-                           var12 = var10[var11];
-                           if(var8 == var12) {
-                              var9 = true;
-                              break;
-                           }
-
-                           ++var11;
-                        }
-                     }
-                  }
-
-                  if(var9) {
-                     char var13;
-                     switch(var8) {
-                     case ' ':
-                     case '-':
-                     case '_':
-                     case ' ':
-                        var13 = 95;
-                        break;
-                     case '#':
-                     case '[':
-                     case ']':
-                        var13 = var8;
-                        break;
-                     case 'À':
-                     case 'Á':
-                     case 'Â':
-                     case 'Ã':
-                     case 'Ä':
-                     case 'à':
-                     case 'á':
-                     case 'â':
-                     case 'ã':
-                     case 'ä':
-                        var13 = 97;
-                        break;
-                     case 'Ç':
-                     case 'ç':
-                        var13 = 99;
-                        break;
-                     case 'È':
-                     case 'É':
-                     case 'Ê':
-                     case 'Ë':
-                     case 'è':
-                     case 'é':
-                     case 'ê':
-                     case 'ë':
-                        var13 = 101;
-                        break;
-                     case 'Í':
-                     case 'Î':
-                     case 'Ï':
-                     case 'í':
-                     case 'î':
-                     case 'ï':
-                        var13 = 105;
-                        break;
-                     case 'Ñ':
-                     case 'ñ':
-                        var13 = 110;
-                        break;
-                     case 'Ò':
-                     case 'Ó':
-                     case 'Ô':
-                     case 'Õ':
-                     case 'Ö':
-                     case 'ò':
-                     case 'ó':
-                     case 'ô':
-                     case 'õ':
-                     case 'ö':
-                        var13 = 111;
-                        break;
-                     case 'Ù':
-                     case 'Ú':
-                     case 'Û':
-                     case 'Ü':
-                     case 'ù':
-                     case 'ú':
-                     case 'û':
-                     case 'ü':
-                        var13 = 117;
-                        break;
-                     case 'ß':
-                        var13 = 98;
-                        break;
-                     case 'ÿ':
-                     case 'Ÿ':
-                        var13 = 121;
-                        break;
-                     default:
-                        var13 = Character.toLowerCase(var8);
-                     }
-
-                     if(var13 != 0) {
-                        var6.append(var13);
-                     }
-                  }
-               }
-
-               if(var6.length() == 0) {
-                  return null;
-               }
-
-               return var6.toString();
+   static final void method3194(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, CollisionData[] var8) {
+      int var10;
+      for(int var9 = 0; var9 < 8; ++var9) {
+         for(var10 = 0; var10 < 8; ++var10) {
+            if(var9 + var2 > 0 && var9 + var2 < 103 && var3 + var10 > 0 && var10 + var3 < 103) {
+               var8[var1].flags[var9 + var2][var3 + var10] &= -16777217;
             }
          }
-
-         return null;
       }
+
+      Buffer var13 = new Buffer(var0);
+
+      for(var10 = 0; var10 < 4; ++var10) {
+         for(int var11 = 0; var11 < 64; ++var11) {
+            for(int var12 = 0; var12 < 64; ++var12) {
+               if(var4 == var10 && var11 >= var5 && var11 < 8 + var5 && var12 >= var6 && var12 < 8 + var6) {
+                  class16.method191(var13, var1, var2 + class114.method2484(var11 & 7, var12 & 7, var7), var3 + class38.method747(var11 & 7, var12 & 7, var7), 0, 0, var7);
+               } else {
+                  class16.method191(var13, 0, -1, -1, 0, 0, 0);
+               }
+            }
+         }
+      }
+
    }
 }

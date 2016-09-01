@@ -2,66 +2,97 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("ez")
 public class class133 {
-   @ObfuscatedName("nn")
+   @ObfuscatedName("x")
+   static final class133 field2106 = new class133(0);
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1706500535
+      intValue = -201805017
    )
-   static int field2106;
-   @ObfuscatedName("g")
-   public static final class133 field2107 = new class133(1);
+   public final int field2107;
+   @ObfuscatedName("j")
+   static final class133 field2108 = new class133(2);
    @ObfuscatedName("r")
-   public static final class133 field2108 = new class133(2);
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 388134783
-   )
-   public final int field2109;
-   @ObfuscatedName("l")
-   public static final class133 field2110 = new class133(0);
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1448891525
-   )
-   static int field2112;
+   public static final class133 field2110 = new class133(1);
 
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class133(int var1) {
-      this.field2109 = var1;
+      this.field2107 = var1;
    }
 
-   @ObfuscatedName("bp")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1342484159"
+      signature = "(LGameEngine;I)V",
+      garbageValue = "-451580898"
    )
-   static final void method2976() {
-      int var0 = class13.menuX;
-      int var1 = class14.menuY;
-      int var2 = Item.menuWidth;
-      int var3 = class77.menuHeight;
-      int var4 = 6116423;
-      class82.method1907(var0, var1, var2, var3, var4);
-      class82.method1907(1 + var0, var1 + 1, var2 - 2, 16, 0);
-      class82.method1893(1 + var0, var1 + 18, var2 - 2, var3 - 19, 0);
-      class59.field1268.method4170("Choose Option", var0 + 3, var1 + 14, var4, -1);
-      int var5 = class143.field2206;
-      int var6 = class143.field2209;
-
-      for(int var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         int var8 = (Client.menuOptionCount - 1 - var7) * 15 + var1 + 31;
-         int var9 = 16777215;
-         if(var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
-            var9 = 16776960;
+   static void method2883(GameEngine var0) {
+      if(class143.field2198 == 1 || !class134.field2117 && class143.field2198 == 4) {
+         int var1 = class33.field745 + 280;
+         if(class143.field2211 >= var1 && class143.field2211 <= 14 + var1 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(0, 0);
+            return;
          }
 
-         class59.field1268.method4170(Tile.method2382(var7), var0 + 3, var8, var9, 0);
+         if(class143.field2211 >= var1 + 15 && class143.field2211 <= 80 + var1 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(0, 1);
+            return;
+         }
+
+         int var2 = class33.field745 + 390;
+         if(class143.field2211 >= var2 && class143.field2211 <= 14 + var2 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(1, 0);
+            return;
+         }
+
+         if(class143.field2211 >= var2 + 15 && class143.field2211 <= var2 + 80 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(1, 1);
+            return;
+         }
+
+         int var3 = 500 + class33.field745;
+         if(class143.field2211 >= var3 && class143.field2211 <= 14 + var3 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(2, 0);
+            return;
+         }
+
+         if(class143.field2211 >= 15 + var3 && class143.field2211 <= var3 + 80 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(2, 1);
+            return;
+         }
+
+         int var4 = 610 + class33.field745;
+         if(class143.field2211 >= var4 && class143.field2211 <= var4 + 14 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(3, 0);
+            return;
+         }
+
+         if(class143.field2211 >= var4 + 15 && class143.field2211 <= var4 + 80 && class143.field2213 >= 4 && class143.field2213 <= 18) {
+            class34.method711(3, 1);
+            return;
+         }
+
+         if(class143.field2211 >= 708 + class33.field745 && class143.field2213 >= 4 && class143.field2211 <= 50 + class33.field745 + 708 && class143.field2213 <= 20) {
+            class33.worldSelectShown = false;
+            class40.field883.method1738(class33.field745, 0);
+            class13.field195.method1738(class33.field745 + 382, 0);
+            class162.field2660.method1896(382 + class33.field745 - class162.field2660.originalWidth / 2, 18);
+            return;
+         }
+
+         if(class33.field752 != -1) {
+            World var5 = class35.worldList[class33.field752];
+            class85.selectWorld(var5);
+            class33.worldSelectShown = false;
+            class40.field883.method1738(class33.field745, 0);
+            class13.field195.method1738(382 + class33.field745, 0);
+            class162.field2660.method1896(class33.field745 + 382 - class162.field2660.originalWidth / 2, 18);
+            return;
+         }
       }
 
-      XItemContainer.method187(class13.menuX, class14.menuY, Item.menuWidth, class77.menuHeight);
    }
 }

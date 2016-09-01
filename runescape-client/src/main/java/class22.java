@@ -1,41 +1,60 @@
+import java.io.IOException;
 import java.util.Comparator;
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("t")
+@ObfuscatedName("y")
 final class class22 implements Comparator {
-   @ObfuscatedName("m")
-   static ModIcon field596;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -147029275
+   )
+   public static int field583;
+   @ObfuscatedName("bn")
+   static class171 field584;
+   @ObfuscatedName("dc")
+   static byte[][] field587;
+   // $FF: synthetic field
    final boolean val$preferOwnWorld;
-   @ObfuscatedName("av")
-   static class146 field601;
 
-   public int compare(Object var1, Object var2) {
-      return this.method593((class217)var1, (class217)var2);
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass170;I)V",
+      garbageValue = "-2008712297"
+   )
+   public static void method557(class170 var0) {
+      class52.field1127 = var0;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IB)LSequence;",
-      garbageValue = "-93"
+      signature = "(ZI)V",
+      garbageValue = "-1815173994"
    )
-   @Export("getAnimation")
-   public static Sequence getAnimation(int var0) {
-      Sequence var1 = (Sequence)Sequence.field1014.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = Sequence.field1013.method3411(12, var0);
-         var1 = new Sequence();
-         if(null != var2) {
-            var1.method908(new Buffer(var2));
+   public static void method558(boolean var0) {
+      if(class174.field2774 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.method2715(var0?2:3);
+            var1.method2742(0);
+            class174.field2774.method3043(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class174.field2774.method3044();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class174.field2792;
+            class174.field2774 = null;
          }
 
-         var1.method910();
-         Sequence.field1014.put(var1, (long)var0);
-         return var1;
       }
+   }
+
+   public int compare(Object var1, Object var2) {
+      return this.method563((class217)var1, (class217)var2);
    }
 
    public boolean equals(Object var1) {
@@ -46,39 +65,26 @@ final class class22 implements Comparator {
       this.val$preferOwnWorld = var1;
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(Lclass217;Lclass217;I)I",
-      garbageValue = "1813958165"
+      garbageValue = "995252177"
    )
-   int method593(class217 var1, class217 var2) {
-      if(var1.field3208 == var2.field3208) {
+   int method563(class217 var1, class217 var2) {
+      if(var2.field3204 == var1.field3204) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(Client.world == var1.field3208) {
+            if(var1.field3204 == Client.world) {
                return -1;
             }
 
-            if(Client.world == var2.field3208) {
+            if(Client.world == var2.field3204) {
                return 1;
             }
          }
 
-         return var1.field3208 < var2.field3208?-1:1;
+         return var1.field3204 < var2.field3204?-1:1;
       }
-   }
-
-   @ObfuscatedName("l")
-   public static final void method594(long var0) {
-      if(var0 > 0L) {
-         if(0L == var0 % 10L) {
-            class124.method2887(var0 - 1L);
-            class124.method2887(1L);
-         } else {
-            class124.method2887(var0);
-         }
-      }
-
    }
 }
