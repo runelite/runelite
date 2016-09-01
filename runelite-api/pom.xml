@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>api</artifactId>
-			<version>120.2-SNAPSHOT</version> <!-- rs version -->
+			<version>121.1-SNAPSHOT</version> <!-- rs version -->
 		</dependency>
 	</dependencies>
 </project>
