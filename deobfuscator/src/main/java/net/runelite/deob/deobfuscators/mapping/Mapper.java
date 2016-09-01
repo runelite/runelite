@@ -240,7 +240,7 @@ public class Mapper
 
 	private Method findPacketMethod()
 	{
-		for (Method m : source.findClass("client").getMethods().getMethods())
+		for (Method m : source.findClass("Client").getMethods().getMethods()) // source jar has client renamed to Client
 		{
 			Annotations an = m.getAnnotations();
 
