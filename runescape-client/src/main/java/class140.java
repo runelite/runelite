@@ -7,84 +7,151 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ew")
+@ObfuscatedName("et")
 public final class class140 implements KeyListener, FocusListener {
-   @ObfuscatedName("co")
-   static int[] field2155 = new int[128];
-   @ObfuscatedName("l")
-   @Export("keyboard")
-   public static class140 keyboard = new class140();
-   @ObfuscatedName("cr")
-   @ObfuscatedGetter(
-      intValue = -189681713
-   )
-   public static int field2159 = 0;
-   @ObfuscatedName("ct")
-   public static int[] field2161 = new int[128];
-   @ObfuscatedName("ci")
-   @ObfuscatedGetter(
-      intValue = -2054548289
-   )
-   public static int field2168 = 0;
-   @ObfuscatedName("cy")
-   public static boolean[] field2171 = new boolean[112];
-   @ObfuscatedName("cb")
-   @ObfuscatedGetter(
-      intValue = -1494859861
-   )
-   public static int field2173 = 0;
-   @ObfuscatedName("cj")
-   static char[] field2175 = new char[128];
-   @ObfuscatedName("cp")
-   @ObfuscatedGetter(
-      intValue = 1800388443
-   )
-   public static int field2178 = 0;
-   @ObfuscatedName("cx")
-   @ObfuscatedGetter(
-      intValue = 1740150079
-   )
-   public static int field2179 = 0;
-   @ObfuscatedName("cn")
-   @ObfuscatedGetter(
-      intValue = -727454407
-   )
-   public static int field2180 = 0;
-   @ObfuscatedName("cs")
-   public static int[] field2181 = new int[128];
    @ObfuscatedName("cu")
    @ObfuscatedGetter(
-      intValue = 985856869
+      intValue = 2001380087
+   )
+   static int field2150 = 0;
+   @ObfuscatedName("cn")
+   static char[] field2160 = new char[128];
+   @ObfuscatedName("ct")
+   @ObfuscatedGetter(
+      intValue = -1294571693
+   )
+   static int field2163 = 0;
+   @ObfuscatedName("cs")
+   @ObfuscatedGetter(
+      intValue = -1119613685
+   )
+   static int field2164 = 0;
+   @ObfuscatedName("bw")
+   static class171 field2165;
+   @ObfuscatedName("cw")
+   public static boolean[] field2167 = new boolean[112];
+   @ObfuscatedName("ci")
+   static int[] field2168 = new int[128];
+   @ObfuscatedName("x")
+   @Export("keyboard")
+   public static class140 keyboard = new class140();
+   @ObfuscatedName("cf")
+   @ObfuscatedGetter(
+      intValue = -2143270523
+   )
+   static int field2170 = 0;
+   @ObfuscatedName("ch")
+   static int[] field2172 = new int[128];
+   @ObfuscatedName("cp")
+   public static int[] field2173 = new int[128];
+   @ObfuscatedName("cc")
+   @ObfuscatedGetter(
+      intValue = 1639374001
+   )
+   public static int field2174 = 0;
+   @ObfuscatedName("ce")
+   static int[] field2175 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+   @ObfuscatedName("cz")
+   @ObfuscatedGetter(
+      intValue = 426154807
+   )
+   static int field2176 = 0;
+   @ObfuscatedName("cv")
+   @ObfuscatedGetter(
+      intValue = -1861758817
    )
    @Export("keyboardIdleTicks")
-   public static volatile int keyboardIdleTicks = 0;
-   @ObfuscatedName("cd")
-   static int[] field2183 = new int[]{-1, -1, -1, -1, -1, -1, -1, -1, 85, 80, 84, -1, 91, -1, -1, -1, 81, 82, 86, -1, -1, -1, -1, -1, -1, -1, -1, 13, -1, -1, -1, -1, 83, 104, 105, 103, 102, 96, 98, 97, 99, -1, -1, -1, -1, -1, -1, -1, 25, 16, 17, 18, 19, 20, 21, 22, 23, 24, -1, -1, -1, -1, -1, -1, -1, 48, 68, 66, 50, 34, 51, 52, 53, 39, 54, 55, 56, 70, 69, 40, 41, 32, 35, 49, 36, 38, 67, 33, 65, 37, 64, -1, -1, -1, -1, -1, 228, 231, 227, 233, 224, 219, 225, 230, 226, 232, 89, 87, -1, 88, 229, 90, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, -1, -1, -1, 101, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 100, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1117461677
-   )
-   public static int field2184;
+   static volatile int keyboardIdleTicks = 0;
+
+   public final void keyTyped(KeyEvent var1) {
+      if(null != keyboard) {
+         char var2 = var1.getKeyChar();
+         if(var2 != 0 && var2 != '\uffff') {
+            boolean var3;
+            if((var2 <= 0 || var2 >= 128) && (var2 < 160 || var2 > 255)) {
+               label62: {
+                  if(var2 != 0) {
+                     char[] var4 = class168.field2724;
+
+                     for(int var5 = 0; var5 < var4.length; ++var5) {
+                        char var6 = var4[var5];
+                        if(var6 == var2) {
+                           var3 = true;
+                           break label62;
+                        }
+                     }
+                  }
+
+                  var3 = false;
+               }
+            } else {
+               var3 = true;
+            }
+
+            if(var3) {
+               int var7 = 1 + field2176 & 127;
+               if(field2150 != var7) {
+                  field2172[field2176] = -1;
+                  field2160[field2176] = var2;
+                  field2176 = var7;
+               }
+            }
+         }
+      }
+
+      var1.consume();
+   }
+
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(null != keyboard) {
+         field2170 = -1;
+      }
+
+   }
+
+   public final synchronized void keyReleased(KeyEvent var1) {
+      if(keyboard != null) {
+         keyboardIdleTicks = 0;
+         int var2 = var1.getKeyCode();
+         if(var2 >= 0 && var2 < field2175.length) {
+            var2 = field2175[var2] & -129;
+         } else {
+            var2 = -1;
+         }
+
+         if(field2170 >= 0 && var2 >= 0) {
+            field2168[field2170] = ~var2;
+            field2170 = field2170 + 1 & 127;
+            if(field2163 == field2170) {
+               field2170 = -1;
+            }
+         }
+      }
+
+      var1.consume();
+   }
 
    public final void focusGained(FocusEvent var1) {
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "202205226"
+      signature = "(I)V",
+      garbageValue = "1947261060"
    )
-   static final int method3052(int var0, int var1, int var2) {
-      int var3 = 256 - var2;
-      return ((var0 & 16711935) * var3 + var2 * (var1 & 16711935) & -16711936) + (var2 * (var1 & '\uff00') + var3 * (var0 & '\uff00') & 16711680) >> 8;
+   static void method2950() {
+      if(class114.loadWorlds()) {
+         class33.worldSelectShown = true;
+      }
+
    }
 
    public final synchronized void keyPressed(KeyEvent var1) {
       if(null != keyboard) {
          keyboardIdleTicks = 0;
          int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field2183.length) {
-            var2 = field2183[var2];
+         if(var2 >= 0 && var2 < field2175.length) {
+            var2 = field2175[var2];
             if((var2 & 128) != 0) {
                var2 = -1;
             }
@@ -92,21 +159,21 @@ public final class class140 implements KeyListener, FocusListener {
             var2 = -1;
          }
 
-         if(field2168 >= 0 && var2 >= 0) {
-            field2181[field2168] = var2;
-            field2168 = field2168 + 1 & 127;
-            if(field2173 == field2168) {
-               field2168 = -1;
+         if(field2170 >= 0 && var2 >= 0) {
+            field2168[field2170] = var2;
+            field2170 = field2170 + 1 & 127;
+            if(field2170 == field2163) {
+               field2170 = -1;
             }
          }
 
          int var3;
          if(var2 >= 0) {
-            var3 = 1 + field2180 & 127;
-            if(var3 != field2179) {
-               field2155[field2180] = var2;
-               field2175[field2180] = 0;
-               field2180 = var3;
+            var3 = field2176 + 1 & 127;
+            if(var3 != field2150) {
+               field2172[field2176] = var2;
+               field2160[field2176] = 0;
+               field2176 = var3;
             }
          }
 
@@ -118,71 +185,38 @@ public final class class140 implements KeyListener, FocusListener {
 
    }
 
-   public final void keyTyped(KeyEvent var1) {
-      if(keyboard != null) {
-         char var2 = var1.getKeyChar();
-         if(var2 != 0 && var2 != '\uffff') {
-            boolean var3;
-            if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
-               var3 = true;
-            } else {
-               label56: {
-                  if(var2 != 0) {
-                     char[] var4 = class168.field2718;
+   @ObfuscatedName("db")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;S)Z",
+      garbageValue = "167"
+   )
+   static boolean method2968(String var0) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var1 = class10.method123(var0, class127.field2087);
 
-                     for(int var5 = 0; var5 < var4.length; ++var5) {
-                        char var6 = var4[var5];
-                        if(var6 == var2) {
-                           var3 = true;
-                           break label56;
-                        }
-                     }
-                  }
-
-                  var3 = false;
-               }
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(class10.method123(var3.name, class127.field2087))) {
+               return true;
             }
 
-            if(var3) {
-               int var7 = field2180 + 1 & 127;
-               if(field2179 != var7) {
-                  field2155[field2180] = -1;
-                  field2175[field2180] = var2;
-                  field2180 = var7;
-               }
+            if(var1.equalsIgnoreCase(class10.method123(var3.previousName, class127.field2087))) {
+               return true;
             }
          }
-      }
 
-      var1.consume();
+         return false;
+      }
    }
 
-   public final synchronized void keyReleased(KeyEvent var1) {
-      if(keyboard != null) {
-         keyboardIdleTicks = 0;
-         int var2 = var1.getKeyCode();
-         if(var2 >= 0 && var2 < field2183.length) {
-            var2 = field2183[var2] & -129;
-         } else {
-            var2 = -1;
-         }
-
-         if(field2168 >= 0 && var2 >= 0) {
-            field2181[field2168] = ~var2;
-            field2168 = field2168 + 1 & 127;
-            if(field2173 == field2168) {
-               field2168 = -1;
-            }
-         }
-      }
-
-      var1.consume();
-   }
-
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(keyboard != null) {
-         field2168 = -1;
-      }
-
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-667440247"
+   )
+   public static void method2969() {
+      PlayerComposition.field2977.reset();
    }
 }

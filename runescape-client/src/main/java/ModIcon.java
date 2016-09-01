@@ -2,36 +2,36 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cf")
+@ObfuscatedName("cj")
 @Implements("ModIcon")
 public final class ModIcon extends class82 {
-   @ObfuscatedName("k")
-   @Export("width")
-   public int width;
-   @ObfuscatedName("g")
-   @Export("palette")
-   public int[] palette;
-   @ObfuscatedName("r")
-   @Export("originalWidth")
-   public int originalWidth;
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @Export("pixels")
    public byte[] pixels;
-   @ObfuscatedName("h")
-   @Export("offsetX")
-   public int offsetX;
-   @ObfuscatedName("s")
-   @Export("offsetY")
-   public int offsetY;
-   @ObfuscatedName("u")
+   @ObfuscatedName("m")
    @Export("originalHeight")
    public int originalHeight;
-   @ObfuscatedName("e")
+   @ObfuscatedName("r")
+   @Export("palette")
+   public int[] palette;
+   @ObfuscatedName("z")
    @Export("height")
    public int height;
-
+   @ObfuscatedName("j")
+   @Export("originalWidth")
+   public int originalWidth;
+   @ObfuscatedName("b")
+   @Export("offsetY")
+   public int offsetY;
    @ObfuscatedName("l")
-   public void method1952() {
+   @Export("width")
+   public int width;
+   @ObfuscatedName("i")
+   @Export("offsetX")
+   public int offsetX;
+
+   @ObfuscatedName("x")
+   public void method1895() {
       if(this.originalWidth != this.width || this.height != this.originalHeight) {
          byte[] var1 = new byte[this.width * this.originalHeight];
          int var2 = 0;
@@ -48,11 +48,10 @@ public final class ModIcon extends class82 {
          this.offsetX = 0;
          this.offsetY = 0;
       }
-
    }
 
-   @ObfuscatedName("r")
-   public void method1954(int var1, int var2) {
+   @ObfuscatedName("j")
+   public void method1896(int var1, int var2) {
       var1 += this.offsetX;
       var2 += this.offsetY;
       int var3 = var1 + var2 * class82.graphicsPixelsWidth;
@@ -62,43 +61,42 @@ public final class ModIcon extends class82 {
       int var7 = class82.graphicsPixelsWidth - var6;
       int var8 = 0;
       int var9;
-      if(var2 < class82.field1492) {
-         var9 = class82.field1492 - var2;
+      if(var2 < class82.field1450) {
+         var9 = class82.field1450 - var2;
          var5 -= var9;
-         var2 = class82.field1492;
+         var2 = class82.field1450;
          var4 += var9 * var6;
          var3 += var9 * class82.graphicsPixelsWidth;
       }
 
-      if(var2 + var5 > class82.field1489) {
-         var5 -= var2 + var5 - class82.field1489;
+      if(var2 + var5 > class82.field1451) {
+         var5 -= var2 + var5 - class82.field1451;
       }
 
-      if(var1 < class82.field1491) {
-         var9 = class82.field1491 - var1;
+      if(var1 < class82.field1452) {
+         var9 = class82.field1452 - var1;
          var6 -= var9;
-         var1 = class82.field1491;
+         var1 = class82.field1452;
          var4 += var9;
          var3 += var9;
          var8 += var9;
          var7 += var9;
       }
 
-      if(var1 + var6 > class82.field1495) {
-         var9 = var1 + var6 - class82.field1495;
+      if(var1 + var6 > class82.field1453) {
+         var9 = var1 + var6 - class82.field1453;
          var6 -= var9;
          var8 += var9;
          var7 += var9;
       }
 
       if(var6 > 0 && var5 > 0) {
-         method1955(class82.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
+         method1897(class82.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
       }
-
    }
 
-   @ObfuscatedName("e")
-   static void method1955(int[] var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   @ObfuscatedName("z")
+   static void method1897(int[] var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = -(var5 >> 2);
       var5 = -(var5 & 3);
 
@@ -150,8 +148,8 @@ public final class ModIcon extends class82 {
 
    }
 
-   @ObfuscatedName("g")
-   public void method1960(int var1, int var2, int var3) {
+   @ObfuscatedName("r")
+   public void method1900(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.palette.length; ++var4) {
          int var5 = this.palette[var4] >> 16 & 255;
          var5 += var1;

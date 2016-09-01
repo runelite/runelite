@@ -4,37 +4,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
+@ObfuscatedName("o")
 @Implements("XClanMember")
 public class XClanMember extends Node {
-   @ObfuscatedName("g")
-   String field639;
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 46592857
+      intValue = -1965805581
    )
    @Export("world")
    int world;
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
    @Export("rank")
    byte rank;
-   @ObfuscatedName("cz")
-   @ObfuscatedGetter(
-      intValue = 1463598849
-   )
-   public static int field643;
-   @ObfuscatedName("bs")
-   static class171 field644;
-   @ObfuscatedName("l")
+   @ObfuscatedName("m")
+   public static short[][] field624;
+   @ObfuscatedName("x")
    @Export("username")
    String username;
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "1334318092"
+   @ObfuscatedName("id")
+   @ObfuscatedGetter(
+      intValue = -223112773
    )
-   static String method615(int var0) {
-      return "<img=" + var0 + ">";
+   static int field626;
+   @ObfuscatedName("r")
+   String field628;
+   @ObfuscatedName("s")
+   public static Buffer field630;
+   @ObfuscatedName("eb")
+   static SpritePixels[] field631;
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-1041090661"
+   )
+   public static int method580(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+      }
+
+      return var2;
    }
 }

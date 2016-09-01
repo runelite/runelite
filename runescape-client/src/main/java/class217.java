@@ -2,57 +2,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ha")
+@ObfuscatedName("hu")
 public class class217 {
-   @ObfuscatedName("e")
-   String field3204;
-   @ObfuscatedName("h")
+   @ObfuscatedName("i")
+   String field3202;
+   @ObfuscatedName("j")
+   public final XGrandExchangeOffer field3203;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 830942631
+   )
+   public final int field3204;
+   @ObfuscatedName("z")
    String field3205;
    @ObfuscatedName("r")
-   public final XGrandExchangeOffer field3206;
-   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1507614503
+      longValue = -3660468620050067843L
    )
-   public final int field3208;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      longValue = -4699190258343518181L
-   )
-   public final long field3209;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1795962116"
-   )
-   public String method4101() {
-      return this.field3205;
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "2037462623"
-   )
-   public String method4102() {
-      return this.field3204;
-   }
+   public final long field3206;
 
    class217(Buffer var1, byte var2, int var3) {
-      this.field3204 = var1.method2663();
-      this.field3205 = var1.method2663();
-      this.field3208 = var1.method2635();
-      this.field3209 = var1.method2649();
-      int var4 = var1.method2620();
-      int var5 = var1.method2620();
-      this.field3206 = new XGrandExchangeOffer();
-      this.field3206.method4149(2);
-      this.field3206.method4150(var2);
-      this.field3206.price = var4;
-      this.field3206.totalQuantity = var5;
-      this.field3206.quantitySold = 0;
-      this.field3206.spent = 0;
-      this.field3206.itemId = var3;
+      this.field3205 = var1.method2774();
+      this.field3202 = var1.method2774();
+      this.field3204 = var1.method2551();
+      this.field3206 = var1.method2562();
+      int var4 = var1.method2561();
+      int var5 = var1.method2561();
+      this.field3203 = new XGrandExchangeOffer();
+      this.field3203.method4015(2);
+      this.field3203.method4010(var2);
+      this.field3203.price = var4;
+      this.field3203.totalQuantity = var5;
+      this.field3203.quantitySold = 0;
+      this.field3203.spent = 0;
+      this.field3203.itemId = var3;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(B)Ljava/lang/String;",
+      garbageValue = "0"
+   )
+   public String method3967() {
+      return this.field3202;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(S)Ljava/lang/String;",
+      garbageValue = "9317"
+   )
+   public String method3969() {
+      return this.field3205;
    }
 }

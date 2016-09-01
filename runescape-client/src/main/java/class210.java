@@ -1,20 +1,19 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hi")
+@ObfuscatedName("hx")
 public class class210 {
-   @ObfuscatedName("e")
+   @ObfuscatedName("z")
+   class210 field3170;
+   @ObfuscatedName("i")
    class210 field3171;
-   @ObfuscatedName("h")
-   class210 field3172;
 
-   @ObfuscatedName("l")
-   public void method4063() {
-      if(this.field3172 != null) {
-         this.field3172.field3171 = this.field3171;
-         this.field3171.field3172 = this.field3172;
+   @ObfuscatedName("x")
+   public void method3941() {
+      if(this.field3171 != null) {
+         this.field3171.field3170 = this.field3170;
+         this.field3170.field3171 = this.field3171;
+         this.field3170 = null;
          this.field3171 = null;
-         this.field3172 = null;
       }
-
    }
 }
