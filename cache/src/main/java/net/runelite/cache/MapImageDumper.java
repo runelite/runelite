@@ -123,72 +123,10 @@ public class MapImageDumper
 
 		BufferedImage image = new BufferedImage(dimX, dimY, BufferedImage.TYPE_INT_RGB);
 
-		// pass 1
-		for (Region region : regions)
-		{
-			int baseX = region.getBaseX();
-			int baseY = region.getBaseY();
+		drawUnderlay(image, z);
+		drawOverlay(image, z);
 
-			// to pixel X
-			int drawBaseX = baseX - lowestX.getBaseX();
-
-			// to pixel Y. top most y is 0, but the top most
-			// region has the greaters y, so invert
-			int drawBaseY = highestY.getBaseY() - baseY;
-
-			for (int x = 0; x < Region.X; ++x)
-			{
-				int drawX = drawBaseX + x;
-
-				for (int y = 0; y < Region.Y; ++y)
-				{
-					int drawY = drawBaseY + (Region.Y - 1 - y);
-
-					int overlayId = region.getOverlayId(z, x, y) - 1;
-					int underlayId = region.getUnderlayId(z, x, y) - 1;
-					int rgb = 0;
-
-					if (overlayId > -1)
-					{
-						OverlayDefinition overlay = findOverlay(overlayId);
-						if (!overlay.isHideUnderlay() && underlayId > -1)
-						{
-							UnderlayDefinition underlay = findUnderlay(underlayId);
-							rgb = underlay.getColor();
-						}
-						else
-						{
-							rgb = overlay.getRgbColor();
-						}
-
-						if (overlay.getSecondaryRgbColor() > -1)
-						{
-							rgb = overlay.getSecondaryRgbColor();
-						}
-
-						if (overlay.getTexture() > -1)
-						{
-							TextureDefinition texture = findTexture(overlay.getTexture());
-							assert texture.getFileIds().length == 1;
-
-							SpriteDefinition sprite = findSprite(texture.getFileIds()[0], 0);
-							assert sprite != null;
-
-							rgb = averageColors.get(sprite);
-						}
-					}
-					else if (underlayId > -1)
-					{
-						UnderlayDefinition underlay = findUnderlay(underlayId);
-						rgb = underlay.getColor();
-					}
-
-					drawMapSquare(image, drawX, drawY, rgb);
-				}
-			}
-		}
-
-		// pass 2
+		// objects
 		for (Region region : regions)
 		{
 			int baseX = region.getBaseX();
@@ -208,7 +146,7 @@ public class MapImageDumper
 			graphics.dispose();
 		}
 
-		// pass 3
+		// map icons
 		for (Region region : regions)
 		{
 			int baseX = region.getBaseX();
@@ -241,6 +179,111 @@ public class MapImageDumper
 		}
 
 		return image;
+	}
+	
+	private void drawUnderlay(BufferedImage image, int z)
+	{
+		// pass 1
+		for (Region region : regions)
+		{
+			int baseX = region.getBaseX();
+			int baseY = region.getBaseY();
+
+			// to pixel X
+			int drawBaseX = baseX - lowestX.getBaseX();
+
+			// to pixel Y. top most y is 0, but the top most
+			// region has the greaters y, so invert
+			int drawBaseY = highestY.getBaseY() - baseY;
+
+			for (int x = 0; x < Region.X; ++x)
+			{
+				int drawX = drawBaseX + x;
+
+				for (int y = 0; y < Region.Y; ++y)
+				{
+					int drawY = drawBaseY + (Region.Y - 1 - y);
+
+					int overlayId = region.getOverlayId(z, x, y) - 1;
+					int underlayId = region.getUnderlayId(z, x, y) - 1;
+					int rgb = 0;
+					
+					if (overlayId > -1)
+					{
+						OverlayDefinition overlay = findOverlay(overlayId);
+						if (!overlay.isHideUnderlay() && underlayId > -1)
+						{
+							UnderlayDefinition underlay = findUnderlay(underlayId);
+							rgb = underlay.getColor();
+						}
+					}
+					else if (underlayId > -1)
+					{
+						UnderlayDefinition underlay = findUnderlay(underlayId);
+						rgb = underlay.getColor();
+					}
+
+					drawMapSquare(image, drawX, drawY, rgb);
+				}
+			}
+		}
+	}
+	
+	private void drawOverlay(BufferedImage image, int z)
+	{
+		for (Region region : regions)
+		{
+			int baseX = region.getBaseX();
+			int baseY = region.getBaseY();
+
+			// to pixel X
+			int drawBaseX = baseX - lowestX.getBaseX();
+
+			// to pixel Y. top most y is 0, but the top most
+			// region has the greaters y, so invert
+			int drawBaseY = highestY.getBaseY() - baseY;
+
+			for (int x = 0; x < Region.X; ++x)
+			{
+				int drawX = drawBaseX + x;
+
+				for (int y = 0; y < Region.Y; ++y)
+				{
+					int drawY = drawBaseY + (Region.Y - 1 - y);
+
+					int overlayId = region.getOverlayId(z, x, y) - 1;
+
+					if (overlayId > -1)
+					{
+						OverlayDefinition overlay = findOverlay(overlayId);
+
+						int rgb = 0;
+						if (overlay.isHideUnderlay())
+						{
+							rgb = overlay.getRgbColor();
+						}
+
+						if (overlay.getSecondaryRgbColor() > -1)
+						{
+							rgb = overlay.getSecondaryRgbColor();
+						}
+
+						if (overlay.getTexture() > -1)
+						{
+							TextureDefinition texture = findTexture(overlay.getTexture());
+							assert texture.getFileIds().length == 1;
+
+							SpriteDefinition sprite = findSprite(texture.getFileIds()[0], 0);
+							assert sprite != null;
+
+							rgb = averageColors.get(sprite);
+						}
+
+						drawMapSquare(image, drawX, drawY, rgb);
+					}
+				}
+			}
+		}
 	}
 
 	private void drawMapSquare(BufferedImage image, int x, int y, int rgb)
