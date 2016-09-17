@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 
 public class CastNull implements Deobfuscator
 {
-	private static final Logger logger = LoggerFactory.getLogger(Deobfuscator.class);
+	private static final Logger logger = LoggerFactory.getLogger(CastNull.class);
 	
 	private int removed;
 	

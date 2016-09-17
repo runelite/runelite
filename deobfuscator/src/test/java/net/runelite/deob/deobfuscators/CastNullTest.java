@@ -27,50 +27,62 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.Optional;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.execution.Execution;
-import net.runelite.deob.TemporyFolderLocation;
-import net.runelite.deob.util.JarUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.InstructionType;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.AConstNull;
+import net.runelite.asm.attributes.code.instructions.CheckCast;
+import net.runelite.asm.attributes.code.instructions.IAdd;
+import net.runelite.asm.attributes.code.instructions.IConst_2;
+import net.runelite.asm.attributes.code.instructions.Return;
+import net.runelite.asm.signature.Type;
+import net.runelite.deob.ClassGroupFactory;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
 public class CastNullTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
-
-	@Rule
-	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
-
-	private ClassGroup group;
-
-	@Before
-	public void before() throws IOException
-	{
-		group = JarUtil.loadJar(GAMEPACK);
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		JarUtil.saveJar(group, folder.newFile());
-	}
-
 	@Test
 	public void testRun()
 	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(3);
+
+		CheckCast checkCast = new CheckCast(ins);
+		checkCast.setType(new Type("test"));
+
+		Instruction[] instructions =
+		{
+			new IConst_2(ins),
+			new AConstNull(ins),
+			checkCast,
+			new IConst_2(ins),
+			new IAdd(ins),
+			new Return(ins, InstructionType.IRETURN)
+		};
+
+		for (Instruction i : instructions)
+		{
+			ins.addInstruction(i);
+		}
+
+		Assert.assertEquals(6, ins.getInstructions().size());
+
 		CastNull lvt = new CastNull();
 		lvt.run(group);
 
-		Execution execution = new Execution(group);
-		execution.populateInitialMethods();
-		execution.run();
+		Assert.assertEquals(5, ins.getInstructions().size());
+
+		Optional<Instruction> o = ins.getInstructions().stream().filter(i -> i instanceof CheckCast).findAny();
+		Assert.assertFalse(o.isPresent());
 	}
 }
