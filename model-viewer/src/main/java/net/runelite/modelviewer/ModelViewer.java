@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.modelviewer;
 
 import java.awt.Color;
@@ -37,6 +36,8 @@ import net.runelite.cache.definitions.loaders.ModelLoader;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.glRotatef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 
 public class ModelViewer
 {
@@ -68,6 +69,10 @@ public class ModelViewer
 		GL11.glCullFace(GL11.GL_BACK);
 
 		long last = 0;
+
+		// rotate and step back to view
+		glRotatef(-90, 1, 0, 0);
+		glTranslatef(0, 60.0f, 0);
 
 		while (!Display.isCloseRequested())
 		{
@@ -106,9 +111,9 @@ public class ModelViewer
 
 				GL11.glColor3f(rf, gf, bf);
 
-				GL11.glVertex3i(vertexAx, vertexAy, vertexAz - 50);
-				GL11.glVertex3i(vertexBx, vertexBy, vertexBz - 50);
-				GL11.glVertex3i(vertexCx, vertexCy, vertexCz - 50);
+				GL11.glVertex3i(vertexAx, vertexAy, vertexAz);
+				GL11.glVertex3i(vertexBx, vertexBy, vertexBz);
+				GL11.glVertex3i(vertexCx, vertexCy, vertexCz);
 			}
 
 			GL11.glEnd();
@@ -129,7 +134,8 @@ public class ModelViewer
 	}
 
 	// found these two functions here https://www.rune-server.org/runescape-development/rs2-client/tools/589900-rs2-hsb-color-picker.html
-	public static int RGB_to_RS2HSB(int red, int green, int blue) {
+	public static int RGB_to_RS2HSB(int red, int green, int blue)
+	{
 		float[] HSB = Color.RGBtoHSB(red, green, blue, null);
 		float hue = (HSB[0]);
 		float saturation = (HSB[1]);
@@ -140,10 +146,11 @@ public class ModelViewer
 		return (encode_hue << 10) + (encode_saturation << 7) + (encode_brightness);
 	}
 
-	public static int RS2HSB_to_RGB(int RS2HSB) {
+	public static int RS2HSB_to_RGB(int RS2HSB)
+	{
 		int decode_hue = (RS2HSB >> 10) & 0x3f;
 		int decode_saturation = (RS2HSB >> 7) & 0x07;
 		int decode_brightness = (RS2HSB & 0x7f);
-		return Color.HSBtoRGB((float)decode_hue/63, (float)decode_saturation/7, (float)decode_brightness/127);
+		return Color.HSBtoRGB((float) decode_hue / 63, (float) decode_saturation / 7, (float) decode_brightness / 127);
 	}
 }
