@@ -49,6 +49,11 @@ public class CheckCast extends Instruction implements TypeInstruction
 	private Class clazz; // XXX unncesssary?
 	private ClassFile myClass;
 
+	public CheckCast(Instructions instructions)
+	{
+		super(instructions, InstructionType.CHECKCAST);
+	}
+
 	public CheckCast(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
