@@ -36,7 +36,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.loaders.NpcLoader;
@@ -50,6 +52,7 @@ public class NpcDumper
 	private final File cache, out, java;
 	private final Gson gson;
 	private NpcLoader loader;
+	private final List<NpcDefinition> npcs = new ArrayList<>();
 
 	public NpcDumper(File cache, File out, File java)
 	{
@@ -90,14 +93,15 @@ public class NpcDumper
 
 			for (net.runelite.cache.fs.File f : archive.getFiles())
 			{
-				loader.load(f.getFileId(), new InputStream(f.getContents()));
+				NpcDefinition npc = loader.load(f.getFileId(), new InputStream(f.getContents()));
+				npcs.add(npc);
 			}
 		}
 	}
 
 	public void dump() throws IOException
 	{
-		for (NpcDefinition def : loader.getNpcs())
+		for (NpcDefinition def : npcs)
 		{
 			out.mkdirs();
 			java.io.File targ = new java.io.File(out, def.id + ".json");
@@ -120,7 +124,7 @@ public class NpcDumper
 			fw.println("package net.runelite.api;");
 			fw.println("");
 			fw.println("public final class NpcID {");
-			for (NpcDefinition def : loader.getNpcs())
+			for (NpcDefinition def : npcs)
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 					continue;
