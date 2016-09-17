@@ -32,6 +32,7 @@ package net.runelite.modelviewer;
 import java.awt.Color;
 import java.io.File;
 import java.nio.file.Files;
+import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -49,9 +50,9 @@ public class ModelViewer
 			System.exit(1);
 		}
 
-		ModelLoader md = new ModelLoader();
+		ModelLoader loader = new ModelLoader();
 		byte[] b = Files.readAllBytes(new File(args[0]).toPath());
-		md.load(b);
+		ModelDefinition md = loader.load(b);
 
 		Display.setDisplayMode(new DisplayMode(800, 600));
 		Display.setTitle("Model Viewer");
