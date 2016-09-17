@@ -36,7 +36,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.definitions.loaders.ItemLoader;
@@ -50,6 +52,7 @@ public class ItemDumper
 	private final File cache, out, java;
 	private final Gson gson;
 	private ItemLoader loader;
+	private final List<ItemDefinition> items = new ArrayList<>();
 
 	public ItemDumper(File cache, File out, File java)
 	{
@@ -97,7 +100,7 @@ public class ItemDumper
 
 	public void dump() throws IOException
 	{
-		for (ItemDefinition def : loader.getItems())
+		for (ItemDefinition def : items)
 		{
 			out.mkdirs();
 			java.io.File targ = new java.io.File(out, def.id + ".json");
@@ -120,7 +123,7 @@ public class ItemDumper
 			fw.println("package net.runelite.api;");
 			fw.println("");
 			fw.println("public final class ItemID {");
-			for (ItemDefinition def : loader.getItems())
+			for (ItemDefinition def : items)
 			{
 				if (def.name.equalsIgnoreCase("NULL"))
 					continue;

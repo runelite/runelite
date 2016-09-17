@@ -30,8 +30,6 @@
 
 package net.runelite.cache.definitions.loaders;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.cache.definitions.ItemDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
@@ -40,14 +38,8 @@ import org.slf4j.LoggerFactory;
 public class ItemLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
-	private final List<ItemDefinition> items = new ArrayList<>();
 
-	public List<ItemDefinition> getItems()
-	{
-		return items;
-	}
-
-	public void load(int id, InputStream stream)
+	public ItemDefinition load(int id, InputStream stream)
 	{
 		ItemDefinition def = new ItemDefinition(id);
 		
@@ -62,7 +54,7 @@ public class ItemLoader
 			this.decodeValues(opcode, def, stream);
 		}
 
-		items.add(def);
+		return def;
 	}
 
 	private void decodeValues(int opcode, ItemDefinition def, InputStream stream)
