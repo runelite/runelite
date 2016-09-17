@@ -63,12 +63,6 @@
 			<id>runelite</id>
 			<name>Runelite</name>
 			<url>http://repo.runelite.net</url>
-			<releases>
-				<updatePolicy>always</updatePolicy>
-			</releases>
-			<snapshots>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
 		</repository>
 	</repositories>
 
