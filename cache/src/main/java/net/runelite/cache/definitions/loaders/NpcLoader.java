@@ -27,11 +27,8 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.definitions.loaders;
 
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
@@ -40,16 +37,11 @@ import org.slf4j.LoggerFactory;
 public class NpcLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
-	private final List<NpcDefinition> npcs = new ArrayList<>();
 
-	public List<NpcDefinition> getNpcs()
-	{
-		return npcs;
-	}
-
-	public void load(int id, InputStream stream)
+	public NpcDefinition load(int id, InputStream stream)
 	{
 		NpcDefinition def = new NpcDefinition(id);
+
 		while (true)
 		{
 			int opcode = stream.readUnsignedByte();
@@ -60,7 +52,8 @@ public class NpcLoader
 
 			this.decodeValues(opcode, def, stream);
 		}
-		npcs.add(def);
+
+		return def;
 	}
 
 	void decodeValues(int opcode, NpcDefinition def, InputStream stream)
