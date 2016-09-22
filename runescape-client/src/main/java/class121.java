@@ -2,31 +2,31 @@ import java.nio.ByteBuffer;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("de")
+@ObfuscatedName("ds")
 public class class121 extends class128 {
-   @ObfuscatedName("x")
-   ByteBuffer field2049;
+   @ObfuscatedName("a")
+   ByteBuffer field2068;
 
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "904637177"
-   )
-   void vmethod2852(byte[] var1) {
-      this.field2049 = ByteBuffer.allocateDirect(var1.length);
-      this.field2049.position(0);
-      this.field2049.put(var1);
-   }
-
-   @ObfuscatedName("x")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(I)[B",
-      garbageValue = "543168377"
+      garbageValue = "-298012552"
    )
-   byte[] vmethod2858() {
-      byte[] var1 = new byte[this.field2049.capacity()];
-      this.field2049.position(0);
-      this.field2049.get(var1);
+   byte[] vmethod2825() {
+      byte[] var1 = new byte[this.field2068.capacity()];
+      this.field2068.position(0);
+      this.field2068.get(var1);
       return var1;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "([BI)V",
+      garbageValue = "-345387204"
+   )
+   void vmethod2826(byte[] var1) {
+      this.field2068 = ByteBuffer.allocateDirect(var1.length);
+      this.field2068.position(0);
+      this.field2068.put(var1);
    }
 }

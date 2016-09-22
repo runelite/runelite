@@ -1,12 +1,10 @@
 import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("ea")
 public class class141 {
-   @ObfuscatedName("r")
-   static String field2184 = null;
-   @ObfuscatedName("at")
-   static class149 field2189;
-   @ObfuscatedName("x")
-   static Applet field2193 = null;
+   @ObfuscatedName("a")
+   static Applet field2204 = null;
+   @ObfuscatedName("d")
+   static String field2205 = null;
 }

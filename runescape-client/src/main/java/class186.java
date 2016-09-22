@@ -1,30 +1,35 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gz")
+@ObfuscatedName("gx")
 public class class186 {
-   @ObfuscatedName("q")
-   public static class62 field3006;
+   @ObfuscatedName("v")
+   static class170 field3012;
+   @ObfuscatedName("d")
+   static class170 field3013;
+   @ObfuscatedName("r")
+   public static class187 field3015;
    @ObfuscatedName("z")
-   public static class187 field3008;
+   @ObfuscatedGetter(
+      intValue = 879544097
+   )
+   public static int field3016 = 0;
+   @ObfuscatedName("t")
+   public static class170 field3017;
+   @ObfuscatedName("a")
+   static class170 field3018;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 512651789
+   )
+   public static int field3019;
+   @ObfuscatedName("k")
+   public static boolean field3020;
+   @ObfuscatedName("u")
+   static class62 field3021;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 473666363
+      intValue = 816535351
    )
-   public static int field3009 = 0;
-   @ObfuscatedName("b")
-   public static class170 field3010;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1910803695
-   )
-   public static int field3011;
-   @ObfuscatedName("x")
-   public static class170 field3013;
-   @ObfuscatedName("j")
-   public static class170 field3014;
-   @ObfuscatedName("d")
-   public static boolean field3016;
-   @ObfuscatedName("v")
-   public static class183 field3017;
+   public static int field3022;
 }

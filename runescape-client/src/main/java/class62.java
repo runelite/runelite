@@ -1,44 +1,76 @@
+import java.io.File;
+import java.io.RandomAccessFile;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bj")
 public class class62 {
-   @ObfuscatedName("cw")
-   static class146 field1259;
    @ObfuscatedName("r")
-   class170 field1260;
-   @ObfuscatedName("z")
-   XHashTable field1262 = new XHashTable(256);
-   @ObfuscatedName("j")
-   XHashTable field1263 = new XHashTable(256);
-   @ObfuscatedName("i")
-   static class170 field1264;
-   @ObfuscatedName("x")
-   class170 field1265;
+   XHashTable field1285 = new XHashTable(256);
+   @ObfuscatedName("d")
+   class170 field1286;
+   @ObfuscatedName("v")
+   XHashTable field1287 = new XHashTable(256);
+   @ObfuscatedName("bw")
+   @Export("host")
+   static String host;
+   @ObfuscatedName("a")
+   class170 field1291;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II[II)Lclass65;",
-      garbageValue = "1707020632"
+      signature = "(I[II)Lclass65;",
+      garbageValue = "791318905"
    )
-   class65 method1303(int var1, int var2, int[] var3) {
+   public class65 method1312(int var1, int[] var2) {
+      if(this.field1286.method3320() == 1) {
+         return this.method1318(0, var1, var2);
+      } else if(this.field1286.method3319(var1) == 1) {
+         return this.method1318(var1, 0, var2);
+      } else {
+         throw new RuntimeException();
+      }
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I[II)Lclass65;",
+      garbageValue = "323162011"
+   )
+   public class65 method1314(int var1, int[] var2) {
+      if(this.field1291.method3320() == 1) {
+         return this.method1315(0, var1, var2);
+      } else if(this.field1291.method3319(var1) == 1) {
+         return this.method1315(var1, 0, var2);
+      } else {
+         throw new RuntimeException();
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(II[IS)Lclass65;",
+      garbageValue = "6146"
+   )
+   class65 method1315(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4;
-      class65 var7 = (class65)this.field1262.method3830(var5);
+      class65 var7 = (class65)this.field1285.method3817(var5);
       if(var7 != null) {
          return var7;
-      } else if(null != var3 && var3[0] <= 0) {
+      } else if(var3 != null && var3[0] <= 0) {
          return null;
       } else {
-         class61 var8 = class61.method1294(this.field1265, var1, var2);
+         class61 var8 = class61.method1309(this.field1291, var1, var2);
          if(var8 == null) {
             return null;
          } else {
-            var7 = var8.method1293();
-            this.field1262.method3819(var7, var5);
+            var7 = var8.method1299();
+            this.field1285.method3823(var7, var5);
             if(var3 != null) {
-               var3[0] -= var7.field1275.length;
+               var3[0] -= var7.field1305.length;
             }
 
             return var7;
@@ -47,106 +79,86 @@ public class class62 {
    }
 
    public class62(class170 var1, class170 var2) {
-      this.field1265 = var1;
-      this.field1260 = var2;
+      this.field1291 = var1;
+      this.field1286 = var2;
    }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I[II)Lclass65;",
-      garbageValue = "1009419415"
-   )
-   public class65 method1304(int var1, int[] var2) {
-      if(this.field1265.method3300() == 1) {
-         return this.method1303(0, var1, var2);
-      } else if(this.field1265.method3299(var1) == 1) {
-         return this.method1303(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(I[II)Lclass65;",
-      garbageValue = "-1350472051"
-   )
-   public class65 method1305(int var1, int[] var2) {
-      if(this.field1260.method3300() == 1) {
-         return this.method1310(0, var1, var2);
-      } else if(this.field1260.method3299(var1) == 1) {
-         return this.method1310(var1, 0, var2);
-      } else {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(II[II)Lclass65;",
-      garbageValue = "1591553488"
+      garbageValue = "334182190"
    )
-   class65 method1310(int var1, int var2, int[] var3) {
+   class65 method1318(int var1, int var2, int[] var3) {
       int var4 = var2 ^ (var1 << 4 & '\uffff' | var1 >>> 12);
       var4 |= var1 << 16;
       long var5 = (long)var4 ^ 4294967296L;
-      class65 var7 = (class65)this.field1262.method3830(var5);
-      if(null != var7) {
+      class65 var7 = (class65)this.field1285.method3817(var5);
+      if(var7 != null) {
          return var7;
-      } else if(var3 != null && var3[0] <= 0) {
+      } else if(null != var3 && var3[0] <= 0) {
          return null;
       } else {
-         class73 var8 = (class73)this.field1263.method3830(var5);
-         if(var8 == null) {
-            var8 = class73.method1581(this.field1260, var1, var2);
-            if(var8 == null) {
+         class73 var8 = (class73)this.field1287.method3817(var5);
+         if(null == var8) {
+            var8 = class73.method1590(this.field1286, var1, var2);
+            if(null == var8) {
                return null;
             }
 
-            this.field1263.method3819(var8, var5);
+            this.field1287.method3823(var8, var5);
          }
 
-         var7 = var8.method1565(var3);
+         var7 = var8.method1591(var3);
          if(var7 == null) {
             return null;
          } else {
             var8.unlink();
-            this.field1262.method3819(var7, var5);
+            this.field1285.method3823(var7, var5);
             return var7;
          }
       }
    }
 
-   @ObfuscatedName("dj")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LWidgetNode;ZI)V",
-      garbageValue = "442713722"
+      signature = "(Ljava/io/File;ZI)Z",
+      garbageValue = "1727042523"
    )
-   static final void method1313(WidgetNode var0, boolean var1) {
-      int var2 = var0.id;
-      int var3 = (int)var0.hash;
-      var0.unlink();
-      if(var1) {
-         class160.method3204(var2);
-      }
+   public static boolean method1320(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
+         }
 
-      for(class204 var4 = (class204)Client.widgetFlags.method3821(); var4 != null; var4 = (class204)Client.widgetFlags.method3822()) {
-         if((var4.hash >> 48 & 65535L) == (long)var2) {
-            var4.unlink();
+         return true;
+      } catch (Exception var4) {
+         return false;
+      }
+   }
+
+   @ObfuscatedName("dk")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "8"
+   )
+   static final void method1321() {
+      Client.field323.method2801(194);
+
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3820(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3827()) {
+         if(var0.field61 == 0 || var0.field61 == 3) {
+            TextureProvider.method2217(var0, true);
          }
       }
 
-      Widget var6 = World.method628(var3);
-      if(var6 != null) {
-         class75.method1606(var6);
-      }
-
-      class47.method971();
-      if(Client.widgetRoot != -1) {
-         int var5 = Client.widgetRoot;
-         if(class175.method3419(var5)) {
-            class52.method1059(Widget.widgets[var5], 1);
-         }
+      if(Client.field444 != null) {
+         class53.method1101(Client.field444);
+         Client.field444 = null;
       }
 
    }

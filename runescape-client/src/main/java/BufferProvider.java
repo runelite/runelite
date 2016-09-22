@@ -7,221 +7,164 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cw")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("z")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1921400007
+      intValue = -1128006963
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("j")
+   @ObfuscatedName("t")
+   @Export("image")
+   public Image image;
+   @ObfuscatedName("v")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("i")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -529613033
+      intValue = -926978739
    )
    @Export("height")
    int height;
-   @ObfuscatedName("b")
-   @Export("image")
-   public Image image;
-   @ObfuscatedName("ic")
-   static Widget field1434;
+   @ObfuscatedName("co")
+   static class146 field1475;
 
-   @ObfuscatedName("as")
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Z",
+      garbageValue = "-581029777"
+   )
+   public static boolean method1715(CharSequence var0) {
+      return FrameMap.method2303(var0, 10, true);
+   }
+
+   @ObfuscatedName("ar")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1590592951"
+      garbageValue = "-1412575018"
    )
-   public final void method1711() {
+   public final void method1716() {
       class82.setRasterBuffer(this.pixels, this.width, this.height);
    }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "2029268660"
-   )
-   public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-1906122185"
-   )
-   public abstract void init(int var1, int var2, Component var3);
-
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "610132572"
+      garbageValue = "138016631"
    )
    public abstract void draw(Graphics var1, int var2, int var3);
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;IB)I",
-      garbageValue = "2"
+      signature = "(Ljava/awt/Graphics;IIIIB)V",
+      garbageValue = "1"
    )
-   public static int method1724(CharSequence var0, CharSequence var1, int var2) {
-      int var3 = var0.length();
-      int var4 = var1.length();
-      int var5 = 0;
-      int var6 = 0;
-      byte var7 = 0;
-      byte var8 = 0;
+   public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
 
-      while(var5 - var7 < var3 || var6 - var8 < var4) {
-         if(var5 - var7 >= var3) {
-            return -1;
-         }
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IILjava/awt/Component;I)V",
+      garbageValue = "-557590795"
+   )
+   abstract void init(int var1, int var2, Component var3);
 
-         if(var6 - var8 >= var4) {
-            return 1;
-         }
-
-         char var9;
-         if(var7 != 0) {
-            var9 = (char)var7;
-            boolean var14 = false;
-         } else {
-            var9 = var0.charAt(var5++);
-         }
-
-         char var10;
-         if(var8 != 0) {
-            var10 = (char)var8;
-            boolean var15 = false;
-         } else {
-            var10 = var1.charAt(var6++);
-         }
-
-         byte var11;
-         if(var9 == 198) {
-            var11 = 69;
-         } else if(var9 == 230) {
-            var11 = 101;
-         } else if(var9 == 223) {
-            var11 = 115;
-         } else if(var9 == 338) {
-            var11 = 69;
-         } else if(var9 == 339) {
-            var11 = 101;
-         } else {
-            var11 = 0;
-         }
-
-         var7 = var11;
-         byte var12;
-         if(var10 == 198) {
-            var12 = 69;
-         } else if(var10 == 230) {
-            var12 = 101;
-         } else if(var10 == 223) {
-            var12 = 115;
-         } else if(var10 == 338) {
-            var12 = 69;
-         } else if(var10 == 339) {
-            var12 = 101;
-         } else {
-            var12 = 0;
-         }
-
-         var8 = var12;
-         var9 = class38.method744(var9, var2);
-         var10 = class38.method744(var10, var2);
-         if(var10 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
-            var9 = Character.toLowerCase(var9);
-            var10 = Character.toLowerCase(var10);
-            if(var10 != var9) {
-               return Frames.method2355(var9, var2) - Frames.method2355(var10, var2);
-            }
-         }
-      }
-
-      int var16 = Math.min(var3, var4);
-
-      int var17;
-      char var20;
-      for(var17 = 0; var17 < var16; ++var17) {
-         char var18 = var0.charAt(var17);
-         var20 = var1.charAt(var17);
-         if(var20 != var18 && Character.toUpperCase(var18) != Character.toUpperCase(var20)) {
-            var18 = Character.toLowerCase(var18);
-            var20 = Character.toLowerCase(var20);
-            if(var20 != var18) {
-               return Frames.method2355(var18, var2) - Frames.method2355(var20, var2);
-            }
-         }
-      }
-
-      var17 = var3 - var4;
-      if(var17 != 0) {
-         return var17;
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "50"
+   )
+   static void method1729(int var0) {
+      if(var0 == -3) {
+         class192.method3774("Connection timed out.", "Please try using a different world.", "");
+      } else if(var0 == -2) {
+         class192.method3774("", "Error connecting to server.", "");
+      } else if(var0 == -1) {
+         class192.method3774("No response from server.", "Please try using a different world.", "");
+      } else if(var0 == 3) {
+         class33.loginIndex = 3;
+      } else if(var0 == 4) {
+         class192.method3774("Your account has been disabled.", "Please check your message-centre for details.", "");
+      } else if(var0 == 5) {
+         class192.method3774("Your account is already logged in.", "Try again in 60 secs...", "");
+      } else if(var0 == 6) {
+         class192.method3774("RuneScape has been updated!", "Please reload this page.", "");
+      } else if(var0 == 7) {
+         class192.method3774("This world is full.", "Please use a different world.", "");
+      } else if(var0 == 8) {
+         class192.method3774("Unable to connect.", "Login server offline.", "");
+      } else if(var0 == 9) {
+         class192.method3774("Login limit exceeded.", "Too many connections from your address.", "");
+      } else if(var0 == 10) {
+         class192.method3774("Unable to connect.", "Bad session id.", "");
+      } else if(var0 == 11) {
+         class192.method3774("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
+      } else if(var0 == 12) {
+         class192.method3774("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+      } else if(var0 == 13) {
+         class192.method3774("Could not complete login.", "Please try using a different world.", "");
+      } else if(var0 == 14) {
+         class192.method3774("The server is being updated.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 16) {
+         class192.method3774("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+      } else if(var0 == 17) {
+         class192.method3774("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+      } else if(var0 == 18) {
+         class192.method3774("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
+      } else if(var0 == 19) {
+         class192.method3774("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+      } else if(var0 == 20) {
+         class192.method3774("Invalid loginserver requested.", "Please try using a different world.", "");
+      } else if(var0 == 22) {
+         class192.method3774("Malformed login packet.", "Please try again.", "");
+      } else if(var0 == 23) {
+         class192.method3774("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 24) {
+         class192.method3774("Error loading your profile.", "Please contact customer support.", "");
+      } else if(var0 == 25) {
+         class192.method3774("Unexpected loginserver response.", "Please try using a different world.", "");
+      } else if(var0 == 26) {
+         class192.method3774("This computers address has been blocked", "as it was used to break our rules.", "");
+      } else if(var0 == 27) {
+         class192.method3774("", "Service unavailable.", "");
+      } else if(var0 == 31) {
+         class192.method3774("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+      } else if(var0 == 32) {
+         class192.method3774("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
+      } else if(var0 == 37) {
+         class192.method3774("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+      } else if(var0 == 38) {
+         class192.method3774("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+      } else if(var0 == 55) {
+         class192.method3774("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
       } else {
-         for(int var19 = 0; var19 < var16; ++var19) {
-            var20 = var0.charAt(var19);
-            char var13 = var1.charAt(var19);
-            if(var20 != var13) {
-               return Frames.method2355(var20, var2) - Frames.method2355(var13, var2);
-            }
+         if(var0 == 56) {
+            class192.method3774("Enter the 6-digit code generated by your", "authenticator app.", "");
+            XItemContainer.setGameState(11);
+            return;
          }
 
-         return 0;
+         if(var0 == 57) {
+            class192.method3774("The code you entered was incorrect.", "Please try again.", "");
+            XItemContainer.setGameState(11);
+            return;
+         }
+
+         class192.method3774("Unexpected server response", "Please try using a different world.", "");
       }
+
+      XItemContainer.setGameState(10);
    }
 
-   @ObfuscatedName("bo")
+   @ObfuscatedName("dd")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "14"
+      signature = "(IB)V",
+      garbageValue = "57"
    )
-   static final void method1725(int var0, int var1) {
-      int var2 = VertexNormal.field1680.method4099("Choose Option");
-
-      int var3;
-      for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
-         class227 var4 = VertexNormal.field1680;
-         String var5;
-         if(Client.menuTargets[var3].length() > 0) {
-            var5 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
-         } else {
-            var5 = Client.menuOptions[var3];
-         }
-
-         int var6 = var4.method4099(var5);
-         if(var6 > var2) {
-            var2 = var6;
-         }
+   static final void method1731(int var0) {
+      if(class93.method2114(var0)) {
+         class75.method1621(Widget.widgets[var0], -1);
       }
-
-      var2 += 8;
-      var3 = Client.menuOptionCount * 15 + 22;
-      int var8 = var0 - var2 / 2;
-      if(var8 + var2 > FaceNormal.field1499) {
-         var8 = FaceNormal.field1499 - var2;
-      }
-
-      if(var8 < 0) {
-         var8 = 0;
-      }
-
-      int var7 = var1;
-      if(var3 + var1 > class212.field3175) {
-         var7 = class212.field3175 - var3;
-      }
-
-      if(var7 < 0) {
-         var7 = 0;
-      }
-
-      Client.isMenuOpen = true;
-      class92.menuX = var8;
-      class85.menuY = var7;
-      class109.menuWidth = var2;
-      class138.menuHeight = Client.menuOptionCount * 15 + 22;
    }
 }
