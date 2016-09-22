@@ -1,70 +1,70 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cv")
 public final class class100 {
-   @ObfuscatedName("s")
-   static int[] field1687 = new int[6];
-   @ObfuscatedName("r")
-   int[] field1688;
-   @ObfuscatedName("j")
-   int[] field1689;
    @ObfuscatedName("z")
-   int[] field1690;
-   @ObfuscatedName("i")
-   int[] field1691;
-   @ObfuscatedName("b")
-   int[] field1692;
-   @ObfuscatedName("m")
-   int[] field1693;
-   @ObfuscatedName("e")
-   static int[] field1694 = new int[6];
-   @ObfuscatedName("p")
-   int[] field1695;
-   @ObfuscatedName("l")
-   int[] field1696;
+   int[] field1723;
    @ObfuscatedName("d")
-   boolean field1697 = true;
-   @ObfuscatedName("a")
-   static int[] field1698 = new int[6];
-   @ObfuscatedName("q")
-   int field1699;
+   int[] field1724;
+   @ObfuscatedName("b")
+   static int[] field1725 = new int[6];
+   @ObfuscatedName("r")
+   int[] field1726;
+   @ObfuscatedName("y")
+   static int[] field1727 = new int[6];
    @ObfuscatedName("t")
-   int field1700;
-   @ObfuscatedName("g")
-   int field1701;
-   @ObfuscatedName("v")
-   int field1702;
-   @ObfuscatedName("h")
-   static int[] field1703 = new int[6];
-   @ObfuscatedName("u")
-   static int[] field1704 = new int[6];
-   @ObfuscatedName("x")
-   int[] field1705;
-   @ObfuscatedName("f")
-   int[] field1706;
-   @ObfuscatedName("c")
-   static final int[][] field1707 = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
+   int[] field1728;
    @ObfuscatedName("n")
-   static final int[][] field1708 = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
+   int[] field1729;
+   @ObfuscatedName("p")
+   static int[] field1730 = new int[6];
+   @ObfuscatedName("g")
+   int[] field1731;
+   @ObfuscatedName("m")
+   int[] field1732;
+   @ObfuscatedName("k")
+   boolean field1733 = true;
+   @ObfuscatedName("x")
+   int field1734;
+   @ObfuscatedName("u")
+   int field1735;
+   @ObfuscatedName("j")
+   int field1736;
+   @ObfuscatedName("i")
+   int[] field1737;
+   @ObfuscatedName("w")
+   static int[] field1738 = new int[6];
+   @ObfuscatedName("a")
+   int[] field1739;
+   @ObfuscatedName("q")
+   int field1740;
+   @ObfuscatedName("o")
+   static int[] field1741 = new int[6];
+   @ObfuscatedName("v")
+   int[] field1742;
+   @ObfuscatedName("s")
+   static final int[][] field1743 = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
+   @ObfuscatedName("e")
+   static final int[][] field1744 = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
 
    class100(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
       if(var6 != var7 || var6 != var8 || var6 != var9) {
-         this.field1697 = false;
+         this.field1733 = false;
       }
 
-      this.field1702 = var1;
-      this.field1699 = var2;
-      this.field1700 = var18;
-      this.field1701 = var19;
+      this.field1734 = var1;
+      this.field1735 = var2;
+      this.field1736 = var18;
+      this.field1740 = var19;
       short var20 = 128;
       int var21 = var20 / 2;
       int var22 = var20 / 4;
       int var23 = var20 * 3 / 4;
-      int[] var24 = field1707[var1];
+      int[] var24 = field1743[var1];
       int var25 = var24.length;
-      this.field1705 = new int[var25];
-      this.field1688 = new int[var25];
-      this.field1689 = new int[var25];
+      this.field1739 = new int[var25];
+      this.field1724 = new int[var25];
+      this.field1742 = new int[var25];
       int[] var26 = new int[var25];
       int[] var27 = new int[var25];
       int var28 = var4 * var20;
@@ -188,23 +188,23 @@ public final class class100 {
             var36 = var17;
          }
 
-         this.field1705[var30] = var32;
-         this.field1688[var30] = var34;
-         this.field1689[var30] = var33;
+         this.field1739[var30] = var32;
+         this.field1724[var30] = var34;
+         this.field1742[var30] = var33;
          var26[var30] = var35;
          var27[var30] = var36;
       }
 
-      int[] var38 = field1708[var1];
+      int[] var38 = field1744[var1];
       var31 = var38.length / 4;
-      this.field1696 = new int[var31];
-      this.field1693 = new int[var31];
-      this.field1695 = new int[var31];
-      this.field1690 = new int[var31];
-      this.field1691 = new int[var31];
-      this.field1692 = new int[var31];
+      this.field1729 = new int[var31];
+      this.field1737 = new int[var31];
+      this.field1731 = new int[var31];
+      this.field1726 = new int[var31];
+      this.field1723 = new int[var31];
+      this.field1728 = new int[var31];
       if(var3 != -1) {
-         this.field1706 = new int[var31];
+         this.field1732 = new int[var31];
       }
 
       var32 = 0;
@@ -227,22 +227,22 @@ public final class class100 {
             var37 = var37 - var2 & 3;
          }
 
-         this.field1696[var33] = var35;
-         this.field1693[var33] = var36;
-         this.field1695[var33] = var37;
+         this.field1729[var33] = var35;
+         this.field1737[var33] = var36;
+         this.field1731[var33] = var37;
          if(var34 == 0) {
-            this.field1690[var33] = var26[var35];
-            this.field1691[var33] = var26[var36];
-            this.field1692[var33] = var26[var37];
-            if(this.field1706 != null) {
-               this.field1706[var33] = -1;
+            this.field1726[var33] = var26[var35];
+            this.field1723[var33] = var26[var36];
+            this.field1728[var33] = var26[var37];
+            if(this.field1732 != null) {
+               this.field1732[var33] = -1;
             }
          } else {
-            this.field1690[var33] = var27[var35];
-            this.field1691[var33] = var27[var36];
-            this.field1692[var33] = var27[var37];
-            if(this.field1706 != null) {
-               this.field1706[var33] = var3;
+            this.field1726[var33] = var27[var35];
+            this.field1723[var33] = var27[var36];
+            this.field1728[var33] = var27[var37];
+            if(this.field1732 != null) {
+               this.field1732[var33] = var3;
             }
          }
       }

@@ -1,83 +1,83 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bz")
+@ObfuscatedName("bo")
 public class class60 {
-   @ObfuscatedName("f")
-   int field1244;
-   @ObfuscatedName("m")
-   int field1245;
-   @ObfuscatedName("z")
-   int[] field1246 = new int[2];
-   @ObfuscatedName("i")
-   int field1247;
-   @ObfuscatedName("r")
-   int field1248 = 2;
-   @ObfuscatedName("l")
-   int field1249;
-   @ObfuscatedName("p")
-   int field1250;
-   @ObfuscatedName("b")
-   int field1251;
    @ObfuscatedName("v")
-   int field1252;
+   int[] field1270 = new int[2];
    @ObfuscatedName("d")
-   int field1253;
-   @ObfuscatedName("j")
-   int[] field1254 = new int[2];
-
+   int[] field1271 = new int[2];
+   @ObfuscatedName("k")
+   int field1272;
    @ObfuscatedName("r")
-   final void method1281(Buffer var1) {
-      this.field1248 = var1.method2556();
-      this.field1254 = new int[this.field1248];
-      this.field1246 = new int[this.field1248];
-
-      for(int var2 = 0; var2 < this.field1248; ++var2) {
-         this.field1254[var2] = var1.method2551();
-         this.field1246[var2] = var1.method2551();
-      }
-
-   }
-
-   @ObfuscatedName("j")
-   final void method1282() {
-      this.field1245 = 0;
-      this.field1250 = 0;
-      this.field1244 = 0;
-      this.field1253 = 0;
-      this.field1252 = 0;
-   }
-
+   int field1273;
+   @ObfuscatedName("i")
+   int field1274;
+   @ObfuscatedName("t")
+   int field1275;
+   @ObfuscatedName("n")
+   int field1276;
+   @ObfuscatedName("a")
+   int field1277 = 2;
+   @ObfuscatedName("g")
+   int field1278;
+   @ObfuscatedName("m")
+   int field1279;
    @ObfuscatedName("z")
-   final int method1283(int var1) {
-      if(this.field1252 >= this.field1245) {
-         this.field1253 = this.field1246[this.field1250++] << 15;
-         if(this.field1250 >= this.field1248) {
-            this.field1250 = this.field1248 - 1;
-         }
+   int field1280;
 
-         this.field1245 = (int)((double)this.field1254[this.field1250] / 65536.0D * (double)var1);
-         if(this.field1245 > this.field1252) {
-            this.field1244 = ((this.field1246[this.field1250] << 15) - this.field1253) / (this.field1245 - this.field1252);
-         }
-      }
-
-      this.field1253 += this.field1244;
-      ++this.field1252;
-      return this.field1253 - this.field1244 >> 15;
+   @ObfuscatedName("a")
+   final void method1286(Buffer var1) {
+      this.field1275 = var1.method2528();
+      this.field1273 = var1.method2533();
+      this.field1280 = var1.method2533();
+      this.method1287(var1);
    }
 
    class60() {
-      this.field1254[0] = 0;
-      this.field1254[1] = '\uffff';
-      this.field1246[0] = 0;
-      this.field1246[1] = '\uffff';
+      this.field1271[0] = 0;
+      this.field1271[1] = '\uffff';
+      this.field1270[0] = 0;
+      this.field1270[1] = '\uffff';
    }
 
-   @ObfuscatedName("x")
-   final void method1289(Buffer var1) {
-      this.field1249 = var1.method2556();
-      this.field1247 = var1.method2561();
-      this.field1251 = var1.method2561();
-      this.method1281(var1);
+   @ObfuscatedName("d")
+   final void method1287(Buffer var1) {
+      this.field1277 = var1.method2528();
+      this.field1271 = new int[this.field1277];
+      this.field1270 = new int[this.field1277];
+
+      for(int var2 = 0; var2 < this.field1277; ++var2) {
+         this.field1271[var2] = var1.method2717();
+         this.field1270[var2] = var1.method2717();
+      }
+
+   }
+
+   @ObfuscatedName("r")
+   final int method1288(int var1) {
+      if(this.field1272 >= this.field1276) {
+         this.field1279 = this.field1270[this.field1274++] << 15;
+         if(this.field1274 >= this.field1277) {
+            this.field1274 = this.field1277 - 1;
+         }
+
+         this.field1276 = (int)((double)this.field1271[this.field1274] / 65536.0D * (double)var1);
+         if(this.field1276 > this.field1272) {
+            this.field1278 = ((this.field1270[this.field1274] << 15) - this.field1279) / (this.field1276 - this.field1272);
+         }
+      }
+
+      this.field1279 += this.field1278;
+      ++this.field1272;
+      return this.field1279 - this.field1278 >> 15;
+   }
+
+   @ObfuscatedName("v")
+   final void method1293() {
+      this.field1276 = 0;
+      this.field1274 = 0;
+      this.field1278 = 0;
+      this.field1279 = 0;
+      this.field1272 = 0;
    }
 }

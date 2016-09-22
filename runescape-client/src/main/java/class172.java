@@ -2,28 +2,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fi")
 public class class172 extends Node {
-   @ObfuscatedName("j")
-   class137 field2762;
-   @ObfuscatedName("r")
-   byte[] field2763;
-   @ObfuscatedName("x")
+   @ObfuscatedName("d")
+   public byte[] field2762;
+   @ObfuscatedName("v")
+   public class137 field2763;
+   @ObfuscatedName("g")
+   static ModIcon[] field2765;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -154545885
+      intValue = -770273435
    )
-   int field2764;
-   @ObfuscatedName("z")
-   class171 field2765;
-   @ObfuscatedName("q")
-   static int[] field2766;
+   int field2767;
+   @ObfuscatedName("r")
+   public class171 field2768;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
-      garbageValue = "-761133707"
+      signature = "(IIIB)I",
+      garbageValue = "0"
    )
-   public static Class method3393(String var0) throws ClassNotFoundException {
-      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Class.forName(var0)))))))));
+   static final int method3414(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return ((var0 & '\uff00') * var3 + var2 * (var1 & '\uff00') & 16711680) + (var2 * (var1 & 16711935) + var3 * (var0 & 16711935) & -16711936) >> 8;
    }
 }

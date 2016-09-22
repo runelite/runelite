@@ -1,59 +1,56 @@
-import java.awt.Component;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cp")
 public final class class92 {
-   @ObfuscatedName("b")
-   boolean field1598 = true;
-   @ObfuscatedName("j")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2131263723
+      intValue = -1098720487
    )
-   int field1599;
-   @ObfuscatedName("z")
+   int field1634;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -454654979
+      intValue = 1366378845
    )
-   int field1600;
-   @ObfuscatedName("i")
+   int field1635;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1270858489
+      intValue = 2033232279
    )
-   int field1601;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1092278449
-   )
-   int field1602;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1314804715
-   )
-   int field1603;
-   @ObfuscatedName("hd")
-   @ObfuscatedGetter(
-      intValue = -756332617
-   )
-   @Export("menuX")
-   static int menuX;
+   int field1636;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 499614767
+      intValue = 1691701653
    )
-   int field1606;
-   @ObfuscatedName("ps")
-   static short[] field1611;
+   int field1637;
+   @ObfuscatedName("t")
+   boolean field1639 = true;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1914130807
+   )
+   int field1640;
+   @ObfuscatedName("qc")
+   @ObfuscatedGetter(
+      intValue = -1544477485
+   )
+   protected static int field1643;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1608972281
+   )
+   int field1645;
 
-   @ObfuscatedName("aq")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1870987184"
+      signature = "(III)V",
+      garbageValue = "-106040209"
    )
-   static int method2124() {
-      return Client.isResized?2:1;
+   static void method2112(int var0, int var1) {
+      class32 var2 = WidgetNode.field65;
+      class77.menuAction(var2.field734, var2.field725, var2.field726, var2.field727, var2.field728, var2.field728, var0, var1);
+      WidgetNode.field65 = null;
    }
 
    @ObfuscatedSignature(
@@ -61,74 +58,47 @@ public final class class92 {
       garbageValue = "0"
    )
    class92(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
-      this.field1602 = var1;
-      this.field1606 = var2;
-      this.field1599 = var3;
-      this.field1600 = var4;
-      this.field1601 = var5;
-      this.field1603 = var6;
-      this.field1598 = var7;
+      this.field1645 = var1;
+      this.field1635 = var2;
+      this.field1636 = var3;
+      this.field1637 = var4;
+      this.field1640 = var5;
+      this.field1634 = var6;
+      this.field1639 = var7;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-2074829828"
+      signature = "(II)I",
+      garbageValue = "565310358"
    )
-   public static void method2125(Component var0) {
-      var0.removeKeyListener(class140.keyboard);
-      var0.removeFocusListener(class140.keyboard);
-      class140.field2170 = -1;
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "1623355749"
-   )
-   static final void method2126(int var0, int var1, int var2) {
-      int var3;
-      for(var3 = 0; var3 < 8; ++var3) {
-         for(int var4 = 0; var4 < 8; ++var4) {
-            class5.tileHeights[var0][var3 + var1][var2 + var4] = 0;
-         }
+   public static int method2113(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
       }
 
-      if(var1 > 0) {
-         for(var3 = 1; var3 < 8; ++var3) {
-            class5.tileHeights[var0][var1][var2 + var3] = class5.tileHeights[var0][var1 - 1][var2 + var3];
-         }
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
       }
 
-      if(var2 > 0) {
-         for(var3 = 1; var3 < 8; ++var3) {
-            class5.tileHeights[var0][var3 + var1][var2] = class5.tileHeights[var0][var1 + var3][var2 - 1];
-         }
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
       }
 
-      if(var1 > 0 && class5.tileHeights[var0][var1 - 1][var2] != 0) {
-         class5.tileHeights[var0][var1][var2] = class5.tileHeights[var0][var1 - 1][var2];
-      } else if(var2 > 0 && class5.tileHeights[var0][var1][var2 - 1] != 0) {
-         class5.tileHeights[var0][var1][var2] = class5.tileHeights[var0][var1][var2 - 1];
-      } else if(var1 > 0 && var2 > 0 && class5.tileHeights[var0][var1 - 1][var2 - 1] != 0) {
-         class5.tileHeights[var0][var1][var2] = class5.tileHeights[var0][var1 - 1][var2 - 1];
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
       }
 
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1618145191"
-   )
-   static final void method2127() {
-      if(class138.field2135 != null) {
-         class138.field2135.method1215();
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
       }
 
-      if(null != FaceNormal.field1492) {
-         FaceNormal.field1492.method1215();
-      }
-
+      return var1 + var0;
    }
 }

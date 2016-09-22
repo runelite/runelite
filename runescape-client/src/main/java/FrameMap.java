@@ -1,108 +1,120 @@
-import net.runelite.mapping.Export;
+import java.awt.FontMetrics;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dr")
+@ObfuscatedName("dt")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("n")
-   static int[] field1816;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -849049467
+   )
+   int field1843;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1276094125
+   )
+   int field1844;
+   @ObfuscatedName("bf")
+   static FontMetrics field1845;
    @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1706957749
-   )
-   int field1817;
-   @ObfuscatedName("gj")
-   @ObfuscatedGetter(
-      intValue = -78291835
-   )
-   @Export("plane")
-   static int plane;
-   @ObfuscatedName("z")
-   int[][] field1819;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1597309099
-   )
-   int field1820;
-   @ObfuscatedName("j")
-   int[] field1821;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "867189931"
-   )
-   static void method2346(int var0) {
-      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.method3830((long)var0);
-      if(null != var1) {
-         for(int var2 = 0; var2 < var1.itemIds.length; ++var2) {
-            var1.itemIds[var2] = -1;
-            var1.stackSizes[var2] = 0;
-         }
-
-      }
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "([BI)Lclass227;",
-      garbageValue = "-342130449"
-   )
-   public static class227 method2347(byte[] var0) {
-      if(var0 == null) {
-         return null;
-      } else {
-         class227 var1 = new class227(var0, class79.field1421, class79.field1423, class20.field567, class79.field1424, class79.field1425, class13.field191);
-         Friend.method193();
-         return var1;
-      }
-   }
+   int[][] field1846;
+   @ObfuscatedName("v")
+   int[] field1847;
 
    FrameMap(int var1, byte[] var2) {
-      this.field1820 = var1;
+      this.field1843 = var1;
       Buffer var3 = new Buffer(var2);
-      this.field1817 = var3.method2556();
-      this.field1821 = new int[this.field1817];
-      this.field1819 = new int[this.field1817][];
+      this.field1844 = var3.method2528();
+      this.field1847 = new int[this.field1844];
+      this.field1846 = new int[this.field1844][];
 
       int var4;
-      for(var4 = 0; var4 < this.field1817; ++var4) {
-         this.field1821[var4] = var3.method2556();
+      for(var4 = 0; var4 < this.field1844; ++var4) {
+         this.field1847[var4] = var3.method2528();
       }
 
-      for(var4 = 0; var4 < this.field1817; ++var4) {
-         this.field1819[var4] = new int[var3.method2556()];
+      for(var4 = 0; var4 < this.field1844; ++var4) {
+         this.field1846[var4] = new int[var3.method2528()];
       }
 
-      for(var4 = 0; var4 < this.field1817; ++var4) {
-         for(int var5 = 0; var5 < this.field1819[var4].length; ++var5) {
-            this.field1819[var4][var5] = var3.method2556();
+      for(var4 = 0; var4 < this.field1844; ++var4) {
+         for(int var5 = 0; var5 < this.field1846[var4].length; ++var5) {
+            this.field1846[var4][var5] = var3.method2528();
          }
       }
 
    }
 
-   @ObfuscatedName("di")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2146169811"
+      signature = "(Ljava/lang/CharSequence;IZI)Z",
+      garbageValue = "-1751100555"
    )
-   static final void method2348() {
-      Client.field323.method2818(127);
+   static boolean method2303(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
 
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3821(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3822()) {
-         if(var0.field53 == 0 || var0.field53 == 3) {
-            class62.method1313(var0, true);
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == 43) {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= 48 && var8 <= 57) {
+               var10 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var10 = var8 - 55;
+            } else {
+               if(var8 < 97 || var8 > 122) {
+                  return false;
+               }
+
+               var10 = var8 - 87;
+            }
+
+            if(var10 >= var1) {
+               return false;
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var1 * var5 + var10;
+            if(var5 != var9 / var1) {
+               return false;
+            }
+
+            var5 = var9;
+            var4 = true;
          }
-      }
 
-      if(null != Client.field443) {
-         class75.method1606(Client.field443);
-         Client.field443 = null;
+         return var4;
+      } else {
+         throw new IllegalArgumentException("");
       }
+   }
 
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(CB)Z",
+      garbageValue = "-3"
+   )
+   static final boolean method2304(char var0) {
+      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
    }
 }

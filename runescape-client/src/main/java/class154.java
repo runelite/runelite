@@ -1,14 +1,20 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("ex")
 public class class154 {
    @ObfuscatedName("r")
+   static ModIcon field2317;
+   @ObfuscatedName("x")
+   static class183 field2324;
+
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-260267160"
+      signature = "(II)I",
+      garbageValue = "-1536367100"
    )
-   static String method3185(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
+   static int method3187(int var0) {
+      ChatLineBuffer var1 = (ChatLineBuffer)class11.chatLineMap.get(Integer.valueOf(var0));
+      return var1 == null?0:var1.method673();
    }
 }

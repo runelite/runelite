@@ -1,40 +1,40 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("hn")
 public class class209 implements Iterator {
-   @ObfuscatedName("r")
-   CacheableNode field3167;
-   @ObfuscatedName("x")
-   class203 field3168;
-   @ObfuscatedName("j")
-   CacheableNode field3169 = null;
+   @ObfuscatedName("a")
+   class203 field3164;
+   @ObfuscatedName("d")
+   CacheableNode field3165;
+   @ObfuscatedName("v")
+   CacheableNode field3166 = null;
+
+   public boolean hasNext() {
+      return this.field3165 != this.field3164.field3154;
+   }
 
    public Object next() {
-      CacheableNode var1 = this.field3167;
-      if(var1 == this.field3168.field3157) {
+      CacheableNode var1 = this.field3165;
+      if(var1 == this.field3164.field3154) {
          var1 = null;
-         this.field3167 = null;
+         this.field3165 = null;
       } else {
-         this.field3167 = var1.previous;
+         this.field3165 = var1.previous;
       }
 
-      this.field3169 = var1;
+      this.field3166 = var1;
       return var1;
    }
 
-   public boolean hasNext() {
-      return this.field3167 != this.field3168.field3157;
-   }
-
    class209(class203 var1) {
-      this.field3168 = var1;
-      this.field3167 = this.field3168.field3157.previous;
-      this.field3169 = null;
+      this.field3164 = var1;
+      this.field3165 = this.field3164.field3154.previous;
+      this.field3166 = null;
    }
 
    public void remove() {
-      this.field3169.method3925();
-      this.field3169 = null;
+      this.field3166.method3938();
+      this.field3166 = null;
    }
 }
