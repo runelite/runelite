@@ -4,138 +4,105 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("ck")
 @Implements("TextureProvider")
 public class TextureProvider implements class95 {
-   @ObfuscatedName("nb")
+   @ObfuscatedName("pe")
    @ObfuscatedGetter(
-      intValue = 536280995
+      intValue = -861333793
    )
-   static int field1667;
+   protected static int field1702;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1025101293
+   )
+   int field1703 = 128;
+   @ObfuscatedName("a")
+   class86[] field1704;
    @ObfuscatedName("r")
-   Deque field1668 = new Deque();
-   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1828204919
+      intValue = -1079794749
    )
-   int field1669;
+   int field1705 = 0;
    @ObfuscatedName("z")
+   double field1706 = 1.0D;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -2132328993
+      intValue = -578892877
    )
-   int field1670 = 0;
-   @ObfuscatedName("l")
-   class170 field1671;
-   @ObfuscatedName("i")
-   double field1672 = 1.0D;
-   @ObfuscatedName("x")
-   class86[] field1673;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 415576383
-   )
-   int field1676 = 128;
+   int field1707;
+   @ObfuscatedName("d")
+   Deque field1708 = new Deque();
+   @ObfuscatedName("n")
+   class170 field1710;
+   @ObfuscatedName("mw")
+   static SpritePixels field1712;
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(D)V",
-      garbageValue = "0.9"
+      signature = "(IB)V",
+      garbageValue = "56"
    )
-   public void method2223(double var1) {
-      this.field1672 = var1;
-      this.method2229();
+   public void method2200(int var1) {
+      for(int var2 = 0; var2 < this.field1704.length; ++var2) {
+         class86 var3 = this.field1704[var2];
+         if(var3 != null && var3.field1528 != 0 && var3.field1531) {
+            var3.method1930(var1);
+            var3.field1531 = false;
+         }
+      }
+
    }
 
    @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "2052637982"
+      signature = "(II)Z",
+      garbageValue = "-617916756"
    )
-   public int vmethod2226(int var1) {
-      return this.field1673[var1] != null?this.field1673[var1].field1481:0;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "18"
-   )
-   public boolean vmethod2227(int var1) {
-      return this.field1673[var1].field1483;
+   public boolean vmethod2201(int var1) {
+      return this.field1703 == 64;
    }
 
    @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1009419415"
-   )
-   public void method2229() {
-      for(int var1 = 0; var1 < this.field1673.length; ++var1) {
-         if(null != this.field1673[var1]) {
-            this.field1673[var1].method1929();
-         }
-      }
-
-      this.field1668 = new Deque();
-      this.field1670 = this.field1669;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1234255520"
-   )
-   public void method2230(int var1) {
-      for(int var2 = 0; var2 < this.field1673.length; ++var2) {
-         class86 var3 = this.field1673[var2];
-         if(var3 != null && var3.field1486 != 0 && var3.field1490) {
-            var3.method1935(var1);
-            var3.field1490 = false;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-297443635"
-   )
-   public boolean vmethod2242(int var1) {
-      return this.field1676 == 64;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "-6085327"
+      garbageValue = "638574059"
    )
    @Export("load")
    public int[] load(int var1) {
-      class86 var2 = this.field1673[var1];
-      if(null != var2) {
-         if(var2.field1488 != null) {
-            this.field1668.method3846(var2);
-            var2.field1490 = true;
-            return var2.field1488;
+      class86 var2 = this.field1704[var1];
+      if(var2 != null) {
+         if(null != var2.field1525) {
+            this.field1708.method3877(var2);
+            var2.field1531 = true;
+            return var2.field1525;
          }
 
-         boolean var3 = var2.method1928(this.field1672, this.field1676, this.field1671);
+         boolean var3 = var2.method1934(this.field1706, this.field1703, this.field1710);
          if(var3) {
-            if(this.field1670 == 0) {
-               class86 var4 = (class86)this.field1668.method3849();
+            if(this.field1705 == 0) {
+               class86 var4 = (class86)this.field1708.method3853();
                var4.method1929();
             } else {
-               --this.field1670;
+               --this.field1705;
             }
 
-            this.field1668.method3846(var2);
-            var2.field1490 = true;
-            return var2.field1488;
+            this.field1708.method3877(var2);
+            var2.field1531 = true;
+            return var2.field1525;
          }
       }
 
       return null;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IB)I",
+      garbageValue = "-106"
+   )
+   public int vmethod2203(int var1) {
+      return null != this.field1704[var1]?this.field1704[var1].field1522:0;
    }
 
    @ObfuscatedSignature(
@@ -143,96 +110,83 @@ public class TextureProvider implements class95 {
       garbageValue = "64"
    )
    public TextureProvider(class170 var1, class170 var2, int var3, double var4, int var6) {
-      this.field1671 = var2;
-      this.field1669 = var3;
-      this.field1670 = this.field1669;
-      this.field1672 = var4;
-      this.field1676 = var6;
-      int[] var7 = var1.method3289(0);
+      this.field1710 = var2;
+      this.field1707 = var3;
+      this.field1705 = this.field1707;
+      this.field1706 = var4;
+      this.field1703 = var6;
+      int[] var7 = var1.method3330(0);
       int var8 = var7.length;
-      this.field1673 = new class86[var1.method3299(0)];
+      this.field1704 = new class86[var1.method3319(0)];
 
       for(int var9 = 0; var9 < var8; ++var9) {
-         Buffer var10 = new Buffer(var1.method3290(0, var7[var9]));
-         this.field1673[var7[var9]] = new class86(var10);
+         Buffer var10 = new Buffer(var1.method3309(0, var7[var9]));
+         this.field1704[var7[var9]] = new class86(var10);
       }
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)[B",
-      garbageValue = "1"
+      signature = "(B)V",
+      garbageValue = "26"
    )
-   public static byte[] method2250(CharSequence var0) {
-      int var1 = var0.length();
-      byte[] var2 = new byte[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 <= 0 || var4 >= 128) && (var4 < 160 || var4 > 255)) {
-            if(var4 == 8364) {
-               var2[var3] = -128;
-            } else if(var4 == 8218) {
-               var2[var3] = -126;
-            } else if(var4 == 402) {
-               var2[var3] = -125;
-            } else if(var4 == 8222) {
-               var2[var3] = -124;
-            } else if(var4 == 8230) {
-               var2[var3] = -123;
-            } else if(var4 == 8224) {
-               var2[var3] = -122;
-            } else if(var4 == 8225) {
-               var2[var3] = -121;
-            } else if(var4 == 710) {
-               var2[var3] = -120;
-            } else if(var4 == 8240) {
-               var2[var3] = -119;
-            } else if(var4 == 352) {
-               var2[var3] = -118;
-            } else if(var4 == 8249) {
-               var2[var3] = -117;
-            } else if(var4 == 338) {
-               var2[var3] = -116;
-            } else if(var4 == 381) {
-               var2[var3] = -114;
-            } else if(var4 == 8216) {
-               var2[var3] = -111;
-            } else if(var4 == 8217) {
-               var2[var3] = -110;
-            } else if(var4 == 8220) {
-               var2[var3] = -109;
-            } else if(var4 == 8221) {
-               var2[var3] = -108;
-            } else if(var4 == 8226) {
-               var2[var3] = -107;
-            } else if(var4 == 8211) {
-               var2[var3] = -106;
-            } else if(var4 == 8212) {
-               var2[var3] = -105;
-            } else if(var4 == 732) {
-               var2[var3] = -104;
-            } else if(var4 == 8482) {
-               var2[var3] = -103;
-            } else if(var4 == 353) {
-               var2[var3] = -102;
-            } else if(var4 == 8250) {
-               var2[var3] = -101;
-            } else if(var4 == 339) {
-               var2[var3] = -100;
-            } else if(var4 == 382) {
-               var2[var3] = -98;
-            } else if(var4 == 376) {
-               var2[var3] = -97;
-            } else {
-               var2[var3] = 63;
-            }
-         } else {
-            var2[var3] = (byte)var4;
+   public void method2205() {
+      for(int var1 = 0; var1 < this.field1704.length; ++var1) {
+         if(this.field1704[var1] != null) {
+            this.field1704[var1].method1929();
          }
       }
 
-      return var2;
+      this.field1708 = new Deque();
+      this.field1705 = this.field1707;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "14"
+   )
+   public boolean vmethod2207(int var1) {
+      return this.field1704[var1].field1523;
+   }
+
+   @ObfuscatedName("dj")
+   @ObfuscatedSignature(
+      signature = "(LWidgetNode;ZB)V",
+      garbageValue = "8"
+   )
+   static final void method2217(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      if(var1) {
+         class162.method3212(var2);
+      }
+
+      ObjectComposition.method882(var2);
+      Widget var4 = class24.method600(var3);
+      if(null != var4) {
+         class53.method1101(var4);
+      }
+
+      Friend.method191();
+      if(Client.widgetRoot != -1) {
+         int var5 = Client.widgetRoot;
+         if(class93.method2114(var5)) {
+            ItemComposition.method1119(Widget.widgets[var5], 1);
+         }
+      }
+
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(D)V",
+      garbageValue = "0.9"
+   )
+   public void method2221(double var1) {
+      this.field1706 = var1;
+      this.method2205();
    }
 }

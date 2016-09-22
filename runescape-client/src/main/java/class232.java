@@ -1,7 +1,7 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hb")
+@ObfuscatedName("hi")
 public class class232 {
    @ObfuscatedName("j")
-   static ModIcon field3276;
+   public static class231[] field3276;
 }

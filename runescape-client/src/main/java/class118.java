@@ -2,59 +2,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dk")
+@ObfuscatedName("dh")
 public class class118 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      longValue = -9123447155943715055L
+      longValue = 7224299423400258823L
    )
-   static long field2032;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      longValue = -1632452023942330573L
-   )
-   static long field2035;
+   static long field2056;
 
-   @ObfuscatedName("do")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
-      garbageValue = "2052513545"
+      signature = "(Lclass170;Ljava/lang/String;Ljava/lang/String;I)LModIcon;",
+      garbageValue = "1268092019"
    )
-   static final boolean method2499(Widget var0) {
-      int var1 = var0.contentType;
-      if(var1 == 205) {
-         Client.field440 = 250;
-         return true;
-      } else {
-         int var2;
-         int var3;
-         if(var1 >= 300 && var1 <= 313) {
-            var2 = (var1 - 300) / 2;
-            var3 = var1 & 1;
-            Client.field553.method3499(var2, var3 == 1);
-         }
+   public static ModIcon method2468(class170 var0, String var1, String var2) {
+      int var3 = var0.method3324(var1);
+      int var4 = var0.method3313(var3, var2);
+      return NPC.method763(var0, var3, var4);
+   }
 
-         if(var1 >= 314 && var1 <= 323) {
-            var2 = (var1 - 314) / 2;
-            var3 = var1 & 1;
-            Client.field553.method3500(var2, var3 == 1);
-         }
-
-         if(var1 == 324) {
-            Client.field553.method3501(false);
-         }
-
-         if(var1 == 325) {
-            Client.field553.method3501(true);
-         }
-
-         if(var1 == 326) {
-            Client.field323.method2818(87);
-            Client.field553.method3502(Client.field323);
-            return true;
-         } else {
-            return false;
-         }
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1485228429"
+   )
+   static final void method2471() {
+      Client.field401 = 0;
+      int var0 = (WidgetNode.localPlayer.x >> 7) + class9.baseX;
+      int var1 = KitDefinition.baseY + (WidgetNode.localPlayer.y >> 7);
+      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+         Client.field401 = 1;
       }
+
+      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+         Client.field401 = 1;
+      }
+
+      if(Client.field401 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+         Client.field401 = 0;
+      }
+
    }
 }

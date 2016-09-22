@@ -1,20 +1,30 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fo")
 public class class161 {
-   @ObfuscatedName("pe")
-   static class8 field2659;
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1439488948"
+      signature = "(II)V",
+      garbageValue = "1055113430"
    )
-   static final int method3205(int var0, int var1) {
-      int var2 = var0 + 57 * var1;
-      var2 ^= var2 << 13;
-      int var3 = (15731 * var2 * var2 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
+   static void method3211(int var0) {
+      if(var0 == -1 && !Client.field426) {
+         class186.field3015.method3671();
+         class186.field3016 = 1;
+         class186.field3017 = null;
+      } else if(var0 != -1 && var0 != Client.field496 && Client.field517 != 0 && !Client.field426) {
+         class171 var1 = class8.field140;
+         int var2 = Client.field517;
+         class186.field3016 = 1;
+         class186.field3017 = var1;
+         class186.field3019 = var0;
+         class186.field3022 = 0;
+         class177.field2951 = var2;
+         class186.field3020 = false;
+         class21.field585 = 2;
+      }
+
+      Client.field496 = var0;
    }
 }

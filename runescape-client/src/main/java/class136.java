@@ -1,53 +1,60 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ea")
+@ObfuscatedName("ef")
 public abstract class class136 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1920699192"
+      garbageValue = "-863152177"
    )
-   abstract void vmethod3173();
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "10"
-   )
-   abstract int vmethod3169(int var1, int var2);
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Lclass170;Lclass170;Lclass170;Lclass170;I)V",
-      garbageValue = "-1831058410"
-   )
-   public static void method2910(class170 var0, class170 var1, class170 var2, class170 var3) {
-      class214.field3186 = var0;
-      class214.field3188 = var1;
-      class62.field1264 = var2;
-      class178.field2951 = var3;
-      Widget.widgets = new Widget[class214.field3186.method3300()][];
-      Widget.validInterfaces = new boolean[class214.field3186.method3300()];
-   }
-
-   @ObfuscatedName("da")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-320130459"
-   )
-   static final void method2911(int var0) {
-      if(class175.method3419(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
-
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(null != var3) {
-               var3.field2932 = 0;
-               var3.field2945 = 0;
-            }
-         }
-
+   static void method2891() {
+      if(class33.field740) {
+         class33.field737 = null;
+         class154.field2317 = null;
+         class33.field753 = null;
+         class130.field2124 = null;
+         class137.field2153 = null;
+         class33.field739 = null;
+         class172.field2765 = null;
+         class33.field741 = null;
+         class93.field1651 = null;
+         class47.field1069 = null;
+         Client.field566 = null;
+         class79.field1466 = null;
+         class1.field27 = null;
+         class157.field2356 = null;
+         class33.field743 = null;
+         ChatMessages.field273 = null;
+         class1.field25 = null;
+         class137.field2145 = null;
+         class1.field20 = null;
+         class129.field2119 = null;
+         class9.field149 = null;
+         class138.field2159 = null;
+         class186.field3016 = 1;
+         class186.field3017 = null;
+         class186.field3019 = -1;
+         class186.field3022 = -1;
+         class177.field2951 = 0;
+         class186.field3020 = false;
+         class21.field585 = 2;
+         class163.method3216(true);
+         class33.field740 = false;
       }
    }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1886051607"
+   )
+   abstract int vmethod3149(int var1, int var2);
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2077774028"
+   )
+   public abstract void vmethod3147();
 }

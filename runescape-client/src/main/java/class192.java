@@ -1,20 +1,16 @@
-import java.io.File;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("gj")
 public class class192 {
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 246317911
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "72"
    )
-   static int field3104;
-   @ObfuscatedName("dt")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
-   @ObfuscatedName("i")
-   public static File field3107;
-   @ObfuscatedName("bg")
-   static class171 field3108;
+   static void method3774(String var0, String var1, String var2) {
+      class33.loginMessage1 = var0;
+      class33.loginMessage2 = var1;
+      class33.loginMessage3 = var2;
+   }
 }

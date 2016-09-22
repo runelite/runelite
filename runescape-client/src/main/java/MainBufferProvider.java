@@ -13,50 +13,50 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("ce")
 @Implements("MainBufferProvider")
 public final class MainBufferProvider extends BufferProvider {
-   @ObfuscatedName("x")
-   Component field1462;
+   @ObfuscatedName("a")
+   Component field1503;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "138016631"
+   )
+   @Export("draw")
+   public final void draw(Graphics var1, int var2, int var3) {
+      var1.drawImage(super.image, var2, var3, this.field1503);
+   }
+
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-1906122185"
+      garbageValue = "-557590795"
    )
    @Export("init")
-   public final void init(int var1, int var2, Component var3) {
+   final void init(int var1, int var2, Component var3) {
       super.width = var1;
       super.height = var2;
-      super.pixels = new int[var1 * var2 + 1];
+      super.pixels = new int[var2 * var1 + 1];
       DataBufferInt var4 = new DataBufferInt(super.pixels, super.pixels.length);
       DirectColorModel var5 = new DirectColorModel(32, 16711680, '\uff00', 255);
       WritableRaster var6 = Raster.createWritableRaster(var5.createCompatibleSampleModel(super.width, super.height), var4, (Point)null);
       super.image = new BufferedImage(var5, var6, false, new Hashtable());
-      this.field1462 = var3;
-      this.method1711();
+      this.field1503 = var3;
+      this.method1716();
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "610132572"
-   )
-   @Export("draw")
-   public final void draw(Graphics var1, int var2, int var3) {
-      var1.drawImage(super.image, var2, var3, this.field1462);
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "2029268660"
+      signature = "(Ljava/awt/Graphics;IIIIB)V",
+      garbageValue = "1"
    )
    @Export("drawSub")
    public final void drawSub(Graphics var1, int var2, int var3, int var4, int var5) {
       Shape var6 = var1.getClip();
       var1.clipRect(var2, var3, var4, var5);
-      var1.drawImage(super.image, 0, 0, this.field1462);
+      var1.drawImage(super.image, 0, 0, this.field1503);
       var1.setClip(var6);
    }
 }

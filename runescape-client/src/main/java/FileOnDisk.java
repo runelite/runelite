@@ -8,42 +8,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("ht")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("i")
+   @ObfuscatedName("n")
+   public static short[] field3260;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -196499901
-   )
-   static int field3259;
-   @ObfuscatedName("x")
-   @Export("file")
-   RandomAccessFile file;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      longValue = 4327789691613402203L
-   )
-   @Export("position")
-   long position;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      longValue = 7146396580059741643L
+      longValue = 4002942151660187767L
    )
    @Export("length")
    long length;
-
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      longValue = 3188358527691333459L
+   )
+   @Export("position")
+   long position;
    @ObfuscatedName("x")
-   final void method4134(long var1) throws IOException {
+   static Widget field3263;
+   @ObfuscatedName("a")
+   @Export("file")
+   RandomAccessFile file;
+
+   @ObfuscatedName("a")
+   final void method4174(long var1) throws IOException {
       this.file.seek(var1);
       this.position = var1;
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "-31"
+      signature = "([BIII)V",
+      garbageValue = "1018248286"
    )
-   public final void method4135(byte[] var1, int var2, int var3) throws IOException {
+   public final void method4175(byte[] var1, int var2, int var3) throws IOException {
       if(this.position + (long)var3 > this.length) {
          this.file.seek(1L + this.length);
          this.file.write(1);
@@ -54,34 +53,35 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-443189957"
-   )
-   public final void method4136() throws IOException {
-      if(null != this.file) {
-         this.file.close();
-         this.file = null;
-      }
-
-   }
-
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-103520622"
+      signature = "([BIIS)I",
+      garbageValue = "19703"
    )
-   public final long method4137() throws IOException {
-      return this.file.length();
+   public final int method4178(byte[] var1, int var2, int var3) throws IOException {
+      int var4 = this.file.read(var1, var2, var3);
+      if(var4 > 0) {
+         this.position += (long)var4;
+      }
+
+      return var4;
    }
 
    protected void finalize() throws Throwable {
-      if(this.file != null) {
+      if(null != this.file) {
          System.out.println("");
-         this.method4136();
+         this.method4197();
       }
 
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "826301400"
+   )
+   public final long method4180() throws IOException {
+      return this.file.length();
    }
 
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
@@ -105,17 +105,16 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "1850773497"
+      signature = "(S)V",
+      garbageValue = "-15894"
    )
-   public final int method4154(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.file.read(var1, var2, var3);
-      if(var4 > 0) {
-         this.position += (long)var4;
+   public final void method4197() throws IOException {
+      if(this.file != null) {
+         this.file.close();
+         this.file = null;
       }
 
-      return var4;
    }
 }
