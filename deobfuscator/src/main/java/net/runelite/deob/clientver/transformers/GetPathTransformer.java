@@ -28,11 +28,74 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob;
+package net.runelite.deob.clientver.transformers;
 
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
+import net.runelite.asm.attributes.code.instructions.LDC_W;
+import net.runelite.asm.attributes.code.instructions.Pop;
+import net.runelite.deob.Transformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public interface Deobfuscator
+public class GetPathTransformer implements Transformer
 {
-	void run(ClassGroup group);
+	private static final Logger logger = LoggerFactory.getLogger(GetPathTransformer.class);
+	
+	private boolean done = false;
+
+	@Override
+	public void transform(ClassGroup group)
+	{
+		ClassFile cf = group.findClass("client");
+
+		for (Method m : cf.getMethods().getMethods())
+		{
+			transform(m);
+		}
+
+		logger.info("Transformed: " + done);
+	}
+
+	private void transform(Method m)
+	{
+		int count = 0;
+		
+		if (m.getCode() == null)
+			return;
+
+		for (Instruction i : m.getCode().getInstructions().getInstructions())
+		{
+			if (i instanceof InvokeInstruction)
+			{
+				InvokeInstruction ii = (InvokeInstruction) i;
+
+				if (ii.getMethod().getName().equals("getPath"))
+				{
+					if (++count == 2)
+					{
+						removeInvoke(i);
+						done = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	private void removeInvoke(Instruction i)
+	{
+		Instructions ins = i.getInstructions();
+
+		int idx = ins.getInstructions().indexOf(i);
+
+		ins.remove(i);
+		ins.getInstructions().add(idx, new Pop(ins)); // pop File
+		ins.getInstructions().add(idx + 1, new LDC_W(ins, ""));
+	}
+
 }

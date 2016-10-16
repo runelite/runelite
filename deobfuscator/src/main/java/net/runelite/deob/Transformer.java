@@ -32,7 +32,7 @@ package net.runelite.deob;
 
 import net.runelite.asm.ClassGroup;
 
-public interface Deobfuscator
+public interface Transformer
 {
-	void run(ClassGroup group);
+	void transform(ClassGroup group);
 }
