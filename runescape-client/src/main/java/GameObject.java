@@ -1,204 +1,187 @@
-import java.io.File;
-import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cz")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 938986241
-   )
-   @Export("offsetX")
-   int offsetX;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1003454913
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -743780759
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 882007089
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1587795339
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 267022967
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("z")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1793440127
-   )
-   @Export("relativeY")
-   int relativeY;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1424716217
-   )
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 942441481
+      intValue = 456667941
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("x")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -771152321
+      intValue = 1010014287
    )
-   int field1756;
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 1647944459
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 288083649
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -2133269533
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1982442285
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -462164429
+   )
+   @Export("offsetX")
+   int offsetX;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 756169809
+      intValue = 715863145
    )
-   int field1757;
-   @ObfuscatedName("u")
+   @Export("relativeY")
+   int relativeY;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -324064097
+      intValue = 275875435
    )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("ng")
-   static class58 field1759;
-   @ObfuscatedName("j")
+   @Export("offsetY")
+   int offsetY;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1005712041
+      intValue = -2129482095
+   )
+   int field1708;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1444904125
+   )
+   int field1709;
+   @ObfuscatedName("z")
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1559209305
    )
    @Export("flags")
    int flags = 0;
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-1717439265"
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1750959551
    )
-   static boolean method2223(int var0, int var1) {
-      return var0 != 4 || var1 < 8;
-   }
+   @Export("hash")
+   public int hash = 0;
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)LFileOnDisk;",
-      garbageValue = "-150572970"
+      signature = "(LBuffer;IIIIIIB)V",
+      garbageValue = "8"
    )
-   public static FileOnDisk method2224(String var0, String var1, boolean var2) {
-      File var3 = new File(class152.field2300, "preferences" + var0 + ".dat");
-      if(var3.exists()) {
-         try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
-            ;
-         }
-      }
+   static final void method2179(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class5.tileSettings[var1][var2][var3] = 0;
 
-      String var4 = "";
-      if(class146.field2248 == 33) {
-         var4 = "_rc";
-      } else if(class146.field2248 == 34) {
-         var4 = "_wip";
-      }
+         while(true) {
+            var7 = var0.method2481();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class5.tileHeights[0][var2];
+                  int var11 = var2 + 932731 + var4;
+                  int var12 = var5 + 556238 + var3;
+                  int var13 = class59.method1227('넵' + var11, 91923 + var12, 4) - 128 + (class59.method1227(var11 + 10294, '鎽' + var12, 2) - 128 >> 1) + (class59.method1227(var11, var12, 1) - 128 >> 2);
+                  var13 = 35 + (int)((double)var13 * 0.3D);
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
+                  }
 
-      File var5 = new File(class228.field3259, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
-      FileOnDisk var6;
-      if(!var2 && var5.exists()) {
-         try {
-            var6 = new FileOnDisk(var5, "rw", 10000L);
-            return var6;
-         } catch (IOException var8) {
-            ;
-         }
-      }
-
-      try {
-         var6 = new FileOnDisk(var3, "rw", 10000L);
-         return var6;
-      } catch (IOException var7) {
-         throw new RuntimeException();
-      }
-   }
-
-   @ObfuscatedName("cp")
-   @ObfuscatedSignature(
-      signature = "(LWidget;IIZI)V",
-      garbageValue = "513329885"
-   )
-   static void method2225(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.field2823 == 0) {
-         var0.width = var0.field2827;
-      } else if(var0.field2823 == 1) {
-         var0.width = var1 - var0.field2827;
-      } else if(var0.field2823 == 2) {
-         var0.width = var0.field2827 * var1 >> 14;
-      }
-
-      if(var0.field2824 == 0) {
-         var0.height = var0.field2828;
-      } else if(var0.field2824 == 1) {
-         var0.height = var2 - var0.field2828;
-      } else if(var0.field2824 == 2) {
-         var0.height = var2 * var0.field2828 >> 14;
-      }
-
-      if(var0.field2823 == 4) {
-         var0.width = var0.height * var0.field2833 / var0.field2834;
-      }
-
-      if(var0.field2824 == 4) {
-         var0.height = var0.field2834 * var0.width / var0.field2833;
-      }
-
-      if(Client.field558 && var0.type == 0) {
-         if(var0.height < 5 && var0.width < 5) {
-            var0.height = 5;
-            var0.width = 5;
-         } else {
-            if(var0.height <= 0) {
-               var0.height = 5;
+                  var8[var3] = 8 * -var13;
+               } else {
+                  class5.tileHeights[var1][var2][var3] = class5.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
             }
 
-            if(var0.width <= 0) {
-               var0.width = 5;
+            if(var7 == 1) {
+               int var14 = var0.method2481();
+               if(var14 == 1) {
+                  var14 = 0;
+               }
+
+               if(var1 == 0) {
+                  class5.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class5.tileHeights[var1][var2][var3] = class5.tileHeights[var1 - 1][var2][var3] - 8 * var14;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class5.field67[var1][var2][var3] = var0.method2601();
+               class5.field69[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class62.field1261[var1][var2][var3] = (byte)(var6 + (var7 - 2) & 3);
+            } else if(var7 <= 81) {
+               class5.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class220.field3213[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.method2481();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.method2481();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.method2481();
             }
          }
       }
 
-      if(var0.contentType == 1337) {
-         Client.field452 = var0;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "-3"
+   )
+   public static int method2180(int var0, int var1) {
+      int var2;
+      if(var1 > var0) {
+         var2 = var0;
+         var0 = var1;
+         var1 = var2;
       }
 
-      if(var3 && null != var0.field2902 && (var4 != var0.width || var0.height != var5)) {
-         class0 var6 = new class0();
-         var6.field2 = var0;
-         var6.field7 = var0.field2902;
-         Client.field479.method3849(var6);
+      while(var1 != 0) {
+         var2 = var0 % var1;
+         var0 = var1;
+         var1 = var2;
       }
 
+      return var0;
    }
 }

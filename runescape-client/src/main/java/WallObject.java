@@ -4,95 +4,61 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cy")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -2125835859
+      intValue = -1062312009
    )
    @Export("x")
    int x;
-   @ObfuscatedName("v")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -2097589959
+      intValue = -1031328835
    )
    @Export("y")
    int y;
-   @ObfuscatedName("n")
-   @Export("renderable2")
-   public Renderable renderable2;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 891795181
+      intValue = -558190651
    )
-   int field1615;
-   @ObfuscatedName("t")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("a")
+   int field1570;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 329673587
-   )
-   @Export("floor")
-   int floor;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -2051919887
+      intValue = 1601799597
    )
    @Export("hash")
    public int hash = 0;
    @ObfuscatedName("g")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("m")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1482240209
+      intValue = 2135688295
    )
-   int field1619 = 0;
+   int field1574 = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1383415985
+   )
+   @Export("floor")
+   int floor;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 2057334241
+   )
+   int field1576;
+
    @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -808726379
-   )
-   int field1620;
-   @ObfuscatedName("qx")
-   protected static java.awt.Frame field1621;
-
-   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(I)[Lclass21;",
-      garbageValue = "-296515580"
+      signature = "(CI)Z",
+      garbageValue = "-348068628"
    )
-   static class21[] method2110() {
-      return new class21[]{class21.field578, class21.field580, class21.field581, class21.field587};
-   }
-
-   @ObfuscatedName("ah")
-   @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "98"
-   )
-   static final void method2111(boolean var0) {
-      for(int var1 = 0; var1 < Client.field319; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.field320[var1]];
-         int var3 = (Client.field320[var1] << 14) + 536870912;
-         if(var2 != null && var2.vmethod785() && var0 == var2.composition.isVisible && var2.composition.method811()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field843 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field472[var4][var5] == Client.field387) {
-                     continue;
-                  }
-
-                  Client.field472[var4][var5] = Client.field387;
-               }
-
-               if(!var2.composition.field942) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               class16.region.method1959(Item.plane, var2.x, var2.y, class116.method2462(var2.field843 * 64 - 64 + var2.x, var2.y + (var2.field843 * 64 - 64), Item.plane), var2.field843 * 64 - 64 + 60, var2, var2.angle, var3, var2.field842);
-            }
-         }
-      }
-
+   public static boolean method2077(char var0) {
+      return var0 >= 48 && var0 <= 57;
    }
 }

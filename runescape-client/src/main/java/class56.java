@@ -2,74 +2,43 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bk")
 public class class56 extends CacheableNode {
-   @ObfuscatedName("a")
-   public static class170 field1233;
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
+   public static class170 field1198;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 368985955
+      intValue = -631312065
    )
-   public static int field1234;
-   @ObfuscatedName("v")
-   static NodeCache field1235 = new NodeCache(64);
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 2031325951
-   )
-   public int field1236 = 0;
-   @ObfuscatedName("na")
-   @ObfuscatedGetter(
-      intValue = 930545741
-   )
-   static int field1238;
+   public int field1199 = 0;
+   @ObfuscatedName("t")
+   public static NodeCache field1203 = new NodeCache(64);
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "65408"
+      signature = "(LBuffer;B)V",
+      garbageValue = "-64"
    )
-   void method1177(Buffer var1) {
+   void method1137(Buffer var1) {
       while(true) {
-         int var2 = var1.method2528();
+         int var2 = var1.method2481();
          if(var2 == 0) {
             return;
          }
 
-         this.method1178(var1, var2);
+         this.method1138(var1, var2);
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "1227446211"
+      garbageValue = "255620902"
    )
-   void method1178(Buffer var1, int var2) {
+   void method1138(Buffer var1, int var2) {
       if(var2 == 5) {
-         this.field1236 = var1.method2717();
+         this.field1199 = var1.method2668();
       }
 
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(Lclass125;I)I",
-      garbageValue = "150580470"
-   )
-   static int method1185(class125 var0) {
-      int var1 = var0.method2792(2);
-      int var2;
-      if(var1 == 0) {
-         var2 = 0;
-      } else if(var1 == 1) {
-         var2 = var0.method2792(5);
-      } else if(var1 == 2) {
-         var2 = var0.method2792(8);
-      } else {
-         var2 = var0.method2792(11);
-      }
-
-      return var2;
    }
 }

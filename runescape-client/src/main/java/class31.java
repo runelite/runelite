@@ -2,72 +2,67 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("ac")
 public final class class31 extends Renderable {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1688330865
-   )
-   int field710;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 2056800229
-   )
-   int field712;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 968598363
-   )
-   int field713;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -508155855
-   )
-   int field715;
-   @ObfuscatedName("n")
-   Sequence field716;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1949268189
-   )
-   int field717 = 0;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1805414549
-   )
-   int field718;
    @ObfuscatedName("m")
-   boolean field719 = false;
-   @ObfuscatedName("qt")
    @ObfuscatedGetter(
-      intValue = 1603001181
+      intValue = 255025393
    )
-   protected static int field720;
-   @ObfuscatedName("r")
+   int field677;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1843970837
+      intValue = -630527445
    )
-   int field721;
+   int field679;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -795031047
+      intValue = 1515489229
    )
-   int field722 = 0;
+   int field680;
+   @ObfuscatedName("h")
+   boolean field681 = false;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1369202925
+   )
+   int field682;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 24058765
+   )
+   int field683;
+   @ObfuscatedName("y")
+   Sequence field684;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1275001189
+   )
+   int field685;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -669731767
+   )
+   int field686 = 0;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1187155123
+   )
+   int field687 = 0;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-241195043"
+      garbageValue = "-1765194617"
    )
-   final void method685(int var1) {
-      if(!this.field719) {
-         this.field722 += var1;
+   final void method677(int var1) {
+      if(!this.field681) {
+         this.field687 += var1;
 
-         while(this.field722 > this.field716.field1015[this.field717]) {
-            this.field722 -= this.field716.field1015[this.field717];
-            ++this.field717;
-            if(this.field717 >= this.field716.field1009.length) {
-               this.field719 = true;
+         while(this.field687 > this.field684.field981[this.field686]) {
+            this.field687 -= this.field684.field981[this.field686];
+            ++this.field686;
+            if(this.field686 >= this.field684.field969.length) {
+               this.field681 = true;
                break;
             }
          }
@@ -75,48 +70,97 @@ public final class class31 extends Renderable {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(I)LModel;",
-      garbageValue = "1853658170"
+      signature = "(LPlayer;III)V",
+      garbageValue = "1444146536"
    )
-   protected final Model getModel() {
-      class45 var1 = class49.method1029(this.field713);
-      Model var2;
-      if(!this.field719) {
-         var2 = var1.method940(this.field717);
-      } else {
-         var2 = var1.method940(-1);
+   static void method678(Player var0, int var1, int var2) {
+      if(var0.animation == var1 && var1 != -1) {
+         int var3 = class4.getAnimation(var1).replyMode;
+         if(var3 == 1) {
+            var0.actionFrame = 0;
+            var0.field835 = 0;
+            var0.actionAnimationDisable = var2;
+            var0.field837 = 0;
+         }
+
+         if(var3 == 2) {
+            var0.field837 = 0;
+         }
+      } else if(var1 == -1 || var0.animation == -1 || class4.getAnimation(var1).field970 >= class4.getAnimation(var0.animation).field970) {
+         var0.animation = var1;
+         var0.actionFrame = 0;
+         var0.field835 = 0;
+         var0.actionAnimationDisable = var2;
+         var0.field837 = 0;
+         var0.field821 = var0.field855;
       }
 
-      return var2 == null?null:var2;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(B)LModel;",
+      garbageValue = "-26"
+   )
+   protected final Model getModel() {
+      class45 var1 = class107.method2269(this.field685);
+      Model var2;
+      if(!this.field681) {
+         var2 = var1.method915(this.field686);
+      } else {
+         var2 = var1.method915(-1);
+      }
+
+      return null == var2?null:var2;
    }
 
    class31(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      this.field713 = var1;
-      this.field710 = var2;
-      this.field721 = var3;
-      this.field718 = var4;
-      this.field715 = var5;
-      this.field712 = var6 + var7;
-      int var8 = class49.method1029(this.field713).field1034;
+      this.field685 = var1;
+      this.field679 = var2;
+      this.field680 = var3;
+      this.field677 = var4;
+      this.field682 = var5;
+      this.field683 = var6 + var7;
+      int var8 = class107.method2269(this.field685).field991;
       if(var8 != -1) {
-         this.field719 = false;
-         this.field716 = Friend.getAnimation(var8);
+         this.field681 = false;
+         this.field684 = class4.getAnimation(var8);
       } else {
-         this.field719 = true;
+         this.field681 = true;
       }
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lclass170;Lclass170;Lclass170;I)V",
-      garbageValue = "-958245125"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1981257873"
    )
-   public static void method692(class170 var0, class170 var1, class170 var2) {
-      class51.field1134 = var0;
-      class51.field1124 = var1;
-      class51.field1125 = var2;
+   public static int method682(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class18.method192(var0.charAt(var3));
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "449664079"
+   )
+   public static void method683() {
+      if(class140.keyboard != null) {
+         class140 var0 = class140.keyboard;
+         synchronized(class140.keyboard) {
+            class140.keyboard = null;
+         }
+      }
+
    }
 }

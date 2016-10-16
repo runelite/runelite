@@ -1,81 +1,65 @@
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dr")
+@ObfuscatedName("dd")
 public class class117 {
-   @ObfuscatedName("cj")
-   @ObfuscatedGetter(
-      intValue = -528131235
-   )
-   public static int field2047;
-   @ObfuscatedName("jw")
-   @ObfuscatedGetter(
-      intValue = 804921739
-   )
-   static int field2048;
-   @ObfuscatedName("w")
-   public static Buffer field2050;
+   @ObfuscatedName("cz")
+   static class227 field2001;
+   @ObfuscatedName("f")
+   static int[] field2002;
+   @ObfuscatedName("pi")
+   static class224 field2004;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "446107821"
+      signature = "(I)V",
+      garbageValue = "-2091780087"
    )
-   static long method2464() {
-      try {
-         URL var0 = new URL(Friend.method189("services", false) + "m=accountappeal/login.ws");
-         URLConnection var1 = var0.openConnection();
-         var1.setRequestProperty("connection", "close");
-         var1.setDoInput(true);
-         var1.setDoOutput(true);
-         var1.setConnectTimeout(5000);
-         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
-         var2.write("data1=req");
-         var2.flush();
-         InputStream var3 = var1.getInputStream();
-         Buffer var4 = new Buffer(new byte[1000]);
-
-         do {
-            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
-            if(var5 == -1) {
-               var4.offset = 0;
-               long var8 = var4.method2534();
-               return var8;
-            }
-
-            var4.offset += var5;
-         } while(var4.offset < 1000);
-
-         return 0L;
-      } catch (Exception var7) {
-         return 0L;
-      }
+   static final void method2418() {
+      class48.field1035.reset();
+      class43.field964.reset();
+      KitDefinition.field1015.reset();
+      class167.method3220();
+      NPCComposition.field870.reset();
+      NPCComposition.npcModelCache.reset();
+      class167.method3224();
+      Sequence.method910();
+      class45.field988.reset();
+      class45.field1003.reset();
+      class50.field1063.reset();
+      class56.field1203.reset();
+      class51.field1076.reset();
+      class51.spriteCache.reset();
+      class51.field1078.reset();
+      class141.method2927();
+      PlayerComposition.field2958.reset();
+      Widget.field2792.reset();
+      Widget.field2793.reset();
+      Widget.field2794.reset();
+      Widget.field2815.reset();
+      ((TextureProvider)class94.field1625).method2157();
+      class23.field585.reset();
+      class23.field583.method3263();
+      Sequence.field983.method3263();
+      class124.field2043.method3263();
+      Client.field443.method3263();
+      class24.field603.method3263();
+      class47.field1024.method3263();
+      class192.field3101.method3263();
+      class152.field2281.method3263();
+      class154.field2299.method3263();
+      class128.field2074.method3263();
+      Buffer.field2033.method3263();
+      class188.field3046.method3263();
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lclass170;Lclass170;I)V",
-      garbageValue = "1631192360"
+      signature = "(III)I",
+      garbageValue = "-211683353"
    )
-   public static void method2465(class170 var0, class170 var1) {
-      class45.field1031 = var0;
-      class221.field3216 = var1;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "2"
-   )
-   static final int method2466(int var0, int var1) {
-      int var2 = var0 + 57 * var1;
-      var2 ^= var2 << 13;
-      int var3 = 1376312589 + var2 * (789221 + var2 * var2 * 15731) & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
+   static int method2419(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method3775((long)var0);
+      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
    }
 }

@@ -1,164 +1,238 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("i")
+@ObfuscatedName("f")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("a")
+   @ObfuscatedName("fj")
+   @ObfuscatedGetter(
+      intValue = 1698302853
+   )
+   @Export("cameraZ")
+   static int cameraZ;
+   @ObfuscatedName("jc")
+   static Widget[] field119;
+   @ObfuscatedName("s")
    @Export("name")
    String name;
 
-   @ObfuscatedName("ch")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
-      garbageValue = "914993807"
+      signature = "(B)V",
+      garbageValue = "-35"
    )
-   @Export("addMenuEntry")
-   static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            ++Client.menuOptionCount;
+   static final void method103() {
+      int var0 = 64 + class22.field575 * 128;
+      int var1 = 64 + class54.field1138 * 128;
+      int var2 = class79.method1656(var0, var1, class59.plane) - class9.field148;
+      if(class13.cameraX < var0) {
+         class13.cameraX += class0.field12 + (var0 - class13.cameraX) * class1.field23 / 1000;
+         if(class13.cameraX > var0) {
+            class13.cameraX = var0;
          }
-
       }
+
+      if(class13.cameraX > var0) {
+         class13.cameraX -= (class13.cameraX - var0) * class1.field23 / 1000 + class0.field12;
+         if(class13.cameraX < var0) {
+            class13.cameraX = var0;
+         }
+      }
+
+      if(cameraZ < var2) {
+         cameraZ += class1.field23 * (var2 - cameraZ) / 1000 + class0.field12;
+         if(cameraZ > var2) {
+            cameraZ = var2;
+         }
+      }
+
+      if(cameraZ > var2) {
+         cameraZ -= class1.field23 * (cameraZ - var2) / 1000 + class0.field12;
+         if(cameraZ < var2) {
+            cameraZ = var2;
+         }
+      }
+
+      if(class154.cameraY < var1) {
+         class154.cameraY += (var1 - class154.cameraY) * class1.field23 / 1000 + class0.field12;
+         if(class154.cameraY > var1) {
+            class154.cameraY = var1;
+         }
+      }
+
+      if(class154.cameraY > var1) {
+         class154.cameraY -= (class154.cameraY - var1) * class1.field23 / 1000 + class0.field12;
+         if(class154.cameraY < var1) {
+            class154.cameraY = var1;
+         }
+      }
+
+      var0 = class51.field1099 * 128 + 64;
+      var1 = 64 + class8.field127 * 128;
+      var2 = class79.method1656(var0, var1, class59.plane) - class4.field63;
+      int var3 = var0 - class13.cameraX;
+      int var4 = var2 - cameraZ;
+      int var5 = var1 - class154.cameraY;
+      int var6 = (int)Math.sqrt((double)(var3 * var3 + var5 * var5));
+      int var7 = (int)(Math.atan2((double)var4, (double)var6) * 325.949D) & 2047;
+      int var8 = (int)(Math.atan2((double)var3, (double)var5) * -325.949D) & 2047;
+      if(var7 < 128) {
+         var7 = 128;
+      }
+
+      if(var7 > 383) {
+         var7 = 383;
+      }
+
+      if(class125.cameraPitch < var7) {
+         class125.cameraPitch += class112.field1939 * (var7 - class125.cameraPitch) / 1000 + class191.field3082;
+         if(class125.cameraPitch > var7) {
+            class125.cameraPitch = var7;
+         }
+      }
+
+      if(class125.cameraPitch > var7) {
+         class125.cameraPitch -= class191.field3082 + class112.field1939 * (class125.cameraPitch - var7) / 1000;
+         if(class125.cameraPitch < var7) {
+            class125.cameraPitch = var7;
+         }
+      }
+
+      int var9 = var8 - class166.cameraYaw;
+      if(var9 > 1024) {
+         var9 -= 2048;
+      }
+
+      if(var9 < -1024) {
+         var9 += 2048;
+      }
+
+      if(var9 > 0) {
+         class166.cameraYaw += class112.field1939 * var9 / 1000 + class191.field3082;
+         class166.cameraYaw &= 2047;
+      }
+
+      if(var9 < 0) {
+         class166.cameraYaw -= -var9 * class112.field1939 / 1000 + class191.field3082;
+         class166.cameraYaw &= 2047;
+      }
+
+      int var10 = var8 - class166.cameraYaw;
+      if(var10 > 1024) {
+         var10 -= 2048;
+      }
+
+      if(var10 < -1024) {
+         var10 += 2048;
+      }
+
+      if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
+         class166.cameraYaw = var8;
+      }
+
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("ad")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-31650611"
+      signature = "(ZI)V",
+      garbageValue = "-1362561095"
    )
-   static void method108() {
-      XItemContainer.itemContainers = new XHashTable(32);
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1993016040"
-   )
-   public static void method109() {
-      class51.field1126.reset();
-      class51.spriteCache.reset();
-      class51.field1128.reset();
-   }
-
-   @ObfuscatedName("bf")
-   @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "-2"
-   )
-   static final void method110(int var0, int var1) {
-      if(var0 != class159.field2372 || var1 != WidgetNode.field66) {
-         class159.field2372 = var0;
-         WidgetNode.field66 = var1;
-         XItemContainer.setGameState(25);
-         class38.method779("Loading - please wait.", true);
-         int var2 = class9.baseX;
-         int var3 = KitDefinition.baseY;
-         class9.baseX = (var0 - 6) * 8;
-         KitDefinition.baseY = (var1 - 6) * 8;
-         int var4 = class9.baseX - var2;
-         int var5 = KitDefinition.baseY - var3;
-         var2 = class9.baseX;
-         var3 = KitDefinition.baseY;
-
-         int var6;
-         int var8;
-         for(var6 = 0; var6 < '耀'; ++var6) {
-            NPC var7 = Client.cachedNPCs[var6];
-            if(var7 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var7.pathX[var8] -= var4;
-                  var7.pathY[var8] -= var5;
-               }
-
-               var7.x -= 128 * var4;
-               var7.y -= 128 * var5;
-            }
-         }
-
-         for(var6 = 0; var6 < 2048; ++var6) {
-            Player var20 = Client.cachedPlayers[var6];
-            if(var20 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var20.pathX[var8] -= var4;
-                  var20.pathY[var8] -= var5;
-               }
-
-               var20.x -= var4 * 128;
-               var20.y -= 128 * var5;
-            }
-         }
-
-         byte var19 = 0;
-         byte var18 = 104;
-         byte var21 = 1;
-         if(var4 < 0) {
-            var19 = 103;
-            var18 = -1;
-            var21 = -1;
-         }
-
-         byte var9 = 0;
-         byte var10 = 104;
-         byte var11 = 1;
-         if(var5 < 0) {
-            var9 = 103;
-            var10 = -1;
-            var11 = -1;
-         }
-
-         int var13;
-         for(int var12 = var19; var18 != var12; var12 += var21) {
-            for(var13 = var9; var13 != var10; var13 += var11) {
-               int var14 = var12 + var4;
-               int var15 = var13 + var5;
-
-               for(int var16 = 0; var16 < 4; ++var16) {
-                  if(var14 >= 0 && var15 >= 0 && var14 < 104 && var15 < 104) {
-                     Client.groundItemDeque[var16][var12][var13] = Client.groundItemDeque[var16][var14][var15];
-                  } else {
-                     Client.groundItemDeque[var16][var12][var13] = null;
+   static final void method104(boolean var0) {
+      for(int var1 = 0; var1 < Client.field309; ++var1) {
+         NPC var2 = Client.cachedNPCs[Client.field307[var1]];
+         int var3 = (Client.field307[var1] << 14) + 536870912;
+         if(null != var2 && var2.vmethod767() && var0 == var2.composition.isVisible && var2.composition.method801()) {
+            int var4 = var2.x >> 7;
+            int var5 = var2.y >> 7;
+            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
+               if(var2.field805 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
+                  if(Client.field373[var4][var5] == Client.field374) {
+                     continue;
                   }
+
+                  Client.field373[var4][var5] = Client.field374;
                }
+
+               if(!var2.composition.field900) {
+                  var3 -= Integer.MIN_VALUE;
+               }
+
+               class114.region.method1926(class59.plane, var2.x, var2.y, class79.method1656(var2.x + (var2.field805 * 64 - 64), var2.y + (var2.field805 * 64 - 64), class59.plane), var2.field805 * 64 - 64 + 60, var2, var2.angle, var3, var2.field860);
             }
          }
+      }
 
-         for(class16 var17 = (class16)Client.field425.method3854(); null != var17; var17 = (class16)Client.field425.method3869()) {
-            var17.field218 -= var4;
-            var17.field219 -= var5;
-            if(var17.field218 < 0 || var17.field219 < 0 || var17.field218 >= 104 || var17.field219 >= 104) {
-               var17.unlink();
-            }
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lclass125;B)V",
+      garbageValue = "22"
+   )
+   static final void method105(class125 var0) {
+      var0.method2750();
+      int var1 = Client.localInteractingIndex;
+      Player var2 = TextureProvider.localPlayer = Client.cachedPlayers[var1] = new Player();
+      var2.field48 = var1;
+      int var3 = var0.method2762(30);
+      byte var4 = (byte)(var3 >> 28);
+      int var5 = var3 >> 14 & 16383;
+      int var6 = var3 & 16383;
+      var2.pathX[0] = var5 - class23.baseX;
+      var2.x = (var2.pathX[0] << 7) + (var2.method9() << 6);
+      var2.pathY[0] = var6 - class8.baseY;
+      var2.y = (var2.pathY[0] << 7) + (var2.method9() << 6);
+      var2.field47 = var4 * -1044776581;
+      class59.plane = var4;
+      if(class34.field742[var1] != null) {
+         var2.method7(class34.field742[var1]);
+      }
+
+      class34.field743 = 0;
+      class34.field739[++class34.field743 - 1] = var1;
+      class34.field740[var1] = 0;
+      class34.field745 = 0;
+
+      for(int var7 = 1; var7 < 2048; ++var7) {
+         if(var1 != var7) {
+            int var8 = var0.method2762(18);
+            int var9 = var8 >> 16;
+            int var10 = var8 >> 8 & 255;
+            int var11 = var8 & 255;
+            class34.field747[var7] = (var10 << 14) + (var9 << 28) + var11;
+            class34.field748[var7] = 0;
+            class34.field755[var7] = -1;
+            class34.field754[++class34.field745 - 1] = var7;
+            class34.field740[var7] = 0;
+         }
+      }
+
+      var0.method2751();
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IIS)I",
+      garbageValue = "-1950"
+   )
+   static final int method106(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
 
-         if(Client.flagX != 0) {
-            Client.flagX -= var4;
-            Client.flagY -= var5;
-         }
-
-         Client.field522 = 0;
-         Client.field528 = false;
-         Client.field466 = -1;
-         Client.field416.method3848();
-         Client.projectiles.method3848();
-
-         for(var13 = 0; var13 < 4; ++var13) {
-            Client.collisionMaps[var13].method2417();
-         }
-
+         return (var0 & 'ﾀ') + var1;
       }
    }
 }

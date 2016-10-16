@@ -1,36 +1,41 @@
 import java.applet.Applet;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("em")
 public class class151 extends RuntimeException {
-   @ObfuscatedName("r")
-   String field2289;
-   @ObfuscatedName("d")
-   public static String field2290;
-   @ObfuscatedName("a")
-   static Applet field2291;
    @ObfuscatedName("z")
-   Throwable field2292;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1573726091
-   )
-   static int field2293;
+   public static String field2264;
+   @ObfuscatedName("p")
+   String field2265;
+   @ObfuscatedName("s")
+   static Applet field2266;
+   @ObfuscatedName("g")
+   Throwable field2268;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("ca")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1309594547"
+      signature = "(IIIIIIIII)V",
+      garbageValue = "215156283"
    )
-   static final void method3162() {
-      if(Client.field333 > 0) {
-         class137.method2908();
+   static final void method3122(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      if(class174.method3393(var0)) {
+         Ignore.field119 = null;
+         Friend.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
+         if(Ignore.field119 != null) {
+            Friend.gameDraw(Ignore.field119, -1412584499, var1, var2, var3, var4, class165.field2696, class9.field142, var7);
+            Ignore.field119 = null;
+         }
+
       } else {
-         XItemContainer.setGameState(40);
-         class10.field163 = BufferProvider.field1475;
-         BufferProvider.field1475 = null;
+         if(var7 != -1) {
+            Client.field379[var7] = true;
+         } else {
+            for(int var8 = 0; var8 < 100; ++var8) {
+               Client.field379[var8] = true;
+            }
+         }
+
       }
    }
 }

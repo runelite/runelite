@@ -8,89 +8,161 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("eg")
 public class class143 implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -2077261529
-   )
-   static volatile int field2215 = 0;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      longValue = 4378126679370282297L
-   )
-   static volatile long field2216 = 0L;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -649451809
-   )
-   static volatile int field2217 = 0;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -648503575
-   )
-   static volatile int field2218 = -1;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1779848985
-   )
-   static volatile int field2219 = -1;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 2078789269
+      intValue = 340335873
    )
-   public static int field2220 = 0;
-   @ObfuscatedName("k")
+   public static volatile int field2182 = 0;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1193824625
+      intValue = 454883131
    )
-   static volatile int field2221 = 0;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1938959205
-   )
-   public static int field2222 = 0;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 239630439
-   )
-   public static int field2223 = 0;
+   public static volatile int field2183 = 0;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 528895935
+      intValue = 1482112173
    )
-   static volatile int field2224 = 0;
+   public static int field2184 = 0;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 628194457
+   )
+   public static volatile int field2186 = -1;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -216990439
+   )
+   public static volatile int field2187 = -1;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1190273929
+      intValue = 1505465163
    )
-   public static int field2225 = 0;
-   @ObfuscatedName("q")
+   public static int field2188 = 0;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1298499335
+      intValue = 1544457985
    )
-   public static int field2226 = 0;
-   @ObfuscatedName("u")
+   public static int field2189 = 0;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 32819773
+      intValue = 640037475
    )
-   public static int field2227 = 0;
-   @ObfuscatedName("d")
+   public static volatile int field2190 = 0;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1956394957
+      intValue = -783561469
+   )
+   public static volatile int field2191 = 0;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1092239795
+   )
+   public static int field2192 = 0;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      longValue = 7767156824277440783L
+   )
+   public static volatile long field2193 = 0L;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1682925067
    )
    @Export("mouseIdleTicks")
    public static volatile int mouseIdleTicks = 0;
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @Export("mouse")
    public static class143 mouse = new class143();
-   @ObfuscatedName("w")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      longValue = -2955393446041624535L
+      intValue = -821333917
    )
-   public static long field2230 = 0L;
+   public static int field2196 = 0;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      longValue = -3649583451536482249L
+   )
+   public static long field2197 = 0L;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1138051231
+   )
+   public static int field2198 = 0;
+   @ObfuscatedName("bv")
+   static class171 field2200;
+
+   public final synchronized void mousePressed(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field2191 = var1.getX();
+         field2183 = var1.getY();
+         field2193 = class113.method2394();
+         if(var1.isAltDown()) {
+            field2190 = 4;
+            field2182 = 4;
+         } else if(var1.isMetaDown()) {
+            field2190 = 2;
+            field2182 = 2;
+         } else {
+            field2190 = 1;
+            field2182 = 1;
+         }
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
+
+   public final synchronized void mouseEntered(MouseEvent var1) {
+      if(null != mouse) {
+         mouseIdleTicks = 0;
+         field2187 = var1.getX();
+         field2186 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mouseExited(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field2187 = -1;
+         field2186 = -1;
+      }
+
+   }
+
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field2187 = var1.getX();
+         field2186 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(mouse != null) {
+         field2182 = 0;
+      }
+
+   }
 
    public final void focusGained(FocusEvent var1) {
+   }
+
+   public final synchronized void mouseReleased(MouseEvent var1) {
+      if(null != mouse) {
+         mouseIdleTicks = 0;
+         field2182 = 0;
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
    }
 
    public final void mouseClicked(MouseEvent var1) {
@@ -100,189 +172,25 @@ public class class143 implements MouseListener, MouseMotionListener, FocusListen
 
    }
 
-   public final synchronized void mouseEntered(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field2218 = var1.getX();
-         field2219 = var1.getY();
-      }
-
-   }
-
-   public final synchronized void mouseDragged(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field2218 = var1.getX();
-         field2219 = var1.getY();
-      }
-
-   }
-
    public final synchronized void mouseMoved(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field2218 = var1.getX();
-         field2219 = var1.getY();
+         field2187 = var1.getX();
+         field2186 = var1.getY();
       }
 
    }
 
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(mouse != null) {
-         field2217 = 0;
-      }
-
-   }
-
-   public final synchronized void mousePressed(MouseEvent var1) {
-      if(null != mouse) {
-         mouseIdleTicks = 0;
-         field2224 = var1.getX();
-         field2221 = var1.getY();
-         field2216 = class5.method63();
-         if(var1.isAltDown()) {
-            field2215 = 4;
-            field2217 = 4;
-         } else if(var1.isMetaDown()) {
-            field2215 = 2;
-            field2217 = 2;
-         } else {
-            field2215 = 1;
-            field2217 = 1;
-         }
-      }
-
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   @ObfuscatedName("d")
-   static final void method2978(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
-      }
-
-   }
-
-   public final synchronized void mouseExited(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field2218 = -1;
-         field2219 = -1;
-      }
-
-   }
-
-   public final synchronized void mouseReleased(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field2217 = 0;
-      }
-
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   @ObfuscatedName("am")
+   @ObfuscatedName("bb")
    @ObfuscatedSignature(
-      signature = "(LActor;B)V",
-      garbageValue = "0"
+      signature = "(IIB)Lclass110;",
+      garbageValue = "-95"
    )
-   static final void method3004(Actor var0) {
-      var0.field842 = false;
-      Sequence var1;
-      if(var0.poseAnimation != -1) {
-         var1 = Friend.getAnimation(var0.poseAnimation);
-         if(var1 != null && var1.field1009 != null) {
-            ++var0.field870;
-            if(var0.poseFrame < var1.field1009.length && var0.field870 > var1.field1015[var0.poseFrame]) {
-               var0.field870 = 1;
-               ++var0.poseFrame;
-               class107.method2314(var1, var0.poseFrame, var0.x, var0.y);
-            }
-
-            if(var0.poseFrame >= var1.field1009.length) {
-               var0.field870 = 0;
-               var0.poseFrame = 0;
-               class107.method2314(var1, var0.poseFrame, var0.x, var0.y);
-            }
-         } else {
-            var0.poseAnimation = -1;
-         }
-      }
-
-      if(var0.graphic != -1 && Client.gameCycle >= var0.field879) {
-         if(var0.field877 < 0) {
-            var0.field877 = 0;
-         }
-
-         int var3 = class49.method1029(var0.graphic).field1034;
-         if(var3 != -1) {
-            Sequence var2 = Friend.getAnimation(var3);
-            if(var2 != null && null != var2.field1009) {
-               ++var0.field878;
-               if(var0.field877 < var2.field1009.length && var0.field878 > var2.field1015[var0.field877]) {
-                  var0.field878 = 1;
-                  ++var0.field877;
-                  class107.method2314(var2, var0.field877, var0.x, var0.y);
-               }
-
-               if(var0.field877 >= var2.field1009.length && (var0.field877 < 0 || var0.field877 >= var2.field1009.length)) {
-                  var0.graphic = -1;
-               }
-            } else {
-               var0.graphic = -1;
-            }
-         } else {
-            var0.graphic = -1;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
-         var1 = Friend.getAnimation(var0.animation);
-         if(var1.precedenceAnimating == 1 && var0.field898 > 0 && var0.field859 <= Client.gameCycle && var0.field845 < Client.gameCycle) {
-            var0.actionAnimationDisable = 1;
-            return;
-         }
-      }
-
-      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-         var1 = Friend.getAnimation(var0.animation);
-         if(null != var1 && null != var1.field1009) {
-            ++var0.field881;
-            if(var0.actionFrame < var1.field1009.length && var0.field881 > var1.field1015[var0.actionFrame]) {
-               var0.field881 = 1;
-               ++var0.actionFrame;
-               class107.method2314(var1, var0.actionFrame, var0.x, var0.y);
-            }
-
-            if(var0.actionFrame >= var1.field1009.length) {
-               var0.actionFrame -= var1.field1014;
-               ++var0.field875;
-               if(var0.field875 >= var1.maxLoops) {
-                  var0.animation = -1;
-               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.field1009.length) {
-                  class107.method2314(var1, var0.actionFrame, var0.x, var0.y);
-               } else {
-                  var0.animation = -1;
-               }
-            }
-
-            var0.field842 = var1.stretches;
-         } else {
-            var0.animation = -1;
-         }
-      }
-
-      if(var0.actionAnimationDisable > 0) {
-         --var0.actionAnimationDisable;
-      }
-
+   static class110 method2968(int var0, int var1) {
+      Client.field547.field1920 = var0;
+      Client.field547.field1917 = var1;
+      Client.field547.field1918 = 1;
+      Client.field547.field1919 = 1;
+      return Client.field547;
    }
 }

@@ -4,46 +4,120 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("av")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("t")
-   @Export("value")
-   String value;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1491653587
-   )
-   @Export("type")
-   int type;
-   @ObfuscatedName("r")
-   @Export("name")
-   String name;
    @ObfuscatedName("z")
-   @Export("sender")
-   String sender;
-   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1170256849
+      intValue = 1327739857
    )
    @Export("tick")
    int tick;
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -924079103
+      intValue = 563126073
+   )
+   @Export("type")
+   int type;
+   @ObfuscatedName("y")
+   @Export("name")
+   String name;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1354997051
    )
    @Export("id")
-   int id = class222.method4033();
-   @ObfuscatedName("rh")
-   protected static String field821;
+   int id;
+   @ObfuscatedName("g")
+   @Export("value")
+   String value;
+   @ObfuscatedName("r")
+   static int[] field776;
+   @ObfuscatedName("p")
+   @Export("sender")
+   String sender;
+   @ObfuscatedName("x")
+   static int[] field780;
+   @ObfuscatedName("c")
+   public static Buffer field781;
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("dr")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "-421993967"
+      signature = "([LWidget;IB)V",
+      garbageValue = "-52"
    )
-   void method768(int var1, String var2, String var3, String var4) {
-      this.id = class222.method4033();
+   static final void method748(Widget[] var0, int var1) {
+      for(int var2 = 0; var2 < var0.length; ++var2) {
+         Widget var3 = var0[var2];
+         if(null != var3 && var1 == var3.parentId && (!var3.field2797 || !class13.method164(var3))) {
+            int var5;
+            if(var3.type == 0) {
+               if(!var3.field2797 && class13.method164(var3) && var3 != ItemComposition.field1196) {
+                  continue;
+               }
+
+               method748(var0, var3.id);
+               if(var3.children != null) {
+                  method748(var3.children, var3.id);
+               }
+
+               WidgetNode var7 = (WidgetNode)Client.componentTable.method3775((long)var3.id);
+               if(null != var7) {
+                  var5 = var7.id;
+                  if(class174.method3393(var5)) {
+                     method748(Widget.widgets[var5], -1);
+                  }
+               }
+            }
+
+            if(var3.type == 6) {
+               if(var3.field2845 != -1 || var3.field2870 != -1) {
+                  boolean var4 = Player.method37(var3);
+                  if(var4) {
+                     var5 = var3.field2870;
+                  } else {
+                     var5 = var3.field2845;
+                  }
+
+                  if(var5 != -1) {
+                     Sequence var6 = class4.getAnimation(var5);
+
+                     for(var3.field2921 += Client.field297; var3.field2921 > var6.field981[var3.field2811]; class32.method685(var3)) {
+                        var3.field2921 -= var6.field981[var3.field2811];
+                        ++var3.field2811;
+                        if(var3.field2811 >= var6.field969.length) {
+                           var3.field2811 -= var6.field973;
+                           if(var3.field2811 < 0 || var3.field2811 >= var6.field969.length) {
+                              var3.field2811 = 0;
+                           }
+                        }
+                     }
+                  }
+               }
+
+               if(var3.field2859 != 0 && !var3.field2797) {
+                  int var8 = var3.field2859 >> 16;
+                  var5 = var3.field2859 << 16 >> 16;
+                  var8 *= Client.field297;
+                  var5 *= Client.field297;
+                  var3.rotationX = var8 + var3.rotationX & 2047;
+                  var3.rotationZ = var3.rotationZ + var5 & 2047;
+                  class32.method685(var3);
+               }
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "49"
+   )
+   void method749(int var1, String var2, String var3, String var4) {
+      int var5 = ++class11.field162 - 1;
+      this.id = var5;
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
@@ -51,212 +125,56 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("bw")
    @ObfuscatedSignature(
-      signature = "(LActor;I)V",
-      garbageValue = "-1134603616"
+      signature = "(Lclass16;B)V",
+      garbageValue = "18"
    )
-   static final void method770(Actor var0) {
-      var0.poseAnimation = var0.idlePoseAnimation;
-      if(var0.field893 == 0) {
-         var0.field897 = 0;
-      } else {
-         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var1 = Friend.getAnimation(var0.animation);
-            if(var0.field898 > 0 && var1.precedenceAnimating == 0) {
-               ++var0.field897;
-               return;
-            }
-
-            if(var0.field898 <= 0 && var1.field1017 == 0) {
-               ++var0.field897;
-               return;
-            }
-         }
-
-         int var10 = var0.x;
-         int var2 = var0.y;
-         int var3 = var0.field843 * 64 + var0.pathX[var0.field893 - 1] * 128;
-         int var4 = var0.field843 * 64 + var0.pathY[var0.field893 - 1] * 128;
-         if(var10 < var3) {
-            if(var2 < var4) {
-               var0.field891 = 1280;
-            } else if(var2 > var4) {
-               var0.field891 = 1792;
-            } else {
-               var0.field891 = 1536;
-            }
-         } else if(var10 > var3) {
-            if(var2 < var4) {
-               var0.field891 = 768;
-            } else if(var2 > var4) {
-               var0.field891 = 256;
-            } else {
-               var0.field891 = 512;
-            }
-         } else if(var2 < var4) {
-            var0.field891 = 1024;
-         } else if(var2 > var4) {
-            var0.field891 = 0;
-         }
-
-         byte var5 = var0.field896[var0.field893 - 1];
-         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
-            int var6 = var0.field891 - var0.angle & 2047;
-            if(var6 > 1024) {
-               var6 -= 2048;
-            }
-
-            int var7 = var0.field887;
-            if(var6 >= -256 && var6 <= 256) {
-               var7 = var0.field847;
-            } else if(var6 >= 256 && var6 < 768) {
-               var7 = var0.field850;
-            } else if(var6 >= -768 && var6 <= -256) {
-               var7 = var0.field863;
-            }
-
-            if(var7 == -1) {
-               var7 = var0.field847;
-            }
-
-            var0.poseAnimation = var7;
-            int var8 = 4;
-            boolean var9 = true;
-            if(var0 instanceof NPC) {
-               var9 = ((NPC)var0).composition.isClickable;
-            }
-
-            if(var9) {
-               if(var0.field891 != var0.angle && var0.interacting == -1 && var0.field892 != 0) {
-                  var8 = 2;
-               }
-
-               if(var0.field893 > 2) {
-                  var8 = 6;
-               }
-
-               if(var0.field893 > 3) {
-                  var8 = 8;
-               }
-
-               if(var0.field897 > 0 && var0.field893 > 1) {
-                  var8 = 8;
-                  --var0.field897;
-               }
-            } else {
-               if(var0.field893 > 1) {
-                  var8 = 6;
-               }
-
-               if(var0.field893 > 2) {
-                  var8 = 8;
-               }
-
-               if(var0.field897 > 0 && var0.field893 > 1) {
-                  var8 = 8;
-                  --var0.field897;
-               }
-            }
-
-            if(var5 == 2) {
-               var8 <<= 1;
-            }
-
-            if(var8 >= 8 && var0.field847 == var0.poseAnimation && var0.field851 != -1) {
-               var0.poseAnimation = var0.field851;
-            }
-
-            if(var10 != var3 || var2 != var4) {
-               if(var10 < var3) {
-                  var0.x += var8;
-                  if(var0.x > var3) {
-                     var0.x = var3;
-                  }
-               } else if(var10 > var3) {
-                  var0.x -= var8;
-                  if(var0.x < var3) {
-                     var0.x = var3;
-                  }
-               }
-
-               if(var2 < var4) {
-                  var0.y += var8;
-                  if(var0.y > var4) {
-                     var0.y = var4;
-                  }
-               } else if(var2 > var4) {
-                  var0.y -= var8;
-                  if(var0.y < var4) {
-                     var0.y = var4;
-                  }
-               }
-            }
-
-            if(var3 == var0.x && var0.y == var4) {
-               --var0.field893;
-               if(var0.field898 > 0) {
-                  --var0.field898;
-               }
-            }
-
-         } else {
-            var0.x = var3;
-            var0.y = var4;
-            --var0.field893;
-            if(var0.field898 > 0) {
-               --var0.field898;
-            }
-
-         }
+   static final void method753(class16 var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(var0.field208 == 0) {
+         var1 = class114.region.method2004(var0.field215, var0.field209, var0.field221);
       }
+
+      if(var0.field208 == 1) {
+         var1 = class114.region.method1942(var0.field215, var0.field209, var0.field221);
+      }
+
+      if(var0.field208 == 2) {
+         var1 = class114.region.method1943(var0.field215, var0.field209, var0.field221);
+      }
+
+      if(var0.field208 == 3) {
+         var1 = class114.region.method1944(var0.field215, var0.field209, var0.field221);
+      }
+
+      if(var1 != 0) {
+         int var5 = class114.region.method1945(var0.field215, var0.field209, var0.field221, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field207 = var2;
+      var0.field213 = var3;
+      var0.field212 = var4;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IB)LItemComposition;",
-      garbageValue = "43"
+      signature = "(Lclass0;I)V",
+      garbageValue = "1980335482"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.field1181.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemComposition.field1179.method3309(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(null != var2) {
-            var1.loadBuffer(new Buffer(var2));
-         }
-
-         var1.method1129();
-         if(var1.field1219 != -1) {
-            var1.method1122(getItemDefinition(var1.field1219), getItemDefinition(var1.note));
-         }
-
-         if(var1.field1226 != -1) {
-            var1.method1123(getItemDefinition(var1.field1226), getItemDefinition(var1.field1225));
-         }
-
-         if(var1.field1184 != -1) {
-            var1.method1148(getItemDefinition(var1.field1184), getItemDefinition(var1.field1227));
-         }
-
-         if(!ItemComposition.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field1191 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.field1223 = 0;
-         }
-
-         ItemComposition.field1181.put(var1, (long)var0);
-         return var1;
-      }
+   static void method754(class0 var0) {
+      Player.method35(var0, 200000);
    }
 
    MessageNode(int var1, String var2, String var3, String var4) {
+      int var5 = ++class11.field162 - 1;
+      this.id = var5;
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
@@ -264,13 +182,30 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1398268118"
+      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
+      garbageValue = "332776828"
    )
-   static int method773(int var0) {
-      MessageNode var1 = (MessageNode)class11.field166.method3836((long)var0);
-      return null == var1?-1:(var1.next == class11.field167.field3154?-1:((MessageNode)var1.next).id);
+   static final String[] method755(String[] var0) {
+      String[] var1 = new String[5];
+
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && var0[var2] != null) {
+            var1[var2] = var1[var2] + var0[var2];
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIB)Z",
+      garbageValue = "61"
+   )
+   public static boolean method757(int var0, int var1) {
+      return (var0 >> 1 + var1 & 1) != 0;
    }
 }

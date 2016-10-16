@@ -1,224 +1,259 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Desktop;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Desktop.Action;
-import java.net.URI;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("as")
+@ObfuscatedName("ah")
 @Implements("World")
 public class World {
-   @ObfuscatedName("x")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1157284435
-   )
-   @Export("mask")
-   int mask;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 2138339791
-   )
-   static int field658 = 0;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 600151841
-   )
-   static int field659 = 0;
-   @ObfuscatedName("g")
-   static int[] field660 = new int[]{0, 1, 2, 3};
-   @ObfuscatedName("i")
-   static int[] field661 = new int[]{1, 1, 1, 1};
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1630477671
-   )
-   @Export("location")
-   int location;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -797882227
+      intValue = 1826254181
    )
    @Export("id")
    int id;
+   @ObfuscatedName("p")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1454933887
+   )
+   static int field630 = 0;
+   @ObfuscatedName("f")
+   static int[] field632 = new int[]{1, 1, 1, 1};
+   @ObfuscatedName("k")
+   static int[] field633 = new int[]{0, 1, 2, 3};
+   @ObfuscatedName("n")
+   @Export("address")
+   String address;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1935925357
+      intValue = 889766177
    )
    @Export("playerCount")
    int playerCount;
-   @ObfuscatedName("j")
-   @Export("address")
-   String address;
-   @ObfuscatedName("q")
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 93556909
+   )
+   @Export("mask")
+   int mask;
+   @ObfuscatedName("d")
    @Export("activity")
    String activity;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -913157991
+   )
+   @Export("location")
+   int location;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1629260139
+      intValue = -882518053
    )
    @Export("index")
    int index;
-   @ObfuscatedName("z")
-   @Export("worldList")
-   static World[] worldList;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "2089647285"
-   )
-   boolean method619() {
-      return (1 & this.mask) != 0;
-   }
-
    @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "10"
+   @ObfuscatedGetter(
+      intValue = -1600861523
    )
-   boolean method620() {
-      return (2 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1146270391"
+   static int field641 = 0;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1119906789
    )
-   boolean method623() {
-      return (536870912 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "854792113"
-   )
-   boolean method624() {
-      return (33554432 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
-      garbageValue = "997400924"
-   )
-   static void method633(String var0, boolean var1, String var2, boolean var3) {
-      if(var1) {
-         if(!var3 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
-            try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var5) {
-               ;
-            }
-         }
-
-         if(class141.field2205.startsWith("win") && !var3) {
-            class13.method164(var0, 0);
-            return;
-         }
-
-         if(class141.field2205.startsWith("mac")) {
-            class20.method558(var0, 1, var2);
-            return;
-         }
-
-         class13.method164(var0, 2);
-      } else {
-         class13.method164(var0, 3);
-      }
-
-   }
+   static int field642;
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "-119"
+      garbageValue = "5"
    )
-   boolean method643() {
+   boolean method607() {
+      return (1 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-1713895486"
+   )
+   boolean method608() {
+      return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "-40"
+   )
+   boolean method609() {
       return (4 & this.mask) != 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-25"
+      signature = "(I)Z",
+      garbageValue = "-38279347"
    )
-   boolean method649() {
+   boolean method631() {
+      return (536870912 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "112163468"
+   )
+   boolean method642() {
+      return (33554432 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "18"
+   )
+   public static int method643(int var0, int var1) {
+      int var2;
+      for(var2 = 0; var1 > 0; --var1) {
+         var2 = var2 << 1 | var0 & 1;
+         var0 >>>= 1;
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "816073367"
+   )
+   boolean method648() {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("bz")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-984681071"
+      signature = "(IIIIS)V",
+      garbageValue = "128"
    )
-   static void method664(int var0, int var1, int var2, int var3) {
-      Widget var4 = class38.method781(var0, var1);
-      if(var4 != null && null != var4.field2819) {
-         class0 var5 = new class0();
-         var5.field2 = var4;
-         var5.field7 = var4.field2819;
-         class1.method9(var5, 200000);
+   static void method653(int var0, int var1, int var2, int var3) {
+      XItemContainer var4 = (XItemContainer)XItemContainer.itemContainers.method3775((long)var0);
+      if(var4 == null) {
+         var4 = new XItemContainer();
+         XItemContainer.itemContainers.method3776(var4, (long)var0);
       }
 
-      Client.field437 = var3;
-      Client.field435 = true;
-      XClanMember.field638 = var0;
-      Client.field436 = var1;
-      class50.field1116 = var2;
-      class53.method1101(var4);
+      if(var4.itemIds.length <= var1) {
+         int[] var5 = new int[var1 + 1];
+         int[] var6 = new int[1 + var1];
+
+         int var7;
+         for(var7 = 0; var7 < var4.itemIds.length; ++var7) {
+            var5[var7] = var4.itemIds[var7];
+            var6[var7] = var4.stackSizes[var7];
+         }
+
+         for(var7 = var4.itemIds.length; var7 < var1; ++var7) {
+            var5[var7] = -1;
+            var6[var7] = 0;
+         }
+
+         var4.itemIds = var5;
+         var4.stackSizes = var6;
+      }
+
+      var4.itemIds[var1] = var2;
+      var4.stackSizes[var1] = var3;
    }
 
-   @ObfuscatedName("at")
+   @ObfuscatedName("bt")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-24"
+      signature = "(IIB)V",
+      garbageValue = "-76"
    )
-   static void method666() {
-      int var0 = GameEngine.field2270;
-      int var1 = GameEngine.field2263;
-      int var2 = class31.field720 - class159.field2374 - var0;
-      int var3 = class146.field2258 - class92.field1643 - var1;
-      if(var0 > 0 || var2 > 0 || var1 > 0 || var3 > 0) {
-         try {
-            Container var4 = Client.field277.method3058();
-            int var5 = 0;
-            int var6 = 0;
-            if(WallObject.field1621 == var4) {
-               Insets var7 = WallObject.field1621.getInsets();
-               var5 = var7.left;
-               var6 = var7.top;
-            }
+   static final void method654(int var0, int var1) {
+      int var2 = class117.field2001.method4027("Choose Option");
 
-            Graphics var9 = var4.getGraphics();
-            var9.setColor(Color.black);
-            if(var0 > 0) {
-               var9.fillRect(var5, var6, var0, class146.field2258);
-            }
+      int var3;
+      for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
+         class227 var4 = class117.field2001;
+         String var7;
+         if(Client.menuTargets[var3].length() > 0) {
+            var7 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
+         } else {
+            var7 = Client.menuOptions[var3];
+         }
 
-            if(var1 > 0) {
-               var9.fillRect(var5, var6, class31.field720, var1);
-            }
-
-            if(var2 > 0) {
-               var9.fillRect(var5 + class31.field720 - var2, var6, var2, class146.field2258);
-            }
-
-            if(var3 > 0) {
-               var9.fillRect(var5, var6 + class146.field2258 - var3, class31.field720, var3);
-            }
-         } catch (Exception var8) {
-            ;
+         int var6 = var4.method4027(var7);
+         if(var6 > var2) {
+            var2 = var6;
          }
       }
 
+      var2 += 8;
+      var3 = Client.menuOptionCount * 15 + 22;
+      int var8 = var0 - var2 / 2;
+      if(var2 + var8 > class50.field1069) {
+         var8 = class50.field1069 - var2;
+      }
+
+      if(var8 < 0) {
+         var8 = 0;
+      }
+
+      int var5 = var1;
+      if(var1 + var3 > class139.field2143) {
+         var5 = class139.field2143 - var3;
+      }
+
+      if(var5 < 0) {
+         var5 = 0;
+      }
+
+      Client.isMenuOpen = true;
+      Client.menuX = var8;
+      class54.menuY = var5;
+      class129.menuWidth = var2;
+      class192.menuHeight = Client.menuOptionCount * 15 + 22;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "71"
+   )
+   static final int method655(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = var2 / 2 + (var1 / 32 << 7) + (var0 / 4 << 10);
+      return var3;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "2013996833"
+   )
+   static int method657(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method3775((long)var0);
+      return null == var2?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 }
