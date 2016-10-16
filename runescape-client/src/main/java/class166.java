@@ -1,50 +1,54 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fz")
 public final class class166 {
-   @ObfuscatedName("aj")
-   static class171 field2718;
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "986976013"
+   @ObfuscatedName("ft")
+   @ObfuscatedGetter(
+      intValue = -530970853
    )
-   public static String method3283(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
+   @Export("cameraYaw")
+   static int cameraYaw;
+   @ObfuscatedName("ey")
+   static ModIcon[] field2699;
 
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class168.field2726[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-906752708"
+   )
+   public static boolean method3195(int var0) {
+      return (var0 >> 31 & 1) != 0;
+   }
 
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-533429245"
+   )
+   static final void method3214() {
+      for(int var0 = 0; var0 < Client.field309; ++var0) {
+         int var1 = Client.field307[var0];
+         NPC var2 = Client.cachedNPCs[var1];
+         if(null != var2) {
+            class16.method188(var2, var2.composition.field902);
          }
       }
 
-      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("du")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "417039326"
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "74"
    )
-   public static String method3284(CharSequence var0) {
-      String var1 = class10.method138(class145.method3016(var0));
-      if(var1 == null) {
-         var1 = "";
+   static final void method3218(String var0) {
+      if(!var0.equals("")) {
+         Client.field300.method2748(150);
+         Client.field300.method2467(class113.method2395(var0));
+         Client.field300.method2472(var0);
       }
-
-      return var1;
    }
 }

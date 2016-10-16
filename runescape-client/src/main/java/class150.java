@@ -2,45 +2,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ee")
+@ObfuscatedName("ep")
 public class class150 extends class136 {
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      longValue = 4542790369875822217L
+      longValue = -5291939483838339947L
    )
-   long field2288 = System.nanoTime();
+   long field2262 = System.nanoTime();
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "2077774028"
+      garbageValue = "1749545983"
    )
-   public void vmethod3147() {
-      this.field2288 = System.nanoTime();
+   public void vmethod3110() {
+      this.field2262 = System.nanoTime();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1886051607"
+      garbageValue = "179567807"
    )
-   int vmethod3149(int var1, int var2) {
-      long var3 = (long)var2 * 1000000L;
-      long var5 = this.field2288 - System.nanoTime();
+   int vmethod3114(int var1, int var2) {
+      long var3 = 1000000L * (long)var2;
+      long var5 = this.field2262 - System.nanoTime();
       if(var5 < var3) {
          var5 = var3;
       }
 
-      Item.method681(var5 / 1000000L);
+      class16.method185(var5 / 1000000L);
       long var7 = System.nanoTime();
 
       int var9;
-      for(var9 = 0; var9 < 10 && (var9 < 1 || this.field2288 < var7); this.field2288 += (long)var1 * 1000000L) {
+      for(var9 = 0; var9 < 10 && (var9 < 1 || this.field2262 < var7); this.field2262 += 1000000L * (long)var1) {
          ++var9;
       }
 
-      if(this.field2288 < var7) {
-         this.field2288 = var7;
+      if(this.field2262 < var7) {
+         this.field2262 = var7;
       }
 
       return var9;

@@ -2,41 +2,34 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
+@ObfuscatedName("fp")
 public class class178 extends CacheableNode {
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1219498321
+      intValue = 790538345
    )
-   public final int field2959;
-   @ObfuscatedName("v")
-   public final int[] field2960;
-   @ObfuscatedName("r")
-   public final int[] field2961;
+   public final int field2943;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1786474299
+   )
+   public final int field2944;
    @ObfuscatedName("t")
-   static class170 field2962;
+   public final int[] field2945;
    @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 2008433047
-   )
-   public final int field2964;
+   static String field2947;
+   @ObfuscatedName("y")
+   public final int[] field2948;
 
-   class178(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2959 = var1;
-      this.field2964 = var2;
-      this.field2960 = var3;
-      this.field2961 = var4;
-   }
-
-   @ObfuscatedName("a")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIB)Z",
-      garbageValue = "101"
+      signature = "(III)Z",
+      garbageValue = "-780844001"
    )
-   public boolean method3499(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2961.length) {
-         int var3 = this.field2961[var2];
-         if(var1 >= var3 && var1 <= var3 + this.field2960[var2]) {
+   public boolean method3447(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2948.length) {
+         int var3 = this.field2948[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2945[var2]) {
             return true;
          }
       }
@@ -44,29 +37,24 @@ public class class178 extends CacheableNode {
       return false;
    }
 
-   @ObfuscatedName("u")
+   class178(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2943 = var1;
+      this.field2944 = var2;
+      this.field2945 = var3;
+      this.field2948 = var4;
+   }
+
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-5148358"
+      signature = "(IB)V",
+      garbageValue = "-118"
    )
-   static final int method3500(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
+   public static void method3448(int var0) {
+      if(class186.field3002 != 0) {
+         class186.field3005 = var0;
+      } else {
+         class186.field3007.method3617(var0);
       }
 
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = var2 / 2 + (var1 / 32 << 7) + (var0 / 4 << 10);
-      return var3;
    }
 }

@@ -1,242 +1,210 @@
+import java.awt.Component;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import netscape.javascript.JSObject;
 
-@ObfuscatedName("az")
+@ObfuscatedName("at")
 public class class45 extends CacheableNode {
+   @ObfuscatedName("k")
+   short[] field986;
+   @ObfuscatedName("f")
+   short[] field987;
    @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 2626587
-   )
-   int field1030;
-   @ObfuscatedName("a")
-   static class170 field1031;
-   @ObfuscatedName("r")
-   public static NodeCache field1032 = new NodeCache(30);
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1295956353
-   )
-   int field1033;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -420958737
-   )
-   public int field1034 = -1;
-   @ObfuscatedName("i")
-   short[] field1036;
+   public static NodeCache field988 = new NodeCache(64);
+   @ObfuscatedName("s")
+   static class170 field989;
    @ObfuscatedName("g")
-   short[] field1037;
+   @ObfuscatedGetter(
+      intValue = -1268868791
+   )
+   int field990;
    @ObfuscatedName("m")
-   short[] field1038;
-   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1254495081
+      intValue = 750799349
    )
-   int field1039 = 128;
-   @ObfuscatedName("u")
+   public int field991 = -1;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1775176245
+      intValue = 463316533
    )
-   int field1041 = 128;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -857104675
-   )
-   int field1042 = 0;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1646051119
-   )
-   int field1043 = 0;
+   int field992 = 0;
+   @ObfuscatedName("mt")
+   static byte field993;
+   @ObfuscatedName("h")
+   short[] field994;
+   @ObfuscatedName("r")
+   short[] field995;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1236875557
+      intValue = -1219608029
    )
-   int field1044 = 0;
-   @ObfuscatedName("k")
-   short[] field1045;
-   @ObfuscatedName("v")
-   public static NodeCache field1047 = new NodeCache(64);
+   int field996 = 128;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 247271309
+   )
+   int field997 = 128;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1706552771
+   )
+   int field998 = 0;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1800139327
+   )
+   int field999 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -148458355
+   )
+   int field1000;
+   @ObfuscatedName("y")
+   public static NodeCache field1003 = new NodeCache(30);
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
-      garbageValue = "-46"
+      signature = "(LBuffer;IS)V",
+      garbageValue = "6314"
    )
-   void method935(Buffer var1, int var2) {
+   void method912(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field1030 = var1.method2717();
+         this.field990 = var1.method2668();
       } else if(var2 == 2) {
-         this.field1034 = var1.method2717();
+         this.field991 = var1.method2668();
       } else if(var2 == 4) {
-         this.field1039 = var1.method2717();
+         this.field996 = var1.method2668();
       } else if(var2 == 5) {
-         this.field1041 = var1.method2717();
+         this.field997 = var1.method2668();
       } else if(var2 == 6) {
-         this.field1042 = var1.method2717();
+         this.field998 = var1.method2668();
       } else if(var2 == 7) {
-         this.field1043 = var1.method2528();
+         this.field999 = var1.method2481();
       } else if(var2 == 8) {
-         this.field1044 = var1.method2528();
+         this.field992 = var1.method2481();
       } else {
          int var3;
          int var4;
          if(var2 == 40) {
-            var3 = var1.method2528();
-            this.field1036 = new short[var3];
-            this.field1037 = new short[var3];
+            var3 = var1.method2481();
+            this.field987 = new short[var3];
+            this.field986 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field1036[var4] = (short)var1.method2717();
-               this.field1037[var4] = (short)var1.method2717();
+               this.field987[var4] = (short)var1.method2668();
+               this.field986[var4] = (short)var1.method2668();
             }
          } else if(var2 == 41) {
-            var3 = var1.method2528();
-            this.field1038 = new short[var3];
-            this.field1045 = new short[var3];
+            var3 = var1.method2481();
+            this.field994 = new short[var3];
+            this.field995 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field1038[var4] = (short)var1.method2717();
-               this.field1045[var4] = (short)var1.method2717();
+               this.field994[var4] = (short)var1.method2668();
+               this.field995[var4] = (short)var1.method2668();
             }
          }
       }
 
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;S)V",
-      garbageValue = "409"
-   )
-   void method936(Buffer var1) {
-      while(true) {
-         int var2 = var1.method2528();
-         if(var2 == 0) {
-            return;
-         }
-
-         this.method935(var1, var2);
-      }
    }
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(II)LModel;",
-      garbageValue = "-570240050"
+      signature = "(Ljava/awt/Component;I)V",
+      garbageValue = "2008333059"
    )
-   public final Model method940(int var1) {
-      Model var2 = (Model)field1032.get((long)this.field1033);
+   public static void method913(Component var0) {
+      var0.removeMouseListener(class143.mouse);
+      var0.removeMouseMotionListener(class143.mouse);
+      var0.removeFocusListener(class143.mouse);
+      class143.field2182 = 0;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "-1383150778"
+   )
+   void method914(Buffer var1) {
+      while(true) {
+         int var2 = var1.method2481();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method912(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)LModel;",
+      garbageValue = "863000929"
+   )
+   public final Model method915(int var1) {
+      Model var2 = (Model)field1003.get((long)this.field1000);
       if(null == var2) {
-         ModelData var3 = ModelData.method2284(class221.field3216, this.field1030, 0);
-         if(var3 == null) {
+         ModelData var3 = ModelData.method2184(class181.field2955, this.field990, 0);
+         if(null == var3) {
             return null;
          }
 
          int var4;
-         if(null != this.field1036) {
-            for(var4 = 0; var4 < this.field1036.length; ++var4) {
-               var3.method2239(this.field1036[var4], this.field1037[var4]);
+         if(null != this.field987) {
+            for(var4 = 0; var4 < this.field987.length; ++var4) {
+               var3.method2197(this.field987[var4], this.field986[var4]);
             }
          }
 
-         if(null != this.field1038) {
-            for(var4 = 0; var4 < this.field1038.length; ++var4) {
-               var3.method2240(this.field1038[var4], this.field1045[var4]);
+         if(null != this.field994) {
+            for(var4 = 0; var4 < this.field994.length; ++var4) {
+               var3.method2234(this.field994[var4], this.field995[var4]);
             }
          }
 
-         var2 = var3.method2247(this.field1043 + 64, this.field1044 + 850, -30, -50, -30);
-         field1032.put(var2, (long)this.field1033);
+         var2 = var3.method2203(64 + this.field999, this.field992 + 850, -30, -50, -30);
+         field1003.put(var2, (long)this.field1000);
       }
 
       Model var5;
-      if(this.field1034 != -1 && var1 != -1) {
-         var5 = Friend.getAnimation(this.field1034).method913(var2, var1);
+      if(this.field991 != -1 && var1 != -1) {
+         var5 = class4.getAnimation(this.field991).method883(var2, var1);
       } else {
-         var5 = var2.method2353(true);
+         var5 = var2.method2297(true);
       }
 
-      if(this.field1039 != 128 || this.field1041 != 128) {
-         var5.method2335(this.field1039, this.field1041, this.field1039);
+      if(this.field996 != 128 || this.field997 != 128) {
+         var5.method2333(this.field996, this.field997, this.field996);
       }
 
-      if(this.field1042 != 0) {
-         if(this.field1042 == 90) {
-            var5.method2330();
+      if(this.field998 != 0) {
+         if(this.field998 == 90) {
+            var5.method2327();
          }
 
-         if(this.field1042 == 180) {
-            var5.method2330();
-            var5.method2330();
+         if(this.field998 == 180) {
+            var5.method2327();
+            var5.method2327();
          }
 
-         if(this.field1042 == 270) {
-            var5.method2330();
-            var5.method2330();
-            var5.method2330();
+         if(this.field998 == 270) {
+            var5.method2327();
+            var5.method2327();
+            var5.method2327();
          }
       }
 
       return var5;
    }
 
-   @ObfuscatedName("ap")
+   @ObfuscatedName("pp")
    @ObfuscatedSignature(
-      signature = "(LPlayer;III)V",
-      garbageValue = "1787557636"
+      signature = "(I)V",
+      garbageValue = "-997377358"
    )
-   static void method949(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = Friend.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field881 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field875 = 0;
-         }
-
-         if(var3 == 2) {
-            var0.field875 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || Friend.getAnimation(var1).field1020 >= Friend.getAnimation(var0.animation).field1020) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field881 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field875 = 0;
-         var0.field898 = var0.field893;
-      }
-
-   }
-
-   @ObfuscatedName("ax")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "28"
-   )
-   static void method950() {
-      int var0 = class159.field2374;
-      int var1 = class92.field1643;
-      if(class31.field720 < var0) {
-         var0 = class31.field720;
-      }
-
-      if(class146.field2258 < var1) {
-         var1 = class146.field2258;
-      }
-
-      if(class116.field2039 != null) {
-         try {
-            Client var2 = Client.field277;
-            Object[] var3 = new Object[]{Integer.valueOf(class23.method586())};
-            JSObject.getWindow(var2).call("resize", var3);
-         } catch (Throwable var4) {
-            ;
-         }
-      }
-
+   protected static final void method923() {
+      class59.field1236 = null;
+      class8.field131 = null;
+      class47.field1028 = null;
    }
 }

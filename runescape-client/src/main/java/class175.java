@@ -1,19 +1,34 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fo")
 public class class175 extends CacheableNode {
-   @ObfuscatedName("d")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -1816972395
+      intValue = 1436364329
    )
-   public int field2801;
-   @ObfuscatedName("v")
-   public byte field2802;
-   @ObfuscatedName("mx")
-   @Export("clanMembers")
-   static XClanMember[] clanMembers;
-   @ObfuscatedName("a")
-   public class171 field2805;
+   public int field2782;
+   @ObfuscatedName("t")
+   public byte field2783;
+   @ObfuscatedName("s")
+   public class171 field2785;
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(CB)C",
+      garbageValue = "96"
+   )
+   static char method3395(char var0) {
+      return var0 != 181 && var0 != 402?Character.toTitleCase(var0):var0;
+   }
+
+   @ObfuscatedName("z")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-2035427192"
+   )
+   public static boolean method3396(int var0) {
+      return (var0 >> 28 & 1) != 0;
+   }
 }

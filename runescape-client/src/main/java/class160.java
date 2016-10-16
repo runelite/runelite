@@ -1,15 +1,23 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fv")
+@ObfuscatedName("ft")
 public class class160 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(III)LMessageNode;",
-      garbageValue = "-1481720729"
+      signature = "(IIB)Z",
+      garbageValue = "-95"
    )
-   static MessageNode method3210(int var0, int var1) {
-      ChatLineBuffer var2 = (ChatLineBuffer)class11.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method669(var1);
+   static final boolean method3159(int var0, int var1) {
+      ObjectComposition var2 = class40.getObjectDefinition(var0);
+      if(var1 == 11) {
+         var1 = 10;
+      }
+
+      if(var1 >= 5 && var1 <= 8) {
+         var1 = 4;
+      }
+
+      return var2.method826(var1);
    }
 }

@@ -3,64 +3,62 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cd")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("a")
+   @ObfuscatedName("f")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -78445199
-   )
-   @Export("floor")
-   int floor;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1381052407
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 683392913
+      intValue = -1132519255
    )
    @Export("y")
    int y;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 921550243
-   )
-   int field1691;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -945699209
+      intValue = 1461194567
    )
-   int field1692;
+   int field1645;
    @ObfuscatedName("g")
-   @Export("renderable2")
-   public Renderable renderable2;
-   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1918921391
+      intValue = 437904665
    )
-   int field1694;
-   @ObfuscatedName("i")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -204213161
-   )
-   int field1696;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1704844587
-   )
-   int field1697 = 0;
+   int field1647;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -762597453
+      intValue = 456975185
+   )
+   int field1648;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -175348055
+   )
+   @Export("floor")
+   int floor;
+   @ObfuscatedName("k")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1723410037
    )
    @Export("hash")
    public int hash = 0;
-   @ObfuscatedName("qz")
-   protected static class136 field1699;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1591642367
+   )
+   int field1652 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -83397981
+   )
+   int field1653;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -834392427
+   )
+   @Export("x")
+   int x;
 }
