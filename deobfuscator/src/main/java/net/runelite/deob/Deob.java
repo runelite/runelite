@@ -34,11 +34,11 @@ import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
+import net.runelite.deob.clientver.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.ExprArgOrder;
 import net.runelite.deob.deobfuscators.FieldInliner;
-import net.runelite.deob.deobfuscators.IfNull;
 import net.runelite.deob.deobfuscators.IllegalStateExceptions;
 import net.runelite.deob.deobfuscators.Lvt;
 import net.runelite.deob.deobfuscators.RenameUnique;
@@ -78,7 +78,6 @@ public class Deob
 		run(group, new ConstantParameter());
 
 		// remove unhit blocks
-		run(group, new IfNull());
 		run(group, new UnreachedCode());
 		run(group, new UnusedMethods());
 
@@ -118,8 +117,10 @@ public class Deob
 		run(group, new ExprArgOrder());
 
 		run(group, new Lvt());
-		
+
 		run(group, new CastNull());
+
+		new GetPathTransformer().transform(group);
 
 		JarUtil.saveJar(group, new File(args[1]));
 		

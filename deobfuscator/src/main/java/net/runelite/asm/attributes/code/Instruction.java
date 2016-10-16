@@ -85,12 +85,6 @@ public abstract class Instruction implements Cloneable
 			assert this != e.getEnd();
 			assert this != e.getHandler();
 		}
-
-		// XXX unreached code deob relies on being able to remove instructions that other ins jump to,
-		// if those other ins are also unreached.
-		//for (Instruction i : instructions.getInstructions())
-		//	if (i instanceof JumpingInstruction)
-		//		assert ((JumpingInstruction) i).getJumps().contains(this) == false;
 	}
 	
 	public boolean removeStack()
