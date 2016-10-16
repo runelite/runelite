@@ -1,45 +1,57 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gd")
+@ObfuscatedName("gh")
 public class class188 {
-   @ObfuscatedName("z")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -946322305
+      intValue = -1580087873
    )
-   int field3052;
-   @ObfuscatedName("d")
-   byte[] field3053;
+   int field3039;
+   @ObfuscatedName("z")
+   byte[] field3040;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 222999963
+      intValue = 101401647
    )
-   int field3054;
-   @ObfuscatedName("v")
+   int field3041;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1633673525
+      intValue = -1004029615
    )
-   int field3055;
-   @ObfuscatedName("i")
+   int field3042;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 656397133
+      intValue = 1173151425
    )
-   int field3056;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1522863973
-   )
-   int field3058;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1160715091
-   )
-   int field3059;
+   int field3043;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1309790011
+      intValue = 794414101
    )
-   int field3060;
-   @ObfuscatedName("a")
-   byte[] field3061;
+   int field3044;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 317608535
+   )
+   int field3045;
+   @ObfuscatedName("bx")
+   static class171 field3046;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1329501087
+   )
+   int field3048;
+   @ObfuscatedName("s")
+   byte[] field3050;
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "785977329"
+   )
+   static String method3706(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
+   }
 }

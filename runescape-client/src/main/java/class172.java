@@ -1,30 +1,22 @@
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("fv")
 public class class172 extends Node {
-   @ObfuscatedName("d")
-   public byte[] field2762;
-   @ObfuscatedName("v")
-   public class137 field2763;
-   @ObfuscatedName("g")
-   static ModIcon[] field2765;
-   @ObfuscatedName("a")
+   @ObfuscatedName("t")
+   class137 field2750;
+   @ObfuscatedName("y")
+   class171 field2751;
+   @ObfuscatedName("eo")
+   static SpritePixels[] field2753;
+   @ObfuscatedName("pd")
+   static GarbageCollectorMXBean field2755;
+   @ObfuscatedName("z")
+   byte[] field2757;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -770273435
+      intValue = -1517245799
    )
-   int field2767;
-   @ObfuscatedName("r")
-   public class171 field2768;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "0"
-   )
-   static final int method3414(int var0, int var1, int var2) {
-      int var3 = 256 - var2;
-      return ((var0 & '\uff00') * var3 + var2 * (var1 & '\uff00') & 16711680) + (var2 * (var1 & 16711935) + var3 * (var0 & 16711935) & -16711936) >> 8;
-   }
+   int field2758;
 }

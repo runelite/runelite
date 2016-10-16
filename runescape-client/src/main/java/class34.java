@@ -1,100 +1,73 @@
-import java.awt.Component;
+import java.io.File;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ao")
+@ObfuscatedName("ag")
 public class class34 {
-   @ObfuscatedName("v")
-   static byte[] field776 = new byte[2048];
-   @ObfuscatedName("r")
-   static byte[] field777 = new byte[2048];
-   @ObfuscatedName("z")
-   static Buffer[] field778 = new Buffer[2048];
+   @ObfuscatedName("m")
+   static int[] field739 = new int[2048];
    @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 545011847
-   )
-   static int field779 = 0;
-   @ObfuscatedName("n")
-   static int[] field780 = new int[2048];
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 79153805
-   )
-   static int field781 = 0;
+   static byte[] field740 = new byte[2048];
+   @ObfuscatedName("y")
+   static byte[] field741 = new byte[2048];
+   @ObfuscatedName("p")
+   static Buffer[] field742 = new Buffer[2048];
    @ObfuscatedName("g")
-   static int[] field782 = new int[2048];
-   @ObfuscatedName("x")
-   static int[] field785 = new int[2048];
+   @ObfuscatedGetter(
+      intValue = -28646119
+   )
+   static int field743 = 0;
+   @ObfuscatedName("n")
+   static int[] field744 = new int[2048];
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1574905151
+   )
+   static int field745 = 0;
+   @ObfuscatedName("h")
+   static int[] field747 = new int[2048];
+   @ObfuscatedName("r")
+   static int[] field748 = new int[2048];
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 790183143
+      intValue = 1329428831
    )
-   static int field786 = 0;
-   @ObfuscatedName("j")
-   static int[] field787 = new int[2048];
+   static int field750 = 0;
+   @ObfuscatedName("d")
+   static Buffer field751 = new Buffer(new byte[5000]);
+   @ObfuscatedName("py")
+   @ObfuscatedGetter(
+      intValue = -2063041645
+   )
+   protected static int field752;
    @ObfuscatedName("k")
-   static int[] field788 = new int[2048];
-   @ObfuscatedName("q")
-   static Buffer field792 = new Buffer(new byte[5000]);
-   @ObfuscatedName("m")
-   static int[] field794 = new int[2048];
+   static int[] field754 = new int[2048];
+   @ObfuscatedName("w")
+   static int[] field755 = new int[2048];
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lclass171;IIIBZI)V",
-      garbageValue = "627028361"
+      signature = "(Ljava/io/File;B)V",
+      garbageValue = "0"
    )
-   static void method745(class171 var0, int var1, int var2, int var3, byte var4, boolean var5) {
-      long var6 = (long)((var1 << 16) + var2);
-      class175 var8 = (class175)class174.field2791.method3817(var6);
-      if(null == var8) {
-         var8 = (class175)class174.field2799.method3817(var6);
-         if(null == var8) {
-            var8 = (class175)class174.field2787.method3817(var6);
-            if(var8 != null) {
-               if(var5) {
-                  var8.method3938();
-                  class174.field2791.method3823(var8, var6);
-                  --class174.field2788;
-                  ++class174.field2783;
-               }
-
-            } else {
-               if(!var5) {
-                  var8 = (class175)class174.field2784.method3817(var6);
-                  if(var8 != null) {
-                     return;
-                  }
-               }
-
-               var8 = new class175();
-               var8.field2805 = var0;
-               var8.field2801 = var3;
-               var8.field2802 = var4;
-               if(var5) {
-                  class174.field2791.method3823(var8, var6);
-                  ++class174.field2783;
-               } else {
-                  class174.field2780.method3925(var8);
-                  class174.field2787.method3823(var8, var6);
-                  ++class174.field2788;
-               }
-
-            }
-         }
+   static void method727(File var0) {
+      class138.field2124 = var0;
+      if(!class138.field2124.exists()) {
+         throw new RuntimeException("");
+      } else {
+         class138.field2132 = true;
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("bf")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;S)V",
-      garbageValue = "148"
+      signature = "(III)V",
+      garbageValue = "-2136734133"
    )
-   public static void method746(Component var0) {
-      var0.setFocusTraversalKeysEnabled(false);
-      var0.addKeyListener(class140.keyboard);
-      var0.addFocusListener(class140.keyboard);
+   static void method728(int var0, int var1) {
+      Client.field300.method2748(209);
+      Client.field300.method2565(var0);
+      Client.field300.method2513(var1);
    }
 }

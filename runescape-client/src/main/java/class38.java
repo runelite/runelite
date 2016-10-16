@@ -1,100 +1,104 @@
-import java.awt.Graphics;
 import java.util.Calendar;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("ap")
 public class class38 {
+   @ObfuscatedName("u")
+   static Calendar field782 = Calendar.getInstance();
+   @ObfuscatedName("y")
+   static String[] field785;
+   @ObfuscatedName("p")
+   static int[] field786 = new int[5];
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -342745875
-   )
-   static int field824 = 0;
-   @ObfuscatedName("r")
-   static String[] field826;
-   @ObfuscatedName("z")
-   static int[] field827 = new int[5];
+   static int[][] field787 = new int[5][5000];
    @ObfuscatedName("t")
-   static int[][] field828 = new int[5][5000];
-   @ObfuscatedName("k")
-   static Widget field829;
-   @ObfuscatedName("i")
+   static int[] field788;
+   @ObfuscatedName("f")
    @Export("chatboxSegments")
    static String[] chatboxSegments = new String[1000];
-   @ObfuscatedName("j")
-   static final String[] field831 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-   @ObfuscatedName("n")
-   static int[] field833 = new int[1000];
-   @ObfuscatedName("u")
-   static Calendar field834 = Calendar.getInstance();
-   @ObfuscatedName("q")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1782030879
+      intValue = -1963030303
    )
-   static int field835 = 0;
+   static int field790 = 0;
+   @ObfuscatedName("h")
+   static class14[] field791 = new class14[50];
+   @ObfuscatedName("w")
+   static Widget field792;
+   @ObfuscatedName("ie")
+   static Widget field793;
+   @ObfuscatedName("n")
+   static final String[] field794 = new String[]{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -754371573
+   )
+   static int field795 = 0;
+   @ObfuscatedName("bd")
+   @Export("host")
+   static String host;
+   @ObfuscatedName("ae")
+   static int[] field799;
    @ObfuscatedName("m")
-   static class14[] field838 = new class14[50];
+   static int[] field800 = new int[1000];
 
-   @ObfuscatedName("ak")
+   @ObfuscatedName("da")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "112957591"
    )
-   static final void method774() {
-      for(class31 var0 = (class31)Client.field416.method3854(); null != var0; var0 = (class31)Client.field416.method3869()) {
-         if(Item.plane == var0.field710 && !var0.field719) {
-            if(Client.gameCycle >= var0.field712) {
-               var0.method685(Client.field358);
-               if(var0.field719) {
-                  var0.unlink();
-               } else {
-                  class16.region.method1959(var0.field710, var0.field721, var0.field718, var0.field715, 60, var0, 0, -1, false);
-               }
-            }
-         } else {
-            var0.unlink();
-         }
-      }
-
-   }
-
-   @ObfuscatedName("aw")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-1903659349"
-   )
-   static final void method779(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = 6 + var2;
-      int var5 = class0.field14.method4067(var0, 250);
-      int var6 = class0.field14.method4068(var0, 250) * 13;
-      class82.method1883(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var6 + var2, 0);
-      class82.method1834(var3 - var2, var4 - var2, var5 + var2 + var2, var2 + var2 + var6, 16777215);
-      class0.field14.method4073(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class113.method2446(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2);
-      if(var1) {
-         try {
-            Graphics var7 = class79.canvas.getGraphics();
-            Buffer.bufferProvider.draw(var7, 0, 0);
-         } catch (Exception var8) {
-            class79.canvas.repaint();
-         }
+   static boolean method764(String var0) {
+      if(var0 == null) {
+         return false;
       } else {
-         class152.method3180(var3, var4, var5, var6);
-      }
+         String var1 = XItemContainer.method178(var0, Client.field518);
 
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(XItemContainer.method178(var3.name, Client.field518))) {
+               return true;
+            }
+
+            if(var1.equalsIgnoreCase(XItemContainer.method178(var3.previousName, Client.field518))) {
+               return true;
+            }
+         }
+
+         return false;
+      }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(III)LWidget;",
-      garbageValue = "-280223033"
+      signature = "(III)I",
+      garbageValue = "-794796897"
    )
-   public static Widget method781(int var0, int var1) {
-      Widget var2 = class24.method600(var0);
-      return var1 == -1?var2:(var2 != null && null != var2.children && var1 < var2.children.length?var2.children[var1]:null);
+   static final int method765(int var0, int var1) {
+      int var2 = var0 + var1 * 57;
+      var2 ^= var2 << 13;
+      int var3 = var2 * (789221 + var2 * var2 * 15731) + 1376312589 & Integer.MAX_VALUE;
+      return var3 >> 19 & 255;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I[BLclass137;B)V",
+      garbageValue = "16"
+   )
+   static void method766(int var0, byte[] var1, class137 var2) {
+      class172 var3 = new class172();
+      var3.field2758 = 0;
+      var3.hash = (long)var0;
+      var3.field2757 = var1;
+      var3.field2750 = var2;
+      Deque var4 = class173.field2760;
+      synchronized(class173.field2760) {
+         class173.field2760.method3801(var3);
+      }
+
+      SecondaryBufferProvider.method1647();
    }
 }
