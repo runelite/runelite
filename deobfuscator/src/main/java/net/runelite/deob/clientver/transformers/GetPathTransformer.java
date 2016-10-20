@@ -27,7 +27,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.clientver.transformers;
 
 import net.runelite.asm.ClassFile;
@@ -45,17 +44,18 @@ import org.slf4j.LoggerFactory;
 public class GetPathTransformer implements Transformer
 {
 	private static final Logger logger = LoggerFactory.getLogger(GetPathTransformer.class);
-	
+
 	private boolean done = false;
 
 	@Override
 	public void transform(ClassGroup group)
 	{
-		ClassFile cf = group.findClass("client");
-
-		for (Method m : cf.getMethods().getMethods())
+		for (ClassFile cf : group.getClasses())
 		{
-			transform(m);
+			for (Method m : cf.getMethods().getMethods())
+			{
+				transform(m);
+			}
 		}
 
 		logger.info("Transformed: " + done);
@@ -64,9 +64,11 @@ public class GetPathTransformer implements Transformer
 	private void transform(Method m)
 	{
 		int count = 0;
-		
+
 		if (m.getCode() == null)
+		{
 			return;
+		}
 
 		for (Instruction i : m.getCode().getInstructions().getInstructions())
 		{
