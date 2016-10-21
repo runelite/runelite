@@ -4,67 +4,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hm")
+@ObfuscatedName("hk")
 @Implements("XGrandExchangeOffer")
 public class XGrandExchangeOffer {
-   @ObfuscatedName("y")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1374357707
-   )
-   @Export("totalQuantity")
-   public int totalQuantity;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 2138448551
-   )
-   @Export("itemId")
-   public int itemId;
-   @ObfuscatedName("s")
-   @Export("progress")
-   byte progress;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 344705533
+      intValue = -480262523
    )
    @Export("price")
    public int price;
-   @ObfuscatedName("p")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1228457433
+      intValue = -1477429399
    )
-   @Export("quantitySold")
-   public int quantitySold;
-   @ObfuscatedName("g")
+   @Export("itemId")
+   public int itemId;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 2047488067
+      intValue = -346476357
    )
    @Export("spent")
    public int spent;
-
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1405432253
+   )
+   @Export("quantitySold")
+   public int quantitySold;
    @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -2081928881
+   )
+   @Export("totalQuantity")
+   public int totalQuantity;
+   @ObfuscatedName("f")
+   @Export("progress")
+   byte progress;
+   @ObfuscatedName("dh")
+   static int[] field3222;
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "682164099"
+      garbageValue = "1400561137"
    )
-   public int method3984() {
+   public int method4063() {
       return this.progress & 7;
    }
 
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "10"
-   )
-   public int method3989() {
-      return (this.progress & 8) == 8?1:0;
-   }
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "283103088"
+      garbageValue = "863083657"
    )
-   void method3990(int var1) {
+   void method4065(int var1) {
+      this.progress &= -8;
+      this.progress = (byte)(this.progress | var1 & 7);
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "18"
+   )
+   void method4067(int var1) {
       this.progress &= -9;
       if(var1 == 1) {
          this.progress = (byte)(this.progress | 8);
@@ -72,29 +75,28 @@ public class XGrandExchangeOffer {
 
    }
 
-   public XGrandExchangeOffer() {
-   }
-
    @ObfuscatedSignature(
       signature = "(LBuffer;Z)V",
       garbageValue = "0"
    )
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
-      this.progress = var1.method2601();
-      this.itemId = var1.method2668();
-      this.price = var1.method2526();
-      this.totalQuantity = var1.method2526();
-      this.quantitySold = var1.method2526();
-      this.spent = var1.method2526();
+      this.progress = var1.method2534();
+      this.itemId = var1.method2535();
+      this.price = var1.method2538();
+      this.totalQuantity = var1.method2538();
+      this.quantitySold = var1.method2538();
+      this.spent = var1.method2538();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "929648981"
+      signature = "(S)I",
+      garbageValue = "-19464"
    )
-   void method4005(int var1) {
-      this.progress &= -8;
-      this.progress = (byte)(this.progress | var1 & 7);
+   public int method4072() {
+      return (this.progress & 8) == 8?1:0;
+   }
+
+   public XGrandExchangeOffer() {
    }
 }

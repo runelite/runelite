@@ -1,130 +1,140 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("eb")
 public class class130 {
-   @ObfuscatedName("u")
-   static class62 field2083;
-   @ObfuscatedName("cw")
-   public static char field2084;
-   @ObfuscatedName("ak")
+   @ObfuscatedName("qc")
    @ObfuscatedGetter(
-      longValue = -3183904738692211371L
+      intValue = -367496431
    )
-   static long field2085;
+   protected static int field2099;
+   @ObfuscatedName("lm")
+   static class133 field2100;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("bv")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;II)I",
-      garbageValue = "143466112"
+      signature = "(ZI)V",
+      garbageValue = "-2007046961"
    )
-   public static int method2820(CharSequence var0, CharSequence var1, int var2) {
-      int var3 = var0.length();
-      int var4 = var1.length();
-      int var5 = 0;
-      int var6 = 0;
-      char var7 = 0;
-      char var8 = 0;
+   @Export("xteaChanged")
+   static final void xteaChanged(boolean var0) {
+      Client.field473 = var0;
+      int var1;
+      int var2;
+      int var3;
+      int var4;
+      int var5;
+      int var6;
+      int var7;
+      if(!Client.field473) {
+         var1 = Client.field327.method2535();
+         var2 = Client.field327.method2569();
+         var3 = Client.field327.method2535();
+         class143.xteaKeys = new int[var3][4];
 
-      while(var5 - var7 < var3 || var6 - var8 < var4) {
-         if(var5 - var7 >= var3) {
-            return -1;
-         }
-
-         if(var6 - var8 >= var4) {
-            return 1;
-         }
-
-         char var9;
-         if(var7 != 0) {
-            var9 = var7;
-            boolean var14 = false;
-         } else {
-            var9 = var0.charAt(var5++);
-         }
-
-         char var10;
-         if(var8 != 0) {
-            var10 = var8;
-            boolean var15 = false;
-         } else {
-            var10 = var1.charAt(var6++);
-         }
-
-         var7 = Buffer.method2622(var9);
-         var8 = Buffer.method2622(var10);
-         var9 = class140.method2900(var9, var2);
-         var10 = class140.method2900(var10, var2);
-         if(var10 != var9 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
-            var9 = Character.toLowerCase(var9);
-            var10 = Character.toLowerCase(var10);
-            if(var10 != var9) {
-               return KitDefinition.method942(var9, var2) - KitDefinition.method942(var10, var2);
+         for(var4 = 0; var4 < var3; ++var4) {
+            for(var5 = 0; var5 < 4; ++var5) {
+               class143.xteaKeys[var4][var5] = Client.field327.method2538();
             }
          }
-      }
 
-      int var16 = Math.min(var3, var4);
+         VertexNormal.mapRegions = new int[var3];
+         XGrandExchangeOffer.field3222 = new int[var3];
+         FrameMap.field1826 = new int[var3];
+         class8.field148 = new byte[var3][];
+         MessageNode.field798 = new byte[var3][];
+         boolean var13 = false;
+         if((var1 / 8 == 48 || var1 / 8 == 49) && var2 / 8 == 48) {
+            var13 = true;
+         }
 
-      char var12;
-      int var17;
-      for(var17 = 0; var17 < var16; ++var17) {
-         char var11 = var0.charAt(var17);
-         var12 = var1.charAt(var17);
-         if(var12 != var11 && Character.toUpperCase(var11) != Character.toUpperCase(var12)) {
-            var11 = Character.toLowerCase(var11);
-            var12 = Character.toLowerCase(var12);
-            if(var12 != var11) {
-               return KitDefinition.method942(var11, var2) - KitDefinition.method942(var12, var2);
+         if(var1 / 8 == 48 && var2 / 8 == 148) {
+            var13 = true;
+         }
+
+         var3 = 0;
+
+         for(var5 = (var1 - 6) / 8; var5 <= (6 + var1) / 8; ++var5) {
+            for(var6 = (var2 - 6) / 8; var6 <= (var2 + 6) / 8; ++var6) {
+               var7 = var6 + (var5 << 8);
+               if(!var13 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
+                  VertexNormal.mapRegions[var3] = var7;
+                  XGrandExchangeOffer.field3222[var3] = class62.field1267.method3299("m" + var5 + "_" + var6);
+                  FrameMap.field1826[var3] = class62.field1267.method3299("l" + var5 + "_" + var6);
+                  ++var3;
+               }
             }
          }
-      }
 
-      var17 = var3 - var4;
-      if(var17 != 0) {
-         return var17;
+         class13.method155(var1, var2);
       } else {
-         for(int var18 = 0; var18 < var16; ++var18) {
-            var12 = var0.charAt(var18);
-            char var13 = var1.charAt(var18);
-            if(var12 != var13) {
-               return KitDefinition.method942(var12, var2) - KitDefinition.method942(var13, var2);
-            }
-         }
+         var1 = Client.field327.method2535();
+         var2 = Client.field327.method2535();
+         var3 = Client.field327.method2535();
+         Client.field327.method2770();
 
-         return 0;
-      }
-   }
-
-   @ObfuscatedName("cz")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "378984361"
-   )
-   static void method2821() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method3780(); var0 != null; var0 = (WidgetNode)Client.componentTable.method3785()) {
-         int var1 = var0.id;
-         if(class174.method3393(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
-
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(null != var3[var4]) {
-                  var2 = var3[var4].field2797;
-                  break;
-               }
-            }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = class92.method2078(var4);
-               if(var5 != null) {
-                  class32.method685(var5);
+         for(var4 = 0; var4 < 4; ++var4) {
+            for(var5 = 0; var5 < 13; ++var5) {
+               for(var6 = 0; var6 < 13; ++var6) {
+                  var7 = Client.field327.method2771(1);
+                  if(var7 == 1) {
+                     Client.field299[var4][var5][var6] = Client.field327.method2771(26);
+                  } else {
+                     Client.field299[var4][var5][var6] = -1;
+                  }
                }
             }
          }
+
+         Client.field327.method2778();
+         class143.xteaKeys = new int[var3][4];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            for(var5 = 0; var5 < 4; ++var5) {
+               class143.xteaKeys[var4][var5] = Client.field327.method2538();
+            }
+         }
+
+         VertexNormal.mapRegions = new int[var3];
+         XGrandExchangeOffer.field3222 = new int[var3];
+         FrameMap.field1826 = new int[var3];
+         class8.field148 = new byte[var3][];
+         MessageNode.field798 = new byte[var3][];
+         var3 = 0;
+
+         for(var4 = 0; var4 < 4; ++var4) {
+            for(var5 = 0; var5 < 13; ++var5) {
+               for(var6 = 0; var6 < 13; ++var6) {
+                  var7 = Client.field299[var4][var5][var6];
+                  if(var7 != -1) {
+                     int var8 = var7 >> 14 & 1023;
+                     int var9 = var7 >> 3 & 2047;
+                     int var10 = (var8 / 8 << 8) + var9 / 8;
+
+                     int var11;
+                     for(var11 = 0; var11 < var3; ++var11) {
+                        if(VertexNormal.mapRegions[var11] == var10) {
+                           var10 = -1;
+                           break;
+                        }
+                     }
+
+                     if(var10 != -1) {
+                        VertexNormal.mapRegions[var3] = var10;
+                        var11 = var10 >> 8 & 255;
+                        int var12 = var10 & 255;
+                        XGrandExchangeOffer.field3222[var3] = class62.field1267.method3299("m" + var11 + "_" + var12);
+                        FrameMap.field1826[var3] = class62.field1267.method3299("l" + var11 + "_" + var12);
+                        ++var3;
+                     }
+                  }
+               }
+            }
+         }
+
+         class13.method155(var2, var1);
       }
 
    }

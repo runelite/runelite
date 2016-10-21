@@ -1,87 +1,75 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cm")
+@ObfuscatedName("cc")
 @Implements("VertexNormal")
 public class VertexNormal {
+   @ObfuscatedName("dw")
+   @Export("mapRegions")
+   static int[] mapRegions;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1444657443
+   )
+   int field1687;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1294320375
+   )
+   int field1688;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 1442988655
+      intValue = -508663377
    )
-   int field1667;
-   @ObfuscatedName("y")
+   int field1689;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1459596207
+      intValue = -129527397
    )
-   int field1668;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 841135403
-   )
-   int field1670;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1617597675
-   )
-   int field1675;
+   int field1690;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1459395878"
+      signature = "(CI)C",
+      garbageValue = "2027044735"
    )
-   public static void method2177() {
-      try {
-         if(class186.field3002 == 1) {
-            int var0 = class186.field3007.method3582();
-            if(var0 > 0 && class186.field3007.method3588()) {
-               var0 -= class153.field2283;
-               if(var0 < 0) {
-                  var0 = 0;
-               }
-
-               class186.field3007.method3617(var0);
-               return;
-            }
-
-            class186.field3007.method3587();
-            class186.field3007.method3662();
-            if(null != XItemContainer.field200) {
-               class186.field3002 = 2;
-            } else {
-               class186.field3002 = 0;
-            }
-
-            class132.field2090 = null;
-            class130.field2083 = null;
-         }
-      } catch (Exception var2) {
-         var2.printStackTrace();
-         class186.field3007.method3587();
-         class186.field3002 = 0;
-         class132.field2090 = null;
-         class130.field2083 = null;
-         XItemContainer.field200 = null;
-      }
-
+   static char method2230(char var0) {
+      return var0 != 181 && var0 != 402?Character.toTitleCase(var0):var0;
    }
 
    VertexNormal(VertexNormal var1) {
-      this.field1675 = var1.field1675;
-      this.field1667 = var1.field1667;
-      this.field1668 = var1.field1668;
-      this.field1670 = var1.field1670;
+      this.field1690 = var1.field1690;
+      this.field1687 = var1.field1687;
+      this.field1688 = var1.field1688;
+      this.field1689 = var1.field1689;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(B)[Lclass85;",
-      garbageValue = "99"
+      signature = "(LWorld;LWorld;IZI)I",
+      garbageValue = "-2002716920"
    )
-   public static class85[] method2178() {
-      return new class85[]{class85.field1474, class85.field1471, class85.field1469, class85.field1476, class85.field1468};
+   static int method2231(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
+
+            if(var5 == -1) {
+               var5 = 2001;
+            }
+         }
+
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method619()?(var1.method619()?0:1):(var1.method619()?-1:0)):(var2 == 5?(var0.method617()?(var1.method617()?0:1):(var1.method617()?-1:0)):(var2 == 6?(var0.method618()?(var1.method618()?0:1):(var1.method618()?-1:0)):(var2 == 7?(var0.method636()?(var1.method636()?0:1):(var1.method636()?-1:0)):var0.id - var1.id)))));
+      }
    }
 
    VertexNormal() {

@@ -2,74 +2,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cr")
+@ObfuscatedName("cq")
 public final class class92 {
-   @ObfuscatedName("cm")
-   static class227 field1590;
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1055570579
+      intValue = -1371074865
    )
-   int field1591;
-   @ObfuscatedName("s")
+   int field1607;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1153173659
+      intValue = 334370885
    )
-   int field1592;
-   @ObfuscatedName("y")
+   int field1608;
+   @ObfuscatedName("b")
+   boolean field1609 = true;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 169634869
+      intValue = 1441106553
    )
-   int field1593;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 743884603
-   )
-   int field1594;
+   int field1610;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1052091565
+      intValue = 888220753
    )
-   int field1596;
-   @ObfuscatedName("x")
-   static String field1598;
-   @ObfuscatedName("z")
+   int field1612;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1428870223
+      intValue = 1235296181
    )
-   int field1599;
-   @ObfuscatedName("g")
-   boolean field1600 = true;
+   int field1613;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1269975215
+   )
+   int field1614;
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "112"
+   )
+   static String method2126(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
+   }
 
    @ObfuscatedSignature(
       signature = "(IIIIIIZ)V",
       garbageValue = "0"
    )
    class92(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
-      this.field1592 = var1;
-      this.field1599 = var2;
-      this.field1591 = var3;
-      this.field1593 = var4;
-      this.field1594 = var5;
-      this.field1596 = var6;
-      this.field1600 = var7;
+      this.field1613 = var1;
+      this.field1607 = var2;
+      this.field1608 = var3;
+      this.field1614 = var4;
+      this.field1610 = var5;
+      this.field1612 = var6;
+      this.field1609 = var7;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II)LWidget;",
-      garbageValue = "1221487957"
+      signature = "(S)V",
+      garbageValue = "-2343"
    )
-   public static Widget method2078(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(Widget.widgets[var1] == null || Widget.widgets[var1][var2] == null) {
-         boolean var3 = class174.method3393(var1);
-         if(!var3) {
-            return null;
+   static void method2127() {
+      Object var0 = class173.field2746;
+      synchronized(class173.field2746) {
+         if(class173.field2743 == 0) {
+            class54.field1146.method2910(new class173(), 5);
          }
-      }
 
-      return Widget.widgets[var1][var2];
+         class173.field2743 = 600;
+      }
    }
 }
