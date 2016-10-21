@@ -4,83 +4,74 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cg")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("t")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 612640247
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1754899277
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("z")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 458059349
+      intValue = 1475794789
    )
    @Export("hash")
    int hash;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 2096748807
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 598239035
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("dr")
+   @ObfuscatedGetter(
+      intValue = 366697215
+   )
+   static int field1737;
+   @ObfuscatedName("v")
+   @Export("middle")
+   Renderable middle;
+   @ObfuscatedName("b")
+   @Export("top")
+   Renderable top;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 17920465
+      intValue = -184055365
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -438014603
+      intValue = 37763273
    )
    @Export("height")
    int height;
-   @ObfuscatedName("g")
-   @Export("top")
-   Renderable top;
-   @ObfuscatedName("p")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("bz")
-   @ObfuscatedGetter(
-      intValue = 2037239257
-   )
-   static int field1726;
+   @ObfuscatedName("t")
+   @Export("bottom")
+   Renderable bottom;
 
-   @ObfuscatedName("pa")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1250366375"
+      signature = "([BZB)Ljava/lang/Object;",
+      garbageValue = "-128"
    )
-   protected static final void method2181() {
-      class14.field199.vmethod3110();
+   public static Object method2235(byte[] var0, boolean var1) {
+      if(null == var0) {
+         return null;
+      } else {
+         if(var0.length > 136 && !class128.field2092) {
+            try {
+               class121 var2 = new class121();
+               var2.vmethod2810(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class128.field2092 = true;
+            }
+         }
 
-      int var0;
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field2251[var0] = 0L;
+         return var0;
       }
-
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field2238[var0] = 0L;
-      }
-
-      class34.field752 = 0;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-935101126"
-   )
-   public static void method2182() {
-      if(class174.field2772 != null) {
-         class174.field2772.method2986();
-      }
-
    }
 }

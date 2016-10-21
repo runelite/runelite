@@ -1,156 +1,102 @@
 import java.util.zip.CRC32;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fb")
+@ObfuscatedName("fv")
 public class class174 {
-   @ObfuscatedName("u")
-   public static boolean field2763;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 541725869
-   )
-   public static int field2764 = 0;
-   @ObfuscatedName("g")
-   public static XHashTable field2765 = new XHashTable(32);
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -568676177
-   )
-   public static int field2766 = 0;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -432170897
-   )
-   public static int field2767 = 0;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -26666679
-   )
-   public static int field2768 = 0;
-   @ObfuscatedName("f")
-   public static Node2LinkedList field2769 = new Node2LinkedList();
-   @ObfuscatedName("k")
-   public static XHashTable field2770 = new XHashTable(4096);
-   @ObfuscatedName("r")
-   public static XHashTable field2771 = new XHashTable(4096);
-   @ObfuscatedName("z")
-   public static class146 field2772;
-   @ObfuscatedName("y")
-   public static XHashTable field2773 = new XHashTable(4096);
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1493985305
-   )
-   public static int field2774 = 0;
-   @ObfuscatedName("d")
-   public static Buffer field2775 = new Buffer(8);
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -644622007
-   )
-   public static int field2776 = 0;
-   @ObfuscatedName("o")
-   public static CRC32 field2777 = new CRC32();
-   @ObfuscatedName("i")
-   public static class171[] field2778 = new class171[256];
-   @ObfuscatedName("x")
-   public static byte field2779 = 0;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1543335399
+      intValue = 1136387433
    )
-   public static int field2780 = 0;
-   @ObfuscatedName("l")
+   public static int field2748 = 0;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1054745517
+      intValue = 580816685
    )
-   public static int field2781 = 0;
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(II)LItemComposition;",
-      garbageValue = "-1556429044"
+   public static int field2749 = 0;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      longValue = -7864143662254435355L
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.field1163.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemComposition.field1142.method3272(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(null != var2) {
-            var1.loadBuffer(new Buffer(var2));
-         }
-
-         var1.method1078();
-         if(var1.field1181 != -1) {
-            var1.method1131(getItemDefinition(var1.field1181), getItemDefinition(var1.note));
-         }
-
-         if(var1.field1190 != -1) {
-            var1.method1082(getItemDefinition(var1.field1190), getItemDefinition(var1.field1189));
-         }
-
-         if(var1.field1154 != -1) {
-            var1.method1083(getItemDefinition(var1.field1154), getItemDefinition(var1.field1191));
-         }
-
-         if(!class49.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field1188 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.field1187 = 0;
-         }
-
-         ItemComposition.field1163.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
+   public static long field2750;
    @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1864381304"
+   public static XHashTable field2751 = new XHashTable(4096);
+   @ObfuscatedName("a")
+   public static class171[] field2752 = new class171[256];
+   @ObfuscatedName("b")
+   public static XHashTable field2753 = new XHashTable(32);
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 744919237
    )
-   public static boolean method3393(int var0) {
-      if(Widget.validInterfaces[var0]) {
-         return true;
-      } else if(!Widget.field2788.method3253(var0)) {
-         return false;
-      } else {
-         int var1 = Widget.field2788.method3260(var0);
-         if(var1 == 0) {
-            Widget.validInterfaces[var0] = true;
-            return true;
-         } else {
-            if(null == Widget.widgets[var0]) {
-               Widget.widgets[var0] = new Widget[var1];
-            }
+   public static int field2754 = 0;
+   @ObfuscatedName("f")
+   public static class146 field2755;
+   @ObfuscatedName("c")
+   public static XHashTable field2756 = new XHashTable(4096);
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -866118789
+   )
+   public static int field2757 = 0;
+   @ObfuscatedName("k")
+   public static Node2LinkedList field2758 = new Node2LinkedList();
+   @ObfuscatedName("q")
+   public static CRC32 field2759 = new CRC32();
+   @ObfuscatedName("l")
+   public static XHashTable field2760 = new XHashTable(4096);
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1570079797
+   )
+   public static int field2762 = 0;
+   @ObfuscatedName("z")
+   public static byte field2764 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 531059865
+   )
+   public static int field2765 = 0;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 289179317
+   )
+   public static int field2766 = 0;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 660252069
+   )
+   public static int field2769 = 0;
+   @ObfuscatedName("x")
+   public static Buffer field2770 = new Buffer(8);
+   @ObfuscatedName("qm")
+   @ObfuscatedGetter(
+      intValue = 2042653227
+   )
+   static int field2771;
 
-            for(int var2 = 0; var2 < var1; ++var2) {
-               if(null == Widget.widgets[var0][var2]) {
-                  byte[] var3 = Widget.field2788.method3272(var0, var2);
-                  if(null != var3) {
-                     Widget.widgets[var0][var2] = new Widget();
-                     Widget.widgets[var0][var2].id = (var0 << 16) + var2;
-                     if(var3[0] == -1) {
-                        Widget.widgets[var0][var2].method3399(new Buffer(var3));
-                     } else {
-                        Widget.widgets[var0][var2].method3398(new Buffer(var3));
-                     }
-                  }
-               }
-            }
-
-            Widget.validInterfaces[var0] = true;
-            return true;
-         }
+   @ObfuscatedName("cu")
+   @ObfuscatedSignature(
+      signature = "([LWidget;LWidget;ZI)V",
+      garbageValue = "404061421"
+   )
+   static void method3428(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      class28.method654(var0, var1.id, var3, var4, var2);
+      if(null != var1.children) {
+         class28.method654(var1.children, var1.id, var3, var4, var2);
       }
+
+      WidgetNode var5 = (WidgetNode)Client.componentTable.method3849((long)var1.id);
+      if(var5 != null) {
+         class8.method109(var5.id, var3, var4, var2);
+      }
+
+      if(var1.contentType == 1337) {
+         ;
+      }
+
    }
 }

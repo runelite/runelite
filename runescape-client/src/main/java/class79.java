@@ -2,110 +2,182 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cz")
 public class class79 {
-   @ObfuscatedName("t")
+   @ObfuscatedName("ep")
+   static SpritePixels[] field1428;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1824812903
+      intValue = 1139030533
    )
-   static int field1418;
-   @ObfuscatedName("y")
-   static int[] field1419;
-   @ObfuscatedName("g")
-   static int[] field1420;
-   @ObfuscatedName("z")
+   static int field1429;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -188782023
+      intValue = -57766495
    )
-   static int field1422;
+   static int field1430;
+   @ObfuscatedName("v")
+   static int[] field1431;
+   @ObfuscatedName("b")
+   static int[] field1432;
+   @ObfuscatedName("cv")
+   static class227 field1434;
+   @ObfuscatedName("r")
+   static int[] field1435;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -436432389
+   )
+   static int field1437;
+   @ObfuscatedName("gb")
+   static Widget field1439;
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("dc")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-20"
+      signature = "(LWidget;III)V",
+      garbageValue = "255586418"
    )
-   static final int method1656(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class5.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
-         }
+   static final void method1695(Widget var0, int var1, int var2) {
+      if(Client.field452 == null && !Client.isMenuOpen) {
+         if(null != var0) {
+            Widget var5 = var0;
+            int var8 = class49.method992(class93.method2130(var0));
+            Widget var4;
+            int var7;
+            if(var8 == 0) {
+               var4 = null;
+            } else {
+               var7 = 0;
 
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = class5.tileHeights[var5][var3][var4] * (128 - var6) + class5.tileHeights[var5][1 + var3][var4] * var6 >> 7;
-         int var9 = class5.tileHeights[var5][var3][1 + var4] * (128 - var6) + class5.tileHeights[var5][1 + var3][var4 + 1] * var6 >> 7;
-         return (128 - var7) * var8 + var9 * var7 >> 7;
-      } else {
-         return 0;
-      }
-   }
+               while(true) {
+                  if(var7 >= var8) {
+                     var4 = var5;
+                     break;
+                  }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "2093018403"
-   )
-   static boolean method1679(int var0, int var1) {
-      return var0 != 4 || var1 < 8;
-   }
+                  var5 = class153.method3170(var5.parentId);
+                  if(null == var5) {
+                     var4 = null;
+                     break;
+                  }
 
-   @ObfuscatedName("dh")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "21939213"
-   )
-   static void method1680(String var0, boolean var1) {
-      var0 = var0.toLowerCase();
-      short[] var2 = new short[16];
-      int var3 = 0;
-
-      for(int var4 = 0; var4 < class138.field2126; ++var4) {
-         ItemComposition var5 = class174.getItemDefinition(var4);
-         if((!var1 || var5.field1188) && var5.field1181 == -1 && var5.name.toLowerCase().indexOf(var0) != -1) {
-            if(var3 >= 250) {
-               class1.field19 = -1;
-               class14.field197 = null;
-               return;
+                  ++var7;
+               }
             }
 
-            if(var3 >= var2.length) {
-               short[] var6 = new short[var2.length * 2];
+            Widget var6 = var4;
+            if(null == var4) {
+               var6 = var0.parent;
+            }
 
-               for(int var7 = 0; var7 < var3; ++var7) {
-                  var6[var7] = var2[var7];
+            if(var6 != null) {
+               Client.field452 = var0;
+               var5 = var0;
+               var8 = class49.method992(class93.method2130(var0));
+               if(var8 == 0) {
+                  var4 = null;
+               } else {
+                  var7 = 0;
+
+                  while(true) {
+                     if(var7 >= var8) {
+                        var4 = var5;
+                        break;
+                     }
+
+                     var5 = class153.method3170(var5.parentId);
+                     if(null == var5) {
+                        var4 = null;
+                        break;
+                     }
+
+                     ++var7;
+                  }
                }
 
-               var2 = var6;
+               var6 = var4;
+               if(null == var4) {
+                  var6 = var0.parent;
+               }
+
+               Client.field453 = var6;
+               Client.field521 = var1;
+               Client.field455 = var2;
+               GameEngine.field2256 = 0;
+               Client.field463 = false;
+               if(Client.menuOptionCount > 0) {
+                  int var9 = Client.menuOptionCount - 1;
+                  class23.field603 = new class32();
+                  class23.field603.field718 = Client.menuActionParams0[var9];
+                  class23.field603.field714 = Client.menuActionParams1[var9];
+                  class23.field603.field708 = Client.menuTypes[var9];
+                  class23.field603.field710 = Client.menuIdentifiers[var9];
+                  class23.field603.field709 = Client.menuOptions[var9];
+               }
+
+               return;
             }
-
-            var2[var3++] = (short)var4;
          }
+
       }
-
-      class14.field197 = var2;
-      XItemContainer.field203 = 0;
-      class1.field19 = var3;
-      String[] var9 = new String[class1.field19];
-
-      for(int var8 = 0; var8 < class1.field19; ++var8) {
-         var9[var8] = class174.getItemDefinition(var2[var8]).name;
-      }
-
-      short[] var10 = class14.field197;
-      class12.method163(var9, var10, 0, var9.length - 1);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("ct")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;S)V",
-      garbageValue = "-19957"
+      signature = "(II)Z",
+      garbageValue = "-1494434143"
    )
-   static void method1681(String var0, String var1, String var2) {
-      class33.loginMessage1 = var0;
-      class33.loginMessage2 = var1;
-      class33.loginMessage3 = var2;
+   static boolean method1725(int var0) {
+      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "([BIILRegion;[LCollisionData;B)V",
+      garbageValue = "-90"
+   )
+   static final void method1727(byte[] var0, int var1, int var2, Region var3, CollisionData[] var4) {
+      Buffer var5 = new Buffer(var0);
+      int var6 = -1;
+
+      while(true) {
+         int var7 = var5.method2546();
+         if(var7 == 0) {
+            return;
+         }
+
+         var6 += var7;
+         int var8 = 0;
+
+         while(true) {
+            int var9 = var5.method2546();
+            if(var9 == 0) {
+               break;
+            }
+
+            var8 += var9 - 1;
+            int var10 = var8 & 63;
+            int var11 = var8 >> 6 & 63;
+            int var12 = var8 >> 12;
+            int var13 = var5.method2656();
+            int var14 = var13 >> 2;
+            int var15 = var13 & 3;
+            int var16 = var11 + var1;
+            int var17 = var2 + var10;
+            if(var16 > 0 && var17 > 0 && var16 < 103 && var17 < 103) {
+               int var18 = var12;
+               if((class5.tileSettings[1][var16][var17] & 2) == 2) {
+                  var18 = var12 - 1;
+               }
+
+               CollisionData var19 = null;
+               if(var18 >= 0) {
+                  var19 = var4[var18];
+               }
+
+               ItemComposition.method1112(var12, var16, var17, var6, var15, var14, var3, var19);
+            }
+         }
+      }
    }
 }

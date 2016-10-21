@@ -1,30 +1,26 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dg")
+@ObfuscatedName("dk")
 public class class127 {
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IB)LNPCComposition;",
-      garbageValue = "98"
-   )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.field870.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = NPCComposition.field869.method3272(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.method786(new Buffer(var2));
-         }
+   @ObfuscatedName("e")
+   public static String field2089;
 
-         var1.method792();
-         NPCComposition.field870.put(var1, (long)var0);
-         return var1;
-      }
+   @ObfuscatedName("cz")
+   @ObfuscatedSignature(
+      signature = "(Lclass32;IIB)V",
+      garbageValue = "-90"
+   )
+   static final void method2803(class32 var0, int var1, int var2) {
+      class38.menuAction(var0.field718, var0.field714, var0.field708, var0.field710, var0.field709, var0.field709, var1, var2);
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1770869066"
+   )
+   public static void method2807() {
+      KitDefinition.field1030.reset();
    }
 }
