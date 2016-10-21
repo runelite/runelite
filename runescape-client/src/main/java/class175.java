@@ -2,33 +2,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fo")
+@ObfuscatedName("fy")
 public class class175 extends CacheableNode {
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1436364329
+      intValue = -869825241
    )
-   public int field2782;
-   @ObfuscatedName("t")
-   public byte field2783;
-   @ObfuscatedName("s")
-   public class171 field2785;
+   public int field2774;
+   @ObfuscatedName("n")
+   public byte field2775;
+   @ObfuscatedName("f")
+   public class171 field2776;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1618301081
+   )
+   static int field2777;
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(CB)C",
-      garbageValue = "96"
+      signature = "(IB)I",
+      garbageValue = "-19"
    )
-   static char method3395(char var0) {
-      return var0 != 181 && var0 != 402?Character.toTitleCase(var0):var0;
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-2035427192"
-   )
-   public static boolean method3396(int var0) {
-      return (var0 >> 28 & 1) != 0;
+   public static int method3438(int var0) {
+      return var0 >> 11 & 63;
    }
 }

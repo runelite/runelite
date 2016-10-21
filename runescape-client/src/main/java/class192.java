@@ -1,15 +1,16 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gn")
+@ObfuscatedName("gq")
 public class class192 {
-   @ObfuscatedName("bk")
-   static class171 field3101;
-   @ObfuscatedName("ht")
+   @ObfuscatedName("be")
    @ObfuscatedGetter(
-      intValue = 2038276437
+      intValue = 935171611
    )
-   @Export("menuHeight")
-   static int menuHeight;
+   static int field3100;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 773366031
+   )
+   public static int field3101;
 }

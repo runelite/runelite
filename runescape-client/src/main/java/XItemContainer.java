@@ -1,180 +1,169 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
+@ObfuscatedName("d")
 @Implements("XItemContainer")
 public class XItemContainer extends Node {
-   @ObfuscatedName("g")
-   public static class170 field200;
-   @ObfuscatedName("z")
-   @Export("itemIds")
-   int[] itemIds = new int[]{-1};
-   @ObfuscatedName("t")
+   @ObfuscatedName("n")
    @Export("stackSizes")
    int[] stackSizes = new int[]{0};
-   @ObfuscatedName("pr")
-   @ObfuscatedGetter(
-      intValue = 233681579
-   )
-   static int field203;
-   @ObfuscatedName("s")
+   @ObfuscatedName("e")
+   @Export("itemIds")
+   int[] itemIds = new int[]{-1};
+   @ObfuscatedName("d")
+   static String field219;
+   @ObfuscatedName("f")
    @Export("itemContainers")
    static XHashTable itemContainers = new XHashTable(32);
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lclass215;I)Ljava/lang/String;",
-      garbageValue = "2039633723"
+   @ObfuscatedName("m")
+   static int[] field221;
+   @ObfuscatedName("gm")
+   @ObfuscatedGetter(
+      intValue = -624243485
    )
-   public static String method178(CharSequence var0, class215 var1) {
-      if(null == var0) {
-         return null;
-      } else {
-         int var2 = 0;
-
-         int var3;
-         boolean var4;
-         char var5;
-         for(var3 = var0.length(); var2 < var3; ++var2) {
-            var5 = var0.charAt(var2);
-            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
-            if(!var4) {
-               break;
-            }
-         }
-
-         while(var3 > var2) {
-            var5 = var0.charAt(var3 - 1);
-            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
-            if(!var4) {
-               break;
-            }
-
-            --var3;
-         }
-
-         int var14 = var3 - var2;
-         if(var14 >= 1 && var14 <= class169.method3241(var1)) {
-            StringBuilder var13 = new StringBuilder(var14);
-
-            for(int var6 = var2; var6 < var3; ++var6) {
-               char var7 = var0.charAt(var6);
-               boolean var8;
-               if(Character.isISOControl(var7)) {
-                  var8 = false;
-               } else if(class152.method3136(var7)) {
-                  var8 = true;
-               } else {
-                  char[] var9 = class167.field2707;
-                  int var10 = 0;
-
-                  label113:
-                  while(true) {
-                     char var11;
-                     if(var10 >= var9.length) {
-                        var9 = class167.field2703;
-
-                        for(var10 = 0; var10 < var9.length; ++var10) {
-                           var11 = var9[var10];
-                           if(var11 == var7) {
-                              var8 = true;
-                              break label113;
-                           }
-                        }
-
-                        var8 = false;
-                        break;
-                     }
-
-                     var11 = var9[var10];
-                     if(var7 == var11) {
-                        var8 = true;
-                        break;
-                     }
-
-                     ++var10;
-                  }
-               }
-
-               if(var8) {
-                  char var12 = class139.method2875(var7);
-                  if(var12 != 0) {
-                     var13.append(var12);
-                  }
-               }
-            }
-
-            if(var13.length() == 0) {
-               return null;
-            } else {
-               return var13.toString();
-            }
-         } else {
-            return null;
-         }
-      }
-   }
+   @Export("plane")
+   static int plane;
+   @ObfuscatedName("ba")
+   static class171 field223;
+   @ObfuscatedName("mb")
+   @ObfuscatedGetter(
+      intValue = 1159513985
+   )
+   static int field224;
+   @ObfuscatedName("cc")
+   static class227 field225;
+   @ObfuscatedName("bo")
+   static class171 field226;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(LModIcon;I)V",
-      garbageValue = "343350447"
+      signature = "(ZB)V",
+      garbageValue = "9"
    )
-   static final void method182(ModIcon var0) {
-      short var1 = 256;
-
-      int var2;
-      for(var2 = 0; var2 < class33.field710.length; ++var2) {
-         class33.field710[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         class33.field710[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = (var3 << 7) + var4;
-               class33.field701[var5] = (class33.field710[var5 - 1] + class33.field710[1 + var5] + class33.field710[var5 - 128] + class33.field710[128 + var5]) / 4;
+   public static void method174(boolean var0) {
+      if(class174.field2755 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.method2518(var0?2:3);
+            var1.method2520(0);
+            class174.field2755.method3009(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class174.field2755.method3010();
+            } catch (Exception var3) {
+               ;
             }
+
+            ++class174.field2766;
+            class174.field2755 = null;
          }
 
-         int[] var8 = class33.field710;
-         class33.field710 = class33.field701;
-         class33.field701 = var8;
       }
-
-      if(null != var0) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var3 + 16 + var0.offsetY;
-                  int var7 = var5 + (var6 << 7);
-                  class33.field710[var7] = 0;
-               }
-            }
-         }
-      }
-
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lclass170;I)V",
-      garbageValue = "-1926077671"
+      signature = "(I)V",
+      garbageValue = "1533706523"
    )
-   public static void method184(class170 var0) {
-      GameEngine.field2248 = var0;
+   public static void method180() {
+      Sequence.field990.reset();
+      Sequence.field991.reset();
+   }
+
+   @ObfuscatedName("ax")
+   @ObfuscatedSignature(
+      signature = "(LWidget;III)V",
+      garbageValue = "-1011203830"
+   )
+   static final void method181(Widget var0, int var1, int var2) {
+      if(Client.field369 == 0 || Client.field369 == 3) {
+         if(class143.field2198 == 1 || !ChatMessages.field276 && class143.field2198 == 4) {
+            class178 var3 = var0.method3474(true);
+            if(null == var3) {
+               return;
+            }
+
+            int var4 = class143.field2197 - var1;
+            int var5 = class143.field2207 - var2;
+            if(var3.method3498(var4, var5)) {
+               var4 -= var3.field2930 / 2;
+               var5 -= var3.field2931 / 2;
+               int var6 = Client.mapScale + Client.mapAngle & 2047;
+               int var7 = class94.field1635[var6];
+               int var8 = class94.field1646[var6];
+               var7 = (256 + Client.mapScaleDelta) * var7 >> 8;
+               var8 = var8 * (256 + Client.mapScaleDelta) >> 8;
+               int var9 = var5 * var7 + var8 * var4 >> 11;
+               int var10 = var8 * var5 - var7 * var4 >> 11;
+               int var11 = class34.localPlayer.x + var9 >> 7;
+               int var12 = class34.localPlayer.y - var10 >> 7;
+               Client.field397.method2768(50);
+               Client.field397.method2518(18);
+               Client.field397.method2559(class140.field2153[82]?(class140.field2153[81]?2:1):0);
+               Client.field397.method2567(class32.baseX + var11);
+               Client.field397.method2516(var12 + class8.baseY);
+               Client.field397.method2518(var4);
+               Client.field397.method2518(var5);
+               Client.field397.method2519(Client.mapAngle);
+               Client.field397.method2518(57);
+               Client.field397.method2518(Client.mapScale);
+               Client.field397.method2518(Client.mapScaleDelta);
+               Client.field397.method2518(89);
+               Client.field397.method2519(class34.localPlayer.x);
+               Client.field397.method2519(class34.localPlayer.y);
+               Client.field397.method2518(63);
+               Client.flagX = var11;
+               Client.flagY = var12;
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(IIIIIII)I",
+      garbageValue = "1376426915"
+   )
+   public static int method183(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
+      }
+
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "-37"
+   )
+   static final int method184(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = var2 / 2 + (var0 / 4 << 10) + (var1 / 32 << 7);
+      return var3;
    }
 }

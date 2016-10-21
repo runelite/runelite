@@ -39,7 +39,7 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>injector-plugin</artifactId>
-	<version>123.2-SNAPSHOT</version> <!-- rs version -->
+	<version>124.1-SNAPSHOT</version> <!-- rs version -->
 	<name>Injector Plugin</name>
 	<packaging>maven-plugin</packaging>
 

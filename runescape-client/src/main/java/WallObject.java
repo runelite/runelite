@@ -2,63 +2,55 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("ch")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("t")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1062312009
+      intValue = -971612581
    )
    @Export("x")
    int x;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -1031328835
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -558190651
-   )
-   int field1570;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1601799597
-   )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("g")
+   @ObfuscatedName("b")
    @Export("renderable1")
    public Renderable renderable1;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1788995757
+   )
+   int field1584;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -984858395
+   )
+   int field1585;
    @ObfuscatedName("m")
    @Export("renderable2")
    public Renderable renderable2;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 2135688295
+      intValue = -1614365283
    )
-   int field1574 = 0;
-   @ObfuscatedName("s")
+   @Export("hash")
+   public int hash = 0;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1383415985
+      intValue = 911396279
+   )
+   int field1589 = 0;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1012390593
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("p")
+   @ObfuscatedName("mj")
+   static byte field1592;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 2057334241
+      intValue = 1897918763
    )
-   int field1576;
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-348068628"
-   )
-   public static boolean method2077(char var0) {
-      return var0 >= 48 && var0 <= 57;
-   }
+   @Export("y")
+   int y;
 }
