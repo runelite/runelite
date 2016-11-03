@@ -1,86 +1,113 @@
-import java.awt.Graphics;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("i")
+@ObfuscatedName("g")
 public class class12 extends Renderable {
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 572337783
+      intValue = -1931937023
    )
-   int field176;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -275731089
-   )
-   int field177;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -735156831
-   )
-   int field178;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -399781585
-   )
-   int field179;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 932981437
-   )
-   int field180;
-   @ObfuscatedName("m")
-   Sequence field182;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1459765903
-   )
-   int field183;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1937777227
-   )
-   int field184;
+   int field173;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1868323753
+      intValue = -347642815
    )
-   int field188;
+   int field174;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 35248861
+   )
+   int field175;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 946187501
+   )
+   int field176;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -2033955557
+   )
+   int field177;
+   @ObfuscatedName("ce")
+   static class146 field178;
+   @ObfuscatedName("an")
+   static class149 field179;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1157840235
+   )
+   int field180;
+   @ObfuscatedName("gz")
+   static Widget field182;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -138634921
+   )
+   int field183;
+   @ObfuscatedName("ih")
+   @ObfuscatedGetter(
+      intValue = -1278316985
+   )
+   static int field184;
+   @ObfuscatedName("dq")
+   static int[] field185;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -1085508723
+   )
+   int field186;
+   @ObfuscatedName("m")
+   Sequence field187;
+   @ObfuscatedName("qk")
+   protected static java.awt.Frame field188;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("dm")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
-      garbageValue = "3"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "1725952648"
+   )
+   static final void method139(String var0) {
+      if(class114.clanMembers != null) {
+         Client.field324.method2828(144);
+         Client.field324.method2556(class31.method685(var0));
+         Client.field324.method2562(var0);
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)LModel;",
+      garbageValue = "-1714992488"
    )
    protected final Model getModel() {
-      if(this.field182 != null) {
-         int var1 = Client.gameCycle - this.field184;
-         if(var1 > 100 && this.field182.field996 > 0) {
+      if(this.field187 != null) {
+         int var1 = Client.gameCycle - this.field180;
+         if(var1 > 100 && this.field187.field1010 > 0) {
             var1 = 100;
          }
 
-         label62: {
+         label68: {
             do {
                do {
-                  if(var1 <= this.field182.field994[this.field183]) {
-                     break label62;
+                  if(var1 <= this.field187.field1008[this.field186]) {
+                     break label68;
                   }
 
-                  var1 -= this.field182.field994[this.field183];
-                  ++this.field183;
-               } while(this.field183 < this.field182.field992.length);
+                  var1 -= this.field187.field1008[this.field186];
+                  ++this.field186;
+               } while(this.field186 < this.field187.field1006.length);
 
-               this.field183 -= this.field182.field996;
-            } while(this.field183 >= 0 && this.field183 < this.field182.field992.length);
+               this.field186 -= this.field187.field1010;
+            } while(this.field186 >= 0 && this.field186 < this.field187.field1006.length);
 
-            this.field182 = null;
+            this.field187 = null;
          }
 
-         this.field184 = Client.gameCycle - var1;
+         this.field180 = Client.gameCycle - var1;
       }
 
-      ObjectComposition var12 = class8.getObjectDefinition(this.field188);
+      ObjectComposition var12 = Projectile.getObjectDefinition(this.field175);
       if(null != var12.impostorIds) {
          var12 = var12.getImpostor();
       }
@@ -90,136 +117,102 @@ public class class12 extends Renderable {
       } else {
          int var2;
          int var3;
-         if(this.field178 != 1 && this.field178 != 3) {
-            var2 = var12.field936;
-            var3 = var12.field937;
+         if(this.field174 != 1 && this.field174 != 3) {
+            var2 = var12.field950;
+            var3 = var12.field948;
          } else {
-            var2 = var12.field937;
-            var3 = var12.field936;
+            var2 = var12.field948;
+            var3 = var12.field950;
          }
 
-         int var4 = (var2 >> 1) + this.field180;
-         int var5 = this.field180 + (1 + var2 >> 1);
-         int var6 = (var3 >> 1) + this.field177;
-         int var7 = this.field177 + (1 + var3 >> 1);
-         int[][] var8 = class5.tileHeights[this.field179];
-         int var9 = var8[var4][var7] + var8[var4][var6] + var8[var5][var6] + var8[var5][var7] >> 2;
-         int var10 = (this.field180 << 7) + (var2 << 6);
-         int var11 = (var3 << 6) + (this.field177 << 7);
-         return var12.method829(this.field176, this.field178, var8, var10, var9, var11, this.field182, this.field183);
+         int var4 = (var2 >> 1) + this.field176;
+         int var5 = (1 + var2 >> 1) + this.field176;
+         int var6 = this.field177 + (var3 >> 1);
+         int var7 = this.field177 + (var3 + 1 >> 1);
+         int[][] var8 = class5.tileHeights[this.field183];
+         int var9 = var8[var5][var7] + var8[var4][var7] + var8[var5][var6] + var8[var4][var6] >> 2;
+         int var10 = (this.field176 << 7) + (var2 << 6);
+         int var11 = (this.field177 << 7) + (var3 << 6);
+         return var12.method842(this.field173, this.field174, var8, var10, var9, var11, this.field187, this.field186);
       }
    }
 
-   @ObfuscatedName("f")
-   public static String method142(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(0L == var0 % 37L) {
-            return null;
-         } else {
-            int var2 = 0;
-
-            for(long var3 = var0; 0L != var3; var3 /= 37L) {
-               ++var2;
-            }
-
-            StringBuilder var5 = new StringBuilder(var2);
-
-            while(0L != var0) {
-               long var6 = var0;
-               var0 /= 37L;
-               var5.append(class165.field2685[(int)(var6 - var0 * 37L)]);
-            }
-
-            return var5.reverse().toString();
-         }
-      } else {
-         return null;
-      }
-   }
-
-   @ObfuscatedName("ap")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)V",
-      garbageValue = "-8910509"
+      signature = "(LWorld;LWorld;IZB)I",
+      garbageValue = "12"
    )
-   static final void method145(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = var2 + 6;
-      int var4 = 6 + var2;
-      int var5 = class112.field1962.method4093(var0, 250);
-      int var6 = class112.field1962.method4094(var0, 250) * 13;
-      class82.method1861(var3 - var2, var4 - var2, var2 + var2 + var5, var2 + var2 + var6, 0);
-      class82.method1852(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2, 16777215);
-      class112.field1962.method4125(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class50.method1014(var3 - var2, var4 - var2, var5 + var2 + var2, var6 + var2 + var2);
-      if(var1) {
-         try {
-            Graphics var7 = GameObject.canvas.getGraphics();
-            XClanMember.bufferProvider.draw(var7, 0, 0);
-         } catch (Exception var8) {
-            GameObject.canvas.repaint();
-         }
-      } else {
-         class48.method968(var3, var4, var5, var6);
-      }
+   static int method143(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
+            }
 
+            if(var5 == -1) {
+               var5 = 2001;
+            }
+         }
+
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method624()?(var1.method624()?0:1):(var1.method624()?-1:0)):(var2 == 5?(var0.method622()?(var1.method622()?0:1):(var1.method622()?-1:0)):(var2 == 6?(var0.method649()?(var1.method649()?0:1):(var1.method649()?-1:0)):(var2 == 7?(var0.method621()?(var1.method621()?0:1):(var1.method621()?-1:0)):var0.id - var1.id)))));
+      }
    }
 
    class12(int var1, int var2, int var3, int var4, int var5, int var6, int var7, boolean var8, Renderable var9) {
-      this.field188 = var1;
-      this.field176 = var2;
-      this.field178 = var3;
-      this.field179 = var4;
-      this.field180 = var5;
+      this.field175 = var1;
+      this.field173 = var2;
+      this.field174 = var3;
+      this.field183 = var4;
+      this.field176 = var5;
       this.field177 = var6;
       if(var7 != -1) {
-         this.field182 = class62.getAnimation(var7);
-         this.field183 = 0;
-         this.field184 = Client.gameCycle - 1;
-         if(this.field182.replyMode == 0 && var9 != null && var9 instanceof class12) {
+         this.field187 = NPC.getAnimation(var7);
+         this.field186 = 0;
+         this.field180 = Client.gameCycle - 1;
+         if(this.field187.replyMode == 0 && null != var9 && var9 instanceof class12) {
             class12 var10 = (class12)var9;
-            if(var10.field182 == this.field182) {
-               this.field183 = var10.field183;
-               this.field184 = var10.field184;
+            if(var10.field187 == this.field187) {
+               this.field186 = var10.field186;
+               this.field180 = var10.field180;
                return;
             }
          }
 
-         if(var8 && this.field182.field996 != -1) {
-            this.field183 = (int)(Math.random() * (double)this.field182.field992.length);
-            this.field184 -= (int)(Math.random() * (double)this.field182.field994[this.field183]);
+         if(var8 && this.field187.field1010 != -1) {
+            this.field186 = (int)(Math.random() * (double)this.field187.field1006.length);
+            this.field180 -= (int)(Math.random() * (double)this.field187.field1008[this.field186]);
          }
       }
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1521990747"
+      signature = "(IIIB)I",
+      garbageValue = "-45"
    )
-   public static void method146(int var0) {
-      class186.field3005 = 1;
-      class186.field2996 = null;
-      class186.field2997 = -1;
-      class175.field2777 = -1;
-      class186.field2999 = 0;
-      class186.field2992 = false;
-      class186.field3002 = var0;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1586064793"
-   )
-   static void method147() {
-      class34.field763 = 0;
-
-      for(int var0 = 0; var0 < 2048; ++var0) {
-         class34.field761[var0] = null;
-         class34.field760[var0] = 1;
+   static final int method145(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
       }
 
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var0 / 4 << 10) + (var1 / 32 << 7) + var2 / 2;
+      return var3;
    }
 }

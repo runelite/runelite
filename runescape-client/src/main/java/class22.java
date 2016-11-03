@@ -1,113 +1,172 @@
 import java.util.Comparator;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("x")
 final class class22 implements Comparator {
-   @ObfuscatedName("an")
-   static class171 field589;
-   @ObfuscatedName("r")
-   public static String field590;
    // $FF: synthetic field
    final boolean val$preferOwnWorld;
+   @ObfuscatedName("q")
+   static class170 field584;
+   @ObfuscatedName("s")
+   static String[] field587;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(Lclass217;Lclass217;I)I",
-      garbageValue = "-405945289"
+      garbageValue = "1687267001"
    )
    int method580(class217 var1, class217 var2) {
-      if(var2.field3196 == var1.field3196) {
+      if(var1.field3197 == var2.field3197) {
          return 0;
       } else {
          if(this.val$preferOwnWorld) {
-            if(Client.world == var1.field3196) {
+            if(Client.world == var1.field3197) {
                return -1;
             }
 
-            if(var2.field3196 == Client.world) {
+            if(var2.field3197 == Client.world) {
                return 1;
             }
          }
 
-         return var1.field3196 < var2.field3196?-1:1;
+         return var1.field3197 < var2.field3197?-1:1;
       }
    }
 
-   class22(boolean var1) {
-      this.val$preferOwnWorld = var1;
+   public int compare(Object var1, Object var2) {
+      return this.method580((class217)var1, (class217)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("ag")
-   @ObfuscatedSignature(
-      signature = "(Lclass35;I)V",
-      garbageValue = "275340996"
-   )
-   static final void method584(class35 var0) {
-      if(class34.localPlayer.x >> 7 == Client.flagX && Client.flagY == class34.localPlayer.y >> 7) {
-         Client.flagX = 0;
-      }
-
-      int var1 = class34.field763;
-      int[] var2 = class34.field758;
-      int var3 = var1;
-      if(var0 == class35.field779 || var0 == class35.field785) {
-         var3 = 1;
-      }
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Player var5;
-         int var6;
-         if(class35.field779 == var0) {
-            var5 = class34.localPlayer;
-            var6 = class34.localPlayer.field57 << 14;
-         } else if(var0 == class35.field785) {
-            var5 = Client.cachedPlayers[Client.field471];
-            var6 = Client.field471 << 14;
-         } else {
-            var5 = Client.cachedPlayers[var2[var4]];
-            var6 = var2[var4] << 14;
-            if(class35.field777 == var0 && Client.field471 == var2[var4]) {
-               continue;
-            }
-         }
-
-         if(var5 != null && var5.vmethod787() && !var5.field52) {
-            var5.field49 = false;
-            if((Client.field286 && var1 > 50 || var1 > 200) && var0 != class35.field779 && var5.idlePoseAnimation == var5.poseAnimation) {
-               var5.field49 = true;
-            }
-
-            int var7 = var5.x >> 7;
-            int var8 = var5.y >> 7;
-            if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
-               if(null != var5.model && Client.gameCycle >= var5.totalLevel && Client.gameCycle < var5.field40) {
-                  var5.field49 = false;
-                  var5.field38 = Renderable.method1960(var5.x, var5.y, XItemContainer.plane);
-                  class9.region.method1976(XItemContainer.plane, var5.x, var5.y, var5.field38, 60, var5, var5.angle, var6, var5.field45, var5.field46, var5.field47, var5.field30);
-               } else {
-                  if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
-                     if(Client.field385[var7][var8] == Client.field386) {
-                        continue;
-                     }
-
-                     Client.field385[var7][var8] = Client.field386;
-                  }
-
-                  var5.field38 = Renderable.method1960(var5.x, var5.y, XItemContainer.plane);
-                  class9.region.method2020(XItemContainer.plane, var5.x, var5.y, var5.field38, 60, var5, var5.angle, var6, var5.field819);
-               }
-            }
-         }
-      }
-
+   class22(boolean var1) {
+      this.val$preferOwnWorld = var1;
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method580((class217)var1, (class217)var2);
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZI)I",
+      garbageValue = "141149483"
+   )
+   public static int method584(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
+
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == 43) {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= 48 && var8 <= 57) {
+               var10 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var10 = var8 - 55;
+            } else {
+               if(var8 < 97 || var8 > 122) {
+                  throw new NumberFormatException();
+               }
+
+               var10 = var8 - 87;
+            }
+
+            if(var10 >= var1) {
+               throw new NumberFormatException();
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var1 * var5 + var10;
+            if(var5 != var9 / var1) {
+               throw new NumberFormatException();
+            }
+
+            var5 = var9;
+            var4 = true;
+         }
+
+         if(!var4) {
+            throw new NumberFormatException();
+         } else {
+            return var5;
+         }
+      } else {
+         throw new IllegalArgumentException("");
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IS)LItemComposition;",
+      garbageValue = "-5838"
+   )
+   @Export("getItemDefinition")
+   public static ItemComposition getItemDefinition(int var0) {
+      ItemComposition var1 = (ItemComposition)ItemComposition.field1172.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = ItemComposition.field1169.method3305(10, var0);
+         var1 = new ItemComposition();
+         var1.id = var0;
+         if(var2 != null) {
+            var1.loadBuffer(new Buffer(var2));
+         }
+
+         var1.method1113();
+         if(var1.field1177 != -1) {
+            var1.method1159(getItemDefinition(var1.field1177), getItemDefinition(var1.note));
+         }
+
+         if(var1.field1218 != -1) {
+            var1.method1117(getItemDefinition(var1.field1218), getItemDefinition(var1.field1203));
+         }
+
+         if(var1.field1196 != -1) {
+            var1.method1118(getItemDefinition(var1.field1196), getItemDefinition(var1.field1216));
+         }
+
+         if(!ItemComposition.isMembersWorld && var1.isMembers) {
+            var1.name = "Members object";
+            var1.field1170 = false;
+            var1.groundActions = null;
+            var1.inventoryActions = null;
+            var1.field1214 = 0;
+         }
+
+         ItemComposition.field1172.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(IZZZI)Lclass171;",
+      garbageValue = "-2084648397"
+   )
+   static class171 method586(int var0, boolean var1, boolean var2, boolean var3) {
+      class137 var4 = null;
+      if(class152.field2279 != null) {
+         var4 = new class137(var0, class152.field2279, XItemContainer.field218[var0], 1000000);
+      }
+
+      return new class171(var4, class31.field709, var0, var1, var2, var3);
    }
 }

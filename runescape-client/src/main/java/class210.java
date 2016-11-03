@@ -1,14 +1,14 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hb")
 public class class210 {
    @ObfuscatedName("v")
    class210 field3163;
-   @ObfuscatedName("t")
+   @ObfuscatedName("c")
    class210 field3164;
 
-   @ObfuscatedName("f")
-   public void method3984() {
+   @ObfuscatedName("k")
+   public void method3945() {
       if(this.field3163 != null) {
          this.field3163.field3164 = this.field3164;
          this.field3164.field3163 = this.field3163;

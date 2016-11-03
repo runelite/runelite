@@ -1,123 +1,112 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gs")
+@ObfuscatedName("gr")
 public class class190 extends Node {
-   @ObfuscatedName("r")
+   @ObfuscatedName("c")
+   class188 field3058;
+   @ObfuscatedName("q")
+   class184 field3059;
+   @ObfuscatedName("f")
+   class65 field3060;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1689515557
-   )
-   int field3054;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1046289433
-   )
-   int field3055;
-   @ObfuscatedName("n")
-   class65 field3056;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1635328799
-   )
-   int field3057;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -759418023
-   )
-   int field3058;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 1148680201
-   )
-   int field3059;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1267127447
-   )
-   int field3060;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 325994145
+      intValue = 185674467
    )
    int field3061;
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1121659379
+      intValue = -2119923847
    )
    int field3062;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 152350873
-   )
-   int field3063;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -604112349
-   )
-   int field3064;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1947257313
-   )
-   int field3065;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1130193969
-   )
-   int field3066;
-   @ObfuscatedName("q")
-   class67 field3067;
-   @ObfuscatedName("t")
-   class188 field3068;
-   @ObfuscatedName("e")
-   class184 field3069;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1688950645
-   )
-   int field3070;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -272232417
+      intValue = -453336993
+   )
+   int field3063;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 1189337491
+   )
+   int field3064;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 448612589
+   )
+   int field3065;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1659812425
+   )
+   int field3066;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1834637735
+   )
+   int field3067;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -720982705
+   )
+   int field3068;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -917119287
+   )
+   int field3069;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 332196335
+   )
+   int field3070;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -750599157
    )
    int field3071;
-   @ObfuscatedName("f")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 470399217
+      intValue = 94783483
    )
-   int field3073;
-   @ObfuscatedName("z")
+   int field3072;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -874003367
+      intValue = -1696894657
    )
    int field3074;
-   @ObfuscatedName("x")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -2028663585
+      intValue = -1733977223
    )
    int field3075;
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-48"
+   @ObfuscatedName("r")
+   class67 field3076;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 344405297
    )
-   void method3804() {
-      this.field3069 = null;
-      this.field3056 = null;
-      this.field3068 = null;
-      this.field3067 = null;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "-1246911236"
+   int field3077;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -387461069
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      DecorativeObject.addChatMessage(var0, var1, var2, (String)null);
+   int field3078;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1062685069
+   )
+   int field3080;
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1606660879"
+   )
+   void method3774() {
+      this.field3059 = null;
+      this.field3060 = null;
+      this.field3058 = null;
+      this.field3076 = null;
    }
 }

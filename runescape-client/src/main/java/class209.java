@@ -1,18 +1,14 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("hv")
 public class class209 implements Iterator {
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    class203 field3160;
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    CacheableNode field3161;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    CacheableNode field3162 = null;
-
-   public boolean hasNext() {
-      return this.field3161 != this.field3160.field3150;
-   }
 
    public Object next() {
       CacheableNode var1 = this.field3161;
@@ -31,9 +27,13 @@ public class class209 implements Iterator {
       if(this.field3162 == null) {
          throw new IllegalStateException();
       } else {
-         this.field3162.method3968();
+         this.field3162.method3932();
          this.field3162 = null;
       }
+   }
+
+   public boolean hasNext() {
+      return this.field3161 != this.field3160.field3150;
    }
 
    class209(class203 var1) {

@@ -1,49 +1,59 @@
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Insets;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fb")
 public class class167 {
-   @ObfuscatedName("n")
-   static final char[] field2691 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
-   @ObfuscatedName("bh")
-   static class171 field2694;
-   @ObfuscatedName("t")
-   static final char[] field2695 = new char[]{'[', ']', '#'};
-   @ObfuscatedName("v")
-   static class170 field2697;
+   @ObfuscatedName("f")
+   static final char[] field2702 = new char[]{' ', ' ', '_', '-', 'à', 'á', 'â', 'ä', 'ã', 'À', 'Á', 'Â', 'Ä', 'Ã', 'è', 'é', 'ê', 'ë', 'È', 'É', 'Ê', 'Ë', 'í', 'î', 'ï', 'Í', 'Î', 'Ï', 'ò', 'ó', 'ô', 'ö', 'õ', 'Ò', 'Ó', 'Ô', 'Ö', 'Õ', 'ù', 'ú', 'û', 'ü', 'Ù', 'Ú', 'Û', 'Ü', 'ç', 'Ç', 'ÿ', 'Ÿ', 'ñ', 'Ñ', 'ß'};
+   @ObfuscatedName("c")
+   static final char[] field2703 = new char[]{'[', ']', '#'};
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("ao")
    @ObfuscatedSignature(
-      signature = "(LSequence;IIII)V",
-      garbageValue = "-1304051273"
+      signature = "(B)V",
+      garbageValue = "-24"
    )
-   static void method3258(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field363 < 50 && Client.field520 != 0) {
-         if(var0.field995 != null && var1 < var0.field995.length) {
-            int var4 = var0.field995[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field522[Client.field363] = var5;
-               Client.field523[Client.field363] = var6;
-               Client.field524[Client.field363] = 0;
-               Client.field313[Client.field363] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field525[Client.field363] = (var9 << 8) + (var8 << 16) + var7;
-               ++Client.field363;
+   static void method3258() {
+      int var0 = GameEngine.field2251;
+      int var1 = GameEngine.field2242;
+      int var2 = class13.field198 - GroundObject.field1652 - var0;
+      int var3 = class11.field169 - VertexNormal.field1689 - var1;
+      if(var0 > 0 || var2 > 0 || var1 > 0 || var3 > 0) {
+         try {
+            Container var4 = Client.field480.method3061();
+            int var5 = 0;
+            int var6 = 0;
+            if(class12.field188 == var4) {
+               Insets var7 = class12.field188.getInsets();
+               var5 = var7.left;
+               var6 = var7.top;
             }
+
+            Graphics var9 = var4.getGraphics();
+            var9.setColor(Color.black);
+            if(var0 > 0) {
+               var9.fillRect(var5, var6, var0, class11.field169);
+            }
+
+            if(var1 > 0) {
+               var9.fillRect(var5, var6, class13.field198, var1);
+            }
+
+            if(var2 > 0) {
+               var9.fillRect(var5 + class13.field198 - var2, var6, var2, class11.field169);
+            }
+
+            if(var3 > 0) {
+               var9.fillRect(var5, class11.field169 + var6 - var3, class13.field198, var3);
+            }
+         } catch (Exception var8) {
+            ;
          }
       }
-   }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(CB)Z",
-      garbageValue = "-39"
-   )
-   public static boolean method3259(char var0) {
-      return var0 >= 48 && var0 <= 57;
    }
 }
