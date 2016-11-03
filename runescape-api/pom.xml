@@ -34,11 +34,11 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.11</version>
+		<version>1.1.12-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>api</artifactId>
-	<version>125.1</version> <!-- rs version -->
+	<version>125.2-SNAPSHOT</version> <!-- rs version -->
 	<name>RuneScape API</name>
 </project>
