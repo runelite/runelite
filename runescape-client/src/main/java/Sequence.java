@@ -1,366 +1,417 @@
-import java.util.Date;
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("an")
 @Implements("Sequence")
 public class Sequence extends CacheableNode {
+   @ObfuscatedName("m")
+   int[] field1001;
+   @ObfuscatedName("t")
+   static int[] field1003;
+   @ObfuscatedName("qa")
+   @ObfuscatedGetter(
+      intValue = -2127741847
+   )
+   static int field1004;
+   @ObfuscatedName("v")
+   static NodeCache field1005 = new NodeCache(100);
+   @ObfuscatedName("j")
+   public int[] field1006;
+   @ObfuscatedName("k")
+   public static class170 field1007;
+   @ObfuscatedName("y")
+   public int[] field1008;
+   @ObfuscatedName("u")
+   public int[] field1009;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -903152619
+   )
+   public int field1010 = -1;
    @ObfuscatedName("l")
    @Export("interleaveLeave")
    int[] interleaveLeave;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 127674323
+   )
+   public int field1012 = 5;
+   @ObfuscatedName("ds")
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
    @ObfuscatedName("e")
-   static class170 field988;
-   @ObfuscatedName("n")
-   static class170 field989;
-   @ObfuscatedName("t")
-   static NodeCache field990 = new NodeCache(64);
-   @ObfuscatedName("v")
-   static NodeCache field991 = new NodeCache(100);
-   @ObfuscatedName("b")
-   public int[] field992;
-   @ObfuscatedName("m")
-   int[] field993;
-   @ObfuscatedName("k")
-   public int[] field994;
-   @ObfuscatedName("c")
-   public int[] field995;
-   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 228245973
+      intValue = 1826526429
    )
-   public int field996 = -1;
-   @ObfuscatedName("j")
+   public int field1014 = -1;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 119712801
+      intValue = 1857107017
    )
-   public int field997 = -1;
-   @ObfuscatedName("h")
-   @Export("stretches")
-   public boolean stretches = false;
-   @ObfuscatedName("u")
+   public int field1015 = -1;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -112482299
-   )
-   public int field1000 = -1;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 2113532637
-   )
-   public int field1001 = -1;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 329117495
+      intValue = 832577809
    )
    @Export("maxLoops")
    public int maxLoops = 99;
-   @ObfuscatedName("f")
-   static class170 field1003;
+   @ObfuscatedName("b")
+   @Export("stretches")
+   public boolean stretches = false;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1931900135
+      intValue = 566714973
    )
-   public int field1005 = 5;
-   @ObfuscatedName("q")
+   public int field1018 = -1;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 817859469
+      intValue = 906691555
    )
    @Export("replyMode")
    public int replyMode = 2;
-   @ObfuscatedName("qi")
+   @ObfuscatedName("f")
+   public static class170 field1020;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -1526994763
-   )
-   protected static int field1010;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 982864337
+      intValue = -516235403
    )
    @Export("precedenceAnimating")
    public int precedenceAnimating = -1;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "-1870298340"
+   @ObfuscatedName("c")
+   static NodeCache field1023 = new NodeCache(64);
+   @ObfuscatedName("nj")
+   @ObfuscatedGetter(
+      intValue = -1914247997
    )
-   void method879(Buffer var1) {
-      while(true) {
-         int var2 = var1.method2656();
-         if(var2 == 0) {
-            return;
-         }
+   static int field1024;
+   @ObfuscatedName("qs")
+   @Export("bufferProvider")
+   public static BufferProvider bufferProvider;
+   @ObfuscatedName("q")
+   public static class170 field1028;
 
-         this.method880(var1, var2);
-      }
-   }
-
-   @ObfuscatedName("t")
+   @ObfuscatedName("di")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "2105517875"
+      signature = "(I)V",
+      garbageValue = "-1468336560"
    )
-   void method880(Buffer var1, int var2) {
-      int var3;
-      int var4;
-      if(var2 == 1) {
-         var3 = var1.method2535();
-         this.field994 = new int[var3];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field994[var4] = var1.method2535();
-         }
-
-         this.field992 = new int[var3];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field992[var4] = var1.method2535();
-         }
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field992[var4] += var1.method2535() << 16;
-         }
-      } else if(var2 == 2) {
-         this.field996 = var1.method2535();
-      } else if(var2 == 3) {
-         var3 = var1.method2656();
-         this.interleaveLeave = new int[var3 + 1];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.interleaveLeave[var4] = var1.method2656();
-         }
-
-         this.interleaveLeave[var3] = 9999999;
-      } else if(var2 == 4) {
-         this.stretches = true;
-      } else if(var2 == 5) {
-         this.field1005 = var1.method2656();
-      } else if(var2 == 6) {
-         this.field1000 = var1.method2535();
-      } else if(var2 == 7) {
-         this.field1001 = var1.method2535();
-      } else if(var2 == 8) {
-         this.maxLoops = var1.method2656();
-      } else if(var2 == 9) {
-         this.precedenceAnimating = var1.method2656();
-      } else if(var2 == 10) {
-         this.field997 = var1.method2656();
-      } else if(var2 == 11) {
-         this.replyMode = var1.method2656();
-      } else if(var2 == 12) {
-         var3 = var1.method2656();
-         this.field993 = new int[var3];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field993[var4] = var1.method2535();
-         }
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field993[var4] += var1.method2535() << 16;
-         }
-      } else if(var2 == 13) {
-         var3 = var1.method2656();
-         this.field995 = new int[var3];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            this.field995[var4] = var1.method2537();
-         }
-      }
-
+   static final void method896() {
+      Client.field324.method2828(21);
+      Client.field324.method2556(0);
    }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "44"
-   )
-   void method881() {
-      if(this.precedenceAnimating == -1) {
-         if(null != this.interleaveLeave) {
-            this.precedenceAnimating = 2;
-         } else {
-            this.precedenceAnimating = 0;
-         }
-      }
-
-      if(this.field997 == -1) {
-         if(this.interleaveLeave != null) {
-            this.field997 = 2;
-         } else {
-            this.field997 = 0;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
       signature = "(LModel;II)LModel;",
-      garbageValue = "-2036701462"
+      garbageValue = "242732378"
    )
-   public Model method882(Model var1, int var2) {
-      var2 = this.field992[var2];
-      Frames var3 = class54.getFrames(var2 >> 16);
+   public Model method898(Model var1, int var2) {
+      var2 = this.field1006[var2];
+      Frames var3 = Client.getFrames(var2 >> 16);
       var2 &= '\uffff';
-      if(var3 == null) {
-         return var1.method2353(true);
+      if(null == var3) {
+         return var1.method2402(true);
       } else {
-         Model var4 = var1.method2353(!var3.method2313(var2));
-         var4.method2325(var3, var2);
+         Model var4 = var1.method2402(!var3.method2357(var2));
+         var4.method2428(var3, var2);
          return var4;
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(LModel;IIB)LModel;",
       garbageValue = "0"
    )
-   Model method883(Model var1, int var2, int var3) {
-      var2 = this.field992[var2];
-      Frames var4 = class54.getFrames(var2 >> 16);
+   Model method899(Model var1, int var2, int var3) {
+      var2 = this.field1006[var2];
+      Frames var4 = Client.getFrames(var2 >> 16);
       var2 &= '\uffff';
-      if(var4 == null) {
-         return var1.method2353(true);
+      if(null == var4) {
+         return var1.method2402(true);
       } else {
-         Model var5 = var1.method2353(!var4.method2313(var2));
+         Model var5 = var1.method2402(!var4.method2357(var2));
          var3 &= 3;
          if(var3 == 1) {
-            var5.method2330();
+            var5.method2373();
          } else if(var3 == 2) {
-            var5.method2331();
+            var5.method2372();
          } else if(var3 == 3) {
-            var5.method2328();
+            var5.method2371();
          }
 
-         var5.method2325(var4, var2);
+         var5.method2428(var4, var2);
          if(var3 == 1) {
-            var5.method2328();
+            var5.method2371();
          } else if(var3 == 2) {
-            var5.method2331();
+            var5.method2372();
          } else if(var3 == 3) {
-            var5.method2330();
+            var5.method2373();
          }
 
          return var5;
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(LModel;II)LModel;",
-      garbageValue = "393354646"
+      garbageValue = "-1026211298"
    )
-   Model method884(Model var1, int var2) {
-      var2 = this.field992[var2];
-      Frames var3 = class54.getFrames(var2 >> 16);
+   Model method900(Model var1, int var2) {
+      var2 = this.field1006[var2];
+      Frames var3 = Client.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(var3 == null) {
-         return var1.method2317(true);
+         return var1.method2364(true);
       } else {
-         Model var4 = var1.method2317(!var3.method2313(var2));
-         var4.method2325(var3, var2);
+         Model var4 = var1.method2364(!var3.method2357(var2));
+         var4.method2428(var3, var2);
          return var4;
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(LModel;ILSequence;IB)LModel;",
-      garbageValue = "91"
+      signature = "(LModel;II)LModel;",
+      garbageValue = "1959529589"
    )
-   public Model method885(Model var1, int var2, Sequence var3, int var4) {
-      var2 = this.field992[var2];
-      Frames var5 = class54.getFrames(var2 >> 16);
-      var2 &= '\uffff';
-      if(var5 == null) {
-         return var3.method882(var1, var4);
-      } else {
-         var4 = var3.field992[var4];
-         Frames var6 = class54.getFrames(var4 >> 16);
-         var4 &= '\uffff';
-         Model var7;
-         if(null == var6) {
-            var7 = var1.method2353(!var5.method2313(var2));
-            var7.method2325(var5, var2);
-            return var7;
-         } else {
-            var7 = var1.method2353(!var5.method2313(var2) & !var6.method2313(var4));
-            var7.method2326(var5, var2, var6, var4, this.interleaveLeave);
-            return var7;
-         }
-      }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(LModel;IB)LModel;",
-      garbageValue = "84"
-   )
-   public Model method889(Model var1, int var2) {
-      int var3 = this.field992[var2];
-      Frames var4 = class54.getFrames(var3 >> 16);
+   public Model method902(Model var1, int var2) {
+      int var3 = this.field1006[var2];
+      Frames var4 = Client.getFrames(var3 >> 16);
       var3 &= '\uffff';
-      if(null == var4) {
-         return var1.method2353(true);
+      if(var4 == null) {
+         return var1.method2402(true);
       } else {
          Frames var5 = null;
          int var6 = 0;
-         if(this.field993 != null && var2 < this.field993.length) {
-            var6 = this.field993[var2];
-            var5 = class54.getFrames(var6 >> 16);
+         if(this.field1001 != null && var2 < this.field1001.length) {
+            var6 = this.field1001[var2];
+            var5 = Client.getFrames(var6 >> 16);
             var6 &= '\uffff';
          }
 
          Model var7;
          if(null != var5 && var6 != '\uffff') {
-            var7 = var1.method2353(!var4.method2313(var3) & !var5.method2313(var6));
-            var7.method2325(var4, var3);
-            var7.method2325(var5, var6);
+            var7 = var1.method2402(!var4.method2357(var3) & !var5.method2357(var6));
+            var7.method2428(var4, var3);
+            var7.method2428(var5, var6);
             return var7;
          } else {
-            var7 = var1.method2353(!var4.method2313(var3));
-            var7.method2325(var4, var3);
+            var7 = var1.method2402(!var4.method2357(var3));
+            var7.method2428(var4, var3);
             return var7;
          }
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IZZZS)Lclass171;",
-      garbageValue = "-18588"
+      signature = "(LBuffer;I)V",
+      garbageValue = "585163146"
    )
-   static class171 method891(int var0, boolean var1, boolean var2, boolean var3) {
-      class137 var4 = null;
-      if(class152.field2281 != null) {
-         var4 = new class137(var0, class152.field2281, class23.field606[var0], 1000000);
+   void method913(Buffer var1) {
+      while(true) {
+         int var2 = var1.method2571();
+         if(var2 == 0) {
+            return;
+         }
+
+         this.method919(var1, var2);
+      }
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(LModel;ILSequence;IB)LModel;",
+      garbageValue = "115"
+   )
+   public Model method917(Model var1, int var2, Sequence var3, int var4) {
+      var2 = this.field1006[var2];
+      Frames var5 = Client.getFrames(var2 >> 16);
+      var2 &= '\uffff';
+      if(var5 == null) {
+         return var3.method898(var1, var4);
+      } else {
+         var4 = var3.field1006[var4];
+         Frames var6 = Client.getFrames(var4 >> 16);
+         var4 &= '\uffff';
+         Model var7;
+         if(var6 == null) {
+            var7 = var1.method2402(!var5.method2357(var2));
+            var7.method2428(var5, var2);
+            return var7;
+         } else {
+            var7 = var1.method2402(!var5.method2357(var2) & !var6.method2357(var4));
+            var7.method2433(var5, var2, var6, var4, this.interleaveLeave);
+            return var7;
+         }
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;IS)V",
+      garbageValue = "17257"
+   )
+   void method919(Buffer var1, int var2) {
+      int var3;
+      int var4;
+      if(var2 == 1) {
+         var3 = var1.method2691();
+         this.field1008 = new int[var3];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.field1008[var4] = var1.method2691();
+         }
+
+         this.field1006 = new int[var3];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.field1006[var4] = var1.method2691();
+         }
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.field1006[var4] += var1.method2691() << 16;
+         }
+      } else if(var2 == 2) {
+         this.field1010 = var1.method2691();
+      } else if(var2 == 3) {
+         var3 = var1.method2571();
+         this.interleaveLeave = new int[var3 + 1];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.interleaveLeave[var4] = var1.method2571();
+         }
+
+         this.interleaveLeave[var3] = 9999999;
+      } else if(var2 == 4) {
+         this.stretches = true;
+      } else if(var2 == 5) {
+         this.field1012 = var1.method2571();
+      } else if(var2 == 6) {
+         this.field1014 = var1.method2691();
+      } else if(var2 == 7) {
+         this.field1015 = var1.method2691();
+      } else if(var2 == 8) {
+         this.maxLoops = var1.method2571();
+      } else if(var2 == 9) {
+         this.precedenceAnimating = var1.method2571();
+      } else if(var2 == 10) {
+         this.field1018 = var1.method2571();
+      } else if(var2 == 11) {
+         this.replyMode = var1.method2571();
+      } else if(var2 == 12) {
+         var3 = var1.method2571();
+         this.field1001 = new int[var3];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.field1001[var4] = var1.method2691();
+         }
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.field1001[var4] += var1.method2691() << 16;
+         }
+      } else if(var2 == 13) {
+         var3 = var1.method2571();
+         this.field1009 = new int[var3];
+
+         for(var4 = 0; var4 < var3; ++var4) {
+            this.field1009[var4] = var1.method2575();
+         }
       }
 
-      return new class171(var4, class59.field1228, var0, var1, var2, var3);
    }
 
-   @ObfuscatedName("f")
-   public static String method918(long var0) {
-      class114.field2009.setTime(new Date(var0));
-      int var2 = class114.field2009.get(7);
-      int var3 = class114.field2009.get(5);
-      int var4 = class114.field2009.get(2);
-      int var5 = class114.field2009.get(1);
-      int var6 = class114.field2009.get(11);
-      int var7 = class114.field2009.get(12);
-      int var8 = class114.field2009.get(13);
-      return class114.field2008[var2 - 1] + ", " + var3 / 10 + var3 % 10 + "-" + class114.field2015[0][var4] + "-" + var5 + " " + var6 / 10 + var6 % 10 + ":" + var7 / 10 + var7 % 10 + ":" + var8 / 10 + var8 % 10 + " GMT";
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lclass170;I)V",
-      garbageValue = "-1984575795"
+      signature = "(I)V",
+      garbageValue = "469638137"
    )
-   public static void method920(class170 var0) {
-      class52.field1131 = var0;
+   void method932() {
+      if(this.precedenceAnimating == -1) {
+         if(this.interleaveLeave != null) {
+            this.precedenceAnimating = 2;
+         } else {
+            this.precedenceAnimating = 0;
+         }
+      }
+
+      if(this.field1018 == -1) {
+         if(this.interleaveLeave != null) {
+            this.field1018 = 2;
+         } else {
+            this.field1018 = 0;
+         }
+      }
+
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(Lclass139;Ljava/awt/Component;III)Lclass59;",
+      garbageValue = "-1886471333"
+   )
+   public static final class59 method933(class139 var0, Component var1, int var2, int var3) {
+      if(class59.field1249 == 0) {
+         throw new IllegalStateException();
+      } else if(var2 >= 0 && var2 < 2) {
+         if(var3 < 256) {
+            var3 = 256;
+         }
+
+         try {
+            class72 var4 = new class72();
+            var4.field1253 = new int[(class59.field1238?2:1) * 256];
+            var4.field1240 = var3;
+            var4.vmethod1565(var1);
+            var4.field1233 = 1024 + (var3 & -1024);
+            if(var4.field1233 > 16384) {
+               var4.field1233 = 16384;
+            }
+
+            var4.vmethod1566(var4.field1233);
+            if(class59.field1235 > 0 && class59.field1236 == null) {
+               class59.field1236 = new class75();
+               class59.field1236.field1412 = var0;
+               var0.method2918(class59.field1236, class59.field1235);
+            }
+
+            if(null != class59.field1236) {
+               if(null != class59.field1236.field1407[var2]) {
+                  throw new IllegalArgumentException();
+               }
+
+               class59.field1236.field1407[var2] = var4;
+            }
+
+            return var4;
+         } catch (Throwable var5) {
+            return new class59();
+         }
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Lclass69;B)V",
+      garbageValue = "-33"
+   )
+   static final void method934(class69 var0) {
+      var0.field1325 = false;
+      if(null != var0.field1322) {
+         var0.field1322.field1321 = 0;
+      }
+
+      for(class69 var1 = var0.vmethod3751(); var1 != null; var1 = var0.vmethod3755()) {
+         method934(var1);
+      }
+
    }
 }

@@ -4,50 +4,59 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ar")
+@ObfuscatedName("at")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("e")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -105260601
-   )
-   @Export("quantity")
-   int quantity;
-   @ObfuscatedName("qr")
-   @ObfuscatedGetter(
-      intValue = 743215721
-   )
-   static int field687;
-   @ObfuscatedName("ps")
-   @ObfuscatedGetter(
-      intValue = -103157211
-   )
-   static int field688;
-   @ObfuscatedName("bb")
-   static class171 field690;
-   @ObfuscatedName("ie")
-   @ObfuscatedGetter(
-      intValue = -635062373
-   )
-   static int field691;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 986946269
+      intValue = -717928919
    )
    @Export("id")
    int id;
-   @ObfuscatedName("ng")
+   @ObfuscatedName("pe")
+   public static class139 field699;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 2065007429
+      intValue = 653824763
    )
-   static int field693;
+   @Export("quantity")
+   int quantity;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
-      garbageValue = "3"
+      signature = "(I)LModel;",
+      garbageValue = "-1714992488"
    )
    protected final Model getModel() {
-      return class45.getItemDefinition(this.id).getModel(this.quantity);
+      return class22.getItemDefinition(this.id).getModel(this.quantity);
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "-804465209"
+   )
+   public static int method673(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + BufferProvider.method1732(var0.charAt(var3));
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(B)Lclass134;",
+      garbageValue = "9"
+   )
+   public static class134 method674() {
+      try {
+         return new class148();
+      } catch (Throwable var1) {
+         return null;
+      }
    }
 }

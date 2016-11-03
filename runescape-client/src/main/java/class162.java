@@ -2,43 +2,96 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fa")
 public class class162 implements class115 {
+   @ObfuscatedName("q")
+   public static final class162 field2641 = new class162(3, 1);
+   @ObfuscatedName("f")
+   public static final class162 field2642 = new class162(2, 2);
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -284096981
+   )
+   final int field2643;
+   @ObfuscatedName("c")
+   public static final class162 field2644 = new class162(1, 3);
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 55369785
+      intValue = -812560761
    )
-   public final int field2634;
-   @ObfuscatedName("e")
-   public static final class162 field2635 = new class162(3, 1);
-   @ObfuscatedName("n")
-   public static final class162 field2636 = new class162(0, 2);
-   @ObfuscatedName("t")
-   public static final class162 field2637 = new class162(1, 3);
-   @ObfuscatedName("f")
-   public static final class162 field2638 = new class162(2, 0);
-   @ObfuscatedName("b")
+   public final int field2645;
+   @ObfuscatedName("k")
+   public static final class162 field2646 = new class162(0, 0);
+   @ObfuscatedName("jh")
    @ObfuscatedGetter(
-      intValue = 702607079
+      intValue = 323690589
    )
-   final int field2639;
+   static int field2649;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(B)[Lclass21;",
-      garbageValue = "7"
+      signature = "(IIB)LWidget;",
+      garbageValue = "-119"
    )
-   static class21[] method3195() {
-      return new class21[]{class21.field578, class21.field586, class21.field579, class21.field581};
+   public static Widget method3195(int var0, int var1) {
+      Widget var2 = class144.method3012(var0);
+      return var1 == -1?var2:(var2 != null && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "50702266"
+      signature = "(ILclass170;IIIZI)V",
+      garbageValue = "-23519887"
    )
-   public int vmethod3196() {
-      return this.field2639;
+   public static void method3196(int var0, class170 var1, int var2, int var3, int var4, boolean var5) {
+      class186.field3007 = 1;
+      class133.field2114 = var1;
+      NPC.field794 = var2;
+      class116.field2023 = var3;
+      class28.field666 = var4;
+      class93.field1626 = var5;
+      class165.field2689 = var0;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-116"
+   )
+   public int vmethod3197() {
+      return this.field2643;
+   }
+
+   @ObfuscatedName("bc")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "1786395139"
+   )
+   static final void method3201(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      class16 var9 = null;
+
+      for(class16 var10 = (class16)Client.field413.method3864(); var10 != null; var10 = (class16)Client.field413.method3851()) {
+         if(var0 == var10.field226 && var10.field228 == var1 && var2 == var10.field225 && var10.field231 == var3) {
+            var9 = var10;
+            break;
+         }
+      }
+
+      if(var9 == null) {
+         var9 = new class16();
+         var9.field226 = var0;
+         var9.field231 = var3;
+         var9.field228 = var1;
+         var9.field225 = var2;
+         Projectile.method92(var9);
+         Client.field413.method3844(var9);
+      }
+
+      var9.field230 = var4;
+      var9.field232 = var5;
+      var9.field224 = var6;
+      var9.field233 = var7;
+      var9.field234 = var8;
    }
 
    @ObfuscatedSignature(
@@ -46,46 +99,7 @@ public class class162 implements class115 {
       garbageValue = "0"
    )
    class162(int var1, int var2) {
-      this.field2634 = var1;
-      this.field2639 = var2;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
-      garbageValue = "40895140"
-   )
-   public static String method3198(CharSequence var0) {
-      int var1 = var0.length();
-      StringBuilder var2 = new StringBuilder(var1);
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
-            if(var4 == 32) {
-               var2.append('+');
-            } else {
-               byte var5 = class56.method1169(var4);
-               var2.append('%');
-               int var6 = var5 >> 4 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-
-               var6 = var5 & 15;
-               if(var6 >= 10) {
-                  var2.append((char)(var6 + 55));
-               } else {
-                  var2.append((char)(var6 + 48));
-               }
-            }
-         } else {
-            var2.append(var4);
-         }
-      }
-
-      return var2.toString();
+      this.field2645 = var1;
+      this.field2643 = var2;
    }
 }
