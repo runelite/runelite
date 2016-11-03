@@ -1,28 +1,9 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gd")
 public class class195 {
-   @ObfuscatedName("f")
+   @ObfuscatedName("k")
    int[] field3127;
-
-   @ObfuscatedName("f")
-   public int method3809(int var1) {
-      int var2 = (this.field3127.length >> 1) - 1;
-      int var3 = var1 & var2;
-
-      while(true) {
-         int var4 = this.field3127[var3 + var3 + 1];
-         if(var4 == -1) {
-            return -1;
-         }
-
-         if(this.field3127[var3 + var3] == var1) {
-            return var4;
-         }
-
-         var3 = var3 + 1 & var2;
-      }
-   }
 
    public class195(int[] var1) {
       int var2;
@@ -46,5 +27,24 @@ public class class195 {
          this.field3127[var4 + var4] = var1[var3];
       }
 
+   }
+
+   @ObfuscatedName("k")
+   public int method3780(int var1) {
+      int var2 = (this.field3127.length >> 1) - 1;
+      int var3 = var1 & var2;
+
+      while(true) {
+         int var4 = this.field3127[var3 + var3 + 1];
+         if(var4 == -1) {
+            return -1;
+         }
+
+         if(this.field3127[var3 + var3] == var1) {
+            return var4;
+         }
+
+         var3 = var3 + 1 & var2;
+      }
    }
 }

@@ -3,100 +3,114 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fv")
+@ObfuscatedName("fl")
 public class class174 {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1136387433
-   )
-   public static int field2748 = 0;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 580816685
-   )
-   public static int field2749 = 0;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      longValue = -7864143662254435355L
-   )
-   public static long field2750;
-   @ObfuscatedName("t")
-   public static XHashTable field2751 = new XHashTable(4096);
-   @ObfuscatedName("a")
-   public static class171[] field2752 = new class171[256];
-   @ObfuscatedName("b")
-   public static XHashTable field2753 = new XHashTable(32);
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 744919237
-   )
-   public static int field2754 = 0;
-   @ObfuscatedName("f")
-   public static class146 field2755;
-   @ObfuscatedName("c")
-   public static XHashTable field2756 = new XHashTable(4096);
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -866118789
-   )
-   public static int field2757 = 0;
-   @ObfuscatedName("k")
-   public static Node2LinkedList field2758 = new Node2LinkedList();
+   @ObfuscatedName("r")
+   static CRC32 field2760 = new CRC32();
    @ObfuscatedName("q")
-   public static CRC32 field2759 = new CRC32();
+   @ObfuscatedGetter(
+      intValue = -1329427405
+   )
+   static int field2761 = 0;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      longValue = -7700566270376198017L
+   )
+   static long field2762;
    @ObfuscatedName("l")
-   public static XHashTable field2760 = new XHashTable(4096);
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1570079797
-   )
-   public static int field2762 = 0;
+   static XHashTable field2764 = new XHashTable(4096);
+   @ObfuscatedName("j")
+   static XHashTable field2765 = new XHashTable(32);
    @ObfuscatedName("z")
-   public static byte field2764 = 0;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 531059865
-   )
-   public static int field2765 = 0;
+   static byte field2766 = 0;
    @ObfuscatedName("y")
+   static Node2LinkedList field2767 = new Node2LinkedList();
+   @ObfuscatedName("u")
+   static XHashTable field2768 = new XHashTable(4096);
+   @ObfuscatedName("k")
+   static class146 field2769;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 289179317
+      intValue = 1897074047
    )
-   public static int field2766 = 0;
+   public static int field2771 = 0;
+   @ObfuscatedName("p")
+   static Buffer field2772 = new Buffer(8);
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 660252069
+      intValue = 2106127523
    )
-   public static int field2769 = 0;
-   @ObfuscatedName("x")
-   public static Buffer field2770 = new Buffer(8);
-   @ObfuscatedName("qm")
+   static int field2773 = 0;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 2042653227
+      intValue = -1133775587
    )
-   static int field2771;
+   public static int field2774 = 0;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -100867139
+   )
+   public static int field2775 = 0;
+   @ObfuscatedName("c")
+   static XHashTable field2776 = new XHashTable(4096);
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 635695047
+   )
+   public static int field2777 = 0;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1618692607
+   )
+   public static int field2778 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1023120275
+   )
+   public static int field2779 = 0;
+   @ObfuscatedName("n")
+   static class171[] field2781 = new class171[256];
 
-   @ObfuscatedName("cu")
+   @ObfuscatedName("ds")
    @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "404061421"
+      signature = "(LWidget;I)Z",
+      garbageValue = "-11325393"
    )
-   static void method3428(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class28.method654(var0, var1.id, var3, var4, var2);
-      if(null != var1.children) {
-         class28.method654(var1.children, var1.id, var3, var4, var2);
-      }
+   static final boolean method3415(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 205) {
+         Client.field397 = 250;
+         return true;
+      } else {
+         int var2;
+         int var3;
+         if(var1 >= 300 && var1 <= 313) {
+            var2 = (var1 - 300) / 2;
+            var3 = var1 & 1;
+            Client.field553.method3509(var2, var3 == 1);
+         }
 
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method3849((long)var1.id);
-      if(var5 != null) {
-         class8.method109(var5.id, var3, var4, var2);
-      }
+         if(var1 >= 314 && var1 <= 323) {
+            var2 = (var1 - 314) / 2;
+            var3 = var1 & 1;
+            Client.field553.method3530(var2, var3 == 1);
+         }
 
-      if(var1.contentType == 1337) {
-         ;
-      }
+         if(var1 == 324) {
+            Client.field553.method3512(false);
+         }
 
+         if(var1 == 325) {
+            Client.field553.method3512(true);
+         }
+
+         if(var1 == 326) {
+            Client.field324.method2828(199);
+            Client.field553.method3537(Client.field324);
+            return true;
+         } else {
+            return false;
+         }
+      }
    }
 }

@@ -1,14 +1,11 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fl")
+@ObfuscatedName("fg")
 public class class159 {
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "57"
+   @ObfuscatedName("qo")
+   @ObfuscatedGetter(
+      intValue = 1925114003
    )
-   static int method3191() {
-      return 9;
-   }
+   protected static int field2344;
 }

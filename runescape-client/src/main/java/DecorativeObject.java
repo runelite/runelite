@@ -4,365 +4,182 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cu")
+@ObfuscatedName("cw")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("e")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1873107217
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("ml")
-   static SpritePixels field1660;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 898190197
-   )
-   int field1661;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 643139285
-   )
-   int field1662;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 1072882195
-   )
-   int field1663;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 638445877
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("c")
-   @Export("renderable2")
-   public Renderable renderable2;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -810290483
-   )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 831390747
-   )
-   int field1667 = 0;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1676685211
+      intValue = -2130975287
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -681283371
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("es")
+   static ModIcon[] field1666;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1320300485
+   )
+   int field1667;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -1498850821
+   )
+   int field1668;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1696239527
+   )
+   int field1669;
+   @ObfuscatedName("u")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("y")
    @Export("renderable1")
    public Renderable renderable1;
-   @ObfuscatedName("t")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1786294855
+      intValue = -747456301
    )
-   int field1670;
-   @ObfuscatedName("ii")
-   static Widget field1672;
+   int field1672;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 2136423971
+   )
+   @Export("hash")
+   public int hash = 0;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 2066153689
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -273482401
+   )
+   int field1675 = 0;
+   @ObfuscatedName("mn")
+   static SpritePixels field1677;
 
-   @ObfuscatedName("bo")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(IIIIII)V",
-      garbageValue = "2126749748"
+      signature = "(IB)Z",
+      garbageValue = "2"
    )
-   static final void method2203(int var0, int var1, int var2, int var3, int var4) {
-      int var5 = class9.region.method2044(var0, var1, var2);
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var11;
-      int var12;
-      if(var5 != 0) {
-         var6 = class9.region.method1994(var0, var1, var2, var5);
-         var7 = var6 >> 6 & 3;
-         var8 = var6 & 31;
-         var9 = var3;
-         if(var5 > 0) {
-            var9 = var4;
+   public static boolean method2237(int var0) {
+      return (var0 >> 21 & 1) != 0;
+   }
+
+   @ObfuscatedName("be")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1715474457"
+   )
+   static final void method2238() {
+      for(class16 var0 = (class16)Client.field413.method3864(); var0 != null; var0 = (class16)Client.field413.method3851()) {
+         if(var0.field234 > 0) {
+            --var0.field234;
          }
 
-         int[] var10 = field1660.image;
-         var11 = 2048 * (103 - var2) + var1 * 4 + 24624;
-         var12 = var5 >> 14 & 32767;
-         ObjectComposition var13 = class8.getObjectDefinition(var12);
-         if(var13.field949 != -1) {
-            ModIcon var14 = class24.field623[var13.field949];
-            if(var14 != null) {
-               int var15 = (var13.field936 * 4 - var14.originalWidth) / 2;
-               int var16 = (var13.field937 * 4 - var14.height) / 2;
-               var14.method1913(48 + var1 * 4 + var15, 48 + (104 - var2 - var13.field937) * 4 + var16);
+         boolean var1;
+         int var2;
+         int var3;
+         ObjectComposition var4;
+         if(var0.field234 == 0) {
+            if(var0.field227 >= 0) {
+               var2 = var0.field227;
+               var3 = var0.field229;
+               var4 = Projectile.getObjectDefinition(var2);
+               if(var3 == 11) {
+                  var3 = 10;
+               }
+
+               if(var3 >= 5 && var3 <= 8) {
+                  var3 = 4;
+               }
+
+               var1 = var4.method838(var3);
+               if(!var1) {
+                  continue;
+               }
             }
+
+            class8.method101(var0.field226, var0.field231, var0.field228, var0.field225, var0.field227, var0.field236, var0.field229);
+            var0.unlink();
          } else {
-            if(var8 == 0 || var8 == 2) {
-               if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[var11 + 512] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[var11 + 1536] = var9;
-               } else if(var7 == 1) {
-                  var10[var11] = var9;
-                  var10[1 + var11] = var9;
-                  var10[2 + var11] = var9;
-                  var10[var11 + 3] = var9;
-               } else if(var7 == 2) {
-                  var10[var11 + 3] = var9;
-                  var10[var11 + 3 + 512] = var9;
-                  var10[1024 + var11 + 3] = var9;
-                  var10[1536 + var11 + 3] = var9;
-               } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[1536 + var11 + 2] = var9;
-                  var10[1536 + var11 + 3] = var9;
-               }
+            if(var0.field233 > 0) {
+               --var0.field233;
             }
 
-            if(var8 == 3) {
-               if(var7 == 0) {
-                  var10[var11] = var9;
-               } else if(var7 == 1) {
-                  var10[3 + var11] = var9;
-               } else if(var7 == 2) {
-                  var10[1536 + 3 + var11] = var9;
-               } else if(var7 == 3) {
-                  var10[var11 + 1536] = var9;
-               }
-            }
+            if(var0.field233 == 0 && var0.field228 >= 1 && var0.field225 >= 1 && var0.field228 <= 102 && var0.field225 <= 102) {
+               if(var0.field230 >= 0) {
+                  var2 = var0.field230;
+                  var3 = var0.field232;
+                  var4 = Projectile.getObjectDefinition(var2);
+                  if(var3 == 11) {
+                     var3 = 10;
+                  }
 
-            if(var8 == 2) {
-               if(var7 == 3) {
-                  var10[var11] = var9;
-                  var10[512 + var11] = var9;
-                  var10[var11 + 1024] = var9;
-                  var10[1536 + var11] = var9;
-               } else if(var7 == 0) {
-                  var10[var11] = var9;
-                  var10[1 + var11] = var9;
-                  var10[var11 + 2] = var9;
-                  var10[3 + var11] = var9;
-               } else if(var7 == 1) {
-                  var10[var11 + 3] = var9;
-                  var10[512 + 3 + var11] = var9;
-                  var10[var11 + 3 + 1024] = var9;
-                  var10[1536 + 3 + var11] = var9;
-               } else if(var7 == 2) {
-                  var10[1536 + var11] = var9;
-                  var10[var11 + 1536 + 1] = var9;
-                  var10[1536 + var11 + 2] = var9;
-                  var10[var11 + 1536 + 3] = var9;
+                  if(var3 >= 5 && var3 <= 8) {
+                     var3 = 4;
+                  }
+
+                  var1 = var4.method838(var3);
+                  if(!var1) {
+                     continue;
+                  }
+               }
+
+               class8.method101(var0.field226, var0.field231, var0.field228, var0.field225, var0.field230, var0.field224, var0.field232);
+               var0.field233 = -1;
+               if(var0.field227 == var0.field230 && var0.field227 == -1) {
+                  var0.unlink();
+               } else if(var0.field230 == var0.field227 && var0.field224 == var0.field236 && var0.field229 == var0.field232) {
+                  var0.unlink();
                }
             }
          }
       }
 
-      var5 = class9.region.method2123(var0, var1, var2);
-      if(var5 != 0) {
-         var6 = class9.region.method1994(var0, var1, var2, var5);
-         var7 = var6 >> 6 & 3;
-         var8 = var6 & 31;
-         var9 = var5 >> 14 & 32767;
-         ObjectComposition var23 = class8.getObjectDefinition(var9);
-         int var19;
-         if(var23.field949 != -1) {
-            ModIcon var17 = class24.field623[var23.field949];
-            if(null != var17) {
-               var12 = (var23.field936 * 4 - var17.originalWidth) / 2;
-               var19 = (var23.field937 * 4 - var17.height) / 2;
-               var17.method1913(var12 + 48 + 4 * var1, 48 + 4 * (104 - var2 - var23.field937) + var19);
-            }
-         } else if(var8 == 9) {
-            var11 = 15658734;
-            if(var5 > 0) {
-               var11 = 15597568;
-            }
+   }
 
-            int[] var18 = field1660.image;
-            var19 = (103 - var2) * 2048 + 4 * var1 + 24624;
-            if(var7 != 0 && var7 != 2) {
-               var18[var19] = var11;
-               var18[1 + var19 + 512] = var11;
-               var18[var19 + 1024 + 2] = var11;
-               var18[1536 + var19 + 3] = var11;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "-1578293290"
+   )
+   static final byte[] method2239(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.method2571();
+      int var3 = var1.method2576();
+      if(var3 >= 0 && (class170.field2732 == 0 || var3 <= class170.field2732)) {
+         if(var2 == 0) {
+            byte[] var6 = new byte[var3];
+            var1.method2582(var6, 0, var3);
+            return var6;
+         } else {
+            int var4 = var1.method2576();
+            if(var4 < 0 || class170.field2732 != 0 && var4 > class170.field2732) {
+               throw new RuntimeException();
             } else {
-               var18[var19 + 1536] = var11;
-               var18[1 + 1024 + var19] = var11;
-               var18[var19 + 512 + 2] = var11;
-               var18[var19 + 3] = var11;
-            }
-         }
-      }
-
-      var5 = class9.region.method2026(var0, var1, var2);
-      if(var5 != 0) {
-         var6 = var5 >> 14 & 32767;
-         ObjectComposition var20 = class8.getObjectDefinition(var6);
-         if(var20.field949 != -1) {
-            ModIcon var21 = class24.field623[var20.field949];
-            if(var21 != null) {
-               var9 = (var20.field936 * 4 - var21.originalWidth) / 2;
-               int var22 = (var20.field937 * 4 - var21.height) / 2;
-               var21.method1913(4 * var1 + 48 + var9, 4 * (104 - var2 - var20.field937) + 48 + var22);
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "-85"
-   )
-   @Export("addChatMessage")
-   static void addChatMessage(int var0, String var1, String var2, String var3) {
-      ChatLineBuffer var4 = (ChatLineBuffer)class11.chatLineMap.get(Integer.valueOf(var0));
-      if(var4 == null) {
-         var4 = new ChatLineBuffer();
-         class11.chatLineMap.put(Integer.valueOf(var0), var4);
-      }
-
-      MessageNode var5 = var4.method668(var0, var1, var2, var3);
-      class11.field167.method3882(var5, (long)var5.id);
-      class11.field174.method3918(var5);
-      Client.field325 = Client.field295;
-   }
-
-   @ObfuscatedName("ck")
-   @ObfuscatedSignature(
-      signature = "(LNPCComposition;IIII)V",
-      garbageValue = "-777769918"
-   )
-   static final void method2205(NPCComposition var0, int var1, int var2, int var3) {
-      if(Client.menuOptionCount < 400) {
-         if(var0.field913 != null) {
-            var0 = var0.method798();
-         }
-
-         if(var0 != null) {
-            if(var0.field916) {
-               if(!var0.field898 || Client.field447 == var1) {
-                  String var4 = var0.name;
-                  int var8;
-                  if(var0.combatLevel != 0) {
-                     int var7 = var0.combatLevel;
-                     var8 = class34.localPlayer.combatLevel;
-                     int var9 = var8 - var7;
-                     String var10;
-                     if(var9 < -9) {
-                        var10 = class92.method2126(16711680);
-                     } else if(var9 < -6) {
-                        var10 = class92.method2126(16723968);
-                     } else if(var9 < -3) {
-                        var10 = class92.method2126(16740352);
-                     } else if(var9 < 0) {
-                        var10 = class92.method2126(16756736);
-                     } else if(var9 > 9) {
-                        var10 = class92.method2126('\uff00');
-                     } else if(var9 > 6) {
-                        var10 = class92.method2126(4259584);
-                     } else if(var9 > 3) {
-                        var10 = class92.method2126(8453888);
-                     } else if(var9 > 0) {
-                        var10 = class92.method2126(12648192);
-                     } else {
-                        var10 = class92.method2126(16776960);
-                     }
-
-                     var4 = var4 + var10 + " " + " (" + "level-" + var0.combatLevel + ")";
-                  }
-
-                  if(Client.field432 == 1) {
-                     Player.addMenuEntry("Use", Client.field433 + " " + "->" + " " + class92.method2126(16776960) + var4, 7, var1, var2, var3);
-                  } else if(Client.field434) {
-                     if((class221.field3210 & 2) == 2) {
-                        Player.addMenuEntry(Client.field492, Client.field438 + " " + "->" + " " + class92.method2126(16776960) + var4, 8, var1, var2, var3);
-                     }
-                  } else {
-                     String[] var5 = var0.actions;
-                     if(Client.field450) {
-                        var5 = class8.method111(var5);
-                     }
-
-                     int var6;
-                     if(null != var5) {
-                        for(var6 = 4; var6 >= 0; --var6) {
-                           if(null != var5[var6] && !var5[var6].equalsIgnoreCase("Attack")) {
-                              byte var11 = 0;
-                              if(var6 == 0) {
-                                 var11 = 9;
-                              }
-
-                              if(var6 == 1) {
-                                 var11 = 10;
-                              }
-
-                              if(var6 == 2) {
-                                 var11 = 11;
-                              }
-
-                              if(var6 == 3) {
-                                 var11 = 12;
-                              }
-
-                              if(var6 == 4) {
-                                 var11 = 13;
-                              }
-
-                              Player.addMenuEntry(var5[var6], class92.method2126(16776960) + var4, var11, var1, var2, var3);
-                           }
-                        }
-                     }
-
-                     if(null != var5) {
-                        for(var6 = 4; var6 >= 0; --var6) {
-                           if(var5[var6] != null && var5[var6].equalsIgnoreCase("Attack")) {
-                              short var12 = 0;
-                              if(Client.field320 != class21.field578) {
-                                 if(Client.field320 == class21.field579 || class21.field581 == Client.field320 && var0.combatLevel > class34.localPlayer.combatLevel) {
-                                    var12 = 2000;
-                                 }
-
-                                 var8 = 0;
-                                 if(var6 == 0) {
-                                    var8 = 9 + var12;
-                                 }
-
-                                 if(var6 == 1) {
-                                    var8 = var12 + 10;
-                                 }
-
-                                 if(var6 == 2) {
-                                    var8 = var12 + 11;
-                                 }
-
-                                 if(var6 == 3) {
-                                    var8 = var12 + 12;
-                                 }
-
-                                 if(var6 == 4) {
-                                    var8 = 13 + var12;
-                                 }
-
-                                 Player.addMenuEntry(var5[var6], class92.method2126(16776960) + var4, var8, var1, var2, var3);
-                              }
-                           }
-                        }
-                     }
-
-                     Player.addMenuEntry("Examine", class92.method2126(16776960) + var4, 1003, var1, var2, var3);
-                  }
-
+               byte[] var5 = new byte[var4];
+               if(var2 == 1) {
+                  class120.method2526(var5, var4, var0, var3, 9);
+               } else {
+                  class170.field2728.method2518(var1, var5);
                }
+
+               return var5;
             }
          }
+      } else {
+         throw new RuntimeException();
       }
    }
 }

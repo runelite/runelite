@@ -1,209 +1,129 @@
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Graphics;
-import java.awt.Insets;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("an")
+@ObfuscatedName("as")
 public class class50 extends CacheableNode {
-   @ObfuscatedName("n")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1887456865
+      intValue = 1275114535
    )
-   public int field1092;
+   public int field1101;
+   @ObfuscatedName("q")
+   public static NodeCache field1102 = new NodeCache(64);
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1591707621
+   )
+   public int field1103;
+   @ObfuscatedName("k")
+   public static class170 field1104;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1014596999
+      intValue = 813215381
    )
-   public int field1093;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -312288319
-   )
-   public int field1094;
-   @ObfuscatedName("f")
-   public static class170 field1095;
-   @ObfuscatedName("e")
-   static NodeCache field1097 = new NodeCache(64);
+   public int field1105;
+   @ObfuscatedName("l")
+   static ModIcon field1109;
+   @ObfuscatedName("kc")
+   @Export("chatMessages")
+   static ChatMessages chatMessages;
 
-   @ObfuscatedName("bl")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "655029947"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1559665649"
    )
-   static final void method1014(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field482; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field526[var4] = true;
+   public static String method1030(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
+            if(var4 == 32) {
+               var2.append('+');
+            } else {
+               byte var5 = BufferProvider.method1732(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(48 + var6));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+            }
+         } else {
+            var2.append(var4);
          }
+      }
+
+      return var2.toString();
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;IB)V",
+      garbageValue = "46"
+   )
+   void method1033(Buffer var1, int var2) {
+      if(var2 == 1) {
+         this.field1103 = var1.method2691();
+         this.field1101 = var1.method2571();
+         this.field1105 = var1.method2571();
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "73"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-290583928"
    )
-   void method1015(Buffer var1) {
+   void method1038(Buffer var1) {
       while(true) {
-         int var2 = var1.method2656();
+         int var2 = var1.method2571();
          if(var2 == 0) {
             return;
          }
 
-         this.method1016(var1, var2);
+         this.method1033(var1, var2);
       }
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "2066705131"
-   )
-   void method1016(Buffer var1, int var2) {
-      if(var2 == 1) {
-         this.field1092 = var1.method2535();
-         this.field1094 = var1.method2656();
-         this.field1093 = var1.method2656();
-      }
-
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(LModIcon;B)V",
-      garbageValue = "1"
-   )
-   static final void method1017(ModIcon var0) {
-      short var1 = 256;
-
-      int var2;
-      for(var2 = 0; var2 < ChatLineBuffer.field685.length; ++var2) {
-         ChatLineBuffer.field685[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         ChatLineBuffer.field685[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = (var3 << 7) + var4;
-               class188.field3046[var5] = (ChatLineBuffer.field685[128 + var5] + ChatLineBuffer.field685[var5 - 128] + ChatLineBuffer.field685[var5 - 1] + ChatLineBuffer.field685[1 + var5]) / 4;
-            }
-         }
-
-         int[] var8 = ChatLineBuffer.field685;
-         ChatLineBuffer.field685 = class188.field3046;
-         class188.field3046 = var8;
-      }
-
-      if(null != var0) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var0.offsetX + 16 + var4;
-                  int var6 = var0.offsetY + var3 + 16;
-                  int var7 = var5 + (var6 << 7);
-                  ChatLineBuffer.field685[var7] = 0;
-               }
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(Lclass170;Lclass170;Lclass170;I)V",
-      garbageValue = "-2030409328"
-   )
-   public static void method1025(class170 var0, class170 var1, class170 var2) {
-      class51.field1102 = var0;
-      class51.field1099 = var1;
-      Ignore.field131 = var2;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIB)I",
-      garbageValue = "74"
-   )
-   public static int method1027(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
    }
 
    @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1359174708"
+      signature = "(II)LMessageNode;",
+      garbageValue = "958853190"
    )
-   static final int method1028(int var0, int var1) {
-      int var2 = BufferProvider.method1728(var0 - 1, var1 - 1) + BufferProvider.method1728(var0 + 1, var1 - 1) + BufferProvider.method1728(var0 - 1, var1 + 1) + BufferProvider.method1728(var0 + 1, var1 + 1);
-      int var3 = BufferProvider.method1728(var0 - 1, var1) + BufferProvider.method1728(1 + var0, var1) + BufferProvider.method1728(var0, var1 - 1) + BufferProvider.method1728(var0, var1 + 1);
-      int var4 = BufferProvider.method1728(var0, var1);
-      return var4 / 4 + var3 / 8 + var2 / 16;
+   static MessageNode method1040(int var0) {
+      return (MessageNode)class11.field167.method3835((long)var0);
    }
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "523036285"
+      signature = "(B)[Lclass156;",
+      garbageValue = "-50"
    )
-   static void method1030() {
-      int var0 = GameEngine.field2248;
-      int var1 = GameEngine.field2245;
-      int var2 = Sequence.field1010 - class153.field2296 - var0;
-      int var3 = class130.field2099 - class93.field1616 - var1;
-      if(var0 > 0 || var2 > 0 || var1 > 0 || var3 > 0) {
-         try {
-            Container var4 = Client.field442.method3047();
-            int var5 = 0;
-            int var6 = 0;
-            if(CollisionData.field1956 == var4) {
-               Insets var7 = CollisionData.field1956.getInsets();
-               var5 = var7.left;
-               var6 = var7.top;
-            }
+   static class156[] method1041() {
+      return new class156[]{class156.field2316, class156.field2313, class156.field2321, class156.field2322};
+   }
 
-            Graphics var9 = var4.getGraphics();
-            var9.setColor(Color.black);
-            if(var0 > 0) {
-               var9.fillRect(var5, var6, var0, class130.field2099);
-            }
-
-            if(var1 > 0) {
-               var9.fillRect(var5, var6, Sequence.field1010, var1);
-            }
-
-            if(var2 > 0) {
-               var9.fillRect(var5 + Sequence.field1010 - var2, var6, var2, class130.field2099);
-            }
-
-            if(var3 > 0) {
-               var9.fillRect(var5, class130.field2099 + var6 - var3, Sequence.field1010, var3);
-            }
-         } catch (Exception var8) {
-            ;
-         }
-      }
-
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "124"
+   )
+   static final int method1042(int var0, int var1, int var2) {
+      int var3 = 256 - var2;
+      return ((var0 & '\uff00') * var3 + var2 * (var1 & '\uff00') & 16711680) + ((var1 & 16711935) * var2 + (var0 & 16711935) * var3 & -16711936) >> 8;
    }
 }
