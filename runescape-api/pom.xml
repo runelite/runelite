@@ -39,6 +39,6 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>api</artifactId>
-	<version>124.2-SNAPSHOT</version> <!-- rs version -->
+	<version>125.1-SNAPSHOT</version> <!-- rs version -->
 	<name>RuneScape API</name>
 </project>
