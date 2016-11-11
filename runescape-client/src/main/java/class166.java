@@ -1,26 +1,25 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fq")
 public final class class166 {
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      longValue = 7136577248360943579L
-   )
-   static long field2694;
-   @ObfuscatedName("ne")
-   static class77 field2695;
-
-   @ObfuscatedName("dx")
+   @ObfuscatedName("ph")
    @ObfuscatedSignature(
-      signature = "(LWidget;S)V",
-      garbageValue = "-3410"
+      signature = "(I)V",
+      garbageValue = "-1102951607"
    )
-   static void method3253(Widget var0) {
-      if(var0.field2930 == Client.field484) {
-         Client.field485[var0.boundsIndex] = true;
+   protected static final void method3254() {
+      class175.field2787.vmethod3147();
+
+      int var0;
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field2249[var0] = 0L;
       }
 
+      for(var0 = 0; var0 < 32; ++var0) {
+         GameEngine.field2256[var0] = 0L;
+      }
+
+      class34.field789 = 0;
    }
 }

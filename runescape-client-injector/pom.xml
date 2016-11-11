@@ -39,20 +39,20 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>client</artifactId>
-	<version>125.2-SNAPSHOT</version> <!-- rs version -->
+	<version>126.1-SNAPSHOT</version> <!-- rs version -->
 	<name>Injector</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>rs-client</artifactId>
-			<version>125.2-SNAPSHOT</version> <!-- rs version -->
+			<version>126.1-SNAPSHOT</version> <!-- rs version -->
 			<scope>provided</scope> <!-- to prevent the dependency on this from runelite-client -->
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>vanilla</artifactId>
-			<version>125</version>
+			<version>126</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

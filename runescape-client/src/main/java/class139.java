@@ -7,37 +7,56 @@ import java.net.URL;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ef")
 public class class139 implements Runnable {
-   @ObfuscatedName("m")
-   EventQueue field2143;
-   @ObfuscatedName("k")
-   public static String field2144;
-   @ObfuscatedName("f")
-   class149 field2145 = null;
-   @ObfuscatedName("c")
-   class149 field2146 = null;
-   @ObfuscatedName("v")
-   Thread field2147;
-   @ObfuscatedName("q")
-   static String field2148;
-   @ObfuscatedName("j")
-   boolean field2151 = false;
+   @ObfuscatedName("ba")
+   static class171 field2139;
+   @ObfuscatedName("h")
+   static String field2140;
+   @ObfuscatedName("e")
+   class149 field2141 = null;
+   @ObfuscatedName("g")
+   class149 field2142 = null;
+   @ObfuscatedName("u")
+   boolean field2143 = false;
+   @ObfuscatedName("n")
+   Thread field2144;
+   @ObfuscatedName("d")
+   public EventQueue field2148;
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1239809060"
+   )
+   final void method2917() {
+      synchronized(this) {
+         this.field2143 = true;
+         this.notifyAll();
+      }
+
+      try {
+         this.field2144.join();
+      } catch (InterruptedException var3) {
+         ;
+      }
+
+   }
 
    public final void run() {
       while(true) {
          class149 var1;
          synchronized(this) {
             while(true) {
-               if(this.field2151) {
+               if(this.field2143) {
                   return;
                }
 
-               if(this.field2145 != null) {
-                  var1 = this.field2145;
-                  this.field2145 = this.field2145.field2267;
-                  if(null == this.field2145) {
-                     this.field2146 = null;
+               if(this.field2141 != null) {
+                  var1 = this.field2141;
+                  this.field2141 = this.field2141.field2267;
+                  if(null == this.field2141) {
+                     this.field2142 = null;
                   }
                   break;
                }
@@ -51,47 +70,47 @@ public class class139 implements Runnable {
          }
 
          try {
-            int var5 = var1.field2265;
+            int var5 = var1.field2266;
             if(var5 == 1) {
-               var1.field2262 = new Socket(InetAddress.getByName((String)var1.field2264), var1.field2260);
+               var1.field2270 = new Socket(InetAddress.getByName((String)var1.field2269), var1.field2268);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field2264);
+               Thread var3 = new Thread((Runnable)var1.field2269);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field2260);
-               var1.field2262 = var3;
+               var3.setPriority(var1.field2268);
+               var1.field2270 = var3;
             } else if(var5 == 4) {
-               var1.field2262 = new DataInputStream(((URL)var1.field2264).openStream());
+               var1.field2270 = new DataInputStream(((URL)var1.field2269).openStream());
             } else if(var5 == 3) {
-               String var10 = (var1.field2260 >> 24 & 255) + "." + (var1.field2260 >> 16 & 255) + "." + (var1.field2260 >> 8 & 255) + "." + (var1.field2260 & 255);
-               var1.field2262 = InetAddress.getByName(var10).getHostName();
+               String var10 = (var1.field2268 >> 24 & 255) + "." + (var1.field2268 >> 16 & 255) + "." + (var1.field2268 >> 8 & 255) + "." + (var1.field2268 & 255);
+               var1.field2270 = InetAddress.getByName(var10).getHostName();
             }
 
-            var1.field2268 = 1;
+            var1.field2265 = 1;
          } catch (ThreadDeath var6) {
             throw var6;
          } catch (Throwable var7) {
-            var1.field2268 = 2;
+            var1.field2265 = 2;
          }
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(IIILjava/lang/Object;I)Lclass149;",
-      garbageValue = "-1300406397"
+      garbageValue = "1648915111"
    )
-   final class149 method2916(int var1, int var2, int var3, Object var4) {
+   final class149 method2918(int var1, int var2, int var3, Object var4) {
       class149 var5 = new class149();
-      var5.field2265 = var1;
-      var5.field2260 = var2;
-      var5.field2264 = var4;
+      var5.field2266 = var1;
+      var5.field2268 = var2;
+      var5.field2269 = var4;
       synchronized(this) {
-         if(null != this.field2146) {
-            this.field2146.field2267 = var5;
-            this.field2146 = var5;
+         if(this.field2142 != null) {
+            this.field2142.field2267 = var5;
+            this.field2142 = var5;
          } else {
-            this.field2146 = this.field2145 = var5;
+            this.field2142 = this.field2141 = var5;
          }
 
          this.notify();
@@ -99,96 +118,63 @@ public class class139 implements Runnable {
       }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;IB)Lclass149;",
-      garbageValue = "1"
+      garbageValue = "17"
    )
-   public final class149 method2917(String var1, int var2) {
-      return this.method2916(1, var2, 0, var1);
+   public final class149 method2919(String var1, int var2) {
+      return this.method2918(1, var2, 0, var1);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Ljava/lang/Runnable;II)Lclass149;",
-      garbageValue = "342914590"
+      garbageValue = "-1796618955"
    )
-   public final class149 method2918(Runnable var1, int var2) {
-      return this.method2916(2, var2, 0, var1);
+   public final class149 method2920(Runnable var1, int var2) {
+      return this.method2918(2, var2, 0, var1);
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(II)Lclass149;",
-      garbageValue = "-719234410"
+      signature = "(Ljava/net/URL;B)Lclass149;",
+      garbageValue = "68"
    )
-   public final class149 method2919(int var1) {
-      return this.method2916(3, var1, 0, (Object)null);
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Lclass149;",
-      garbageValue = "-648607067"
-   )
-   public final class149 method2920(URL var1) {
-      return this.method2916(4, 0, 0, var1);
-   }
-
-   @ObfuscatedName("dt")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "836109363"
-   )
-   static void method2930(int var0) {
-      for(class204 var1 = (class204)Client.widgetFlags.method3825(); var1 != null; var1 = (class204)Client.widgetFlags.method3826()) {
-         if((var1.hash >> 48 & 65535L) == (long)var0) {
-            var1.unlink();
-         }
-      }
-
+   public final class149 method2922(URL var1) {
+      return this.method2918(4, 0, 0, var1);
    }
 
    class139() {
-      field2144 = "Unknown";
-      field2148 = "1.1";
+      class93.field1614 = "Unknown";
+      field2140 = "1.1";
 
       try {
-         field2144 = System.getProperty("java.vendor");
-         field2148 = System.getProperty("java.version");
+         class93.field1614 = System.getProperty("java.vendor");
+         field2140 = System.getProperty("java.version");
       } catch (Exception var3) {
          ;
       }
 
       try {
-         this.field2143 = Toolkit.getDefaultToolkit().getSystemEventQueue();
+         this.field2148 = Toolkit.getDefaultToolkit().getSystemEventQueue();
       } catch (Throwable var2) {
          ;
       }
 
-      this.field2151 = false;
-      this.field2147 = new Thread(this);
-      this.field2147.setPriority(10);
-      this.field2147.setDaemon(true);
-      this.field2147.start();
+      this.field2143 = false;
+      this.field2144 = new Thread(this);
+      this.field2144.setPriority(10);
+      this.field2144.setDaemon(true);
+      this.field2144.start();
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "98"
+      signature = "(II)Lclass149;",
+      garbageValue = "521181466"
    )
-   final void method2937() {
-      synchronized(this) {
-         this.field2151 = true;
-         this.notifyAll();
-      }
-
-      try {
-         this.field2147.join();
-      } catch (InterruptedException var3) {
-         ;
-      }
-
+   public final class149 method2940(int var1) {
+      return this.method2918(3, var1, 0, (Object)null);
    }
 }

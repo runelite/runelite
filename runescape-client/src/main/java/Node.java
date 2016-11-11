@@ -5,17 +5,17 @@ import net.runelite.mapping.ObfuscatedName;
 @ObfuscatedName("hk")
 @Implements("Node")
 public class Node {
-   @ObfuscatedName("ez")
-   @Export("hash")
-   public long hash;
-   @ObfuscatedName("es")
+   @ObfuscatedName("et")
    @Export("next")
    public Node next;
-   @ObfuscatedName("eb")
+   @ObfuscatedName("ew")
    @Export("previous")
    Node previous;
+   @ObfuscatedName("em")
+   @Export("hash")
+   public long hash;
 
-   @ObfuscatedName("ih")
+   @ObfuscatedName("is")
    @Export("linked")
    public boolean linked() {
       return this.previous != null;

@@ -1,124 +1,108 @@
-import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("dj")
 public final class class107 {
-   @ObfuscatedName("p")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1282455061
+      intValue = 352812341
+   )
+   int field1835;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 1163380777
    )
    int field1836;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 2109168511
-   )
-   int field1837;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 406077509
+      intValue = -308751141
    )
-   int field1839;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -724097235
-   )
-   int field1840;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1812627245
-   )
-   int field1841;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 1126485611
-   )
-   int field1843;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 657833135
-   )
-   int field1844;
+   int field1837;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 2038013603
+      intValue = 1011465513
    )
-   int field1845;
+   int field1838;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -542704753
+   )
+   int field1839;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1038730761
+      intValue = 1792183061
+   )
+   int field1840;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1736417435
+   )
+   int field1841;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 7710315
+   )
+   int field1842;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1685597731
+   )
+   int field1843;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1086575475
+   )
+   int field1844;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1006878705
+   )
+   int field1845;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -52105243
    )
    int field1846;
-   @ObfuscatedName("b")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1065821063
+      intValue = -561237401
    )
    int field1847;
-   @ObfuscatedName("g")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1190598009
+      intValue = 1562397605
    )
    int field1848;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1003806969
+      intValue = 376373341
    )
    int field1849;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 911185627
-   )
-   int field1850;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -2036686003
-   )
-   int field1851;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1965957481
-   )
-   int field1852;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1062069405
-   )
-   int field1853;
-   @ObfuscatedName("rt")
-   protected static boolean field1854;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -322083959
-   )
-   int field1855;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1277374247
+      intValue = 1745562585
    )
-   int field1856;
+   int field1850;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1412114747
+   )
+   int field1851;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1628475101
+   )
+   int field1852;
 
-   @ObfuscatedName("bz")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1541402784"
+      signature = "(ZZI)I",
+      garbageValue = "-2069158508"
    )
-   static final void method2360(boolean var0) {
-      class110.method2445();
-      ++Client.field330;
-      if(Client.field330 >= 50 || var0) {
-         Client.field330 = 0;
-         if(!Client.field335 && class28.field671 != null) {
-            Client.field324.method2828(45);
-
-            try {
-               class28.field671.method3027(Client.field324.payload, 0, Client.field324.offset);
-               Client.field324.offset = 0;
-            } catch (IOException var2) {
-               Client.field335 = true;
-            }
-         }
-
-      }
+   public static int method2328(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class174.field2760 + class174.field2763;
+      return var3;
    }
 }

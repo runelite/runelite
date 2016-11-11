@@ -2,146 +2,116 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("am")
+@ObfuscatedName("an")
 public class class32 {
-   @ObfuscatedName("f")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1293117343
+      intValue = 117548695
    )
-   int field721;
-   @ObfuscatedName("q")
+   int field732;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 754500939
+      intValue = 67562511
    )
-   int field722;
-   @ObfuscatedName("c")
+   int field733;
+   @ObfuscatedName("n")
+   String field735;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1678647595
+      intValue = 1325362175
    )
-   int field724;
-   @ObfuscatedName("v")
-   String field725;
-   @ObfuscatedName("k")
+   int field736;
+   @ObfuscatedName("ce")
+   static class227 field737;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 590591205
+      intValue = -1696514591
    )
-   int field726;
+   int field739;
 
-   @ObfuscatedName("de")
+   @ObfuscatedName("ct")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "1943946429"
+      signature = "(LWidget;I)V",
+      garbageValue = "-1824698161"
    )
-   static final void method688(String var0) {
-      if(null != var0) {
-         if((Client.friendCount < 200 || Client.field521 == 1) && Client.friendCount < 400) {
-            String var1 = class112.method2486(var0, class43.field996);
-            if(var1 != null) {
-               int var2;
-               String var4;
-               String var5;
-               for(var2 = 0; var2 < Client.friendCount; ++var2) {
-                  Friend var3 = Client.friends[var2];
-                  var4 = class112.method2486(var3.name, class43.field996);
-                  if(var4 != null && var4.equals(var1)) {
-                     Widget.sendGameMessage(30, "", var0 + " is already on your friend list");
-                     return;
-                  }
-
-                  if(null != var3.previousName) {
-                     var5 = class112.method2486(var3.previousName, class43.field996);
-                     if(var5 != null && var5.equals(var1)) {
-                        Widget.sendGameMessage(30, "", var0 + " is already on your friend list");
-                        return;
-                     }
-                  }
-               }
-
-               for(var2 = 0; var2 < Client.ignoreCount; ++var2) {
-                  Ignore var6 = Client.ignores[var2];
-                  var4 = class112.method2486(var6.name, class43.field996);
-                  if(null != var4 && var4.equals(var1)) {
-                     Widget.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
-                     return;
-                  }
-
-                  if(null != var6.previousName) {
-                     var5 = class112.method2486(var6.previousName, class43.field996);
-                     if(var5 != null && var5.equals(var1)) {
-                        Widget.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
-                        return;
-                     }
-                  }
-               }
-
-               if(class112.method2486(class165.localPlayer.name, class43.field996).equals(var1)) {
-                  Widget.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
-               } else {
-                  Client.field324.method2828(61);
-                  Client.field324.method2556(class31.method685(var0));
-                  Client.field324.method2562(var0);
-               }
-            }
-         } else {
-            Widget.sendGameMessage(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
-         }
-      }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lclass170;Lclass170;Ljava/lang/String;Ljava/lang/String;B)Lclass227;",
-      garbageValue = "124"
-   )
-   public static class227 method689(class170 var0, class170 var1, String var2, String var3) {
-      int var4 = var0.method3327(var2);
-      int var5 = var0.method3325(var4, var3);
-      return class218.method3986(var0, var1, var4, var5);
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-573725883"
-   )
-   public static int method690() {
-      return ++class143.mouseIdleTicks - 1;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIIB)V",
-      garbageValue = "-9"
-   )
-   public static void method691(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var2 + var3) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
-
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(null == var6 || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
-            }
-         }
-
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method691(var0, var1, var2, var5 - 1);
-         method691(var0, var1, 1 + var5, var3);
+   static void method673(Widget var0) {
+      if(Client.field451 == var0.field2900) {
+         Client.field494[var0.boundsIndex] = true;
       }
 
+   }
+
+   @ObfuscatedName("da")
+   @ObfuscatedSignature(
+      signature = "(IIIILSpritePixels;Lclass178;S)V",
+      garbageValue = "205"
+   )
+   static final void method674(int var0, int var1, int var2, int var3, SpritePixels var4, class178 var5) {
+      int var6 = var2 * var2 + var3 * var3;
+      if(var6 > 4225 && var6 < 90000) {
+         int var7 = Client.mapScale + Client.mapAngle & 2047;
+         int var8 = class94.field1623[var7];
+         int var9 = class94.field1642[var7];
+         var8 = 256 * var8 / (256 + Client.mapScaleDelta);
+         var9 = var9 * 256 / (256 + Client.mapScaleDelta);
+         int var10 = var9 * var2 + var8 * var3 >> 16;
+         int var11 = var3 * var9 - var2 * var8 >> 16;
+         double var12 = Math.atan2((double)var10, (double)var11);
+         int var14 = (int)(Math.sin(var12) * 63.0D);
+         int var15 = (int)(Math.cos(var12) * 57.0D);
+         class119.field2032.method1762(4 + var14 + 94 + var0 - 10, 83 + var1 - var15 - 20, 20, 20, 15, 15, var12, 256);
+      } else {
+         class18.method197(var0, var1, var2, var3, var4, var5);
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "19"
+   )
+   static final int method675(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = var2 / 2 + (var0 / 4 << 10) + (var1 / 32 << 7);
+      return var3;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;Ljava/lang/String;I)I",
+      garbageValue = "-1778357418"
+   )
+   public static int method676(Buffer var0, String var1) {
+      int var2 = var0.offset;
+      byte[] var3 = Client.method528(var1);
+      var0.method2542(var3.length);
+      var0.offset += class225.field3236.method2467(var3, 0, var3.length, var0.payload, var0.offset);
+      return var0.offset - var2;
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1475260768"
+   )
+   public static void method677() {
+      Sequence.field1015.reset();
+      Sequence.field1013.reset();
    }
 }

@@ -2,55 +2,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("du")
+@ObfuscatedName("dw")
 public class class118 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      longValue = -8227153301322544145L
+      longValue = -3391822168699084311L
    )
-   static long field2032;
-   @ObfuscatedName("q")
-   public static String field2034;
-
+   static long field2024;
    @ObfuscatedName("v")
+   public static class231[] field2025;
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-1277364705"
+      signature = "(II)I",
+      garbageValue = "1517197527"
    )
-   public static int method2512(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
-      }
-
-      return var2;
+   public static int method2483(int var0) {
+      var0 = (var0 >>> 1 & 1431655765) + (var0 & 1431655765);
+      var0 = (var0 & 858993459) + (var0 >>> 2 & 858993459);
+      var0 = (var0 >>> 4) + var0 & 252645135;
+      var0 += var0 >>> 8;
+      var0 += var0 >>> 16;
+      return var0 & 255;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("dn")
    @ObfuscatedSignature(
-      signature = "(IIIIIII)I",
-      garbageValue = "-1193708665"
+      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
+      garbageValue = "2"
    )
-   public static int method2513(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
+   static String method2485(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.field514 == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.field514 == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.field514 == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.field514 == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.field514 == 4) {
+         var0 = "local";
       }
 
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
-   }
+      String var3 = "";
+      if(null != class4.field79) {
+         var3 = "/p=" + class4.field79;
+      }
 
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1973059692"
-   )
-   public static void method2514() {
-      Sequence.field1023.reset();
-      Sequence.field1005.reset();
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.field310 + "/a=" + Client.field344 + var3 + "/";
    }
 }

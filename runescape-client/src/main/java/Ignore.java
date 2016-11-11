@@ -3,50 +3,53 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("l")
 @Implements("Ignore")
 public class Ignore {
    @ObfuscatedName("h")
-   static ModIcon field128;
-   @ObfuscatedName("q")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("g")
-   static int[] field130;
-   @ObfuscatedName("k")
+   @ObfuscatedName("ph")
+   static short[] field145;
+   @ObfuscatedName("i")
    @Export("name")
    String name;
-   @ObfuscatedName("ey")
-   static ModIcon[] field132;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("ai")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "953050773"
+      signature = "(III)V",
+      garbageValue = "-1176771647"
    )
-   static final void method97(int var0, int var1, int var2, int var3) {
-      for(int var4 = var1; var4 <= var3 + var1; ++var4) {
-         for(int var5 = var0; var5 <= var0 + var2; ++var5) {
-            if(var5 >= 0 && var5 < 104 && var4 >= 0 && var4 < 104) {
-               class53.field1155[0][var5][var4] = 127;
-               if(var5 == var0 && var5 > 0) {
-                  class5.tileHeights[0][var5][var4] = class5.tileHeights[0][var5 - 1][var4];
-               }
+   static final void method102(int var0, int var1) {
+      if(Client.field306 == 2) {
+         class116.method2468(Client.field540 + (Client.field321 - class193.baseX << 7), (Client.field529 - DecorativeObject.baseY << 7) + Client.field325, Client.field323 * 2);
+         if(Client.field445 > -1 && Client.gameCycle % 20 < 10) {
+            class137.field2130[0].method1810(Client.field445 + var0 - 12, Client.field418 + var1 - 28);
+         }
 
-               if(var5 == var0 + var2 && var5 < 103) {
-                  class5.tileHeights[0][var5][var4] = class5.tileHeights[0][1 + var5][var4];
-               }
+      }
+   }
 
-               if(var4 == var1 && var4 > 0) {
-                  class5.tileHeights[0][var5][var4] = class5.tileHeights[0][var5][var4 - 1];
-               }
-
-               if(var4 == var3 + var1 && var4 < 103) {
-                  class5.tileHeights[0][var5][var4] = class5.tileHeights[0][var5][1 + var4];
-               }
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "([BZB)Ljava/lang/Object;",
+      garbageValue = "-15"
+   )
+   public static Object method103(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !class128.field2084) {
+            try {
+               class121 var2 = new class121();
+               var2.vmethod2823(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class128.field2084 = true;
             }
          }
-      }
 
+         return var0;
+      }
    }
 }

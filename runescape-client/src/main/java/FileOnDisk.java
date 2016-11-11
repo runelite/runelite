@@ -8,53 +8,33 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hf")
+@ObfuscatedName("hi")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("q")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      longValue = 4061839419306493621L
+      longValue = -1203593337595622491L
    )
    @Export("length")
    long length;
-   @ObfuscatedName("k")
+   @ObfuscatedName("i")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("f")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      longValue = -7914536822331600479L
+      longValue = 4070088608280391861L
    )
    @Export("position")
    long position;
 
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "1768489614"
-   )
-   public final int method4143(byte[] var1, int var2, int var3) throws IOException {
-      int var4 = this.file.read(var1, var2, var3);
-      if(var4 > 0) {
-         this.position += (long)var4;
-      }
-
-      return var4;
-   }
-
-   @ObfuscatedName("k")
-   final void method4144(long var1) throws IOException {
-      this.file.seek(var1);
-      this.position = var1;
-   }
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "1524714639"
+      garbageValue = "166245958"
    )
-   public final void method4145(byte[] var1, int var2, int var3) throws IOException {
-      if(this.position + (long)var3 > this.length) {
-         this.file.seek(this.length + 1L);
+   public final void method4153(byte[] var1, int var2, int var3) throws IOException {
+      if((long)var3 + this.position > this.length) {
+         this.file.seek(1L + this.length);
          this.file.write(1);
          throw new EOFException();
       } else {
@@ -63,38 +43,70 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
+   final void method4154(long var1) throws IOException {
+      this.file.seek(var1);
+      this.position = var1;
+   }
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "115633702"
+      garbageValue = "1619921534"
    )
-   public final void method4146() throws IOException {
-      if(this.file != null) {
+   public final void method4156() throws IOException {
+      if(null != this.file) {
          this.file.close();
          this.file = null;
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "-911547729"
+      signature = "([BIII)I",
+      garbageValue = "-2090892801"
    )
-   public final long method4147() throws IOException {
-      return this.file.length();
+   public final int method4157(byte[] var1, int var2, int var3) throws IOException {
+      int var4 = this.file.read(var1, var2, var3);
+      if(var4 > 0) {
+         this.position += (long)var4;
+      }
+
+      return var4;
    }
 
    protected void finalize() throws Throwable {
       if(this.file != null) {
          System.out.println("");
-         this.method4146();
+         this.method4156();
       }
 
    }
 
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "124193045"
+   )
+   public final long method4160() throws IOException {
+      return this.file.length();
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-863194448"
+   )
+   static final int method4168(int var0, int var1) {
+      int var2 = class31.method669(var0 - 1, var1 - 1) + class31.method669(var0 + 1, var1 - 1) + class31.method669(var0 - 1, 1 + var1) + class31.method669(var0 + 1, 1 + var1);
+      int var3 = class31.method669(var0 - 1, var1) + class31.method669(1 + var0, var1) + class31.method669(var0, var1 - 1) + class31.method669(var0, var1 + 1);
+      int var4 = class31.method669(var0, var1);
+      return var4 / 4 + var2 / 16 + var3 / 8;
+   }
+
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(-1L == var3) {
+      if(var3 == -1L) {
          var3 = Long.MAX_VALUE;
       }
 

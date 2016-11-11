@@ -4,57 +4,72 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gs")
+@ObfuscatedName("gh")
 @Implements("PlayerComposition")
 public class PlayerComposition {
-   @ObfuscatedName("v")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      longValue = 4771388128559774409L
+      longValue = -5418384415936130295L
    )
    @Export("hash")
    long hash;
-   @ObfuscatedName("b")
-   static NodeCache field2965 = new NodeCache(260);
-   @ObfuscatedName("l")
-   static final int[] field2967 = new int[]{8, 11, 4, 6, 9, 7, 10};
-   @ObfuscatedName("y")
-   public static short[][] field2968;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      longValue = -1658536306076960475L
-   )
-   long field2969;
-   @ObfuscatedName("f")
-   @Export("isFemale")
-   public boolean isFemale;
-   @ObfuscatedName("q")
+   @ObfuscatedName("h")
    @Export("bodyPartColours")
    int[] bodyPartColours;
-   @ObfuscatedName("k")
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1840714693
+   )
+   public int field2971;
+   @ObfuscatedName("i")
    @Export("bodyParts")
    int[] bodyParts;
-   @ObfuscatedName("c")
+   @ObfuscatedName("e")
+   @Export("isFemale")
+   public boolean isFemale;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1800478553
+      longValue = 1364456254774596847L
    )
-   public int field2975;
-   @ObfuscatedName("ct")
-   static class227 field2977;
+   long field2974;
+   @ObfuscatedName("d")
+   public static short[] field2975;
+   @ObfuscatedName("m")
+   public static short[] field2976;
+   @ObfuscatedName("j")
+   public static short[][] field2977;
+   @ObfuscatedName("y")
+   static final int[] field2978 = new int[]{8, 11, 4, 6, 9, 7, 10};
+   @ObfuscatedName("s")
+   static NodeCache field2979 = new NodeCache(260);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("i")
+   public static final void method3511(long var0) {
+      if(var0 > 0L) {
+         if(0L == var0 % 10L) {
+            VertexNormal.method2241(var0 - 1L);
+            VertexNormal.method2241(1L);
+         } else {
+            VertexNormal.method2241(var0);
+         }
+
+      }
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "([I[IZII)V",
-      garbageValue = "-2104639370"
+      garbageValue = "845677654"
    )
-   public void method3508(int[] var1, int[] var2, boolean var3, int var4) {
-      if(null == var1) {
+   public void method3512(int[] var1, int[] var2, boolean var3, int var4) {
+      if(var1 == null) {
          var1 = new int[12];
 
          for(int var5 = 0; var5 < 7; ++var5) {
-            for(int var6 = 0; var6 < class28.field670; ++var6) {
-               KitDefinition var7 = ChatLineBuffer.getKitDefinition(var6);
-               if(var7 != null && !var7.field1058 && var7.field1053 == (var3?7:0) + var5) {
-                  var1[field2967[var5]] = 256 + var6;
+            for(int var6 = 0; var6 < class169.field2712; ++var6) {
+               KitDefinition var7 = class1.getKitDefinition(var6);
+               if(var7 != null && !var7.field1060 && (var3?7:0) + var5 == var7.field1048) {
+                  var1[field2978[var5]] = 256 + var6;
                   break;
                }
             }
@@ -64,61 +79,63 @@ public class PlayerComposition {
       this.bodyParts = var1;
       this.bodyPartColours = var2;
       this.isFemale = var3;
-      this.field2975 = var4;
-      this.method3513();
+      this.field2971 = var4;
+      this.method3517();
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(IZI)V",
-      garbageValue = "-1029575216"
+      garbageValue = "-292202641"
    )
-   public void method3509(int var1, boolean var2) {
-      if(var1 != 1 || !this.isFemale) {
-         int var3 = this.bodyParts[field2967[var1]];
-         if(var3 != 0) {
-            var3 -= 256;
-
-            KitDefinition var4;
-            do {
-               if(!var2) {
-                  --var3;
-                  if(var3 < 0) {
-                     var3 = class28.field670 - 1;
-                  }
-               } else {
-                  ++var3;
-                  if(var3 >= class28.field670) {
-                     var3 = 0;
-                  }
-               }
-
-               var4 = ChatLineBuffer.getKitDefinition(var3);
-            } while(null == var4 || var4.field1058 || var4.field1053 != var1 + (this.isFemale?7:0));
-
-            this.bodyParts[field2967[var1]] = var3 + 256;
-            this.method3513();
-         }
+   public void method3514(int var1, boolean var2) {
+      int var3 = this.bodyPartColours[var1];
+      if(!var2) {
+         do {
+            --var3;
+            if(var3 < 0) {
+               var3 = Friend.field272[var1].length - 1;
+            }
+         } while(!ChatLineBuffer.method651(var1, var3));
+      } else {
+         do {
+            ++var3;
+            if(var3 >= Friend.field272[var1].length) {
+               var3 = 0;
+            }
+         } while(!ChatLineBuffer.method651(var1, var3));
       }
+
+      this.bodyPartColours[var1] = var3;
+      this.method3517();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(ZI)V",
-      garbageValue = "-369404832"
+      garbageValue = "-9680081"
    )
-   public void method3512(boolean var1) {
-      if(this.isFemale != var1) {
-         this.method3508((int[])null, this.bodyPartColours, var1, -1);
+   public void method3515(boolean var1) {
+      if(var1 != this.isFemale) {
+         this.method3512((int[])null, this.bodyPartColours, var1, -1);
       }
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1399511546"
+   )
+   public int method3516() {
+      return this.field2971 == -1?(this.bodyParts[11] << 5) + (this.bodyPartColours[0] << 25) + (this.bodyPartColours[4] << 20) + (this.bodyParts[0] << 15) + (this.bodyParts[8] << 10) + this.bodyParts[1]:305419896 + Friend.getNpcDefinition(this.field2971).id;
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1753218118"
+      garbageValue = "-161166554"
    )
-   void method3513() {
+   void method3517() {
       long var1 = this.hash;
       int var3 = this.bodyParts[5];
       int var4 = this.bodyParts[9];
@@ -151,144 +168,144 @@ public class PlayerComposition {
       this.hash += (long)(this.isFemale?1:0);
       this.bodyParts[5] = var3;
       this.bodyParts[9] = var4;
-      if(var1 != 0L && var1 != this.hash) {
-         field2965.remove(var1);
+      if(0L != var1 && var1 != this.hash) {
+         field2979.remove(var1);
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(LSequence;ILSequence;II)LModel;",
-      garbageValue = "-1992979800"
+      garbageValue = "1432679905"
    )
-   public Model method3514(Sequence var1, int var2, Sequence var3, int var4) {
-      if(this.field2975 != -1) {
-         return class110.getNpcDefinition(this.field2975).method808(var1, var2, var3, var4);
+   public Model method3518(Sequence var1, int var2, Sequence var3, int var4) {
+      if(this.field2971 != -1) {
+         return Friend.getNpcDefinition(this.field2971).method814(var1, var2, var3, var4);
       } else {
          long var5 = this.hash;
          int[] var7 = this.bodyParts;
-         if(var1 != null && (var1.field1014 >= 0 || var1.field1015 >= 0)) {
+         if(var1 != null && (var1.field1022 >= 0 || var1.field1020 >= 0)) {
             var7 = new int[12];
 
-            for(int var8 = 0; var8 < 12; ++var8) {
-               var7[var8] = this.bodyParts[var8];
+            for(int var15 = 0; var15 < 12; ++var15) {
+               var7[var15] = this.bodyParts[var15];
             }
 
-            if(var1.field1014 >= 0) {
-               var5 += (long)(var1.field1014 - this.bodyParts[5] << 40);
-               var7[5] = var1.field1014;
+            if(var1.field1022 >= 0) {
+               var5 += (long)(var1.field1022 - this.bodyParts[5] << 40);
+               var7[5] = var1.field1022;
             }
 
-            if(var1.field1015 >= 0) {
-               var5 += (long)(var1.field1015 - this.bodyParts[3] << 48);
-               var7[3] = var1.field1015;
+            if(var1.field1020 >= 0) {
+               var5 += (long)(var1.field1020 - this.bodyParts[3] << 48);
+               var7[3] = var1.field1020;
             }
          }
 
-         Model var15 = (Model)field2965.get(var5);
-         if(null == var15) {
-            boolean var9 = false;
+         Model var8 = (Model)field2979.get(var5);
+         if(var8 == null) {
+            boolean var16 = false;
 
             int var11;
             for(int var10 = 0; var10 < 12; ++var10) {
                var11 = var7[var10];
-               if(var11 >= 256 && var11 < 512 && !ChatLineBuffer.getKitDefinition(var11 - 256).ready()) {
-                  var9 = true;
+               if(var11 >= 256 && var11 < 512 && !class1.getKitDefinition(var11 - 256).ready()) {
+                  var16 = true;
                }
 
-               if(var11 >= 512 && !class22.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
-                  var9 = true;
+               if(var11 >= 512 && !class92.getItemDefinition(var11 - 512).readyWorn(this.isFemale)) {
+                  var16 = true;
                }
             }
 
-            if(var9) {
-               if(-1L != this.field2969) {
-                  var15 = (Model)field2965.get(this.field2969);
+            if(var16) {
+               if(this.field2974 != -1L) {
+                  var8 = (Model)field2979.get(this.field2974);
                }
 
-               if(var15 == null) {
+               if(var8 == null) {
                   return null;
                }
             }
 
-            if(null == var15) {
+            if(null == var8) {
                ModelData[] var17 = new ModelData[12];
                var11 = 0;
 
                int var13;
-               for(int var12 = 0; var12 < 12; ++var12) {
-                  var13 = var7[var12];
+               for(int var18 = 0; var18 < 12; ++var18) {
+                  var13 = var7[var18];
                   ModelData var14;
                   if(var13 >= 256 && var13 < 512) {
-                     var14 = ChatLineBuffer.getKitDefinition(var13 - 256).getModelData();
+                     var14 = class1.getKitDefinition(var13 - 256).getModelData();
                      if(var14 != null) {
                         var17[var11++] = var14;
                      }
                   }
 
                   if(var13 >= 512) {
-                     var14 = class22.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
-                     if(var14 != null) {
+                     var14 = class92.getItemDefinition(var13 - 512).getWornModelData(this.isFemale);
+                     if(null != var14) {
                         var17[var11++] = var14;
                      }
                   }
                }
 
-               ModelData var16 = new ModelData(var17, var11);
+               ModelData var12 = new ModelData(var17, var11);
 
                for(var13 = 0; var13 < 5; ++var13) {
-                  if(this.bodyPartColours[var13] < field2968[var13].length) {
-                     var16.method2285(class109.field1925[var13], field2968[var13][this.bodyPartColours[var13]]);
+                  if(this.bodyPartColours[var13] < Friend.field272[var13].length) {
+                     var12.method2315(field2975[var13], Friend.field272[var13][this.bodyPartColours[var13]]);
                   }
 
-                  if(this.bodyPartColours[var13] < class4.field72[var13].length) {
-                     var16.method2285(class112.field1966[var13], class4.field72[var13][this.bodyPartColours[var13]]);
+                  if(this.bodyPartColours[var13] < field2977[var13].length) {
+                     var12.method2315(field2976[var13], field2977[var13][this.bodyPartColours[var13]]);
                   }
                }
 
-               var15 = var16.method2293(64, 850, -30, -50, -30);
-               field2965.put(var15, var5);
-               this.field2969 = var5;
+               var8 = var12.method2265(64, 850, -30, -50, -30);
+               field2979.put(var8, var5);
+               this.field2974 = var5;
             }
          }
 
-         if(null == var1 && null == var3) {
-            return var15;
+         if(null == var1 && var3 == null) {
+            return var8;
          } else {
-            Model var18;
+            Model var9;
             if(var1 != null && var3 != null) {
-               var18 = var1.method917(var15, var2, var3, var4);
-            } else if(var1 != null) {
-               var18 = var1.method898(var15, var2);
+               var9 = var1.method921(var8, var2, var3, var4);
+            } else if(null != var1) {
+               var9 = var1.method900(var8, var2);
             } else {
-               var18 = var3.method898(var15, var4);
+               var9 = var3.method900(var8, var4);
             }
 
-            return var18;
+            return var9;
          }
       }
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(I)LModelData;",
-      garbageValue = "809576943"
+      garbageValue = "-1852726456"
    )
-   ModelData method3515() {
-      if(this.field2975 != -1) {
-         return class110.getNpcDefinition(this.field2975).method800();
+   ModelData method3519() {
+      if(this.field2971 != -1) {
+         return Friend.getNpcDefinition(this.field2971).method808();
       } else {
          boolean var1 = false;
 
          int var3;
          for(int var2 = 0; var2 < 12; ++var2) {
             var3 = this.bodyParts[var2];
-            if(var3 >= 256 && var3 < 512 && !ChatLineBuffer.getKitDefinition(var3 - 256).method956()) {
+            if(var3 >= 256 && var3 < 512 && !class1.getKitDefinition(var3 - 256).method968()) {
                var1 = true;
             }
 
-            if(var3 >= 512 && !class22.getItemDefinition(var3 - 512).method1124(this.isFemale)) {
+            if(var3 >= 512 && !class92.getItemDefinition(var3 - 512).method1145(this.isFemale)) {
                var1 = true;
             }
          }
@@ -304,15 +321,15 @@ public class PlayerComposition {
                var5 = this.bodyParts[var4];
                ModelData var6;
                if(var5 >= 256 && var5 < 512) {
-                  var6 = ChatLineBuffer.getKitDefinition(var5 - 256).method957();
+                  var6 = class1.getKitDefinition(var5 - 256).method953();
                   if(var6 != null) {
                      var7[var3++] = var6;
                   }
                }
 
                if(var5 >= 512) {
-                  var6 = class22.getItemDefinition(var5 - 512).method1125(this.isFemale);
-                  if(var6 != null) {
+                  var6 = class92.getItemDefinition(var5 - 512).method1135(this.isFemale);
+                  if(null != var6) {
                      var7[var3++] = var6;
                   }
                }
@@ -321,12 +338,12 @@ public class PlayerComposition {
             ModelData var8 = new ModelData(var7, var3);
 
             for(var5 = 0; var5 < 5; ++var5) {
-               if(this.bodyPartColours[var5] < field2968[var5].length) {
-                  var8.method2285(class109.field1925[var5], field2968[var5][this.bodyPartColours[var5]]);
+               if(this.bodyPartColours[var5] < Friend.field272[var5].length) {
+                  var8.method2315(field2975[var5], Friend.field272[var5][this.bodyPartColours[var5]]);
                }
 
-               if(this.bodyPartColours[var5] < class4.field72[var5].length) {
-                  var8.method2285(class112.field1966[var5], class4.field72[var5][this.bodyPartColours[var5]]);
+               if(this.bodyPartColours[var5] < field2977[var5].length) {
+                  var8.method2315(field2976[var5], field2977[var5][this.bodyPartColours[var5]]);
                }
             }
 
@@ -335,75 +352,91 @@ public class PlayerComposition {
       }
    }
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1073636039"
-   )
-   public int method3516() {
-      return this.field2975 == -1?(this.bodyParts[8] << 10) + (this.bodyPartColours[4] << 20) + (this.bodyPartColours[0] << 25) + (this.bodyParts[0] << 15) + (this.bodyParts[11] << 5) + this.bodyParts[1]:305419896 + class110.getNpcDefinition(this.field2975).id;
-   }
-
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(IZI)V",
-      garbageValue = "-711564847"
+      garbageValue = "-1696860481"
    )
-   public void method3530(int var1, boolean var2) {
-      int var3 = this.bodyPartColours[var1];
-      boolean var4;
-      if(!var2) {
-         do {
-            --var3;
-            if(var3 < 0) {
-               var3 = field2968[var1].length - 1;
-            }
+   public void method3525(int var1, boolean var2) {
+      if(var1 != 1 || !this.isFemale) {
+         int var3 = this.bodyParts[field2978[var1]];
+         if(var3 != 0) {
+            var3 -= 256;
 
-            if(var1 == 4 && var3 >= 8) {
-               var4 = false;
-            } else {
-               var4 = true;
-            }
-         } while(!var4);
-      } else {
-         do {
-            ++var3;
-            if(var3 >= field2968[var1].length) {
-               var3 = 0;
-            }
+            KitDefinition var4;
+            do {
+               if(!var2) {
+                  --var3;
+                  if(var3 < 0) {
+                     var3 = class169.field2712 - 1;
+                  }
+               } else {
+                  ++var3;
+                  if(var3 >= class169.field2712) {
+                     var3 = 0;
+                  }
+               }
 
-            if(var1 == 4 && var3 >= 8) {
-               var4 = false;
-            } else {
-               var4 = true;
-            }
-         } while(!var4);
+               var4 = class1.getKitDefinition(var3);
+            } while(null == var4 || var4.field1060 || (this.isFemale?7:0) + var1 != var4.field1048);
+
+            this.bodyParts[field2978[var1]] = var3 + 256;
+            this.method3517();
+         }
       }
-
-      this.bodyPartColours[var1] = var3;
-      this.method3513();
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-1943463766"
+      garbageValue = "1454290515"
    )
-   public void method3537(Buffer var1) {
-      var1.method2556(this.isFemale?1:0);
+   public void method3532(Buffer var1) {
+      var1.method2529(this.isFemale?1:0);
 
       int var2;
       for(var2 = 0; var2 < 7; ++var2) {
-         int var3 = this.bodyParts[field2967[var2]];
+         int var3 = this.bodyParts[field2978[var2]];
          if(var3 == 0) {
-            var1.method2556(-1);
+            var1.method2529(-1);
          } else {
-            var1.method2556(var3 - 256);
+            var1.method2529(var3 - 256);
          }
       }
 
       for(var2 = 0; var2 < 5; ++var2) {
-         var1.method2556(this.bodyPartColours[var2]);
+         var1.method2529(this.bodyPartColours[var2]);
+      }
+
+   }
+
+   @ObfuscatedName("ay")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "119"
+   )
+   static final void method3540(int var0, int var1, int var2, int var3) {
+      if(Client.field413 == 1) {
+         class24.field639[Client.field412 / 100].method1810(Client.field499 - 8, Client.field411 - 8);
+      }
+
+      if(Client.field413 == 2) {
+         class24.field639[Client.field412 / 100 + 4].method1810(Client.field499 - 8, Client.field411 - 8);
+      }
+
+      Client.field442 = 0;
+      int var4 = (class138.localPlayer.x >> 7) + class193.baseX;
+      int var5 = DecorativeObject.baseY + (class138.localPlayer.y >> 7);
+      if(var4 >= 3053 && var4 <= 3156 && var5 >= 3056 && var5 <= 3136) {
+         Client.field442 = 1;
+      }
+
+      if(var4 >= 3072 && var4 <= 3118 && var5 >= 9492 && var5 <= 9535) {
+         Client.field442 = 1;
+      }
+
+      if(Client.field442 == 1 && var4 >= 3139 && var4 <= 3199 && var5 >= 3008 && var5 <= 3062) {
+         Client.field442 = 0;
       }
 
    }
