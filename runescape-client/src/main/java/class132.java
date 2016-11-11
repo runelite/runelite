@@ -1,60 +1,49 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ej")
+@ObfuscatedName("ed")
 public final class class132 {
-   @ObfuscatedName("ch")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIZB)V",
-      garbageValue = "-79"
+      signature = "(IB)Z",
+      garbageValue = "80"
    )
-   static void method2874(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         Widget var6 = var0[var5];
-         if(var6 != null && var6.parentId == var1) {
-            class13.method149(var6, var2, var3, var4);
-            class116.method2496(var6, var2, var3);
-            if(var6.itemId > var6.scrollWidth - var6.width) {
-               var6.itemId = var6.scrollWidth - var6.width;
-            }
-
-            if(var6.itemId < 0) {
-               var6.itemId = 0;
-            }
-
-            if(var6.scrollY > var6.scrollHeight - var6.height) {
-               var6.scrollY = var6.scrollHeight - var6.height;
-            }
-
-            if(var6.scrollY < 0) {
-               var6.scrollY = 0;
-            }
-
-            if(var6.type == 0) {
-               Projectile.method93(var0, var6, var4);
-            }
-         }
-      }
-
+   public static boolean method2857(int var0) {
+      return (var0 >> 29 & 1) != 0;
    }
 
-   @ObfuscatedName("rq")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-95"
+      signature = "(B)Lclass136;",
+      garbageValue = "98"
    )
-   protected static final void method2876() {
-      CollisionData.field1963.vmethod3139();
-
-      int var0;
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field2249[var0] = 0L;
+   static class136 method2860() {
+      try {
+         return new class150();
+      } catch (Throwable var1) {
+         return new class144();
       }
+   }
 
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field2250[var0] = 0L;
+   @ObfuscatedName("bm")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
+      garbageValue = "-1997893753"
+   )
+   @Export("addMenuEntry")
+   static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            ++Client.menuOptionCount;
+         }
+
       }
-
-      class92.field1615 = 0;
    }
 }

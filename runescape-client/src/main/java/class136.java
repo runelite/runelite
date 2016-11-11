@@ -1,36 +1,43 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("el")
 public abstract class class136 {
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-355225866"
-   )
-   abstract void vmethod3139();
+   @ObfuscatedName("pp")
+   static class224 field2122;
+   @ObfuscatedName("ct")
+   static class227 field2123;
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-130934505"
+   )
+   public static boolean method2884(int var0) {
+      return (var0 >> 28 & 1) != 0;
+   }
+
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(III)I",
-      garbageValue = "-1507060313"
+      garbageValue = "-9037346"
    )
-   abstract int vmethod3137(int var1, int var2);
+   abstract int vmethod3148(int var1, int var2);
 
-   @ObfuscatedName("dr")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(LWidget;IIIB)V",
-      garbageValue = "83"
+      signature = "(III)LWidget;",
+      garbageValue = "1760417790"
    )
-   static final void method2897(Widget var0, int var1, int var2, int var3) {
-      class178 var4 = var0.method3425(false);
-      if(null != var4) {
-         if(Client.field516 < 3) {
-            class157.field2325.method1825(var1, var2, var4.field2947, var4.field2942, 25, 25, Client.mapAngle, 256, var4.field2944, var4.field2941);
-         } else {
-            class82.method1852(var1, var2, 0, var4.field2944, var4.field2941);
-         }
-
-      }
+   public static Widget method2889(int var0, int var1) {
+      Widget var2 = class173.method3412(var0);
+      return var1 == -1?var2:(null != var2 && null != var2.children && var1 < var2.children.length?var2.children[var1]:null);
    }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-53"
+   )
+   abstract void vmethod3147();
 }

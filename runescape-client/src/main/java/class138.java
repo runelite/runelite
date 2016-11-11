@@ -1,16 +1,27 @@
 import java.util.Hashtable;
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("ek")
 public class class138 {
-   @ObfuscatedName("f")
-   static Hashtable field2140 = new Hashtable(16);
-   @ObfuscatedName("k")
-   static boolean field2141 = false;
-   @ObfuscatedName("di")
-   @ObfuscatedGetter(
-      intValue = 1143876867
+   @ObfuscatedName("e")
+   static Hashtable field2132 = new Hashtable(16);
+   @ObfuscatedName("i")
+   public static boolean field2133 = false;
+   @ObfuscatedName("hx")
+   @Export("localPlayer")
+   static Player localPlayer;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "83"
    )
-   static int field2142;
+   static void method2915() {
+      if(FrameMap.loadWorlds()) {
+         class33.worldSelectShown = true;
+      }
+
+   }
 }
