@@ -1,15 +1,22 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fk")
 public class class175 extends CacheableNode {
-   @ObfuscatedName("k")
-   class171 field2782;
-   @ObfuscatedName("f")
-   byte field2784;
-   @ObfuscatedName("q")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -658806911
+      intValue = 936181699
    )
-   int field2785;
+   public int field2783;
+   @ObfuscatedName("e")
+   public byte field2784;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1450479959
+   )
+   static int field2785;
+   @ObfuscatedName("qa")
+   static class136 field2787;
+   @ObfuscatedName("i")
+   public class171 field2790;
 }

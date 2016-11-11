@@ -1,136 +1,141 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ae")
+@ObfuscatedName("aj")
 public class class47 extends CacheableNode {
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
+   public static NodeCache field1063 = new NodeCache(64);
+   @ObfuscatedName("i")
+   public static class170 field1064;
+   @ObfuscatedName("e")
    public boolean field1065 = false;
-   @ObfuscatedName("q")
-   public static NodeCache field1066 = new NodeCache(64);
-   @ObfuscatedName("dv")
-   @ObfuscatedGetter(
-      intValue = 650823935
-   )
-   @Export("baseX")
-   static int baseX;
-   @ObfuscatedName("k")
-   public static class170 field1071;
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-435650365"
-   )
-   public static boolean method976() {
-      try {
-         if(class186.field3007 == 2) {
-            if(class218.field3209 == null) {
-               class218.field3209 = class183.method3554(class133.field2114, NPC.field794, class116.field2023);
-               if(class218.field3209 == null) {
-                  return false;
-               }
-            }
-
-            if(class117.field2031 == null) {
-               class117.field2031 = new class62(class186.field3009, class186.field3005);
-            }
-
-            if(class186.field3008.method3641(class218.field3209, class186.field3012, class117.field2031, 22050)) {
-               class186.field3008.method3642();
-               class186.field3008.method3639(class28.field666);
-               class186.field3008.method3702(class218.field3209, class93.field1626);
-               class186.field3007 = 0;
-               class218.field3209 = null;
-               class117.field2031 = null;
-               class133.field2114 = null;
-               return true;
-            }
-         }
-      } catch (Exception var1) {
-         var1.printStackTrace();
-         class186.field3008.method3735();
-         class186.field3007 = 0;
-         class218.field3209 = null;
-         class117.field2031 = null;
-         class133.field2114 = null;
-      }
-
-      return false;
-   }
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
       signature = "(LBuffer;IB)V",
-      garbageValue = "22"
+      garbageValue = "23"
    )
-   void method977(Buffer var1, int var2) {
+   void method970(Buffer var1, int var2) {
       if(var2 == 2) {
          this.field1065 = true;
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;Ljava/lang/CharSequence;IS)I",
+      garbageValue = "128"
+   )
+   public static int method971(CharSequence var0, CharSequence var1, int var2) {
+      int var3 = var0.length();
+      int var4 = var1.length();
+      int var5 = 0;
+      int var6 = 0;
+      char var7 = 0;
+      char var8 = 0;
+
+      while(var5 - var7 < var3 || var6 - var8 < var4) {
+         if(var5 - var7 >= var3) {
+            return -1;
+         }
+
+         if(var6 - var8 >= var4) {
+            return 1;
+         }
+
+         char var9;
+         if(var7 != 0) {
+            var9 = var7;
+            boolean var14 = false;
+         } else {
+            var9 = var0.charAt(var5++);
+         }
+
+         char var10;
+         if(var8 != 0) {
+            var10 = var8;
+            boolean var15 = false;
+         } else {
+            var10 = var1.charAt(var6++);
+         }
+
+         var7 = class177.method3473(var9);
+         var8 = class177.method3473(var10);
+         var9 = Actor.method797(var9, var2);
+         var10 = Actor.method797(var10, var2);
+         if(var9 != var10 && Character.toUpperCase(var9) != Character.toUpperCase(var10)) {
+            var9 = Character.toLowerCase(var9);
+            var10 = Character.toLowerCase(var10);
+            if(var9 != var10) {
+               return class45.method946(var9, var2) - class45.method946(var10, var2);
+            }
+         }
+      }
+
+      int var16 = Math.min(var3, var4);
+
+      char var12;
+      int var17;
+      for(var17 = 0; var17 < var16; ++var17) {
+         char var11 = var0.charAt(var17);
+         var12 = var1.charAt(var17);
+         if(var12 != var11 && Character.toUpperCase(var11) != Character.toUpperCase(var12)) {
+            var11 = Character.toLowerCase(var11);
+            var12 = Character.toLowerCase(var12);
+            if(var11 != var12) {
+               return class45.method946(var11, var2) - class45.method946(var12, var2);
+            }
+         }
+      }
+
+      var17 = var3 - var4;
+      if(var17 != 0) {
+         return var17;
+      } else {
+         for(int var18 = 0; var18 < var16; ++var18) {
+            var12 = var0.charAt(var18);
+            char var13 = var1.charAt(var18);
+            if(var12 != var13) {
+               return class45.method946(var12, var2) - class45.method946(var13, var2);
+            }
+         }
+
+         return 0;
+      }
+   }
+
+   @ObfuscatedName("ar")
+   @ObfuscatedSignature(
+      signature = "(IILjava/awt/Component;B)LBufferProvider;",
+      garbageValue = "1"
+   )
+   public static BufferProvider method980(int var0, int var1, Component var2) {
+      try {
+         MainBufferProvider var3 = new MainBufferProvider();
+         var3.init(var0, var1, var2);
+         return var3;
+      } catch (Throwable var5) {
+         SecondaryBufferProvider var4 = new SecondaryBufferProvider();
+         var4.init(var0, var1, var2);
+         return var4;
+      }
+   }
+
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-442309172"
+      garbageValue = "94716476"
    )
-   public void method978(Buffer var1) {
+   public void method981(Buffer var1) {
       while(true) {
-         int var2 = var1.method2571();
+         int var2 = var1.method2544();
          if(var2 == 0) {
             return;
          }
 
-         this.method977(var1, var2);
+         this.method970(var1, var2);
       }
-   }
-
-   @ObfuscatedName("dv")
-   @ObfuscatedSignature(
-      signature = "([LWidget;IB)V",
-      garbageValue = "20"
-   )
-   static final void method982(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(null != var3) {
-            if(var3.type == 0) {
-               if(null != var3.children) {
-                  method982(var3.children, var1);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.method3828((long)var3.id);
-               if(null != var4) {
-                  class158.method3191(var4.id, var1);
-               }
-            }
-
-            class0 var5;
-            if(var1 == 0 && null != var3.field2905) {
-               var5 = new class0();
-               var5.field11 = var3;
-               var5.field0 = var3.field2905;
-               SecondaryBufferProvider.method1661(var5);
-            }
-
-            if(var1 == 1 && null != var3.field2929) {
-               if(var3.index >= 0) {
-                  Widget var6 = class144.method3012(var3.id);
-                  if(null == var6 || var6.children == null || var3.index >= var6.children.length || var3 != var6.children[var3.index]) {
-                     continue;
-                  }
-               }
-
-               var5 = new class0();
-               var5.field11 = var3;
-               var5.field0 = var3.field2929;
-               SecondaryBufferProvider.method1661(var5);
-            }
-         }
-      }
-
    }
 }

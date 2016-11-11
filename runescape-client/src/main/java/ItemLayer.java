@@ -3,78 +3,116 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import netscape.javascript.JSObject;
 
-@ObfuscatedName("cb")
+@ObfuscatedName("ck")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("v")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("q")
+   @ObfuscatedName("bm")
    @ObfuscatedGetter(
-      intValue = 527419605
+      intValue = 76106359
    )
-   @Export("x")
-   int x;
-   @ObfuscatedName("k")
+   static int field1731;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1384470371
-   )
-   @Export("hash")
-   int hash;
-   @ObfuscatedName("c")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1326789549
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("j")
-   @Export("top")
-   Renderable top;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1183021269
+      intValue = -589550963
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("cm")
-   public static char field1744;
-   @ObfuscatedName("y")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -2049120395
+      intValue = 1506709547
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("g")
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("n")
+   @Export("middle")
+   Renderable middle;
+   @ObfuscatedName("u")
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 142183241
    )
    @Export("height")
    int height;
-
-   @ObfuscatedName("db")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "211761050"
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -2118354301
    )
-   static final void method2271(int var0) {
-      if(class85.method1938(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+   @Export("x")
+   int x;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -2068871161
+   )
+   @Export("hash")
+   int hash;
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(null != var3) {
-               var3.field2920 = 0;
-               var3.field2873 = 0;
-            }
-         }
-
+   @ObfuscatedName("au")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2146353208"
+   )
+   static void method2243() {
+      int var0 = class62.field1267;
+      int var1 = class77.field1428;
+      if(class116.field2012 < var0) {
+         var0 = class116.field2012;
       }
+
+      if(class18.field276 < var1) {
+         var1 = class18.field276;
+      }
+
+      if(Player.field42 != null) {
+         try {
+            Client var2 = class168.field2706;
+            int var3 = Client.isResized?2:1;
+            Object[] var4 = new Object[]{Integer.valueOf(var3)};
+            JSObject.getWindow(var2).call("resize", var4);
+         } catch (Throwable var5) {
+            ;
+         }
+      }
+
    }
 
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(IS)Z",
-      garbageValue = "148"
-   )
-   public static boolean method2272(int var0) {
-      return (var0 >> 28 & 1) != 0;
+   @ObfuscatedName("i")
+   public static String method2244(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(0L == var0 % 37L) {
+            return null;
+         } else {
+            int var2 = 0;
+
+            for(long var3 = var0; 0L != var3; var3 /= 37L) {
+               ++var2;
+            }
+
+            StringBuilder var5;
+            char var8;
+            for(var5 = new StringBuilder(var2); 0L != var0; var5.append(var8)) {
+               long var6 = var0;
+               var0 /= 37L;
+               var8 = class165.field2698[(int)(var6 - var0 * 37L)];
+               if(var8 == 95) {
+                  int var9 = var5.length() - 1;
+                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+                  var8 = 160;
+               }
+            }
+
+            var5.reverse();
+            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+            return var5.toString();
+         }
+      } else {
+         return null;
+      }
    }
 }
