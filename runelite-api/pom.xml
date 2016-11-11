@@ -34,19 +34,19 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.12</version>
+		<version>1.1.13-SNAPSHOT</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
 	<artifactId>api</artifactId>
-	<version>1.0.13</version>
+	<version>1.0.14-SNAPSHOT</version>
 	<name>Runelite API</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>api</artifactId>
-			<version>126.1</version> <!-- rs version -->
+			<version>126.2-SNAPSHOT</version> <!-- rs version -->
 		</dependency>
 	</dependencies>
 </project>
