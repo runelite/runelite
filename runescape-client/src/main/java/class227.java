@@ -1,94 +1,45 @@
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
-public final class class227 extends class226 {
-   public class227(byte[] var1) {
-      super(var1);
-   }
+@ObfuscatedName("hm")
+public class class227 {
+   @ObfuscatedName("n")
+   static class126 field3232 = new class126();
 
-   @ObfuscatedName("f")
-   final void vmethod4148(byte[] var1, int var2, int var3, int var4, int var5, int var6) {
-      int var7 = var2 + var3 * class82.graphicsPixelsWidth;
-      int var8 = class82.graphicsPixelsWidth - var4;
+   @ObfuscatedName("by")
+   @ObfuscatedSignature(
+      signature = "(IIIIIIB)V",
+      garbageValue = "71"
+   )
+   static final void method4318(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = 2048 - var3 & 2047;
+      int var7 = 2048 - var4 & 2047;
+      int var8 = 0;
       int var9 = 0;
-      int var10 = 0;
+      int var10 = var5;
       int var11;
-      if(var3 < class82.field1466) {
-         var11 = class82.field1466 - var3;
-         var5 -= var11;
-         var3 = class82.field1466;
-         var10 += var11 * var4;
-         var7 += var11 * class82.graphicsPixelsWidth;
-      }
-
-      if(var3 + var5 > class82.field1469) {
-         var5 -= var3 + var5 - class82.field1469;
-      }
-
-      if(var2 < class82.field1465) {
-         var11 = class82.field1465 - var2;
-         var4 -= var11;
-         var2 = class82.field1465;
-         var10 += var11;
-         var7 += var11;
-         var9 += var11;
-         var8 += var11;
-      }
-
-      if(var2 + var4 > class82.field1471) {
-         var11 = var2 + var4 - class82.field1471;
-         var4 -= var11;
-         var9 += var11;
-         var8 += var11;
-      }
-
-      if(var4 > 0 && var5 > 0) {
-         class226.method4083(class82.graphicsPixels, var1, var6, var10, var7, var4, var5, var8, var9);
-      }
-   }
-
-   @ObfuscatedName("b")
-   final void vmethod4149(byte[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      int var8 = var2 + var3 * class82.graphicsPixelsWidth;
-      int var9 = class82.graphicsPixelsWidth - var4;
-      int var10 = 0;
-      int var11 = 0;
       int var12;
-      if(var3 < class82.field1466) {
-         var12 = class82.field1466 - var3;
-         var5 -= var12;
-         var3 = class82.field1466;
-         var11 += var12 * var4;
-         var8 += var12 * class82.graphicsPixelsWidth;
+      int var13;
+      if(var6 != 0) {
+         var11 = class84.field1444[var6];
+         var12 = class84.field1445[var6];
+         var13 = var12 * var9 - var5 * var11 >> 16;
+         var10 = var5 * var12 + var9 * var11 >> 16;
+         var9 = var13;
       }
 
-      if(var3 + var5 > class82.field1469) {
-         var5 -= var3 + var5 - class82.field1469;
+      if(var7 != 0) {
+         var11 = class84.field1444[var7];
+         var12 = class84.field1445[var7];
+         var13 = var11 * var10 + var12 * var8 >> 16;
+         var10 = var12 * var10 - var8 * var11 >> 16;
+         var8 = var13;
       }
 
-      if(var2 < class82.field1465) {
-         var12 = class82.field1465 - var2;
-         var4 -= var12;
-         var2 = class82.field1465;
-         var11 += var12;
-         var8 += var12;
-         var10 += var12;
-         var9 += var12;
-      }
-
-      if(var2 + var4 > class82.field1471) {
-         var12 = var2 + var4 - class82.field1471;
-         var4 -= var12;
-         var10 += var12;
-         var9 += var12;
-      }
-
-      if(var4 > 0 && var5 > 0) {
-         class226.method4085(class82.graphicsPixels, var1, var6, var11, var8, var4, var5, var9, var10, var7);
-      }
-   }
-
-   public class227(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {
-      super(var1, var2, var3, var4, var5, var6, var7);
+      XGrandExchangeOffer.cameraX = var0 - var8;
+      Client.cameraZ = var1 - var9;
+      Client.cameraY = var2 - var10;
+      class40.cameraPitch = var3;
+      class104.cameraYaw = var4;
    }
 }

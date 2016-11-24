@@ -1,43 +1,37 @@
+import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
-public abstract class class136 {
-   @ObfuscatedName("pp")
-   static class224 field2122;
-   @ObfuscatedName("ct")
-   static class227 field2123;
+@ObfuscatedName("en")
+public class class136 implements Iterable {
+   @ObfuscatedName("n")
+   public CacheableNode field1897 = new CacheableNode();
+
+   @ObfuscatedName("d")
+   public void method2521(CacheableNode var1) {
+      if(var1.next != null) {
+         var1.method2483();
+      }
+
+      var1.next = this.field1897.next;
+      var1.previous = this.field1897;
+      var1.next.previous = var1;
+      var1.previous.next = var1;
+   }
 
    @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-130934505"
-   )
-   public static boolean method2884(int var0) {
-      return (var0 >> 28 & 1) != 0;
+   public void method2522() {
+      while(this.field1897.previous != this.field1897) {
+         this.field1897.previous.method2483();
+      }
+
    }
 
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-9037346"
-   )
-   abstract int vmethod3148(int var1, int var2);
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(III)LWidget;",
-      garbageValue = "1760417790"
-   )
-   public static Widget method2889(int var0, int var1) {
-      Widget var2 = class173.method3412(var0);
-      return var1 == -1?var2:(null != var2 && null != var2.children && var1 < var2.children.length?var2.children[var1]:null);
+   public Iterator iterator() {
+      return new class135(this);
    }
 
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-53"
-   )
-   abstract void vmethod3147();
+   public class136() {
+      this.field1897.previous = this.field1897;
+      this.field1897.next = this.field1897;
+   }
 }

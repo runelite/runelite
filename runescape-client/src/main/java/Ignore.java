@@ -3,53 +3,53 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("l")
+@ObfuscatedName("a")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("h")
-   @Export("previousName")
-   String previousName;
-   @ObfuscatedName("ph")
-   static short[] field145;
-   @ObfuscatedName("i")
+   @ObfuscatedName("n")
    @Export("name")
    String name;
+   @ObfuscatedName("d")
+   @Export("previousName")
+   String previousName;
+   @ObfuscatedName("j")
+   static String field211;
 
-   @ObfuscatedName("ai")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1176771647"
+      signature = "(IIB)V",
+      garbageValue = "75"
    )
-   static final void method102(int var0, int var1) {
-      if(Client.field306 == 2) {
-         class116.method2468(Client.field540 + (Client.field321 - class193.baseX << 7), (Client.field529 - DecorativeObject.baseY << 7) + Client.field325, Client.field323 * 2);
-         if(Client.field445 > -1 && Client.gameCycle % 20 < 10) {
-            class137.field2130[0].method1810(Client.field445 + var0 - 12, Client.field418 + var1 - 28);
-         }
+   static void method207(int var0, int var1) {
+      int[] var2 = new int[4];
+      int[] var3 = new int[4];
+      var2[0] = var0;
+      var3[0] = var1;
+      int var4 = 1;
 
+      for(int var5 = 0; var5 < 4; ++var5) {
+         if(var0 != World.field686[var5]) {
+            var2[var4] = World.field686[var5];
+            var3[var4] = World.field674[var5];
+            ++var4;
+         }
       }
+
+      World.field686 = var2;
+      World.field674 = var3;
+      FaceNormal.method1924(World.worldList, 0, World.worldList.length - 1, World.field686, World.field674);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("di")
    @ObfuscatedSignature(
-      signature = "([BZB)Ljava/lang/Object;",
-      garbageValue = "-15"
+      signature = "(Ljava/lang/String;B)V",
+      garbageValue = "-94"
    )
-   public static Object method103(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         if(var0.length > 136 && !class128.field2084) {
-            try {
-               class121 var2 = new class121();
-               var2.vmethod2823(var0);
-               return var2;
-            } catch (Throwable var3) {
-               class128.field2084 = true;
-            }
-         }
-
-         return var0;
+   static final void method208(String var0) {
+      if(class164.clanMembers != null) {
+         Client.field330.method3234(227);
+         Client.field330.method2975(RSCanvas.method2132(var0));
+         Client.field330.method2981(var0);
       }
    }
 }

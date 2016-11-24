@@ -1,159 +1,83 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bx")
-public class class58 extends class69 {
-   @ObfuscatedName("e")
-   int field1226 = 0;
+@ObfuscatedName("bo")
+public class class58 {
+   @ObfuscatedName("m")
+   int[] field1056 = new int[2];
+   @ObfuscatedName("d")
+   int[] field1057 = new int[2];
    @ObfuscatedName("h")
-   Deque field1227 = new Deque();
-   @ObfuscatedName("i")
-   Deque field1228 = new Deque();
+   int field1058;
+   @ObfuscatedName("n")
+   int field1059 = 2;
+   @ObfuscatedName("p")
+   int field1060;
+   @ObfuscatedName("r")
+   int field1061;
+   @ObfuscatedName("c")
+   int field1062;
+   @ObfuscatedName("w")
+   int field1063;
    @ObfuscatedName("g")
-   int field1229 = -1;
-
-   @ObfuscatedName("i")
-   public final synchronized void method1177(class69 var1) {
-      this.field1228.method3841(var1);
-   }
-
-   @ObfuscatedName("h")
-   public final synchronized void method1178(class69 var1) {
-      var1.unlink();
-   }
-
-   @ObfuscatedName("e")
-   void method1179() {
-      if(this.field1226 > 0) {
-         for(class64 var1 = (class64)this.field1227.method3845(); var1 != null; var1 = (class64)this.field1227.method3847()) {
-            var1.field1283 -= this.field1226;
-         }
-
-         this.field1229 -= this.field1226;
-         this.field1226 = 0;
-      }
-
-   }
-
-   @ObfuscatedName("g")
-   void method1180(Node var1, class64 var2) {
-      while(var1 != this.field1227.head && ((class64)var1).field1283 <= var2.field1283) {
-         var1 = var1.next;
-      }
-
-      Deque.method3842(var2, var1);
-      this.field1229 = ((class64)this.field1227.head.next).field1283;
-   }
+   int field1064;
+   @ObfuscatedName("z")
+   int field1065;
+   @ObfuscatedName("q")
+   int field1066;
 
    @ObfuscatedName("n")
-   void method1181(class64 var1) {
-      var1.unlink();
-      var1.method1321();
-      Node var2 = this.field1227.head.next;
-      if(var2 == this.field1227.head) {
-         this.field1229 = -1;
-      } else {
-         this.field1229 = ((class64)var2).field1283;
-      }
-
-   }
-
-   @ObfuscatedName("u")
-   protected class69 vmethod3756() {
-      return (class69)this.field1228.method3845();
+   final void method1095(Buffer var1) {
+      this.field1061 = var1.method3033();
+      this.field1058 = var1.method2995();
+      this.field1063 = var1.method2995();
+      this.method1096(var1);
    }
 
    @ObfuscatedName("d")
-   protected class69 vmethod3744() {
-      return (class69)this.field1228.method3847();
-   }
+   final void method1096(Buffer var1) {
+      this.field1059 = var1.method3033();
+      this.field1057 = new int[this.field1059];
+      this.field1056 = new int[this.field1059];
 
-   @ObfuscatedName("l")
-   protected int vmethod3745() {
-      return 0;
+      for(int var2 = 0; var2 < this.field1059; ++var2) {
+         this.field1057[var2] = var1.method3097();
+         this.field1056[var2] = var1.method3097();
+      }
+
    }
 
    @ObfuscatedName("m")
-   public final synchronized void vmethod3746(int[] var1, int var2, int var3) {
-      do {
-         if(this.field1229 < 0) {
-            this.method1194(var1, var2, var3);
-            return;
-         }
-
-         if(this.field1226 + var3 < this.field1229) {
-            this.field1226 += var3;
-            this.method1194(var1, var2, var3);
-            return;
-         }
-
-         int var4 = this.field1229 - this.field1226;
-         this.method1194(var1, var2, var4);
-         var2 += var4;
-         var3 -= var4;
-         this.field1226 += var4;
-         this.method1179();
-         class64 var5 = (class64)this.field1227.method3845();
-         synchronized(var5) {
-            int var7 = var5.method1317(this);
-            if(var7 < 0) {
-               var5.field1283 = 0;
-               this.method1181(var5);
-            } else {
-               var5.field1283 = var7;
-               this.method1180(var5.next, var5);
-            }
-         }
-      } while(var3 != 0);
-
+   final void method1097() {
+      this.field1062 = 0;
+      this.field1060 = 0;
+      this.field1064 = 0;
+      this.field1065 = 0;
+      this.field1066 = 0;
    }
 
-   @ObfuscatedName("s")
-   void method1188(int var1) {
-      for(class69 var2 = (class69)this.field1228.method3845(); var2 != null; var2 = (class69)this.field1228.method3847()) {
-         var2.vmethod3743(var1);
+   @ObfuscatedName("h")
+   final int method1098(int var1) {
+      if(this.field1066 >= this.field1062) {
+         this.field1065 = this.field1056[this.field1060++] << 15;
+         if(this.field1060 >= this.field1059) {
+            this.field1060 = this.field1059 - 1;
+         }
+
+         this.field1062 = (int)((double)this.field1057[this.field1060] / 65536.0D * (double)var1);
+         if(this.field1062 > this.field1066) {
+            this.field1064 = ((this.field1056[this.field1060] << 15) - this.field1065) / (this.field1062 - this.field1066);
+         }
       }
 
+      this.field1065 += this.field1064;
+      ++this.field1066;
+      return this.field1065 - this.field1064 >> 15;
    }
 
-   @ObfuscatedName("j")
-   void method1194(int[] var1, int var2, int var3) {
-      for(class69 var4 = (class69)this.field1228.method3845(); var4 != null; var4 = (class69)this.field1228.method3847()) {
-         var4.method1505(var1, var2, var3);
-      }
-
-   }
-
-   @ObfuscatedName("y")
-   public final synchronized void vmethod3743(int var1) {
-      do {
-         if(this.field1229 < 0) {
-            this.method1188(var1);
-            return;
-         }
-
-         if(this.field1226 + var1 < this.field1229) {
-            this.field1226 += var1;
-            this.method1188(var1);
-            return;
-         }
-
-         int var2 = this.field1229 - this.field1226;
-         this.method1188(var2);
-         var1 -= var2;
-         this.field1226 += var2;
-         this.method1179();
-         class64 var3 = (class64)this.field1227.method3845();
-         synchronized(var3) {
-            int var5 = var3.method1317(this);
-            if(var5 < 0) {
-               var3.field1283 = 0;
-               this.method1181(var3);
-            } else {
-               var3.field1283 = var5;
-               this.method1180(var3.next, var3);
-            }
-         }
-      } while(var1 != 0);
-
+   class58() {
+      this.field1057[0] = 0;
+      this.field1057[1] = '\uffff';
+      this.field1056[0] = 0;
+      this.field1056[1] = '\uffff';
    }
 }

@@ -1,111 +1,222 @@
-import java.applet.Applet;
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eu")
+@ObfuscatedName("el")
 public class class141 {
-   @ObfuscatedName("pi")
-   @ObfuscatedGetter(
-      intValue = 1161354225
-   )
-   static int field2183;
    @ObfuscatedName("h")
-   public static String field2184 = null;
-   @ObfuscatedName("i")
-   public static Applet field2190 = null;
+   int[] field1978;
+   @ObfuscatedName("m")
+   int[] field1980;
+   @ObfuscatedName("d")
+   int field1981;
+   @ObfuscatedName("w")
+   int[] field1982;
+   @ObfuscatedName("r")
+   int[] field1983;
+   @ObfuscatedName("c")
+   int field1984;
+   @ObfuscatedName("z")
+   static final byte[] field1987 = new byte[]{(byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)1, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)2, (byte)0, (byte)1, (byte)2, (byte)1, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0, (byte)0};
+   @ObfuscatedName("n")
+   Buffer field1989 = new Buffer((byte[])null);
+   @ObfuscatedName("g")
+   long field1991;
+
+   @ObfuscatedName("c")
+   void method2686() {
+      this.field1989.offset = -1;
+   }
+
+   class141(byte[] var1) {
+      this.method2687(var1);
+   }
 
    @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "8"
-   )
-   public static void method2972() {
-      try {
-         File var0 = new File(class152.field2280, "random.dat");
-         int var2;
-         if(var0.exists()) {
-            class152.field2283 = new class231(new FileOnDisk(var0, "rw", 25L), 24, 0);
-         } else {
-            label37:
-            for(int var1 = 0; var1 < FrameMap.field1817.length; ++var1) {
-               for(var2 = 0; var2 < class124.field2050.length; ++var2) {
-                  File var3 = new File(class124.field2050[var2] + FrameMap.field1817[var1] + File.separatorChar + "random.dat");
-                  if(var3.exists()) {
-                     class152.field2283 = new class231(new FileOnDisk(var3, "rw", 25L), 24, 0);
-                     break label37;
-                  }
-               }
+   void method2687(byte[] var1) {
+      this.field1989.payload = var1;
+      this.field1989.offset = 10;
+      int var2 = this.field1989.method3097();
+      this.field1981 = this.field1989.method3097();
+      this.field1984 = 500000;
+      this.field1980 = new int[var2];
+
+      int var3;
+      int var5;
+      for(var3 = 0; var3 < var2; this.field1989.offset += var5) {
+         int var4 = this.field1989.method2995();
+         var5 = this.field1989.method2995();
+         if(var4 == 1297379947) {
+            this.field1980[var3] = this.field1989.offset;
+            ++var3;
+         }
+      }
+
+      this.field1991 = 0L;
+      this.field1978 = new int[var2];
+
+      for(var3 = 0; var3 < var2; ++var3) {
+         this.field1978[var3] = this.field1980[var3];
+      }
+
+      this.field1982 = new int[var2];
+      this.field1983 = new int[var2];
+   }
+
+   @ObfuscatedName("d")
+   void method2688() {
+      this.field1989.payload = null;
+      this.field1980 = null;
+      this.field1978 = null;
+      this.field1982 = null;
+      this.field1983 = null;
+   }
+
+   @ObfuscatedName("m")
+   boolean method2689() {
+      return this.field1989.payload != null;
+   }
+
+   @ObfuscatedName("h")
+   int method2690() {
+      return this.field1978.length;
+   }
+
+   @ObfuscatedName("w")
+   void method2691(int var1) {
+      this.field1989.offset = this.field1978[var1];
+   }
+
+   class141() {
+   }
+
+   @ObfuscatedName("r")
+   void method2692(int var1) {
+      this.field1978[var1] = this.field1989.offset;
+   }
+
+   @ObfuscatedName("l")
+   int method2695(int var1) {
+      byte var2 = this.field1989.payload[this.field1989.offset];
+      int var5;
+      if(var2 < 0) {
+         var5 = var2 & 255;
+         this.field1983[var1] = var5;
+         ++this.field1989.offset;
+      } else {
+         var5 = this.field1983[var1];
+      }
+
+      if(var5 != 240 && var5 != 247) {
+         return this.method2717(var1, var5);
+      } else {
+         int var3 = this.field1989.method3142();
+         if(var5 == 247 && var3 > 0) {
+            int var4 = this.field1989.payload[this.field1989.offset] & 255;
+            if(var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
+               ++this.field1989.offset;
+               this.field1983[var1] = var4;
+               return this.method2717(var1, var4);
             }
          }
 
-         if(null == class152.field2283) {
-            RandomAccessFile var4 = new RandomAccessFile(var0, "rw");
-            var2 = var4.read();
-            var4.seek(0L);
-            var4.write(var2);
-            var4.seek(0L);
-            var4.close();
-            class152.field2283 = new class231(new FileOnDisk(var0, "rw", 25L), 24, 0);
+         this.field1989.offset += var3;
+         return 0;
+      }
+   }
+
+   @ObfuscatedName("e")
+   long method2697(int var1) {
+      return this.field1991 + (long)var1 * (long)this.field1984;
+   }
+
+   @ObfuscatedName("x")
+   int method2698() {
+      int var1 = this.field1978.length;
+      int var2 = -1;
+      int var3 = Integer.MAX_VALUE;
+
+      for(int var4 = 0; var4 < var1; ++var4) {
+         if(this.field1978[var4] >= 0 && this.field1982[var4] < var3) {
+            var2 = var4;
+            var3 = this.field1982[var4];
          }
-      } catch (IOException var5) {
-         ;
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("q")
+   int method2699(int var1) {
+      int var2 = this.method2695(var1);
+      return var2;
+   }
+
+   @ObfuscatedName("s")
+   void method2700(long var1) {
+      this.field1991 = var1;
+      int var3 = this.field1978.length;
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         this.field1982[var4] = 0;
+         this.field1983[var4] = 0;
+         this.field1989.offset = this.field1980[var4];
+         this.method2724(var4);
+         this.field1978[var4] = this.field1989.offset;
       }
 
    }
 
-   @ObfuscatedName("bp")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1210059431"
-   )
-   static final void method2973() {
-      int var0 = class146.menuX;
-      int var1 = class130.menuY;
-      int var2 = ChatLineBuffer.menuWidth;
-      int var3 = class194.menuHeight;
-      int var4 = 6116423;
-      class82.method1853(var0, var1, var2, var3, var4);
-      class82.method1853(1 + var0, 1 + var1, var2 - 2, 16, 0);
-      class82.method1856(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
-      MessageNode.field811.method4124("Choose Option", 3 + var0, 14 + var1, var4, -1);
-      int var5 = class143.field2204;
-      int var6 = class143.field2206;
-
-      int var7;
-      int var8;
-      int var9;
-      for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-         var8 = 15 * (Client.menuOptionCount - 1 - var7) + var1 + 31;
-         var9 = 16777215;
-         if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < 3 + var8) {
-            var9 = 16776960;
-         }
-
-         class227 var10 = MessageNode.field811;
-         String var12;
-         if(Client.menuTargets[var7].length() > 0) {
-            var12 = Client.menuOptions[var7] + " " + Client.menuTargets[var7];
+   @ObfuscatedName("y")
+   int method2717(int var1, int var2) {
+      int var4;
+      if(var2 == 255) {
+         int var7 = this.field1989.method3033();
+         var4 = this.field1989.method3142();
+         if(var7 == 47) {
+            this.field1989.offset += var4;
+            return 1;
+         } else if(var7 == 81) {
+            int var5 = this.field1989.method2994();
+            var4 -= 3;
+            int var6 = this.field1982[var1];
+            this.field1991 += (long)var6 * (long)(this.field1984 - var5);
+            this.field1984 = var5;
+            this.field1989.offset += var4;
+            return 2;
          } else {
-            var12 = Client.menuOptions[var7];
+            this.field1989.offset += var4;
+            return 3;
+         }
+      } else {
+         byte var3 = field1987[var2 - 128];
+         var4 = var2;
+         if(var3 >= 1) {
+            var4 = var2 | this.field1989.method3033() << 8;
          }
 
-         var10.method4124(var12, 3 + var0, var8, var9, 0);
+         if(var3 >= 2) {
+            var4 |= this.field1989.method3033() << 16;
+         }
+
+         return var4;
       }
+   }
 
-      var7 = class146.menuX;
-      var8 = class130.menuY;
-      var9 = ChatLineBuffer.menuWidth;
-      int var13 = class194.menuHeight;
+   @ObfuscatedName("z")
+   void method2724(int var1) {
+      int var2 = this.field1989.method3142();
+      this.field1982[var1] += var2;
+   }
 
-      for(int var11 = 0; var11 < Client.field425; ++var11) {
-         if(Client.widgetPositionX[var11] + Client.widgetBoundsWidth[var11] > var7 && Client.widgetPositionX[var11] < var7 + var9 && Client.widgetPositionY[var11] + Client.widgetBoundsHeight[var11] > var8 && Client.widgetPositionY[var11] < var13 + var8) {
-            Client.field506[var11] = true;
+   @ObfuscatedName("f")
+   boolean method2731() {
+      int var1 = this.field1978.length;
+
+      for(int var2 = 0; var2 < var1; ++var2) {
+         if(this.field1978[var2] >= 0) {
+            return false;
          }
       }
 
+      return true;
    }
 }
