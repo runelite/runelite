@@ -1,54 +1,171 @@
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("ch")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("e")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2128084359
+      intValue = -267066925
    )
-   int field1503;
+   int field1551;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1942151231
+   )
+   int field1552;
+   @ObfuscatedName("ei")
+   static SpritePixels field1555;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1570400875
+   )
+   int field1556;
+
    @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1194723603
-   )
-   int field1504;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1772414087
-   )
-   int field1506;
-   @ObfuscatedName("y")
-   public static class227 field1507;
-
-   @ObfuscatedName("du")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)Z",
-      garbageValue = "-101"
+      signature = "(I)V",
+      garbageValue = "-1892342840"
    )
-   static boolean method1940(Widget var0) {
-      if(Client.field470) {
-         if(Projectile.method96(var0) != 0) {
-            return false;
-         }
-
-         if(var0.type == 0) {
-            return false;
-         }
-      }
-
-      return var0.isHidden;
+   public static void method1923() {
+      ItemComposition.itemSpriteCache.reset();
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lclass170;B)V",
-      garbageValue = "0"
+      signature = "([LWorld;II[I[II)V",
+      garbageValue = "1188399254"
    )
-   public static void method1941(class170 var0) {
-      class53.field1147 = var0;
+   static void method1924(World[] var0, int var1, int var2, int[] var3, int[] var4) {
+      if(var1 < var2) {
+         int var5 = var1 - 1;
+         int var6 = var2 + 1;
+         int var7 = (var2 + var1) / 2;
+         World var8 = var0[var7];
+         var0[var7] = var0[var1];
+         var0[var1] = var8;
+
+         while(var5 < var6) {
+            boolean var9 = true;
+
+            int var10;
+            int var11;
+            int var12;
+            do {
+               --var6;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var6].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var6].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var6].method637()?1:0;
+                     var12 = var8.method637()?1:0;
+                  } else {
+                     var11 = var0[var6].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var12 != var11) {
+                     if((var4[var10] != 1 || var11 <= var12) && (var4[var10] != 0 || var11 >= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            var9 = true;
+
+            do {
+               ++var5;
+
+               for(var10 = 0; var10 < 4; ++var10) {
+                  if(var3[var10] == 2) {
+                     var11 = var0[var5].index;
+                     var12 = var8.index;
+                  } else if(var3[var10] == 1) {
+                     var11 = var0[var5].playerCount;
+                     var12 = var8.playerCount;
+                     if(var11 == -1 && var4[var10] == 1) {
+                        var11 = 2001;
+                     }
+
+                     if(var12 == -1 && var4[var10] == 1) {
+                        var12 = 2001;
+                     }
+                  } else if(var3[var10] == 3) {
+                     var11 = var0[var5].method637()?1:0;
+                     var12 = var8.method637()?1:0;
+                  } else {
+                     var11 = var0[var5].id;
+                     var12 = var8.id;
+                  }
+
+                  if(var12 != var11) {
+                     if((var4[var10] != 1 || var11 >= var12) && (var4[var10] != 0 || var11 <= var12)) {
+                        var9 = false;
+                     }
+                     break;
+                  }
+
+                  if(var10 == 3) {
+                     var9 = false;
+                  }
+               }
+            } while(var9);
+
+            if(var5 < var6) {
+               World var13 = var0[var5];
+               var0[var5] = var0[var6];
+               var0[var6] = var13;
+            }
+         }
+
+         method1924(var0, var1, var6, var3, var4);
+         method1924(var0, var6 + 1, var2, var3, var4);
+      }
+
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Ljava/io/File;ZI)Z",
+      garbageValue = "-1021843888"
+   )
+   static boolean method1925(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
+         }
+
+         return true;
+      } catch (Exception var4) {
+         return false;
+      }
    }
 }

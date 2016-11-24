@@ -39,14 +39,14 @@
 
 	<groupId>net.runelite.rs</groupId>
 	<artifactId>rs-client</artifactId>
-	<version>126.2-SNAPSHOT</version> <!-- rs version -->
+	<version>127.1-SNAPSHOT</version> <!-- rs version -->
 	<name>RuneScape Client</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>api</artifactId>
-			<version>126.2-SNAPSHOT</version> <!-- rs version -->
+			<version>127.1-SNAPSHOT</version> <!-- rs version -->
 		</dependency>
 	</dependencies>
 </project>

@@ -2,66 +2,77 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("dd")
 @Implements("NodeCache")
 public final class NodeCache {
-   @ObfuscatedName("g")
-   @Export("table")
-   XHashTable table;
-   @ObfuscatedName("i")
-   CacheableNode field3137 = new CacheableNode();
-   @ObfuscatedName("e")
-   int field3138;
-   @ObfuscatedName("n")
+   @ObfuscatedName("w")
    @Export("list")
    Node2LinkedList list = new Node2LinkedList();
+   @ObfuscatedName("n")
+   CacheableNode field1866 = new CacheableNode();
+   @ObfuscatedName("m")
+   int field1867;
+   @ObfuscatedName("d")
+   int field1868;
    @ObfuscatedName("h")
-   int field3140;
+   @Export("table")
+   XHashTable table;
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("d")
    @Export("remove")
    public void remove(long var1) {
-      CacheableNode var3 = (CacheableNode)this.table.method3812(var1);
+      CacheableNode var3 = (CacheableNode)this.table.method2405(var1);
       if(var3 != null) {
          var3.unlink();
-         var3.method3924();
-         ++this.field3138;
+         var3.method2483();
+         ++this.field1867;
       }
 
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("m")
    @Export("put")
    public void put(CacheableNode var1, long var2) {
-      if(this.field3138 == 0) {
-         CacheableNode var4 = this.list.method3909();
+      if(this.field1867 == 0) {
+         CacheableNode var4 = this.list.method2354();
          var4.unlink();
-         var4.method3924();
-         if(var4 == this.field3137) {
-            var4 = this.list.method3909();
+         var4.method2483();
+         if(var4 == this.field1866) {
+            var4 = this.list.method2354();
             var4.unlink();
-            var4.method3924();
+            var4.method2483();
          }
       } else {
-         --this.field3138;
+         --this.field1867;
       }
 
-      this.table.method3813(var1, var2);
-      this.list.method3903(var1);
+      this.table.method2406(var1, var2);
+      this.list.method2352(var1);
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("h")
    @Export("reset")
    public void reset() {
-      this.list.method3908();
-      this.table.method3820();
-      this.field3137 = new CacheableNode();
-      this.field3138 = this.field3140;
+      this.list.method2356();
+      this.table.method2407();
+      this.field1866 = new CacheableNode();
+      this.field1867 = this.field1868;
+   }
+
+   @ObfuscatedName("n")
+   @Export("get")
+   public CacheableNode get(long var1) {
+      CacheableNode var3 = (CacheableNode)this.table.method2405(var1);
+      if(var3 != null) {
+         this.list.method2352(var3);
+      }
+
+      return var3;
    }
 
    public NodeCache(int var1) {
-      this.field3140 = var1;
-      this.field3138 = var1;
+      this.field1868 = var1;
+      this.field1867 = var1;
 
       int var2;
       for(var2 = 1; var2 + var2 < var1; var2 += var2) {
@@ -69,16 +80,5 @@ public final class NodeCache {
       }
 
       this.table = new XHashTable(var2);
-   }
-
-   @ObfuscatedName("i")
-   @Export("get")
-   public CacheableNode get(long var1) {
-      CacheableNode var3 = (CacheableNode)this.table.method3812(var1);
-      if(var3 != null) {
-         this.list.method3903(var3);
-      }
-
-      return var3;
    }
 }

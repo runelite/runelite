@@ -1,56 +1,92 @@
+import java.io.File;
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dw")
+@ObfuscatedName("dn")
 public class class118 {
-   @ObfuscatedName("h")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      longValue = -3391822168699084311L
+      intValue = 1680871925
    )
-   static long field2024;
-   @ObfuscatedName("v")
-   public static class231[] field2025;
+   static int field1837;
+   @ObfuscatedName("m")
+   static int[][] field1839 = new int[128][128];
+   @ObfuscatedName("p")
+   static int[] field1840 = new int[4096];
+   @ObfuscatedName("h")
+   static int[][] field1842 = new int[128][128];
+   @ObfuscatedName("g")
+   static int[] field1843 = new int[4096];
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1517197527"
+      signature = "(III)I",
+      garbageValue = "504103768"
    )
-   public static int method2483(int var0) {
-      var0 = (var0 >>> 1 & 1431655765) + (var0 & 1431655765);
-      var0 = (var0 & 858993459) + (var0 >>> 2 & 858993459);
-      var0 = (var0 >>> 4) + var0 & 252645135;
-      var0 += var0 >>> 8;
-      var0 += var0 >>> 16;
-      return var0 & 255;
+   static final int method2338(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 'ﾀ') + var1;
+      }
    }
 
-   @ObfuscatedName("dn")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)Ljava/lang/String;",
-      garbageValue = "2"
+      signature = "(Ljava/lang/String;Ljava/lang/String;ZI)LFileOnDisk;",
+      garbageValue = "997154296"
    )
-   static String method2485(String var0, boolean var1) {
-      String var2 = var1?"https://":"http://";
-      if(Client.field514 == 1) {
-         var0 = var0 + "-wtrc";
-      } else if(Client.field514 == 2) {
-         var0 = var0 + "-wtqa";
-      } else if(Client.field514 == 3) {
-         var0 = var0 + "-wtwip";
-      } else if(Client.field514 == 5) {
-         var0 = var0 + "-wti";
-      } else if(Client.field514 == 4) {
-         var0 = "local";
+   public static FileOnDisk method2341(String var0, String var1, boolean var2) {
+      File var3 = new File(class104.field1676, "preferences" + var0 + ".dat");
+      if(var3.exists()) {
+         try {
+            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
+            return var10;
+         } catch (IOException var9) {
+            ;
+         }
       }
 
-      String var3 = "";
-      if(null != class4.field79) {
-         var3 = "/p=" + class4.field79;
+      String var4 = "";
+      if(class103.field1671 == 33) {
+         var4 = "_rc";
+      } else if(class103.field1671 == 34) {
+         var4 = "_wip";
       }
 
-      String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.field310 + "/a=" + Client.field344 + var3 + "/";
+      File var5 = new File(Ignore.field211, "jagex_" + var1 + "_preferences" + var0 + var4 + ".dat");
+      FileOnDisk var6;
+      if(!var2 && var5.exists()) {
+         try {
+            var6 = new FileOnDisk(var5, "rw", 10000L);
+            return var6;
+         } catch (IOException var8) {
+            ;
+         }
+      }
+
+      try {
+         var6 = new FileOnDisk(var3, "rw", 10000L);
+         return var6;
+      } catch (IOException var7) {
+         throw new RuntimeException();
+      }
    }
 }

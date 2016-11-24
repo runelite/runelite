@@ -1,34 +1,33 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hi")
 public class class225 {
-   @ObfuscatedName("i")
-   public static class116 field3236;
-
-   @ObfuscatedName("cj")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIIII)V",
-      garbageValue = "-1730848861"
+   @ObfuscatedName("p")
+   static int[] field3210;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -811556033
    )
-   static final void method4056(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      if(class14.method172(var0)) {
-         class128.field2088 = null;
-         class13.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
-         if(class128.field2088 != null) {
-            class13.gameDraw(class128.field2088, -1412584499, var1, var2, var3, var4, class228.field3263, class157.field2335, var7);
-            class128.field2088 = null;
-         }
-
-      } else {
-         if(var7 != -1) {
-            Client.field494[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field494[var8] = true;
-            }
-         }
-
-      }
-   }
+   static int field3211;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 336443631
+   )
+   static int field3212;
+   @ObfuscatedName("h")
+   static int[] field3213;
+   @ObfuscatedName("w")
+   static int[] field3214;
+   @ObfuscatedName("r")
+   static int[] field3215;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 1650091497
+   )
+   static int field3216;
+   @ObfuscatedName("g")
+   static byte[][] field3218;
+   @ObfuscatedName("c")
+   static int[] field3219;
 }
