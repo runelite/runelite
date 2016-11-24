@@ -1,115 +1,66 @@
+import java.awt.event.ActionEvent;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bj")
-public class class63 {
-   @ObfuscatedName("g")
-   int field1276 = class73.method1567(24) + 1;
-   @ObfuscatedName("h")
-   int field1277 = class73.method1567(24);
-   @ObfuscatedName("i")
-   int field1278 = class73.method1567(16);
-   @ObfuscatedName("e")
-   int field1279 = class73.method1567(24);
-   @ObfuscatedName("n")
-   int field1280 = class73.method1567(6) + 1;
-   @ObfuscatedName("u")
-   int field1281 = class73.method1567(8);
+@ObfuscatedName("ba")
+public class class63 implements Runnable {
    @ObfuscatedName("d")
-   int[] field1282;
+   volatile class57[] field1080 = new class57[2];
+   @ObfuscatedName("n")
+   class103 field1081;
+   @ObfuscatedName("h")
+   volatile boolean field1082 = false;
+   @ObfuscatedName("rv")
+   protected static boolean field1083;
+   @ObfuscatedName("m")
+   volatile boolean field1084 = false;
+   @ObfuscatedName("nu")
+   @ObfuscatedGetter(
+      intValue = -1612481661
+   )
+   static int field1085;
 
-   class63() {
-      int[] var1 = new int[this.field1280];
+   public void run() {
+      this.field1082 = true;
 
-      int var2;
-      for(var2 = 0; var2 < this.field1280; ++var2) {
-         int var3 = 0;
-         int var4 = class73.method1567(3);
-         boolean var5 = class73.method1566() != 0;
-         if(var5) {
-            var3 = class73.method1567(5);
+      try {
+         while(!this.field1084) {
+            class57 var2;
+            for(int var1 = 0; var1 < 2; ++var1) {
+               var2 = this.field1080[var1];
+               if(var2 != null) {
+                  var2.method1045();
+               }
+            }
+
+            class0.method12(10L);
+            class103 var5 = this.field1081;
+            var2 = null;
+            if(null != var5.field1670) {
+               for(int var3 = 0; var3 < 50 && var5.field1670.peekEvent() != null; ++var3) {
+                  class0.method12(1L);
+               }
+
+               if(null != var2) {
+                  var5.field1670.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               }
+            }
          }
-
-         var1[var2] = var3 << 3 | var4;
-      }
-
-      this.field1282 = new int[this.field1280 * 8];
-
-      for(var2 = 0; var2 < this.field1280 * 8; ++var2) {
-         this.field1282[var2] = (var1[var2 >> 3] & 1 << (var2 & 7)) != 0?class73.method1567(8):-1;
+      } catch (Exception var8) {
+         class39.method772((String)null, var8);
+      } finally {
+         this.field1082 = false;
       }
 
    }
 
-   @ObfuscatedName("i")
-   void method1315(float[] var1, int var2, boolean var3) {
-      int var4;
-      for(var4 = 0; var4 < var2; ++var4) {
-         var1[var4] = 0.0F;
-      }
-
-      if(!var3) {
-         var4 = class73.field1352[this.field1281].field1414;
-         int var5 = this.field1279 - this.field1277;
-         int var6 = var5 / this.field1276;
-         int[] var7 = new int[var6];
-
-         for(int var8 = 0; var8 < 8; ++var8) {
-            int var9 = 0;
-
-            while(var9 < var6) {
-               int var10;
-               int var11;
-               if(var8 == 0) {
-                  var10 = class73.field1352[this.field1281].method1616();
-
-                  for(var11 = var4 - 1; var11 >= 0; --var11) {
-                     if(var9 + var11 < var6) {
-                        var7[var9 + var11] = var10 % this.field1280;
-                     }
-
-                     var10 /= this.field1280;
-                  }
-               }
-
-               for(var10 = 0; var10 < var4; ++var10) {
-                  var11 = var7[var9];
-                  int var12 = this.field1282[var11 * 8 + var8];
-                  if(var12 >= 0) {
-                     int var13 = this.field1277 + var9 * this.field1276;
-                     class76 var14 = class73.field1352[var12];
-                     int var15;
-                     if(this.field1278 == 0) {
-                        var15 = this.field1276 / var14.field1414;
-
-                        for(int var19 = 0; var19 < var15; ++var19) {
-                           float[] var20 = var14.method1617();
-
-                           for(int var18 = 0; var18 < var14.field1414; ++var18) {
-                              var1[var13 + var19 + var18 * var15] += var20[var18];
-                           }
-                        }
-                     } else {
-                        var15 = 0;
-
-                        while(var15 < this.field1276) {
-                           float[] var16 = var14.method1617();
-
-                           for(int var17 = 0; var17 < var14.field1414; ++var17) {
-                              var1[var13 + var15] += var16[var17];
-                              ++var15;
-                           }
-                        }
-                     }
-                  }
-
-                  ++var9;
-                  if(var9 >= var6) {
-                     break;
-                  }
-               }
-            }
-         }
-
-      }
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(IB)I",
+      garbageValue = "-22"
+   )
+   public static int method1151(int var0) {
+      return var0 >> 11 & 63;
    }
 }

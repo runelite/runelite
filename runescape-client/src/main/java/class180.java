@@ -1,29 +1,39 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
-public class class180 {
-   @ObfuscatedName("e")
-   static ModIcon field2958;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass51;",
-      garbageValue = "-2044386030"
+@ObfuscatedName("fb")
+public class class180 extends Node {
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 351915711
    )
-   public static class51 method3491(int var0) {
-      class51 var1 = (class51)class51.field1108.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class51.field1127.method3292(32, var0);
-         var1 = new class51();
-         if(var2 != null) {
-            var1.method1035(new Buffer(var2));
-         }
+   int field2699;
+   @ObfuscatedName("d")
+   byte[] field2700;
+   @ObfuscatedName("m")
+   class116 field2701;
+   @ObfuscatedName("h")
+   class184 field2702;
 
-         class51.field1108.put(var1, (long)var0);
-         return var1;
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(Lclass166;B)I",
+      garbageValue = "126"
+   )
+   static int method3324(class166 var0) {
+      int var1 = var0.method3237(2);
+      int var2;
+      if(var1 == 0) {
+         var2 = 0;
+      } else if(var1 == 1) {
+         var2 = var0.method3237(5);
+      } else if(var1 == 2) {
+         var2 = var0.method3237(8);
+      } else {
+         var2 = var0.method3237(11);
       }
+
+      return var2;
    }
 }

@@ -1,108 +1,45 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.Canvas;
+import java.io.File;
+import java.util.Hashtable;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dj")
-public final class class107 {
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 352812341
-   )
-   int field1835;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1163380777
-   )
-   int field1836;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -308751141
-   )
-   int field1837;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1011465513
-   )
-   int field1838;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -542704753
-   )
-   int field1839;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1792183061
-   )
-   int field1840;
+@ObfuscatedName("da")
+public class class107 {
+   @ObfuscatedName("ql")
+   @Export("canvas")
+   public static Canvas canvas;
    @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1736417435
-   )
-   int field1841;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 7710315
-   )
-   int field1842;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1685597731
-   )
-   int field1843;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = 1086575475
-   )
-   int field1844;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1006878705
-   )
-   int field1845;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -52105243
-   )
-   int field1846;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -561237401
-   )
-   int field1847;
+   static File field1726;
+   @ObfuscatedName("m")
+   static Hashtable field1727 = new Hashtable(16);
+   @ObfuscatedName("q")
+   static int[] field1728;
    @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 1562397605
-   )
-   int field1848;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 376373341
-   )
-   int field1849;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1745562585
-   )
-   int field1850;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1412114747
-   )
-   int field1851;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1628475101
-   )
-   int field1852;
+   static class20 field1729;
+   @ObfuscatedName("i")
+   static int[] field1730;
+   @ObfuscatedName("n")
+   static boolean field1735 = false;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(ZZI)I",
-      garbageValue = "-2069158508"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;B)Z",
+      garbageValue = "-29"
    )
-   public static int method2328(boolean var0, boolean var1) {
-      byte var2 = 0;
-      int var3 = var2 + class174.field2760 + class174.field2763;
-      return var3;
+   public static final boolean method2082(String var0, String var1, String var2, String var3) {
+      return null != var0 && null != var2?(!var0.startsWith("#") && !var2.startsWith("#")?var1.equals(var3):var0.equals(var2)):false;
+   }
+
+   @ObfuscatedName("dm")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "56"
+   )
+   static final void method2085(int var0) {
+      if(class60.method1127(var0)) {
+         class104.method2043(Widget.widgets[var0], -1);
+      }
    }
 }

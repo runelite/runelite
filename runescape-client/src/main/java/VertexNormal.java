@@ -1,54 +1,69 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cc")
 @Implements("VertexNormal")
 public class VertexNormal {
-   @ObfuscatedName("g")
+   @ObfuscatedName("qi")
+   static class109 field1414;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1967602669
+      intValue = 1927254061
    )
-   int field1683;
+   int field1415;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1484712819
+      intValue = -998944889
    )
-   int field1684;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -545016947
-   )
-   int field1685;
+   int field1416;
    @ObfuscatedName("n")
-   @Export("worldList")
-   static World[] worldList;
-   @ObfuscatedName("bu")
-   static class171 field1688;
-   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1701116389
+      intValue = -794929269
    )
-   int field1689;
+   int field1417;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -529426927
+   )
+   int field1418;
 
    VertexNormal(VertexNormal var1) {
-      this.field1689 = var1.field1689;
-      this.field1684 = var1.field1684;
-      this.field1685 = var1.field1685;
-      this.field1683 = var1.field1683;
-   }
-
-   @ObfuscatedName("h")
-   static final void method2241(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
-      }
-
+      this.field1417 = var1.field1417;
+      this.field1415 = var1.field1415;
+      this.field1418 = var1.field1418;
+      this.field1416 = var1.field1416;
    }
 
    VertexNormal() {
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "([BIIB)Ljava/lang/String;",
+      garbageValue = "0"
+   )
+   public static String method1664(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         int var6 = var0[var5 + var1] & 255;
+         if(var6 != 0) {
+            if(var6 >= 128 && var6 < 160) {
+               char var7 = class203.field3067[var6 - 128];
+               if(var7 == 0) {
+                  var7 = 63;
+               }
+
+               var6 = var7;
+            }
+
+            var3[var4++] = (char)var6;
+         }
+      }
+
+      return new String(var3, 0, var4);
    }
 }

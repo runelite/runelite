@@ -1,33 +1,45 @@
-import java.io.File;
-import java.util.Comparator;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hj")
-final class class221 implements Comparator {
-   @ObfuscatedName("g")
-   static File field3219;
-   @ObfuscatedName("i")
+@ObfuscatedName("hn")
+public class class221 implements class165 {
+   @ObfuscatedName("h")
+   public static final class221 field3177 = new class221(3, 3);
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      longValue = 6283781607779967307L
+      intValue = -361161775
    )
-   static long field3220;
+   public final int field3178;
+   @ObfuscatedName("m")
+   public static final class221 field3179 = new class221(2, 2);
+   @ObfuscatedName("n")
+   public static final class221 field3180 = new class221(0, 0);
+   @ObfuscatedName("w")
+   public static final class221 field3181 = new class221(4, 4);
+   @ObfuscatedName("d")
+   public static final class221 field3182 = new class221(1, 1);
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -843259445
+   )
+   final int field3183;
 
-   public boolean equals(Object var1) {
-      return super.equals(var1);
-   }
-
-   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lclass217;Lclass217;I)I",
-      garbageValue = "1310926135"
+      signature = "(II)V",
+      garbageValue = "0"
    )
-   int method4006(class217 var1, class217 var2) {
-      return var1.field3207 < var2.field3207?-1:(var1.field3207 == var2.field3207?0:1);
+   class221(int var1, int var2) {
+      this.field3178 = var1;
+      this.field3183 = var2;
    }
 
-   public int compare(Object var1, Object var2) {
-      return this.method4006((class217)var1, (class217)var2);
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-1689281815"
+   )
+   public int vmethod4132() {
+      return this.field3183;
    }
 }

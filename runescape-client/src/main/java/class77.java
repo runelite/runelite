@@ -1,158 +1,279 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bl")
-public class class77 {
+@ObfuscatedName("bw")
+public final class class77 {
+   @ObfuscatedName("p")
+   int[] field1260;
+   @ObfuscatedName("d")
+   int[] field1261;
    @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1169324131
-   )
-   int field1422;
-   @ObfuscatedName("u")
-   int[][] field1424;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -273239365
-   )
-   public static int field1426;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -145448143
-   )
-   int field1427;
-   @ObfuscatedName("qq")
-   @ObfuscatedGetter(
-      intValue = 1829424793
-   )
-   protected static int field1428;
-
-   public class77(int var1, int var2) {
-      if(var1 != var2) {
-         int var4 = var1;
-         int var5 = var2;
-         if(var2 > var1) {
-            var4 = var2;
-            var5 = var1;
-         }
-
-         while(var5 != 0) {
-            int var6 = var4 % var5;
-            var4 = var5;
-            var5 = var6;
-         }
-
-         var1 /= var4;
-         var2 /= var4;
-         this.field1427 = var1;
-         this.field1422 = var2;
-         this.field1424 = new int[var1][14];
-
-         for(int var7 = 0; var7 < var1; ++var7) {
-            int[] var8 = this.field1424[var7];
-            double var9 = (double)var7 / (double)var1 + 6.0D;
-            int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
-            if(var11 < 0) {
-               var11 = 0;
-            }
-
-            int var12 = (int)Math.ceil(7.0D + var9);
-            if(var12 > 14) {
-               var12 = 14;
-            }
-
-            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
-               double var15 = 3.141592653589793D * ((double)var11 - var9);
-               double var17 = var13;
-               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
-                  var17 = var13 * (Math.sin(var15) / var15);
-               }
-
-               var17 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var11 - var9));
-               var8[var11] = (int)Math.floor(0.5D + 65536.0D * var17);
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "2096779002"
-   )
-   byte[] method1630(byte[] var1) {
-      if(null != this.field1424) {
-         int var2 = 14 + (int)((long)var1.length * (long)this.field1422 / (long)this.field1427);
-         int[] var3 = new int[var2];
-         int var4 = 0;
-         int var5 = 0;
-
-         int var6;
-         for(var6 = 0; var6 < var1.length; ++var6) {
-            byte var7 = var1[var6];
-            int[] var8 = this.field1424[var5];
-
-            int var9;
-            for(var9 = 0; var9 < 14; ++var9) {
-               var3[var4 + var9] += var7 * var8[var9];
-            }
-
-            var5 += this.field1422;
-            var9 = var5 / this.field1427;
-            var4 += var9;
-            var5 -= this.field1427 * var9;
-         }
-
-         var1 = new byte[var2];
-
-         for(var6 = 0; var6 < var2; ++var6) {
-            int var10 = var3[var6] + '耀' >> 16;
-            if(var10 < -128) {
-               var1[var6] = -128;
-            } else if(var10 > 127) {
-               var1[var6] = 127;
-            } else {
-               var1[var6] = (byte)var10;
-            }
-         }
-      }
-
-      return var1;
-   }
-
+   int[] field1262;
    @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "106"
-   )
-   int method1631(int var1) {
-      if(this.field1424 != null) {
-         var1 = (int)((long)var1 * (long)this.field1422 / (long)this.field1427);
-      }
-
-      return var1;
-   }
-
+   int[] field1263;
+   @ObfuscatedName("w")
+   int[] field1264;
+   @ObfuscatedName("r")
+   int[] field1265;
+   @ObfuscatedName("m")
+   int[] field1266;
    @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1607034823"
-   )
-   int method1632(int var1) {
-      if(this.field1424 != null) {
-         var1 = (int)((long)this.field1422 * (long)var1 / (long)this.field1427) + 6;
+   int field1267;
+   @ObfuscatedName("g")
+   int[] field1268;
+   @ObfuscatedName("z")
+   int[] field1269;
+   @ObfuscatedName("q")
+   boolean field1270 = true;
+   @ObfuscatedName("l")
+   int field1271;
+   @ObfuscatedName("o")
+   static int[] field1272 = new int[6];
+   @ObfuscatedName("y")
+   int field1273;
+   @ObfuscatedName("x")
+   int field1274;
+   @ObfuscatedName("f")
+   static int[] field1275 = new int[6];
+   @ObfuscatedName("s")
+   static int[] field1276 = new int[6];
+   @ObfuscatedName("c")
+   int[] field1277;
+   @ObfuscatedName("i")
+   static int[] field1278 = new int[6];
+   @ObfuscatedName("a")
+   static int[] field1279 = new int[6];
+   @ObfuscatedName("b")
+   static final int[][] field1280 = new int[][]{{1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 6}, {1, 3, 5, 7, 2, 6}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 2, 8}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 11, 12}, {1, 3, 5, 7, 13, 14}};
+   @ObfuscatedName("j")
+   static final int[][] field1281 = new int[][]{{0, 1, 2, 3, 0, 0, 1, 3}, {1, 1, 2, 3, 1, 0, 1, 3}, {0, 1, 2, 3, 1, 0, 1, 3}, {0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3}, {0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4}, {0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4}, {0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3}, {0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3}, {0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5}, {0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5}, {0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3}, {1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3}, {1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5}};
+
+   class77(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12, int var13, int var14, int var15, int var16, int var17, int var18, int var19) {
+      if(var6 != var7 || var6 != var8 || var6 != var9) {
+         this.field1270 = false;
       }
 
-      return var1;
-   }
+      this.field1271 = var1;
+      this.field1273 = var2;
+      this.field1267 = var18;
+      this.field1274 = var19;
+      short var20 = 128;
+      int var21 = var20 / 2;
+      int var22 = var20 / 4;
+      int var23 = var20 * 3 / 4;
+      int[] var24 = field1280[var1];
+      int var25 = var24.length;
+      this.field1262 = new int[var25];
+      this.field1261 = new int[var25];
+      this.field1266 = new int[var25];
+      int[] var26 = new int[var25];
+      int[] var27 = new int[var25];
+      int var28 = var4 * var20;
+      int var29 = var5 * var20;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)[Lclass85;",
-      garbageValue = "94"
-   )
-   public static class85[] method1637() {
-      return new class85[]{class85.field1482, class85.field1484, class85.field1487, class85.field1485, class85.field1486};
+      int var31;
+      int var32;
+      int var33;
+      int var34;
+      int var35;
+      int var36;
+      for(int var30 = 0; var30 < var25; ++var30) {
+         var31 = var24[var30];
+         if((var31 & 1) == 0 && var31 <= 8) {
+            var31 = (var31 - var2 - var2 - 1 & 7) + 1;
+         }
+
+         if(var31 > 8 && var31 <= 12) {
+            var31 = (var31 - 9 - var2 & 3) + 9;
+         }
+
+         if(var31 > 12 && var31 <= 16) {
+            var31 = (var31 - 13 - var2 & 3) + 13;
+         }
+
+         if(var31 == 1) {
+            var32 = var28;
+            var33 = var29;
+            var34 = var6;
+            var35 = var10;
+            var36 = var14;
+         } else if(var31 == 2) {
+            var32 = var28 + var21;
+            var33 = var29;
+            var34 = var6 + var7 >> 1;
+            var35 = var10 + var11 >> 1;
+            var36 = var14 + var15 >> 1;
+         } else if(var31 == 3) {
+            var32 = var28 + var20;
+            var33 = var29;
+            var34 = var7;
+            var35 = var11;
+            var36 = var15;
+         } else if(var31 == 4) {
+            var32 = var28 + var20;
+            var33 = var29 + var21;
+            var34 = var7 + var8 >> 1;
+            var35 = var11 + var12 >> 1;
+            var36 = var15 + var16 >> 1;
+         } else if(var31 == 5) {
+            var32 = var28 + var20;
+            var33 = var29 + var20;
+            var34 = var8;
+            var35 = var12;
+            var36 = var16;
+         } else if(var31 == 6) {
+            var32 = var28 + var21;
+            var33 = var29 + var20;
+            var34 = var8 + var9 >> 1;
+            var35 = var12 + var13 >> 1;
+            var36 = var16 + var17 >> 1;
+         } else if(var31 == 7) {
+            var32 = var28;
+            var33 = var29 + var20;
+            var34 = var9;
+            var35 = var13;
+            var36 = var17;
+         } else if(var31 == 8) {
+            var32 = var28;
+            var33 = var29 + var21;
+            var34 = var9 + var6 >> 1;
+            var35 = var13 + var10 >> 1;
+            var36 = var17 + var14 >> 1;
+         } else if(var31 == 9) {
+            var32 = var28 + var21;
+            var33 = var29 + var22;
+            var34 = var6 + var7 >> 1;
+            var35 = var10 + var11 >> 1;
+            var36 = var14 + var15 >> 1;
+         } else if(var31 == 10) {
+            var32 = var28 + var23;
+            var33 = var29 + var21;
+            var34 = var7 + var8 >> 1;
+            var35 = var11 + var12 >> 1;
+            var36 = var15 + var16 >> 1;
+         } else if(var31 == 11) {
+            var32 = var28 + var21;
+            var33 = var29 + var23;
+            var34 = var8 + var9 >> 1;
+            var35 = var12 + var13 >> 1;
+            var36 = var16 + var17 >> 1;
+         } else if(var31 == 12) {
+            var32 = var28 + var22;
+            var33 = var29 + var21;
+            var34 = var9 + var6 >> 1;
+            var35 = var13 + var10 >> 1;
+            var36 = var17 + var14 >> 1;
+         } else if(var31 == 13) {
+            var32 = var28 + var22;
+            var33 = var29 + var22;
+            var34 = var6;
+            var35 = var10;
+            var36 = var14;
+         } else if(var31 == 14) {
+            var32 = var28 + var23;
+            var33 = var29 + var22;
+            var34 = var7;
+            var35 = var11;
+            var36 = var15;
+         } else if(var31 == 15) {
+            var32 = var28 + var23;
+            var33 = var29 + var23;
+            var34 = var8;
+            var35 = var12;
+            var36 = var16;
+         } else {
+            var32 = var28 + var22;
+            var33 = var29 + var23;
+            var34 = var9;
+            var35 = var13;
+            var36 = var17;
+         }
+
+         this.field1262[var30] = var32;
+         this.field1261[var30] = var34;
+         this.field1266[var30] = var33;
+         var26[var30] = var35;
+         var27[var30] = var36;
+      }
+
+      int[] var38 = field1281[var1];
+      var31 = var38.length / 4;
+      this.field1277 = new int[var31];
+      this.field1260 = new int[var31];
+      this.field1268 = new int[var31];
+      this.field1263 = new int[var31];
+      this.field1264 = new int[var31];
+      this.field1265 = new int[var31];
+      if(var3 != -1) {
+         this.field1269 = new int[var31];
+      }
+
+      var32 = 0;
+
+      for(var33 = 0; var33 < var31; ++var33) {
+         var34 = var38[var32];
+         var35 = var38[var32 + 1];
+         var36 = var38[var32 + 2];
+         int var37 = var38[var32 + 3];
+         var32 += 4;
+         if(var35 < 4) {
+            var35 = var35 - var2 & 3;
+         }
+
+         if(var36 < 4) {
+            var36 = var36 - var2 & 3;
+         }
+
+         if(var37 < 4) {
+            var37 = var37 - var2 & 3;
+         }
+
+         this.field1277[var33] = var35;
+         this.field1260[var33] = var36;
+         this.field1268[var33] = var37;
+         if(var34 == 0) {
+            this.field1263[var33] = var26[var35];
+            this.field1264[var33] = var26[var36];
+            this.field1265[var33] = var26[var37];
+            if(this.field1269 != null) {
+               this.field1269[var33] = -1;
+            }
+         } else {
+            this.field1263[var33] = var27[var35];
+            this.field1264[var33] = var27[var36];
+            this.field1265[var33] = var27[var37];
+            if(this.field1269 != null) {
+               this.field1269[var33] = var3;
+            }
+         }
+      }
+
+      var33 = var6;
+      var34 = var7;
+      if(var7 < var6) {
+         var33 = var7;
+      }
+
+      if(var7 > var7) {
+         var34 = var7;
+      }
+
+      if(var8 < var33) {
+         var33 = var8;
+      }
+
+      if(var8 > var34) {
+         var34 = var8;
+      }
+
+      if(var9 < var33) {
+         var33 = var9;
+      }
+
+      if(var9 > var34) {
+         var34 = var9;
+      }
+
+      var33 /= 14;
+      var34 /= 14;
    }
 }
