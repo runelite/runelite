@@ -3793,7 +3793,7 @@ public class class164 {
             }
 
             var40.append("").append(var10);
-            class39.method772(var40.toString(), var41);
+            class39.reportException(var40.toString(), var41);
          }
       }
    }

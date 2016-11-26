@@ -3177,7 +3177,7 @@ public abstract class Actor extends Renderable {
                return true;
             }
 
-            class39.method772("" + Client.packetOpcode + "," + Client.field338 + "," + Client.field339 + "," + Client.field564, (Throwable)null);
+            class39.reportException("" + Client.packetOpcode + "," + Client.field338 + "," + Client.field339 + "," + Client.field564, (Throwable)null);
             GameEngine.method2223();
          } catch (IOException var34) {
             if(Client.field405 > 0) {
@@ -3194,7 +3194,7 @@ public abstract class Actor extends Renderable {
                var17 = var17 + Client.field370.payload[var2] + ",";
             }
 
-            class39.method772(var17, var35);
+            class39.reportException(var17, var35);
             GameEngine.method2223();
          }
 
