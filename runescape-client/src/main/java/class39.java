@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
 import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -45,7 +46,8 @@ public class class39 {
       signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
       garbageValue = "-1263810495"
    )
-   public static void method772(String var0, Throwable var1) {
+   @Export("reportException")
+   public static void reportException(String var0, Throwable var1) {
       try {
          String var2 = "";
          if(null != var1) {

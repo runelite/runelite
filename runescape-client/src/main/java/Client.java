@@ -1222,7 +1222,7 @@ public final class Client extends GameEngine {
          try {
             class166.method3255("oldschool", var15, var12, 16);
          } catch (Exception var14) {
-            class39.method772((String)null, var14);
+            class39.reportException((String)null, var14);
          }
 
          field281 = this;

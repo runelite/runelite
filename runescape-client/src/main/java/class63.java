@@ -48,7 +48,7 @@ public class class63 implements Runnable {
             }
          }
       } catch (Exception var8) {
-         class39.method772((String)null, var8);
+         class39.reportException((String)null, var8);
       } finally {
          this.field1082 = false;
       }
