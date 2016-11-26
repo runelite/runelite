@@ -1,4 +1,4 @@
-package net.runelite.deob.runeloader.inject;
+package net.runelite.runeloader.inject;
 
 public class GetterInjectInstruction {
    private final String className;

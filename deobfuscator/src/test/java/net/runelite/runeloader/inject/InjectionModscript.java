@@ -1,4 +1,4 @@
-package net.runelite.deob.runeloader.inject;
+package net.runelite.runeloader.inject;
 
 import com.google.common.io.Files;
 import com.google.gson.GsonBuilder;
