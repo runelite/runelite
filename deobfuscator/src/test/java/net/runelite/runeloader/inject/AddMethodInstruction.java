@@ -1,4 +1,4 @@
-package net.runelite.deob.runeloader.inject;
+package net.runelite.runeloader.inject;
 
 import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.ClassNode;

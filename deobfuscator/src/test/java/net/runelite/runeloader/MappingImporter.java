@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob.runeloader;
+package net.runelite.runeloader;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,9 +39,9 @@ import net.runelite.asm.attributes.Annotations;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.annotation.Element;
 import net.runelite.asm.signature.Type;
-import net.runelite.deob.runeloader.inject.AddInterfaceInstruction;
-import net.runelite.deob.runeloader.inject.GetterInjectInstruction;
-import net.runelite.deob.runeloader.inject.InjectionModscript;
+import net.runelite.runeloader.inject.AddInterfaceInstruction;
+import net.runelite.runeloader.inject.GetterInjectInstruction;
+import net.runelite.runeloader.inject.InjectionModscript;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
 import org.junit.Assert;
