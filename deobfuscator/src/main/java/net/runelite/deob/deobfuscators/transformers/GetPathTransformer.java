@@ -27,7 +27,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.deob.clientver.transformers;
+package net.runelite.deob.deobfuscators.transformers;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
