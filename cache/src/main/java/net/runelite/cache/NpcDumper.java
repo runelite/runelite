@@ -74,7 +74,7 @@ public class NpcDumper
 		File out = new File(args[1]);
 		File java = new File(args[2]);
 
-		ItemDumper dumper = new ItemDumper(cache, out, java);
+		NpcDumper dumper = new NpcDumper(cache, out, java);
 		dumper.load();
 		dumper.dump();
 		dumper.java();
