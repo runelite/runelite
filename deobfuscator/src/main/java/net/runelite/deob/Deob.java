@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.execution.Execution;
-import net.runelite.deob.clientver.transformers.GetPathTransformer;
+import net.runelite.deob.deobfuscators.transformers.GetPathTransformer;
 import net.runelite.deob.deobfuscators.CastNull;
 import net.runelite.deob.deobfuscators.ConstantParameter;
 import net.runelite.deob.deobfuscators.ExprArgOrder;
