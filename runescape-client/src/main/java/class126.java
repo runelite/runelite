@@ -1,9 +1,13 @@
 import java.util.Iterator;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("di")
+@Implements("CombatInfoList")
 public class class126 implements Iterable {
    @ObfuscatedName("n")
+   @Export("node")
    Node field1875 = new Node();
    @ObfuscatedName("d")
    Node field1876;

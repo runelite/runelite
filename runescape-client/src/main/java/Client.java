@@ -210,6 +210,7 @@ public final class Client extends GameEngine {
    )
    static int field327;
    @ObfuscatedName("mn")
+   @Export("clanChatOwner")
    static String field328;
    @ObfuscatedName("cc")
    static int[] field329;

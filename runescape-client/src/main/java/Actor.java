@@ -86,6 +86,7 @@ public abstract class Actor extends Renderable {
    @Export("inSequence")
    boolean inSequence = false;
    @ObfuscatedName("bt")
+   @Export("combatInfoList")
    class126 field611 = new class126();
    @ObfuscatedName("aa")
    @ObfuscatedGetter(

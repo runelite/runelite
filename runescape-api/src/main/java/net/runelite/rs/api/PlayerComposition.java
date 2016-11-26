@@ -43,6 +43,6 @@ public interface PlayerComposition
 	@Import("bodyPartColours")
 	int[] getBodyPartColours();
 
-	@Import("bodyParts")
-	int[] getBodyParts();
+	@Import("equipmentIds")
+	int[] getEquipmentIds();
 }

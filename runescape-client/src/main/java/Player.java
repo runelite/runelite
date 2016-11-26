@@ -24,6 +24,7 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = 1381212041
    )
+   @Export("overheadIcon")
    int field246 = -1;
    @ObfuscatedName("t")
    @ObfuscatedGetter(
@@ -85,6 +86,7 @@ public final class Player extends Actor {
    @ObfuscatedGetter(
       intValue = -1111011517
    )
+   @Export("skullIcon")
    int field259 = -1;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
