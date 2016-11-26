@@ -63,7 +63,7 @@ public class ClientErrorTransformerTest
 	@After
 	public void after() throws IOException
 	{
-		File out = new File("d:/rs/07/temp/out.jar");//folder.newFile();
+		File out = folder.newFile();
 
 		JarUtil.saveJar(group, out);
 
