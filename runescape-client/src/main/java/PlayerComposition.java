@@ -33,7 +33,7 @@ public class PlayerComposition {
    @ObfuscatedName("q")
    static final int[] field2042 = new int[]{8, 11, 4, 6, 9, 7, 10};
    @ObfuscatedName("n")
-   @Export("bodyParts")
+   @Export("equipmentIds")
    int[] bodyParts;
    @ObfuscatedName("db")
    static int[] field2044;

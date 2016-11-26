@@ -436,7 +436,7 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -500778255
    )
-   @Export("itemId")
+   @Export("scrollX")
    public int itemId = 0;
    @ObfuscatedName("dr")
    public Object[] field2166;

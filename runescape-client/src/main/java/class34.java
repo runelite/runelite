@@ -1,8 +1,10 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ag")
+@Implements("CombatInfoListHolder")
 public class class34 extends Node {
    @ObfuscatedName("q")
    public static boolean field742;
@@ -10,8 +12,10 @@ public class class34 extends Node {
    @Export("bufferProvider")
    public static BufferProvider bufferProvider;
    @ObfuscatedName("m")
+   @Export("combatInfo2")
    class193 field744;
    @ObfuscatedName("h")
+   @Export("combatInfo1")
    class126 field745 = new class126();
    @ObfuscatedName("bd")
    static class184 field746;

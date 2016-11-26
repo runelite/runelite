@@ -1,9 +1,11 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ay")
+@Implements("CombatInfo1")
 public class class28 extends Node {
    @ObfuscatedName("ea")
    static SpritePixels[] field657;
@@ -26,6 +28,7 @@ public class class28 extends Node {
    @ObfuscatedGetter(
       intValue = -509191837
    )
+   @Export("healthRatio")
    int field662;
    @ObfuscatedName("dy")
    @Export("xteaKeys")
