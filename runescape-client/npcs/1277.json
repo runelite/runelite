@@ -1,49 +1,45 @@
 {
   "id": 1277,
-  "anInt2156": 32,
-  "name": "null",
-  "models": [
-    1282,
-    8001,
-    29812,
-    24931,
-    27392,
-    25439,
-    40,
-    10242,
+  "recolorToFind": [
     0,
-    22410,
-    916,
-    22464,
-    588
+    916
   ],
-  "stanceAnimation": -1,
+  "anInt2156": 32,
+  "name": "Loar Shade",
+  "recolorToReplace": [
+    22410,
+    22464
+  ],
+  "models": [
+    4140
+  ],
+  "stanceAnimation": 1282,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1281,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 25701,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 40,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
-  "hasRenderPriority": false,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

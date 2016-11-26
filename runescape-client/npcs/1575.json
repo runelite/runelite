@@ -1,19 +1,51 @@
 {
   "id": 1575,
+  "recolorToFind": [
+    8741,
+    4626,
+    25238,
+    7756,
+    7845
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Apprentice",
+  "recolorToReplace": [
+    -26722,
+    -26722,
+    -26722,
+    8152,
+    6965
+  ],
+  "models": [
+    202,
+    215,
+    251,
+    292,
+    5592,
+    170,
+    4113,
+    534,
+    3470,
+    265,
+    185
+  ],
+  "models_2": [
+    53,
+    44,
+    83
+  ],
+  "stanceAnimation": 813,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 1206,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -21,7 +53,7 @@
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
-  "rotate90LeftAnimation": -1,
+  "rotate90LeftAnimation": 1208,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,
@@ -30,5 +62,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

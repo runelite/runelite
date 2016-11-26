@@ -1,11 +1,25 @@
 {
   "id": 3146,
+  "recolorToFind": [
+    37
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Gnome baller",
+  "recolorToReplace": [
+    825
+  ],
+  "models": [
+    2914,
+    2905,
+    2924
+  ],
+  "models_2": [
+    21
+  ],
+  "stanceAnimation": 208,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 208,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -20,7 +34,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

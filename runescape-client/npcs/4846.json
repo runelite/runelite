@@ -17,10 +17,10 @@
   "models": [
     13835
   ],
-  "stanceAnimation": 29796,
+  "stanceAnimation": 3444,
   "anInt2165": -1,
-  "tileSpacesOccupied": 782,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 3443,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 300,
@@ -39,7 +39,7 @@
   "rotate90LeftAnimation": -1,
   "resizeY": 300,
   "hasRenderPriority": false,
-  "ambient": 0,
+  "ambient": 25,
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,

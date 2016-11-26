@@ -1,28 +1,50 @@
 {
   "id": 2346,
-  "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "recolorToFind": [
+    61,
+    16,
+    123,
+    -1122,
+    5904
+  ],
+  "anInt2156": 0,
+  "name": "Dromund\u0027s cat",
+  "recolorToReplace": [
+    5400,
+    10324,
+    0,
+    478,
+    10266
+  ],
+  "models": [
+    3010,
+    3006,
+    7024
+  ],
+  "models_2": [
+    6436
+  ],
+  "stanceAnimation": 2134,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 65,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 65,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

@@ -1,10 +1,19 @@
 {
   "id": 5983,
+  "recolorToFind": [
+    -6242
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "\u003ccol\u003dff9040\u003ePet rock\u003c/col\u003e",
+  "recolorToReplace": [
+    41
+  ],
+  "models": [
+    4271
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -13,7 +22,7 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Take",
     null,
     null,
     null,

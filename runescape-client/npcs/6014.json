@@ -1,7 +1,7 @@
 {
   "id": 6014,
   "anInt2156": 0,
-  "name": "null",
+  "name": "Terrorbird display",
   "models": [
     26857,
     25746,
@@ -11,12 +11,12 @@
   ],
   "stanceAnimation": 6443,
   "anInt2165": -1,
-  "tileSpacesOccupied": 770,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 30976,
-  "contrast": 114,
+  "resizeX": 128,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
@@ -29,13 +29,13 @@
   "renderOnMinimap": false,
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 26994,
+  "resizeY": 128,
   "hasRenderPriority": false,
-  "ambient": 105,
+  "ambient": 0,
   "headIcon": -1,
-  "anInt2184": 108,
+  "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

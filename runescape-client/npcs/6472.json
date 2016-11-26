@@ -1,10 +1,13 @@
 {
   "id": 6472,
-  "anInt2156": 32,
-  "name": "null",
+  "anInt2156": 0,
+  "name": "Terror dog statue",
+  "models": [
+    21382
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 871,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -20,7 +23,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

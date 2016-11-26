@@ -1,19 +1,43 @@
 {
   "id": 1145,
+  "recolorToFind": [
+    25238,
+    -22464,
+    8078
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Jerico",
+  "recolorToReplace": [
+    11169,
+    4550,
+    -22425
+  ],
+  "models": [
+    214,
+    250,
+    315,
+    173,
+    176,
+    267,
+    185,
+    280
+  ],
+  "models_2": [
+    52,
+    82
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -21,7 +45,7 @@
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
-  "rotate90LeftAnimation": -1,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,
@@ -30,5 +54,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

@@ -5,10 +5,10 @@
   "models": [
     21547
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 5668,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5666,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 75,
@@ -17,10 +17,10 @@
   "anInt2174": -1,
   "options": [
     null,
+    "Attack",
     null,
     null,
-    null,
-    "\r\u0016$\u001fAttack"
+    null
   ],
   "renderOnMinimap": true,
   "combatLevel": 2,

@@ -1,19 +1,28 @@
 {
   "id": 4859,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": 37406,
+  "name": "Ogre boat",
+  "models": [
+    13729,
+    13728,
+    13727
+  ],
+  "models_2": [
+    13884,
+    13888
+  ],
+  "stanceAnimation": 3473,
   "anInt2165": -1,
-  "tileSpacesOccupied": 1293,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 3474,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 29284,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Board",
     null,
     null,
     null,
@@ -30,5 +39,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

@@ -1,7 +1,7 @@
 {
   "id": 127,
-  "anInt2156": 26740,
-  "name": "null",
+  "anInt2156": 32,
+  "name": "Right head",
   "models": [
     3010,
     3006
@@ -13,7 +13,7 @@
   ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 258,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -24,7 +24,7 @@
   "options": [
     null,
     null,
-    "head",
+    null,
     null,
     null
   ],

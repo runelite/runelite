@@ -1,11 +1,20 @@
 {
   "id": 6622,
-  "anInt2156": 32,
+  "recolorToFind": [
+    10392
+  ],
+  "anInt2156": 0,
   "name": "null",
+  "recolorToReplace": [
+    37
+  ],
+  "models": [
+    24149
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 607,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 6120,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -19,8 +28,8 @@
     null,
     null
   ],
-  "renderOnMinimap": true,
-  "combatLevel": -1,
+  "renderOnMinimap": false,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

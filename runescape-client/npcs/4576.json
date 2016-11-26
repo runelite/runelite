@@ -1,29 +1,50 @@
 {
   "id": 4576,
+  "recolorToFind": [
+    127,
+    16,
+    61,
+    4818,
+    -1122
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Bones",
+  "recolorToReplace": [
+    10291,
+    -32715,
+    -32715,
+    1478,
+    31671
+  ],
+  "models": [
+    9386,
+    9388
+  ],
+  "models_2": [
+    6438
+  ],
+  "stanceAnimation": 2664,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2662,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 37,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
-  "hasRenderPriority": false,
+  "resizeY": 37,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

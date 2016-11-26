@@ -1,0 +1,65 @@
+{
+  "id": 6773,
+  "recolorToFind": [
+    25238,
+    8741,
+    926,
+    7700,
+    11200,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Doomsayer",
+  "recolorToReplace": [
+    78,
+    -29391,
+    -22260,
+    -27880,
+    94,
+    6067
+  ],
+  "models": [
+    208,
+    250,
+    14461,
+    323,
+    10301,
+    176,
+    534,
+    14460,
+    8919
+  ],
+  "models_2": [
+    48,
+    82
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1146,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk to",
+    null,
+    "Toggle warnings",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

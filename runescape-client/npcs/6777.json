@@ -1,0 +1,44 @@
+{
+  "id": 6777,
+  "anInt2156": 32,
+  "name": "\u003ccol\u003dff9040\u003eMaze Guardian\u003c/col\u003e",
+  "models": [
+    10633,
+    10640,
+    10637,
+    10638,
+    10632
+  ],
+  "models_2": [
+    10696
+  ],
+  "stanceAnimation": 3033,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3033,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 60,
+  "contrast": 10,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Observe",
+    null,
+    "Reset",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 62,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

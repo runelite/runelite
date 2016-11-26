@@ -5,9 +5,9 @@
   "models": [
     21143
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 5530,
   "anInt2165": -1,
-  "tileSpacesOccupied": 269,
+  "tileSpacesOccupied": 1,
   "walkAnimation": 5531,
   "rotate90RightAnimation": -1,
   "aBool2170": true,

@@ -1,7 +1,17 @@
 {
   "id": 5312,
+  "recolorToFind": [
+    4550,
+    926,
+    11200
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Mourner",
+  "recolorToReplace": [
+    7632,
+    5904,
+    8088
+  ],
   "models": [
     212,
     295,
@@ -15,24 +25,24 @@
   ],
   "stanceAnimation": 813,
   "anInt2165": -1,
-  "tileSpacesOccupied": 296,
-  "walkAnimation": 50717,
-  "rotate90RightAnimation": 40471,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
   "aBool2170": true,
   "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": 53251,
+  "rotate180Animation": 1206,
   "anInt2174": -1,
   "options": [
     null,
-    "˜\u0002Mourner",
+    null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
-  "rotate90LeftAnimation": 4139,
+  "rotate90LeftAnimation": 1208,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,

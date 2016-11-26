@@ -1,0 +1,52 @@
+{
+  "id": 7017,
+  "recolorToFind": [
+    61,
+    57
+  ],
+  "anInt2156": 32,
+  "name": "Kourend head guard",
+  "recolorToReplace": [
+    -29403,
+    7054
+  ],
+  "models": [
+    29696,
+    29774,
+    29713,
+    29698,
+    29708,
+    29783,
+    490,
+    486
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 84,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

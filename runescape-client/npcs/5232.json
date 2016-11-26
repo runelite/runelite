@@ -1,19 +1,52 @@
 {
   "id": 5232,
+  "recolorToFind": [
+    8741,
+    25238,
+    -22464,
+    6798,
+    7073,
+    -22419
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Thormac",
+  "recolorToReplace": [
+    -26722,
+    -26722,
+    4550,
+    -22436,
+    -21622,
+    -15406
+  ],
+  "models": [
+    202,
+    214,
+    250,
+    292,
+    170,
+    176,
+    256,
+    283,
+    553,
+    567
+  ],
+  "models_2": [
+    44,
+    52,
+    82
+  ],
+  "stanceAnimation": 813,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -21,7 +54,7 @@
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
-  "rotate90LeftAnimation": -1,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,
@@ -30,5 +63,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

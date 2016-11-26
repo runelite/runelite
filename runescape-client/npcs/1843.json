@@ -1,19 +1,28 @@
 {
   "id": 1843,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Centaur",
+  "models": [
+    16196,
+    16202,
+    16199,
+    16200
+  ],
+  "models_2": [
+    16213
+  ],
+  "stanceAnimation": 4311,
   "anInt2165": -1,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 4310,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -29,6 +38,6 @@
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
-  "anInt2189": 55070,
-  "aBool2190": true
+  "anInt2189": -1,
+  "aBool2190": false
 }

@@ -1,16 +1,45 @@
 {
   "id": 1577,
+  "recolorToFind": [
+    123,
+    24,
+    61,
+    41,
+    57,
+    926
+  ],
   "anInt2156": 32,
-  "name": "\n\u0002\n\u0002\n\u0002\r\n\u0001(\u0006",
-  "stanceAnimation": -1,
+  "name": "Adventurer",
+  "recolorToReplace": [
+    -26711,
+    -29403,
+    -29403,
+    -28266,
+    -29403,
+    -17506
+  ],
+  "models": [
+    218,
+    306,
+    3189,
+    164,
+    10218,
+    546,
+    268,
+    4954
+  ],
+  "models_2": [
+    56
+  ],
+  "stanceAnimation": 2561,
   "anInt2165": -1,
-  "tileSpacesOccupied": 273,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2562,
+  "rotate90RightAnimation": 2562,
   "aBool2170": true,
   "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 2562,
   "anInt2174": -1,
   "options": [
     "Talk-to",
@@ -21,7 +50,7 @@
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
-  "rotate90LeftAnimation": -1,
+  "rotate90LeftAnimation": 2562,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,

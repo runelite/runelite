@@ -1,7 +1,7 @@
 {
   "id": 3746,
   "anInt2156": 32,
-  "name": "null",
+  "name": "Ranis Drakan",
   "models": [
     18005,
     18002
@@ -11,18 +11,18 @@
   ],
   "stanceAnimation": 4690,
   "anInt2165": -1,
-  "tileSpacesOccupied": 770,
+  "tileSpacesOccupied": 3,
   "walkAnimation": 4684,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 28265,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "Drakan",
+    null,
     null,
     null
   ],

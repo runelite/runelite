@@ -1,0 +1,65 @@
+{
+  "id": 6775,
+  "recolorToFind": [
+    6798,
+    4550,
+    8741,
+    25238,
+    908,
+    5652
+  ],
+  "anInt2156": 32,
+  "name": "Gallow",
+  "recolorToReplace": [
+    39,
+    4558,
+    13859,
+    -31323,
+    916,
+    5276
+  ],
+  "models": [
+    11352,
+    391,
+    418,
+    23957,
+    346,
+    356,
+    433,
+    7366
+  ],
+  "models_2": [
+    11406,
+    114,
+    137
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 120,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

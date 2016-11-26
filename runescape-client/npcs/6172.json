@@ -11,7 +11,7 @@
   "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": 820,
-  "anInt2174": 3276,
+  "anInt2174": 4153,
   "options": [
     null,
     null,
@@ -20,7 +20,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": 1,
+  "combatLevel": 665,
   "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,
@@ -29,7 +29,7 @@
   "anInt2184": 30,
   "anIntArray2185": [
     -1,
-    3888
+    6575
   ],
   "anInt2187": -40212193,
   "isClickable": true,

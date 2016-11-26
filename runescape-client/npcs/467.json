@@ -1,11 +1,31 @@
 {
   "id": 467,
+  "recolorToFind": [
+    103,
+    82,
+    61,
+    41,
+    0
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Skeletal Wyvern",
+  "recolorToReplace": [
+    -25506,
+    -24362,
+    -24374,
+    -24391,
+    -27475
+  ],
+  "models": [
+    10351,
+    10355,
+    10358,
+    21832
+  ],
+  "stanceAnimation": 2984,
   "anInt2165": -1,
-  "tileSpacesOccupied": 863,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 2982,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -14,13 +34,13 @@
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 140,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

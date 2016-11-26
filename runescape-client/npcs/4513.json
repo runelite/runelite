@@ -1,19 +1,48 @@
 {
   "id": 4513,
+  "recolorToFind": [
+    8741,
+    25238,
+    7952,
+    4550
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "H.A.M. Member",
+  "recolorToReplace": [
+    -4189,
+    -4189,
+    -4189,
+    4564
+  ],
+  "models": [
+    163,
+    176,
+    247,
+    185,
+    265,
+    292,
+    5434,
+    5430,
+    5433,
+    317,
+    15475
+  ],
+  "models_2": [
+    5428,
+    79
+  ],
+  "stanceAnimation": 4193,
   "anInt2165": -1,
-  "tileSpacesOccupied": 269,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4194,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -29,6 +58,6 @@
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
-  "anInt2189": 25118,
-  "aBool2190": true
+  "anInt2189": -1,
+  "aBool2190": false
 }

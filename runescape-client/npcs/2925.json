@@ -1,39 +1,19 @@
 {
   "id": 2925,
+  "recolorToFind": [
+    7062
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Copper ore",
+  "recolorToReplace": [
+    3912
+  ],
   "models": [
-    38415,
-    18434,
-    17263,
-    28784,
-    25970,
-    8303,
-    29285,
-    1,
-    291,
-    28416,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
+    9071
   ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 808,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,

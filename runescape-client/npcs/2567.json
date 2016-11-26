@@ -1,11 +1,33 @@
 {
   "id": 2567,
+  "recolorToFind": [
+    22424,
+    22426,
+    28434,
+    10347,
+    22418
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Ermin",
+  "recolorToReplace": [
+    10892,
+    6594,
+    1820,
+    21704,
+    1820
+  ],
+  "models": [
+    17008,
+    2909,
+    2915
+  ],
+  "models_2": [
+    16967
+  ],
+  "stanceAnimation": 195,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,14 +35,14 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

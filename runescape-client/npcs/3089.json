@@ -26,9 +26,9 @@
   "models_2": [
     55
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 1728,
   "anInt2165": -1,
-  "tileSpacesOccupied": 269,
+  "tileSpacesOccupied": 1,
   "walkAnimation": 1205,
   "rotate90RightAnimation": 1207,
   "aBool2170": true,

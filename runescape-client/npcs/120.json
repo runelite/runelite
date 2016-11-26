@@ -1,14 +1,21 @@
 {
   "id": 120,
-  "anInt2156": 8296,
-  "name": "null",
+  "anInt2156": 32,
+  "name": "Crawling hand",
+  "models": [
+    3010,
+    3006
+  ],
+  "models_2": [
+    12735
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 258,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 28260,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,

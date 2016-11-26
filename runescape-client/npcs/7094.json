@@ -1,0 +1,63 @@
+{
+  "id": 7094,
+  "recolorToFind": [
+    4550,
+    12,
+    10659,
+    61,
+    2578,
+    910
+  ],
+  "anInt2156": 32,
+  "name": "Miner",
+  "recolorToReplace": [
+    4541,
+    4541,
+    691,
+    691,
+    926,
+    916
+  ],
+  "models": [
+    7035,
+    6019,
+    7060,
+    7038,
+    7048,
+    7068,
+    2992
+  ],
+  "models_2": [
+    6994,
+    6026
+  ],
+  "stanceAnimation": 900,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 104,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

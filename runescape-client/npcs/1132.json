@@ -1,11 +1,34 @@
 {
   "id": 1132,
+  "recolorToFind": [
+    25238,
+    22426,
+    11162,
+    4550,
+    4292
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Child",
+  "recolorToReplace": [
+    3980,
+    21534,
+    8596,
+    4300,
+    4661
+  ],
+  "models": [
+    2897,
+    2910,
+    2918
+  ],
+  "models_2": [
+    139,
+    11430
+  ],
+  "stanceAnimation": 195,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,7 +36,7 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,

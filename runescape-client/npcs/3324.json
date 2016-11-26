@@ -1,11 +1,20 @@
 {
   "id": 3324,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Mystery figure",
+  "models": [
+    10338,
+    10340,
+    10341,
+    10339
+  ],
+  "models_2": [
+    10238
+  ],
+  "stanceAnimation": 2943,
   "anInt2165": -1,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,

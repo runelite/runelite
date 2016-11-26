@@ -1,14 +1,39 @@
 {
   "id": 1562,
+  "recolorToFind": [
+    4550,
+    8741,
+    22426,
+    22424,
+    11162,
+    6798
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Smiddi Ryak",
+  "recolorToReplace": [
+    10450,
+    291,
+    414,
+    4645,
+    16536,
+    4781
+  ],
+  "models": [
+    2895,
+    2909,
+    14178,
+    14177
+  ],
+  "models_2": [
+    138
+  ],
+  "stanceAnimation": 195,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 110,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,

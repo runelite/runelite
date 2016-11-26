@@ -3,7 +3,7 @@
   "recolorToFind": [
     -32682
   ],
-  "anInt2156": 3590,
+  "anInt2156": 32,
   "name": "Ghost (?)",
   "recolorToReplace": [
     27088
@@ -14,10 +14,10 @@
   "models_2": [
     5204
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 1639,
   "anInt2165": -1,
-  "tileSpacesOccupied": 269,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1640,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,

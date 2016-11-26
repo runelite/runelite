@@ -1,14 +1,41 @@
 {
   "id": 2459,
+  "recolorToFind": [
+    4550,
+    5784,
+    664,
+    61,
+    49,
+    803
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Gamfred",
+  "recolorToReplace": [
+    4539,
+    5035,
+    7704,
+    6705,
+    22,
+    3608
+  ],
+  "models": [
+    10321,
+    10325,
+    2977,
+    6021,
+    2982,
+    7067
+  ],
+  "models_2": [
+    10235
+  ],
+  "stanceAnimation": 101,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 150,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
@@ -20,10 +47,10 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
-  "hasRenderPriority": false,
+  "resizeY": 120,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

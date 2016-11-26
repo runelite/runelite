@@ -1,16 +1,41 @@
 {
   "id": 5641,
+  "recolorToFind": [
+    4550,
+    7236,
+    25238,
+    8741,
+    4626
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Angry juvinate",
+  "recolorToReplace": [
+    21580,
+    21580,
+    24745,
+    24745,
+    21580
+  ],
+  "models": [
+    4089,
+    310,
+    167,
+    176,
+    275,
+    181
+  ],
+  "models_2": [
+    6216
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 190,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
     null,
@@ -20,9 +45,9 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
-  "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "combatLevel": 100,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 158,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

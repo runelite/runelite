@@ -1,10 +1,44 @@
 {
   "id": 4327,
+  "recolorToFind": [
+    8741,
+    25238,
+    7952,
+    61,
+    4550,
+    7073
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "HAM member",
+  "recolorToReplace": [
+    -6237,
+    -6237,
+    -6237,
+    5784,
+    6730,
+    8082
+  ],
+  "models": [
+    169,
+    176,
+    15476,
+    250,
+    181,
+    265,
+    296,
+    5434,
+    5430,
+    5433,
+    317,
+    5437
+  ],
+  "models_2": [
+    5428,
+    82
+  ],
+  "stanceAnimation": 4208,
   "anInt2165": -1,
-  "tileSpacesOccupied": 269,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -20,7 +54,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 22,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,
@@ -29,6 +63,6 @@
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
-  "anInt2189": 28767,
+  "anInt2189": -1,
   "aBool2190": false
 }

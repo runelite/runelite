@@ -1,15 +1,22 @@
 {
   "id": 128,
   "anInt2156": 32,
-  "name": "null",
+  "name": "Kalphite Queen",
+  "models": [
+    3010,
+    3006
+  ],
+  "models_2": [
+    24572
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 258,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27760,
-  "contrast": 101,
+  "resizeX": 128,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [

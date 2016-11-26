@@ -1,28 +1,43 @@
 {
   "id": 409,
+  "recolorToFind": [
+    21656,
+    21652,
+    10421
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Cave crawler",
+  "recolorToReplace": [
+    26904,
+    21652,
+    12469
+  ],
+  "models": [
+    5066,
+    5067,
+    5069
+  ],
+  "stanceAnimation": 226,
   "anInt2165": -1,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 225,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 122,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 23,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 122,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

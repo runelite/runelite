@@ -1,10 +1,35 @@
 {
   "id": 574,
+  "recolorToFind": [
+    3986,
+    3862,
+    3738,
+    3614,
+    3619,
+    1934
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Zombie pirate",
+  "recolorToReplace": [
+    8078,
+    7954,
+    7830,
+    7706,
+    7582,
+    6024
+  ],
+  "models": [
+    21431,
+    21476,
+    21419,
+    21443,
+    21463,
+    21455,
+    21421
+  ],
   "stanceAnimation": 5650,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
+  "tileSpacesOccupied": 1,
   "walkAnimation": 5652,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -20,7 +45,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 57,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

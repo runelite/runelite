@@ -1,10 +1,29 @@
 {
   "id": 3574,
-  "anInt2156": 32,
-  "name": "null",
+  "recolorToFind": [
+    13716,
+    13840,
+    13964,
+    14216,
+    15238,
+    0
+  ],
+  "anInt2156": 0,
+  "name": "Furnace grate",
+  "recolorToReplace": [
+    7618,
+    7609,
+    6707,
+    6703,
+    7595,
+    7715
+  ],
+  "models": [
+    10996
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 615,
+  "tileSpacesOccupied": 2,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -14,12 +33,12 @@
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Clear",
     null,
     null,
     null
   ],
-  "renderOnMinimap": true,
+  "renderOnMinimap": false,
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,

@@ -32,9 +32,9 @@
     113,
     101
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 2255,
   "anInt2165": -1,
-  "tileSpacesOccupied": 525,
+  "tileSpacesOccupied": 2,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,

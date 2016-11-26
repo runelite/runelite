@@ -1,0 +1,59 @@
+{
+  "id": 6986,
+  "recolorToFind": [
+    6798,
+    -10304,
+    8741,
+    -11139,
+    25238
+  ],
+  "anInt2156": 32,
+  "name": "Leenz",
+  "recolorToReplace": [
+    10502,
+    8,
+    10361,
+    4769,
+    0
+  ],
+  "models": [
+    16453,
+    467,
+    351,
+    419,
+    29814,
+    353
+  ],
+  "models_2": [
+    16441
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

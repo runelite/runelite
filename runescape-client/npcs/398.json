@@ -1,11 +1,17 @@
 {
   "id": 398,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Banker",
+  "models": [
+    2860
+  ],
+  "models_2": [
+    14
+  ],
+  "stanceAnimation": 112,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 112,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,10 +19,10 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
+    "Talk-to",
     null,
-    null,
-    null,
-    null,
+    "Bank",
+    "Collect",
     null
   ],
   "renderOnMinimap": true,

@@ -1,14 +1,29 @@
 {
   "id": 3202,
+  "recolorToFind": [
+    2859,
+    3408,
+    2739,
+    2624
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Crab",
+  "recolorToReplace": [
+    4762,
+    6695,
+    5914,
+    6938
+  ],
+  "models": [
+    13799
+  ],
+  "stanceAnimation": 3424,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3426,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 50,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
@@ -19,10 +34,10 @@
     null,
     null
   ],
-  "renderOnMinimap": true,
-  "combatLevel": -1,
+  "renderOnMinimap": false,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 50,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

@@ -1,39 +1,19 @@
 {
   "id": 2928,
+  "recolorToFind": [
+    7062
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Adamantite ore",
+  "recolorToReplace": [
+    21662
+  ],
   "models": [
-    38484,
-    40450,
-    16740,
-    24941,
-    24942,
-    29801,
-    29797,
-    8303,
-    29285,
-    1,
-    291,
-    28416,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0
+    9071
   ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 808,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,

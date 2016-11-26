@@ -1,7 +1,7 @@
 {
   "id": 6015,
   "anInt2156": 0,
-  "name": "null",
+  "name": "Dragon display",
   "models": [
     17407,
     17425,
@@ -11,18 +11,18 @@
   ],
   "stanceAnimation": 6447,
   "anInt2165": -1,
-  "tileSpacesOccupied": 1282,
+  "tileSpacesOccupied": 5,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 26479,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "display",
+    null,
     null,
     null
   ],

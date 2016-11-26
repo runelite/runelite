@@ -1,19 +1,40 @@
 {
   "id": 4564,
+  "recolorToFind": [
+    25238,
+    8741,
+    906
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Dead Monk",
+  "recolorToReplace": [
+    4769,
+    4769,
+    4888
+  ],
+  "models": [
+    230,
+    246,
+    292,
+    9607,
+    170,
+    10218,
+    260,
+    8919,
+    326
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 542,
+  "tileSpacesOccupied": 2,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
-  "contrast": 97,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Search",
     null,
     null,
     null,
@@ -23,7 +44,7 @@
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
-  "hasRenderPriority": true,
+  "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

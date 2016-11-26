@@ -1,11 +1,30 @@
 {
   "id": 4733,
+  "recolorToFind": [
+    803,
+    4550
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Thurgo",
+  "recolorToReplace": [
+    5652,
+    5314
+  ],
+  "models": [
+    7034,
+    7049,
+    7041,
+    7057,
+    2985,
+    19100
+  ],
+  "models_2": [
+    6993
+  ],
+  "stanceAnimation": 101,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,7 +32,7 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,

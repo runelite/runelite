@@ -1,11 +1,19 @@
 {
   "id": 5966,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Gnome troop",
+  "models": [
+    2914,
+    2903,
+    2919
+  ],
+  "models_2": [
+    22
+  ],
+  "stanceAnimation": 195,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -14,13 +22,13 @@
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 3,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

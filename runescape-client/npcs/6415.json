@@ -1,19 +1,44 @@
 {
   "id": 6415,
+  "recolorToFind": [
+    4550,
+    5572,
+    4886
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Sharimika",
+  "recolorToReplace": [
+    4645,
+    -3523,
+    3173
+  ],
+  "models": [
+    210,
+    8921,
+    249,
+    8928,
+    8916,
+    8918,
+    8925,
+    8919
+  ],
+  "models_2": [
+    49,
+    81,
+    8909
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -30,5 +55,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

@@ -1,29 +1,31 @@
 {
   "id": 4228,
-  "anInt2156": 32,
-  "name": "null",
-  "models": [
-    6561,
-    3609,
-    41057,
-    110,
-    25088,
-    28255,
-    0,
-    10245,
+  "recolorToFind": [
     2221,
-    47,
     2337,
-    39,
-    2328
+    2328,
+    272,
+    3594
   ],
-  "stanceAnimation": -1,
+  "anInt2156": 32,
+  "name": "Sinclair Guard dog",
+  "recolorToReplace": [
+    47,
+    39,
+    30,
+    20,
+    16
+  ],
+  "models": [
+    26255
+  ],
+  "stanceAnimation": 6561,
   "anInt2165": -1,
-  "tileSpacesOccupied": 268,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6560,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 110,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
@@ -35,9 +37,9 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 110,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

@@ -1,28 +1,44 @@
 {
   "id": 928,
+  "recolorToFind": [
+    61,
+    21570
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Kraka",
+  "recolorToReplace": [
+    6435,
+    4510
+  ],
+  "models": [
+    3753,
+    3759,
+    3756,
+    3773,
+    3766,
+    3763
+  ],
   "stanceAnimation": 926,
   "anInt2165": -1,
-  "tileSpacesOccupied": 609,
+  "tileSpacesOccupied": 2,
   "walkAnimation": 1139,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 178,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 91,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 162,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

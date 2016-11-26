@@ -1,11 +1,20 @@
 {
   "id": 5733,
+  "recolorToFind": [
+    -26507
+  ],
   "anInt2156": 32,
   "name": "null",
-  "stanceAnimation": -1,
+  "recolorToReplace": [
+    947
+  ],
+  "models": [
+    19982
+  ],
+  "stanceAnimation": 171,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 168,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -19,8 +28,8 @@
     null,
     null
   ],
-  "renderOnMinimap": true,
-  "combatLevel": -1,
+  "renderOnMinimap": false,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,
@@ -28,7 +37,7 @@
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
-  "isClickable": true,
+  "isClickable": false,
   "anInt2189": -1,
   "aBool2190": false
 }

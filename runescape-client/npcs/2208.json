@@ -5,10 +5,10 @@
   "models": [
     27697
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 4311,
   "anInt2165": -1,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 4310,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -27,11 +27,11 @@
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,
-  "ambient": 0,
+  "ambient": 25,
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
-  "anInt2189": 55140,
+  "anInt2189": -1,
   "aBool2190": false
 }

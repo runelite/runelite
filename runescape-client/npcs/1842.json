@@ -1,11 +1,17 @@
 {
   "id": 1842,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Fairy Queen",
+  "models": [
+    2858
+  ],
+  "models_2": [
+    12
+  ],
+  "stanceAnimation": 112,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 106,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,7 +19,7 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,

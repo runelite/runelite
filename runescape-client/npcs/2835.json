@@ -1,11 +1,25 @@
 {
   "id": 2835,
+  "recolorToFind": [
+    -2249,
+    -2253
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Camel",
+  "recolorToReplace": [
+    94,
+    0
+  ],
+  "models": [
+    2939
+  ],
+  "models_2": [
+    9841
+  ],
+  "stanceAnimation": 51,
   "anInt2165": -1,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 45,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,7 +27,7 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,

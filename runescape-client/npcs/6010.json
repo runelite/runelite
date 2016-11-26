@@ -1,7 +1,7 @@
 {
   "id": 6010,
   "anInt2156": 0,
-  "name": "null",
+  "name": "Monkey display",
   "models": [
     25871,
     25786,
@@ -10,18 +10,18 @@
   ],
   "stanceAnimation": 6435,
   "anInt2165": -1,
-  "tileSpacesOccupied": 770,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
-  "contrast": 121,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "display",
+    null,
     null,
     null
   ],
@@ -34,7 +34,7 @@
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
-  "isClickable": false,
+  "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

@@ -1,14 +1,33 @@
 {
   "id": 5782,
+  "recolorToFind": [
+    5388,
+    5392,
+    5268,
+    5272,
+    5276,
+    4558
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Baby Mole",
+  "recolorToReplace": [
+    317,
+    322,
+    326,
+    328,
+    332,
+    -1830
+  ],
+  "models": [
+    12073
+  ],
+  "stanceAnimation": 3309,
   "anInt2165": -1,
-  "tileSpacesOccupied": 61793,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3313,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 108,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
@@ -19,10 +38,10 @@
     null,
     null
   ],
-  "renderOnMinimap": true,
+  "renderOnMinimap": false,
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 108,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

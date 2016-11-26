@@ -1,21 +1,48 @@
 {
   "id": 2588,
+  "recolorToFind": [
+    25238,
+    -22464,
+    6443,
+    4550
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Skippy",
+  "recolorToReplace": [
+    21530,
+    6490,
+    10405,
+    6490
+  ],
+  "models": [
+    6364,
+    210,
+    253,
+    8845,
+    168,
+    176,
+    275,
+    9823
+  ],
+  "models_2": [
+    49,
+    85,
+    6212
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
+    "Talk-To",
     null,
-    null,
-    null,
+    "Sober-Up",
     null,
     null
   ],
@@ -30,5 +57,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

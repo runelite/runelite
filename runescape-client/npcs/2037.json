@@ -1,29 +1,49 @@
 {
   "id": 2037,
+  "recolorToFind": [
+    22426,
+    -32601,
+    -32610,
+    8
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Sacrifice",
+  "recolorToReplace": [
+    17170,
+    17170,
+    17294,
+    18316
+  ],
+  "models": [
+    17002,
+    2899,
+    2918
+  ],
+  "models_2": [
+    16
+  ],
+  "stanceAnimation": 195,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 100,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
-  "hasRenderPriority": false,
+  "resizeY": 100,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

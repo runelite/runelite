@@ -1,10 +1,20 @@
 {
   "id": 5504,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Mr. Mordaut",
+  "models": [
+    26896,
+    26898,
+    26895,
+    26897,
+    26894
+  ],
+  "models_2": [
+    26906
+  ],
+  "stanceAnimation": 6825,
   "anInt2165": -1,
-  "tileSpacesOccupied": 1375,
+  "tileSpacesOccupied": 5,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -13,18 +23,18 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,
-  "ambient": 0,
+  "ambient": 20,
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,

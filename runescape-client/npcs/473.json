@@ -7,7 +7,7 @@
     10301,
     3491
   ],
-  "anInt2156": 32,
+  "anInt2156": 900,
   "name": "Zygomite",
   "recolorToReplace": [
     10448,
@@ -19,10 +19,10 @@
   "models": [
     12641
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 3324,
   "anInt2165": -1,
-  "tileSpacesOccupied": 64615,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3323,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,

@@ -1,7 +1,7 @@
 {
   "id": 6013,
   "anInt2156": 0,
-  "name": "null",
+  "name": "Camel display",
   "models": [
     25734,
     25737,
@@ -10,18 +10,18 @@
   ],
   "stanceAnimation": 6441,
   "anInt2165": -1,
-  "tileSpacesOccupied": 770,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 28005,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "display",
+    null,
     null,
     null
   ],

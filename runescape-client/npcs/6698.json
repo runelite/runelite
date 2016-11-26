@@ -1,0 +1,49 @@
+{
+  "id": 6698,
+  "recolorToFind": [
+    17467
+  ],
+  "anInt2156": 32,
+  "name": "Ghost guard",
+  "recolorToReplace": [
+    18626
+  ],
+  "models": [
+    5212,
+    5219,
+    5209,
+    5216
+  ],
+  "models_2": [
+    5203
+  ],
+  "stanceAnimation": -1,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 112,
+  "contrast": 35,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 1337,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 112,
+  "hasRenderPriority": false,
+  "ambient": 35,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

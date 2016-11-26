@@ -1,10 +1,41 @@
 {
   "id": 5383,
+  "recolorToFind": [
+    25238,
+    4550,
+    10004,
+    5648,
+    908,
+    11200
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Guard Captain",
+  "recolorToReplace": [
+    41,
+    3524,
+    33,
+    24,
+    24,
+    926
+  ],
+  "models": [
+    233,
+    247,
+    312,
+    323,
+    152,
+    179,
+    6098,
+    263,
+    4954
+  ],
+  "models_2": [
+    66,
+    79
+  ],
   "stanceAnimation": 3040,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
+  "tileSpacesOccupied": 1,
   "walkAnimation": 3039,
   "rotate90RightAnimation": 821,
   "aBool2170": true,
@@ -13,14 +44,14 @@
   "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,

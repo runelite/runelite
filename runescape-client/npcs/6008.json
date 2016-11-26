@@ -1,7 +1,7 @@
 {
   "id": 6008,
   "anInt2156": 0,
-  "name": "null",
+  "name": "Sea slugs display",
   "models": [
     25739,
     25740,
@@ -12,18 +12,18 @@
   ],
   "stanceAnimation": 6433,
   "anInt2165": -1,
-  "tileSpacesOccupied": 770,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
-  "contrast": 97,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "slugs display",
+    null,
     null,
     null
   ],

@@ -1,16 +1,41 @@
 {
   "id": 5921,
+  "recolorToFind": [
+    123,
+    6430,
+    10378,
+    10270
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "BigRedJapan",
+  "recolorToReplace": [
+    49,
+    24,
+    -31866,
+    -24690
+  ],
+  "models": [
+    215,
+    7610,
+    7605,
+    7606,
+    7609,
+    7607,
+    3189,
+    251
+  ],
+  "models_2": [
+    53
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
   "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
     null,
@@ -20,8 +45,8 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
-  "rotate90LeftAnimation": -1,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,

@@ -1,10 +1,13 @@
 {
   "id": 600,
   "anInt2156": 32,
-  "name": "null",
+  "name": "Barrelchest",
+  "models": [
+    22790
+  ],
   "stanceAnimation": 5893,
   "anInt2165": -1,
-  "tileSpacesOccupied": 863,
+  "tileSpacesOccupied": 3,
   "walkAnimation": 5892,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -20,10 +23,10 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 190,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
-  "hasRenderPriority": false,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

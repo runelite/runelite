@@ -1,0 +1,58 @@
+{
+  "id": 7090,
+  "recolorToFind": [
+    5181,
+    61,
+    803,
+    2578,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Fuggy",
+  "recolorToReplace": [
+    4510,
+    7471,
+    7582,
+    5640,
+    4657
+  ],
+  "models": [
+    7026,
+    7059,
+    2978,
+    2981,
+    2985
+  ],
+  "models_2": [
+    6985
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,19 +1,43 @@
 {
   "id": 2433,
+  "recolorToFind": [
+    4550,
+    7473,
+    22,
+    4626,
+    7062
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Dwarven Boatman",
+  "recolorToReplace": [
+    4552,
+    -29538,
+    -32742,
+    4382,
+    10512
+  ],
+  "models": [
+    2970,
+    2980,
+    2979,
+    2983,
+    2985
+  ],
+  "models_2": [
+    0
+  ],
   "stanceAnimation": 101,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
+  "tileSpacesOccupied": 1,
   "walkAnimation": 98,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -30,5 +54,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

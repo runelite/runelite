@@ -1,7 +1,7 @@
 {
   "id": 3738,
   "anInt2156": 32,
-  "name": "null",
+  "name": "Vanstrom Klause",
   "models": [
     18004,
     18003
@@ -11,18 +11,18 @@
   ],
   "stanceAnimation": 4707,
   "anInt2165": -1,
-  "tileSpacesOccupied": 770,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
-  "aBool2170": false,
-  "resizeX": 28275,
+  "aBool2170": true,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "Klause",
+    null,
     null,
     null
   ],
@@ -37,5 +37,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

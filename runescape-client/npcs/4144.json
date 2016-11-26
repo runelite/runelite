@@ -1,14 +1,30 @@
 {
   "id": 4144,
+  "recolorToFind": [
+    61,
+    21570,
+    10355
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Mushroom",
+  "recolorToReplace": [
+    7465,
+    6439,
+    7626
+  ],
+  "models": [
+    3754,
+    3758,
+    3756,
+    3769
+  ],
   "stanceAnimation": 1159,
   "anInt2165": -1,
-  "tileSpacesOccupied": 609,
+  "tileSpacesOccupied": 2,
   "walkAnimation": 283,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 142,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
@@ -20,9 +36,9 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 142,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

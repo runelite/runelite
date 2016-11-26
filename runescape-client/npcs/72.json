@@ -1,6 +1,6 @@
 {
   "id": 72,
-  "anInt2156": 3349,
+  "anInt2156": 32,
   "name": "Skeleton",
   "models": [
     21168,
@@ -10,10 +10,10 @@
     21180,
     21188
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 5483,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5479,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -36,7 +36,7 @@
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
-  "isClickable": false,
+  "isClickable": true,
   "anInt2189": -1,
   "aBool2190": false
 }

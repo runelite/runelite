@@ -1,26 +1,32 @@
 {
   "id": 3099,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Hellpuppy",
+  "models": [
+    29240
+  ],
+  "models_2": [
+    29392
+  ],
+  "stanceAnimation": 6561,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6560,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
+    "Talk-to",
     null,
-    null,
-    null,
+    "Pick-up",
     null,
     null
   ],
-  "renderOnMinimap": true,
-  "combatLevel": -1,
+  "renderOnMinimap": false,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

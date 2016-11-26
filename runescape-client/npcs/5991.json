@@ -1,28 +1,52 @@
 {
   "id": 5991,
+  "recolorToFind": [
+    2578,
+    -22481,
+    61,
+    12,
+    910
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Yellow Fortune Secretary",
+  "recolorToReplace": [
+    9802,
+    8138,
+    9802,
+    4541,
+    10529
+  ],
+  "models": [
+    7035,
+    7058,
+    7038,
+    7048,
+    7068
+  ],
+  "models_2": [
+    6994
+  ],
+  "stanceAnimation": 2157,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2156,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 120,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 120,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

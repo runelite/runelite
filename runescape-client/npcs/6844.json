@@ -1,0 +1,54 @@
+{
+  "id": 6844,
+  "recolorToFind": [
+    6798,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Wounded soldier",
+  "recolorToReplace": [
+    6028,
+    4649
+  ],
+  "models": [
+    215,
+    246,
+    29772,
+    29766,
+    29699,
+    29711,
+    29781
+  ],
+  "models_2": [
+    53
+  ],
+  "stanceAnimation": 6282,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 6282,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

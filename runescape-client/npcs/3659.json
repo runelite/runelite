@@ -1,16 +1,40 @@
 {
   "id": 3659,
+  "recolorToFind": [
+    25238,
+    8741
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Farmer Fromund",
+  "recolorToReplace": [
+    -25299,
+    8656
+  ],
+  "models": [
+    4843,
+    215,
+    252,
+    10705,
+    170,
+    177,
+    7125,
+    263,
+    185
+  ],
+  "models_2": [
+    5534,
+    53,
+    84
+  ],
+  "stanceAnimation": 2273,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
   "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
     "Talk-to",
@@ -20,10 +44,10 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
-  "rotate90LeftAnimation": -1,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
-  "hasRenderPriority": false,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

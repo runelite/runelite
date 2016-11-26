@@ -1,7 +1,7 @@
 {
   "id": 6016,
   "anInt2156": 0,
-  "name": "null",
+  "name": "Wyvern display",
   "models": [
     25496,
     25497,
@@ -12,18 +12,18 @@
   ],
   "stanceAnimation": 6445,
   "anInt2165": -1,
-  "tileSpacesOccupied": 1026,
+  "tileSpacesOccupied": 4,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
-  "contrast": 114,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    "display",
+    null,
     null,
     null
   ],

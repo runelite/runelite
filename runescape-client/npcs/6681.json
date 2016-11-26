@@ -1,28 +1,43 @@
 {
   "id": 6681,
+  "recolorToFind": [
+    61,
+    16
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Overgrown cat",
+  "recolorToReplace": [
+    -22361,
+    10304
+  ],
+  "models": [
+    3010,
+    3006
+  ],
+  "models_2": [
+    6435
+  ],
+  "stanceAnimation": 317,
   "anInt2165": -1,
-  "tileSpacesOccupied": 353,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 314,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 85,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
     null,
-    null,
+    "Pick-up",
     null,
     null
   ],
-  "renderOnMinimap": true,
-  "combatLevel": -1,
+  "renderOnMinimap": false,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 60,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

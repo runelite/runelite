@@ -5,10 +5,10 @@
   "models": [
     13225
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 3716,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": 33822,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3717,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -16,7 +16,7 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Pick-up",
     null,
     null,
     null,
@@ -26,12 +26,12 @@
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
-  "hasRenderPriority": true,
+  "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,
-  "anInt2184": 0,
+  "anInt2184": 30,
   "anInt2187": -1,
-  "isClickable": false,
+  "isClickable": true,
   "anInt2189": -1,
   "aBool2190": false
 }

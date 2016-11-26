@@ -1,10 +1,40 @@
 {
   "id": 2989,
+  "recolorToFind": [
+    8741,
+    7281,
+    4550,
+    6798,
+    25238
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Ak-Haranu",
+  "recolorToReplace": [
+    -461,
+    -223,
+    5565,
+    -22506,
+    -223
+  ],
+  "models": [
+    217,
+    5215,
+    5221,
+    170,
+    176,
+    5217,
+    181,
+    241,
+    5233
+  ],
+  "models_2": [
+    55,
+    73,
+    5207
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -13,17 +43,17 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
+    "Talk-To",
     null,
-    null,
-    null,
+    "Trade",
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
-  "hasRenderPriority": false,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

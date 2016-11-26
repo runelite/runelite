@@ -1,19 +1,43 @@
 {
   "id": 5055,
+  "recolorToFind": [
+    8741,
+    25238,
+    4550
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Stranger",
+  "recolorToReplace": [
+    9106,
+    9106,
+    4822
+  ],
+  "models": [
+    208,
+    250,
+    292,
+    170,
+    176,
+    3599,
+    26135
+  ],
+  "models_2": [
+    48,
+    82,
+    3483
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -30,5 +54,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

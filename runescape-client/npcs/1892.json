@@ -1,16 +1,50 @@
 {
   "id": 1892,
+  "recolorToFind": [
+    8741,
+    25238,
+    8078,
+    6798,
+    7952,
+    7073
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Honour guard",
+  "recolorToReplace": [
+    6554,
+    7566,
+    7609,
+    6713,
+    13072,
+    5404
+  ],
+  "models": [
+    4219,
+    4220,
+    242,
+    252,
+    21883,
+    317,
+    156,
+    179,
+    4236,
+    19335,
+    21878,
+    19945
+  ],
+  "models_2": [
+    4210,
+    84
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
   "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
     null,
@@ -20,8 +54,8 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
-  "rotate90LeftAnimation": -1,
+  "combatLevel": 115,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,

@@ -1,19 +1,43 @@
 {
   "id": 1201,
+  "recolorToFind": [
+    22424,
+    6038,
+    -11139,
+    6550,
+    11162,
+    6798
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Philipe Carnillean",
+  "recolorToReplace": [
+    947,
+    -21581,
+    11200,
+    6057,
+    -21581,
+    6057
+  ],
+  "models": [
+    2894,
+    2909,
+    2918
+  ],
+  "models_2": [
+    53
+  ],
+  "stanceAnimation": 195,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -30,5 +54,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

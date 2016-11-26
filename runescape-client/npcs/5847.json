@@ -1,19 +1,39 @@
 {
   "id": 5847,
+  "recolorToFind": [
+    8621,
+    8741,
+    8734,
+    8982,
+    9104
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Zanaris choir",
+  "recolorToReplace": [
+    -8409,
+    -10333,
+    -11357,
+    -13403,
+    -14425
+  ],
+  "models": [
+    11978
+  ],
+  "models_2": [
+    6309
+  ],
+  "stanceAnimation": 3252,
   "anInt2165": -1,
-  "tileSpacesOccupied": 46110,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3253,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -30,5 +50,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

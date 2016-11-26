@@ -1,27 +1,54 @@
 {
   "id": 3669,
+  "recolorToFind": [
+    8741,
+    25238,
+    8078
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Guard",
+  "recolorToReplace": [
+    6554,
+    7566,
+    7609
+  ],
+  "models": [
+    4220,
+    250,
+    292,
+    162,
+    179,
+    4226,
+    4218,
+    326,
+    4221,
+    4219
+  ],
+  "models_2": [
+    4210,
+    84,
+    4211
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
-  "rotate90LeftAnimation": -1,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
   "hasRenderPriority": false,
   "ambient": 0,
@@ -30,5 +57,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

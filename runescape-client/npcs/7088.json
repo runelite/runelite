@@ -1,0 +1,60 @@
+{
+  "id": 7088,
+  "recolorToFind": [
+    6798,
+    7054,
+    5784,
+    4626,
+    61,
+    10330
+  ],
+  "anInt2156": 32,
+  "name": "Munty",
+  "recolorToReplace": [
+    2700,
+    8846,
+    8846,
+    10392,
+    5440,
+    6932
+  ],
+  "models": [
+    5621,
+    7061,
+    2978,
+    7046,
+    6018
+  ],
+  "models_2": [
+    5618
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,10 +1,16 @@
 {
   "id": 2496,
   "anInt2156": 32,
-  "name": "null",
+  "name": "Oozing barrier",
+  "models": [
+    10302
+  ],
+  "models_2": [
+    15912
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -20,7 +26,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 1,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

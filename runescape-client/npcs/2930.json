@@ -1,13 +1,21 @@
 {
   "id": 2930,
+  "recolorToFind": [
+    7062,
+    45
+  ],
   "anInt2156": 32,
   "name": "Silver ore",
+  "recolorToReplace": [
+    -22440,
+    -22440
+  ],
   "models": [
     9071
   ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 808,
+  "tileSpacesOccupied": 3,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,

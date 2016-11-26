@@ -1,0 +1,52 @@
+{
+  "id": 6911,
+  "recolorToFind": [
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Soldier (tier 4)",
+  "recolorToReplace": [
+    4533
+  ],
+  "models": [
+    29695,
+    29776,
+    29768,
+    29701,
+    29705,
+    29778,
+    540
+  ],
+  "models_2": [
+    30944
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 70,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,26 +1,41 @@
 {
   "id": 1690,
+  "recolorToFind": [
+    4550,
+    4546,
+    4541,
+    4537
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Splatter",
+  "recolorToReplace": [
+    -7856,
+    -7860,
+    -7864,
+    -7996
+  ],
+  "models": [
+    14550
+  ],
+  "stanceAnimation": 3886,
   "anInt2165": -1,
-  "tileSpacesOccupied": 287,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3887,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 25451,
+  "resizeX": 128,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 33,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

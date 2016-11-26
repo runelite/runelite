@@ -1,11 +1,19 @@
 {
   "id": 5949,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Al the Camel",
+  "models": [
+    9846,
+    9844,
+    9849
+  ],
+  "models_2": [
+    9840
+  ],
+  "stanceAnimation": 51,
   "anInt2165": -1,
-  "tileSpacesOccupied": 610,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 45,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -20,9 +28,9 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 126,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,

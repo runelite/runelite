@@ -1,14 +1,14 @@
 {
   "id": 469,
-  "anInt2156": 32,
+  "anInt2156": 900,
   "name": "Killerwatt",
   "models": [
     11264
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 3160,
   "anInt2165": -1,
-  "tileSpacesOccupied": 22631,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3161,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,

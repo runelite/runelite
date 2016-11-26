@@ -1,19 +1,47 @@
 {
   "id": 6429,
+  "recolorToFind": [
+    4550,
+    6798,
+    4416,
+    -22464,
+    6443
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Jagbakoba",
+  "recolorToReplace": [
+    5671,
+    4783,
+    5572,
+    5572,
+    5572
+  ],
+  "models": [
+    206,
+    252,
+    8845,
+    173,
+    176,
+    566,
+    8925,
+    8919
+  ],
+  "models_2": [
+    46,
+    84
+  ],
   "stanceAnimation": -1,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 130,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
@@ -22,7 +50,7 @@
   "renderOnMinimap": true,
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
+  "resizeY": 131,
   "hasRenderPriority": false,
   "ambient": 0,
   "headIcon": -1,
@@ -30,5 +58,5 @@
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

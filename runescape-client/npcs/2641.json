@@ -1,14 +1,25 @@
 {
   "id": 2641,
+  "recolorToFind": [
+    933,
+    26776
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Dragonkin",
+  "recolorToReplace": [
+    3734,
+    10396
+  ],
+  "models": [
+    9416
+  ],
+  "stanceAnimation": 2688,
   "anInt2165": -1,
-  "tileSpacesOccupied": 865,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 2689,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 150,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
@@ -19,11 +30,11 @@
     null,
     null
   ],
-  "renderOnMinimap": true,
+  "renderOnMinimap": false,
   "combatLevel": 0,
   "rotate90LeftAnimation": -1,
-  "resizeY": 128,
-  "hasRenderPriority": false,
+  "resizeY": 150,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

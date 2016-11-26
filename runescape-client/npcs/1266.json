@@ -1,10 +1,16 @@
 {
   "id": 1266,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
-  "anInt2165": 95,
-  "tileSpacesOccupied": 269,
+  "name": "Bones",
+  "models": [
+    13700
+  ],
+  "models_2": [
+    13700
+  ],
+  "stanceAnimation": 3840,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -20,7 +26,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

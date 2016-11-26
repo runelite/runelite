@@ -1,16 +1,45 @@
 {
   "id": 1940,
+  "recolorToFind": [
+    8741,
+    25238,
+    8078,
+    6798,
+    7952
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Mord Gunnars",
+  "recolorToReplace": [
+    -25442,
+    -32626,
+    -25433,
+    6713,
+    -25326
+  ],
+  "models": [
+    208,
+    252,
+    299,
+    162,
+    179,
+    4226,
+    4218,
+    3877,
+    317
+  ],
+  "models_2": [
+    48,
+    84
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 351,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
   "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
     "Talk-to",
@@ -20,10 +49,10 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
-  "rotate90LeftAnimation": -1,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
-  "hasRenderPriority": false,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,

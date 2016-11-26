@@ -1,7 +1,17 @@
 {
   "id": 4329,
+  "recolorToFind": [
+    8741,
+    25238,
+    7952
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "H.A.M. Deacon",
+  "recolorToReplace": [
+    -5236,
+    -5236,
+    -5236
+  ],
   "models": [
     151,
     176,
@@ -19,9 +29,9 @@
     5428,
     80
   ],
-  "stanceAnimation": -1,
+  "stanceAnimation": 4208,
   "anInt2165": -1,
-  "tileSpacesOccupied": 269,
+  "tileSpacesOccupied": 1,
   "walkAnimation": -1,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -34,7 +44,7 @@
     null,
     null,
     null,
-    "%ëŒb–ëŒ\u001f\u0010ëŒ\u0002H.A.M. Deacon"
+    null
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
@@ -46,6 +56,6 @@
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
-  "anInt2189": 28712,
+  "anInt2189": -1,
   "aBool2190": false
 }

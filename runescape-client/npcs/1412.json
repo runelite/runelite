@@ -1,11 +1,36 @@
 {
   "id": 1412,
+  "recolorToFind": [
+    61,
+    57,
+    37,
+    7054
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Black Guard",
+  "recolorToReplace": [
+    12,
+    12,
+    12,
+    28
+  ],
+  "models": [
+    2971,
+    2986,
+    7051,
+    11815,
+    7043,
+    7065,
+    2993
+  ],
+  "models_2": [
+    1,
+    6
+  ],
+  "stanceAnimation": 101,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -14,13 +39,13 @@
   "anInt2174": -1,
   "options": [
     null,
-    null,
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 25,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

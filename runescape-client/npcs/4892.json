@@ -1,11 +1,36 @@
 {
   "id": 4892,
+  "recolorToFind": [
+    2578,
+    66,
+    8728,
+    5784,
+    61
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Dondakan the Dwarf",
+  "recolorToReplace": [
+    6455,
+    -31437,
+    6806,
+    7277,
+    6554
+  ],
+  "models": [
+    2970,
+    2980,
+    2978,
+    2984,
+    6018,
+    2990
+  ],
+  "models_2": [
+    0
+  ],
+  "stanceAnimation": 101,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -20,7 +45,7 @@
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

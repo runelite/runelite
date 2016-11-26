@@ -1,11 +1,17 @@
 {
   "id": 4652,
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Ugthanki",
+  "models": [
+    2939
+  ],
+  "models_2": [
+    9841
+  ],
+  "stanceAnimation": 51,
   "anInt2165": -1,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 45,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
@@ -13,14 +19,14 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
-    null,
+    "Talk-to",
+    "Attack",
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 42,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

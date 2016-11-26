@@ -21,13 +21,13 @@
   "models": [
     5065
   ],
-  "stanceAnimation": 3334,
-  "anInt2165": 24832,
-  "tileSpacesOccupied": 526,
-  "walkAnimation": -1,
+  "stanceAnimation": 1551,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 1549,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
-  "resizeX": 128,
+  "resizeX": 245,
   "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,

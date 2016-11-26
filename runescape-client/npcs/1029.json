@@ -1,34 +1,62 @@
 {
   "id": 1029,
+  "recolorToFind": [
+    4550,
+    -22464,
+    25238,
+    926,
+    7056,
+    4626
+  ],
   "anInt2156": 32,
-  "name": "null",
-  "stanceAnimation": -1,
+  "name": "Jiminua",
+  "recolorToReplace": [
+    4645,
+    4541,
+    4541,
+    121,
+    4541,
+    4645
+  ],
+  "models": [
+    404,
+    453,
+    478,
+    351,
+    353,
+    429,
+    358
+  ],
+  "models_2": [
+    121
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 286,
-  "walkAnimation": -1,
-  "rotate90RightAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
   "aBool2170": true,
-  "resizeX": 27755,
+  "resizeX": 128,
   "contrast": 0,
-  "rotate180Animation": -1,
+  "rotate180Animation": 820,
   "anInt2174": -1,
   "options": [
+    "Talk-to",
     null,
-    null,
-    null,
+    "Trade",
     null,
     null
   ],
   "renderOnMinimap": true,
   "combatLevel": 0,
-  "rotate90LeftAnimation": -1,
+  "rotate90LeftAnimation": 822,
   "resizeY": 128,
-  "hasRenderPriority": false,
+  "hasRenderPriority": true,
   "ambient": 0,
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
   "isClickable": true,
   "anInt2189": -1,
-  "aBool2190": true
+  "aBool2190": false
 }

@@ -1,10 +1,22 @@
 {
   "id": 3668,
+  "recolorToFind": [
+    5351
+  ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "King Vargas",
+  "recolorToReplace": [
+    5470
+  ],
+  "models": [
+    3001
+  ],
+  "models_2": [
+    4651
+  ],
   "stanceAnimation": 296,
   "anInt2165": -1,
-  "tileSpacesOccupied": 607,
+  "tileSpacesOccupied": 2,
   "walkAnimation": 293,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
@@ -13,14 +25,14 @@
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
-    null,
+    "Talk-to",
     null,
     null,
     null,
     null
   ],
   "renderOnMinimap": true,
-  "combatLevel": -1,
+  "combatLevel": 0,
   "rotate90LeftAnimation": -1,
   "resizeY": 128,
   "hasRenderPriority": false,

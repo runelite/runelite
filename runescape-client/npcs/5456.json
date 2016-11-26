@@ -1,52 +1,49 @@
 {
   "id": 5456,
   "recolorToFind": [
-    808,
-    24940,
-    29807,
-    16993,
-    33,
-    27756,
-    29696,
     25238,
     8741,
     61,
     6798,
-    4550,
-    578
+    4550
   ],
   "anInt2156": 32,
-  "name": "null",
+  "name": "Banker",
   "recolorToReplace": [
-    7764,
-    27437,
-    32,
-    28267,
-    17263,
-    25955,
-    10245,
     45,
     45,
     4550,
     7690,
-    4510,
-    24942
+    4510
   ],
-  "stanceAnimation": -1,
+  "models": [
+    235,
+    246,
+    292,
+    162,
+    176,
+    254,
+    181,
+    320
+  ],
+  "models_2": [
+    67
+  ],
+  "stanceAnimation": 808,
   "anInt2165": -1,
-  "tileSpacesOccupied": 270,
-  "walkAnimation": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 808,
   "rotate90RightAnimation": -1,
   "aBool2170": true,
   "resizeX": 128,
-  "contrast": 114,
+  "contrast": 0,
   "rotate180Animation": -1,
   "anInt2174": -1,
   "options": [
+    "Talk-to",
     null,
-    null,
-    null,
-    null,
+    "Bank",
+    "Collect",
     null
   ],
   "renderOnMinimap": true,
@@ -58,7 +55,7 @@
   "headIcon": -1,
   "anInt2184": 30,
   "anInt2187": -1,
-  "isClickable": false,
+  "isClickable": true,
   "anInt2189": -1,
   "aBool2190": false
 }
