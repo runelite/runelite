@@ -111,6 +111,16 @@ public class Instructions
 		instructions.remove(ins);
 		ins.setInstructions(null);
 	}
+
+	public void clear()
+	{
+		for (Instruction ins : instructions)
+		{
+			ins.remove();
+			ins.setInstructions(null);
+		}
+		instructions.clear();
+	}
 	
 	public Code getCode()
 	{

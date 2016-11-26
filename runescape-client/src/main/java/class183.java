@@ -70,7 +70,7 @@ public class class183 implements Runnable {
             }
          }
       } catch (Exception var13) {
-         class39.method772((String)null, var13);
+         class39.reportException((String)null, var13);
       }
    }
 

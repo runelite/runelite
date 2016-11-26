@@ -27,52 +27,72 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.deob.deobfuscators.transformers;
 
-package net.runelite.asm.attributes.code;
-
-import java.util.ArrayList;
-import java.util.List;
 import net.runelite.asm.ClassFile;
+import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.ALoad_1;
+import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
+import net.runelite.asm.attributes.code.instructions.VReturn;
+import net.runelite.asm.signature.Signature;
+import net.runelite.deob.Transformer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Exceptions
+public class ClientErrorTransformer implements Transformer
 {
-	private Code code;
-	private List<Exception> exceptions = new ArrayList<Exception>();
+	private static final Logger logger = LoggerFactory.getLogger(ClientErrorTransformer.class);
 
-	public Exceptions(Code code)
+	private static final String REPORT_EXCEPTION = "reportException";
+
+	private boolean done = false;
+
+	@Override
+	public void transform(ClassGroup group)
 	{
-		this.code = code;
+		for (ClassFile cf : group.getClasses())
+		{
+			for (Method m : cf.getMethods().getMethods())
+			{
+				transform(m);
+			}
+		}
+
+		logger.info("Transformed: " + done);
 	}
 
-	public void add(Exception e)
+	private void transform(Method m)
 	{
-		exceptions.add(e);
-	}
-	
-	public void remove(Exception e)
-	{
-		exceptions.remove(e);
+		if (!m.getName().equals(REPORT_EXCEPTION))
+			return;
+
+		Code code = m.getCode();
+		Instructions ins = code.getInstructions();
+
+		code.getExceptions().clear();
+		ins.clear();
+
+		Instruction aload1 = new ALoad_1(ins); // load throwable
+
+		InvokeVirtual printStackTrace = new InvokeVirtual(ins,
+			new net.runelite.asm.pool.Method(
+				new net.runelite.asm.pool.Class("java/lang/Throwable"),
+				"printStackTrace",
+				new Signature("()V")
+			)
+		);
+
+		Instruction ret = new VReturn(ins);
+
+		ins.addInstruction(aload1);
+		ins.addInstruction(printStackTrace);
+		ins.addInstruction(ret);
+
+		done = true;
 	}
 
-	public void clear()
-	{
-		exceptions.clear();
-	}
-	
-	public Code getCode()
-	{
-		return code;
-	}
-	
-	public List<Exception> getExceptions()
-	{
-		return exceptions;
-	}
-	
-	public void renameClass(ClassFile cf, String name)
-	{
-		for (Exception e : exceptions)
-			e.renameClass(cf, name);
-	}
 }

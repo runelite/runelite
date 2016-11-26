@@ -649,7 +649,7 @@ public final class class110 implements Runnable {
             break;
          }
       } catch (Exception var12) {
-         class39.method772((String)null, var12);
+         class39.reportException((String)null, var12);
       }
 
    }
