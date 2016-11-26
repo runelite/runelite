@@ -124,9 +124,6 @@ public interface Widget
 	@Import("borderThickness")
 	int getBorderThickness();
 
-	@Import("itemId")
-	int getItemId();
-
 	@Import("itemQuantity")
 	int getItemQuantity();
 
