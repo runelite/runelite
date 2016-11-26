@@ -106,6 +106,7 @@ public class Region {
    @ObfuscatedName("bv")
    static boolean[][][][] field1525;
    @ObfuscatedName("bd")
+   @Export("renderArea")
    static boolean[][] field1526;
    @ObfuscatedName("r")
    @Export("tiles")

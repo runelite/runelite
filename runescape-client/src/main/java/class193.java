@@ -1,8 +1,11 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gk")
+@Implements("CombatInfo2")
 public class class193 extends CacheableNode {
    @ObfuscatedName("h")
    static NodeCache field2831 = new NodeCache(64);
@@ -56,6 +59,7 @@ public class class193 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -582884331
    )
+   @Export("healthScale")
    public int field2844 = 30;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
