@@ -123,7 +123,7 @@ public class class20 implements Runnable {
                         var11 += var13 - 1;
                         int var14 = var11 & 63;
                         int var15 = var11 >> 6 & 63;
-                        int var16 = var22.method3033() >> 2;
+                        int var16 = var22.readUnsignedByte() >> 2;
                         int var17 = var3 + var15;
                         int var18 = var14 + var4;
                         if(var17 > 0 && var18 > 0 && var17 < 103 && var18 < 103) {
@@ -144,7 +144,7 @@ public class class20 implements Runnable {
                         break;
                      }
 
-                     var22.method3033();
+                     var22.readUnsignedByte();
                   }
                }
             }

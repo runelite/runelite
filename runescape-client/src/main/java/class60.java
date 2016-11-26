@@ -169,7 +169,7 @@ public class class60 {
             int var15 = var13 & 63;
             int var16 = var13 >> 6 & 63;
             int var17 = var13 >> 12;
-            int var18 = var10.method3033();
+            int var18 = var10.readUnsignedByte();
             int var19 = var18 >> 2;
             int var20 = var18 & 3;
             if(var4 == var17 && var16 >= var5 && var16 < var5 + 8 && var15 >= var6 && var15 < var6 + 8) {

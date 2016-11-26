@@ -59,22 +59,22 @@ public class FrameMap extends Node {
    FrameMap(int var1, byte[] var2) {
       this.field1459 = var1;
       Buffer var3 = new Buffer(var2);
-      this.field1461 = var3.method3033();
+      this.field1461 = var3.readUnsignedByte();
       this.field1467 = new int[this.field1461];
       this.field1462 = new int[this.field1461][];
 
       int var4;
       for(var4 = 0; var4 < this.field1461; ++var4) {
-         this.field1467[var4] = var3.method3033();
+         this.field1467[var4] = var3.readUnsignedByte();
       }
 
       for(var4 = 0; var4 < this.field1461; ++var4) {
-         this.field1462[var4] = new int[var3.method3033()];
+         this.field1462[var4] = new int[var3.readUnsignedByte()];
       }
 
       for(var4 = 0; var4 < this.field1461; ++var4) {
          for(int var5 = 0; var5 < this.field1462[var4].length; ++var5) {
-            this.field1462[var4][var5] = var3.method3033();
+            this.field1462[var4][var5] = var3.readUnsignedByte();
          }
       }
 

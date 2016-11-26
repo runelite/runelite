@@ -26,22 +26,22 @@ public class class79 extends Node {
    static int[] field1308;
 
    class79(Buffer var1) {
-      this.field1302 = var1.method3097();
-      this.field1299 = var1.method3033() == 1;
-      int var2 = var1.method3033();
+      this.field1302 = var1.readUnsignedShort();
+      this.field1299 = var1.readUnsignedByte() == 1;
+      int var2 = var1.readUnsignedByte();
       if(var2 >= 1 && var2 <= 4) {
          this.field1300 = new int[var2];
 
          int var3;
          for(var3 = 0; var3 < var2; ++var3) {
-            this.field1300[var3] = var1.method3097();
+            this.field1300[var3] = var1.readUnsignedShort();
          }
 
          if(var2 > 1) {
             this.field1301 = new int[var2 - 1];
 
             for(var3 = 0; var3 < var2 - 1; ++var3) {
-               this.field1301[var3] = var1.method3033();
+               this.field1301[var3] = var1.readUnsignedByte();
             }
          }
 
@@ -49,7 +49,7 @@ public class class79 extends Node {
             this.field1295 = new int[var2 - 1];
 
             for(var3 = 0; var3 < var2 - 1; ++var3) {
-               this.field1295[var3] = var1.method3033();
+               this.field1295[var3] = var1.readUnsignedByte();
             }
          }
 
@@ -59,8 +59,8 @@ public class class79 extends Node {
             this.field1303[var3] = var1.method2995();
          }
 
-         this.field1304 = var1.method3033();
-         this.field1306 = var1.method3033();
+         this.field1304 = var1.readUnsignedByte();
+         this.field1306 = var1.readUnsignedByte();
          this.field1298 = null;
       } else {
          throw new RuntimeException();

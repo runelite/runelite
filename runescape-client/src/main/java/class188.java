@@ -19,7 +19,7 @@ public class class188 extends CacheableNode {
    )
    void method3487(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }

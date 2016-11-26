@@ -755,17 +755,17 @@ public final class GroundObject {
             byte[] var0 = class206.worldServersDownload.method608();
             if(null != var0) {
                Buffer var1 = new Buffer(var0);
-               World.field672 = var1.method3097();
+               World.field672 = var1.readUnsignedShort();
                World.worldList = new World[World.field672];
 
                World var3;
                for(int var2 = 0; var2 < World.field672; var3.index = var2++) {
                   var3 = World.worldList[var2] = new World();
-                  var3.id = var1.method3097();
+                  var3.id = var1.readUnsignedShort();
                   var3.mask = var1.method2995();
                   var3.address = var1.method3057();
                   var3.activity = var1.method3057();
-                  var3.location = var1.method3033();
+                  var3.location = var1.readUnsignedByte();
                   var3.playerCount = var1.method2993();
                }
 

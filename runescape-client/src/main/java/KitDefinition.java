@@ -45,7 +45,7 @@ public class KitDefinition extends CacheableNode {
    )
    void method3541(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -61,39 +61,39 @@ public class KitDefinition extends CacheableNode {
    )
    void method3542(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2822 = var1.method3033();
+         this.field2822 = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if(var2 == 2) {
-            var3 = var1.method3033();
+            var3 = var1.readUnsignedByte();
             this.field2819 = new int[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2819[var4] = var1.method3097();
+               this.field2819[var4] = var1.readUnsignedShort();
             }
          } else if(var2 == 3) {
             this.field2828 = true;
          } else if(var2 == 40) {
-            var3 = var1.method3033();
+            var3 = var1.readUnsignedByte();
             this.field2824 = new short[var3];
             this.field2825 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2824[var4] = (short)var1.method3097();
-               this.field2825[var4] = (short)var1.method3097();
+               this.field2824[var4] = (short)var1.readUnsignedShort();
+               this.field2825[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 41) {
-            var3 = var1.method3033();
+            var3 = var1.readUnsignedByte();
             this.field2826 = new short[var3];
             this.field2827 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2826[var4] = (short)var1.method3097();
-               this.field2827[var4] = (short)var1.method3097();
+               this.field2826[var4] = (short)var1.readUnsignedShort();
+               this.field2827[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 >= 60 && var2 < 70) {
-            this.field2823[var2 - 60] = var1.method3097();
+            this.field2823[var2 - 60] = var1.readUnsignedShort();
          }
       }
 

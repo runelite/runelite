@@ -54,7 +54,7 @@ public class class2 {
    class2(Buffer var1, byte var2, int var3) {
       this.field17 = var1.method3057();
       this.field18 = var1.method3057();
-      this.field24 = var1.method3097();
+      this.field24 = var1.readUnsignedShort();
       this.field15 = var1.method3118();
       int var4 = var1.method2995();
       int var5 = var1.method2995();

@@ -100,7 +100,7 @@ public class class196 extends CacheableNode {
    )
    void method3617(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -228,7 +228,7 @@ public class class196 extends CacheableNode {
       if(var2 == 1) {
          this.field2872 = var1.method3005();
       } else if(var2 == 2) {
-         this.field2883 = var1.method2994();
+         this.field2883 = var1.read24BitInt();
       } else if(var2 == 3) {
          this.field2875 = var1.method3005();
       } else if(var2 == 4) {
@@ -242,41 +242,41 @@ public class class196 extends CacheableNode {
       } else if(var2 == 8) {
          this.field2882 = var1.method2999();
       } else if(var2 == 9) {
-         this.field2867 = var1.method3097();
+         this.field2867 = var1.readUnsignedShort();
       } else if(var2 == 10) {
          this.field2880 = var1.method2993();
       } else if(var2 == 11) {
          this.field2874 = 0;
       } else if(var2 == 12) {
-         this.field2884 = var1.method3033();
+         this.field2884 = var1.readUnsignedByte();
       } else if(var2 == 13) {
          this.field2865 = var1.method2993();
       } else if(var2 == 14) {
-         this.field2874 = var1.method3097();
+         this.field2874 = var1.readUnsignedShort();
       } else if(var2 == 17 || var2 == 18) {
-         this.field2877 = var1.method3097();
+         this.field2877 = var1.readUnsignedShort();
          if(this.field2877 == '\uffff') {
             this.field2877 = -1;
          }
 
-         this.field2886 = var1.method3097();
+         this.field2886 = var1.readUnsignedShort();
          if(this.field2886 == '\uffff') {
             this.field2886 = -1;
          }
 
          int var3 = -1;
          if(var2 == 18) {
-            var3 = var1.method3097();
+            var3 = var1.readUnsignedShort();
             if(var3 == '\uffff') {
                var3 = -1;
             }
          }
 
-         int var4 = var1.method3033();
+         int var4 = var1.readUnsignedByte();
          this.field2885 = new int[var4 + 2];
 
          for(int var5 = 0; var5 <= var4; ++var5) {
-            this.field2885[var5] = var1.method3097();
+            this.field2885[var5] = var1.readUnsignedShort();
             if(this.field2885[var5] == '\uffff') {
                this.field2885[var5] = -1;
             }

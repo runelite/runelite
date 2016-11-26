@@ -32,22 +32,22 @@ public class class30 {
 
    class30(Buffer var1) {
       if(var1 != null && null != var1.payload) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 >= 0 && var2 <= field690) {
-            if(var1.method3033() == 1) {
+            if(var1.readUnsignedByte() == 1) {
                this.field691 = true;
             }
 
             if(var2 > 1) {
-               this.field688 = var1.method3033() == 1;
+               this.field688 = var1.readUnsignedByte() == 1;
             }
 
             if(var2 > 3) {
-               this.field692 = var1.method3033();
+               this.field692 = var1.readUnsignedByte();
             }
 
             if(var2 > 2) {
-               int var3 = var1.method3033();
+               int var3 = var1.readUnsignedByte();
 
                for(int var4 = 0; var4 < var3; ++var4) {
                   int var5 = var1.method2995();

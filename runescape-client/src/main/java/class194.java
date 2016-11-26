@@ -31,7 +31,7 @@ public class class194 extends CacheableNode {
    )
    void method3589(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -47,9 +47,9 @@ public class class194 extends CacheableNode {
    )
    void method3590(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2850 = var1.method3097();
-         this.field2848 = var1.method3033();
-         this.field2852 = var1.method3033();
+         this.field2850 = var1.readUnsignedShort();
+         this.field2848 = var1.readUnsignedByte();
+         this.field2852 = var1.readUnsignedByte();
       }
 
    }

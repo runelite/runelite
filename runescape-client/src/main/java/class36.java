@@ -196,7 +196,7 @@ public class class36 {
          if(var3 == 2) {
             var0.field631 = 0;
          }
-      } else if(var1 == -1 || var0.animation == -1 || class9.getAnimation(var1).field3054 >= class9.getAnimation(var0.animation).field3054) {
+      } else if(var1 == -1 || var0.animation == -1 || class9.getAnimation(var1).forcedPriority >= class9.getAnimation(var0.animation).forcedPriority) {
          var0.animation = var1;
          var0.actionFrame = 0;
          var0.field595 = 0;

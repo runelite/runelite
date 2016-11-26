@@ -253,7 +253,7 @@ public class ObjectComposition extends CacheableNode {
    )
    void method3654(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -430,7 +430,7 @@ public class ObjectComposition extends CacheableNode {
       int var3;
       int var4;
       if(var2 == 1) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          if(var3 > 0) {
             if(null != this.field2899 && !field2935) {
                var1.offset += var3 * 3;
@@ -439,15 +439,15 @@ public class ObjectComposition extends CacheableNode {
                this.field2899 = new int[var3];
 
                for(var4 = 0; var4 < var3; ++var4) {
-                  this.field2899[var4] = var1.method3097();
-                  this.field2900[var4] = var1.method3033();
+                  this.field2899[var4] = var1.readUnsignedShort();
+                  this.field2900[var4] = var1.readUnsignedByte();
                }
             }
          }
       } else if(var2 == 2) {
          this.name = var1.method3057();
       } else if(var2 == 5) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          if(var3 > 0) {
             if(this.field2899 != null && !field2935) {
                var1.offset += 2 * var3;
@@ -456,21 +456,21 @@ public class ObjectComposition extends CacheableNode {
                this.field2899 = new int[var3];
 
                for(var4 = 0; var4 < var3; ++var4) {
-                  this.field2899[var4] = var1.method3097();
+                  this.field2899[var4] = var1.readUnsignedShort();
                }
             }
          }
       } else if(var2 == 14) {
-         this.field2903 = var1.method3033();
+         this.field2903 = var1.readUnsignedByte();
       } else if(var2 == 15) {
-         this.field2907 = var1.method3033();
+         this.field2907 = var1.readUnsignedByte();
       } else if(var2 == 17) {
          this.field2908 = 0;
          this.field2909 = false;
       } else if(var2 == 18) {
          this.field2909 = false;
       } else if(var2 == 19) {
-         this.field2910 = var1.method3033();
+         this.field2910 = var1.readUnsignedByte();
       } else if(var2 == 21) {
          this.field2911 = 0;
       } else if(var2 == 22) {
@@ -478,14 +478,14 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 23) {
          this.field2913 = true;
       } else if(var2 == 24) {
-         this.field2914 = var1.method3097();
+         this.field2914 = var1.readUnsignedShort();
          if(this.field2914 == '\uffff') {
             this.field2914 = -1;
          }
       } else if(var2 == 27) {
          this.field2908 = 1;
       } else if(var2 == 28) {
-         this.field2915 = var1.method3033();
+         this.field2915 = var1.readUnsignedByte();
       } else if(var2 == 29) {
          this.field2937 = var1.method3047();
       } else if(var2 == 39) {
@@ -496,39 +496,39 @@ public class ObjectComposition extends CacheableNode {
             this.actions[var2 - 30] = null;
          }
       } else if(var2 == 40) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field2905 = new short[var3];
          this.field2916 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field2905[var4] = (short)var1.method3097();
-            this.field2916[var4] = (short)var1.method3097();
+            this.field2905[var4] = (short)var1.readUnsignedShort();
+            this.field2916[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 41) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field2893 = new short[var3];
          this.field2932 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field2893[var4] = (short)var1.method3097();
-            this.field2932[var4] = (short)var1.method3097();
+            this.field2893[var4] = (short)var1.readUnsignedShort();
+            this.field2932[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 60) {
-         this.field2919 = var1.method3097();
+         this.field2919 = var1.readUnsignedShort();
       } else if(var2 == 62) {
          this.field2921 = true;
       } else if(var2 == 64) {
          this.field2891 = false;
       } else if(var2 == 65) {
-         this.field2923 = var1.method3097();
+         this.field2923 = var1.readUnsignedShort();
       } else if(var2 == 66) {
-         this.field2924 = var1.method3097();
+         this.field2924 = var1.readUnsignedShort();
       } else if(var2 == 67) {
-         this.field2925 = var1.method3097();
+         this.field2925 = var1.readUnsignedShort();
       } else if(var2 == 68) {
-         this.field2920 = var1.method3097();
+         this.field2920 = var1.readUnsignedShort();
       } else if(var2 == 69) {
-         var1.method3033();
+         var1.readUnsignedByte();
       } else if(var2 == 70) {
          this.field2926 = var1.method2993();
       } else if(var2 == 71) {
@@ -540,48 +540,48 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 74) {
          this.field2930 = true;
       } else if(var2 == 75) {
-         this.field2931 = var1.method3033();
+         this.field2931 = var1.readUnsignedByte();
       } else if(var2 != 77 && var2 != 92) {
          if(var2 == 78) {
-            this.field2922 = var1.method3097();
-            this.field2936 = var1.method3033();
+            this.field2922 = var1.readUnsignedShort();
+            this.field2936 = var1.readUnsignedByte();
          } else if(var2 == 79) {
-            this.field2898 = var1.method3097();
-            this.field2938 = var1.method3097();
-            this.field2936 = var1.method3033();
-            var3 = var1.method3033();
+            this.field2898 = var1.readUnsignedShort();
+            this.field2938 = var1.readUnsignedShort();
+            this.field2936 = var1.readUnsignedByte();
+            var3 = var1.readUnsignedByte();
             this.field2895 = new int[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2895[var4] = var1.method3097();
+               this.field2895[var4] = var1.readUnsignedShort();
             }
          } else if(var2 == 81) {
-            this.field2911 = var1.method3033() * 256;
+            this.field2911 = var1.readUnsignedByte() * 256;
          }
       } else {
-         this.field2933 = var1.method3097();
+         this.field2933 = var1.readUnsignedShort();
          if(this.field2933 == '\uffff') {
             this.field2933 = -1;
          }
 
-         this.field2906 = var1.method3097();
+         this.field2906 = var1.readUnsignedShort();
          if(this.field2906 == '\uffff') {
             this.field2906 = -1;
          }
 
          var3 = -1;
          if(var2 == 92) {
-            var3 = var1.method3097();
+            var3 = var1.readUnsignedShort();
             if(var3 == '\uffff') {
                var3 = -1;
             }
          }
 
-         var4 = var1.method3033();
+         var4 = var1.readUnsignedByte();
          this.impostorIds = new int[2 + var4];
 
          for(int var5 = 0; var5 <= var4; ++var5) {
-            this.impostorIds[var5] = var1.method3097();
+            this.impostorIds[var5] = var1.readUnsignedShort();
             if(this.impostorIds[var5] == '\uffff') {
                this.impostorIds[var5] = -1;
             }

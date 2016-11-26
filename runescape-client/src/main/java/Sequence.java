@@ -14,18 +14,21 @@ public class Sequence extends CacheableNode {
    @ObfuscatedName("w")
    public static NodeCache field3046 = new NodeCache(100);
    @ObfuscatedName("r")
-   public int[] field3047;
+   @Export("frameIDs")
+   public int[] frameIDs;
    @ObfuscatedName("c")
    int[] field3048;
    @ObfuscatedName("n")
    public static class182 field3049;
    @ObfuscatedName("p")
-   public int[] field3050;
+   @Export("frameLenghts")
+   public int[] frameLenghts;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = 753518011
    )
-   public int field3051 = -1;
+   @Export("rightHandItem")
+   public int rightHandItem = -1;
    @ObfuscatedName("q")
    @Export("interleaveLeave")
    int[] interleaveLeave;
@@ -36,7 +39,8 @@ public class Sequence extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1756092837
    )
-   public int field3054 = 5;
+   @Export("forcedPriority")
+   public int forcedPriority = 5;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = 1685535099
@@ -55,7 +59,8 @@ public class Sequence extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -1719805293
    )
-   public int field3059 = -1;
+   @Export("leftHandItem")
+   public int leftHandItem = -1;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = -1211161795
@@ -66,12 +71,14 @@ public class Sequence extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1987217989
    )
-   public int field3061 = -1;
+   @Export("frameStep")
+   public int frameStep = -1;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 1878890717
    )
-   public int field3062 = -1;
+   @Export("priority")
+   public int priority = -1;
 
    @ObfuscatedName("d")
    @ObfuscatedSignature(
@@ -80,7 +87,7 @@ public class Sequence extends CacheableNode {
    )
    void method3798(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -98,66 +105,66 @@ public class Sequence extends CacheableNode {
       int var3;
       int var4;
       if(var2 == 1) {
-         var3 = var1.method3097();
-         this.field3050 = new int[var3];
+         var3 = var1.readUnsignedShort();
+         this.frameLenghts = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3050[var4] = var1.method3097();
+            this.frameLenghts[var4] = var1.readUnsignedShort();
          }
 
-         this.field3047 = new int[var3];
+         this.frameIDs = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3047[var4] = var1.method3097();
+            this.frameIDs[var4] = var1.readUnsignedShort();
          }
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3047[var4] += var1.method3097() << 16;
+            this.frameIDs[var4] += var1.readUnsignedShort() << 16;
          }
       } else if(var2 == 2) {
-         this.field3061 = var1.method3097();
+         this.frameStep = var1.readUnsignedShort();
       } else if(var2 == 3) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.interleaveLeave = new int[1 + var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.interleaveLeave[var4] = var1.method3033();
+            this.interleaveLeave[var4] = var1.readUnsignedByte();
          }
 
          this.interleaveLeave[var3] = 9999999;
       } else if(var2 == 4) {
          this.stretches = true;
       } else if(var2 == 5) {
-         this.field3054 = var1.method3033();
+         this.forcedPriority = var1.readUnsignedByte();
       } else if(var2 == 6) {
-         this.field3059 = var1.method3097();
+         this.leftHandItem = var1.readUnsignedShort();
       } else if(var2 == 7) {
-         this.field3051 = var1.method3097();
+         this.rightHandItem = var1.readUnsignedShort();
       } else if(var2 == 8) {
-         this.maxLoops = var1.method3033();
+         this.maxLoops = var1.readUnsignedByte();
       } else if(var2 == 9) {
-         this.precedenceAnimating = var1.method3033();
+         this.precedenceAnimating = var1.readUnsignedByte();
       } else if(var2 == 10) {
-         this.field3062 = var1.method3033();
+         this.priority = var1.readUnsignedByte();
       } else if(var2 == 11) {
-         this.replyMode = var1.method3033();
+         this.replyMode = var1.readUnsignedByte();
       } else if(var2 == 12) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field3048 = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3048[var4] = var1.method3097();
+            this.field3048[var4] = var1.readUnsignedShort();
          }
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3048[var4] += var1.method3097() << 16;
+            this.field3048[var4] += var1.readUnsignedShort() << 16;
          }
       } else if(var2 == 13) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field3056 = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3056[var4] = var1.method2994();
+            this.field3056[var4] = var1.read24BitInt();
          }
       }
 
@@ -177,11 +184,11 @@ public class Sequence extends CacheableNode {
          }
       }
 
-      if(this.field3062 == -1) {
+      if(this.priority == -1) {
          if(this.interleaveLeave != null) {
-            this.field3062 = 2;
+            this.priority = 2;
          } else {
-            this.field3062 = 0;
+            this.priority = 0;
          }
       }
 
@@ -193,7 +200,7 @@ public class Sequence extends CacheableNode {
       garbageValue = "829388133"
    )
    public Model method3801(Model var1, int var2) {
-      var2 = this.field3047[var2];
+      var2 = this.frameIDs[var2];
       Frames var3 = class182.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(var3 == null) {
@@ -211,7 +218,7 @@ public class Sequence extends CacheableNode {
       garbageValue = "102761659"
    )
    Model method3802(Model var1, int var2, int var3) {
-      var2 = this.field3047[var2];
+      var2 = this.frameIDs[var2];
       Frames var4 = class182.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(null == var4) {
@@ -246,13 +253,13 @@ public class Sequence extends CacheableNode {
       garbageValue = "-153"
    )
    public Model method3807(Model var1, int var2, Sequence var3, int var4) {
-      var2 = this.field3047[var2];
+      var2 = this.frameIDs[var2];
       Frames var5 = class182.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(null == var5) {
          return var3.method3801(var1, var4);
       } else {
-         var4 = var3.field3047[var4];
+         var4 = var3.frameIDs[var4];
          Frames var6 = class182.getFrames(var4 >> 16);
          var4 &= '\uffff';
          Model var7;
@@ -274,7 +281,7 @@ public class Sequence extends CacheableNode {
       garbageValue = "1068211930"
    )
    Model method3811(Model var1, int var2) {
-      var2 = this.field3047[var2];
+      var2 = this.frameIDs[var2];
       Frames var3 = class182.getFrames(var2 >> 16);
       var2 &= '\uffff';
       if(null == var3) {
@@ -292,7 +299,7 @@ public class Sequence extends CacheableNode {
       garbageValue = "1546286870"
    )
    public Model method3823(Model var1, int var2) {
-      int var3 = this.field3047[var2];
+      int var3 = this.frameIDs[var2];
       Frames var4 = class182.getFrames(var3 >> 16);
       var3 &= '\uffff';
       if(null == var4) {

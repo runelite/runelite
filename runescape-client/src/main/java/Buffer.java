@@ -278,7 +278,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "-113737427"
    )
-   public int method2994() {
+   @Export("read24BitInt")
+   public int read24BitInt() {
       this.offset += 3;
       return (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 3] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 8);
    }
@@ -342,7 +343,7 @@ public class Buffer extends Node {
    )
    public int method3002() {
       int var1 = this.payload[this.offset] & 255;
-      return var1 < 128?this.method3033() - 64:this.method3097() - '쀀';
+      return var1 < 128?this.readUnsignedByte() - 64:this.readUnsignedShort() - '쀀';
    }
 
    @ObfuscatedName("aq")
@@ -352,7 +353,7 @@ public class Buffer extends Node {
    )
    public int method3003() {
       int var1 = this.payload[this.offset] & 255;
-      return var1 < 128?this.method3033():this.method3097() - '耀';
+      return var1 < 128?this.readUnsignedByte():this.readUnsignedShort() - '耀';
    }
 
    @ObfuscatedName("ac")
@@ -361,7 +362,7 @@ public class Buffer extends Node {
       garbageValue = "-1275163599"
    )
    public int method3004() {
-      return this.payload[this.offset] < 0?this.method2995() & Integer.MAX_VALUE:this.method3097();
+      return this.payload[this.offset] < 0?this.method2995() & Integer.MAX_VALUE:this.readUnsignedShort();
    }
 
    @ObfuscatedName("ae")
@@ -373,7 +374,7 @@ public class Buffer extends Node {
       if(this.payload[this.offset] < 0) {
          return this.method2995() & Integer.MAX_VALUE;
       } else {
-         int var1 = this.method3097();
+         int var1 = this.readUnsignedShort();
          return var1 == 32767?-1:var1;
       }
    }
@@ -645,7 +646,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "46"
    )
-   public int method3033() {
+   @Export("readUnsignedByte")
+   public int readUnsignedByte() {
       return this.payload[++this.offset - 1] & 255;
    }
 
@@ -799,7 +801,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "117"
    )
-   public int method3097() {
+   @Export("readUnsignedShort")
+   public int readUnsignedShort() {
       this.offset += 2;
       return (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 2] & 255) << 8);
    }

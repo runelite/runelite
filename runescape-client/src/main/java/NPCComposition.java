@@ -150,7 +150,7 @@ public class NPCComposition extends CacheableNode {
    )
    void method3745(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -168,67 +168,67 @@ public class NPCComposition extends CacheableNode {
       int var3;
       int var4;
       if(var2 == 1) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.models = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.models[var4] = var1.method3097();
+            this.models[var4] = var1.readUnsignedShort();
          }
       } else if(var2 == 2) {
          this.name = var1.method3057();
       } else if(var2 == 12) {
-         this.field3009 = var1.method3033();
+         this.field3009 = var1.readUnsignedByte();
       } else if(var2 == 13) {
-         this.field3001 = var1.method3097();
+         this.field3001 = var1.readUnsignedShort();
       } else if(var2 == 14) {
-         this.field2998 = var1.method3097();
+         this.field2998 = var1.readUnsignedShort();
       } else if(var2 == 15) {
-         this.field3006 = var1.method3097();
+         this.field3006 = var1.readUnsignedShort();
       } else if(var2 == 16) {
-         this.field3003 = var1.method3097();
+         this.field3003 = var1.readUnsignedShort();
       } else if(var2 == 17) {
-         this.field2998 = var1.method3097();
-         this.field3005 = var1.method3097();
-         this.field3011 = var1.method3097();
-         this.field3007 = var1.method3097();
+         this.field2998 = var1.readUnsignedShort();
+         this.field3005 = var1.readUnsignedShort();
+         this.field3011 = var1.readUnsignedShort();
+         this.field3007 = var1.readUnsignedShort();
       } else if(var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.method3057();
          if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
             this.actions[var2 - 30] = null;
          }
       } else if(var2 == 40) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field3014 = new short[var3];
          this.field3012 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3014[var4] = (short)var1.method3097();
-            this.field3012[var4] = (short)var1.method3097();
+            this.field3014[var4] = (short)var1.readUnsignedShort();
+            this.field3012[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 41) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field3010 = new short[var3];
          this.field3026 = new short[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3010[var4] = (short)var1.method3097();
-            this.field3026[var4] = (short)var1.method3097();
+            this.field3010[var4] = (short)var1.readUnsignedShort();
+            this.field3026[var4] = (short)var1.readUnsignedShort();
          }
       } else if(var2 == 60) {
-         var3 = var1.method3033();
+         var3 = var1.readUnsignedByte();
          this.field3008 = new int[var3];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            this.field3008[var4] = var1.method3097();
+            this.field3008[var4] = var1.readUnsignedShort();
          }
       } else if(var2 == 93) {
          this.isMinimapVisible = false;
       } else if(var2 == 95) {
-         this.combatLevel = var1.method3097();
+         this.combatLevel = var1.readUnsignedShort();
       } else if(var2 == 97) {
-         this.field3015 = var1.method3097();
+         this.field3015 = var1.readUnsignedShort();
       } else if(var2 == 98) {
-         this.field3016 = var1.method3097();
+         this.field3016 = var1.readUnsignedShort();
       } else if(var2 == 99) {
          this.isVisible = true;
       } else if(var2 == 100) {
@@ -236,9 +236,9 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 101) {
          this.field3019 = var1.method3047() * 5;
       } else if(var2 == 102) {
-         this.field3020 = var1.method3097();
+         this.field3020 = var1.readUnsignedShort();
       } else if(var2 == 103) {
-         this.field3021 = var1.method3097();
+         this.field3021 = var1.readUnsignedShort();
       } else if(var2 != 106 && var2 != 118) {
          if(var2 == 107) {
             this.field3024 = false;
@@ -248,29 +248,29 @@ public class NPCComposition extends CacheableNode {
             this.field3027 = true;
          }
       } else {
-         this.field3023 = var1.method3097();
+         this.field3023 = var1.readUnsignedShort();
          if(this.field3023 == '\uffff') {
             this.field3023 = -1;
          }
 
-         this.field2992 = var1.method3097();
+         this.field2992 = var1.readUnsignedShort();
          if(this.field2992 == '\uffff') {
             this.field2992 = -1;
          }
 
          var3 = -1;
          if(var2 == 118) {
-            var3 = var1.method3097();
+            var3 = var1.readUnsignedShort();
             if(var3 == '\uffff') {
                var3 = -1;
             }
          }
 
-         var4 = var1.method3033();
+         var4 = var1.readUnsignedByte();
          this.field3022 = new int[var4 + 2];
 
          for(int var5 = 0; var5 <= var4; ++var5) {
-            this.field3022[var5] = var1.method3097();
+            this.field3022[var5] = var1.readUnsignedShort();
             if(this.field3022[var5] == '\uffff') {
                this.field3022[var5] = -1;
             }

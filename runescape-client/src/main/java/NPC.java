@@ -64,7 +64,7 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && class9.getAnimation(super.animation).field3062 == 1) {
+      if(super.animation != -1 && class9.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -124,7 +124,7 @@ public final class NPC extends Actor {
       garbageValue = "7"
    )
    final void method738(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class9.getAnimation(super.animation).field3062 == 1) {
+      if(super.animation != -1 && class9.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 

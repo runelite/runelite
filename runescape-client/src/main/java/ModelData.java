@@ -140,20 +140,20 @@ public class ModelData extends Renderable {
       Buffer var7 = new Buffer(var1);
       Buffer var8 = new Buffer(var1);
       var2.offset = var1.length - 23;
-      int var9 = var2.method3097();
-      int var10 = var2.method3097();
-      int var11 = var2.method3033();
-      int var12 = var2.method3033();
-      int var13 = var2.method3033();
-      int var14 = var2.method3033();
-      int var15 = var2.method3033();
-      int var16 = var2.method3033();
-      int var17 = var2.method3033();
-      int var18 = var2.method3097();
-      int var19 = var2.method3097();
-      int var20 = var2.method3097();
-      int var21 = var2.method3097();
-      int var22 = var2.method3097();
+      int var9 = var2.readUnsignedShort();
+      int var10 = var2.readUnsignedShort();
+      int var11 = var2.readUnsignedByte();
+      int var12 = var2.readUnsignedByte();
+      int var13 = var2.readUnsignedByte();
+      int var14 = var2.readUnsignedByte();
+      int var15 = var2.readUnsignedByte();
+      int var16 = var2.readUnsignedByte();
+      int var17 = var2.readUnsignedByte();
+      int var18 = var2.readUnsignedShort();
+      int var19 = var2.readUnsignedShort();
+      int var20 = var2.readUnsignedShort();
+      int var21 = var2.readUnsignedShort();
+      int var22 = var2.readUnsignedShort();
       int var23 = 0;
       int var24 = 0;
       int var25 = 0;
@@ -308,7 +308,7 @@ public class ModelData extends Renderable {
       int var54;
       int var55;
       for(var51 = 0; var51 < var9; ++var51) {
-         var52 = var2.method3033();
+         var52 = var2.readUnsignedByte();
          var53 = 0;
          if((var52 & 1) != 0) {
             var53 = var3.method3002();
@@ -331,7 +331,7 @@ public class ModelData extends Renderable {
          var49 = this.field1215[var51];
          var50 = this.field1223[var51];
          if(var17 == 1) {
-            this.field1240[var51] = var6.method3033();
+            this.field1240[var51] = var6.readUnsignedByte();
          }
       }
 
@@ -344,7 +344,7 @@ public class ModelData extends Renderable {
       var8.offset = var36;
 
       for(var51 = 0; var51 < var10; ++var51) {
-         this.field1213[var51] = (short)var2.method3097();
+         this.field1213[var51] = (short)var2.readUnsignedShort();
          if(var12 == 1) {
             this.field1221[var51] = var3.method3047();
          }
@@ -358,15 +358,15 @@ public class ModelData extends Renderable {
          }
 
          if(var15 == 1) {
-            this.field1241[var51] = var6.method3033();
+            this.field1241[var51] = var6.readUnsignedByte();
          }
 
          if(var16 == 1) {
-            this.field1226[var51] = (short)(var7.method3097() - 1);
+            this.field1226[var51] = (short)(var7.readUnsignedShort() - 1);
          }
 
          if(this.field1239 != null && this.field1226[var51] != -1) {
-            this.field1239[var51] = (byte)(var8.method3033() - 1);
+            this.field1239[var51] = (byte)(var8.readUnsignedByte() - 1);
          }
       }
 
@@ -379,7 +379,7 @@ public class ModelData extends Renderable {
 
       int var56;
       for(var55 = 0; var55 < var10; ++var55) {
-         var56 = var3.method3033();
+         var56 = var3.readUnsignedByte();
          if(var56 == 1) {
             var51 = var2.method3002() + var54;
             var52 = var2.method3002() + var51;
@@ -430,56 +430,56 @@ public class ModelData extends Renderable {
       for(var55 = 0; var55 < var11; ++var55) {
          var56 = this.field1253[var55] & 255;
          if(var56 == 0) {
-            this.field1232[var55] = (short)var2.method3097();
-            this.field1231[var55] = (short)var2.method3097();
-            this.field1224[var55] = (short)var2.method3097();
+            this.field1232[var55] = (short)var2.readUnsignedShort();
+            this.field1231[var55] = (short)var2.readUnsignedShort();
+            this.field1224[var55] = (short)var2.readUnsignedShort();
          }
 
          if(var56 == 1) {
-            this.field1232[var55] = (short)var3.method3097();
-            this.field1231[var55] = (short)var3.method3097();
-            this.field1224[var55] = (short)var3.method3097();
-            this.field1233[var55] = (short)var4.method3097();
-            this.field1234[var55] = (short)var4.method3097();
-            this.field1235[var55] = (short)var4.method3097();
-            this.field1230[var55] = (short)var5.method3097();
+            this.field1232[var55] = (short)var3.readUnsignedShort();
+            this.field1231[var55] = (short)var3.readUnsignedShort();
+            this.field1224[var55] = (short)var3.readUnsignedShort();
+            this.field1233[var55] = (short)var4.readUnsignedShort();
+            this.field1234[var55] = (short)var4.readUnsignedShort();
+            this.field1235[var55] = (short)var4.readUnsignedShort();
+            this.field1230[var55] = (short)var5.readUnsignedShort();
             this.field1237[var55] = var6.method3047();
-            this.field1225[var55] = (short)var7.method3097();
+            this.field1225[var55] = (short)var7.readUnsignedShort();
          }
 
          if(var56 == 2) {
-            this.field1232[var55] = (short)var3.method3097();
-            this.field1231[var55] = (short)var3.method3097();
-            this.field1224[var55] = (short)var3.method3097();
-            this.field1233[var55] = (short)var4.method3097();
-            this.field1234[var55] = (short)var4.method3097();
-            this.field1235[var55] = (short)var4.method3097();
-            this.field1230[var55] = (short)var5.method3097();
+            this.field1232[var55] = (short)var3.readUnsignedShort();
+            this.field1231[var55] = (short)var3.readUnsignedShort();
+            this.field1224[var55] = (short)var3.readUnsignedShort();
+            this.field1233[var55] = (short)var4.readUnsignedShort();
+            this.field1234[var55] = (short)var4.readUnsignedShort();
+            this.field1235[var55] = (short)var4.readUnsignedShort();
+            this.field1230[var55] = (short)var5.readUnsignedShort();
             this.field1237[var55] = var6.method3047();
-            this.field1225[var55] = (short)var7.method3097();
-            this.field1238[var55] = (short)var7.method3097();
+            this.field1225[var55] = (short)var7.readUnsignedShort();
+            this.field1238[var55] = (short)var7.readUnsignedShort();
          }
 
          if(var56 == 3) {
-            this.field1232[var55] = (short)var3.method3097();
-            this.field1231[var55] = (short)var3.method3097();
-            this.field1224[var55] = (short)var3.method3097();
-            this.field1233[var55] = (short)var4.method3097();
-            this.field1234[var55] = (short)var4.method3097();
-            this.field1235[var55] = (short)var4.method3097();
-            this.field1230[var55] = (short)var5.method3097();
+            this.field1232[var55] = (short)var3.readUnsignedShort();
+            this.field1231[var55] = (short)var3.readUnsignedShort();
+            this.field1224[var55] = (short)var3.readUnsignedShort();
+            this.field1233[var55] = (short)var4.readUnsignedShort();
+            this.field1234[var55] = (short)var4.readUnsignedShort();
+            this.field1235[var55] = (short)var4.readUnsignedShort();
+            this.field1230[var55] = (short)var5.readUnsignedShort();
             this.field1237[var55] = var6.method3047();
-            this.field1225[var55] = (short)var7.method3097();
+            this.field1225[var55] = (short)var7.readUnsignedShort();
          }
       }
 
       var2.offset = var26;
-      var55 = var2.method3033();
+      var55 = var2.readUnsignedByte();
       if(var55 != 0) {
          new class88();
-         var2.method3097();
-         var2.method3097();
-         var2.method3097();
+         var2.readUnsignedShort();
+         var2.readUnsignedShort();
+         var2.readUnsignedShort();
          var2.method2995();
       }
 
@@ -495,18 +495,18 @@ public class ModelData extends Renderable {
       Buffer var7 = new Buffer(var1);
       Buffer var8 = new Buffer(var1);
       var4.offset = var1.length - 18;
-      int var9 = var4.method3097();
-      int var10 = var4.method3097();
-      int var11 = var4.method3033();
-      int var12 = var4.method3033();
-      int var13 = var4.method3033();
-      int var14 = var4.method3033();
-      int var15 = var4.method3033();
-      int var16 = var4.method3033();
-      int var17 = var4.method3097();
-      int var18 = var4.method3097();
-      int var19 = var4.method3097();
-      int var20 = var4.method3097();
+      int var9 = var4.readUnsignedShort();
+      int var10 = var4.readUnsignedShort();
+      int var11 = var4.readUnsignedByte();
+      int var12 = var4.readUnsignedByte();
+      int var13 = var4.readUnsignedByte();
+      int var14 = var4.readUnsignedByte();
+      int var15 = var4.readUnsignedByte();
+      int var16 = var4.readUnsignedByte();
+      int var17 = var4.readUnsignedShort();
+      int var18 = var4.readUnsignedShort();
+      int var19 = var4.readUnsignedShort();
+      int var20 = var4.readUnsignedShort();
       byte var21 = 0;
       int var45 = var21 + var9;
       int var23 = var45;
@@ -603,7 +603,7 @@ public class ModelData extends Renderable {
       int var41;
       int var42;
       for(var38 = 0; var38 < var9; ++var38) {
-         var39 = var4.method3033();
+         var39 = var4.readUnsignedByte();
          var40 = 0;
          if((var39 & 1) != 0) {
             var40 = var5.method3002();
@@ -626,7 +626,7 @@ public class ModelData extends Renderable {
          var36 = this.field1215[var38];
          var37 = this.field1223[var38];
          if(var16 == 1) {
-            this.field1240[var38] = var8.method3033();
+            this.field1240[var38] = var8.readUnsignedByte();
          }
       }
 
@@ -637,9 +637,9 @@ public class ModelData extends Renderable {
       var8.offset = var25;
 
       for(var38 = 0; var38 < var10; ++var38) {
-         this.field1213[var38] = (short)var4.method3097();
+         this.field1213[var38] = (short)var4.readUnsignedShort();
          if(var12 == 1) {
-            var39 = var5.method3033();
+            var39 = var5.readUnsignedByte();
             if((var39 & 1) == 1) {
                this.field1221[var38] = 1;
                var2 = true;
@@ -669,7 +669,7 @@ public class ModelData extends Renderable {
          }
 
          if(var15 == 1) {
-            this.field1241[var38] = var8.method3033();
+            this.field1241[var38] = var8.readUnsignedByte();
          }
       }
 
@@ -683,7 +683,7 @@ public class ModelData extends Renderable {
       int var43;
       int var44;
       for(var42 = 0; var42 < var10; ++var42) {
-         var43 = var5.method3033();
+         var43 = var5.readUnsignedByte();
          if(var43 == 1) {
             var38 = var4.method3002() + var41;
             var39 = var4.method3002() + var38;
@@ -728,9 +728,9 @@ public class ModelData extends Renderable {
 
       for(var42 = 0; var42 < var11; ++var42) {
          this.field1253[var42] = 0;
-         this.field1232[var42] = (short)var4.method3097();
-         this.field1231[var42] = (short)var4.method3097();
-         this.field1224[var42] = (short)var4.method3097();
+         this.field1232[var42] = (short)var4.readUnsignedShort();
+         this.field1231[var42] = (short)var4.readUnsignedShort();
+         this.field1224[var42] = (short)var4.readUnsignedShort();
       }
 
       if(this.field1239 != null) {

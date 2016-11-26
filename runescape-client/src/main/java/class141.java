@@ -34,8 +34,8 @@ public class class141 {
    void method2687(byte[] var1) {
       this.field1989.payload = var1;
       this.field1989.offset = 10;
-      int var2 = this.field1989.method3097();
-      this.field1981 = this.field1989.method3097();
+      int var2 = this.field1989.readUnsignedShort();
+      this.field1981 = this.field1989.readUnsignedShort();
       this.field1984 = 500000;
       this.field1980 = new int[var2];
 
@@ -169,13 +169,13 @@ public class class141 {
    int method2717(int var1, int var2) {
       int var4;
       if(var2 == 255) {
-         int var7 = this.field1989.method3033();
+         int var7 = this.field1989.readUnsignedByte();
          var4 = this.field1989.method3142();
          if(var7 == 47) {
             this.field1989.offset += var4;
             return 1;
          } else if(var7 == 81) {
-            int var5 = this.field1989.method2994();
+            int var5 = this.field1989.read24BitInt();
             var4 -= 3;
             int var6 = this.field1982[var1];
             this.field1991 += (long)var6 * (long)(this.field1984 - var5);
@@ -190,11 +190,11 @@ public class class141 {
          byte var3 = field1987[var2 - 128];
          var4 = var2;
          if(var3 >= 1) {
-            var4 = var2 | this.field1989.method3033() << 8;
+            var4 = var2 | this.field1989.readUnsignedByte() << 8;
          }
 
          if(var3 >= 2) {
-            var4 |= this.field1989.method3033() << 16;
+            var4 |= this.field1989.readUnsignedByte() << 16;
          }
 
          return var4;
