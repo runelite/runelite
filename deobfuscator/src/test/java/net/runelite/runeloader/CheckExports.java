@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob.runeloader;
+package net.runelite.runeloader;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,20 +38,19 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
-import net.runelite.deob.runeloader.inject.GetterInjectInstruction;
-import net.runelite.deob.runeloader.inject.InjectionModscript;
+import net.runelite.runeloader.inject.GetterInjectInstruction;
+import net.runelite.runeloader.inject.InjectionModscript;
 import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class CheckMappings
+public class CheckExports
 {
-	private static final File CLIENT = new File("d:/rs/07/adamout.jar");
-	private static final File RL_INJECTION = new File(CheckMappings.class.getResource("/injection_v18.json").getFile());
+	private static final File CLIENT = new File("/Users/adam/w/rs/07/rs-client-1.0-SNAPSHOT.jar");
+	private static final File RL_INJECTION = new File("/Users/adam/w/rs/07/rl/injection.json");
 	
 	private final List<Class> classes = new ArrayList<>();
 	
@@ -60,14 +59,14 @@ public class CheckMappings
 	{
 		ClassLoader loader = new URLClassLoader(new URL[] { CLIENT.toURL() });
 		
-		Class c = loader.loadClass("client");
+		Class c = loader.loadClass("net.runelite.rs.client.client");
 		classes.add(c);
 		
 		for (int i = 0; i < 230; ++i)
 		{
 			try
 			{
-				c = loader.loadClass("class" + i);
+				c = loader.loadClass("net.runelite.rs.client.class" + i);
 				classes.add(c);
 			}
 			catch (ClassNotFoundException ex)
@@ -107,20 +106,10 @@ public class CheckMappings
 		return null;
 	}
 	
-	private Integer getIntegerMultiplier(Field f)
+	private boolean isExported(Field f)
 	{
-		ObfuscatedGetter getter = (ObfuscatedGetter) f.getDeclaredAnnotation(ObfuscatedGetter.class);
-		if (getter == null)
-			return null;
-		return getter.intValue() == 0 ? null : getter.intValue();
-	}
-
-	private String getExportedName(Field f)
-	{
-		Export e = (Export) f.getDeclaredAnnotation(Export.class);
-		if (e == null)
-			return null;
-		return e.value();
+		Export export = (Export) f.getDeclaredAnnotation(Export.class);
+		return export != null;
 	}
 
 	@Test
@@ -138,18 +127,8 @@ public class CheckMappings
 			
 			Field f = this.findFieldWithObfuscatedName(c, gii.getGetterFieldName());
 			Assert.assertNotNull(f);
-
-			String exportedName = this.getExportedName(f);
-			String attrName = gii.getGetterName();
-			attrName = Utils.toExportedName(attrName);
 			
-			Integer mul = gii.getMultiplier(),
-				myMul = this.getIntegerMultiplier(f);
-
-			// XXX Check @Export etc names
-
-			//Assert.assertEquals(exportedName, attrName);
-			Assert.assertEquals(myMul, mul);
+			Assert.assertTrue(this.isExported(f));
 		}
 	}
 }

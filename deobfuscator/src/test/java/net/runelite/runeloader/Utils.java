@@ -28,7 +28,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.deob.runeloader;
+package net.runelite.runeloader;
 
 public class Utils
 {
