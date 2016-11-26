@@ -130,7 +130,7 @@ public class class142 extends Node {
          var12 = 2;
 
          for(var14 = 2; var14 < var9; ++var14) {
-            int var15 = var2.method3033();
+            int var15 = var2.readUnsignedByte();
             if(var15 == 0) {
                var37 = var12++;
             } else {
@@ -152,21 +152,21 @@ public class class142 extends Node {
       class137 var38;
       for(var14 = 0; var14 < var13.length; ++var14) {
          var38 = var13[var14] = new class137();
-         int var16 = var2.method3033();
+         int var16 = var2.readUnsignedByte();
          if(var16 > 0) {
             var38.field1907 = new byte[var16 * 2];
          }
 
-         var16 = var2.method3033();
+         var16 = var2.readUnsignedByte();
          if(var16 > 0) {
             var38.field1899 = new byte[2 + 2 * var16];
             var38.field1899[1] = 64;
          }
       }
 
-      var14 = var2.method3033();
+      var14 = var2.readUnsignedByte();
       byte[] var45 = var14 > 0?new byte[2 * var14]:null;
-      var14 = var2.method3033();
+      var14 = var2.readUnsignedByte();
       byte[] var40 = var14 > 0?new byte[2 * var14]:null;
 
       int var17;
@@ -187,14 +187,14 @@ public class class142 extends Node {
 
       int var20;
       for(var20 = 0; var20 < 128; ++var20) {
-         var19 += var2.method3033();
+         var19 += var2.readUnsignedByte();
          this.field2004[var20] = (short)var19;
       }
 
       var19 = 0;
 
       for(var20 = 0; var20 < 128; ++var20) {
-         var19 += var2.method3033();
+         var19 += var2.readUnsignedByte();
          this.field2004[var20] = (short)(this.field2004[var20] + (var19 << 8));
       }
 
@@ -297,7 +297,7 @@ public class class142 extends Node {
             }
 
             if(this.field1999[var27] > 0) {
-               var26 = var2.method3033() + 1;
+               var26 = var2.readUnsignedByte() + 1;
             }
          }
 
@@ -305,7 +305,7 @@ public class class142 extends Node {
          --var20;
       }
 
-      this.field1995 = var2.method3033() + 1;
+      this.field1995 = var2.readUnsignedByte() + 1;
 
       class137 var28;
       int var29;
@@ -342,7 +342,7 @@ public class class142 extends Node {
             var19 = 0;
 
             for(var29 = 2; var29 < var28.field1899.length; var29 += 2) {
-               var19 = 1 + var19 + var2.method3033();
+               var19 = 1 + var19 + var2.readUnsignedByte();
                var28.field1899[var29] = (byte)var19;
             }
          }
@@ -354,7 +354,7 @@ public class class142 extends Node {
             var19 = 0;
 
             for(var29 = 2; var29 < var28.field1907.length; var29 += 2) {
-               var19 = 1 + var19 + var2.method3033();
+               var19 = 1 + var19 + var2.readUnsignedByte();
                var28.field1907[var29] = (byte)var19;
             }
          }
@@ -367,11 +367,11 @@ public class class142 extends Node {
       int var42;
       byte var44;
       if(var45 != null) {
-         var19 = var2.method3033();
+         var19 = var2.readUnsignedByte();
          var45[0] = (byte)var19;
 
          for(var27 = 2; var27 < var45.length; var27 += 2) {
-            var19 = var19 + 1 + var2.method3033();
+            var19 = var19 + 1 + var2.readUnsignedByte();
             var45[var27] = (byte)var19;
          }
 
@@ -405,11 +405,11 @@ public class class142 extends Node {
       }
 
       if(null != var40) {
-         var19 = var2.method3033();
+         var19 = var2.readUnsignedByte();
          var40[0] = (byte)var19;
 
          for(var27 = 2; var27 < var40.length; var27 += 2) {
-            var19 = 1 + var19 + var2.method3033();
+            var19 = 1 + var19 + var2.readUnsignedByte();
             var40[var27] = (byte)var19;
          }
 
@@ -471,39 +471,39 @@ public class class142 extends Node {
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
-         var13[var27].field1898 = var2.method3033();
+         var13[var27].field1898 = var2.readUnsignedByte();
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
          var28 = var13[var27];
          if(var28.field1907 != null) {
-            var28.field1901 = var2.method3033();
+            var28.field1901 = var2.readUnsignedByte();
          }
 
          if(null != var28.field1899) {
-            var28.field1902 = var2.method3033();
+            var28.field1902 = var2.readUnsignedByte();
          }
 
          if(var28.field1898 > 0) {
-            var28.field1900 = var2.method3033();
+            var28.field1900 = var2.readUnsignedByte();
          }
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
-         var13[var27].field1905 = var2.method3033();
+         var13[var27].field1905 = var2.readUnsignedByte();
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
          var28 = var13[var27];
          if(var28.field1905 > 0) {
-            var28.field1904 = var2.method3033();
+            var28.field1904 = var2.readUnsignedByte();
          }
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
          var28 = var13[var27];
          if(var28.field1904 > 0) {
-            var28.field1906 = var2.method3033();
+            var28.field1906 = var2.readUnsignedByte();
          }
       }
 

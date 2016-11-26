@@ -179,16 +179,16 @@ public final class Projectile extends Renderable {
          while(true) {
             do {
                do {
-                  if(this.field872 <= this.animationSequence.field3050[this.field876]) {
+                  if(this.field872 <= this.animationSequence.frameLenghts[this.field876]) {
                      return;
                   }
 
-                  this.field872 -= this.animationSequence.field3050[this.field876];
+                  this.field872 -= this.animationSequence.frameLenghts[this.field876];
                   ++this.field876;
-               } while(this.field876 < this.animationSequence.field3047.length);
+               } while(this.field876 < this.animationSequence.frameIDs.length);
 
-               this.field876 -= this.animationSequence.field3061;
-            } while(this.field876 >= 0 && this.field876 < this.animationSequence.field3047.length);
+               this.field876 -= this.animationSequence.frameStep;
+            } while(this.field876 >= 0 && this.field876 < this.animationSequence.frameIDs.length);
 
             this.field876 = 0;
          }

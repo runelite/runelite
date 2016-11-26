@@ -267,7 +267,7 @@ public class class70 {
       this.field1148.method1095(var1);
       this.field1142 = new class58();
       this.field1142.method1095(var1);
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
          this.field1141 = new class58();
@@ -276,7 +276,7 @@ public class class70 {
          this.field1144.method1095(var1);
       }
 
-      var2 = var1.method3033();
+      var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
          this.field1164 = new class58();
@@ -285,7 +285,7 @@ public class class70 {
          this.field1157.method1095(var1);
       }
 
-      var2 = var1.method3033();
+      var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
          this.field1147 = new class58();
@@ -307,8 +307,8 @@ public class class70 {
 
       this.field1152 = var1.method3003();
       this.field1153 = var1.method3003();
-      this.field1156 = var1.method3097();
-      this.field1160 = var1.method3097();
+      this.field1156 = var1.readUnsignedShort();
+      this.field1160 = var1.readUnsignedShort();
       this.field1154 = new class67();
       this.field1155 = new class58();
       this.field1154.method1368(var1, this.field1155);

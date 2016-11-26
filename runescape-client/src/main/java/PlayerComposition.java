@@ -212,21 +212,21 @@ public class PlayerComposition {
       } else {
          long var5 = this.hash;
          int[] var7 = this.bodyParts;
-         if(null != var1 && (var1.field3059 >= 0 || var1.field3051 >= 0)) {
+         if(null != var1 && (var1.leftHandItem >= 0 || var1.rightHandItem >= 0)) {
             var7 = new int[12];
 
             for(int var8 = 0; var8 < 12; ++var8) {
                var7[var8] = this.bodyParts[var8];
             }
 
-            if(var1.field3059 >= 0) {
-               var5 += (long)(var1.field3059 - this.bodyParts[5] << 40);
-               var7[5] = var1.field3059;
+            if(var1.leftHandItem >= 0) {
+               var5 += (long)(var1.leftHandItem - this.bodyParts[5] << 40);
+               var7[5] = var1.leftHandItem;
             }
 
-            if(var1.field3051 >= 0) {
-               var5 += (long)(var1.field3051 - this.bodyParts[3] << 48);
-               var7[3] = var1.field3051;
+            if(var1.rightHandItem >= 0) {
+               var5 += (long)(var1.rightHandItem - this.bodyParts[3] << 48);
+               var7[3] = var1.rightHandItem;
             }
          }
 

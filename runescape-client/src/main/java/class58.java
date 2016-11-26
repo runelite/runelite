@@ -27,7 +27,7 @@ public class class58 {
 
    @ObfuscatedName("n")
    final void method1095(Buffer var1) {
-      this.field1061 = var1.method3033();
+      this.field1061 = var1.readUnsignedByte();
       this.field1058 = var1.method2995();
       this.field1063 = var1.method2995();
       this.method1096(var1);
@@ -35,13 +35,13 @@ public class class58 {
 
    @ObfuscatedName("d")
    final void method1096(Buffer var1) {
-      this.field1059 = var1.method3033();
+      this.field1059 = var1.readUnsignedByte();
       this.field1057 = new int[this.field1059];
       this.field1056 = new int[this.field1059];
 
       for(int var2 = 0; var2 < this.field1059; ++var2) {
-         this.field1057[var2] = var1.method3097();
-         this.field1056[var2] = var1.method3097();
+         this.field1057[var2] = var1.readUnsignedShort();
+         this.field1056[var2] = var1.readUnsignedShort();
       }
 
    }

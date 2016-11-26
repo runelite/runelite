@@ -38,7 +38,7 @@ public class class195 extends CacheableNode {
    )
    void method3603(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
@@ -54,9 +54,9 @@ public class class195 extends CacheableNode {
    )
    void method3605(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2856 = (char)var1.method3033();
+         this.field2856 = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {
-         this.field2858 = (char)var1.method3033();
+         this.field2858 = (char)var1.readUnsignedByte();
       } else if(var2 == 3) {
          this.field2854 = var1.method3057();
       } else if(var2 == 4) {
@@ -64,7 +64,7 @@ public class class195 extends CacheableNode {
       } else {
          int var3;
          if(var2 == 5) {
-            this.field2860 = var1.method3097();
+            this.field2860 = var1.readUnsignedShort();
             this.field2861 = new int[this.field2860];
             this.field2863 = new String[this.field2860];
 
@@ -73,7 +73,7 @@ public class class195 extends CacheableNode {
                this.field2863[var3] = var1.method3057();
             }
          } else if(var2 == 6) {
-            this.field2860 = var1.method3097();
+            this.field2860 = var1.readUnsignedShort();
             this.field2861 = new int[this.field2860];
             this.field2862 = new int[this.field2860];
 

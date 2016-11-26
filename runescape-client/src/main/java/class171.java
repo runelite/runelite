@@ -35,10 +35,10 @@ public class class171 {
             Buffer var3 = new Buffer(var2);
             var3.offset = var3.payload.length - 12;
             int var4 = var3.method2995();
-            var1.field932 = var3.method3097();
-            var1.field940 = var3.method3097();
-            var1.field938 = var3.method3097();
-            var1.field937 = var3.method3097();
+            var1.field932 = var3.readUnsignedShort();
+            var1.field940 = var3.readUnsignedShort();
+            var1.field938 = var3.readUnsignedShort();
+            var1.field937 = var3.readUnsignedShort();
             var3.offset = 0;
             var3.method3094();
             var1.field939 = new int[var4];
@@ -47,13 +47,13 @@ public class class171 {
 
             int var6;
             for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.field939[var5++] = var6) {
-               var6 = var3.method3097();
+               var6 = var3.readUnsignedShort();
                if(var6 == 3) {
                   var1.field935[var5] = var3.method3057();
                } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
                   var1.field934[var5] = var3.method2995();
                } else {
-                  var1.field934[var5] = var3.method3033();
+                  var1.field934[var5] = var3.readUnsignedByte();
                }
             }
 

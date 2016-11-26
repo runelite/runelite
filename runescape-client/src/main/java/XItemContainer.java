@@ -79,15 +79,15 @@ public class XItemContainer extends Node {
       Sequence var1;
       if(var0.poseAnimation != -1) {
          var1 = class9.getAnimation(var0.poseAnimation);
-         if(var1 != null && var1.field3047 != null) {
+         if(var1 != null && var1.frameIDs != null) {
             ++var0.field626;
-            if(var0.poseFrame < var1.field3047.length && var0.field626 > var1.field3050[var0.poseFrame]) {
+            if(var0.poseFrame < var1.frameIDs.length && var0.field626 > var1.frameLenghts[var0.poseFrame]) {
                var0.field626 = 1;
                ++var0.poseFrame;
                class16.method200(var1, var0.poseFrame, var0.x, var0.y);
             }
 
-            if(var0.poseFrame >= var1.field3047.length) {
+            if(var0.poseFrame >= var1.frameIDs.length) {
                var0.field626 = 0;
                var0.poseFrame = 0;
                class16.method200(var1, var0.poseFrame, var0.x, var0.y);
@@ -105,15 +105,15 @@ public class XItemContainer extends Node {
          int var3 = class179.method3320(var0.graphic).field2800;
          if(var3 != -1) {
             Sequence var2 = class9.getAnimation(var3);
-            if(null != var2 && null != var2.field3047) {
+            if(null != var2 && null != var2.frameIDs) {
                ++var0.field616;
-               if(var0.field633 < var2.field3047.length && var0.field616 > var2.field3050[var0.field633]) {
+               if(var0.field633 < var2.frameIDs.length && var0.field616 > var2.frameLenghts[var0.field633]) {
                   var0.field616 = 1;
                   ++var0.field633;
                   class16.method200(var2, var0.field633, var0.x, var0.y);
                }
 
-               if(var0.field633 >= var2.field3047.length && (var0.field633 < 0 || var0.field633 >= var2.field3047.length)) {
+               if(var0.field633 >= var2.frameIDs.length && (var0.field633 < 0 || var0.field633 >= var2.frameIDs.length)) {
                   var0.graphic = -1;
                }
             } else {
@@ -134,20 +134,20 @@ public class XItemContainer extends Node {
 
       if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
          var1 = class9.getAnimation(var0.animation);
-         if(null != var1 && null != var1.field3047) {
+         if(null != var1 && null != var1.frameIDs) {
             ++var0.field595;
-            if(var0.actionFrame < var1.field3047.length && var0.field595 > var1.field3050[var0.actionFrame]) {
+            if(var0.actionFrame < var1.frameIDs.length && var0.field595 > var1.frameLenghts[var0.actionFrame]) {
                var0.field595 = 1;
                ++var0.actionFrame;
                class16.method200(var1, var0.actionFrame, var0.x, var0.y);
             }
 
-            if(var0.actionFrame >= var1.field3047.length) {
-               var0.actionFrame -= var1.field3061;
+            if(var0.actionFrame >= var1.frameIDs.length) {
+               var0.actionFrame -= var1.frameStep;
                ++var0.field631;
                if(var0.field631 >= var1.maxLoops) {
                   var0.animation = -1;
-               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.field3047.length) {
+               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
                   class16.method200(var1, var0.actionFrame, var0.x, var0.y);
                } else {
                   var0.animation = -1;

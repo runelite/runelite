@@ -129,39 +129,39 @@ public class class190 extends CacheableNode {
    )
    void method3511(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2799 = var1.method3097();
+         this.field2799 = var1.readUnsignedShort();
       } else if(var2 == 2) {
-         this.field2800 = var1.method3097();
+         this.field2800 = var1.readUnsignedShort();
       } else if(var2 == 4) {
-         this.field2810 = var1.method3097();
+         this.field2810 = var1.readUnsignedShort();
       } else if(var2 == 5) {
-         this.field2806 = var1.method3097();
+         this.field2806 = var1.readUnsignedShort();
       } else if(var2 == 6) {
-         this.field2805 = var1.method3097();
+         this.field2805 = var1.readUnsignedShort();
       } else if(var2 == 7) {
-         this.field2808 = var1.method3033();
+         this.field2808 = var1.readUnsignedByte();
       } else if(var2 == 8) {
-         this.field2809 = var1.method3033();
+         this.field2809 = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if(var2 == 40) {
-            var3 = var1.method3033();
+            var3 = var1.readUnsignedByte();
             this.field2794 = new short[var3];
             this.field2803 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2794[var4] = (short)var1.method3097();
-               this.field2803[var4] = (short)var1.method3097();
+               this.field2794[var4] = (short)var1.readUnsignedShort();
+               this.field2803[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 41) {
-            var3 = var1.method3033();
+            var3 = var1.readUnsignedByte();
             this.field2804 = new short[var3];
             this.field2802 = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2804[var4] = (short)var1.method3097();
-               this.field2802[var4] = (short)var1.method3097();
+               this.field2804[var4] = (short)var1.readUnsignedShort();
+               this.field2802[var4] = (short)var1.readUnsignedShort();
             }
          }
       }
@@ -196,7 +196,7 @@ public class class190 extends CacheableNode {
    )
    void method3526(Buffer var1) {
       while(true) {
-         int var2 = var1.method3033();
+         int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }

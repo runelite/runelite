@@ -131,7 +131,7 @@ public final class Player extends Actor {
    )
    final void method230(Buffer var1) {
       var1.offset = 0;
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       this.field259 = var1.method3047();
       this.field246 = var1.method3047();
       int var3 = -1;
@@ -141,14 +141,14 @@ public final class Player extends Actor {
       int var6;
       int var7;
       for(int var5 = 0; var5 < 12; ++var5) {
-         var6 = var1.method3033();
+         var6 = var1.readUnsignedByte();
          if(var6 == 0) {
             var4[var5] = 0;
          } else {
-            var7 = var1.method3033();
+            var7 = var1.readUnsignedByte();
             var4[var5] = (var6 << 8) + var7;
             if(var5 == 0 && var4[0] == '\uffff') {
-               var3 = var1.method3097();
+               var3 = var1.readUnsignedShort();
                break;
             }
 
@@ -164,7 +164,7 @@ public final class Player extends Actor {
       int[] var9 = new int[5];
 
       for(var6 = 0; var6 < 5; ++var6) {
-         var7 = var1.method3033();
+         var7 = var1.readUnsignedByte();
          if(var7 < 0 || var7 >= class116.field1823[var6].length) {
             var7 = 0;
          }
@@ -172,38 +172,38 @@ public final class Player extends Actor {
          var9[var6] = var7;
       }
 
-      super.idlePoseAnimation = var1.method3097();
+      super.idlePoseAnimation = var1.readUnsignedShort();
       if(super.idlePoseAnimation == '\uffff') {
          super.idlePoseAnimation = -1;
       }
 
-      super.field601 = var1.method3097();
+      super.field601 = var1.readUnsignedShort();
       if(super.field601 == '\uffff') {
          super.field601 = -1;
       }
 
       super.field604 = super.field601;
-      super.field603 = var1.method3097();
+      super.field603 = var1.readUnsignedShort();
       if(super.field603 == '\uffff') {
          super.field603 = -1;
       }
 
-      super.field650 = var1.method3097();
+      super.field650 = var1.readUnsignedShort();
       if(super.field650 == '\uffff') {
          super.field650 = -1;
       }
 
-      super.field605 = var1.method3097();
+      super.field605 = var1.readUnsignedShort();
       if(super.field605 == '\uffff') {
          super.field605 = -1;
       }
 
-      super.field606 = var1.method3097();
+      super.field606 = var1.readUnsignedShort();
       if(super.field606 == '\uffff') {
          super.field606 = -1;
       }
 
-      super.field630 = var1.method3097();
+      super.field630 = var1.readUnsignedShort();
       if(super.field630 == '\uffff') {
          super.field630 = -1;
       }
@@ -213,9 +213,9 @@ public final class Player extends Actor {
          class101.field1644 = this.name;
       }
 
-      this.combatLevel = var1.method3033();
-      this.field249 = var1.method3097();
-      this.field263 = var1.method3033() == 1;
+      this.combatLevel = var1.readUnsignedByte();
+      this.field249 = var1.readUnsignedShort();
+      this.field263 = var1.readUnsignedByte() == 1;
       if(Client.field443 == 0 && Client.field503 >= 2) {
          this.field263 = false;
       }
@@ -303,7 +303,7 @@ public final class Player extends Actor {
       garbageValue = "-75"
    )
    final void method233(int var1, int var2, byte var3) {
-      if(super.animation != -1 && class9.getAnimation(super.animation).field3062 == 1) {
+      if(super.animation != -1 && class9.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
@@ -390,7 +390,7 @@ public final class Player extends Actor {
          class11.tileSettings[var1][var2][var3] = 0;
 
          while(true) {
-            var7 = var0.method3033();
+            var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
                   int[] var8 = class11.tileHeights[0][var2];
@@ -412,7 +412,7 @@ public final class Player extends Actor {
             }
 
             if(var7 == 1) {
-               int var14 = var0.method3033();
+               int var14 = var0.readUnsignedByte();
                if(var14 == 1) {
                   var14 = 0;
                }
@@ -437,18 +437,18 @@ public final class Player extends Actor {
          }
       } else {
          while(true) {
-            var7 = var0.method3033();
+            var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                break;
             }
 
             if(var7 == 1) {
-               var0.method3033();
+               var0.readUnsignedByte();
                break;
             }
 
             if(var7 <= 49) {
-               var0.method3033();
+               var0.readUnsignedByte();
             }
          }
       }

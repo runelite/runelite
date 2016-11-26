@@ -593,7 +593,7 @@ public class class54 extends Node {
 
          int var6;
          do {
-            var6 = var2.method3033();
+            var6 = var2.readUnsignedByte();
             var5 += var6;
          } while(var6 >= 255);
 

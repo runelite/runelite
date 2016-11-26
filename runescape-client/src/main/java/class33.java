@@ -59,10 +59,10 @@ public final class class33 extends Renderable {
       if(!this.field740) {
          this.field739 += var1;
 
-         while(this.field739 > this.field735.field3050[this.field738]) {
-            this.field739 -= this.field735.field3050[this.field738];
+         while(this.field739 > this.field735.frameLenghts[this.field738]) {
+            this.field739 -= this.field735.frameLenghts[this.field738];
             ++this.field738;
-            if(this.field738 >= this.field735.field3047.length) {
+            if(this.field738 >= this.field735.frameIDs.length) {
                this.field740 = true;
                break;
             }
