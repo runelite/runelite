@@ -294,7 +294,7 @@ public class class34 extends Node {
                return;
             }
 
-            if(var0.field654 <= 0 && var1.field3062 == 0) {
+            if(var0.field654 <= 0 && var1.priority == 0) {
                ++var0.field634;
                return;
             }

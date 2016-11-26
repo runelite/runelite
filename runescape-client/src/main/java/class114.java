@@ -45,39 +45,39 @@ public class class114 {
    static void method2249(byte[] var0) {
       Buffer var1 = new Buffer(var0);
       var1.offset = var0.length - 2;
-      class225.field3212 = var1.method3097();
+      class225.field3212 = var1.readUnsignedShort();
       class225.field3213 = new int[class225.field3212];
       class225.field3214 = new int[class225.field3212];
       class225.field3215 = new int[class225.field3212];
       class225.field3219 = new int[class225.field3212];
       class225.field3218 = new byte[class225.field3212][];
       var1.offset = var0.length - 7 - class225.field3212 * 8;
-      class225.field3211 = var1.method3097();
-      class225.field3216 = var1.method3097();
-      int var2 = (var1.method3033() & 255) + 1;
+      class225.field3211 = var1.readUnsignedShort();
+      class225.field3216 = var1.readUnsignedShort();
+      int var2 = (var1.readUnsignedByte() & 255) + 1;
 
       int var3;
       for(var3 = 0; var3 < class225.field3212; ++var3) {
-         class225.field3213[var3] = var1.method3097();
+         class225.field3213[var3] = var1.readUnsignedShort();
       }
 
       for(var3 = 0; var3 < class225.field3212; ++var3) {
-         class225.field3214[var3] = var1.method3097();
+         class225.field3214[var3] = var1.readUnsignedShort();
       }
 
       for(var3 = 0; var3 < class225.field3212; ++var3) {
-         class225.field3215[var3] = var1.method3097();
+         class225.field3215[var3] = var1.readUnsignedShort();
       }
 
       for(var3 = 0; var3 < class225.field3212; ++var3) {
-         class225.field3219[var3] = var1.method3097();
+         class225.field3219[var3] = var1.readUnsignedShort();
       }
 
       var1.offset = var0.length - 7 - class225.field3212 * 8 - 3 * (var2 - 1);
       class225.field3210 = new int[var2];
 
       for(var3 = 1; var3 < var2; ++var3) {
-         class225.field3210[var3] = var1.method2994();
+         class225.field3210[var3] = var1.read24BitInt();
          if(class225.field3210[var3] == 0) {
             class225.field3210[var3] = 1;
          }
@@ -91,7 +91,7 @@ public class class114 {
          int var6 = var5 * var4;
          byte[] var7 = new byte[var6];
          class225.field3218[var3] = var7;
-         int var8 = var1.method3033();
+         int var8 = var1.readUnsignedByte();
          int var9;
          if(var8 == 0) {
             for(var9 = 0; var9 < var6; ++var9) {
@@ -136,7 +136,7 @@ public class class114 {
             int var10 = var8 & 63;
             int var11 = var8 >> 6 & 63;
             int var12 = var8 >> 12;
-            int var13 = var5.method3033();
+            int var13 = var5.readUnsignedByte();
             int var14 = var13 >> 2;
             int var15 = var13 & 3;
             int var16 = var11 + var1;

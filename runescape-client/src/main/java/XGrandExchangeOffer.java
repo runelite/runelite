@@ -57,7 +57,7 @@ public class XGrandExchangeOffer {
    )
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
       this.progress = var1.method3047();
-      this.itemId = var1.method3097();
+      this.itemId = var1.readUnsignedShort();
       this.price = var1.method2995();
       this.totalQuantity = var1.method2995();
       this.quantitySold = var1.method2995();
@@ -80,7 +80,7 @@ public class XGrandExchangeOffer {
    )
    static final byte[] method50(byte[] var0) {
       Buffer var1 = new Buffer(var0);
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       int var3 = var1.method2995();
       if(var3 >= 0 && (class182.field2723 == 0 || var3 <= class182.field2723)) {
          if(var2 == 0) {

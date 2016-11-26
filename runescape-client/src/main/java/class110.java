@@ -257,7 +257,7 @@ public final class class110 implements Runnable {
                Client.packetOpcode = Client.field370.method3235();
                FileOnDisk.field1183.method2106(Client.field370.payload, 0, 2);
                Client.field370.offset = 0;
-               Client.field564 = Client.field370.method3097();
+               Client.field564 = Client.field370.readUnsignedShort();
 
                try {
                   Client var6 = Client.field281;
@@ -398,7 +398,7 @@ public final class class110 implements Runnable {
                   Client.field370.offset = 0;
                   FileOnDisk.field1183.method2106(Client.field370.payload, 0, 2);
                   Client.field370.offset = 0;
-                  Projectile.field880 = Client.field370.method3097();
+                  Projectile.field880 = Client.field370.readUnsignedShort();
                   Client.field452 = 12;
                }
 
@@ -437,7 +437,7 @@ public final class class110 implements Runnable {
 
                      FileOnDisk.field1183.method2106(Client.field370.payload, 0, 2);
                      Client.field370.offset = 0;
-                     Client.field564 = Client.field370.method3097();
+                     Client.field564 = Client.field370.readUnsignedShort();
                   }
 
                   if(FileOnDisk.field1183.method2105() >= Client.field564) {

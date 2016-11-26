@@ -101,12 +101,12 @@ public class class104 {
                   if(var5 != -1) {
                      Sequence var6 = class9.getAnimation(var5);
 
-                     for(var3.field2192 += Client.field517; var3.field2192 > var6.field3050[var3.field2057]; Tile.method1577(var3)) {
-                        var3.field2192 -= var6.field3050[var3.field2057];
+                     for(var3.field2192 += Client.field517; var3.field2192 > var6.frameLenghts[var3.field2057]; Tile.method1577(var3)) {
+                        var3.field2192 -= var6.frameLenghts[var3.field2057];
                         ++var3.field2057;
-                        if(var3.field2057 >= var6.field3047.length) {
-                           var3.field2057 -= var6.field3061;
-                           if(var3.field2057 < 0 || var3.field2057 >= var6.field3047.length) {
+                        if(var3.field2057 >= var6.frameIDs.length) {
+                           var3.field2057 -= var6.frameStep;
+                           if(var3.field2057 < 0 || var3.field2057 >= var6.frameIDs.length) {
                               var3.field2057 = 0;
                            }
                         }

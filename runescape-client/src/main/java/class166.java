@@ -217,14 +217,14 @@ public final class class166 extends Buffer {
                }
 
                var11.offset = 0;
-               var12 = var11.method3033();
+               var12 = var11.readUnsignedByte();
                if(var12 < 1 || var12 > 3) {
                   throw new IOException("" + var12);
                }
 
                int var13 = 0;
                if(var12 > 1) {
-                  var13 = var11.method3033();
+                  var13 = var11.readUnsignedByte();
                }
 
                if(var12 <= 2) {

@@ -562,7 +562,7 @@ public class Widget extends Node {
       garbageValue = "-13"
    )
    static final void method2836(Actor var0) {
-      if(Client.gameCycle == var0.field642 || var0.animation == -1 || var0.actionAnimationDisable != 0 || 1 + var0.field595 > class9.getAnimation(var0.animation).field3050[var0.actionFrame]) {
+      if(Client.gameCycle == var0.field642 || var0.animation == -1 || var0.actionAnimationDisable != 0 || 1 + var0.field595 > class9.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
          int var1 = var0.field642 - var0.field648;
          int var2 = Client.gameCycle - var0.field648;
          int var3 = var0.field637 * 128 + var0.field599 * 64;
@@ -584,106 +584,106 @@ public class Widget extends Node {
       garbageValue = "-1530194197"
    )
    void method2838(Buffer var1) {
-      var1.method3033();
+      var1.readUnsignedByte();
       this.field2068 = true;
-      this.type = var1.method3033();
-      this.contentType = var1.method3097();
+      this.type = var1.readUnsignedByte();
+      this.contentType = var1.readUnsignedShort();
       this.field2078 = var1.method2993();
       this.field2087 = var1.method2993();
-      this.field2144 = var1.method3097();
+      this.field2144 = var1.readUnsignedShort();
       if(this.type == 9) {
          this.field2081 = var1.method2993();
       } else {
-         this.field2081 = var1.method3097();
+         this.field2081 = var1.readUnsignedShort();
       }
 
       this.field2076 = var1.method3047();
       this.field2077 = var1.method3047();
       this.field2074 = var1.method3047();
       this.field2075 = var1.method3047();
-      this.parentId = var1.method3097();
+      this.parentId = var1.readUnsignedShort();
       if(this.parentId == '\uffff') {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
       }
 
-      this.isHidden = var1.method3033() == 1;
+      this.isHidden = var1.readUnsignedByte() == 1;
       if(this.type == 0) {
-         this.scrollWidth = var1.method3097();
-         this.scrollHeight = var1.method3097();
-         this.field2202 = var1.method3033() == 1;
+         this.scrollWidth = var1.readUnsignedShort();
+         this.scrollHeight = var1.readUnsignedShort();
+         this.field2202 = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 5) {
          this.textureId = var1.method2995();
-         this.field2106 = var1.method3097();
-         this.field2107 = var1.method3033() == 1;
-         this.opacity = var1.method3033();
-         this.borderThickness = var1.method3033();
+         this.field2106 = var1.readUnsignedShort();
+         this.field2107 = var1.readUnsignedByte() == 1;
+         this.opacity = var1.readUnsignedByte();
+         this.borderThickness = var1.readUnsignedByte();
          this.sprite2 = var1.method2995();
-         this.flippedVertically = var1.method3033() == 1;
-         this.flippedHorizontally = var1.method3033() == 1;
+         this.flippedVertically = var1.readUnsignedByte() == 1;
+         this.flippedHorizontally = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 6) {
          this.modelType = 1;
-         this.modelId = var1.method3097();
+         this.modelId = var1.readUnsignedShort();
          if(this.modelId == '\uffff') {
             this.modelId = -1;
          }
 
          this.field2131 = var1.method2993();
          this.field2119 = var1.method2993();
-         this.rotationX = var1.method3097();
-         this.rotationZ = var1.method3097();
-         this.rotationY = var1.method3097();
-         this.field2134 = var1.method3097();
-         this.field2116 = var1.method3097();
+         this.rotationX = var1.readUnsignedShort();
+         this.rotationZ = var1.readUnsignedShort();
+         this.rotationY = var1.readUnsignedShort();
+         this.field2134 = var1.readUnsignedShort();
+         this.field2116 = var1.readUnsignedShort();
          if(this.field2116 == '\uffff') {
             this.field2116 = -1;
          }
 
-         this.field2140 = var1.method3033() == 1;
-         var1.method3097();
+         this.field2140 = var1.readUnsignedByte() == 1;
+         var1.readUnsignedShort();
          if(this.field2076 != 0) {
-            this.field2124 = var1.method3097();
+            this.field2124 = var1.readUnsignedShort();
          }
 
          if(this.field2077 != 0) {
-            var1.method3097();
+            var1.readUnsignedShort();
          }
       }
 
       if(this.type == 4) {
-         this.field2190 = var1.method3097();
+         this.field2190 = var1.readUnsignedShort();
          if(this.field2190 == '\uffff') {
             this.field2190 = -1;
          }
 
          this.text = var1.method3057();
-         this.field2086 = var1.method3033();
-         this.field2132 = var1.method3033();
-         this.field2070 = var1.method3033();
-         this.field2173 = var1.method3033() == 1;
+         this.field2086 = var1.readUnsignedByte();
+         this.field2132 = var1.readUnsignedByte();
+         this.field2070 = var1.readUnsignedByte();
+         this.field2173 = var1.readUnsignedByte() == 1;
          this.textColor = var1.method2995();
       }
 
       if(this.type == 3) {
          this.textColor = var1.method2995();
-         this.field2098 = var1.method3033() == 1;
-         this.opacity = var1.method3033();
+         this.field2098 = var1.readUnsignedByte() == 1;
+         this.opacity = var1.readUnsignedByte();
       }
 
       if(this.type == 9) {
-         this.field2102 = var1.method3033();
+         this.field2102 = var1.readUnsignedByte();
          this.textColor = var1.method2995();
-         this.field2103 = var1.method3033() == 1;
+         this.field2103 = var1.readUnsignedByte() == 1;
       }
 
-      this.field2141 = var1.method2994();
+      this.field2141 = var1.read24BitInt();
       this.name = var1.method3057();
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       if(var2 > 0) {
          this.actions = new String[var2];
 
@@ -692,9 +692,9 @@ public class Widget extends Node {
          }
       }
 
-      this.field2125 = var1.method3033();
-      this.field2146 = var1.method3033();
-      this.field2147 = var1.method3033() == 1;
+      this.field2125 = var1.readUnsignedByte();
+      this.field2146 = var1.readUnsignedByte();
+      this.field2147 = var1.readUnsignedByte() == 1;
       this.field2148 = var1.method3057();
       this.field2163 = this.method2868(var1);
       this.field2155 = this.method2868(var1);
@@ -725,7 +725,7 @@ public class Widget extends Node {
       garbageValue = "1812004754"
    )
    int[] method2840(Buffer var1) {
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       if(var2 == 0) {
          return null;
       } else {
@@ -1034,39 +1034,39 @@ public class Widget extends Node {
    )
    void method2854(Buffer var1) {
       this.field2068 = false;
-      this.type = var1.method3033();
-      this.field2072 = var1.method3033();
-      this.contentType = var1.method3097();
+      this.type = var1.readUnsignedByte();
+      this.field2072 = var1.readUnsignedByte();
+      this.contentType = var1.readUnsignedShort();
       this.field2078 = var1.method2993();
       this.field2087 = var1.method2993();
-      this.field2144 = var1.method3097();
-      this.field2081 = var1.method3097();
-      this.opacity = var1.method3033();
-      this.parentId = var1.method3097();
+      this.field2144 = var1.readUnsignedShort();
+      this.field2081 = var1.readUnsignedShort();
+      this.opacity = var1.readUnsignedByte();
+      this.parentId = var1.readUnsignedShort();
       if(this.parentId == '\uffff') {
          this.parentId = -1;
       } else {
          this.parentId += this.id & -65536;
       }
 
-      this.field2120 = var1.method3097();
+      this.field2120 = var1.readUnsignedShort();
       if(this.field2120 == '\uffff') {
          this.field2120 = -1;
       }
 
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       int var3;
       if(var2 > 0) {
          this.field2181 = new int[var2];
          this.field2183 = new int[var2];
 
          for(var3 = 0; var3 < var2; ++var3) {
-            this.field2181[var3] = var1.method3033();
-            this.field2183[var3] = var1.method3097();
+            this.field2181[var3] = var1.readUnsignedByte();
+            this.field2183[var3] = var1.readUnsignedShort();
          }
       }
 
-      var3 = var1.method3033();
+      var3 = var1.readUnsignedByte();
       int var4;
       int var5;
       int var6;
@@ -1074,11 +1074,11 @@ public class Widget extends Node {
          this.dynamicValues = new int[var3][];
 
          for(var4 = 0; var4 < var3; ++var4) {
-            var5 = var1.method3097();
+            var5 = var1.readUnsignedShort();
             this.dynamicValues[var4] = new int[var5];
 
             for(var6 = 0; var6 < var5; ++var6) {
-               this.dynamicValues[var4][var6] = var1.method3097();
+               this.dynamicValues[var4][var6] = var1.readUnsignedShort();
                if(this.dynamicValues[var4][var6] == '\uffff') {
                   this.dynamicValues[var4][var6] = -1;
                }
@@ -1087,47 +1087,47 @@ public class Widget extends Node {
       }
 
       if(this.type == 0) {
-         this.scrollHeight = var1.method3097();
-         this.isHidden = var1.method3033() == 1;
+         this.scrollHeight = var1.readUnsignedShort();
+         this.isHidden = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 1) {
-         var1.method3097();
-         var1.method3033();
+         var1.readUnsignedShort();
+         var1.readUnsignedByte();
       }
 
       if(this.type == 2) {
          this.itemIds = new int[this.field2144 * this.field2081];
          this.itemQuantities = new int[this.field2081 * this.field2144];
-         var4 = var1.method3033();
+         var4 = var1.readUnsignedByte();
          if(var4 == 1) {
             this.field2141 |= 268435456;
          }
 
-         var5 = var1.method3033();
+         var5 = var1.readUnsignedByte();
          if(var5 == 1) {
             this.field2141 |= 1073741824;
          }
 
-         var6 = var1.method3033();
+         var6 = var1.readUnsignedByte();
          if(var6 == 1) {
             this.field2141 |= Integer.MIN_VALUE;
          }
 
-         int var7 = var1.method3033();
+         int var7 = var1.readUnsignedByte();
          if(var7 == 1) {
             this.field2141 |= 536870912;
          }
 
-         this.field2135 = var1.method3033();
-         this.field2136 = var1.method3033();
+         this.field2135 = var1.readUnsignedByte();
+         this.field2136 = var1.readUnsignedByte();
          this.field2137 = new int[20];
          this.field2129 = new int[20];
          this.field2139 = new int[20];
 
          int var8;
          for(var8 = 0; var8 < 20; ++var8) {
-            int var9 = var1.method3033();
+            int var9 = var1.readUnsignedByte();
             if(var9 == 1) {
                this.field2137[var8] = var1.method2993();
                this.field2129[var8] = var1.method2993();
@@ -1149,19 +1149,19 @@ public class Widget extends Node {
       }
 
       if(this.type == 3) {
-         this.field2098 = var1.method3033() == 1;
+         this.field2098 = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 4 || this.type == 1) {
-         this.field2132 = var1.method3033();
-         this.field2070 = var1.method3033();
-         this.field2086 = var1.method3033();
-         this.field2190 = var1.method3097();
+         this.field2132 = var1.readUnsignedByte();
+         this.field2070 = var1.readUnsignedByte();
+         this.field2086 = var1.readUnsignedByte();
+         this.field2190 = var1.readUnsignedShort();
          if(this.field2190 == '\uffff') {
             this.field2190 = -1;
          }
 
-         this.field2173 = var1.method3033() == 1;
+         this.field2173 = var1.readUnsignedByte() == 1;
       }
 
       if(this.type == 4) {
@@ -1186,46 +1186,46 @@ public class Widget extends Node {
 
       if(this.type == 6) {
          this.modelType = 1;
-         this.modelId = var1.method3097();
+         this.modelId = var1.readUnsignedShort();
          if(this.modelId == '\uffff') {
             this.modelId = -1;
          }
 
          this.field2114 = 1;
-         this.field2115 = var1.method3097();
+         this.field2115 = var1.readUnsignedShort();
          if(this.field2115 == '\uffff') {
             this.field2115 = -1;
          }
 
-         this.field2116 = var1.method3097();
+         this.field2116 = var1.readUnsignedShort();
          if(this.field2116 == '\uffff') {
             this.field2116 = -1;
          }
 
-         this.field2117 = var1.method3097();
+         this.field2117 = var1.readUnsignedShort();
          if(this.field2117 == '\uffff') {
             this.field2117 = -1;
          }
 
-         this.field2134 = var1.method3097();
-         this.rotationX = var1.method3097();
-         this.rotationZ = var1.method3097();
+         this.field2134 = var1.readUnsignedShort();
+         this.rotationX = var1.readUnsignedShort();
+         this.rotationZ = var1.readUnsignedShort();
       }
 
       if(this.type == 7) {
          this.itemIds = new int[this.field2081 * this.field2144];
          this.itemQuantities = new int[this.field2144 * this.field2081];
-         this.field2132 = var1.method3033();
-         this.field2190 = var1.method3097();
+         this.field2132 = var1.readUnsignedByte();
+         this.field2190 = var1.readUnsignedShort();
          if(this.field2190 == '\uffff') {
             this.field2190 = -1;
          }
 
-         this.field2173 = var1.method3033() == 1;
+         this.field2173 = var1.readUnsignedByte() == 1;
          this.textColor = var1.method2995();
          this.field2135 = var1.method2993();
          this.field2136 = var1.method2993();
-         var4 = var1.method3033();
+         var4 = var1.readUnsignedByte();
          if(var4 == 1) {
             this.field2141 |= 1073741824;
          }
@@ -1248,7 +1248,7 @@ public class Widget extends Node {
       if(this.field2072 == 2 || this.type == 2) {
          this.field2148 = var1.method3057();
          this.field2133 = var1.method3057();
-         var4 = var1.method3097() & 63;
+         var4 = var1.readUnsignedShort() & 63;
          this.field2141 |= var4 << 11;
       }
 
@@ -1289,14 +1289,14 @@ public class Widget extends Node {
       garbageValue = "1112359742"
    )
    Object[] method2868(Buffer var1) {
-      int var2 = var1.method3033();
+      int var2 = var1.readUnsignedByte();
       if(var2 == 0) {
          return null;
       } else {
          Object[] var3 = new Object[var2];
 
          for(int var4 = 0; var4 < var2; ++var4) {
-            int var5 = var1.method3033();
+            int var5 = var1.readUnsignedByte();
             if(var5 == 0) {
                var3[var4] = new Integer(var1.method2995());
             } else if(var5 == 1) {

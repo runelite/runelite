@@ -88,28 +88,28 @@ public class class67 {
 
    @ObfuscatedName("w")
    final void method1368(Buffer var1, class58 var2) {
-      int var3 = var1.method3033();
+      int var3 = var1.readUnsignedByte();
       this.field1126[0] = var3 >> 4;
       this.field1126[1] = var3 & 15;
       if(var3 != 0) {
-         this.field1125[0] = var1.method3097();
-         this.field1125[1] = var1.method3097();
-         int var4 = var1.method3033();
+         this.field1125[0] = var1.readUnsignedShort();
+         this.field1125[1] = var1.readUnsignedShort();
+         int var4 = var1.readUnsignedByte();
 
          int var5;
          int var6;
          for(var5 = 0; var5 < 2; ++var5) {
             for(var6 = 0; var6 < this.field1126[var5]; ++var6) {
-               this.field1131[var5][0][var6] = var1.method3097();
-               this.field1124[var5][0][var6] = var1.method3097();
+               this.field1131[var5][0][var6] = var1.readUnsignedShort();
+               this.field1124[var5][0][var6] = var1.readUnsignedShort();
             }
          }
 
          for(var5 = 0; var5 < 2; ++var5) {
             for(var6 = 0; var6 < this.field1126[var5]; ++var6) {
                if((var4 & 1 << var5 * 4 << var6) != 0) {
-                  this.field1131[var5][1][var6] = var1.method3097();
-                  this.field1124[var5][1][var6] = var1.method3097();
+                  this.field1131[var5][1][var6] = var1.readUnsignedShort();
+                  this.field1124[var5][1][var6] = var1.readUnsignedShort();
                } else {
                   this.field1131[var5][1][var6] = this.field1131[var5][0][var6];
                   this.field1124[var5][1][var6] = this.field1124[var5][0][var6];

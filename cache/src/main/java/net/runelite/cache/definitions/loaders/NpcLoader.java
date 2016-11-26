@@ -56,7 +56,7 @@ public class NpcLoader
 		return def;
 	}
 
-	void decodeValues(int opcode, NpcDefinition def, InputStream stream)
+	private void decodeValues(int opcode, NpcDefinition def, InputStream stream)
 	{
 		int length;
 		int index;

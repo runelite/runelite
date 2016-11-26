@@ -27,12 +27,12 @@ public class class13 {
       int var4;
       int var35;
       if(Client.packetOpcode == 16) {
-         var0 = Client.field370.method3033();
+         var0 = Client.field370.readUnsignedByte();
          var1 = (var0 >> 4 & 7) + class7.field65;
          var2 = (var0 & 7) + class3.field32;
-         var3 = Client.field370.method3097();
-         var4 = Client.field370.method3097();
-         var35 = Client.field370.method3097();
+         var3 = Client.field370.readUnsignedShort();
+         var4 = Client.field370.readUnsignedShort();
+         var35 = Client.field370.readUnsignedShort();
          if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
             Deque var36 = Client.groundItemDeque[class166.plane][var1][var2];
             if(var36 != null) {
@@ -65,7 +65,7 @@ public class class13 {
             Item var33;
             if(Client.packetOpcode == 175) {
                var0 = Client.field370.method3153();
-               var1 = Client.field370.method3033();
+               var1 = Client.field370.readUnsignedByte();
                var2 = class7.field65 + (var1 >> 4 & 7);
                var3 = class3.field32 + (var1 & 7);
                if(var2 >= 0 && var3 >= 0 && var2 < 104 && var3 < 104) {
@@ -93,19 +93,19 @@ public class class13 {
                int var11;
                int var42;
                if(Client.packetOpcode == 209) {
-                  var0 = Client.field370.method3033();
+                  var0 = Client.field370.readUnsignedByte();
                   var1 = class7.field65 + (var0 >> 4 & 7);
                   var2 = class3.field32 + (var0 & 7);
                   var3 = var1 + Client.field370.method3047();
                   var4 = var2 + Client.field370.method3047();
                   var35 = Client.field370.method2993();
-                  var41 = Client.field370.method3097();
-                  var7 = Client.field370.method3033() * 4;
-                  var42 = Client.field370.method3033() * 4;
-                  var9 = Client.field370.method3097();
-                  var10 = Client.field370.method3097();
-                  var11 = Client.field370.method3033();
-                  int var40 = Client.field370.method3033();
+                  var41 = Client.field370.readUnsignedShort();
+                  var7 = Client.field370.readUnsignedByte() * 4;
+                  var42 = Client.field370.readUnsignedByte() * 4;
+                  var9 = Client.field370.readUnsignedShort();
+                  var10 = Client.field370.readUnsignedShort();
+                  var11 = Client.field370.readUnsignedByte();
+                  int var40 = Client.field370.readUnsignedByte();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var3 >= 0 && var4 >= 0 && var3 < 104 && var4 < 104 && var41 != '\uffff') {
                      var1 = 64 + var1 * 128;
                      var2 = 128 * var2 + 64;
@@ -119,7 +119,7 @@ public class class13 {
                } else {
                   if(Client.packetOpcode == 208) {
                      var0 = Client.field370.method3153();
-                     var1 = Client.field370.method3033();
+                     var1 = Client.field370.readUnsignedByte();
                      var2 = var1 >> 2;
                      var3 = var1 & 3;
                      var4 = Client.field350[var2];
@@ -131,7 +131,7 @@ public class class13 {
                      var10 = class7.field65 + (var9 >> 4 & 7);
                      var11 = class3.field32 + (var9 & 7);
                      byte var12 = Client.field370.method3106();
-                     int var34 = Client.field370.method3097();
+                     int var34 = Client.field370.readUnsignedShort();
                      int var14 = Client.field370.method3026();
                      Player var15;
                      if(var0 == Client.localInteractingIndex) {
@@ -191,14 +191,14 @@ public class class13 {
                   }
 
                   if(Client.packetOpcode == 117) {
-                     var0 = Client.field370.method3033();
+                     var0 = Client.field370.readUnsignedByte();
                      var1 = class7.field65 + (var0 >> 4 & 7);
                      var2 = class3.field32 + (var0 & 7);
-                     var3 = Client.field370.method3097();
-                     var4 = Client.field370.method3033();
+                     var3 = Client.field370.readUnsignedShort();
+                     var4 = Client.field370.readUnsignedByte();
                      var35 = var4 >> 4 & 15;
                      var41 = var4 & 7;
-                     var7 = Client.field370.method3033();
+                     var7 = Client.field370.readUnsignedByte();
                      if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                         var42 = 1 + var35;
                         if(class40.localPlayer.pathX[0] >= var1 - var42 && class40.localPlayer.pathX[0] <= var42 + var1 && class40.localPlayer.pathY[0] >= var2 - var42 && class40.localPlayer.pathY[0] <= var42 + var2 && Client.field526 != 0 && var41 > 0 && Client.field527 < 50) {
@@ -235,7 +235,7 @@ public class class13 {
                         var0 = Client.field370.method3019();
                         var1 = (var0 >> 4 & 7) + class7.field65;
                         var2 = (var0 & 7) + class3.field32;
-                        var3 = Client.field370.method3097();
+                        var3 = Client.field370.readUnsignedShort();
                         var4 = Client.field370.method3017();
                         var35 = var4 >> 2;
                         var41 = var4 & 3;
@@ -245,12 +245,12 @@ public class class13 {
                         }
 
                      } else if(Client.packetOpcode == 243) {
-                        var0 = Client.field370.method3033();
+                        var0 = Client.field370.readUnsignedByte();
                         var1 = (var0 >> 4 & 7) + class7.field65;
                         var2 = (var0 & 7) + class3.field32;
-                        var3 = Client.field370.method3097();
-                        var4 = Client.field370.method3033();
-                        var35 = Client.field370.method3097();
+                        var3 = Client.field370.readUnsignedShort();
+                        var4 = Client.field370.readUnsignedByte();
+                        var35 = Client.field370.readUnsignedShort();
                         if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                            var1 = var1 * 128 + 64;
                            var2 = 128 * var2 + 64;
@@ -534,7 +534,7 @@ public class class13 {
    )
    public static void method188(Buffer var0, int var1) {
       ClassInfo var2 = new ClassInfo();
-      var2.field3221 = var0.method3033();
+      var2.field3221 = var0.readUnsignedByte();
       var2.field3223 = var0.method2995();
       var2.field3220 = new int[var2.field3221];
       var2.field3224 = new int[var2.field3221];
@@ -545,7 +545,7 @@ public class class13 {
 
       for(int var3 = 0; var3 < var2.field3221; ++var3) {
          try {
-            int var4 = var0.method3033();
+            int var4 = var0.readUnsignedByte();
             String var5;
             String var6;
             int var7;
@@ -553,7 +553,7 @@ public class class13 {
                if(var4 == 3 || var4 == 4) {
                   var5 = var0.method3057();
                   var6 = var0.method3057();
-                  var7 = var0.method3033();
+                  var7 = var0.readUnsignedByte();
                   String[] var8 = new String[var7];
 
                   for(int var9 = 0; var9 < var7; ++var9) {

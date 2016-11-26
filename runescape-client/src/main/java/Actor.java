@@ -522,7 +522,7 @@ public abstract class Actor extends Renderable {
 
                FileOnDisk.field1183.method2106(Client.field370.payload, 0, 2);
                Client.field370.offset = 0;
-               Client.field564 = Client.field370.method3097();
+               Client.field564 = Client.field370.readUnsignedShort();
                var0 -= 2;
             }
 
@@ -540,7 +540,7 @@ public abstract class Actor extends Renderable {
             Widget var3;
             if(Client.packetOpcode == 63) {
                var1 = Client.field370.method2995();
-               var2 = Client.field370.method3097();
+               var2 = Client.field370.readUnsignedShort();
                var3 = class5.method79(var1);
                if(var3.modelType != 2 || var2 != var3.modelId) {
                   var3.modelType = 2;
@@ -560,8 +560,8 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 70) {
-               var1 = Client.field370.method3033();
-               if(Client.field370.method3033() == 0) {
+               var1 = Client.field370.readUnsignedByte();
+               if(Client.field370.readUnsignedByte() == 0) {
                   Client.grandExchangeOffers[var1] = new XGrandExchangeOffer();
                   Client.field370.offset += 18;
                } else {
@@ -580,9 +580,9 @@ public abstract class Actor extends Renderable {
             long var78;
             if(Client.packetOpcode == 99) {
                var17 = Client.field370.method3057();
-               var58 = (long)Client.field370.method3097();
-               var78 = (long)Client.field370.method2994();
-               class177 var47 = (class177)class101.method1985(class65.method1170(), Client.field370.method3033());
+               var58 = (long)Client.field370.readUnsignedShort();
+               var78 = (long)Client.field370.read24BitInt();
+               class177 var47 = (class177)class101.method1985(class65.method1170(), Client.field370.readUnsignedByte());
                var59 = (var58 << 32) + var78;
                boolean var73 = false;
 
@@ -620,12 +620,12 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 179) {
-               Client.flagX = Client.field370.method3033();
+               Client.flagX = Client.field370.readUnsignedByte();
                if(Client.flagX == 255) {
                   Client.flagX = 0;
                }
 
-               Client.flagY = Client.field370.method3033();
+               Client.flagY = Client.field370.readUnsignedByte();
                if(Client.flagY == 255) {
                   Client.flagY = 0;
                }
@@ -657,10 +657,10 @@ public abstract class Actor extends Renderable {
             int var4;
             int var19;
             if(Client.packetOpcode == 114) {
-               var1 = Client.field370.method3033();
-               var2 = Client.field370.method3033();
-               var19 = Client.field370.method3033();
-               var4 = Client.field370.method3033();
+               var1 = Client.field370.readUnsignedByte();
+               var2 = Client.field370.readUnsignedByte();
+               var19 = Client.field370.readUnsignedByte();
+               var4 = Client.field370.readUnsignedByte();
                Client.field429[var1] = true;
                Client.field535[var1] = var2;
                Client.field536[var1] = var19;
@@ -710,7 +710,7 @@ public abstract class Actor extends Renderable {
             int var5;
             int var20;
             if(Client.packetOpcode == 90) {
-               var1 = Client.field370.method3097();
+               var1 = Client.field370.readUnsignedShort();
                var2 = Client.field370.method3067();
                var19 = var1 >> 10 & 31;
                var4 = var1 >> 5 & 31;
@@ -729,11 +729,11 @@ public abstract class Actor extends Renderable {
             int var7;
             if(Client.packetOpcode == 80) {
                Client.field533 = true;
-               class145.field2021 = Client.field370.method3033();
-               class37.field787 = Client.field370.method3033();
-               class143.field2006 = Client.field370.method3097();
-               XItemContainer.field128 = Client.field370.method3033();
-               class9.field83 = Client.field370.method3033();
+               class145.field2021 = Client.field370.readUnsignedByte();
+               class37.field787 = Client.field370.readUnsignedByte();
+               class143.field2006 = Client.field370.readUnsignedShort();
+               XItemContainer.field128 = Client.field370.readUnsignedByte();
+               class9.field83 = Client.field370.readUnsignedByte();
                if(class9.field83 >= 100) {
                   var1 = class145.field2021 * 128 + 64;
                   var2 = 64 + class37.field787 * 128;
@@ -833,9 +833,9 @@ public abstract class Actor extends Renderable {
             if(Client.packetOpcode == 20) {
                var17 = Client.field370.method3057();
                var58 = Client.field370.method3118();
-               var78 = (long)Client.field370.method3097();
-               var72 = (long)Client.field370.method2994();
-               class177 var43 = (class177)class101.method1985(class65.method1170(), Client.field370.method3033());
+               var78 = (long)Client.field370.readUnsignedShort();
+               var72 = (long)Client.field370.read24BitInt();
+               class177 var43 = (class177)class101.method1985(class65.method1170(), Client.field370.readUnsignedByte());
                var54 = var72 + (var78 << 32);
                var55 = false;
 
@@ -894,7 +894,7 @@ public abstract class Actor extends Renderable {
             Widget var24;
             if(Client.packetOpcode == 32) {
                var1 = Client.field370.method3153();
-               var2 = Client.field370.method3097();
+               var2 = Client.field370.readUnsignedShort();
                var19 = Client.field370.method2995();
                var24 = class5.method79(var19);
                var24.field2112 = var1 + (var2 << 16);
@@ -904,11 +904,11 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 216) {
                Client.field533 = true;
-               class49.field948 = Client.field370.method3033();
-               field652 = Client.field370.method3033();
-               class63.field1085 = Client.field370.method3097();
-               Renderable.field1535 = Client.field370.method3033();
-               RSCanvas.field1758 = Client.field370.method3033();
+               class49.field948 = Client.field370.readUnsignedByte();
+               field652 = Client.field370.readUnsignedByte();
+               class63.field1085 = Client.field370.readUnsignedShort();
+               Renderable.field1535 = Client.field370.readUnsignedByte();
+               RSCanvas.field1758 = Client.field370.readUnsignedByte();
                if(RSCanvas.field1758 >= 100) {
                   XGrandExchangeOffer.cameraX = 64 + class49.field948 * 128;
                   Client.cameraY = field652 * 128 + 64;
@@ -920,7 +920,7 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 164) {
-               var1 = Client.field370.method3097();
+               var1 = Client.field370.readUnsignedShort();
                Client.widgetRoot = var1;
                class101.method1990(Client.widgetRoot, class16.field169, class65.field1103, false);
                Client.method603(var1);
@@ -935,7 +935,7 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 87) {
-               var2 = Client.field370.method3033();
+               var2 = Client.field370.readUnsignedByte();
                class216[] var51 = new class216[]{class216.field3154, class216.field3156, class216.field3155};
                class216[] var96 = var51;
                var5 = 0;
@@ -1006,7 +1006,7 @@ public abstract class Actor extends Renderable {
 
                Client.field512 = var37;
                XClanMember.field273 = Client.field370.method3047();
-               var20 = Client.field370.method3033();
+               var20 = Client.field370.readUnsignedByte();
                if(var20 == 255) {
                   Client.packetOpcode = -1;
                   return true;
@@ -1019,7 +1019,7 @@ public abstract class Actor extends Renderable {
                   var76[var92] = new XClanMember();
                   var76[var92].username = Client.field370.method3057();
                   var76[var92].field277 = class162.method3194(var76[var92].username, class108.field1740);
-                  var76[var92].world = Client.field370.method3097();
+                  var76[var92].world = Client.field370.readUnsignedShort();
                   var76[var92].rank = Client.field370.method3047();
                   Client.field370.method3057();
                   if(var76[var92].username.equals(class40.localPlayer.name)) {
@@ -1069,7 +1069,7 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 192) {
                class182.method3405();
-               Client.energy = Client.field370.method3033();
+               Client.energy = Client.field370.readUnsignedByte();
                Client.field379 = Client.field470;
                Client.packetOpcode = -1;
                return true;
@@ -1079,7 +1079,7 @@ public abstract class Actor extends Renderable {
             String var84;
             if(Client.packetOpcode == 214) {
                var1 = Client.field370.method3003();
-               var50 = Client.field370.method3033() == 1;
+               var50 = Client.field370.readUnsignedByte() == 1;
                var37 = "";
                var49 = false;
                if(var50) {
@@ -1132,7 +1132,7 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 102) {
                var17 = Client.field370.method3057();
-               var2 = Client.field370.method3033();
+               var2 = Client.field370.readUnsignedByte();
                var19 = Client.field370.method3018();
                if(var2 >= 1 && var2 <= 8) {
                   if(var17.equalsIgnoreCase("null")) {
@@ -1148,7 +1148,7 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 2) {
-               Client.field521 = Client.field370.method3033();
+               Client.field521 = Client.field370.readUnsignedByte();
                Client.packetOpcode = -1;
                return true;
             }
@@ -1156,7 +1156,7 @@ public abstract class Actor extends Renderable {
             WidgetNode var85;
             if(Client.packetOpcode == 18) {
                var1 = Client.field370.method3025();
-               var2 = Client.field370.method3033();
+               var2 = Client.field370.readUnsignedByte();
                var19 = Client.field370.method3036();
                var85 = (WidgetNode)Client.componentTable.method2405((long)var19);
                if(null != var85) {
@@ -1188,7 +1188,7 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 188) {
                var1 = Client.field370.method2995();
-               var2 = Client.field370.method3097();
+               var2 = Client.field370.readUnsignedShort();
                if(var1 < -70000) {
                   var2 += '耀';
                }
@@ -1201,10 +1201,10 @@ public abstract class Actor extends Renderable {
 
                for(; Client.field370.offset < Client.field564; class1.method19(var2, var4, var5 - 1, var20)) {
                   var4 = Client.field370.method3003();
-                  var5 = Client.field370.method3097();
+                  var5 = Client.field370.readUnsignedShort();
                   var20 = 0;
                   if(var5 != 0) {
-                     var20 = Client.field370.method3033();
+                     var20 = Client.field370.readUnsignedByte();
                      if(var20 == 255) {
                         var20 = Client.field370.method2995();
                      }
@@ -1235,7 +1235,7 @@ public abstract class Actor extends Renderable {
 
             boolean var39;
             if(Client.packetOpcode == 13) {
-               var39 = Client.field370.method3033() == 1;
+               var39 = Client.field370.readUnsignedByte() == 1;
                if(var39) {
                   class2.field21 = class202.method3838() - Client.field370.method3118();
                   class3.field33 = new class1(Client.field370, true);
@@ -1260,7 +1260,7 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 38) {
-               var1 = Client.field370.method3097();
+               var1 = Client.field370.readUnsignedShort();
                if(var1 == '\uffff') {
                   var1 = -1;
                }
@@ -1337,7 +1337,7 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 19) {
                var17 = Client.field370.method3057();
-               var2 = Client.field370.method3097();
+               var2 = Client.field370.readUnsignedShort();
                byte var81 = Client.field370.method3047();
                var49 = false;
                if(var81 == -128) {
@@ -1449,8 +1449,8 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 41) {
-               Client.field364 = Client.field370.method3033();
-               Client.field504 = Client.field370.method3033();
+               Client.field364 = Client.field370.readUnsignedByte();
+               Client.field504 = Client.field370.readUnsignedByte();
                Client.packetOpcode = -1;
                return true;
             }
@@ -1586,14 +1586,14 @@ public abstract class Actor extends Renderable {
                for(var4 = 0; var4 < class45.field908; ++var4) {
                   var5 = class45.field909[var4];
                   var6 = Client.cachedPlayers[var5];
-                  var7 = var65.method3033();
+                  var7 = var65.readUnsignedByte();
                   if((var7 & 64) != 0) {
-                     var7 += var65.method3033() << 8;
+                     var7 += var65.readUnsignedByte() << 8;
                   }
 
                   var26 = -1;
                   if((var7 & 32) != 0) {
-                     var9 = var65.method3033();
+                     var9 = var65.readUnsignedByte();
                      var18 = new byte[var9];
                      var28 = new Buffer(var18);
                      var65.method3043(var18, 0, var9);
@@ -1602,17 +1602,17 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 128) != 0) {
-                     var9 = var65.method3097();
+                     var9 = var65.readUnsignedShort();
                      if(var9 == '\uffff') {
                         var9 = -1;
                      }
 
-                     var10 = var65.method3033();
+                     var10 = var65.readUnsignedByte();
                      class36.method756(var6, var9, var10);
                   }
 
                   if((var7 & 8) != 0) {
-                     var6.interacting = var65.method3097();
+                     var6.interacting = var65.readUnsignedShort();
                      if(var6.interacting == '\uffff') {
                         var6.interacting = -1;
                      }
@@ -1634,7 +1634,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 4) != 0) {
-                     var9 = var65.method3033();
+                     var9 = var65.readUnsignedByte();
                      if(var9 > 0) {
                         for(var10 = 0; var10 < var9; ++var10) {
                            var12 = -1;
@@ -1657,15 +1657,15 @@ public abstract class Actor extends Renderable {
                         }
                      }
 
-                     var10 = var65.method3033();
+                     var10 = var65.readUnsignedByte();
                      if(var10 > 0) {
                         for(var11 = 0; var11 < var10; ++var11) {
                            var12 = var65.method3003();
                            var13 = var65.method3003();
                            if(var13 != 32767) {
                               var14 = var65.method3003();
-                              var15 = var65.method3033();
-                              var16 = var13 > 0?var65.method3033():var15;
+                              var15 = var65.readUnsignedByte();
+                              var16 = var13 > 0?var65.readUnsignedByte():var15;
                               var6.method620(var12, Client.gameCycle, var13, var14, var15, var16);
                            } else {
                               var6.method621(var12);
@@ -1675,7 +1675,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 16) != 0) {
-                     var6.field623 = var65.method3097();
+                     var6.field623 = var65.readUnsignedShort();
                      if(var6.field649 == 0) {
                         var6.field646 = var6.field623;
                         var6.field623 = -1;
@@ -1683,10 +1683,10 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 2) != 0) {
-                     var9 = var65.method3097();
-                     var63 = (class177)class101.method1985(class65.method1170(), var65.method3033());
-                     var55 = var65.method3033() == 1;
-                     var12 = var65.method3033();
+                     var9 = var65.readUnsignedShort();
+                     var63 = (class177)class101.method1985(class65.method1170(), var65.readUnsignedByte());
+                     var55 = var65.readUnsignedByte() == 1;
+                     var12 = var65.readUnsignedByte();
                      var13 = var65.offset;
                      if(var6.name != null && null != var6.composition) {
                         var57 = false;
@@ -1723,7 +1723,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 4096) != 0) {
-                     var6.graphic = var65.method3097();
+                     var6.graphic = var65.readUnsignedShort();
                      var9 = var65.method2995();
                      var6.field636 = var9 >> 16;
                      var6.field608 = Client.gameCycle + (var9 & '\uffff');
@@ -1743,9 +1743,9 @@ public abstract class Actor extends Renderable {
                      var6.field639 = var65.method3047();
                      var6.field638 = var65.method3047();
                      var6.field640 = var65.method3047();
-                     var6.field648 = var65.method3097() + Client.gameCycle;
-                     var6.field642 = var65.method3097() + Client.gameCycle;
-                     var6.field643 = var65.method3097();
+                     var6.field648 = var65.readUnsignedShort() + Client.gameCycle;
+                     var6.field642 = var65.readUnsignedShort() + Client.gameCycle;
+                     var6.field643 = var65.readUnsignedShort();
                      if(var6.field264) {
                         var6.field637 += var6.field247;
                         var6.field639 += var6.field268;
@@ -1810,7 +1810,7 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 207) {
                while(Client.field370.offset < Client.field564) {
-                  var1 = Client.field370.method3033();
+                  var1 = Client.field370.readUnsignedByte();
                   var50 = (var1 & 1) == 1;
                   var37 = Client.field370.method3057();
                   var91 = Client.field370.method3057();
@@ -1849,7 +1849,7 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 67) {
                var1 = Client.field370.method2995();
-               var2 = Client.field370.method3097();
+               var2 = Client.field370.readUnsignedShort();
                if(var1 < -70000) {
                   var2 += '耀';
                }
@@ -1868,11 +1868,11 @@ public abstract class Actor extends Renderable {
                }
 
                class49.method898(var2);
-               var4 = Client.field370.method3097();
+               var4 = Client.field370.readUnsignedShort();
 
                for(var5 = 0; var5 < var4; ++var5) {
                   var20 = Client.field370.method3026();
-                  var7 = Client.field370.method3033();
+                  var7 = Client.field370.readUnsignedByte();
                   if(var7 == 255) {
                      var7 = Client.field370.method3036();
                   }
@@ -1912,10 +1912,10 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 191) {
                class3.field32 = Client.field370.method3019();
-               class7.field65 = Client.field370.method3033();
+               class7.field65 = Client.field370.readUnsignedByte();
 
                while(Client.field370.offset < Client.field564) {
-                  Client.packetOpcode = Client.field370.method3033();
+                  Client.packetOpcode = Client.field370.readUnsignedByte();
                   class13.method183();
                }
 
@@ -1930,9 +1930,9 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 186) {
-               var1 = Client.field370.method3097();
-               var2 = Client.field370.method3033();
-               var19 = Client.field370.method3097();
+               var1 = Client.field370.readUnsignedShort();
+               var2 = Client.field370.readUnsignedByte();
+               var19 = Client.field370.readUnsignedShort();
                if(Client.field478 != 0 && var2 != 0 && Client.field527 < 50) {
                   Client.field528[Client.field527] = var1;
                   Client.field529[Client.field527] = var2;
@@ -2016,7 +2016,7 @@ public abstract class Actor extends Renderable {
             if(Client.packetOpcode == 244) {
                class9.xteaChanged(true);
                Client.field370.method3235();
-               var1 = Client.field370.method3097();
+               var1 = Client.field370.readUnsignedShort();
                var97 = Client.field370;
                var19 = var97.offset;
                class45.field908 = 0;
@@ -2137,14 +2137,14 @@ public abstract class Actor extends Renderable {
                for(var4 = 0; var4 < class45.field908; ++var4) {
                   var5 = class45.field909[var4];
                   var6 = Client.cachedPlayers[var5];
-                  var7 = var97.method3033();
+                  var7 = var97.readUnsignedByte();
                   if((var7 & 64) != 0) {
-                     var7 += var97.method3033() << 8;
+                     var7 += var97.readUnsignedByte() << 8;
                   }
 
                   var26 = -1;
                   if((var7 & 32) != 0) {
-                     var9 = var97.method3033();
+                     var9 = var97.readUnsignedByte();
                      var18 = new byte[var9];
                      var28 = new Buffer(var18);
                      var97.method3043(var18, 0, var9);
@@ -2153,17 +2153,17 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 128) != 0) {
-                     var9 = var97.method3097();
+                     var9 = var97.readUnsignedShort();
                      if(var9 == '\uffff') {
                         var9 = -1;
                      }
 
-                     var10 = var97.method3033();
+                     var10 = var97.readUnsignedByte();
                      class36.method756(var6, var9, var10);
                   }
 
                   if((var7 & 8) != 0) {
-                     var6.interacting = var97.method3097();
+                     var6.interacting = var97.readUnsignedShort();
                      if(var6.interacting == '\uffff') {
                         var6.interacting = -1;
                      }
@@ -2185,7 +2185,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 4) != 0) {
-                     var9 = var97.method3033();
+                     var9 = var97.readUnsignedByte();
                      if(var9 > 0) {
                         for(var10 = 0; var10 < var9; ++var10) {
                            var12 = -1;
@@ -2208,15 +2208,15 @@ public abstract class Actor extends Renderable {
                         }
                      }
 
-                     var10 = var97.method3033();
+                     var10 = var97.readUnsignedByte();
                      if(var10 > 0) {
                         for(var11 = 0; var11 < var10; ++var11) {
                            var12 = var97.method3003();
                            var13 = var97.method3003();
                            if(var13 != 32767) {
                               var14 = var97.method3003();
-                              var15 = var97.method3033();
-                              var16 = var13 > 0?var97.method3033():var15;
+                              var15 = var97.readUnsignedByte();
+                              var16 = var13 > 0?var97.readUnsignedByte():var15;
                               var6.method620(var12, Client.gameCycle, var13, var14, var15, var16);
                            } else {
                               var6.method621(var12);
@@ -2226,7 +2226,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 16) != 0) {
-                     var6.field623 = var97.method3097();
+                     var6.field623 = var97.readUnsignedShort();
                      if(var6.field649 == 0) {
                         var6.field646 = var6.field623;
                         var6.field623 = -1;
@@ -2234,10 +2234,10 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 2) != 0) {
-                     var9 = var97.method3097();
-                     var63 = (class177)class101.method1985(class65.method1170(), var97.method3033());
-                     var55 = var97.method3033() == 1;
-                     var12 = var97.method3033();
+                     var9 = var97.readUnsignedShort();
+                     var63 = (class177)class101.method1985(class65.method1170(), var97.readUnsignedByte());
+                     var55 = var97.readUnsignedByte() == 1;
+                     var12 = var97.readUnsignedByte();
                      var13 = var97.offset;
                      if(var6.name != null && null != var6.composition) {
                         var57 = false;
@@ -2274,7 +2274,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 4096) != 0) {
-                     var6.graphic = var97.method3097();
+                     var6.graphic = var97.readUnsignedShort();
                      var9 = var97.method2995();
                      var6.field636 = var9 >> 16;
                      var6.field608 = (var9 & '\uffff') + Client.gameCycle;
@@ -2294,9 +2294,9 @@ public abstract class Actor extends Renderable {
                      var6.field639 = var97.method3047();
                      var6.field638 = var97.method3047();
                      var6.field640 = var97.method3047();
-                     var6.field648 = var97.method3097() + Client.gameCycle;
-                     var6.field642 = var97.method3097() + Client.gameCycle;
-                     var6.field643 = var97.method3097();
+                     var6.field648 = var97.readUnsignedShort() + Client.gameCycle;
+                     var6.field642 = var97.readUnsignedShort() + Client.gameCycle;
+                     var6.field643 = var97.readUnsignedShort();
                      if(var6.field264) {
                         var6.field637 += var6.field247;
                         var6.field639 += var6.field268;
@@ -2353,17 +2353,17 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 49) {
                while(Client.field370.offset < Client.field564) {
-                  var39 = Client.field370.method3033() == 1;
+                  var39 = Client.field370.readUnsignedByte() == 1;
                   var27 = Client.field370.method3057();
                   var37 = Client.field370.method3057();
-                  var4 = Client.field370.method3097();
-                  var5 = Client.field370.method3033();
-                  var20 = Client.field370.method3033();
+                  var4 = Client.field370.readUnsignedShort();
+                  var5 = Client.field370.readUnsignedByte();
+                  var20 = Client.field370.readUnsignedByte();
                   boolean var48 = (var20 & 2) != 0;
                   var94 = (var20 & 1) != 0;
                   if(var4 > 0) {
                      Client.field370.method3057();
-                     Client.field370.method3033();
+                     Client.field370.readUnsignedByte();
                      Client.field370.method2995();
                   }
 
@@ -2500,7 +2500,7 @@ public abstract class Actor extends Renderable {
             if(Client.packetOpcode == 237) {
                World var62 = new World();
                var62.address = Client.field370.method3057();
-               var62.id = Client.field370.method3097();
+               var62.id = Client.field370.readUnsignedShort();
                var2 = Client.field370.method2995();
                var62.mask = var2;
                class186.setGameState(45);
@@ -2541,8 +2541,8 @@ public abstract class Actor extends Renderable {
 
             if(Client.packetOpcode == 149) {
                var1 = Client.field564 + Client.field370.offset;
-               var2 = Client.field370.method3097();
-               var19 = Client.field370.method3097();
+               var2 = Client.field370.readUnsignedShort();
+               var19 = Client.field370.readUnsignedShort();
                if(var2 != Client.widgetRoot) {
                   Client.widgetRoot = var2;
                   class101.method1990(Client.widgetRoot, class16.field169, class65.field1103, false);
@@ -2557,8 +2557,8 @@ public abstract class Actor extends Renderable {
                WidgetNode var21;
                for(; var19-- > 0; var21.field173 = true) {
                   var4 = Client.field370.method2995();
-                  var5 = Client.field370.method3097();
-                  var20 = Client.field370.method3033();
+                  var5 = Client.field370.readUnsignedShort();
+                  var20 = Client.field370.readUnsignedByte();
                   var21 = (WidgetNode)Client.componentTable.method2405((long)var4);
                   if(null != var21 && var5 != var21.id) {
                      XGrandExchangeOffer.method68(var21, true);
@@ -2601,8 +2601,8 @@ public abstract class Actor extends Renderable {
 
                while(Client.field370.offset < var1) {
                   var4 = Client.field370.method2995();
-                  var5 = Client.field370.method3097();
-                  var20 = Client.field370.method3097();
+                  var5 = Client.field370.readUnsignedShort();
+                  var20 = Client.field370.readUnsignedShort();
                   var7 = Client.field370.method2995();
 
                   for(var92 = var5; var92 <= var20; ++var92) {
@@ -2649,8 +2649,8 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 238) {
-               class3.field32 = Client.field370.method3033();
-               class7.field65 = Client.field370.method3033();
+               class3.field32 = Client.field370.readUnsignedByte();
+               class7.field65 = Client.field370.readUnsignedByte();
 
                for(var1 = class7.field65; var1 < 8 + class7.field65; ++var1) {
                   for(var2 = class3.field32; var2 < class3.field32 + 8; ++var2) {
@@ -2686,9 +2686,9 @@ public abstract class Actor extends Renderable {
             }
 
             if(Client.packetOpcode == 22) {
-               Client.field302 = Client.field370.method3033();
+               Client.field302 = Client.field370.readUnsignedByte();
                if(Client.field302 == 1) {
-                  Client.field303 = Client.field370.method3097();
+                  Client.field303 = Client.field370.readUnsignedShort();
                }
 
                if(Client.field302 >= 2 && Client.field302 <= 6) {
@@ -2718,13 +2718,13 @@ public abstract class Actor extends Renderable {
                   }
 
                   Client.field302 = 2;
-                  Client.field305 = Client.field370.method3097();
-                  Client.field306 = Client.field370.method3097();
-                  Client.field453 = Client.field370.method3033();
+                  Client.field305 = Client.field370.readUnsignedShort();
+                  Client.field306 = Client.field370.readUnsignedShort();
+                  Client.field453 = Client.field370.readUnsignedByte();
                }
 
                if(Client.field302 == 10) {
-                  Client.field304 = Client.field370.method3097();
+                  Client.field304 = Client.field370.readUnsignedShort();
                }
 
                Client.packetOpcode = -1;
@@ -2734,7 +2734,7 @@ public abstract class Actor extends Renderable {
             if(Client.packetOpcode == 182) {
                class9.xteaChanged(false);
                Client.field370.method3235();
-               var1 = Client.field370.method3097();
+               var1 = Client.field370.readUnsignedShort();
                var97 = Client.field370;
                var19 = var97.offset;
                class45.field908 = 0;
@@ -2855,14 +2855,14 @@ public abstract class Actor extends Renderable {
                for(var4 = 0; var4 < class45.field908; ++var4) {
                   var5 = class45.field909[var4];
                   var6 = Client.cachedPlayers[var5];
-                  var7 = var97.method3033();
+                  var7 = var97.readUnsignedByte();
                   if((var7 & 64) != 0) {
-                     var7 += var97.method3033() << 8;
+                     var7 += var97.readUnsignedByte() << 8;
                   }
 
                   var26 = -1;
                   if((var7 & 32) != 0) {
-                     var9 = var97.method3033();
+                     var9 = var97.readUnsignedByte();
                      var18 = new byte[var9];
                      var28 = new Buffer(var18);
                      var97.method3043(var18, 0, var9);
@@ -2871,17 +2871,17 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 128) != 0) {
-                     var9 = var97.method3097();
+                     var9 = var97.readUnsignedShort();
                      if(var9 == '\uffff') {
                         var9 = -1;
                      }
 
-                     var10 = var97.method3033();
+                     var10 = var97.readUnsignedByte();
                      class36.method756(var6, var9, var10);
                   }
 
                   if((var7 & 8) != 0) {
-                     var6.interacting = var97.method3097();
+                     var6.interacting = var97.readUnsignedShort();
                      if(var6.interacting == '\uffff') {
                         var6.interacting = -1;
                      }
@@ -2903,7 +2903,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 4) != 0) {
-                     var9 = var97.method3033();
+                     var9 = var97.readUnsignedByte();
                      if(var9 > 0) {
                         for(var10 = 0; var10 < var9; ++var10) {
                            var12 = -1;
@@ -2926,15 +2926,15 @@ public abstract class Actor extends Renderable {
                         }
                      }
 
-                     var10 = var97.method3033();
+                     var10 = var97.readUnsignedByte();
                      if(var10 > 0) {
                         for(var11 = 0; var11 < var10; ++var11) {
                            var12 = var97.method3003();
                            var13 = var97.method3003();
                            if(var13 != 32767) {
                               var14 = var97.method3003();
-                              var15 = var97.method3033();
-                              var16 = var13 > 0?var97.method3033():var15;
+                              var15 = var97.readUnsignedByte();
+                              var16 = var13 > 0?var97.readUnsignedByte():var15;
                               var6.method620(var12, Client.gameCycle, var13, var14, var15, var16);
                            } else {
                               var6.method621(var12);
@@ -2944,7 +2944,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 16) != 0) {
-                     var6.field623 = var97.method3097();
+                     var6.field623 = var97.readUnsignedShort();
                      if(var6.field649 == 0) {
                         var6.field646 = var6.field623;
                         var6.field623 = -1;
@@ -2952,10 +2952,10 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 2) != 0) {
-                     var9 = var97.method3097();
-                     var63 = (class177)class101.method1985(class65.method1170(), var97.method3033());
-                     var55 = var97.method3033() == 1;
-                     var12 = var97.method3033();
+                     var9 = var97.readUnsignedShort();
+                     var63 = (class177)class101.method1985(class65.method1170(), var97.readUnsignedByte());
+                     var55 = var97.readUnsignedByte() == 1;
+                     var12 = var97.readUnsignedByte();
                      var13 = var97.offset;
                      if(null != var6.name && null != var6.composition) {
                         var57 = false;
@@ -2992,7 +2992,7 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 4096) != 0) {
-                     var6.graphic = var97.method3097();
+                     var6.graphic = var97.readUnsignedShort();
                      var9 = var97.method2995();
                      var6.field636 = var9 >> 16;
                      var6.field608 = (var9 & '\uffff') + Client.gameCycle;
@@ -3012,9 +3012,9 @@ public abstract class Actor extends Renderable {
                      var6.field639 = var97.method3047();
                      var6.field638 = var97.method3047();
                      var6.field640 = var97.method3047();
-                     var6.field648 = var97.method3097() + Client.gameCycle;
-                     var6.field642 = var97.method3097() + Client.gameCycle;
-                     var6.field643 = var97.method3097();
+                     var6.field648 = var97.readUnsignedShort() + Client.gameCycle;
+                     var6.field642 = var97.readUnsignedShort() + Client.gameCycle;
+                     var6.field643 = var97.readUnsignedShort();
                      if(var6.field264) {
                         var6.field637 += var6.field247;
                         var6.field639 += var6.field268;

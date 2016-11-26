@@ -229,22 +229,22 @@ public class ChatMessages {
                return;
             }
 
-            int var14 = var13.method3033();
+            int var14 = var13.readUnsignedByte();
             if(var14 >= 0 && var14 <= 1) {
-               int var15 = var13.method3097();
+               int var15 = var13.readUnsignedShort();
 
                int var7;
                int var8;
                int var9;
                for(var7 = 0; var7 < var15; ++var7) {
-                  var8 = var13.method3097();
+                  var8 = var13.readUnsignedShort();
                   var9 = var13.method2995();
                   if(this.field914[var8]) {
                      this.field921[var8] = var9;
                   }
                }
 
-               var7 = var13.method3097();
+               var7 = var13.readUnsignedShort();
                var8 = 0;
 
                while(true) {
@@ -252,7 +252,7 @@ public class ChatMessages {
                      break label203;
                   }
 
-                  var9 = var13.method3097();
+                  var9 = var13.readUnsignedShort();
                   String var10 = var13.method3057();
                   if(this.field923[var9]) {
                      this.messages[var9] = var10;

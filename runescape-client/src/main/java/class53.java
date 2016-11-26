@@ -94,7 +94,7 @@ public class class53 {
 
    class53(Buffer var1) {
       for(int var2 = 0; var2 < 10; ++var2) {
-         int var3 = var1.method3033();
+         int var3 = var1.readUnsignedByte();
          if(var3 != 0) {
             --var1.offset;
             this.field976[var2] = new class70();
@@ -102,7 +102,7 @@ public class class53 {
          }
       }
 
-      this.field975 = var1.method3097();
-      this.field978 = var1.method3097();
+      this.field975 = var1.readUnsignedShort();
+      this.field978 = var1.readUnsignedShort();
    }
 }

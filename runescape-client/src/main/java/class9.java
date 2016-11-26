@@ -66,8 +66,8 @@ public final class class9 {
       int var7;
       if(!Client.field348) {
          var1 = Client.field370.method3153();
-         var2 = Client.field370.method3097();
-         var3 = Client.field370.method3097();
+         var2 = Client.field370.readUnsignedShort();
+         var3 = Client.field370.readUnsignedShort();
          class28.xteaKeys = new int[var3][4];
 
          for(var4 = 0; var4 < var3; ++var4) {
@@ -108,7 +108,7 @@ public final class class9 {
       } else {
          var1 = Client.field370.method3153();
          var2 = Client.field370.method3026();
-         var3 = Client.field370.method3097();
+         var3 = Client.field370.readUnsignedShort();
          Client.field370.method3232();
 
          for(var4 = 0; var4 < 4; ++var4) {

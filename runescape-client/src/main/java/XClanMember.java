@@ -43,7 +43,7 @@ public class XClanMember extends Node {
       for(int var0 = 0; var0 < Client.field337; ++var0) {
          int var1 = Client.field329[var0];
          NPC var2 = Client.cachedNPCs[var1];
-         int var3 = Client.field370.method3033();
+         int var3 = Client.field370.readUnsignedByte();
          if((var3 & 2) != 0) {
             var2.interacting = Client.field370.method3026();
             if(var2.interacting == '\uffff') {
@@ -111,7 +111,7 @@ public class XClanMember extends Node {
                   if(var8 != 32767) {
                      var9 = Client.field370.method3003();
                      var10 = Client.field370.method3018();
-                     int var11 = var8 > 0?Client.field370.method3033():var10;
+                     int var11 = var8 > 0?Client.field370.readUnsignedByte():var10;
                      var2.method620(var7, Client.gameCycle, var8, var9, var10, var11);
                   } else {
                      var2.method621(var7);
@@ -139,7 +139,7 @@ public class XClanMember extends Node {
                if(var6 == 2) {
                   var2.field631 = 0;
                }
-            } else if(var4 == -1 || var2.animation == -1 || class9.getAnimation(var4).field3054 >= class9.getAnimation(var2.animation).field3054) {
+            } else if(var4 == -1 || var2.animation == -1 || class9.getAnimation(var4).forcedPriority >= class9.getAnimation(var2.animation).forcedPriority) {
                var2.animation = var4;
                var2.actionFrame = 0;
                var2.field595 = 0;
@@ -150,7 +150,7 @@ public class XClanMember extends Node {
          }
 
          if((var3 & 1) != 0) {
-            var4 = Client.field370.method3097();
+            var4 = Client.field370.readUnsignedShort();
             var5 = Client.field370.method3153();
             var6 = var2.x - 64 * (var4 - class16.baseX - class16.baseX);
             var7 = var2.y - 64 * (var5 - Client.baseY - Client.baseY);
@@ -282,9 +282,9 @@ public class XClanMember extends Node {
 
                      if(class162.field2308 == null) {
                         class185.field2758.offset = 0;
-                        var7 = class185.field2758.method3033();
-                        var8 = class185.field2758.method3097();
-                        int var9 = class185.field2758.method3033();
+                        var7 = class185.field2758.readUnsignedByte();
+                        var8 = class185.field2758.readUnsignedShort();
+                        int var9 = class185.field2758.readUnsignedByte();
                         var10 = class185.field2758.method2995();
                         long var11 = (long)(var8 + (var7 << 16));
                         class181 var13 = (class181)class185.field2750.method2405(var11);

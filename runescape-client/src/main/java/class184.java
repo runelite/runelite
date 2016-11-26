@@ -114,7 +114,7 @@ public class class184 extends class182 {
             field2743.update(var3, 0, var3.length);
             var5 = (int)field2743.getValue();
             Buffer var6 = new Buffer(XGrandExchangeOffer.method50(var3));
-            int var7 = var6.method3033();
+            int var7 = var6.readUnsignedByte();
             if(var7 != 5 && var7 != 6) {
                throw new RuntimeException(var7 + "," + this.field2737 + "," + var2);
             } else {

@@ -65,23 +65,23 @@ public class class49 extends Renderable {
    protected final Model getModel() {
       if(this.field949 != null) {
          int var12 = Client.gameCycle - this.field951;
-         if(var12 > 100 && this.field949.field3061 > 0) {
+         if(var12 > 100 && this.field949.frameStep > 0) {
             var12 = 100;
          }
 
          label63: {
             do {
                do {
-                  if(var12 <= this.field949.field3050[this.field952]) {
+                  if(var12 <= this.field949.frameLenghts[this.field952]) {
                      break label63;
                   }
 
-                  var12 -= this.field949.field3050[this.field952];
+                  var12 -= this.field949.frameLenghts[this.field952];
                   ++this.field952;
-               } while(this.field952 < this.field949.field3047.length);
+               } while(this.field952 < this.field949.frameIDs.length);
 
-               this.field952 -= this.field949.field3061;
-            } while(this.field952 >= 0 && this.field952 < this.field949.field3047.length);
+               this.field952 -= this.field949.frameStep;
+            } while(this.field952 >= 0 && this.field952 < this.field949.frameIDs.length);
 
             this.field949 = null;
          }
@@ -139,9 +139,9 @@ public class class49 extends Renderable {
             }
          }
 
-         if(var8 && this.field949.field3061 != -1) {
-            this.field952 = (int)(Math.random() * (double)this.field949.field3047.length);
-            this.field951 -= (int)(Math.random() * (double)this.field949.field3050[this.field952]);
+         if(var8 && this.field949.frameStep != -1) {
+            this.field952 = (int)(Math.random() * (double)this.field949.frameIDs.length);
+            this.field951 -= (int)(Math.random() * (double)this.field949.frameLenghts[this.field952]);
          }
       }
 

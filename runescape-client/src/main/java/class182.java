@@ -66,17 +66,17 @@ public abstract class class182 {
       var5 = ~var5;
       this.field2720 = var5;
       Buffer var4 = new Buffer(XGrandExchangeOffer.method50(var1));
-      var5 = var4.method3033();
+      var5 = var4.readUnsignedByte();
       if(var5 >= 5 && var5 <= 7) {
          if(var5 >= 6) {
             var4.method2995();
          }
 
-         var6 = var4.method3033();
+         var6 = var4.readUnsignedByte();
          if(var5 >= 7) {
             this.field2714 = var4.method3004();
          } else {
-            this.field2714 = var4.method3097();
+            this.field2714 = var4.readUnsignedShort();
          }
 
          int var7 = 0;
@@ -92,7 +92,7 @@ public abstract class class182 {
             }
          } else {
             for(var9 = 0; var9 < this.field2714; ++var9) {
-               this.field2708[var9] = var7 += var4.method3097();
+               this.field2708[var9] = var7 += var4.readUnsignedShort();
                if(this.field2708[var9] > var8) {
                   var8 = this.field2708[var9];
                }
@@ -124,7 +124,7 @@ public abstract class class182 {
          }
 
          for(var9 = 0; var9 < this.field2714; ++var9) {
-            this.field2713[this.field2708[var9]] = var4.method3097();
+            this.field2713[this.field2708[var9]] = var4.readUnsignedShort();
          }
 
          int var10;
@@ -158,7 +158,7 @@ public abstract class class182 {
                this.field2718[var10] = new int[var11];
 
                for(var13 = 0; var13 < var11; ++var13) {
-                  var14 = this.field2718[var10][var13] = var7 += var4.method3097();
+                  var14 = this.field2718[var10][var13] = var7 += var4.readUnsignedShort();
                   if(var14 > var12) {
                      var12 = var14;
                   }
