@@ -37,8 +37,6 @@ import net.runelite.cache.definitions.loaders.ModelLoader;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glTranslatef;
 
 public class ModelViewer
 {
@@ -71,9 +69,7 @@ public class ModelViewer
 
 		long last = 0;
 
-		// rotate and step back to view
-		glRotatef(-90, 1, 0, 0);
-		glTranslatef(0, 60.0f, 0);
+		Camera camera = new Camera();
 
 		while (!Display.isCloseRequested())
 		{
@@ -125,10 +121,8 @@ public class ModelViewer
 			long delta = System.currentTimeMillis() - last;
 			last = System.currentTimeMillis();
 
-			Camera.create();
-			Camera.acceptInput(delta);
-
-			Camera.apply();
+			camera.acceptInput(delta);
+			camera.apply();
 		}
 
 		Display.destroy();
