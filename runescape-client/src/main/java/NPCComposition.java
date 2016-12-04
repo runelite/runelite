@@ -232,9 +232,9 @@ public class NPCComposition extends CacheableNode {
       } else if(var2 == 99) {
          this.isVisible = true;
       } else if(var2 == 100) {
-         this.field3018 = var1.method3047();
+         this.field3018 = var1.readByte();
       } else if(var2 == 101) {
-         this.field3019 = var1.method3047() * 5;
+         this.field3019 = var1.readByte() * 5;
       } else if(var2 == 102) {
          this.field3020 = var1.readUnsignedShort();
       } else if(var2 == 103) {

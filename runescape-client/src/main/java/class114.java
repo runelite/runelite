@@ -95,12 +95,12 @@ public class class114 {
          int var9;
          if(var8 == 0) {
             for(var9 = 0; var9 < var6; ++var9) {
-               var7[var9] = var1.method3047();
+               var7[var9] = var1.readByte();
             }
          } else if(var8 == 1) {
             for(var9 = 0; var9 < var4; ++var9) {
                for(int var10 = 0; var10 < var5; ++var10) {
-                  var7[var9 + var10 * var4] = var1.method3047();
+                  var7[var9 + var10 * var4] = var1.readByte();
                }
             }
          }

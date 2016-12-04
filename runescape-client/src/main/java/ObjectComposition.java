@@ -487,9 +487,9 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 28) {
          this.field2915 = var1.readUnsignedByte();
       } else if(var2 == 29) {
-         this.field2937 = var1.method3047();
+         this.field2937 = var1.readByte();
       } else if(var2 == 39) {
-         this.field2934 = var1.method3047() * 25;
+         this.field2934 = var1.readByte() * 25;
       } else if(var2 >= 30 && var2 < 35) {
          this.actions[var2 - 30] = var1.method3057();
          if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {

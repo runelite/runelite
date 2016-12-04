@@ -301,7 +301,7 @@ public class class70 {
          }
 
          this.field1149[var3] = var4;
-         this.field1150[var3] = var1.method3002();
+         this.field1150[var3] = var1.readShortSmart();
          this.field1143[var3] = var1.method3003();
       }
 

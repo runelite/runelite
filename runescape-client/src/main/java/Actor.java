@@ -1006,7 +1006,7 @@ public abstract class Actor extends Renderable {
                }
 
                Client.field512 = var37;
-               XClanMember.field273 = Client.field370.method3047();
+               XClanMember.field273 = Client.field370.readByte();
                var20 = Client.field370.readUnsignedByte();
                if(var20 == 255) {
                   Client.packetOpcode = -1;
@@ -1021,7 +1021,7 @@ public abstract class Actor extends Renderable {
                   var76[var92].username = Client.field370.method3057();
                   var76[var92].field277 = class162.method3194(var76[var92].username, class108.field1740);
                   var76[var92].world = Client.field370.readUnsignedShort();
-                  var76[var92].rank = Client.field370.method3047();
+                  var76[var92].rank = Client.field370.readByte();
                   Client.field370.method3057();
                   if(var76[var92].username.equals(class40.localPlayer.name)) {
                      WidgetNode.field175 = var76[var92].rank;
@@ -1339,7 +1339,7 @@ public abstract class Actor extends Renderable {
             if(Client.packetOpcode == 19) {
                var17 = Client.field370.method3057();
                var2 = Client.field370.readUnsignedShort();
-               byte var81 = Client.field370.method3047();
+               byte var81 = Client.field370.readByte();
                var49 = false;
                if(var81 == -128) {
                   var49 = true;
@@ -1740,10 +1740,10 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 2048) != 0) {
-                     var6.field637 = var65.method3047();
-                     var6.field639 = var65.method3047();
-                     var6.field638 = var65.method3047();
-                     var6.field640 = var65.method3047();
+                     var6.field637 = var65.readByte();
+                     var6.field639 = var65.readByte();
+                     var6.field638 = var65.readByte();
+                     var6.field640 = var65.readByte();
                      var6.field648 = var65.readUnsignedShort() + Client.gameCycle;
                      var6.field642 = var65.readUnsignedShort() + Client.gameCycle;
                      var6.field643 = var65.readUnsignedShort();
@@ -1765,11 +1765,11 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 1024) != 0) {
-                     class45.field901[var5] = var65.method3047();
+                     class45.field901[var5] = var65.readByte();
                   }
 
                   if((var7 & 256) != 0) {
-                     var26 = var65.method3047();
+                     var26 = var65.readByte();
                   }
 
                   if((var7 & 512) != 0) {
@@ -2291,10 +2291,10 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 2048) != 0) {
-                     var6.field637 = var97.method3047();
-                     var6.field639 = var97.method3047();
-                     var6.field638 = var97.method3047();
-                     var6.field640 = var97.method3047();
+                     var6.field637 = var97.readByte();
+                     var6.field639 = var97.readByte();
+                     var6.field638 = var97.readByte();
+                     var6.field640 = var97.readByte();
                      var6.field648 = var97.readUnsignedShort() + Client.gameCycle;
                      var6.field642 = var97.readUnsignedShort() + Client.gameCycle;
                      var6.field643 = var97.readUnsignedShort();
@@ -2316,11 +2316,11 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 1024) != 0) {
-                     class45.field901[var5] = var97.method3047();
+                     class45.field901[var5] = var97.readByte();
                   }
 
                   if((var7 & 256) != 0) {
-                     var26 = var97.method3047();
+                     var26 = var97.readByte();
                   }
 
                   if((var7 & 512) != 0) {
@@ -3009,10 +3009,10 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 2048) != 0) {
-                     var6.field637 = var97.method3047();
-                     var6.field639 = var97.method3047();
-                     var6.field638 = var97.method3047();
-                     var6.field640 = var97.method3047();
+                     var6.field637 = var97.readByte();
+                     var6.field639 = var97.readByte();
+                     var6.field638 = var97.readByte();
+                     var6.field640 = var97.readByte();
                      var6.field648 = var97.readUnsignedShort() + Client.gameCycle;
                      var6.field642 = var97.readUnsignedShort() + Client.gameCycle;
                      var6.field643 = var97.readUnsignedShort();
@@ -3034,11 +3034,11 @@ public abstract class Actor extends Renderable {
                   }
 
                   if((var7 & 1024) != 0) {
-                     class45.field901[var5] = var97.method3047();
+                     class45.field901[var5] = var97.readByte();
                   }
 
                   if((var7 & 256) != 0) {
-                     var26 = var97.method3047();
+                     var26 = var97.readByte();
                   }
 
                   if((var7 & 512) != 0) {

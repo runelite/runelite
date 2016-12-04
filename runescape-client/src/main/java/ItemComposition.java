@@ -362,9 +362,9 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 112) {
             this.field2983 = var1.readUnsignedShort();
          } else if(var2 == 113) {
-            this.field2965 = var1.method3047();
+            this.field2965 = var1.readByte();
          } else if(var2 == 114) {
-            this.field2985 = var1.method3047() * 5;
+            this.field2985 = var1.readByte() * 5;
          } else if(var2 == 115) {
             this.field2986 = var1.readUnsignedByte();
          } else if(var2 == 139) {

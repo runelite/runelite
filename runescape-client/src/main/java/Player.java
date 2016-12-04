@@ -134,8 +134,8 @@ public final class Player extends Actor {
    final void method230(Buffer var1) {
       var1.offset = 0;
       int var2 = var1.readUnsignedByte();
-      this.field259 = var1.method3047();
-      this.field246 = var1.method3047();
+      this.field259 = var1.readByte();
+      this.field246 = var1.readByte();
       int var3 = -1;
       this.team = 0;
       int[] var4 = new int[12];
@@ -428,7 +428,7 @@ public final class Player extends Actor {
             }
 
             if(var7 <= 49) {
-               class11.field106[var1][var2][var3] = var0.method3047();
+               class11.field106[var1][var2][var3] = var0.readByte();
                class38.field797[var1][var2][var3] = (byte)((var7 - 2) / 4);
                class11.field107[var1][var2][var3] = (byte)(var6 + (var7 - 2) & 3);
             } else if(var7 <= 81) {

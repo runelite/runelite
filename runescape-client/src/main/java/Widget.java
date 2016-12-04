@@ -597,10 +597,10 @@ public class Widget extends Node {
          this.field2081 = var1.readUnsignedShort();
       }
 
-      this.field2076 = var1.method3047();
-      this.field2077 = var1.method3047();
-      this.field2074 = var1.method3047();
-      this.field2075 = var1.method3047();
+      this.field2076 = var1.readByte();
+      this.field2077 = var1.readByte();
+      this.field2074 = var1.readByte();
+      this.field2075 = var1.readByte();
       this.parentId = var1.readUnsignedShort();
       if(this.parentId == '\uffff') {
          this.parentId = -1;
