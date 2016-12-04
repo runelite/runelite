@@ -56,7 +56,7 @@ public class XGrandExchangeOffer {
       garbageValue = "0"
    )
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
-      this.progress = var1.method3047();
+      this.progress = var1.readByte();
       this.itemId = var1.readUnsignedShort();
       this.price = var1.method2995();
       this.totalQuantity = var1.method2995();

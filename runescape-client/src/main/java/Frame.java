@@ -61,19 +61,19 @@ public class Frame {
             }
 
             if((var9 & 1) != 0) {
-               field1309[var7] = var4.method3002();
+               field1309[var7] = var4.readShortSmart();
             } else {
                field1309[var7] = var11;
             }
 
             if((var9 & 2) != 0) {
-               field1311[var7] = var4.method3002();
+               field1311[var7] = var4.readShortSmart();
             } else {
                field1311[var7] = var11;
             }
 
             if((var9 & 4) != 0) {
-               field1312[var7] = var4.method3002();
+               field1312[var7] = var4.readShortSmart();
             } else {
                field1312[var7] = var11;
             }
