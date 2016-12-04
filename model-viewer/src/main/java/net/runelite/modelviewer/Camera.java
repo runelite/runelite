@@ -107,7 +107,7 @@ public class Camera
 		{
 			Mouse.setGrabbed(true);
 		}
-		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+		if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Keyboard.isKeyDown(Keyboard.KEY_LMENU))
 		{
 			Mouse.setGrabbed(false);
 		}

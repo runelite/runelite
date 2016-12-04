@@ -40,6 +40,8 @@ import java.util.List;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
+import net.runelite.cache.models.Vector3f;
+import net.runelite.cache.models.VertexNormal;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -116,15 +118,13 @@ public class ModelViewer
 		GL11.glFrustum(-aspect * near * fov, aspect * near * fov, -fov, fov, near, far);
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
+
 		GL11.glCullFace(GL11.GL_BACK);
+		GL11.glEnable(GL11.GL_CULL_FACE);
 
 		long last = 0;
 
 		Camera camera = new Camera();
-
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		glRotatef(45, 1, 0, 0);
-		GL11.glPopMatrix();
 
 		while (!Display.isCloseRequested())
 		{
@@ -158,6 +158,19 @@ public class ModelViewer
 			int vertexA = md.trianglePointsX[i];
 			int vertexB = md.trianglePointsY[i];
 			int vertexC = md.trianglePointsZ[i];
+
+			VertexNormal normalVertexA = md.normals[vertexA];
+			VertexNormal normalVertexB = md.normals[vertexB];
+			VertexNormal normalVertexC = md.normals[vertexC];
+
+			Vector3f nA = normalVertexA.normalize();
+			Vector3f nB = normalVertexB.normalize();
+			Vector3f nC = normalVertexC.normalize();
+
+			// Invert y
+			nA.y = -nA.y;
+			nB.y = -nB.y;
+			nC.y = -nC.y;
 
 			int vertexAx = md.vertexX[vertexA];
 			int vertexAy = md.vertexY[vertexA];
@@ -195,9 +208,17 @@ public class ModelViewer
 
 			GL11.glColor3f(rf, gf, bf);
 
-			GL11.glVertex3i(vertexAx, vertexAy, vertexAz);
-			GL11.glVertex3i(vertexBx, vertexBy, vertexBz);
-			GL11.glVertex3i(vertexCx, vertexCy, vertexCz);
+			// With GL11.GL_CCW we have to draw A -> C -> B when
+			// inverting y instead of A -> B -> C, or else with cull
+			// face will cull the wrong side
+			GL11.glNormal3f(nA.x, nA.y, nA.z);
+			GL11.glVertex3i(vertexAx, -vertexAy, vertexAz);
+
+			GL11.glNormal3f(nC.x, nC.y, nC.z);
+			GL11.glVertex3i(vertexCx, -vertexCy, vertexCz);
+
+			GL11.glNormal3f(nB.x, nB.y, nB.z);
+			GL11.glVertex3i(vertexBx, -vertexBy, vertexBz);
 		}
 
 		GL11.glEnd();
