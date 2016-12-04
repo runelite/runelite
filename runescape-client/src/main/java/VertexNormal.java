@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -12,28 +13,32 @@ public class VertexNormal {
    @ObfuscatedGetter(
       intValue = 1927254061
    )
-   int field1415;
+   @Export("y")
+   int y;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -998944889
    )
-   int field1416;
+   @Export("magnitude")
+   int magnitude;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -794929269
    )
-   int field1417;
+   @Export("x")
+   int x;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -529426927
    )
-   int field1418;
+   @Export("z")
+   int z;
 
    VertexNormal(VertexNormal var1) {
-      this.field1417 = var1.field1417;
-      this.field1415 = var1.field1415;
-      this.field1418 = var1.field1418;
-      this.field1416 = var1.field1416;
+      this.x = var1.x;
+      this.y = var1.y;
+      this.z = var1.z;
+      this.magnitude = var1.magnitude;
    }
 
    VertexNormal() {

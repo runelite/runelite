@@ -89,7 +89,8 @@ public class ModelData extends Renderable {
    @ObfuscatedName("ai")
    int[][] field1243;
    @ObfuscatedName("aq")
-   FaceNormal[] field1244;
+   @Export("faceNormals")
+   FaceNormal[] faceNormals;
    @ObfuscatedName("ac")
    @Export("normals")
    VertexNormal[] normals;
@@ -817,7 +818,7 @@ public class ModelData extends Renderable {
    void method1496() {
       this.normals = null;
       this.field1246 = null;
-      this.field1244 = null;
+      this.faceNormals = null;
       this.field1257 = false;
    }
 
@@ -863,7 +864,7 @@ public class ModelData extends Renderable {
       var1.field1242 = this.field1242;
       var1.field1243 = this.field1243;
       var1.normals = this.normals;
-      var1.field1244 = this.field1244;
+      var1.faceNormals = this.faceNormals;
       var1.field1247 = this.field1247;
       var1.field1216 = this.field1216;
       return var1;
@@ -1115,8 +1116,8 @@ public class ModelData extends Renderable {
          if(var12 == -1) {
             if(var17 != 0) {
                if(var17 == 1) {
-                  var19 = this.field1244[var9];
-                  var14 = var1 + (var3 * var19.field1556 + var4 * var19.field1551 + var5 * var19.field1552) / (var7 + var7 / 2);
+                  var19 = this.faceNormals[var9];
+                  var14 = var1 + (var3 * var19.x + var4 * var19.y + var5 * var19.z) / (var7 + var7 / 2);
                   var8.field1360[var9] = method1513(this.faceColor[var9] & '\uffff', var14);
                   var8.field1362[var9] = -1;
                } else if(var17 == 3) {
@@ -1133,7 +1134,7 @@ public class ModelData extends Renderable {
                   var13 = this.normals[this.trianglePointsX[var9]];
                }
 
-               var14 = var1 + (var3 * var13.field1417 + var4 * var13.field1415 + var5 * var13.field1418) / (var7 * var13.field1416);
+               var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
                var8.field1360[var9] = method1513(var15, var14);
                if(this.field1246 != null && this.field1246[this.trianglePointsY[var9]] != null) {
                   var13 = this.field1246[this.trianglePointsY[var9]];
@@ -1141,7 +1142,7 @@ public class ModelData extends Renderable {
                   var13 = this.normals[this.trianglePointsY[var9]];
                }
 
-               var14 = var1 + (var3 * var13.field1417 + var4 * var13.field1415 + var5 * var13.field1418) / (var7 * var13.field1416);
+               var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
                var8.field1361[var9] = method1513(var15, var14);
                if(this.field1246 != null && this.field1246[this.trianglePointsZ[var9]] != null) {
                   var13 = this.field1246[this.trianglePointsZ[var9]];
@@ -1149,13 +1150,13 @@ public class ModelData extends Renderable {
                   var13 = this.normals[this.trianglePointsZ[var9]];
                }
 
-               var14 = var1 + (var3 * var13.field1417 + var4 * var13.field1415 + var5 * var13.field1418) / (var7 * var13.field1416);
+               var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
                var8.field1362[var9] = method1513(var15, var14);
             }
          } else if(var17 != 0) {
             if(var17 == 1) {
-               var19 = this.field1244[var9];
-               var14 = var1 + (var3 * var19.field1556 + var4 * var19.field1551 + var5 * var19.field1552) / (var7 + var7 / 2);
+               var19 = this.faceNormals[var9];
+               var14 = var1 + (var3 * var19.x + var4 * var19.y + var5 * var19.z) / (var7 + var7 / 2);
                var8.field1360[var9] = method1539(var14);
                var8.field1362[var9] = -1;
             } else {
@@ -1168,7 +1169,7 @@ public class ModelData extends Renderable {
                var13 = this.normals[this.trianglePointsX[var9]];
             }
 
-            var14 = var1 + (var3 * var13.field1417 + var4 * var13.field1415 + var5 * var13.field1418) / (var7 * var13.field1416);
+            var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
             var8.field1360[var9] = method1539(var14);
             if(this.field1246 != null && this.field1246[this.trianglePointsY[var9]] != null) {
                var13 = this.field1246[this.trianglePointsY[var9]];
@@ -1176,7 +1177,7 @@ public class ModelData extends Renderable {
                var13 = this.normals[this.trianglePointsY[var9]];
             }
 
-            var14 = var1 + (var3 * var13.field1417 + var4 * var13.field1415 + var5 * var13.field1418) / (var7 * var13.field1416);
+            var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
             var8.field1361[var9] = method1539(var14);
             if(this.field1246 != null && this.field1246[this.trianglePointsZ[var9]] != null) {
                var13 = this.field1246[this.trianglePointsZ[var9]];
@@ -1184,7 +1185,7 @@ public class ModelData extends Renderable {
                var13 = this.normals[this.trianglePointsZ[var9]];
             }
 
-            var14 = var1 + (var3 * var13.field1417 + var4 * var13.field1415 + var5 * var13.field1418) / (var7 * var13.field1416);
+            var14 = var1 + (var3 * var13.x + var4 * var13.y + var5 * var13.z) / (var7 * var13.magnitude);
             var8.field1362[var9] = method1539(var14);
          }
       }
@@ -1288,7 +1289,7 @@ public class ModelData extends Renderable {
       this.field1242 = var1.field1242;
       this.field1243 = var1.field1243;
       this.normals = var1.normals;
-      this.field1244 = var1.field1244;
+      this.faceNormals = var1.faceNormals;
       this.field1246 = var1.field1246;
       this.field1247 = var1.field1247;
       this.field1216 = var1.field1216;
@@ -1520,7 +1521,7 @@ public class ModelData extends Renderable {
       int var9;
       for(var9 = 0; var9 < var0.vertexCount; ++var9) {
          VertexNormal var10 = var0.normals[var9];
-         if(var10.field1416 != 0) {
+         if(var10.magnitude != 0) {
             int var11 = var0.vertexY[var9] - var3;
             if(var11 <= var1.field1250) {
                int var12 = var0.vertexX[var9] - var2;
@@ -1529,7 +1530,7 @@ public class ModelData extends Renderable {
                   if(var13 >= var1.field1254 && var13 <= var1.field1236) {
                      for(int var14 = 0; var14 < var8; ++var14) {
                         VertexNormal var15 = var1.normals[var14];
-                        if(var12 == var7[var14] && var13 == var1.vertexZ[var14] && var11 == var1.vertexY[var14] && var15.field1416 != 0) {
+                        if(var12 == var7[var14] && var13 == var1.vertexZ[var14] && var11 == var1.vertexY[var14] && var15.magnitude != 0) {
                            if(var0.field1246 == null) {
                               var0.field1246 = new VertexNormal[var0.vertexCount];
                            }
@@ -1548,14 +1549,14 @@ public class ModelData extends Renderable {
                               var17 = var1.field1246[var14] = new VertexNormal(var15);
                            }
 
-                           var16.field1417 += var15.field1417;
-                           var16.field1415 += var15.field1415;
-                           var16.field1418 += var15.field1418;
-                           var16.field1416 += var15.field1416;
-                           var17.field1417 += var10.field1417;
-                           var17.field1415 += var10.field1415;
-                           var17.field1418 += var10.field1418;
-                           var17.field1416 += var10.field1416;
+                           var16.x += var15.x;
+                           var16.y += var15.y;
+                           var16.z += var15.z;
+                           var16.magnitude += var15.magnitude;
+                           var17.x += var10.x;
+                           var17.y += var10.y;
+                           var17.z += var10.z;
+                           var17.magnitude += var10.magnitude;
                            ++var6;
                            field1255[var9] = field1258;
                            field1249[var14] = field1258;
@@ -1726,15 +1727,15 @@ public class ModelData extends Renderable {
          }
 
          for(var1 = 0; var1 < this.triangleFaceCount; ++var1) {
-            int var2 = this.trianglePointsX[var1];
-            int var3 = this.trianglePointsY[var1];
-            int var4 = this.trianglePointsZ[var1];
-            int var5 = this.vertexX[var3] - this.vertexX[var2];
-            int var6 = this.vertexY[var3] - this.vertexY[var2];
-            int var7 = this.vertexZ[var3] - this.vertexZ[var2];
-            int var8 = this.vertexX[var4] - this.vertexX[var2];
-            int var9 = this.vertexY[var4] - this.vertexY[var2];
-            int var10 = this.vertexZ[var4] - this.vertexZ[var2];
+            int vertexA = this.trianglePointsX[var1];
+            int vertexB = this.trianglePointsY[var1];
+            int vertexC = this.trianglePointsZ[var1];
+            int var5 = this.vertexX[vertexB] - this.vertexX[vertexA];
+            int var6 = this.vertexY[vertexB] - this.vertexY[vertexA];
+            int var7 = this.vertexZ[vertexB] - this.vertexZ[vertexA];
+            int var8 = this.vertexX[vertexC] - this.vertexX[vertexA];
+            int var9 = this.vertexY[vertexC] - this.vertexY[vertexA];
+            int var10 = this.vertexZ[vertexC] - this.vertexZ[vertexA];
             int var11 = var6 * var10 - var9 * var7;
             int var12 = var7 * var8 - var10 * var5;
 
@@ -1760,30 +1761,30 @@ public class ModelData extends Renderable {
             }
 
             if(var15 == 0) {
-               VertexNormal var16 = this.normals[var2];
-               var16.field1417 += var11;
-               var16.field1415 += var12;
-               var16.field1418 += var13;
-               ++var16.field1416;
-               var16 = this.normals[var3];
-               var16.field1417 += var11;
-               var16.field1415 += var12;
-               var16.field1418 += var13;
-               ++var16.field1416;
-               var16 = this.normals[var4];
-               var16.field1417 += var11;
-               var16.field1415 += var12;
-               var16.field1418 += var13;
-               ++var16.field1416;
+               VertexNormal var16 = this.normals[vertexA];
+               var16.x += var11;
+               var16.y += var12;
+               var16.z += var13;
+               ++var16.magnitude;
+               var16 = this.normals[vertexB];
+               var16.x += var11;
+               var16.y += var12;
+               var16.z += var13;
+               ++var16.magnitude;
+               var16 = this.normals[vertexC];
+               var16.x += var11;
+               var16.y += var12;
+               var16.z += var13;
+               ++var16.magnitude;
             } else if(var15 == 1) {
-               if(this.field1244 == null) {
-                  this.field1244 = new FaceNormal[this.triangleFaceCount];
+               if(this.faceNormals == null) {
+                  this.faceNormals = new FaceNormal[this.triangleFaceCount];
                }
 
-               FaceNormal var17 = this.field1244[var1] = new FaceNormal();
-               var17.field1556 = var11;
-               var17.field1551 = var12;
-               var17.field1552 = var13;
+               FaceNormal var17 = this.faceNormals[var1] = new FaceNormal();
+               var17.x = var11;
+               var17.y = var12;
+               var17.z = var13;
             }
          }
 
