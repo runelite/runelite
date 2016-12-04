@@ -115,6 +115,7 @@ public class ModelViewer
 		double fov = 1; // 1 gives you a 90° field of view. It's tan(fov_angle)/2.
 		GL11.glFrustum(-aspect * near * fov, aspect * near * fov, -fov, fov, near, far);
 
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glCullFace(GL11.GL_BACK);
 
 		long last = 0;
