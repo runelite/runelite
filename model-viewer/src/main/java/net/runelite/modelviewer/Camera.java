@@ -39,7 +39,7 @@ public class Camera
 {
 	private static final float MAX_X = 89;
 
-	public float moveSpeed = 0.05f;
+	public float moveSpeed = 0.20f;
 
 	private float mouseSensitivity = 0.05f;
 

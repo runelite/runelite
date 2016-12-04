@@ -29,28 +29,78 @@
  */
 package net.runelite.modelviewer;
 
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.cache.definitions.ModelDefinition;
+import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.glRotatef;
 
 public class ModelViewer
 {
 	public static void main(String[] args) throws Exception
 	{
-		if (args.length < 1)
-		{
-			System.err.println("Usage: modelfile");
-			System.exit(1);
-		}
+		Options options = new Options();
 
-		ModelLoader loader = new ModelLoader();
-		byte[] b = Files.readAllBytes(new File(args[0]).toPath());
-		ModelDefinition md = loader.load(b);
+		options.addOption(null, "npcdir", true, "npc directory");
+		options.addOption(null, "modeldir", true, "model directory");
+		options.addOption(null, "npc", true, "npc to render");
+		options.addOption(null, "model", true, "model to render");
+
+		CommandLineParser parser = new DefaultParser();
+		CommandLine cmd = parser.parse(options, args);
+
+		String npcdir = cmd.getOptionValue("npcdir");
+		String modeldir = cmd.getOptionValue("modeldir");
+
+		NpcDefinition npcdef = null;
+		List<ModelDefinition> models = new ArrayList<>();
+
+		if (cmd.hasOption("model"))
+		{
+			// render model
+			String model = cmd.getOptionValue("model");
+
+			ModelLoader loader = new ModelLoader();
+			byte[] b = Files.readAllBytes(new File(modeldir + "/" + model + ".model").toPath());
+			ModelDefinition md = loader.load(b);
+			models.add(md);
+		}
+		else if (cmd.hasOption("npc"))
+		{
+			String npc = cmd.getOptionValue("npc");
+
+			try (FileInputStream fin = new FileInputStream(npcdir + "/" + npc + ".json"))
+			{
+				npcdef = new Gson().fromJson(new InputStreamReader(fin), NpcDefinition.class);
+			}
+
+			for (int model : npcdef.models)
+			{
+				ModelLoader mloader = new ModelLoader();
+				byte[] b = Files.readAllBytes(new File(modeldir + "/" + model + ".model").toPath());
+				ModelDefinition md = mloader.load(b);
+				models.add(md);
+			}
+		}
+		else
+		{
+			System.out.println("Must specify model or npc");
+			return;
+		}
 
 		Display.setDisplayMode(new DisplayMode(800, 600));
 		Display.setTitle("Model Viewer");
@@ -71,49 +121,19 @@ public class ModelViewer
 
 		Camera camera = new Camera();
 
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+		glRotatef(45, 1, 0, 0);
+		GL11.glPopMatrix();
+
 		while (!Display.isCloseRequested())
 		{
 			// Clear the screen and depth buffer
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-			GL11.glBegin(GL11.GL_TRIANGLES);
-
-			for (int i = 0; i < md.triangleFaceCount; ++i)
+			for (ModelDefinition def : models)
 			{
-				int vertexA = md.trianglePointsX[i];
-				int vertexB = md.trianglePointsY[i];
-				int vertexC = md.trianglePointsZ[i];
-
-				int vertexAx = md.vertexX[vertexA];
-				int vertexAy = md.vertexY[vertexA];
-				int vertexAz = md.vertexZ[vertexA];
-
-				int vertexBx = md.vertexX[vertexB];
-				int vertexBy = md.vertexY[vertexB];
-				int vertexBz = md.vertexZ[vertexB];
-
-				int vertexCx = md.vertexX[vertexC];
-				int vertexCy = md.vertexY[vertexC];
-				int vertexCz = md.vertexZ[vertexC];
-
-				short hsb = md.faceColor[i];
-
-				int rgb = RS2HSB_to_RGB(hsb);
-				Color c = new Color(rgb);
-
-				// convert to range of 0-1
-				float rf = (float) c.getRed() / 255f;
-				float gf = (float) c.getGreen() / 255f;
-				float bf = (float) c.getBlue() / 255f;
-
-				GL11.glColor3f(rf, gf, bf);
-
-				GL11.glVertex3i(vertexAx, vertexAy, vertexAz);
-				GL11.glVertex3i(vertexBx, vertexBy, vertexBz);
-				GL11.glVertex3i(vertexCx, vertexCy, vertexCz);
+				drawModel(npcdef, def);
 			}
-
-			GL11.glEnd();
 
 			Display.update();
 			Display.sync(50); // fps
@@ -126,6 +146,60 @@ public class ModelViewer
 		}
 
 		Display.destroy();
+	}
+
+	private static void drawModel(NpcDefinition npcdef, ModelDefinition md)
+	{
+		GL11.glBegin(GL11.GL_TRIANGLES);
+
+		for (int i = 0; i < md.triangleFaceCount; ++i)
+		{
+			int vertexA = md.trianglePointsX[i];
+			int vertexB = md.trianglePointsY[i];
+			int vertexC = md.trianglePointsZ[i];
+
+			int vertexAx = md.vertexX[vertexA];
+			int vertexAy = md.vertexY[vertexA];
+			int vertexAz = md.vertexZ[vertexA];
+
+			int vertexBx = md.vertexX[vertexB];
+			int vertexBy = md.vertexY[vertexB];
+			int vertexBz = md.vertexZ[vertexB];
+
+			int vertexCx = md.vertexX[vertexC];
+			int vertexCy = md.vertexY[vertexC];
+			int vertexCz = md.vertexZ[vertexC];
+
+			short hsb = md.faceColor[i];
+
+			// Check recolor
+			if (npcdef != null && npcdef.recolorToFind != null)
+			{
+				for (int j = 0; j < npcdef.recolorToFind.length; ++j)
+				{
+					if (npcdef.recolorToFind[j] == hsb)
+					{
+						hsb = npcdef.recolorToReplace[j];
+					}
+				}
+			}
+
+			int rgb = RS2HSB_to_RGB(hsb);
+			Color c = new Color(rgb);
+
+			// convert to range of 0-1
+			float rf = (float) c.getRed() / 255f;
+			float gf = (float) c.getGreen() / 255f;
+			float bf = (float) c.getBlue() / 255f;
+
+			GL11.glColor3f(rf, gf, bf);
+
+			GL11.glVertex3i(vertexAx, vertexAy, vertexAz);
+			GL11.glVertex3i(vertexBx, vertexBy, vertexBz);
+			GL11.glVertex3i(vertexCx, vertexCy, vertexCz);
+		}
+
+		GL11.glEnd();
 	}
 
 	// found these two functions here https://www.rune-server.org/runescape-development/rs2-client/tools/589900-rs2-hsb-color-picker.html
