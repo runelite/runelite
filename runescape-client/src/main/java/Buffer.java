@@ -341,7 +341,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1544129294"
    )
-   public int method3002() {
+   @Export("readShortSmart")
+   public int readShortSmart() {
       int var1 = this.payload[this.offset] & 255;
       return var1 < 128?this.readUnsignedByte() - 64:this.readUnsignedShort() - '쀀';
    }
@@ -734,7 +735,8 @@ public class Buffer extends Node {
       signature = "(I)B",
       garbageValue = "-1819338116"
    )
-   public byte method3047() {
+   @Export("readByte")
+   public byte readByte() {
       return this.payload[++this.offset - 1];
    }
 

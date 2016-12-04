@@ -96,8 +96,8 @@ public class class13 {
                   var0 = Client.field370.readUnsignedByte();
                   var1 = class7.field65 + (var0 >> 4 & 7);
                   var2 = class3.field32 + (var0 & 7);
-                  var3 = var1 + Client.field370.method3047();
-                  var4 = var2 + Client.field370.method3047();
+                  var3 = var1 + Client.field370.readByte();
+                  var4 = var2 + Client.field370.readByte();
                   var35 = Client.field370.method2993();
                   var41 = Client.field370.readUnsignedShort();
                   var7 = Client.field370.readUnsignedByte() * 4;
@@ -123,7 +123,7 @@ public class class13 {
                      var2 = var1 >> 2;
                      var3 = var1 & 3;
                      var4 = Client.field350[var2];
-                     byte var5 = Client.field370.method3047();
+                     byte var5 = Client.field370.readByte();
                      byte var30 = Client.field370.method3020();
                      var7 = Client.field370.method3025();
                      byte var31 = Client.field370.method3106();
