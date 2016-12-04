@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.RandomAccessFile;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -12,19 +13,22 @@ public class FaceNormal {
    @ObfuscatedGetter(
       intValue = -267066925
    )
-   int field1551;
+   @Export("y")
+   int y;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1942151231
    )
-   int field1552;
+   @Export("z")
+   int z;
    @ObfuscatedName("ei")
    static SpritePixels field1555;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1570400875
    )
-   int field1556;
+   @Export("x")
+   int x;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
