@@ -18,6 +18,8 @@ public class ModelLoader
 			this.load2(def, var1);
 		}
 
+		def.computeNormals();
+
 		return def;
 	}
 
