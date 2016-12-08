@@ -1,106 +1,131 @@
+import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("t")
+@ObfuscatedName("e")
 public final class class25 extends Node {
-   @ObfuscatedName("r")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 724365331
+      intValue = -1799524175
    )
-   int field572;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -642279425
-   )
-   int field573;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1366580351
-   )
-   int field574;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -772918891
-   )
-   int field575;
-   @ObfuscatedName("jd")
-   @ObfuscatedGetter(
-      intValue = -807957027
-   )
-   static int field576;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 126014903
-   )
-   int field577;
+   int field570;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -1041229065
+      intValue = -1702802305
+   )
+   int field571;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -2084798917
+   )
+   int field572;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 135956229
+   )
+   int field573;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1319060999
+   )
+   int field575;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 288316779
+   )
+   int field576;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 535130495
+   )
+   int field577 = -1;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 1872041301
    )
    int field578;
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1043931723
+      intValue = 2026795993
    )
    int field579;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -574214715
+      intValue = -72704535
    )
-   int field580;
-   @ObfuscatedName("q")
+   int field580 = 0;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 813225051
+      intValue = 645823303
    )
-   int field581 = 0;
-   @ObfuscatedName("l")
+   int field581;
+   @ObfuscatedName("bq")
+   static class184 field583;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1906098897
-   )
-   int field582 = -1;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1505487477
-   )
-   int field583;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -248019319
+      intValue = 376906497
    )
    int field584;
+   @ObfuscatedName("be")
+   static class184 field587;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "23142"
+      signature = "(Lclass68;I)V",
+      garbageValue = "-1500641267"
    )
-   static int method605(int var0, int var1) {
-      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method2405((long)var0);
-      return var2 == null?-1:(var1 >= 0 && var1 < var2.itemIds.length?var2.itemIds[var1]:-1);
-   }
-
-   @ObfuscatedName("do")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1722781758"
-   )
-   static void method606(int var0, int var1) {
-      class38 var2 = class2.field19;
-      KitDefinition.menuAction(var2.field798, var2.field791, var2.field792, var2.field793, var2.field790, var2.field790, var0, var1);
-      class2.field19 = null;
-   }
-
-   @ObfuscatedName("dq")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "458491402"
-   )
-   static final void method607(String var0) {
-      if(!var0.equals("")) {
-         Client.field330.method3234(208);
-         Client.field330.method2975(RSCanvas.method2132(var0));
-         Client.field330.method2981(var0);
+   static final void method558(class68 var0) {
+      var0.field1146 = false;
+      if(var0.field1143 != null) {
+         var0.field1143.field1177 = 0;
       }
+
+      for(class68 var1 = var0.vmethod2625(); null != var1; var1 = var0.vmethod2626()) {
+         method558(var1);
+      }
+
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "2066333589"
+   )
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(null == World.worldServersDownload) {
+            World.worldServersDownload = new class26(Tile.field1346, new URL(class167.field2195));
+         } else {
+            byte[] var0 = World.worldServersDownload.method567();
+            if(var0 != null) {
+               Buffer var1 = new Buffer(var0);
+               World.field679 = var1.readUnsignedShort();
+               World.worldList = new World[World.field679];
+
+               World var3;
+               for(int var2 = 0; var2 < World.field679; var3.index = var2++) {
+                  var3 = World.worldList[var2] = new World();
+                  var3.id = var1.readUnsignedShort();
+                  var3.mask = var1.method2731();
+                  var3.address = var1.method2780();
+                  var3.activity = var1.method2780();
+                  var3.location = var1.readUnsignedByte();
+                  var3.playerCount = var1.method2729();
+               }
+
+               class7.method87(World.worldList, 0, World.worldList.length - 1, World.field696, World.field675);
+               World.worldServersDownload = null;
+               return true;
+            }
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         World.worldServersDownload = null;
+      }
+
+      return false;
    }
 }

@@ -2,108 +2,89 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gn")
+@ObfuscatedName("gc")
 public class class183 implements Runnable {
-   @ObfuscatedName("d")
-   static Deque field2727 = new Deque();
-   @ObfuscatedName("h")
-   static Object field2729 = new Object();
-   @ObfuscatedName("n")
-   static Deque field2731 = new Deque();
-   @ObfuscatedName("kr")
-   static class112 field2732;
-   @ObfuscatedName("q")
-   public static class208 field2733;
+   @ObfuscatedName("o")
+   public static Deque field2733 = new Deque();
    @ObfuscatedName("m")
+   public static Deque field2734 = new Deque();
+   @ObfuscatedName("g")
+   public static Object field2736 = new Object();
+   @ObfuscatedName("v")
+   static byte[][][] field2737;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 220353037
+      intValue = 240880821
    )
-   static int field2734 = 0;
+   public static int field2740 = 0;
 
    public void run() {
       try {
          while(true) {
-            Deque var2 = field2731;
+            Deque var2 = field2733;
             class180 var1;
-            synchronized(field2731) {
-               var1 = (class180)field2731.method2466();
+            synchronized(field2733) {
+               var1 = (class180)field2733.method2349();
             }
 
             Object var14;
             if(null != var1) {
-               if(var1.field2699 == 0) {
-                  var1.field2701.method2294((int)var1.hash, var1.field2700, var1.field2700.length);
-                  var2 = field2731;
-                  synchronized(field2731) {
+               if(var1.field2702 == 0) {
+                  var1.field2704.method2186((int)var1.hash, var1.field2703, var1.field2703.length);
+                  var2 = field2733;
+                  synchronized(field2733) {
                      var1.unlink();
                   }
-               } else if(var1.field2699 == 1) {
-                  var1.field2700 = var1.field2701.method2297((int)var1.hash);
-                  var2 = field2731;
-                  synchronized(field2731) {
-                     field2727.method2454(var1);
+               } else if(var1.field2702 == 1) {
+                  var1.field2703 = var1.field2704.method2185((int)var1.hash);
+                  var2 = field2733;
+                  synchronized(field2733) {
+                     field2734.method2361(var1);
                   }
                }
 
-               var14 = field2729;
-               synchronized(field2729) {
-                  if(field2734 <= 1) {
-                     field2734 = 0;
-                     field2729.notifyAll();
+               var14 = field2736;
+               synchronized(field2736) {
+                  if(field2740 <= 1) {
+                     field2740 = 0;
+                     field2736.notifyAll();
                      return;
                   }
 
-                  field2734 = 600;
+                  field2740 = 600;
                }
             } else {
-               class0.method12(100L);
-               var14 = field2729;
-               synchronized(field2729) {
-                  if(field2734 <= 1) {
-                     field2734 = 0;
-                     field2729.notifyAll();
+               XClanMember.method237(100L);
+               var14 = field2736;
+               synchronized(field2736) {
+                  if(field2740 <= 1) {
+                     field2740 = 0;
+                     field2736.notifyAll();
                      return;
                   }
 
-                  --field2734;
+                  --field2740;
                }
             }
          }
       } catch (Exception var13) {
-         class39.reportException((String)null, var13);
+         FaceNormal.method1844((String)null, var13);
       }
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;B)[LModIcon;",
-      garbageValue = "26"
+      signature = "(I)V",
+      garbageValue = "609676524"
    )
-   public static ModIcon[] method3419(class182 var0, String var1, String var2) {
-      int var3 = var0.method3350(var1);
-      int var4 = var0.method3345(var3, var2);
-      ModIcon[] var5;
-      if(!KitDefinition.method3566(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         ModIcon[] var7 = new ModIcon[class225.field3212];
-
-         for(int var8 = 0; var8 < class225.field3212; ++var8) {
-            ModIcon var9 = var7[var8] = new ModIcon();
-            var9.width = class225.field3211;
-            var9.originalHeight = class225.field3216;
-            var9.offsetX = class225.field3213[var8];
-            var9.offsetY = class225.field3214[var8];
-            var9.originalWidth = class225.field3215[var8];
-            var9.height = class225.field3219[var8];
-            var9.palette = class225.field3210;
-            var9.pixels = class225.field3218[var8];
-         }
-
-         class189.method3507();
-         var5 = var7;
+   static final void method3292() {
+      if(class8.field62 != null) {
+         class8.field62.method1020();
       }
 
-      return var5;
+      if(null != class88.field1527) {
+         class88.field1527.method1020();
+      }
+
    }
 }

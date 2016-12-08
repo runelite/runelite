@@ -1,83 +1,72 @@
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("gj")
 public class class185 {
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 116590163
-   )
-   public static int field2745 = 0;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 7999389
-   )
-   public static int field2746 = 0;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      longValue = -3374855969677076063L
-   )
-   public static long field2747;
-   @ObfuscatedName("h")
-   public static XHashTable field2748 = new XHashTable(4096);
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 773202359
-   )
-   public static int field2749 = 0;
-   @ObfuscatedName("r")
-   public static XHashTable field2750 = new XHashTable(32);
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1493034331
-   )
-   public static int field2751 = 0;
-   @ObfuscatedName("p")
-   public static Node2LinkedList field2752 = new Node2LinkedList();
-   @ObfuscatedName("g")
-   public static XHashTable field2753 = new XHashTable(4096);
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1275220721
-   )
-   public static int field2754 = 0;
-   @ObfuscatedName("q")
-   public static XHashTable field2755 = new XHashTable(4096);
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -93144319
+      intValue = -1990021853
    )
    public static int field2756 = 0;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 696472993
-   )
-   public static int field2757 = 0;
-   @ObfuscatedName("x")
-   public static Buffer field2758 = new Buffer(8);
-   @ObfuscatedName("i")
-   static CRC32 field2759 = new CRC32();
    @ObfuscatedName("b")
-   static class184[] field2760 = new class184[256];
-   @ObfuscatedName("n")
-   public static class110 field2761;
-   @ObfuscatedName("j")
-   public static byte field2762 = 0;
-   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 862456783
+      longValue = 8600495277640006627L
+   )
+   public static long field2757;
+   @ObfuscatedName("v")
+   public static XHashTable field2758 = new XHashTable(32);
+   @ObfuscatedName("u")
+   static XHashTable field2759 = new XHashTable(4096);
+   @ObfuscatedName("q")
+   public static byte field2760 = 0;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 257699761
+   )
+   public static int field2761 = 0;
+   @ObfuscatedName("c")
+   public static Node2LinkedList field2762 = new Node2LinkedList();
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 971465329
    )
    public static int field2763 = 0;
-
-   @ObfuscatedName("dx")
-   @ObfuscatedSignature(
-      signature = "(LWidget;S)I",
-      garbageValue = "16256"
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1196790817
    )
-   static int method3463(Widget var0) {
-      class133 var1 = (class133)Client.widgetFlags.method2405(((long)var0.id << 32) + (long)var0.index);
-      return null != var1?var1.field1892:var0.field2141;
-   }
+   public static int field2764 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 393742933
+   )
+   public static int field2765 = 0;
+   @ObfuscatedName("z")
+   public static XHashTable field2766 = new XHashTable(4096);
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = -555672557
+   )
+   public static int field2767 = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -705805123
+   )
+   public static int field2768 = 0;
+   @ObfuscatedName("d")
+   public static CRC32 field2769 = new CRC32();
+   @ObfuscatedName("n")
+   public static class184[] field2770 = new class184[256];
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -1277936795
+   )
+   public static int field2772 = 0;
+   @ObfuscatedName("g")
+   public static XHashTable field2773 = new XHashTable(4096);
+   @ObfuscatedName("o")
+   public static class110 field2774;
+   @ObfuscatedName("p")
+   public static Buffer field2775 = new Buffer(8);
 }

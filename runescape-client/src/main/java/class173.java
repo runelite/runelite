@@ -1,26 +1,23 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fw")
+@ObfuscatedName("fv")
 public class class173 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IB)Lclass194;",
-      garbageValue = "87"
+      signature = "(II)Lclass178;",
+      garbageValue = "-1538210831"
    )
-   public static class194 method3303(int var0) {
-      class194 var1 = (class194)class194.field2849.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class194.field2851.method3329(14, var0);
-         var1 = new class194();
-         if(null != var2) {
-            var1.method3589(new Buffer(var2));
-         }
+   public static class178 method3177(int var0) {
+      class178[] var1 = ItemLayer.method1432();
 
-         class194.field2849.put(var1, (long)var0);
-         return var1;
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         class178 var3 = var1[var2];
+         if(var0 == var3.field2686) {
+            return var3;
+         }
       }
+
+      return null;
    }
 }

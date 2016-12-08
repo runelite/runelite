@@ -4,91 +4,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bc")
+@ObfuscatedName("bz")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1674801075
+      intValue = -1350420449
    )
    @Export("x")
    int x;
-   @ObfuscatedName("bm")
-   static class184 field1202;
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -913500127
+      intValue = -749194795
    )
    @Export("hash")
    int hash;
-   @ObfuscatedName("h")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1776698613
+      intValue = 676907695
    )
    @Export("y")
    int y;
+   @ObfuscatedName("h")
+   @Export("bottom")
+   Renderable bottom;
    @ObfuscatedName("m")
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("w")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1191984871
+      intValue = -1598591419
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("p")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1500088957
+      intValue = -1040425173
    )
    @Export("height")
    int height;
-   @ObfuscatedName("r")
-   @Export("top")
-   Renderable top;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Lclass182;I)V",
-      garbageValue = "-1035685881"
+      signature = "(I)[Lclass178;",
+      garbageValue = "559506051"
    )
-   public static void method1486(class182 var0) {
-      class187.field2775 = var0;
-      class187.field2773 = class187.field2775.method3339(16);
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(IZS)Ljava/lang/String;",
-      garbageValue = "-19086"
-   )
-   public static String method1487(int var0, boolean var1) {
-      return Integer.toString(var0);
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "1"
-   )
-   static final String method1488(int var0) {
-      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;II)Z",
-      garbageValue = "1389529036"
-   )
-   public static boolean method1489(class182 var0, int var1) {
-      byte[] var2 = var0.method3334(var1);
-      if(var2 == null) {
-         return false;
-      } else {
-         class114.method2249(var2);
-         return true;
-      }
+   static class178[] method1432() {
+      return new class178[]{class178.field2684, class178.field2687, class178.field2683, class178.field2682};
    }
 }

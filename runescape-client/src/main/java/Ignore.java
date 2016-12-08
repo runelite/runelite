@@ -1,55 +1,94 @@
+import java.io.File;
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("a")
+@ObfuscatedName("w")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("n")
+   @ObfuscatedName("da")
+   static int[] field206;
+   @ObfuscatedName("o")
    @Export("name")
    String name;
-   @ObfuscatedName("d")
+   @ObfuscatedName("pk")
+   static GarbageCollectorMXBean field208;
+   @ObfuscatedName("gb")
+   static Widget field209;
+   @ObfuscatedName("g")
+   static File field210;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1097184963
+   )
+   static int field215;
+   @ObfuscatedName("b")
+   public static class182 field216;
+   @ObfuscatedName("m")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("j")
-   static String field211;
+   @ObfuscatedName("cj")
+   static class208 field218;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("dl")
    @ObfuscatedSignature(
-      signature = "(IIB)V",
-      garbageValue = "75"
+      signature = "(I)V",
+      garbageValue = "138721456"
    )
-   static void method207(int var0, int var1) {
-      int[] var2 = new int[4];
-      int[] var3 = new int[4];
-      var2[0] = var0;
-      var3[0] = var1;
-      int var4 = 1;
+   static void method188() {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2296(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2300()) {
+         int var1 = var0.id;
+         if(class2.method25(var1)) {
+            boolean var2 = true;
+            Widget[] var3 = Widget.widgets[var1];
 
-      for(int var5 = 0; var5 < 4; ++var5) {
-         if(var0 != World.field686[var5]) {
-            var2[var4] = World.field686[var5];
-            var3[var4] = World.field674[var5];
-            ++var4;
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(var3[var4] != null) {
+                  var2 = var3[var4].field2204;
+                  break;
+               }
+            }
+
+            if(!var2) {
+               var4 = (int)var0.hash;
+               Widget var5 = class174.method3178(var4);
+               if(var5 != null) {
+                  class97.method1886(var5);
+               }
+            }
          }
       }
 
-      World.field686 = var2;
-      World.field674 = var3;
-      FaceNormal.method1924(World.worldList, 0, World.worldList.length - 1, World.field686, World.field674);
    }
 
-   @ObfuscatedName("di")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)V",
-      garbageValue = "-94"
-   )
-   static final void method208(String var0) {
-      if(class164.clanMembers != null) {
-         Client.field330.method3234(227);
-         Client.field330.method2975(RSCanvas.method2132(var0));
-         Client.field330.method2981(var0);
+   @ObfuscatedName("m")
+   public static String method189(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(var0 % 37L == 0L) {
+            return null;
+         } else {
+            int var2 = 0;
+
+            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
+               ++var2;
+            }
+
+            StringBuilder var5 = new StringBuilder(var2);
+
+            while(0L != var0) {
+               long var6 = var0;
+               var0 /= 37L;
+               var5.append(class205.field3080[(int)(var6 - 37L * var0)]);
+            }
+
+            return var5.reverse().toString();
+         }
+      } else {
+         return null;
       }
    }
 }

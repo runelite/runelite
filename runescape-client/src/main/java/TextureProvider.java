@@ -1,76 +1,147 @@
+import java.awt.datatransfer.Clipboard;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("bj")
 @Implements("TextureProvider")
 public class TextureProvider implements class93 {
-   @ObfuscatedName("h")
+   @ObfuscatedName("qx")
    @ObfuscatedGetter(
-      intValue = -525524085
+      intValue = -1015894959
    )
-   int field1189 = 0;
-   @ObfuscatedName("d")
-   Deque field1190 = new Deque();
+   public static int field1200;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1135212011
+   )
+   int field1201 = 128;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -582008053
+   )
+   int field1202;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -382545837
+   )
+   int field1203 = 0;
+   @ObfuscatedName("o")
+   class79[] field1204;
+   @ObfuscatedName("l")
+   class182 field1206;
    @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 2061768551
-   )
-   int field1191;
-   @ObfuscatedName("c")
-   class182 field1192;
-   @ObfuscatedName("w")
-   double field1193 = 1.0D;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -2095171409
-   )
-   int field1194 = 128;
-   @ObfuscatedName("n")
-   class79[] field1198;
-
+   Deque field1207 = new Deque();
    @ObfuscatedName("h")
+   double field1208 = 1.0D;
+   @ObfuscatedName("qb")
+   @Export("bufferProvider")
+   public static BufferProvider bufferProvider;
+   @ObfuscatedName("py")
+   static Clipboard field1210;
+
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1291388267"
+      signature = "(D)V",
+      garbageValue = "0.9"
    )
-   public boolean vmethod1935(int var1) {
-      return this.field1198[var1].field1299;
+   public void method1406(double var1) {
+      this.field1208 = var1;
+      this.method1411();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IB)[I",
-      garbageValue = "-50"
+      signature = "(II)[I",
+      garbageValue = "-2027168990"
    )
    @Export("load")
    public int[] load(int var1) {
-      class79 var2 = this.field1198[var1];
-      if(null != var2) {
-         if(null != var2.field1298) {
-            this.field1190.method2455(var2);
-            var2.field1307 = true;
-            return var2.field1298;
+      class79 var2 = this.field1204[var1];
+      if(var2 != null) {
+         if(null != var2.field1309) {
+            this.field1207.method2345(var2);
+            var2.field1304 = true;
+            return var2.field1309;
          }
 
-         boolean var3 = var2.method1572(this.field1193, this.field1194, this.field1192);
+         boolean var3 = var2.method1509(this.field1208, this.field1201, this.field1206);
          if(var3) {
-            if(this.field1189 == 0) {
-               class79 var4 = (class79)this.field1190.method2458();
-               var4.method1573();
+            if(this.field1203 == 0) {
+               class79 var4 = (class79)this.field1207.method2373();
+               var4.method1516();
             } else {
-               --this.field1189;
+               --this.field1203;
             }
 
-            this.field1190.method2455(var2);
-            var2.field1307 = true;
-            return var2.field1298;
+            this.field1207.method2345(var2);
+            var2.field1304 = true;
+            return var2.field1309;
          }
       }
 
       return null;
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(IB)I",
+      garbageValue = "1"
+   )
+   public int vmethod1853(int var1) {
+      return null != this.field1204[var1]?this.field1204[var1].field1301:0;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "-93"
+   )
+   public boolean vmethod1864(int var1) {
+      return this.field1204[var1].field1302;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-86"
+   )
+   public void method1410(int var1) {
+      for(int var2 = 0; var2 < this.field1204.length; ++var2) {
+         class79 var3 = this.field1204[var2];
+         if(var3 != null && var3.field1307 != 0 && var3.field1304) {
+            var3.method1511(var1);
+            var3.field1304 = false;
+         }
+      }
+
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2133440488"
+   )
+   public void method1411() {
+      for(int var1 = 0; var1 < this.field1204.length; ++var1) {
+         if(null != this.field1204[var1]) {
+            this.field1204[var1].method1516();
+         }
+      }
+
+      this.field1207 = new Deque();
+      this.field1203 = this.field1202;
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "3164661"
+   )
+   public boolean vmethod1856(int var1) {
+      return this.field1201 == 64;
    }
 
    @ObfuscatedSignature(
@@ -78,153 +149,28 @@ public class TextureProvider implements class93 {
       garbageValue = "64"
    )
    public TextureProvider(class182 var1, class182 var2, int var3, double var4, int var6) {
-      this.field1192 = var2;
-      this.field1191 = var3;
-      this.field1189 = this.field1191;
-      this.field1193 = var4;
-      this.field1194 = var6;
-      int[] var7 = var1.method3338(0);
+      this.field1206 = var2;
+      this.field1202 = var3;
+      this.field1203 = this.field1202;
+      this.field1208 = var4;
+      this.field1201 = var6;
+      int[] var7 = var1.method3212(0);
       int var8 = var7.length;
-      this.field1198 = new class79[var1.method3339(0)];
+      this.field1204 = new class79[var1.method3245(0)];
 
       for(int var9 = 0; var9 < var8; ++var9) {
-         Buffer var10 = new Buffer(var1.method3329(0, var7[var9]));
-         this.field1198[var7[var9]] = new class79(var10);
+         Buffer var10 = new Buffer(var1.method3203(0, var7[var9]));
+         this.field1204[var7[var9]] = new class79(var10);
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(D)V",
-      garbageValue = "0.9"
+      signature = "(B)LWorld;",
+      garbageValue = "-40"
    )
-   public void method1463(double var1) {
-      this.field1193 = var1;
-      this.method1465();
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-326783789"
-   )
-   public boolean vmethod1933(int var1) {
-      return this.field1194 == 64;
-   }
-
-   @ObfuscatedName("r")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1424586725"
-   )
-   public void method1465() {
-      for(int var1 = 0; var1 < this.field1198.length; ++var1) {
-         if(this.field1198[var1] != null) {
-            this.field1198[var1].method1573();
-         }
-      }
-
-      this.field1190 = new Deque();
-      this.field1189 = this.field1191;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "885846759"
-   )
-   public int vmethod1934(int var1) {
-      return null != this.field1198[var1]?this.field1198[var1].field1302:0;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "1231871094"
-   )
-   public void method1482(int var1) {
-      for(int var2 = 0; var2 < this.field1198.length; ++var2) {
-         class79 var3 = this.field1198[var2];
-         if(null != var3 && var3.field1304 != 0 && var3.field1307) {
-            var3.method1574(var1);
-            var3.field1307 = false;
-         }
-      }
-
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "([BZB)Ljava/lang/Object;",
-      garbageValue = "41"
-   )
-   public static Object method1484(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
-      } else {
-         if(var0.length > 136 && !class163.field2314) {
-            try {
-               class158 var2 = new class158();
-               var2.vmethod3199(var0);
-               return var2;
-            } catch (Throwable var3) {
-               class163.field2314 = true;
-            }
-         }
-
-         return var0;
-      }
-   }
-
-   @ObfuscatedName("cw")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-2108266969"
-   )
-   static final void method1485(int var0, int var1) {
-      int var2 = class156.field2236.method3912("Choose Option");
-
-      int var3;
-      for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
-         class208 var8 = class156.field2236;
-         String var7;
-         if(Client.menuTargets[var3].length() > 0) {
-            var7 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
-         } else {
-            var7 = Client.menuOptions[var3];
-         }
-
-         int var6 = var8.method3912(var7);
-         if(var6 > var2) {
-            var2 = var6;
-         }
-      }
-
-      var2 += 8;
-      var3 = Client.menuOptionCount * 15 + 22;
-      int var4 = var0 - var2 / 2;
-      if(var4 + var2 > class16.field169) {
-         var4 = class16.field169 - var2;
-      }
-
-      if(var4 < 0) {
-         var4 = 0;
-      }
-
-      int var5 = var1;
-      if(var3 + var1 > class65.field1103) {
-         var5 = class65.field1103 - var3;
-      }
-
-      if(var5 < 0) {
-         var5 = 0;
-      }
-
-      Client.isMenuOpen = true;
-      Projectile.menuX = var4;
-      XClanMember.menuY = var5;
-      class37.menuWidth = var2;
-      class20.menuHeight = 22 + Client.menuOptionCount * 15;
+   static World method1431() {
+      return World.field680 < World.field679?World.worldList[++World.field680 - 1]:null;
    }
 }

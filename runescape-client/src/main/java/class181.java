@@ -2,41 +2,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("ft")
 public class class181 extends CacheableNode {
-   @ObfuscatedName("n")
-   class184 field2703;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1202861357
-   )
-   int field2704;
+   @ObfuscatedName("o")
+   public class184 field2708;
    @ObfuscatedName("m")
-   byte field2705;
-   @ObfuscatedName("g")
-   static ModIcon[] field2706;
-
-   @ObfuscatedName("cl")
-   @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "-608438885"
+   @ObfuscatedGetter(
+      intValue = -385280891
    )
-   static void method3325(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      Frames.method1930(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         Frames.method1930(var1.children, var1.id, var3, var4, var2);
-      }
+   public int field2709;
+   @ObfuscatedName("b")
+   public byte field2710;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1619480893
+   )
+   public static int field2711;
 
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method2405((long)var1.id);
-      if(var5 != null) {
-         class101.method1990(var5.id, var3, var4, var2);
-      }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
+      garbageValue = "1991660969"
+   )
+   static Class method3199(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Class.forName(var0)))))))));
    }
 }

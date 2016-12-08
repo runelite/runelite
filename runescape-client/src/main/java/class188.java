@@ -1,41 +1,39 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gb")
+@ObfuscatedName("gs")
 public class class188 extends CacheableNode {
-   @ObfuscatedName("u")
-   static int[] field2780;
+   @ObfuscatedName("b")
+   public boolean field2785 = false;
    @ObfuscatedName("m")
-   public boolean field2781 = false;
-   @ObfuscatedName("n")
-   public static class182 field2782;
-   @ObfuscatedName("d")
-   static NodeCache field2783 = new NodeCache(64);
+   public static NodeCache field2786 = new NodeCache(64);
+   @ObfuscatedName("o")
+   public static class182 field2787;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-1522347516"
+      garbageValue = "-50684126"
    )
-   void method3487(Buffer var1) {
+   public void method3358(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3488(var1, var2);
+         this.method3360(var1, var2);
       }
    }
 
    @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "-1668883068"
+      garbageValue = "705437841"
    )
-   void method3488(Buffer var1, int var2) {
+   void method3360(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field2781 = true;
+         this.field2785 = true;
       }
 
    }

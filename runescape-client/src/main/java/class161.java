@@ -1,61 +1,66 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fq")
 public class class161 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("ng")
    @ObfuscatedGetter(
-      intValue = -933018755
+      intValue = 1491581887
    )
-   static int field2297 = 0;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1247931529
-   )
-   static int field2298 = 0;
-   @ObfuscatedName("h")
-   static byte[][] field2299 = new byte[1000][];
-   @ObfuscatedName("w")
-   static byte[][] field2300 = new byte[250][];
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 20660487
-   )
-   static int field2301 = 0;
-   @ObfuscatedName("r")
-   static byte[][] field2304 = new byte[50][];
+   static int field2151;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("bs")
    @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "600230293"
+      signature = "(III)V",
+      garbageValue = "-1346164190"
    )
-   static synchronized byte[] method3187(int var0) {
-      byte[] var1;
-      if(var0 == 100 && field2297 > 0) {
-         var1 = field2299[--field2297];
-         field2299[field2297] = null;
-         return var1;
-      } else if(var0 == 5000 && field2301 > 0) {
-         var1 = field2300[--field2301];
-         field2300[field2301] = null;
-         return var1;
-      } else if(var0 == 30000 && field2298 > 0) {
-         var1 = field2304[--field2298];
-         field2304[field2298] = null;
-         return var1;
+   @Export("groundItemSpawned")
+   static final void groundItemSpawned(int var0, int var1) {
+      Deque var2 = Client.groundItemDeque[class63.plane][var0][var1];
+      if(null == var2) {
+         class159.region.method1676(class63.plane, var0, var1);
       } else {
-         return new byte[var0];
-      }
-   }
+         long var3 = -99999999L;
+         Item var5 = null;
 
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "6"
-   )
-   public static boolean method3188() {
-      return class138.field1917 != 0?true:class138.field1919.method2557();
+         Item var6;
+         for(var6 = (Item)var2.method2349(); null != var6; var6 = (Item)var2.method2351()) {
+            ItemComposition var7 = class137.getItemDefinition(var6.id);
+            long var10 = (long)var7.price;
+            if(var7.isStackable == 1) {
+               var10 *= (long)(var6.quantity + 1);
+            }
+
+            if(var10 > var3) {
+               var3 = var10;
+               var5 = var6;
+            }
+         }
+
+         if(var5 == null) {
+            class159.region.method1676(class63.plane, var0, var1);
+         } else {
+            var2.method2345(var5);
+            Item var12 = null;
+            Item var8 = null;
+
+            for(var6 = (Item)var2.method2349(); null != var6; var6 = (Item)var2.method2351()) {
+               if(var6.id != var5.id) {
+                  if(var12 == null) {
+                     var12 = var6;
+                  }
+
+                  if(var12.id != var6.id && var8 == null) {
+                     var8 = var6;
+                  }
+               }
+            }
+
+            int var9 = 1610612736 + var0 + (var1 << 7);
+            class159.region.method1673(class63.plane, var0, var1, ChatLineBuffer.method896(128 * var0 + 64, 128 * var1 + 64, class63.plane), var5, var9, var12, var8);
+         }
+      }
    }
 }

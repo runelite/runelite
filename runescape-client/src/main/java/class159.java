@@ -1,146 +1,166 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
-public final class class159 {
-   @ObfuscatedName("m")
-   final int field2245 = 258;
-   @ObfuscatedName("d")
-   final int field2246 = 16;
-   @ObfuscatedName("w")
-   final int field2247 = 50;
-   @ObfuscatedName("h")
-   final int field2248 = 6;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1589281217
-   )
-   int field2249;
-   @ObfuscatedName("r")
-   final int field2250 = 18002;
-   @ObfuscatedName("c")
-   byte[] field2251;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -608975129
-   )
-   int field2252 = 0;
+@ObfuscatedName("fp")
+public final class class159 extends Buffer {
+   @ObfuscatedName("ds")
+   @Export("region")
+   static Region region;
+   @ObfuscatedName("u")
+   class160 field2137;
    @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1304657577
-   )
-   int field2253;
+   static final int[] field2138 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+   @ObfuscatedName("ev")
+   static SpritePixels field2139;
+   @ObfuscatedName("ax")
+   static class102 field2140;
    @ObfuscatedName("z")
-   byte[] field2254;
-   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1819308459
+      intValue = 411998461
    )
-   int field2255 = 0;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -438611211
-   )
-   int field2256;
-   @ObfuscatedName("n")
-   final int field2257 = 4096;
-   @ObfuscatedName("e")
-   byte field2258;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1153377869
-   )
-   int field2259;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -293826131
-   )
-   int field2260;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -821866247
-   )
-   int field2261;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -549944971
-   )
-   int field2262;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -1127267857
-   )
-   int field2263;
-   @ObfuscatedName("j")
-   int[] field2264 = new int[256];
-   @ObfuscatedName("ag")
-   int[][] field2265 = new int[6][258];
-   @ObfuscatedName("am")
-   int[][] field2266 = new int[6][258];
-   @ObfuscatedName("as")
-   byte[] field2267 = new byte[4096];
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      intValue = -744893647
-   )
-   int field2268;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1699531877
-   )
-   int field2269;
-   @ObfuscatedName("v")
-   int[] field2270 = new int[257];
-   @ObfuscatedName("aw")
-   boolean[] field2271 = new boolean[16];
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = -2095377833
-   )
-   int field2272;
-   @ObfuscatedName("ay")
-   byte[] field2273 = new byte[256];
-   @ObfuscatedName("ai")
-   int[] field2274 = new int[16];
-   @ObfuscatedName("aq")
-   byte[] field2275 = new byte[18002];
-   @ObfuscatedName("ac")
-   byte[] field2276 = new byte[18002];
-   @ObfuscatedName("ae")
-   byte[][] field2277 = new byte[6][258];
-   @ObfuscatedName("ap")
-   int[] field2278 = new int[6];
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 1318489309
-   )
-   int field2279;
-   @ObfuscatedName("af")
-   int[][] field2280 = new int[6][258];
-   @ObfuscatedName("av")
-   boolean[] field2281 = new boolean[256];
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 308406701
-   )
-   int field2282;
+   int field2141;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("hx")
    @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "1193022766"
+      signature = "(IB)V",
+      garbageValue = "-103"
    )
-   static final boolean method2972(char var0) {
-      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
+   public void method2967(int var1) {
+      super.payload[++super.offset - 1] = (byte)(var1 + this.field2137.method2994());
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("hc")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)Ljava/lang/String;",
-      garbageValue = "125"
+      signature = "(I)I",
+      garbageValue = "719825803"
    )
-   public static String method2973(Buffer var0) {
-      return class190.method3513(var0, 32767);
+   public int method2968() {
+      return super.payload[++super.offset - 1] - this.field2137.method2994() & 255;
+   }
+
+   @ObfuscatedName("hb")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "555824681"
+   )
+   public void method2969() {
+      this.field2141 = super.offset * 8;
+   }
+
+   @ObfuscatedName("il")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-65574880"
+   )
+   public int method2971(int var1) {
+      return 8 * var1 - this.field2141;
+   }
+
+   @ObfuscatedName("hr")
+   @ObfuscatedSignature(
+      signature = "([II)V",
+      garbageValue = "-740813415"
+   )
+   public void method2975(int[] var1) {
+      this.field2137 = new class160(var1);
+   }
+
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "5000"
+   )
+   public class159(int var1) {
+      super(var1);
+   }
+
+   @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2122040542"
+   )
+   static final int method2979() {
+      if(XGrandExchangeOffer.field35.field699) {
+         return class63.plane;
+      } else {
+         int var0 = ChatLineBuffer.method896(class110.cameraX, class16.cameraY, class63.plane);
+         return var0 - class189.cameraZ < 800 && (class10.tileSettings[class63.plane][class110.cameraX >> 7][class16.cameraY >> 7] & 4) != 0?class63.plane:3;
+      }
+   }
+
+   @ObfuscatedName("cn")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;LWidget;B)Ljava/lang/String;",
+      garbageValue = "53"
+   )
+   static String method2980(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var6 = var0.indexOf("%" + var2);
+               if(var6 == -1) {
+                  break;
+               }
+
+               var0 = var0.substring(0, var6) + class174.method3180(Player.method235(var1, var2 - 1)) + var0.substring(2 + var6);
+            }
+         }
+
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var3 = "";
+            if(World.field678 != null) {
+               int var5 = World.field678.field1656;
+               String var4 = (var5 >> 24 & 255) + "." + (var5 >> 16 & 255) + "." + (var5 >> 8 & 255) + "." + (var5 & 255);
+               var3 = var4;
+               if(World.field678.field1662 != null) {
+                  var3 = (String)World.field678.field1662;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var3 + var0.substring(var2 + 4);
+         }
+      }
+
+      return var0;
+   }
+
+   @ObfuscatedName("hs")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-2111034128"
+   )
+   public int method2986(int var1) {
+      int var2 = this.field2141 >> 3;
+      int var3 = 8 - (this.field2141 & 7);
+      int var4 = 0;
+
+      for(this.field2141 += var1; var1 > var3; var3 = 8) {
+         var4 += (super.payload[var2++] & field2138[var3]) << var1 - var3;
+         var1 -= var3;
+      }
+
+      if(var3 == var1) {
+         var4 += super.payload[var2] & field2138[var3];
+      } else {
+         var4 += super.payload[var2] >> var3 - var1 & field2138[var1];
+      }
+
+      return var4;
+   }
+
+   @ObfuscatedName("hl")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1709290086"
+   )
+   public void method2992() {
+      super.offset = (this.field2141 + 7) / 8;
    }
 }

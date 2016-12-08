@@ -1,74 +1,55 @@
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
-import java.net.URI;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("j")
+@ObfuscatedName("q")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("fx")
+   @ObfuscatedName("am")
+   static int[] field230;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 637513739
-   )
-   static int field223;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -48150117
-   )
-   @Export("tick")
-   int tick;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 221119997
+      intValue = -1871082685
    )
    @Export("type")
    int type;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 874592105
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("h")
+   @ObfuscatedName("g")
    @Export("name")
    String name;
-   @ObfuscatedName("w")
+   @ObfuscatedName("h")
    @Export("sender")
    String sender;
-   @ObfuscatedName("ab")
-   static boolean field229;
-   @ObfuscatedName("qx")
-   protected static java.awt.Frame field230;
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @Export("value")
    String value;
-   @ObfuscatedName("rg")
-   protected static String field234;
-   @ObfuscatedName("g")
-   public static short[] field235;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1394102869
+   )
+   @Export("tick")
+   int tick;
+   @ObfuscatedName("by")
+   @ObfuscatedGetter(
+      intValue = 1995946803
+   )
+   static int field237;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -1422299407
+   )
+   @Export("id")
+   int id = class1.method14();
 
-   MessageNode(int var1, String var2, String var3, String var4) {
-      int var5 = ++class47.field927 - 1;
-      this.id = var5;
-      this.tick = Client.gameCycle;
-      this.type = var1;
-      this.name = var2;
-      this.sender = var3;
-      this.value = var4;
-   }
-
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "-1015751294"
+      garbageValue = "1662010682"
    )
-   void method215(int var1, String var2, String var3, String var4) {
-      int var5 = ++class47.field927 - 1;
-      this.id = var5;
+   void method199(int var1, String var2, String var3, String var4) {
+      this.id = class1.method14();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
@@ -76,57 +57,47 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZB)V",
-      garbageValue = "-56"
+      signature = "(ZI)V",
+      garbageValue = "1871649558"
    )
-   public static void method217(String var0, boolean var1, boolean var2) {
-      if(var1) {
-         if(Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+   public static void method201(boolean var0) {
+      if(null != class185.field2774) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.method2815(var0?2:3);
+            var1.method2713(0);
+            class185.field2774.method2016(var1.payload, 0, 4);
+         } catch (IOException var4) {
             try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var4) {
+               class185.field2774.method2027();
+            } catch (Exception var3) {
                ;
             }
+
+            ++class185.field2763;
+            class185.field2774 = null;
          }
 
-         if(class114.field1794.startsWith("win")) {
-            class16.method197(var0, 0, "openjs");
-         } else if(class114.field1794.startsWith("mac")) {
-            class16.method197(var0, 1, "openjs");
-         } else {
-            class16.method197(var0, 2, "openjs");
-         }
-      } else {
-         class16.method197(var0, 3, "openjs");
       }
-
    }
 
-   @ObfuscatedName("dg")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIIILSpritePixels;Lclass145;B)V",
-      garbageValue = "-41"
+      signature = "(IB)I",
+      garbageValue = "28"
    )
-   static final void method220(int var0, int var1, int var2, int var3, SpritePixels var4, class145 var5) {
-      int var6 = var3 * var3 + var2 * var2;
-      if(var6 > 4225 && var6 < 90000) {
-         int var7 = Client.mapScale + Client.mapAngle & 2047;
-         int var8 = class84.field1444[var7];
-         int var9 = class84.field1445[var7];
-         var8 = 256 * var8 / (256 + Client.mapScaleDelta);
-         var9 = 256 * var9 / (256 + Client.mapScaleDelta);
-         int var10 = var3 * var8 + var2 * var9 >> 16;
-         int var11 = var9 * var3 - var2 * var8 >> 16;
-         double var12 = Math.atan2((double)var10, (double)var11);
-         int var14 = (int)(Math.sin(var12) * 63.0D);
-         int var15 = (int)(Math.cos(var12) * 57.0D);
-         FaceNormal.field1555.method4204(4 + var0 + 94 + var14 - 10, 83 + var1 - var15 - 20, 20, 20, 15, 15, var12, 256);
-      } else {
-         class40.method785(var0, var1, var2, var3, var4, var5);
-      }
+   static int method203(int var0) {
+      ChatLineBuffer var1 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
+      return null == var1?0:var1.method884();
+   }
 
+   MessageNode(int var1, String var2, String var3, String var4) {
+      this.tick = Client.gameCycle;
+      this.type = var1;
+      this.name = var2;
+      this.sender = var3;
+      this.value = var4;
    }
 }
