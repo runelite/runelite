@@ -8,44 +8,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bs")
+@ObfuscatedName("bn")
 @Implements("FileOnDisk")
 public final class FileOnDisk {
-   @ObfuscatedName("cy")
-   static class110 field1183;
-   @ObfuscatedName("d")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      longValue = -7482900439825072601L
-   )
-   @Export("length")
-   long length;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      longValue = -5412082561027177477L
+      longValue = 4199302794556595219L
    )
    @Export("position")
    long position;
-   @ObfuscatedName("n")
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      longValue = 5190847102451418709L
+   )
+   @Export("length")
+   long length;
+   @ObfuscatedName("o")
    @Export("file")
    RandomAccessFile file;
-   @ObfuscatedName("h")
-   static String[] field1188;
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "0"
+   @ObfuscatedName("nm")
+   @ObfuscatedGetter(
+      intValue = -1459804033
    )
-   public final long method1439() throws IOException {
-      return this.file.length();
-   }
+   static int field1197;
+   @ObfuscatedName("l")
+   public static int[] field1199;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "-1218042491"
+      garbageValue = "-1708279247"
    )
-   public final void method1441(byte[] var1, int var2, int var3) throws IOException {
+   public final void method1387(byte[] var1, int var2, int var3) throws IOException {
       if(this.position + (long)var3 > this.length) {
          this.file.seek(1L + this.length);
          this.file.write(1);
@@ -56,46 +50,53 @@ public final class FileOnDisk {
       }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("o")
+   final void method1388(long var1) throws IOException {
+      this.file.seek(var1);
+      this.position = var1;
+   }
+
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-985305222"
+      signature = "(I)J",
+      garbageValue = "329788446"
    )
-   public final void method1442() throws IOException {
-      if(null != this.file) {
-         this.file.close();
-         this.file = null;
+   public final long method1389() throws IOException {
+      return this.file.length();
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "([Lclass158;II)Lclass158;",
+      garbageValue = "1793000019"
+   )
+   public static class158 method1390(class158[] var0, int var1) {
+      class158[] var2 = var0;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class158 var4 = var2[var3];
+         if(var1 == var4.vmethod3989()) {
+            return var4;
+         }
+      }
+
+      return null;
+   }
+
+   protected void finalize() throws Throwable {
+      if(this.file != null) {
+         System.out.println("");
+         this.method1400();
       }
 
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1343651211"
+      signature = "([BIIB)I",
+      garbageValue = "82"
    )
-   public static void method1443() {
-      while(true) {
-         Deque var1 = class183.field2731;
-         class180 var0;
-         synchronized(class183.field2731) {
-            var0 = (class180)class183.field2727.method2474();
-         }
-
-         if(var0 == null) {
-            return;
-         }
-
-         var0.field2702.method3430(var0.field2701, (int)var0.hash, var0.field2700, false);
-      }
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "([BIIS)I",
-      garbageValue = "-25422"
-   )
-   public final int method1444(byte[] var1, int var2, int var3) throws IOException {
+   public final int method1391(byte[] var1, int var2, int var3) throws IOException {
       int var4 = this.file.read(var1, var2, var3);
       if(var4 > 0) {
          this.position += (long)var4;
@@ -104,16 +105,8 @@ public final class FileOnDisk {
       return var4;
    }
 
-   protected void finalize() throws Throwable {
-      if(null != this.file) {
-         System.out.println("");
-         this.method1442();
-      }
-
-   }
-
    public FileOnDisk(File var1, String var2, long var3) throws IOException {
-      if(-1L == var3) {
+      if(var3 == -1L) {
          var3 = Long.MAX_VALUE;
       }
 
@@ -133,9 +126,51 @@ public final class FileOnDisk {
       this.file.seek(0L);
    }
 
-   @ObfuscatedName("n")
-   final void method1459(long var1) throws IOException {
-      this.file.seek(var1);
-      this.position = var1;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-2125142392"
+   )
+   public final void method1400() throws IOException {
+      if(this.file != null) {
+         this.file.close();
+         this.file = null;
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "416674217"
+   )
+   public static int method1403(CharSequence var0) {
+      return class142.method2619(var0, 10, true);
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(LSequence;IIIB)V",
+      garbageValue = "40"
+   )
+   static void method1404(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field526 < 50 && Client.field525 != 0) {
+         if(var0.field3053 != null && var1 < var0.field3053.length) {
+            int var4 = var0.field3053[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field527[Client.field526] = var5;
+               Client.field351[Client.field526] = var6;
+               Client.field529[Client.field526] = 0;
+               Client.field531[Client.field526] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field349[Client.field526] = var7 + (var8 << 16) + (var9 << 8);
+               ++Client.field526;
+            }
+         }
+      }
    }
 }

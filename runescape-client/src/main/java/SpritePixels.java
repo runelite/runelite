@@ -8,293 +8,29 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hf")
+@ObfuscatedName("hm")
 @Implements("SpritePixels")
 public final class SpritePixels extends class219 {
-   @ObfuscatedName("d")
-   @Export("width")
-   public int width;
-   @ObfuscatedName("m")
+   @ObfuscatedName("g")
+   public int field3203;
+   @ObfuscatedName("b")
    @Export("height")
    public int height;
-   @ObfuscatedName("h")
-   public int field3201;
-   @ObfuscatedName("w")
-   int field3202;
-   @ObfuscatedName("c")
-   public int field3203;
-   @ObfuscatedName("r")
-   public int field3205;
-   @ObfuscatedName("n")
+   @ObfuscatedName("m")
+   @Export("width")
+   public int width;
+   @ObfuscatedName("v")
+   public int field3208;
+   @ObfuscatedName("l")
+   public int field3209;
+   @ObfuscatedName("o")
    @Export("image")
    public int[] image;
-
-   public SpritePixels(byte[] var1, Component var2) {
-      try {
-         Image var3 = Toolkit.getDefaultToolkit().createImage(var1);
-         MediaTracker var4 = new MediaTracker(var2);
-         var4.addImage(var3, 0);
-         var4.waitForAll();
-         this.width = var3.getWidth(var2);
-         this.height = var3.getHeight(var2);
-         this.field3205 = this.width;
-         this.field3203 = this.height;
-         this.field3201 = 0;
-         this.field3202 = 0;
-         this.image = new int[this.width * this.height];
-         PixelGrabber var5 = new PixelGrabber(var3, 0, 0, this.width, this.height, this.image, 0, this.width);
-         var5.grabPixels();
-      } catch (InterruptedException var6) {
-         ;
-      }
-
-   }
-
-   public SpritePixels(int var1, int var2) {
-      this.image = new int[var1 * var2];
-      this.width = this.field3205 = var1;
-      this.height = this.field3203 = var2;
-      this.field3202 = 0;
-      this.field3201 = 0;
-   }
-
-   @ObfuscatedName("d")
-   public SpritePixels method4181() {
-      SpritePixels var1 = new SpritePixels(this.field3205, this.field3203);
-
-      for(int var2 = 0; var2 < this.height; ++var2) {
-         for(int var3 = 0; var3 < this.width; ++var3) {
-            var1.image[(var2 + this.field3202) * this.field3205 + var3 + this.field3201] = this.image[var2 * this.width + var3];
-         }
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("m")
-   public void method4182() {
-      class219.setRasterBuffer(this.image, this.width, this.height);
-   }
-
-   @ObfuscatedName("w")
-   public void method4184() {
-      if(this.width != this.field3205 || this.height != this.field3203) {
-         int[] var1 = new int[this.field3205 * this.field3203];
-
-         for(int var2 = 0; var2 < this.height; ++var2) {
-            for(int var3 = 0; var3 < this.width; ++var3) {
-               var1[(var2 + this.field3202) * this.field3205 + var3 + this.field3201] = this.image[var2 * this.width + var3];
-            }
-         }
-
-         this.image = var1;
-         this.width = this.field3205;
-         this.height = this.field3203;
-         this.field3201 = 0;
-         this.field3202 = 0;
-      }
-   }
-
-   @ObfuscatedName("l")
-   public void method4189(int var1) {
-      for(int var2 = this.height - 1; var2 > 0; --var2) {
-         int var3 = var2 * this.width;
-
-         for(int var4 = this.width - 1; var4 > 0; --var4) {
-            if(this.image[var4 + var3] == 0 && this.image[var4 + var3 - 1 - this.width] != 0) {
-               this.image[var4 + var3] = var1;
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("y")
-   public void method4190(int var1, int var2) {
-      var1 += this.field3201;
-      var2 += this.field3202;
-      int var3 = var1 + var2 * class219.graphicsPixelsWidth;
-      int var4 = 0;
-      int var5 = this.height;
-      int var6 = this.width;
-      int var7 = class219.graphicsPixelsWidth - var6;
-      int var8 = 0;
-      int var9;
-      if(var2 < class219.field3168) {
-         var9 = class219.field3168 - var2;
-         var5 -= var9;
-         var2 = class219.field3168;
-         var4 += var9 * var6;
-         var3 += var9 * class219.graphicsPixelsWidth;
-      }
-
-      if(var2 + var5 > class219.field3169) {
-         var5 -= var2 + var5 - class219.field3169;
-      }
-
-      if(var1 < class219.field3165) {
-         var9 = class219.field3165 - var1;
-         var6 -= var9;
-         var1 = class219.field3165;
-         var4 += var9;
-         var3 += var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var1 + var6 > class219.field3171) {
-         var9 = var1 + var6 - class219.field3171;
-         var6 -= var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var6 > 0 && var5 > 0) {
-         method4191(class219.graphicsPixels, this.image, var4, var3, var6, var5, var7, var8);
-      }
-   }
-
-   @ObfuscatedName("e")
-   static void method4191(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      for(int var8 = -var5; var8 < 0; ++var8) {
-         int var9;
-         for(var9 = var3 + var4 - 3; var3 < var9; var0[var3++] = var1[var2++]) {
-            var0[var3++] = var1[var2++];
-            var0[var3++] = var1[var2++];
-            var0[var3++] = var1[var2++];
-         }
-
-         for(var9 += 3; var3 < var9; var0[var3++] = var1[var2++]) {
-            ;
-         }
-
-         var3 += var6;
-         var2 += var7;
-      }
-
-   }
-
-   @ObfuscatedName("x")
-   public void method4192(int var1, int var2) {
-      var1 += this.field3201;
-      var2 += this.field3202;
-      int var3 = var1 + var2 * class219.graphicsPixelsWidth;
-      int var4 = 0;
-      int var5 = this.height;
-      int var6 = this.width;
-      int var7 = class219.graphicsPixelsWidth - var6;
-      int var8 = 0;
-      int var9;
-      if(var2 < class219.field3168) {
-         var9 = class219.field3168 - var2;
-         var5 -= var9;
-         var2 = class219.field3168;
-         var4 += var9 * var6;
-         var3 += var9 * class219.graphicsPixelsWidth;
-      }
-
-      if(var2 + var5 > class219.field3169) {
-         var5 -= var2 + var5 - class219.field3169;
-      }
-
-      if(var1 < class219.field3165) {
-         var9 = class219.field3165 - var1;
-         var6 -= var9;
-         var1 = class219.field3165;
-         var4 += var9;
-         var3 += var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var1 + var6 > class219.field3171) {
-         var9 = var1 + var6 - class219.field3171;
-         var6 -= var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var6 > 0 && var5 > 0) {
-         method4197(class219.graphicsPixels, this.image, 0, var4, var3, var6, var5, var7, var8);
-      }
-   }
+   @ObfuscatedName("h")
+   int field3211;
 
    @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "16777215"
-   )
-   public void method4194(int var1, int var2, int var3, int var4) {
-      var1 += this.field3201;
-      var2 += this.field3202;
-      int var5 = var1 + var2 * class219.graphicsPixelsWidth;
-      int var6 = 0;
-      int var7 = this.height;
-      int var8 = this.width;
-      int var9 = class219.graphicsPixelsWidth - var8;
-      int var10 = 0;
-      int var11;
-      if(var2 < class219.field3168) {
-         var11 = class219.field3168 - var2;
-         var7 -= var11;
-         var2 = class219.field3168;
-         var6 += var11 * var8;
-         var5 += var11 * class219.graphicsPixelsWidth;
-      }
-
-      if(var2 + var7 > class219.field3169) {
-         var7 -= var2 + var7 - class219.field3169;
-      }
-
-      if(var1 < class219.field3165) {
-         var11 = class219.field3165 - var1;
-         var8 -= var11;
-         var1 = class219.field3165;
-         var6 += var11;
-         var5 += var11;
-         var10 += var11;
-         var9 += var11;
-      }
-
-      if(var1 + var8 > class219.field3171) {
-         var11 = var1 + var8 - class219.field3171;
-         var8 -= var11;
-         var10 += var11;
-         var9 += var11;
-      }
-
-      if(var8 > 0 && var7 > 0) {
-         method4208(class219.graphicsPixels, this.image, 0, var6, var5, var8, var7, var9, var10, var3, var4);
-      }
-   }
-
-   @ObfuscatedName("o")
-   static void method4195(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
-      int var12 = var3;
-
-      for(int var13 = -var8; var13 < 0; ++var13) {
-         int var14 = (var4 >> 16) * var11;
-
-         for(int var15 = -var7; var15 < 0; ++var15) {
-            var2 = var1[(var3 >> 16) + var14];
-            if(var2 != 0) {
-               var0[var5++] = var2;
-            } else {
-               ++var5;
-            }
-
-            var3 += var9;
-         }
-
-         var4 += var10;
-         var3 = var12;
-         var5 += var6;
-      }
-
-   }
-
-   @ObfuscatedName("f")
-   static void method4197(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   static void method4035(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = -(var5 >> 2);
       var5 = -(var5 & 3);
 
@@ -345,73 +81,293 @@ public final class SpritePixels extends class219 {
 
    }
 
+   @ObfuscatedName("o")
+   public SpritePixels method4037() {
+      SpritePixels var1 = new SpritePixels(this.width, this.height);
+      var1.field3208 = this.field3208;
+      var1.field3209 = this.field3209;
+      var1.field3203 = this.field3208 - this.width - this.field3203;
+      var1.field3211 = this.field3211;
+
+      for(int var2 = 0; var2 < this.height; ++var2) {
+         for(int var3 = 0; var3 < this.width; ++var3) {
+            var1.image[var2 * this.width + var3] = this.image[var2 * this.width + this.width - 1 - var3];
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("m")
+   public SpritePixels method4039() {
+      SpritePixels var1 = new SpritePixels(this.field3208, this.field3209);
+
+      for(int var2 = 0; var2 < this.height; ++var2) {
+         for(int var3 = 0; var3 < this.width; ++var3) {
+            var1.image[(var2 + this.field3211) * this.field3208 + var3 + this.field3203] = this.image[var2 * this.width + var3];
+         }
+      }
+
+      return var1;
+   }
+
    @ObfuscatedName("b")
-   public void method4198(int var1, int var2, int var3) {
-      var1 += this.field3201;
-      var2 += this.field3202;
-      int var4 = var1 + var2 * class219.graphicsPixelsWidth;
-      int var5 = 0;
-      int var6 = this.height;
-      int var7 = this.width;
-      int var8 = class219.graphicsPixelsWidth - var7;
-      int var9 = 0;
-      int var10;
-      if(var2 < class219.field3168) {
-         var10 = class219.field3168 - var2;
-         var6 -= var10;
-         var2 = class219.field3168;
-         var5 += var10 * var7;
-         var4 += var10 * class219.graphicsPixelsWidth;
+   public void method4040() {
+      class219.setRasterBuffer(this.image, this.width, this.height);
+   }
+
+   @ObfuscatedName("g")
+   public void method4041(int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < this.image.length; ++var4) {
+         int var5 = this.image[var4];
+         if(var5 != 0) {
+            int var6 = var5 >> 16 & 255;
+            var6 += var1;
+            if(var6 < 1) {
+               var6 = 1;
+            } else if(var6 > 255) {
+               var6 = 255;
+            }
+
+            int var7 = var5 >> 8 & 255;
+            var7 += var2;
+            if(var7 < 1) {
+               var7 = 1;
+            } else if(var7 > 255) {
+               var7 = 255;
+            }
+
+            int var8 = var5 & 255;
+            var8 += var3;
+            if(var8 < 1) {
+               var8 = 1;
+            } else if(var8 > 255) {
+               var8 = 255;
+            }
+
+            this.image[var4] = (var6 << 16) + (var7 << 8) + var8;
+         }
       }
 
-      if(var2 + var6 > class219.field3169) {
-         var6 -= var2 + var6 - class219.field3169;
-      }
+   }
 
-      if(var1 < class219.field3165) {
-         var10 = class219.field3165 - var1;
-         var7 -= var10;
-         var1 = class219.field3165;
-         var5 += var10;
-         var4 += var10;
-         var9 += var10;
-         var8 += var10;
-      }
+   @ObfuscatedName("l")
+   public void method4042() {
+      if(this.width != this.field3208 || this.height != this.field3209) {
+         int[] var1 = new int[this.field3208 * this.field3209];
 
-      if(var1 + var7 > class219.field3171) {
-         var10 = var1 + var7 - class219.field3171;
-         var7 -= var10;
-         var9 += var10;
-         var8 += var10;
-      }
+         for(int var2 = 0; var2 < this.height; ++var2) {
+            for(int var3 = 0; var3 < this.width; ++var3) {
+               var1[(var2 + this.field3211) * this.field3208 + var3 + this.field3203] = this.image[var2 * this.width + var3];
+            }
+         }
 
-      if(var7 > 0 && var6 > 0) {
-         method4203(class219.graphicsPixels, this.image, 0, var5, var4, var7, var6, var8, var9, var3);
+         this.image = var1;
+         this.width = this.field3208;
+         this.height = this.field3209;
+         this.field3203 = 0;
+         this.field3211 = 0;
       }
    }
 
-   @ObfuscatedName("k")
-   public void method4200(int var1, int var2, int var3, int var4, int var5) {
+   @ObfuscatedName("c")
+   public void method4043(int var1) {
+      if(this.width != this.field3208 || this.height != this.field3209) {
+         int var2 = var1;
+         if(var1 > this.field3203) {
+            var2 = this.field3203;
+         }
+
+         int var3 = var1;
+         if(var1 + this.field3203 + this.width > this.field3208) {
+            var3 = this.field3208 - this.field3203 - this.width;
+         }
+
+         int var4 = var1;
+         if(var1 > this.field3211) {
+            var4 = this.field3211;
+         }
+
+         int var5 = var1;
+         if(var1 + this.field3211 + this.height > this.field3209) {
+            var5 = this.field3209 - this.field3211 - this.height;
+         }
+
+         int var6 = this.width + var2 + var3;
+         int var7 = this.height + var4 + var5;
+         int[] var8 = new int[var6 * var7];
+
+         for(int var9 = 0; var9 < this.height; ++var9) {
+            for(int var10 = 0; var10 < this.width; ++var10) {
+               var8[(var9 + var4) * var6 + var10 + var2] = this.image[var9 * this.width + var10];
+            }
+         }
+
+         this.image = var8;
+         this.width = var6;
+         this.height = var7;
+         this.field3203 -= var2;
+         this.field3211 -= var4;
+      }
+   }
+
+   @ObfuscatedName("u")
+   public void method4044() {
+      int[] var1 = new int[this.width * this.height];
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < this.height; ++var3) {
+         for(int var4 = this.width - 1; var4 >= 0; --var4) {
+            var1[var2++] = this.image[var4 + var3 * this.width];
+         }
+      }
+
+      this.image = var1;
+      this.field3203 = this.field3208 - this.width - this.field3203;
+   }
+
+   public SpritePixels(int var1, int var2) {
+      this.image = new int[var1 * var2];
+      this.width = this.field3208 = var1;
+      this.height = this.field3209 = var2;
+      this.field3211 = 0;
+      this.field3203 = 0;
+   }
+
+   SpritePixels() {
+   }
+
+   @ObfuscatedName("p")
+   public void method4048(int var1, int var2) {
+      var1 += this.field3203;
+      var2 += this.field3211;
+      int var3 = var1 + var2 * class219.graphicsPixelsWidth;
+      int var4 = 0;
+      int var5 = this.height;
+      int var6 = this.width;
+      int var7 = class219.graphicsPixelsWidth - var6;
+      int var8 = 0;
+      int var9;
+      if(var2 < class219.field3171) {
+         var9 = class219.field3171 - var2;
+         var5 -= var9;
+         var2 = class219.field3171;
+         var4 += var9 * var6;
+         var3 += var9 * class219.graphicsPixelsWidth;
+      }
+
+      if(var2 + var5 > class219.field3173) {
+         var5 -= var2 + var5 - class219.field3173;
+      }
+
+      if(var1 < class219.field3175) {
+         var9 = class219.field3175 - var1;
+         var6 -= var9;
+         var1 = class219.field3175;
+         var4 += var9;
+         var3 += var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var1 + var6 > class219.field3176) {
+         var9 = var1 + var6 - class219.field3176;
+         var6 -= var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var6 > 0 && var5 > 0) {
+         method4035(class219.graphicsPixels, this.image, 0, var4, var3, var6, var5, var7, var8);
+      }
+   }
+
+   @ObfuscatedName("s")
+   public void method4050(int var1, int var2, int var3, int var4) {
+      if(var3 > 0 && var4 > 0) {
+         int var5 = this.width;
+         int var6 = this.height;
+         int var7 = 0;
+         int var8 = 0;
+         int var9 = this.field3208;
+         int var10 = this.field3209;
+         int var11 = (var9 << 16) / var3;
+         int var12 = (var10 << 16) / var4;
+         int var13;
+         if(this.field3203 > 0) {
+            var13 = ((this.field3203 << 16) + var11 - 1) / var11;
+            var1 += var13;
+            var7 += var13 * var11 - (this.field3203 << 16);
+         }
+
+         if(this.field3211 > 0) {
+            var13 = ((this.field3211 << 16) + var12 - 1) / var12;
+            var2 += var13;
+            var8 += var13 * var12 - (this.field3211 << 16);
+         }
+
+         if(var5 < var9) {
+            var3 = ((var5 << 16) - var7 + var11 - 1) / var11;
+         }
+
+         if(var6 < var10) {
+            var4 = ((var6 << 16) - var8 + var12 - 1) / var12;
+         }
+
+         var13 = var1 + var2 * class219.graphicsPixelsWidth;
+         int var14 = class219.graphicsPixelsWidth - var3;
+         if(var2 + var4 > class219.field3173) {
+            var4 -= var2 + var4 - class219.field3173;
+         }
+
+         int var15;
+         if(var2 < class219.field3171) {
+            var15 = class219.field3171 - var2;
+            var4 -= var15;
+            var13 += var15 * class219.graphicsPixelsWidth;
+            var8 += var12 * var15;
+         }
+
+         if(var1 + var3 > class219.field3176) {
+            var15 = var1 + var3 - class219.field3176;
+            var3 -= var15;
+            var14 += var15;
+         }
+
+         if(var1 < class219.field3175) {
+            var15 = class219.field3175 - var1;
+            var3 -= var15;
+            var13 += var15;
+            var7 += var11 * var15;
+            var14 += var15;
+         }
+
+         method4100(class219.graphicsPixels, this.image, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
+      }
+   }
+
+   @ObfuscatedName("t")
+   public void method4051(int var1, int var2, int var3, int var4, int var5) {
       if(var3 > 0 && var4 > 0) {
          int var6 = this.width;
          int var7 = this.height;
          int var8 = 0;
          int var9 = 0;
-         int var10 = this.field3205;
-         int var11 = this.field3203;
+         int var10 = this.field3208;
+         int var11 = this.field3209;
          int var12 = (var10 << 16) / var3;
          int var13 = (var11 << 16) / var4;
          int var14;
-         if(this.field3201 > 0) {
-            var14 = ((this.field3201 << 16) + var12 - 1) / var12;
+         if(this.field3203 > 0) {
+            var14 = ((this.field3203 << 16) + var12 - 1) / var12;
             var1 += var14;
-            var8 += var14 * var12 - (this.field3201 << 16);
+            var8 += var14 * var12 - (this.field3203 << 16);
          }
 
-         if(this.field3202 > 0) {
-            var14 = ((this.field3202 << 16) + var13 - 1) / var13;
+         if(this.field3211 > 0) {
+            var14 = ((this.field3211 << 16) + var13 - 1) / var13;
             var2 += var14;
-            var9 += var14 * var13 - (this.field3202 << 16);
+            var9 += var14 * var13 - (this.field3211 << 16);
          }
 
          if(var6 < var10) {
@@ -424,38 +380,172 @@ public final class SpritePixels extends class219 {
 
          var14 = var1 + var2 * class219.graphicsPixelsWidth;
          int var15 = class219.graphicsPixelsWidth - var3;
-         if(var2 + var4 > class219.field3169) {
-            var4 -= var2 + var4 - class219.field3169;
+         if(var2 + var4 > class219.field3173) {
+            var4 -= var2 + var4 - class219.field3173;
          }
 
          int var16;
-         if(var2 < class219.field3168) {
-            var16 = class219.field3168 - var2;
+         if(var2 < class219.field3171) {
+            var16 = class219.field3171 - var2;
             var4 -= var16;
             var14 += var16 * class219.graphicsPixelsWidth;
             var9 += var13 * var16;
          }
 
-         if(var1 + var3 > class219.field3171) {
-            var16 = var1 + var3 - class219.field3171;
+         if(var1 + var3 > class219.field3176) {
+            var16 = var1 + var3 - class219.field3176;
             var3 -= var16;
             var15 += var16;
          }
 
-         if(var1 < class219.field3165) {
-            var16 = class219.field3165 - var1;
+         if(var1 < class219.field3175) {
+            var16 = class219.field3175 - var1;
             var3 -= var16;
             var14 += var16;
             var8 += var12 * var16;
             var15 += var16;
          }
 
-         method4201(class219.graphicsPixels, this.image, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
+         method4057(class219.graphicsPixels, this.image, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
       }
    }
 
-   @ObfuscatedName("v")
-   static void method4201(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12) {
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "16777215"
+   )
+   public void method4052(int var1, int var2, int var3, int var4) {
+      var1 += this.field3203;
+      var2 += this.field3211;
+      int var5 = var1 + var2 * class219.graphicsPixelsWidth;
+      int var6 = 0;
+      int var7 = this.height;
+      int var8 = this.width;
+      int var9 = class219.graphicsPixelsWidth - var8;
+      int var10 = 0;
+      int var11;
+      if(var2 < class219.field3171) {
+         var11 = class219.field3171 - var2;
+         var7 -= var11;
+         var2 = class219.field3171;
+         var6 += var11 * var8;
+         var5 += var11 * class219.graphicsPixelsWidth;
+      }
+
+      if(var2 + var7 > class219.field3173) {
+         var7 -= var2 + var7 - class219.field3173;
+      }
+
+      if(var1 < class219.field3175) {
+         var11 = class219.field3175 - var1;
+         var8 -= var11;
+         var1 = class219.field3175;
+         var6 += var11;
+         var5 += var11;
+         var10 += var11;
+         var9 += var11;
+      }
+
+      if(var1 + var8 > class219.field3176) {
+         var11 = var1 + var8 - class219.field3176;
+         var8 -= var11;
+         var10 += var11;
+         var9 += var11;
+      }
+
+      if(var8 > 0 && var7 > 0) {
+         method4053(class219.graphicsPixels, this.image, 0, var6, var5, var8, var7, var9, var10, var3, var4);
+      }
+   }
+
+   @ObfuscatedName("w")
+   static void method4053(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
+      int var11 = 256 - var9;
+      int var12 = (var10 & 16711935) * var11 & -16711936;
+      int var13 = (var10 & '\uff00') * var11 & 16711680;
+      var10 = (var12 | var13) >>> 8;
+
+      for(int var14 = -var6; var14 < 0; ++var14) {
+         for(int var15 = -var5; var15 < 0; ++var15) {
+            var2 = var1[var3++];
+            if(var2 != 0) {
+               var12 = (var2 & 16711935) * var9 & -16711936;
+               var13 = (var2 & '\uff00') * var9 & 16711680;
+               var0[var4++] = ((var12 | var13) >>> 8) + var10;
+            } else {
+               ++var4;
+            }
+         }
+
+         var4 += var7;
+         var3 += var8;
+      }
+
+   }
+
+   @ObfuscatedName("n")
+   public void method4054(int var1, int var2, int var3) {
+      var1 += this.field3203;
+      var2 += this.field3211;
+      int var4 = var1 + var2 * class219.graphicsPixelsWidth;
+      int var5 = 0;
+      int var6 = this.height;
+      int var7 = this.width;
+      int var8 = class219.graphicsPixelsWidth - var7;
+      int var9 = 0;
+      int var10;
+      if(var2 < class219.field3171) {
+         var10 = class219.field3171 - var2;
+         var6 -= var10;
+         var2 = class219.field3171;
+         var5 += var10 * var7;
+         var4 += var10 * class219.graphicsPixelsWidth;
+      }
+
+      if(var2 + var6 > class219.field3173) {
+         var6 -= var2 + var6 - class219.field3173;
+      }
+
+      if(var1 < class219.field3175) {
+         var10 = class219.field3175 - var1;
+         var7 -= var10;
+         var1 = class219.field3175;
+         var5 += var10;
+         var4 += var10;
+         var9 += var10;
+         var8 += var10;
+      }
+
+      if(var1 + var7 > class219.field3176) {
+         var10 = var1 + var7 - class219.field3176;
+         var7 -= var10;
+         var9 += var10;
+         var8 += var10;
+      }
+
+      if(var7 > 0 && var6 > 0) {
+         method4103(class219.graphicsPixels, this.image, 0, var5, var4, var7, var6, var8, var9, var3);
+      }
+   }
+
+   @ObfuscatedName("k")
+   public void method4056() {
+      int[] var1 = new int[this.width * this.height];
+      int var2 = 0;
+
+      for(int var3 = this.height - 1; var3 >= 0; --var3) {
+         for(int var4 = 0; var4 < this.width; ++var4) {
+            var1[var2++] = this.image[var4 + var3 * this.width];
+         }
+      }
+
+      this.image = var1;
+      this.field3211 = this.field3209 - this.height - this.field3211;
+   }
+
+   @ObfuscatedName("r")
+   static void method4057(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11, int var12) {
       int var13 = 256 - var12;
       int var14 = var3;
 
@@ -481,8 +571,8 @@ public final class SpritePixels extends class219 {
 
    }
 
-   @ObfuscatedName("u")
-   public void method4202(int var1, int var2, int var3, int var4, int var5, int var6, int[] var7, int[] var8) {
+   @ObfuscatedName("a")
+   public void method4058(int var1, int var2, int var3, int var4, int var5, int var6, int[] var7, int[] var8) {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.height <= var6?this.height:var6 - var2;
       int var11 = var1 < 0?-var1:0;
@@ -529,33 +619,47 @@ public final class SpritePixels extends class219 {
 
    }
 
-   @ObfuscatedName("j")
-   static void method4203(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
-      int var10 = 256 - var9;
+   @ObfuscatedName("e")
+   public void method4059(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
+      try {
+         int var11 = -var3 / 2;
+         int var12 = -var4 / 2;
+         int var13 = (int)(Math.sin((double)var7 / 326.11D) * 65536.0D);
+         int var14 = (int)(Math.cos((double)var7 / 326.11D) * 65536.0D);
+         var13 = var13 * var8 >> 8;
+         var14 = var14 * var8 >> 8;
+         int var15 = (var5 << 16) + var12 * var13 + var11 * var14;
+         int var16 = (var6 << 16) + (var12 * var14 - var11 * var13);
+         int var17 = var1 + var2 * class219.graphicsPixelsWidth;
 
-      for(int var11 = -var6; var11 < 0; ++var11) {
-         for(int var12 = -var5; var12 < 0; ++var12) {
-            var2 = var1[var3++];
-            if(var2 != 0) {
-               int var13 = var0[var4];
-               var0[var4++] = ((var2 & 16711935) * var9 + (var13 & 16711935) * var10 & -16711936) + ((var2 & '\uff00') * var9 + (var13 & '\uff00') * var10 & 16711680) >> 8;
-            } else {
-               ++var4;
+         for(var2 = 0; var2 < var4; ++var2) {
+            int var18 = var9[var2];
+            int var19 = var17 + var18;
+            int var20 = var15 + var14 * var18;
+            int var21 = var16 - var13 * var18;
+
+            for(var1 = -var10[var2]; var1 < 0; ++var1) {
+               class219.graphicsPixels[var19++] = this.image[(var20 >> 16) + (var21 >> 16) * this.width];
+               var20 += var14;
+               var21 -= var13;
             }
-         }
 
-         var4 += var7;
-         var3 += var8;
+            var15 += var13;
+            var16 += var14;
+            var17 += class219.graphicsPixelsWidth;
+         }
+      } catch (Exception var23) {
+         ;
       }
 
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
       signature = "(IIIIIIDI)V",
       garbageValue = "256"
    )
-   public void method4204(int var1, int var2, int var3, int var4, int var5, int var6, double var7, int var9) {
+   public void method4060(int var1, int var2, int var3, int var4, int var5, int var6, double var7, int var9) {
       try {
          int var10 = -var3 / 2;
          int var11 = -var4 / 2;
@@ -594,28 +698,11 @@ public final class SpritePixels extends class219 {
 
    }
 
-   @ObfuscatedName("n")
-   public SpritePixels method4205() {
-      SpritePixels var1 = new SpritePixels(this.width, this.height);
-      var1.field3205 = this.field3205;
-      var1.field3203 = this.field3203;
-      var1.field3201 = this.field3205 - this.width - this.field3201;
-      var1.field3202 = this.field3202;
-
-      for(int var2 = 0; var2 < this.height; ++var2) {
-         for(int var3 = 0; var3 < this.width; ++var3) {
-            var1.image[var2 * this.width + var3] = this.image[var2 * this.width + this.width - 1 - var3];
-         }
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("ay")
-   void method4206(int var1, int var2, int var3, int var4, int var5, int var6) {
+   @ObfuscatedName("au")
+   void method4062(int var1, int var2, int var3, int var4, int var5, int var6) {
       if(var6 != 0) {
-         var1 -= this.field3201 << 4;
-         var2 -= this.field3202 << 4;
+         var1 -= this.field3203 << 4;
+         var2 -= this.field3211 << 4;
          double var7 = (double)(var5 & '\uffff') * 9.587379924285257E-5D;
          int var9 = (int)Math.floor(Math.sin(var7) * (double)var6 + 0.5D);
          int var10 = (int)Math.floor(Math.cos(var7) * (double)var6 + 0.5D);
@@ -691,20 +778,20 @@ public final class SpritePixels extends class219 {
          var20 = var20 + 15 >> 4;
          var21 >>= 4;
          var22 = var22 + 15 >> 4;
-         if(var19 < class219.field3165) {
-            var19 = class219.field3165;
+         if(var19 < class219.field3175) {
+            var19 = class219.field3175;
          }
 
-         if(var20 > class219.field3171) {
-            var20 = class219.field3171;
+         if(var20 > class219.field3176) {
+            var20 = class219.field3176;
          }
 
-         if(var21 < class219.field3168) {
-            var21 = class219.field3168;
+         if(var21 < class219.field3171) {
+            var21 = class219.field3171;
          }
 
-         if(var22 > class219.field3169) {
-            var22 = class219.field3169;
+         if(var22 > class219.field3173) {
+            var22 = class219.field3173;
          }
 
          var20 = var19 - var20;
@@ -1080,20 +1167,126 @@ public final class SpritePixels extends class219 {
       }
    }
 
-   @ObfuscatedName("a")
-   static void method4208(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10) {
-      int var11 = 256 - var9;
-      int var12 = (var10 & 16711935) * var11 & -16711936;
-      int var13 = (var10 & '\uff00') * var11 & 16711680;
-      var10 = (var12 | var13) >>> 8;
+   @ObfuscatedName("y")
+   public void method4074(int var1) {
+      for(int var2 = this.height - 1; var2 > 0; --var2) {
+         int var3 = var2 * this.width;
 
-      for(int var14 = -var6; var14 < 0; ++var14) {
-         for(int var15 = -var5; var15 < 0; ++var15) {
+         for(int var4 = this.width - 1; var4 > 0; --var4) {
+            if(this.image[var4 + var3] == 0 && this.image[var4 + var3 - 1 - this.width] != 0) {
+               this.image[var4 + var3] = var1;
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("ag")
+   public void method4083(int var1, int var2, int var3, int var4) {
+      this.method4062(this.field3208 << 3, this.field3209 << 3, var1 << 4, var2 << 4, var3, var4);
+   }
+
+   @ObfuscatedName("j")
+   public void method4092(int var1, int var2) {
+      var1 += this.field3203;
+      var2 += this.field3211;
+      int var3 = var1 + var2 * class219.graphicsPixelsWidth;
+      int var4 = 0;
+      int var5 = this.height;
+      int var6 = this.width;
+      int var7 = class219.graphicsPixelsWidth - var6;
+      int var8 = 0;
+      int var9;
+      if(var2 < class219.field3171) {
+         var9 = class219.field3171 - var2;
+         var5 -= var9;
+         var2 = class219.field3171;
+         var4 += var9 * var6;
+         var3 += var9 * class219.graphicsPixelsWidth;
+      }
+
+      if(var2 + var5 > class219.field3173) {
+         var5 -= var2 + var5 - class219.field3173;
+      }
+
+      if(var1 < class219.field3175) {
+         var9 = class219.field3175 - var1;
+         var6 -= var9;
+         var1 = class219.field3175;
+         var4 += var9;
+         var3 += var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var1 + var6 > class219.field3176) {
+         var9 = var1 + var6 - class219.field3176;
+         var6 -= var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var6 > 0 && var5 > 0) {
+         method4108(class219.graphicsPixels, this.image, var4, var3, var6, var5, var7, var8);
+      }
+   }
+
+   public SpritePixels(byte[] var1, Component var2) {
+      try {
+         Image var3 = Toolkit.getDefaultToolkit().createImage(var1);
+         MediaTracker var4 = new MediaTracker(var2);
+         var4.addImage(var3, 0);
+         var4.waitForAll();
+         this.width = var3.getWidth(var2);
+         this.height = var3.getHeight(var2);
+         this.field3208 = this.width;
+         this.field3209 = this.height;
+         this.field3203 = 0;
+         this.field3211 = 0;
+         this.image = new int[this.width * this.height];
+         PixelGrabber var5 = new PixelGrabber(var3, 0, 0, this.width, this.height, this.image, 0, this.width);
+         var5.grabPixels();
+      } catch (InterruptedException var6) {
+         ;
+      }
+
+   }
+
+   @ObfuscatedName("x")
+   static void method4100(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9, int var10, int var11) {
+      int var12 = var3;
+
+      for(int var13 = -var8; var13 < 0; ++var13) {
+         int var14 = (var4 >> 16) * var11;
+
+         for(int var15 = -var7; var15 < 0; ++var15) {
+            var2 = var1[(var3 >> 16) + var14];
+            if(var2 != 0) {
+               var0[var5++] = var2;
+            } else {
+               ++var5;
+            }
+
+            var3 += var9;
+         }
+
+         var4 += var10;
+         var3 = var12;
+         var5 += var6;
+      }
+
+   }
+
+   @ObfuscatedName("q")
+   static void method4103(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+      int var10 = 256 - var9;
+
+      for(int var11 = -var6; var11 < 0; ++var11) {
+         for(int var12 = -var5; var12 < 0; ++var12) {
             var2 = var1[var3++];
             if(var2 != 0) {
-               var12 = (var2 & 16711935) * var9 & -16711936;
-               var13 = (var2 & '\uff00') * var9 & 16711680;
-               var0[var4++] = ((var12 | var13) >>> 8) + var10;
+               int var13 = var0[var4];
+               var0[var4++] = ((var2 & 16711935) * var9 + (var13 & 16711935) * var10 & -16711936) + ((var2 & '\uff00') * var9 + (var13 & '\uff00') * var10 & 16711680) >> 8;
             } else {
                ++var4;
             }
@@ -1105,225 +1298,32 @@ public final class SpritePixels extends class219 {
 
    }
 
-   @ObfuscatedName("h")
-   public void method4212(int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < this.image.length; ++var4) {
-         int var5 = this.image[var4];
-         if(var5 != 0) {
-            int var6 = var5 >> 16 & 255;
-            var6 += var1;
-            if(var6 < 1) {
-               var6 = 1;
-            } else if(var6 > 255) {
-               var6 = 255;
-            }
-
-            int var7 = var5 >> 8 & 255;
-            var7 += var2;
-            if(var7 < 1) {
-               var7 = 1;
-            } else if(var7 > 255) {
-               var7 = 255;
-            }
-
-            int var8 = var5 & 255;
-            var8 += var3;
-            if(var8 < 1) {
-               var8 = 1;
-            } else if(var8 > 255) {
-               var8 = 255;
-            }
-
-            this.image[var4] = (var6 << 16) + (var7 << 8) + var8;
+   @ObfuscatedName("f")
+   static void method4108(int[] var0, int[] var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      for(int var8 = -var5; var8 < 0; ++var8) {
+         int var9;
+         for(var9 = var3 + var4 - 3; var3 < var9; var0[var3++] = var1[var2++]) {
+            var0[var3++] = var1[var2++];
+            var0[var3++] = var1[var2++];
+            var0[var3++] = var1[var2++];
          }
+
+         for(var9 += 3; var3 < var9; var0[var3++] = var1[var2++]) {
+            ;
+         }
+
+         var3 += var6;
+         var2 += var7;
       }
 
-   }
-
-   @ObfuscatedName("t")
-   public void method4216(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int[] var9, int[] var10) {
-      try {
-         int var11 = -var3 / 2;
-         int var12 = -var4 / 2;
-         int var13 = (int)(Math.sin((double)var7 / 326.11D) * 65536.0D);
-         int var14 = (int)(Math.cos((double)var7 / 326.11D) * 65536.0D);
-         var13 = var13 * var8 >> 8;
-         var14 = var14 * var8 >> 8;
-         int var15 = (var5 << 16) + var12 * var13 + var11 * var14;
-         int var16 = (var6 << 16) + (var12 * var14 - var11 * var13);
-         int var17 = var1 + var2 * class219.graphicsPixelsWidth;
-
-         for(var2 = 0; var2 < var4; ++var2) {
-            int var18 = var9[var2];
-            int var19 = var17 + var18;
-            int var20 = var15 + var14 * var18;
-            int var21 = var16 - var13 * var18;
-
-            for(var1 = -var10[var2]; var1 < 0; ++var1) {
-               class219.graphicsPixels[var19++] = this.image[(var20 >> 16) + (var21 >> 16) * this.width];
-               var20 += var14;
-               var21 -= var13;
-            }
-
-            var15 += var13;
-            var16 += var14;
-            var17 += class219.graphicsPixelsWidth;
-         }
-      } catch (Exception var23) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("r")
-   public void method4218(int var1) {
-      if(this.width != this.field3205 || this.height != this.field3203) {
-         int var2 = var1;
-         if(var1 > this.field3201) {
-            var2 = this.field3201;
-         }
-
-         int var3 = var1;
-         if(var1 + this.field3201 + this.width > this.field3205) {
-            var3 = this.field3205 - this.field3201 - this.width;
-         }
-
-         int var4 = var1;
-         if(var1 > this.field3202) {
-            var4 = this.field3202;
-         }
-
-         int var5 = var1;
-         if(var1 + this.field3202 + this.height > this.field3203) {
-            var5 = this.field3203 - this.field3202 - this.height;
-         }
-
-         int var6 = this.width + var2 + var3;
-         int var7 = this.height + var4 + var5;
-         int[] var8 = new int[var6 * var7];
-
-         for(int var9 = 0; var9 < this.height; ++var9) {
-            for(int var10 = 0; var10 < this.width; ++var10) {
-               var8[(var9 + var4) * var6 + var10 + var2] = this.image[var9 * this.width + var10];
-            }
-         }
-
-         this.image = var8;
-         this.width = var6;
-         this.height = var7;
-         this.field3201 -= var2;
-         this.field3202 -= var4;
-      }
    }
 
    @ObfuscatedName("z")
-   public void method4220() {
-      int[] var1 = new int[this.width * this.height];
-      int var2 = 0;
-
-      for(int var3 = this.height - 1; var3 >= 0; --var3) {
-         for(int var4 = 0; var4 < this.width; ++var4) {
-            var1[var2++] = this.image[var4 + var3 * this.width];
-         }
-      }
-
-      this.image = var1;
-      this.field3202 = this.field3203 - this.height - this.field3202;
-   }
-
-   SpritePixels() {
-   }
-
-   @ObfuscatedName("c")
-   public void method4236() {
-      int[] var1 = new int[this.width * this.height];
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < this.height; ++var3) {
-         for(int var4 = this.width - 1; var4 >= 0; --var4) {
-            var1[var2++] = this.image[var4 + var3 * this.width];
-         }
-      }
-
-      this.image = var1;
-      this.field3201 = this.field3205 - this.width - this.field3201;
-   }
-
-   @ObfuscatedName("aw")
-   public void method4237(int var1, int var2, int var3, int var4) {
-      this.method4206(this.field3205 << 3, this.field3203 << 3, var1 << 4, var2 << 4, var3, var4);
-   }
-
-   @ObfuscatedName("s")
-   public void method4266(int var1, int var2, int var3, int var4) {
-      if(var3 > 0 && var4 > 0) {
-         int var5 = this.width;
-         int var6 = this.height;
-         int var7 = 0;
-         int var8 = 0;
-         int var9 = this.field3205;
-         int var10 = this.field3203;
-         int var11 = (var9 << 16) / var3;
-         int var12 = (var10 << 16) / var4;
-         int var13;
-         if(this.field3201 > 0) {
-            var13 = ((this.field3201 << 16) + var11 - 1) / var11;
-            var1 += var13;
-            var7 += var13 * var11 - (this.field3201 << 16);
-         }
-
-         if(this.field3202 > 0) {
-            var13 = ((this.field3202 << 16) + var12 - 1) / var12;
-            var2 += var13;
-            var8 += var13 * var12 - (this.field3202 << 16);
-         }
-
-         if(var5 < var9) {
-            var3 = ((var5 << 16) - var7 + var11 - 1) / var11;
-         }
-
-         if(var6 < var10) {
-            var4 = ((var6 << 16) - var8 + var12 - 1) / var12;
-         }
-
-         var13 = var1 + var2 * class219.graphicsPixelsWidth;
-         int var14 = class219.graphicsPixelsWidth - var3;
-         if(var2 + var4 > class219.field3169) {
-            var4 -= var2 + var4 - class219.field3169;
-         }
-
-         int var15;
-         if(var2 < class219.field3168) {
-            var15 = class219.field3168 - var2;
-            var4 -= var15;
-            var13 += var15 * class219.graphicsPixelsWidth;
-            var8 += var12 * var15;
-         }
-
-         if(var1 + var3 > class219.field3171) {
-            var15 = var1 + var3 - class219.field3171;
-            var3 -= var15;
-            var14 += var15;
-         }
-
-         if(var1 < class219.field3165) {
-            var15 = class219.field3165 - var1;
-            var3 -= var15;
-            var13 += var15;
-            var7 += var11 * var15;
-            var14 += var15;
-         }
-
-         method4195(class219.graphicsPixels, this.image, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
-      }
-   }
-
-   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "1"
    )
-   public void method4276(int var1) {
+   public void method4129(int var1) {
       int[] var2 = new int[this.width * this.height];
       int var3 = 0;
 

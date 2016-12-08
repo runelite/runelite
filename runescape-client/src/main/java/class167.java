@@ -1,216 +1,67 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fz")
-public final class class167 {
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 833379741
-   )
-   int field2330;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -121983921
-   )
-   int field2331;
-   @ObfuscatedName("w")
-   int[] field2332 = new int[256];
-   @ObfuscatedName("r")
-   int[] field2333 = new int[256];
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -678763171
-   )
-   int field2334;
+@ObfuscatedName("fi")
+public class class167 {
+   @ObfuscatedName("o")
+   public static final short[] field2191 = new short[]{(short)6798, (short)8741, (short)25238, (short)4626, (short)4550};
+   @ObfuscatedName("b")
+   public static final short[] field2192 = new short[]{(short)-10304, (short)9104, (short)-1, (short)-1, (short)-1};
+   @ObfuscatedName("m")
+   public static final short[][] field2193 = new short[][]{{(short)6798, (short)107, (short)10283, (short)16, (short)4797, (short)7744, (short)5799, (short)4634, (short)-31839, (short)22433, (short)2983, (short)-11343, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)8741, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)25239, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)25238, (short)8742, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)4626, (short)11146, (short)6439, (short)12, (short)4758, (short)10270}, {(short)4550, (short)4537, (short)5681, (short)5673, (short)5790, (short)6806, (short)8076, (short)4574, (short)17050, (short)0, (short)127}};
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1434280369
-   )
-   int field2335;
+   public static final short[][] field2194 = new short[][]{{(short)6554, (short)115, (short)10304, (short)28, (short)5702, (short)7756, (short)5681, (short)4510, (short)-31835, (short)22437, (short)2859, (short)-11339, (short)16, (short)5157, (short)10446, (short)3658, (short)-27314, (short)-21965, (short)472, (short)580, (short)784, (short)21966, (short)28950, (short)-15697, (short)-14002}, {(short)9104, (short)10275, (short)7595, (short)3610, (short)7975, (short)8526, (short)918, (short)-26734, (short)24466, (short)10145, (short)-6882, (short)5027, (short)1457, (short)16565, (short)-30545, (short)25486, (short)24, (short)5392, (short)10429, (short)3673, (short)-27335, (short)-21957, (short)192, (short)687, (short)412, (short)21821, (short)28835, (short)-15460, (short)-14019}, new short[0], new short[0], new short[0]};
+   @ObfuscatedName("f")
+   static String field2195;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "-1"
+   )
+   public static boolean method3095(int var0) {
+      return (var0 & 1) != 0;
+   }
+
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-12"
+      garbageValue = "19"
    )
-   final void method3257() {
-      this.field2335 += ++this.field2330;
-
-      for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = this.field2333[var1];
-         if((var1 & 2) == 0) {
-            if((var1 & 1) == 0) {
-               this.field2334 ^= this.field2334 << 13;
-            } else {
-               this.field2334 ^= this.field2334 >>> 6;
-            }
-         } else if((var1 & 1) == 0) {
-            this.field2334 ^= this.field2334 << 2;
+   static void method3096() {
+      class41.username = class41.username.trim();
+      if(class41.username.length() == 0) {
+         class47.method861("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
+      } else {
+         long var1 = class37.method719();
+         int var0;
+         if(var1 == 0L) {
+            var0 = 5;
          } else {
-            this.field2334 ^= this.field2334 >>> 16;
+            var0 = class26.method565(var1, class41.username);
          }
 
-         this.field2334 += this.field2333[var1 + 128 & 255];
-         int var3;
-         this.field2333[var1] = var3 = this.field2335 + this.field2334 + this.field2333[(var2 & 1020) >> 2];
-         this.field2332[var1] = this.field2335 = this.field2333[(var3 >> 8 & 1020) >> 2] + var2;
+         switch(var0) {
+         case 2:
+            class47.method861("", "Page has opened in a new window.", "(Please check your popup blocker.)");
+            class41.loginIndex = 6;
+            break;
+         case 3:
+            class47.method861("", "Error connecting to server.", "");
+            break;
+         case 4:
+            class47.method861("The part of the website you are trying", "to connect to is offline at the moment.", "Please try again later.");
+            break;
+         case 5:
+            class47.method861("Sorry, there was an error trying to", "log you in to this part of the website.", "Please try again later.");
+            break;
+         case 6:
+            class47.method861("", "Error connecting to server.", "");
+            break;
+         case 7:
+            class47.method861("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
+         }
+
       }
-
-   }
-
-   class167(int[] var1) {
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         this.field2332[var2] = var1[var2];
-      }
-
-      this.method3258();
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
-   )
-   final void method3258() {
-      int var9 = -1640531527;
-      int var8 = -1640531527;
-      int var7 = -1640531527;
-      int var6 = -1640531527;
-      int var5 = -1640531527;
-      int var4 = -1640531527;
-      int var3 = -1640531527;
-      int var2 = -1640531527;
-
-      int var1;
-      for(var1 = 0; var1 < 4; ++var1) {
-         var2 ^= var3 << 11;
-         var5 += var2;
-         var3 += var4;
-         var3 ^= var4 >>> 2;
-         var6 += var3;
-         var4 += var5;
-         var4 ^= var5 << 8;
-         var7 += var4;
-         var5 += var6;
-         var5 ^= var6 >>> 16;
-         var8 += var5;
-         var6 += var7;
-         var6 ^= var7 << 10;
-         var9 += var6;
-         var7 += var8;
-         var7 ^= var8 >>> 4;
-         var2 += var7;
-         var8 += var9;
-         var8 ^= var9 << 8;
-         var3 += var8;
-         var9 += var2;
-         var9 ^= var2 >>> 9;
-         var4 += var9;
-         var2 += var3;
-      }
-
-      for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2332[var1];
-         var3 += this.field2332[var1 + 1];
-         var4 += this.field2332[var1 + 2];
-         var5 += this.field2332[var1 + 3];
-         var6 += this.field2332[4 + var1];
-         var7 += this.field2332[var1 + 5];
-         var8 += this.field2332[6 + var1];
-         var9 += this.field2332[var1 + 7];
-         var2 ^= var3 << 11;
-         var5 += var2;
-         var3 += var4;
-         var3 ^= var4 >>> 2;
-         var6 += var3;
-         var4 += var5;
-         var4 ^= var5 << 8;
-         var7 += var4;
-         var5 += var6;
-         var5 ^= var6 >>> 16;
-         var8 += var5;
-         var6 += var7;
-         var6 ^= var7 << 10;
-         var9 += var6;
-         var7 += var8;
-         var7 ^= var8 >>> 4;
-         var2 += var7;
-         var8 += var9;
-         var8 ^= var9 << 8;
-         var3 += var8;
-         var9 += var2;
-         var9 ^= var2 >>> 9;
-         var4 += var9;
-         var2 += var3;
-         this.field2333[var1] = var2;
-         this.field2333[1 + var1] = var3;
-         this.field2333[2 + var1] = var4;
-         this.field2333[var1 + 3] = var5;
-         this.field2333[var1 + 4] = var6;
-         this.field2333[5 + var1] = var7;
-         this.field2333[var1 + 6] = var8;
-         this.field2333[var1 + 7] = var9;
-      }
-
-      for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2333[var1];
-         var3 += this.field2333[1 + var1];
-         var4 += this.field2333[2 + var1];
-         var5 += this.field2333[3 + var1];
-         var6 += this.field2333[var1 + 4];
-         var7 += this.field2333[5 + var1];
-         var8 += this.field2333[var1 + 6];
-         var9 += this.field2333[var1 + 7];
-         var2 ^= var3 << 11;
-         var5 += var2;
-         var3 += var4;
-         var3 ^= var4 >>> 2;
-         var6 += var3;
-         var4 += var5;
-         var4 ^= var5 << 8;
-         var7 += var4;
-         var5 += var6;
-         var5 ^= var6 >>> 16;
-         var8 += var5;
-         var6 += var7;
-         var6 ^= var7 << 10;
-         var9 += var6;
-         var7 += var8;
-         var7 ^= var8 >>> 4;
-         var2 += var7;
-         var8 += var9;
-         var8 ^= var9 << 8;
-         var3 += var8;
-         var9 += var2;
-         var9 ^= var2 >>> 9;
-         var4 += var9;
-         var2 += var3;
-         this.field2333[var1] = var2;
-         this.field2333[1 + var1] = var3;
-         this.field2333[2 + var1] = var4;
-         this.field2333[3 + var1] = var5;
-         this.field2333[4 + var1] = var6;
-         this.field2333[5 + var1] = var7;
-         this.field2333[var1 + 6] = var8;
-         this.field2333[7 + var1] = var9;
-      }
-
-      this.method3257();
-      this.field2331 = 256;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "1000942429"
-   )
-   final int method3260() {
-      if(--this.field2331 + 1 == 0) {
-         this.method3257();
-         this.field2331 = 255;
-      }
-
-      return this.field2332[this.field2331];
    }
 }
