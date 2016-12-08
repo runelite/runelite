@@ -34,6 +34,9 @@ import java.util.Objects;
 
 public class Type
 {
+	public static final Type STRING = new Type("Ljava/lang/String;");
+	public static final Type THROWABLE = new Type("Ljava/lang/Throwable;");
+	
 	private String type;
 	private int arrayDimms;
 	
@@ -67,7 +70,7 @@ public class Type
 	
 	public String getFullType()
 	{
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < arrayDimms; ++i)
 			sb.append('[');
 		sb.append(type);
