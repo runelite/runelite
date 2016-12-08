@@ -39,6 +39,7 @@ import net.runelite.asm.attributes.code.instructions.ALoad_1;
 import net.runelite.asm.attributes.code.instructions.InvokeVirtual;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.signature.Signature;
+import net.runelite.asm.signature.Type;
 import net.runelite.deob.Transformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,8 +47,6 @@ import org.slf4j.LoggerFactory;
 public class ClientErrorTransformer implements Transformer
 {
 	private static final Logger logger = LoggerFactory.getLogger(ClientErrorTransformer.class);
-
-	private static final String REPORT_EXCEPTION = "reportException";
 
 	private boolean done = false;
 
@@ -67,7 +66,9 @@ public class ClientErrorTransformer implements Transformer
 
 	private void transform(Method m)
 	{
-		if (!m.getName().equals(REPORT_EXCEPTION))
+		if (!m.isStatic() || m.getDescriptor().size() != 2
+			|| !m.getDescriptor().getTypeOfArg(0).equals(Type.STRING)
+			|| !m.getDescriptor().getTypeOfArg(1).equals(Type.THROWABLE))
 			return;
 
 		Code code = m.getCode();
