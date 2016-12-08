@@ -1,20 +1,28 @@
+import java.awt.Desktop;
+import java.awt.Desktop.Action;
+import java.net.URI;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("ci")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("ee")
-   static ModIcon[] field1563;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 335145731
-   )
-   public static int field1566;
+   @ObfuscatedName("h")
+   public static class182 field1559;
    @ObfuscatedName("n")
-   Frame[] field1567;
+   static String field1560;
+   @ObfuscatedName("o")
+   Frame[] field1562;
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "1537745157"
+   )
+   public boolean method1847(int var1) {
+      return this.field1562[var1].field1312;
+   }
 
    @ObfuscatedSignature(
       signature = "(Lclass182;Lclass182;IZ)V",
@@ -22,113 +30,100 @@ public class Frames extends CacheableNode {
    )
    public Frames(class182 var1, class182 var2, int var3, boolean var4) {
       Deque var5 = new Deque();
-      int var6 = var1.method3339(var3);
-      this.field1567 = new Frame[var6];
-      int[] var7 = var1.method3338(var3);
+      int var6 = var1.method3245(var3);
+      this.field1562 = new Frame[var6];
+      int[] var7 = var1.method3212(var3);
 
       for(int var8 = 0; var8 < var7.length; ++var8) {
-         byte[] var9 = var1.method3329(var3, var7[var8]);
+         byte[] var9 = var1.method3203(var3, var7[var8]);
          FrameMap var10 = null;
          int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
 
-         for(FrameMap var12 = (FrameMap)var5.method2466(); var12 != null; var12 = (FrameMap)var5.method2461()) {
+         for(FrameMap var12 = (FrameMap)var5.method2349(); null != var12; var12 = (FrameMap)var5.method2351()) {
             if(var11 == var12.field1459) {
                var10 = var12;
                break;
             }
          }
 
-         if(null == var10) {
-            byte[] var13 = var2.method3335(var11, 0);
+         if(var10 == null) {
+            byte[] var13 = var2.method3209(var11, 0);
             var10 = new FrameMap(var11, var13);
-            var5.method2454(var10);
+            var5.method2361(var10);
          }
 
-         this.field1567[var7[var8]] = new Frame(var9, var10);
+         this.field1562[var7[var8]] = new Frame(var9, var10);
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "5"
+      signature = "(Ljava/lang/String;ZLjava/lang/String;ZI)V",
+      garbageValue = "-526959282"
    )
-   public boolean method1926(int var1) {
-      return this.field1567[var1].field1319;
+   static void method1849(String var0, boolean var1, String var2, boolean var3) {
+      if(var1) {
+         if(!var3 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
+            try {
+               Desktop.getDesktop().browse(new URI(var0));
+               return;
+            } catch (Exception var5) {
+               ;
+            }
+         }
+
+         if(class114.field1799.startsWith("win") && !var3) {
+            XItemContainer.method159(var0, 0, "openjs");
+            return;
+         }
+
+         if(class114.field1799.startsWith("mac")) {
+            XItemContainer.method159(var0, 1, var2);
+            return;
+         }
+
+         XItemContainer.method159(var0, 2, "openjs");
+      } else {
+         XItemContainer.method159(var0, 3, "openjs");
+      }
+
    }
 
-   @ObfuscatedName("ct")
+   @ObfuscatedName("cy")
    @ObfuscatedSignature(
-      signature = "([LWidget;IIIZI)V",
-      garbageValue = "65280"
+      signature = "(I)V",
+      garbageValue = "1279203437"
    )
-   static void method1930(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         Widget var6 = var0[var5];
-         if(var6 != null && var1 == var6.parentId) {
-            class103.method2018(var6, var2, var3, var4);
-            class37.method766(var6, var2, var3);
-            if(var6.itemId > var6.scrollWidth - var6.width) {
-               var6.itemId = var6.scrollWidth - var6.width;
+   static void method1850() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(XGrandExchangeOffer.method52(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[1 + var1];
+                  Client.menuTargets[var1] = Client.menuTargets[1 + var1];
+                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[1 + var1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+               }
             }
 
-            if(var6.itemId < 0) {
-               var6.itemId = 0;
-            }
-
-            if(var6.scrollY > var6.scrollHeight - var6.height) {
-               var6.scrollY = var6.scrollHeight - var6.height;
-            }
-
-            if(var6.scrollY < 0) {
-               var6.scrollY = 0;
-            }
-
-            if(var6.type == 0) {
-               class181.method3325(var0, var6, var4);
-            }
+            --Client.menuOptionCount;
          }
       }
 
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "([BI)Ljava/lang/String;",
-      garbageValue = "-1229286799"
+      signature = "(III)I",
+      garbageValue = "1178930606"
    )
-   public static String method1931(byte[] var0) {
-      int var2 = var0.length;
-      StringBuilder var3 = new StringBuilder();
-
-      for(int var4 = 0; var4 < var2 + 0; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class206.field3077[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[var4 + 1] & 255;
-            var3.append(class206.field3077[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class206.field3077[(var6 & 15) << 2 | var7 >>> 6]).append(class206.field3077[var7 & 63]);
-            } else {
-               var3.append(class206.field3077[(var6 & 15) << 2]).append("=");
-            }
-         } else {
-            var3.append(class206.field3077[(var5 & 3) << 4]).append("==");
-         }
-      }
-
-      String var1 = var3.toString();
-      return var1;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IS)I",
-      garbageValue = "3349"
-   )
-   public static int method1932(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
+   static final int method1851(int var0, int var1) {
+      int var2 = class155.method2931(var0 - 1, var1 - 1) + class155.method2931(1 + var0, var1 - 1) + class155.method2931(var0 - 1, var1 + 1) + class155.method2931(1 + var0, var1 + 1);
+      int var3 = class155.method2931(var0 - 1, var1) + class155.method2931(1 + var0, var1) + class155.method2931(var0, var1 - 1) + class155.method2931(var0, 1 + var1);
+      int var4 = class155.method2931(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
    }
 }

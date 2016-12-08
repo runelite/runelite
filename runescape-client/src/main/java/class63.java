@@ -1,66 +1,70 @@
-import java.awt.event.ActionEvent;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ba")
 public class class63 implements Runnable {
-   @ObfuscatedName("d")
-   volatile class57[] field1080 = new class57[2];
-   @ObfuscatedName("n")
-   class103 field1081;
-   @ObfuscatedName("h")
-   volatile boolean field1082 = false;
-   @ObfuscatedName("rv")
-   protected static boolean field1083;
+   @ObfuscatedName("o")
+   class103 field1088;
+   @ObfuscatedName("dh")
+   static byte[][] field1089;
+   @ObfuscatedName("b")
+   volatile boolean field1090 = false;
+   @ObfuscatedName("g")
+   volatile boolean field1091 = false;
    @ObfuscatedName("m")
-   volatile boolean field1084 = false;
-   @ObfuscatedName("nu")
+   volatile class57[] field1092 = new class57[2];
+   @ObfuscatedName("gr")
    @ObfuscatedGetter(
-      intValue = -1612481661
+      intValue = -899164823
    )
-   static int field1085;
+   @Export("plane")
+   static int plane;
+   @ObfuscatedName("u")
+   static ModIcon[] field1094;
 
-   public void run() {
-      this.field1082 = true;
-
-      try {
-         while(!this.field1084) {
-            class57 var2;
-            for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1080[var1];
-               if(var2 != null) {
-                  var2.method1045();
-               }
-            }
-
-            class0.method12(10L);
-            class103 var5 = this.field1081;
-            var2 = null;
-            if(null != var5.field1670) {
-               for(int var3 = 0; var3 < 50 && var5.field1670.peekEvent() != null; ++var3) {
-                  class0.method12(1L);
-               }
-
-               if(null != var2) {
-                  var5.field1670.postEvent(new ActionEvent(var2, 1001, "dummy"));
-               }
-            }
-         }
-      } catch (Exception var8) {
-         class39.reportException((String)null, var8);
-      } finally {
-         this.field1082 = false;
-      }
-
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1410212941"
+   )
+   public static void method1143() {
+      NPCComposition.field2995.reset();
+      NPCComposition.npcModelCache.reset();
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("du")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-22"
+      signature = "(II)V",
+      garbageValue = "1245402582"
    )
-   public static int method1151(int var0) {
-      return var0 >> 11 & 63;
+   static final void method1145(int var0) {
+      if(class2.method25(var0)) {
+         Player.method234(Widget.widgets[var0], -1);
+      }
+   }
+
+   public void run() {
+      this.field1091 = true;
+
+      try {
+         while(!this.field1090) {
+            for(int var1 = 0; var1 < 2; ++var1) {
+               class57 var2 = this.field1092[var1];
+               if(var2 != null) {
+                  var2.method1020();
+               }
+            }
+
+            XClanMember.method237(10L);
+            CombatInfo1.method594(this.field1088, (Object)null);
+         }
+      } catch (Exception var7) {
+         FaceNormal.method1844((String)null, var7);
+      } finally {
+         this.field1091 = false;
+      }
+
    }
 }
