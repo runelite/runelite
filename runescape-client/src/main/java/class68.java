@@ -1,43 +1,43 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bi")
+@ObfuscatedName("bg")
 public abstract class class68 extends Node {
+   @ObfuscatedName("w")
+   volatile boolean field1145 = true;
+   @ObfuscatedName("u")
+   class68 field1146;
    @ObfuscatedName("x")
-   class71 field1143;
-   @ObfuscatedName("i")
-   class68 field1144;
-   @ObfuscatedName("s")
-   int field1145;
-   @ObfuscatedName("d")
-   volatile boolean field1146 = true;
-
+   class71 field1147;
    @ObfuscatedName("j")
-   protected abstract void vmethod2629(int var1);
+   int field1148;
 
-   @ObfuscatedName("ep")
-   final void method1327(int[] var1, int var2, int var3) {
-      if(this.field1146) {
-         this.vmethod2628(var1, var2, var3);
+   @ObfuscatedName("w")
+   protected abstract class68 vmethod2658();
+
+   @ObfuscatedName("v")
+   protected abstract int vmethod2649();
+
+   @ObfuscatedName("en")
+   final void method1323(int[] var1, int var2, int var3) {
+      if(this.field1145) {
+         this.vmethod2665(var1, var2, var3);
       } else {
-         this.vmethod2629(var3);
+         this.vmethod2651(var3);
       }
 
    }
 
-   @ObfuscatedName("z")
-   protected abstract void vmethod2628(int[] var1, int var2, int var3);
-
-   @ObfuscatedName("ab")
-   int vmethod1329() {
+   @ObfuscatedName("as")
+   int vmethod1324() {
       return 255;
    }
 
-   @ObfuscatedName("k")
-   protected abstract int vmethod2624();
+   @ObfuscatedName("l")
+   protected abstract void vmethod2651(int var1);
 
-   @ObfuscatedName("c")
-   protected abstract class68 vmethod2625();
+   @ObfuscatedName("h")
+   protected abstract void vmethod2665(int[] var1, int var2, int var3);
 
-   @ObfuscatedName("u")
-   protected abstract class68 vmethod2626();
+   @ObfuscatedName("q")
+   protected abstract class68 vmethod2666();
 }

@@ -4,162 +4,134 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fs")
 public class class178 {
-   @ObfuscatedName("m")
-   static final class178 field2682 = new class178("BUILDLIVE", 3);
-   @ObfuscatedName("b")
-   static final class178 field2683 = new class178("RC", 1);
+   @ObfuscatedName("e")
+   static final class178 field2673 = new class178("BUILDLIVE", 3);
+   @ObfuscatedName("f")
+   static final class178 field2674 = new class178("RC", 1);
+   @ObfuscatedName("k")
+   static final class178 field2675 = new class178("WIP", 2);
    @ObfuscatedName("g")
-   static final class178 field2684 = new class178("WIP", 2);
-   @ObfuscatedName("h")
-   public final String field2685;
-   @ObfuscatedName("v")
+   public final String field2676;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 627245535
+      intValue = 203332065
    )
-   final int field2686;
-   @ObfuscatedName("o")
-   static final class178 field2687 = new class178("LIVE", 0);
+   final int field2677;
+   @ObfuscatedName("eg")
+   static SpritePixels field2678;
+   @ObfuscatedName("i")
+   static final class178 field2679 = new class178("LIVE", 0);
+   @ObfuscatedName("ny")
+   @ObfuscatedGetter(
+      intValue = -1670199511
+   )
+   static int field2680;
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;III)Z",
+      garbageValue = "-2044222569"
+   )
+   public static boolean method3196(class182 var0, int var1, int var2) {
+      byte[] var3 = var0.method3211(var1, var2);
+      if(var3 == null) {
+         return false;
+      } else {
+         class204.method3735(var3);
+         return true;
+      }
+   }
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;I)V",
       garbageValue = "0"
    )
    class178(String var1, int var2) {
-      this.field2685 = var1;
-      this.field2686 = var2;
+      this.field2676 = var1;
+      this.field2677 = var2;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2046795927"
+      signature = "(Lclass184;IIIBZB)V",
+      garbageValue = "7"
    )
-   public static void method3192() {
-      class194.field2847.reset();
+   static void method3200(class184 var0, int var1, int var2, int var3, byte var4, boolean var5) {
+      long var6 = (long)((var1 << 16) + var2);
+      class181 var8 = (class181)class185.field2747.method2311(var6);
+      if(null == var8) {
+         var8 = (class181)class185.field2749.method2311(var6);
+         if(var8 == null) {
+            var8 = (class181)class185.field2757.method2311(var6);
+            if(var8 != null) {
+               if(var5) {
+                  var8.method2388();
+                  class185.field2747.method2312(var8, var6);
+                  --class185.field2753;
+                  ++class185.field2765;
+               }
+
+            } else {
+               if(!var5) {
+                  var8 = (class181)class185.field2754.method2311(var6);
+                  if(var8 != null) {
+                     return;
+                  }
+               }
+
+               var8 = new class181();
+               var8.field2698 = var0;
+               var8.field2697 = var3;
+               var8.field2701 = var4;
+               if(var5) {
+                  class185.field2747.method2312(var8, var6);
+                  ++class185.field2765;
+               } else {
+                  class185.field2751.method2258(var8);
+                  class185.field2757.method2312(var8, var6);
+                  ++class185.field2753;
+               }
+
+            }
+         }
+      }
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(Lclass182;III)[LModIcon;",
-      garbageValue = "-1877336648"
+      signature = "(Ljava/lang/String;I)Ljava/lang/String;",
+      garbageValue = "-849339272"
    )
-   static ModIcon[] method3194(class182 var0, int var1, int var2) {
-      return !Friend.method170(var0, var1, var2)?null:class194.method3462();
-   }
+   public static String method3201(String var0) {
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
+      byte var3 = 2;
 
-   @ObfuscatedName("ag")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1275186775"
-   )
-   static final void method3195() {
-      int var0 = 64 + class57.field1059 * 128;
-      int var1 = 64 + ChatMessages.field928 * 128;
-      int var2 = ChatLineBuffer.method896(var0, var1, class63.plane) - class45.field901;
-      if(class110.cameraX < var0) {
-         class110.cameraX += FileOnDisk.field1197 + (var0 - class110.cameraX) * class9.field73 / 1000;
-         if(class110.cameraX > var0) {
-            class110.cameraX = var0;
+      for(int var4 = 0; var4 < var1; ++var4) {
+         char var5 = var0.charAt(var4);
+         if(var3 == 0) {
+            var5 = Character.toLowerCase(var5);
+         } else if(var3 == 2 || Character.isUpperCase(var5)) {
+            var5 = class165.method3062(var5);
          }
-      }
 
-      if(class110.cameraX > var0) {
-         class110.cameraX -= (class110.cameraX - var0) * class9.field73 / 1000 + FileOnDisk.field1197;
-         if(class110.cameraX < var0) {
-            class110.cameraX = var0;
+         if(Character.isLetter(var5)) {
+            var3 = 0;
+         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
+            if(Character.isSpaceChar(var5)) {
+               if(var3 != 2) {
+                  var3 = 1;
+               }
+            } else {
+               var3 = 1;
+            }
+         } else {
+            var3 = 2;
          }
+
+         var2[var4] = var5;
       }
 
-      if(class189.cameraZ < var2) {
-         class189.cameraZ += FileOnDisk.field1197 + class9.field73 * (var2 - class189.cameraZ) / 1000;
-         if(class189.cameraZ > var2) {
-            class189.cameraZ = var2;
-         }
-      }
-
-      if(class189.cameraZ > var2) {
-         class189.cameraZ -= FileOnDisk.field1197 + (class189.cameraZ - var2) * class9.field73 / 1000;
-         if(class189.cameraZ < var2) {
-            class189.cameraZ = var2;
-         }
-      }
-
-      if(class16.cameraY < var1) {
-         class16.cameraY += class9.field73 * (var1 - class16.cameraY) / 1000 + FileOnDisk.field1197;
-         if(class16.cameraY > var1) {
-            class16.cameraY = var1;
-         }
-      }
-
-      if(class16.cameraY > var1) {
-         class16.cameraY -= (class16.cameraY - var1) * class9.field73 / 1000 + FileOnDisk.field1197;
-         if(class16.cameraY < var1) {
-            class16.cameraY = var1;
-         }
-      }
-
-      var0 = Actor.field620 * 128 + 64;
-      var1 = class139.field1941 * 128 + 64;
-      var2 = ChatLineBuffer.method896(var0, var1, class63.plane) - Projectile.field887;
-      int var3 = var0 - class110.cameraX;
-      int var4 = var2 - class189.cameraZ;
-      int var5 = var1 - class16.cameraY;
-      int var6 = (int)Math.sqrt((double)(var5 * var5 + var3 * var3));
-      int var7 = (int)(Math.atan2((double)var4, (double)var6) * 325.949D) & 2047;
-      int var8 = (int)(Math.atan2((double)var3, (double)var5) * -325.949D) & 2047;
-      if(var7 < 128) {
-         var7 = 128;
-      }
-
-      if(var7 > 383) {
-         var7 = 383;
-      }
-
-      if(WidgetNode.cameraPitch < var7) {
-         WidgetNode.cameraPitch += class161.field2151 * (var7 - WidgetNode.cameraPitch) / 1000 + class13.field148;
-         if(WidgetNode.cameraPitch > var7) {
-            WidgetNode.cameraPitch = var7;
-         }
-      }
-
-      if(WidgetNode.cameraPitch > var7) {
-         WidgetNode.cameraPitch -= class161.field2151 * (WidgetNode.cameraPitch - var7) / 1000 + class13.field148;
-         if(WidgetNode.cameraPitch < var7) {
-            WidgetNode.cameraPitch = var7;
-         }
-      }
-
-      int var9 = var8 - class60.cameraYaw;
-      if(var9 > 1024) {
-         var9 -= 2048;
-      }
-
-      if(var9 < -1024) {
-         var9 += 2048;
-      }
-
-      if(var9 > 0) {
-         class60.cameraYaw += var9 * class161.field2151 / 1000 + class13.field148;
-         class60.cameraYaw &= 2047;
-      }
-
-      if(var9 < 0) {
-         class60.cameraYaw -= class161.field2151 * -var9 / 1000 + class13.field148;
-         class60.cameraYaw &= 2047;
-      }
-
-      int var10 = var8 - class60.cameraYaw;
-      if(var10 > 1024) {
-         var10 -= 2048;
-      }
-
-      if(var10 < -1024) {
-         var10 += 2048;
-      }
-
-      if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
-         class60.cameraYaw = var8;
-      }
-
+      return new String(var2);
    }
 }

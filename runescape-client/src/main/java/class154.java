@@ -2,52 +2,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("em")
+@ObfuscatedName("ey")
 public class class154 {
-   @ObfuscatedName("v")
-   static byte[][] field2111 = new byte[50][];
-   @ObfuscatedName("b")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 647830699
+      intValue = -834147339
    )
-   static int field2113 = 0;
+   static int field2100 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1215836129
+   )
+   static int field2101 = 0;
+   @ObfuscatedName("k")
+   static byte[][] field2102 = new byte[1000][];
    @ObfuscatedName("g")
-   static byte[][] field2114 = new byte[1000][];
-   @ObfuscatedName("h")
-   static byte[][] field2115 = new byte[250][];
-   @ObfuscatedName("o")
+   static byte[][] field2103 = new byte[250][];
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 563494539
+      intValue = 1537782779
    )
-   static int field2116 = 0;
-   @ObfuscatedName("mk")
-   static SpritePixels field2118;
-   @ObfuscatedName("ie")
-   static class38 field2120;
-   @ObfuscatedName("m")
+   static int field2104 = 0;
+   @ObfuscatedName("nu")
    @ObfuscatedGetter(
-      intValue = 641607123
+      intValue = -984409145
    )
-   static int field2121 = 0;
+   static int field2105;
+   @ObfuscatedName("w")
+   public static byte[][] field2106;
+   @ObfuscatedName("n")
+   static byte[][] field2107 = new byte[50][];
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IB)[B",
-      garbageValue = "90"
+      signature = "(IS)[B",
+      garbageValue = "20862"
    )
-   static synchronized byte[] method2929(int var0) {
+   static synchronized byte[] method2945(int var0) {
       byte[] var1;
-      if(var0 == 100 && field2116 > 0) {
-         var1 = field2114[--field2116];
-         field2114[field2116] = null;
+      if(var0 == 100 && field2101 > 0) {
+         var1 = field2102[--field2101];
+         field2102[field2101] = null;
          return var1;
-      } else if(var0 == 5000 && field2121 > 0) {
-         var1 = field2115[--field2121];
-         field2115[field2121] = null;
+      } else if(var0 == 5000 && field2100 > 0) {
+         var1 = field2103[--field2100];
+         field2103[field2100] = null;
          return var1;
-      } else if(var0 == 30000 && field2113 > 0) {
-         var1 = field2111[--field2113];
-         field2111[field2113] = null;
+      } else if(var0 == 30000 && field2104 > 0) {
+         var1 = field2107[--field2104];
+         field2107[field2104] = null;
          return var1;
       } else {
          return new byte[var0];

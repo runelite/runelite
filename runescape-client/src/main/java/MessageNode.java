@@ -1,55 +1,73 @@
-import java.io.IOException;
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("s")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("am")
-   static int[] field230;
-   @ObfuscatedName("b")
+   @ObfuscatedName("bs")
+   static class184 field220;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1871082685
-   )
-   @Export("type")
-   int type;
-   @ObfuscatedName("g")
-   @Export("name")
-   String name;
-   @ObfuscatedName("h")
-   @Export("sender")
-   String sender;
-   @ObfuscatedName("v")
-   @Export("value")
-   String value;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1394102869
+      intValue = 1557327565
    )
    @Export("tick")
    int tick;
-   @ObfuscatedName("by")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1995946803
+      intValue = 265462093
    )
-   static int field237;
-   @ObfuscatedName("o")
+   @Export("type")
+   int type;
+   @ObfuscatedName("k")
+   @Export("name")
+   String name;
+   @ObfuscatedName("g")
+   @Export("sender")
+   String sender;
+   @ObfuscatedName("n")
+   @Export("value")
+   String value;
+   @ObfuscatedName("q")
+   static class179 field226;
+   @ObfuscatedName("dn")
    @ObfuscatedGetter(
-      intValue = -1422299407
+      intValue = -915970983
+   )
+   static int field227;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1671700543
    )
    @Export("id")
-   int id = class1.method14();
+   int id = ItemLayer.method1447();
+   @ObfuscatedName("nw")
+   static class65 field229;
+   @ObfuscatedName("r")
+   static String[] field231;
+   @ObfuscatedName("iz")
+   @ObfuscatedGetter(
+      intValue = 107847965
+   )
+   static int field232;
+   @ObfuscatedName("fa")
+   @ObfuscatedGetter(
+      intValue = 1575178341
+   )
+   @Export("cameraZ")
+   static int cameraZ;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1662010682"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
+      garbageValue = "0"
    )
    void method199(int var1, String var2, String var3, String var4) {
-      this.id = class1.method14();
+      this.id = ItemLayer.method1447();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
@@ -57,40 +75,92 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "1871649558"
+      signature = "(Ljava/io/File;ZB)Z",
+      garbageValue = "16"
    )
-   public static void method201(boolean var0) {
-      if(null != class185.field2774) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.method2815(var0?2:3);
-            var1.method2713(0);
-            class185.field2774.method2016(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class185.field2774.method2027();
-            } catch (Exception var3) {
-               ;
-            }
-
-            ++class185.field2763;
-            class185.field2774 = null;
+   static boolean method200(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
          }
 
+         return true;
+      } catch (Exception var4) {
+         return false;
       }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("ax")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "28"
+      signature = "(Lclass15;B)V",
+      garbageValue = "61"
    )
-   static int method203(int var0) {
-      ChatLineBuffer var1 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
-      return null == var1?0:var1.method884();
+   static final void method202(class15 var0) {
+      if(Client.flagX == class39.localPlayer.x >> 7 && class39.localPlayer.y >> 7 == Client.flagY) {
+         Client.flagX = 0;
+      }
+
+      int var1 = class45.field908;
+      int[] var2 = class45.field903;
+      int var3 = var1;
+      if(var0 == class15.field158 || var0 == class15.field159) {
+         var3 = 1;
+      }
+
+      for(int var4 = 0; var4 < var3; ++var4) {
+         Player var5;
+         int var6;
+         if(var0 == class15.field158) {
+            var5 = class39.localPlayer;
+            var6 = class39.localPlayer.field262 << 14;
+         } else if(var0 == class15.field159) {
+            var5 = Client.cachedPlayers[Client.field418];
+            var6 = Client.field418 << 14;
+         } else {
+            var5 = Client.cachedPlayers[var2[var4]];
+            var6 = var2[var4] << 14;
+            if(var0 == class15.field161 && var2[var4] == Client.field418) {
+               continue;
+            }
+         }
+
+         if(var5 != null && var5.vmethod679() && !var5.field245) {
+            var5.field258 = false;
+            if((Client.field289 && var1 > 50 || var1 > 200) && var0 != class15.field158 && var5.idlePoseAnimation == var5.poseAnimation) {
+               var5.field258 = true;
+            }
+
+            int var7 = var5.x >> 7;
+            int var8 = var5.y >> 7;
+            if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
+               if(var5.model != null && Client.gameCycle >= var5.totalLevel && Client.gameCycle < var5.field249) {
+                  var5.field258 = false;
+                  var5.field247 = class85.method1686(var5.x, var5.y, class171.plane);
+                  Client.region.method1703(class171.plane, var5.x, var5.y, var5.field247, 60, var5, var5.angle, var6, var5.field254, var5.field255, var5.field239, var5.field257);
+               } else {
+                  if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
+                     if(Client.field312 == Client.field391[var7][var8]) {
+                        continue;
+                     }
+
+                     Client.field391[var7][var8] = Client.field312;
+                  }
+
+                  var5.field247 = class85.method1686(var5.x, var5.y, class171.plane);
+                  Client.region.method1739(class171.plane, var5.x, var5.y, var5.field247, 60, var5, var5.angle, var6, var5.field605);
+               }
+            }
+         }
+      }
+
    }
 
    MessageNode(int var1, String var2, String var3, String var4) {
@@ -99,5 +169,14 @@ public class MessageNode extends CacheableNode {
       this.name = var2;
       this.sender = var3;
       this.value = var4;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;I)V",
+      garbageValue = "1032274152"
+   )
+   public static void method203(class182 var0) {
+      class200.field3037 = var0;
    }
 }

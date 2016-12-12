@@ -1,84 +1,45 @@
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
+import java.awt.FontMetrics;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("an")
+@ObfuscatedName("az")
 public class class37 {
-   @ObfuscatedName("qc")
+   @ObfuscatedName("ff")
    @ObfuscatedGetter(
-      intValue = 136199849
+      intValue = 842161617
    )
-   static int field795;
-   @ObfuscatedName("do")
-   static int[] field797;
+   static int field785;
+   @ObfuscatedName("bw")
+   static ModIcon field789;
+   @ObfuscatedName("bf")
+   protected static FontMetrics field791;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "-40"
+      signature = "(III)I",
+      garbageValue = "-256946660"
    )
-   static long method719() {
-      try {
-         URL var0 = new URL(class65.method1162("services", false) + "m=accountappeal/login.ws");
-         URLConnection var1 = var0.openConnection();
-         var1.setRequestProperty("connection", "close");
-         var1.setDoInput(true);
-         var1.setDoOutput(true);
-         var1.setConnectTimeout(5000);
-         OutputStreamWriter var2 = new OutputStreamWriter(var1.getOutputStream());
-         var2.write("data1=req");
-         var2.flush();
-         InputStream var3 = var1.getInputStream();
-         Buffer var4 = new Buffer(new byte[1000]);
-
-         do {
-            int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
-            if(var5 == -1) {
-               var4.offset = 0;
-               long var8 = var4.method2732();
-               return var8;
-            }
-
-            var4.offset += var5;
-         } while(var4.offset < 1000);
-
-         return 0L;
-      } catch (Exception var7) {
-         return 0L;
-      }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Lclass159;II)V",
-      garbageValue = "2020156274"
-   )
-   static final void method721(class159 var0, int var1) {
-      int var2 = var0.offset;
-      class45.field904 = 0;
-      class36.method707(var0);
-      class6.method72(var0);
-      if(var1 != var0.offset - var2) {
-         throw new RuntimeException(var0.offset - var2 + " " + var1);
-      }
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1672672204"
-   )
-   public static void method722() {
-      if(class115.mouse != null) {
-         class115 var0 = class115.mouse;
-         synchronized(class115.mouse) {
-            class115.mouse = null;
+   static final int method703(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
-      }
 
+         return var1;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return (var0 & 'ﾀ') + var1;
+      }
    }
 }

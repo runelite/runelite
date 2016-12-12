@@ -2,69 +2,68 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("ej")
 public class class155 {
-   @ObfuscatedName("m")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      longValue = 1168537988852939307L
+      longValue = -590259008304774307L
    )
-   static long field2124;
-   @ObfuscatedName("o")
+   static long field2108;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      longValue = -4803283728477328129L
+      longValue = 987846418709483427L
    )
-   static long field2127;
-   @ObfuscatedName("id")
-   @ObfuscatedGetter(
-      intValue = -611018479
-   )
-   static int field2128;
+   static long field2109;
+   @ObfuscatedName("h")
+   static class208 field2112;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-946637247"
+      signature = "(IZS)Ljava/lang/String;",
+      garbageValue = "25651"
    )
-   static final int method2931(int var0, int var1) {
-      int var2 = 57 * var1 + var0;
-      var2 ^= var2 << 13;
-      int var3 = (var2 * var2 * 15731 + 789221) * var2 + 1376312589 & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
-   }
+   public static String method2947(int var0, boolean var1) {
+      if(var1 && var0 >= 0) {
+         int var3 = var0;
+         String var2;
+         if(var1 && var0 >= 0) {
+            int var4 = 2;
 
-   @ObfuscatedName("dy")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Z",
-      garbageValue = "1007253899"
-   )
-   static boolean method2934(String var0, boolean var1) {
-      if(null == var0) {
-         return false;
-      } else {
-         String var2 = class162.method3013(var0, Friend.field155);
-
-         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
-            if(var2.equalsIgnoreCase(class162.method3013(Client.friends[var3].name, Friend.field155)) && (!var1 || Client.friends[var3].world != 0)) {
-               return true;
+            for(int var5 = var0 / 10; var5 != 0; ++var4) {
+               var5 /= 10;
             }
+
+            char[] var6 = new char[var4];
+            var6[0] = 43;
+
+            for(int var7 = var4 - 1; var7 > 0; --var7) {
+               int var8 = var3;
+               var3 /= 10;
+               int var9 = var8 - 10 * var3;
+               if(var9 >= 10) {
+                  var6[var7] = (char)(87 + var9);
+               } else {
+                  var6[var7] = (char)(48 + var9);
+               }
+            }
+
+            var2 = new String(var6);
+         } else {
+            var2 = Integer.toString(var0, 10);
          }
 
-         if(var2.equalsIgnoreCase(class162.method3013(class5.localPlayer.name, Friend.field155))) {
-            return true;
-         } else {
-            return false;
-         }
+         return var2;
+      } else {
+         return Integer.toString(var0);
       }
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)LSpritePixels;",
-      garbageValue = "-1535379326"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "-105"
    )
-   public static SpritePixels method2935(class182 var0, String var1, String var2) {
-      int var3 = var0.method3218(var1);
-      int var4 = var0.method3219(var3, var2);
-      return class152.method2709(var0, var3, var4);
+   static String method2949(int var0) {
+      return "<col=" + Integer.toHexString(var0) + ">";
    }
 }

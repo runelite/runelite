@@ -1,110 +1,51 @@
-import java.io.IOException;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("ff")
 public class class168 {
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1622082407
-   )
-   public static int field2197;
-   @ObfuscatedName("aj")
-   @ObfuscatedGetter(
-      longValue = -6453837003847405463L
-   )
-   static long field2198;
+   @ObfuscatedName("f")
+   static int[] field2193;
+   @ObfuscatedName("ef")
+   static ModIcon[] field2195;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("ay")
    @ObfuscatedSignature(
-      signature = "(Lclass110;ZI)V",
-      garbageValue = "1436095358"
+      signature = "(I)V",
+      garbageValue = "-223248201"
    )
-   public static void method3103(class110 var0, boolean var1) {
-      if(null != class185.field2774) {
-         try {
-            class185.field2774.method2027();
-         } catch (Exception var6) {
-            ;
-         }
+   static final void method3099() {
+      int var0 = class45.field908;
+      int[] var1 = class45.field903;
 
-         class185.field2774 = null;
+      for(int var2 = 0; var2 < var0; ++var2) {
+         Player var3 = Client.cachedPlayers[var1[var2]];
+         if(null != var3) {
+            ChatMessages.method833(var3, 1);
+         }
       }
 
-      class185.field2774 = var0;
-      MessageNode.method201(var1);
-      class185.field2775.offset = 0;
-      class172.field2358 = null;
-      class149.field2051 = null;
-      class185.field2768 = 0;
-
-      while(true) {
-         class181 var2 = (class181)class185.field2758.method2296();
-         if(var2 == null) {
-            while(true) {
-               var2 = (class181)class185.field2766.method2296();
-               if(var2 == null) {
-                  if(class185.field2760 != 0) {
-                     try {
-                        Buffer var7 = new Buffer(4);
-                        var7.method2815(4);
-                        var7.method2815(class185.field2760);
-                        var7.method2712(0);
-                        class185.field2774.method2016(var7.payload, 0, 4);
-                     } catch (IOException var5) {
-                        try {
-                           class185.field2774.method2027();
-                        } catch (Exception var4) {
-                           ;
-                        }
-
-                        ++class185.field2763;
-                        class185.field2774 = null;
-                     }
-                  }
-
-                  class185.field2756 = 0;
-                  class185.field2757 = class114.method2154();
-                  return;
-               }
-
-               class185.field2762.method2248(var2);
-               class185.field2759.method2291(var2, var2.hash);
-               ++class185.field2764;
-               --class185.field2767;
-            }
-         }
-
-         class185.field2773.method2291(var2, var2.hash);
-         ++class185.field2765;
-         --class185.field2761;
-      }
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("ak")
    @ObfuscatedSignature(
-      signature = "([BILjava/lang/CharSequence;I)I",
-      garbageValue = "85862815"
+      signature = "(II)V",
+      garbageValue = "128951216"
    )
-   public static int method3104(byte[] var0, int var1, CharSequence var2) {
-      int var3 = var2.length();
-      int var4 = var1;
-
-      for(int var5 = 0; var5 < var3; ++var5) {
-         char var6 = var2.charAt(var5);
-         if(var6 <= 127) {
-            var0[var4++] = (byte)var6;
-         } else if(var6 <= 2047) {
-            var0[var4++] = (byte)(192 | var6 >> 6);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         } else {
-            var0[var4++] = (byte)(224 | var6 >> 12);
-            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
-            var0[var4++] = (byte)(128 | var6 & 63);
-         }
+   static void method3100(int var0) {
+      if(var0 == -1 && !Client.field525) {
+         class172.method3180();
+      } else if(var0 != -1 && Client.field414 != var0 && Client.field373 != 0 && !Client.field525) {
+         class184 var1 = class204.field3079;
+         int var2 = Client.field373;
+         class138.field1914 = 1;
+         class145.field2014 = var1;
+         class30.field693 = var0;
+         class138.field1915 = 0;
+         ItemLayer.field1220 = var2;
+         ItemLayer.field1221 = false;
+         class138.field1916 = 2;
       }
 
-      return var4 - var1;
+      Client.field414 = var0;
    }
 }

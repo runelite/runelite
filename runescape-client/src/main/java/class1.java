@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -5,50 +10,45 @@ import java.util.List;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("m")
+@ObfuscatedName("e")
 public class class1 {
-   @ObfuscatedName("o")
-   public final List field7;
-   @ObfuscatedName("b")
-   public static Comparator field8;
+   @ObfuscatedName("e")
+   public static Comparator field10 = new class7();
+   @ObfuscatedName("f")
+   public static Comparator field11;
+   @ObfuscatedName("k")
+   public static Comparator field12;
    @ObfuscatedName("g")
-   public static Comparator field9;
-   @ObfuscatedName("h")
-   public static Comparator field10;
-   @ObfuscatedName("m")
-   public static Comparator field11 = new class7();
+   public static Comparator field13;
+   @ObfuscatedName("i")
+   public final List field14;
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-631122367"
+   )
+   public static void method8() {
+      while(true) {
+         Deque var1 = class183.field2726;
+         class180 var0;
+         synchronized(class183.field2726) {
+            var0 = (class180)class183.field2725.method2357();
+         }
+
+         if(null == var0) {
+            return;
+         }
+
+         var0.field2694.method3322(var0.field2693, (int)var0.hash, var0.field2691, false);
+      }
+   }
 
    static {
       new class0();
-      field8 = new class5();
-      field9 = new class6();
-      field10 = new class3();
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZB)V",
-      garbageValue = "-3"
-   )
-   public void method11(Comparator var1, boolean var2) {
-      if(var2) {
-         Collections.sort(this.field7, var1);
-      } else {
-         Collections.sort(this.field7, Collections.reverseOrder(var1));
-      }
-
-   }
-
-   @ObfuscatedName("ay")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "519238545"
-   )
-   static void method12() {
-      Client.field330.method2967(92);
-      Client.field330.method2815(class47.method871());
-      Client.field330.method2712(TextureProvider.field1200);
-      Client.field330.method2712(class94.field1584);
+      field11 = new class5();
+      field12 = new class6();
+      field13 = new class3();
    }
 
    @ObfuscatedSignature(
@@ -66,134 +66,166 @@ public class class1 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field7 = new ArrayList(var6);
+      this.field14 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field7.add(new class2(var1, var5, var3));
+         this.field14.add(new class2(var1, var5, var3));
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("cb")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-13"
+      signature = "(LWidget;IIZI)V",
+      garbageValue = "-1602114367"
    )
-   static int method14() {
-      return ++class47.field940 - 1;
+   static void method12(Widget var0, int var1, int var2, boolean var3) {
+      int var4 = var0.width;
+      int var5 = var0.height;
+      if(var0.field2215 == 0) {
+         var0.width = var0.field2219;
+      } else if(var0.field2215 == 1) {
+         var0.width = var1 - var0.field2219;
+      } else if(var0.field2215 == 2) {
+         var0.width = var1 * var0.field2219 >> 14;
+      }
+
+      if(var0.field2264 == 0) {
+         var0.height = var0.field2220;
+      } else if(var0.field2264 == 1) {
+         var0.height = var2 - var0.field2220;
+      } else if(var0.field2264 == 2) {
+         var0.height = var2 * var0.field2220 >> 14;
+      }
+
+      if(var0.field2215 == 4) {
+         var0.width = var0.field2225 * var0.height / var0.field2329;
+      }
+
+      if(var0.field2264 == 4) {
+         var0.height = var0.field2329 * var0.width / var0.field2225;
+      }
+
+      if(Client.field456 && var0.type == 0) {
+         if(var0.height < 5 && var0.width < 5) {
+            var0.height = 5;
+            var0.width = 5;
+         } else {
+            if(var0.height <= 0) {
+               var0.height = 5;
+            }
+
+            if(var0.width <= 0) {
+               var0.width = 5;
+            }
+         }
+      }
+
+      if(var0.contentType == 1337) {
+         Client.field421 = var0;
+      }
+
+      if(var3 && null != var0.field2317 && (var4 != var0.width || var0.height != var5)) {
+         class18 var6 = new class18();
+         var6.field187 = var0;
+         var6.field188 = var0.field2317;
+         Client.field475.method2376(var6);
+      }
+
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "1"
+      signature = "(Ljava/lang/Throwable;B)Ljava/lang/String;",
+      garbageValue = "105"
    )
-   static final void method15() {
-      short var0 = 256;
-      int var1;
-      if(class41.field836 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class41.field836 > 768) {
-               ChatMessages.field918[var1] = class57.method1066(class45.field912[var1], class214.field3159[var1], 1024 - class41.field836);
-            } else if(class41.field836 > 256) {
-               ChatMessages.field918[var1] = class214.field3159[var1];
-            } else {
-               ChatMessages.field918[var1] = class57.method1066(class214.field3159[var1], class45.field912[var1], 256 - class41.field836);
-            }
-         }
-      } else if(class41.field848 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class41.field848 > 768) {
-               ChatMessages.field918[var1] = class57.method1066(class45.field912[var1], class15.field163[var1], 1024 - class41.field848);
-            } else if(class41.field848 > 256) {
-               ChatMessages.field918[var1] = class15.field163[var1];
-            } else {
-               ChatMessages.field918[var1] = class57.method1066(class15.field163[var1], class45.field912[var1], 256 - class41.field848);
-            }
-         }
+   static String method13(Throwable var0) throws IOException {
+      String var1;
+      if(var0 instanceof class101) {
+         class101 var2 = (class101)var0;
+         var1 = var2.field1637 + " | ";
+         var0 = var2.field1641;
       } else {
-         for(var1 = 0; var1 < 256; ++var1) {
-            ChatMessages.field918[var1] = class45.field912[var1];
-         }
+         var1 = "";
       }
 
-      class219.method3893(class41.field860, 9, 128 + class41.field860, 7 + var0);
-      class41.field830.method4092(class41.field860, 0);
-      class219.method3891();
-      var1 = 0;
-      int var2 = TextureProvider.bufferProvider.width * 9 + class41.field860;
+      StringWriter var12 = new StringWriter();
+      PrintWriter var3 = new PrintWriter(var12);
+      var0.printStackTrace(var3);
+      var3.close();
+      String var4 = var12.toString();
+      BufferedReader var5 = new BufferedReader(new StringReader(var4));
+      String var6 = var5.readLine();
 
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var10;
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = (var0 - var3) * class41.field851[var3] / var0;
-         var5 = 22 + var4;
-         if(var5 < 0) {
-            var5 = 0;
-         }
-
-         var1 += var5;
-
-         for(var6 = var5; var6 < 128; ++var6) {
-            var7 = MessageNode.field230[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = ChatMessages.field918[var7];
-               var10 = TextureProvider.bufferProvider.pixels[var2];
-               TextureProvider.bufferProvider.pixels[var2++] = (var9 * (var10 & '\uff00') + (var7 & '\uff00') * var8 & 16711680) + (var9 * (var10 & 16711935) + (var7 & 16711935) * var8 & -16711936) >> 8;
-            } else {
-               ++var2;
+      while(true) {
+         while(true) {
+            String var7 = var5.readLine();
+            if(null == var7) {
+               var1 = var1 + "| " + var6;
+               return var1;
             }
-         }
 
-         var2 += TextureProvider.bufferProvider.width + var5 - 128;
+            int var8 = var7.indexOf(40);
+            int var9 = var7.indexOf(41, var8 + 1);
+            if(var8 >= 0 && var9 >= 0) {
+               String var10 = var7.substring(1 + var8, var9);
+               int var11 = var10.indexOf(".java:");
+               if(var11 >= 0) {
+                  var10 = var10.substring(0, var11) + var10.substring(5 + var11);
+                  var1 = var1 + var10 + ' ';
+                  continue;
+               }
+
+               var7 = var7.substring(0, var8);
+            }
+
+            var7 = var7.trim();
+            var7 = var7.substring(var7.lastIndexOf(32) + 1);
+            var7 = var7.substring(var7.lastIndexOf(9) + 1);
+            var1 = var1 + var7 + ' ';
+         }
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I[BLclass116;I)V",
+      garbageValue = "1851799159"
+   )
+   static void method14(int var0, byte[] var1, class116 var2) {
+      class180 var3 = new class180();
+      var3.field2692 = 0;
+      var3.hash = (long)var0;
+      var3.field2691 = var1;
+      var3.field2693 = var2;
+      Deque var4 = class183.field2726;
+      synchronized(class183.field2726) {
+         class183.field2726.method2376(var3);
       }
 
-      class219.method3893(class41.field860 + 765 - 128, 9, 765 + class41.field860, var0 + 7);
-      RSCanvas.field1766.method4092(class41.field860 + 382, 0);
-      class219.method3891();
-      var1 = 0;
-      var2 = class41.field860 + TextureProvider.bufferProvider.width * 9 + 24 + 637;
+      class104.method1975();
+   }
 
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = class41.field851[var3] * (var0 - var3) / var0;
-         var5 = 103 - var4;
-         var2 += var4;
-
-         for(var6 = 0; var6 < var5; ++var6) {
-            var7 = MessageNode.field230[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = ChatMessages.field918[var7];
-               var10 = TextureProvider.bufferProvider.pixels[var2];
-               TextureProvider.bufferProvider.pixels[var2++] = ((var10 & '\uff00') * var9 + var8 * (var7 & '\uff00') & 16711680) + (var9 * (var10 & 16711935) + (var7 & 16711935) * var8 & -16711936) >> 8;
-            } else {
-               ++var2;
-            }
-         }
-
-         var1 += 128 - var5;
-         var2 += TextureProvider.bufferProvider.width - var5 - var4;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/util/Comparator;ZB)V",
+      garbageValue = "50"
+   )
+   public void method15(Comparator var1, boolean var2) {
+      if(var2) {
+         Collections.sort(this.field14, var1);
+      } else {
+         Collections.sort(this.field14, Collections.reverseOrder(var1));
       }
 
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;IZI)V",
-      garbageValue = "1709494423"
+      signature = "(I)V",
+      garbageValue = "2051119504"
    )
-   public static void method16(class182 var0, String var1, String var2, int var3, boolean var4) {
-      int var5 = var0.method3218(var1);
-      int var6 = var0.method3219(var5, var2);
-      WallObject.method1843(var0, var5, var6, var3, var4);
+   public static void method16() {
+      class187.field2777.reset();
    }
 }

@@ -2,66 +2,42 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fd")
+@ObfuscatedName("fh")
 public class class177 implements class158 {
-   @ObfuscatedName("v")
-   public static final class177 field2668 = new class177(5, 10, false, false, true);
-   @ObfuscatedName("m")
-   public static final class177 field2669 = new class177(1, 0, true, true, true);
-   @ObfuscatedName("cb")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -740217913
+      intValue = -839945989
    )
-   public static int field2670;
-   @ObfuscatedName("b")
-   public static final class177 field2671 = new class177(2, 1, true, true, false);
-   @ObfuscatedName("h")
-   public static final class177 field2672 = new class177(4, 3, false, false, true);
-   @ObfuscatedName("g")
-   public static final class177 field2673 = new class177(3, 2, false, false, true);
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 458310047
-   )
-   final int field2674;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 791626915
-   )
-   public final int field2675;
-   @ObfuscatedName("o")
-   public static final class177 field2676 = new class177(0, -1, true, false, true);
+   public final int field2659;
+   @ObfuscatedName("e")
+   static final class177 field2660 = new class177(1, 0, true, true, true);
+   @ObfuscatedName("i")
+   static final class177 field2661 = new class177(0, -1, true, false, true);
    @ObfuscatedName("k")
-   public final boolean field2677;
-   @ObfuscatedName("mo")
+   static final class177 field2662 = new class177(3, 2, false, false, true);
+   @ObfuscatedName("g")
+   static final class177 field2663 = new class177(4, 3, false, false, true);
+   @ObfuscatedName("n")
+   static final class177 field2664 = new class177(5, 10, false, false, true);
+   @ObfuscatedName("f")
+   static final class177 field2665 = new class177(2, 1, true, true, false);
+   @ObfuscatedName("w")
+   public final boolean field2666;
+   @ObfuscatedName("v")
+   public final boolean field2668;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -489554013
+      intValue = -18342301
    )
-   static int field2678;
-   @ObfuscatedName("pw")
-   @ObfuscatedGetter(
-      intValue = 554145589
-   )
-   static int field2679;
-   @ObfuscatedName("u")
-   public final boolean field2680;
+   final int field2671;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "656494876"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "-24"
    )
-   public static boolean method3184(int var0) {
-      return (var0 >> 20 & 1) != 0;
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "255"
-   )
-   public int vmethod3989() {
-      return this.field2674;
+   static final String method3186(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 
    @ObfuscatedSignature(
@@ -69,53 +45,42 @@ public class class177 implements class158 {
       garbageValue = "1"
    )
    class177(int var1, int var2, boolean var3, boolean var4, boolean var5) {
-      this.field2674 = var1;
-      this.field2675 = var2;
-      this.field2680 = var4;
-      this.field2677 = var5;
+      this.field2671 = var1;
+      this.field2659 = var2;
+      this.field2666 = var4;
+      this.field2668 = var5;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IB)Lclass187;",
-      garbageValue = "0"
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "382736064"
    )
-   public static class187 method3187(int var0) {
-      class187 var1 = (class187)class187.field2780.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class187.field2781.method3203(16, var0);
-         var1 = new class187();
-         if(null != var2) {
-            var1.method3347(new Buffer(var2));
-         }
-
-         class187.field2780.put(var1, (long)var0);
-         return var1;
-      }
+   public static int method3191(CharSequence var0) {
+      return class146.method2699(var0, 10, true);
    }
 
    @ObfuscatedName("z")
    @ObfuscatedSignature(
-      signature = "([BZI)Ljava/lang/Object;",
-      garbageValue = "461393858"
+      signature = "(I)V",
+      garbageValue = "1889072846"
    )
-   public static Object method3189(byte[] var0, boolean var1) {
-      if(var0 == null) {
-         return null;
+   static final void method3192() {
+      if(Client.field453 > 0) {
+         class10.method146();
       } else {
-         if(var0.length > 136 && !class156.field2130) {
-            try {
-               class151 var2 = new class151();
-               var2.vmethod2938(var0);
-               return var2;
-            } catch (Throwable var3) {
-               class156.field2130 = true;
-            }
-         }
-
-         return var0;
+         XGrandExchangeOffer.setGameState(40);
+         Client.field326 = class156.field2118;
+         class156.field2118 = null;
       }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2056039019"
+   )
+   public int vmethod3974() {
+      return this.field2671;
    }
 }
