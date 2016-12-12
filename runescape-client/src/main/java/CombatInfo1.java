@@ -1,120 +1,131 @@
-import java.awt.Component;
-import java.awt.event.ActionEvent;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("au")
+@ObfuscatedName("aq")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("z")
-   public static boolean field665;
-   @ObfuscatedName("m")
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = 1799972201
+      intValue = -1907433425
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -74485247
+      intValue = -521426357
    )
-   int field667;
-   @ObfuscatedName("g")
+   int field661;
+   @ObfuscatedName("p")
+   static int[] field662;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1399651075
+      intValue = -1414056125
    )
-   int field668;
-   @ObfuscatedName("go")
-   static Widget field669;
-   @ObfuscatedName("b")
+   int field664;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1930750747
+      intValue = -810870241
    )
-   int field673;
+   int field666;
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "17"
+   )
+   void method588(int var1, int var2, int var3, int var4) {
+      this.field661 = var1;
+      this.healthRatio = var2;
+      this.field666 = var3;
+      this.field664 = var4;
+   }
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field667 = var1;
+      this.field661 = var1;
       this.healthRatio = var2;
-      this.field673 = var3;
-      this.field668 = var4;
+      this.field666 = var3;
+      this.field664 = var4;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-299705579"
+      signature = "(CII)C",
+      garbageValue = "1958363218"
    )
-   void method591(int var1, int var2, int var3, int var4) {
-      this.field667 = var1;
-      this.healthRatio = var2;
-      this.field673 = var3;
-      this.field668 = var4;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-117"
-   )
-   public static int method592(int var0) {
-      int var1 = 0;
-      if(var0 < 0 || var0 >= 65536) {
-         var0 >>>= 16;
-         var1 += 16;
-      }
-
-      if(var0 >= 256) {
-         var0 >>>= 8;
-         var1 += 8;
-      }
-
-      if(var0 >= 16) {
-         var0 >>>= 4;
-         var1 += 4;
-      }
-
-      if(var0 >= 4) {
-         var0 >>>= 2;
-         var1 += 2;
-      }
-
-      if(var0 >= 1) {
-         var0 >>>= 1;
-         ++var1;
-      }
-
-      return var1 + var0;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;S)V",
-      garbageValue = "496"
-   )
-   public static void method593(Component var0) {
-      var0.setFocusTraversalKeysEnabled(false);
-      var0.addKeyListener(class105.keyboard);
-      var0.addFocusListener(class105.keyboard);
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(Lclass103;Ljava/lang/Object;B)V",
-      garbageValue = "95"
-   )
-   public static void method594(class103 var0, Object var1) {
-      if(var0.field1669 != null) {
-         for(int var2 = 0; var2 < 50 && var0.field1669.peekEvent() != null; ++var2) {
-            XClanMember.method237(1L);
+   public static char method589(char var0, int var1) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
          }
 
-         if(null != var1) {
-            var0.field1669.postEvent(new ActionEvent(var1, 1001, "dummy"));
+         if(var0 == 199) {
+            return 'C';
          }
 
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
+         }
+
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
+         }
+
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
+         }
+
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
+         }
+
+         if(var0 == 221) {
+            return 'Y';
+         }
+
+         if(var0 == 223) {
+            return 's';
+         }
+
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
+         }
+
+         if(var0 == 231) {
+            return 'c';
+         }
+
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
+         }
+
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
+         }
+
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
+         }
+
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
+         }
+
+         if(var0 == 253 || var0 == 255) {
+            return 'y';
+         }
+      }
+
+      if(var0 == 338) {
+         return 'O';
+      } else if(var0 == 339) {
+         return 'o';
+      } else if(var0 == 376) {
+         return 'Y';
+      } else {
+         return var0;
       }
    }
 }

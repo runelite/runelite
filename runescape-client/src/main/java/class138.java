@@ -1,142 +1,61 @@
-import java.io.File;
-import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("eg")
 public class class138 {
-   @ObfuscatedName("if")
-   @ObfuscatedGetter(
-      intValue = -991064737
-   )
-   static int field1925;
+   @ObfuscatedName("f")
+   public static class182 field1912;
+   @ObfuscatedName("k")
+   public static class139 field1913;
    @ObfuscatedName("g")
-   public static class139 field1926;
-   @ObfuscatedName("b")
-   public static class182 field1927;
-   @ObfuscatedName("m")
-   public static class182 field1928;
-   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1580580237
+      intValue = 660865175
    )
-   public static int field1929 = 0;
+   public static int field1914 = 0;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -783843549
+   )
+   public static int field1915;
    @ObfuscatedName("v")
-   public static class182 field1930;
-   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -378261749
+      intValue = -823295807
    )
-   public static int field1931;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 45457943
-   )
-   public static int field1932;
-   @ObfuscatedName("o")
-   public static class182 field1934;
+   public static int field1916;
+   @ObfuscatedName("p")
+   public static class144 field1917;
+   @ObfuscatedName("e")
+   public static class182 field1918;
+   @ObfuscatedName("i")
+   public static class182 field1919;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(IIB)LWidget;",
-      garbageValue = "-42"
+      signature = "(CS)Z",
+      garbageValue = "-2548"
    )
-   public static Widget method2419(int var0, int var1) {
-      Widget var2 = class174.method3178(var0);
-      return var1 == -1?var2:(null != var2 && null != var2.children && var1 < var2.children.length?var2.children[var1]:null);
+   public static boolean method2457(char var0) {
+      return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(IIIII)I",
-      garbageValue = "309645302"
+      signature = "(I)V",
+      garbageValue = "1826953075"
    )
-   static final int method2434(int var0, int var1, int var2, int var3) {
-      int var4 = 65536 - class84.field1446[1024 * var2 / var3] >> 1;
-      return (var4 * var1 >> 16) + ((65536 - var4) * var0 >> 16);
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZI)Z",
-      garbageValue = "442455256"
-   )
-   static boolean method2444(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
-         }
-
-         return true;
-      } catch (Exception var4) {
-         return false;
-      }
-   }
-
-   @ObfuscatedName("cw")
-   @ObfuscatedSignature(
-      signature = "(LWidget;IIZI)V",
-      garbageValue = "-1431826298"
-   )
-   static void method2445(Widget var0, int var1, int var2, boolean var3) {
-      int var4 = var0.width;
-      int var5 = var0.height;
-      if(var0.field2214 == 0) {
-         var0.width = var0.field2218;
-      } else if(var0.field2214 == 1) {
-         var0.width = var1 - var0.field2218;
-      } else if(var0.field2214 == 2) {
-         var0.width = var1 * var0.field2218 >> 14;
-      }
-
-      if(var0.field2253 == 0) {
-         var0.height = var0.field2215;
-      } else if(var0.field2253 == 1) {
-         var0.height = var2 - var0.field2215;
-      } else if(var0.field2253 == 2) {
-         var0.height = var0.field2215 * var2 >> 14;
-      }
-
-      if(var0.field2214 == 4) {
-         var0.width = var0.field2224 * var0.height / var0.field2232;
-      }
-
-      if(var0.field2253 == 4) {
-         var0.height = var0.field2232 * var0.width / var0.field2224;
-      }
-
-      if(Client.field454 && var0.type == 0) {
-         if(var0.height < 5 && var0.width < 5) {
-            var0.height = 5;
-            var0.width = 5;
-         } else {
-            if(var0.height <= 0) {
-               var0.height = 5;
-            }
-
-            if(var0.width <= 0) {
-               var0.width = 5;
-            }
-         }
-      }
-
-      if(var0.contentType == 1337) {
-         Client.field566 = var0;
-      }
-
-      if(var3 && null != var0.field2316 && (var4 != var0.width || var5 != var0.height)) {
-         class18 var6 = new class18();
-         var6.field193 = var0;
-         var6.field203 = var0.field2316;
-         Client.field483.method2361(var6);
-      }
-
+   static void method2458() {
+      NPC.field763 = null;
+      class11.field117 = null;
+      class10.field91 = null;
+      class65.field1110 = null;
+      class10.field97 = null;
+      class10.field92 = null;
+      class7.field65 = null;
+      class211.field3116 = null;
+      WallObject.field1552 = null;
+      CombatInfo1.field662 = null;
+      class211.field3118 = null;
+      ItemLayer.field1222 = null;
    }
 }

@@ -1,94 +1,147 @@
-import java.io.File;
-import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("w")
+@ObfuscatedName("d")
 @Implements("Ignore")
 public class Ignore {
-   @ObfuscatedName("da")
-   static int[] field206;
-   @ObfuscatedName("o")
-   @Export("name")
-   String name;
-   @ObfuscatedName("pk")
-   static GarbageCollectorMXBean field208;
-   @ObfuscatedName("gb")
-   static Widget field209;
-   @ObfuscatedName("g")
-   static File field210;
-   @ObfuscatedName("i")
+   @ObfuscatedName("ac")
    @ObfuscatedGetter(
-      intValue = -1097184963
+      longValue = 5307918134879951137L
    )
-   static int field215;
-   @ObfuscatedName("b")
-   public static class182 field216;
-   @ObfuscatedName("m")
+   static long field201;
+   @ObfuscatedName("ks")
+   @Export("chatMessages")
+   static ChatMessages chatMessages;
+   @ObfuscatedName("e")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("cj")
-   static class208 field218;
+   @ObfuscatedName("i")
+   @Export("name")
+   String name;
 
-   @ObfuscatedName("dl")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "138721456"
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "1921422778"
    )
-   static void method188() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2296(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2300()) {
-         int var1 = var0.id;
-         if(class2.method25(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
+   static final String method187(int var0) {
+      return var0 < 999999999?Integer.toString(var0):"*";
+   }
 
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(var3[var4] != null) {
-                  var2 = var3[var4].field2204;
-                  break;
-               }
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "647545620"
+   )
+   static final void method188(int var0, int var1, int var2, int var3) {
+      if(Client.field398 == 1) {
+         class15.field162[Client.field397 / 100].method4032(Client.field395 - 8, Client.field396 - 8);
+      }
+
+      if(Client.field398 == 2) {
+         class15.field162[Client.field397 / 100 + 4].method4032(Client.field395 - 8, Client.field396 - 8);
+      }
+
+      class149.method2736();
+   }
+
+   @ObfuscatedName("bz")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;B)V",
+      garbageValue = "-59"
+   )
+   static void method189(int var0, String var1) {
+      int var2 = class45.field908;
+      int[] var3 = class45.field903;
+      boolean var4 = false;
+
+      for(int var5 = 0; var5 < var2; ++var5) {
+         Player var6 = Client.cachedPlayers[var3[var5]];
+         if(null != var6 && var6 != class39.localPlayer && null != var6.name && var6.name.equalsIgnoreCase(var1)) {
+            if(var0 == 1) {
+               Client.field294.method2976(197);
+               Client.field294.method2785(0);
+               Client.field294.method2792(var3[var5]);
+            } else if(var0 == 4) {
+               Client.field294.method2976(57);
+               Client.field294.method2784(0);
+               Client.field294.method2746(var3[var5]);
+            } else if(var0 == 6) {
+               Client.field294.method2976(181);
+               Client.field294.method2793(var3[var5]);
+               Client.field294.method2785(0);
+            } else if(var0 == 7) {
+               Client.field294.method2976(203);
+               Client.field294.method2793(var3[var5]);
+               Client.field294.method2785(0);
             }
 
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = class174.method3178(var4);
-               if(var5 != null) {
-                  class97.method1886(var5);
-               }
-            }
+            var4 = true;
+            break;
          }
+      }
+
+      if(!var4) {
+         ObjectComposition.method3581(4, "", "Unable to find " + var1);
       }
 
    }
 
-   @ObfuscatedName("m")
-   public static String method189(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(var0 % 37L == 0L) {
-            return null;
-         } else {
-            int var2 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;IZS)V",
+      garbageValue = "-3035"
+   )
+   public static void method190(class182 var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.method3225(var1);
+      int var6 = var0.method3226(var5, var2);
+      class116.method2199(var0, var5, var6, var3, var4);
+   }
 
-            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
-               ++var2;
-            }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Lclass18;I)V",
+      garbageValue = "-1084636590"
+   )
+   static void method191(class18 var0) {
+      class6.method83(var0, 200000);
+   }
 
-            StringBuilder var5 = new StringBuilder(var2);
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I)Lclass109;",
+      garbageValue = "232819363"
+   )
+   static class109 method192() {
+      try {
+         return new class98();
+      } catch (Throwable var1) {
+         return new class99();
+      }
+   }
 
-            while(0L != var0) {
-               long var6 = var0;
-               var0 /= 37L;
-               var5.append(class205.field3080[(int)(var6 - 37L * var0)]);
-            }
-
-            return var5.reverse().toString();
-         }
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(IB)Lclass190;",
+      garbageValue = "1"
+   )
+   public static class190 method193(int var0) {
+      class190 var1 = (class190)class190.field2793.get((long)var0);
+      if(null != var1) {
+         return var1;
       } else {
-         return null;
+         byte[] var2 = class190.field2806.method3211(13, var0);
+         var1 = new class190();
+         var1.field2795 = var0;
+         if(null != var2) {
+            var1.method3401(new Buffer(var2));
+         }
+
+         class190.field2793.put(var1, (long)var0);
+         return var1;
       }
    }
 }

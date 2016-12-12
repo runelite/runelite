@@ -2,38 +2,24 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("db")
+@ObfuscatedName("dz")
 @Implements("XHashTable")
 public final class XHashTable {
-   @ObfuscatedName("b")
-   Node field1886;
-   @ObfuscatedName("h")
-   int field1887 = 0;
-   @ObfuscatedName("m")
+   @ObfuscatedName("g")
+   int field1869 = 0;
+   @ObfuscatedName("e")
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("g")
-   Node field1889;
-   @ObfuscatedName("o")
+   @ObfuscatedName("f")
+   Node field1871;
+   @ObfuscatedName("i")
    @Export("size")
    int size;
+   @ObfuscatedName("k")
+   Node field1873;
 
-   @ObfuscatedName("m")
-   public void method2291(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
-   }
-
-   @ObfuscatedName("b")
-   void method2292() {
+   @ObfuscatedName("f")
+   void method2310() {
       for(int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
@@ -47,51 +33,44 @@ public final class XHashTable {
          }
       }
 
-      this.field1886 = null;
-      this.field1889 = null;
+      this.field1871 = null;
+      this.field1873 = null;
    }
 
-   @ObfuscatedName("g")
-   public Node method2296() {
-      this.field1887 = 0;
-      return this.method2300();
-   }
-
-   @ObfuscatedName("o")
-   public Node method2299(long var1) {
+   @ObfuscatedName("i")
+   public Node method2311(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
-      for(this.field1886 = var3.next; this.field1886 != var3; this.field1886 = this.field1886.next) {
-         if(this.field1886.hash == var1) {
-            Node var4 = this.field1886;
-            this.field1886 = this.field1886.next;
+      for(this.field1871 = var3.next; this.field1871 != var3; this.field1871 = this.field1871.next) {
+         if(this.field1871.hash == var1) {
+            Node var4 = this.field1871;
+            this.field1871 = this.field1871.next;
             return var4;
          }
       }
 
-      this.field1886 = null;
+      this.field1871 = null;
       return null;
    }
 
-   @ObfuscatedName("l")
-   public Node method2300() {
-      Node var1;
-      if(this.field1887 > 0 && this.field1889 != this.buckets[this.field1887 - 1]) {
-         var1 = this.field1889;
-         this.field1889 = var1.next;
-         return var1;
-      } else {
-         do {
-            if(this.field1887 >= this.size) {
-               return null;
-            }
-
-            var1 = this.buckets[this.field1887++].next;
-         } while(var1 == this.buckets[this.field1887 - 1]);
-
-         this.field1889 = var1.next;
-         return var1;
+   @ObfuscatedName("e")
+   public void method2312(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
       }
+
+      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
+   }
+
+   @ObfuscatedName("k")
+   public Node method2313() {
+      this.field1869 = 0;
+      return this.method2321();
    }
 
    public XHashTable(int var1) {
@@ -104,5 +83,26 @@ public final class XHashTable {
          var3.previous = var3;
       }
 
+   }
+
+   @ObfuscatedName("a")
+   public Node method2321() {
+      Node var1;
+      if(this.field1869 > 0 && this.field1873 != this.buckets[this.field1869 - 1]) {
+         var1 = this.field1873;
+         this.field1873 = var1.next;
+         return var1;
+      } else {
+         do {
+            if(this.field1869 >= this.size) {
+               return null;
+            }
+
+            var1 = this.buckets[this.field1869++].next;
+         } while(var1 == this.buckets[this.field1869 - 1]);
+
+         this.field1873 = var1.next;
+         return var1;
+      }
    }
 }

@@ -4,133 +4,153 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("p")
+@ObfuscatedName("m")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("m")
-   @Export("previousName")
-   String previousName;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 481307097
+      intValue = 1743365343
    )
    @Export("rank")
    int rank;
-   @ObfuscatedName("b")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1544660437
+      intValue = 583031109
    )
    @Export("world")
    int world;
-   @ObfuscatedName("v")
-   boolean field154;
-   @ObfuscatedName("u")
-   static class228 field155;
-   @ObfuscatedName("pj")
-   @ObfuscatedGetter(
-      longValue = -1446386515909283143L
-   )
-   static long field156;
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
+   @Export("previousName")
+   String previousName;
+   @ObfuscatedName("h")
+   static ModIcon field148;
+   @ObfuscatedName("n")
+   boolean field149;
+   @ObfuscatedName("bw")
+   static class184 field150;
+   @ObfuscatedName("ag")
+   static class184 field152;
+   @ObfuscatedName("i")
    @Export("name")
    String name;
-   @ObfuscatedName("h")
-   boolean field159;
-   @ObfuscatedName("bo")
-   static class184 field160;
+   @ObfuscatedName("g")
+   boolean field157;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("af")
    @ObfuscatedSignature(
-      signature = "(Lclass182;IIB)Z",
-      garbageValue = "6"
+      signature = "(IB)V",
+      garbageValue = "68"
    )
-   public static boolean method170(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.method3203(var1, var2);
-      if(null == var3) {
-         return false;
+   static void method166(int var0) {
+      Client.field562 = 0L;
+      if(var0 >= 2) {
+         Client.isResized = true;
       } else {
-         class2.method29(var3);
-         return true;
+         Client.isResized = false;
       }
+
+      class63.method1131();
+      if(Client.gameState >= 25) {
+         FrameMap.method1689();
+      }
+
+      GameEngine.field1775 = true;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("cx")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "-491670510"
+      signature = "(LWidget;IIS)V",
+      garbageValue = "-2368"
    )
-   public static void method171(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var3 + var2) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   static void method167(Widget var0, int var1, int var2) {
+      if(var0.field2213 == 0) {
+         var0.relativeX = var0.field2288;
+      } else if(var0.field2213 == 1) {
+         var0.relativeX = (var1 - var0.width) / 2 + var0.field2288;
+      } else if(var0.field2213 == 2) {
+         var0.relativeX = var1 - var0.width - var0.field2288;
+      } else if(var0.field2213 == 3) {
+         var0.relativeX = var1 * var0.field2288 >> 14;
+      } else if(var0.field2213 == 4) {
+         var0.relativeX = (var1 - var0.width) / 2 + (var0.field2288 * var1 >> 14);
+      } else {
+         var0.relativeX = var1 - var0.width - (var0.field2288 * var1 >> 14);
+      }
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(var6 == null || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
-            }
+      if(var0.field2214 == 0) {
+         var0.relativeY = var0.field2218;
+      } else if(var0.field2214 == 1) {
+         var0.relativeY = var0.field2218 + (var2 - var0.height) / 2;
+      } else if(var0.field2214 == 2) {
+         var0.relativeY = var2 - var0.height - var0.field2218;
+      } else if(var0.field2214 == 3) {
+         var0.relativeY = var0.field2218 * var2 >> 14;
+      } else if(var0.field2214 == 4) {
+         var0.relativeY = (var0.field2218 * var2 >> 14) + (var2 - var0.height) / 2;
+      } else {
+         var0.relativeY = var2 - var0.height - (var0.field2218 * var2 >> 14);
+      }
+
+      if(Client.field456 && var0.type == 0) {
+         if(var0.relativeX < 0) {
+            var0.relativeX = 0;
+         } else if(var0.relativeX + var0.width > var1) {
+            var0.relativeX = var1 - var0.width;
          }
 
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method171(var0, var1, var2, var5 - 1);
-         method171(var0, var1, 1 + var5, var3);
+         if(var0.relativeY < 0) {
+            var0.relativeY = 0;
+         } else if(var0.height + var0.relativeY > var2) {
+            var0.relativeY = var2 - var0.height;
+         }
       }
 
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-1312797069"
+      signature = "(IB)LCombatInfo2;",
+      garbageValue = "110"
    )
-   public static int method172(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
+   public static CombatInfo2 method168(int var0) {
+      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field2837.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = CombatInfo2.field2832.method3211(33, var0);
+         var1 = new CombatInfo2();
+         if(var2 != null) {
+            var1.method3469(new Buffer(var2));
+         }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+         CombatInfo2.field2837.put(var1, (long)var0);
+         return var1;
       }
-
-      return var2;
-   }
-
-   @ObfuscatedName("as")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "-127"
-   )
-   static final void method173(int var0, int var1, int var2, int var3) {
-      if(Client.field476 == 1) {
-         class8.field63[Client.field396 / 100].method4048(Client.field500 - 8, Client.field395 - 8);
-      }
-
-      if(Client.field476 == 2) {
-         class8.field63[4 + Client.field396 / 100].method4048(Client.field500 - 8, Client.field395 - 8);
-      }
-
-      class187.method3356();
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1814218919"
+      signature = "(LSequence;IIII)V",
+      garbageValue = "-1589458219"
    )
-   public static int method174(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
+   static void method169(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field528 < 50 && Client.field527 != 0) {
+         if(null != var0.field3055 && var1 < var0.field3055.length) {
+            int var4 = var0.field3055[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field529[Client.field528] = var5;
+               Client.field409[Client.field528] = var6;
+               Client.field439[Client.field528] = 0;
+               Client.field533[Client.field528] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field483[Client.field528] = var7 + (var8 << 16) + (var9 << 8);
+               ++Client.field528;
+            }
+         }
+      }
    }
 }

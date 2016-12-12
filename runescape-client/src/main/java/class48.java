@@ -1,76 +1,70 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aj")
+@ObfuscatedName("ac")
 public class class48 extends CacheableNode {
-   @ObfuscatedName("o")
-   static NodeCache field946 = new NodeCache(128);
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 15593241
-   )
-   int field947;
-   @ObfuscatedName("b")
+   @ObfuscatedName("f")
    int[] field948;
-   @ObfuscatedName("g")
-   String[] field949;
-   @ObfuscatedName("m")
-   int[] field950;
-   @ObfuscatedName("l")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1680893353
+      intValue = 1887849457
    )
-   int field951;
-   @ObfuscatedName("h")
+   int field949;
+   @ObfuscatedName("e")
+   int[] field950;
+   @ObfuscatedName("k")
+   String[] field951;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1452423847
+      intValue = 2119381441
    )
    int field952;
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
+   static NodeCache field953 = new NodeCache(128);
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1010333563
+      intValue = -1683474505
    )
-   int field953;
+   int field954;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1727362077
+   )
+   int field955;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Lclass182;I)V",
-      garbageValue = "-560021963"
+      signature = "(IIII)I",
+      garbageValue = "735017078"
    )
-   public static void method876(class182 var0) {
-      class187.field2781 = var0;
-      class150.field2057 = class187.field2781.method3245(16);
+   public static int method855(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(II)LMessageNode;",
-      garbageValue = "-440348474"
+      signature = "(IIIIIII)I",
+      garbageValue = "-1644478184"
    )
-   static MessageNode method877(int var0) {
-      return (MessageNode)class47.field945.method2258((long)var0);
-   }
-
-   @ObfuscatedName("cp")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIB)V",
-      garbageValue = "83"
-   )
-   @Export("addMenuEntry")
-   static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            ++Client.menuOptionCount;
-         }
-
+   public static int method856(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if((var5 & 1) == 1) {
+         int var6 = var3;
+         var3 = var4;
+         var4 = var6;
       }
+
+      var2 &= 3;
+      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0 - (var3 - 1):7 - var1 - (var4 - 1)));
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "378269264"
+   )
+   public static void method860() {
+      class227.field3228 = new CombatInfoList();
    }
 }

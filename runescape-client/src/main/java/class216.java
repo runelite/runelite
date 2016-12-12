@@ -2,25 +2,25 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hz")
+@ObfuscatedName("hy")
 public class class216 {
-   @ObfuscatedName("m")
-   public static final class216 field3161 = new class216(1);
-   @ObfuscatedName("b")
-   static final class216 field3163 = new class216(2);
-   @ObfuscatedName("g")
+   @ObfuscatedName("e")
+   public static final class216 field3163 = new class216(1);
+   @ObfuscatedName("i")
+   static final class216 field3164 = new class216(0);
+   @ObfuscatedName("f")
+   static final class216 field3165 = new class216(2);
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -75511739
+      intValue = -1974967113
    )
-   public final int field3164;
-   @ObfuscatedName("o")
-   static final class216 field3165 = new class216(0);
+   public final int field3166;
 
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class216(int var1) {
-      this.field3164 = var1;
+      this.field3166 = var1;
    }
 }

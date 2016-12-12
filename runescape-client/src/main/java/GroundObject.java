@@ -4,139 +4,168 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ct")
+@ObfuscatedName("cn")
 @Implements("GroundObject")
 public final class GroundObject {
-   @ObfuscatedName("v")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1289556679
+      intValue = -199807221
    )
-   int field1288;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = 625875297
-   )
-   @Export("x")
-   int x;
+   int field1294;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 608308585
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("h")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = 713006955
+      intValue = 2050105713
    )
    @Export("hash")
    public int hash;
-   @ObfuscatedName("o")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 457027439
+      intValue = -42873871
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("k")
+   @Export("renderable")
+   public Renderable renderable;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1401934921
    )
    @Export("floor")
    int floor;
-   @ObfuscatedName("pf")
-   static class116 field1294;
-
-   @ObfuscatedName("dx")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1955183370"
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 692717797
    )
-   static void method1506(int var0, int var1) {
-      class38 var2 = class154.field2120;
-      class109.menuAction(var2.field807, var2.field803, var2.field804, var2.field802, var2.field805, var2.field805, var0, var1);
-      class154.field2120 = null;
-   }
+   @Export("x")
+   int x;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-90"
+      signature = "(I)V",
+      garbageValue = "2095013191"
    )
-   static void method1507(int var0) {
-      if(var0 == -3) {
-         class47.method861("Connection timed out.", "Please try using a different world.", "");
-      } else if(var0 == -2) {
-         class47.method861("", "Error connecting to server.", "");
-      } else if(var0 == -1) {
-         class47.method861("No response from server.", "Please try using a different world.", "");
-      } else if(var0 == 3) {
-         class41.loginIndex = 3;
-      } else if(var0 == 4) {
-         class47.method861("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(var0 == 5) {
-         class47.method861("Your account is already logged in.", "Try again in 60 secs...", "");
-      } else if(var0 == 6) {
-         class47.method861("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         class47.method861("This world is full.", "Please use a different world.", "");
-      } else if(var0 == 8) {
-         class47.method861("Unable to connect.", "Login server offline.", "");
-      } else if(var0 == 9) {
-         class47.method861("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         class47.method861("Unable to connect.", "Bad session id.", "");
-      } else if(var0 == 11) {
-         class47.method861("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         class47.method861("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         class47.method861("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         class47.method861("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         class47.method861("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(var0 == 17) {
-         class47.method861("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         class47.method861("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         class47.method861("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(var0 == 20) {
-         class47.method861("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(var0 == 22) {
-         class47.method861("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         class47.method861("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         class47.method861("Error loading your profile.", "Please contact customer support.", "");
-      } else if(var0 == 25) {
-         class47.method861("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         class47.method861("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(var0 == 27) {
-         class47.method861("", "Service unavailable.", "");
-      } else if(var0 == 31) {
-         class47.method861("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         class47.method861("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         class47.method861("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         class47.method861("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(var0 == 55) {
-         class47.method861("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
-      } else {
-         if(var0 == 56) {
-            class47.method861("Enter the 6-digit code generated by your", "authenticator app.", "");
-            class20.setGameState(11);
-            return;
-         }
+   static void method1527() {
+      Client.field563 = -1L;
+      Client.field297 = -1;
+      class26.field596.field210 = 0;
+      class9.field83 = true;
+      Client.field298 = true;
+      Client.field512 = -1L;
+      class48.method860();
+      Client.field294.offset = 0;
+      Client.field544.offset = 0;
+      Client.packetOpcode = -1;
+      Client.field319 = -1;
+      Client.field466 = -1;
+      Client.field336 = -1;
+      Client.field332 = 0;
+      Client.field300 = 0;
+      Client.field453 = 0;
+      Client.field489 = 0;
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
+      class115.mouseIdleTicks = 0;
+      class171.method3176();
+      Client.field526 = 0;
+      Client.field523 = false;
+      Client.field528 = 0;
+      Client.field352 = (int)(Math.random() * 100.0D) - 50;
+      Client.field354 = (int)(Math.random() * 110.0D) - 55;
+      Client.field356 = (int)(Math.random() * 80.0D) - 40;
+      Client.mapScale = (int)(Math.random() * 120.0D) - 60;
+      Client.mapScaleDelta = (int)(Math.random() * 30.0D) - 20;
+      Client.mapAngle = (int)(Math.random() * 20.0D) - 10 & 2047;
+      Client.field522 = 0;
+      Client.field515 = -1;
+      Client.flagX = 0;
+      Client.flagY = 0;
+      Client.field309 = class40.field815;
+      Client.field310 = class40.field815;
+      Client.field322 = 0;
+      class165.method3061();
 
-         if(var0 == 57) {
-            class47.method861("The code you entered was incorrect.", "Please try again.", "");
-            class20.setGameState(11);
-            return;
-         }
-
-         class47.method861("Unexpected server response", "Please try using a different world.", "");
+      int var0;
+      for(var0 = 0; var0 < 2048; ++var0) {
+         Client.cachedPlayers[var0] = null;
       }
 
-      class20.setGameState(10);
+      for(var0 = 0; var0 < '耀'; ++var0) {
+         Client.cachedNPCs[var0] = null;
+      }
+
+      Client.field418 = -1;
+      Client.projectiles.method2353();
+      Client.field422.method2353();
+
+      for(var0 = 0; var0 < 4; ++var0) {
+         for(int var4 = 0; var4 < 104; ++var4) {
+            for(int var2 = 0; var2 < 104; ++var2) {
+               Client.groundItemDeque[var0][var4][var2] = null;
+            }
+         }
+      }
+
+      Client.field370 = new Deque();
+      Client.field554 = 0;
+      Client.friendCount = 0;
+      Client.ignoreCount = 0;
+
+      for(var0 = 0; var0 < class187.field2779; ++var0) {
+         class187 var1 = class41.method751(var0);
+         if(null != var1) {
+            class165.settings[var0] = 0;
+            class165.widgetSettings[var0] = 0;
+         }
+      }
+
+      Ignore.chatMessages.method822();
+      Client.field454 = -1;
+      if(Client.widgetRoot != -1) {
+         Renderable.method1861(Client.widgetRoot);
+      }
+
+      for(WidgetNode var3 = (WidgetNode)Client.componentTable.method2313(); var3 != null; var3 = (WidgetNode)Client.componentTable.method2321()) {
+         class26.method560(var3, true);
+      }
+
+      Client.widgetRoot = -1;
+      Client.componentTable = new XHashTable(8);
+      Client.field450 = null;
+      Client.isMenuOpen = false;
+      Client.menuOptionCount = 0;
+      Client.field284.method3064((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
+
+      for(var0 = 0; var0 < 8; ++var0) {
+         Client.field415[var0] = null;
+         Client.field416[var0] = false;
+      }
+
+      class11.method150();
+      Client.field292 = true;
+
+      for(var0 = 0; var0 < 100; ++var0) {
+         Client.field524[var0] = true;
+      }
+
+      FrameMap.method1689();
+      Client.field513 = null;
+      class13.field136 = 0;
+      class8.clanMembers = null;
+
+      for(var0 = 0; var0 < 8; ++var0) {
+         Client.grandExchangeOffers[var0] = new XGrandExchangeOffer();
+      }
+
+      CombatInfoListHolder.field749 = null;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;II)Z",
+      garbageValue = "-1755041539"
+   )
+   public static boolean method1528(String var0, int var1) {
+      return NPC.method689(var0, var1, "openjs");
    }
 }
