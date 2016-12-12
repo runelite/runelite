@@ -1,12 +1,12 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fo")
+@ObfuscatedName("fk")
 public interface class158 {
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(S)I",
-      garbageValue = "255"
+      signature = "(I)I",
+      garbageValue = "-2056039019"
    )
-   int vmethod3989();
+   int vmethod3974();
 }
