@@ -43,13 +43,11 @@ public class HeightCalc
 		}
 	}
 
-	public static int calculate(int baseX, int baseY, int x, int y)
+	public static int calculate(int x, int y)
 	{
-		int xc = (baseX >> 3) + 932731 + x;
-		int yc = (baseY >> 3) + 556238 + y;
-		int n = interpolateNoise(xc + 45365, yc + 91923, 4) - 128
-			+ (interpolateNoise(10294 + xc, yc + 37821, 2) - 128 >> 1)
-			+ (interpolateNoise(xc, yc, 1) - 128 >> 2);
+		int n = interpolateNoise(x + 45365, y + 91923, 4) - 128
+			+ (interpolateNoise(10294 + x, y + 37821, 2) - 128 >> 1)
+			+ (interpolateNoise(x, y, 1) - 128 >> 2);
 		n = 35 + (int) ((double) n * 0.3D);
 		if (n < 10)
 		{
