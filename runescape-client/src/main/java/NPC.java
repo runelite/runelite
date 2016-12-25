@@ -12,7 +12,8 @@ import netscape.javascript.JSObject;
 @Implements("NPC")
 public final class NPC extends Actor {
    @ObfuscatedName("k")
-   static byte[][][] field763;
+   @Export("underlayIds")
+   static byte[][][] underlayIds;
    @ObfuscatedName("i")
    @Export("composition")
    NPCComposition composition;

@@ -45,10 +45,10 @@ public class class138 {
       garbageValue = "1826953075"
    )
    static void method2458() {
-      NPC.field763 = null;
-      class11.field117 = null;
-      class10.field91 = null;
-      class65.field1110 = null;
+      NPC.underlayIds = null;
+      class11.overlayIds = null;
+      class10.overlayPaths = null;
+      class65.overlayRotations = null;
       class10.field97 = null;
       class10.field92 = null;
       class7.field65 = null;

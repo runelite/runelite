@@ -653,13 +653,13 @@ public class WidgetNode extends Node {
             }
 
             if(var7 <= 49) {
-               class11.field117[var1][var2][var3] = var0.readByte();
-               class10.field91[var1][var2][var3] = (byte)((var7 - 2) / 4);
-               class65.field1110[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
+               class11.overlayIds[var1][var2][var3] = var0.readByte();
+               class10.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class65.overlayRotations[var1][var2][var3] = (byte)(var7 - 2 + var6 & 3);
             } else if(var7 <= 81) {
                class10.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
             } else {
-               NPC.field763[var1][var2][var3] = (byte)(var7 - 81);
+               NPC.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
             }
          }
       } else {

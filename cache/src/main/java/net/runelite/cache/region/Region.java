@@ -53,7 +53,7 @@ public class Region
 	public Region(int id)
 	{
 		this.regionID = id;
-		this.baseX = ((id >> 8) & 0xFF) << 6;
+		this.baseX = ((id >> 8) & 0xFF) << 6; // local coords are in bottom 6 bits (64*64)
 		this.baseY = (id & 0xFF) << 6;
 	}
 
