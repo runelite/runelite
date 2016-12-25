@@ -45,10 +45,10 @@ public class class188 extends CacheableNode {
    )
    static void method3391() {
       class10.field102 = 99;
-      NPC.field763 = new byte[4][104][104];
-      class11.field117 = new byte[4][104][104];
-      class10.field91 = new byte[4][104][104];
-      class65.field1110 = new byte[4][104][104];
+      NPC.underlayIds = new byte[4][104][104];
+      class11.overlayIds = new byte[4][104][104];
+      class10.overlayPaths = new byte[4][104][104];
+      class65.overlayRotations = new byte[4][104][104];
       class10.field97 = new int[4][105][105];
       class10.field92 = new byte[4][105][105];
       class7.field65 = new int[105][105];

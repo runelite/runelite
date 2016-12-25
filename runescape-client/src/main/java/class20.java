@@ -273,7 +273,7 @@ public class class20 implements Runnable {
             for(var12 = 0; var12 < 104; ++var12) {
                var13 = var11 + 5;
                if(var13 >= 0 && var13 < 104) {
-                  var14 = NPC.field763[var2][var13][var12] & 255;
+                  var14 = NPC.underlayIds[var2][var13][var12] & 255;
                   if(var14 > 0) {
                      class191 var44 = class183.method3307(var14 - 1);
                      class211.field3116[var12] += var44.field2811;
@@ -286,7 +286,7 @@ public class class20 implements Runnable {
 
                var14 = var11 - 5;
                if(var14 >= 0 && var14 < 104) {
-                  var15 = NPC.field763[var2][var14][var12] & 255;
+                  var15 = NPC.underlayIds[var2][var14][var12] & 255;
                   if(var15 > 0) {
                      class191 var16 = class183.method3307(var15 - 1);
                      class211.field3116[var12] -= var16.field2811;
@@ -329,8 +329,8 @@ public class class20 implements Runnable {
                         class10.field102 = var2;
                      }
 
-                     var20 = NPC.field763[var2][var11][var17] & 255;
-                     int var21 = class11.field117[var2][var11][var17] & 255;
+                     var20 = NPC.underlayIds[var2][var11][var17] & 255;
+                     int var21 = class11.overlayIds[var2][var11][var17] & 255;
                      if(var20 > 0 || var21 > 0) {
                         int var22 = class10.tileHeights[var2][var11][var17];
                         int var23 = class10.tileHeights[var2][var11 + 1][var17];
@@ -364,7 +364,7 @@ public class class20 implements Runnable {
                         class200 var35;
                         if(var2 > 0) {
                            boolean var51 = true;
-                           if(var20 == 0 && class10.field91[var2][var11][var17] != 0) {
+                           if(var20 == 0 && class10.overlayPaths[var2][var11][var17] != 0) {
                               var51 = false;
                            }
 
@@ -404,8 +404,8 @@ public class class20 implements Runnable {
                         if(var21 == 0) {
                            var0.method1696(var2, var11, var17, 0, 0, -1, var22, var23, var24, var25, class8.method97(var30, var26), class8.method97(var30, var27), class8.method97(var30, var28), class8.method97(var30, var29), 0, 0, 0, 0, var32, 0);
                         } else {
-                           var33 = class10.field91[var2][var11][var17] + 1;
-                           byte var52 = class65.field1110[var2][var11][var17];
+                           var33 = class10.overlayPaths[var2][var11][var17] + 1;
+                           byte var52 = class65.overlayRotations[var2][var11][var17];
                            int var36 = var21 - 1;
                            class200 var37 = (class200)class200.field3045.get((long)var36);
                            if(null != var37) {
@@ -479,10 +479,10 @@ public class class20 implements Runnable {
             }
          }
 
-         NPC.field763[var2] = null;
-         class11.field117[var2] = null;
-         class10.field91[var2] = null;
-         class65.field1110[var2] = null;
+         NPC.underlayIds[var2] = null;
+         class11.overlayIds[var2] = null;
+         class10.overlayPaths[var2] = null;
+         class65.overlayRotations[var2] = null;
          class10.field92[var2] = null;
       }
 

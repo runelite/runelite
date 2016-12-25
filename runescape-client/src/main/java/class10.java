@@ -13,7 +13,8 @@ public final class class10 {
    @ObfuscatedName("x")
    static final int[] field90 = new int[]{1, 2, 4, 8};
    @ObfuscatedName("n")
-   static byte[][][] field91;
+   @Export("overlayPaths")
+   static byte[][][] overlayPaths;
    @ObfuscatedName("q")
    static byte[][][] field92;
    @ObfuscatedName("s")
