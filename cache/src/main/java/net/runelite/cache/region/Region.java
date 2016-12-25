@@ -74,7 +74,7 @@ public class Region
 						{
 							if (z == 0)
 							{
-								tileHeights[0][x][y] = -HeightCalc.calculate(baseX, baseY, x, y) * 8;
+								tileHeights[0][x][y] = -HeightCalc.calculate(baseX + x + 0xe3b7b, baseY + y + 0x87cce) * 8;
 							}
 							else
 							{

@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
@@ -8,7 +9,8 @@ public class class170 {
       signature = "(III)I",
       garbageValue = "2034990174"
    )
-   static final int method3172(int var0, int var1) {
+   @Export("calculateHeight")
+   static final int calculateHeight(int var0, int var1) {
       int var2 = class8.method96('넵' + var0, var1 + 91923, 4) - 128 + (class8.method96(var0 + 10294, var1 + '鎽', 2) - 128 >> 1) + (class8.method96(var0, var1, 1) - 128 >> 2);
       var2 = 35 + (int)(0.3D * (double)var2);
       if(var2 < 10) {
