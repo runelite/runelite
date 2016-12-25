@@ -631,7 +631,7 @@ public class WidgetNode extends Node {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  class10.tileHeights[0][var2][var3] = -class170.method3172(var4 + var2 + 932731, var3 + 556238 + var5) * 8;
+                  class10.tileHeights[0][var2][var3] = -class170.calculateHeight(var4 + var2 + 932731, var3 + 556238 + var5) * 8;
                } else {
                   class10.tileHeights[var1][var2][var3] = class10.tileHeights[var1 - 1][var2][var3] - 240;
                }
