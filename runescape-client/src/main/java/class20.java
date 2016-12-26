@@ -361,7 +361,7 @@ public class class20 implements Runnable {
                            var31 = class41.method762(var32, var33, var34);
                         }
 
-                        class200 var35;
+                        Overlay var35;
                         if(var2 > 0) {
                            boolean var51 = true;
                            if(var20 == 0 && class10.overlayPaths[var2][var11][var17] != 0) {
@@ -370,19 +370,19 @@ public class class20 implements Runnable {
 
                            if(var21 > 0) {
                               var34 = var21 - 1;
-                              var35 = (class200)class200.field3045.get((long)var34);
-                              class200 var48;
+                              var35 = (Overlay)Overlay.field3045.get((long)var34);
+                              Overlay var48;
                               if(var35 != null) {
                                  var48 = var35;
                               } else {
-                                 byte[] var47 = class200.field3037.method3211(4, var34);
-                                 var35 = new class200();
+                                 byte[] var47 = Overlay.field3037.method3211(4, var34);
+                                 var35 = new Overlay();
                                  if(null != var47) {
                                     var35.method3662(new Buffer(var47), var34);
                                  }
 
                                  var35.method3672();
-                                 class200.field3045.put(var35, (long)var34);
+                                 Overlay.field3045.put(var35, (long)var34);
                                  var48 = var35;
                               }
 
@@ -407,22 +407,22 @@ public class class20 implements Runnable {
                            var33 = class10.overlayPaths[var2][var11][var17] + 1;
                            byte var52 = class65.overlayRotations[var2][var11][var17];
                            int var36 = var21 - 1;
-                           class200 var37 = (class200)class200.field3045.get((long)var36);
+                           Overlay var37 = (Overlay)Overlay.field3045.get((long)var36);
                            if(null != var37) {
                               var35 = var37;
                            } else {
-                              byte[] var38 = class200.field3037.method3211(4, var36);
-                              var37 = new class200();
+                              byte[] var38 = Overlay.field3037.method3211(4, var36);
+                              var37 = new Overlay();
                               if(null != var38) {
                                  var37.method3662(new Buffer(var38), var36);
                               }
 
                               var37.method3672();
-                              class200.field3045.put(var37, (long)var36);
+                              Overlay.field3045.put(var37, (long)var36);
                               var35 = var37;
                            }
 
-                           int var49 = var35.field3038;
+                           int var49 = var35.texture;
                            int var39;
                            int var40;
                            int var41;
@@ -430,21 +430,21 @@ public class class20 implements Runnable {
                            if(var49 >= 0) {
                               var40 = class84.field1450.vmethod1872(var49);
                               var39 = -1;
-                           } else if(var35.field3036 == 16711935) {
+                           } else if(var35.color == 16711935) {
                               var39 = -2;
                               var49 = -1;
                               var40 = -2;
                            } else {
-                              var39 = class41.method762(var35.field3041, var35.field3042, var35.field3043);
-                              var41 = var35.field3041 + class10.field100 & 255;
-                              var42 = var35.field3043 + class10.field101;
+                              var39 = class41.method762(var35.hue, var35.saturation, var35.lightness);
+                              var41 = var35.hue + class10.field100 & 255;
+                              var42 = var35.lightness + class10.field101;
                               if(var42 < 0) {
                                  var42 = 0;
                               } else if(var42 > 255) {
                                  var42 = 255;
                               }
 
-                              var40 = class41.method762(var41, var35.field3042, var42);
+                              var40 = class41.method762(var41, var35.saturation, var42);
                            }
 
                            var41 = 0;

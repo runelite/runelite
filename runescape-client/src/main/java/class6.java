@@ -559,7 +559,7 @@ final class class6 implements Comparator {
                break;
             case 1:
             case 2:
-               Client.field294.method2747(class200.field3048);
+               Client.field294.method2747(Overlay.field3048);
                Client.field294.offset += 5;
                break;
             case 3:
@@ -3213,7 +3213,7 @@ final class class6 implements Comparator {
                                                          var81 = Character.toLowerCase(var81);
                                                          var84 = Character.toLowerCase(var84);
                                                          if(var84 != var81) {
-                                                            var18 = class200.method3676(var81, var40) - class200.method3676(var84, var40);
+                                                            var18 = Overlay.method3676(var81, var40) - Overlay.method3676(var84, var40);
                                                             break label3613;
                                                          }
                                                       }
@@ -3227,7 +3227,7 @@ final class class6 implements Comparator {
                                                          var84 = var88.charAt(var83);
                                                          char var32 = var61.charAt(var83);
                                                          if(var84 != var32) {
-                                                            var18 = class200.method3676(var84, var40) - class200.method3676(var32, var40);
+                                                            var18 = Overlay.method3676(var84, var40) - Overlay.method3676(var32, var40);
                                                             break label3613;
                                                          }
                                                       }
@@ -3301,7 +3301,7 @@ final class class6 implements Comparator {
                                                    var28 = Character.toLowerCase(var28);
                                                    var29 = Character.toLowerCase(var29);
                                                    if(var28 != var29) {
-                                                      var18 = class200.method3676(var28, var40) - class200.method3676(var29, var40);
+                                                      var18 = Overlay.method3676(var28, var40) - Overlay.method3676(var29, var40);
                                                       break;
                                                    }
                                                 }

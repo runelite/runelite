@@ -40,7 +40,7 @@ public class class108 {
       garbageValue = "90"
    )
    static final void method2015() {
-      class200.field3045.reset();
+      Overlay.field3045.reset();
       class191.field2809.reset();
       class105.method1994();
       class15.method172();

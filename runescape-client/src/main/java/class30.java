@@ -141,7 +141,7 @@ public class class30 {
                   if(var1 != -1412584499 && !var10.field2286) {
                      class186.field2772 = var0;
                      class116.field1815 = var6;
-                     class200.field3047 = var7;
+                     Overlay.field3047 = var7;
                      continue;
                   }
 
