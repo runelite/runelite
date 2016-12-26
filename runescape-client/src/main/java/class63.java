@@ -97,7 +97,7 @@ public class class63 implements Runnable {
          class186.field2772 = null;
          class30.gameDraw(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6, var7);
          if(class186.field2772 != null) {
-            class30.gameDraw(class186.field2772, -1412584499, var1, var2, var3, var4, class116.field1815, class200.field3047, var7);
+            class30.gameDraw(class186.field2772, -1412584499, var1, var2, var3, var4, class116.field1815, Overlay.field3047, var7);
             class186.field2772 = null;
          }
 

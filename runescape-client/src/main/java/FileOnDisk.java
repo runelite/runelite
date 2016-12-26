@@ -201,7 +201,7 @@ public final class FileOnDisk {
                         class41.loginIndex = 0;
                         class41.username = "";
                         class41.field850 = "";
-                        class200.field3048 = 0;
+                        Overlay.field3048 = 0;
                         VertexNormal.authCode = "";
                         class41.field828 = true;
                      }
@@ -221,7 +221,7 @@ public final class FileOnDisk {
                               class41.loginIndex = 0;
                               class41.username = "";
                               class41.field850 = "";
-                              class200.field3048 = 0;
+                              Overlay.field3048 = 0;
                               VertexNormal.authCode = "";
                               class41.field828 = true;
                            } else if(class41.loginIndex2 == 0) {
@@ -302,7 +302,7 @@ public final class FileOnDisk {
                               return;
                            }
 
-                           class200.field3048 = Integer.parseInt(VertexNormal.authCode);
+                           Overlay.field3048 = Integer.parseInt(VertexNormal.authCode);
                            VertexNormal.authCode = "";
                            class41.field851 = class41.field828?class97.field1618:class97.field1620;
                            class22.method204("", "Connecting to server...", "");
@@ -341,7 +341,7 @@ public final class FileOnDisk {
                            class41.loginIndex = 0;
                            class41.username = "";
                            class41.field850 = "";
-                           class200.field3048 = 0;
+                           Overlay.field3048 = 0;
                            VertexNormal.authCode = "";
                         }
 
@@ -359,7 +359,7 @@ public final class FileOnDisk {
                               class41.loginIndex = 0;
                               class41.username = "";
                               class41.field850 = "";
-                              class200.field3048 = 0;
+                              Overlay.field3048 = 0;
                               VertexNormal.authCode = "";
                            } else {
                               if(Tile.field1352 == 85 && VertexNormal.authCode.length() > 0) {
@@ -373,7 +373,7 @@ public final class FileOnDisk {
                                     return;
                                  }
 
-                                 class200.field3048 = Integer.parseInt(VertexNormal.authCode);
+                                 Overlay.field3048 = Integer.parseInt(VertexNormal.authCode);
                                  VertexNormal.authCode = "";
                                  class41.field851 = class41.field828?class97.field1618:class97.field1620;
                                  class22.method204("", "Connecting to server...", "");

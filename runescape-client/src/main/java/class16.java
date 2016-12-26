@@ -461,7 +461,7 @@ public class class16 extends class131 {
             class41.field850 = "";
          }
 
-         class200.field3048 = 0;
+         Overlay.field3048 = 0;
          VertexNormal.authCode = "";
          class41.field828 = true;
          class41.worldSelectShown = false;

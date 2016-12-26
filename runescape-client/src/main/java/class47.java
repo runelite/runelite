@@ -161,7 +161,7 @@ public class class47 {
          }
 
          if(var1 == 18) {
-            Client.field309 = (class40)XItemContainer.method161(class200.method3675(), var2);
+            Client.field309 = (class40)XItemContainer.method161(Overlay.method3675(), var2);
             if(null == Client.field309) {
                Client.field309 = class40.field817;
             }
@@ -176,7 +176,7 @@ public class class47 {
          }
 
          if(var1 == 22) {
-            Client.field310 = (class40)XItemContainer.method161(class200.method3675(), var2);
+            Client.field310 = (class40)XItemContainer.method161(Overlay.method3675(), var2);
             if(Client.field310 == null) {
                Client.field310 = class40.field817;
             }

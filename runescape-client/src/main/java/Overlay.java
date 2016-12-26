@@ -1,9 +1,12 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ge")
-public class class200 extends CacheableNode {
+@Implements("Overlay")
+public class Overlay extends CacheableNode {
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 1751809229
@@ -13,14 +16,16 @@ public class class200 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1213517961
    )
-   public int field3036 = 0;
+   @Export("color")
+   public int color = 0;
    @ObfuscatedName("i")
    public static class182 field3037;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 2060379517
    )
-   public int field3038 = -1;
+   @Export("texture")
+   public int texture = -1;
    @ObfuscatedName("g")
    public boolean field3039 = true;
    @ObfuscatedName("n")
@@ -32,17 +37,20 @@ public class class200 extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -336784201
    )
-   public int field3041;
+   @Export("hue")
+   public int hue;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = -517758039
    )
-   public int field3042;
+   @Export("saturation")
+   public int saturation;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1648332807
    )
-   public int field3043;
+   @Export("lightness")
+   public int lightness;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = -1725717051
@@ -89,9 +97,9 @@ public class class200 extends CacheableNode {
    )
    void method3663(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
-         this.field3036 = var1.read24BitInt();
+         this.color = var1.read24BitInt();
       } else if(var2 == 2) {
-         this.field3038 = var1.readUnsignedByte();
+         this.texture = var1.readUnsignedByte();
       } else if(var2 == 5) {
          this.field3039 = false;
       } else if(var2 == 7) {
@@ -151,19 +159,19 @@ public class class200 extends CacheableNode {
       }
 
       var12 /= 6.0D;
-      this.field3041 = (int)(var12 * 256.0D);
-      this.field3042 = (int)(var14 * 256.0D);
-      this.field3043 = (int)(var16 * 256.0D);
-      if(this.field3042 < 0) {
-         this.field3042 = 0;
-      } else if(this.field3042 > 255) {
-         this.field3042 = 255;
+      this.hue = (int)(var12 * 256.0D);
+      this.saturation = (int)(var14 * 256.0D);
+      this.lightness = (int)(var16 * 256.0D);
+      if(this.saturation < 0) {
+         this.saturation = 0;
+      } else if(this.saturation > 255) {
+         this.saturation = 255;
       }
 
-      if(this.field3043 < 0) {
-         this.field3043 = 0;
-      } else if(this.field3043 > 255) {
-         this.field3043 = 255;
+      if(this.lightness < 0) {
+         this.lightness = 0;
+      } else if(this.lightness > 255) {
+         this.lightness = 255;
       }
 
    }
@@ -176,12 +184,12 @@ public class class200 extends CacheableNode {
    public void method3672() {
       if(this.field3040 != -1) {
          this.method3664(this.field3040);
-         this.field3044 = this.field3041;
-         this.field3035 = this.field3042;
-         this.field3046 = this.field3043;
+         this.field3044 = this.hue;
+         this.field3035 = this.saturation;
+         this.field3046 = this.lightness;
       }
 
-      this.method3664(this.field3036);
+      this.method3664(this.color);
    }
 
    @ObfuscatedName("i")
