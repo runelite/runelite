@@ -43,6 +43,7 @@ public class HeightMapDumper
 	private static final Logger logger = LoggerFactory.getLogger(HeightMapDumper.class);
 
 	private static final int MAP_SCALE = 1;
+	private static final float MAX_HEIGHT = 2048f;
 
 	private final Store store;
 	private RegionLoader regionLoader;
@@ -130,7 +131,7 @@ public class HeightMapDumper
 		// height seems to be between -2040 and 0, inclusive
 		height = -height;
 		// Convert to between 0 and 1
-		float color = (float) height / 2040f;
+		float color = (float) height / MAX_HEIGHT;
 
 		assert color >= 0.0f && color <= 1.0f;
 
