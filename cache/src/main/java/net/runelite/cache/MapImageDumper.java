@@ -57,8 +57,8 @@ import net.runelite.cache.fs.Store;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.region.Location;
 import net.runelite.cache.region.Region;
+import net.runelite.cache.region.RegionLoader;
 import net.runelite.cache.util.Djb2;
-import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +66,6 @@ public class MapImageDumper
 {
 	private static final Logger logger = LoggerFactory.getLogger(MapImageDumper.class);
 
-	private static final int MAX_REGION = 32768;
 	private static final int MAP_SCALE = 2; // this squared is the number of pixels per map square
 	private static final int MAPICON_MAX_WIDTH = 5; // scale minimap icons down to this size so they fit..
 	private static final int MAPICON_MAX_HEIGHT = 6;
@@ -82,9 +81,7 @@ public class MapImageDumper
 	private final Map<Integer, ObjectDefinition> objects = new HashMap<>();
 	private final Map<Integer, Image> mapFunctions = new HashMap<>(); // quest, water, etc
 
-	private final List<Region> regions = new ArrayList<>();
-	private Region lowestX = null, lowestY = null;
-	private Region highestX = null, highestY = null;
+	private RegionLoader regionLoader;
 
 	private boolean labelRegions;
 	private boolean outlineRegions;
@@ -107,11 +104,11 @@ public class MapImageDumper
 
 	public BufferedImage drawMap(int z) throws IOException
 	{
-		int minX = lowestX.getBaseX();
-		int minY = lowestY.getBaseY();
+		int minX = regionLoader.getLowestX().getBaseX();
+		int minY = regionLoader.getLowestY().getBaseY();
 
-		int maxX = highestX.getBaseX() + Region.X;
-		int maxY = highestY.getBaseY() + Region.Y;
+		int maxX = regionLoader.getHighestX().getBaseX() + Region.X;
+		int maxY = regionLoader.getHighestY().getBaseY() + Region.Y;
 
 		int dimX = maxX - minX;
 		int dimY = maxY - minY;
@@ -127,17 +124,17 @@ public class MapImageDumper
 		drawOverlay(image, z);
 
 		// objects
-		for (Region region : regions)
+		for (Region region : regionLoader.getRegions())
 		{
 			int baseX = region.getBaseX();
 			int baseY = region.getBaseY();
 
 			// to pixel X
-			int drawBaseX = baseX - lowestX.getBaseX();
+			int drawBaseX = baseX - regionLoader.getLowestX().getBaseX();
 
 			// to pixel Y. top most y is 0, but the top most
-			// region has the greaters y, so invert
-			int drawBaseY = highestY.getBaseY() - baseY;
+			// region has the greatest y, so invert
+			int drawBaseY = regionLoader.getHighestY().getBaseY() - baseY;
 
 			Graphics2D graphics = image.createGraphics();
 			
@@ -147,17 +144,17 @@ public class MapImageDumper
 		}
 
 		// map icons
-		for (Region region : regions)
+		for (Region region : regionLoader.getRegions())
 		{
 			int baseX = region.getBaseX();
 			int baseY = region.getBaseY();
 
 			// to pixel X
-			int drawBaseX = baseX - lowestX.getBaseX();
+			int drawBaseX = baseX - regionLoader.getLowestX().getBaseX();
 
 			// to pixel Y. top most y is 0, but the top most
-			// region has the greaters y, so invert
-			int drawBaseY = highestY.getBaseY() - baseY;
+			// region has the greatest y, so invert
+			int drawBaseY = regionLoader.getHighestY().getBaseY() - baseY;
 
 			Graphics2D graphics = image.createGraphics();
 
@@ -184,17 +181,17 @@ public class MapImageDumper
 	private void drawUnderlay(BufferedImage image, int z)
 	{
 		// pass 1
-		for (Region region : regions)
+		for (Region region : regionLoader.getRegions())
 		{
 			int baseX = region.getBaseX();
 			int baseY = region.getBaseY();
 
 			// to pixel X
-			int drawBaseX = baseX - lowestX.getBaseX();
+			int drawBaseX = baseX - regionLoader.getLowestX().getBaseX();
 
 			// to pixel Y. top most y is 0, but the top most
-			// region has the greaters y, so invert
-			int drawBaseY = highestY.getBaseY() - baseY;
+			// region has the greatest y, so invert
+			int drawBaseY = regionLoader.getHighestY().getBaseY() - baseY;
 
 			for (int x = 0; x < Region.X; ++x)
 			{
@@ -231,17 +228,17 @@ public class MapImageDumper
 	
 	private void drawOverlay(BufferedImage image, int z)
 	{
-		for (Region region : regions)
+		for (Region region : regionLoader.getRegions())
 		{
 			int baseX = region.getBaseX();
 			int baseY = region.getBaseY();
 
 			// to pixel X
-			int drawBaseX = baseX - lowestX.getBaseX();
+			int drawBaseX = baseX - regionLoader.getLowestX().getBaseX();
 
 			// to pixel Y. top most y is 0, but the top most
-			// region has the greaters y, so invert
-			int drawBaseY = highestY.getBaseY() - baseY;
+			// region has the greatest y, so invert
+			int drawBaseY = regionLoader.getHighestY().getBaseY() - baseY;
 
 			for (int x = 0; x < Region.X; ++x)
 			{
@@ -354,83 +351,14 @@ public class MapImageDumper
 	
 	private void loadRegions(Store store) throws IOException
 	{
-		Index index = store.getIndex(IndexType.MAPS);
-		XteaKeyManager keyManager = index.getXteaManager();
+		regionLoader = new RegionLoader();
+		regionLoader.loadRegions(store);
+		regionLoader.calculateBounds();
 
-		for (int i = 0; i < MAX_REGION; ++i)
-		{
-			int x = i >> 8;
-			int y = i & 0xFF;
-
-			Archive map = index.findArchiveByName("m" + x + "_" + y);
-			Archive land = index.findArchiveByName("l" + x + "_" + y);
-
-			assert (map == null) == (land == null);
-
-			if (map == null || land == null)
-			{
-				continue;
-			}
-
-			assert map.getFiles().size() == 1;
-			assert land.getFiles().size() == 1;
-
-			map.decompressAndLoad(null);
-
-			byte[] data = map.getFiles().get(0).getContents();
-
-			Region region = new Region(i);
-			region.loadTerrain(data);
-
-			int[] keys = keyManager.getKeys(i);
-			if (keys != null)
-			{
-				try
-				{
-					land.decompressAndLoad(keys);
-
-					data = land.getFiles().get(0).getContents();
-					region.loadLocations(data);
-				}
-				catch (IOException ex)
-				{
-					logger.debug("Can't decrypt region " + i, ex);
-				}
-			}
-
-			regions.add(region);
-
-			if (lowestX == null || region.getBaseX() < lowestX.getBaseX())
-			{
-				lowestX = region;
-			}
-
-			if (highestX == null || region.getBaseX() > highestX.getBaseX())
-			{
-				highestX = region;
-			}
-
-			if (lowestY == null || region.getBaseY() < lowestY.getBaseY())
-			{
-				lowestY = region;
-			}
-
-			if (highestY == null || region.getBaseY() > highestY.getBaseY())
-			{
-				highestY = region;
-			}
-		}
-
-		assert lowestX != null;
-		assert lowestY != null;
-
-		assert highestX != null;
-		assert highestY != null;
-
-		logger.info("North most region: {}", lowestY.getBaseY());
-		logger.info("South most region: {}", highestY.getBaseY());
-		logger.info("West most region:  {}", lowestX.getBaseX());
-		logger.info("East most region:  {}", highestX.getBaseX());
+		logger.info("North most region: {}", regionLoader.getLowestY().getBaseY());
+		logger.info("South most region: {}", regionLoader.getHighestY().getBaseY());
+		logger.info("West most region:  {}", regionLoader.getLowestX().getBaseX());
+		logger.info("East most region:  {}", regionLoader.getHighestX().getBaseX());
 	}
 
 	private void loadUnderlays(Store store)
