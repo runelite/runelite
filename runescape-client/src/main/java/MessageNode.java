@@ -177,6 +177,6 @@ public class MessageNode extends CacheableNode {
       garbageValue = "1032274152"
    )
    public static void method203(class182 var0) {
-      class200.field3037 = var0;
+      Overlay.field3037 = var0;
    }
 }
