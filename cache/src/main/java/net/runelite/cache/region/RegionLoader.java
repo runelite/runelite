@@ -46,58 +46,73 @@ public class RegionLoader
 
 	private static final int MAX_REGION = 32768;
 
+	private final Store store;
+	private final Index index;
+	private final XteaKeyManager keyManager;
+
 	private final List<Region> regions = new ArrayList<>();
 	private Region lowestX = null, lowestY = null;
 	private Region highestX = null, highestY = null;
 
-	public void loadRegions(Store store) throws IOException
+	public RegionLoader(Store store)
 	{
-		Index index = store.getIndex(IndexType.MAPS);
-		XteaKeyManager keyManager = index.getXteaManager();
+		this.store = store;
+		index = store.getIndex(IndexType.MAPS);
+		keyManager = index.getXteaManager();
+	}
 
+	public void loadRegions() throws IOException
+	{
 		for (int i = 0; i < MAX_REGION; ++i)
 		{
-			int x = i >> 8;
-			int y = i & 0xFF;
-
-			Archive map = index.findArchiveByName("m" + x + "_" + y);
-			Archive land = index.findArchiveByName("l" + x + "_" + y);
-
-			assert (map == null) == (land == null);
-
-			if (map == null || land == null)
-			{
-				continue;
-			}
-
-			assert map.getFiles().size() == 1;
-			assert land.getFiles().size() == 1;
-
-			map.decompressAndLoad(null);
-
-			byte[] data = map.getFiles().get(0).getContents();
-
-			Region region = new Region(i);
-			region.loadTerrain(data);
-
-			int[] keys = keyManager.getKeys(i);
-			if (keys != null)
-			{
-				try
-				{
-					land.decompressAndLoad(keys);
-
-					data = land.getFiles().get(0).getContents();
-					region.loadLocations(data);
-				}
-				catch (IOException ex)
-				{
-					logger.debug("Can't decrypt region " + i, ex);
-				}
-			}
-
-			regions.add(region);
+			Region region = this.loadRegionFromArchive(i);
+			if (region != null)
+				regions.add(region);
 		}
+	}
+
+	public Region loadRegionFromArchive(int i) throws IOException
+	{
+		int x = i >> 8;
+		int y = i & 0xFF;
+
+		Archive map = index.findArchiveByName("m" + x + "_" + y);
+		Archive land = index.findArchiveByName("l" + x + "_" + y);
+
+		assert (map == null) == (land == null);
+
+		if (map == null || land == null)
+		{
+			return null;
+		}
+
+		assert map.getFiles().size() == 1;
+		assert land.getFiles().size() == 1;
+
+		map.decompressAndLoad(null);
+
+		byte[] data = map.getFiles().get(0).getContents();
+
+		Region region = new Region(i);
+		region.loadTerrain(data);
+
+		int[] keys = keyManager.getKeys(i);
+		if (keys != null)
+		{
+			try
+			{
+				land.decompressAndLoad(keys);
+
+				data = land.getFiles().get(0).getContents();
+				region.loadLocations(data);
+			}
+			catch (IOException ex)
+			{
+				logger.debug("Can't decrypt region " + i, ex);
+			}
+		}
+
+		return region;
 	}
 
 	public void calculateBounds()

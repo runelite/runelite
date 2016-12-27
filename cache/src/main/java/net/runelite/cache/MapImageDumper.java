@@ -163,7 +163,8 @@ public class MapImageDumper
 			if (labelRegions)
 			{
 				graphics.setColor(Color.WHITE);
-				graphics.drawString(baseX + "," + baseY, drawBaseX * MAP_SCALE, drawBaseY * MAP_SCALE + graphics.getFontMetrics().getHeight());
+				String str = baseX + "," + baseY + " (" + region.getRegionX() + "," + region.getRegionY() + ")";
+				graphics.drawString(str, drawBaseX * MAP_SCALE, drawBaseY * MAP_SCALE + graphics.getFontMetrics().getHeight());
 			}
 
 			if (outlineRegions)
@@ -351,8 +352,8 @@ public class MapImageDumper
 	
 	private void loadRegions(Store store) throws IOException
 	{
-		regionLoader = new RegionLoader();
-		regionLoader.loadRegions(store);
+		regionLoader = new RegionLoader(store);
+		regionLoader.loadRegions();
 		regionLoader.calculateBounds();
 
 		logger.info("North most region: {}", regionLoader.getLowestY().getBaseY());
