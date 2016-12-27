@@ -55,8 +55,8 @@ public class HeightMapDumper
 
 	public void load() throws IOException
 	{
-		regionLoader = new RegionLoader();
-		regionLoader.loadRegions(store);
+		regionLoader = new RegionLoader(store);
+		regionLoader.loadRegions();
 		regionLoader.calculateBounds();
 	}
 
