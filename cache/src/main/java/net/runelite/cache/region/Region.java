@@ -57,6 +57,13 @@ public class Region
 		this.baseY = (id & 0xFF) << 6;
 	}
 
+	public Region(int x, int y)
+	{
+		this.regionID = x << 8 | y;
+		this.baseX = x << 6;
+		this.baseY = y << 6;
+	}
+
 	public void loadTerrain(byte[] buf)
 	{
 		InputStream in = new InputStream(buf);
@@ -201,5 +208,15 @@ public class Region
 	public List<Location> getLocations()
 	{
 		return locations;
+	}
+
+	public int getRegionX()
+	{
+		return baseX >> 6;
+	}
+
+	public int getRegionY()
+	{
+		return baseY >> 6;
 	}
 }

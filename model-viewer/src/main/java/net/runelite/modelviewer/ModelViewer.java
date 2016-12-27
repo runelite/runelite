@@ -33,43 +33,59 @@ import com.google.gson.Gson;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
+import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.UnderlayDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.models.Vector3f;
 import net.runelite.cache.models.VertexNormal;
+import net.runelite.cache.region.Region;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
+import org.apache.commons.compress.utils.IOUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import static org.lwjgl.opengl.GL11.glRotatef;
 
 public class ModelViewer
 {
+	private static final int NUM_UNDERLAYS = 150;
+	private static final int NUM_OVERLAYS = 174;
+
+	private static UnderlayDefinition[] underlays = new UnderlayDefinition[NUM_UNDERLAYS];
+	private static OverlayDefinition[] overlays = new OverlayDefinition[NUM_OVERLAYS];
+
 	public static void main(String[] args) throws Exception
 	{
 		Options options = new Options();
 
 		options.addOption(null, "npcdir", true, "npc directory");
 		options.addOption(null, "modeldir", true, "model directory");
+		options.addOption(null, "mapdir", true, "maps directory");
+
 		options.addOption(null, "npc", true, "npc to render");
 		options.addOption(null, "model", true, "model to render");
+		options.addOption(null, "map", true, "map region to render");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd = parser.parse(options, args);
 
 		String npcdir = cmd.getOptionValue("npcdir");
 		String modeldir = cmd.getOptionValue("modeldir");
+		String mapdir = cmd.getOptionValue("mapdir");
 
 		NpcDefinition npcdef = null;
 		List<ModelDefinition> models = new ArrayList<>();
+		Region region = null;
 
 		if (cmd.hasOption("model"))
 		{
@@ -81,7 +97,7 @@ public class ModelViewer
 			ModelDefinition md = loader.load(b);
 			models.add(md);
 		}
-		else if (cmd.hasOption("npc"))
+		if (cmd.hasOption("npc"))
 		{
 			String npc = cmd.getOptionValue("npc");
 
@@ -98,10 +114,23 @@ public class ModelViewer
 				models.add(md);
 			}
 		}
-		else
+		if (cmd.hasOption("map"))
 		{
-			System.out.println("Must specify model or npc");
-			return;
+			String map = cmd.getOptionValue("map");
+			String[] s = map.split(",");
+
+			int x = Integer.parseInt(s[0]), y = Integer.parseInt(s[1]);
+
+			region = new Region(x, y);
+
+			try (FileInputStream fin = new FileInputStream(mapdir + "/m" + x + "_" + y + ".dat"))
+			{
+				byte[] b = IOUtils.toByteArray(fin);
+				region.loadTerrain(b);
+			}
+
+			loadUnderlays();
+			loadOverlays();
 		}
 
 		Display.setDisplayMode(new DisplayMode(800, 600));
@@ -113,7 +142,7 @@ public class ModelViewer
 		GL11.glLoadIdentity();
 		double aspect = 1;
 		double near = 1; // near should be chosen as far into the scene as possible
-		double far = 1000;
+		double far = 10000;
 		double fov = 1; // 1 gives you a 90° field of view. It's tan(fov_angle)/2.
 		GL11.glFrustum(-aspect * near * fov, aspect * near * fov, -fov, fov, near, far);
 
@@ -121,7 +150,6 @@ public class ModelViewer
 
 		GL11.glCullFace(GL11.GL_BACK);
 		GL11.glEnable(GL11.GL_CULL_FACE);
-
 		long last = 0;
 
 		Camera camera = new Camera();
@@ -135,6 +163,8 @@ public class ModelViewer
 			{
 				drawModel(npcdef, def);
 			}
+
+			drawRegion(region);
 
 			Display.update();
 			Display.sync(50); // fps
@@ -222,6 +252,129 @@ public class ModelViewer
 		}
 
 		GL11.glEnd();
+	}
+
+	private static void drawRegion(Region region)
+	{
+		if (region == null)
+		{
+			return;
+		}
+
+		GL11.glBegin(GL11.GL_TRIANGLES);
+
+		for (int regionX = 0; regionX < Region.X; ++regionX)
+		{
+			for (int regionY = 0; regionY < Region.Y; ++regionY)
+			{
+				int x = regionX;
+				int y = regionY;
+
+				int TILE_SCALE = 16;
+				x *= TILE_SCALE;
+				y *= TILE_SCALE;
+
+				/*
+				 Split into two triangles with verticies
+				 x,y,z1   x+1,y,z2 x,y+1,z3
+				 x,y+1,z3 x+1,y,z2 x+1,y+1,z4
+				
+				 z1 = height
+				 z2 = height of tile x+1
+				 z3 = height of tile y-1
+				
+				 in rs 0,0 (x,y) is the bottom left with
+				 y increasing going further from you
+				
+				 in opengl, 0,0 (x,z) is the bottom left
+				 with z decreasing going further from you
+				
+				 in rs, height is also negative
+				
+				 so we do rs(x,y,z) -> opengl(x,-z,-y)
+				 */
+				int z1 = -region.getTileHeight(0, regionX, regionY);
+				int z2 = regionX + 1 < Region.X ? -region.getTileHeight(0, regionX + 1, regionY) : z1;
+				int z3 = regionY + 1 < Region.Y ? -region.getTileHeight(0, regionX, regionY + 1) : z1;
+				int z4 = regionX + 1 < Region.X && regionY + 1 < Region.Y ? -region.getTileHeight(0, regionX + 1, regionY + 1) : z1;
+
+				// scale down height (I randomally picked this)
+				z1 /= 4;
+				z2 /= 4;
+				z3 /= 4;
+				z4 /= 4;
+
+				int underlayId = region.getUnderlayId(0, regionX, regionY);
+				int overlayId = region.getOverlayId(0, regionX, regionY);
+
+				Color color = null;
+				if (underlayId > 0)
+				{
+					UnderlayDefinition ud = underlays[underlayId - 1];
+					color = new Color(ud.getColor());
+				}
+				if (overlayId > 0)
+				{
+					OverlayDefinition od = overlays[overlayId - 1];
+					color = new Color(od.getRgbColor());
+
+					if (od.getSecondaryRgbColor() > -1)
+					{
+						color = new Color(od.getSecondaryRgbColor());
+					}
+
+					if (od.getTexture() > -1)
+					{
+						// textures?
+					}
+				}
+
+				if (color != null)
+				{
+					GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
+				}
+
+				GL11.glVertex3i(x, z1, -y);
+				GL11.glVertex3i(x + TILE_SCALE, z2, -y);
+				GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
+
+				GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
+				GL11.glVertex3i(x + TILE_SCALE, z2, -y);
+				GL11.glVertex3i(x + TILE_SCALE, z4, -(y + TILE_SCALE));
+			}
+		}
+
+		GL11.glEnd();
+	}
+
+	private static void loadUnderlays() throws IOException
+	{
+		for (int i = 0; i < NUM_UNDERLAYS; ++i)
+		{
+			try (FileInputStream fin = new FileInputStream("underlays/" + i + ".json"))
+			{
+				UnderlayDefinition underlay = new Gson().fromJson(new InputStreamReader(fin), UnderlayDefinition.class);
+				underlays[i] = underlay;
+			}
+			catch (FileNotFoundException ex)
+			{
+			}
+		}
+	}
+
+	private static void loadOverlays() throws IOException
+	{
+		for (int i = 0; i < NUM_UNDERLAYS; ++i)
+		{
+			try (FileInputStream fin = new FileInputStream("overlays/" + i + ".json"))
+			{
+				OverlayDefinition overlay = new Gson().fromJson(new InputStreamReader(fin), OverlayDefinition.class);
+				overlays[i] = overlay;
+			}
+			catch (FileNotFoundException ex)
+			{
+			}
+		}
 	}
 
 	// found these two functions here https://www.rune-server.org/runescape-development/rs2-client/tools/589900-rs2-hsb-color-picker.html

@@ -29,6 +29,7 @@
  */
 package net.runelite.modelviewer;
 
+import net.runelite.cache.models.Vector3f;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -39,7 +40,7 @@ public class Camera
 {
 	private static final float MAX_X = 89;
 
-	public float moveSpeed = 0.20f;
+	public float moveSpeed = 0.60f;
 
 	private float mouseSensitivity = 0.05f;
 
@@ -196,104 +197,14 @@ public class Camera
 		return pos;
 	}
 
-	public void setX(float x)
-	{
-		pos.x = x;
-	}
-
-	public float getX()
-	{
-		return pos.x;
-	}
-
-	public void addToX(float x)
-	{
-		pos.x += x;
-	}
-
-	public void setY(float y)
-	{
-		pos.y = y;
-	}
-
-	public float getY()
-	{
-		return pos.y;
-	}
-
-	public void addToY(float y)
-	{
-		pos.y += y;
-	}
-
-	public void setZ(float z)
-	{
-		pos.z = z;
-	}
-
-	public float getZ()
-	{
-		return pos.z;
-	}
-
-	public void addToZ(float z)
-	{
-		pos.z += z;
-	}
-
-	public void setRotation(Vector3f rotation)
-	{
-		this.rotation = rotation;
-	}
-
 	public Vector3f getRotation()
 	{
 		return rotation;
 	}
 
-	public void setRotationX(float x)
+	public void setRotation(Vector3f rotation)
 	{
-		rotation.x = x;
-	}
-
-	public float getRotationX()
-	{
-		return rotation.x;
-	}
-
-	public void addToRotationX(float x)
-	{
-		rotation.x += x;
-	}
-
-	public void setRotationY(float y)
-	{
-		rotation.y = y;
-	}
-
-	public float getRotationY()
-	{
-		return rotation.y;
-	}
-
-	public void addToRotationY(float y)
-	{
-		rotation.y += y;
-	}
-
-	public void setRotationZ(float z)
-	{
-		rotation.z = z;
-	}
-
-	public float getRotationZ()
-	{
-		return rotation.z;
-	}
-
-	public void addToRotationZ(float z)
-	{
-		rotation.z += z;
+		this.rotation = rotation;
 	}
 
 	public void setMouseSensitivity(float mouseSensitivity)

@@ -27,23 +27,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.cache;
 
-package net.runelite.modelviewer;
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.loaders.OverlayLoader;
+import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.Index;
+import net.runelite.cache.fs.Store;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class Vector3f
+public class OverlayDumper
 {
-	public float x, y, z;
+	private static final Logger logger = LoggerFactory.getLogger(OverlayDumper.class);
 
-	public Vector3f(float x, float y, float z)
-	{
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
+	@Rule
+	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
-	@Override
-	public String toString()
+	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+	@Test
+	public void extract() throws IOException
 	{
-		return "Vector3f{" + "x=" + x + ", y=" + y + ", z=" + z + '}';
+		java.io.File base = StoreLocation.LOCATION,
+			outDir = folder.newFile();
+
+		int count = 0;
+
+		try (Store store = new Store(base))
+		{
+			store.load();
+
+			Index index = store.getIndex(IndexType.CONFIGS);
+			Archive archive = index.getArchive(ConfigType.OVERLAY.getId());
+
+			for (File file : archive.getFiles())
+			{
+				OverlayLoader loader = new OverlayLoader();
+				OverlayDefinition overlay = loader.load(file.getFileId(), file.getContents());
+
+				Files.write(gson.toJson(overlay), new java.io.File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				++count;
+			}
+		}
+
+		logger.info("Dumped {} overlays to {}", count, outDir);
 	}
 }
