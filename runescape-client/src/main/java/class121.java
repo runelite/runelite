@@ -1,19 +1,65 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("dt")
 public final class class121 implements Iterable {
+   @ObfuscatedName("u")
+   int field1847;
+   @ObfuscatedName("x")
+   Node[] field1848;
    @ObfuscatedName("i")
-   int field1857;
-   @ObfuscatedName("e")
-   Node[] field1858;
-   @ObfuscatedName("f")
-   Node field1859;
+   Node field1849;
 
-   @ObfuscatedName("f")
-   public void method2277() {
-      for(int var1 = 0; var1 < this.field1857; ++var1) {
-         Node var2 = this.field1858[var1];
+   @ObfuscatedName("u")
+   public Node method2300(long var1) {
+      Node var3 = this.field1848[(int)(var1 & (long)(this.field1847 - 1))];
+
+      for(this.field1849 = var3.next; this.field1849 != var3; this.field1849 = this.field1849.next) {
+         if(this.field1849.hash == var1) {
+            Node var4 = this.field1849;
+            this.field1849 = this.field1849.next;
+            return var4;
+         }
+      }
+
+      this.field1849 = null;
+      return null;
+   }
+
+   @ObfuscatedName("x")
+   public void method2301(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
+      }
+
+      Node var4 = this.field1848[(int)(var2 & (long)(this.field1847 - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
+   }
+
+   public class121(int var1) {
+      this.field1847 = var1;
+      this.field1848 = new Node[var1];
+
+      for(int var2 = 0; var2 < var1; ++var2) {
+         Node var3 = this.field1848[var2] = new Node();
+         var3.next = var3;
+         var3.previous = var3;
+      }
+
+   }
+
+   public Iterator iterator() {
+      return new class132(this);
+   }
+
+   @ObfuscatedName("i")
+   public void method2307() {
+      for(int var1 = 0; var1 < this.field1847; ++var1) {
+         Node var2 = this.field1848[var1];
 
          while(true) {
             Node var3 = var2.next;
@@ -25,52 +71,6 @@ public final class class121 implements Iterable {
          }
       }
 
-      this.field1859 = null;
-   }
-
-   public class121(int var1) {
-      this.field1857 = var1;
-      this.field1858 = new Node[var1];
-
-      for(int var2 = 0; var2 < var1; ++var2) {
-         Node var3 = this.field1858[var2] = new Node();
-         var3.next = var3;
-         var3.previous = var3;
-      }
-
-   }
-
-   @ObfuscatedName("e")
-   public void method2283(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
-
-      Node var4 = this.field1858[(int)(var2 & (long)(this.field1857 - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
-   }
-
-   @ObfuscatedName("i")
-   public Node method2284(long var1) {
-      Node var3 = this.field1858[(int)(var1 & (long)(this.field1857 - 1))];
-
-      for(this.field1859 = var3.next; this.field1859 != var3; this.field1859 = this.field1859.next) {
-         if(this.field1859.hash == var1) {
-            Node var4 = this.field1859;
-            this.field1859 = this.field1859.next;
-            return var4;
-         }
-      }
-
-      this.field1859 = null;
-      return null;
-   }
-
-   public Iterator iterator() {
-      return new class132(this);
+      this.field1849 = null;
    }
 }

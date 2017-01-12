@@ -4,277 +4,238 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bt")
+@ObfuscatedName("bf")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -2082296675
+      intValue = -1119464309
    )
    @Export("flags")
    int flags;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -769451707
-   )
-   @Export("hash")
-   int hash;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 811623377
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("k")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1117874361
+      intValue = 920756917
    )
    @Export("x")
    int x;
-   @ObfuscatedName("n")
+   @ObfuscatedName("a")
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 620718117
+   )
+   @Export("hash")
+   int hash;
+   @ObfuscatedName("c")
    @Export("top")
    Renderable top;
-   @ObfuscatedName("g")
+   @ObfuscatedName("f")
    @Export("middle")
    Renderable middle;
-   @ObfuscatedName("q")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1810346735
+      intValue = -1338642657
    )
    @Export("height")
    int height;
-   @ObfuscatedName("w")
+   @ObfuscatedName("qe")
    @ObfuscatedGetter(
-      intValue = 58297741
+      intValue = -200131883
    )
-   public static int field1220;
-   @ObfuscatedName("h")
-   public static boolean field1221;
-   @ObfuscatedName("c")
-   static int[] field1222;
-   @ObfuscatedName("qz")
+   protected static int field1211;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 263810413
+      intValue = 1926062925
    )
-   public static int field1223;
+   @Export("y")
+   int y;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("ag")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "7"
+      signature = "(LSequence;IIIB)V",
+      garbageValue = "12"
    )
-   static int method1447() {
-      return ++class47.field939 - 1;
-   }
-
-   @ObfuscatedName("cv")
-   @ObfuscatedSignature(
-      signature = "(LWidget;IB)I",
-      garbageValue = "-41"
-   )
-   static final int method1448(Widget var0, int var1) {
-      if(null != var0.dynamicValues && var1 < var0.dynamicValues.length) {
-         try {
-            int[] var2 = var0.dynamicValues[var1];
-            int var3 = 0;
-            int var4 = 0;
-            byte var5 = 0;
-
-            while(true) {
-               int var6 = var2[var4++];
-               int var7 = 0;
-               byte var8 = 0;
-               if(var6 == 0) {
-                  return var3;
-               }
-
-               if(var6 == 1) {
-                  var7 = Client.boostedSkillLevels[var2[var4++]];
-               }
-
-               if(var6 == 2) {
-                  var7 = Client.realSkillLevels[var2[var4++]];
-               }
-
-               if(var6 == 3) {
-                  var7 = Client.skillExperiences[var2[var4++]];
-               }
-
-               int var9;
-               Widget var10;
-               int var11;
-               int var12;
-               if(var6 == 4) {
-                  var9 = var2[var4++] << 16;
-                  var9 += var2[var4++];
-                  var10 = class191.method3433(var9);
-                  var11 = var2[var4++];
-                  if(var11 != -1 && (!class7.getItemDefinition(var11).isMembers || Client.isMembers)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(1 + var11 == var10.itemIds[var12]) {
-                           var7 += var10.itemQuantities[var12];
-                        }
-                     }
-                  }
-               }
-
-               if(var6 == 5) {
-                  var7 = class165.widgetSettings[var2[var4++]];
-               }
-
-               if(var6 == 6) {
-                  var7 = class172.field2357[Client.realSkillLevels[var2[var4++]] - 1];
-               }
-
-               if(var6 == 7) {
-                  var7 = class165.widgetSettings[var2[var4++]] * 100 / '뜛';
-               }
-
-               if(var6 == 8) {
-                  var7 = class39.localPlayer.combatLevel;
-               }
-
-               if(var6 == 9) {
-                  for(var9 = 0; var9 < 25; ++var9) {
-                     if(class172.field2356[var9]) {
-                        var7 += Client.realSkillLevels[var9];
-                     }
-                  }
-               }
-
-               if(var6 == 10) {
-                  var9 = var2[var4++] << 16;
-                  var9 += var2[var4++];
-                  var10 = class191.method3433(var9);
-                  var11 = var2[var4++];
-                  if(var11 != -1 && (!class7.getItemDefinition(var11).isMembers || Client.isMembers)) {
-                     for(var12 = 0; var12 < var10.itemIds.length; ++var12) {
-                        if(1 + var11 == var10.itemIds[var12]) {
-                           var7 = 999999999;
-                           break;
-                        }
-                     }
-                  }
-               }
-
-               if(var6 == 11) {
-                  var7 = Client.energy;
-               }
-
-               if(var6 == 12) {
-                  var7 = Client.weight;
-               }
-
-               if(var6 == 13) {
-                  var9 = class165.widgetSettings[var2[var4++]];
-                  int var13 = var2[var4++];
-                  var7 = (var9 & 1 << var13) != 0?1:0;
-               }
-
-               if(var6 == 14) {
-                  var9 = var2[var4++];
-                  var7 = class97.method1898(var9);
-               }
-
-               if(var6 == 15) {
-                  var8 = 1;
-               }
-
-               if(var6 == 16) {
-                  var8 = 2;
-               }
-
-               if(var6 == 17) {
-                  var8 = 3;
-               }
-
-               if(var6 == 18) {
-                  var7 = class15.baseX + (class39.localPlayer.x >> 7);
-               }
-
-               if(var6 == 19) {
-                  var7 = class20.baseY + (class39.localPlayer.y >> 7);
-               }
-
-               if(var6 == 20) {
-                  var7 = var2[var4++];
-               }
-
-               if(var8 == 0) {
-                  if(var5 == 0) {
-                     var3 += var7;
-                  }
-
-                  if(var5 == 1) {
-                     var3 -= var7;
-                  }
-
-                  if(var5 == 2 && var7 != 0) {
-                     var3 /= var7;
-                  }
-
-                  if(var5 == 3) {
-                     var3 *= var7;
-                  }
-
-                  var5 = 0;
-               } else {
-                  var5 = var8;
-               }
+   static void method1411(Sequence var0, int var1, int var2, int var3) {
+      if(Client.field516 < 50 && Client.field557 != 0) {
+         if(var0.field3049 != null && var1 < var0.field3049.length) {
+            int var4 = var0.field3049[var1];
+            if(var4 != 0) {
+               int var5 = var4 >> 8;
+               int var6 = var4 >> 4 & 7;
+               int var7 = var4 & 15;
+               Client.field500[Client.field516] = var5;
+               Client.field292[Client.field516] = var6;
+               Client.field526[Client.field516] = 0;
+               Client.field528[Client.field516] = null;
+               int var8 = (var2 - 64) / 128;
+               int var9 = (var3 - 64) / 128;
+               Client.field527[Client.field516] = var7 + (var8 << 16) + (var9 << 8);
+               ++Client.field516;
             }
-         } catch (Exception var14) {
-            return -1;
          }
-      } else {
-         return -2;
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(II)LObjectComposition;",
-      garbageValue = "-662671593"
+      signature = "(I)V",
+      garbageValue = "-1302502749"
    )
-   @Export("getObjectDefinition")
-   public static ObjectComposition getObjectDefinition(int var0) {
-      ObjectComposition var1 = (ObjectComposition)ObjectComposition.field2894.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class207.field3089.method3211(6, var0);
-         var1 = new ObjectComposition();
-         var1.field2923 = var0;
-         if(var2 != null) {
-            var1.method3540(new Buffer(var2));
-         }
+   static void method1412() {
+      Client.field291 = -1L;
+      Client.field294 = -1;
+      class191.field2796.field214 = 0;
+      class20.field219 = true;
+      Client.field295 = true;
+      Client.field506 = -1L;
+      class227.field3228 = new CombatInfoList();
+      Client.field326.offset = 0;
+      Client.field409.offset = 0;
+      Client.packetOpcode = -1;
+      Client.field333 = 1;
+      Client.field334 = -1;
+      Client.field335 = -1;
+      Client.field308 = 0;
+      Client.field297 = 0;
+      Client.field336 = 0;
+      Client.field298 = 0;
+      Client.menuOptionCount = 0;
+      Client.isMenuOpen = false;
+      class115.mouseIdleTicks = 0;
+      class47.chatLineMap.clear();
+      class47.field922.method2307();
+      class47.field921.method2449();
+      class47.field919 = 0;
+      Client.field447 = 0;
+      Client.field435 = false;
+      Client.field516 = 0;
+      Client.field347 = (int)(Math.random() * 100.0D) - 50;
+      Client.field394 = (int)(Math.random() * 110.0D) - 55;
+      Client.field351 = (int)(Math.random() * 80.0D) - 40;
+      Client.mapScale = (int)(Math.random() * 120.0D) - 60;
+      Client.mapScaleDelta = (int)(Math.random() * 30.0D) - 20;
+      Client.mapAngle = (int)(Math.random() * 20.0D) - 10 & 2047;
+      Client.field543 = 0;
+      Client.field359 = -1;
+      Client.flagX = 0;
+      Client.flagY = 0;
+      Client.field306 = class40.field798;
+      Client.field307 = class40.field798;
+      Client.field322 = 0;
+      class190.method3457();
 
-         var1.method3539();
-         if(var1.field2931) {
-            var1.field2909 = 0;
-            var1.field2910 = false;
-         }
-
-         ObjectComposition.field2894.put(var1, (long)var0);
-         return var1;
+      int var3;
+      for(var3 = 0; var3 < 2048; ++var3) {
+         Client.cachedPlayers[var3] = null;
       }
+
+      for(var3 = 0; var3 < '耀'; ++var3) {
+         Client.cachedNPCs[var3] = null;
+      }
+
+      Client.field412 = -1;
+      Client.projectiles.method2385();
+      Client.field405.method2385();
+
+      int var2;
+      for(var3 = 0; var3 < 4; ++var3) {
+         for(int var1 = 0; var1 < 104; ++var1) {
+            for(var2 = 0; var2 < 104; ++var2) {
+               Client.groundItemDeque[var3][var1][var2] = null;
+            }
+         }
+      }
+
+      Client.field545 = new Deque();
+      Client.field465 = 0;
+      Client.friendCount = 0;
+      Client.ignoreCount = 0;
+
+      for(var3 = 0; var3 < class187.field2750; ++var3) {
+         class187 var4 = class30.method674(var3);
+         if(var4 != null) {
+            class165.settings[var3] = 0;
+            class165.widgetSettings[var3] = 0;
+         }
+      }
+
+      Renderable.chatMessages.method830();
+      Client.field448 = -1;
+      if(Client.widgetRoot != -1) {
+         var3 = Client.widgetRoot;
+         if(var3 != -1 && class6.validInterfaces[var3]) {
+            Widget.field2245.method3274(var3);
+            if(null != Widget.widgets[var3]) {
+               boolean var5 = true;
+
+               for(var2 = 0; var2 < Widget.widgets[var3].length; ++var2) {
+                  if(null != Widget.widgets[var3][var2]) {
+                     if(Widget.widgets[var3][var2].type != 2) {
+                        Widget.widgets[var3][var2] = null;
+                     } else {
+                        var5 = false;
+                     }
+                  }
+               }
+
+               if(var5) {
+                  Widget.widgets[var3] = null;
+               }
+
+               class6.validInterfaces[var3] = false;
+            }
+         }
+      }
+
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2344(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2343()) {
+         class3.method31(var0, true);
+      }
+
+      Client.widgetRoot = -1;
+      Client.componentTable = new XHashTable(8);
+      Client.field537 = null;
+      Client.isMenuOpen = false;
+      Client.menuOptionCount = 0;
+      Client.field560.method3119((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
+
+      for(var3 = 0; var3 < 8; ++var3) {
+         Client.field466[var3] = null;
+         Client.field410[var3] = false;
+      }
+
+      class156.method3005();
+      Client.field301 = true;
+
+      for(var3 = 0; var3 < 100; ++var3) {
+         Client.field485[var3] = true;
+      }
+
+      Client.field326.method3029(112);
+      Client.field326.method2760(class182.method3335());
+      Client.field326.method2918(class0.field1);
+      Client.field326.method2918(class65.field1099);
+      Client.field507 = null;
+      class142.field1984 = 0;
+      class30.clanMembers = null;
+
+      for(var3 = 0; var3 < 8; ++var3) {
+         Client.grandExchangeOffers[var3] = new XGrandExchangeOffer();
+      }
+
+      class11.field123 = null;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-1504157154"
+      signature = "(IIB)I",
+      garbageValue = "10"
    )
-   public static int method1450(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + class162.method3009(var0.charAt(var3));
-      }
-
-      return var2;
+   static final int method1413(int var0, int var1) {
+      int var2 = class2.method29(var0 - 1, var1 - 1) + class2.method29(var0 + 1, var1 - 1) + class2.method29(var0 - 1, 1 + var1) + class2.method29(var0 + 1, 1 + var1);
+      int var3 = class2.method29(var0 - 1, var1) + class2.method29(var0 + 1, var1) + class2.method29(var0, var1 - 1) + class2.method29(var0, 1 + var1);
+      int var4 = class2.method29(var0, var1);
+      return var4 / 4 + var2 / 16 + var3 / 8;
    }
 }

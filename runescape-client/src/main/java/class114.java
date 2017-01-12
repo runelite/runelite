@@ -1,36 +1,68 @@
 import java.applet.Applet;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dt")
+@ObfuscatedName("dp")
 public class class114 {
-   @ObfuscatedName("e")
-   public static String field1784 = null;
-   @ObfuscatedName("i")
-   static Applet field1788 = null;
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1608593208"
+   @ObfuscatedName("x")
+   static String field1775 = null;
+   @ObfuscatedName("na")
+   @ObfuscatedGetter(
+      intValue = 898180123
    )
-   static void method2163(int var0, int var1) {
-      int[] var2 = new int[4];
-      int[] var3 = new int[4];
-      var2[0] = var0;
-      var3[0] = var1;
-      int var4 = 1;
+   static int field1776;
+   @ObfuscatedName("u")
+   static Applet field1778 = null;
+   @ObfuscatedName("eg")
+   static ModIcon[] field1780;
 
-      for(int var5 = 0; var5 < 4; ++var5) {
-         if(World.field678[var5] != var0) {
-            var2[var4] = World.field678[var5];
-            var3[var4] = World.field674[var5];
-            ++var4;
-         }
+   @ObfuscatedName("dp")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "0"
+   )
+   static void method2162(int var0, int var1) {
+      class38 var2 = class9.field89;
+      class33.menuAction(var2.field787, var2.field785, var2.field786, var2.field784, var2.field790, var2.field790, var0, var1);
+      class9.field89 = null;
+   }
+
+   @ObfuscatedName("bx")
+   @ObfuscatedSignature(
+      signature = "(Lclass25;I)V",
+      garbageValue = "-754557752"
+   )
+   static final void method2175(class25 var0) {
+      int var1 = 0;
+      int var2 = -1;
+      int var3 = 0;
+      int var4 = 0;
+      if(var0.field567 == 0) {
+         var1 = class6.region.method1696(var0.field584, var0.field568, var0.field569);
       }
 
-      World.field678 = var2;
-      World.field674 = var3;
-      class142.method2646(class107.worldList, 0, class107.worldList.length - 1, World.field678, World.field674);
+      if(var0.field567 == 1) {
+         var1 = class6.region.method1697(var0.field584, var0.field568, var0.field569);
+      }
+
+      if(var0.field567 == 2) {
+         var1 = class6.region.method1698(var0.field584, var0.field568, var0.field569);
+      }
+
+      if(var0.field567 == 3) {
+         var1 = class6.region.method1699(var0.field584, var0.field568, var0.field569);
+      }
+
+      if(var1 != 0) {
+         int var5 = class6.region.method1714(var0.field584, var0.field568, var0.field569, var1);
+         var2 = var1 >> 14 & 32767;
+         var3 = var5 & 31;
+         var4 = var5 >> 6 & 3;
+      }
+
+      var0.field570 = var2;
+      var0.field574 = var3;
+      var0.field571 = var4;
    }
 }

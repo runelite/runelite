@@ -1,97 +1,81 @@
+import java.awt.datatransfer.Clipboard;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fg")
+@ObfuscatedName("fn")
 public final class class160 {
-   @ObfuscatedName("ir")
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -378428385
+      intValue = 2117231115
    )
-   static int field2132;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1212972729
-   )
-   int field2133;
-   @ObfuscatedName("g")
-   int[] field2134 = new int[256];
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1745199959
-   )
-   int field2135;
-   @ObfuscatedName("n")
-   int[] field2137 = new int[256];
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -32372711
-   )
-   int field2138;
+   int field2114;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1306749973
+      intValue = -1925052805
    )
-   int field2139;
+   int field2116;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1683169877
+   )
+   int field2117;
+   @ObfuscatedName("pr")
+   static Clipboard field2118;
+   @ObfuscatedName("l")
+   int[] field2119 = new int[256];
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1241589171
+   )
+   int field2120;
+   @ObfuscatedName("d")
+   int[] field2122 = new int[256];
 
    class160(int[] var1) {
       for(int var2 = 0; var2 < var1.length; ++var2) {
-         this.field2134[var2] = var1[var2];
+         this.field2122[var2] = var1[var2];
       }
 
-      this.method3003();
+      this.method3054();
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1825872290"
+      garbageValue = "-114389779"
    )
-   final void method2994() {
-      this.field2139 += ++this.field2133;
+   final void method3053() {
+      this.field2116 += ++this.field2114;
 
       for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = this.field2137[var1];
+         int var2 = this.field2119[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
-               this.field2138 ^= this.field2138 << 13;
+               this.field2120 ^= this.field2120 << 13;
             } else {
-               this.field2138 ^= this.field2138 >>> 6;
+               this.field2120 ^= this.field2120 >>> 6;
             }
          } else if((var1 & 1) == 0) {
-            this.field2138 ^= this.field2138 << 2;
+            this.field2120 ^= this.field2120 << 2;
          } else {
-            this.field2138 ^= this.field2138 >>> 16;
+            this.field2120 ^= this.field2120 >>> 16;
          }
 
-         this.field2138 += this.field2137[var1 + 128 & 255];
+         this.field2120 += this.field2119[var1 + 128 & 255];
          int var3;
-         this.field2137[var1] = var3 = this.field2137[(var2 & 1020) >> 2] + this.field2138 + this.field2139;
-         this.field2134[var1] = this.field2139 = this.field2137[(var3 >> 8 & 1020) >> 2] + var2;
+         this.field2119[var1] = var3 = this.field2120 + this.field2119[(var2 & 1020) >> 2] + this.field2116;
+         this.field2122[var1] = this.field2116 = this.field2119[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-1"
+      signature = "(B)V",
+      garbageValue = "77"
    )
-   final int method2997() {
-      if(--this.field2135 + 1 == 0) {
-         this.method2994();
-         this.field2135 = 255;
-      }
-
-      return this.field2134[this.field2135];
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "220"
-   )
-   final void method3003() {
+   final void method3054() {
       int var9 = -1640531527;
       int var8 = -1640531527;
       int var7 = -1640531527;
@@ -130,14 +114,14 @@ public final class class160 {
       }
 
       for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2134[var1];
-         var3 += this.field2134[var1 + 1];
-         var4 += this.field2134[var1 + 2];
-         var5 += this.field2134[3 + var1];
-         var6 += this.field2134[var1 + 4];
-         var7 += this.field2134[var1 + 5];
-         var8 += this.field2134[var1 + 6];
-         var9 += this.field2134[7 + var1];
+         var2 += this.field2122[var1];
+         var3 += this.field2122[var1 + 1];
+         var4 += this.field2122[var1 + 2];
+         var5 += this.field2122[3 + var1];
+         var6 += this.field2122[4 + var1];
+         var7 += this.field2122[5 + var1];
+         var8 += this.field2122[var1 + 6];
+         var9 += this.field2122[var1 + 7];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -162,25 +146,25 @@ public final class class160 {
          var9 ^= var2 >>> 9;
          var4 += var9;
          var2 += var3;
-         this.field2137[var1] = var2;
-         this.field2137[1 + var1] = var3;
-         this.field2137[2 + var1] = var4;
-         this.field2137[var1 + 3] = var5;
-         this.field2137[var1 + 4] = var6;
-         this.field2137[var1 + 5] = var7;
-         this.field2137[6 + var1] = var8;
-         this.field2137[var1 + 7] = var9;
+         this.field2119[var1] = var2;
+         this.field2119[1 + var1] = var3;
+         this.field2119[var1 + 2] = var4;
+         this.field2119[3 + var1] = var5;
+         this.field2119[4 + var1] = var6;
+         this.field2119[var1 + 5] = var7;
+         this.field2119[var1 + 6] = var8;
+         this.field2119[7 + var1] = var9;
       }
 
       for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2137[var1];
-         var3 += this.field2137[1 + var1];
-         var4 += this.field2137[var1 + 2];
-         var5 += this.field2137[var1 + 3];
-         var6 += this.field2137[4 + var1];
-         var7 += this.field2137[5 + var1];
-         var8 += this.field2137[var1 + 6];
-         var9 += this.field2137[var1 + 7];
+         var2 += this.field2119[var1];
+         var3 += this.field2119[1 + var1];
+         var4 += this.field2119[2 + var1];
+         var5 += this.field2119[3 + var1];
+         var6 += this.field2119[4 + var1];
+         var7 += this.field2119[5 + var1];
+         var8 += this.field2119[var1 + 6];
+         var9 += this.field2119[7 + var1];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -205,26 +189,31 @@ public final class class160 {
          var9 ^= var2 >>> 9;
          var4 += var9;
          var2 += var3;
-         this.field2137[var1] = var2;
-         this.field2137[1 + var1] = var3;
-         this.field2137[var1 + 2] = var4;
-         this.field2137[var1 + 3] = var5;
-         this.field2137[4 + var1] = var6;
-         this.field2137[var1 + 5] = var7;
-         this.field2137[6 + var1] = var8;
-         this.field2137[var1 + 7] = var9;
+         this.field2119[var1] = var2;
+         this.field2119[var1 + 1] = var3;
+         this.field2119[var1 + 2] = var4;
+         this.field2119[var1 + 3] = var5;
+         this.field2119[var1 + 4] = var6;
+         this.field2119[5 + var1] = var7;
+         this.field2119[var1 + 6] = var8;
+         this.field2119[var1 + 7] = var9;
       }
 
-      this.method2994();
-      this.field2135 = 256;
+      this.method3053();
+      this.field2117 = 256;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "895641086"
+      signature = "(B)I",
+      garbageValue = "-56"
    )
-   public static boolean method3004(int var0) {
-      return (var0 >> 29 & 1) != 0;
+   final int method3063() {
+      if(--this.field2117 + 1 == 0) {
+         this.method3053();
+         this.field2117 = 255;
+      }
+
+      return this.field2122[this.field2117];
    }
 }

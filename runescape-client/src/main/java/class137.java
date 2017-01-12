@@ -2,88 +2,107 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("es")
+@ObfuscatedName("ex")
 public class class137 {
-   @ObfuscatedName("ae")
-   static class184 field1897;
-   @ObfuscatedName("e")
-   byte[] field1898;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -621092333
-   )
-   int field1899;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -1817247909
-   )
-   int field1900;
+   @ObfuscatedName("u")
+   byte[] field1887;
    @ObfuscatedName("i")
-   byte[] field1901;
-   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 2141241609
+      intValue = -1365630943
    )
-   int field1902;
+   int field1889;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1854697083
+      intValue = 2073321775
    )
-   int field1903;
-   @ObfuscatedName("w")
+   int field1890;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -612736085
+      intValue = 1842092719
    )
-   int field1905;
+   int field1891;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 958162947
+   )
+   int field1892;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1899269885
+   )
+   int field1893;
+   @ObfuscatedName("x")
+   byte[] field1894;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 324489197
+      intValue = 1156876627
    )
-   int field1907;
-   @ObfuscatedName("q")
+   int field1895;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1692364239
+      intValue = 739206747
    )
-   int field1909;
+   int field1896;
+   @ObfuscatedName("by")
+   static class184 field1898;
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("bv")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "78"
+      signature = "(I)V",
+      garbageValue = "-116722532"
    )
-   public static void method2433() {
-      try {
-         class104.field1673.method1357();
+   static final void method2459() {
+      Client.field402 = 0;
+      int var0 = FrameMap.baseX + (class148.localPlayer.x >> 7);
+      int var1 = XItemContainer.baseY + (class148.localPlayer.y >> 7);
+      if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
+         Client.field402 = 1;
+      }
 
-         for(int var0 = 0; var0 < class40.field819; ++var0) {
-            class9.field84[var0].method1357();
-         }
+      if(var0 >= 3072 && var0 <= 3118 && var1 >= 9492 && var1 <= 9535) {
+         Client.field402 = 1;
+      }
 
-         class104.field1666.method1357();
-         class104.field1668.method1357();
-      } catch (Exception var2) {
-         ;
+      if(Client.field402 == 1 && var0 >= 3139 && var0 <= 3199 && var1 >= 3008 && var1 <= 3062) {
+         Client.field402 = 0;
       }
 
    }
 
-   @ObfuscatedName("dn")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "903184794"
+      signature = "(I)V",
+      garbageValue = "896579005"
    )
-   static final void method2434(int var0) {
-      if(class212.method3870(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+   public static void method2460() {
+      ItemComposition.field2938.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
+   }
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(var3 != null) {
-               var3.field2330 = 0;
-               var3.field2251 = 0;
-            }
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Object;ZS)[B",
+      garbageValue = "12068"
+   )
+   public static byte[] method2461(Object var0, boolean var1) {
+      if(null == var0) {
+         return null;
+      } else if(var0 instanceof byte[]) {
+         byte[] var6 = (byte[])((byte[])var0);
+         if(var1) {
+            int var4 = var6.length;
+            byte[] var5 = new byte[var4];
+            System.arraycopy(var6, 0, var5, 0, var4);
+            return var5;
+         } else {
+            return var6;
          }
-
+      } else if(var0 instanceof class156) {
+         class156 var2 = (class156)var0;
+         return var2.vmethod3000();
+      } else {
+         throw new IllegalArgumentException();
       }
    }
 }

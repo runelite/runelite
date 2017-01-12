@@ -1,18 +1,25 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gl")
+@ObfuscatedName("gj")
 public final class class207 {
-   @ObfuscatedName("e")
-   public static class182 field3089;
-
-   @ObfuscatedName("r")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IIIII)I",
-      garbageValue = "-2067761124"
+      signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-853720211"
    )
-   static final int method3763(int var0, int var1, int var2, int var3) {
-      int var4 = 65536 - class84.field1454[var2 * 1024 / var3] >> 1;
-      return (var1 * var4 >> 16) + (var0 * (65536 - var4) >> 16);
+   @Export("addChatMessage")
+   static void addChatMessage(int var0, String var1, String var2, String var3) {
+      ChatLineBuffer var4 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
+      if(var4 == null) {
+         var4 = new ChatLineBuffer();
+         class47.chatLineMap.put(Integer.valueOf(var0), var4);
+      }
+
+      MessageNode var5 = var4.method875(var0, var1, var2, var3);
+      class47.field922.method2301(var5, (long)var5.id);
+      class47.field921.method2450(var5);
+      Client.field289 = Client.field446;
    }
 }

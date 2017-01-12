@@ -2,60 +2,40 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eg")
+@ObfuscatedName("ey")
 public class class138 {
+   @ObfuscatedName("a")
+   public static class139 field1899;
    @ObfuscatedName("f")
-   public static class182 field1912;
-   @ObfuscatedName("k")
-   public static class139 field1913;
-   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 660865175
+      intValue = -855438639
    )
-   public static int field1914 = 0;
-   @ObfuscatedName("q")
+   public static int field1900 = 0;
+   @ObfuscatedName("u")
+   public static class182 field1901;
+   @ObfuscatedName("x")
+   public static class182 field1902;
+   @ObfuscatedName("c")
+   public static class182 field1903;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = -783843549
+      intValue = -175963215
    )
-   public static int field1915;
-   @ObfuscatedName("v")
+   public static int field1904;
+   @ObfuscatedName("qo")
    @ObfuscatedGetter(
-      intValue = -823295807
+      intValue = 1030458477
    )
-   public static int field1916;
-   @ObfuscatedName("p")
-   public static class144 field1917;
-   @ObfuscatedName("e")
-   public static class182 field1918;
-   @ObfuscatedName("i")
-   public static class182 field1919;
+   protected static int field1905;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(CS)Z",
-      garbageValue = "-2548"
+      signature = "(Lclass182;Lclass182;ZI)V",
+      garbageValue = "-1379698473"
    )
-   public static boolean method2457(char var0) {
-      return var0 >= 65 && var0 <= 90 || var0 >= 97 && var0 <= 122;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1826953075"
-   )
-   static void method2458() {
-      NPC.underlayIds = null;
-      class11.overlayIds = null;
-      class10.overlayPaths = null;
-      class65.overlayRotations = null;
-      class10.field97 = null;
-      class10.field92 = null;
-      class7.field65 = null;
-      class211.field3116 = null;
-      WallObject.field1552 = null;
-      CombatInfo1.field662 = null;
-      class211.field3118 = null;
-      ItemLayer.field1222 = null;
+   public static void method2475(class182 var0, class182 var1, boolean var2) {
+      ObjectComposition.field2881 = var0;
+      NPC.field758 = var1;
+      ObjectComposition.field2916 = var2;
    }
 }

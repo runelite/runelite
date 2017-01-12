@@ -1,26 +1,56 @@
-import java.io.IOException;
 import java.util.Comparator;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("k")
+@ObfuscatedName("a")
 final class class3 implements Comparator {
-   @ObfuscatedName("c")
-   static String field33;
-   @ObfuscatedName("nq")
-   @ObfuscatedGetter(
-      intValue = 1761298245
-   )
-   static int field34;
-
-   @ObfuscatedName("i")
+   @ObfuscatedName("dx")
    @ObfuscatedSignature(
-      signature = "(Lclass2;Lclass2;B)I",
-      garbageValue = "79"
+      signature = "(LWidgetNode;ZB)V",
+      garbageValue = "-19"
    )
-   int method27(class2 var1, class2 var2) {
-      return var1.field24.totalQuantity < var2.field24.totalQuantity?-1:(var1.field24.totalQuantity == var2.field24.totalQuantity?0:1);
+   static final void method31(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      int var5;
+      if(var1 && var2 != -1 && class6.validInterfaces[var2]) {
+         Widget.field2245.method3274(var2);
+         if(Widget.widgets[var2] != null) {
+            boolean var4 = true;
+
+            for(var5 = 0; var5 < Widget.widgets[var2].length; ++var5) {
+               if(null != Widget.widgets[var2][var5]) {
+                  if(Widget.widgets[var2][var5].type != 2) {
+                     Widget.widgets[var2][var5] = null;
+                  } else {
+                     var4 = false;
+                  }
+               }
+            }
+
+            if(var4) {
+               Widget.widgets[var2] = null;
+            }
+
+            class6.validInterfaces[var2] = false;
+         }
+      }
+
+      class16.method180(var2);
+      Widget var6 = class44.method799(var3);
+      if(null != var6) {
+         class6.method87(var6);
+      }
+
+      class101.method1909();
+      if(Client.widgetRoot != -1) {
+         var5 = Client.widgetRoot;
+         if(class94.method1870(var5)) {
+            class140.method2607(Widget.widgets[var5], 1);
+         }
+      }
+
    }
 
    public boolean equals(Object var1) {
@@ -28,64 +58,15 @@ final class class3 implements Comparator {
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method27((class2)var1, (class2)var2);
+      return this.method37((class2)var1, (class2)var2);
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Lclass182;I)V",
-      garbageValue = "-1314393958"
+      signature = "(Lclass2;Lclass2;I)I",
+      garbageValue = "1876922061"
    )
-   public static void method28(class182 var0) {
-      class188.field2781 = var0;
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "-582185369"
-   )
-   public static void method33(Buffer var0) {
-      byte[] var1 = new byte[24];
-
-      try {
-         class104.field1668.method1356(0L);
-         class104.field1668.method1360(var1);
-
-         int var2;
-         for(var2 = 0; var2 < 24 && var1[var2] == 0; ++var2) {
-            ;
-         }
-
-         if(var2 >= 24) {
-            throw new IOException();
-         }
-      } catch (Exception var5) {
-         for(int var3 = 0; var3 < 24; ++var3) {
-            var1[var3] = -1;
-         }
-      }
-
-      var0.method2753(var1, 0, 24);
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1176714482"
-   )
-   public static int method34(int var0) {
-      return var0 >> 17 & 7;
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;I)V",
-      garbageValue = "-596304185"
-   )
-   public static void method36(class182 var0, class182 var1) {
-      class231.field3280 = var0;
-      KitDefinition.field2821 = var1;
-      KitDefinition.field2817 = class231.field3280.method3220(3);
+   int method37(class2 var1, class2 var2) {
+      return var1.field15.totalQuantity < var2.field15.totalQuantity?-1:(var1.field15.totalQuantity == var2.field15.totalQuantity?0:1);
    }
 }

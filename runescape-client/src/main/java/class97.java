@@ -1,35 +1,64 @@
+import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cw")
 public class class97 implements class158 {
-   @ObfuscatedName("f")
-   public static final class97 field1617 = new class97(0, 2);
-   @ObfuscatedName("e")
-   public static final class97 field1618 = new class97(1, 1);
+   @ObfuscatedName("u")
+   public static final class97 field1619 = new class97(1, 0);
    @ObfuscatedName("i")
-   public static final class97 field1619 = new class97(3, 0);
-   @ObfuscatedName("k")
-   public static final class97 field1620 = new class97(2, 3);
-   @ObfuscatedName("g")
+   public static final class97 field1620 = new class97(2, 2);
+   @ObfuscatedName("cx")
+   static class208 field1621;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -876794511
+      intValue = -1367917779
    )
-   public final int field1621;
-   @ObfuscatedName("n")
+   public final int field1622;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -1509070715
+      intValue = 1147706147
    )
-   final int field1622;
+   final int field1623;
+   @ObfuscatedName("a")
+   public static final class97 field1624 = new class97(0, 3);
+   @ObfuscatedName("x")
+   public static final class97 field1625 = new class97(3, 1);
+   @ObfuscatedName("ef")
+   static ModIcon[] field1626;
+   @ObfuscatedName("b")
+   static int[] field1627;
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2056039019"
+      signature = "(II)LCombatInfo2;",
+      garbageValue = "723314664"
    )
-   public int vmethod3974() {
-      return this.field1622;
+   public static CombatInfo2 method1874(int var0) {
+      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field2815.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = CombatInfo2.field2821.method3272(33, var0);
+         var1 = new CombatInfo2();
+         if(var2 != null) {
+            var1.method3515(new Buffer(var2));
+         }
+
+         CombatInfo2.field2815.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "1"
+   )
+   public int vmethod4062() {
+      return this.field1623;
    }
 
    @ObfuscatedSignature(
@@ -37,21 +66,66 @@ public class class97 implements class158 {
       garbageValue = "0"
    )
    class97(int var1, int var2) {
-      this.field1621 = var1;
-      this.field1622 = var2;
+      this.field1622 = var1;
+      this.field1623 = var2;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "381227072"
+      signature = "(I)Z",
+      garbageValue = "-1713265301"
    )
-   public static int method1898(int var0) {
-      class194 var1 = class25.method555(var0);
-      int var2 = var1.field2848;
-      int var3 = var1.field2849;
-      int var4 = var1.field2852;
-      int var5 = class165.field2170[var4 - var3];
-      return class165.widgetSettings[var2] >> var3 & var5;
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(Friend.worldServersDownload == null) {
+            Friend.worldServersDownload = new class26(class44.field881, new URL(class15.field170));
+         } else {
+            byte[] var0 = Friend.worldServersDownload.method595();
+            if(var0 != null) {
+               Buffer var1 = new Buffer(var0);
+               World.field684 = var1.readUnsignedShort();
+               World.worldList = new World[World.field684];
+
+               World var3;
+               for(int var2 = 0; var2 < World.field684; var3.index = var2++) {
+                  var3 = World.worldList[var2] = new World();
+                  var3.id = var1.readUnsignedShort();
+                  var3.mask = var1.method2780();
+                  var3.address = var1.method2965();
+                  var3.activity = var1.method2965();
+                  var3.location = var1.readUnsignedByte();
+                  var3.playerCount = var1.method2968();
+               }
+
+               VertexNormal.method1597(World.worldList, 0, World.worldList.length - 1, World.field674, World.field676);
+               Friend.worldServersDownload = null;
+               return true;
+            }
+         }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         Friend.worldServersDownload = null;
+      }
+
+      return false;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass178;",
+      garbageValue = "805146703"
+   )
+   public static class178 method1877(int var0) {
+      class178[] var1 = class11.method154();
+
+      for(int var2 = 0; var2 < var1.length; ++var2) {
+         class178 var3 = var1[var2];
+         if(var3.field2652 == var0) {
+            return var3;
+         }
+      }
+
+      return null;
    }
 }
