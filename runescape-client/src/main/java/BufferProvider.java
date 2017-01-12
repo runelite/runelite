@@ -7,81 +7,55 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hl")
+@ObfuscatedName("hm")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("g")
-   @Export("image")
-   public Image image;
-   @ObfuscatedName("f")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = 1781787305
-   )
-   @Export("width")
-   public int width;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 966713999
+      intValue = 1662906089
    )
    @Export("height")
    int height;
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -262303787
+   )
+   @Export("width")
+   public int width;
+   @ObfuscatedName("x")
    @Export("pixels")
    public int[] pixels;
+   @ObfuscatedName("f")
+   @Export("image")
+   public Image image;
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-1084945969"
-   )
-   public abstract void init(int var1, int var2, Component var3);
-
-   @ObfuscatedName("c")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-1200705536"
+      garbageValue = "-593792580"
    )
-   public final void method3954() {
+   public final void method4046() {
       class219.setRasterBuffer(this.pixels, this.width, this.height);
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "2"
+      signature = "(IILjava/awt/Component;B)V",
+      garbageValue = "49"
+   )
+   public abstract void init(int var1, int var2, Component var3);
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "1846076808"
    )
    public abstract void draw(Graphics var1, int var2, int var3);
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIIIB)V",
-      garbageValue = "0"
+      signature = "(Ljava/awt/Graphics;IIIII)V",
+      garbageValue = "119912113"
    )
    public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZI)[B",
-      garbageValue = "476611925"
-   )
-   public static byte[] method3959(Object var0, boolean var1) {
-      if(null == var0) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
-         }
-      } else if(var0 instanceof class156) {
-         class156 var2 = (class156)var0;
-         return var2.vmethod2952();
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
 }

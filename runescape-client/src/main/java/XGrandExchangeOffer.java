@@ -1,124 +1,107 @@
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("g")
+@ObfuscatedName("f")
 @Implements("XGrandExchangeOffer")
 public class XGrandExchangeOffer {
-   @ObfuscatedName("hh")
+   @ObfuscatedName("dh")
    @ObfuscatedGetter(
-      intValue = 1233658227
+      intValue = 713765757
    )
-   @Export("menuY")
-   static int menuY;
-   @ObfuscatedName("i")
-   @Export("progress")
-   byte progress;
-   @ObfuscatedName("f")
+   static int field31;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1515552405
-   )
-   @Export("price")
-   public int price;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -740555981
-   )
-   @Export("totalQuantity")
-   public int totalQuantity;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -2046098317
-   )
-   @Export("quantitySold")
-   public int quantitySold;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 2059779791
-   )
-   @Export("spent")
-   public int spent;
-   @ObfuscatedName("dt")
-   static int[] field41;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 1983254767
+      intValue = -2023683977
    )
    @Export("itemId")
    public int itemId;
-   @ObfuscatedName("b")
-   static int[] field44;
-
-   @ObfuscatedName("am")
-   @ObfuscatedSignature(
-      signature = "(LPlayer;III)V",
-      garbageValue = "2102061811"
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 868779171
    )
-   static void method38(Player var0, int var1, int var2) {
-      if(var0.animation == var1 && var1 != -1) {
-         int var3 = GameEngine.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field632 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field635 = 0;
-         }
+   @Export("price")
+   public int price;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 1704640093
+   )
+   @Export("totalQuantity")
+   public int totalQuantity;
+   @ObfuscatedName("u")
+   @Export("progress")
+   byte progress;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1126911337
+   )
+   @Export("spent")
+   public int spent;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -532628905
+   )
+   @Export("quantitySold")
+   public int quantitySold;
 
-         if(var3 == 2) {
-            var0.field635 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || GameEngine.getAnimation(var1).forcedPriority >= GameEngine.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field632 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field635 = 0;
-         var0.field607 = var0.field652;
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "(LActor;I)V",
+      garbageValue = "816027962"
+   )
+   static final void method41(Actor var0) {
+      if(var0.field646 == Client.gameCycle || var0.animation == -1 || var0.actionAnimationDisable != 0 || 1 + var0.field633 > CombatInfo2.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
+         int var1 = var0.field646 - var0.field610;
+         int var2 = Client.gameCycle - var0.field610;
+         int var3 = var0.field641 * 128 + var0.field603 * 64;
+         int var4 = var0.field643 * 128 + var0.field603 * 64;
+         int var5 = var0.field603 * 64 + var0.field618 * 128;
+         int var6 = var0.field642 * 128 + var0.field603 * 64;
+         var0.x = (var3 * (var1 - var2) + var5 * var2) / var1;
+         var0.y = (var4 * (var1 - var2) + var2 * var6) / var1;
       }
 
+      var0.field657 = 0;
+      var0.field650 = var0.field647;
+      var0.angle = var0.field650;
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "4982882"
+      signature = "(B)I",
+      garbageValue = "125"
    )
-   public int method40() {
+   public int method44() {
       return this.progress & 7;
    }
 
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-1788039139"
-   )
-   public int method41() {
-      return (this.progress & 8) == 8?1:0;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "-26494"
-   )
-   void method42(int var1) {
-      this.progress &= -8;
-      this.progress = (byte)(this.progress | var1 & 7);
-   }
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)V",
-      garbageValue = "-1431785644"
+      garbageValue = "-1368165861"
    )
-   void method43(int var1) {
+   void method47(int var1) {
       this.progress &= -9;
       if(var1 == 1) {
          this.progress = (byte)(this.progress | 8);
       }
 
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "-2025856550"
+   )
+   public int method51() {
+      return (this.progress & 8) == 8?1:0;
+   }
+
+   public XGrandExchangeOffer() {
    }
 
    @ObfuscatedSignature(
@@ -128,109 +111,68 @@ public class XGrandExchangeOffer {
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
       this.progress = var1.readByte();
       this.itemId = var1.readUnsignedShort();
-      this.price = var1.method2844();
-      this.totalQuantity = var1.method2844();
-      this.quantitySold = var1.method2844();
-      this.spent = var1.method2844();
+      this.price = var1.method2780();
+      this.totalQuantity = var1.method2780();
+      this.quantitySold = var1.method2780();
+      this.spent = var1.method2780();
    }
 
-   public XGrandExchangeOffer() {
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;IIS)Z",
+      garbageValue = "256"
+   )
+   static boolean method60(class182 var0, int var1, int var2) {
+      byte[] var3 = var0.method3272(var1, var2);
+      if(var3 == null) {
+         return false;
+      } else {
+         class164.method3116(var3);
+         return true;
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "268318859"
+   )
+   void method62(int var1) {
+      this.progress &= -8;
+      this.progress = (byte)(this.progress | var1 & 7);
    }
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-973979957"
+      signature = "(Ljava/io/File;ZI)Z",
+      garbageValue = "-2070852983"
    )
-   static String method56(int var0) {
-      return "<img=" + var0 + ">";
+   static boolean method63(File var0, boolean var1) {
+      try {
+         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
+         int var3 = var2.read();
+         var2.seek(0L);
+         var2.write(var3);
+         var2.seek(0L);
+         var2.close();
+         if(var1) {
+            var0.delete();
+         }
+
+         return true;
+      } catch (Exception var4) {
+         return false;
+      }
    }
 
-   @ObfuscatedName("av")
+   @ObfuscatedName("cf")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "0"
+      signature = "(IIIZI)V",
+      garbageValue = "1900964742"
    )
-   static int method57() {
-      return Client.isResized?2:1;
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "-3139"
-   )
-   @Export("setGameState")
-   static void setGameState(int var0) {
-      if(Client.gameState != var0) {
-         if(Client.gameState == 0) {
-            ChatMessages.field925 = null;
-            class88.field1537 = null;
-            class37.field791 = null;
-         }
-
-         if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.field316 = 0;
-            Client.field317 = 0;
-            Client.field318 = 0;
-         }
-
-         if(var0 != 20 && var0 != 40 && Client.field326 != null) {
-            Client.field326.method2035();
-            Client.field326 = null;
-         }
-
-         if(Client.gameState == 25) {
-            Client.field345 = 0;
-            Client.field341 = 0;
-            Client.field342 = 1;
-            Client.field343 = 0;
-            Client.field328 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               class16.method180(class110.canvas, CollisionData.field1838, Client.field314, true, Client.gameState == 11?4:0);
-            } else if(var0 == 11) {
-               class16.method180(class110.canvas, CollisionData.field1838, Client.field314, false, 4);
-            } else if(class41.field835) {
-               class156.field2120 = null;
-               class41.field826 = null;
-               class41.field827 = null;
-               class16.field172 = null;
-               class41.field861 = null;
-               class101.field1639 = null;
-               class210.field3113 = null;
-               class142.field1996 = null;
-               Friend.field148 = null;
-               class41.field860 = null;
-               class0.field2 = null;
-               class184.field2743 = null;
-               class20.field216 = null;
-               class37.field789 = null;
-               WidgetNode.field181 = null;
-               class41.field834 = null;
-               class41.field853 = null;
-               class41.field833 = null;
-               field44 = null;
-               class230.field3255 = null;
-               GameObject.field1613 = null;
-               class119.field1850 = null;
-               class138.field1914 = 1;
-               class145.field2014 = null;
-               class30.field693 = -1;
-               class138.field1915 = -1;
-               ItemLayer.field1220 = 0;
-               ItemLayer.field1221 = false;
-               class138.field1916 = 2;
-               class185.method3360(true);
-               class41.field835 = false;
-            }
-         } else {
-            class16.method180(class110.canvas, CollisionData.field1838, Client.field314, true, 0);
-         }
-
-         Client.gameState = var0;
+   static final void method64(int var0, int var1, int var2, boolean var3) {
+      if(class94.method1870(var0)) {
+         class189.method3445(Widget.widgets[var0], -1, var1, var2, var3);
       }
    }
 }

@@ -7,110 +7,111 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("an")
 @Implements("World")
 public class World {
-   @ObfuscatedName("u")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 89290177
+      intValue = 1441135927
    )
    @Export("index")
    int index;
-   @ObfuscatedName("n")
+   @ObfuscatedName("f")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("g")
+   static int[] field674 = new int[]{0, 1, 2, 3};
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1039387333
+      intValue = -1543643073
    )
-   static int field672 = 0;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1160984473
-   )
-   static int field673 = 0;
-   @ObfuscatedName("q")
-   static int[] field674 = new int[]{1, 1, 1, 1};
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1810942875
-   )
-   @Export("location")
-   int location;
+   static int field675 = 0;
    @ObfuscatedName("l")
+   static int[] field676 = new int[]{1, 1, 1, 1};
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -415118299
-   )
-   @Export("playerCount")
-   int playerCount;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -639847853
+      intValue = 911079867
    )
    @Export("mask")
    int mask;
-   @ObfuscatedName("w")
-   static int[] field678 = new int[]{0, 1, 2, 3};
-   @ObfuscatedName("c")
-   @Export("address")
-   String address;
-   @ObfuscatedName("m")
-   @Export("activity")
-   String activity;
-   @ObfuscatedName("mp")
-   static byte field683;
-   @ObfuscatedName("h")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 750938385
+      intValue = -667360259
    )
    @Export("id")
    int id;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1923340923
+   )
+   @Export("playerCount")
+   int playerCount;
+   @ObfuscatedName("e")
+   @Export("address")
+   String address;
+   @ObfuscatedName("v")
+   @Export("activity")
+   String activity;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -111847025
+   )
+   @Export("location")
+   int location;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 2009384227
+   )
+   static int field684 = 0;
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "644053701"
+   )
+   boolean method625() {
+      return (4 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "-101"
+      garbageValue = "-81"
    )
-   boolean method591() {
-      return (1 & this.mask) != 0;
+   boolean method628() {
+      return (8 & this.mask) != 0;
    }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "95"
+      garbageValue = "50"
    )
-   boolean method592() {
-      return (2 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-712487879"
-   )
-   boolean method593() {
-      return (4 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "928432529"
-   )
-   boolean method595() {
-      return (536870912 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "948815824"
-   )
-   boolean method596() {
+   boolean method631() {
       return (33554432 & this.mask) != 0;
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "1893532728"
+      garbageValue = "-1728384831"
    )
-   boolean method620() {
-      return (8 & this.mask) != 0;
+   boolean method636() {
+      return (1 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "44"
+   )
+   boolean method637() {
+      return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "2"
+   )
+   boolean method646() {
+      return (536870912 & this.mask) != 0;
    }
 }

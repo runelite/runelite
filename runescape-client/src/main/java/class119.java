@@ -2,134 +2,140 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dy")
+@ObfuscatedName("dq")
 public abstract class class119 {
-   @ObfuscatedName("ai")
-   static int[] field1850;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 579596225
+   )
+   public int field1837;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1350491353
+   )
+   public int field1838;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 446910417
+   )
+   public int field1840;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -445671171
+      intValue = -593998597
    )
-   public int field1851;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 149243127
-   )
-   public int field1852;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 754739921
-   )
-   public int field1853;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1772710851
-   )
-   public int field1855;
+   public int field1841;
+   @ObfuscatedName("bl")
+   static class184 field1843;
+   @ObfuscatedName("g")
+   static byte[][] field1845;
 
-   @ObfuscatedName("dl")
+   @ObfuscatedName("al")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZI)Z",
-      garbageValue = "-480794557"
+      signature = "(IIII)V",
+      garbageValue = "-149407552"
    )
-   static boolean method2252(String var0, boolean var1) {
-      if(null == var0) {
-         return false;
-      } else {
-         String var2 = class118.method2244(var0, class108.field1724);
-
-         for(int var3 = 0; var3 < Client.friendCount; ++var3) {
-            if(var2.equalsIgnoreCase(class118.method2244(Client.friends[var3].name, class108.field1724)) && (!var1 || Client.friends[var3].world != 0)) {
-               return true;
-            }
-         }
-
-         if(var2.equalsIgnoreCase(class118.method2244(class39.localPlayer.name, class108.field1724))) {
-            return true;
-         } else {
-            return false;
-         }
+   static void method2275(int var0, int var1, int var2) {
+      if(Client.field358 != 0 && var1 != 0 && Client.field516 < 50) {
+         Client.field500[Client.field516] = var0;
+         Client.field292[Client.field516] = var1;
+         Client.field526[Client.field516] = var2;
+         Client.field528[Client.field516] = null;
+         Client.field527[Client.field516] = 0;
+         ++Client.field516;
       }
+
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "([BIIIIIIILRegion;[LCollisionData;B)V",
-      garbageValue = "-127"
+      signature = "(IIILCollisionData;I)Z",
+      garbageValue = "703014920"
    )
-   static final void method2253(byte[] var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, Region var8, CollisionData[] var9) {
-      Buffer var10 = new Buffer(var0);
-      int var11 = -1;
+   protected abstract boolean vmethod2276(int var1, int var2, int var3, CollisionData var4);
 
-      while(true) {
-         int var12 = var10.method2772();
-         if(var12 == 0) {
-            return;
-         }
-
-         var11 += var12;
-         int var13 = 0;
-
-         while(true) {
-            int var14 = var10.method2772();
-            if(var14 == 0) {
-               break;
-            }
-
-            var13 += var14 - 1;
-            int var15 = var13 & 63;
-            int var16 = var13 >> 6 & 63;
-            int var17 = var13 >> 12;
-            int var18 = var10.readUnsignedByte();
-            int var19 = var18 >> 2;
-            int var20 = var18 & 3;
-            if(var17 == var4 && var16 >= var5 && var16 < 8 + var5 && var15 >= var6 && var15 < var6 + 8) {
-               ObjectComposition var21 = ItemLayer.getObjectDefinition(var11);
-               int var22 = var2 + class48.method856(var16 & 7, var15 & 7, var7, var21.field2907, var21.field2908, var20);
-               int var23 = var3 + class85.method1685(var16 & 7, var15 & 7, var7, var21.field2907, var21.field2908, var20);
-               if(var22 > 0 && var23 > 0 && var22 < 103 && var23 < 103) {
-                  int var24 = var1;
-                  if((class10.tileSettings[1][var22][var23] & 2) == 2) {
-                     var24 = var1 - 1;
-                  }
-
-                  CollisionData var25 = null;
-                  if(var24 >= 0) {
-                     var25 = var9[var24];
-                  }
-
-                  class6.method72(var1, var22, var23, var11, var7 + var20 & 3, var19, var8, var25);
+   @ObfuscatedName("aj")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "8"
+   )
+   static final void method2278() {
+      for(int var0 = 0; var0 < Client.field516; ++var0) {
+         --Client.field526[var0];
+         if(Client.field526[var0] >= -10) {
+            class53 var10 = Client.field528[var0];
+            if(null == var10) {
+               Object var10000 = null;
+               var10 = class53.method955(class10.field94, Client.field500[var0], 0);
+               if(null == var10) {
+                  continue;
                }
+
+               Client.field526[var0] += var10.method950();
+               Client.field528[var0] = var10;
             }
+
+            if(Client.field526[var0] < 0) {
+               int var2;
+               if(Client.field527[var0] != 0) {
+                  int var9 = (Client.field527[var0] & 255) * 128;
+                  int var11 = Client.field527[var0] >> 16 & 255;
+                  int var5 = 64 + var11 * 128 - class148.localPlayer.x;
+                  if(var5 < 0) {
+                     var5 = -var5;
+                  }
+
+                  int var6 = Client.field527[var0] >> 8 & 255;
+                  int var7 = 128 * var6 + 64 - class148.localPlayer.y;
+                  if(var7 < 0) {
+                     var7 = -var7;
+                  }
+
+                  int var8 = var5 + var7 - 128;
+                  if(var8 > var9) {
+                     Client.field526[var0] = -100;
+                     continue;
+                  }
+
+                  if(var8 < 0) {
+                     var8 = 0;
+                  }
+
+                  var2 = (var9 - var8) * Client.field557 / var9;
+               } else {
+                  var2 = Client.field358;
+               }
+
+               if(var2 > 0) {
+                  class55 var3 = var10.method953().method994(class140.field1961);
+                  class66 var4 = class66.method1130(var3, 100, var2);
+                  var4.method1133(Client.field292[var0] - 1);
+                  class20.field222.method889(var4);
+               }
+
+               Client.field526[var0] = -100;
+            }
+         } else {
+            --Client.field516;
+
+            for(int var1 = var0; var1 < Client.field516; ++var1) {
+               Client.field500[var1] = Client.field500[1 + var1];
+               Client.field528[var1] = Client.field528[1 + var1];
+               Client.field292[var1] = Client.field292[1 + var1];
+               Client.field526[var1] = Client.field526[var1 + 1];
+               Client.field527[var1] = Client.field527[var1 + 1];
+            }
+
+            --var0;
          }
       }
-   }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(IIILCollisionData;B)Z",
-      garbageValue = "96"
-   )
-   protected abstract boolean vmethod2255(int var1, int var2, int var3, CollisionData var4);
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass196;",
-      garbageValue = "699221928"
-   )
-   public static class196 method2256(int var0) {
-      class196 var1 = (class196)class196.field2868.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class196.field2866.method3211(32, var0);
-         var1 = new class196();
-         if(null != var2) {
-            var1.method3510(new Buffer(var2));
+      if(Client.field519 && !class20.method193()) {
+         if(Client.field517 != 0 && Client.field444 != -1) {
+            class107.method2001(class37.field781, Client.field444, 0, Client.field517, false);
          }
 
-         class196.field2868.put(var1, (long)var0);
-         return var1;
+         Client.field519 = false;
       }
+
    }
 }

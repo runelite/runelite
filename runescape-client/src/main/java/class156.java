@@ -1,98 +1,81 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fy")
 public abstract class class156 {
-   @ObfuscatedName("e")
-   static boolean field2117 = false;
-   @ObfuscatedName("ck")
-   static class110 field2118;
-   @ObfuscatedName("ga")
-   static Widget field2119;
-   @ObfuscatedName("f")
-   static ModIcon field2120;
+   @ObfuscatedName("x")
+   static boolean field2096 = false;
+   @ObfuscatedName("d")
+   public static short[] field2098;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "([BI)V",
+      garbageValue = "659635151"
+   )
+   abstract void vmethod2996(byte[] var1);
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZZI)V",
+      garbageValue = "-1336245515"
+   )
+   public static void method2998(String var0, boolean var1, boolean var2) {
+      class2.method24(var0, var1, "openjs", var2);
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)[B",
-      garbageValue = "1914510908"
+      garbageValue = "-1241589171"
    )
-   abstract byte[] vmethod2952();
+   abstract byte[] vmethod3000();
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([BB)V",
-      garbageValue = "-22"
+      signature = "(I)V",
+      garbageValue = "-1536888711"
    )
-   abstract void vmethod2953(byte[] var1);
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "119"
-   )
-   public static void method2954() {
-      CombatInfo2.field2837.reset();
-      CombatInfo2.field2833.reset();
+   static void method3005() {
+      XItemContainer.itemContainers = new XHashTable(32);
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-884547072"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-905287914"
    )
-   public static boolean method2956(int var0) {
-      return (var0 >> 20 & 1) != 0;
-   }
+   public static String method3010(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
 
-   @ObfuscatedName("cm")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-70"
-   )
-   static void method2961() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2313(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2321()) {
-         int var1 = var0.id;
-         if(class212.method3870(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
+            if(var4 == 32) {
+               var2.append('+');
+            } else {
+               byte var5 = XClanMember.method240(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(55 + var6));
+               } else {
+                  var2.append((char)(48 + var6));
+               }
 
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(var3[var4] != null) {
-                  var2 = var3[var4].field2198;
-                  break;
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(55 + var6));
+               } else {
+                  var2.append((char)(48 + var6));
                }
             }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = class191.method3433(var4);
-               if(var5 != null) {
-                  class94.method1890(var5);
-               }
-            }
+         } else {
+            var2.append(var4);
          }
       }
 
-   }
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(B)LModIcon;",
-      garbageValue = "119"
-   )
-   static ModIcon method2963() {
-      ModIcon var0 = new ModIcon();
-      var0.width = class225.field3215;
-      var0.originalHeight = class225.field3216;
-      var0.offsetX = class225.field3217[0];
-      var0.offsetY = RSCanvas.field1748[0];
-      var0.originalWidth = class225.field3218[0];
-      var0.height = Item.field897[0];
-      var0.palette = class167.field2191;
-      var0.pixels = class154.field2106[0];
-      class185.method3361();
-      return var0;
+      return var2.toString();
    }
 }

@@ -1,48 +1,31 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("fe")
 public class class170 {
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "2034990174"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z",
+      garbageValue = "1616658844"
    )
-   @Export("calculateHeight")
-   static final int calculateHeight(int var0, int var1) {
-      int var2 = class8.method96('넵' + var0, var1 + 91923, 4) - 128 + (class8.method96(var0 + 10294, var1 + '鎽', 2) - 128 >> 1) + (class8.method96(var0, var1, 1) - 128 >> 2);
-      var2 = 35 + (int)(0.3D * (double)var2);
-      if(var2 < 10) {
-         var2 = 10;
-      } else if(var2 > 60) {
-         var2 = 60;
-      }
-
-      return var2;
+   public static final boolean method3216(String var0, String var1, String var2, String var3) {
+      return var0 != null && null != var2?(!var0.startsWith("#") && !var2.startsWith("#")?var1.equals(var3):var0.equals(var2)):false;
    }
 
-   @ObfuscatedName("bb")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1978665628"
+      signature = "(Lclass68;B)V",
+      garbageValue = "40"
    )
-   static final void method3174(int var0, int var1) {
-      if(Client.menuOptionCount >= 2 || Client.field526 != 0 || Client.field523) {
-         String var2;
-         if(Client.field526 == 1 && Client.menuOptionCount < 2) {
-            var2 = "Use" + " " + Client.field375 + " " + "->";
-         } else if(Client.field523 && Client.menuOptionCount < 2) {
-            var2 = Client.field444 + " " + Client.field327 + " " + "->";
-         } else {
-            var2 = class172.method3179(Client.menuOptionCount - 1);
-         }
-
-         if(Client.menuOptionCount > 2) {
-            var2 = var2 + class155.method2949(16777215) + " " + '/' + " " + (Client.menuOptionCount - 2) + " more options";
-         }
-
-         class11.field119.method3787(var2, var0 + 4, 15 + var1, 16777215, 0, Client.gameCycle / 1000);
+   static final void method3230(class68 var0) {
+      var0.field1135 = false;
+      if(null != var0.field1136) {
+         var0.field1136.field1167 = 0;
       }
+
+      for(class68 var1 = var0.vmethod2671(); null != var1; var1 = var0.vmethod2672()) {
+         method3230(var1);
+      }
+
    }
 }

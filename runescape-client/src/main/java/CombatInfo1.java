@@ -4,128 +4,131 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aq")
+@ObfuscatedName("al")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("e")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -1907433425
+      intValue = -1401315215
+   )
+   int field660;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -935074681
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -521426357
+      intValue = -518481051
    )
-   int field661;
-   @ObfuscatedName("p")
-   static int[] field662;
-   @ObfuscatedName("k")
+   int field662;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1414056125
+      intValue = 14416959
    )
-   int field664;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -810870241
-   )
-   int field666;
+   int field663;
+   @ObfuscatedName("z")
+   public static short[][] field665;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "17"
+      signature = "(B)V",
+      garbageValue = "-91"
    )
-   void method588(int var1, int var2, int var3, int var4) {
-      this.field661 = var1;
+   public static void method617() {
+      if(class103.field1661.toLowerCase().indexOf("microsoft") != -1) {
+         class105.field1708[186] = 57;
+         class105.field1708[187] = 27;
+         class105.field1708[188] = 71;
+         class105.field1708[189] = 26;
+         class105.field1708[190] = 72;
+         class105.field1708[191] = 73;
+         class105.field1708[192] = 58;
+         class105.field1708[219] = 42;
+         class105.field1708[220] = 74;
+         class105.field1708[221] = 43;
+         class105.field1708[222] = 59;
+         class105.field1708[223] = 28;
+      } else {
+         class105.field1708[44] = 71;
+         class105.field1708[45] = 26;
+         class105.field1708[46] = 72;
+         class105.field1708[47] = 73;
+         class105.field1708[59] = 57;
+         class105.field1708[61] = 27;
+         class105.field1708[91] = 42;
+         class105.field1708[92] = 74;
+         class105.field1708[93] = 43;
+         class105.field1708[192] = 28;
+         class105.field1708[222] = 58;
+         class105.field1708[520] = 59;
+      }
+
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "-512692434"
+   )
+   void method618(int var1, int var2, int var3, int var4) {
+      this.field662 = var1;
       this.healthRatio = var2;
-      this.field666 = var3;
-      this.field664 = var4;
+      this.field660 = var3;
+      this.field663 = var4;
    }
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field661 = var1;
+      this.field662 = var1;
       this.healthRatio = var2;
-      this.field666 = var3;
-      this.field664 = var4;
+      this.field660 = var3;
+      this.field663 = var4;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("be")
    @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "1958363218"
+      signature = "(LActor;II)V",
+      garbageValue = "-2035125907"
    )
-   public static char method589(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
+   static final void method622(Actor var0, int var1) {
+      class16.method179(var0.x, var0.y, var1);
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;[SIII)V",
+      garbageValue = "-742697597"
+   )
+   public static void method623(String[] var0, short[] var1, int var2, int var3) {
+      if(var2 < var3) {
+         int var4 = (var3 + var2) / 2;
+         int var5 = var2;
+         String var6 = var0[var4];
+         var0[var4] = var0[var3];
+         var0[var3] = var6;
+         short var7 = var1[var4];
+         var1[var4] = var1[var3];
+         var1[var3] = var7;
+
+         for(int var8 = var2; var8 < var3; ++var8) {
+            if(null == var6 || null != var0[var8] && var0[var8].compareTo(var6) < (var8 & 1)) {
+               String var9 = var0[var8];
+               var0[var8] = var0[var5];
+               var0[var5] = var9;
+               short var10 = var1[var8];
+               var1[var8] = var1[var5];
+               var1[var5++] = var10;
+            }
          }
 
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
+         var0[var3] = var0[var5];
+         var0[var5] = var6;
+         var1[var3] = var1[var5];
+         var1[var5] = var7;
+         method623(var0, var1, var2, var5 - 1);
+         method623(var0, var1, var5 + 1, var3);
       }
 
-      if(var0 == 338) {
-         return 'O';
-      } else if(var0 == 339) {
-         return 'o';
-      } else if(var0 == 376) {
-         return 'Y';
-      } else {
-         return var0;
-      }
    }
 }

@@ -2,98 +2,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("x")
+@ObfuscatedName("r")
 public class class18 extends Node {
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1306840557
-   )
-   static int field185;
-   @ObfuscatedName("df")
-   static byte[][] field186;
+   @ObfuscatedName("x")
+   boolean field189;
    @ObfuscatedName("f")
-   Widget field187;
-   @ObfuscatedName("i")
-   Object[] field188;
-   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1484670691
-   )
-   int field189;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1893856409
+      intValue = 27214169
    )
    int field190;
-   @ObfuscatedName("e")
-   boolean field191;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1890481185
+      intValue = -363689273
+   )
+   int field191;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1307088743
    )
    int field192;
-   @ObfuscatedName("w")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -105426931
+      intValue = -1207785977
    )
    int field193;
-   @ObfuscatedName("v")
-   String field194;
-   @ObfuscatedName("h")
+   @ObfuscatedName("d")
+   Widget field194;
+   @ObfuscatedName("i")
+   Widget field195;
+   @ObfuscatedName("z")
+   String field197;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 793557277
-   )
-   int field195;
-   @ObfuscatedName("a")
-   Widget field196;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1423316071
+      intValue = -740052757
    )
    int field198;
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-2115121419"
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 2061234831
    )
-   static void method186() {
-      Client.field294.offset = 0;
-      Client.field544.offset = 0;
-      Client.packetOpcode = -1;
-      Client.field319 = -1;
-      Client.field466 = -1;
-      Client.field336 = -1;
-      Client.field485 = 0;
-      Client.field332 = 0;
-      Client.field300 = 0;
-      Client.menuOptionCount = 0;
-      Client.isMenuOpen = false;
-      Client.field522 = 0;
-      Client.flagX = 0;
+   int field201;
+   @ObfuscatedName("u")
+   Object[] field203;
 
-      int var0;
-      for(var0 = 0; var0 < 2048; ++var0) {
-         Client.cachedPlayers[var0] = null;
-      }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "200145694"
+   )
+   static void method186(int var0) {
+      if(var0 != -1) {
+         if(class94.method1870(var0)) {
+            Widget[] var1 = Widget.widgets[var0];
 
-      class39.localPlayer = null;
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(null != var3.field2266) {
+                  class18 var4 = new class18();
+                  var4.field195 = var3;
+                  var4.field203 = var3.field2266;
+                  class49.method871(var4, 2000000);
+               }
+            }
 
-      for(var0 = 0; var0 < Client.cachedNPCs.length; ++var0) {
-         NPC var1 = Client.cachedNPCs[var0];
-         if(null != var1) {
-            var1.interacting = -1;
-            var1.field625 = false;
          }
       }
+   }
 
-      class11.method150();
-      XGrandExchangeOffer.setGameState(30);
+   @ObfuscatedName("cj")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "57"
+   )
+   static void method187() {
+      if(Client.field435) {
+         Widget var0 = class157.method3011(class2.field16, Client.field436);
+         if(var0 != null && var0.field2297 != null) {
+            class18 var1 = new class18();
+            var1.field195 = var0;
+            var1.field203 = var0.field2297;
+            class49.method871(var1, 200000);
+         }
 
-      for(var0 = 0; var0 < 100; ++var0) {
-         Client.field524[var0] = true;
+         Client.field435 = false;
+         class6.method87(var0);
       }
-
-      FrameMap.method1689();
    }
 }

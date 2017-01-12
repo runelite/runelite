@@ -1,122 +1,293 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.ImageObserver;
+import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cj")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("k")
-   int[][] field1467;
-   @ObfuscatedName("f")
-   int[] field1468;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1949617757
+   )
+   int field1460;
+   @ObfuscatedName("a")
+   int[][] field1461;
    @ObfuscatedName("i")
+   int[] field1462;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -10599773
+      intValue = -778283383
    )
-   int field1469;
-   @ObfuscatedName("e")
+   int field1463;
+   @ObfuscatedName("dd")
    @ObfuscatedGetter(
-      intValue = -873555889
+      intValue = 1453237237
    )
-   int field1473;
+   @Export("baseX")
+   static int baseX;
+   @ObfuscatedName("s")
+   static String field1465;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -259272587
+   )
+   public static int field1466;
+   @ObfuscatedName("lj")
+   static class216 field1467;
 
-   @ObfuscatedName("cw")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(LWidget;B)V",
-      garbageValue = "65"
+      signature = "(Lclass182;Lclass182;B)I",
+      garbageValue = "119"
    )
-   static void method1687(Widget var0) {
-      Widget var1 = var0.parentId == -1?null:class191.method3433(var0.parentId);
-      int var2;
-      int var3;
-      if(var1 == null) {
-         var2 = ItemLayer.field1223;
-         var3 = class112.field1755;
-      } else {
-         var2 = var1.width;
-         var3 = var1.height;
+   static int method1664(class182 var0, class182 var1) {
+      int var2 = 0;
+      if(var0.method3280("title.jpg", "")) {
+         ++var2;
       }
 
-      class1.method12(var0, var2, var3, false);
-      Friend.method167(var0, var2, var3);
-   }
-
-   @ObfuscatedName("ck")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;LWidget;I)Ljava/lang/String;",
-      garbageValue = "250377100"
-   )
-   static String method1688(String var0, Widget var1) {
-      if(var0.indexOf("%") != -1) {
-         int var2;
-         for(var2 = 1; var2 <= 5; ++var2) {
-            while(true) {
-               int var6 = var0.indexOf("%" + var2);
-               if(var6 == -1) {
-                  break;
-               }
-
-               var0 = var0.substring(0, var6) + Ignore.method187(ItemLayer.method1448(var1, var2 - 1)) + var0.substring(var6 + 2);
-            }
-         }
-
-         while(true) {
-            var2 = var0.indexOf("%dns");
-            if(var2 == -1) {
-               break;
-            }
-
-            String var3 = "";
-            if(class6.field60 != null) {
-               int var5 = class6.field60.field1648;
-               String var4 = (var5 >> 24 & 255) + "." + (var5 >> 16 & 255) + "." + (var5 >> 8 & 255) + "." + (var5 & 255);
-               var3 = var4;
-               if(null != class6.field60.field1652) {
-                  var3 = (String)class6.field60.field1652;
-               }
-            }
-
-            var0 = var0.substring(0, var2) + var3 + var0.substring(var2 + 4);
-         }
+      if(var1.method3280("logo", "")) {
+         ++var2;
       }
 
-      return var0;
+      if(var1.method3280("logo_deadman_mode", "")) {
+         ++var2;
+      }
+
+      if(var1.method3280("titlebox", "")) {
+         ++var2;
+      }
+
+      if(var1.method3280("titlebutton", "")) {
+         ++var2;
+      }
+
+      if(var1.method3280("runes", "")) {
+         ++var2;
+      }
+
+      if(var1.method3280("title_mute", "")) {
+         ++var2;
+      }
+
+      if(var1.method3263("options_radio_buttons,0")) {
+         ++var2;
+      }
+
+      if(var1.method3263("options_radio_buttons,2")) {
+         ++var2;
+      }
+
+      var1.method3280("sl_back", "");
+      var1.method3280("sl_flags", "");
+      var1.method3280("sl_arrows", "");
+      var1.method3280("sl_stars", "");
+      var1.method3280("sl_button", "");
+      return var2;
    }
 
    FrameMap(int var1, byte[] var2) {
-      this.field1469 = var1;
+      this.field1463 = var1;
       Buffer var3 = new Buffer(var2);
-      this.field1473 = var3.readUnsignedByte();
-      this.field1468 = new int[this.field1473];
-      this.field1467 = new int[this.field1473][];
+      this.field1460 = var3.readUnsignedByte();
+      this.field1462 = new int[this.field1460];
+      this.field1461 = new int[this.field1460][];
 
       int var4;
-      for(var4 = 0; var4 < this.field1473; ++var4) {
-         this.field1468[var4] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field1460; ++var4) {
+         this.field1462[var4] = var3.readUnsignedByte();
       }
 
-      for(var4 = 0; var4 < this.field1473; ++var4) {
-         this.field1467[var4] = new int[var3.readUnsignedByte()];
+      for(var4 = 0; var4 < this.field1460; ++var4) {
+         this.field1461[var4] = new int[var3.readUnsignedByte()];
       }
 
-      for(var4 = 0; var4 < this.field1473; ++var4) {
-         for(int var5 = 0; var5 < this.field1467[var4].length; ++var5) {
-            this.field1467[var4][var5] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field1460; ++var4) {
+         for(int var5 = 0; var5 < this.field1461[var4].length; ++var5) {
+            this.field1461[var4][var5] = var3.readUnsignedByte();
          }
       }
 
    }
 
-   @ObfuscatedName("az")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-99"
+      signature = "(LBuffer;IIIIIIS)V",
+      garbageValue = "-9894"
    )
-   static void method1689() {
-      Client.field294.method2976(172);
-      Client.field294.method2932(XGrandExchangeOffer.method57());
-      Client.field294.method2746(ItemLayer.field1223);
-      Client.field294.method2746(class112.field1755);
+   static final void method1665(Buffer var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      int var7;
+      if(var2 >= 0 && var2 < 104 && var3 >= 0 && var3 < 104) {
+         class10.tileSettings[var1][var2][var3] = 0;
+
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               if(var1 == 0) {
+                  int[] var8 = class10.tileHeights[0][var2];
+                  int var11 = 932731 + var2 + var4;
+                  int var12 = var3 + 556238 + var5;
+                  int var13 = class112.method2055(var11 + '넵', 91923 + var12, 4) - 128 + (class112.method2055(10294 + var11, '鎽' + var12, 2) - 128 >> 1) + (class112.method2055(var11, var12, 1) - 128 >> 2);
+                  var13 = 35 + (int)(0.3D * (double)var13);
+                  if(var13 < 10) {
+                     var13 = 10;
+                  } else if(var13 > 60) {
+                     var13 = 60;
+                  }
+
+                  var8[var3] = 8 * -var13;
+               } else {
+                  class10.tileHeights[var1][var2][var3] = class10.tileHeights[var1 - 1][var2][var3] - 240;
+               }
+               break;
+            }
+
+            if(var7 == 1) {
+               int var14 = var0.readUnsignedByte();
+               if(var14 == 1) {
+                  var14 = 0;
+               }
+
+               if(var1 == 0) {
+                  class10.tileHeights[0][var2][var3] = -var14 * 8;
+               } else {
+                  class10.tileHeights[var1][var2][var3] = class10.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+               }
+               break;
+            }
+
+            if(var7 <= 49) {
+               class10.overlayIds[var1][var2][var3] = var0.readByte();
+               class10.overlayPaths[var1][var2][var3] = (byte)((var7 - 2) / 4);
+               class174.overlayRotations[var1][var2][var3] = (byte)(var6 + (var7 - 2) & 3);
+            } else if(var7 <= 81) {
+               class10.tileSettings[var1][var2][var3] = (byte)(var7 - 49);
+            } else {
+               class10.underlayIds[var1][var2][var3] = (byte)(var7 - 81);
+            }
+         }
+      } else {
+         while(true) {
+            var7 = var0.readUnsignedByte();
+            if(var7 == 0) {
+               break;
+            }
+
+            if(var7 == 1) {
+               var0.readUnsignedByte();
+               break;
+            }
+
+            if(var7 <= 49) {
+               var0.readUnsignedByte();
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "1727501694"
+   )
+   public static void method1666(boolean var0) {
+      if(null != class185.field2737) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.method2760(var0?2:3);
+            var1.method2914(0);
+            class185.field2737.method2018(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class185.field2737.method2026();
+            } catch (Exception var3) {
+               ;
+            }
+
+            ++class185.field2736;
+            class185.field2737 = null;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(CII)I",
+      garbageValue = "-1379722108"
+   )
+   static int method1667(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = (var0 << 4) + 1;
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("sj")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/awt/Color;ZI)V",
+      garbageValue = "-693397327"
+   )
+   protected static final void method1668(int var0, String var1, Color var2, boolean var3) {
+      try {
+         Graphics var4 = class165.canvas.getGraphics();
+         if(null == CombatInfoListHolder.field752) {
+            CombatInfoListHolder.field752 = new Font("Helvetica", 1, 13);
+            RSCanvas.field1745 = class165.canvas.getFontMetrics(CombatInfoListHolder.field752);
+         }
+
+         if(var3) {
+            var4.setColor(Color.black);
+            var4.fillRect(0, 0, class0.field1, class65.field1099);
+         }
+
+         if(null == var2) {
+            var2 = new Color(140, 17, 17);
+         }
+
+         try {
+            if(class178.field2658 == null) {
+               class178.field2658 = class165.canvas.createImage(304, 34);
+            }
+
+            Graphics var5 = class178.field2658.getGraphics();
+            var5.setColor(var2);
+            var5.drawRect(0, 0, 303, 33);
+            var5.fillRect(2, 2, var0 * 3, 30);
+            var5.setColor(Color.black);
+            var5.drawRect(1, 1, 301, 31);
+            var5.fillRect(2 + var0 * 3, 2, 300 - var0 * 3, 30);
+            var5.setFont(CombatInfoListHolder.field752);
+            var5.setColor(Color.white);
+            var5.drawString(var1, (304 - RSCanvas.field1745.stringWidth(var1)) / 2, 22);
+            var4.drawImage(class178.field2658, class0.field1 / 2 - 152, class65.field1099 / 2 - 18, (ImageObserver)null);
+         } catch (Exception var8) {
+            int var6 = class0.field1 / 2 - 152;
+            int var7 = class65.field1099 / 2 - 18;
+            var4.setColor(var2);
+            var4.drawRect(var6, var7, 303, 33);
+            var4.fillRect(var6 + 2, var7 + 2, 3 * var0, 30);
+            var4.setColor(Color.black);
+            var4.drawRect(var6 + 1, var7 + 1, 301, 31);
+            var4.fillRect(2 + var6 + var0 * 3, 2 + var7, 300 - var0 * 3, 30);
+            var4.setFont(CombatInfoListHolder.field752);
+            var4.setColor(Color.white);
+            var4.drawString(var1, var6 + (304 - RSCanvas.field1745.stringWidth(var1)) / 2, 22 + var7);
+         }
+      } catch (Exception var9) {
+         class165.canvas.repaint();
+      }
+
    }
 }
