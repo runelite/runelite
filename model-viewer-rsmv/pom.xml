@@ -34,11 +34,11 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.16-SNAPSHOT</version>
+		<version>1.1.16</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
 	<artifactId>modelviewer-rsmv</artifactId>
-	<version>1.0.16-SNAPSHOT</version>
+	<version>1.0.16</version>
 	<name>Model Viewer (RSMV)</name>
 </project>
