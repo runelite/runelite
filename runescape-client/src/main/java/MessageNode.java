@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
@@ -9,158 +8,51 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("s")
 @Implements("MessageNode")
 public class MessageNode extends CacheableNode {
-   @ObfuscatedName("bs")
-   static class184 field220;
-   @ObfuscatedName("e")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1557327565
+      intValue = -1908090327
+   )
+   @Export("id")
+   int id = class115.method2186();
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1898974721
    )
    @Export("tick")
    int tick;
-   @ObfuscatedName("f")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 265462093
+      intValue = -2048898487
    )
    @Export("type")
    int type;
-   @ObfuscatedName("k")
+   @ObfuscatedName("a")
    @Export("name")
    String name;
-   @ObfuscatedName("g")
-   @Export("sender")
-   String sender;
-   @ObfuscatedName("n")
+   @ObfuscatedName("c")
    @Export("value")
    String value;
-   @ObfuscatedName("q")
-   static class179 field226;
-   @ObfuscatedName("dn")
+   @ObfuscatedName("di")
    @ObfuscatedGetter(
-      intValue = -915970983
+      intValue = 1392162575
    )
-   static int field227;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1671700543
-   )
-   @Export("id")
-   int id = ItemLayer.method1447();
-   @ObfuscatedName("nw")
-   static class65 field229;
-   @ObfuscatedName("r")
-   static String[] field231;
-   @ObfuscatedName("iz")
-   @ObfuscatedGetter(
-      intValue = 107847965
-   )
-   static int field232;
-   @ObfuscatedName("fa")
-   @ObfuscatedGetter(
-      intValue = 1575178341
-   )
-   @Export("cameraZ")
-   static int cameraZ;
+   static int field231;
+   @ObfuscatedName("f")
+   @Export("sender")
+   String sender;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;B)V",
-      garbageValue = "0"
+      garbageValue = "-91"
    )
-   void method199(int var1, String var2, String var3, String var4) {
-      this.id = ItemLayer.method1447();
+   void method195(int var1, String var2, String var3, String var4) {
+      this.id = class115.method2186();
       this.tick = Client.gameCycle;
       this.type = var1;
       this.name = var2;
       this.sender = var3;
       this.value = var4;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;ZB)Z",
-      garbageValue = "16"
-   )
-   static boolean method200(File var0, boolean var1) {
-      try {
-         RandomAccessFile var2 = new RandomAccessFile(var0, "rw");
-         int var3 = var2.read();
-         var2.seek(0L);
-         var2.write(var3);
-         var2.seek(0L);
-         var2.close();
-         if(var1) {
-            var0.delete();
-         }
-
-         return true;
-      } catch (Exception var4) {
-         return false;
-      }
-   }
-
-   @ObfuscatedName("ax")
-   @ObfuscatedSignature(
-      signature = "(Lclass15;B)V",
-      garbageValue = "61"
-   )
-   static final void method202(class15 var0) {
-      if(Client.flagX == class39.localPlayer.x >> 7 && class39.localPlayer.y >> 7 == Client.flagY) {
-         Client.flagX = 0;
-      }
-
-      int var1 = class45.field908;
-      int[] var2 = class45.field903;
-      int var3 = var1;
-      if(var0 == class15.field158 || var0 == class15.field159) {
-         var3 = 1;
-      }
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Player var5;
-         int var6;
-         if(var0 == class15.field158) {
-            var5 = class39.localPlayer;
-            var6 = class39.localPlayer.field262 << 14;
-         } else if(var0 == class15.field159) {
-            var5 = Client.cachedPlayers[Client.field418];
-            var6 = Client.field418 << 14;
-         } else {
-            var5 = Client.cachedPlayers[var2[var4]];
-            var6 = var2[var4] << 14;
-            if(var0 == class15.field161 && var2[var4] == Client.field418) {
-               continue;
-            }
-         }
-
-         if(var5 != null && var5.vmethod679() && !var5.field245) {
-            var5.field258 = false;
-            if((Client.field289 && var1 > 50 || var1 > 200) && var0 != class15.field158 && var5.idlePoseAnimation == var5.poseAnimation) {
-               var5.field258 = true;
-            }
-
-            int var7 = var5.x >> 7;
-            int var8 = var5.y >> 7;
-            if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
-               if(var5.model != null && Client.gameCycle >= var5.totalLevel && Client.gameCycle < var5.field249) {
-                  var5.field258 = false;
-                  var5.field247 = class85.method1686(var5.x, var5.y, class171.plane);
-                  Client.region.method1703(class171.plane, var5.x, var5.y, var5.field247, 60, var5, var5.angle, var6, var5.field254, var5.field255, var5.field239, var5.field257);
-               } else {
-                  if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
-                     if(Client.field312 == Client.field391[var7][var8]) {
-                        continue;
-                     }
-
-                     Client.field391[var7][var8] = Client.field312;
-                  }
-
-                  var5.field247 = class85.method1686(var5.x, var5.y, class171.plane);
-                  Client.region.method1739(class171.plane, var5.x, var5.y, var5.field247, 60, var5, var5.angle, var6, var5.field605);
-               }
-            }
-         }
-      }
-
    }
 
    MessageNode(int var1, String var2, String var3, String var4) {
@@ -171,12 +63,136 @@ public class MessageNode extends CacheableNode {
       this.value = var4;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("cs")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "-10"
+   )
+   static final void method198(int var0) {
+      if(var0 >= 0) {
+         int var1 = Client.menuActionParams0[var0];
+         int var2 = Client.menuActionParams1[var0];
+         int var3 = Client.menuTypes[var0];
+         int var4 = Client.menuIdentifiers[var0];
+         String var5 = Client.menuOptions[var0];
+         String var6 = Client.menuTargets[var0];
+         class33.menuAction(var1, var2, var3, var4, var5, var6, class115.field1791, class115.field1796);
+      }
+   }
+
+   @ObfuscatedName("by")
+   @ObfuscatedSignature(
+      signature = "(ZI)V",
+      garbageValue = "683252175"
+   )
+   static final void method199(boolean var0) {
+      class40.method741();
+      ++Client.field332;
+      if(Client.field332 >= 50 || var0) {
+         Client.field332 = 0;
+         if(!Client.field337 && null != class37.field774) {
+            Client.field326.method3029(217);
+
+            try {
+               class37.field774.method2018(Client.field326.payload, 0, Client.field326.offset);
+               Client.field326.offset = 0;
+            } catch (IOException var2) {
+               Client.field337 = true;
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "3"
+   )
+   public static int method200(int var0, int var1) {
+      int var2;
+      for(var2 = 1; var1 > 1; var1 >>= 1) {
+         if((var1 & 1) != 0) {
+            var2 *= var0;
+         }
+
+         var0 *= var0;
+      }
+
+      if(var1 == 1) {
+         return var2 * var0;
+      } else {
+         return var2;
+      }
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Lclass182;I)V",
-      garbageValue = "1032274152"
+      garbageValue = "-19627853"
    )
-   public static void method203(class182 var0) {
-      Overlay.field3037 = var0;
+   public static void method201(class182 var0) {
+      class188.field2753 = var0;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZB)Z",
+      garbageValue = "49"
+   )
+   public static boolean method202(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
+
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == 43) {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= 48 && var8 <= 57) {
+               var10 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var10 = var8 - 55;
+            } else {
+               if(var8 < 97 || var8 > 122) {
+                  return false;
+               }
+
+               var10 = var8 - 87;
+            }
+
+            if(var10 >= var1) {
+               return false;
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var1 * var5 + var10;
+            if(var9 / var1 != var5) {
+               return false;
+            }
+
+            var5 = var9;
+            var4 = true;
+         }
+
+         return var4;
+      } else {
+         throw new IllegalArgumentException("");
+      }
    }
 }

@@ -1,95 +1,94 @@
 import java.util.Comparator;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("q")
+@ObfuscatedName("l")
 final class class7 implements Comparator {
-   @ObfuscatedName("w")
-   static int[][] field65;
-   @ObfuscatedName("bz")
+   @ObfuscatedName("db")
+   static byte[][] field59;
+   @ObfuscatedName("pl")
+   static class116 field60;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 71461715
+      intValue = -1259943023
    )
-   static int field66;
+   public static int field65;
+   @ObfuscatedName("es")
+   static SpritePixels[] field66;
+   @ObfuscatedName("ao")
+   static SpritePixels[] field67;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-1379475654"
+   )
+   static void method99(int var0, String var1, String var2) {
+      class207.addChatMessage(var0, var1, var2, (String)null);
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Lclass2;Lclass2;I)I",
-      garbageValue = "-1908275865"
+      garbageValue = "-2119681662"
    )
-   int method87(class2 var1, class2 var2) {
-      return var1.field26 < var2.field26?-1:(var2.field26 == var1.field26?0:1);
+   int method100(class2 var1, class2 var2) {
+      return var1.field17 < var2.field17?-1:(var1.field17 == var2.field17?0:1);
    }
 
    public int compare(Object var1, Object var2) {
-      return this.method87((class2)var1, (class2)var2);
+      return this.method100((class2)var1, (class2)var2);
    }
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("by")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1943620849"
+      signature = "(I)V",
+      garbageValue = "2030640065"
    )
-   static final boolean method94(int var0) {
-      if(var0 < 0) {
-         return false;
-      } else {
-         int var1 = Client.menuTypes[var0];
-         if(var1 >= 2000) {
-            var1 -= 2000;
-         }
+   static void method108() {
+      FileOnDisk var0 = null;
 
-         return var1 == 1007;
+      try {
+         var0 = class47.method856("", class13.field139.field2669, true);
+         Buffer var1 = class2.field21.method668();
+         var0.method1375(var1.payload, 0, var1.offset);
+      } catch (Exception var3) {
+         ;
       }
+
+      try {
+         if(null != var0) {
+            var0.method1365();
+         }
+      } catch (Exception var2) {
+         ;
+      }
+
    }
 
-   @ObfuscatedName("e")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(II)LItemComposition;",
-      garbageValue = "-345616876"
+      signature = "(B)V",
+      garbageValue = "-44"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.field2949.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemComposition.field2952.method3211(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
+   public static void method110() {
+      while(true) {
+         Deque var1 = class183.field2705;
+         class180 var0;
+         synchronized(class183.field2705) {
+            var0 = (class180)class183.field2703.method2389();
          }
 
-         var1.method3617();
-         if(var1.field2985 != -1) {
-            var1.method3585(getItemDefinition(var1.field2985), getItemDefinition(var1.note));
+         if(null == var0) {
+            return;
          }
 
-         if(var1.field2994 != -1) {
-            var1.method3606(getItemDefinition(var1.field2994), getItemDefinition(var1.field2973));
-         }
-
-         if(var1.field2996 != -1) {
-            var1.method3595(getItemDefinition(var1.field2996), getItemDefinition(var1.field2995));
-         }
-
-         if(!CombatInfoListHolder.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field2992 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.field2991 = 0;
-         }
-
-         ItemComposition.field2949.put(var1, (long)var0);
-         return var1;
+         var0.field2671.method3361(var0.field2670, (int)var0.hash, var0.field2675, false);
       }
    }
 }

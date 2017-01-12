@@ -1,77 +1,129 @@
-import java.awt.Canvas;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("ds")
 public final class class110 implements Runnable {
-   @ObfuscatedName("k")
-   boolean field1733 = false;
-   @ObfuscatedName("n")
-   class102 field1734;
-   @ObfuscatedName("f")
-   Socket field1735;
-   @ObfuscatedName("g")
-   class103 field1737;
-   @ObfuscatedName("q")
+   @ObfuscatedName("a")
+   boolean field1730 = false;
+   @ObfuscatedName("i")
+   Socket field1732;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 661810615
+      intValue = 511727373
+   )
+   int field1733 = 0;
+   @ObfuscatedName("c")
+   class102 field1734;
+   @ObfuscatedName("d")
+   byte[] field1736;
+   @ObfuscatedName("x")
+   OutputStream field1737;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 863130375
    )
    int field1738 = 0;
-   @ObfuscatedName("a")
-   byte[] field1739;
-   @ObfuscatedName("i")
-   OutputStream field1740;
-   @ObfuscatedName("w")
+   @ObfuscatedName("z")
+   boolean field1739 = false;
+   @ObfuscatedName("qb")
    @ObfuscatedGetter(
-      intValue = -1187222207
+      intValue = -117871671
    )
-   int field1741 = 0;
-   @ObfuscatedName("v")
-   boolean field1742 = false;
-   @ObfuscatedName("e")
-   InputStream field1745;
-   @ObfuscatedName("qy")
-   @Export("canvas")
-   public static Canvas canvas;
+   protected static int field1740;
+   @ObfuscatedName("u")
+   InputStream field1741;
+   @ObfuscatedName("f")
+   class103 field1744;
 
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "-9"
-   )
-   public int method2028() throws IOException {
-      return this.field1733?0:this.field1745.available();
+   public void run() {
+      try {
+         while(true) {
+            label84: {
+               int var1;
+               int var2;
+               synchronized(this) {
+                  if(this.field1733 == this.field1738) {
+                     if(this.field1730) {
+                        break label84;
+                     }
+
+                     try {
+                        this.wait();
+                     } catch (InterruptedException var10) {
+                        ;
+                     }
+                  }
+
+                  var2 = this.field1733;
+                  if(this.field1738 >= this.field1733) {
+                     var1 = this.field1738 - this.field1733;
+                  } else {
+                     var1 = 5000 - this.field1733;
+                  }
+               }
+
+               if(var1 <= 0) {
+                  continue;
+               }
+
+               try {
+                  this.field1737.write(this.field1736, var2, var1);
+               } catch (IOException var9) {
+                  this.field1739 = true;
+               }
+
+               this.field1733 = (var1 + this.field1733) % 5000;
+
+               try {
+                  if(this.field1738 == this.field1733) {
+                     this.field1737.flush();
+                  }
+               } catch (IOException var8) {
+                  this.field1739 = true;
+               }
+               continue;
+            }
+
+            try {
+               if(null != this.field1741) {
+                  this.field1741.close();
+               }
+
+               if(this.field1737 != null) {
+                  this.field1737.close();
+               }
+
+               if(null != this.field1732) {
+                  this.field1732.close();
+               }
+            } catch (IOException var7) {
+               ;
+            }
+
+            this.field1736 = null;
+            break;
+         }
+      } catch (Exception var12) {
+         class174.method3240((String)null, var12);
+      }
+
    }
 
-   protected void finalize() {
-      this.method2035();
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "83"
-   )
-   public int method2030() throws IOException {
-      return this.field1733?0:this.field1745.read();
-   }
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "([BIII)V",
-      garbageValue = "220745382"
+      garbageValue = "-2123123753"
    )
-   public void method2031(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field1733) {
+   public void method2014(byte[] var1, int var2, int var3) throws IOException {
+      if(!this.field1730) {
          while(var3 > 0) {
-            int var4 = this.field1745.read(var1, var2, var3);
+            int var4 = this.field1741.read(var1, var2, var3);
             if(var4 <= 0) {
                throw new EOFException();
             }
@@ -83,32 +135,52 @@ public final class class110 implements Runnable {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1969111152"
+   )
+   public int method2017() throws IOException {
+      return this.field1730?0:this.field1741.available();
+   }
+
+   public class110(Socket var1, class103 var2) throws IOException {
+      this.field1744 = var2;
+      this.field1732 = var1;
+      this.field1732.setSoTimeout(30000);
+      this.field1732.setTcpNoDelay(true);
+      this.field1732.setReceiveBufferSize(16384);
+      this.field1732.setSendBufferSize(16384);
+      this.field1741 = this.field1732.getInputStream();
+      this.field1737 = this.field1732.getOutputStream();
+   }
+
+   @ObfuscatedName("z")
    @ObfuscatedSignature(
       signature = "([BIIB)V",
-      garbageValue = "42"
+      garbageValue = "2"
    )
-   public void method2032(byte[] var1, int var2, int var3) throws IOException {
-      if(!this.field1733) {
-         if(this.field1742) {
-            this.field1742 = false;
+   public void method2018(byte[] var1, int var2, int var3) throws IOException {
+      if(!this.field1730) {
+         if(this.field1739) {
+            this.field1739 = false;
             throw new IOException();
          } else {
-            if(null == this.field1739) {
-               this.field1739 = new byte[5000];
+            if(this.field1736 == null) {
+               this.field1736 = new byte[5000];
             }
 
             synchronized(this) {
                for(int var5 = 0; var5 < var3; ++var5) {
-                  this.field1739[this.field1741] = var1[var2 + var5];
-                  this.field1741 = (this.field1741 + 1) % 5000;
-                  if(this.field1741 == (this.field1738 + 4900) % 5000) {
+                  this.field1736[this.field1738] = var1[var2 + var5];
+                  this.field1738 = (this.field1738 + 1) % 5000;
+                  if(this.field1738 == (this.field1733 + 4900) % 5000) {
                      throw new IOException();
                   }
                }
 
-               if(null == this.field1734) {
-                  this.field1734 = this.field1737.method1932(this, 3);
+               if(this.field1734 == null) {
+                  this.field1734 = this.field1744.method1916(this, 3);
                }
 
                this.notifyAll();
@@ -117,98 +189,37 @@ public final class class110 implements Runnable {
       }
    }
 
-   public void run() {
-      try {
-         while(true) {
-            label84: {
-               int var1;
-               int var2;
-               synchronized(this) {
-                  if(this.field1741 == this.field1738) {
-                     if(this.field1733) {
-                        break label84;
-                     }
-
-                     try {
-                        this.wait();
-                     } catch (InterruptedException var10) {
-                        ;
-                     }
-                  }
-
-                  var2 = this.field1738;
-                  if(this.field1741 >= this.field1738) {
-                     var1 = this.field1741 - this.field1738;
-                  } else {
-                     var1 = 5000 - this.field1738;
-                  }
-               }
-
-               if(var1 <= 0) {
-                  continue;
-               }
-
-               try {
-                  this.field1740.write(this.field1739, var2, var1);
-               } catch (IOException var9) {
-                  this.field1742 = true;
-               }
-
-               this.field1738 = (this.field1738 + var1) % 5000;
-
-               try {
-                  if(this.field1738 == this.field1741) {
-                     this.field1740.flush();
-                  }
-               } catch (IOException var8) {
-                  this.field1742 = true;
-               }
-               continue;
-            }
-
-            try {
-               if(this.field1745 != null) {
-                  this.field1745.close();
-               }
-
-               if(null != this.field1740) {
-                  this.field1740.close();
-               }
-
-               if(this.field1735 != null) {
-                  this.field1735.close();
-               }
-            } catch (IOException var7) {
-               ;
-            }
-
-            this.field1739 = null;
-            break;
-         }
-      } catch (Exception var12) {
-         FaceNormal.method1864((String)null, var12);
-      }
-
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1015624839"
+   )
+   public int method2021() throws IOException {
+      return this.field1730?0:this.field1741.read();
    }
 
-   @ObfuscatedName("f")
+   protected void finalize() {
+      this.method2026();
+   }
+
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "31"
+      signature = "(I)V",
+      garbageValue = "-657646102"
    )
-   public void method2035() {
-      if(!this.field1733) {
+   public void method2026() {
+      if(!this.field1730) {
          synchronized(this) {
-            this.field1733 = true;
+            this.field1730 = true;
             this.notifyAll();
          }
 
-         if(this.field1734 != null) {
-            while(this.field1734.field1650 == 0) {
-               class10.method149(1L);
+         if(null != this.field1734) {
+            while(this.field1734.field1648 == 0) {
+               VertexNormal.method1598(1L);
             }
 
-            if(this.field1734.field1650 == 1) {
+            if(this.field1734.field1648 == 1) {
                try {
                   ((Thread)this.field1734.field1652).join();
                } catch (InterruptedException var3) {
@@ -219,66 +230,5 @@ public final class class110 implements Runnable {
 
          this.field1734 = null;
       }
-   }
-
-   public class110(Socket var1, class103 var2) throws IOException {
-      this.field1737 = var2;
-      this.field1735 = var1;
-      this.field1735.setSoTimeout(30000);
-      this.field1735.setTcpNoDelay(true);
-      this.field1735.setReceiveBufferSize(16384);
-      this.field1735.setSendBufferSize(16384);
-      this.field1745 = this.field1735.getInputStream();
-      this.field1740 = this.field1735.getOutputStream();
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;B)J",
-      garbageValue = "121"
-   )
-   static long method2047(CharSequence var0) {
-      long var1 = 0L;
-      int var3 = var0.length();
-
-      for(int var4 = 0; var4 < var3; ++var4) {
-         var1 *= 37L;
-         char var5 = var0.charAt(var4);
-         if(var5 >= 65 && var5 <= 90) {
-            var1 += (long)(1 + var5 - 65);
-         } else if(var5 >= 97 && var5 <= 122) {
-            var1 += (long)(1 + var5 - 97);
-         } else if(var5 >= 48 && var5 <= 57) {
-            var1 += (long)(27 + var5 - 48);
-         }
-
-         if(var1 >= 177917621779460413L) {
-            break;
-         }
-      }
-
-      while(var1 % 37L == 0L && 0L != var1) {
-         var1 /= 37L;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)LModIcon;",
-      garbageValue = "-1970928742"
-   )
-   public static ModIcon method2048(class182 var0, String var1, String var2) {
-      int var3 = var0.method3225(var1);
-      int var4 = var0.method3226(var3, var2);
-      ModIcon var5;
-      if(!class178.method3196(var0, var3, var4)) {
-         var5 = null;
-      } else {
-         var5 = class156.method2963();
-      }
-
-      return var5;
    }
 }

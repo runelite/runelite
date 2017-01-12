@@ -2,105 +2,72 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cn")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("g")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 235862001
+      intValue = 654699371
    )
-   int field1587;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -595215287
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("q")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("w")
-   @Export("renderable2")
-   public Renderable renderable2;
+   int field1584;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1508956827
+      intValue = -1641536165
+   )
+   int field1585;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1999387459
    )
    @Export("y")
    int y;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 182481635
-   )
-   int field1592;
+   @ObfuscatedName("e")
+   static int[] field1587;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -247251583
+      intValue = -83018305
    )
-   int field1593;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 2032997785
-   )
-   int field1594;
+   int field1588;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -2043862103
+      intValue = -1514190861
    )
-   @Export("floor")
-   int floor;
-   @ObfuscatedName("v")
+   @Export("x")
+   int x;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1413534175
+      intValue = -1863693607
+   )
+   int field1590;
+   @ObfuscatedName("l")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("g")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -298103449
    )
    @Export("hash")
    public int hash = 0;
-   @ObfuscatedName("h")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -2127619427
+      intValue = 973628967
    )
-   int field1597 = 0;
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;ZLclass208;I)V",
-      garbageValue = "-608387578"
+   int field1594 = 0;
+   @ObfuscatedName("pe")
+   static class230 field1595;
+   @ObfuscatedName("pz")
+   @ObfuscatedGetter(
+      intValue = -64737917
    )
-   public static void method1893(class182 var0, class182 var1, boolean var2, class208 var3) {
-      ItemComposition.field2952 = var0;
-      ItemComposition.field2943 = var1;
-      CombatInfoListHolder.isMembersWorld = var2;
-      ItemComposition.field2948 = ItemComposition.field2952.method3220(10);
-      class155.field2112 = var3;
-   }
-
-   @ObfuscatedName("cp")
-   @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
-      garbageValue = "-1528550482"
+   static int field1596;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 961776411
    )
-   static final void method1894(Widget var0, int var1, int var2) {
-      if(null == Client.field511 && !Client.isMenuOpen) {
-         if(null != var0 && class15.method171(var0) != null) {
-            Client.field511 = var0;
-            Client.field460 = class15.method171(var0);
-            Client.field461 = var1;
-            Client.field462 = var2;
-            class72.field1191 = 0;
-            Client.field470 = false;
-            if(Client.menuOptionCount > 0) {
-               int var3 = Client.menuOptionCount - 1;
-               Player.field260 = new class38();
-               Player.field260.field797 = Client.menuActionParams0[var3];
-               Player.field260.field800 = Client.menuActionParams1[var3];
-               Player.field260.field795 = Client.menuTypes[var3];
-               Player.field260.field798 = Client.menuIdentifiers[var3];
-               Player.field260.field799 = Client.menuOptions[var3];
-            }
-
-         }
-      }
-   }
+   @Export("floor")
+   int floor;
 }

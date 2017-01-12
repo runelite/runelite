@@ -1,127 +1,156 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("em")
 public final class class152 {
-   @ObfuscatedName("av")
-   int[][] field2050 = new int[6][258];
-   @ObfuscatedName("e")
-   final int field2051 = 16;
-   @ObfuscatedName("f")
-   final int field2052 = 258;
-   @ObfuscatedName("k")
-   final int field2053 = 6;
-   @ObfuscatedName("g")
-   final int field2054 = 50;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -2122004961
-   )
-   int field2055;
+   @ObfuscatedName("ai")
+   byte[][] field2029 = new byte[6][258];
+   @ObfuscatedName("x")
+   final int field2030 = 16;
+   @ObfuscatedName("i")
+   final int field2031 = 258;
    @ObfuscatedName("a")
-   byte[] field2056;
-   @ObfuscatedName("af")
-   int[][] field2057 = new int[6][258];
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1272363897
-   )
-   int field2058;
-   @ObfuscatedName("v")
-   byte[] field2059;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1810908881
-   )
-   int field2060 = 0;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = -188626531
-   )
-   int field2061;
+   final int field2032 = 6;
+   @ObfuscatedName("az")
+   int[] field2033 = new int[6];
+   @ObfuscatedName("c")
+   final int field2034 = 18002;
+   @ObfuscatedName("d")
+   byte[] field2035;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -109464907
+      intValue = 1545841707
    )
-   int field2062;
-   @ObfuscatedName("ap")
-   byte[] field2063 = new byte[18002];
+   int field2036 = 0;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1541808697
+   )
+   int field2037;
+   @ObfuscatedName("z")
+   byte[] field2038;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 1900066193
+   )
+   int field2039 = 0;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -512647053
+      intValue = -1348176375
    )
-   int field2064;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -1787750535
-   )
-   int field2065;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 634081827
-   )
-   int field2066;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -2003847211
-   )
-   int field2067;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 81520039
-   )
-   int field2068;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1140694415
-   )
-   int field2069;
-   @ObfuscatedName("ak")
-   boolean[] field2070 = new boolean[256];
-   @ObfuscatedName("s")
-   int[] field2071 = new int[256];
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1485702847
-   )
-   int field2072;
-   @ObfuscatedName("z")
-   int[] field2073 = new int[257];
-   @ObfuscatedName("am")
-   int[][] field2074 = new int[6][258];
-   @ObfuscatedName("ay")
-   int[] field2075 = new int[16];
-   @ObfuscatedName("c")
-   byte field2076;
-   @ObfuscatedName("aq")
-   byte[] field2077 = new byte[256];
-   @ObfuscatedName("an")
-   byte[] field2078 = new byte[4096];
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -818608209
-   )
-   int field2079;
-   @ObfuscatedName("n")
-   final int field2080 = 18002;
-   @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = 1225916653
-   )
-   int field2081;
-   @ObfuscatedName("aw")
-   byte[][] field2082 = new byte[6][258];
-   @ObfuscatedName("i")
-   final int field2084 = 4096;
-   @ObfuscatedName("aj")
-   byte[] field2085 = new byte[18002];
-   @ObfuscatedName("ai")
-   boolean[] field2086 = new boolean[16];
+   int field2040;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1078726197
+      intValue = -728648573
    )
-   int field2087 = 0;
-   @ObfuscatedName("az")
-   int[] field2088 = new int[6];
+   int field2041;
+   @ObfuscatedName("e")
+   byte field2042;
+   @ObfuscatedName("n")
+   int[] field2043 = new int[257];
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 740332701
+   )
+   int field2044;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -411761085
+   )
+   int field2045;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 150141731
+   )
+   int field2046;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -717015163
+   )
+   int field2047;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 901578873
+   )
+   int field2048;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1463852673
+   )
+   int field2049;
+   @ObfuscatedName("s")
+   int[] field2050 = new int[256];
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1309376871
+   )
+   int field2051;
+   @ObfuscatedName("ah")
+   int[][] field2052 = new int[6][258];
+   @ObfuscatedName("af")
+   int[] field2053 = new int[16];
+   @ObfuscatedName("aj")
+   boolean[] field2054 = new boolean[256];
+   @ObfuscatedName("ag")
+   boolean[] field2055 = new boolean[16];
+   @ObfuscatedName("al")
+   byte[] field2056 = new byte[256];
+   @ObfuscatedName("an")
+   byte[] field2057 = new byte[4096];
+   @ObfuscatedName("at")
+   int[][] field2058 = new int[6][258];
+   @ObfuscatedName("f")
+   final int field2059 = 50;
+   @ObfuscatedName("ax")
+   byte[] field2060 = new byte[18002];
+   @ObfuscatedName("nj")
+   @ObfuscatedGetter(
+      intValue = -1057156839
+   )
+   static int field2061;
+   @ObfuscatedName("ad")
+   @ObfuscatedGetter(
+      intValue = 1567901601
+   )
+   int field2062;
+   @ObfuscatedName("av")
+   int[][] field2063 = new int[6][258];
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1227938789
+   )
+   int field2064;
+   @ObfuscatedName("u")
+   final int field2065 = 4096;
+   @ObfuscatedName("aa")
+   byte[] field2066 = new byte[18002];
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1668661393
+   )
+   int field2067;
+   @ObfuscatedName("fo")
+   @ObfuscatedGetter(
+      intValue = 1985797641
+   )
+   static int field2068;
+   @ObfuscatedName("bk")
+   @Export("host")
+   static String host;
+
+   @ObfuscatedName("cd")
+   @ObfuscatedSignature(
+      signature = "(IIIII)V",
+      garbageValue = "736102614"
+   )
+   static final void method2757(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field533; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field486[var4] = true;
+         }
+      }
+
+   }
 }

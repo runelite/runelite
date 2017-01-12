@@ -4,180 +4,342 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cr")
 @Implements("Tile")
 public final class Tile extends Node {
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 612718061
-   )
-   int field1329;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -1588233811
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -305837179
+      intValue = -1935665965
    )
    @Export("y")
    int y;
-   @ObfuscatedName("s")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -23742145
+      intValue = 1442300261
    )
-   int field1332;
-   @ObfuscatedName("g")
-   class85 field1333;
-   @ObfuscatedName("n")
-   class77 field1334;
+   @Export("x")
+   int x;
+   @ObfuscatedName("j")
+   boolean field1329;
    @ObfuscatedName("a")
-   @Export("wallObject")
-   WallObject wallObject;
+   @ObfuscatedGetter(
+      intValue = 1154265393
+   )
+   int field1330;
+   @ObfuscatedName("f")
+   class85 field1331;
+   @ObfuscatedName("c")
+   class77 field1332;
    @ObfuscatedName("q")
-   @Export("decorativeObject")
-   DecorativeObject decorativeObject;
-   @ObfuscatedName("v")
+   int[] field1333 = new int[5];
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 1291966217
+   )
+   int field1334;
+   @ObfuscatedName("g")
+   @Export("groundObject")
+   GroundObject groundObject;
+   @ObfuscatedName("z")
    @Export("itemLayer")
    ItemLayer itemLayer;
    @ObfuscatedName("t")
-   Tile field1338;
+   @ObfuscatedGetter(
+      intValue = 216730305
+   )
+   int field1337;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 224981567
+      intValue = -1451425087
    )
-   int field1339;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1332092911
-   )
-   int field1340;
-   @ObfuscatedName("l")
-   int[] field1341 = new int[5];
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1316193777
-   )
-   int field1343;
-   @ObfuscatedName("r")
-   boolean field1344;
-   @ObfuscatedName("w")
-   @Export("groundObject")
-   GroundObject groundObject;
-   @ObfuscatedName("j")
-   boolean field1346;
+   int field1338;
    @ObfuscatedName("d")
+   @Export("wallObject")
+   WallObject wallObject;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1712145099
+      intValue = -1358608083
    )
-   int field1347;
-   @ObfuscatedName("i")
+   int field1340 = 0;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -1103456115
+      intValue = 1302850227
+   )
+   int field1341;
+   @ObfuscatedName("m")
+   @Export("objects")
+   GameObject[] objects = new GameObject[5];
+   @ObfuscatedName("p")
+   boolean field1343;
+   @ObfuscatedName("k")
+   boolean field1344;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1114724191
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("c")
+   @ObfuscatedName("l")
+   @Export("decorativeObject")
+   DecorativeObject decorativeObject;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 490823815
+      intValue = 51532031
    )
-   int field1349 = 0;
-   @ObfuscatedName("u")
-   boolean field1350;
-   @ObfuscatedName("p")
-   @Export("objects")
-   GameObject[] objects = new GameObject[5];
-   @ObfuscatedName("cw")
+   int field1348;
+   @ObfuscatedName("w")
+   Tile field1349;
+   @ObfuscatedName("bj")
    @ObfuscatedGetter(
-      intValue = -1913242129
+      intValue = -1767976545
    )
-   public static int field1352;
-   @ObfuscatedName("k")
+   static int field1351;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1615910351
+      intValue = 1843166337
    )
-   int field1354;
+   int field1353;
+   @ObfuscatedName("dw")
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("ah")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1528102776"
+      signature = "(LActor;I)V",
+      garbageValue = "-1587144562"
    )
-   static final void method1538() {
-      if(Client.widgetRoot != -1) {
-         ChatMessages.method834(Client.widgetRoot);
-      }
-
-      int var0;
-      for(var0 = 0; var0 < Client.field281; ++var0) {
-         if(Client.field524[var0]) {
-            Client.field560[var0] = true;
-         }
-
-         Client.field559[var0] = Client.field524[var0];
-         Client.field524[var0] = false;
-      }
-
-      Client.field490 = Client.gameCycle;
-      Client.field435 = -1;
-      Client.field340 = -1;
-      class156.field2119 = null;
-      if(Client.widgetRoot != -1) {
-         Client.field281 = 0;
-         class63.method1133(Client.widgetRoot, 0, 0, ItemLayer.field1223, class112.field1755, 0, 0, -1);
-      }
-
-      class219.method3888();
-      if(!Client.isMenuOpen) {
-         if(Client.field435 != -1) {
-            class170.method3174(Client.field435, Client.field340);
-         }
+   static final void method1511(Actor var0) {
+      var0.poseAnimation = var0.idlePoseAnimation;
+      if(var0.field653 == 0) {
+         var0.field657 = 0;
       } else {
-         var0 = FileOnDisk.menuX;
-         int var1 = XGrandExchangeOffer.menuY;
-         int var2 = class20.menuWidth;
-         int var3 = class101.menuHeight;
-         int var4 = 6116423;
-         class219.method3910(var0, var1, var2, var3, var4);
-         class219.method3910(var0 + 1, var1 + 1, var2 - 2, 16, 0);
-         class219.method3932(1 + var0, 18 + var1, var2 - 2, var3 - 19, 0);
-         class11.field119.method3779("Choose Option", 3 + var0, var1 + 14, var4, -1);
-         int var5 = class115.field1794;
-         int var6 = class115.field1797;
-
-         for(int var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-            int var8 = (Client.menuOptionCount - 1 - var7) * 15 + var1 + 31;
-            int var9 = 16777215;
-            if(var5 > var0 && var5 < var0 + var2 && var6 > var8 - 13 && var6 < 3 + var8) {
-               var9 = 16776960;
+         if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+            Sequence var10 = CombatInfo2.getAnimation(var0.animation);
+            if(var0.field658 > 0 && var10.precedenceAnimating == 0) {
+               ++var0.field657;
+               return;
             }
 
-            class11.field119.method3779(class172.method3179(var7), 3 + var0, var8, var9, 0);
-         }
-
-         class179.method3205(FileOnDisk.menuX, XGrandExchangeOffer.menuY, class20.menuWidth, class101.menuHeight);
-      }
-
-      if(Client.field498 == 3) {
-         for(var0 = 0; var0 < Client.field281; ++var0) {
-            if(Client.field559[var0]) {
-               class219.method3894(Client.widgetPositionX[var0], Client.widgetPositionY[var0], Client.widgetBoundsWidth[var0], Client.widgetBoundsHeight[var0], 16711935, 128);
-            } else if(Client.field560[var0]) {
-               class219.method3894(Client.widgetPositionX[var0], Client.widgetPositionY[var0], Client.widgetBoundsWidth[var0], Client.widgetBoundsHeight[var0], 16711680, 128);
+            if(var0.field658 <= 0 && var10.priority == 0) {
+               ++var0.field657;
+               return;
             }
          }
-      }
 
-      class57.method1046(class171.plane, class39.localPlayer.x, class39.localPlayer.y, Client.field364);
-      Client.field364 = 0;
+         int var1 = var0.x;
+         int var2 = var0.y;
+         int var3 = var0.field603 * 64 + 128 * var0.pathX[var0.field653 - 1];
+         int var4 = var0.field603 * 64 + 128 * var0.pathY[var0.field653 - 1];
+         if(var1 < var3) {
+            if(var2 < var4) {
+               var0.field650 = 1280;
+            } else if(var2 > var4) {
+               var0.field650 = 1792;
+            } else {
+               var0.field650 = 1536;
+            }
+         } else if(var1 > var3) {
+            if(var2 < var4) {
+               var0.field650 = 768;
+            } else if(var2 > var4) {
+               var0.field650 = 256;
+            } else {
+               var0.field650 = 512;
+            }
+         } else if(var2 < var4) {
+            var0.field650 = 1024;
+         } else if(var2 > var4) {
+            var0.field650 = 0;
+         }
+
+         byte var5 = var0.field656[var0.field653 - 1];
+         if(var3 - var1 <= 256 && var3 - var1 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
+            int var6 = var0.field650 - var0.angle & 2047;
+            if(var6 > 1024) {
+               var6 -= 2048;
+            }
+
+            int var7 = var0.field608;
+            if(var6 >= -256 && var6 <= 256) {
+               var7 = var0.field607;
+            } else if(var6 >= 256 && var6 < 768) {
+               var7 = var0.field614;
+            } else if(var6 >= -768 && var6 <= -256) {
+               var7 = var0.field639;
+            }
+
+            if(var7 == -1) {
+               var7 = var0.field607;
+            }
+
+            var0.poseAnimation = var7;
+            int var8 = 4;
+            boolean var9 = true;
+            if(var0 instanceof NPC) {
+               var9 = ((NPC)var0).composition.isClickable;
+            }
+
+            if(var9) {
+               if(var0.field650 != var0.angle && var0.interacting == -1 && var0.field616 != 0) {
+                  var8 = 2;
+               }
+
+               if(var0.field653 > 2) {
+                  var8 = 6;
+               }
+
+               if(var0.field653 > 3) {
+                  var8 = 8;
+               }
+
+               if(var0.field657 > 0 && var0.field653 > 1) {
+                  var8 = 8;
+                  --var0.field657;
+               }
+            } else {
+               if(var0.field653 > 1) {
+                  var8 = 6;
+               }
+
+               if(var0.field653 > 2) {
+                  var8 = 8;
+               }
+
+               if(var0.field657 > 0 && var0.field653 > 1) {
+                  var8 = 8;
+                  --var0.field657;
+               }
+            }
+
+            if(var5 == 2) {
+               var8 <<= 1;
+            }
+
+            if(var8 >= 8 && var0.field607 == var0.poseAnimation && var0.field622 != -1) {
+               var0.poseAnimation = var0.field622;
+            }
+
+            if(var1 != var3 || var2 != var4) {
+               if(var1 < var3) {
+                  var0.x += var8;
+                  if(var0.x > var3) {
+                     var0.x = var3;
+                  }
+               } else if(var1 > var3) {
+                  var0.x -= var8;
+                  if(var0.x < var3) {
+                     var0.x = var3;
+                  }
+               }
+
+               if(var2 < var4) {
+                  var0.y += var8;
+                  if(var0.y > var4) {
+                     var0.y = var4;
+                  }
+               } else if(var2 > var4) {
+                  var0.y -= var8;
+                  if(var0.y < var4) {
+                     var0.y = var4;
+                  }
+               }
+            }
+
+            if(var0.x == var3 && var0.y == var4) {
+               --var0.field653;
+               if(var0.field658 > 0) {
+                  --var0.field658;
+               }
+            }
+
+         } else {
+            var0.x = var3;
+            var0.y = var4;
+            --var0.field653;
+            if(var0.field658 > 0) {
+               --var0.field658;
+            }
+
+         }
+      }
    }
 
    Tile(int var1, int var2, int var3) {
-      this.plane = var1 * -1103456115;
-      this.field1354 = var1;
+      this.field1330 = this.plane = var1;
       this.x = var2;
       this.y = var3;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-853609796"
+   )
+   static final void method1512() {
+      class109.method2005();
+      class176.method3242();
+      class47.method866();
+      ObjectComposition.field2904.reset();
+      ObjectComposition.field2929.reset();
+      ObjectComposition.field2884.reset();
+      ObjectComposition.field2908.reset();
+      CombatInfoListHolder.method714();
+      class137.method2460();
+      Sequence.field3044.reset();
+      Sequence.field3040.reset();
+      class190.field2768.reset();
+      class190.field2769.reset();
+      class5.method79();
+      class187.field2752.reset();
+      class196.field2854.reset();
+      class196.spriteCache.reset();
+      class196.field2856.reset();
+      CombatInfo2.field2815.reset();
+      CombatInfo2.field2824.reset();
+      class72.method1362();
+      class99.method1898();
+      ((TextureProvider)class84.field1434).method1391();
+      class48.field929.reset();
+      class5.field46.method3275();
+      class11.field120.method3275();
+      Client.field349.method3275();
+      class10.field94.method3275();
+      Client.field563.method3275();
+      class37.field781.method3275();
+      Client.field314.method3275();
+      class0.field4.method3275();
+      class5.field49.method3275();
+      ChatLineBuffer.field956.method3275();
+      class162.field2136.method3275();
+      class137.field1898.method3275();
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(II)LObjectComposition;",
+      garbageValue = "-879614425"
+   )
+   @Export("getObjectDefinition")
+   public static ObjectComposition getObjectDefinition(int var0) {
+      ObjectComposition var1 = (ObjectComposition)ObjectComposition.field2904.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = ObjectComposition.field2881.method3272(6, var0);
+         var1 = new ObjectComposition();
+         var1.field2887 = var0;
+         if(var2 != null) {
+            var1.method3594(new Buffer(var2));
+         }
+
+         var1.method3600();
+         if(var1.field2919) {
+            var1.field2923 = 0;
+            var1.field2898 = false;
+         }
+
+         ObjectComposition.field2904.put(var1, (long)var0);
+         return var1;
+      }
    }
 }
