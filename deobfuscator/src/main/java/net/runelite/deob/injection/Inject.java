@@ -59,6 +59,7 @@ import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.mapping.Import;
+import net.runelite.rs.api.Client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,19 +75,7 @@ public class Inject
 
 	private static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 	
-	private static java.lang.Class<?> clientClass;
-	
-	static
-	{
-		try
-		{
-			clientClass = java.lang.Class.forName("net.runelite.rs.api.Client");
-		}
-		catch (ClassNotFoundException ex)
-		{
-			ex.printStackTrace();
-		}
-	}
+	private static final java.lang.Class<?> clientClass = Client.class;
 	
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -235,15 +224,16 @@ public class Inject
 				if (targetApiClass == null)
 				{
 					assert !f.isStatic();
-					System.out.println("Non static exported field " + exportedName + " on non exported interface");
+
 					// non static field exported on non exported interface
+					logger.warn("Non static exported field {} on non exported interface", exportedName);
 					continue;
 				}
 				
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName);
 				if (apiMethod == null)
 				{
-					System.out.println("Unable to find import method on api class " + targetApiClass + " with exported name " + exportedName + ", not injecting getter");
+					logger.info("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
 					continue;
 				}
 				
@@ -300,21 +290,25 @@ public class Inject
 				if (targetClassJava == null)
 				{
 					assert !m.isStatic();
-					System.out.println("Non static exported method " + exportedName + " on non exported interface");
+
 					// non static exported method on non exported interface, weird.
+					logger.warn("Non static exported method {} on non exported interface", exportedName);
 					continue;
 				}
 				
 				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetClassJava, exportedName); // api method to invoke 'otherm'
 				if (apiMethod == null)
 				{
-					System.out.println("Unable to find api method on " + targetClassJava + " for exported name " + exportedName + ", not injecting invoker");
+					logger.info("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);
 					continue;
 				}
 
 				injectInvoker(targetClass, apiMethod, m, otherm, garbage);
 			}
 		}
+
+		InjectorValidator iv = new InjectorValidator(vanilla);
+		iv.validate();
 	}
 	
 	private java.lang.Class injectInterface(ClassFile cf, ClassFile other)
@@ -336,7 +330,7 @@ public class Inject
 		}
 		catch (ClassNotFoundException ex)
 		{
-			logger.warn("Class {} implements nonexistent interface {}, skipping interface injection",
+			logger.info("Class {} implements nonexistent interface {}, skipping interface injection",
 				cf.getName(),
 				ifaceName);
 			return null;
