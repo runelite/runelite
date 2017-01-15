@@ -70,7 +70,7 @@ public class TextureDumper
 				TextureLoader loader = new TextureLoader();
 				TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
 
-				Files.write(gson.toJson(texture), new java.io.File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
+				Files.write(gson.toJson(texture), new java.io.File(outDir, texture.getId() + ".json"), Charset.defaultCharset());
 				++count;
 			}
 		}
