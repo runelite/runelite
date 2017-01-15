@@ -59,14 +59,13 @@ public class CombatInfoListHolder extends Node {
          if(var6 < 4) {
             this.combatInfo1.method2356(new CombatInfo1(var1, var2, var3, var4));
          }
-
       } else {
          CombatInfoList.method2357(new CombatInfo1(var1, var2, var3, var4), var5);
          if(var6 >= 4) {
             this.combatInfo1.method2358().unlink();
          }
-
       }
+
    }
 
    CombatInfoListHolder(CombatInfo2 var1) {
@@ -148,7 +147,7 @@ public class CombatInfoListHolder extends Node {
       if(null != class185.field2737) {
          try {
             class185.field2737.method2026();
-         } catch (Exception var6) {
+         } catch (Exception var7) {
             ;
          }
 
@@ -170,15 +169,15 @@ public class CombatInfoListHolder extends Node {
                if(null == var2) {
                   if(class185.field2739 != 0) {
                      try {
-                        Buffer var7 = new Buffer(4);
-                        var7.method2760(4);
-                        var7.method2760(class185.field2739);
-                        var7.method2918(0);
-                        class185.field2737.method2018(var7.payload, 0, 4);
-                     } catch (IOException var5) {
+                        Buffer var3 = new Buffer(4);
+                        var3.method2760(4);
+                        var3.method2760(class185.field2739);
+                        var3.method2918(0);
+                        class185.field2737.method2018(var3.payload, 0, 4);
+                     } catch (IOException var6) {
                         try {
                            class185.field2737.method2026();
-                        } catch (Exception var4) {
+                        } catch (Exception var5) {
                            ;
                         }
 

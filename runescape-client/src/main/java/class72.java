@@ -102,86 +102,86 @@ public class class72 {
          }
 
          long var4 = this.field1182;
-         int var7 = var3;
-         int var8;
+         int var6 = var3;
+         int var7;
          if(this.field1182 >= this.field1179 && this.field1182 < this.field1179 + (long)this.field1171) {
-            var8 = (int)((long)this.field1171 - (this.field1182 - this.field1179));
-            if(var8 > var3) {
-               var8 = var3;
+            var7 = (int)((long)this.field1171 - (this.field1182 - this.field1179));
+            if(var7 > var3) {
+               var7 = var3;
             }
 
-            System.arraycopy(this.field1169, (int)(this.field1182 - this.field1179), var1, var2, var8);
-            this.field1182 += (long)var8;
-            var2 += var8;
-            var3 -= var8;
+            System.arraycopy(this.field1169, (int)(this.field1182 - this.field1179), var1, var2, var7);
+            this.field1182 += (long)var7;
+            var2 += var7;
+            var3 -= var7;
          }
 
          if(var3 > this.field1169.length) {
             this.field1170.method1369(this.field1182);
 
-            for(this.field1178 = this.field1182; var3 > 0; var3 -= var8) {
-               var8 = this.field1170.method1368(var1, var2, var3);
-               if(var8 == -1) {
+            for(this.field1178 = this.field1182; var3 > 0; var3 -= var7) {
+               var7 = this.field1170.method1368(var1, var2, var3);
+               if(var7 == -1) {
                   break;
                }
 
-               this.field1178 += (long)var8;
-               this.field1182 += (long)var8;
-               var2 += var8;
+               this.field1178 += (long)var7;
+               this.field1182 += (long)var7;
+               var2 += var7;
             }
          } else if(var3 > 0) {
             this.method1339();
-            var8 = var3;
+            var7 = var3;
             if(var3 > this.field1171) {
-               var8 = this.field1171;
+               var7 = this.field1171;
             }
 
-            System.arraycopy(this.field1169, 0, var1, var2, var8);
-            var2 += var8;
-            var3 -= var8;
-            this.field1182 += (long)var8;
+            System.arraycopy(this.field1169, 0, var1, var2, var7);
+            var2 += var7;
+            var3 -= var7;
+            this.field1182 += (long)var7;
          }
 
          if(-1L != this.field1173) {
             if(this.field1173 > this.field1182 && var3 > 0) {
-               var8 = (int)(this.field1173 - this.field1182) + var2;
-               if(var8 > var2 + var3) {
-                  var8 = var2 + var3;
+               var7 = (int)(this.field1173 - this.field1182) + var2;
+               if(var7 > var2 + var3) {
+                  var7 = var2 + var3;
                }
 
-               while(var2 < var8) {
+               while(var2 < var7) {
                   var1[var2++] = 0;
                   --var3;
                   ++this.field1182;
                }
             }
 
-            long var15 = -1L;
+            long var8 = -1L;
             long var10 = -1L;
-            if(this.field1173 >= var4 && this.field1173 < var4 + (long)var7) {
-               var15 = this.field1173;
+            if(this.field1173 >= var4 && this.field1173 < var4 + (long)var6) {
+               var8 = this.field1173;
             } else if(var4 >= this.field1173 && var4 < this.field1173 + (long)this.field1174) {
-               var15 = var4;
+               var8 = var4;
             }
 
-            if((long)this.field1174 + this.field1173 > var4 && (long)this.field1174 + this.field1173 <= (long)var7 + var4) {
+            if((long)this.field1174 + this.field1173 > var4 && (long)this.field1174 + this.field1173 <= (long)var6 + var4) {
                var10 = this.field1173 + (long)this.field1174;
-            } else if(var4 + (long)var7 > this.field1173 && (long)var7 + var4 <= this.field1173 + (long)this.field1174) {
-               var10 = var4 + (long)var7;
+            } else if(var4 + (long)var6 > this.field1173 && (long)var6 + var4 <= this.field1173 + (long)this.field1174) {
+               var10 = var4 + (long)var6;
             }
 
-            if(var15 > -1L && var10 > var15) {
-               int var12 = (int)(var10 - var15);
-               System.arraycopy(this.field1172, (int)(var15 - this.field1173), var1, var2 + (int)(var15 - var4), var12);
+            if(var8 > -1L && var10 > var8) {
+               int var12 = (int)(var10 - var8);
+               System.arraycopy(this.field1172, (int)(var8 - this.field1173), var1, var2 + (int)(var8 - var4), var12);
                if(var10 > this.field1182) {
                   var3 = (int)((long)var3 - (var10 - this.field1182));
                   this.field1182 = var10;
                }
             }
          }
-      } catch (IOException var14) {
+      } catch (IOException var13) {
          this.field1178 = -1L;
-         throw var14;
+         throw var13;
       }
 
       if(var3 > 0) {
@@ -313,7 +313,6 @@ public class class72 {
                if(this.field1182 - this.field1173 > (long)this.field1174) {
                   this.field1174 = (int)(this.field1182 - this.field1173);
                }
-
             }
          } else {
             if(this.field1178 != this.field1182) {
@@ -327,12 +326,12 @@ public class class72 {
                this.field1176 = this.field1178;
             }
 
-            long var11 = -1L;
+            long var10 = -1L;
             long var6 = -1L;
             if(this.field1182 >= this.field1179 && this.field1182 < this.field1179 + (long)this.field1171) {
-               var11 = this.field1182;
+               var10 = this.field1182;
             } else if(this.field1179 >= this.field1182 && this.field1179 < this.field1182 + (long)var3) {
-               var11 = this.field1179;
+               var10 = this.field1179;
             }
 
             if((long)var3 + this.field1182 > this.field1179 && this.field1182 + (long)var3 <= (long)this.field1171 + this.field1179) {
@@ -341,16 +340,17 @@ public class class72 {
                var6 = (long)this.field1171 + this.field1179;
             }
 
-            if(var11 > -1L && var6 > var11) {
-               int var8 = (int)(var6 - var11);
-               System.arraycopy(var1, (int)((long)var2 + var11 - this.field1182), this.field1169, (int)(var11 - this.field1179), var8);
+            if(var10 > -1L && var6 > var10) {
+               int var8 = (int)(var6 - var10);
+               System.arraycopy(var1, (int)((long)var2 + var10 - this.field1182), this.field1169, (int)(var10 - this.field1179), var8);
             }
 
             this.field1182 += (long)var3;
          }
-      } catch (IOException var10) {
+
+      } catch (IOException var9) {
          this.field1178 = -1L;
-         throw var10;
+         throw var9;
       }
    }
 

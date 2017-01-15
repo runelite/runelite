@@ -55,7 +55,7 @@ public final class class110 implements Runnable {
 
                      try {
                         this.wait();
-                     } catch (InterruptedException var10) {
+                     } catch (InterruptedException var9) {
                         ;
                      }
                   }
@@ -74,7 +74,7 @@ public final class class110 implements Runnable {
 
                try {
                   this.field1737.write(this.field1736, var2, var1);
-               } catch (IOException var9) {
+               } catch (IOException var8) {
                   this.field1739 = true;
                }
 
@@ -84,7 +84,7 @@ public final class class110 implements Runnable {
                   if(this.field1738 == this.field1733) {
                      this.field1737.flush();
                   }
-               } catch (IOException var8) {
+               } catch (IOException var7) {
                   this.field1739 = true;
                }
                continue;
@@ -102,15 +102,15 @@ public final class class110 implements Runnable {
                if(null != this.field1732) {
                   this.field1732.close();
                }
-            } catch (IOException var7) {
+            } catch (IOException var6) {
                ;
             }
 
             this.field1736 = null;
             break;
          }
-      } catch (Exception var12) {
-         class174.method3240((String)null, var12);
+      } catch (Exception var11) {
+         class174.method3240((String)null, var11);
       }
 
    }
@@ -131,8 +131,8 @@ public final class class110 implements Runnable {
             var2 += var4;
             var3 -= var4;
          }
-
       }
+
    }
 
    @ObfuscatedName("c")
@@ -165,28 +165,29 @@ public final class class110 implements Runnable {
          if(this.field1739) {
             this.field1739 = false;
             throw new IOException();
-         } else {
-            if(this.field1736 == null) {
-               this.field1736 = new byte[5000];
+         }
+
+         if(this.field1736 == null) {
+            this.field1736 = new byte[5000];
+         }
+
+         synchronized(this) {
+            for(int var5 = 0; var5 < var3; ++var5) {
+               this.field1736[this.field1738] = var1[var2 + var5];
+               this.field1738 = (this.field1738 + 1) % 5000;
+               if(this.field1738 == (this.field1733 + 4900) % 5000) {
+                  throw new IOException();
+               }
             }
 
-            synchronized(this) {
-               for(int var5 = 0; var5 < var3; ++var5) {
-                  this.field1736[this.field1738] = var1[var2 + var5];
-                  this.field1738 = (this.field1738 + 1) % 5000;
-                  if(this.field1738 == (this.field1733 + 4900) % 5000) {
-                     throw new IOException();
-                  }
-               }
-
-               if(this.field1734 == null) {
-                  this.field1734 = this.field1744.method1916(this, 3);
-               }
-
-               this.notifyAll();
+            if(this.field1734 == null) {
+               this.field1734 = this.field1744.method1916(this, 3);
             }
+
+            this.notifyAll();
          }
       }
+
    }
 
    @ObfuscatedName("a")
@@ -230,5 +231,6 @@ public final class class110 implements Runnable {
 
          this.field1734 = null;
       }
+
    }
 }

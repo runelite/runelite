@@ -197,6 +197,7 @@ public class Friend {
 
          Client.gameState = var0;
       }
+
    }
 
    @ObfuscatedName("x")

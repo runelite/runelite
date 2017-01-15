@@ -53,13 +53,13 @@ public class Ignore {
                   class107.field1718.put(var0, var2);
                   return var2;
                }
-            } catch (Exception var8) {
+            } catch (Exception var7) {
                try {
                   if(var3 != null) {
                      var3.close();
                      var3 = null;
                   }
-               } catch (Exception var7) {
+               } catch (Exception var6) {
                   ;
                }
 

@@ -144,22 +144,22 @@ public final class Player extends Actor {
       this.team = 0;
       int[] var4 = new int[12];
 
+      int var5;
       int var6;
-      int var7;
-      for(int var5 = 0; var5 < 12; ++var5) {
-         var6 = var1.readUnsignedByte();
-         if(var6 == 0) {
-            var4[var5] = 0;
+      for(int var7 = 0; var7 < 12; ++var7) {
+         var5 = var1.readUnsignedByte();
+         if(var5 == 0) {
+            var4[var7] = 0;
          } else {
-            var7 = var1.readUnsignedByte();
-            var4[var5] = var7 + (var6 << 8);
-            if(var5 == 0 && var4[0] == '\uffff') {
+            var6 = var1.readUnsignedByte();
+            var4[var7] = var6 + (var5 << 8);
+            if(var7 == 0 && var4[0] == '\uffff') {
                var3 = var1.readUnsignedShort();
                break;
             }
 
-            if(var4[var5] >= 512) {
-               int var8 = class88.getItemDefinition(var4[var5] - 512).field2954;
+            if(var4[var7] >= 512) {
+               int var8 = class88.getItemDefinition(var4[var7] - 512).field2954;
                if(var8 != 0) {
                   this.team = var8;
                }
@@ -169,13 +169,13 @@ public final class Player extends Actor {
 
       int[] var9 = new int[5];
 
-      for(var6 = 0; var6 < 5; ++var6) {
-         var7 = var1.readUnsignedByte();
-         if(var7 < 0 || var7 >= class227.field3229[var6].length) {
-            var7 = 0;
+      for(var5 = 0; var5 < 5; ++var5) {
+         var6 = var1.readUnsignedByte();
+         if(var6 < 0 || var6 >= class227.field3229[var5].length) {
+            var6 = 0;
          }
 
-         var9[var6] = var7;
+         var9[var5] = var6;
       }
 
       super.idlePoseAnimation = var1.readUnsignedShort();
@@ -252,7 +252,7 @@ public final class Player extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?CombatInfo2.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation != -1 && !this.field246 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?CombatInfo2.getAnimation(super.poseAnimation):null;
+         Sequence var2 = super.poseAnimation == -1 || this.field246 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:CombatInfo2.getAnimation(super.poseAnimation);
          Model var3 = this.composition.method3152(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;

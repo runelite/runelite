@@ -174,5 +174,6 @@ public class XGrandExchangeOffer {
       if(class94.method1870(var0)) {
          class189.method3445(Widget.widgets[var0], -1, var1, var2, var3);
       }
+
    }
 }

@@ -170,23 +170,23 @@ public class class99 extends class109 {
                   int var9 = var5;
                   int var10 = var6;
                   if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                     int[][] var13 = Client.collisionMaps[class60.plane].flags;
+                     int[][] var11 = Client.collisionMaps[class60.plane].flags;
 
-                     for(int var14 = 0; var14 < 10; ++var14) {
-                        int var15 = (int)(Math.random() * 4.0D);
-                        if(var15 == 0 && var9 > 0 && var9 > var5 - 3 && (var13[var9 - 1][var10] & 19136776) == 0) {
+                     for(int var12 = 0; var12 < 10; ++var12) {
+                        int var13 = (int)(Math.random() * 4.0D);
+                        if(var13 == 0 && var9 > 0 && var9 > var5 - 3 && (var11[var9 - 1][var10] & 19136776) == 0) {
                            --var9;
                         }
 
-                        if(var15 == 1 && var9 < 103 && var9 < 3 + var5 && (var13[1 + var9][var10] & 19136896) == 0) {
+                        if(var13 == 1 && var9 < 103 && var9 < 3 + var5 && (var11[1 + var9][var10] & 19136896) == 0) {
                            ++var9;
                         }
 
-                        if(var15 == 2 && var10 > 0 && var10 > var6 - 3 && (var13[var9][var10 - 1] & 19136770) == 0) {
+                        if(var13 == 2 && var10 > 0 && var10 > var6 - 3 && (var11[var9][var10 - 1] & 19136770) == 0) {
                            --var10;
                         }
 
-                        if(var15 == 3 && var10 < 103 && var10 < 3 + var6 && (var13[var9][var10 + 1] & 19136800) == 0) {
+                        if(var13 == 3 && var10 < 103 && var10 < 3 + var6 && (var11[var9][var10 + 1] & 19136800) == 0) {
                            ++var10;
                         }
                      }

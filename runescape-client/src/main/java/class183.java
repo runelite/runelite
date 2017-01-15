@@ -23,29 +23,35 @@ public class class183 implements Runnable {
    public void run() {
       try {
          while(true) {
-            Deque var2 = field2705;
-            class180 var1;
+            Deque var1 = field2705;
+            Deque var3 = field2705;
+            class180 var2;
             synchronized(field2705) {
-               var1 = (class180)field2705.method2391();
+               var2 = (class180)field2705.method2391();
             }
 
-            Object var14;
-            if(null != var1) {
-               if(var1.field2673 == 0) {
-                  var1.field2670.method2224((int)var1.hash, var1.field2675, var1.field2675.length);
-                  var2 = field2705;
+            Object var4;
+            Object var15;
+            if(null != var2) {
+               Deque var16;
+               if(var2.field2673 == 0) {
+                  var2.field2670.method2224((int)var2.hash, var2.field2675, var2.field2675.length);
+                  var1 = field2705;
+                  var16 = field2705;
                   synchronized(field2705) {
-                     var1.unlink();
+                     var2.unlink();
                   }
-               } else if(var1.field2673 == 1) {
-                  var1.field2675 = var1.field2670.method2227((int)var1.hash);
-                  var2 = field2705;
+               } else if(var2.field2673 == 1) {
+                  var2.field2675 = var2.field2670.method2227((int)var2.hash);
+                  var1 = field2705;
+                  var16 = field2705;
                   synchronized(field2705) {
-                     field2703.method2394(var1);
+                     field2703.method2394(var2);
                   }
                }
 
-               var14 = field2706;
+               var15 = field2706;
+               var4 = field2706;
                synchronized(field2706) {
                   if(field2704 <= 1) {
                      field2704 = 0;
@@ -57,7 +63,8 @@ public class class183 implements Runnable {
                }
             } else {
                VertexNormal.method1598(100L);
-               var14 = field2706;
+               var15 = field2706;
+               var4 = field2706;
                synchronized(field2706) {
                   if(field2704 <= 1) {
                      field2704 = 0;
@@ -69,8 +76,8 @@ public class class183 implements Runnable {
                }
             }
          }
-      } catch (Exception var13) {
-         class174.method3240((String)null, var13);
+      } catch (Exception var14) {
+         class174.method3240((String)null, var14);
       }
    }
 
@@ -111,6 +118,7 @@ public class class183 implements Runnable {
       if(class94.method1870(var0)) {
          Frames.method1850(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
       }
+
    }
 
    @ObfuscatedName("x")

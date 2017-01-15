@@ -116,14 +116,14 @@ public class class230 extends Node {
       String var2;
       try {
          var2 = System.getProperty("os.arch").toLowerCase();
-      } catch (Exception var13) {
+      } catch (Exception var12) {
          var2 = "";
       }
 
       String var3;
       try {
          var3 = System.getProperty("os.version").toLowerCase();
-      } catch (Exception var12) {
+      } catch (Exception var11) {
          var3 = "";
       }
 
@@ -133,7 +133,7 @@ public class class230 extends Node {
       try {
          var4 = System.getProperty("java.vendor");
          var5 = System.getProperty("java.version");
-      } catch (Exception var11) {
+      } catch (Exception var10) {
          ;
       }
 
@@ -195,57 +195,57 @@ public class class230 extends Node {
          this.field3259 = 4;
       }
 
-      int var9 = 2;
+      int var6 = 2;
       int var7 = 0;
 
       char var8;
       try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
             if(var8 < 48 || var8 > 57) {
                break;
             }
 
             var7 = var7 * 10 + (var8 - 48);
-            ++var9;
-         }
-      } catch (Exception var16) {
-         ;
-      }
-
-      this.field3275 = var7;
-      var9 = var5.indexOf(46, 2) + 1;
-      var7 = 0;
-
-      try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
-            if(var8 < 48 || var8 > 57) {
-               break;
-            }
-
-            var7 = var8 - 48 + var7 * 10;
-            ++var9;
+            ++var6;
          }
       } catch (Exception var15) {
          ;
       }
 
-      this.field3270 = var7;
-      var9 = var5.indexOf(95, 4) + 1;
+      this.field3275 = var7;
+      var6 = var5.indexOf(46, 2) + 1;
       var7 = 0;
 
       try {
-         while(var9 < var5.length()) {
-            var8 = var5.charAt(var9);
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
+            if(var8 < 48 || var8 > 57) {
+               break;
+            }
+
+            var7 = var8 - 48 + var7 * 10;
+            ++var6;
+         }
+      } catch (Exception var14) {
+         ;
+      }
+
+      this.field3270 = var7;
+      var6 = var5.indexOf(95, 4) + 1;
+      var7 = 0;
+
+      try {
+         while(var6 < var5.length()) {
+            var8 = var5.charAt(var6);
             if(var8 < 48 || var8 > 57) {
                break;
             }
 
             var7 = var8 - 48 + 10 * var7;
-            ++var9;
+            ++var6;
          }
-      } catch (Exception var14) {
+      } catch (Exception var13) {
          ;
       }
 

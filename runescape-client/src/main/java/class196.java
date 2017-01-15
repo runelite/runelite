@@ -100,6 +100,7 @@ public class class196 extends CacheableNode {
    )
    public static final boolean method3554() {
       class105 var0 = class105.keyboard;
+      class105 var1 = class105.keyboard;
       synchronized(class105.keyboard) {
          if(class105.field1683 == class105.field1709) {
             return false;

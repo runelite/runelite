@@ -16,6 +16,7 @@ public class Overlay extends CacheableNode {
    @ObfuscatedName("x")
    static NodeCache field3023 = new NodeCache(64);
    @ObfuscatedName("f")
+   @Export("isHidden")
    public boolean field3025 = true;
    @ObfuscatedName("l")
    @ObfuscatedGetter(

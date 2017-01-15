@@ -41,9 +41,9 @@ public class class47 {
       File var3 = new File(class104.field1672, "preferences" + var0 + ".dat");
       if(var3.exists()) {
          try {
-            FileOnDisk var10 = new FileOnDisk(var3, "rw", 10000L);
-            return var10;
-         } catch (IOException var9) {
+            FileOnDisk var11 = new FileOnDisk(var3, "rw", 10000L);
+            return var11;
+         } catch (IOException var10) {
             ;
          }
       }
@@ -61,7 +61,7 @@ public class class47 {
          try {
             var6 = new FileOnDisk(var5, "rw", 10000L);
             return var6;
-         } catch (IOException var8) {
+         } catch (IOException var9) {
             ;
          }
       }
@@ -69,7 +69,7 @@ public class class47 {
       try {
          var6 = new FileOnDisk(var3, "rw", 10000L);
          return var6;
-      } catch (IOException var7) {
+      } catch (IOException var8) {
          throw new RuntimeException();
       }
    }
@@ -102,15 +102,15 @@ public class class47 {
             var1.field935 = new int[var4];
             var1.field930 = new String[var4];
 
-            int var6;
-            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.field928[var5++] = var6) {
-               var6 = var3.readUnsignedShort();
-               if(var6 == 3) {
-                  var1.field930[var5] = var3.method2965();
-               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
-                  var1.field935[var5] = var3.method2780();
+            int var5;
+            for(int var6 = 0; var3.offset < var3.payload.length - 12; var1.field928[var6++] = var5) {
+               var5 = var3.readUnsignedShort();
+               if(var5 == 3) {
+                  var1.field930[var6] = var3.method2965();
+               } else if(var5 < 100 && var5 != 21 && var5 != 38 && var5 != 39) {
+                  var1.field935[var6] = var3.method2780();
                } else {
-                  var1.field935[var5] = var3.readUnsignedByte();
+                  var1.field935[var6] = var3.readUnsignedByte();
                }
             }
 

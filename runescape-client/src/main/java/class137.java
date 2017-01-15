@@ -89,14 +89,14 @@ public class class137 {
       if(null == var0) {
          return null;
       } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
+         byte[] var5 = (byte[])((byte[])((byte[])var0));
          if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
+            int var3 = var5.length;
+            byte[] var4 = new byte[var3];
+            System.arraycopy(var5, 0, var4, 0, var3);
+            return var4;
          } else {
-            return var6;
+            return var5;
          }
       } else if(var0 instanceof class156) {
          class156 var2 = (class156)var0;

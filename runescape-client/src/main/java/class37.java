@@ -106,7 +106,6 @@ public class class37 {
          if(var4 == 4) {
             class41.loginIndex = 4;
          }
-
       } else {
          class41.loginIndex = var4;
          class219.method4007();
@@ -196,10 +195,10 @@ public class class37 {
          class41.field835 = true;
          class41.worldSelectShown = false;
          if(!class2.field21.field692) {
-            class184 var9 = field781;
-            int var7 = var9.method3277("scape main");
-            int var8 = var9.method3278(var7, "");
-            class85.method1663(2, var9, var7, var8, 255, false);
+            class184 var7 = field781;
+            int var8 = var7.method3277("scape main");
+            int var9 = var7.method3278(var8, "");
+            class85.method1663(2, var7, var8, var9, 255, false);
          } else {
             class138.field1900 = 1;
             class138.field1903 = null;
@@ -218,5 +217,6 @@ public class class37 {
          class41.field840.method4123(class41.field846 + 382, 0);
          class229.field3246.method4066(382 + class41.field846 - class229.field3246.originalWidth / 2, 18);
       }
+
    }
 }

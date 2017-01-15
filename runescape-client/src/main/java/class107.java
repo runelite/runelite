@@ -49,15 +49,15 @@ public class class107 {
                ++var2;
             }
 
-            StringBuilder var5 = new StringBuilder(var2);
+            StringBuilder var6 = new StringBuilder(var2);
 
             while(0L != var0) {
-               long var6 = var0;
+               long var4 = var0;
                var0 /= 37L;
-               var5.append(class205.field3069[(int)(var6 - 37L * var0)]);
+               var6.append(class205.field3069[(int)(var4 - 37L * var0)]);
             }
 
-            return var5.reverse().toString();
+            return var6.reverse().toString();
          }
       } else {
          return null;

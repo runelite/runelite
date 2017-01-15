@@ -52,72 +52,72 @@ public class class20 implements Runnable {
          var3 = XItemContainer.baseY;
 
          int var6;
-         int var8;
+         int var7;
          for(var6 = 0; var6 < '耀'; ++var6) {
-            NPC var7 = Client.cachedNPCs[var6];
-            if(var7 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var7.pathX[var8] -= var4;
-                  var7.pathY[var8] -= var5;
+            NPC var8 = Client.cachedNPCs[var6];
+            if(var8 != null) {
+               for(var7 = 0; var7 < 10; ++var7) {
+                  var8.pathX[var7] -= var4;
+                  var8.pathY[var7] -= var5;
                }
 
-               var7.x -= var4 * 128;
-               var7.y -= var5 * 128;
+               var8.x -= var4 * 128;
+               var8.y -= var5 * 128;
             }
          }
 
          for(var6 = 0; var6 < 2048; ++var6) {
-            Player var20 = Client.cachedPlayers[var6];
-            if(var20 != null) {
-               for(var8 = 0; var8 < 10; ++var8) {
-                  var20.pathX[var8] -= var4;
-                  var20.pathY[var8] -= var5;
+            Player var19 = Client.cachedPlayers[var6];
+            if(var19 != null) {
+               for(var7 = 0; var7 < 10; ++var7) {
+                  var19.pathX[var7] -= var4;
+                  var19.pathY[var7] -= var5;
                }
 
-               var20.x -= var4 * 128;
-               var20.y -= 128 * var5;
+               var19.x -= var4 * 128;
+               var19.y -= 128 * var5;
             }
          }
 
-         byte var19 = 0;
-         byte var18 = 104;
-         byte var21 = 1;
+         byte var20 = 0;
+         byte var9 = 104;
+         byte var10 = 1;
          if(var4 < 0) {
-            var19 = 103;
-            var18 = -1;
-            var21 = -1;
-         }
-
-         byte var9 = 0;
-         byte var10 = 104;
-         byte var11 = 1;
-         if(var5 < 0) {
-            var9 = 103;
+            var20 = 103;
+            var9 = -1;
             var10 = -1;
-            var11 = -1;
          }
 
-         int var13;
-         for(int var17 = var19; var17 != var18; var17 += var21) {
-            for(var13 = var9; var13 != var10; var13 += var11) {
-               int var14 = var4 + var17;
-               int var15 = var5 + var13;
+         byte var11 = 0;
+         byte var12 = 104;
+         byte var13 = 1;
+         if(var5 < 0) {
+            var11 = 103;
+            var12 = -1;
+            var13 = -1;
+         }
 
-               for(int var16 = 0; var16 < 4; ++var16) {
-                  if(var14 >= 0 && var15 >= 0 && var14 < 104 && var15 < 104) {
-                     Client.groundItemDeque[var16][var17][var13] = Client.groundItemDeque[var16][var14][var15];
+         int var14;
+         for(int var15 = var20; var15 != var9; var15 += var10) {
+            for(var14 = var11; var14 != var12; var14 += var13) {
+               int var16 = var4 + var15;
+               int var17 = var5 + var14;
+
+               for(int var18 = 0; var18 < 4; ++var18) {
+                  if(var16 >= 0 && var17 >= 0 && var16 < 104 && var17 < 104) {
+                     Client.groundItemDeque[var18][var15][var14] = Client.groundItemDeque[var18][var16][var17];
                   } else {
-                     Client.groundItemDeque[var16][var17][var13] = null;
+                     Client.groundItemDeque[var18][var15][var14] = null;
                   }
                }
             }
          }
 
-         for(class25 var12 = (class25)Client.field545.method2391(); var12 != null; var12 = (class25)Client.field545.method2393()) {
-            var12.field568 -= var4;
-            var12.field569 -= var5;
-            if(var12.field568 < 0 || var12.field569 < 0 || var12.field568 >= 104 || var12.field569 >= 104) {
-               var12.unlink();
+         for(class25 var21 = (class25)Client.field545.method2391(); var21 != null; var21 = (class25)Client.field545.method2393()) {
+            var21.field568 -= var4;
+            var21.field569 -= var5;
+            if(var21.field568 < 0 || var21.field569 < 0 || var21.field568 >= 104 || var21.field569 >= 104) {
+               var21.unlink();
             }
          }
 
@@ -132,16 +132,17 @@ public class class20 implements Runnable {
          Client.field405.method2385();
          Client.projectiles.method2385();
 
-         for(var13 = 0; var13 < 4; ++var13) {
-            Client.collisionMaps[var13].method2229();
+         for(var14 = 0; var14 < 4; ++var14) {
+            Client.collisionMaps[var14].method2229();
          }
-
       }
+
    }
 
    public void run() {
       for(; this.field218; VertexNormal.method1598(50L)) {
          Object var1 = this.field213;
+         Object var2 = this.field213;
          synchronized(this.field213) {
             if(this.field214 < 500) {
                this.field215[this.field214] = class115.field1788;

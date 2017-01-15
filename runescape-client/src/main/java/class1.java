@@ -45,9 +45,9 @@ public class class1 {
                   break;
                }
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("u")
@@ -64,13 +64,6 @@ public class class1 {
 
    }
 
-   static {
-      new class0();
-      field9 = new class5();
-      field10 = new class6();
-      field8 = new class3();
-   }
-
    @ObfuscatedName("a")
    @ObfuscatedSignature(
       signature = "(ILclass116;Lclass184;B)V",
@@ -79,10 +72,11 @@ public class class1 {
    static void method11(int var0, class116 var1, class184 var2) {
       byte[] var3 = null;
       Deque var4 = class183.field2705;
+      Deque var5 = class183.field2705;
       synchronized(class183.field2705) {
-         for(class180 var5 = (class180)class183.field2705.method2391(); var5 != null; var5 = (class180)class183.field2705.method2393()) {
-            if((long)var0 == var5.hash && var5.field2670 == var1 && var5.field2673 == 0) {
-               var3 = var5.field2675;
+         for(class180 var6 = (class180)class183.field2705.method2391(); var6 != null; var6 = (class180)class183.field2705.method2393()) {
+            if((long)var0 == var6.hash && var6.field2670 == var1 && var6.field2673 == 0) {
+               var3 = var6.field2675;
                break;
             }
          }
@@ -91,9 +85,10 @@ public class class1 {
       if(var3 != null) {
          var2.method3361(var1, var0, var3, true);
       } else {
-         byte[] var8 = var1.method2227(var0);
-         var2.method3361(var1, var0, var8, true);
+         byte[] var9 = var1.method2227(var0);
+         var2.method3361(var1, var0, var9, true);
       }
+
    }
 
    @ObfuscatedSignature(
@@ -329,5 +324,12 @@ public class class1 {
          class189.field2760.put(var1, (long)var0);
          return var1;
       }
+   }
+
+   static {
+      new class0();
+      field9 = new class5();
+      field10 = new class6();
+      field8 = new class3();
    }
 }

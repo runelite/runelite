@@ -84,8 +84,8 @@ public final class class33 extends Renderable {
                break;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("cl")
@@ -168,27 +168,27 @@ public final class class33 extends Renderable {
          }
       }
 
-      Widget var15;
+      int var11;
+      Widget var13;
       if(var2 == 25) {
-         var15 = class157.method3011(var1, var0);
-         if(var15 != null) {
+         var13 = class157.method3011(var1, var0);
+         if(var13 != null) {
             class18.method187();
-            int var12 = GameObject.method1872(var15);
-            int var11 = var12 >> 11 & 63;
-            class32.method692(var1, var0, var11, var15.item);
+            int var10 = GameObject.method1872(var13);
+            var11 = var10 >> 11 & 63;
+            class32.method692(var1, var0, var11, var13.item);
             Client.field447 = 0;
-            Client.field438 = class32.method690(var15);
+            Client.field438 = class32.method690(var13);
             if(Client.field438 == null) {
                Client.field438 = "Null";
             }
 
-            if(var15.field2184) {
-               Client.field282 = var15.name + class32.method691(16777215);
+            if(var13.field2184) {
+               Client.field282 = var13.name + class32.method691(16777215);
             } else {
-               Client.field282 = class32.method691('\uff00') + var15.field2301 + class32.method691(16777215);
+               Client.field282 = class32.method691('\uff00') + var13.field2301 + class32.method691(16777215);
             }
          }
-
       } else {
          if(var2 == 33) {
             Client.field326.method3029(2);
@@ -360,28 +360,27 @@ public final class class33 extends Renderable {
          }
 
          if(var2 == 58) {
-            var15 = class157.method3011(var1, var0);
-            if(null != var15) {
+            var13 = class157.method3011(var1, var0);
+            if(null != var13) {
                Client.field326.method3029(199);
                Client.field326.method2942(Client.field436);
                Client.field326.method2807(Client.field437);
                Client.field326.method2942(var0);
                Client.field326.method2848(var1);
                Client.field326.method2817(class2.field16);
-               Client.field326.method2809(var15.item);
+               Client.field326.method2809(var13.item);
             }
          }
 
-         int var13;
          if(var2 == 29) {
             Client.field326.method3029(253);
             Client.field326.method2763(var1);
-            var15 = class44.method799(var1);
-            if(var15.dynamicValues != null && var15.dynamicValues[0][0] == 5) {
-               var13 = var15.dynamicValues[0][1];
-               if(class165.widgetSettings[var13] != var15.field2207[0]) {
-                  class165.widgetSettings[var13] = var15.field2207[0];
-                  CombatInfo2.method3532(var13);
+            var13 = class44.method799(var1);
+            if(var13.dynamicValues != null && var13.dynamicValues[0][0] == 5) {
+               var11 = var13.dynamicValues[0][1];
+               if(class165.widgetSettings[var11] != var13.field2207[0]) {
+                  class165.widgetSettings[var11] = var13.field2207[0];
+                  CombatInfo2.method3532(var11);
                }
             }
          }
@@ -420,16 +419,22 @@ public final class class33 extends Renderable {
 
          if(var2 == 26) {
             Client.field326.method3029(249);
+            WidgetNode var12 = (WidgetNode)Client.componentTable.method2344();
 
-            for(WidgetNode var16 = (WidgetNode)Client.componentTable.method2344(); var16 != null; var16 = (WidgetNode)Client.componentTable.method2343()) {
-               if(var16.field182 == 0 || var16.field182 == 3) {
-                  class3.method31(var16, true);
+            while(true) {
+               if(var12 == null) {
+                  if(null != Client.field537) {
+                     class6.method87(Client.field537);
+                     Client.field537 = null;
+                  }
+                  break;
                }
-            }
 
-            if(null != Client.field537) {
-               class6.method87(Client.field537);
-               Client.field537 = null;
+               if(var12.field182 == 0 || var12.field182 == 3) {
+                  class3.method31(var12, true);
+               }
+
+               var12 = (WidgetNode)Client.componentTable.method2343();
             }
          }
 
@@ -521,11 +526,11 @@ public final class class33 extends Renderable {
          if(var2 == 28) {
             Client.field326.method3029(253);
             Client.field326.method2763(var1);
-            var15 = class44.method799(var1);
-            if(var15.dynamicValues != null && var15.dynamicValues[0][0] == 5) {
-               var13 = var15.dynamicValues[0][1];
-               class165.widgetSettings[var13] = 1 - class165.widgetSettings[var13];
-               CombatInfo2.method3532(var13);
+            var13 = class44.method799(var1);
+            if(var13.dynamicValues != null && var13.dynamicValues[0][0] == 5) {
+               var11 = var13.dynamicValues[0][1];
+               class165.widgetSettings[var11] = 1 - class165.widgetSettings[var11];
+               CombatInfo2.method3532(var11);
             }
          }
 
@@ -540,16 +545,16 @@ public final class class33 extends Renderable {
          }
 
          if(var2 == 57 || var2 == 1007) {
-            var15 = class157.method3011(var1, var0);
-            if(null != var15) {
-               class8.method111(var3, var1, var0, var15.item, var5);
+            var13 = class157.method3011(var1, var0);
+            if(null != var13) {
+               class8.method111(var3, var1, var0, var13.item, var5);
             }
          }
 
          if(var2 == 1005) {
-            var15 = class44.method799(var1);
-            if(var15 != null && var15.itemQuantities[var0] >= 100000) {
-               class7.method99(27, "", var15.itemQuantities[var0] + " x " + class88.getItemDefinition(var3).name);
+            var13 = class44.method799(var1);
+            if(var13 != null && var13.itemQuantities[var0] >= 100000) {
+               class7.method99(27, "", var13.itemQuantities[var0] + " x " + class88.getItemDefinition(var3).name);
             } else {
                Client.field326.method3029(72);
                Client.field326.method2809(var3);
@@ -781,17 +786,16 @@ public final class class33 extends Renderable {
 
          if(var2 == 38) {
             class18.method187();
-            var15 = class44.method799(var1);
+            var13 = class44.method799(var1);
             Client.field447 = 1;
             class15.field169 = var0;
             ObjectComposition.field2930 = var1;
             class6.field52 = var3;
-            class6.method87(var15);
+            class6.method87(var13);
             Client.field468 = class32.method691(16748608) + class88.getItemDefinition(var3).name + class32.method691(16777215);
             if(null == Client.field468) {
                Client.field468 = "null";
             }
-
          } else {
             if(var2 == 4) {
                Client.field390 = var6;
@@ -837,13 +841,13 @@ public final class class33 extends Renderable {
             }
 
             if(var2 == 24) {
-               var15 = class44.method799(var1);
-               boolean var17 = true;
-               if(var15.contentType > 0) {
-                  var17 = class2.method26(var15);
+               var13 = class44.method799(var1);
+               boolean var15 = true;
+               if(var13.contentType > 0) {
+                  var15 = class2.method26(var13);
                }
 
-               if(var17) {
+               if(var15) {
                   Client.field326.method3029(253);
                   Client.field326.method2763(var1);
                }
@@ -879,9 +883,9 @@ public final class class33 extends Renderable {
             if(PlayerComposition.field2164 != null && Client.field531 == 0) {
                class6.method87(PlayerComposition.field2164);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("dw")

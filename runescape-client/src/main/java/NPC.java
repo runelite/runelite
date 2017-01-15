@@ -73,7 +73,7 @@ public final class NPC extends Actor {
          return null;
       } else {
          Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?CombatInfo2.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || super.idlePoseAnimation == super.poseAnimation && var1 != null?null:CombatInfo2.getAnimation(super.poseAnimation);
+         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || var1 == null)?CombatInfo2.getAnimation(super.poseAnimation):null;
          Model var3 = this.composition.method3701(var1, super.actionFrame, var2, super.poseFrame);
          if(var3 == null) {
             return null;

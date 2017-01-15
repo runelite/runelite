@@ -74,17 +74,17 @@ public class class184 extends class182 {
       } else if(super.field2699 != null) {
          return 99;
       } else {
-         int var2 = this.field2711;
-         long var3 = (long)(var2 + 16711680);
-         int var1;
-         if(class185.field2723 != null && class185.field2723.hash == var3) {
-            var1 = class22.field238.offset * 99 / (class22.field238.payload.length - class185.field2723.field2677) + 1;
+         int var1 = this.field2711;
+         long var2 = (long)(var1 + 16711680);
+         int var4;
+         if(class185.field2723 != null && class185.field2723.hash == var2) {
+            var4 = class22.field238.offset * 99 / (class22.field238.payload.length - class185.field2723.field2677) + 1;
          } else {
-            var1 = 0;
+            var4 = 0;
          }
 
-         int var5 = var1;
-         if(var1 >= 100) {
+         int var5 = var4;
+         if(var4 >= 100) {
             var5 = 99;
          }
 
@@ -128,6 +128,7 @@ public class class184 extends class182 {
       garbageValue = "1733660244"
    )
    void method3360(int var1, byte[] var2, boolean var3, boolean var4) {
+      Deque var8;
       if(var3) {
          if(this.field2712) {
             throw new RuntimeException();
@@ -141,7 +142,8 @@ public class class184 extends class182 {
             var7.hash = (long)var5;
             var7.field2675 = var2;
             var7.field2670 = var6;
-            Deque var8 = class183.field2705;
+            var8 = class183.field2705;
+            Deque var9 = class183.field2705;
             synchronized(class183.field2705) {
                class183.field2705.method2394(var7);
             }
@@ -155,15 +157,16 @@ public class class184 extends class182 {
          var2[var2.length - 2] = (byte)(super.field2687[var1] >> 8);
          var2[var2.length - 1] = (byte)super.field2687[var1];
          if(null != this.field2709) {
-            class116 var11 = this.field2709;
-            class180 var14 = new class180();
-            var14.field2673 = 0;
-            var14.hash = (long)var1;
-            var14.field2675 = var2;
-            var14.field2670 = var11;
-            Deque var15 = class183.field2705;
+            class116 var14 = this.field2709;
+            class180 var15 = new class180();
+            var15.field2673 = 0;
+            var15.hash = (long)var1;
+            var15.field2675 = var2;
+            var15.field2670 = var14;
+            Deque var16 = class183.field2705;
+            var8 = class183.field2705;
             synchronized(class183.field2705) {
-               class183.field2705.method2394(var14);
+               class183.field2705.method2394(var15);
             }
 
             class171.method3232();
@@ -187,67 +190,61 @@ public class class184 extends class182 {
       if(this.field2713 == var1) {
          if(this.field2712) {
             throw new RuntimeException();
-         }
-
-         if(null == var3) {
+         } else if(null == var3) {
             class2.method25(this, 255, this.field2711, this.field2716, (byte)0, true);
-            return;
-         }
+         } else {
+            field2715.reset();
+            field2715.update(var3, 0, var3.length);
+            var5 = (int)field2715.getValue();
+            Buffer var9 = new Buffer(class8.method113(var3));
+            int var7 = var9.readUnsignedByte();
+            if(var7 != 5 && var7 != 6) {
+               throw new RuntimeException(var7 + "," + this.field2711 + "," + var2);
+            } else {
+               int var8 = 0;
+               if(var7 >= 6) {
+                  var8 = var9.method2780();
+               }
 
-         field2715.reset();
-         field2715.update(var3, 0, var3.length);
-         var5 = (int)field2715.getValue();
-         Buffer var6 = new Buffer(class8.method113(var3));
-         int var7 = var6.readUnsignedByte();
-         if(var7 != 5 && var7 != 6) {
-            throw new RuntimeException(var7 + "," + this.field2711 + "," + var2);
+               if(var5 != this.field2716 || this.field2717 != var8) {
+                  class2.method25(this, 255, this.field2711, this.field2716, (byte)0, true);
+               } else {
+                  this.method3260(var3);
+                  this.method3362();
+               }
+            }
          }
-
-         int var8 = 0;
-         if(var7 >= 6) {
-            var8 = var6.method2780();
-         }
-
-         if(var5 != this.field2716 || this.field2717 != var8) {
-            class2.method25(this, 255, this.field2711, this.field2716, (byte)0, true);
-            return;
-         }
-
-         this.method3260(var3);
-         this.method3362();
       } else {
          if(!var4 && this.field2710 == var2) {
             this.field2712 = true;
          }
 
-         if(var3 == null || var3.length <= 2) {
+         if(var3 != null && var3.length > 2) {
+            field2715.reset();
+            field2715.update(var3, 0, var3.length - 2);
+            var5 = (int)field2715.getValue();
+            int var6 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
+            if(super.field2686[var2] == var5 && super.field2687[var2] == var6) {
+               this.field2718[var2] = true;
+               if(var4) {
+                  super.field2699[var2] = class116.method2221(var3, false);
+               }
+
+            } else {
+               this.field2718[var2] = false;
+               if(this.field2714 || var4) {
+                  class2.method25(this, this.field2711, var2, super.field2686[var2], (byte)2, var4);
+               }
+
+            }
+         } else {
             this.field2718[var2] = false;
             if(this.field2714 || var4) {
                class2.method25(this, this.field2711, var2, super.field2686[var2], (byte)2, var4);
             }
 
-            return;
-         }
-
-         field2715.reset();
-         field2715.update(var3, 0, var3.length - 2);
-         var5 = (int)field2715.getValue();
-         int var9 = ((var3[var3.length - 2] & 255) << 8) + (var3[var3.length - 1] & 255);
-         if(super.field2686[var2] != var5 || super.field2687[var2] != var9) {
-            this.field2718[var2] = false;
-            if(this.field2714 || var4) {
-               class2.method25(this, this.field2711, var2, super.field2686[var2], (byte)2, var4);
-            }
-
-            return;
-         }
-
-         this.field2718[var2] = true;
-         if(var4) {
-            super.field2699[var2] = class116.method2221(var3, false);
          }
       }
-
    }
 
    @ObfuscatedName("cy")
@@ -278,8 +275,8 @@ public class class184 extends class182 {
          if(this.field2710 == -1) {
             this.field2712 = true;
          }
-
       }
+
    }
 
    @ObfuscatedName("cp")
@@ -293,16 +290,16 @@ public class class184 extends class182 {
       } else if(this.field2718[var1]) {
          return 100;
       } else {
-         int var3 = this.field2711;
-         long var4 = (long)(var1 + (var3 << 16));
-         int var2;
-         if(null != class185.field2723 && class185.field2723.hash == var4) {
-            var2 = class22.field238.offset * 99 / (class22.field238.payload.length - class185.field2723.field2677) + 1;
+         int var2 = this.field2711;
+         long var3 = (long)(var1 + (var2 << 16));
+         int var5;
+         if(null != class185.field2723 && class185.field2723.hash == var3) {
+            var5 = class22.field238.offset * 99 / (class22.field238.payload.length - class185.field2723.field2677) + 1;
          } else {
-            var2 = 0;
+            var5 = 0;
          }
 
-         return var2;
+         return var5;
       }
    }
 
@@ -321,15 +318,15 @@ public class class184 extends class182 {
       this.field2713 = var2;
       this.field2711 = var3;
       this.field2714 = var6;
-      int var8 = this.field2711;
+      int var7 = this.field2711;
       if(ChatMessages.field905 != null) {
-         ChatMessages.field905.offset = 5 + var8 * 8;
+         ChatMessages.field905.offset = 5 + var7 * 8;
+         int var8 = ChatMessages.field905.method2780();
          int var9 = ChatMessages.field905.method2780();
-         int var10 = ChatMessages.field905.method2780();
-         this.method3359(var9, var10);
+         this.method3359(var8, var9);
       } else {
          class2.method25((class184)null, 255, 255, 0, (byte)0, true);
-         class185.field2738[var8] = this;
+         class185.field2738[var7] = this;
       }
 
    }

@@ -89,7 +89,6 @@ public class class164 extends CacheableNode {
          if(var9.field2923 == 1) {
             var8.method2233(var2, var3);
          }
-
       } else if(var6 != 10 && var6 != 11) {
          if(var6 >= 12) {
             if(var9.field2903 == -1 && var9.impostorIds == null) {
@@ -102,7 +101,6 @@ public class class164 extends CacheableNode {
             if(var9.field2923 != 0) {
                var8.method2231(var2, var3, var10, var11, var9.field2898);
             }
-
          } else if(var6 == 0) {
             if(var9.field2903 == -1 && null == var9.impostorIds) {
                var22 = var9.method3593(0, var5, var16, var18, var17, var19);
@@ -114,7 +112,6 @@ public class class164 extends CacheableNode {
             if(var9.field2923 != 0) {
                var8.method2252(var2, var3, var6, var5, var9.field2898);
             }
-
          } else if(var6 == 1) {
             if(var9.field2903 == -1 && null == var9.impostorIds) {
                var22 = var9.method3593(1, var5, var16, var18, var17, var19);
@@ -126,26 +123,24 @@ public class class164 extends CacheableNode {
             if(var9.field2923 != 0) {
                var8.method2252(var2, var3, var6, var5, var9.field2898);
             }
-
          } else {
-            Object var24;
-            int var27;
+            Object var23;
+            int var24;
             if(var6 == 2) {
-               var27 = 1 + var5 & 3;
-               Object var28;
+               var24 = 1 + var5 & 3;
+               Object var25;
                if(var9.field2903 == -1 && null == var9.impostorIds) {
-                  var28 = var9.method3593(2, 4 + var5, var16, var18, var17, var19);
-                  var24 = var9.method3593(2, var27, var16, var18, var17, var19);
+                  var25 = var9.method3593(2, 4 + var5, var16, var18, var17, var19);
+                  var23 = var9.method3593(2, var24, var16, var18, var17, var19);
                } else {
-                  var28 = new class49(var4, 2, 4 + var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
-                  var24 = new class49(var4, 2, var27, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                  var25 = new class49(var4, 2, 4 + var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                  var23 = new class49(var4, 2, var24, var1, var2, var3, var9.field2903, true, (Renderable)null);
                }
 
-               var7.method1678(var0, var2, var3, var17, (Renderable)var28, (Renderable)var24, class10.field96[var5], class10.field96[var27], var20, var21);
+               var7.method1678(var0, var2, var3, var17, (Renderable)var25, (Renderable)var23, class10.field96[var5], class10.field96[var24], var20, var21);
                if(var9.field2923 != 0) {
                   var8.method2252(var2, var3, var6, var5, var9.field2898);
                }
-
             } else if(var6 == 3) {
                if(var9.field2903 == -1 && var9.impostorIds == null) {
                   var22 = var9.method3593(3, var5, var16, var18, var17, var19);
@@ -157,7 +152,6 @@ public class class164 extends CacheableNode {
                if(var9.field2923 != 0) {
                   var8.method2252(var2, var3, var6, var5, var9.field2898);
                }
-
             } else if(var6 == 9) {
                if(var9.field2903 == -1 && var9.impostorIds == null) {
                   var22 = var9.method3593(var6, var5, var16, var18, var17, var19);
@@ -169,7 +163,6 @@ public class class164 extends CacheableNode {
                if(var9.field2923 != 0) {
                   var8.method2231(var2, var3, var10, var11, var9.field2898);
                }
-
             } else if(var6 == 4) {
                if(var9.field2903 == -1 && null == var9.impostorIds) {
                   var22 = var9.method3593(4, var5, var16, var18, var17, var19);
@@ -179,62 +172,62 @@ public class class164 extends CacheableNode {
 
                var7.method1807(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class10.field96[var5], 0, 0, 0, var20, var21);
             } else {
-               int var23;
+               int var28;
                if(var6 == 5) {
-                  var27 = 16;
-                  var23 = var7.method1696(var0, var2, var3);
-                  if(var23 != 0) {
-                     var27 = Tile.getObjectDefinition(var23 >> 14 & 32767).field2905;
+                  var24 = 16;
+                  var28 = var7.method1696(var0, var2, var3);
+                  if(var28 != 0) {
+                     var24 = Tile.getObjectDefinition(var28 >> 14 & 32767).field2905;
                   }
 
                   if(var9.field2903 == -1 && var9.impostorIds == null) {
-                     var24 = var9.method3593(4, var5, var16, var18, var17, var19);
+                     var23 = var9.method3593(4, var5, var16, var18, var17, var19);
                   } else {
-                     var24 = new class49(var4, 4, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var23 = new class49(var4, 4, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
                   }
 
-                  var7.method1807(var0, var2, var3, var17, (Renderable)var24, (Renderable)null, class10.field96[var5], 0, class10.field102[var5] * var27, class10.field106[var5] * var27, var20, var21);
+                  var7.method1807(var0, var2, var3, var17, (Renderable)var23, (Renderable)null, class10.field96[var5], 0, class10.field102[var5] * var24, class10.field106[var5] * var24, var20, var21);
                } else if(var6 == 6) {
-                  var27 = 8;
-                  var23 = var7.method1696(var0, var2, var3);
-                  if(var23 != 0) {
-                     var27 = Tile.getObjectDefinition(var23 >> 14 & 32767).field2905 / 2;
+                  var24 = 8;
+                  var28 = var7.method1696(var0, var2, var3);
+                  if(var28 != 0) {
+                     var24 = Tile.getObjectDefinition(var28 >> 14 & 32767).field2905 / 2;
                   }
 
                   if(var9.field2903 == -1 && var9.impostorIds == null) {
-                     var24 = var9.method3593(4, 4 + var5, var16, var18, var17, var19);
+                     var23 = var9.method3593(4, 4 + var5, var16, var18, var17, var19);
                   } else {
-                     var24 = new class49(var4, 4, 4 + var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var23 = new class49(var4, 4, 4 + var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
                   }
 
-                  var7.method1807(var0, var2, var3, var17, (Renderable)var24, (Renderable)null, 256, var5, var27 * class10.field104[var5], var27 * class10.field105[var5], var20, var21);
+                  var7.method1807(var0, var2, var3, var17, (Renderable)var23, (Renderable)null, 256, var5, var24 * class10.field104[var5], var24 * class10.field105[var5], var20, var21);
                } else if(var6 == 7) {
-                  var23 = var5 + 2 & 3;
+                  var28 = var5 + 2 & 3;
                   if(var9.field2903 == -1 && var9.impostorIds == null) {
-                     var22 = var9.method3593(4, 4 + var23, var16, var18, var17, var19);
+                     var22 = var9.method3593(4, 4 + var28, var16, var18, var17, var19);
                   } else {
-                     var22 = new class49(var4, 4, 4 + var23, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var22 = new class49(var4, 4, 4 + var28, var1, var2, var3, var9.field2903, true, (Renderable)null);
                   }
 
-                  var7.method1807(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, 256, var23, 0, 0, var20, var21);
+                  var7.method1807(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, 256, var28, 0, 0, var20, var21);
                } else if(var6 == 8) {
-                  var27 = 8;
-                  var23 = var7.method1696(var0, var2, var3);
-                  if(var23 != 0) {
-                     var27 = Tile.getObjectDefinition(var23 >> 14 & 32767).field2905 / 2;
+                  var24 = 8;
+                  var28 = var7.method1696(var0, var2, var3);
+                  if(var28 != 0) {
+                     var24 = Tile.getObjectDefinition(var28 >> 14 & 32767).field2905 / 2;
                   }
 
                   int var26 = var5 + 2 & 3;
-                  Object var25;
+                  Object var27;
                   if(var9.field2903 == -1 && var9.impostorIds == null) {
-                     var24 = var9.method3593(4, 4 + var5, var16, var18, var17, var19);
-                     var25 = var9.method3593(4, 4 + var26, var16, var18, var17, var19);
+                     var23 = var9.method3593(4, 4 + var5, var16, var18, var17, var19);
+                     var27 = var9.method3593(4, 4 + var26, var16, var18, var17, var19);
                   } else {
-                     var24 = new class49(var4, 4, var5 + 4, var1, var2, var3, var9.field2903, true, (Renderable)null);
-                     var25 = new class49(var4, 4, var26 + 4, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var23 = new class49(var4, 4, var5 + 4, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var27 = new class49(var4, 4, var26 + 4, var1, var2, var3, var9.field2903, true, (Renderable)null);
                   }
 
-                  var7.method1807(var0, var2, var3, var17, (Renderable)var24, (Renderable)var25, 256, var5, var27 * class10.field104[var5], var27 * class10.field105[var5], var20, var21);
+                  var7.method1807(var0, var2, var3, var17, (Renderable)var23, (Renderable)var27, 256, var5, var24 * class10.field104[var5], var24 * class10.field105[var5], var20, var21);
                }
             }
          }
@@ -252,8 +245,8 @@ public class class164 extends CacheableNode {
          if(var9.field2923 != 0) {
             var8.method2231(var2, var3, var10, var11, var9.field2898);
          }
-
       }
+
    }
 
    @ObfuscatedName("ed")

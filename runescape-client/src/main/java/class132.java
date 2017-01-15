@@ -36,17 +36,16 @@ public class class132 implements Iterator {
          this.field1877 = var1;
          return var1;
       } else {
-         do {
-            if(this.field1879 >= this.field1880.field1847) {
-               return null;
-            }
-
+         while(this.field1879 < this.field1880.field1847) {
             var1 = this.field1880.field1848[this.field1879++].next;
-         } while(var1 == this.field1880.field1848[this.field1879 - 1]);
+            if(var1 != this.field1880.field1848[this.field1879 - 1]) {
+               this.field1878 = var1.next;
+               this.field1877 = var1;
+               return var1;
+            }
+         }
 
-         this.field1878 = var1.next;
-         this.field1877 = var1;
-         return var1;
+         return null;
       }
    }
 

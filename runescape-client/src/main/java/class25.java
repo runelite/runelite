@@ -85,22 +85,22 @@ public final class class25 extends Node {
       if(!XGrandExchangeOffer.method60(var0, var3, var4)) {
          var5 = null;
       } else {
-         SpritePixels[] var7 = new SpritePixels[class225.field3215];
+         SpritePixels[] var6 = new SpritePixels[class225.field3215];
 
-         for(int var8 = 0; var8 < class225.field3215; ++var8) {
-            SpritePixels var9 = var7[var8] = new SpritePixels();
-            var9.field3205 = class225.field3214;
-            var9.field3207 = class202.field3060;
-            var9.field3209 = class225.field3213[var8];
-            var9.field3208 = class225.field3216[var8];
-            var9.width = class225.field3217[var8];
-            var9.height = class178.field2653[var8];
-            int var10 = var9.height * var9.width;
-            byte[] var11 = class119.field1845[var8];
-            var9.image = new int[var10];
+         for(int var7 = 0; var7 < class225.field3215; ++var7) {
+            SpritePixels var8 = var6[var7] = new SpritePixels();
+            var8.field3205 = class225.field3214;
+            var8.field3207 = class202.field3060;
+            var8.field3209 = class225.field3213[var7];
+            var8.field3208 = class225.field3216[var7];
+            var8.width = class225.field3217[var7];
+            var8.height = class178.field2653[var7];
+            int var9 = var8.height * var8.width;
+            byte[] var10 = class119.field1845[var7];
+            var8.image = new int[var9];
 
-            for(int var12 = 0; var12 < var10; ++var12) {
-               var9.image[var12] = class225.field3218[var11[var12] & 255];
+            for(int var11 = 0; var11 < var9; ++var11) {
+               var8.image[var11] = class225.field3218[var10[var11] & 255];
             }
          }
 
@@ -109,8 +109,8 @@ public final class class25 extends Node {
          class225.field3217 = null;
          class178.field2653 = null;
          class225.field3218 = null;
-         class119.field1845 = null;
-         var5 = var7;
+         class119.field1845 = (byte[][])null;
+         var5 = var6;
       }
 
       return var5;
@@ -145,9 +145,9 @@ public final class class25 extends Node {
             }
          }
 
-         int[] var8 = class88.field1531;
+         int[] var6 = class88.field1531;
          class88.field1531 = class97.field1627;
-         class97.field1627 = var8;
+         class97.field1627 = var6;
       }
 
       if(null != var0) {
@@ -157,8 +157,8 @@ public final class class25 extends Node {
             for(var4 = 0; var4 < var0.originalWidth; ++var4) {
                if(var0.pixels[var2++] != 0) {
                   var5 = 16 + var4 + var0.offsetX;
-                  int var6 = 16 + var3 + var0.offsetY;
-                  int var7 = (var6 << 7) + var5;
+                  int var8 = 16 + var3 + var0.offsetY;
+                  int var7 = (var8 << 7) + var5;
                   class88.field1531[var7] = 0;
                }
             }
@@ -175,9 +175,9 @@ public final class class25 extends Node {
    static String method594() {
       String var0 = "";
 
-      MessageNode var2;
-      for(Iterator var1 = class47.field922.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
+      MessageNode var1;
+      for(Iterator var2 = class47.field922.iterator(); var2.hasNext(); var0 = var0 + var1.name + ':' + var1.value + '\n') {
+         var1 = (MessageNode)var2.next();
       }
 
       return var0;
