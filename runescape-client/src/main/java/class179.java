@@ -53,13 +53,14 @@ public class class179 implements class158 {
    )
    public static void method3256() {
       Object var0 = class183.field2706;
+      Object var1 = class183.field2706;
       synchronized(class183.field2706) {
          if(class183.field2704 != 0) {
             class183.field2704 = 1;
 
             try {
                class183.field2706.wait();
-            } catch (InterruptedException var3) {
+            } catch (InterruptedException var4) {
                ;
             }
          }

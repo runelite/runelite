@@ -64,33 +64,33 @@ public class class103 implements Runnable {
 
                try {
                   this.wait();
-               } catch (InterruptedException var8) {
+               } catch (InterruptedException var7) {
                   ;
                }
             }
          }
 
          try {
-            int var5 = var1.field1647;
-            if(var5 == 1) {
+            int var2 = var1.field1647;
+            if(var2 == 1) {
                var1.field1652 = new Socket(InetAddress.getByName((String)var1.field1651), var1.field1650);
-            } else if(var5 == 2) {
+            } else if(var2 == 2) {
                Thread var3 = new Thread((Runnable)var1.field1651);
                var3.setDaemon(true);
                var3.start();
                var3.setPriority(var1.field1650);
                var1.field1652 = var3;
-            } else if(var5 == 4) {
+            } else if(var2 == 4) {
                var1.field1652 = new DataInputStream(((URL)var1.field1651).openStream());
-            } else if(var5 == 3) {
-               String var10 = (var1.field1650 >> 24 & 255) + "." + (var1.field1650 >> 16 & 255) + "." + (var1.field1650 >> 8 & 255) + "." + (var1.field1650 & 255);
-               var1.field1652 = InetAddress.getByName(var10).getHostName();
+            } else if(var2 == 3) {
+               String var9 = (var1.field1650 >> 24 & 255) + "." + (var1.field1650 >> 16 & 255) + "." + (var1.field1650 >> 8 & 255) + "." + (var1.field1650 & 255);
+               var1.field1652 = InetAddress.getByName(var9).getHostName();
             }
 
             var1.field1648 = 1;
-         } catch (ThreadDeath var6) {
-            throw var6;
-         } catch (Throwable var7) {
+         } catch (ThreadDeath var5) {
+            throw var5;
+         } catch (Throwable var6) {
             var1.field1648 = 2;
          }
       }

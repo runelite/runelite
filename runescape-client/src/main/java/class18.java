@@ -51,22 +51,20 @@ public class class18 extends Node {
       garbageValue = "200145694"
    )
    static void method186(int var0) {
-      if(var0 != -1) {
-         if(class94.method1870(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
+      if(var0 != -1 && class94.method1870(var0)) {
+         Widget[] var1 = Widget.widgets[var0];
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(null != var3.field2266) {
-                  class18 var4 = new class18();
-                  var4.field195 = var3;
-                  var4.field203 = var3.field2266;
-                  class49.method871(var4, 2000000);
-               }
+         for(int var2 = 0; var2 < var1.length; ++var2) {
+            Widget var3 = var1[var2];
+            if(null != var3.field2266) {
+               class18 var4 = new class18();
+               var4.field195 = var3;
+               var4.field203 = var3.field2266;
+               class49.method871(var4, 2000000);
             }
-
          }
       }
+
    }
 
    @ObfuscatedName("cj")
@@ -87,5 +85,6 @@ public class class18 extends Node {
          Client.field435 = false;
          class6.method87(var0);
       }
+
    }
 }

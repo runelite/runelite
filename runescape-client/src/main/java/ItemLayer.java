@@ -58,24 +58,23 @@ public final class ItemLayer {
       garbageValue = "12"
    )
    static void method1411(Sequence var0, int var1, int var2, int var3) {
-      if(Client.field516 < 50 && Client.field557 != 0) {
-         if(var0.field3049 != null && var1 < var0.field3049.length) {
-            int var4 = var0.field3049[var1];
-            if(var4 != 0) {
-               int var5 = var4 >> 8;
-               int var6 = var4 >> 4 & 7;
-               int var7 = var4 & 15;
-               Client.field500[Client.field516] = var5;
-               Client.field292[Client.field516] = var6;
-               Client.field526[Client.field516] = 0;
-               Client.field528[Client.field516] = null;
-               int var8 = (var2 - 64) / 128;
-               int var9 = (var3 - 64) / 128;
-               Client.field527[Client.field516] = var7 + (var8 << 16) + (var9 << 8);
-               ++Client.field516;
-            }
+      if(Client.field516 < 50 && Client.field557 != 0 && var0.field3049 != null && var1 < var0.field3049.length) {
+         int var4 = var0.field3049[var1];
+         if(var4 != 0) {
+            int var5 = var4 >> 8;
+            int var6 = var4 >> 4 & 7;
+            int var7 = var4 & 15;
+            Client.field500[Client.field516] = var5;
+            Client.field292[Client.field516] = var6;
+            Client.field526[Client.field516] = 0;
+            Client.field528[Client.field516] = null;
+            int var8 = (var2 - 64) / 128;
+            int var9 = (var3 - 64) / 128;
+            Client.field527[Client.field516] = var7 + (var8 << 16) + (var9 << 8);
+            ++Client.field516;
          }
       }
+
    }
 
    @ObfuscatedName("r")
@@ -126,24 +125,24 @@ public final class ItemLayer {
       Client.field322 = 0;
       class190.method3457();
 
-      int var3;
-      for(var3 = 0; var3 < 2048; ++var3) {
-         Client.cachedPlayers[var3] = null;
+      int var0;
+      for(var0 = 0; var0 < 2048; ++var0) {
+         Client.cachedPlayers[var0] = null;
       }
 
-      for(var3 = 0; var3 < '耀'; ++var3) {
-         Client.cachedNPCs[var3] = null;
+      for(var0 = 0; var0 < '耀'; ++var0) {
+         Client.cachedNPCs[var0] = null;
       }
 
       Client.field412 = -1;
       Client.projectiles.method2385();
       Client.field405.method2385();
 
-      int var2;
-      for(var3 = 0; var3 < 4; ++var3) {
-         for(int var1 = 0; var1 < 104; ++var1) {
-            for(var2 = 0; var2 < 104; ++var2) {
-               Client.groundItemDeque[var3][var1][var2] = null;
+      int var1;
+      for(var0 = 0; var0 < 4; ++var0) {
+         for(int var2 = 0; var2 < 104; ++var2) {
+            for(var1 = 0; var1 < 104; ++var1) {
+               Client.groundItemDeque[var0][var2][var1] = null;
             }
          }
       }
@@ -153,44 +152,44 @@ public final class ItemLayer {
       Client.friendCount = 0;
       Client.ignoreCount = 0;
 
-      for(var3 = 0; var3 < class187.field2750; ++var3) {
-         class187 var4 = class30.method674(var3);
-         if(var4 != null) {
-            class165.settings[var3] = 0;
-            class165.widgetSettings[var3] = 0;
+      for(var0 = 0; var0 < class187.field2750; ++var0) {
+         class187 var3 = class30.method674(var0);
+         if(var3 != null) {
+            class165.settings[var0] = 0;
+            class165.widgetSettings[var0] = 0;
          }
       }
 
       Renderable.chatMessages.method830();
       Client.field448 = -1;
       if(Client.widgetRoot != -1) {
-         var3 = Client.widgetRoot;
-         if(var3 != -1 && class6.validInterfaces[var3]) {
-            Widget.field2245.method3274(var3);
-            if(null != Widget.widgets[var3]) {
-               boolean var5 = true;
+         var0 = Client.widgetRoot;
+         if(var0 != -1 && class6.validInterfaces[var0]) {
+            Widget.field2245.method3274(var0);
+            if(null != Widget.widgets[var0]) {
+               boolean var4 = true;
 
-               for(var2 = 0; var2 < Widget.widgets[var3].length; ++var2) {
-                  if(null != Widget.widgets[var3][var2]) {
-                     if(Widget.widgets[var3][var2].type != 2) {
-                        Widget.widgets[var3][var2] = null;
+               for(var1 = 0; var1 < Widget.widgets[var0].length; ++var1) {
+                  if(null != Widget.widgets[var0][var1]) {
+                     if(Widget.widgets[var0][var1].type != 2) {
+                        Widget.widgets[var0][var1] = null;
                      } else {
-                        var5 = false;
+                        var4 = false;
                      }
                   }
                }
 
-               if(var5) {
-                  Widget.widgets[var3] = null;
+               if(var4) {
+                  Widget.widgets[var0] = null;
                }
 
-               class6.validInterfaces[var3] = false;
+               class6.validInterfaces[var0] = false;
             }
          }
       }
 
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2344(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2343()) {
-         class3.method31(var0, true);
+      for(WidgetNode var5 = (WidgetNode)Client.componentTable.method2344(); var5 != null; var5 = (WidgetNode)Client.componentTable.method2343()) {
+         class3.method31(var5, true);
       }
 
       Client.widgetRoot = -1;
@@ -200,16 +199,16 @@ public final class ItemLayer {
       Client.menuOptionCount = 0;
       Client.field560.method3119((int[])null, new int[]{0, 0, 0, 0, 0}, false, -1);
 
-      for(var3 = 0; var3 < 8; ++var3) {
-         Client.field466[var3] = null;
-         Client.field410[var3] = false;
+      for(var0 = 0; var0 < 8; ++var0) {
+         Client.field466[var0] = null;
+         Client.field410[var0] = false;
       }
 
       class156.method3005();
       Client.field301 = true;
 
-      for(var3 = 0; var3 < 100; ++var3) {
-         Client.field485[var3] = true;
+      for(var0 = 0; var0 < 100; ++var0) {
+         Client.field485[var0] = true;
       }
 
       Client.field326.method3029(112);
@@ -220,8 +219,8 @@ public final class ItemLayer {
       class142.field1984 = 0;
       class30.clanMembers = null;
 
-      for(var3 = 0; var3 < 8; ++var3) {
-         Client.grandExchangeOffers[var3] = new XGrandExchangeOffer();
+      for(var0 = 0; var0 < 8; ++var0) {
+         Client.grandExchangeOffers[var0] = new XGrandExchangeOffer();
       }
 
       class11.field123 = null;

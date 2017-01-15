@@ -68,13 +68,13 @@ public class class32 {
          class25.field582 = new int[var3];
          class104.field1680 = new byte[var3][];
          class7.field59 = new byte[var3][];
-         boolean var13 = false;
+         boolean var8 = false;
          if((var1 / 8 == 48 || var1 / 8 == 49) && var2 / 8 == 48) {
-            var13 = true;
+            var8 = true;
          }
 
          if(var1 / 8 == 48 && var2 / 8 == 148) {
-            var13 = true;
+            var8 = true;
          }
 
          var3 = 0;
@@ -82,7 +82,7 @@ public class class32 {
          for(var5 = (var1 - 6) / 8; var5 <= (var1 + 6) / 8; ++var5) {
             for(var6 = (var2 - 6) / 8; var6 <= (6 + var2) / 8; ++var6) {
                var7 = (var5 << 8) + var6;
-               if(!var13 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
+               if(!var8 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
                   class183.mapRegions[var3] = var7;
                   Actor.field659[var3] = Client.field563.method3277("m" + var5 + "_" + var6);
                   class25.field582[var3] = Client.field563.method3277("l" + var5 + "_" + var6);
@@ -132,9 +132,9 @@ public class class32 {
                for(var6 = 0; var6 < 13; ++var6) {
                   var7 = Client.field345[var4][var5][var6];
                   if(var7 != -1) {
-                     int var8 = var7 >> 14 & 1023;
+                     int var13 = var7 >> 14 & 1023;
                      int var9 = var7 >> 3 & 2047;
-                     int var10 = (var8 / 8 << 8) + var9 / 8;
+                     int var10 = (var13 / 8 << 8) + var9 / 8;
 
                      int var11;
                      for(var11 = 0; var11 < var3; ++var11) {
@@ -168,9 +168,9 @@ public class class32 {
       garbageValue = "1790779825"
    )
    static String method690(Widget var0) {
-      int var2 = GameObject.method1872(var0);
-      int var1 = var2 >> 11 & 63;
-      return var1 == 0?null:(null != var0.field2264 && var0.field2264.trim().length() != 0?var0.field2264:null);
+      int var1 = GameObject.method1872(var0);
+      int var2 = var1 >> 11 & 63;
+      return var2 == 0?null:(null != var0.field2264 && var0.field2264.trim().length() != 0?var0.field2264:null);
    }
 
    @ObfuscatedName("x")

@@ -1,9 +1,11 @@
 import java.util.Random;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hz")
+@Implements("FontTypeFace")
 public abstract class class209 extends class219 {
    @ObfuscatedName("a")
    int[] field3081;
@@ -68,57 +70,57 @@ public abstract class class209 extends class219 {
             this.field3084[var3] = var1[var2++] & 255;
          }
 
-         int[] var10 = new int[256];
+         int[] var12 = new int[256];
          int[] var4 = new int[256];
 
          int var5;
          for(var5 = 0; var5 < 256; ++var5) {
-            var10[var5] = var1[var2++] & 255;
+            var12[var5] = var1[var2++] & 255;
          }
 
          for(var5 = 0; var5 < 256; ++var5) {
             var4[var5] = var1[var2++] & 255;
          }
 
-         byte[][] var11 = new byte[256][];
+         byte[][] var6 = new byte[256][];
 
-         int var8;
-         for(int var6 = 0; var6 < 256; ++var6) {
-            var11[var6] = new byte[var10[var6]];
-            byte var7 = 0;
+         int var7;
+         for(int var8 = 0; var8 < 256; ++var8) {
+            var6[var8] = new byte[var12[var8]];
+            byte var9 = 0;
 
-            for(var8 = 0; var8 < var11[var6].length; ++var8) {
-               var7 += var1[var2++];
-               var11[var6][var8] = var7;
+            for(var7 = 0; var7 < var6[var8].length; ++var7) {
+               var9 += var1[var2++];
+               var6[var8][var7] = var9;
             }
          }
 
-         byte[][] var12 = new byte[256][];
+         byte[][] var13 = new byte[256][];
 
-         int var13;
-         for(var13 = 0; var13 < 256; ++var13) {
-            var12[var13] = new byte[var10[var13]];
-            byte var14 = 0;
+         int var14;
+         for(var14 = 0; var14 < 256; ++var14) {
+            var13[var14] = new byte[var12[var14]];
+            byte var10 = 0;
 
-            for(int var9 = 0; var9 < var12[var13].length; ++var9) {
-               var14 += var1[var2++];
-               var12[var13][var9] = var14;
+            for(int var11 = 0; var11 < var13[var14].length; ++var11) {
+               var10 += var1[var2++];
+               var13[var14][var11] = var10;
             }
          }
 
          this.field3091 = new byte[65536];
 
-         for(var13 = 0; var13 < 256; ++var13) {
-            if(var13 != 32 && var13 != 160) {
-               for(var8 = 0; var8 < 256; ++var8) {
-                  if(var8 != 32 && var8 != 160) {
-                     this.field3091[(var13 << 8) + var8] = (byte)method3860(var11, var12, var4, this.field3084, var10, var13, var8);
+         for(var14 = 0; var14 < 256; ++var14) {
+            if(var14 != 32 && var14 != 160) {
+               for(var7 = 0; var7 < 256; ++var7) {
+                  if(var7 != 32 && var7 != 160) {
+                     this.field3091[(var14 << 8) + var7] = (byte)method3860(var6, var13, var4, this.field3084, var12, var14, var7);
                   }
                }
             }
          }
 
-         this.field3087 = var4[32] + var10[32];
+         this.field3087 = var4[32] + var12[32];
       }
 
    }
@@ -218,11 +220,11 @@ public abstract class class209 extends class219 {
                      var11 = 62;
                   } else if(var16.startsWith("img=")) {
                      try {
-                        String var18 = var16.substring(4);
-                        int var17 = KitDefinition.method3499(var18, 10, true);
-                        var4 += modIcons[var17].width;
+                        String var17 = var16.substring(4);
+                        int var18 = KitDefinition.method3499(var17, 10, true);
+                        var4 += modIcons[var18].width;
                         var11 = 0;
-                     } catch (Exception var22) {
+                     } catch (Exception var19) {
                         ;
                      }
                   }
@@ -265,9 +267,9 @@ public abstract class class209 extends class219 {
             }
          }
 
-         String var21 = var6.toString();
-         if(var21.length() > var5) {
-            var3[var12++] = var21.substring(var5, var21.length());
+         String var20 = var6.toString();
+         if(var20.length() > var5) {
+            var3[var12++] = var20.substring(var5, var20.length());
          }
 
          return var12;
@@ -332,6 +334,7 @@ public abstract class class209 extends class219 {
          this.method3876(var4, var5);
          this.method3879(var1, var2, var3);
       }
+
    }
 
    @ObfuscatedName("y")
@@ -341,6 +344,7 @@ public abstract class class209 extends class219 {
          field3093 = var6;
          this.method3879(var1, var2, var3);
       }
+
    }
 
    @ObfuscatedName("h")
@@ -353,6 +357,7 @@ public abstract class class209 extends class219 {
          this.method3876(var4, var5);
          this.method3879(var1, var2 - this.method3874(var1), var3);
       }
+
    }
 
    @ObfuscatedName("s")
@@ -365,6 +370,7 @@ public abstract class class209 extends class219 {
          this.method3876(var4, var5);
          this.method3879(var1, var2 - this.method3874(var1) / 2, var3);
       }
+
    }
 
    @ObfuscatedName("w")
@@ -453,7 +459,7 @@ public abstract class class209 extends class219 {
                               int var8 = class16.method183(var7.substring(4));
                               var4 += modIcons[var8].width;
                               var3 = -1;
-                           } catch (Exception var10) {
+                           } catch (Exception var9) {
                               ;
                            }
                         }
@@ -501,6 +507,7 @@ public abstract class class209 extends class219 {
 
          this.method3915(var1, var2, var3, var7, (int[])null);
       }
+
    }
 
    @ObfuscatedName("ag")
@@ -554,7 +561,7 @@ public abstract class class209 extends class219 {
          } else if(var1.equals("br")) {
             this.method3876(field3096, field3082);
          }
-      } catch (Exception var5) {
+      } catch (Exception var4) {
          ;
       }
 
@@ -594,27 +601,27 @@ public abstract class class209 extends class219 {
             if(var7 == 60) {
                var4 = var6;
             } else {
-               int var9;
+               int var8;
                if(var7 == 62 && var4 != -1) {
-                  String var8 = var1.substring(var4 + 1, var6);
+                  String var9 = var1.substring(var4 + 1, var6);
                   var4 = -1;
-                  if(var8.equals("lt")) {
+                  if(var9.equals("lt")) {
                      var7 = 60;
                   } else {
-                     if(!var8.equals("gt")) {
-                        if(var8.startsWith("img=")) {
+                     if(!var9.equals("gt")) {
+                        if(var9.startsWith("img=")) {
                            try {
-                              String var10 = var8.substring(4);
-                              var9 = KitDefinition.method3499(var10, 10, true);
-                              ModIcon var12 = modIcons[var9];
-                              var12.method4066(var2, var3 + this.field3087 - var12.originalHeight);
-                              var2 += var12.width;
+                              String var14 = var9.substring(4);
+                              var8 = KitDefinition.method3499(var14, 10, true);
+                              ModIcon var11 = modIcons[var8];
+                              var11.method4066(var2, var3 + this.field3087 - var11.originalHeight);
+                              var2 += var11.width;
                               var5 = -1;
-                           } catch (Exception var16) {
+                           } catch (Exception var12) {
                               ;
                            }
                         } else {
-                           this.method3877(var8);
+                           this.method3877(var9);
                         }
                         continue;
                      }
@@ -632,21 +639,21 @@ public abstract class class209 extends class219 {
                      var2 += this.field3091[(var5 << 8) + var7];
                   }
 
-                  int var14 = this.field3083[var7];
-                  var9 = this.field3081[var7];
+                  int var13 = this.field3083[var7];
+                  var8 = this.field3081[var7];
                   if(var7 != 32) {
                      if(field3093 == 256) {
                         if(field3095 != -1) {
-                           method3883(this.field3089[var7], var2 + this.field3085[var7] + 1, var3 + this.field3099[var7] + 1, var14, var9, field3095);
+                           method3883(this.field3089[var7], var2 + this.field3085[var7] + 1, var3 + this.field3099[var7] + 1, var13, var8, field3095);
                         }
 
-                        this.vmethod3881(this.field3089[var7], var2 + this.field3085[var7], var3 + this.field3099[var7], var14, var9, field3097);
+                        this.vmethod3881(this.field3089[var7], var2 + this.field3085[var7], var3 + this.field3099[var7], var13, var8, field3097);
                      } else {
                         if(field3095 != -1) {
-                           method3920(this.field3089[var7], var2 + this.field3085[var7] + 1, var3 + this.field3099[var7] + 1, var14, var9, field3095, field3093);
+                           method3920(this.field3089[var7], var2 + this.field3085[var7] + 1, var3 + this.field3099[var7] + 1, var13, var8, field3095, field3093);
                         }
 
-                        this.vmethod3882(this.field3089[var7], var2 + this.field3085[var7], var3 + this.field3099[var7], var14, var9, field3097, field3093);
+                        this.vmethod3882(this.field3089[var7], var2 + this.field3085[var7], var3 + this.field3099[var7], var13, var8, field3097, field3093);
                      }
                   } else if(field3102 > 0) {
                      field3100 += field3102;
@@ -654,16 +661,16 @@ public abstract class class209 extends class219 {
                      field3100 &= 255;
                   }
 
-                  int var15 = this.field3084[var7];
+                  int var10 = this.field3084[var7];
                   if(field3092 != -1) {
-                     class219.method3979(var2, var3 + (int)((double)this.field3087 * 0.7D), var15, field3092);
+                     class219.method3979(var2, var3 + (int)((double)this.field3087 * 0.7D), var10, field3092);
                   }
 
                   if(field3086 != -1) {
-                     class219.method3979(var2, var3 + this.field3087 + 1, var15, field3086);
+                     class219.method3979(var2, var3 + this.field3087 + 1, var10, field3086);
                   }
 
-                  var2 += var15;
+                  var2 += var10;
                   var5 = var7;
                }
             }
@@ -717,6 +724,7 @@ public abstract class class209 extends class219 {
       if(var3 > 0 && var4 > 0) {
          method3884(class219.graphicsPixels, var0, var5, var9, var6, var3, var4, var7, var8);
       }
+
    }
 
    @ObfuscatedName("ai")
@@ -828,6 +836,7 @@ public abstract class class209 extends class219 {
 
          this.method3915(var1, var2 - this.method3874(var1) / 2, var3, (int[])null, var10);
       }
+
    }
 
    class209(byte[] var1) {
@@ -846,6 +855,7 @@ public abstract class class209 extends class219 {
 
          this.method3915(var1, var2 - this.method3874(var1) / 2, var3, (int[])null, var7);
       }
+
    }
 
    @ObfuscatedName("aa")
@@ -861,42 +871,42 @@ public abstract class class209 extends class219 {
             if(var10 == 60) {
                var6 = var9;
             } else {
+               int var11;
                int var12;
                int var13;
-               int var14;
                if(var10 == 62 && var6 != -1) {
-                  String var11 = var1.substring(var6 + 1, var9);
+                  String var14 = var1.substring(var6 + 1, var9);
                   var6 = -1;
-                  if(var11.equals("lt")) {
+                  if(var14.equals("lt")) {
                      var10 = 60;
                   } else {
-                     if(!var11.equals("gt")) {
-                        if(var11.startsWith("img=")) {
+                     if(!var14.equals("gt")) {
+                        if(var14.startsWith("img=")) {
                            try {
                               if(var4 != null) {
-                                 var12 = var4[var8];
+                                 var11 = var4[var8];
+                              } else {
+                                 var11 = 0;
+                              }
+
+                              if(var5 != null) {
+                                 var12 = var5[var8];
                               } else {
                                  var12 = 0;
                               }
 
-                              if(var5 != null) {
-                                 var13 = var5[var8];
-                              } else {
-                                 var13 = 0;
-                              }
-
                               ++var8;
-                              String var15 = var11.substring(4);
-                              var14 = KitDefinition.method3499(var15, 10, true);
-                              ModIcon var17 = modIcons[var14];
-                              var17.method4066(var2 + var12, var3 + this.field3087 - var17.originalHeight + var13);
-                              var2 += var17.width;
+                              String var19 = var14.substring(4);
+                              var13 = KitDefinition.method3499(var19, 10, true);
+                              ModIcon var16 = modIcons[var13];
+                              var16.method4066(var2 + var11, var3 + this.field3087 - var16.originalHeight + var12);
+                              var2 += var16.width;
                               var7 = -1;
-                           } catch (Exception var21) {
+                           } catch (Exception var17) {
                               ;
                            }
                         } else {
-                           this.method3877(var11);
+                           this.method3877(var14);
                         }
                         continue;
                      }
@@ -914,34 +924,34 @@ public abstract class class209 extends class219 {
                      var2 += this.field3091[(var7 << 8) + var10];
                   }
 
-                  int var19 = this.field3083[var10];
-                  var12 = this.field3081[var10];
+                  int var18 = this.field3083[var10];
+                  var11 = this.field3081[var10];
                   if(var4 != null) {
-                     var13 = var4[var8];
+                     var12 = var4[var8];
                   } else {
-                     var13 = 0;
+                     var12 = 0;
                   }
 
                   if(var5 != null) {
-                     var14 = var5[var8];
+                     var13 = var5[var8];
                   } else {
-                     var14 = 0;
+                     var13 = 0;
                   }
 
                   ++var8;
                   if(var10 != 32) {
                      if(field3093 == 256) {
                         if(field3095 != -1) {
-                           method3883(this.field3089[var10], var2 + this.field3085[var10] + 1 + var13, var3 + this.field3099[var10] + 1 + var14, var19, var12, field3095);
+                           method3883(this.field3089[var10], var2 + this.field3085[var10] + 1 + var12, var3 + this.field3099[var10] + 1 + var13, var18, var11, field3095);
                         }
 
-                        this.vmethod3881(this.field3089[var10], var2 + this.field3085[var10] + var13, var3 + this.field3099[var10] + var14, var19, var12, field3097);
+                        this.vmethod3881(this.field3089[var10], var2 + this.field3085[var10] + var12, var3 + this.field3099[var10] + var13, var18, var11, field3097);
                      } else {
                         if(field3095 != -1) {
-                           method3920(this.field3089[var10], var2 + this.field3085[var10] + 1 + var13, var3 + this.field3099[var10] + 1 + var14, var19, var12, field3095, field3093);
+                           method3920(this.field3089[var10], var2 + this.field3085[var10] + 1 + var12, var3 + this.field3099[var10] + 1 + var13, var18, var11, field3095, field3093);
                         }
 
-                        this.vmethod3882(this.field3089[var10], var2 + this.field3085[var10] + var13, var3 + this.field3099[var10] + var14, var19, var12, field3097, field3093);
+                        this.vmethod3882(this.field3089[var10], var2 + this.field3085[var10] + var12, var3 + this.field3099[var10] + var13, var18, var11, field3097, field3093);
                      }
                   } else if(field3102 > 0) {
                      field3100 += field3102;
@@ -949,16 +959,16 @@ public abstract class class209 extends class219 {
                      field3100 &= 255;
                   }
 
-                  int var20 = this.field3084[var10];
+                  int var15 = this.field3084[var10];
                   if(field3092 != -1) {
-                     class219.method3979(var2, var3 + (int)((double)this.field3087 * 0.7D), var20, field3092);
+                     class219.method3979(var2, var3 + (int)((double)this.field3087 * 0.7D), var15, field3092);
                   }
 
                   if(field3086 != -1) {
-                     class219.method3979(var2, var3 + this.field3087, var20, field3086);
+                     class219.method3979(var2, var3 + this.field3087, var15, field3086);
                   }
 
-                  var2 += var20;
+                  var2 += var15;
                   var7 = var10;
                }
             }
@@ -1006,6 +1016,7 @@ public abstract class class209 extends class219 {
       if(var3 > 0 && var4 > 0) {
          method3886(class219.graphicsPixels, var0, var5, var10, var7, var3, var4, var8, var9, var6);
       }
+
    }
 
    @ObfuscatedName("o")
@@ -1022,5 +1033,6 @@ public abstract class class209 extends class219 {
 
          this.method3915(var1, var2 - this.method3874(var1) / 2, var3, var7, var8);
       }
+
    }
 }

@@ -119,6 +119,7 @@ public class NPCComposition extends CacheableNode {
    )
    public int field3015 = 32;
    @ObfuscatedName("af")
+   @Export("configs")
    public int[] field3016;
    @ObfuscatedName("aa")
    @ObfuscatedGetter(
@@ -148,69 +149,69 @@ public class NPCComposition extends CacheableNode {
    )
    public final Model method3701(Sequence var1, int var2, Sequence var3, int var4) {
       if(null != this.field3016) {
-         NPCComposition var12 = this.method3705();
-         return var12 == null?null:var12.method3701(var1, var2, var3, var4);
+         NPCComposition var11 = this.method3705();
+         return var11 == null?null:var11.method3701(var1, var2, var3, var4);
       } else {
          Model var5 = (Model)npcModelCache.get((long)this.id);
          if(null == var5) {
-            boolean var10 = false;
+            boolean var6 = false;
 
-            for(int var11 = 0; var11 < this.models.length; ++var11) {
-               if(!Widget.field2321.method3264(this.models[var11], 0)) {
-                  var10 = true;
+            for(int var7 = 0; var7 < this.models.length; ++var7) {
+               if(!Widget.field2321.method3264(this.models[var7], 0)) {
+                  var6 = true;
                }
             }
 
-            if(var10) {
+            if(var6) {
                return null;
             }
 
-            ModelData[] var8 = new ModelData[this.models.length];
+            ModelData[] var12 = new ModelData[this.models.length];
 
-            int var9;
-            for(var9 = 0; var9 < this.models.length; ++var9) {
-               var8[var9] = ModelData.method1463(Widget.field2321, this.models[var9], 0);
+            int var8;
+            for(var8 = 0; var8 < this.models.length; ++var8) {
+               var12[var8] = ModelData.method1463(Widget.field2321, this.models[var8], 0);
             }
 
-            ModelData var7;
-            if(var8.length == 1) {
-               var7 = var8[0];
+            ModelData var9;
+            if(var12.length == 1) {
+               var9 = var12[0];
             } else {
-               var7 = new ModelData(var8, var8.length);
+               var9 = new ModelData(var12, var12.length);
             }
 
             if(this.field3012 != null) {
-               for(var9 = 0; var9 < this.field3012.length; ++var9) {
-                  var7.method1427(this.field3012[var9], this.field3003[var9]);
+               for(var8 = 0; var8 < this.field3012.length; ++var8) {
+                  var9.method1427(this.field3012[var8], this.field3003[var8]);
                }
             }
 
             if(null != this.field3004) {
-               for(var9 = 0; var9 < this.field3004.length; ++var9) {
-                  var7.method1469(this.field3004[var9], this.field2999[var9]);
+               for(var8 = 0; var8 < this.field3004.length; ++var8) {
+                  var9.method1469(this.field3004[var8], this.field2999[var8]);
                }
             }
 
-            var5 = var7.method1486(this.field2998 + 64, this.field2996 + 850, -30, -50, -30);
+            var5 = var9.method1486(this.field2998 + 64, this.field2996 + 850, -30, -50, -30);
             npcModelCache.put(var5, (long)this.id);
          }
 
-         Model var6;
+         Model var10;
          if(var1 != null && var3 != null) {
-            var6 = var1.method3755(var5, var2, var3, var4);
+            var10 = var1.method3755(var5, var2, var3, var4);
          } else if(null != var1) {
-            var6 = var1.method3764(var5, var2);
+            var10 = var1.method3764(var5, var2);
          } else if(var3 != null) {
-            var6 = var3.method3764(var5, var4);
+            var10 = var3.method3764(var5, var4);
          } else {
-            var6 = var5.method1557(true);
+            var10 = var5.method1557(true);
          }
 
          if(this.field3013 != 128 || this.field3005 != 128) {
-            var6.method1514(this.field3013, this.field3005, this.field3013);
+            var10.method1514(this.field3013, this.field3005, this.field3013);
          }
 
-         return var6;
+         return var10;
       }
    }
 
@@ -343,49 +344,49 @@ public class NPCComposition extends CacheableNode {
    )
    public final ModelData method3704() {
       if(this.field3016 != null) {
-         NPCComposition var1 = this.method3705();
-         return var1 == null?null:var1.method3704();
+         NPCComposition var5 = this.method3705();
+         return var5 == null?null:var5.method3704();
       } else if(this.field2994 == null) {
          return null;
       } else {
-         boolean var5 = false;
+         boolean var1 = false;
 
          for(int var2 = 0; var2 < this.field2994.length; ++var2) {
             if(!Widget.field2321.method3264(this.field2994[var2], 0)) {
-               var5 = true;
+               var1 = true;
             }
          }
 
-         if(var5) {
+         if(var1) {
             return null;
          } else {
-            ModelData[] var7 = new ModelData[this.field2994.length];
+            ModelData[] var6 = new ModelData[this.field2994.length];
 
-            for(int var6 = 0; var6 < this.field2994.length; ++var6) {
-               var7[var6] = ModelData.method1463(Widget.field2321, this.field2994[var6], 0);
+            for(int var3 = 0; var3 < this.field2994.length; ++var3) {
+               var6[var3] = ModelData.method1463(Widget.field2321, this.field2994[var3], 0);
             }
 
-            ModelData var3;
-            if(var7.length == 1) {
-               var3 = var7[0];
+            ModelData var7;
+            if(var6.length == 1) {
+               var7 = var6[0];
             } else {
-               var3 = new ModelData(var7, var7.length);
+               var7 = new ModelData(var6, var6.length);
             }
 
             int var4;
             if(null != this.field3012) {
                for(var4 = 0; var4 < this.field3012.length; ++var4) {
-                  var3.method1427(this.field3012[var4], this.field3003[var4]);
+                  var7.method1427(this.field3012[var4], this.field3003[var4]);
                }
             }
 
             if(this.field3004 != null) {
                for(var4 = 0; var4 < this.field3004.length; ++var4) {
-                  var3.method1469(this.field3004[var4], this.field2999[var4]);
+                  var7.method1469(this.field3004[var4], this.field2999[var4]);
                }
             }
 
-            return var3;
+            return var7;
          }
       }
    }

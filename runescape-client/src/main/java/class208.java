@@ -1,6 +1,8 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("hb")
+@Implements("Font")
 public final class class208 extends class209 {
    @ObfuscatedName("u")
    final void vmethod3881(byte[] var1, int var2, int var3, int var4, int var5, int var6) {
@@ -41,6 +43,7 @@ public final class class208 extends class209 {
       if(var4 > 0 && var5 > 0) {
          class209.method3884(class219.graphicsPixels, var1, var6, var10, var7, var4, var5, var8, var9);
       }
+
    }
 
    public class208(byte[] var1) {
@@ -86,6 +89,7 @@ public final class class208 extends class209 {
       if(var4 > 0 && var5 > 0) {
          class209.method3886(class219.graphicsPixels, var1, var6, var11, var8, var4, var5, var9, var10, var7);
       }
+
    }
 
    public class208(byte[] var1, int[] var2, int[] var3, int[] var4, int[] var5, int[] var6, byte[][] var7) {

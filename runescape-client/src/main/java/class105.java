@@ -105,32 +105,32 @@ public final class class105 implements KeyListener, FocusListener {
          char var2 = var1.getKeyChar();
          if(var2 != 0 && var2 != '\uffff') {
             boolean var3;
-            if((var2 <= 0 || var2 >= 128) && (var2 < 160 || var2 > 255)) {
-               label67: {
+            if(var2 > 0 && var2 < 128 || var2 >= 160 && var2 <= 255) {
+               var3 = true;
+            } else {
+               label56: {
                   if(var2 != 0) {
-                     char[] var7 = class203.field3061;
+                     char[] var4 = class203.field3061;
 
-                     for(int var5 = 0; var5 < var7.length; ++var5) {
-                        char var6 = var7[var5];
+                     for(int var5 = 0; var5 < var4.length; ++var5) {
+                        char var6 = var4[var5];
                         if(var2 == var6) {
                            var3 = true;
-                           break label67;
+                           break label56;
                         }
                      }
                   }
 
                   var3 = false;
                }
-            } else {
-               var3 = true;
             }
 
             if(var3) {
-               int var4 = 1 + field1713 & 127;
-               if(field1709 != var4) {
+               int var7 = 1 + field1713 & 127;
+               if(field1709 != var7) {
                   field1705[field1713] = -1;
                   field1704[field1713] = var2;
-                  field1713 = var4;
+                  field1713 = var7;
                }
             }
          }
@@ -153,6 +153,7 @@ public final class class105 implements KeyListener, FocusListener {
          Client.field326.method2760(class148.method2740(var0));
          Client.field326.method2811(var0);
       }
+
    }
 
    public final synchronized void focusLost(FocusEvent var1) {
@@ -192,6 +193,7 @@ public final class class105 implements KeyListener, FocusListener {
    public static void method1982() {
       if(keyboard != null) {
          class105 var0 = keyboard;
+         class105 var1 = keyboard;
          synchronized(keyboard) {
             keyboard = null;
          }

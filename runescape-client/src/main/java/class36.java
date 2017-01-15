@@ -34,19 +34,19 @@ public class class36 {
             String var1 = class139.method2601(var0, Ignore.field209);
             if(var1 != null) {
                int var2;
+               String var3;
                String var4;
-               String var5;
                for(var2 = 0; var2 < Client.friendCount; ++var2) {
-                  Friend var3 = Client.friends[var2];
-                  var4 = class139.method2601(var3.name, Ignore.field209);
-                  if(var4 != null && var4.equals(var1)) {
+                  Friend var5 = Client.friends[var2];
+                  var3 = class139.method2601(var5.name, Ignore.field209);
+                  if(var3 != null && var3.equals(var1)) {
                      class7.method99(30, "", var0 + " is already on your friend list");
                      return;
                   }
 
-                  if(var3.previousName != null) {
-                     var5 = class139.method2601(var3.previousName, Ignore.field209);
-                     if(var5 != null && var5.equals(var1)) {
+                  if(var5.previousName != null) {
+                     var4 = class139.method2601(var5.previousName, Ignore.field209);
+                     if(var4 != null && var4.equals(var1)) {
                         class7.method99(30, "", var0 + " is already on your friend list");
                         return;
                      }
@@ -55,15 +55,15 @@ public class class36 {
 
                for(var2 = 0; var2 < Client.ignoreCount; ++var2) {
                   Ignore var6 = Client.ignores[var2];
-                  var4 = class139.method2601(var6.name, Ignore.field209);
-                  if(null != var4 && var4.equals(var1)) {
+                  var3 = class139.method2601(var6.name, Ignore.field209);
+                  if(null != var3 && var3.equals(var1)) {
                      class7.method99(30, "", "Please remove " + var0 + " from your ignore list first");
                      return;
                   }
 
                   if(null != var6.previousName) {
-                     var5 = class139.method2601(var6.previousName, Ignore.field209);
-                     if(null != var5 && var5.equals(var1)) {
+                     var4 = class139.method2601(var6.previousName, Ignore.field209);
+                     if(null != var4 && var4.equals(var1)) {
                         class7.method99(30, "", "Please remove " + var0 + " from your ignore list first");
                         return;
                      }
@@ -82,5 +82,6 @@ public class class36 {
             class7.method99(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
          }
       }
+
    }
 }

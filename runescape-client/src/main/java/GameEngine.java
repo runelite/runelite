@@ -53,6 +53,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    @ObfuscatedGetter(
       intValue = 1907070649
    )
+   @Export("FPS")
    protected static int field1763 = 0;
    @ObfuscatedName("pp")
    static boolean field1764 = false;
@@ -126,22 +127,22 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       int var4 = class65.field1099;
       Canvas var5 = class165.canvas;
 
-      Object var9;
+      Object var6;
       try {
-         MainBufferProvider var6 = new MainBufferProvider();
-         var6.init(var3, var4, var5);
-         var9 = var6;
-      } catch (Throwable var8) {
-         SecondaryBufferProvider var7 = new SecondaryBufferProvider();
+         MainBufferProvider var7 = new MainBufferProvider();
          var7.init(var3, var4, var5);
-         var9 = var7;
+         var6 = var7;
+      } catch (Throwable var9) {
+         SecondaryBufferProvider var8 = new SecondaryBufferProvider();
+         var8.init(var3, var4, var5);
+         var6 = var8;
       }
 
       if(null != bufferProvider) {
-         bufferProvider.draw(((BufferProvider)var9).image.getGraphics(), 0, 0);
+         bufferProvider.draw(((BufferProvider)var6).image.getGraphics(), 0, 0);
       }
 
-      bufferProvider = (BufferProvider)var9;
+      bufferProvider = (BufferProvider)var6;
       field1771 = false;
       field1762 = class9.method117();
    }
@@ -179,19 +180,20 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          this.method2058();
          this.vmethod2086();
 
-         Object var11;
+         Object var8;
          try {
-            var11 = new class98();
-         } catch (Throwable var9) {
-            var11 = new class99();
+            var8 = new class98();
+         } catch (Throwable var6) {
+            var8 = new class99();
          }
 
-         class8.field79 = (class109)var11;
+         class8.field79 = (class109)var8;
 
          label85:
          while(true) {
-            Canvas var7;
-            class103 var12;
+            Canvas var9;
+            class103 var10;
+            int var11;
             do {
                if(0L != field1767 && class9.method117() >= field1767) {
                   break label85;
@@ -199,25 +201,25 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
                CombatInfoListHolder.field753 = class8.field79.vmethod2004(field1760, field1761);
 
-               for(int var6 = 0; var6 < CombatInfoListHolder.field753; ++var6) {
+               for(var11 = 0; var11 < CombatInfoListHolder.field753; ++var11) {
                   this.method2060();
                }
 
                this.method2061();
-               var12 = class44.field881;
-               var7 = class165.canvas;
-            } while(null == var12.field1659);
+               var10 = class44.field881;
+               var9 = class165.canvas;
+            } while(null == var10.field1659);
 
-            for(int var8 = 0; var8 < 50 && var12.field1659.peekEvent() != null; ++var8) {
+            for(var11 = 0; var11 < 50 && var10.field1659.peekEvent() != null; ++var11) {
                VertexNormal.method1598(1L);
             }
 
-            if(var7 != null) {
-               var12.field1659.postEvent(new ActionEvent(var7, 1001, "dummy"));
+            if(var9 != null) {
+               var10.field1659.postEvent(new ActionEvent(var9, 1001, "dummy"));
             }
          }
-      } catch (Exception var10) {
-         class174.method3240((String)null, var10);
+      } catch (Exception var7) {
+         class174.method3240((String)null, var7);
          this.method2073("crash");
       }
 
@@ -316,12 +318,14 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          this.vmethod2076();
       }
+
    }
 
    public void start() {
       if(this == field1757 && !field1764) {
          field1767 = 0L;
       }
+
    }
 
    public void destroy() {
@@ -330,6 +334,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          VertexNormal.method1598(5000L);
          this.method2062();
       }
+
    }
 
    public final void update(Graphics var1) {
@@ -345,8 +350,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                field1771 = true;
             }
          }
-
       }
+
    }
 
    public final void focusGained(FocusEvent var1) {
@@ -387,8 +392,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          } catch (Exception var3) {
             ;
          }
-
       }
+
    }
 
    @ObfuscatedName("sm")
@@ -527,6 +532,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
       if(this == field1757 && !field1764) {
          field1767 = class9.method117() + 4000L;
       }
+
    }
 
    public final void windowClosing(WindowEvent var1) {

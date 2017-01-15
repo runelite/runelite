@@ -87,9 +87,9 @@ public class class22 extends class119 {
       int var1;
       int var2;
       int var3;
+      int var4;
       int var5;
       int var6;
-      int var7;
       if(!Client.isMenuOpen) {
          if(Client.field429 != -1) {
             class13.method173(Client.field429, Client.field430);
@@ -99,27 +99,27 @@ public class class22 extends class119 {
          var1 = Buffer.menuY;
          var2 = class20.menuWidth;
          var3 = class94.menuHeight;
-         int var12 = 6116423;
-         class219.method3993(var0, var1, var2, var3, var12);
+         int var7 = 6116423;
+         class219.method3993(var0, var1, var2, var3, var7);
          class219.method3993(1 + var0, var1 + 1, var2 - 2, 16, 0);
          class219.method3977(var0 + 1, var1 + 18, var2 - 2, var3 - 19, 0);
-         class97.field1621.method3867("Choose Option", 3 + var0, var1 + 14, var12, -1);
-         var5 = class115.field1788;
-         var6 = class115.field1789;
+         class97.field1621.method3867("Choose Option", 3 + var0, var1 + 14, var7, -1);
+         var4 = class115.field1788;
+         var5 = class115.field1789;
 
-         for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-            int var8 = 15 * (Client.menuOptionCount - 1 - var7) + var1 + 31;
+         for(var6 = 0; var6 < Client.menuOptionCount; ++var6) {
+            int var8 = 15 * (Client.menuOptionCount - 1 - var6) + var1 + 31;
             int var9 = 16777215;
-            if(var5 > var0 && var5 < var2 + var0 && var6 > var8 - 13 && var6 < var8 + 3) {
+            if(var4 > var0 && var4 < var2 + var0 && var5 > var8 - 13 && var5 < var8 + 3) {
                var9 = 16776960;
             }
 
             class208 var10 = class97.field1621;
             String var11;
-            if(Client.menuTargets[var7].length() > 0) {
-               var11 = Client.menuOptions[var7] + " " + Client.menuTargets[var7];
+            if(Client.menuTargets[var6].length() > 0) {
+               var11 = Client.menuOptions[var6] + " " + Client.menuTargets[var6];
             } else {
-               var11 = Client.menuOptions[var7];
+               var11 = Client.menuOptions[var6];
             }
 
             var10.method3867(var11, 3 + var0, var8, var9, 0);
@@ -143,74 +143,77 @@ public class class22 extends class119 {
       var2 = class148.localPlayer.y;
       var3 = Client.field462;
 
-      for(class31 var4 = (class31)class31.field703.method2391(); null != var4; var4 = (class31)class31.field703.method2393()) {
-         if(var4.field705 != -1 || null != var4.field709) {
-            var5 = 0;
-            if(var1 > var4.field702) {
-               var5 += var1 - var4.field702;
-            } else if(var1 < var4.field700) {
-               var5 += var4.field700 - var1;
+      for(class31 var12 = (class31)class31.field703.method2391(); null != var12; var12 = (class31)class31.field703.method2393()) {
+         if(var12.field705 != -1 || null != var12.field709) {
+            var4 = 0;
+            if(var1 > var12.field702) {
+               var4 += var1 - var12.field702;
+            } else if(var1 < var12.field700) {
+               var4 += var12.field700 - var1;
             }
 
-            if(var2 > var4.field716) {
-               var5 += var2 - var4.field716;
-            } else if(var2 < var4.field701) {
-               var5 += var4.field701 - var2;
+            if(var2 > var12.field716) {
+               var4 += var2 - var12.field716;
+            } else if(var2 < var12.field701) {
+               var4 += var12.field701 - var2;
             }
 
-            if(var5 - 64 <= var4.field704 && Client.field557 != 0 && var4.field699 == var0) {
-               var5 -= 64;
-               if(var5 < 0) {
-                  var5 = 0;
+            if(var4 - 64 <= var12.field704 && Client.field557 != 0 && var12.field699 == var0) {
+               var4 -= 64;
+               if(var4 < 0) {
+                  var4 = 0;
                }
 
-               var6 = (var4.field704 - var5) * Client.field557 / var4.field704;
-               Object var10000;
-               if(null == var4.field706) {
-                  if(var4.field705 >= 0) {
-                     var10000 = null;
-                     class53 var14 = class53.method955(class10.field94, var4.field705, 0);
+               var5 = (var12.field704 - var4) * Client.field557 / var12.field704;
+               Object var13;
+               class53 var14;
+               class55 var15;
+               class66 var16;
+               if(null == var12.field706) {
+                  if(var12.field705 >= 0) {
+                     var13 = null;
+                     var14 = class53.method955(class10.field94, var12.field705, 0);
                      if(var14 != null) {
-                        class55 var15 = var14.method953().method994(class140.field1961);
-                        class66 var13 = class66.method1130(var15, 100, var6);
-                        var13.method1133(-1);
-                        class20.field222.method889(var13);
-                        var4.field706 = var13;
+                        var15 = var14.method953().method994(class140.field1961);
+                        var16 = class66.method1130(var15, 100, var5);
+                        var16.method1133(-1);
+                        class20.field222.method889(var16);
+                        var12.field706 = var16;
                      }
                   }
                } else {
-                  var4.field706.method1134(var6);
+                  var12.field706.method1134(var5);
                }
 
-               if(var4.field698 == null) {
-                  if(null != var4.field709 && (var4.field710 -= var3) <= 0) {
-                     var7 = (int)(Math.random() * (double)var4.field709.length);
-                     var10000 = null;
-                     class53 var18 = class53.method955(class10.field94, var4.field709[var7], 0);
-                     if(var18 != null) {
-                        class55 var17 = var18.method953().method994(class140.field1961);
-                        class66 var16 = class66.method1130(var17, 100, var6);
+               if(var12.field698 == null) {
+                  if(null != var12.field709 && (var12.field710 -= var3) <= 0) {
+                     var6 = (int)(Math.random() * (double)var12.field709.length);
+                     var13 = null;
+                     var14 = class53.method955(class10.field94, var12.field709[var6], 0);
+                     if(var14 != null) {
+                        var15 = var14.method953().method994(class140.field1961);
+                        var16 = class66.method1130(var15, 100, var5);
                         var16.method1133(0);
                         class20.field222.method889(var16);
-                        var4.field698 = var16;
-                        var4.field710 = var4.field707 + (int)(Math.random() * (double)(var4.field708 - var4.field707));
+                        var12.field698 = var16;
+                        var12.field710 = var12.field707 + (int)(Math.random() * (double)(var12.field708 - var12.field707));
                      }
                   }
                } else {
-                  var4.field698.method1134(var6);
-                  if(!var4.field698.linked()) {
-                     var4.field698 = null;
+                  var12.field698.method1134(var5);
+                  if(!var12.field698.linked()) {
+                     var12.field698 = null;
                   }
                }
             } else {
-               if(null != var4.field706) {
-                  class20.field222.method903(var4.field706);
-                  var4.field706 = null;
+               if(null != var12.field706) {
+                  class20.field222.method903(var12.field706);
+                  var12.field706 = null;
                }
 
-               if(null != var4.field698) {
-                  class20.field222.method903(var4.field698);
-                  var4.field698 = null;
+               if(null != var12.field698) {
+                  class20.field222.method903(var12.field698);
+                  var12.field698 = null;
                }
             }
          }
@@ -440,60 +443,60 @@ public class class22 extends class119 {
                      var0.method2763(var6);
                   }
 
-                  Method var25;
+                  Method var7;
                   if(var4 != 3) {
                      if(var4 == 4) {
-                        var25 = var1.methods[var3];
-                        var6 = var25.getModifiers();
+                        var7 = var1.methods[var3];
+                        var6 = var7.getModifiers();
                         var0.method2760(0);
                         var0.method2763(var6);
                      }
                   } else {
-                     var25 = var1.methods[var3];
-                     byte[][] var10 = var1.args[var3];
-                     Object[] var7 = new Object[var10.length];
+                     var7 = var1.methods[var3];
+                     byte[][] var8 = var1.args[var3];
+                     Object[] var9 = new Object[var8.length];
 
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
+                     for(int var10 = 0; var10 < var8.length; ++var10) {
+                        ObjectInputStream var11 = new ObjectInputStream(new ByteArrayInputStream(var8[var10]));
+                        var9[var10] = var11.readObject();
                      }
 
-                     Object var11 = var25.invoke((Object)null, var7);
-                     if(null == var11) {
+                     Object var24 = var7.invoke((Object)null, var9);
+                     if(null == var24) {
                         var0.method2760(0);
-                     } else if(var11 instanceof Number) {
+                     } else if(var24 instanceof Number) {
                         var0.method2760(1);
-                        var0.method2933(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
+                        var0.method2933(((Number)var24).longValue());
+                     } else if(var24 instanceof String) {
                         var0.method2760(2);
-                        var0.method2811((String)var11);
+                        var0.method2811((String)var24);
                      } else {
                         var0.method2760(4);
                      }
                   }
-               } catch (ClassNotFoundException var13) {
+               } catch (ClassNotFoundException var12) {
                   var0.method2760(-10);
-               } catch (InvalidClassException var14) {
+               } catch (InvalidClassException var13) {
                   var0.method2760(-11);
-               } catch (StreamCorruptedException var15) {
+               } catch (StreamCorruptedException var14) {
                   var0.method2760(-12);
-               } catch (OptionalDataException var16) {
+               } catch (OptionalDataException var15) {
                   var0.method2760(-13);
-               } catch (IllegalAccessException var17) {
+               } catch (IllegalAccessException var16) {
                   var0.method2760(-14);
-               } catch (IllegalArgumentException var18) {
+               } catch (IllegalArgumentException var17) {
                   var0.method2760(-15);
-               } catch (InvocationTargetException var19) {
+               } catch (InvocationTargetException var18) {
                   var0.method2760(-16);
-               } catch (SecurityException var20) {
+               } catch (SecurityException var19) {
                   var0.method2760(-17);
-               } catch (IOException var21) {
+               } catch (IOException var20) {
                   var0.method2760(-18);
-               } catch (NullPointerException var22) {
+               } catch (NullPointerException var21) {
                   var0.method2760(-19);
-               } catch (Exception var23) {
+               } catch (Exception var22) {
                   var0.method2760(-20);
-               } catch (Throwable var24) {
+               } catch (Throwable var23) {
                   var0.method2760(-21);
                }
             }
@@ -502,5 +505,6 @@ public class class22 extends class119 {
          var0.method2797(var2);
          var1.unlink();
       }
+
    }
 }

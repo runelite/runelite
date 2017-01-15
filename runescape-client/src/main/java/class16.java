@@ -46,11 +46,11 @@ public class class16 extends class131 {
             Client.field388 = -1;
             Client.field491 = -1;
          }
-
       } else {
          Client.field388 = -1;
          Client.field491 = -1;
       }
+
    }
 
    @ObfuscatedName("ei")
@@ -102,6 +102,7 @@ public class class16 extends class131 {
       var3.field2670 = var1;
       var3.field2671 = var2;
       Deque var4 = class183.field2705;
+      Deque var5 = class183.field2705;
       synchronized(class183.field2705) {
          class183.field2705.method2394(var3);
       }

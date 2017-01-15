@@ -70,210 +70,210 @@ public final class class77 {
       int var28 = var4 * var20;
       int var29 = var5 * var20;
 
+      int var30;
       int var31;
       int var32;
       int var33;
       int var34;
       int var35;
-      int var36;
-      for(int var30 = 0; var30 < var25; ++var30) {
-         var31 = var24[var30];
-         if((var31 & 1) == 0 && var31 <= 8) {
-            var31 = (var31 - var2 - var2 - 1 & 7) + 1;
+      for(int var36 = 0; var36 < var25; ++var36) {
+         var30 = var24[var36];
+         if((var30 & 1) == 0 && var30 <= 8) {
+            var30 = (var30 - var2 - var2 - 1 & 7) + 1;
          }
 
-         if(var31 > 8 && var31 <= 12) {
-            var31 = (var31 - 9 - var2 & 3) + 9;
+         if(var30 > 8 && var30 <= 12) {
+            var30 = (var30 - 9 - var2 & 3) + 9;
          }
 
-         if(var31 > 12 && var31 <= 16) {
-            var31 = (var31 - 13 - var2 & 3) + 13;
+         if(var30 > 12 && var30 <= 16) {
+            var30 = (var30 - 13 - var2 & 3) + 13;
          }
 
-         if(var31 == 1) {
-            var32 = var28;
-            var33 = var29;
-            var34 = var6;
-            var35 = var10;
-            var36 = var14;
-         } else if(var31 == 2) {
-            var32 = var28 + var21;
-            var33 = var29;
-            var34 = var6 + var7 >> 1;
-            var35 = var10 + var11 >> 1;
-            var36 = var14 + var15 >> 1;
-         } else if(var31 == 3) {
-            var32 = var28 + var20;
-            var33 = var29;
-            var34 = var7;
-            var35 = var11;
-            var36 = var15;
-         } else if(var31 == 4) {
-            var32 = var28 + var20;
-            var33 = var29 + var21;
-            var34 = var7 + var8 >> 1;
-            var35 = var11 + var12 >> 1;
-            var36 = var15 + var16 >> 1;
-         } else if(var31 == 5) {
-            var32 = var28 + var20;
-            var33 = var29 + var20;
-            var34 = var8;
-            var35 = var12;
-            var36 = var16;
-         } else if(var31 == 6) {
-            var32 = var28 + var21;
-            var33 = var29 + var20;
-            var34 = var8 + var9 >> 1;
-            var35 = var12 + var13 >> 1;
-            var36 = var16 + var17 >> 1;
-         } else if(var31 == 7) {
-            var32 = var28;
-            var33 = var29 + var20;
-            var34 = var9;
-            var35 = var13;
-            var36 = var17;
-         } else if(var31 == 8) {
-            var32 = var28;
-            var33 = var29 + var21;
-            var34 = var9 + var6 >> 1;
-            var35 = var13 + var10 >> 1;
-            var36 = var17 + var14 >> 1;
-         } else if(var31 == 9) {
-            var32 = var28 + var21;
-            var33 = var29 + var22;
-            var34 = var6 + var7 >> 1;
-            var35 = var10 + var11 >> 1;
-            var36 = var14 + var15 >> 1;
-         } else if(var31 == 10) {
-            var32 = var28 + var23;
-            var33 = var29 + var21;
-            var34 = var7 + var8 >> 1;
-            var35 = var11 + var12 >> 1;
-            var36 = var15 + var16 >> 1;
-         } else if(var31 == 11) {
-            var32 = var28 + var21;
-            var33 = var29 + var23;
-            var34 = var8 + var9 >> 1;
-            var35 = var12 + var13 >> 1;
-            var36 = var16 + var17 >> 1;
-         } else if(var31 == 12) {
-            var32 = var28 + var22;
-            var33 = var29 + var21;
-            var34 = var9 + var6 >> 1;
-            var35 = var13 + var10 >> 1;
-            var36 = var17 + var14 >> 1;
-         } else if(var31 == 13) {
-            var32 = var28 + var22;
-            var33 = var29 + var22;
-            var34 = var6;
-            var35 = var10;
-            var36 = var14;
-         } else if(var31 == 14) {
-            var32 = var28 + var23;
-            var33 = var29 + var22;
-            var34 = var7;
-            var35 = var11;
-            var36 = var15;
-         } else if(var31 == 15) {
-            var32 = var28 + var23;
-            var33 = var29 + var23;
-            var34 = var8;
-            var35 = var12;
-            var36 = var16;
+         if(var30 == 1) {
+            var31 = var28;
+            var32 = var29;
+            var33 = var6;
+            var34 = var10;
+            var35 = var14;
+         } else if(var30 == 2) {
+            var31 = var28 + var21;
+            var32 = var29;
+            var33 = var6 + var7 >> 1;
+            var34 = var10 + var11 >> 1;
+            var35 = var14 + var15 >> 1;
+         } else if(var30 == 3) {
+            var31 = var28 + var20;
+            var32 = var29;
+            var33 = var7;
+            var34 = var11;
+            var35 = var15;
+         } else if(var30 == 4) {
+            var31 = var28 + var20;
+            var32 = var29 + var21;
+            var33 = var7 + var8 >> 1;
+            var34 = var11 + var12 >> 1;
+            var35 = var15 + var16 >> 1;
+         } else if(var30 == 5) {
+            var31 = var28 + var20;
+            var32 = var29 + var20;
+            var33 = var8;
+            var34 = var12;
+            var35 = var16;
+         } else if(var30 == 6) {
+            var31 = var28 + var21;
+            var32 = var29 + var20;
+            var33 = var8 + var9 >> 1;
+            var34 = var12 + var13 >> 1;
+            var35 = var16 + var17 >> 1;
+         } else if(var30 == 7) {
+            var31 = var28;
+            var32 = var29 + var20;
+            var33 = var9;
+            var34 = var13;
+            var35 = var17;
+         } else if(var30 == 8) {
+            var31 = var28;
+            var32 = var29 + var21;
+            var33 = var9 + var6 >> 1;
+            var34 = var13 + var10 >> 1;
+            var35 = var17 + var14 >> 1;
+         } else if(var30 == 9) {
+            var31 = var28 + var21;
+            var32 = var29 + var22;
+            var33 = var6 + var7 >> 1;
+            var34 = var10 + var11 >> 1;
+            var35 = var14 + var15 >> 1;
+         } else if(var30 == 10) {
+            var31 = var28 + var23;
+            var32 = var29 + var21;
+            var33 = var7 + var8 >> 1;
+            var34 = var11 + var12 >> 1;
+            var35 = var15 + var16 >> 1;
+         } else if(var30 == 11) {
+            var31 = var28 + var21;
+            var32 = var29 + var23;
+            var33 = var8 + var9 >> 1;
+            var34 = var12 + var13 >> 1;
+            var35 = var16 + var17 >> 1;
+         } else if(var30 == 12) {
+            var31 = var28 + var22;
+            var32 = var29 + var21;
+            var33 = var9 + var6 >> 1;
+            var34 = var13 + var10 >> 1;
+            var35 = var17 + var14 >> 1;
+         } else if(var30 == 13) {
+            var31 = var28 + var22;
+            var32 = var29 + var22;
+            var33 = var6;
+            var34 = var10;
+            var35 = var14;
+         } else if(var30 == 14) {
+            var31 = var28 + var23;
+            var32 = var29 + var22;
+            var33 = var7;
+            var34 = var11;
+            var35 = var15;
+         } else if(var30 == 15) {
+            var31 = var28 + var23;
+            var32 = var29 + var23;
+            var33 = var8;
+            var34 = var12;
+            var35 = var16;
          } else {
-            var32 = var28 + var22;
-            var33 = var29 + var23;
-            var34 = var9;
-            var35 = var13;
-            var36 = var17;
+            var31 = var28 + var22;
+            var32 = var29 + var23;
+            var33 = var9;
+            var34 = var13;
+            var35 = var17;
          }
 
-         this.field1281[var30] = var32;
-         this.field1266[var30] = var34;
-         this.field1267[var30] = var33;
-         var26[var30] = var35;
-         var27[var30] = var36;
+         this.field1281[var36] = var31;
+         this.field1266[var36] = var33;
+         this.field1267[var36] = var32;
+         var26[var36] = var34;
+         var27[var36] = var35;
       }
 
       int[] var38 = field1286[var1];
-      var31 = var38.length / 4;
-      this.field1271 = new int[var31];
-      this.field1276 = new int[var31];
-      this.field1275 = new int[var31];
-      this.field1268 = new int[var31];
-      this.field1269 = new int[var31];
-      this.field1270 = new int[var31];
+      var30 = var38.length / 4;
+      this.field1271 = new int[var30];
+      this.field1276 = new int[var30];
+      this.field1275 = new int[var30];
+      this.field1268 = new int[var30];
+      this.field1269 = new int[var30];
+      this.field1270 = new int[var30];
       if(var3 != -1) {
-         this.field1274 = new int[var31];
+         this.field1274 = new int[var30];
       }
 
-      var32 = 0;
+      var31 = 0;
 
-      for(var33 = 0; var33 < var31; ++var33) {
-         var34 = var38[var32];
-         var35 = var38[var32 + 1];
-         var36 = var38[var32 + 2];
-         int var37 = var38[var32 + 3];
-         var32 += 4;
-         if(var35 < 4) {
-            var35 = var35 - var2 & 3;
+      for(var32 = 0; var32 < var30; ++var32) {
+         var33 = var38[var31];
+         var34 = var38[var31 + 1];
+         var35 = var38[var31 + 2];
+         int var37 = var38[var31 + 3];
+         var31 += 4;
+         if(var34 < 4) {
+            var34 = var34 - var2 & 3;
          }
 
-         if(var36 < 4) {
-            var36 = var36 - var2 & 3;
+         if(var35 < 4) {
+            var35 = var35 - var2 & 3;
          }
 
          if(var37 < 4) {
             var37 = var37 - var2 & 3;
          }
 
-         this.field1271[var33] = var35;
-         this.field1276[var33] = var36;
-         this.field1275[var33] = var37;
-         if(var34 == 0) {
-            this.field1268[var33] = var26[var35];
-            this.field1269[var33] = var26[var36];
-            this.field1270[var33] = var26[var37];
+         this.field1271[var32] = var34;
+         this.field1276[var32] = var35;
+         this.field1275[var32] = var37;
+         if(var33 == 0) {
+            this.field1268[var32] = var26[var34];
+            this.field1269[var32] = var26[var35];
+            this.field1270[var32] = var26[var37];
             if(this.field1274 != null) {
-               this.field1274[var33] = -1;
+               this.field1274[var32] = -1;
             }
          } else {
-            this.field1268[var33] = var27[var35];
-            this.field1269[var33] = var27[var36];
-            this.field1270[var33] = var27[var37];
+            this.field1268[var32] = var27[var34];
+            this.field1269[var32] = var27[var35];
+            this.field1270[var32] = var27[var37];
             if(this.field1274 != null) {
-               this.field1274[var33] = var3;
+               this.field1274[var32] = var3;
             }
          }
       }
 
-      var33 = var6;
-      var34 = var7;
+      var32 = var6;
+      var33 = var7;
       if(var7 < var6) {
-         var33 = var7;
+         var32 = var7;
       }
 
       if(var7 > var7) {
-         var34 = var7;
+         var33 = var7;
       }
 
-      if(var8 < var33) {
+      if(var8 < var32) {
+         var32 = var8;
+      }
+
+      if(var8 > var33) {
          var33 = var8;
       }
 
-      if(var8 > var34) {
-         var34 = var8;
+      if(var9 < var32) {
+         var32 = var9;
       }
 
-      if(var9 < var33) {
+      if(var9 > var33) {
          var33 = var9;
       }
 
-      if(var9 > var34) {
-         var34 = var9;
-      }
-
+      var32 /= 14;
       var33 /= 14;
-      var34 /= 14;
    }
 }

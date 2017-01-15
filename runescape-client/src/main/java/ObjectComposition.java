@@ -161,6 +161,7 @@ public class ObjectComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 2146422057
    )
+   @Export("ambientSoundId")
    public int field2924 = -1;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
@@ -365,6 +366,7 @@ public class ObjectComposition extends CacheableNode {
       ModelData var3 = null;
       boolean var4;
       int var5;
+      int var6;
       int var7;
       if(this.field2889 == null) {
          if(var1 != 10) {
@@ -382,15 +384,15 @@ public class ObjectComposition extends CacheableNode {
 
          var5 = this.field2888.length;
 
-         for(int var8 = 0; var8 < var5; ++var8) {
-            var7 = this.field2888[var8];
+         for(var7 = 0; var7 < var5; ++var7) {
+            var6 = this.field2888[var7];
             if(var4) {
-               var7 += 65536;
+               var6 += 65536;
             }
 
-            var3 = (ModelData)field2929.get((long)var7);
+            var3 = (ModelData)field2929.get((long)var6);
             if(var3 == null) {
-               var3 = ModelData.method1463(NPC.field758, var7 & '\uffff', 0);
+               var3 = ModelData.method1463(NPC.field758, var6 & '\uffff', 0);
                if(var3 == null) {
                   return null;
                }
@@ -399,11 +401,11 @@ public class ObjectComposition extends CacheableNode {
                   var3.method1414();
                }
 
-               field2929.put(var3, (long)var7);
+               field2929.put(var3, (long)var6);
             }
 
             if(var5 > 1) {
-               field2886[var8] = var3;
+               field2886[var7] = var3;
             }
          }
 
@@ -411,22 +413,22 @@ public class ObjectComposition extends CacheableNode {
             var3 = new ModelData(field2886, var5);
          }
       } else {
-         int var9 = -1;
+         var7 = -1;
 
          for(var5 = 0; var5 < this.field2889.length; ++var5) {
             if(this.field2889[var5] == var1) {
-               var9 = var5;
+               var7 = var5;
                break;
             }
          }
 
-         if(var9 == -1) {
+         if(var7 == -1) {
             return null;
          }
 
-         var5 = this.field2888[var9];
-         boolean var11 = this.field2910 ^ var2 > 3;
-         if(var11) {
+         var5 = this.field2888[var7];
+         boolean var8 = this.field2910 ^ var2 > 3;
+         if(var8) {
             var5 += 65536;
          }
 
@@ -437,7 +439,7 @@ public class ObjectComposition extends CacheableNode {
                return null;
             }
 
-            if(var11) {
+            if(var8) {
                var3.method1414();
             }
 
@@ -458,42 +460,42 @@ public class ObjectComposition extends CacheableNode {
          var10 = true;
       }
 
-      ModelData var6 = new ModelData(var3, var2 == 0 && !var4 && !var10, this.field2891 == null, null == this.field2893, true);
+      ModelData var9 = new ModelData(var3, var2 == 0 && !var4 && !var10, this.field2891 == null, null == this.field2893, true);
       if(var1 == 4 && var2 > 3) {
-         var6.method1425(256);
-         var6.method1426(45, 0, -45);
+         var9.method1425(256);
+         var9.method1426(45, 0, -45);
       }
 
       var2 &= 3;
       if(var2 == 1) {
-         var6.method1422();
+         var9.method1422();
       } else if(var2 == 2) {
-         var6.method1452();
+         var9.method1452();
       } else if(var2 == 3) {
-         var6.method1424();
+         var9.method1424();
       }
 
       if(this.field2891 != null) {
-         for(var7 = 0; var7 < this.field2891.length; ++var7) {
-            var6.method1427(this.field2891[var7], this.field2892[var7]);
+         for(var6 = 0; var6 < this.field2891.length; ++var6) {
+            var9.method1427(this.field2891[var6], this.field2892[var6]);
          }
       }
 
       if(this.field2893 != null) {
-         for(var7 = 0; var7 < this.field2893.length; ++var7) {
-            var6.method1469(this.field2893[var7], this.field2894[var7]);
+         for(var6 = 0; var6 < this.field2893.length; ++var6) {
+            var9.method1469(this.field2893[var6], this.field2894[var6]);
          }
       }
 
       if(var4) {
-         var6.method1423(this.field2912, this.field2913, this.field2914);
+         var9.method1423(this.field2912, this.field2913, this.field2914);
       }
 
       if(var10) {
-         var6.method1426(this.field2921, this.field2880, this.field2897);
+         var9.method1426(this.field2921, this.field2880, this.field2897);
       }
 
-      return var6;
+      return var9;
    }
 
    @ObfuscatedName("j")

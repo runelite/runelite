@@ -153,8 +153,8 @@ public class VertexNormal {
          } else {
             CombatInfoListHolder.method709(var0);
          }
-
       }
+
    }
 
    @ObfuscatedName("am")

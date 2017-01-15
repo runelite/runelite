@@ -37,6 +37,7 @@ public class Widget extends Node {
    @ObfuscatedName("t")
    public static boolean field2183 = false;
    @ObfuscatedName("m")
+   @Export("hasScript")
    public boolean field2184 = false;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
@@ -82,11 +83,13 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1915953029
    )
+   @Export("originalX")
    public int field2194 = 0;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1631797403
    )
+   @Export("originalY")
    public int field2195 = 0;
    @ObfuscatedName("bv")
    @Export("flippedVertically")
@@ -185,6 +188,7 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = 1698608361
    )
+   @Export("fontId")
    public int field2217;
    @ObfuscatedName("bg")
    public boolean field2218;
@@ -269,6 +273,7 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1058968299
    )
+   @Export("originalWidth")
    public int field2237 = 0;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
@@ -518,6 +523,7 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1591792007
    )
+   @Export("contentType")
    public int field2312;
    @ObfuscatedName("es")
    @ObfuscatedGetter(
@@ -666,8 +672,8 @@ public class Widget extends Node {
 
          int var8;
          for(var8 = 0; var8 < 20; ++var8) {
-            int var10 = var1.readUnsignedByte();
-            if(var10 == 1) {
+            int var9 = var1.readUnsignedByte();
+            if(var9 == 1) {
                this.field2253[var8] = var1.method2968();
                this.field2254[var8] = var1.method2968();
                this.field2190[var8] = var1.method2780();
@@ -679,9 +685,9 @@ public class Widget extends Node {
          this.field2256 = new String[5];
 
          for(var8 = 0; var8 < 5; ++var8) {
-            String var9 = var1.method2965();
-            if(var9.length() > 0) {
-               this.field2256[var8] = var9;
+            String var11 = var1.method2965();
+            if(var11.length() > 0) {
+               this.field2256[var8] = var11;
                this.field2257 |= 1 << var8 + 23;
             }
          }
@@ -772,9 +778,9 @@ public class Widget extends Node {
          this.field2256 = new String[5];
 
          for(var5 = 0; var5 < 5; ++var5) {
-            String var11 = var1.method2965();
-            if(var11.length() > 0) {
-               this.field2256[var5] = var11;
+            String var10 = var1.method2965();
+            if(var10.length() > 0) {
+               this.field2256[var5] = var10;
                this.field2257 |= 1 << 23 + var5;
             }
          }

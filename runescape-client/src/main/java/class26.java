@@ -102,8 +102,8 @@ public class class26 {
          if(Client.field388 > -1 && Client.gameCycle % 20 < 10) {
             Player.field253[0].method4122(var0 + Client.field388 - 12, Client.field491 + var1 - 28);
          }
-
       }
+
    }
 
    @ObfuscatedName("g")

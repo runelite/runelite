@@ -78,17 +78,18 @@ final class class7 implements Comparator {
    )
    public static void method110() {
       while(true) {
-         Deque var1 = class183.field2705;
-         class180 var0;
+         Deque var0 = class183.field2705;
+         Deque var2 = class183.field2705;
+         class180 var1;
          synchronized(class183.field2705) {
-            var0 = (class180)class183.field2703.method2389();
+            var1 = (class180)class183.field2703.method2389();
          }
 
-         if(null == var0) {
+         if(null == var1) {
             return;
          }
 
-         var0.field2671.method3361(var0.field2670, (int)var0.hash, var0.field2675, false);
+         var1.field2671.method3361(var1.field2670, (int)var1.hash, var1.field2675, false);
       }
    }
 }

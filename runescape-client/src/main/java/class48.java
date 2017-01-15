@@ -70,76 +70,85 @@ public class class48 extends CacheableNode {
          Client.field340 = 0;
          var0 = true;
 
+         int var2;
+         Buffer var3;
          int var4;
-         Buffer var8;
+         int var5;
+         int var6;
+         int var7;
+         int var8;
          int var9;
          int var10;
          int var11;
+         int var12;
          int var13;
-         int var14;
-         int var15;
-         int var16;
-         int var17;
-         int var18;
-         int var44;
          for(var1 = 0; var1 < class104.field1680.length; ++var1) {
-            byte[] var2 = class7.field59[var1];
-            if(var2 != null) {
-               var44 = (class183.mapRegions[var1] >> 8) * 64 - FrameMap.baseX;
-               var4 = (class183.mapRegions[var1] & 255) * 64 - XItemContainer.baseY;
+            byte[] var14 = class7.field59[var1];
+            if(var14 != null) {
+               var13 = (class183.mapRegions[var1] >> 8) * 64 - FrameMap.baseX;
+               var2 = (class183.mapRegions[var1] & 255) * 64 - XItemContainer.baseY;
                if(Client.field434) {
-                  var44 = 10;
-                  var4 = 10;
+                  var13 = 10;
+                  var2 = 10;
                }
 
-               boolean var7 = true;
-               var8 = new Buffer(var2);
-               var9 = -1;
+               boolean var15 = true;
+               var3 = new Buffer(var14);
+               var4 = -1;
 
-               label1499:
+               label1140:
                while(true) {
-                  var10 = var8.method2963();
-                  if(var10 == 0) {
-                     var0 &= var7;
+                  var5 = var3.method2963();
+                  if(var5 == 0) {
+                     var0 &= var15;
                      break;
                   }
 
-                  var9 += var10;
-                  var11 = 0;
-                  boolean var12 = false;
+                  var4 += var5;
+                  var6 = 0;
+                  boolean var16 = false;
 
                   while(true) {
-                     while(!var12) {
-                        var13 = var8.method2963();
-                        if(var13 == 0) {
-                           continue label1499;
-                        }
+                     ObjectComposition var17;
+                     do {
+                        do {
+                           do {
+                              do {
+                                 do {
+                                    while(var16) {
+                                       var7 = var3.method2963();
+                                       if(var7 == 0) {
+                                          continue label1140;
+                                       }
 
-                        var11 += var13 - 1;
-                        var14 = var11 & 63;
-                        var15 = var11 >> 6 & 63;
-                        var16 = var8.readUnsignedByte() >> 2;
-                        var17 = var44 + var15;
-                        var18 = var14 + var4;
-                        if(var17 > 0 && var18 > 0 && var17 < 103 && var18 < 103) {
-                           ObjectComposition var46 = Tile.getObjectDefinition(var9);
-                           if(var16 != 22 || !Client.field286 || var46.field2899 != 0 || var46.field2923 == 1 || var46.field2918) {
-                              if(!var46.method3597()) {
-                                 ++Client.field340;
-                                 var7 = false;
-                              }
+                                       var3.readUnsignedByte();
+                                    }
 
-                              var12 = true;
-                           }
-                        }
+                                    var7 = var3.method2963();
+                                    if(var7 == 0) {
+                                       continue label1140;
+                                    }
+
+                                    var6 += var7 - 1;
+                                    var8 = var6 & 63;
+                                    var9 = var6 >> 6 & 63;
+                                    var10 = var3.readUnsignedByte() >> 2;
+                                    var11 = var13 + var9;
+                                    var12 = var8 + var2;
+                                 } while(var11 <= 0);
+                              } while(var12 <= 0);
+                           } while(var11 >= 103);
+                        } while(var12 >= 103);
+
+                        var17 = Tile.getObjectDefinition(var4);
+                     } while(var10 == 22 && Client.field286 && var17.field2899 == 0 && var17.field2923 != 1 && !var17.field2918);
+
+                     if(!var17.method3597()) {
+                        ++Client.field340;
+                        var15 = false;
                      }
 
-                     var13 = var8.method2963();
-                     if(var13 == 0) {
-                        break;
-                     }
-
-                     var8.readUnsignedByte();
+                     var16 = true;
                   }
                }
             }
@@ -149,7 +158,7 @@ public class class48 extends CacheableNode {
             Client.field342 = 2;
          } else {
             if(Client.field342 != 0) {
-               VertexNormal.method1599("Loading - please wait." + "<br>" + " (" + 100 + "%" + ")", true);
+               VertexNormal.method1599("Loading - please wait.<br> (100%)", true);
             }
 
             class40.method741();
@@ -163,11 +172,11 @@ public class class48 extends CacheableNode {
                Client.collisionMaps[var1].method2229();
             }
 
-            int var47;
+            int var48;
             for(var1 = 0; var1 < 4; ++var1) {
-               for(var47 = 0; var47 < 104; ++var47) {
-                  for(var44 = 0; var44 < 104; ++var44) {
-                     class10.tileSettings[var1][var47][var44] = 0;
+               for(var48 = 0; var48 < 104; ++var48) {
+                  for(var13 = 0; var13 < 104; ++var13) {
+                     class10.tileSettings[var1][var48][var13] = 0;
                   }
                }
             }
@@ -189,226 +198,267 @@ public class class48 extends CacheableNode {
             var1 = class104.field1680.length;
             class173.method3237();
             MessageNode.method199(true);
-            int var5;
-            int var6;
+            int var18;
             int var19;
             int var20;
             int var21;
-            int var60;
-            int var62;
+            int var49;
+            int var50;
+            int var51;
             if(!Client.field434) {
-               byte[] var49;
-               for(var47 = 0; var47 < var1; ++var47) {
-                  var44 = 64 * (class183.mapRegions[var47] >> 8) - FrameMap.baseX;
-                  var4 = 64 * (class183.mapRegions[var47] & 255) - XItemContainer.baseY;
-                  var49 = class104.field1680[var47];
-                  if(var49 != null) {
-                     class40.method741();
-                     var6 = MessageNode.field231 * 8 - 48;
-                     var60 = XGrandExchangeOffer.field31 * 8 - 48;
-                     CollisionData[] var61 = Client.collisionMaps;
+               var48 = 0;
 
-                     for(var9 = 0; var9 < 4; ++var9) {
-                        for(var10 = 0; var10 < 64; ++var10) {
-                           for(var11 = 0; var11 < 64; ++var11) {
-                              if(var10 + var44 > 0 && var10 + var44 < 103 && var11 + var4 > 0 && var4 + var11 < 103) {
-                                 var61[var9].flags[var44 + var10][var4 + var11] &= -16777217;
-                              }
-                           }
+               label1064:
+               while(true) {
+                  byte[] var22;
+                  if(var48 >= var1) {
+                     for(var48 = 0; var48 < var1; ++var48) {
+                        var13 = (class183.mapRegions[var48] >> 8) * 64 - FrameMap.baseX;
+                        var2 = (class183.mapRegions[var48] & 255) * 64 - XItemContainer.baseY;
+                        var22 = class104.field1680[var48];
+                        if(var22 == null && XGrandExchangeOffer.field31 < 800) {
+                           class40.method741();
+                           class179.method3257(var13, var2, 64, 64);
                         }
                      }
 
-                     Buffer var50 = new Buffer(var49);
-
-                     for(var10 = 0; var10 < 4; ++var10) {
-                        for(var11 = 0; var11 < 64; ++var11) {
-                           for(var62 = 0; var62 < 64; ++var62) {
-                              FrameMap.method1665(var50, var10, var44 + var11, var4 + var62, var6, var60, 0);
-                           }
-                        }
-                     }
-                  }
-               }
-
-               for(var47 = 0; var47 < var1; ++var47) {
-                  var44 = (class183.mapRegions[var47] >> 8) * 64 - FrameMap.baseX;
-                  var4 = (class183.mapRegions[var47] & 255) * 64 - XItemContainer.baseY;
-                  var49 = class104.field1680[var47];
-                  if(var49 == null && XGrandExchangeOffer.field31 < 800) {
-                     class40.method741();
-                     class179.method3257(var44, var4, 64, 64);
-                  }
-               }
-
-               MessageNode.method199(true);
-
-               for(var47 = 0; var47 < var1; ++var47) {
-                  byte[] var3 = class7.field59[var47];
-                  if(var3 != null) {
-                     var4 = 64 * (class183.mapRegions[var47] >> 8) - FrameMap.baseX;
-                     var5 = (class183.mapRegions[var47] & 255) * 64 - XItemContainer.baseY;
-                     class40.method741();
-                     Region var51 = class6.region;
-                     CollisionData[] var48 = Client.collisionMaps;
-                     var8 = new Buffer(var3);
-                     var9 = -1;
+                     MessageNode.method199(true);
+                     var48 = 0;
 
                      while(true) {
-                        var10 = var8.method2963();
-                        if(var10 == 0) {
-                           break;
+                        if(var48 >= var1) {
+                           break label1064;
                         }
 
-                        var9 += var10;
-                        var11 = 0;
+                        byte[] var53 = class7.field59[var48];
+                        if(var53 != null) {
+                           var2 = 64 * (class183.mapRegions[var48] >> 8) - FrameMap.baseX;
+                           var49 = (class183.mapRegions[var48] & 255) * 64 - XItemContainer.baseY;
+                           class40.method741();
+                           Region var55 = class6.region;
+                           CollisionData[] var25 = Client.collisionMaps;
+                           var3 = new Buffer(var53);
+                           var4 = -1;
 
-                        while(true) {
-                           var62 = var8.method2963();
-                           if(var62 == 0) {
-                              break;
-                           }
-
-                           var11 += var62 - 1;
-                           var13 = var11 & 63;
-                           var14 = var11 >> 6 & 63;
-                           var15 = var11 >> 12;
-                           var16 = var8.readUnsignedByte();
-                           var17 = var16 >> 2;
-                           var18 = var16 & 3;
-                           var19 = var4 + var14;
-                           var20 = var5 + var13;
-                           if(var19 > 0 && var20 > 0 && var19 < 103 && var20 < 103) {
-                              var21 = var15;
-                              if((class10.tileSettings[1][var19][var20] & 2) == 2) {
-                                 var21 = var15 - 1;
+                           while(true) {
+                              var5 = var3.method2963();
+                              if(var5 == 0) {
+                                 break;
                               }
 
-                              CollisionData var22 = null;
-                              if(var21 >= 0) {
-                                 var22 = var48[var21];
-                              }
+                              var4 += var5;
+                              var6 = 0;
 
-                              class13.method172(var15, var19, var20, var9, var18, var17, var51, var22);
+                              while(true) {
+                                 var21 = var3.method2963();
+                                 if(var21 == 0) {
+                                    break;
+                                 }
+
+                                 var6 += var21 - 1;
+                                 var7 = var6 & 63;
+                                 var8 = var6 >> 6 & 63;
+                                 var9 = var6 >> 12;
+                                 var10 = var3.readUnsignedByte();
+                                 var11 = var10 >> 2;
+                                 var12 = var10 & 3;
+                                 var51 = var2 + var8;
+                                 var18 = var49 + var7;
+                                 if(var51 > 0 && var18 > 0 && var51 < 103 && var18 < 103) {
+                                    var19 = var9;
+                                    if((class10.tileSettings[1][var51][var18] & 2) == 2) {
+                                       var19 = var9 - 1;
+                                    }
+
+                                    CollisionData var26 = null;
+                                    if(var19 >= 0) {
+                                       var26 = var25[var19];
+                                    }
+
+                                    class13.method172(var9, var51, var18, var4, var12, var11, var55, var26);
+                                 }
+                              }
                            }
                         }
+
+                        ++var48;
                      }
                   }
+
+                  var13 = 64 * (class183.mapRegions[var48] >> 8) - FrameMap.baseX;
+                  var2 = 64 * (class183.mapRegions[var48] & 255) - XItemContainer.baseY;
+                  var22 = class104.field1680[var48];
+                  if(var22 != null) {
+                     class40.method741();
+                     var50 = MessageNode.field231 * 8 - 48;
+                     var20 = XGrandExchangeOffer.field31 * 8 - 48;
+                     CollisionData[] var23 = Client.collisionMaps;
+                     var4 = 0;
+
+                     label1061:
+                     while(true) {
+                        if(var4 >= 4) {
+                           Buffer var24 = new Buffer(var22);
+                           var5 = 0;
+
+                           while(true) {
+                              if(var5 >= 4) {
+                                 break label1061;
+                              }
+
+                              for(var6 = 0; var6 < 64; ++var6) {
+                                 for(var21 = 0; var21 < 64; ++var21) {
+                                    FrameMap.method1665(var24, var5, var13 + var6, var2 + var21, var50, var20, 0);
+                                 }
+                              }
+
+                              ++var5;
+                           }
+                        }
+
+                        for(var5 = 0; var5 < 64; ++var5) {
+                           for(var6 = 0; var6 < 64; ++var6) {
+                              if(var5 + var13 > 0 && var5 + var13 < 103 && var6 + var2 > 0 && var2 + var6 < 103) {
+                                 var23[var4].flags[var13 + var5][var2 + var6] &= -16777217;
+                              }
+                           }
+                        }
+
+                        ++var4;
+                     }
+                  }
+
+                  ++var48;
                }
             }
 
-            int var45;
+            int var52;
             if(Client.field434) {
-               for(var47 = 0; var47 < 4; ++var47) {
+               var48 = 0;
+
+               label997:
+               while(true) {
+                  if(var48 >= 4) {
+                     for(var48 = 0; var48 < 13; ++var48) {
+                        for(var13 = 0; var13 < 13; ++var13) {
+                           var2 = Client.field345[0][var48][var13];
+                           if(var2 == -1) {
+                              class179.method3257(8 * var48, 8 * var13, 8, 8);
+                           }
+                        }
+                     }
+
+                     MessageNode.method199(true);
+                     var48 = 0;
+
+                     while(true) {
+                        if(var48 >= 4) {
+                           break label997;
+                        }
+
+                        class40.method741();
+
+                        for(var13 = 0; var13 < 13; ++var13) {
+                           for(var2 = 0; var2 < 13; ++var2) {
+                              var49 = Client.field345[var48][var13][var2];
+                              if(var49 != -1) {
+                                 var50 = var49 >> 24 & 3;
+                                 var20 = var49 >> 1 & 3;
+                                 var52 = var49 >> 14 & 1023;
+                                 var4 = var49 >> 3 & 2047;
+                                 var5 = var4 / 8 + (var52 / 8 << 8);
+
+                                 for(var6 = 0; var6 < class183.mapRegions.length; ++var6) {
+                                    if(var5 == class183.mapRegions[var6] && null != class7.field59[var6]) {
+                                       class116.method2226(class7.field59[var6], var48, var13 * 8, 8 * var2, var50, (var52 & 7) * 8, 8 * (var4 & 7), var20, class6.region, Client.collisionMaps);
+                                       break;
+                                    }
+                                 }
+                              }
+                           }
+                        }
+
+                        ++var48;
+                     }
+                  }
+
                   class40.method741();
 
-                  for(var44 = 0; var44 < 13; ++var44) {
-                     for(var4 = 0; var4 < 13; ++var4) {
-                        boolean var59 = false;
-                        var6 = Client.field345[var47][var44][var4];
-                        if(var6 != -1) {
-                           var60 = var6 >> 24 & 3;
-                           var45 = var6 >> 1 & 3;
-                           var9 = var6 >> 14 & 1023;
-                           var10 = var6 >> 3 & 2047;
-                           var11 = var10 / 8 + (var9 / 8 << 8);
+                  for(var13 = 0; var13 < 13; ++var13) {
+                     for(var2 = 0; var2 < 13; ++var2) {
+                        boolean var54 = false;
+                        var50 = Client.field345[var48][var13][var2];
+                        if(var50 != -1) {
+                           var20 = var50 >> 24 & 3;
+                           var52 = var50 >> 1 & 3;
+                           var4 = var50 >> 14 & 1023;
+                           var5 = var50 >> 3 & 2047;
+                           var6 = var5 / 8 + (var4 / 8 << 8);
 
-                           for(var62 = 0; var62 < class183.mapRegions.length; ++var62) {
-                              if(var11 == class183.mapRegions[var62] && null != class104.field1680[var62]) {
-                                 class204.method3813(class104.field1680[var62], var47, 8 * var44, 8 * var4, var60, (var9 & 7) * 8, 8 * (var10 & 7), var45, Client.collisionMaps);
-                                 var59 = true;
+                           for(var21 = 0; var21 < class183.mapRegions.length; ++var21) {
+                              if(var6 == class183.mapRegions[var21] && null != class104.field1680[var21]) {
+                                 class204.method3813(class104.field1680[var21], var48, 8 * var13, 8 * var2, var20, (var4 & 7) * 8, 8 * (var5 & 7), var52, Client.collisionMaps);
+                                 var54 = true;
                                  break;
                               }
                            }
                         }
 
-                        if(!var59) {
-                           var60 = var47;
-                           var45 = 8 * var44;
-                           var9 = 8 * var4;
+                        if(!var54) {
+                           var20 = var48;
+                           var52 = 8 * var13;
+                           var4 = 8 * var2;
 
-                           for(var10 = 0; var10 < 8; ++var10) {
-                              for(var11 = 0; var11 < 8; ++var11) {
-                                 class10.tileHeights[var60][var45 + var10][var11 + var9] = 0;
+                           for(var5 = 0; var5 < 8; ++var5) {
+                              for(var6 = 0; var6 < 8; ++var6) {
+                                 class10.tileHeights[var20][var52 + var5][var6 + var4] = 0;
                               }
                            }
 
-                           if(var45 > 0) {
-                              for(var10 = 1; var10 < 8; ++var10) {
-                                 class10.tileHeights[var60][var45][var10 + var9] = class10.tileHeights[var60][var45 - 1][var10 + var9];
+                           if(var52 > 0) {
+                              for(var5 = 1; var5 < 8; ++var5) {
+                                 class10.tileHeights[var20][var52][var5 + var4] = class10.tileHeights[var20][var52 - 1][var5 + var4];
                               }
                            }
 
-                           if(var9 > 0) {
-                              for(var10 = 1; var10 < 8; ++var10) {
-                                 class10.tileHeights[var60][var10 + var45][var9] = class10.tileHeights[var60][var45 + var10][var9 - 1];
+                           if(var4 > 0) {
+                              for(var5 = 1; var5 < 8; ++var5) {
+                                 class10.tileHeights[var20][var5 + var52][var4] = class10.tileHeights[var20][var52 + var5][var4 - 1];
                               }
                            }
 
-                           if(var45 > 0 && class10.tileHeights[var60][var45 - 1][var9] != 0) {
-                              class10.tileHeights[var60][var45][var9] = class10.tileHeights[var60][var45 - 1][var9];
-                           } else if(var9 > 0 && class10.tileHeights[var60][var45][var9 - 1] != 0) {
-                              class10.tileHeights[var60][var45][var9] = class10.tileHeights[var60][var45][var9 - 1];
-                           } else if(var45 > 0 && var9 > 0 && class10.tileHeights[var60][var45 - 1][var9 - 1] != 0) {
-                              class10.tileHeights[var60][var45][var9] = class10.tileHeights[var60][var45 - 1][var9 - 1];
+                           if(var52 > 0 && class10.tileHeights[var20][var52 - 1][var4] != 0) {
+                              class10.tileHeights[var20][var52][var4] = class10.tileHeights[var20][var52 - 1][var4];
+                           } else if(var4 > 0 && class10.tileHeights[var20][var52][var4 - 1] != 0) {
+                              class10.tileHeights[var20][var52][var4] = class10.tileHeights[var20][var52][var4 - 1];
+                           } else if(var52 > 0 && var4 > 0 && class10.tileHeights[var20][var52 - 1][var4 - 1] != 0) {
+                              class10.tileHeights[var20][var52][var4] = class10.tileHeights[var20][var52 - 1][var4 - 1];
                            }
                         }
                      }
                   }
-               }
 
-               for(var47 = 0; var47 < 13; ++var47) {
-                  for(var44 = 0; var44 < 13; ++var44) {
-                     var4 = Client.field345[0][var47][var44];
-                     if(var4 == -1) {
-                        class179.method3257(8 * var47, 8 * var44, 8, 8);
-                     }
-                  }
-               }
-
-               MessageNode.method199(true);
-
-               for(var47 = 0; var47 < 4; ++var47) {
-                  class40.method741();
-
-                  for(var44 = 0; var44 < 13; ++var44) {
-                     for(var4 = 0; var4 < 13; ++var4) {
-                        var5 = Client.field345[var47][var44][var4];
-                        if(var5 != -1) {
-                           var6 = var5 >> 24 & 3;
-                           var60 = var5 >> 1 & 3;
-                           var45 = var5 >> 14 & 1023;
-                           var9 = var5 >> 3 & 2047;
-                           var10 = var9 / 8 + (var45 / 8 << 8);
-
-                           for(var11 = 0; var11 < class183.mapRegions.length; ++var11) {
-                              if(var10 == class183.mapRegions[var11] && null != class7.field59[var11]) {
-                                 class116.method2226(class7.field59[var11], var47, var44 * 8, 8 * var4, var6, (var45 & 7) * 8, 8 * (var9 & 7), var60, class6.region, Client.collisionMaps);
-                                 break;
-                              }
-                           }
-                        }
-                     }
-                  }
+                  ++var48;
                }
             }
 
             MessageNode.method199(true);
             Tile.method1512();
             class40.method741();
-            Region var57 = class6.region;
-            CollisionData[] var58 = Client.collisionMaps;
+            Region var56 = class6.region;
+            CollisionData[] var57 = Client.collisionMaps;
 
-            for(var4 = 0; var4 < 4; ++var4) {
-               for(var5 = 0; var5 < 104; ++var5) {
-                  for(var6 = 0; var6 < 104; ++var6) {
-                     if((class10.tileSettings[var4][var5][var6] & 1) == 1) {
-                        var60 = var4;
-                        if((class10.tileSettings[1][var5][var6] & 2) == 2) {
-                           var60 = var4 - 1;
+            for(var2 = 0; var2 < 4; ++var2) {
+               for(var49 = 0; var49 < 104; ++var49) {
+                  for(var50 = 0; var50 < 104; ++var50) {
+                     if((class10.tileSettings[var2][var49][var50] & 1) == 1) {
+                        var20 = var2;
+                        if((class10.tileSettings[1][var49][var50] & 2) == 2) {
+                           var20 = var2 - 1;
                         }
 
-                        if(var60 >= 0) {
-                           var58[var60].method2232(var5, var6);
+                        if(var20 >= 0) {
+                           var57[var20].method2232(var49, var50);
                         }
                      }
                   }
@@ -433,227 +483,228 @@ public class class48 extends CacheableNode {
                class10.field97 = 16;
             }
 
-            for(var4 = 0; var4 < 4; ++var4) {
-               byte[][] var67 = class174.field2619[var4];
-               var11 = (int)Math.sqrt(5100.0D);
-               var62 = 768 * var11 >> 8;
+            for(var2 = 0; var2 < 4; ++var2) {
+               byte[][] var58 = class174.field2619[var2];
+               var6 = (int)Math.sqrt(5100.0D);
+               var21 = 768 * var6 >> 8;
 
-               int var54;
-               for(var13 = 1; var13 < 103; ++var13) {
-                  for(var14 = 1; var14 < 103; ++var14) {
-                     var15 = class10.tileHeights[var4][var14 + 1][var13] - class10.tileHeights[var4][var14 - 1][var13];
-                     var16 = class10.tileHeights[var4][var14][var13 + 1] - class10.tileHeights[var4][var14][var13 - 1];
-                     var17 = (int)Math.sqrt((double)(var16 * var16 + var15 * var15 + 65536));
-                     var18 = (var15 << 8) / var17;
-                     var19 = 65536 / var17;
-                     var20 = (var16 << 8) / var17;
-                     var21 = (var20 * -50 + -50 * var18 + -10 * var19) / var62 + 96;
-                     var54 = (var67[var14][var13 + 1] >> 3) + (var67[1 + var14][var13] >> 3) + (var67[var14 - 1][var13] >> 2) + (var67[var14][var13 - 1] >> 2) + (var67[var14][var13] >> 1);
-                     class191.field2785[var14][var13] = var21 - var54;
+               int var60;
+               for(var7 = 1; var7 < 103; ++var7) {
+                  for(var8 = 1; var8 < 103; ++var8) {
+                     var9 = class10.tileHeights[var2][var8 + 1][var7] - class10.tileHeights[var2][var8 - 1][var7];
+                     var10 = class10.tileHeights[var2][var8][var7 + 1] - class10.tileHeights[var2][var8][var7 - 1];
+                     var11 = (int)Math.sqrt((double)(var10 * var10 + var9 * var9 + 65536));
+                     var12 = (var9 << 8) / var11;
+                     var51 = 65536 / var11;
+                     var18 = (var10 << 8) / var11;
+                     var19 = (var18 * -50 + -50 * var12 + -10 * var51) / var21 + 96;
+                     var60 = (var58[var8][var7 + 1] >> 3) + (var58[1 + var8][var7] >> 3) + (var58[var8 - 1][var7] >> 2) + (var58[var8][var7 - 1] >> 2) + (var58[var8][var7] >> 1);
+                     class191.field2785[var8][var7] = var19 - var60;
                   }
                }
 
-               for(var13 = 0; var13 < 104; ++var13) {
-                  class20.field221[var13] = 0;
-                  class10.field99[var13] = 0;
-                  class191.field2791[var13] = 0;
-                  class39.field796[var13] = 0;
-                  DecorativeObject.field1587[var13] = 0;
+               for(var7 = 0; var7 < 104; ++var7) {
+                  class20.field221[var7] = 0;
+                  class10.field99[var7] = 0;
+                  class191.field2791[var7] = 0;
+                  class39.field796[var7] = 0;
+                  DecorativeObject.field1587[var7] = 0;
                }
 
-               for(var13 = -5; var13 < 109; ++var13) {
-                  for(var14 = 0; var14 < 104; ++var14) {
-                     var15 = 5 + var13;
-                     if(var15 >= 0 && var15 < 104) {
-                        var16 = class10.underlayIds[var4][var15][var14] & 255;
-                        if(var16 > 0) {
-                           var18 = var16 - 1;
-                           class191 var66 = (class191)class191.field2789.get((long)var18);
-                           class191 var53;
-                           if(var66 != null) {
-                              var53 = var66;
+               for(var7 = -5; var7 < 109; ++var7) {
+                  for(var8 = 0; var8 < 104; ++var8) {
+                     var9 = 5 + var7;
+                     class191 var27;
+                     class191 var28;
+                     byte[] var29;
+                     if(var9 >= 0 && var9 < 104) {
+                        var10 = class10.underlayIds[var2][var9][var8] & 255;
+                        if(var10 > 0) {
+                           var12 = var10 - 1;
+                           var27 = (class191)class191.field2789.get((long)var12);
+                           if(var27 != null) {
+                              var28 = var27;
                            } else {
-                              byte[] var52 = class191.field2795.method3272(1, var18);
-                              var66 = new class191();
-                              if(null != var52) {
-                                 var66.method3476(new Buffer(var52), var18);
+                              var29 = class191.field2795.method3272(1, var12);
+                              var27 = new class191();
+                              if(null != var29) {
+                                 var27.method3476(new Buffer(var29), var12);
                               }
 
-                              var66.method3462();
-                              class191.field2789.put(var66, (long)var18);
-                              var53 = var66;
+                              var27.method3462();
+                              class191.field2789.put(var27, (long)var12);
+                              var28 = var27;
                            }
 
-                           class20.field221[var14] += var53.field2787;
-                           class10.field99[var14] += var53.field2788;
-                           class191.field2791[var14] += var53.field2784;
-                           class39.field796[var14] += var53.field2790;
-                           ++DecorativeObject.field1587[var14];
+                           class20.field221[var8] += var28.field2787;
+                           class10.field99[var8] += var28.field2788;
+                           class191.field2791[var8] += var28.field2784;
+                           class39.field796[var8] += var28.field2790;
+                           ++DecorativeObject.field1587[var8];
                         }
                      }
 
-                     var16 = var13 - 5;
-                     if(var16 >= 0 && var16 < 104) {
-                        var17 = class10.underlayIds[var4][var16][var14] & 255;
-                        if(var17 > 0) {
-                           var19 = var17 - 1;
-                           class191 var68 = (class191)class191.field2789.get((long)var19);
-                           class191 var55;
-                           if(var68 != null) {
-                              var55 = var68;
+                     var10 = var7 - 5;
+                     if(var10 >= 0 && var10 < 104) {
+                        var11 = class10.underlayIds[var2][var10][var8] & 255;
+                        if(var11 > 0) {
+                           var51 = var11 - 1;
+                           var27 = (class191)class191.field2789.get((long)var51);
+                           if(var27 != null) {
+                              var28 = var27;
                            } else {
-                              byte[] var56 = class191.field2795.method3272(1, var19);
-                              var68 = new class191();
-                              if(var56 != null) {
-                                 var68.method3476(new Buffer(var56), var19);
+                              var29 = class191.field2795.method3272(1, var51);
+                              var27 = new class191();
+                              if(var29 != null) {
+                                 var27.method3476(new Buffer(var29), var51);
                               }
 
-                              var68.method3462();
-                              class191.field2789.put(var68, (long)var19);
-                              var55 = var68;
+                              var27.method3462();
+                              class191.field2789.put(var27, (long)var51);
+                              var28 = var27;
                            }
 
-                           class20.field221[var14] -= var55.field2787;
-                           class10.field99[var14] -= var55.field2788;
-                           class191.field2791[var14] -= var55.field2784;
-                           class39.field796[var14] -= var55.field2790;
-                           --DecorativeObject.field1587[var14];
+                           class20.field221[var8] -= var28.field2787;
+                           class10.field99[var8] -= var28.field2788;
+                           class191.field2791[var8] -= var28.field2784;
+                           class39.field796[var8] -= var28.field2790;
+                           --DecorativeObject.field1587[var8];
                         }
                      }
                   }
 
-                  if(var13 >= 1 && var13 < 103) {
-                     var14 = 0;
-                     var15 = 0;
-                     var16 = 0;
-                     var17 = 0;
-                     var18 = 0;
+                  if(var7 >= 1 && var7 < 103) {
+                     var8 = 0;
+                     var9 = 0;
+                     var10 = 0;
+                     var11 = 0;
+                     var12 = 0;
 
-                     for(var19 = -5; var19 < 109; ++var19) {
-                        var20 = 5 + var19;
-                        if(var20 >= 0 && var20 < 104) {
-                           var14 += class20.field221[var20];
-                           var15 += class10.field99[var20];
-                           var16 += class191.field2791[var20];
-                           var17 += class39.field796[var20];
-                           var18 += DecorativeObject.field1587[var20];
+                     for(var51 = -5; var51 < 109; ++var51) {
+                        var18 = 5 + var51;
+                        if(var18 >= 0 && var18 < 104) {
+                           var8 += class20.field221[var18];
+                           var9 += class10.field99[var18];
+                           var10 += class191.field2791[var18];
+                           var11 += class39.field796[var18];
+                           var12 += DecorativeObject.field1587[var18];
                         }
 
-                        var21 = var19 - 5;
-                        if(var21 >= 0 && var21 < 104) {
-                           var14 -= class20.field221[var21];
-                           var15 -= class10.field99[var21];
-                           var16 -= class191.field2791[var21];
-                           var17 -= class39.field796[var21];
-                           var18 -= DecorativeObject.field1587[var21];
+                        var19 = var51 - 5;
+                        if(var19 >= 0 && var19 < 104) {
+                           var8 -= class20.field221[var19];
+                           var9 -= class10.field99[var19];
+                           var10 -= class191.field2791[var19];
+                           var11 -= class39.field796[var19];
+                           var12 -= DecorativeObject.field1587[var19];
                         }
 
-                        if(var19 >= 1 && var19 < 103 && (!Client.field286 || (class10.tileSettings[0][var13][var19] & 2) != 0 || (class10.tileSettings[var4][var13][var19] & 16) == 0)) {
-                           if(var4 < class10.field95) {
-                              class10.field95 = var4;
+                        if(var51 >= 1 && var51 < 103 && (!Client.field286 || (class10.tileSettings[0][var7][var51] & 2) != 0 || (class10.tileSettings[var2][var7][var51] & 16) == 0)) {
+                           if(var2 < class10.field95) {
+                              class10.field95 = var2;
                            }
 
-                           var54 = class10.underlayIds[var4][var13][var19] & 255;
-                           int var23 = class10.overlayIds[var4][var13][var19] & 255;
-                           if(var54 > 0 || var23 > 0) {
-                              int var24 = class10.tileHeights[var4][var13][var19];
-                              int var25 = class10.tileHeights[var4][var13 + 1][var19];
-                              int var26 = class10.tileHeights[var4][var13 + 1][var19 + 1];
-                              int var27 = class10.tileHeights[var4][var13][var19 + 1];
-                              int var28 = class191.field2785[var13][var19];
-                              int var29 = class191.field2785[var13 + 1][var19];
-                              int var30 = class191.field2785[1 + var13][var19 + 1];
-                              int var31 = class191.field2785[var13][1 + var19];
-                              int var32 = -1;
-                              int var33 = -1;
-                              int var34;
-                              int var35;
-                              if(var54 > 0) {
-                                 var34 = 256 * var14 / var17;
-                                 var35 = var15 / var18;
-                                 int var36 = var16 / var18;
-                                 var32 = CombatInfo2.method3533(var34, var35, var36);
-                                 var34 = class10.field93 + var34 & 255;
-                                 var36 += class10.field97;
-                                 if(var36 < 0) {
-                                    var36 = 0;
-                                 } else if(var36 > 255) {
-                                    var36 = 255;
+                           var60 = class10.underlayIds[var2][var7][var51] & 255;
+                           int var61 = class10.overlayIds[var2][var7][var51] & 255;
+                           if(var60 > 0 || var61 > 0) {
+                              int var63 = class10.tileHeights[var2][var7][var51];
+                              int var62 = class10.tileHeights[var2][var7 + 1][var51];
+                              int var30 = class10.tileHeights[var2][var7 + 1][var51 + 1];
+                              int var31 = class10.tileHeights[var2][var7][var51 + 1];
+                              int var32 = class191.field2785[var7][var51];
+                              int var33 = class191.field2785[var7 + 1][var51];
+                              int var34 = class191.field2785[1 + var7][var51 + 1];
+                              int var35 = class191.field2785[var7][1 + var51];
+                              int var36 = -1;
+                              int var37 = -1;
+                              int var38;
+                              int var39;
+                              if(var60 > 0) {
+                                 var38 = 256 * var8 / var11;
+                                 var39 = var9 / var12;
+                                 int var40 = var10 / var12;
+                                 var36 = CombatInfo2.method3533(var38, var39, var40);
+                                 var38 = class10.field93 + var38 & 255;
+                                 var40 += class10.field97;
+                                 if(var40 < 0) {
+                                    var40 = 0;
+                                 } else if(var40 > 255) {
+                                    var40 = 255;
                                  }
 
-                                 var33 = CombatInfo2.method3533(var34, var35, var36);
+                                 var37 = CombatInfo2.method3533(var38, var39, var40);
                               }
 
-                              if(var4 > 0) {
+                              if(var2 > 0) {
                                  boolean var64 = true;
-                                 if(var54 == 0 && class10.overlayPaths[var4][var13][var19] != 0) {
+                                 if(var60 == 0 && class10.overlayPaths[var2][var7][var51] != 0) {
                                     var64 = false;
                                  }
 
-                                 if(var23 > 0 && !class112.method2054(var23 - 1).field3025) {
+                                 if(var61 > 0 && !class112.method2054(var61 - 1).field3025) {
                                     var64 = false;
                                  }
 
-                                 if(var64 && var25 == var24 && var26 == var24 && var24 == var27) {
-                                    class221.field3189[var4][var13][var19] |= 2340;
+                                 if(var64 && var62 == var63 && var30 == var63 && var63 == var31) {
+                                    class221.field3189[var2][var7][var51] |= 2340;
                                  }
                               }
 
-                              var34 = 0;
-                              if(var33 != -1) {
-                                 var34 = class84.colorPalette[class184.method3384(var33, 96)];
+                              var38 = 0;
+                              if(var37 != -1) {
+                                 var38 = class84.colorPalette[class184.method3384(var37, 96)];
                               }
 
-                              if(var23 == 0) {
-                                 var57.method1675(var4, var13, var19, 0, 0, -1, var24, var25, var26, var27, class184.method3384(var32, var28), class184.method3384(var32, var29), class184.method3384(var32, var30), class184.method3384(var32, var31), 0, 0, 0, 0, var34, 0);
+                              if(var61 == 0) {
+                                 var56.method1675(var2, var7, var51, 0, 0, -1, var63, var62, var30, var31, class184.method3384(var36, var32), class184.method3384(var36, var33), class184.method3384(var36, var34), class184.method3384(var36, var35), 0, 0, 0, 0, var38, 0);
                               } else {
-                                 var35 = 1 + class10.overlayPaths[var4][var13][var19];
-                                 byte var65 = class174.overlayRotations[var4][var13][var19];
-                                 Overlay var37 = class112.method2054(var23 - 1);
-                                 int var38 = var37.texture;
-                                 int var39;
-                                 int var40;
-                                 int var41;
-                                 int var42;
-                                 if(var38 >= 0) {
-                                    var40 = class84.field1434.vmethod1854(var38);
-                                    var39 = -1;
-                                 } else if(var37.color == 16711935) {
-                                    var39 = -2;
-                                    var38 = -1;
-                                    var40 = -2;
+                                 var39 = 1 + class10.overlayPaths[var2][var7][var51];
+                                 byte var65 = class174.overlayRotations[var2][var7][var51];
+                                 Overlay var41 = class112.method2054(var61 - 1);
+                                 int var42 = var41.texture;
+                                 int var43;
+                                 int var44;
+                                 int var45;
+                                 int var46;
+                                 if(var42 >= 0) {
+                                    var44 = class84.field1434.vmethod1854(var42);
+                                    var43 = -1;
+                                 } else if(var41.color == 16711935) {
+                                    var43 = -2;
+                                    var42 = -1;
+                                    var44 = -2;
                                  } else {
-                                    var39 = CombatInfo2.method3533(var37.hue, var37.saturation, var37.lightness);
-                                    var41 = var37.hue + class10.field93 & 255;
-                                    var42 = var37.lightness + class10.field97;
-                                    if(var42 < 0) {
-                                       var42 = 0;
-                                    } else if(var42 > 255) {
-                                       var42 = 255;
+                                    var43 = CombatInfo2.method3533(var41.hue, var41.saturation, var41.lightness);
+                                    var45 = var41.hue + class10.field93 & 255;
+                                    var46 = var41.lightness + class10.field97;
+                                    if(var46 < 0) {
+                                       var46 = 0;
+                                    } else if(var46 > 255) {
+                                       var46 = 255;
                                     }
 
-                                    var40 = CombatInfo2.method3533(var41, var37.saturation, var42);
+                                    var44 = CombatInfo2.method3533(var45, var41.saturation, var46);
                                  }
 
-                                 var41 = 0;
-                                 if(var40 != -2) {
-                                    var41 = class84.colorPalette[class112.method2052(var40, 96)];
+                                 var45 = 0;
+                                 if(var44 != -2) {
+                                    var45 = class84.colorPalette[class112.method2052(var44, 96)];
                                  }
 
-                                 if(var37.field3027 != -1) {
-                                    var42 = class10.field93 + var37.field3031 & 255;
-                                    int var43 = var37.field3033 + class10.field97;
-                                    if(var43 < 0) {
-                                       var43 = 0;
-                                    } else if(var43 > 255) {
-                                       var43 = 255;
+                                 if(var41.field3027 != -1) {
+                                    var46 = class10.field93 + var41.field3031 & 255;
+                                    int var47 = var41.field3033 + class10.field97;
+                                    if(var47 < 0) {
+                                       var47 = 0;
+                                    } else if(var47 > 255) {
+                                       var47 = 255;
                                     }
 
-                                    var40 = CombatInfo2.method3533(var42, var37.field3032, var43);
-                                    var41 = class84.colorPalette[class112.method2052(var40, 96)];
+                                    var44 = CombatInfo2.method3533(var46, var41.field3032, var47);
+                                    var45 = class84.colorPalette[class112.method2052(var44, 96)];
                                  }
 
-                                 var57.method1675(var4, var13, var19, var35, var65, var38, var24, var25, var26, var27, class184.method3384(var32, var28), class184.method3384(var32, var29), class184.method3384(var32, var30), class184.method3384(var32, var31), class112.method2052(var39, var28), class112.method2052(var39, var29), class112.method2052(var39, var30), class112.method2052(var39, var31), var34, var41);
+                                 var56.method1675(var2, var7, var51, var39, var65, var42, var63, var62, var30, var31, class184.method3384(var36, var32), class184.method3384(var36, var33), class184.method3384(var36, var34), class184.method3384(var36, var35), class112.method2052(var43, var32), class112.method2052(var43, var33), class112.method2052(var43, var34), class112.method2052(var43, var35), var38, var45);
                               }
                            }
                         }
@@ -661,186 +712,186 @@ public class class48 extends CacheableNode {
                   }
                }
 
-               for(var13 = 1; var13 < 103; ++var13) {
-                  for(var14 = 1; var14 < 103; ++var14) {
-                     var57.method1726(var4, var14, var13, class22.method203(var4, var14, var13));
+               for(var7 = 1; var7 < 103; ++var7) {
+                  for(var8 = 1; var8 < 103; ++var8) {
+                     var56.method1726(var2, var8, var7, class22.method203(var2, var8, var7));
                   }
                }
 
-               class10.underlayIds[var4] = null;
-               class10.overlayIds[var4] = null;
-               class10.overlayPaths[var4] = null;
-               class174.overlayRotations[var4] = null;
-               class174.field2619[var4] = null;
+               class10.underlayIds[var2] = (byte[][])null;
+               class10.overlayIds[var2] = (byte[][])null;
+               class10.overlayPaths[var2] = (byte[][])null;
+               class174.overlayRotations[var2] = (byte[][])null;
+               class174.field2619[var2] = (byte[][])null;
             }
 
-            var57.method1701(-50, -10, -50);
+            var56.method1701(-50, -10, -50);
 
-            for(var4 = 0; var4 < 104; ++var4) {
-               for(var5 = 0; var5 < 104; ++var5) {
-                  if((class10.tileSettings[1][var4][var5] & 2) == 2) {
-                     var57.method1747(var4, var5);
+            for(var2 = 0; var2 < 104; ++var2) {
+               for(var49 = 0; var49 < 104; ++var49) {
+                  if((class10.tileSettings[1][var2][var49] & 2) == 2) {
+                     var56.method1747(var2, var49);
                   }
                }
             }
 
-            var4 = 1;
-            var5 = 2;
-            var6 = 4;
+            var2 = 1;
+            var49 = 2;
+            var50 = 4;
 
-            for(var60 = 0; var60 < 4; ++var60) {
-               if(var60 > 0) {
-                  var4 <<= 3;
-                  var5 <<= 3;
-                  var6 <<= 3;
+            for(var20 = 0; var20 < 4; ++var20) {
+               if(var20 > 0) {
+                  var2 <<= 3;
+                  var49 <<= 3;
+                  var50 <<= 3;
                }
 
-               for(var45 = 0; var45 <= var60; ++var45) {
-                  for(var9 = 0; var9 <= 104; ++var9) {
-                     for(var10 = 0; var10 <= 104; ++var10) {
-                        short var63;
-                        if((class221.field3189[var45][var10][var9] & var4) != 0) {
-                           var11 = var9;
-                           var62 = var9;
-                           var13 = var45;
+               for(var52 = 0; var52 <= var20; ++var52) {
+                  for(var4 = 0; var4 <= 104; ++var4) {
+                     for(var5 = 0; var5 <= 104; ++var5) {
+                        short var59;
+                        if((class221.field3189[var52][var5][var4] & var2) != 0) {
+                           var6 = var4;
+                           var21 = var4;
+                           var7 = var52;
 
-                           for(var14 = var45; var11 > 0 && (class221.field3189[var45][var10][var11 - 1] & var4) != 0; --var11) {
+                           for(var8 = var52; var6 > 0 && (class221.field3189[var52][var5][var6 - 1] & var2) != 0; --var6) {
                               ;
                            }
 
-                           while(var62 < 104 && (class221.field3189[var45][var10][var62 + 1] & var4) != 0) {
-                              ++var62;
+                           while(var21 < 104 && (class221.field3189[var52][var5][var21 + 1] & var2) != 0) {
+                              ++var21;
                            }
 
-                           label1035:
-                           while(var13 > 0) {
-                              for(var15 = var11; var15 <= var62; ++var15) {
-                                 if((class221.field3189[var13 - 1][var10][var15] & var4) == 0) {
-                                    break label1035;
+                           label655:
+                           while(var7 > 0) {
+                              for(var9 = var6; var9 <= var21; ++var9) {
+                                 if((class221.field3189[var7 - 1][var5][var9] & var2) == 0) {
+                                    break label655;
                                  }
                               }
 
-                              --var13;
+                              --var7;
                            }
 
-                           label1024:
-                           while(var14 < var60) {
-                              for(var15 = var11; var15 <= var62; ++var15) {
-                                 if((class221.field3189[var14 + 1][var10][var15] & var4) == 0) {
-                                    break label1024;
+                           label644:
+                           while(var8 < var20) {
+                              for(var9 = var6; var9 <= var21; ++var9) {
+                                 if((class221.field3189[var8 + 1][var5][var9] & var2) == 0) {
+                                    break label644;
                                  }
                               }
 
-                              ++var14;
+                              ++var8;
                            }
 
-                           var15 = (1 + var14 - var13) * (1 + (var62 - var11));
-                           if(var15 >= 8) {
-                              var63 = 240;
-                              var17 = class10.tileHeights[var14][var10][var11] - var63;
-                              var18 = class10.tileHeights[var13][var10][var11];
-                              Region.method1673(var60, 1, var10 * 128, 128 * var10, var11 * 128, var62 * 128 + 128, var17, var18);
+                           var9 = (1 + var8 - var7) * (1 + (var21 - var6));
+                           if(var9 >= 8) {
+                              var59 = 240;
+                              var11 = class10.tileHeights[var8][var5][var6] - var59;
+                              var12 = class10.tileHeights[var7][var5][var6];
+                              Region.method1673(var20, 1, var5 * 128, 128 * var5, var6 * 128, var21 * 128 + 128, var11, var12);
 
-                              for(var19 = var13; var19 <= var14; ++var19) {
-                                 for(var20 = var11; var20 <= var62; ++var20) {
-                                    class221.field3189[var19][var10][var20] &= ~var4;
+                              for(var51 = var7; var51 <= var8; ++var51) {
+                                 for(var18 = var6; var18 <= var21; ++var18) {
+                                    class221.field3189[var51][var5][var18] &= ~var2;
                                  }
                               }
                            }
                         }
 
-                        if((class221.field3189[var45][var10][var9] & var5) != 0) {
-                           var11 = var10;
-                           var62 = var10;
-                           var13 = var45;
+                        if((class221.field3189[var52][var5][var4] & var49) != 0) {
+                           var6 = var5;
+                           var21 = var5;
+                           var7 = var52;
 
-                           for(var14 = var45; var11 > 0 && (class221.field3189[var45][var11 - 1][var9] & var5) != 0; --var11) {
+                           for(var8 = var52; var6 > 0 && (class221.field3189[var52][var6 - 1][var4] & var49) != 0; --var6) {
                               ;
                            }
 
-                           while(var62 < 104 && (class221.field3189[var45][1 + var62][var9] & var5) != 0) {
-                              ++var62;
+                           while(var21 < 104 && (class221.field3189[var52][1 + var21][var4] & var49) != 0) {
+                              ++var21;
                            }
 
-                           label1088:
-                           while(var13 > 0) {
-                              for(var15 = var11; var15 <= var62; ++var15) {
-                                 if((class221.field3189[var13 - 1][var15][var9] & var5) == 0) {
-                                    break label1088;
+                           label708:
+                           while(var7 > 0) {
+                              for(var9 = var6; var9 <= var21; ++var9) {
+                                 if((class221.field3189[var7 - 1][var9][var4] & var49) == 0) {
+                                    break label708;
                                  }
                               }
 
-                              --var13;
+                              --var7;
                            }
 
-                           label1077:
-                           while(var14 < var60) {
-                              for(var15 = var11; var15 <= var62; ++var15) {
-                                 if((class221.field3189[var14 + 1][var15][var9] & var5) == 0) {
-                                    break label1077;
+                           label697:
+                           while(var8 < var20) {
+                              for(var9 = var6; var9 <= var21; ++var9) {
+                                 if((class221.field3189[var8 + 1][var9][var4] & var49) == 0) {
+                                    break label697;
                                  }
                               }
 
-                              ++var14;
+                              ++var8;
                            }
 
-                           var15 = (1 + var14 - var13) * (1 + (var62 - var11));
-                           if(var15 >= 8) {
-                              var63 = 240;
-                              var17 = class10.tileHeights[var14][var11][var9] - var63;
-                              var18 = class10.tileHeights[var13][var11][var9];
-                              Region.method1673(var60, 2, var11 * 128, var62 * 128 + 128, 128 * var9, 128 * var9, var17, var18);
+                           var9 = (1 + var8 - var7) * (1 + (var21 - var6));
+                           if(var9 >= 8) {
+                              var59 = 240;
+                              var11 = class10.tileHeights[var8][var6][var4] - var59;
+                              var12 = class10.tileHeights[var7][var6][var4];
+                              Region.method1673(var20, 2, var6 * 128, var21 * 128 + 128, 128 * var4, 128 * var4, var11, var12);
 
-                              for(var19 = var13; var19 <= var14; ++var19) {
-                                 for(var20 = var11; var20 <= var62; ++var20) {
-                                    class221.field3189[var19][var20][var9] &= ~var5;
+                              for(var51 = var7; var51 <= var8; ++var51) {
+                                 for(var18 = var6; var18 <= var21; ++var18) {
+                                    class221.field3189[var51][var18][var4] &= ~var49;
                                  }
                               }
                            }
                         }
 
-                        if((class221.field3189[var45][var10][var9] & var6) != 0) {
-                           var11 = var10;
-                           var62 = var10;
-                           var13 = var9;
+                        if((class221.field3189[var52][var5][var4] & var50) != 0) {
+                           var6 = var5;
+                           var21 = var5;
+                           var7 = var4;
 
-                           for(var14 = var9; var13 > 0 && (class221.field3189[var45][var10][var13 - 1] & var6) != 0; --var13) {
+                           for(var8 = var4; var7 > 0 && (class221.field3189[var52][var5][var7 - 1] & var50) != 0; --var7) {
                               ;
                            }
 
-                           while(var14 < 104 && (class221.field3189[var45][var10][1 + var14] & var6) != 0) {
-                              ++var14;
+                           while(var8 < 104 && (class221.field3189[var52][var5][1 + var8] & var50) != 0) {
+                              ++var8;
                            }
 
-                           label1141:
-                           while(var11 > 0) {
-                              for(var15 = var13; var15 <= var14; ++var15) {
-                                 if((class221.field3189[var45][var11 - 1][var15] & var6) == 0) {
-                                    break label1141;
+                           label761:
+                           while(var6 > 0) {
+                              for(var9 = var7; var9 <= var8; ++var9) {
+                                 if((class221.field3189[var52][var6 - 1][var9] & var50) == 0) {
+                                    break label761;
                                  }
                               }
 
-                              --var11;
+                              --var6;
                            }
 
-                           label1130:
-                           while(var62 < 104) {
-                              for(var15 = var13; var15 <= var14; ++var15) {
-                                 if((class221.field3189[var45][var62 + 1][var15] & var6) == 0) {
-                                    break label1130;
+                           label750:
+                           while(var21 < 104) {
+                              for(var9 = var7; var9 <= var8; ++var9) {
+                                 if((class221.field3189[var52][var21 + 1][var9] & var50) == 0) {
+                                    break label750;
                                  }
                               }
 
-                              ++var62;
+                              ++var21;
                            }
 
-                           if((var62 - var11 + 1) * (1 + (var14 - var13)) >= 4) {
-                              var15 = class10.tileHeights[var45][var11][var13];
-                              Region.method1673(var60, 4, 128 * var11, 128 + 128 * var62, 128 * var13, 128 * var14 + 128, var15, var15);
+                           if((var21 - var6 + 1) * (1 + (var8 - var7)) >= 4) {
+                              var9 = class10.tileHeights[var52][var6][var7];
+                              Region.method1673(var20, 4, 128 * var6, 128 + 128 * var21, 128 * var7, 128 * var8 + 128, var9, var9);
 
-                              for(var16 = var11; var16 <= var62; ++var16) {
-                                 for(var17 = var13; var17 <= var14; ++var17) {
-                                    class221.field3189[var45][var16][var17] &= ~var6;
+                              for(var10 = var6; var10 <= var21; ++var10) {
+                                 for(var11 = var7; var11 <= var8; ++var11) {
+                                    class221.field3189[var52][var10][var11] &= ~var50;
                                  }
                               }
                            }
@@ -851,13 +902,13 @@ public class class48 extends CacheableNode {
             }
 
             MessageNode.method199(true);
-            var4 = class10.field95;
-            if(var4 > class60.plane) {
-               var4 = class60.plane;
+            var2 = class10.field95;
+            if(var2 > class60.plane) {
+               var2 = class60.plane;
             }
 
-            if(var4 < class60.plane - 1) {
-               var4 = class60.plane - 1;
+            if(var2 < class60.plane - 1) {
+               var2 = class60.plane - 1;
             }
 
             if(Client.field286) {
@@ -866,9 +917,9 @@ public class class48 extends CacheableNode {
                class6.region.method1813(0);
             }
 
-            for(var5 = 0; var5 < 104; ++var5) {
-               for(var6 = 0; var6 < 104; ++var6) {
-                  class44.groundItemSpawned(var5, var6);
+            for(var49 = 0; var49 < 104; ++var49) {
+               for(var50 = 0; var50 < 104; ++var50) {
+                  class44.groundItemSpawned(var49, var50);
                }
             }
 
@@ -881,16 +932,16 @@ public class class48 extends CacheableNode {
             }
 
             if(!Client.field434) {
-               var5 = (MessageNode.field231 - 6) / 8;
-               var6 = (MessageNode.field231 + 6) / 8;
-               var60 = (XGrandExchangeOffer.field31 - 6) / 8;
-               var45 = (6 + XGrandExchangeOffer.field31) / 8;
+               var49 = (MessageNode.field231 - 6) / 8;
+               var50 = (MessageNode.field231 + 6) / 8;
+               var20 = (XGrandExchangeOffer.field31 - 6) / 8;
+               var52 = (6 + XGrandExchangeOffer.field31) / 8;
 
-               for(var9 = var5 - 1; var9 <= var6 + 1; ++var9) {
-                  for(var10 = var60 - 1; var10 <= 1 + var45; ++var10) {
-                     if(var9 < var5 || var9 > var6 || var10 < var60 || var10 > var45) {
-                        Client.field563.method3281("m" + var9 + "_" + var10);
-                        Client.field563.method3281("l" + var9 + "_" + var10);
+               for(var4 = var49 - 1; var4 <= var50 + 1; ++var4) {
+                  for(var5 = var20 - 1; var5 <= 1 + var52; ++var5) {
+                     if(var4 < var49 || var4 > var50 || var5 < var20 || var5 > var52) {
+                        Client.field563.method3281("m" + var4 + "_" + var5);
+                        Client.field563.method3281("l" + var4 + "_" + var5);
                      }
                   }
                }
@@ -898,13 +949,13 @@ public class class48 extends CacheableNode {
 
             Friend.setGameState(30);
             class40.method741();
-            class10.underlayIds = null;
-            class10.overlayIds = null;
-            class10.overlayPaths = null;
-            class174.overlayRotations = null;
-            class221.field3189 = null;
-            class174.field2619 = null;
-            class191.field2785 = null;
+            class10.underlayIds = (byte[][][])null;
+            class10.overlayIds = (byte[][][])null;
+            class10.overlayPaths = (byte[][][])null;
+            class174.overlayRotations = (byte[][][])null;
+            class221.field3189 = (int[][][])null;
+            class174.field2619 = (byte[][][])null;
+            class191.field2785 = (int[][])null;
             class20.field221 = null;
             class10.field99 = null;
             class191.field2791 = null;
@@ -913,16 +964,17 @@ public class class48 extends CacheableNode {
             Client.field326.method3029(49);
             class8.field79.vmethod2003();
 
-            for(var5 = 0; var5 < 32; ++var5) {
-               GameEngine.field1772[var5] = 0L;
+            for(var49 = 0; var49 < 32; ++var49) {
+               GameEngine.field1772[var49] = 0L;
             }
 
-            for(var5 = 0; var5 < 32; ++var5) {
-               GameEngine.field1755[var5] = 0L;
+            for(var49 = 0; var49 < 32; ++var49) {
+               GameEngine.field1755[var49] = 0L;
             }
 
             CombatInfoListHolder.field753 = 0;
          }
       }
+
    }
 }

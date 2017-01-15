@@ -342,8 +342,8 @@ public abstract class Actor extends Renderable {
          if(var11 >= 4) {
             var9.unlink();
          }
-
       }
+
    }
 
    @ObfuscatedName("aa")
@@ -385,38 +385,38 @@ public abstract class Actor extends Renderable {
       int var10 = -1;
       int var11 = 0;
       if(var1 >= 0) {
-         class196 var14 = class65.method1118(var1);
-         var10 = var14.field2867;
-         var11 = var14.field2873;
+         class196 var12 = class65.method1118(var1);
+         var10 = var12.field2867;
+         var11 = var12.field2873;
       }
 
-      int var12;
+      int var14;
       if(var8) {
          if(var10 == -1) {
             return;
          }
 
          var9 = 0;
-         var12 = 0;
+         var14 = 0;
          if(var10 == 0) {
-            var12 = this.field601[0];
+            var14 = this.field601[0];
          } else if(var10 == 1) {
-            var12 = this.field651[0];
+            var14 = this.field651[0];
          }
 
          for(int var13 = 1; var13 < 4; ++var13) {
             if(var10 == 0) {
-               if(this.field601[var13] < var12) {
+               if(this.field601[var13] < var14) {
                   var9 = var13;
-                  var12 = this.field601[var13];
+                  var14 = this.field601[var13];
                }
-            } else if(var10 == 1 && this.field651[var13] < var12) {
+            } else if(var10 == 1 && this.field651[var13] < var14) {
                var9 = var13;
-               var12 = this.field651[var13];
+               var14 = this.field651[var13];
             }
          }
 
-         if(var10 == 1 && var12 >= var2) {
+         if(var10 == 1 && var14 >= var2) {
             return;
          }
       } else {
@@ -424,7 +424,7 @@ public abstract class Actor extends Renderable {
             this.field620 = 0;
          }
 
-         for(var12 = 0; var12 < 4; ++var12) {
+         for(var14 = 0; var14 < 4; ++var14) {
             byte var15 = this.field620;
             this.field620 = (byte)((1 + this.field620) % 4);
             if(this.field601[var15] <= var5) {
@@ -441,6 +441,7 @@ public abstract class Actor extends Renderable {
          this.field623[var9] = var4;
          this.field601[var9] = var11 + var5 + var6;
       }
+
    }
 
    @ObfuscatedName("x")

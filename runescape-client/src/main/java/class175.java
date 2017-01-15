@@ -16,12 +16,12 @@ public class class175 {
          int var2;
          for(var2 = 1; var2 <= 5; ++var2) {
             while(true) {
-               int var6 = var0.indexOf("%" + var2);
-               if(var6 == -1) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
                   break;
                }
 
-               var0 = var0.substring(0, var6) + class150.method2745(class22.method210(var1, var2 - 1)) + var0.substring(var6 + 2);
+               var0 = var0.substring(0, var3) + class150.method2745(class22.method210(var1, var2 - 1)) + var0.substring(var3 + 2);
             }
          }
 
@@ -31,17 +31,17 @@ public class class175 {
                break;
             }
 
-            String var3 = "";
+            String var6 = "";
             if(null != class72.field1175) {
-               int var5 = class72.field1175.field1650;
-               String var4 = (var5 >> 24 & 255) + "." + (var5 >> 16 & 255) + "." + (var5 >> 8 & 255) + "." + (var5 & 255);
-               var3 = var4;
+               int var4 = class72.field1175.field1650;
+               String var5 = (var4 >> 24 & 255) + "." + (var4 >> 16 & 255) + "." + (var4 >> 8 & 255) + "." + (var4 & 255);
+               var6 = var5;
                if(null != class72.field1175.field1652) {
-                  var3 = (String)class72.field1175.field1652;
+                  var6 = (String)class72.field1175.field1652;
                }
             }
 
-            var0 = var0.substring(0, var2) + var3 + var0.substring(var2 + 4);
+            var0 = var0.substring(0, var2) + var6 + var0.substring(var2 + 4);
          }
       }
 

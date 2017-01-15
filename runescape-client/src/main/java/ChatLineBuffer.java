@@ -35,14 +35,14 @@ public class ChatLineBuffer {
       int var3;
       for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
          class208 var4 = class97.field1621;
-         String var7;
+         String var5;
          if(Client.menuTargets[var3].length() > 0) {
-            var7 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
+            var5 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
          } else {
-            var7 = Client.menuOptions[var3];
+            var5 = Client.menuOptions[var3];
          }
 
-         int var6 = var4.method3874(var7);
+         int var6 = var4.method3874(var5);
          if(var6 > var2) {
             var2 = var6;
          }
@@ -50,27 +50,27 @@ public class ChatLineBuffer {
 
       var2 += 8;
       var3 = Client.menuOptionCount * 15 + 22;
-      int var8 = var0 - var2 / 2;
-      if(var2 + var8 > class0.field1) {
-         var8 = class0.field1 - var2;
+      int var7 = var0 - var2 / 2;
+      if(var2 + var7 > class0.field1) {
+         var7 = class0.field1 - var2;
+      }
+
+      if(var7 < 0) {
+         var7 = 0;
+      }
+
+      int var8 = var1;
+      if(var3 + var1 > class65.field1099) {
+         var8 = class65.field1099 - var3;
       }
 
       if(var8 < 0) {
          var8 = 0;
       }
 
-      int var5 = var1;
-      if(var3 + var1 > class65.field1099) {
-         var5 = class65.field1099 - var3;
-      }
-
-      if(var5 < 0) {
-         var5 = 0;
-      }
-
       Client.isMenuOpen = true;
-      class118.menuX = var8;
-      Buffer.menuY = var5;
+      class118.menuX = var7;
+      Buffer.menuY = var8;
       class20.menuWidth = var2;
       class94.menuHeight = 22 + Client.menuOptionCount * 15;
    }
@@ -130,6 +130,7 @@ public class ChatLineBuffer {
    )
    public static void method879() {
       class115 var0 = class115.mouse;
+      class115 var1 = class115.mouse;
       synchronized(class115.mouse) {
          class115.field1787 = class115.field1784;
          class115.field1788 = class115.field1795;

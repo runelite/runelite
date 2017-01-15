@@ -87,7 +87,7 @@ public class class177 implements class158 {
       class225.field3217 = null;
       class178.field2653 = null;
       class225.field3218 = null;
-      class119.field1845 = null;
+      class119.field1845 = (byte[][])null;
       return var0;
    }
 }

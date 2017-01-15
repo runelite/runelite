@@ -53,121 +53,121 @@ public abstract class class112 {
       }
 
       int var4;
-      int var12;
+      int var5;
       if(var0.type == 2) {
-         var12 = 0;
+         var5 = 0;
 
          for(var4 = 0; var4 < var0.height; ++var4) {
-            for(int var13 = 0; var13 < var0.width; ++var13) {
-               int var6 = (32 + var0.field2251) * var13;
-               int var7 = var4 * (var0.field2252 + 32);
-               if(var12 < 20) {
-                  var6 += var0.field2253[var12];
-                  var7 += var0.field2254[var12];
+            for(int var6 = 0; var6 < var0.width; ++var6) {
+               int var7 = (32 + var0.field2251) * var6;
+               int var8 = var4 * (var0.field2252 + 32);
+               if(var5 < 20) {
+                  var7 += var0.field2253[var5];
+                  var8 += var0.field2254[var5];
                }
 
-               if(var1 >= var6 && var2 >= var7 && var1 < 32 + var6 && var2 < 32 + var7) {
-                  Client.field399 = var12;
+               if(var1 >= var7 && var2 >= var8 && var1 < 32 + var7 && var2 < 32 + var8) {
+                  Client.field399 = var5;
                   class13.field144 = var0;
-                  if(var0.itemIds[var12] > 0) {
-                     ItemComposition var8 = class88.getItemDefinition(var0.itemIds[var12] - 1);
+                  if(var0.itemIds[var5] > 0) {
+                     ItemComposition var9 = class88.getItemDefinition(var0.itemIds[var5] - 1);
                      if(Client.field447 == 1 && class47.method864(GameObject.method1872(var0))) {
-                        if(var0.id != ObjectComposition.field2930 || var12 != class15.field169) {
-                           GroundObject.addMenuEntry("Use", Client.field468 + " " + "->" + " " + class32.method691(16748608) + var8.name, 31, var8.id, var12, var0.id);
+                        if(var0.id != ObjectComposition.field2930 || var5 != class15.field169) {
+                           GroundObject.addMenuEntry("Use", Client.field468 + " " + "->" + " " + class32.method691(16748608) + var9.name, 31, var9.id, var5, var0.id);
                         }
                      } else if(Client.field435 && class47.method864(GameObject.method1872(var0))) {
                         if((class214.field3158 & 16) == 16) {
-                           GroundObject.addMenuEntry(Client.field438, Client.field282 + " " + "->" + " " + class32.method691(16748608) + var8.name, 32, var8.id, var12, var0.id);
+                           GroundObject.addMenuEntry(Client.field438, Client.field282 + " " + "->" + " " + class32.method691(16748608) + var9.name, 32, var9.id, var5, var0.id);
                         }
                      } else {
-                        String[] var9 = var8.inventoryActions;
+                        String[] var10 = var9.inventoryActions;
                         if(Client.field300) {
-                           var9 = class8.method112(var9);
+                           var10 = class8.method112(var10);
                         }
 
-                        int var10;
-                        byte var11;
+                        int var11;
+                        byte var12;
                         if(class47.method864(GameObject.method1872(var0))) {
-                           for(var10 = 4; var10 >= 3; --var10) {
-                              if(null != var9 && var9[var10] != null) {
-                                 if(var10 == 3) {
-                                    var11 = 36;
+                           for(var11 = 4; var11 >= 3; --var11) {
+                              if(null != var10 && var10[var11] != null) {
+                                 if(var11 == 3) {
+                                    var12 = 36;
                                  } else {
-                                    var11 = 37;
+                                    var12 = 37;
                                  }
 
-                                 GroundObject.addMenuEntry(var9[var10], class32.method691(16748608) + var8.name, var11, var8.id, var12, var0.id);
-                              } else if(var10 == 4) {
-                                 GroundObject.addMenuEntry("Drop", class32.method691(16748608) + var8.name, 37, var8.id, var12, var0.id);
+                                 GroundObject.addMenuEntry(var10[var11], class32.method691(16748608) + var9.name, var12, var9.id, var5, var0.id);
+                              } else if(var11 == 4) {
+                                 GroundObject.addMenuEntry("Drop", class32.method691(16748608) + var9.name, 37, var9.id, var5, var0.id);
                               }
                            }
                         }
 
                         if(Player.method238(GameObject.method1872(var0))) {
-                           GroundObject.addMenuEntry("Use", class32.method691(16748608) + var8.name, 38, var8.id, var12, var0.id);
+                           GroundObject.addMenuEntry("Use", class32.method691(16748608) + var9.name, 38, var9.id, var5, var0.id);
                         }
 
-                        if(class47.method864(GameObject.method1872(var0)) && null != var9) {
-                           for(var10 = 2; var10 >= 0; --var10) {
-                              if(null != var9[var10]) {
-                                 var11 = 0;
-                                 if(var10 == 0) {
-                                    var11 = 33;
+                        if(class47.method864(GameObject.method1872(var0)) && null != var10) {
+                           for(var11 = 2; var11 >= 0; --var11) {
+                              if(null != var10[var11]) {
+                                 var12 = 0;
+                                 if(var11 == 0) {
+                                    var12 = 33;
                                  }
 
-                                 if(var10 == 1) {
-                                    var11 = 34;
+                                 if(var11 == 1) {
+                                    var12 = 34;
                                  }
 
-                                 if(var10 == 2) {
-                                    var11 = 35;
+                                 if(var11 == 2) {
+                                    var12 = 35;
                                  }
 
-                                 GroundObject.addMenuEntry(var9[var10], class32.method691(16748608) + var8.name, var11, var8.id, var12, var0.id);
+                                 GroundObject.addMenuEntry(var10[var11], class32.method691(16748608) + var9.name, var12, var9.id, var5, var0.id);
                               }
                            }
                         }
 
-                        var9 = var0.field2256;
+                        var10 = var0.field2256;
                         if(Client.field300) {
-                           var9 = class8.method112(var9);
+                           var10 = class8.method112(var10);
                         }
 
-                        if(var9 != null) {
-                           for(var10 = 4; var10 >= 0; --var10) {
-                              if(null != var9[var10]) {
-                                 var11 = 0;
-                                 if(var10 == 0) {
-                                    var11 = 39;
+                        if(var10 != null) {
+                           for(var11 = 4; var11 >= 0; --var11) {
+                              if(null != var10[var11]) {
+                                 var12 = 0;
+                                 if(var11 == 0) {
+                                    var12 = 39;
                                  }
 
-                                 if(var10 == 1) {
-                                    var11 = 40;
+                                 if(var11 == 1) {
+                                    var12 = 40;
                                  }
 
-                                 if(var10 == 2) {
-                                    var11 = 41;
+                                 if(var11 == 2) {
+                                    var12 = 41;
                                  }
 
-                                 if(var10 == 3) {
-                                    var11 = 42;
+                                 if(var11 == 3) {
+                                    var12 = 42;
                                  }
 
-                                 if(var10 == 4) {
-                                    var11 = 43;
+                                 if(var11 == 4) {
+                                    var12 = 43;
                                  }
 
-                                 GroundObject.addMenuEntry(var9[var10], class32.method691(16748608) + var8.name, var11, var8.id, var12, var0.id);
+                                 GroundObject.addMenuEntry(var10[var11], class32.method691(16748608) + var9.name, var12, var9.id, var5, var0.id);
                               }
                            }
                         }
 
-                        GroundObject.addMenuEntry("Examine", class32.method691(16748608) + var8.name, 1005, var8.id, var12, var0.id);
+                        GroundObject.addMenuEntry("Examine", class32.method691(16748608) + var9.name, 1005, var9.id, var5, var0.id);
                      }
                   }
                }
 
-               ++var12;
+               ++var5;
             }
          }
       }
@@ -178,18 +178,18 @@ public abstract class class112 {
                GroundObject.addMenuEntry(Client.field438, Client.field282 + " " + "->" + " " + var0.name, 58, 0, var0.index, var0.id);
             }
          } else {
-            for(var12 = 9; var12 >= 5; --var12) {
-               String var15;
-               if(!Friend.method177(GameObject.method1872(var0), var12) && null == var0.field2285) {
-                  var15 = null;
-               } else if(var0.actions != null && var0.actions.length > var12 && var0.actions[var12] != null && var0.actions[var12].trim().length() != 0) {
-                  var15 = var0.actions[var12];
+            String var13;
+            for(var5 = 9; var5 >= 5; --var5) {
+               if(!Friend.method177(GameObject.method1872(var0), var5) && null == var0.field2285) {
+                  var13 = null;
+               } else if(var0.actions != null && var0.actions.length > var5 && var0.actions[var5] != null && var0.actions[var5].trim().length() != 0) {
+                  var13 = var0.actions[var5];
                } else {
-                  var15 = null;
+                  var13 = null;
                }
 
-               if(null != var15) {
-                  GroundObject.addMenuEntry(var15, var0.name, 1007, 1 + var12, var0.index, var0.id);
+               if(null != var13) {
+                  GroundObject.addMenuEntry(var13, var0.name, 1007, 1 + var5, var0.index, var0.id);
                }
             }
 
@@ -199,17 +199,16 @@ public abstract class class112 {
             }
 
             for(var4 = 4; var4 >= 0; --var4) {
-               String var5;
                if(!Friend.method177(GameObject.method1872(var0), var4) && var0.field2285 == null) {
-                  var5 = null;
+                  var13 = null;
                } else if(null != var0.actions && var0.actions.length > var4 && null != var0.actions[var4] && var0.actions[var4].trim().length() != 0) {
-                  var5 = var0.actions[var4];
+                  var13 = var0.actions[var4];
                } else {
-                  var5 = null;
+                  var13 = null;
                }
 
-               if(null != var5) {
-                  GroundObject.addMenuEntry(var5, var0.name, 57, var4 + 1, var0.index, var0.id);
+               if(null != var13) {
+                  GroundObject.addMenuEntry(var13, var0.name, 57, var4 + 1, var0.index, var0.id);
                }
             }
 

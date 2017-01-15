@@ -91,6 +91,7 @@ public final class SecondaryBufferProvider extends BufferProvider implements Ima
          this.field3198.setPixels(0, 0, super.width, super.height, this.field3200, super.pixels, 0, super.width);
          this.field3198.imageComplete(2);
       }
+
    }
 
    public void requestTopDownLeftRightResend(ImageConsumer var1) {
@@ -106,6 +107,7 @@ public final class SecondaryBufferProvider extends BufferProvider implements Ima
          this.field3198.setPixels(var1, var2, var3, var4, this.field3200, super.pixels, var2 * super.width + var1, super.width);
          this.field3198.imageComplete(2);
       }
+
    }
 
    public boolean imageUpdate(Image var1, int var2, int var3, int var4, int var5, int var6) {

@@ -114,23 +114,23 @@ public final class Tile extends Node {
          var0.field657 = 0;
       } else {
          if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-            Sequence var10 = CombatInfo2.getAnimation(var0.animation);
-            if(var0.field658 > 0 && var10.precedenceAnimating == 0) {
+            Sequence var1 = CombatInfo2.getAnimation(var0.animation);
+            if(var0.field658 > 0 && var1.precedenceAnimating == 0) {
                ++var0.field657;
                return;
             }
 
-            if(var0.field658 <= 0 && var10.priority == 0) {
+            if(var0.field658 <= 0 && var1.priority == 0) {
                ++var0.field657;
                return;
             }
          }
 
-         int var1 = var0.x;
+         int var10 = var0.x;
          int var2 = var0.y;
          int var3 = var0.field603 * 64 + 128 * var0.pathX[var0.field653 - 1];
          int var4 = var0.field603 * 64 + 128 * var0.pathY[var0.field653 - 1];
-         if(var1 < var3) {
+         if(var10 < var3) {
             if(var2 < var4) {
                var0.field650 = 1280;
             } else if(var2 > var4) {
@@ -138,7 +138,7 @@ public final class Tile extends Node {
             } else {
                var0.field650 = 1536;
             }
-         } else if(var1 > var3) {
+         } else if(var10 > var3) {
             if(var2 < var4) {
                var0.field650 = 768;
             } else if(var2 > var4) {
@@ -153,7 +153,7 @@ public final class Tile extends Node {
          }
 
          byte var5 = var0.field656[var0.field653 - 1];
-         if(var3 - var1 <= 256 && var3 - var1 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
+         if(var3 - var10 <= 256 && var3 - var10 >= -256 && var4 - var2 <= 256 && var4 - var2 >= -256) {
             int var6 = var0.field650 - var0.angle & 2047;
             if(var6 > 1024) {
                var6 -= 2048;
@@ -219,13 +219,13 @@ public final class Tile extends Node {
                var0.poseAnimation = var0.field622;
             }
 
-            if(var1 != var3 || var2 != var4) {
-               if(var1 < var3) {
+            if(var10 != var3 || var2 != var4) {
+               if(var10 < var3) {
                   var0.x += var8;
                   if(var0.x > var3) {
                      var0.x = var3;
                   }
-               } else if(var1 > var3) {
+               } else if(var10 > var3) {
                   var0.x -= var8;
                   if(var0.x < var3) {
                      var0.x = var3;
@@ -251,7 +251,6 @@ public final class Tile extends Node {
                   --var0.field658;
                }
             }
-
          } else {
             var0.x = var3;
             var0.y = var4;
@@ -259,9 +258,9 @@ public final class Tile extends Node {
             if(var0.field658 > 0) {
                --var0.field658;
             }
-
          }
       }
+
    }
 
    Tile(int var1, int var2, int var3) {

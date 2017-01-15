@@ -62,24 +62,24 @@ public abstract class class119 {
       for(int var0 = 0; var0 < Client.field516; ++var0) {
          --Client.field526[var0];
          if(Client.field526[var0] >= -10) {
-            class53 var10 = Client.field528[var0];
-            if(null == var10) {
-               Object var10000 = null;
-               var10 = class53.method955(class10.field94, Client.field500[var0], 0);
-               if(null == var10) {
+            class53 var9 = Client.field528[var0];
+            if(null == var9) {
+               Object var2 = null;
+               var9 = class53.method955(class10.field94, Client.field500[var0], 0);
+               if(null == var9) {
                   continue;
                }
 
-               Client.field526[var0] += var10.method950();
-               Client.field528[var0] = var10;
+               Client.field526[var0] += var9.method950();
+               Client.field528[var0] = var9;
             }
 
             if(Client.field526[var0] < 0) {
-               int var2;
+               int var10;
                if(Client.field527[var0] != 0) {
-                  int var9 = (Client.field527[var0] & 255) * 128;
-                  int var11 = Client.field527[var0] >> 16 & 255;
-                  int var5 = 64 + var11 * 128 - class148.localPlayer.x;
+                  int var3 = (Client.field527[var0] & 255) * 128;
+                  int var4 = Client.field527[var0] >> 16 & 255;
+                  int var5 = 64 + var4 * 128 - class148.localPlayer.x;
                   if(var5 < 0) {
                      var5 = -var5;
                   }
@@ -91,7 +91,7 @@ public abstract class class119 {
                   }
 
                   int var8 = var5 + var7 - 128;
-                  if(var8 > var9) {
+                  if(var8 > var3) {
                      Client.field526[var0] = -100;
                      continue;
                   }
@@ -100,16 +100,16 @@ public abstract class class119 {
                      var8 = 0;
                   }
 
-                  var2 = (var9 - var8) * Client.field557 / var9;
+                  var10 = (var3 - var8) * Client.field557 / var3;
                } else {
-                  var2 = Client.field358;
+                  var10 = Client.field358;
                }
 
-               if(var2 > 0) {
-                  class55 var3 = var10.method953().method994(class140.field1961);
-                  class66 var4 = class66.method1130(var3, 100, var2);
-                  var4.method1133(Client.field292[var0] - 1);
-                  class20.field222.method889(var4);
+               if(var10 > 0) {
+                  class55 var11 = var9.method953().method994(class140.field1961);
+                  class66 var12 = class66.method1130(var11, 100, var10);
+                  var12.method1133(Client.field292[var0] - 1);
+                  class20.field222.method889(var12);
                }
 
                Client.field526[var0] = -100;

@@ -23,20 +23,20 @@ public class class173 {
          Client.field542 = 20;
       } else {
          int var1;
+         int var2;
          int var3;
          int var4;
-         int var7;
          if(Client.field542 == 20) {
-            int[] var16 = new int[9];
+            int[] var5 = new int[9];
 
             for(var1 = 0; var1 < 9; ++var1) {
-               var7 = 15 + var1 * 32 + 128;
-               var3 = 600 + var7 * 3;
-               var4 = class84.field1438[var7];
-               var16[var1] = var4 * var3 >> 16;
+               var4 = 15 + var1 * 32 + 128;
+               var2 = 600 + var4 * 3;
+               var3 = class84.field1438[var4];
+               var5[var1] = var3 * var2 >> 16;
             }
 
-            Region.method1705(var16, 500, 800, 512, 334);
+            Region.method1705(var5, 500, 800, 512, 334);
             class41.field826 = "Prepared visibility map";
             class41.field825 = 10;
             Client.field542 = 30;
@@ -61,8 +61,8 @@ public class class173 {
             class41.field825 = 20;
             Client.field542 = 40;
          } else if(Client.field542 == 40) {
-            byte var19 = 0;
-            var0 = var19 + class5.field46.method3356() * 4 / 100;
+            byte var12 = 0;
+            var0 = var12 + class5.field46.method3356() * 4 / 100;
             var0 += class11.field120.method3356() * 4 / 100;
             var0 += class48.field936.method3356() * 2 / 100;
             var0 += Client.field349.method3356() * 2 / 100;
@@ -90,22 +90,22 @@ public class class173 {
                Client.field542 = 45;
             }
          } else {
-            class184 var2;
-            class184 var9;
-            class184 var17;
+            class184 var6;
+            class184 var7;
+            class184 var13;
             if(Client.field542 == 45) {
                XClanMember.method241(22050, !Client.field286, 2);
-               class139 var15 = new class139();
-               var15.method2580(9, 128);
+               class139 var8 = new class139();
+               var8.method2580(9, 128);
                Client.field522 = Friend.method175(class44.field881, class165.canvas, 0, 22050);
-               Client.field522.method1024(var15);
-               var17 = Client.field343;
-               var2 = XItemContainer.field136;
-               var9 = class10.field94;
-               class138.field1901 = var17;
-               class138.field1902 = var2;
-               Ignore.field210 = var9;
-               class138.field1899 = var15;
+               Client.field522.method1024(var8);
+               var7 = Client.field343;
+               var13 = XItemContainer.field136;
+               var6 = class10.field94;
+               class138.field1901 = var7;
+               class138.field1902 = var13;
+               Ignore.field210 = var6;
+               class138.field1899 = var8;
                class13.field150 = Friend.method175(class44.field881, class165.canvas, 1, 2048);
                class20.field222 = new class51();
                class13.field150.method1024(class20.field222);
@@ -114,39 +114,39 @@ public class class173 {
                class41.field825 = 35;
                Client.field542 = 50;
             } else {
-               int var5;
+               int var14;
                if(Client.field542 == 50) {
                   var0 = 0;
-                  class208 var18;
+                  class208 var9;
                   if(FileOnDisk.field1186 == null) {
-                     var2 = class0.field4;
-                     var9 = class119.field1843;
-                     var4 = var2.method3277("p11_full");
-                     var5 = var2.method3278(var4, "");
-                     var18 = class63.method1110(var2, var9, var4, var5);
-                     FileOnDisk.field1186 = var18;
+                     var13 = class0.field4;
+                     var6 = class119.field1843;
+                     var3 = var13.method3277("p11_full");
+                     var14 = var13.method3278(var3, "");
+                     var9 = class63.method1110(var13, var6, var3, var14);
+                     FileOnDisk.field1186 = var9;
                   } else {
                      ++var0;
                   }
 
                   if(null == class22.field235) {
-                     var2 = class0.field4;
-                     var9 = class119.field1843;
-                     var4 = var2.method3277("p12_full");
-                     var5 = var2.method3278(var4, "");
-                     var18 = class63.method1110(var2, var9, var4, var5);
-                     class22.field235 = var18;
+                     var13 = class0.field4;
+                     var6 = class119.field1843;
+                     var3 = var13.method3277("p12_full");
+                     var14 = var13.method3278(var3, "");
+                     var9 = class63.method1110(var13, var6, var3, var14);
+                     class22.field235 = var9;
                   } else {
                      ++var0;
                   }
 
                   if(class97.field1621 == null) {
-                     var2 = class0.field4;
-                     var9 = class119.field1843;
-                     var4 = var2.method3277("b12_full");
-                     var5 = var2.method3278(var4, "");
-                     var18 = class63.method1110(var2, var9, var4, var5);
-                     class97.field1621 = var18;
+                     var13 = class0.field4;
+                     var6 = class119.field1843;
+                     var3 = var13.method3277("b12_full");
+                     var14 = var13.method3278(var3, "");
+                     var9 = class63.method1110(var13, var6, var3, var14);
+                     class97.field1621 = var9;
                   } else {
                      ++var0;
                   }
@@ -162,9 +162,9 @@ public class class173 {
                   }
                } else if(Client.field542 == 60) {
                   var0 = FrameMap.method1664(ChatLineBuffer.field956, class0.field4);
-                  byte var12 = 9;
-                  if(var0 < var12) {
-                     class41.field826 = "Loading title screen - " + var0 * 100 / var12 + "%";
+                  byte var15 = 9;
+                  if(var0 < var15) {
+                     class41.field826 = "Loading title screen - " + var0 * 100 / var15 + "%";
                      class41.field825 = 50;
                   } else {
                      class41.field826 = "Loaded title screen";
@@ -184,16 +184,16 @@ public class class173 {
                      class2.method30(class48.field936, Client.field314);
                      class146.method2712(class48.field936, Client.field314, Client.isMembers, FileOnDisk.field1186);
                      class142.method2664(class48.field936, class5.field46, class11.field120);
-                     class184 var14 = class48.field936;
-                     var17 = Client.field314;
-                     class190.field2778 = var14;
-                     class190.field2781 = var17;
-                     var2 = class48.field936;
-                     class194.field2836 = var2;
+                     class184 var16 = class48.field936;
+                     var7 = Client.field314;
+                     class190.field2778 = var16;
+                     class190.field2781 = var7;
+                     var13 = class48.field936;
+                     class194.field2836 = var13;
                      class104.method1951(class48.field936);
                      class22.method209(Client.field349, Client.field314, class0.field4, class119.field1843);
-                     var9 = class48.field936;
-                     class186.field2748 = var9;
+                     var6 = class48.field936;
+                     class186.field2748 = var6;
                      class184 var10 = class48.field936;
                      class195.field2847 = var10;
                      MessageNode.method201(class48.field936);
@@ -212,8 +212,8 @@ public class class173 {
                         class41.field826 = "Loading textures - " + class5.field49.method3355() + "%";
                         class41.field825 = 90;
                      } else {
-                        TextureProvider var13 = new TextureProvider(class5.field49, class0.field4, 20, 0.8D, Client.field286?64:128);
-                        class84.method1605(var13);
+                        TextureProvider var17 = new TextureProvider(class5.field49, class0.field4, 20, 0.8D, Client.field286?64:128);
+                        class84.method1605(var17);
                         class84.method1606(0.8D);
                         class41.field826 = "Loaded textures";
                         class41.field825 = 90;
@@ -227,11 +227,11 @@ public class class173 {
                      Client.field542 = 120;
                   } else if(Client.field542 == 120) {
                      if(!ChatLineBuffer.field956.method3280("huffman", "")) {
-                        class41.field826 = "Loading wordpack - " + 0 + "%";
+                        class41.field826 = "Loading wordpack - 0%";
                         class41.field825 = 96;
                      } else {
-                        class145 var6 = new class145(ChatLineBuffer.field956.method3279("huffman", ""));
-                        class210.field3106 = var6;
+                        class145 var18 = new class145(ChatLineBuffer.field956.method3279("huffman", ""));
+                        class210.field3106 = var18;
                         class41.field826 = "Loaded wordpack";
                         class41.field825 = 96;
                         Client.field542 = 130;
@@ -256,23 +256,23 @@ public class class173 {
                   }
                } else {
                   var0 = 0;
-                  SpritePixels var8;
+                  SpritePixels var19;
                   if(null == class8.field73) {
-                     var2 = class0.field4;
-                     var3 = var2.method3277("compass");
-                     var4 = var2.method3278(var3, "");
-                     var8 = TextureProvider.method1410(var2, var3, var4);
-                     class8.field73 = var8;
+                     var13 = class0.field4;
+                     var2 = var13.method3277("compass");
+                     var3 = var13.method3278(var2, "");
+                     var19 = TextureProvider.method1410(var13, var2, var3);
+                     class8.field73 = var19;
                   } else {
                      ++var0;
                   }
 
                   if(null == class45.field901) {
-                     var2 = class0.field4;
-                     var3 = var2.method3277("mapedge");
-                     var4 = var2.method3278(var3, "");
-                     var8 = TextureProvider.method1410(var2, var3, var4);
-                     class45.field901 = var8;
+                     var13 = class0.field4;
+                     var2 = var13.method3277("mapedge");
+                     var3 = var13.method3278(var2, "");
+                     var19 = TextureProvider.method1410(var13, var2, var3);
+                     class45.field901 = var19;
                   } else {
                      ++var0;
                   }
@@ -344,15 +344,15 @@ public class class173 {
                      class209.modIcons = class97.field1626;
                      class45.field901.method4205();
                      var1 = (int)(Math.random() * 21.0D) - 10;
-                     var7 = (int)(Math.random() * 21.0D) - 10;
-                     var3 = (int)(Math.random() * 21.0D) - 10;
-                     var4 = (int)(Math.random() * 41.0D) - 20;
+                     var4 = (int)(Math.random() * 21.0D) - 10;
+                     var2 = (int)(Math.random() * 21.0D) - 10;
+                     var3 = (int)(Math.random() * 41.0D) - 20;
 
-                     for(var5 = 0; var5 < class210.field3104.length; ++var5) {
-                        class210.field3104[var5].method4113(var4 + var1, var7 + var4, var4 + var3);
+                     for(var14 = 0; var14 < class210.field3104.length; ++var14) {
+                        class210.field3104[var14].method4113(var3 + var1, var4 + var3, var3 + var2);
                      }
 
-                     class114.field1780[0].method4068(var4 + var1, var4 + var7, var4 + var3);
+                     class114.field1780[0].method4068(var3 + var1, var3 + var4, var3 + var2);
                      class41.field826 = "Loaded sprites";
                      class41.field825 = 70;
                      Client.field542 = 90;
@@ -361,6 +361,7 @@ public class class173 {
             }
          }
       }
+
    }
 
    @ObfuscatedName("u")

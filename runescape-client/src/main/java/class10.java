@@ -88,15 +88,15 @@ public final class class10 {
          var2.method214(var7);
       }
 
-      int var13;
+      int var14;
       if((var3 & 4) != 0) {
          var5 = var0.readUnsignedShort();
          if(var5 == '\uffff') {
             var5 = -1;
          }
 
-         var13 = var0.readUnsignedByte();
-         XItemContainer.method167(var2, var5, var13);
+         var14 = var0.readUnsignedByte();
+         XItemContainer.method167(var2, var5, var14);
       }
 
       if((var3 & 2) != 0) {
@@ -123,46 +123,46 @@ public final class class10 {
 
       int var8;
       int var9;
-      int var12;
+      int var15;
       if((var3 & 64) != 0) {
          var5 = var0.readUnsignedByte();
          int var10;
          int var11;
-         int var14;
+         int var12;
          if(var5 > 0) {
-            for(var13 = 0; var13 < var5; ++var13) {
+            for(var14 = 0; var14 < var5; ++var14) {
+               var15 = -1;
                var8 = -1;
-               var9 = -1;
                var10 = -1;
-               var14 = var0.method2963();
-               if(var14 == 32767) {
-                  var14 = var0.method2963();
-                  var9 = var0.method2963();
+               var12 = var0.method2963();
+               if(var12 == 32767) {
+                  var12 = var0.method2963();
                   var8 = var0.method2963();
+                  var15 = var0.method2963();
                   var10 = var0.method2963();
-               } else if(var14 != 32766) {
-                  var9 = var0.method2963();
+               } else if(var12 != 32766) {
+                  var8 = var0.method2963();
                } else {
-                  var14 = -1;
+                  var12 = -1;
                }
 
                var11 = var0.method2963();
-               var2.method614(var14, var9, var8, var10, Client.gameCycle, var11);
+               var2.method614(var12, var8, var15, var10, Client.gameCycle, var11);
             }
          }
 
-         var13 = var0.readUnsignedByte();
-         if(var13 > 0) {
-            for(var14 = 0; var14 < var13; ++var14) {
+         var14 = var0.readUnsignedByte();
+         if(var14 > 0) {
+            for(var12 = 0; var12 < var14; ++var12) {
+               var15 = var0.method2963();
                var8 = var0.method2963();
-               var9 = var0.method2963();
-               if(var9 != 32767) {
+               if(var8 != 32767) {
                   var10 = var0.method2963();
                   var11 = var0.readUnsignedByte();
-                  var12 = var9 > 0?var0.readUnsignedByte():var11;
-                  var2.method605(var8, Client.gameCycle, var9, var10, var11, var12);
+                  var9 = var8 > 0?var0.readUnsignedByte():var11;
+                  var2.method605(var15, Client.gameCycle, var8, var10, var11, var9);
                } else {
-                  var2.method606(var8);
+                  var2.method606(var15);
                }
             }
          }
@@ -179,41 +179,41 @@ public final class class10 {
       if((var3 & 1) != 0) {
          var5 = var0.readUnsignedShort();
          class177 var16 = (class177)class181.method3258(class22.method211(), var0.readUnsignedByte());
-         boolean var19 = var0.readUnsignedByte() == 1;
-         var8 = var0.readUnsignedByte();
-         var9 = var0.offset;
+         boolean var17 = var0.readUnsignedByte() == 1;
+         var15 = var0.readUnsignedByte();
+         var8 = var0.offset;
          if(var2.name != null && var2.composition != null) {
-            boolean var18 = false;
+            boolean var19 = false;
             if(var16.field2648 && class164.method3115(var2.name)) {
-               var18 = true;
+               var19 = true;
             }
 
-            if(!var18 && Client.field402 == 0 && !var2.field260) {
+            if(!var19 && Client.field402 == 0 && !var2.field260) {
                class45.field897.offset = 0;
-               var0.method2974(class45.field897.payload, 0, var8);
+               var0.method2974(class45.field897.payload, 0, var15);
                class45.field897.offset = 0;
-               String var15 = class209.method3866(Client.method589(class40.method738(class45.field897)));
-               var2.overhead = var15.trim();
+               String var13 = class209.method3866(Client.method589(class40.method738(class45.field897)));
+               var2.overhead = var13.trim();
                var2.field599 = var5 >> 8;
                var2.field617 = var5 & 255;
                var2.field615 = 150;
-               var2.field645 = var19;
-               var2.inSequence = var2 != class148.localPlayer && var16.field2648 && Client.field554 != "" && var15.toLowerCase().indexOf(Client.field554) == -1;
+               var2.field645 = var17;
+               var2.inSequence = var2 != class148.localPlayer && var16.field2648 && Client.field554 != "" && var13.toLowerCase().indexOf(Client.field554) == -1;
                if(var16.field2649) {
-                  var12 = var19?91:1;
+                  var9 = var17?91:1;
                } else {
-                  var12 = var19?90:2;
+                  var9 = var17?90:2;
                }
 
                if(var16.field2641 != -1) {
-                  class7.method99(var12, class109.method2012(var16.field2641) + var2.name, var15);
+                  class7.method99(var9, class109.method2012(var16.field2641) + var2.name, var13);
                } else {
-                  class7.method99(var12, var2.name, var15);
+                  class7.method99(var9, var2.name, var13);
                }
             }
          }
 
-         var0.offset = var8 + var9;
+         var0.offset = var15 + var8;
       }
 
       if((var3 & 256) != 0) {
@@ -275,14 +275,14 @@ public final class class10 {
          if(var4 == 127) {
             var2.method218(var2.field264, var2.field265);
          } else {
-            byte var17;
+            byte var18;
             if(var4 != -1) {
-               var17 = var4;
+               var18 = var4;
             } else {
-               var17 = class45.field886[var1];
+               var18 = class45.field886[var1];
             }
 
-            var2.method217(var2.field264, var2.field265, var17);
+            var2.method217(var2.field264, var2.field265, var18);
          }
       }
 
