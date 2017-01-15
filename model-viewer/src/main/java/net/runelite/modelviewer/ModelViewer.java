@@ -26,17 +26,23 @@ package net.runelite.modelviewer;
 
 import com.google.gson.Gson;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.imageio.ImageIO;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
+import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.models.Vector3f;
@@ -50,14 +56,28 @@ import org.apache.commons.compress.utils.IOUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.GL_NEAREST;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_S;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_WRAP_T;
+import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ModelViewer
 {
-	private static final int NUM_UNDERLAYS = 150;
-	private static final int NUM_OVERLAYS = 174;
+	private static final Logger logger = LoggerFactory.getLogger(ModelViewer.class);
+
+	private static int NUM_UNDERLAYS = 150;
+	private static int NUM_OVERLAYS = 174;
+	private static int NUM_TEXTURES = 61;
 
 	private static UnderlayDefinition[] underlays = new UnderlayDefinition[NUM_UNDERLAYS];
 	private static OverlayDefinition[] overlays = new OverlayDefinition[NUM_OVERLAYS];
+	private static Map<Integer, Texture> textures = new HashMap<>();
 
 	public static void main(String[] args) throws Exception
 	{
@@ -256,8 +276,6 @@ public class ModelViewer
 			return;
 		}
 
-		GL11.glBegin(GL11.GL_TRIANGLES);
-
 		for (int regionX = 0; regionX < Region.X; ++regionX)
 		{
 			for (int regionY = 0; regionY < Region.Y; ++regionY)
@@ -303,6 +321,8 @@ public class ModelViewer
 				int overlayId = region.getOverlayId(0, regionX, regionY);
 
 				Color color = null;
+				int glTexture = -1;
+
 				if (underlayId > 0)
 				{
 					UnderlayDefinition ud = underlays[underlayId - 1];
@@ -320,26 +340,67 @@ public class ModelViewer
 
 					if (od.getTexture() > -1)
 					{
-						// textures?
+						color = Color.WHITE;
+
+						Texture texture = getTexture(od.getTexture());
+						glTexture = texture.getOpenglId();
+						assert glTexture > -1;
+
+						GL11.glEnable(GL11.GL_TEXTURE_2D);
+						GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
 					}
 				}
+
+				GL11.glBegin(GL11.GL_TRIANGLES);
 
 				if (color != null)
 				{
 					GL11.glColor3f((float) color.getRed() / 255f, (float) color.getGreen() / 255f, (float) color.getBlue() / 255f);
 				}
 
+				// triangle 1
+				if (glTexture > -1)
+				{
+					GL11.glTexCoord2f(0, 0);
+				}
 				GL11.glVertex3i(x, z1, -y);
+				if (glTexture > -1)
+				{
+					GL11.glTexCoord2f(1, 0);
+				}
 				GL11.glVertex3i(x + TILE_SCALE, z2, -y);
+				if (glTexture > -1)
+				{
+					GL11.glTexCoord2f(0, 1);
+				}
 				GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
 
+				// triangle 2
+				if (glTexture > -1)
+				{
+					GL11.glTexCoord2f(0, 1);
+				}
 				GL11.glVertex3i(x, z3, -(y + TILE_SCALE));
+				if (glTexture > -1)
+				{
+					GL11.glTexCoord2f(1, 0);
+				}
 				GL11.glVertex3i(x + TILE_SCALE, z2, -y);
+				if (glTexture > -1)
+				{
+					GL11.glTexCoord2f(1, 1);
+				}
 				GL11.glVertex3i(x + TILE_SCALE, z4, -(y + TILE_SCALE));
+
+				GL11.glEnd();
+
+				if (glTexture > -1)
+				{
+					GL11.glDisable(GL11.GL_TEXTURE_2D);
+				}
+
 			}
 		}
-
-		GL11.glEnd();
 	}
 
 	private static void loadUnderlays() throws IOException
@@ -359,7 +420,7 @@ public class ModelViewer
 
 	private static void loadOverlays() throws IOException
 	{
-		for (int i = 0; i < NUM_UNDERLAYS; ++i)
+		for (int i = 0; i < NUM_OVERLAYS; ++i)
 		{
 			try (FileInputStream fin = new FileInputStream("overlays/" + i + ".json"))
 			{
@@ -369,6 +430,83 @@ public class ModelViewer
 			catch (FileNotFoundException ex)
 			{
 			}
+		}
+	}
+
+	private static Texture getTexture(int id)
+	{
+		Texture texture = textures.get(id);
+		if (texture != null)
+		{
+			return texture;
+		}
+
+		TextureDefinition td;
+		try (FileInputStream fin = new FileInputStream("textures/" + id + ".json"))
+		{
+			td = new Gson().fromJson(new InputStreamReader(fin), TextureDefinition.class);
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
+		}
+
+		try (FileInputStream fin = new FileInputStream("sprite/" + td.getFileIds()[0] + "-0.png"))
+		{
+			BufferedImage image = ImageIO.read(fin);
+
+			int width = image.getWidth();
+			int height = image.getHeight();
+			int[] rgb = new int[width * height];
+
+			int[] out = image.getRGB(0, 0, width, height, rgb, 0, width);
+			assert rgb == out;
+
+			ByteBuffer buffer = ByteBuffer.allocateDirect(rgb.length * 4);
+			for (int i = 0; i < rgb.length; ++i)
+			{
+				int pixel = rgb[i];
+
+				// argb -> rgba
+				int a = pixel >>> 24;
+				int r = (pixel >> 16) & 0xff;
+				int g = (pixel >> 8) & 0xff;
+				int b = pixel & 0xff;
+
+				buffer.put((byte) r);
+				buffer.put((byte) g);
+				buffer.put((byte) b);
+				buffer.put((byte) a);
+			}
+			buffer.position(0);
+
+			int glTexture = GL11.glGenTextures();
+			GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
+
+			//Setup filtering, i.e. how OpenGL will interpolate the pixels when scaling up or down
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+			//Setup wrap mode, i.e. how OpenGL will handle pixels outside of the expected range
+			//Note: GL_CLAMP_TO_EDGE is part of GL12
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+
+			GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR); // Linear Filtering
+			GL11.glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR); // Linear Filtering
+
+			texture = new Texture(rgb, width, height, glTexture);
+			textures.put(id, texture);
+
+			return texture;
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
 		}
 	}
 
