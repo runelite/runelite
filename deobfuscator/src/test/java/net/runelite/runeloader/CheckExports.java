@@ -37,6 +37,7 @@ import net.runelite.runeloader.inject.GetterInjectInstruction;
 import net.runelite.runeloader.inject.InjectionModscript;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.runeloader.inject.Injection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -45,7 +46,6 @@ import org.junit.Test;
 public class CheckExports
 {
 	private static final File CLIENT = new File("/Users/adam/w/rs/07/rs-client-1.0-SNAPSHOT.jar");
-	private static final File RL_INJECTION = new File("/Users/adam/w/rs/07/rl/injection.json");
 	
 	private final List<Class> classes = new ArrayList<>();
 	
@@ -111,7 +111,7 @@ public class CheckExports
 	@Ignore
 	public void checkMappings() throws IOException
 	{
-		InjectionModscript mod = InjectionModscript.load(RL_INJECTION);
+		InjectionModscript mod = Injection.load(MappingImporter.class.getResourceAsStream(MappingImporter.RL_INJECTION));
 		
 		for (int i = 0; i < mod.getGetterInjects().size(); ++i)
 		{

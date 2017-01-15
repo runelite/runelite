@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.runeloader;
 
 import java.io.File;
@@ -38,36 +37,42 @@ import net.runelite.runeloader.inject.AddInterfaceInstruction;
 import net.runelite.runeloader.inject.GetterInjectInstruction;
 import net.runelite.runeloader.inject.InjectionModscript;
 import net.runelite.deob.util.JarUtil;
+import net.runelite.runeloader.inject.Injection;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MappingImporter
 {
-	private static final File IN = new File("d:/rs/07/gamepack_v18_annotationmap.jar");
+	private static final Logger logger = LoggerFactory.getLogger(MappingImporter.class);
+
+	private static final File IN = new File("d:/rs/07/adamin.jar");
 	private static final File OUT = new File("d:/rs/07/adamout.jar");
-	private static final File RL_INJECTION = new File(MappingImporter.class.getResource("/injection_v18.json").getFile());
-	
+
+	public static final String RL_INJECTION = "/injection_130.json";
+
 	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
 	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
-	
+
 	private ClassGroup group;
-	
+
 	@Before
 	public void before() throws IOException
 	{
 		group = JarUtil.loadJar(IN);
 	}
-	
+
 	@After
 	public void after() throws IOException
 	{
 		JarUtil.saveJar(group, OUT);
 	}
-	
+
 	private boolean hasObfuscatedName(Annotations an, String name)
 	{
 		if (an == null)
@@ -92,28 +97,34 @@ public class MappingImporter
 
 		return false;
 	}
-	
+
 	private ClassFile findClassWithObfuscatedName(String name)
 	{
 		for (ClassFile c : group.getClasses())
 		{
 			if (c.getName().equals(name))
+			{
 				return c;
-			
+			}
+
 			Annotations an = c.getAnnotations();
 			if (this.hasObfuscatedName(an, name))
+			{
 				return c;
+			}
 		}
 		return null;
 	}
-	
+
 	private Field findFieldWithObfuscatedName(ClassFile c, String name)
 	{
 		for (Field f : c.getFields().getFields())
 		{
 			Annotations an = f.getAnnotations();
 			if (this.hasObfuscatedName(an, name))
+			{
 				return f;
+			}
 		}
 		return null;
 	}
@@ -122,18 +133,24 @@ public class MappingImporter
 	@Ignore
 	public void makeMappings() throws IOException
 	{
-		InjectionModscript mod = InjectionModscript.load(RL_INJECTION);
-		
+		InjectionModscript mod = Injection.load(MappingImporter.class.getResourceAsStream(RL_INJECTION));
+		int fields = 0, classes = 0;
+
 		for (int i = 0; i < mod.getGetterInjects().size(); ++i)
 		{
 			GetterInjectInstruction gii = (GetterInjectInstruction) mod.getGetterInjects().get(i);
-			
+
 			ClassFile cf = this.findClassWithObfuscatedName(gii.getGetterClassName());
 			Assert.assertNotNull(cf);
-			
+
 			Field f = this.findFieldWithObfuscatedName(cf, gii.getGetterFieldName());
-			Assert.assertNotNull(f);
-			
+			if (f == null)
+			{
+				// some of their fields they inject getters for they also inject,
+				// so they don't all exist
+				continue;
+			}
+
 			String attrName = gii.getGetterName();
 			attrName = Utils.toExportedName(attrName);
 
@@ -146,22 +163,25 @@ public class MappingImporter
 
 				if (!attrName.equals(exportedName))
 				{
-					System.out.println("Exported field " + f + " with mismatched name. Theirs: " + attrName + ", mine: " + exportedName);
+					logger.info("Exported field " + f + " with mismatched name. Theirs: " + attrName + ", mine: " + exportedName);
 				}
 			}
 			else
 			{
 				an.addAnnotation(EXPORT, "value", attrName);
+
+				logger.info("Exporting field " + f + " with name " + attrName);
+				++fields;
 			}
 		}
-		
+
 		for (AddInterfaceInstruction aii : mod.getAddInterfaceInjects())
 		{
 			ClassFile cf = this.findClassWithObfuscatedName(aii.getClientClass());
 			Assert.assertNotNull(cf);
-			
+
 			String iface = aii.getInterfaceClass();
-			
+
 			iface = iface.replace("com/runeloader/api/bridge/os/accessor/", "");
 
 			Annotations an = cf.getAnnotations();
@@ -173,13 +193,18 @@ public class MappingImporter
 
 				if (!iface.equals(implementsName))
 				{
-					System.out.println("Implements class " + cf + " with mismatched name. Theirs: " + iface + ", mine: " + implementsName);
+					logger.info("Implements class " + cf + " with mismatched name. Theirs: " + iface + ", mine: " + implementsName);
 				}
 			}
 			else
 			{
 				an.addAnnotation(IMPLEMENTS, "value", iface);
+
+				logger.info("Exporting class " + cf.getName() + " with name " + iface);
+				++classes;
 			}
 		}
+
+		logger.info("Added {} fields, {} classes", fields, classes);
 	}
 }
