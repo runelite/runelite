@@ -118,10 +118,10 @@ public class class30 {
       int var2 = var0.method3032(2);
       int var3;
       int var4;
+      int var5;
+      int var6;
       int var7;
       int var8;
-      int var9;
-      int var10;
       if(var2 == 0) {
          if(var0.method3032(1) != 0) {
             method673(var0, var1);
@@ -129,30 +129,30 @@ public class class30 {
 
          var3 = var0.method3032(6);
          var4 = var0.method3032(6);
-         boolean var12 = var0.method3032(1) == 1;
-         if(var12) {
+         boolean var11 = var0.method3032(1) == 1;
+         if(var11) {
             class45.field904[++class45.field895 - 1] = var1;
          }
 
          if(null != Client.cachedPlayers[var1]) {
             throw new RuntimeException();
          } else {
-            Player var6 = Client.cachedPlayers[var1] = new Player();
-            var6.field244 = var1;
+            Player var12 = Client.cachedPlayers[var1] = new Player();
+            var12.field244 = var1;
             if(null != class45.field887[var1]) {
-               var6.method214(class45.field887[var1]);
+               var12.method214(class45.field887[var1]);
             }
 
-            var6.field650 = class45.field883[var1];
-            var6.interacting = class45.field894[var1];
-            var7 = class45.field889[var1];
-            var8 = var7 >> 28;
-            var9 = var7 >> 14 & 255;
-            var10 = var7 & 255;
-            var6.field656[0] = class45.field886[var1];
-            var6.field261 = (byte)var8;
-            var6.method218(var3 + (var9 << 6) - FrameMap.baseX, (var10 << 6) + var4 - XItemContainer.baseY);
-            var6.field263 = false;
+            var12.field650 = class45.field883[var1];
+            var12.interacting = class45.field894[var1];
+            var5 = class45.field889[var1];
+            var6 = var5 >> 28;
+            var7 = var5 >> 14 & 255;
+            var8 = var5 & 255;
+            var12.field656[0] = class45.field886[var1];
+            var12.field261 = (byte)var6;
+            var12.method218(var3 + (var7 << 6) - FrameMap.baseX, (var8 << 6) + var4 - XItemContainer.baseY);
+            var12.field263 = false;
             return true;
          }
       } else if(var2 == 1) {
@@ -161,64 +161,64 @@ public class class30 {
          class45.field889[var1] = ((var3 + (var4 >> 28) & 3) << 28) + (var4 & 268435455);
          return false;
       } else {
-         int var5;
-         int var11;
+         int var9;
+         int var10;
          if(var2 == 2) {
             var3 = var0.method3032(5);
             var4 = var3 >> 3;
-            var5 = var3 & 7;
-            var11 = class45.field889[var1];
-            var7 = (var11 >> 28) + var4 & 3;
-            var8 = var11 >> 14 & 255;
-            var9 = var11 & 255;
-            if(var5 == 0) {
-               --var8;
-               --var9;
+            var9 = var3 & 7;
+            var10 = class45.field889[var1];
+            var5 = (var10 >> 28) + var4 & 3;
+            var6 = var10 >> 14 & 255;
+            var7 = var10 & 255;
+            if(var9 == 0) {
+               --var6;
+               --var7;
             }
 
-            if(var5 == 1) {
-               --var9;
+            if(var9 == 1) {
+               --var7;
             }
 
-            if(var5 == 2) {
-               ++var8;
-               --var9;
+            if(var9 == 2) {
+               ++var6;
+               --var7;
             }
 
-            if(var5 == 3) {
-               --var8;
+            if(var9 == 3) {
+               --var6;
             }
 
-            if(var5 == 4) {
-               ++var8;
+            if(var9 == 4) {
+               ++var6;
             }
 
-            if(var5 == 5) {
-               --var8;
-               ++var9;
+            if(var9 == 5) {
+               --var6;
+               ++var7;
             }
 
-            if(var5 == 6) {
-               ++var9;
+            if(var9 == 6) {
+               ++var7;
             }
 
-            if(var5 == 7) {
-               ++var8;
-               ++var9;
+            if(var9 == 7) {
+               ++var6;
+               ++var7;
             }
 
-            class45.field889[var1] = (var8 << 14) + (var7 << 28) + var9;
+            class45.field889[var1] = (var6 << 14) + (var5 << 28) + var7;
             return false;
          } else {
             var3 = var0.method3032(18);
             var4 = var3 >> 16;
-            var5 = var3 >> 8 & 255;
-            var11 = var3 & 255;
-            var7 = class45.field889[var1];
-            var8 = var4 + (var7 >> 28) & 3;
-            var9 = var5 + (var7 >> 14) & 255;
-            var10 = var11 + var7 & 255;
-            class45.field889[var1] = var10 + (var9 << 14) + (var8 << 28);
+            var9 = var3 >> 8 & 255;
+            var10 = var3 & 255;
+            var5 = class45.field889[var1];
+            var6 = var4 + (var5 >> 28) & 3;
+            var7 = var9 + (var5 >> 14) & 255;
+            var8 = var10 + var5 & 255;
+            class45.field889[var1] = var8 + (var7 << 14) + (var6 << 28);
             return false;
          }
       }

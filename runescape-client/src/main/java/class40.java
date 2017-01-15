@@ -45,7 +45,7 @@ public class class40 implements class158 {
          var0.offset += class210.field3106.method2706(var0.payload, var0.offset, var3, 0, var2);
          String var4 = class183.method3346(var3, 0, var2);
          var1 = var4;
-      } catch (Exception var6) {
+      } catch (Exception var5) {
          var1 = "Cabbage";
       }
 
@@ -89,14 +89,14 @@ public class class40 implements class158 {
       ++Client.field387;
       class6.method83(class15.field172);
       boolean var4 = false;
-      int var7;
-      int var16;
+      int var5;
+      int var6;
       if(Client.field412 >= 0) {
-         var16 = class45.field888;
-         int[] var6 = class45.field892;
+         var6 = class45.field888;
+         int[] var7 = class45.field892;
 
-         for(var7 = 0; var7 < var16; ++var7) {
-            if(var6[var7] == Client.field412) {
+         for(var5 = 0; var5 < var6; ++var5) {
+            if(var7[var5] == Client.field412) {
                var4 = true;
                break;
             }
@@ -111,35 +111,35 @@ public class class40 implements class158 {
       class6.method83(var4?class15.field168:class15.field165);
       Friend.method174(false);
 
-      for(Projectile var5 = (Projectile)Client.projectiles.method2391(); null != var5; var5 = (Projectile)Client.projectiles.method2393()) {
-         if(class60.plane == var5.floor && Client.gameCycle <= var5.field854) {
-            if(Client.gameCycle >= var5.startTime) {
-               if(var5.interacting > 0) {
-                  NPC var18 = Client.cachedNPCs[var5.interacting - 1];
-                  if(null != var18 && var18.x >= 0 && var18.x < 13312 && var18.y >= 0 && var18.y < 13312) {
-                     var5.method775(var18.x, var18.y, class176.method3243(var18.x, var18.y, var5.floor) - var5.field876, Client.gameCycle);
+      for(Projectile var16 = (Projectile)Client.projectiles.method2391(); null != var16; var16 = (Projectile)Client.projectiles.method2393()) {
+         if(class60.plane == var16.floor && Client.gameCycle <= var16.field854) {
+            if(Client.gameCycle >= var16.startTime) {
+               if(var16.interacting > 0) {
+                  NPC var8 = Client.cachedNPCs[var16.interacting - 1];
+                  if(null != var8 && var8.x >= 0 && var8.x < 13312 && var8.y >= 0 && var8.y < 13312) {
+                     var16.method775(var8.x, var8.y, class176.method3243(var8.x, var8.y, var16.floor) - var16.field876, Client.gameCycle);
                   }
                }
 
-               if(var5.interacting < 0) {
-                  var7 = -var5.interacting - 1;
-                  Player var19;
-                  if(var7 == Client.localInteractingIndex) {
-                     var19 = class148.localPlayer;
+               if(var16.interacting < 0) {
+                  var5 = -var16.interacting - 1;
+                  Player var18;
+                  if(var5 == Client.localInteractingIndex) {
+                     var18 = class148.localPlayer;
                   } else {
-                     var19 = Client.cachedPlayers[var7];
+                     var18 = Client.cachedPlayers[var5];
                   }
 
-                  if(var19 != null && var19.x >= 0 && var19.x < 13312 && var19.y >= 0 && var19.y < 13312) {
-                     var5.method775(var19.x, var19.y, class176.method3243(var19.x, var19.y, var5.floor) - var5.field876, Client.gameCycle);
+                  if(var18 != null && var18.x >= 0 && var18.x < 13312 && var18.y >= 0 && var18.y < 13312) {
+                     var16.method775(var18.x, var18.y, class176.method3243(var18.x, var18.y, var16.floor) - var16.field876, Client.gameCycle);
                   }
                }
 
-               var5.method776(Client.field462);
-               class6.region.method1686(class60.plane, (int)var5.x, (int)var5.velocityZ, (int)var5.z, 60, var5, var5.field867, -1, false);
+               var16.method776(Client.field462);
+               class6.region.method1686(class60.plane, (int)var16.x, (int)var16.velocityZ, (int)var16.z, 60, var16, var16.field867, -1, false);
             }
          } else {
-            var5.unlink();
+            var16.unlink();
          }
       }
 
@@ -153,49 +153,49 @@ public class class40 implements class158 {
       class84.method1614();
       int var17;
       if(!Client.field529) {
-         var16 = Client.field520;
-         if(Client.field406 / 256 > var16) {
-            var16 = Client.field406 / 256;
+         var6 = Client.field520;
+         if(Client.field406 / 256 > var6) {
+            var6 = Client.field406 / 256;
          }
 
-         if(Client.field493[4] && 128 + Client.field532[4] > var16) {
-            var16 = 128 + Client.field532[4];
+         if(Client.field493[4] && 128 + Client.field532[4] > var6) {
+            var6 = 128 + Client.field532[4];
          }
 
          var17 = Client.field351 + Client.mapAngle & 2047;
-         ItemComposition.method3686(class22.field236, class176.method3243(class148.localPlayer.x, class148.localPlayer.y, class60.plane) - Client.field372, class152.field2068, var16, var17, 600 + 3 * var16);
+         ItemComposition.method3686(class22.field236, class176.method3243(class148.localPlayer.x, class148.localPlayer.y, class60.plane) - Client.field372, class152.field2068, var6, var17, 600 + 3 * var6);
       }
 
-      int var8;
       int var9;
       int var10;
       int var11;
       int var12;
       int var13;
+      int var19;
       if(!Client.field529) {
          if(class2.field21.field690) {
             var17 = class60.plane;
          } else {
-            label405: {
-               var7 = 3;
+            label294: {
+               var5 = 3;
                if(class165.cameraPitch < 310) {
-                  var8 = class36.cameraX >> 7;
+                  var19 = class36.cameraX >> 7;
                   var9 = GroundObject.cameraY >> 7;
                   var10 = class148.localPlayer.x >> 7;
                   var11 = class148.localPlayer.y >> 7;
-                  if(var8 < 0 || var9 < 0 || var8 >= 104 || var9 >= 104) {
+                  if(var19 < 0 || var9 < 0 || var19 >= 104 || var9 >= 104) {
                      var17 = class60.plane;
-                     break label405;
+                     break label294;
                   }
 
-                  if((class10.tileSettings[class60.plane][var8][var9] & 4) != 0) {
-                     var7 = class60.plane;
+                  if((class10.tileSettings[class60.plane][var19][var9] & 4) != 0) {
+                     var5 = class60.plane;
                   }
 
-                  if(var10 > var8) {
-                     var12 = var10 - var8;
+                  if(var10 > var19) {
+                     var12 = var10 - var19;
                   } else {
-                     var12 = var8 - var10;
+                     var12 = var19 - var10;
                   }
 
                   if(var11 > var9) {
@@ -210,15 +210,15 @@ public class class40 implements class158 {
                      var14 = 65536 * var13 / var12;
                      var15 = '耀';
 
-                     while(var8 != var10) {
-                        if(var8 < var10) {
-                           ++var8;
-                        } else if(var8 > var10) {
-                           --var8;
+                     while(var19 != var10) {
+                        if(var19 < var10) {
+                           ++var19;
+                        } else if(var19 > var10) {
+                           --var19;
                         }
 
-                        if((class10.tileSettings[class60.plane][var8][var9] & 4) != 0) {
-                           var7 = class60.plane;
+                        if((class10.tileSettings[class60.plane][var19][var9] & 4) != 0) {
+                           var5 = class60.plane;
                         }
 
                         var15 += var14;
@@ -230,8 +230,8 @@ public class class40 implements class158 {
                               --var9;
                            }
 
-                           if((class10.tileSettings[class60.plane][var8][var9] & 4) != 0) {
-                              var7 = class60.plane;
+                           if((class10.tileSettings[class60.plane][var19][var9] & 4) != 0) {
+                              var5 = class60.plane;
                            }
                         }
                      }
@@ -246,21 +246,21 @@ public class class40 implements class158 {
                            --var9;
                         }
 
-                        if((class10.tileSettings[class60.plane][var8][var9] & 4) != 0) {
-                           var7 = class60.plane;
+                        if((class10.tileSettings[class60.plane][var19][var9] & 4) != 0) {
+                           var5 = class60.plane;
                         }
 
                         var15 += var14;
                         if(var15 >= 65536) {
                            var15 -= 65536;
-                           if(var8 < var10) {
-                              ++var8;
-                           } else if(var8 > var10) {
-                              --var8;
+                           if(var19 < var10) {
+                              ++var19;
+                           } else if(var19 > var10) {
+                              --var19;
                            }
 
-                           if((class10.tileSettings[class60.plane][var8][var9] & 4) != 0) {
-                              var7 = class60.plane;
+                           if((class10.tileSettings[class60.plane][var19][var9] & 4) != 0) {
+                              var5 = class60.plane;
                            }
                         }
                      }
@@ -269,24 +269,24 @@ public class class40 implements class158 {
 
                if(class148.localPlayer.x >= 0 && class148.localPlayer.y >= 0 && class148.localPlayer.x < 13312 && class148.localPlayer.y < 13312) {
                   if((class10.tileSettings[class60.plane][class148.localPlayer.x >> 7][class148.localPlayer.y >> 7] & 4) != 0) {
-                     var7 = class60.plane;
+                     var5 = class60.plane;
                   }
 
-                  var17 = var7;
+                  var17 = var5;
                } else {
                   var17 = class60.plane;
                }
             }
          }
 
-         var16 = var17;
+         var6 = var17;
       } else {
-         var16 = class10.method119();
+         var6 = class10.method119();
       }
 
       var17 = class36.cameraX;
-      var7 = class36.cameraZ;
-      var8 = GroundObject.cameraY;
+      var5 = class36.cameraZ;
+      var19 = GroundObject.cameraY;
       var9 = class165.cameraPitch;
       var10 = XClanMember.cameraYaw;
 
@@ -344,7 +344,7 @@ public class class40 implements class158 {
       method741();
       var13 = class84.field1437;
       class84.field1437 = Client.scale;
-      class6.region.method1708(class36.cameraX, class36.cameraZ, GroundObject.cameraY, class165.cameraPitch, XClanMember.cameraYaw, var16);
+      class6.region.method1708(class36.cameraX, class36.cameraZ, GroundObject.cameraY, class165.cameraPitch, XClanMember.cameraYaw, var6);
       class84.field1437 = var13;
       method741();
       class6.region.method1684();
@@ -353,8 +353,8 @@ public class class40 implements class158 {
       ((TextureProvider)class84.field1434).method1402(Client.field462);
       class26.method599(var0, var1, var2, var3);
       class36.cameraX = var17;
-      class36.cameraZ = var7;
-      GroundObject.cameraY = var8;
+      class36.cameraZ = var5;
+      GroundObject.cameraY = var19;
       class165.cameraPitch = var9;
       XClanMember.cameraYaw = var10;
       if(Client.field301 && NPC.method728(true, false) == 0) {
@@ -389,16 +389,13 @@ public class class40 implements class158 {
             class13.gameDraw(class11.field122, -1412584499, var1, var2, var3, var4, class107.field1721, Friend.field163, var7);
             class11.field122 = null;
          }
-
+      } else if(var7 != -1) {
+         Client.field485[var7] = true;
       } else {
-         if(var7 != -1) {
-            Client.field485[var7] = true;
-         } else {
-            for(int var8 = 0; var8 < 100; ++var8) {
-               Client.field485[var8] = true;
-            }
+         for(int var8 = 0; var8 < 100; ++var8) {
+            Client.field485[var8] = true;
          }
-
       }
+
    }
 }

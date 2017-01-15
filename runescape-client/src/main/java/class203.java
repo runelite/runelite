@@ -27,8 +27,8 @@ public class class203 {
             } else {
                var4.method4122(var5.field2143 / 2 + var0 + var10 - var4.field3205 / 2, var5.field2139 / 2 + var1 - var11 - var4.field3207 / 2);
             }
-
          }
       }
+
    }
 }

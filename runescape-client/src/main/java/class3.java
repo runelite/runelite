@@ -13,23 +13,23 @@ final class class3 implements Comparator {
       int var2 = var0.id;
       int var3 = (int)var0.hash;
       var0.unlink();
-      int var5;
+      int var4;
       if(var1 && var2 != -1 && class6.validInterfaces[var2]) {
          Widget.field2245.method3274(var2);
          if(Widget.widgets[var2] != null) {
-            boolean var4 = true;
+            boolean var5 = true;
 
-            for(var5 = 0; var5 < Widget.widgets[var2].length; ++var5) {
-               if(null != Widget.widgets[var2][var5]) {
-                  if(Widget.widgets[var2][var5].type != 2) {
-                     Widget.widgets[var2][var5] = null;
+            for(var4 = 0; var4 < Widget.widgets[var2].length; ++var4) {
+               if(null != Widget.widgets[var2][var4]) {
+                  if(Widget.widgets[var2][var4].type != 2) {
+                     Widget.widgets[var2][var4] = null;
                   } else {
-                     var4 = false;
+                     var5 = false;
                   }
                }
             }
 
-            if(var4) {
+            if(var5) {
                Widget.widgets[var2] = null;
             }
 
@@ -45,9 +45,9 @@ final class class3 implements Comparator {
 
       class101.method1909();
       if(Client.widgetRoot != -1) {
-         var5 = Client.widgetRoot;
-         if(class94.method1870(var5)) {
-            class140.method2607(Widget.widgets[var5], 1);
+         var4 = Client.widgetRoot;
+         if(class94.method1870(var4)) {
+            class140.method2607(Widget.widgets[var4], 1);
          }
       }
 

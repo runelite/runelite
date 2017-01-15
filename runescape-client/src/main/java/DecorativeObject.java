@@ -10,11 +10,13 @@ public final class DecorativeObject {
    @ObfuscatedGetter(
       intValue = 654699371
    )
+   @Export("offsetX")
    int field1584;
    @ObfuscatedName("f")
    @ObfuscatedGetter(
       intValue = -1641536165
    )
+   @Export("rotation")
    int field1585;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
@@ -28,6 +30,7 @@ public final class DecorativeObject {
    @ObfuscatedGetter(
       intValue = -83018305
    )
+   @Export("renderFlag")
    int field1588;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
@@ -39,6 +42,7 @@ public final class DecorativeObject {
    @ObfuscatedGetter(
       intValue = -1863693607
    )
+   @Export("offsetY")
    int field1590;
    @ObfuscatedName("l")
    @Export("renderable1")
@@ -56,6 +60,7 @@ public final class DecorativeObject {
    @ObfuscatedGetter(
       intValue = 973628967
    )
+   @Export("renderInfoBitPacked")
    int field1594 = 0;
    @ObfuscatedName("pe")
    static class230 field1595;

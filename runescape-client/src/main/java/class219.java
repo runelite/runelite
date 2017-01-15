@@ -1,8 +1,10 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("hr")
+@Implements("Rasterizer2D")
 public class class219 extends CacheableNode {
    @ObfuscatedName("ag")
    @Export("graphicsPixelsHeight")
@@ -226,8 +228,8 @@ public class class219 extends CacheableNode {
          for(int var5 = 0; var5 < var2; ++var5) {
             graphicsPixels[var4 + var5] = var3;
          }
-
       }
+
    }
 
    @ObfuscatedName("de")
@@ -246,17 +248,17 @@ public class class219 extends CacheableNode {
          int var6 = (var3 >> 16 & 255) * var4;
          int var7 = (var3 >> 8 & 255) * var4;
          int var8 = (var3 & 255) * var4;
-         int var12 = var0 + var1 * graphicsPixelsWidth;
+         int var9 = var0 + var1 * graphicsPixelsWidth;
 
-         for(int var13 = 0; var13 < var2; ++var13) {
-            int var9 = (graphicsPixels[var12] >> 16 & 255) * var5;
-            int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
-            int var11 = (graphicsPixels[var12] & 255) * var5;
-            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
-            graphicsPixels[var12++] = var14;
+         for(int var10 = 0; var10 < var2; ++var10) {
+            int var11 = (graphicsPixels[var9] >> 16 & 255) * var5;
+            int var12 = (graphicsPixels[var9] >> 8 & 255) * var5;
+            int var13 = (graphicsPixels[var9] & 255) * var5;
+            int var14 = (var6 + var11 >> 8 << 16) + (var7 + var12 >> 8 << 8) + (var8 + var13 >> 8);
+            graphicsPixels[var9++] = var14;
          }
-
       }
+
    }
 
    @ObfuscatedName("dn")
@@ -276,8 +278,8 @@ public class class219 extends CacheableNode {
          for(int var5 = 0; var5 < var2; ++var5) {
             graphicsPixels[var4 + var5 * graphicsPixelsWidth] = var3;
          }
-
       }
+
    }
 
    @ObfuscatedName("dp")
@@ -296,18 +298,18 @@ public class class219 extends CacheableNode {
          int var6 = (var3 >> 16 & 255) * var4;
          int var7 = (var3 >> 8 & 255) * var4;
          int var8 = (var3 & 255) * var4;
-         int var12 = var0 + var1 * graphicsPixelsWidth;
+         int var9 = var0 + var1 * graphicsPixelsWidth;
 
-         for(int var13 = 0; var13 < var2; ++var13) {
-            int var9 = (graphicsPixels[var12] >> 16 & 255) * var5;
-            int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
-            int var11 = (graphicsPixels[var12] & 255) * var5;
-            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
-            graphicsPixels[var12] = var14;
-            var12 += graphicsPixelsWidth;
+         for(int var10 = 0; var10 < var2; ++var10) {
+            int var11 = (graphicsPixels[var9] >> 16 & 255) * var5;
+            int var12 = (graphicsPixels[var9] >> 8 & 255) * var5;
+            int var13 = (graphicsPixels[var9] & 255) * var5;
+            int var14 = (var6 + var11 >> 8 << 16) + (var7 + var12 >> 8 << 8) + (var8 + var13 >> 8);
+            graphicsPixels[var9] = var14;
+            var9 += graphicsPixelsWidth;
          }
-
       }
+
    }
 
    @ObfuscatedName("do")
@@ -320,14 +322,12 @@ public class class219 extends CacheableNode {
          } else {
             method3979(var0 + var2, var1, -var2 + 1, var4);
          }
-
       } else if(var2 == 0) {
          if(var3 >= 0) {
             method3981(var0, var1, var3 + 1, var4);
          } else {
             method3981(var0, var1 + var3, -var3 + 1, var4);
          }
-
       } else {
          if(var2 + var3 < 0) {
             var0 += var2;
@@ -387,8 +387,8 @@ public class class219 extends CacheableNode {
                ++var1;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("dw")
@@ -554,52 +554,52 @@ public class class219 extends CacheableNode {
       int var12 = var4 >> 16;
       int var13 = (var4 & '\uff00') >> 8;
       int var14 = var4 & 255;
-      int var18 = graphicsPixelsWidth - var2;
-      int var19 = var0 + var1 * graphicsPixelsWidth;
+      int var15 = graphicsPixelsWidth - var2;
+      int var16 = var0 + var1 * graphicsPixelsWidth;
 
-      for(int var20 = 0; var20 < var3; ++var20) {
-         int var21;
-         int var22;
-         int var23;
-         for(var21 = -var2; var21 < 0; ++var21) {
-            var22 = graphicsPixels[var19];
-            var23 = var22 >> 16;
-            int var24 = (var22 & '\uff00') >> 8;
-            int var25 = var22 & 255;
-            int var15;
-            int var16;
-            int var17;
+      for(int var17 = 0; var17 < var3; ++var17) {
+         int var18;
+         int var19;
+         int var20;
+         for(var18 = -var2; var18 < 0; ++var18) {
+            var19 = graphicsPixels[var16];
+            var20 = var19 >> 16;
+            int var21 = (var19 & '\uff00') >> 8;
+            int var22 = var19 & 255;
+            int var23;
+            int var24;
+            int var25;
             if(var11 == 0) {
-               var15 = var23 < 127?var12 * var23 >> 7:255 - ((255 - var12) * (255 - var23) >> 7);
-               var16 = var24 < 127?var13 * var24 >> 7:255 - ((255 - var13) * (255 - var24) >> 7);
-               var17 = var25 < 127?var14 * var25 >> 7:255 - ((255 - var14) * (255 - var25) >> 7);
+               var23 = var20 < 127?var12 * var20 >> 7:255 - ((255 - var12) * (255 - var20) >> 7);
+               var24 = var21 < 127?var13 * var21 >> 7:255 - ((255 - var13) * (255 - var21) >> 7);
+               var25 = var22 < 127?var14 * var22 >> 7:255 - ((255 - var14) * (255 - var22) >> 7);
             } else {
-               var15 = var23 < 127?(var12 * var23 * var10 >> 7) + var23 * var11 >> 8:(255 - ((255 - var12) * (255 - var23) >> 7)) * var10 + var23 * var11 >> 8;
-               var16 = var24 < 127?(var13 * var24 * var10 >> 7) + var24 * var11 >> 8:(255 - ((255 - var13) * (255 - var24) >> 7)) * var10 + var24 * var11 >> 8;
-               var17 = var25 < 127?(var14 * var25 * var10 >> 7) + var25 * var11 >> 8:(255 - ((255 - var14) * (255 - var25) >> 7)) * var10 + var25 * var11 >> 8;
+               var23 = var20 < 127?(var12 * var20 * var10 >> 7) + var20 * var11 >> 8:(255 - ((255 - var12) * (255 - var20) >> 7)) * var10 + var20 * var11 >> 8;
+               var24 = var21 < 127?(var13 * var21 * var10 >> 7) + var21 * var11 >> 8:(255 - ((255 - var13) * (255 - var21) >> 7)) * var10 + var21 * var11 >> 8;
+               var25 = var22 < 127?(var14 * var22 * var10 >> 7) + var22 * var11 >> 8:(255 - ((255 - var14) * (255 - var22) >> 7)) * var10 + var22 * var11 >> 8;
             }
 
-            graphicsPixels[var19++] = (var15 << 16) + (var16 << 8) + var17;
+            graphicsPixels[var16++] = (var23 << 16) + (var24 << 8) + var25;
          }
 
          if(var9 > 0) {
             var8 += var9;
-            var21 = 65536 - var8 >> 8;
-            var22 = var8 >> 8;
+            var18 = 65536 - var8 >> 8;
+            var19 = var8 >> 8;
             if(var6 != var7) {
                var10 = var6 * (65536 - var8) + var7 * var8 >> 16;
                var11 = 256 - var10;
             }
 
             if(var4 != var5) {
-               var23 = ((var4 & 16711935) * var21 + (var5 & 16711935) * var22 & -16711936) + ((var4 & '\uff00') * var21 + (var5 & '\uff00') * var22 & 16711680) >>> 8;
-               var12 = var23 >> 16;
-               var13 = (var23 & '\uff00') >> 8;
-               var14 = var23 & 255;
+               var20 = ((var4 & 16711935) * var18 + (var5 & 16711935) * var19 & -16711936) + ((var4 & '\uff00') * var18 + (var5 & '\uff00') * var19 & 16711680) >>> 8;
+               var12 = var20 >> 16;
+               var13 = (var20 & '\uff00') >> 8;
+               var14 = var20 & 255;
             }
          }
 
-         var19 += var18;
+         var16 += var15;
       }
 
    }

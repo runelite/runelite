@@ -21,12 +21,16 @@ public final class SpritePixels extends class219 {
    @Export("width")
    public int width;
    @ObfuscatedName("c")
+   @Export("maxWidth")
    public int field3205;
    @ObfuscatedName("d")
+   @Export("maxHeight")
    public int field3207;
    @ObfuscatedName("f")
+   @Export("offsetY")
    int field3208;
    @ObfuscatedName("a")
+   @Export("offsetX")
    public int field3209;
 
    @ObfuscatedName("y")
@@ -76,6 +80,7 @@ public final class SpritePixels extends class219 {
       if(var8 > 0 && var7 > 0) {
          method4111(class219.graphicsPixels, this.image, 0, var6, var5, var8, var7, var9, var10, var3, var4);
       }
+
    }
 
    public SpritePixels(int var1, int var2) {
@@ -211,6 +216,7 @@ public final class SpritePixels extends class219 {
          this.field3209 -= var2;
          this.field3208 -= var4;
       }
+
    }
 
    @ObfuscatedName("t")
@@ -691,10 +697,10 @@ public final class SpritePixels extends class219 {
                      var31 += var27;
                   }
                }
-
             }
          }
       }
+
    }
 
    @ObfuscatedName("j")
@@ -740,6 +746,7 @@ public final class SpritePixels extends class219 {
       if(var6 > 0 && var5 > 0) {
          method4176(class219.graphicsPixels, this.image, 0, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("e")
@@ -785,6 +792,7 @@ public final class SpritePixels extends class219 {
       if(var6 > 0 && var5 > 0) {
          method4184(class219.graphicsPixels, this.image, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("r")
@@ -867,7 +875,7 @@ public final class SpritePixels extends class219 {
             var15 += var13;
             var16 += class219.graphicsPixelsWidth;
          }
-      } catch (Exception var22) {
+      } catch (Exception var21) {
          ;
       }
 
@@ -956,6 +964,7 @@ public final class SpritePixels extends class219 {
 
          method4131(class219.graphicsPixels, this.image, 0, var8, var9, var14, var15, var3, var4, var12, var13, var6, var5);
       }
+
    }
 
    @ObfuscatedName("o")
@@ -990,11 +999,10 @@ public final class SpritePixels extends class219 {
       int var9 = var2 < 0?-var2:0;
       int var10 = var2 + this.height <= var6?this.height:var6 - var2;
       int var11 = var1 < 0?-var1:0;
-      int var10000;
       if(var1 + this.width <= var5) {
-         var10000 = this.width;
+         int var12 = this.width;
       } else {
-         var10000 = var5 - var1;
+         int var10000 = var5 - var1;
       }
 
       int var13 = var3 + var1 + var11 + (var4 + var2 + var9) * class219.graphicsPixelsWidth;
@@ -1012,17 +1020,17 @@ public final class SpritePixels extends class219 {
             var19 = var11;
          }
 
-         int var12;
+         int var20;
          if(var1 + this.width <= var16 + var17) {
-            var12 = this.width;
+            var20 = this.width;
          } else {
-            var12 = var16 + var17 - var1;
+            var20 = var16 + var17 - var1;
          }
 
-         for(int var20 = var19; var20 < var12; ++var20) {
-            int var21 = this.image[var20 + var15 * this.width];
-            if(var21 != 0) {
-               class219.graphicsPixels[var18++] = var21;
+         for(int var21 = var19; var21 < var20; ++var21) {
+            int var22 = this.image[var21 + var15 * this.width];
+            if(var22 != 0) {
+               class219.graphicsPixels[var18++] = var22;
             } else {
                ++var18;
             }
@@ -1062,7 +1070,7 @@ public final class SpritePixels extends class219 {
             var16 += var14;
             var17 += class219.graphicsPixelsWidth;
          }
-      } catch (Exception var23) {
+      } catch (Exception var22) {
          ;
       }
 
@@ -1145,6 +1153,7 @@ public final class SpritePixels extends class219 {
       if(var7 > 0 && var6 > 0) {
          method4129(class219.graphicsPixels, this.image, 0, var5, var4, var7, var6, var8, var9, var3);
       }
+
    }
 
    @ObfuscatedName("m")
@@ -1328,6 +1337,7 @@ public final class SpritePixels extends class219 {
 
          method4125(class219.graphicsPixels, this.image, 0, var7, var8, var13, var14, var3, var4, var11, var12, var5);
       }
+
    }
 
    @ObfuscatedName("c")
@@ -1347,5 +1357,6 @@ public final class SpritePixels extends class219 {
          this.field3209 = 0;
          this.field3208 = 0;
       }
+
    }
 }

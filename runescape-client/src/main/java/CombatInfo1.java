@@ -11,6 +11,7 @@ public class CombatInfo1 extends Node {
    @ObfuscatedGetter(
       intValue = -1401315215
    )
+   @Export("health")
    int field660;
    @ObfuscatedName("x")
    @ObfuscatedGetter(

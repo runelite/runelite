@@ -237,33 +237,33 @@ public class KitDefinition extends CacheableNode {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
+               var9 = var8 - 48;
             } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
+               var9 = var8 - 55;
             } else {
                if(var8 < 97 || var8 > 122) {
                   throw new NumberFormatException();
                }
 
-               var10 = var8 - 87;
+               var9 = var8 - 87;
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                throw new NumberFormatException();
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var1 * var5 + var10;
-            if(var5 != var9 / var1) {
+            int var10 = var1 * var5 + var9;
+            if(var5 != var10 / var1) {
                throw new NumberFormatException();
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 
@@ -287,160 +287,161 @@ public class KitDefinition extends CacheableNode {
       if(class41.username.length() == 0) {
          class116.method2225("Please enter your username.", "If you created your account after November", "2010, this will be the creation email address.");
       } else {
-         long var1;
+         long var0;
+         Buffer var6;
          try {
-            URL var3 = new URL(class164.method3113("services", false) + "m=accountappeal/login.ws");
-            URLConnection var4 = var3.openConnection();
-            var4.setRequestProperty("connection", "close");
-            var4.setDoInput(true);
-            var4.setDoOutput(true);
-            var4.setConnectTimeout(5000);
-            OutputStreamWriter var5 = new OutputStreamWriter(var4.getOutputStream());
-            var5.write("data1=req");
-            var5.flush();
-            InputStream var6 = var4.getInputStream();
-            Buffer var7 = new Buffer(new byte[1000]);
+            URL var2 = new URL(class164.method3113("services", false) + "m=accountappeal/login.ws");
+            URLConnection var3 = var2.openConnection();
+            var3.setRequestProperty("connection", "close");
+            var3.setDoInput(true);
+            var3.setDoOutput(true);
+            var3.setConnectTimeout(5000);
+            OutputStreamWriter var4 = new OutputStreamWriter(var3.getOutputStream());
+            var4.write("data1=req");
+            var4.flush();
+            InputStream var5 = var3.getInputStream();
+            var6 = new Buffer(new byte[1000]);
 
             while(true) {
-               int var8 = var6.read(var7.payload, var7.offset, 1000 - var7.offset);
-               if(var8 == -1) {
-                  var7.offset = 0;
-                  long var35 = var7.method2908();
-                  var1 = var35;
+               int var7 = var5.read(var6.payload, var6.offset, 1000 - var6.offset);
+               if(var7 == -1) {
+                  var6.offset = 0;
+                  long var8 = var6.method2908();
+                  var0 = var8;
                   break;
                }
 
-               var7.offset += var8;
-               if(var7.offset >= 1000) {
-                  var1 = 0L;
+               var6.offset += var7;
+               if(var6.offset >= 1000) {
+                  var0 = 0L;
                   break;
                }
             }
-         } catch (Exception var32) {
-            var1 = 0L;
+         } catch (Exception var25) {
+            var0 = 0L;
          }
 
-         byte var0;
-         if(var1 == 0L) {
-            var0 = 5;
+         byte var26;
+         if(var0 == 0L) {
+            var26 = 5;
          } else {
-            String var33 = class41.username;
-            Random var34 = new Random();
-            Buffer var23 = new Buffer(128);
-            Buffer var9 = new Buffer(128);
-            int[] var10 = new int[]{var34.nextInt(), var34.nextInt(), (int)(var1 >> 32), (int)var1};
-            var23.method2760(10);
+            String var27 = class41.username;
+            Random var28 = new Random();
+            Buffer var29 = new Buffer(128);
+            var6 = new Buffer(128);
+            int[] var30 = new int[]{var28.nextInt(), var28.nextInt(), (int)(var0 >> 32), (int)var0};
+            var29.method2760(10);
 
-            int var11;
-            for(var11 = 0; var11 < 4; ++var11) {
-               var23.method2763(var34.nextInt());
+            int var31;
+            for(var31 = 0; var31 < 4; ++var31) {
+               var29.method2763(var28.nextInt());
             }
 
-            var23.method2763(var10[0]);
-            var23.method2763(var10[1]);
-            var23.method2933(var1);
-            var23.method2933(0L);
+            var29.method2763(var30[0]);
+            var29.method2763(var30[1]);
+            var29.method2933(var0);
+            var29.method2933(0L);
 
-            for(var11 = 0; var11 < 4; ++var11) {
-               var23.method2763(var34.nextInt());
+            for(var31 = 0; var31 < 4; ++var31) {
+               var29.method2763(var28.nextInt());
             }
 
-            var23.method2796(class36.field767, class36.field766);
-            var9.method2760(10);
+            var29.method2796(class36.field767, class36.field766);
+            var6.method2760(10);
 
-            for(var11 = 0; var11 < 3; ++var11) {
-               var9.method2763(var34.nextInt());
+            for(var31 = 0; var31 < 3; ++var31) {
+               var6.method2763(var28.nextInt());
             }
 
-            var9.method2933(var34.nextLong());
-            var9.method2764(var34.nextLong());
-            byte[] var24 = new byte[24];
+            var6.method2933(var28.nextLong());
+            var6.method2764(var28.nextLong());
+            byte[] var9 = new byte[24];
 
             try {
                class104.field1682.method1335(0L);
-               class104.field1682.method1337(var24);
+               class104.field1682.method1337(var9);
 
-               int var12;
-               for(var12 = 0; var12 < 24 && var24[var12] == 0; ++var12) {
+               int var10;
+               for(var10 = 0; var10 < 24 && var9[var10] == 0; ++var10) {
                   ;
                }
 
-               if(var12 >= 24) {
+               if(var10 >= 24) {
                   throw new IOException();
                }
-            } catch (Exception var31) {
-               for(int var13 = 0; var13 < 24; ++var13) {
-                  var24[var13] = -1;
+            } catch (Exception var24) {
+               for(int var11 = 0; var11 < 24; ++var11) {
+                  var9[var11] = -1;
                }
             }
 
-            var9.method2769(var24, 0, 24);
-            var9.method2933(var34.nextLong());
-            var9.method2796(class36.field767, class36.field766);
-            var11 = class148.method2740(var33);
-            if(var11 % 8 != 0) {
-               var11 += 8 - var11 % 8;
+            var6.method2769(var9, 0, 24);
+            var6.method2933(var28.nextLong());
+            var6.method2796(class36.field767, class36.field766);
+            var31 = class148.method2740(var27);
+            if(var31 % 8 != 0) {
+               var31 += 8 - var31 % 8;
             }
 
-            Buffer var25 = new Buffer(var11);
-            var25.method2811(var33);
-            var25.offset = var11;
-            var25.method2886(var10);
-            Buffer var26 = new Buffer(var25.offset + var9.offset + var23.offset + 5);
-            var26.method2760(2);
-            var26.method2760(var23.offset);
-            var26.method2769(var23.payload, 0, var23.offset);
-            var26.method2760(var9.offset);
-            var26.method2769(var9.payload, 0, var9.offset);
-            var26.method2918(var25.offset);
-            var26.method2769(var25.payload, 0, var25.offset);
-            String var14 = class57.method1057(var26.payload);
+            Buffer var32 = new Buffer(var31);
+            var32.method2811(var27);
+            var32.offset = var31;
+            var32.method2886(var30);
+            Buffer var33 = new Buffer(var32.offset + var6.offset + var29.offset + 5);
+            var33.method2760(2);
+            var33.method2760(var29.offset);
+            var33.method2769(var29.payload, 0, var29.offset);
+            var33.method2760(var6.offset);
+            var33.method2769(var6.payload, 0, var6.offset);
+            var33.method2918(var32.offset);
+            var33.method2769(var32.payload, 0, var32.offset);
+            String var12 = class57.method1057(var33.payload);
 
-            byte var27;
+            byte var13;
             try {
-               URL var15 = new URL(class164.method3113("services", false) + "m=accountappeal/login.ws");
-               URLConnection var16 = var15.openConnection();
-               var16.setDoInput(true);
-               var16.setDoOutput(true);
-               var16.setConnectTimeout(5000);
-               OutputStreamWriter var17 = new OutputStreamWriter(var16.getOutputStream());
-               var17.write("data2=" + class156.method3010(var14) + "&dest=" + class156.method3010("passwordchoice.ws"));
-               var17.flush();
-               InputStream var18 = var16.getInputStream();
-               var26 = new Buffer(new byte[1000]);
+               URL var14 = new URL(class164.method3113("services", false) + "m=accountappeal/login.ws");
+               URLConnection var15 = var14.openConnection();
+               var15.setDoInput(true);
+               var15.setDoOutput(true);
+               var15.setConnectTimeout(5000);
+               OutputStreamWriter var16 = new OutputStreamWriter(var15.getOutputStream());
+               var16.write("data2=" + class156.method3010(var12) + "&dest=" + class156.method3010("passwordchoice.ws"));
+               var16.flush();
+               InputStream var17 = var15.getInputStream();
+               var33 = new Buffer(new byte[1000]);
 
                while(true) {
-                  int var19 = var18.read(var26.payload, var26.offset, 1000 - var26.offset);
-                  if(var19 == -1) {
+                  int var18 = var17.read(var33.payload, var33.offset, 1000 - var33.offset);
+                  if(var18 == -1) {
+                     var16.close();
                      var17.close();
-                     var18.close();
-                     String var28 = new String(var26.payload);
-                     if(var28.startsWith("OFFLINE")) {
-                        var27 = 4;
-                     } else if(var28.startsWith("WRONG")) {
-                        var27 = 7;
-                     } else if(var28.startsWith("RELOAD")) {
-                        var27 = 3;
-                     } else if(var28.startsWith("Not permitted for social network accounts.")) {
-                        var27 = 6;
+                     String var19 = new String(var33.payload);
+                     if(var19.startsWith("OFFLINE")) {
+                        var13 = 4;
+                     } else if(var19.startsWith("WRONG")) {
+                        var13 = 7;
+                     } else if(var19.startsWith("RELOAD")) {
+                        var13 = 3;
+                     } else if(var19.startsWith("Not permitted for social network accounts.")) {
+                        var13 = 6;
                      } else {
-                        var26.method2793(var10);
+                        var33.method2793(var30);
 
-                        while(var26.offset > 0 && var26.payload[var26.offset - 1] == 0) {
-                           --var26.offset;
+                        while(var33.offset > 0 && var33.payload[var33.offset - 1] == 0) {
+                           --var33.offset;
                         }
 
-                        var28 = new String(var26.payload, 0, var26.offset);
+                        var19 = new String(var33.payload, 0, var33.offset);
                         boolean var20;
-                        if(var28 == null) {
+                        if(var19 == null) {
                            var20 = false;
                         } else {
-                           label133: {
+                           label178: {
                               try {
-                                 new URL(var28);
-                              } catch (MalformedURLException var29) {
+                                 new URL(var19);
+                              } catch (MalformedURLException var22) {
                                  var20 = false;
-                                 break label133;
+                                 break label178;
                               }
 
                               var20 = true;
@@ -448,30 +449,30 @@ public class KitDefinition extends CacheableNode {
                         }
 
                         if(var20) {
-                           class156.method2998(var28, true, false);
-                           var27 = 2;
+                           class156.method2998(var19, true, false);
+                           var13 = 2;
                         } else {
-                           var27 = 5;
+                           var13 = 5;
                         }
                      }
                      break;
                   }
 
-                  var26.offset += var19;
-                  if(var26.offset >= 1000) {
-                     var27 = 5;
+                  var33.offset += var18;
+                  if(var33.offset >= 1000) {
+                     var13 = 5;
                      break;
                   }
                }
-            } catch (Throwable var30) {
-               var30.printStackTrace();
-               var27 = 5;
+            } catch (Throwable var23) {
+               var23.printStackTrace();
+               var13 = 5;
             }
 
-            var0 = var27;
+            var26 = var13;
          }
 
-         switch(var0) {
+         switch(var26) {
          case 2:
             class116.method2225("", "Page has opened in a new window.", "(Please check your popup blocker.)");
             class41.loginIndex = 6;
@@ -491,7 +492,7 @@ public class KitDefinition extends CacheableNode {
          case 7:
             class116.method2225("You must enter a valid login to proceed. For accounts", "created after 24th November 2010, please use your", "email address. Otherwise please use your username.");
          }
-
       }
+
    }
 }

@@ -96,19 +96,20 @@ public class class59 extends class57 {
          this.field1068.start();
          this.field1070 = var1;
       } catch (LineUnavailableException var5) {
-         if(Widget.method3215(var1) != 1) {
-            int var4 = var1 - 1;
-            var4 |= var4 >>> 1;
-            var4 |= var4 >>> 2;
-            var4 |= var4 >>> 4;
-            var4 |= var4 >>> 8;
-            var4 |= var4 >>> 16;
-            int var3 = var4 + 1;
-            this.vmethod1080(var3);
-         } else {
+         if(Widget.method3215(var1) == 1) {
             this.field1068 = null;
             throw var5;
          }
+
+         int var3 = var1 - 1;
+         var3 |= var3 >>> 1;
+         var3 |= var3 >>> 2;
+         var3 |= var3 >>> 4;
+         var3 |= var3 >>> 8;
+         var3 |= var3 >>> 16;
+         int var4 = var3 + 1;
+         this.vmethod1080(var4);
       }
+
    }
 }

@@ -140,19 +140,19 @@ public class class60 {
             String var2 = class139.method2601(var0, Ignore.field209);
             if(var2 != null) {
                int var3;
+               String var4;
                String var5;
-               String var6;
                for(var3 = 0; var3 < Client.ignoreCount; ++var3) {
-                  Ignore var4 = Client.ignores[var3];
-                  var5 = class139.method2601(var4.name, Ignore.field209);
-                  if(null != var5 && var5.equals(var2)) {
+                  Ignore var6 = Client.ignores[var3];
+                  var4 = class139.method2601(var6.name, Ignore.field209);
+                  if(null != var4 && var4.equals(var2)) {
                      class7.method99(31, "", var0 + " is already on your ignore list");
                      return;
                   }
 
-                  if(var4.previousName != null) {
-                     var6 = class139.method2601(var4.previousName, Ignore.field209);
-                     if(null != var6 && var6.equals(var2)) {
+                  if(var6.previousName != null) {
+                     var5 = class139.method2601(var6.previousName, Ignore.field209);
+                     if(null != var5 && var5.equals(var2)) {
                         class7.method99(31, "", var0 + " is already on your ignore list");
                         return;
                      }
@@ -161,15 +161,15 @@ public class class60 {
 
                for(var3 = 0; var3 < Client.friendCount; ++var3) {
                   Friend var7 = Client.friends[var3];
-                  var5 = class139.method2601(var7.name, Ignore.field209);
-                  if(var5 != null && var5.equals(var2)) {
+                  var4 = class139.method2601(var7.name, Ignore.field209);
+                  if(var4 != null && var4.equals(var2)) {
                      class7.method99(31, "", "Please remove " + var0 + " from your friend list first");
                      return;
                   }
 
                   if(var7.previousName != null) {
-                     var6 = class139.method2601(var7.previousName, Ignore.field209);
-                     if(var6 != null && var6.equals(var2)) {
+                     var5 = class139.method2601(var7.previousName, Ignore.field209);
+                     if(var5 != null && var5.equals(var2)) {
                         class7.method99(31, "", "Please remove " + var0 + " from your friend list first");
                         return;
                      }
@@ -188,6 +188,7 @@ public class class60 {
             class7.method99(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
          }
       }
+
    }
 
    @ObfuscatedName("k")
@@ -264,14 +265,14 @@ public class class60 {
          int var1;
          int var2;
          if(Client.field329 == 5) {
-            int[] var7 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D)};
+            int[] var3 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D)};
             Client.field326.offset = 0;
             Client.field326.method2760(1);
             Client.field326.method2760(class41.field834.vmethod4062());
-            Client.field326.method2763(var7[0]);
-            Client.field326.method2763(var7[1]);
-            Client.field326.method2763(var7[2]);
-            Client.field326.method2763(var7[3]);
+            Client.field326.method2763(var3[0]);
+            Client.field326.method2763(var3[1]);
+            Client.field326.method2763(var3[2]);
+            Client.field326.method2763(var3[3]);
             switch(class41.field834.field1622) {
             case 0:
             case 3:
@@ -304,33 +305,33 @@ public class class60 {
             Client.field417.method2760((Client.isResized?1:0) << 1 | (Client.field286?1:0));
             Client.field417.method2918(class0.field1);
             Client.field417.method2918(class65.field1099);
-            class159 var3 = Client.field417;
-            byte[] var4 = new byte[24];
+            class159 var4 = Client.field417;
+            byte[] var5 = new byte[24];
 
-            int var5;
+            int var6;
             try {
                class104.field1682.method1335(0L);
-               class104.field1682.method1337(var4);
+               class104.field1682.method1337(var5);
 
-               for(var5 = 0; var5 < 24 && var4[var5] == 0; ++var5) {
+               for(var6 = 0; var6 < 24 && var5[var6] == 0; ++var6) {
                   ;
                }
 
-               if(var5 >= 24) {
+               if(var6 >= 24) {
                   throw new IOException();
                }
-            } catch (Exception var12) {
-               for(int var6 = 0; var6 < 24; ++var6) {
-                  var4[var6] = -1;
+            } catch (Exception var10) {
+               for(int var8 = 0; var8 < 24; ++var8) {
+                  var5[var8] = -1;
                }
             }
 
-            var3.method2769(var4, 0, 24);
+            var4.method2769(var5, 0, 24);
             Client.field417.method2811(class217.field3167);
             Client.field417.method2763(class171.field2331);
-            Buffer var17 = new Buffer(DecorativeObject.field1595.method4246());
-            DecorativeObject.field1595.method4243(var17);
-            Client.field417.method2769(var17.payload, 0, var17.payload.length);
+            Buffer var7 = new Buffer(DecorativeObject.field1595.method4246());
+            DecorativeObject.field1595.method4243(var7);
+            Client.field417.method2769(var7.payload, 0, var7.payload.length);
             Client.field417.method2760(Overlay.field3034);
             Client.field417.method2763(class5.field46.field2698);
             Client.field417.method2763(class11.field120.field2698);
@@ -348,16 +349,16 @@ public class class60 {
             Client.field417.method2763(class119.field1843.field2698);
             Client.field417.method2763(XItemContainer.field136.field2698);
             Client.field417.method2763(Client.field343.field2698);
-            Client.field417.method2794(var7, var2, Client.field417.offset);
+            Client.field417.method2794(var3, var2, Client.field417.offset);
             Client.field417.method2771(Client.field417.offset - var1);
             class37.field774.method2018(Client.field417.payload, 0, Client.field417.offset);
-            Client.field326.method3028(var7);
+            Client.field326.method3028(var3);
 
-            for(var5 = 0; var5 < 4; ++var5) {
-               var7[var5] += 50;
+            for(var6 = 0; var6 < 4; ++var6) {
+               var3[var6] += 50;
             }
 
-            Client.field409.method3028(var7);
+            Client.field409.method3028(var3);
             Client.field329 = 6;
          }
 
@@ -394,14 +395,13 @@ public class class60 {
             if(--Client.field320 <= 0) {
                Client.field329 = 0;
             }
-
          } else {
             if(Client.field329 == 9 && class37.field774.method2017() >= 13) {
-               boolean var14 = class37.field774.method2021() == 1;
+               boolean var12 = class37.field774.method2021() == 1;
                class37.field774.method2014(Client.field409.payload, 0, 4);
                Client.field409.offset = 0;
-               boolean var15 = false;
-               if(var14) {
+               boolean var14 = false;
+               if(var12) {
                   var1 = Client.field409.method3030() << 24;
                   var1 |= Client.field409.method3030() << 16;
                   var1 |= Client.field409.method3030() << 8;
@@ -432,7 +432,7 @@ public class class60 {
 
                try {
                   class100.method1901(Client.field279, "zap");
-               } catch (Throwable var11) {
+               } catch (Throwable var9) {
                   ;
                }
 
@@ -449,7 +449,6 @@ public class class60 {
                   class32.xteaChanged(false);
                   Client.packetOpcode = -1;
                }
-
             } else {
                if(Client.field329 == 11 && class37.field774.method2017() >= 2) {
                   Client.field409.offset = 0;
@@ -463,10 +462,10 @@ public class class60 {
                   Client.field409.offset = 0;
                   class37.field774.method2014(Client.field409.payload, 0, class142.field1976);
                   Client.field409.offset = 0;
-                  String var18 = Client.field409.method2965();
-                  String var10 = Client.field409.method2965();
-                  String var9 = Client.field409.method2965();
-                  class116.method2225(var18, var10, var9);
+                  String var13 = Client.field409.method2965();
+                  String var15 = Client.field409.method2965();
+                  String var17 = Client.field409.method2965();
+                  class116.method2225(var13, var15, var17);
                   Friend.setGameState(10);
                }
 
@@ -510,7 +509,7 @@ public class class60 {
                }
             }
          }
-      } catch (IOException var13) {
+      } catch (IOException var11) {
          if(Client.field319 < 1) {
             if(Tile.field1351 == class107.field1719) {
                Tile.field1351 = class9.field90;
@@ -524,6 +523,7 @@ public class class60 {
             class37.method733(-2);
          }
       }
+
    }
 
    @ObfuscatedName("dv")

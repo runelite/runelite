@@ -148,123 +148,119 @@ public final class FileOnDisk {
             var0 = var0.method3705();
          }
 
-         if(null != var0) {
-            if(var0.field3009) {
-               if(!var0.field3021 || var1 == Client.field448) {
-                  String var4 = var0.name;
-                  int var8;
-                  if(var0.combatLevel != 0) {
-                     int var7 = var0.combatLevel;
-                     var8 = class148.localPlayer.combatLevel;
-                     int var9 = var8 - var7;
-                     String var6;
-                     if(var9 < -9) {
-                        var6 = class32.method691(16711680);
-                     } else if(var9 < -6) {
-                        var6 = class32.method691(16723968);
-                     } else if(var9 < -3) {
-                        var6 = class32.method691(16740352);
-                     } else if(var9 < 0) {
-                        var6 = class32.method691(16756736);
-                     } else if(var9 > 9) {
-                        var6 = class32.method691('\uff00');
-                     } else if(var9 > 6) {
-                        var6 = class32.method691(4259584);
-                     } else if(var9 > 3) {
-                        var6 = class32.method691(8453888);
-                     } else if(var9 > 0) {
-                        var6 = class32.method691(12648192);
-                     } else {
-                        var6 = class32.method691(16776960);
-                     }
-
-                     var4 = var4 + var6 + " " + " (" + "level-" + var0.combatLevel + ")";
-                  }
-
-                  if(Client.field447 == 1) {
-                     GroundObject.addMenuEntry("Use", Client.field468 + " " + "->" + " " + class32.method691(16776960) + var4, 7, var1, var2, var3);
-                  } else if(Client.field435) {
-                     if((class214.field3158 & 2) == 2) {
-                        GroundObject.addMenuEntry(Client.field438, Client.field282 + " " + "->" + " " + class32.method691(16776960) + var4, 8, var1, var2, var3);
-                     }
-                  } else {
-                     String[] var5 = var0.actions;
-                     if(Client.field300) {
-                        var5 = class8.method112(var5);
-                     }
-
-                     int var10;
-                     if(null != var5) {
-                        for(var10 = 4; var10 >= 0; --var10) {
-                           if(null != var5[var10] && !var5[var10].equalsIgnoreCase("Attack")) {
-                              byte var11 = 0;
-                              if(var10 == 0) {
-                                 var11 = 9;
-                              }
-
-                              if(var10 == 1) {
-                                 var11 = 10;
-                              }
-
-                              if(var10 == 2) {
-                                 var11 = 11;
-                              }
-
-                              if(var10 == 3) {
-                                 var11 = 12;
-                              }
-
-                              if(var10 == 4) {
-                                 var11 = 13;
-                              }
-
-                              GroundObject.addMenuEntry(var5[var10], class32.method691(16776960) + var4, var11, var1, var2, var3);
-                           }
-                        }
-                     }
-
-                     if(null != var5) {
-                        for(var10 = 4; var10 >= 0; --var10) {
-                           if(null != var5[var10] && var5[var10].equalsIgnoreCase("Attack")) {
-                              short var12 = 0;
-                              if(Client.field307 != class40.field798) {
-                                 if(Client.field307 == class40.field802 || Client.field307 == class40.field799 && var0.combatLevel > class148.localPlayer.combatLevel) {
-                                    var12 = 2000;
-                                 }
-
-                                 var8 = 0;
-                                 if(var10 == 0) {
-                                    var8 = 9 + var12;
-                                 }
-
-                                 if(var10 == 1) {
-                                    var8 = 10 + var12;
-                                 }
-
-                                 if(var10 == 2) {
-                                    var8 = var12 + 11;
-                                 }
-
-                                 if(var10 == 3) {
-                                    var8 = var12 + 12;
-                                 }
-
-                                 if(var10 == 4) {
-                                    var8 = var12 + 13;
-                                 }
-
-                                 GroundObject.addMenuEntry(var5[var10], class32.method691(16776960) + var4, var8, var1, var2, var3);
-                              }
-                           }
-                        }
-                     }
-
-                     GroundObject.addMenuEntry("Examine", class32.method691(16776960) + var4, 1003, var1, var2, var3);
-                  }
-
+         if(null != var0 && var0.field3009 && (!var0.field3021 || var1 == Client.field448)) {
+            String var4 = var0.name;
+            int var5;
+            int var7;
+            if(var0.combatLevel != 0) {
+               int var6 = var0.combatLevel;
+               var5 = class148.localPlayer.combatLevel;
+               var7 = var5 - var6;
+               String var8;
+               if(var7 < -9) {
+                  var8 = class32.method691(16711680);
+               } else if(var7 < -6) {
+                  var8 = class32.method691(16723968);
+               } else if(var7 < -3) {
+                  var8 = class32.method691(16740352);
+               } else if(var7 < 0) {
+                  var8 = class32.method691(16756736);
+               } else if(var7 > 9) {
+                  var8 = class32.method691('\uff00');
+               } else if(var7 > 6) {
+                  var8 = class32.method691(4259584);
+               } else if(var7 > 3) {
+                  var8 = class32.method691(8453888);
+               } else if(var7 > 0) {
+                  var8 = class32.method691(12648192);
+               } else {
+                  var8 = class32.method691(16776960);
                }
+
+               var4 = var4 + var8 + " " + " (" + "level-" + var0.combatLevel + ")";
+            }
+
+            if(Client.field447 == 1) {
+               GroundObject.addMenuEntry("Use", Client.field468 + " " + "->" + " " + class32.method691(16776960) + var4, 7, var1, var2, var3);
+            } else if(Client.field435) {
+               if((class214.field3158 & 2) == 2) {
+                  GroundObject.addMenuEntry(Client.field438, Client.field282 + " " + "->" + " " + class32.method691(16776960) + var4, 8, var1, var2, var3);
+               }
+            } else {
+               String[] var9 = var0.actions;
+               if(Client.field300) {
+                  var9 = class8.method112(var9);
+               }
+
+               if(null != var9) {
+                  for(var7 = 4; var7 >= 0; --var7) {
+                     if(null != var9[var7] && !var9[var7].equalsIgnoreCase("Attack")) {
+                        byte var10 = 0;
+                        if(var7 == 0) {
+                           var10 = 9;
+                        }
+
+                        if(var7 == 1) {
+                           var10 = 10;
+                        }
+
+                        if(var7 == 2) {
+                           var10 = 11;
+                        }
+
+                        if(var7 == 3) {
+                           var10 = 12;
+                        }
+
+                        if(var7 == 4) {
+                           var10 = 13;
+                        }
+
+                        GroundObject.addMenuEntry(var9[var7], class32.method691(16776960) + var4, var10, var1, var2, var3);
+                     }
+                  }
+               }
+
+               if(null != var9) {
+                  for(var7 = 4; var7 >= 0; --var7) {
+                     if(null != var9[var7] && var9[var7].equalsIgnoreCase("Attack")) {
+                        short var11 = 0;
+                        if(Client.field307 != class40.field798) {
+                           if(Client.field307 == class40.field802 || Client.field307 == class40.field799 && var0.combatLevel > class148.localPlayer.combatLevel) {
+                              var11 = 2000;
+                           }
+
+                           var5 = 0;
+                           if(var7 == 0) {
+                              var5 = 9 + var11;
+                           }
+
+                           if(var7 == 1) {
+                              var5 = 10 + var11;
+                           }
+
+                           if(var7 == 2) {
+                              var5 = var11 + 11;
+                           }
+
+                           if(var7 == 3) {
+                              var5 = var11 + 12;
+                           }
+
+                           if(var7 == 4) {
+                              var5 = var11 + 13;
+                           }
+
+                           GroundObject.addMenuEntry(var9[var7], class32.method691(16776960) + var4, var5, var1, var2, var3);
+                        }
+                     }
+                  }
+               }
+
+               GroundObject.addMenuEntry("Examine", class32.method691(16776960) + var4, 1003, var1, var2, var3);
             }
          }
       }
+
    }
 }

@@ -339,8 +339,8 @@ public class CombatInfo2 extends CacheableNode {
                Client.field307 = class40.field799;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("j")

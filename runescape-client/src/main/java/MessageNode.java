@@ -78,6 +78,7 @@ public class MessageNode extends CacheableNode {
          String var6 = Client.menuTargets[var0];
          class33.menuAction(var1, var2, var3, var4, var5, var6, class115.field1791, class115.field1796);
       }
+
    }
 
    @ObfuscatedName("by")
@@ -100,8 +101,8 @@ public class MessageNode extends CacheableNode {
                Client.field337 = true;
             }
          }
-
       }
+
    }
 
    @ObfuscatedName("u")
@@ -160,33 +161,33 @@ public class MessageNode extends CacheableNode {
                }
             }
 
-            int var10;
+            int var9;
             if(var8 >= 48 && var8 <= 57) {
-               var10 = var8 - 48;
+               var9 = var8 - 48;
             } else if(var8 >= 65 && var8 <= 90) {
-               var10 = var8 - 55;
+               var9 = var8 - 55;
             } else {
                if(var8 < 97 || var8 > 122) {
                   return false;
                }
 
-               var10 = var8 - 87;
+               var9 = var8 - 87;
             }
 
-            if(var10 >= var1) {
+            if(var9 >= var1) {
                return false;
             }
 
             if(var3) {
-               var10 = -var10;
+               var9 = -var9;
             }
 
-            int var9 = var1 * var5 + var10;
-            if(var9 / var1 != var5) {
+            int var10 = var1 * var5 + var9;
+            if(var10 / var1 != var5) {
                return false;
             }
 
-            var5 = var9;
+            var5 = var10;
             var4 = true;
          }
 

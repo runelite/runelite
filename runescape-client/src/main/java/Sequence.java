@@ -403,7 +403,7 @@ public class Sequence extends CacheableNode {
 
       try {
          class104.field1678 = System.getProperty("os.name");
-      } catch (Exception var29) {
+      } catch (Exception var19) {
          class104.field1678 = "Unknown";
       }
 
@@ -414,7 +414,7 @@ public class Sequence extends CacheableNode {
          if(null != FrameMap.field1465) {
             FrameMap.field1465 = FrameMap.field1465 + "/";
          }
-      } catch (Exception var28) {
+      } catch (Exception var18) {
          ;
       }
 
@@ -430,7 +430,7 @@ public class Sequence extends CacheableNode {
          if(null != FrameMap.field1465) {
             FrameMap.field1465 = FrameMap.field1465 + "/";
          }
-      } catch (Exception var27) {
+      } catch (Exception var17) {
          ;
       }
 
@@ -440,16 +440,17 @@ public class Sequence extends CacheableNode {
 
       Friend.field161 = new String[]{"c:/rscache/", "/rscache/", "c:/windows/", "c:/winnt/", "c:/", FrameMap.field1465, "/tmp/", ""};
       class174.field2621 = new String[]{".jagex_cache_" + Frames.field1561, ".file_store_" + Frames.field1561};
-      int var18 = 0;
+      int var4 = 0;
 
-      label270:
-      while(var18 < 4) {
-         String var6 = var18 == 0?"":"" + var18;
-         class104.field1671 = new File(FrameMap.field1465, "jagex_cl_" + var0 + "_" + var1 + var6 + ".dat");
+      label241:
+      while(var4 < 4) {
+         String var5 = var4 == 0?"":"" + var4;
+         class104.field1671 = new File(FrameMap.field1465, "jagex_cl_" + var0 + "_" + var1 + var5 + ".dat");
+         String var6 = null;
          String var7 = null;
-         String var8 = null;
-         boolean var9 = false;
-         File var36;
+         boolean var8 = false;
+         File var9;
+         int var13;
          if(class104.field1671.exists()) {
             try {
                FileOnDisk var10 = new FileOnDisk(class104.field1671, "rw", 10000L);
@@ -469,104 +470,108 @@ public class Sequence extends CacheableNode {
                   throw new IOException("" + var12);
                }
 
-               int var13 = 0;
+               var13 = 0;
                if(var12 > 1) {
                   var13 = var11.readUnsignedByte();
                }
 
                if(var12 <= 2) {
-                  var7 = var11.method2784();
+                  var6 = var11.method2784();
                   if(var13 == 1) {
-                     var8 = var11.method2784();
+                     var7 = var11.method2784();
                   }
                } else {
-                  var7 = var11.method2949();
+                  var6 = var11.method2949();
                   if(var13 == 1) {
-                     var8 = var11.method2949();
+                     var7 = var11.method2949();
                   }
                }
 
                var10.method1365();
-            } catch (IOException var32) {
-               var32.printStackTrace();
+            } catch (IOException var22) {
+               var22.printStackTrace();
             }
 
-            if(var7 != null) {
-               var36 = new File(var7);
-               if(!var36.exists()) {
-                  var7 = null;
+            if(var6 != null) {
+               var9 = new File(var6);
+               if(!var9.exists()) {
+                  var6 = null;
                }
             }
 
-            if(var7 != null) {
-               var36 = new File(var7, "test.dat");
-               if(!XGrandExchangeOffer.method63(var36, true)) {
-                  var7 = null;
+            if(var6 != null) {
+               var9 = new File(var6, "test.dat");
+               if(!XGrandExchangeOffer.method63(var9, true)) {
+                  var6 = null;
                }
             }
          }
 
-         if(var7 == null && var18 == 0) {
-            label245:
-            for(int var19 = 0; var19 < class174.field2621.length; ++var19) {
-               for(int var20 = 0; var20 < Friend.field161.length; ++var20) {
-                  File var21 = new File(Friend.field161[var20] + class174.field2621[var19] + File.separatorChar + var0 + File.separatorChar);
-                  if(var21.exists() && XGrandExchangeOffer.method63(new File(var21, "test.dat"), true)) {
-                     var7 = var21.toString();
-                     var9 = true;
-                     break label245;
+         if(var6 == null && var4 == 0) {
+            label215:
+            for(int var27 = 0; var27 < class174.field2621.length; ++var27) {
+               for(int var30 = 0; var30 < Friend.field161.length; ++var30) {
+                  File var32 = new File(Friend.field161[var30] + class174.field2621[var27] + File.separatorChar + var0 + File.separatorChar);
+                  if(var32.exists() && XGrandExchangeOffer.method63(new File(var32, "test.dat"), true)) {
+                     var6 = var32.toString();
+                     var8 = true;
+                     break label215;
                   }
                }
             }
          }
 
-         if(var7 == null) {
-            var7 = FrameMap.field1465 + File.separatorChar + "jagexcache" + var6 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
-            var9 = true;
+         if(var6 == null) {
+            var6 = FrameMap.field1465 + File.separatorChar + "jagexcache" + var5 + File.separatorChar + var0 + File.separatorChar + var1 + File.separatorChar;
+            var8 = true;
          }
 
-         if(null != var8) {
-            File var35 = new File(var8);
-            var36 = new File(var7);
+         File var14;
+         File var29;
+         File[] var31;
+         File[] var33;
+         if(null != var7) {
+            var29 = new File(var7);
+            var9 = new File(var6);
 
             try {
-               File[] var39 = var35.listFiles();
-               File[] var22 = var39;
+               var31 = var29.listFiles();
+               var33 = var31;
 
-               for(int var14 = 0; var14 < var22.length; ++var14) {
-                  File var15 = var22[var14];
-                  File var16 = new File(var36, var15.getName());
-                  boolean var17 = var15.renameTo(var16);
-                  if(!var17) {
+               for(var13 = 0; var13 < var33.length; ++var13) {
+                  var14 = var33[var13];
+                  File var15 = new File(var9, var14.getName());
+                  boolean var16 = var14.renameTo(var15);
+                  if(!var16) {
                      throw new IOException();
                   }
                }
-            } catch (Exception var31) {
-               var31.printStackTrace();
+            } catch (Exception var21) {
+               var21.printStackTrace();
             }
 
-            var9 = true;
+            var8 = true;
          }
 
-         if(var9) {
-            class41.method770(new File(var7), (File)null);
+         if(var8) {
+            class41.method770(new File(var6), (File)null);
          }
 
-         File var5 = new File(var7);
-         class104.field1672 = var5;
+         var29 = new File(var6);
+         class104.field1672 = var29;
          if(!class104.field1672.exists()) {
             class104.field1672.mkdirs();
          }
 
-         File[] var34 = class104.field1672.listFiles();
-         if(null != var34) {
-            File[] var37 = var34;
+         var31 = class104.field1672.listFiles();
+         if(null != var31) {
+            var33 = var31;
 
-            for(int var23 = 0; var23 < var37.length; ++var23) {
-               File var24 = var37[var23];
-               if(!XGrandExchangeOffer.method63(var24, false)) {
-                  ++var18;
-                  continue label270;
+            for(var13 = 0; var13 < var33.length; ++var13) {
+               var14 = var33[var13];
+               if(!XGrandExchangeOffer.method63(var14, false)) {
+                  ++var4;
+                  continue label241;
                }
             }
          }
@@ -576,33 +581,33 @@ public class Sequence extends CacheableNode {
       class72.method1361(class104.field1672);
 
       try {
-         File var4 = new File(FrameMap.field1465, "random.dat");
-         int var26;
-         if(var4.exists()) {
-            class104.field1682 = new class72(new FileOnDisk(var4, "rw", 25L), 24, 0);
+         File var23 = new File(FrameMap.field1465, "random.dat");
+         int var28;
+         if(var23.exists()) {
+            class104.field1682 = new class72(new FileOnDisk(var23, "rw", 25L), 24, 0);
          } else {
-            label198:
-            for(int var25 = 0; var25 < class174.field2621.length; ++var25) {
-               for(var26 = 0; var26 < Friend.field161.length; ++var26) {
-                  File var38 = new File(Friend.field161[var26] + class174.field2621[var25] + File.separatorChar + "random.dat");
-                  if(var38.exists()) {
-                     class104.field1682 = new class72(new FileOnDisk(var38, "rw", 25L), 24, 0);
-                     break label198;
+            label168:
+            for(int var24 = 0; var24 < class174.field2621.length; ++var24) {
+               for(var28 = 0; var28 < Friend.field161.length; ++var28) {
+                  File var26 = new File(Friend.field161[var28] + class174.field2621[var24] + File.separatorChar + "random.dat");
+                  if(var26.exists()) {
+                     class104.field1682 = new class72(new FileOnDisk(var26, "rw", 25L), 24, 0);
+                     break label168;
                   }
                }
             }
          }
 
          if(null == class104.field1682) {
-            RandomAccessFile var33 = new RandomAccessFile(var4, "rw");
-            var26 = var33.read();
-            var33.seek(0L);
-            var33.write(var26);
-            var33.seek(0L);
-            var33.close();
-            class104.field1682 = new class72(new FileOnDisk(var4, "rw", 25L), 24, 0);
+            RandomAccessFile var25 = new RandomAccessFile(var23, "rw");
+            var28 = var25.read();
+            var25.seek(0L);
+            var25.write(var28);
+            var25.seek(0L);
+            var25.close();
+            class104.field1682 = new class72(new FileOnDisk(var23, "rw", 25L), 24, 0);
          }
-      } catch (IOException var30) {
+      } catch (IOException var20) {
          ;
       }
 
@@ -610,8 +615,8 @@ public class Sequence extends CacheableNode {
       class104.field1677 = new class72(new FileOnDisk(Ignore.method188("main_file_cache.idx255"), "rw", 1048576L), 6000, 0);
       class215.field3160 = new class72[class104.field1673];
 
-      for(var18 = 0; var18 < class104.field1673; ++var18) {
-         class215.field3160[var18] = new class72(new FileOnDisk(Ignore.method188("main_file_cache.idx" + var18), "rw", 1048576L), 6000, 0);
+      for(var4 = 0; var4 < class104.field1673; ++var4) {
+         class215.field3160[var4] = new class72(new FileOnDisk(Ignore.method188("main_file_cache.idx" + var4), "rw", 1048576L), 6000, 0);
       }
 
    }

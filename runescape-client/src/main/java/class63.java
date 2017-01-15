@@ -18,29 +18,29 @@ public class class63 implements Runnable {
 
       try {
          while(!this.field1088) {
-            class57 var2;
-            for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1087[var1];
-               if(var2 != null) {
-                  var2.method1019();
+            class57 var1;
+            for(int var2 = 0; var2 < 2; ++var2) {
+               var1 = this.field1087[var2];
+               if(var1 != null) {
+                  var1.method1019();
                }
             }
 
             VertexNormal.method1598(10L);
-            class103 var5 = this.field1086;
-            var2 = null;
-            if(null != var5.field1659) {
-               for(int var3 = 0; var3 < 50 && var5.field1659.peekEvent() != null; ++var3) {
+            class103 var9 = this.field1086;
+            var1 = null;
+            if(null != var9.field1659) {
+               for(int var3 = 0; var3 < 50 && var9.field1659.peekEvent() != null; ++var3) {
                   VertexNormal.method1598(1L);
                }
 
-               if(var2 != null) {
-                  var5.field1659.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               if(var1 != null) {
+                  var9.field1659.postEvent(new ActionEvent(var1, 1001, "dummy"));
                }
             }
          }
-      } catch (Exception var8) {
-         class174.method3240((String)null, var8);
+      } catch (Exception var7) {
+         class174.method3240((String)null, var7);
       } finally {
          this.field1089 = false;
       }
@@ -59,8 +59,8 @@ public class class63 implements Runnable {
             var1.itemIds[var2] = -1;
             var1.stackSizes[var2] = 0;
          }
-
       }
+
    }
 
    @ObfuscatedName("x")
@@ -72,22 +72,22 @@ public class class63 implements Runnable {
       if(!XGrandExchangeOffer.method60(var0, var2, var3)) {
          return null;
       } else {
-         byte[] var5 = var1.method3272(var2, var3);
-         class208 var4;
-         if(var5 == null) {
-            var4 = null;
+         byte[] var4 = var1.method3272(var2, var3);
+         class208 var5;
+         if(var4 == null) {
+            var5 = null;
          } else {
-            class208 var6 = new class208(var5, class225.field3213, class225.field3216, class225.field3217, class178.field2653, class225.field3218, class119.field1845);
+            class208 var6 = new class208(var4, class225.field3213, class225.field3216, class225.field3217, class178.field2653, class225.field3218, class119.field1845);
             class225.field3213 = null;
             class225.field3216 = null;
             class225.field3217 = null;
             class178.field2653 = null;
             class225.field3218 = null;
-            class119.field1845 = null;
-            var4 = var6;
+            class119.field1845 = (byte[][])null;
+            var5 = var6;
          }
 
-         return var4;
+         return var5;
       }
    }
 }

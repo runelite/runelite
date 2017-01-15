@@ -8,6 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("ItemComposition")
 public class ItemComposition extends CacheableNode {
    @ObfuscatedName("k")
+   @Export("textToReplaceWith")
    short[] field2934;
    @ObfuscatedName("a")
    static class182 field2935;
@@ -20,6 +21,7 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 174839141
    )
+   @Export("yan2d")
    public int field2937 = 0;
    @ObfuscatedName("l")
    static NodeCache field2938 = new NodeCache(64);
@@ -46,40 +48,49 @@ public class ItemComposition extends CacheableNode {
    @Export("name")
    public String name = "null";
    @ObfuscatedName("v")
+   @Export("colourToReplace")
    short[] field2944;
    @ObfuscatedName("j")
+   @Export("colourToReplaceWith")
    short[] field2945;
    @ObfuscatedName("p")
+   @Export("textureToReplace")
    short[] field2946;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 122364169
    )
+   @Export("inventoryModel")
    int field2947;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 1935724557
    )
+   @Export("zoom2d")
    public int field2948 = 2000;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 936490693
    )
+   @Export("xan2d")
    public int field2949 = 0;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1347504897
    )
+   @Export("zan2d")
    public int field2951 = 0;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1917829677
    )
+   @Export("offsetX2d")
    public int field2952 = 0;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1049896293
    )
+   @Export("offsetY2d")
    public int field2953 = 0;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
@@ -110,6 +121,7 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 672754093
    )
+   @Export("maleModel")
    int field2959 = -1;
    @ObfuscatedName("ag")
    @Export("groundActions")
@@ -177,6 +189,7 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 1397651855
    )
+   @Export("notedTemplate")
    public int field2974 = -1;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
@@ -298,18 +311,18 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-1938983245"
    )
    public final ModelData method3639(int var1) {
-      int var3;
+      int var2;
       if(this.field2971 != null && var1 > 1) {
-         int var2 = -1;
+         int var3 = -1;
 
-         for(var3 = 0; var3 < 10; ++var3) {
-            if(var1 >= this.field2972[var3] && this.field2972[var3] != 0) {
-               var2 = this.field2971[var3];
+         for(var2 = 0; var2 < 10; ++var2) {
+            if(var1 >= this.field2972[var2] && this.field2972[var2] != 0) {
+               var3 = this.field2971[var2];
             }
          }
 
-         if(var2 != -1) {
-            return class88.getItemDefinition(var2).method3639(1);
+         if(var3 != -1) {
+            return class88.getItemDefinition(var3).method3639(1);
          }
       }
 
@@ -322,14 +335,14 @@ public class ItemComposition extends CacheableNode {
          }
 
          if(this.field2944 != null) {
-            for(var3 = 0; var3 < this.field2944.length; ++var3) {
-               var4.method1427(this.field2944[var3], this.field2945[var3]);
+            for(var2 = 0; var2 < this.field2944.length; ++var2) {
+               var4.method1427(this.field2944[var2], this.field2945[var2]);
             }
          }
 
          if(this.field2946 != null) {
-            for(var3 = 0; var3 < this.field2946.length; ++var3) {
-               var4.method1469(this.field2946[var3], this.field2934[var3]);
+            for(var2 = 0; var2 < this.field2946.length; ++var2) {
+               var4.method1469(this.field2946[var2], this.field2934[var2]);
             }
          }
 
@@ -345,48 +358,48 @@ public class ItemComposition extends CacheableNode {
    @Export("getModel")
    public final Model getModel(int var1) {
       if(null != this.field2971 && var1 > 1) {
-         int var5 = -1;
+         int var2 = -1;
 
-         for(int var6 = 0; var6 < 10; ++var6) {
-            if(var1 >= this.field2972[var6] && this.field2972[var6] != 0) {
-               var5 = this.field2971[var6];
+         for(int var3 = 0; var3 < 10; ++var3) {
+            if(var1 >= this.field2972[var3] && this.field2972[var3] != 0) {
+               var2 = this.field2971[var3];
             }
          }
 
-         if(var5 != -1) {
-            return class88.getItemDefinition(var5).getModel(1);
+         if(var2 != -1) {
+            return class88.getItemDefinition(var2).getModel(1);
          }
       }
 
-      Model var2 = (Model)itemModelCache.get((long)this.id);
-      if(null != var2) {
-         return var2;
+      Model var5 = (Model)itemModelCache.get((long)this.id);
+      if(null != var5) {
+         return var5;
       } else {
-         ModelData var3 = ModelData.method1463(field2976, this.field2947, 0);
-         if(var3 == null) {
+         ModelData var6 = ModelData.method1463(field2976, this.field2947, 0);
+         if(var6 == null) {
             return null;
          } else {
             if(this.field2982 != 128 || this.field2936 != 128 || this.field2977 != 128) {
-               var3.method1423(this.field2982, this.field2936, this.field2977);
+               var6.method1423(this.field2982, this.field2936, this.field2977);
             }
 
             int var4;
             if(null != this.field2944) {
                for(var4 = 0; var4 < this.field2944.length; ++var4) {
-                  var3.method1427(this.field2944[var4], this.field2945[var4]);
+                  var6.method1427(this.field2944[var4], this.field2945[var4]);
                }
             }
 
             if(this.field2946 != null) {
                for(var4 = 0; var4 < this.field2946.length; ++var4) {
-                  var3.method1469(this.field2946[var4], this.field2934[var4]);
+                  var6.method1469(this.field2946[var4], this.field2934[var4]);
                }
             }
 
-            var2 = var3.method1486(64 + this.field2957, 768 + this.field2979, -50, -10, -50);
-            var2.field1381 = true;
-            itemModelCache.put(var2, (long)this.id);
-            return var2;
+            var5 = var6.method1486(64 + this.field2957, 768 + this.field2979, -50, -10, -50);
+            var5.field1381 = true;
+            itemModelCache.put(var5, (long)this.id);
+            return var5;
          }
       }
    }
@@ -764,21 +777,21 @@ public class ItemComposition extends CacheableNode {
       } else {
          ModelData var4 = ModelData.method1463(field2976, var2, 0);
          if(var3 != -1) {
-            ModelData var7 = ModelData.method1463(field2976, var3, 0);
-            ModelData[] var6 = new ModelData[]{var4, var7};
+            ModelData var5 = ModelData.method1463(field2976, var3, 0);
+            ModelData[] var6 = new ModelData[]{var4, var5};
             var4 = new ModelData(var6, 2);
          }
 
-         int var5;
+         int var7;
          if(null != this.field2944) {
-            for(var5 = 0; var5 < this.field2944.length; ++var5) {
-               var4.method1427(this.field2944[var5], this.field2945[var5]);
+            for(var7 = 0; var7 < this.field2944.length; ++var7) {
+               var4.method1427(this.field2944[var7], this.field2945[var7]);
             }
          }
 
          if(this.field2946 != null) {
-            for(var5 = 0; var5 < this.field2946.length; ++var5) {
-               var4.method1469(this.field2946[var5], this.field2934[var5]);
+            for(var7 = 0; var7 < this.field2946.length; ++var7) {
+               var4.method1469(this.field2946[var7], this.field2934[var7]);
             }
          }
 
@@ -811,13 +824,13 @@ public class ItemComposition extends CacheableNode {
       int var7 = var3 * var6 * 512 / (var2 * 334);
       int var8;
       int var9;
-      short var15;
+      short var10;
       if(var7 < Client.field541) {
-         var15 = Client.field541;
-         var6 = 334 * var15 * var2 / (var3 * 512);
+         var10 = Client.field541;
+         var6 = 334 * var10 * var2 / (var3 * 512);
          if(var6 > Client.field540) {
             var6 = Client.field540;
-            var8 = 512 * var3 * var6 / (334 * var15);
+            var8 = 512 * var3 * var6 / (334 * var10);
             var9 = (var2 - var8) / 2;
             if(var4) {
                class219.method3964();
@@ -829,11 +842,11 @@ public class ItemComposition extends CacheableNode {
             var2 -= var9 * 2;
          }
       } else if(var7 > Client.field513) {
-         var15 = Client.field513;
-         var6 = var2 * var15 * 334 / (512 * var3);
+         var10 = Client.field513;
+         var6 = var2 * var10 * 334 / (512 * var3);
          if(var6 < Client.field539) {
             var6 = Client.field539;
-            var8 = 334 * var2 * var15 / (var6 * 512);
+            var8 = 334 * var2 * var10 / (var6 * 512);
             var9 = (var3 - var8) / 2;
             if(var4) {
                class219.method3964();
@@ -849,16 +862,16 @@ public class ItemComposition extends CacheableNode {
       var8 = (Client.field538 - Client.field389) * var5 / 100 + Client.field389;
       Client.scale = var3 * var6 * var8 / 85504 << 1;
       if(var2 != Client.camera2 || Client.camera3 != var3) {
-         int[] var14 = new int[9];
+         int[] var11 = new int[9];
 
-         for(int var10 = 0; var10 < 9; ++var10) {
-            int var11 = 15 + var10 * 32 + 128;
-            int var12 = 3 * var11 + 600;
-            int var13 = class84.field1438[var11];
-            var14[var10] = var12 * var13 >> 16;
+         for(int var12 = 0; var12 < 9; ++var12) {
+            int var13 = 15 + var12 * 32 + 128;
+            int var14 = 3 * var13 + 600;
+            int var15 = class84.field1438[var13];
+            var11[var12] = var14 * var15 >> 16;
          }
 
-         Region.method1705(var14, 500, 800, var2, var3);
+         Region.method1705(var11, 500, 800, var2, var3);
       }
 
       Client.field420 = var0;

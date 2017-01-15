@@ -87,15 +87,15 @@ public class class97 implements class158 {
                World.field684 = var1.readUnsignedShort();
                World.worldList = new World[World.field684];
 
-               World var3;
-               for(int var2 = 0; var2 < World.field684; var3.index = var2++) {
-                  var3 = World.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.method2780();
-                  var3.address = var1.method2965();
-                  var3.activity = var1.method2965();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.method2968();
+               World var2;
+               for(int var3 = 0; var3 < World.field684; var2.index = var3++) {
+                  var2 = World.worldList[var3] = new World();
+                  var2.id = var1.readUnsignedShort();
+                  var2.mask = var1.method2780();
+                  var2.address = var1.method2965();
+                  var2.activity = var1.method2965();
+                  var2.location = var1.readUnsignedByte();
+                  var2.playerCount = var1.method2968();
                }
 
                VertexNormal.method1597(World.worldList, 0, World.worldList.length - 1, World.field674, World.field676);

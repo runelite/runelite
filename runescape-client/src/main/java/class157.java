@@ -32,7 +32,7 @@ public class class157 {
                var3.field2308 = 0;
             }
          }
-
       }
+
    }
 }

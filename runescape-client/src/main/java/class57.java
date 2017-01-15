@@ -159,7 +159,7 @@ public class class57 {
             }
 
             this.field1045 = var3;
-         } catch (Exception var7) {
+         } catch (Exception var6) {
             this.vmethod1072();
             this.field1042 = 2000L + var1;
          }
@@ -173,11 +173,11 @@ public class class57 {
                this.method1023(256);
                this.field1038 += (long)(256000 / class7.field65);
             }
-         } catch (Exception var6) {
+         } catch (Exception var5) {
             this.field1038 = var1;
          }
-
       }
+
    }
 
    @ObfuscatedName("c")
@@ -313,36 +313,36 @@ public class class57 {
          int var5 = 255;
 
          int var6;
-         class68 var10;
-         label134:
+         class68 var7;
+         label106:
          for(var6 = 7; var5 != 0; --var6) {
-            int var7;
             int var8;
+            int var9;
             if(var6 < 0) {
-               var7 = var6 & 3;
-               var8 = -(var6 >> 2);
+               var8 = var6 & 3;
+               var9 = -(var6 >> 2);
             } else {
-               var7 = var6;
-               var8 = 0;
+               var8 = var6;
+               var9 = 0;
             }
 
-            for(int var9 = var5 >>> var7 & 286331153; var9 != 0; var9 >>>= 4) {
-               if((var9 & 1) != 0) {
-                  var5 &= ~(1 << var7);
-                  var10 = null;
-                  class68 var11 = this.field1031[var7];
+            for(int var10 = var5 >>> var8 & 286331153; var10 != 0; var10 >>>= 4) {
+               if((var10 & 1) != 0) {
+                  var5 &= ~(1 << var8);
+                  var7 = null;
+                  class68 var11 = this.field1031[var8];
 
-                  label128:
+                  label100:
                   while(true) {
                      while(true) {
                         if(var11 == null) {
-                           break label128;
+                           break label100;
                         }
 
                         class71 var12 = var11.field1136;
-                        if(var12 != null && var12.field1167 > var8) {
-                           var5 |= 1 << var7;
-                           var10 = var11;
+                        if(var12 != null && var12.field1167 > var9) {
+                           var5 |= 1 << var8;
+                           var7 = var11;
                            var11 = var11.field1133;
                         } else {
                            var11.field1135 = true;
@@ -353,47 +353,47 @@ public class class57 {
                            }
 
                            if(var4 >= this.field1037) {
-                              break label134;
+                              break label106;
                            }
 
                            class68 var14 = var11.vmethod2671();
                            if(null != var14) {
-                              for(int var16 = var11.field1134; var14 != null; var14 = var11.vmethod2672()) {
-                                 this.method1025(var14, var16 * var14.vmethod1300() >> 8);
+                              for(int var15 = var11.field1134; var14 != null; var14 = var11.vmethod2672()) {
+                                 this.method1025(var14, var15 * var14.vmethod1300() >> 8);
                               }
                            }
 
-                           class68 var15 = var11.field1133;
+                           class68 var18 = var11.field1133;
                            var11.field1133 = null;
-                           if(null == var10) {
-                              this.field1031[var7] = var15;
+                           if(null == var7) {
+                              this.field1031[var8] = var18;
                            } else {
-                              var10.field1133 = var15;
+                              var7.field1133 = var18;
                            }
 
-                           if(null == var15) {
-                              this.field1052[var7] = var10;
+                           if(null == var18) {
+                              this.field1052[var8] = var7;
                            }
 
-                           var11 = var15;
+                           var11 = var18;
                         }
                      }
                   }
                }
 
-               var7 += 4;
-               ++var8;
+               var8 += 4;
+               ++var9;
             }
          }
 
          for(var6 = 0; var6 < 8; ++var6) {
-            class68 var17 = this.field1031[var6];
-            class68[] var18 = this.field1031;
+            class68 var16 = this.field1031[var6];
+            class68[] var17 = this.field1031;
             this.field1052[var6] = null;
 
-            for(var18[var6] = null; null != var17; var17 = var10) {
-               var10 = var17.field1133;
-               var17.field1133 = null;
+            for(var17[var6] = null; null != var16; var16 = var7) {
+               var7 = var16.field1133;
+               var16.field1133 = null;
             }
          }
       }
@@ -489,27 +489,27 @@ public class class57 {
       garbageValue = "1978929451"
    )
    public static String method1057(byte[] var0) {
-      int var2 = var0.length;
-      StringBuilder var3 = new StringBuilder();
+      int var1 = var0.length;
+      StringBuilder var2 = new StringBuilder();
 
-      for(int var4 = 0; var4 < 0 + var2; var4 += 3) {
-         int var5 = var0[var4] & 255;
-         var3.append(class206.field3074[var5 >>> 2]);
-         if(var4 < var2 - 1) {
-            int var6 = var0[1 + var4] & 255;
-            var3.append(class206.field3074[(var5 & 3) << 4 | var6 >>> 4]);
-            if(var4 < var2 - 2) {
-               int var7 = var0[var4 + 2] & 255;
-               var3.append(class206.field3074[(var6 & 15) << 2 | var7 >>> 6]).append(class206.field3074[var7 & 63]);
+      for(int var3 = 0; var3 < 0 + var1; var3 += 3) {
+         int var4 = var0[var3] & 255;
+         var2.append(class206.field3074[var4 >>> 2]);
+         if(var3 < var1 - 1) {
+            int var5 = var0[1 + var3] & 255;
+            var2.append(class206.field3074[(var4 & 3) << 4 | var5 >>> 4]);
+            if(var3 < var1 - 2) {
+               int var6 = var0[var3 + 2] & 255;
+               var2.append(class206.field3074[(var5 & 15) << 2 | var6 >>> 6]).append(class206.field3074[var6 & 63]);
             } else {
-               var3.append(class206.field3074[(var6 & 15) << 2]).append("=");
+               var2.append(class206.field3074[(var5 & 15) << 2]).append("=");
             }
          } else {
-            var3.append(class206.field3074[(var5 & 3) << 4]).append("==");
+            var2.append(class206.field3074[(var4 & 3) << 4]).append("==");
          }
       }
 
-      String var1 = var3.toString();
-      return var1;
+      String var7 = var2.toString();
+      return var7;
    }
 }

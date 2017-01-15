@@ -38,22 +38,22 @@ public class class143 extends class68 {
    protected void vmethod2674(int[] var1, int var2, int var3) {
       this.field1991.vmethod2674(var1, var2, var3);
 
-      for(class140 var6 = (class140)this.field1992.method2391(); null != var6; var6 = (class140)this.field1992.method2393()) {
-         if(!this.field1990.method2511(var6)) {
-            int var4 = var2;
-            int var5 = var3;
+      for(class140 var4 = (class140)this.field1992.method2391(); null != var4; var4 = (class140)this.field1992.method2393()) {
+         if(!this.field1990.method2511(var4)) {
+            int var5 = var2;
+            int var6 = var3;
 
             do {
-               if(var5 <= var6.field1959) {
-                  this.method2697(var6, var1, var4, var5, var5 + var4);
-                  var6.field1959 -= var5;
+               if(var6 <= var4.field1959) {
+                  this.method2697(var4, var1, var5, var6, var6 + var5);
+                  var4.field1959 -= var6;
                   break;
                }
 
-               this.method2697(var6, var1, var4, var6.field1959, var4 + var5);
-               var4 += var6.field1959;
-               var5 -= var6.field1959;
-            } while(!this.field1990.method2512(var6, var1, var4, var5));
+               this.method2697(var4, var1, var5, var4.field1959, var5 + var6);
+               var5 += var4.field1959;
+               var6 -= var4.field1959;
+            } while(!this.field1990.method2512(var4, var1, var5, var6));
          }
       }
 
@@ -63,20 +63,20 @@ public class class143 extends class68 {
    protected void vmethod2675(int var1) {
       this.field1991.vmethod2675(var1);
 
-      for(class140 var3 = (class140)this.field1992.method2391(); null != var3; var3 = (class140)this.field1992.method2393()) {
-         if(!this.field1990.method2511(var3)) {
-            int var2 = var1;
+      for(class140 var2 = (class140)this.field1992.method2391(); null != var2; var2 = (class140)this.field1992.method2393()) {
+         if(!this.field1990.method2511(var2)) {
+            int var3 = var1;
 
             do {
-               if(var2 <= var3.field1959) {
-                  this.method2684(var3, var2);
-                  var3.field1959 -= var2;
+               if(var3 <= var2.field1959) {
+                  this.method2684(var2, var3);
+                  var2.field1959 -= var3;
                   break;
                }
 
-               this.method2684(var3, var3.field1959);
-               var2 -= var3.field1959;
-            } while(!this.field1990.method2512(var3, (int[])null, 0, var2));
+               this.method2684(var2, var2.field1959);
+               var3 -= var2.field1959;
+            } while(!this.field1990.method2512(var2, (int[])null, 0, var3));
          }
       }
 
@@ -93,6 +93,7 @@ public class class143 extends class68 {
       if(null != var4) {
          class185.field2728.method2285(var4);
       }
+
    }
 
    @ObfuscatedName("x")

@@ -115,13 +115,13 @@ public final class class31 extends Node {
       garbageValue = "2077302431"
    )
    static final void method680(Actor var0, int var1) {
-      int var5;
+      int var2;
       if(var0.field610 > Client.gameCycle) {
-         var5 = var0.field610 - Client.gameCycle;
+         var2 = var0.field610 - Client.gameCycle;
          int var3 = var0.field603 * 64 + var0.field641 * 128;
          int var4 = var0.field603 * 64 + var0.field643 * 128;
-         var0.x += (var3 - var0.x) / var5;
-         var0.y += (var4 - var0.y) / var5;
+         var0.x += (var3 - var0.x) / var2;
+         var0.y += (var4 - var0.y) / var2;
          var0.field657 = 0;
          var0.field650 = var0.field647;
       } else if(var0.field646 >= Client.gameCycle) {
@@ -152,21 +152,21 @@ public final class class31 extends Node {
 
       class41.method773(var0);
       var0.field602 = false;
-      Sequence var2;
+      Sequence var5;
       if(var0.poseAnimation != -1) {
-         var2 = CombatInfo2.getAnimation(var0.poseAnimation);
-         if(null != var2 && null != var2.frameIDs) {
+         var5 = CombatInfo2.getAnimation(var0.poseAnimation);
+         if(null != var5 && null != var5.frameIDs) {
             ++var0.field606;
-            if(var0.poseFrame < var2.frameIDs.length && var0.field606 > var2.frameLenghts[var0.poseFrame]) {
+            if(var0.poseFrame < var5.frameIDs.length && var0.field606 > var5.frameLenghts[var0.poseFrame]) {
                var0.field606 = 1;
                ++var0.poseFrame;
-               ItemLayer.method1411(var2, var0.poseFrame, var0.x, var0.y);
+               ItemLayer.method1411(var5, var0.poseFrame, var0.x, var0.y);
             }
 
-            if(var0.poseFrame >= var2.frameIDs.length) {
+            if(var0.poseFrame >= var5.frameIDs.length) {
                var0.field606 = 0;
                var0.poseFrame = 0;
-               ItemLayer.method1411(var2, var0.poseFrame, var0.x, var0.y);
+               ItemLayer.method1411(var5, var0.poseFrame, var0.x, var0.y);
             }
          } else {
             var0.poseAnimation = -1;
@@ -178,9 +178,9 @@ public final class class31 extends Node {
             var0.field634 = 0;
          }
 
-         var5 = class185.method3389(var0.graphic).field2772;
-         if(var5 != -1) {
-            Sequence var6 = CombatInfo2.getAnimation(var5);
+         var2 = class185.method3389(var0.graphic).field2772;
+         if(var2 != -1) {
+            Sequence var6 = CombatInfo2.getAnimation(var2);
             if(null != var6 && null != var6.frameIDs) {
                ++var0.field638;
                if(var0.field634 < var6.frameIDs.length && var0.field638 > var6.frameLenghts[var0.field634]) {
@@ -201,36 +201,36 @@ public final class class31 extends Node {
       }
 
       if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
-         var2 = CombatInfo2.getAnimation(var0.animation);
-         if(var2.precedenceAnimating == 1 && var0.field658 > 0 && var0.field610 <= Client.gameCycle && var0.field646 < Client.gameCycle) {
+         var5 = CombatInfo2.getAnimation(var0.animation);
+         if(var5.precedenceAnimating == 1 && var0.field658 > 0 && var0.field610 <= Client.gameCycle && var0.field646 < Client.gameCycle) {
             var0.actionAnimationDisable = 1;
             return;
          }
       }
 
       if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
-         var2 = CombatInfo2.getAnimation(var0.animation);
-         if(null != var2 && null != var2.frameIDs) {
+         var5 = CombatInfo2.getAnimation(var0.animation);
+         if(null != var5 && null != var5.frameIDs) {
             ++var0.field633;
-            if(var0.actionFrame < var2.frameIDs.length && var0.field633 > var2.frameLenghts[var0.actionFrame]) {
+            if(var0.actionFrame < var5.frameIDs.length && var0.field633 > var5.frameLenghts[var0.actionFrame]) {
                var0.field633 = 1;
                ++var0.actionFrame;
-               ItemLayer.method1411(var2, var0.actionFrame, var0.x, var0.y);
+               ItemLayer.method1411(var5, var0.actionFrame, var0.x, var0.y);
             }
 
-            if(var0.actionFrame >= var2.frameIDs.length) {
-               var0.actionFrame -= var2.frameStep;
+            if(var0.actionFrame >= var5.frameIDs.length) {
+               var0.actionFrame -= var5.frameStep;
                ++var0.field635;
-               if(var0.field635 >= var2.maxLoops) {
+               if(var0.field635 >= var5.maxLoops) {
                   var0.animation = -1;
-               } else if(var0.actionFrame >= 0 && var0.actionFrame < var2.frameIDs.length) {
-                  ItemLayer.method1411(var2, var0.actionFrame, var0.x, var0.y);
+               } else if(var0.actionFrame >= 0 && var0.actionFrame < var5.frameIDs.length) {
+                  ItemLayer.method1411(var5, var0.actionFrame, var0.x, var0.y);
                } else {
                   var0.animation = -1;
                }
             }
 
-            var0.field602 = var2.stretches;
+            var0.field602 = var5.stretches;
          } else {
             var0.animation = -1;
          }
@@ -249,15 +249,16 @@ public final class class31 extends Node {
    )
    static void method682() {
       Client var0 = Client.field279;
+      Client var1 = Client.field279;
       synchronized(Client.field279) {
-         Container var1 = Client.field279.method2074();
-         if(null != var1) {
-            ItemLayer.field1211 = Math.max(var1.getSize().width, class138.field1905);
-            class11.field115 = Math.max(var1.getSize().height, class110.field1740);
-            if(GameObject.field1615 == var1) {
-               Insets var2 = GameObject.field1615.getInsets();
-               ItemLayer.field1211 -= var2.right + var2.left;
-               class11.field115 -= var2.bottom + var2.top;
+         Container var2 = Client.field279.method2074();
+         if(null != var2) {
+            ItemLayer.field1211 = Math.max(var2.getSize().width, class138.field1905);
+            class11.field115 = Math.max(var2.getSize().height, class110.field1740);
+            if(GameObject.field1615 == var2) {
+               Insets var3 = GameObject.field1615.getInsets();
+               ItemLayer.field1211 -= var3.right + var3.left;
+               class11.field115 -= var3.bottom + var3.top;
             }
 
             if(ItemLayer.field1211 <= 0) {
@@ -279,25 +280,25 @@ public final class class31 extends Node {
             GameEngine.field1765 = (ItemLayer.field1211 - class0.field1) / 2;
             GameEngine.field1766 = 0;
             class165.canvas.setSize(class0.field1, class65.field1099);
-            int var3 = class0.field1;
+            int var12 = class0.field1;
             int var4 = class65.field1099;
             Canvas var5 = class165.canvas;
 
-            Object var11;
+            Object var6;
             try {
-               MainBufferProvider var6 = new MainBufferProvider();
-               var6.init(var3, var4, var5);
-               var11 = var6;
-            } catch (Throwable var9) {
-               SecondaryBufferProvider var7 = new SecondaryBufferProvider();
-               var7.init(var3, var4, var5);
-               var11 = var7;
+               MainBufferProvider var7 = new MainBufferProvider();
+               var7.init(var12, var4, var5);
+               var6 = var7;
+            } catch (Throwable var10) {
+               SecondaryBufferProvider var8 = new SecondaryBufferProvider();
+               var8.init(var12, var4, var5);
+               var6 = var8;
             }
 
-            GameEngine.bufferProvider = (BufferProvider)var11;
-            if(var1 == GameObject.field1615) {
-               Insets var12 = GameObject.field1615.getInsets();
-               class165.canvas.setLocation(GameEngine.field1765 + var12.left, GameEngine.field1766 + var12.top);
+            GameEngine.bufferProvider = (BufferProvider)var6;
+            if(var2 == GameObject.field1615) {
+               Insets var13 = GameObject.field1615.getInsets();
+               class165.canvas.setLocation(GameEngine.field1765 + var13.left, GameEngine.field1766 + var13.top);
             } else {
                class165.canvas.setLocation(GameEngine.field1765, GameEngine.field1766);
             }
@@ -309,6 +310,7 @@ public final class class31 extends Node {
 
             Client.method588();
          }
+
       }
    }
 }

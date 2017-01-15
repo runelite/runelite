@@ -24,22 +24,22 @@ public class class174 {
                ++var2;
             }
 
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); 0L != var0; var5.append(var8)) {
-               long var6 = var0;
+            char var4;
+            StringBuilder var8;
+            for(var8 = new StringBuilder(var2); 0L != var0; var8.append(var4)) {
+               long var5 = var0;
                var0 /= 37L;
-               var8 = class205.field3069[(int)(var6 - 37L * var0)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
+               var4 = class205.field3069[(int)(var5 - 37L * var0)];
+               if(var4 == 95) {
+                  int var7 = var8.length() - 1;
+                  var8.setCharAt(var7, Character.toUpperCase(var8.charAt(var7)));
+                  var4 = 160;
                }
             }
 
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
+            var8.reverse();
+            var8.setCharAt(0, Character.toUpperCase(var8.charAt(0)));
+            return var8.toString();
          }
       } else {
          return null;

@@ -48,6 +48,7 @@ public final class ModIcon extends class219 {
          this.offsetX = 0;
          this.offsetY = 0;
       }
+
    }
 
    @ObfuscatedName("i")
@@ -93,6 +94,7 @@ public final class ModIcon extends class219 {
       if(var6 > 0 && var5 > 0) {
          method4067(class219.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
       }
+
    }
 
    @ObfuscatedName("a")

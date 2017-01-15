@@ -32,6 +32,7 @@ public final class GroundObject {
    @ObfuscatedGetter(
       intValue = 160198391
    )
+   @Export("renderInfoBitPacked")
    int field1292;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
@@ -73,18 +74,16 @@ public final class GroundObject {
    )
    @Export("addMenuEntry")
    static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
-      if(!Client.isMenuOpen) {
-         if(Client.menuOptionCount < 500) {
-            Client.menuOptions[Client.menuOptionCount] = var0;
-            Client.menuTargets[Client.menuOptionCount] = var1;
-            Client.menuTypes[Client.menuOptionCount] = var2;
-            Client.menuIdentifiers[Client.menuOptionCount] = var3;
-            Client.menuActionParams0[Client.menuOptionCount] = var4;
-            Client.menuActionParams1[Client.menuOptionCount] = var5;
-            ++Client.menuOptionCount;
-         }
-
+      if(!Client.isMenuOpen && Client.menuOptionCount < 500) {
+         Client.menuOptions[Client.menuOptionCount] = var0;
+         Client.menuTargets[Client.menuOptionCount] = var1;
+         Client.menuTypes[Client.menuOptionCount] = var2;
+         Client.menuIdentifiers[Client.menuOptionCount] = var3;
+         Client.menuActionParams0[Client.menuOptionCount] = var4;
+         Client.menuActionParams1[Client.menuOptionCount] = var5;
+         ++Client.menuOptionCount;
       }
+
    }
 
    @ObfuscatedName("c")
@@ -101,30 +100,30 @@ public final class GroundObject {
          World.worldList[var1] = var8;
 
          for(int var9 = var0; var9 < var1; ++var9) {
-            World var11 = World.worldList[var9];
-            int var14 = class26.method598(var11, var8, var2, var3);
-            int var10;
-            if(var14 != 0) {
+            World var10 = World.worldList[var9];
+            int var11 = class26.method598(var10, var8, var2, var3);
+            int var12;
+            if(var11 != 0) {
                if(var3) {
-                  var10 = -var14;
+                  var12 = -var11;
                } else {
-                  var10 = var14;
+                  var12 = var11;
                }
             } else if(var4 == -1) {
-               var10 = 0;
+               var12 = 0;
             } else {
-               int var13 = class26.method598(var11, var8, var4, var5);
+               int var13 = class26.method598(var10, var8, var4, var5);
                if(var5) {
-                  var10 = -var13;
+                  var12 = -var13;
                } else {
-                  var10 = var13;
+                  var12 = var13;
                }
             }
 
-            if(var10 <= 0) {
-               World var12 = World.worldList[var9];
+            if(var12 <= 0) {
+               World var14 = World.worldList[var9];
                World.worldList[var9] = World.worldList[var7];
-               World.worldList[var7++] = var12;
+               World.worldList[var7++] = var14;
             }
          }
 
@@ -145,7 +144,7 @@ public final class GroundObject {
       for(int var2 = 0; var2 < var0.length; ++var2) {
          Widget var3 = var0[var2];
          if(var3 != null && var3.parentId == var1 && (!var3.field2184 || !WallObject.method1846(var3))) {
-            int var5;
+            int var4;
             if(var3.type == 0) {
                if(!var3.field2184 && WallObject.method1846(var3) && class188.field2758 != var3) {
                   continue;
@@ -156,11 +155,11 @@ public final class GroundObject {
                   method1499(var3.children, var3.id);
                }
 
-               WidgetNode var4 = (WidgetNode)Client.componentTable.method2339((long)var3.id);
-               if(var4 != null) {
-                  var5 = var4.id;
-                  if(class94.method1870(var5)) {
-                     method1499(Widget.widgets[var5], -1);
+               WidgetNode var5 = (WidgetNode)Client.componentTable.method2339((long)var3.id);
+               if(var5 != null) {
+                  var4 = var5.id;
+                  if(class94.method1870(var4)) {
+                     method1499(Widget.widgets[var4], -1);
                   }
                }
             }
@@ -169,13 +168,13 @@ public final class GroundObject {
                if(var3.field2250 != -1 || var3.field2233 != -1) {
                   boolean var7 = class94.method1868(var3);
                   if(var7) {
-                     var5 = var3.field2233;
+                     var4 = var3.field2233;
                   } else {
-                     var5 = var3.field2250;
+                     var4 = var3.field2250;
                   }
 
-                  if(var5 != -1) {
-                     Sequence var6 = CombatInfo2.getAnimation(var5);
+                  if(var4 != -1) {
+                     Sequence var6 = CombatInfo2.getAnimation(var4);
 
                      for(var3.field2308 += Client.field462; var3.field2308 > var6.frameLenghts[var3.field2215]; class6.method87(var3)) {
                         var3.field2308 -= var6.frameLenghts[var3.field2215];
@@ -192,11 +191,11 @@ public final class GroundObject {
 
                if(var3.field2241 != 0 && !var3.field2184) {
                   int var8 = var3.field2241 >> 16;
-                  var5 = var3.field2241 << 16 >> 16;
+                  var4 = var3.field2241 << 16 >> 16;
                   var8 *= Client.field462;
-                  var5 *= Client.field462;
+                  var4 *= Client.field462;
                   var3.rotationX = var8 + var3.rotationX & 2047;
-                  var3.rotationZ = var3.rotationZ + var5 & 2047;
+                  var3.rotationZ = var3.rotationZ + var4 & 2047;
                   class6.method87(var3);
                }
             }

@@ -131,18 +131,18 @@ public class FrameMap extends Node {
             var7 = var0.readUnsignedByte();
             if(var7 == 0) {
                if(var1 == 0) {
-                  int[] var8 = class10.tileHeights[0][var2];
-                  int var11 = 932731 + var2 + var4;
-                  int var12 = var3 + 556238 + var5;
-                  int var13 = class112.method2055(var11 + '넵', 91923 + var12, 4) - 128 + (class112.method2055(10294 + var11, '鎽' + var12, 2) - 128 >> 1) + (class112.method2055(var11, var12, 1) - 128 >> 2);
-                  var13 = 35 + (int)(0.3D * (double)var13);
-                  if(var13 < 10) {
-                     var13 = 10;
-                  } else if(var13 > 60) {
-                     var13 = 60;
+                  int[] var12 = class10.tileHeights[0][var2];
+                  int var9 = 932731 + var2 + var4;
+                  int var10 = var3 + 556238 + var5;
+                  int var11 = class112.method2055(var9 + '넵', 91923 + var10, 4) - 128 + (class112.method2055(10294 + var9, '鎽' + var10, 2) - 128 >> 1) + (class112.method2055(var9, var10, 1) - 128 >> 2);
+                  var11 = 35 + (int)(0.3D * (double)var11);
+                  if(var11 < 10) {
+                     var11 = 10;
+                  } else if(var11 > 60) {
+                     var11 = 60;
                   }
 
-                  var8[var3] = 8 * -var13;
+                  var12[var3] = 8 * -var11;
                } else {
                   class10.tileHeights[var1][var2][var3] = class10.tileHeights[var1 - 1][var2][var3] - 240;
                }
@@ -150,15 +150,15 @@ public class FrameMap extends Node {
             }
 
             if(var7 == 1) {
-               int var14 = var0.readUnsignedByte();
-               if(var14 == 1) {
-                  var14 = 0;
+               int var8 = var0.readUnsignedByte();
+               if(var8 == 1) {
+                  var8 = 0;
                }
 
                if(var1 == 0) {
-                  class10.tileHeights[0][var2][var3] = -var14 * 8;
+                  class10.tileHeights[0][var2][var3] = -var8 * 8;
                } else {
-                  class10.tileHeights[var1][var2][var3] = class10.tileHeights[var1 - 1][var2][var3] - var14 * 8;
+                  class10.tileHeights[var1][var2][var3] = class10.tileHeights[var1 - 1][var2][var3] - var8 * 8;
                }
                break;
             }
@@ -215,8 +215,8 @@ public class FrameMap extends Node {
             ++class185.field2736;
             class185.field2737 = null;
          }
-
       }
+
    }
 
    @ObfuscatedName("a")

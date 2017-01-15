@@ -59,34 +59,32 @@ public final class WallObject {
       garbageValue = "-434547521"
    )
    static final void method1845(Widget var0, int var1, int var2) {
-      if(null == Client.field453 && !Client.isMenuOpen) {
-         if(null != var0) {
-            Widget var4 = class140.method2605(var0);
-            if(null == var4) {
-               var4 = var0.parent;
-            }
-
-            if(var4 != null) {
-               Client.field453 = var0;
-               var4 = class140.method2605(var0);
-               if(null == var4) {
-                  var4 = var0.parent;
-               }
-
-               Client.field454 = var4;
-               Client.field455 = var1;
-               Client.field550 = var2;
-               class94.field1581 = 0;
-               Client.field464 = false;
-               if(Client.menuOptionCount > 0) {
-                  class72.method1363(Client.menuOptionCount - 1);
-               }
-
-               return;
-            }
+      if(null == Client.field453 && !Client.isMenuOpen && null != var0) {
+         Widget var3 = class140.method2605(var0);
+         if(null == var3) {
+            var3 = var0.parent;
          }
 
+         if(var3 != null) {
+            Client.field453 = var0;
+            var3 = class140.method2605(var0);
+            if(null == var3) {
+               var3 = var0.parent;
+            }
+
+            Client.field454 = var3;
+            Client.field455 = var1;
+            Client.field550 = var2;
+            class94.field1581 = 0;
+            Client.field464 = false;
+            if(Client.menuOptionCount > 0) {
+               class72.method1363(Client.menuOptionCount - 1);
+            }
+
+            return;
+         }
       }
+
    }
 
    @ObfuscatedName("ex")

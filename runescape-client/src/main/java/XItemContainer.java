@@ -113,40 +113,40 @@ public class XItemContainer extends Node {
       if(var1 != null) {
          return var1;
       } else {
-         class182 var3 = Sequence.field3043;
-         class182 var4 = Sequence.field3054;
-         boolean var5 = true;
-         int[] var6 = var3.method3314(var0);
+         class182 var2 = Sequence.field3043;
+         class182 var3 = Sequence.field3054;
+         boolean var4 = true;
+         int[] var5 = var2.method3314(var0);
 
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.method3268(var0, var6[var7]);
-            if(null == var8) {
-               var5 = false;
+         for(int var6 = 0; var6 < var5.length; ++var6) {
+            byte[] var7 = var2.method3268(var0, var5[var6]);
+            if(null == var7) {
+               var4 = false;
             } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.method3268(var9, 0);
-               if(var10 == null) {
-                  var5 = false;
+               int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
+               byte[] var9 = var3.method3268(var8, 0);
+               if(var9 == null) {
+                  var4 = false;
                }
             }
          }
 
-         Frames var2;
-         if(!var5) {
-            var2 = null;
+         Frames var11;
+         if(!var4) {
+            var11 = null;
          } else {
             try {
-               var2 = new Frames(var3, var4, var0, false);
-            } catch (Exception var12) {
-               var2 = null;
+               var11 = new Frames(var2, var3, var0, false);
+            } catch (Exception var10) {
+               var11 = null;
             }
          }
 
-         if(var2 != null) {
-            Sequence.field3040.put(var2, (long)var0);
+         if(var11 != null) {
+            Sequence.field3040.put(var11, (long)var0);
          }
 
-         return var2;
+         return var11;
       }
    }
 }

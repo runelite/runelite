@@ -159,15 +159,15 @@ public final class class94 {
       garbageValue = "-13"
    )
    static final void method1869() {
-      class5.method76();
-      if(null == class31.field715) {
-         if(Client.field453 == null) {
+      int var2;
+      int var3;
+      label200: {
+         class5.method76();
+         if(null == class31.field715 && Client.field453 == null) {
             int var0 = class115.field1794;
             int var1;
-            int var2;
-            int var3;
-            int var6;
-            int var8;
+            int var4;
+            int var5;
             if(Client.isMenuOpen) {
                if(var0 != 1 && (GroundObject.field1297 || var0 != 4)) {
                   var1 = class115.field1788;
@@ -184,17 +184,17 @@ public final class class94 {
                   var3 = class20.menuWidth;
                   int var9 = class115.field1791;
                   int var10 = class115.field1796;
-                  var6 = -1;
+                  var4 = -1;
 
                   for(int var11 = 0; var11 < Client.menuOptionCount; ++var11) {
-                     var8 = (Client.menuOptionCount - 1 - var11) * 15 + 31 + var2;
-                     if(var9 > var1 && var9 < var1 + var3 && var10 > var8 - 13 && var10 < var8 + 3) {
-                        var6 = var11;
+                     var5 = (Client.menuOptionCount - 1 - var11) * 15 + 31 + var2;
+                     if(var9 > var1 && var9 < var1 + var3 && var10 > var5 - 13 && var10 < var5 + 3) {
+                        var4 = var11;
                      }
                   }
 
-                  if(var6 != -1) {
-                     MessageNode.method198(var6);
+                  if(var4 != -1) {
+                     MessageNode.method198(var4);
                   }
 
                   Client.isMenuOpen = false;
@@ -204,40 +204,19 @@ public final class class94 {
                if((var0 == 1 || !GroundObject.field1297 && var0 == 4) && Client.menuOptionCount > 0) {
                   var1 = Client.menuTypes[Client.menuOptionCount - 1];
                   if(var1 == 39 || var1 == 40 || var1 == 41 || var1 == 42 || var1 == 43 || var1 == 33 || var1 == 34 || var1 == 35 || var1 == 36 || var1 == 37 || var1 == 38 || var1 == 1005) {
-                     label272: {
-                        var2 = Client.menuActionParams0[Client.menuOptionCount - 1];
-                        var3 = Client.menuActionParams1[Client.menuOptionCount - 1];
-                        Widget var4 = class44.method799(var3);
-                        var6 = GameObject.method1872(var4);
-                        boolean var5 = (var6 >> 28 & 1) != 0;
-                        if(!var5) {
-                           var8 = GameObject.method1872(var4);
-                           boolean var7 = (var8 >> 29 & 1) != 0;
-                           if(!var7) {
-                              break label272;
-                           }
-                        }
+                     var2 = Client.menuActionParams0[Client.menuOptionCount - 1];
+                     var3 = Client.menuActionParams1[Client.menuOptionCount - 1];
+                     Widget var6 = class44.method799(var3);
+                     var4 = GameObject.method1872(var6);
+                     boolean var7 = (var4 >> 28 & 1) != 0;
+                     if(var7) {
+                        break label200;
+                     }
 
-                        if(null != class31.field715 && !Client.field400 && Client.field303 != 1 && !class5.method78(Client.menuOptionCount - 1) && Client.menuOptionCount > 0) {
-                           class114.method2162(Client.field397, Client.field398);
-                        }
-
-                        Client.field400 = false;
-                        Client.field401 = 0;
-                        if(null != class31.field715) {
-                           class6.method87(class31.field715);
-                        }
-
-                        class31.field715 = class44.method799(var3);
-                        Client.field396 = var2;
-                        Client.field397 = class115.field1791;
-                        Client.field398 = class115.field1796;
-                        if(Client.menuOptionCount > 0) {
-                           class72.method1363(Client.menuOptionCount - 1);
-                        }
-
-                        class6.method87(class31.field715);
-                        return;
+                     var5 = GameObject.method1872(var6);
+                     boolean var8 = (var5 >> 29 & 1) != 0;
+                     if(var8) {
+                        break label200;
                      }
                   }
                }
@@ -254,9 +233,30 @@ public final class class94 {
                   ChatLineBuffer.method874(class115.field1791, class115.field1796);
                }
             }
-
          }
+
+         return;
       }
+
+      if(null != class31.field715 && !Client.field400 && Client.field303 != 1 && !class5.method78(Client.menuOptionCount - 1) && Client.menuOptionCount > 0) {
+         class114.method2162(Client.field397, Client.field398);
+      }
+
+      Client.field400 = false;
+      Client.field401 = 0;
+      if(null != class31.field715) {
+         class6.method87(class31.field715);
+      }
+
+      class31.field715 = class44.method799(var3);
+      Client.field396 = var2;
+      Client.field397 = class115.field1791;
+      Client.field398 = class115.field1796;
+      if(Client.menuOptionCount > 0) {
+         class72.method1363(Client.menuOptionCount - 1);
+      }
+
+      class6.method87(class31.field715);
    }
 
    @ObfuscatedName("a")
@@ -307,29 +307,30 @@ public final class class94 {
    )
    public static void method1871() {
       class105 var0 = class105.keyboard;
+      class105 var1 = class105.keyboard;
       synchronized(class105.keyboard) {
          ++class105.keyboardIdleTicks;
          class105.field1709 = class105.field1683;
          class105.field1710 = 0;
-         int var1;
+         int var2;
          if(class105.field1703 < 0) {
-            for(var1 = 0; var1 < 112; ++var1) {
-               class105.field1700[var1] = false;
+            for(var2 = 0; var2 < 112; ++var2) {
+               class105.field1700[var2] = false;
             }
 
             class105.field1703 = class105.field1702;
          } else {
             while(class105.field1702 != class105.field1703) {
-               var1 = class105.field1701[class105.field1702];
+               var2 = class105.field1701[class105.field1702];
                class105.field1702 = 1 + class105.field1702 & 127;
-               if(var1 < 0) {
-                  class105.field1700[~var1] = false;
+               if(var2 < 0) {
+                  class105.field1700[~var2] = false;
                } else {
-                  if(!class105.field1700[var1] && class105.field1710 < class105.field1706.length - 1) {
-                     class105.field1706[++class105.field1710 - 1] = var1;
+                  if(!class105.field1700[var2] && class105.field1710 < class105.field1706.length - 1) {
+                     class105.field1706[++class105.field1710 - 1] = var2;
                   }
 
-                  class105.field1700[var1] = true;
+                  class105.field1700[var2] = true;
                }
             }
          }
