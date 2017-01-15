@@ -38,6 +38,7 @@ import net.runelite.runeloader.inject.InjectionModscript;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.runeloader.inject.Injection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -46,7 +47,6 @@ import org.junit.Test;
 public class CheckMappings
 {
 	private static final File CLIENT = new File("d:/rs/07/adamout.jar");
-	private static final File RL_INJECTION = new File(CheckMappings.class.getResource("/injection_v18.json").getFile());
 	
 	private final List<Class> classes = new ArrayList<>();
 	
@@ -122,7 +122,7 @@ public class CheckMappings
 	@Ignore
 	public void checkMappings() throws IOException
 	{
-		InjectionModscript mod = InjectionModscript.load(RL_INJECTION);
+		InjectionModscript mod = Injection.load(MappingImporter.class.getResourceAsStream(MappingImporter.RL_INJECTION));
 		
 		for (int i = 0; i < mod.getGetterInjects().size(); ++i)
 		{
