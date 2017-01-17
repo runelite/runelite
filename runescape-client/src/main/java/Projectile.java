@@ -77,7 +77,6 @@ public final class Projectile extends Renderable {
    @Export("z")
    double z;
    @ObfuscatedName("j")
-   @Export("velocityX")
    double field862;
    @ObfuscatedName("p")
    @Export("scalar")
