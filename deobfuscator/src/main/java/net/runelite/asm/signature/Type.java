@@ -108,6 +108,11 @@ public class Type
 		return type.startsWith("Lclass");
 	}
 	
+	public boolean isArray()
+	{
+		return arrayDimms > 0;
+	}
+
 	@Override
 	public boolean equals(Object other)
 	{
