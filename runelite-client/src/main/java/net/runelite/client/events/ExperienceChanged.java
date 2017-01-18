@@ -22,31 +22,10 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package net.runelite.client.events;
 
-public class Hooks
+public class ExperienceChanged
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
-
-	public static void callHook(String name, Object object)
-	{
-		switch (name)
-		{
-			case "experienceChanged":
-				runelite.getEventBus().post(new ExperienceChanged());
-				break;
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
-
-		logger.debug("Event {} triggered on {}", name, object);
-	}
 }
