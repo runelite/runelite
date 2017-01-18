@@ -36,11 +36,11 @@ public class class164 extends CacheableNode {
       int var10;
       int var11;
       if(var5 != 1 && var5 != 3) {
-         var10 = var9.field2895;
-         var11 = var9.field2931;
+         var10 = var9.sizeX;
+         var11 = var9.sizeY;
       } else {
-         var10 = var9.field2931;
-         var11 = var9.field2895;
+         var10 = var9.sizeY;
+         var11 = var9.sizeX;
       }
 
       int var12;
@@ -79,10 +79,10 @@ public class class164 extends CacheableNode {
 
       Object var22;
       if(var6 == 22) {
-         if(var9.field2903 == -1 && null == var9.impostorIds) {
+         if(var9.animationId == -1 && null == var9.impostorIds) {
             var22 = var9.method3593(22, var5, var16, var18, var17, var19);
          } else {
-            var22 = new class49(var4, 22, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+            var22 = new class49(var4, 22, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
          }
 
          var7.groundObjectSpawned(var0, var2, var3, var17, (Renderable)var22, var20, var21);
@@ -91,10 +91,10 @@ public class class164 extends CacheableNode {
          }
       } else if(var6 != 10 && var6 != 11) {
          if(var6 >= 12) {
-            if(var9.field2903 == -1 && var9.impostorIds == null) {
+            if(var9.animationId == -1 && var9.impostorIds == null) {
                var22 = var9.method3593(var6, var5, var16, var18, var17, var19);
             } else {
-               var22 = new class49(var4, var6, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+               var22 = new class49(var4, var6, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
             }
 
             var7.method1680(var0, var2, var3, var17, 1, 1, (Renderable)var22, 0, var20, var21);
@@ -102,10 +102,10 @@ public class class164 extends CacheableNode {
                var8.method2231(var2, var3, var10, var11, var9.field2898);
             }
          } else if(var6 == 0) {
-            if(var9.field2903 == -1 && null == var9.impostorIds) {
+            if(var9.animationId == -1 && null == var9.impostorIds) {
                var22 = var9.method3593(0, var5, var16, var18, var17, var19);
             } else {
-               var22 = new class49(var4, 0, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+               var22 = new class49(var4, 0, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
             }
 
             var7.method1678(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class10.field96[var5], 0, var20, var21);
@@ -113,10 +113,10 @@ public class class164 extends CacheableNode {
                var8.method2252(var2, var3, var6, var5, var9.field2898);
             }
          } else if(var6 == 1) {
-            if(var9.field2903 == -1 && null == var9.impostorIds) {
+            if(var9.animationId == -1 && null == var9.impostorIds) {
                var22 = var9.method3593(1, var5, var16, var18, var17, var19);
             } else {
-               var22 = new class49(var4, 1, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+               var22 = new class49(var4, 1, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
             }
 
             var7.method1678(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class10.field101[var5], 0, var20, var21);
@@ -129,12 +129,12 @@ public class class164 extends CacheableNode {
             if(var6 == 2) {
                var24 = 1 + var5 & 3;
                Object var25;
-               if(var9.field2903 == -1 && null == var9.impostorIds) {
+               if(var9.animationId == -1 && null == var9.impostorIds) {
                   var25 = var9.method3593(2, 4 + var5, var16, var18, var17, var19);
                   var23 = var9.method3593(2, var24, var16, var18, var17, var19);
                } else {
-                  var25 = new class49(var4, 2, 4 + var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
-                  var23 = new class49(var4, 2, var24, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                  var25 = new class49(var4, 2, 4 + var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
+                  var23 = new class49(var4, 2, var24, var1, var2, var3, var9.animationId, true, (Renderable)null);
                }
 
                var7.method1678(var0, var2, var3, var17, (Renderable)var25, (Renderable)var23, class10.field96[var5], class10.field96[var24], var20, var21);
@@ -142,10 +142,10 @@ public class class164 extends CacheableNode {
                   var8.method2252(var2, var3, var6, var5, var9.field2898);
                }
             } else if(var6 == 3) {
-               if(var9.field2903 == -1 && var9.impostorIds == null) {
+               if(var9.animationId == -1 && var9.impostorIds == null) {
                   var22 = var9.method3593(3, var5, var16, var18, var17, var19);
                } else {
-                  var22 = new class49(var4, 3, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                  var22 = new class49(var4, 3, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
                }
 
                var7.method1678(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class10.field101[var5], 0, var20, var21);
@@ -153,10 +153,10 @@ public class class164 extends CacheableNode {
                   var8.method2252(var2, var3, var6, var5, var9.field2898);
                }
             } else if(var6 == 9) {
-               if(var9.field2903 == -1 && var9.impostorIds == null) {
+               if(var9.animationId == -1 && var9.impostorIds == null) {
                   var22 = var9.method3593(var6, var5, var16, var18, var17, var19);
                } else {
-                  var22 = new class49(var4, var6, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                  var22 = new class49(var4, var6, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
                }
 
                var7.method1680(var0, var2, var3, var17, 1, 1, (Renderable)var22, 0, var20, var21);
@@ -164,10 +164,10 @@ public class class164 extends CacheableNode {
                   var8.method2231(var2, var3, var10, var11, var9.field2898);
                }
             } else if(var6 == 4) {
-               if(var9.field2903 == -1 && null == var9.impostorIds) {
+               if(var9.animationId == -1 && null == var9.impostorIds) {
                   var22 = var9.method3593(4, var5, var16, var18, var17, var19);
                } else {
-                  var22 = new class49(var4, 4, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                  var22 = new class49(var4, 4, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
                }
 
                var7.method1807(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, class10.field96[var5], 0, 0, 0, var20, var21);
@@ -180,10 +180,10 @@ public class class164 extends CacheableNode {
                      var24 = Tile.getObjectDefinition(var28 >> 14 & 32767).field2905;
                   }
 
-                  if(var9.field2903 == -1 && var9.impostorIds == null) {
+                  if(var9.animationId == -1 && var9.impostorIds == null) {
                      var23 = var9.method3593(4, var5, var16, var18, var17, var19);
                   } else {
-                     var23 = new class49(var4, 4, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var23 = new class49(var4, 4, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
                   }
 
                   var7.method1807(var0, var2, var3, var17, (Renderable)var23, (Renderable)null, class10.field96[var5], 0, class10.field102[var5] * var24, class10.field106[var5] * var24, var20, var21);
@@ -194,19 +194,19 @@ public class class164 extends CacheableNode {
                      var24 = Tile.getObjectDefinition(var28 >> 14 & 32767).field2905 / 2;
                   }
 
-                  if(var9.field2903 == -1 && var9.impostorIds == null) {
+                  if(var9.animationId == -1 && var9.impostorIds == null) {
                      var23 = var9.method3593(4, 4 + var5, var16, var18, var17, var19);
                   } else {
-                     var23 = new class49(var4, 4, 4 + var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var23 = new class49(var4, 4, 4 + var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
                   }
 
                   var7.method1807(var0, var2, var3, var17, (Renderable)var23, (Renderable)null, 256, var5, var24 * class10.field104[var5], var24 * class10.field105[var5], var20, var21);
                } else if(var6 == 7) {
                   var28 = var5 + 2 & 3;
-                  if(var9.field2903 == -1 && var9.impostorIds == null) {
+                  if(var9.animationId == -1 && var9.impostorIds == null) {
                      var22 = var9.method3593(4, 4 + var28, var16, var18, var17, var19);
                   } else {
-                     var22 = new class49(var4, 4, 4 + var28, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var22 = new class49(var4, 4, 4 + var28, var1, var2, var3, var9.animationId, true, (Renderable)null);
                   }
 
                   var7.method1807(var0, var2, var3, var17, (Renderable)var22, (Renderable)null, 256, var28, 0, 0, var20, var21);
@@ -219,12 +219,12 @@ public class class164 extends CacheableNode {
 
                   int var26 = var5 + 2 & 3;
                   Object var27;
-                  if(var9.field2903 == -1 && var9.impostorIds == null) {
+                  if(var9.animationId == -1 && var9.impostorIds == null) {
                      var23 = var9.method3593(4, 4 + var5, var16, var18, var17, var19);
                      var27 = var9.method3593(4, 4 + var26, var16, var18, var17, var19);
                   } else {
-                     var23 = new class49(var4, 4, var5 + 4, var1, var2, var3, var9.field2903, true, (Renderable)null);
-                     var27 = new class49(var4, 4, var26 + 4, var1, var2, var3, var9.field2903, true, (Renderable)null);
+                     var23 = new class49(var4, 4, var5 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
+                     var27 = new class49(var4, 4, var26 + 4, var1, var2, var3, var9.animationId, true, (Renderable)null);
                   }
 
                   var7.method1807(var0, var2, var3, var17, (Renderable)var23, (Renderable)var27, 256, var5, var24 * class10.field104[var5], var24 * class10.field105[var5], var20, var21);
@@ -232,10 +232,10 @@ public class class164 extends CacheableNode {
             }
          }
       } else {
-         if(var9.field2903 == -1 && var9.impostorIds == null) {
+         if(var9.animationId == -1 && var9.impostorIds == null) {
             var22 = var9.method3593(10, var5, var16, var18, var17, var19);
          } else {
-            var22 = new class49(var4, 10, var5, var1, var2, var3, var9.field2903, true, (Renderable)null);
+            var22 = new class49(var4, 10, var5, var1, var2, var3, var9.animationId, true, (Renderable)null);
          }
 
          if(var22 != null) {
