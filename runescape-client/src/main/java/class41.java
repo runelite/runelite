@@ -489,12 +489,12 @@ public class class41 {
       }
 
       ItemComposition var9 = class88.getItemDefinition(var0);
-      if(var1 > 1 && var9.field2971 != null) {
+      if(var1 > 1 && var9.countObj != null) {
          int var10 = -1;
 
          for(int var11 = 0; var11 < 10; ++var11) {
-            if(var1 >= var9.field2972[var11] && var9.field2972[var11] != 0) {
-               var10 = var9.field2971[var11];
+            if(var1 >= var9.countCo[var11] && var9.countCo[var11] != 0) {
+               var10 = var9.countObj[var11];
             }
          }
 
@@ -508,7 +508,7 @@ public class class41 {
          return null;
       } else {
          SpritePixels var20 = null;
-         if(var9.field2974 != -1) {
+         if(var9.notedTemplate != -1) {
             var20 = createSprite(var9.note, 10, 1, 0, 0, true);
             if(var20 == null) {
                return null;
@@ -540,17 +540,17 @@ public class class41 {
             var20.method4122(0, 0);
          }
 
-         int var16 = var9.field2948;
+         int var16 = var9.zoom2d;
          if(var5) {
             var16 = (int)(1.5D * (double)var16);
          } else if(var2 == 2) {
             var16 = (int)((double)var16 * 1.04D);
          }
 
-         int var17 = var16 * class84.field1438[var9.field2949] >> 16;
-         int var18 = class84.field1428[var9.field2949] * var16 >> 16;
+         int var17 = var16 * class84.field1438[var9.xan2d] >> 16;
+         int var18 = class84.field1428[var9.xan2d] * var16 >> 16;
          var19.method1532();
-         var19.method1531(0, var9.field2937, var9.field2951, var9.field2949, var9.field2952, var9.field2953 + var17 + var19.modelHeight / 2, var18 + var9.field2953);
+         var19.method1531(0, var9.yan2d, var9.zan2d, var9.xan2d, var9.offsetX2d, var9.offsetY2d + var17 + var19.modelHeight / 2, var18 + var9.offsetY2d);
          if(var9.field2983 != -1) {
             var20.method4122(0, 0);
          }
@@ -568,7 +568,7 @@ public class class41 {
          }
 
          class219.setRasterBuffer(var8.image, 36, 32);
-         if(var9.field2974 != -1) {
+         if(var9.notedTemplate != -1) {
             var20.method4122(0, 0);
          }
 

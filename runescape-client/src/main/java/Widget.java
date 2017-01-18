@@ -920,7 +920,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method1486(var9.field2957 + 64, 768 + var9.field2979, -50, -10, -50);
+               var7 = var8.method1486(var9.ambient + 64, 768 + var9.contrast, -50, -10, -50);
             }
 
             field2180.put(var7, (long)((var5 << 16) + var6));

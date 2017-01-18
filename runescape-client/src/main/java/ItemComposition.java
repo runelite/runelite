@@ -9,20 +9,21 @@ import net.runelite.mapping.ObfuscatedSignature;
 public class ItemComposition extends CacheableNode {
    @ObfuscatedName("k")
    @Export("textToReplaceWith")
-   short[] field2934;
+   short[] textToReplaceWith;
    @ObfuscatedName("a")
    static class182 field2935;
    @ObfuscatedName("ab")
    @ObfuscatedGetter(
       intValue = -636941583
    )
-   int field2936 = 128;
+   @Export("resizeY")
+   int resizeY = 128;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 174839141
    )
    @Export("yan2d")
-   public int field2937 = 0;
+   public int yan2d = 0;
    @ObfuscatedName("l")
    static NodeCache field2938 = new NodeCache(64);
    @ObfuscatedName("am")
@@ -49,54 +50,55 @@ public class ItemComposition extends CacheableNode {
    public String name = "null";
    @ObfuscatedName("v")
    @Export("colourToReplace")
-   short[] field2944;
+   short[] colourToReplace;
    @ObfuscatedName("j")
    @Export("colourToReplaceWith")
-   short[] field2945;
+   short[] colourToReplaceWith;
    @ObfuscatedName("p")
    @Export("textureToReplace")
-   short[] field2946;
+   short[] textureToReplace;
    @ObfuscatedName("q")
    @ObfuscatedGetter(
       intValue = 122364169
    )
    @Export("inventoryModel")
-   int field2947;
+   int inventoryModel;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 1935724557
    )
    @Export("zoom2d")
-   public int field2948 = 2000;
+   public int zoom2d = 2000;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = 936490693
    )
    @Export("xan2d")
-   public int field2949 = 0;
+   public int xan2d = 0;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
       intValue = 1347504897
    )
    @Export("zan2d")
-   public int field2951 = 0;
+   public int zan2d = 0;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = -1917829677
    )
    @Export("offsetX2d")
-   public int field2952 = 0;
+   public int offsetX2d = 0;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = -1049896293
    )
    @Export("offsetY2d")
-   public int field2953 = 0;
+   public int offsetY2d = 0;
    @ObfuscatedName("ao")
    @ObfuscatedGetter(
       intValue = -2101777909
    )
-   public int field2954 = 0;
+   @Export("team")
+   public int team = 0;
    @ObfuscatedName("b")
    @ObfuscatedGetter(
       intValue = 1127289627
@@ -110,7 +112,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 565863917
    )
-   public int field2957 = 0;
+   @Export("ambient")
+   public int ambient = 0;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1022532413
@@ -122,7 +125,7 @@ public class ItemComposition extends CacheableNode {
       intValue = 672754093
    )
    @Export("maleModel")
-   int field2959 = -1;
+   int maleModel = -1;
    @ObfuscatedName("ag")
    @Export("groundActions")
    public String[] groundActions = new String[]{null, null, "Take", null, null};
@@ -136,32 +139,38 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 131321879
    )
-   int field2962 = -1;
+   @Export("femaleModel")
+   int femaleModel = -1;
    @ObfuscatedName("ai")
    @ObfuscatedGetter(
       intValue = 401775957
    )
-   int field2963 = -1;
+   @Export("femaleModel1")
+   int femaleModel1 = -1;
    @ObfuscatedName("ah")
    @ObfuscatedGetter(
       intValue = -65525033
    )
-   int field2964 = 0;
+   @Export("femaleOffset")
+   int femaleOffset = 0;
    @ObfuscatedName("av")
    @ObfuscatedGetter(
       intValue = 876106993
    )
-   int field2965 = -1;
+   @Export("maleModel2")
+   int maleModel2 = -1;
    @ObfuscatedName("at")
    @ObfuscatedGetter(
       intValue = 1959165703
    )
-   int field2966 = -1;
+   @Export("femaleModel2")
+   int femaleModel2 = -1;
    @ObfuscatedName("az")
    @ObfuscatedGetter(
       intValue = -784529781
    )
-   int maleModel = -1;
+   @Export("maleHeadModel")
+   int maleHeadModel = -1;
    @ObfuscatedName("g")
    @Export("itemModelCache")
    static NodeCache itemModelCache = new NodeCache(50);
@@ -169,27 +178,32 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 260180195
    )
-   int field2969 = -1;
+   @Export("femaleHeadModel")
+   int femaleHeadModel = -1;
    @ObfuscatedName("ad")
    @ObfuscatedGetter(
       intValue = -1624535803
    )
-   int field2970 = -1;
+   @Export("maleHeadModel2")
+   int makeHeadModel2 = -1;
    @ObfuscatedName("aq")
-   int[] field2971;
+   @Export("countObj")
+   int[] countObj;
    @ObfuscatedName("ac")
-   int[] field2972;
+   @Export("countCo")
+   int[] countCo;
    @ObfuscatedName("ak")
    @ObfuscatedGetter(
       intValue = 1793289293
    )
-   int field2973 = -1;
+   @Export("femaleHeadModel2")
+   int femaleHeadModel2 = -1;
    @ObfuscatedName("ay")
    @ObfuscatedGetter(
       intValue = 1397651855
    )
    @Export("notedTemplate")
-   public int field2974 = -1;
+   public int notedTemplate = -1;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
       intValue = 881892393
@@ -201,7 +215,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -809703683
    )
-   int field2977 = 128;
+   @Export("resizeZ")
+   int resizeZ = 128;
    @ObfuscatedName("al")
    @Export("inventoryActions")
    public String[] inventoryActions = new String[]{null, null, null, null, "Drop"};
@@ -209,19 +224,22 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -471133615
    )
-   public int field2979 = 0;
+   @Export("contrast")
+   public int contrast = 0;
    @ObfuscatedName("af")
    @ObfuscatedGetter(
       intValue = -1154405339
    )
-   int field2980 = -1;
+   @Export("maleModel1")
+   int maleModel1 = -1;
    @ObfuscatedName("au")
    public boolean field2981 = false;
    @ObfuscatedName("ar")
    @ObfuscatedGetter(
       intValue = 1622294711
    )
-   int field2982 = 128;
+   @Export("resizeX")
+   int resizeX = 128;
    @ObfuscatedName("bv")
    @ObfuscatedGetter(
       intValue = -1225377779
@@ -236,7 +254,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 795638717
    )
-   int field2985 = 0;
+   @Export("maleOffset")
+   int maleOffset = 0;
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(
@@ -244,17 +263,17 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-53432563"
    )
    void method3636(ItemComposition var1, ItemComposition var2) {
-      this.field2947 = var1.field2947;
-      this.field2948 = var1.field2948;
-      this.field2949 = var1.field2949;
-      this.field2937 = var1.field2937;
-      this.field2951 = var1.field2951;
-      this.field2952 = var1.field2952;
-      this.field2953 = var1.field2953;
-      this.field2944 = var1.field2944;
-      this.field2945 = var1.field2945;
-      this.field2946 = var1.field2946;
-      this.field2934 = var1.field2934;
+      this.inventoryModel = var1.inventoryModel;
+      this.zoom2d = var1.zoom2d;
+      this.xan2d = var1.xan2d;
+      this.yan2d = var1.yan2d;
+      this.zan2d = var1.zan2d;
+      this.offsetX2d = var1.offsetX2d;
+      this.offsetY2d = var1.offsetY2d;
+      this.colourToReplace = var1.colourToReplace;
+      this.colourToReplaceWith = var1.colourToReplaceWith;
+      this.textureToReplace = var1.textureToReplace;
+      this.textToReplaceWith = var1.textToReplaceWith;
       this.name = var2.name;
       this.isMembers = var2.isMembers;
       this.price = var2.price;
@@ -267,31 +286,31 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "43"
    )
    void method3637(ItemComposition var1, ItemComposition var2) {
-      this.field2947 = var1.field2947;
-      this.field2948 = var1.field2948;
-      this.field2949 = var1.field2949;
-      this.field2937 = var1.field2937;
-      this.field2951 = var1.field2951;
-      this.field2952 = var1.field2952;
-      this.field2953 = var1.field2953;
-      this.field2944 = var2.field2944;
-      this.field2945 = var2.field2945;
-      this.field2946 = var2.field2946;
-      this.field2934 = var2.field2934;
+      this.inventoryModel = var1.inventoryModel;
+      this.zoom2d = var1.zoom2d;
+      this.xan2d = var1.xan2d;
+      this.yan2d = var1.yan2d;
+      this.zan2d = var1.zan2d;
+      this.offsetX2d = var1.offsetX2d;
+      this.offsetY2d = var1.offsetY2d;
+      this.colourToReplace = var2.colourToReplace;
+      this.colourToReplaceWith = var2.colourToReplaceWith;
+      this.textureToReplace = var2.textureToReplace;
+      this.textToReplaceWith = var2.textToReplaceWith;
       this.name = var2.name;
       this.isMembers = var2.isMembers;
       this.isStackable = var2.isStackable;
-      this.field2959 = var2.field2959;
-      this.field2980 = var2.field2980;
-      this.field2965 = var2.field2965;
-      this.field2962 = var2.field2962;
-      this.field2963 = var2.field2963;
-      this.field2966 = var2.field2966;
       this.maleModel = var2.maleModel;
-      this.field2970 = var2.field2970;
-      this.field2969 = var2.field2969;
-      this.field2973 = var2.field2973;
-      this.field2954 = var2.field2954;
+      this.maleModel1 = var2.maleModel1;
+      this.maleModel2 = var2.maleModel2;
+      this.femaleModel = var2.femaleModel;
+      this.femaleModel1 = var2.femaleModel1;
+      this.femaleModel2 = var2.femaleModel2;
+      this.maleHeadModel = var2.maleHeadModel;
+      this.makeHeadModel2 = var2.makeHeadModel2;
+      this.femaleHeadModel = var2.femaleHeadModel;
+      this.femaleHeadModel2 = var2.femaleHeadModel2;
+      this.team = var2.team;
       this.groundActions = var2.groundActions;
       this.inventoryActions = new String[5];
       if(null != var2.inventoryActions) {
@@ -311,12 +330,12 @@ public class ItemComposition extends CacheableNode {
    )
    public final ModelData method3639(int var1) {
       int var2;
-      if(this.field2971 != null && var1 > 1) {
+      if(this.countObj != null && var1 > 1) {
          int var3 = -1;
 
          for(var2 = 0; var2 < 10; ++var2) {
-            if(var1 >= this.field2972[var2] && this.field2972[var2] != 0) {
-               var3 = this.field2971[var2];
+            if(var1 >= this.countCo[var2] && this.countCo[var2] != 0) {
+               var3 = this.countObj[var2];
             }
          }
 
@@ -325,23 +344,23 @@ public class ItemComposition extends CacheableNode {
          }
       }
 
-      ModelData var4 = ModelData.method1463(field2976, this.field2947, 0);
+      ModelData var4 = ModelData.method1463(field2976, this.inventoryModel, 0);
       if(var4 == null) {
          return null;
       } else {
-         if(this.field2982 != 128 || this.field2936 != 128 || this.field2977 != 128) {
-            var4.method1423(this.field2982, this.field2936, this.field2977);
+         if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
+            var4.method1423(this.resizeX, this.resizeY, this.resizeZ);
          }
 
-         if(this.field2944 != null) {
-            for(var2 = 0; var2 < this.field2944.length; ++var2) {
-               var4.method1427(this.field2944[var2], this.field2945[var2]);
+         if(this.colourToReplace != null) {
+            for(var2 = 0; var2 < this.colourToReplace.length; ++var2) {
+               var4.method1427(this.colourToReplace[var2], this.colourToReplaceWith[var2]);
             }
          }
 
-         if(this.field2946 != null) {
-            for(var2 = 0; var2 < this.field2946.length; ++var2) {
-               var4.method1469(this.field2946[var2], this.field2934[var2]);
+         if(this.textureToReplace != null) {
+            for(var2 = 0; var2 < this.textureToReplace.length; ++var2) {
+               var4.method1469(this.textureToReplace[var2], this.textToReplaceWith[var2]);
             }
          }
 
@@ -356,12 +375,12 @@ public class ItemComposition extends CacheableNode {
    )
    @Export("getModel")
    public final Model getModel(int var1) {
-      if(null != this.field2971 && var1 > 1) {
+      if(null != this.countObj && var1 > 1) {
          int var2 = -1;
 
          for(int var3 = 0; var3 < 10; ++var3) {
-            if(var1 >= this.field2972[var3] && this.field2972[var3] != 0) {
-               var2 = this.field2971[var3];
+            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
+               var2 = this.countObj[var3];
             }
          }
 
@@ -374,28 +393,28 @@ public class ItemComposition extends CacheableNode {
       if(null != var5) {
          return var5;
       } else {
-         ModelData var6 = ModelData.method1463(field2976, this.field2947, 0);
+         ModelData var6 = ModelData.method1463(field2976, this.inventoryModel, 0);
          if(var6 == null) {
             return null;
          } else {
-            if(this.field2982 != 128 || this.field2936 != 128 || this.field2977 != 128) {
-               var6.method1423(this.field2982, this.field2936, this.field2977);
+            if(this.resizeX != 128 || this.resizeY != 128 || this.resizeZ != 128) {
+               var6.method1423(this.resizeX, this.resizeY, this.resizeZ);
             }
 
             int var4;
-            if(null != this.field2944) {
-               for(var4 = 0; var4 < this.field2944.length; ++var4) {
-                  var6.method1427(this.field2944[var4], this.field2945[var4]);
+            if(null != this.colourToReplace) {
+               for(var4 = 0; var4 < this.colourToReplace.length; ++var4) {
+                  var6.method1427(this.colourToReplace[var4], this.colourToReplaceWith[var4]);
                }
             }
 
-            if(this.field2946 != null) {
-               for(var4 = 0; var4 < this.field2946.length; ++var4) {
-                  var6.method1469(this.field2946[var4], this.field2934[var4]);
+            if(this.textureToReplace != null) {
+               for(var4 = 0; var4 < this.textureToReplace.length; ++var4) {
+                  var6.method1469(this.textureToReplace[var4], this.textToReplaceWith[var4]);
                }
             }
 
-            var5 = var6.method1486(64 + this.field2957, 768 + this.field2979, -50, -10, -50);
+            var5 = var6.method1486(64 + this.ambient, 768 + this.contrast, -50, -10, -50);
             var5.field1381 = true;
             itemModelCache.put(var5, (long)this.id);
             return var5;
@@ -409,12 +428,12 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-121"
    )
    public ItemComposition method3641(int var1) {
-      if(this.field2971 != null && var1 > 1) {
+      if(this.countObj != null && var1 > 1) {
          int var2 = -1;
 
          for(int var3 = 0; var3 < 10; ++var3) {
-            if(var1 >= this.field2972[var3] && this.field2972[var3] != 0) {
-               var2 = this.field2971[var3];
+            if(var1 >= this.countCo[var3] && this.countCo[var3] != 0) {
+               var2 = this.countObj[var3];
             }
          }
 
@@ -433,13 +452,13 @@ public class ItemComposition extends CacheableNode {
    )
    @Export("readyWorn")
    public final boolean readyWorn(boolean var1) {
-      int var2 = this.field2959;
-      int var3 = this.field2980;
-      int var4 = this.field2965;
+      int var2 = this.maleModel;
+      int var3 = this.maleModel1;
+      int var4 = this.maleModel2;
       if(var1) {
-         var2 = this.field2962;
-         var3 = this.field2963;
-         var4 = this.field2966;
+         var2 = this.femaleModel;
+         var3 = this.femaleModel1;
+         var4 = this.femaleModel2;
       }
 
       if(var2 == -1) {
@@ -469,13 +488,13 @@ public class ItemComposition extends CacheableNode {
    )
    @Export("getWornModelData")
    public final ModelData getWornModelData(boolean var1) {
-      int var2 = this.field2959;
-      int var3 = this.field2980;
-      int var4 = this.field2965;
+      int var2 = this.maleModel;
+      int var3 = this.maleModel1;
+      int var4 = this.maleModel2;
       if(var1) {
-         var2 = this.field2962;
-         var3 = this.field2963;
-         var4 = this.field2966;
+         var2 = this.femaleModel;
+         var3 = this.femaleModel1;
+         var4 = this.femaleModel2;
       }
 
       if(var2 == -1) {
@@ -494,24 +513,24 @@ public class ItemComposition extends CacheableNode {
             }
          }
 
-         if(!var1 && this.field2985 != 0) {
-            var5.method1426(0, this.field2985, 0);
+         if(!var1 && this.maleOffset != 0) {
+            var5.method1426(0, this.maleOffset, 0);
          }
 
-         if(var1 && this.field2964 != 0) {
-            var5.method1426(0, this.field2964, 0);
+         if(var1 && this.femaleOffset != 0) {
+            var5.method1426(0, this.femaleOffset, 0);
          }
 
          int var9;
-         if(null != this.field2944) {
-            for(var9 = 0; var9 < this.field2944.length; ++var9) {
-               var5.method1427(this.field2944[var9], this.field2945[var9]);
+         if(null != this.colourToReplace) {
+            for(var9 = 0; var9 < this.colourToReplace.length; ++var9) {
+               var5.method1427(this.colourToReplace[var9], this.colourToReplaceWith[var9]);
             }
          }
 
-         if(null != this.field2946) {
-            for(var9 = 0; var9 < this.field2946.length; ++var9) {
-               var5.method1469(this.field2946[var9], this.field2934[var9]);
+         if(null != this.textureToReplace) {
+            for(var9 = 0; var9 < this.textureToReplace.length; ++var9) {
+               var5.method1469(this.textureToReplace[var9], this.textToReplaceWith[var9]);
             }
          }
 
@@ -525,11 +544,11 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "-1017911133"
    )
    public final boolean method3644(boolean var1) {
-      int var2 = this.maleModel;
-      int var3 = this.field2970;
+      int var2 = this.maleHeadModel;
+      int var3 = this.makeHeadModel2;
       if(var1) {
-         var2 = this.field2969;
-         var3 = this.field2973;
+         var2 = this.femaleHeadModel;
+         var3 = this.femaleHeadModel2;
       }
 
       if(var2 == -1) {
@@ -581,24 +600,24 @@ public class ItemComposition extends CacheableNode {
    @Export("populateFromBuffer")
    void populateFromBuffer(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2947 = var1.readUnsignedShort();
+         this.inventoryModel = var1.readUnsignedShort();
       } else if(var2 == 2) {
          this.name = var1.method2965();
       } else if(var2 == 4) {
-         this.field2948 = var1.readUnsignedShort();
+         this.zoom2d = var1.readUnsignedShort();
       } else if(var2 == 5) {
-         this.field2949 = var1.readUnsignedShort();
+         this.xan2d = var1.readUnsignedShort();
       } else if(var2 == 6) {
-         this.field2937 = var1.readUnsignedShort();
+         this.yan2d = var1.readUnsignedShort();
       } else if(var2 == 7) {
-         this.field2952 = var1.readUnsignedShort();
-         if(this.field2952 > 32767) {
-            this.field2952 -= 65536;
+         this.offsetX2d = var1.readUnsignedShort();
+         if(this.offsetX2d > 32767) {
+            this.offsetX2d -= 65536;
          }
       } else if(var2 == 8) {
-         this.field2953 = var1.readUnsignedShort();
-         if(this.field2953 > 32767) {
-            this.field2953 -= 65536;
+         this.offsetY2d = var1.readUnsignedShort();
+         if(this.offsetY2d > 32767) {
+            this.offsetY2d -= 65536;
          }
       } else if(var2 == 11) {
          this.isStackable = 1;
@@ -607,15 +626,15 @@ public class ItemComposition extends CacheableNode {
       } else if(var2 == 16) {
          this.isMembers = true;
       } else if(var2 == 23) {
-         this.field2959 = var1.readUnsignedShort();
-         this.field2985 = var1.readUnsignedByte();
+         this.maleModel = var1.readUnsignedShort();
+         this.maleOffset = var1.readUnsignedByte();
       } else if(var2 == 24) {
-         this.field2980 = var1.readUnsignedShort();
+         this.maleModel1 = var1.readUnsignedShort();
       } else if(var2 == 25) {
-         this.field2962 = var1.readUnsignedShort();
-         this.field2964 = var1.readUnsignedByte();
+         this.femaleModel = var1.readUnsignedShort();
+         this.femaleOffset = var1.readUnsignedByte();
       } else if(var2 == 26) {
-         this.field2963 = var1.readUnsignedShort();
+         this.femaleModel1 = var1.readUnsignedShort();
       } else if(var2 >= 30 && var2 < 35) {
          this.groundActions[var2 - 30] = var1.method2965();
          if(this.groundActions[var2 - 30].equalsIgnoreCase("Hidden")) {
@@ -628,62 +647,62 @@ public class ItemComposition extends CacheableNode {
          int var4;
          if(var2 == 40) {
             var3 = var1.readUnsignedByte();
-            this.field2944 = new short[var3];
-            this.field2945 = new short[var3];
+            this.colourToReplace = new short[var3];
+            this.colourToReplaceWith = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2944[var4] = (short)var1.readUnsignedShort();
-               this.field2945[var4] = (short)var1.readUnsignedShort();
+               this.colourToReplace[var4] = (short)var1.readUnsignedShort();
+               this.colourToReplaceWith[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 41) {
             var3 = var1.readUnsignedByte();
-            this.field2946 = new short[var3];
-            this.field2934 = new short[var3];
+            this.textureToReplace = new short[var3];
+            this.textToReplaceWith = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2946[var4] = (short)var1.readUnsignedShort();
-               this.field2934[var4] = (short)var1.readUnsignedShort();
+               this.textureToReplace[var4] = (short)var1.readUnsignedShort();
+               this.textToReplaceWith[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 65) {
             this.field2981 = true;
          } else if(var2 == 78) {
-            this.field2965 = var1.readUnsignedShort();
+            this.maleModel2 = var1.readUnsignedShort();
          } else if(var2 == 79) {
-            this.field2966 = var1.readUnsignedShort();
+            this.femaleModel2 = var1.readUnsignedShort();
          } else if(var2 == 90) {
-            this.maleModel = var1.readUnsignedShort();
+            this.maleHeadModel = var1.readUnsignedShort();
          } else if(var2 == 91) {
-            this.field2969 = var1.readUnsignedShort();
+            this.femaleHeadModel = var1.readUnsignedShort();
          } else if(var2 == 92) {
-            this.field2970 = var1.readUnsignedShort();
+            this.makeHeadModel2 = var1.readUnsignedShort();
          } else if(var2 == 93) {
-            this.field2973 = var1.readUnsignedShort();
+            this.femaleHeadModel2 = var1.readUnsignedShort();
          } else if(var2 == 95) {
-            this.field2951 = var1.readUnsignedShort();
+            this.zan2d = var1.readUnsignedShort();
          } else if(var2 == 97) {
             this.note = var1.readUnsignedShort();
          } else if(var2 == 98) {
-            this.field2974 = var1.readUnsignedShort();
+            this.notedTemplate = var1.readUnsignedShort();
          } else if(var2 >= 100 && var2 < 110) {
-            if(null == this.field2971) {
-               this.field2971 = new int[10];
-               this.field2972 = new int[10];
+            if(null == this.countObj) {
+               this.countObj = new int[10];
+               this.countCo = new int[10];
             }
 
-            this.field2971[var2 - 100] = var1.readUnsignedShort();
-            this.field2972[var2 - 100] = var1.readUnsignedShort();
+            this.countObj[var2 - 100] = var1.readUnsignedShort();
+            this.countCo[var2 - 100] = var1.readUnsignedShort();
          } else if(var2 == 110) {
-            this.field2982 = var1.readUnsignedShort();
+            this.resizeX = var1.readUnsignedShort();
          } else if(var2 == 111) {
-            this.field2936 = var1.readUnsignedShort();
+            this.resizeY = var1.readUnsignedShort();
          } else if(var2 == 112) {
-            this.field2977 = var1.readUnsignedShort();
+            this.resizeZ = var1.readUnsignedShort();
          } else if(var2 == 113) {
-            this.field2957 = var1.readByte();
+            this.ambient = var1.readByte();
          } else if(var2 == 114) {
-            this.field2979 = var1.readByte() * 5;
+            this.contrast = var1.readByte() * 5;
          } else if(var2 == 115) {
-            this.field2954 = var1.readUnsignedByte();
+            this.team = var1.readUnsignedByte();
          } else if(var2 == 139) {
             this.field2941 = var1.readUnsignedShort();
          } else if(var2 == 140) {
@@ -703,17 +722,17 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "1177371448"
    )
    void method3679(ItemComposition var1, ItemComposition var2) {
-      this.field2947 = var1.field2947;
-      this.field2948 = var1.field2948;
-      this.field2949 = var1.field2949;
-      this.field2937 = var1.field2937;
-      this.field2951 = var1.field2951;
-      this.field2952 = var1.field2952;
-      this.field2953 = var1.field2953;
-      this.field2944 = var1.field2944;
-      this.field2945 = var1.field2945;
-      this.field2946 = var1.field2946;
-      this.field2934 = var1.field2934;
+      this.inventoryModel = var1.inventoryModel;
+      this.zoom2d = var1.zoom2d;
+      this.xan2d = var1.xan2d;
+      this.yan2d = var1.yan2d;
+      this.zan2d = var1.zan2d;
+      this.offsetX2d = var1.offsetX2d;
+      this.offsetY2d = var1.offsetY2d;
+      this.colourToReplace = var1.colourToReplace;
+      this.colourToReplaceWith = var1.colourToReplaceWith;
+      this.textureToReplace = var1.textureToReplace;
+      this.textToReplaceWith = var1.textToReplaceWith;
       this.isStackable = var1.isStackable;
       this.name = var2.name;
       this.price = 0;
@@ -764,11 +783,11 @@ public class ItemComposition extends CacheableNode {
       garbageValue = "83"
    )
    public final ModelData method3690(boolean var1) {
-      int var2 = this.maleModel;
-      int var3 = this.field2970;
+      int var2 = this.maleHeadModel;
+      int var3 = this.makeHeadModel2;
       if(var1) {
-         var2 = this.field2969;
-         var3 = this.field2973;
+         var2 = this.femaleHeadModel;
+         var3 = this.femaleHeadModel2;
       }
 
       if(var2 == -1) {
@@ -782,15 +801,15 @@ public class ItemComposition extends CacheableNode {
          }
 
          int var7;
-         if(null != this.field2944) {
-            for(var7 = 0; var7 < this.field2944.length; ++var7) {
-               var4.method1427(this.field2944[var7], this.field2945[var7]);
+         if(null != this.colourToReplace) {
+            for(var7 = 0; var7 < this.colourToReplace.length; ++var7) {
+               var4.method1427(this.colourToReplace[var7], this.colourToReplaceWith[var7]);
             }
          }
 
-         if(this.field2946 != null) {
-            for(var7 = 0; var7 < this.field2946.length; ++var7) {
-               var4.method1469(this.field2946[var7], this.field2934[var7]);
+         if(this.textureToReplace != null) {
+            for(var7 = 0; var7 < this.textureToReplace.length; ++var7) {
+               var4.method1469(this.textureToReplace[var7], this.textToReplaceWith[var7]);
             }
          }
 
