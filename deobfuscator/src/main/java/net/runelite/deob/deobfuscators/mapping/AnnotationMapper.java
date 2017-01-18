@@ -44,6 +44,7 @@ public class AnnotationMapper
 	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
 	private static final Type REPLACE = new Type("Lnet/runelite/mapping/Replace;");
 	private static final Type OBFUSCATED_OVERRIDE = new Type("Lnet/runelite/mapping/ObfuscatedOverride;");
+	private static final Type HOOK = new Type("Lnet/runelite/mapping/Hook;");
 	
 	private final ClassGroup source, target;
 	private final ParallelExecutorMapping mapping;
@@ -151,7 +152,11 @@ public class AnnotationMapper
 
 	private boolean isCopyable(Annotation a)
 	{
-		return a.getType().equals(EXPORT) || a.getType().equals(IMPLEMENTS) || a.getType().equals(REPLACE) || a.getType().equals(OBFUSCATED_OVERRIDE);
+		return a.getType().equals(EXPORT)
+			|| a.getType().equals(IMPLEMENTS)
+			|| a.getType().equals(REPLACE)
+			|| a.getType().equals(OBFUSCATED_OVERRIDE)
+			|| a.getType().equals(HOOK);
 	}
 
 	private String getExport(Annotations an)
