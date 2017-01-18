@@ -95,7 +95,7 @@ public class class97 implements class158 {
                   var2.address = var1.method2965();
                   var2.activity = var1.method2965();
                   var2.location = var1.readUnsignedByte();
-                  var2.playerCount = var1.method2968();
+                  var2.playerCount = var1.readShort();
                }
 
                VertexNormal.method1597(World.worldList, 0, World.worldList.length - 1, World.field674, World.field676);

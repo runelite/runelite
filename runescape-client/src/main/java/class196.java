@@ -267,19 +267,19 @@ public class class196 extends CacheableNode {
       } else if(var2 == 6) {
          this.field2852 = var1.method2790();
       } else if(var2 == 7) {
-         this.field2868 = var1.method2968();
+         this.field2868 = var1.readShort();
       } else if(var2 == 8) {
          this.field2871 = var1.method2784();
       } else if(var2 == 9) {
          this.field2873 = var1.readUnsignedShort();
       } else if(var2 == 10) {
-         this.field2869 = var1.method2968();
+         this.field2869 = var1.readShort();
       } else if(var2 == 11) {
          this.field2870 = 0;
       } else if(var2 == 12) {
          this.field2867 = var1.readUnsignedByte();
       } else if(var2 == 13) {
-         this.field2857 = var1.method2968();
+         this.field2857 = var1.readShort();
       } else if(var2 == 14) {
          this.field2870 = var1.readUnsignedShort();
       } else if(var2 == 17 || var2 == 18) {

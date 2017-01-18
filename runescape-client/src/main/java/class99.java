@@ -165,7 +165,7 @@ public class class99 extends class109 {
             int var7 = class6.region.method1699(class60.plane, var5, var6);
             if(var7 != 0) {
                var7 = var7 >> 14 & 32767;
-               int var8 = Tile.getObjectDefinition(var7).field2882;
+               int var8 = Tile.getObjectDefinition(var7).mapIconId;
                if(var8 >= 0) {
                   int var9 = var5;
                   int var10 = var6;

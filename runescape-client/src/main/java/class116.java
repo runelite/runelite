@@ -379,12 +379,12 @@ public final class class116 {
          var10 = 2048 * (103 - var2) + var1 * 4 + 24624;
          var11 = var5 >> 14 & 32767;
          ObjectComposition var13 = Tile.getObjectDefinition(var11);
-         if(var13.field2909 != -1) {
-            var14 = class114.field1780[var13.field2909];
+         if(var13.mapSceneId != -1) {
+            var14 = class114.field1780[var13.mapSceneId];
             if(var14 != null) {
-               int var15 = (var13.field2895 * 4 - var14.originalWidth) / 2;
-               int var16 = (var13.field2931 * 4 - var14.height) / 2;
-               var14.method4066(var15 + 48 + 4 * var1, 4 * (104 - var2 - var13.field2931) + 48 + var16);
+               int var15 = (var13.sizeX * 4 - var14.originalWidth) / 2;
+               int var16 = (var13.sizeY * 4 - var14.height) / 2;
+               var14.method4066(var15 + 48 + 4 * var1, 4 * (104 - var2 - var13.sizeY) + 48 + var16);
             }
          } else {
             if(var8 == 0 || var8 == 2) {
@@ -458,12 +458,12 @@ public final class class116 {
          var9 = var5 >> 14 & 32767;
          var17 = Tile.getObjectDefinition(var9);
          int var18;
-         if(var17.field2909 != -1) {
-            var14 = class114.field1780[var17.field2909];
+         if(var17.mapSceneId != -1) {
+            var14 = class114.field1780[var17.mapSceneId];
             if(var14 != null) {
-               var11 = (var17.field2895 * 4 - var14.originalWidth) / 2;
-               var18 = (var17.field2931 * 4 - var14.height) / 2;
-               var14.method4066(var11 + 48 + 4 * var1, var18 + 48 + (104 - var2 - var17.field2931) * 4);
+               var11 = (var17.sizeX * 4 - var14.originalWidth) / 2;
+               var18 = (var17.sizeY * 4 - var14.height) / 2;
+               var14.method4066(var11 + 48 + 4 * var1, var18 + 48 + (104 - var2 - var17.sizeY) * 4);
             }
          } else if(var8 == 9) {
             var10 = 15658734;
@@ -491,12 +491,12 @@ public final class class116 {
       if(var5 != 0) {
          var6 = var5 >> 14 & 32767;
          var17 = Tile.getObjectDefinition(var6);
-         if(var17.field2909 != -1) {
-            ModIcon var19 = class114.field1780[var17.field2909];
+         if(var17.mapSceneId != -1) {
+            ModIcon var19 = class114.field1780[var17.mapSceneId];
             if(var19 != null) {
-               var9 = (var17.field2895 * 4 - var19.originalWidth) / 2;
-               int var21 = (var17.field2931 * 4 - var19.height) / 2;
-               var19.method4066(var9 + 48 + var1 * 4, 48 + 4 * (104 - var2 - var17.field2931) + var21);
+               var9 = (var17.sizeX * 4 - var19.originalWidth) / 2;
+               int var21 = (var17.sizeY * 4 - var19.height) / 2;
+               var19.method4066(var9 + 48 + var1 * 4, 48 + 4 * (104 - var2 - var17.sizeY) + var21);
             }
          }
       }
@@ -580,8 +580,8 @@ public final class class116 {
                ObjectComposition var21 = Tile.getObjectDefinition(var11);
                int var22 = var16 & 7;
                int var23 = var15 & 7;
-               int var24 = var21.field2895;
-               int var25 = var21.field2931;
+               int var24 = var21.sizeX;
+               int var25 = var21.sizeY;
                int var26;
                if((var20 & 1) == 1) {
                   var26 = var24;
@@ -602,7 +602,7 @@ public final class class116 {
                }
 
                var26 = var28 + var2;
-               int var29 = var3 + GroundObject.method1496(var16 & 7, var15 & 7, var7, var21.field2895, var21.field2931, var20);
+               int var29 = var3 + GroundObject.method1496(var16 & 7, var15 & 7, var7, var21.sizeX, var21.sizeY, var20);
                if(var26 > 0 && var29 > 0 && var26 < 103 && var29 < 103) {
                   int var30 = var1;
                   if((class10.tileSettings[1][var26][var29] & 2) == 2) {
