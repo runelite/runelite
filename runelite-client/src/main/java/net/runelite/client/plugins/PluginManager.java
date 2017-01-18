@@ -28,17 +28,30 @@ package net.runelite.client.plugins;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.boosts.Boosts;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 
 public class PluginManager
 {
+	private final RuneLite runelite;
 	private final List<Plugin> plugins = new ArrayList<>();
+
+	public PluginManager(RuneLite runelite)
+	{
+		this.runelite = runelite;
+	}
 
 	public void loadAll()
 	{
-		plugins.add(new Boosts());
-		plugins.add(new OpponentInfo());
+		load(new Boosts());
+		load(new OpponentInfo());
+	}
+
+	private void load(Plugin plugin)
+	{
+		plugins.add(plugin);
+		runelite.getEventBus().register(plugin);
 	}
 
 	public Collection<Plugin> getPlugins()
