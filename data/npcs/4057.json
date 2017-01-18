@@ -1,0 +1,63 @@
+{
+  "id": 4057,
+  "recolorToFind": [
+    10128,
+    6798,
+    61,
+    22430,
+    4626,
+    57
+  ],
+  "anInt2156": 32,
+  "name": "Sir Percival",
+  "recolorToReplace": [
+    70,
+    8,
+    107,
+    960,
+    70,
+    107
+  ],
+  "models": [
+    232,
+    306,
+    164,
+    179,
+    268,
+    185,
+    246,
+    318
+  ],
+  "models_2": [
+    65
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

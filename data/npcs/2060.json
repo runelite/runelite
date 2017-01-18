@@ -1,0 +1,64 @@
+{
+  "id": 2060,
+  "recolorToFind": [
+    -22464,
+    61,
+    6798,
+    33,
+    49,
+    41
+  ],
+  "anInt2156": 32,
+  "name": "Dodgy Squire",
+  "recolorToReplace": [
+    4550,
+    37,
+    3594,
+    5276,
+    5165,
+    5157
+  ],
+  "models": [
+    9452,
+    10304,
+    301,
+    173,
+    10218,
+    14565,
+    181,
+    8954
+  ],
+  "models_2": [
+    9448,
+    18187
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 808,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 108,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 108,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

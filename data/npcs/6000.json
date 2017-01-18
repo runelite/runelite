@@ -1,0 +1,62 @@
+{
+  "id": 6000,
+  "recolorToFind": [
+    6980,
+    -22481,
+    61,
+    4550,
+    910,
+    22
+  ],
+  "anInt2156": 32,
+  "name": "Yellow Fortune Director",
+  "recolorToReplace": [
+    7516,
+    8138,
+    9802,
+    4541,
+    10816,
+    10816
+  ],
+  "models": [
+    7031,
+    7070,
+    7058,
+    7038,
+    7045,
+    7068
+  ],
+  "models_2": [
+    6990,
+    6995
+  ],
+  "stanceAnimation": 2157,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2156,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 135,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,51 @@
+{
+  "id": 473,
+  "recolorToFind": [
+    6371,
+    7386,
+    7376,
+    10301,
+    3491
+  ],
+  "anInt2156": 900,
+  "name": "Zygomite",
+  "recolorToReplace": [
+    10448,
+    15434,
+    21563,
+    24751,
+    1843
+  ],
+  "models": [
+    12641
+  ],
+  "stanceAnimation": 3324,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3323,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 10,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 74,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

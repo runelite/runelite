@@ -1,0 +1,62 @@
+{
+  "id": 1578,
+  "recolorToFind": [
+    4626,
+    7756,
+    7845,
+    7591
+  ],
+  "anInt2156": 32,
+  "name": "Mage",
+  "recolorToReplace": [
+    127,
+    -25369,
+    -25037,
+    -25037
+  ],
+  "models": [
+    5033,
+    393,
+    5035,
+    5603,
+    5029,
+    5030,
+    14589,
+    5034,
+    358,
+    567
+  ],
+  "models_2": [
+    4951,
+    115
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

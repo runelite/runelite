@@ -1,0 +1,56 @@
+{
+  "id": 8965,
+  "resizeY": 0,
+  "xan2d": 221,
+  "cost": 50,
+  "inventoryModel": 15743,
+  "resizeZ": 0,
+  "colorFind": [
+    -22225,
+    -22233
+  ],
+  "colorReplace": [
+    28,
+    20
+  ],
+  "name": "Grey tricorn hat",
+  "zoom2d": 592,
+  "yan2d": 258,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -15,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 15974,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 5,
+  "maleHeadModel": 15967,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 15972,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 15987,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

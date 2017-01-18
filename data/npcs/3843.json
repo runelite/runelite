@@ -1,0 +1,55 @@
+{
+  "id": 3843,
+  "recolorToFind": [
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Sirsal Banker",
+  "recolorToReplace": [
+    8914
+  ],
+  "models": [
+    220,
+    253,
+    16485,
+    16472,
+    16476,
+    16481,
+    16473,
+    12086,
+    270
+  ],
+  "models_2": [
+    15407,
+    85
+  ],
+  "stanceAnimation": 4424,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4424,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 12,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Bank",
+    "Collect",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 120,
+  "hasRenderPriority": false,
+  "ambient": 12,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

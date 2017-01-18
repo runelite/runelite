@@ -1,0 +1,61 @@
+{
+  "id": 6991,
+  "recolorToFind": [
+    25238,
+    8741,
+    -22464,
+    6798,
+    8741
+  ],
+  "anInt2156": 32,
+  "name": "Woman",
+  "recolorToReplace": [
+    5652,
+    5784,
+    4550,
+    5921,
+    5784
+  ],
+  "models": [
+    391,
+    471,
+    332,
+    353,
+    419,
+    358,
+    414
+  ],
+  "models_2": [
+    114,
+    131
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 2,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

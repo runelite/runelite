@@ -1,0 +1,49 @@
+{
+  "id": 2141,
+  "recolorToFind": [
+    7475,
+    4762
+  ],
+  "anInt2156": 32,
+  "name": "Cyclops",
+  "recolorToReplace": [
+    -32729,
+    41
+  ],
+  "models": [
+    26405,
+    26404,
+    17434,
+    17466,
+    17460
+  ],
+  "stanceAnimation": 4650,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 4649,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 106,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

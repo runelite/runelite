@@ -1,0 +1,55 @@
+{
+  "id": 4117,
+  "recolorToFind": [
+    8390,
+    8384,
+    8371,
+    10411,
+    5388,
+    5392
+  ],
+  "anInt2156": 32,
+  "name": "Mountain goat",
+  "recolorToReplace": [
+    10322,
+    10312,
+    10304,
+    10421,
+    10275,
+    10270
+  ],
+  "models": [
+    20273,
+    20281,
+    20275
+  ],
+  "stanceAnimation": 5339,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5340,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,59 @@
+{
+  "id": 6450,
+  "recolorToFind": [
+    5276,
+    5272,
+    5268,
+    8,
+    898,
+    12
+  ],
+  "anInt2156": 32,
+  "name": "Zombie",
+  "recolorToReplace": [
+    43,
+    35,
+    26,
+    8596,
+    8596,
+    8844
+  ],
+  "models": [
+    21105,
+    21132,
+    21056,
+    21038,
+    21119,
+    21077,
+    21085
+  ],
+  "stanceAnimation": 5576,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5577,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 42,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

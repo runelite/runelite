@@ -1,0 +1,56 @@
+{
+  "id": 4895,
+  "resizeY": 0,
+  "xan2d": 464,
+  "cost": 280000,
+  "inventoryModel": 6582,
+  "resizeZ": 0,
+  "colorFind": [
+    10394,
+    10291
+  ],
+  "colorReplace": [
+    10388,
+    10508
+  ],
+  "name": "Dharok\u0027s platebody 25",
+  "zoom2d": 1260,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 4,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6670,
+  "maleModel1": 6639,
+  "femaleModel1": 6681,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6698,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

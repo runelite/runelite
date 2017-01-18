@@ -1,0 +1,57 @@
+{
+  "id": 5041,
+  "recolorToFind": [
+    25238,
+    8741,
+    8615
+  ],
+  "anInt2156": 0,
+  "name": "Martina Scorsby",
+  "recolorToReplace": [
+    -11089,
+    10574,
+    10448
+  ],
+  "models": [
+    12140,
+    391,
+    470,
+    12139,
+    428,
+    358,
+    12144
+  ],
+  "models_2": [
+    114,
+    12133
+  ],
+  "stanceAnimation": 3281,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 5,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

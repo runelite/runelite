@@ -1,0 +1,58 @@
+{
+  "id": 12488,
+  "resizeY": 0,
+  "xan2d": 344,
+  "cost": 54400,
+  "inventoryModel": 2339,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    7054,
+    57
+  ],
+  "colorReplace": [
+    -29403,
+    7845,
+    7845
+  ],
+  "name": "Bandos kiteshield",
+  "zoom2d": 1560,
+  "yan2d": 1104,
+  "zan2d": 0,
+  "maleOffset": 4,
+  "yOffset2d": -14,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 486,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -6,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 12489,
+  "femaleModel0": 486,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

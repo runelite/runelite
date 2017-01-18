@@ -1,0 +1,62 @@
+{
+  "id": 3957,
+  "recolorToFind": [
+    4550,
+    8741,
+    25238,
+    6798,
+    926
+  ],
+  "anInt2156": 32,
+  "name": "Ungadulu",
+  "recolorToReplace": [
+    7062,
+    127,
+    127,
+    86,
+    7062
+  ],
+  "models": [
+    214,
+    250,
+    292,
+    170,
+    176,
+    265,
+    181,
+    534
+  ],
+  "models_2": [
+    52,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 70,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

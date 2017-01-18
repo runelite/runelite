@@ -1,0 +1,55 @@
+{
+  "id": 5996,
+  "recolorToFind": [
+    4550,
+    5784,
+    61,
+    22
+  ],
+  "anInt2156": 0,
+  "name": "Brown Engine Secretary",
+  "recolorToReplace": [
+    4537,
+    6945,
+    8741,
+    6812
+  ],
+  "models": [
+    2971,
+    7063,
+    2978,
+    7047
+  ],
+  "models_2": [
+    1
+  ],
+  "stanceAnimation": 2158,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

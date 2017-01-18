@@ -1,0 +1,53 @@
+{
+  "id": 5131,
+  "recolorToFind": [
+    22426,
+    25238,
+    22422,
+    11162
+  ],
+  "anInt2156": 0,
+  "name": "Winkin",
+  "recolorToReplace": [
+    -3933,
+    175,
+    -19271,
+    39
+  ],
+  "models": [
+    26110,
+    26108
+  ],
+  "models_2": [
+    21
+  ],
+  "stanceAnimation": 6534,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

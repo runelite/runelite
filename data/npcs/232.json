@@ -1,0 +1,53 @@
+{
+  "id": 232,
+  "recolorToFind": [
+    8373,
+    5293,
+    5289,
+    5285,
+    5268,
+    8390
+  ],
+  "anInt2156": 32,
+  "name": "Jungle Wolf",
+  "recolorToReplace": [
+    10415,
+    8363,
+    8487,
+    8483,
+    8361,
+    8483
+  ],
+  "models": [
+    26265
+  ],
+  "stanceAnimation": 6580,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 6556,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 64,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

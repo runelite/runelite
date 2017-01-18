@@ -1,0 +1,56 @@
+{
+  "id": 4121,
+  "recolorToFind": [
+    61,
+    10355,
+    21570,
+    926
+  ],
+  "anInt2156": 32,
+  "name": "Troll general",
+  "recolorToReplace": [
+    8367,
+    10578,
+    7469,
+    7704
+  ],
+  "models": [
+    3754,
+    3759,
+    3756,
+    3769,
+    3770,
+    3760,
+    3757,
+    3774
+  ],
+  "stanceAnimation": 926,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 1139,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 200,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 113,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 200,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

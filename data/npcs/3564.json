@@ -1,0 +1,56 @@
+{
+  "id": 3564,
+  "recolorToFind": [
+    6575,
+    6695,
+    6814,
+    7062,
+    7060,
+    8078
+  ],
+  "anInt2156": 32,
+  "name": "Chicken",
+  "recolorToReplace": [
+    -28344,
+    -28476,
+    -27463,
+    -28497,
+    -29533,
+    -32742
+  ],
+  "models": [
+    7728
+  ],
+  "models_2": [
+    55
+  ],
+  "stanceAnimation": 2298,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2297,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 32,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 32,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

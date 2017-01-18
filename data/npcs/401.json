@@ -1,0 +1,65 @@
+{
+  "id": 401,
+  "recolorToFind": [
+    8741,
+    25238,
+    7952,
+    61,
+    41,
+    24
+  ],
+  "anInt2156": 32,
+  "name": "Turael",
+  "recolorToReplace": [
+    -22483,
+    -25446,
+    21526,
+    -27582,
+    -27603,
+    -27492
+  ],
+  "models": [
+    208,
+    251,
+    3379,
+    317,
+    174,
+    179,
+    274,
+    185,
+    555
+  ],
+  "models_2": [
+    48,
+    83
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Assignment",
+    "Trade",
+    "Rewards"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

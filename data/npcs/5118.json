@@ -1,0 +1,58 @@
+{
+  "id": 5118,
+  "recolorToFind": [
+    6798,
+    3868
+  ],
+  "anInt2156": 32,
+  "name": "Sylas",
+  "recolorToReplace": [
+    5210,
+    5210
+  ],
+  "models": [
+    26092,
+    230,
+    15936,
+    26094,
+    26089,
+    10218,
+    26093,
+    26090,
+    26096
+  ],
+  "models_2": [
+    63,
+    26084,
+    26085
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": 5309,
+  "recolorToFind": [
+    22426,
+    25238,
+    11162,
+    22422
+  ],
+  "anInt2156": 32,
+  "name": "Gnome",
+  "recolorToReplace": [
+    16679,
+    9641,
+    10405,
+    16679
+  ],
+  "models": [
+    8362,
+    8363,
+    2918
+  ],
+  "models_2": [
+    21
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

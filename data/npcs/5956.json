@@ -1,0 +1,59 @@
+{
+  "id": 5956,
+  "recolorToFind": [
+    4550,
+    11162,
+    6550,
+    25238,
+    22426,
+    908
+  ],
+  "anInt2156": 32,
+  "name": "Ali the Leaflet Dropper",
+  "recolorToReplace": [
+    4521,
+    8613,
+    6020,
+    3164,
+    8497,
+    19220
+  ],
+  "models": [
+    14289,
+    8363,
+    2917,
+    14386
+  ],
+  "models_2": [
+    14287
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Take-flyer",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

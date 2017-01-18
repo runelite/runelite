@@ -1,0 +1,53 @@
+{
+  "id": 2694,
+  "recolorToFind": [
+    6466,
+    8896,
+    935,
+    929,
+    6474,
+    6470
+  ],
+  "anInt2156": 32,
+  "name": "Rooster",
+  "recolorToReplace": [
+    3996,
+    6720,
+    685,
+    679,
+    3879,
+    4003
+  ],
+  "models": [
+    23905
+  ],
+  "stanceAnimation": 5386,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5385,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 100,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 3,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 100,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

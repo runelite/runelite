@@ -1,0 +1,56 @@
+{
+  "id": 242,
+  "recolorToFind": [
+    910,
+    912,
+    1938,
+    1814,
+    2588,
+    2469
+  ],
+  "anInt2156": 32,
+  "name": "Baby dragon",
+  "recolorToReplace": [
+    -22242,
+    -22237,
+    -22233,
+    -24279,
+    -27459,
+    -27450
+  ],
+  "models": [
+    17412,
+    17428,
+    17421,
+    17424
+  ],
+  "stanceAnimation": 27,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 21,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 105,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 48,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 105,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

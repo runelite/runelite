@@ -1,0 +1,67 @@
+{
+  "id": 1023,
+  "recolorToFind": [
+    25238,
+    8741,
+    -27500,
+    -32506,
+    937,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Fancy dress shop owner",
+  "recolorToReplace": [
+    10760,
+    123,
+    -10719,
+    -10843,
+    -10719,
+    5338
+  ],
+  "models": [
+    7743,
+    230,
+    245,
+    247,
+    11811,
+    10301,
+    10218,
+    12138,
+    181
+  ],
+  "models_2": [
+    63,
+    79,
+    78,
+    7741
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 134,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 111,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

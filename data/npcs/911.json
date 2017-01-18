@@ -1,0 +1,43 @@
+{
+  "id": 911,
+  "anInt2156": 32,
+  "name": "Agrith Naar",
+  "models": [
+    17380,
+    17397,
+    17384,
+    17401
+  ],
+  "models_2": [
+    17547
+  ],
+  "stanceAnimation": 4675,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 4674,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 95,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 100,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 95,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

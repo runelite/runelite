@@ -1,0 +1,66 @@
+{
+  "id": 305,
+  "recolorToFind": [
+    8741,
+    25238,
+    -26722,
+    8082,
+    11200,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Witch",
+  "recolorToReplace": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    7762
+  ],
+  "models": [
+    390,
+    377,
+    462,
+    348,
+    353,
+    481,
+    440,
+    444,
+    450,
+    534
+  ],
+  "models_2": [
+    113,
+    102
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 813,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

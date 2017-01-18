@@ -1,0 +1,54 @@
+{
+  "id": 2277,
+  "resizeY": 0,
+  "xan2d": 236,
+  "cost": 2,
+  "inventoryModel": 17112,
+  "resizeZ": 0,
+  "colorFind": [
+    926
+  ],
+  "colorReplace": [
+    6080
+  ],
+  "name": "Fruit batta",
+  "zoom2d": 780,
+  "yan2d": 136,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 32,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2278,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

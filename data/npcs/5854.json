@@ -1,0 +1,52 @@
+{
+  "id": 5854,
+  "recolorToFind": [
+    6600,
+    7473,
+    7469,
+    7461
+  ],
+  "anInt2156": 32,
+  "name": "Baby tanglefoot",
+  "recolorToReplace": [
+    8361,
+    7333,
+    8481,
+    7452
+  ],
+  "models": [
+    11979
+  ],
+  "models_2": [
+    11987
+  ],
+  "stanceAnimation": 3259,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3261,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 70,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 45,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 80,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

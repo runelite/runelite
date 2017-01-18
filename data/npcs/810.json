@@ -1,0 +1,62 @@
+{
+  "id": 810,
+  "recolorToFind": [
+    6798,
+    25238,
+    8741,
+    8078,
+    8084
+  ],
+  "anInt2156": 32,
+  "name": "Styrmir",
+  "recolorToReplace": [
+    6585,
+    7465,
+    5404,
+    5409,
+    7601
+  ],
+  "models": [
+    206,
+    252,
+    292,
+    162,
+    176,
+    3599,
+    4391,
+    4234
+  ],
+  "models_2": [
+    46,
+    84
+  ],
+  "stanceAnimation": 1137,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1323,
+  "rotate90RightAnimation": 1325,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1324,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1326,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

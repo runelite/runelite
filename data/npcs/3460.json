@@ -1,0 +1,60 @@
+{
+  "id": 3460,
+  "recolorToFind": [
+    4550,
+    25238,
+    4626,
+    9327,
+    7236,
+    7265
+  ],
+  "anInt2156": 32,
+  "name": "Dessous",
+  "recolorToReplace": [
+    7401,
+    7446,
+    7401,
+    8745,
+    7401,
+    6455
+  ],
+  "models": [
+    6225,
+    4088,
+    6227,
+    275,
+    181
+  ],
+  "models_2": [
+    6218
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 139,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

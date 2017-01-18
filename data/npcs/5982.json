@@ -1,0 +1,60 @@
+{
+  "id": 5982,
+  "recolorToFind": [
+    -22456,
+    -22460,
+    -22467,
+    -22473,
+    -22481,
+    24
+  ],
+  "anInt2156": 32,
+  "name": "Graveyard Guardian",
+  "recolorToReplace": [
+    5161,
+    10279,
+    5157,
+    10275,
+    10396,
+    935
+  ],
+  "models": [
+    10633,
+    10634,
+    10637,
+    10638,
+    10629
+  ],
+  "models_2": [
+    10697
+  ],
+  "stanceAnimation": 3033,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 3035,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 130,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 130,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

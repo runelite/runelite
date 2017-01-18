@@ -1,0 +1,49 @@
+{
+  "id": 1861,
+  "recolorToFind": [
+    7717,
+    4550,
+    4680,
+    127
+  ],
+  "anInt2156": 32,
+  "name": "Tree spirit",
+  "recolorToReplace": [
+    3470,
+    10638,
+    7566,
+    22430
+  ],
+  "models": [
+    2856
+  ],
+  "stanceAnimation": 96,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 93,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 14,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

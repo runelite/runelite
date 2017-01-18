@@ -1,0 +1,66 @@
+{
+  "id": 5039,
+  "recolorToFind": [
+    -32506,
+    -27500,
+    6798,
+    8741,
+    10002,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Draul Leptoc",
+  "recolorToReplace": [
+    7721,
+    4292,
+    5214,
+    7721,
+    8099,
+    27528
+  ],
+  "models": [
+    215,
+    238,
+    247,
+    11811,
+    11769,
+    10980,
+    10218,
+    11869,
+    181
+  ],
+  "models_2": [
+    53,
+    70,
+    79
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 132,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 138,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

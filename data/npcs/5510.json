@@ -1,0 +1,59 @@
+{
+  "id": 5510,
+  "recolorToFind": [
+    8741,
+    25238,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Sandwich lady",
+  "recolorToReplace": [
+    1372,
+    1372,
+    10762
+  ],
+  "models": [
+    391,
+    10744,
+    332,
+    353,
+    428,
+    358,
+    10745,
+    417
+  ],
+  "models_2": [
+    114,
+    10740,
+    136
+  ],
+  "stanceAnimation": 3043,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3042,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    "Dismiss"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

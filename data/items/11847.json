@@ -1,0 +1,56 @@
+{
+  "id": 11847,
+  "resizeY": 0,
+  "xan2d": 516,
+  "cost": 7,
+  "inventoryModel": 2438,
+  "resizeZ": 0,
+  "colorFind": [
+    926,
+    0
+  ],
+  "colorReplace": [
+    8,
+    9152
+  ],
+  "name": "Black h\u0027ween mask",
+  "zoom2d": 730,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -10,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Destroy"
+  ],
+  "maleModel0": 3188,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 1755,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 3187,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 3192,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

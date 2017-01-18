@@ -1,0 +1,61 @@
+{
+  "id": 3839,
+  "recolorToFind": [
+    15009,
+    8621,
+    8615,
+    8865
+  ],
+  "anInt2156": 32,
+  "name": "Meteora",
+  "recolorToReplace": [
+    8772,
+    -24358,
+    -20305,
+    -20185
+  ],
+  "models": [
+    390,
+    16506,
+    16493,
+    16498,
+    12143,
+    16496,
+    16499,
+    16508,
+    270
+  ],
+  "models_2": [
+    16450,
+    16469
+  ],
+  "stanceAnimation": 4424,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4426,
+  "rotate90RightAnimation": 4428,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 12,
+  "rotate180Animation": 4427,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 4429,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 12,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

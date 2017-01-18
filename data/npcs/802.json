@@ -1,0 +1,68 @@
+{
+  "id": 802,
+  "recolorToFind": [
+    6798,
+    6587,
+    8084,
+    25238,
+    8741,
+    7952
+  ],
+  "anInt2156": 32,
+  "name": "Olaf the Bard",
+  "recolorToReplace": [
+    4771,
+    5404,
+    10524,
+    6435,
+    8619,
+    13964
+  ],
+  "models": [
+    215,
+    249,
+    292,
+    163,
+    179,
+    4226,
+    4218,
+    4391,
+    4390,
+    244,
+    29317
+  ],
+  "models_2": [
+    53,
+    81,
+    77
+  ],
+  "stanceAnimation": 1318,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

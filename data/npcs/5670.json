@@ -1,0 +1,53 @@
+{
+  "id": 5670,
+  "recolorToFind": [
+    5276,
+    5281,
+    -22502,
+    -22493,
+    -22489,
+    -22485
+  ],
+  "anInt2156": 32,
+  "name": "Undead Lumberjack",
+  "recolorToReplace": [
+    10266,
+    10270,
+    47,
+    51,
+    55,
+    59
+  ],
+  "models": [
+    23214
+  ],
+  "stanceAnimation": 5966,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5966,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 10,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 40,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

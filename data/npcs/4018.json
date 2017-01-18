@@ -1,0 +1,65 @@
+{
+  "id": 4018,
+  "recolorToFind": [
+    8741,
+    8078,
+    8741,
+    25238,
+    5231
+  ],
+  "anInt2156": 32,
+  "name": "Smith",
+  "recolorToReplace": [
+    1451,
+    -1380,
+    -1487,
+    8396,
+    7496
+  ],
+  "models": [
+    193,
+    214,
+    236,
+    250,
+    11115,
+    11106,
+    10218,
+    5218,
+    11191
+  ],
+  "models_2": [
+    52,
+    82,
+    36,
+    68
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 145,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 130,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

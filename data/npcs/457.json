@@ -1,0 +1,53 @@
+{
+  "id": 457,
+  "recolorToFind": [
+    21553,
+    21549,
+    21545,
+    21665,
+    21660,
+    21656
+  ],
+  "anInt2156": 32,
+  "name": "Crawling Hand",
+  "recolorToReplace": [
+    24747,
+    26793,
+    24741,
+    24860,
+    24856,
+    24980
+  ],
+  "models": [
+    5071
+  ],
+  "stanceAnimation": 1588,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 1589,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 198,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 12,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 198,
+  "hasRenderPriority": false,
+  "ambient": 30,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

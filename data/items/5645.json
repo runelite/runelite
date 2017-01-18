@@ -1,0 +1,54 @@
+{
+  "id": 5645,
+  "resizeY": 0,
+  "xan2d": 268,
+  "cost": 64,
+  "inventoryModel": 2763,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    -22239
+  ],
+  "name": "Mithril javelin(p+)",
+  "zoom2d": 1470,
+  "yan2d": 1964,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 63,
+  "stackable": 1,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 547,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 547,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,62 @@
+{
+  "id": 756,
+  "recolorToFind": [
+    4550,
+    6798,
+    4416,
+    -22464,
+    6443
+  ],
+  "anInt2156": 32,
+  "name": "Jagbakoba",
+  "recolorToReplace": [
+    5671,
+    4783,
+    5572,
+    5572,
+    5572
+  ],
+  "models": [
+    206,
+    252,
+    8845,
+    173,
+    176,
+    540,
+    8925,
+    8919
+  ],
+  "models_2": [
+    46,
+    84
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 130,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 131,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,64 @@
+{
+  "id": 1815,
+  "recolorToFind": [
+    7050,
+    -22225,
+    6798,
+    -22114,
+    25238,
+    -22233
+  ],
+  "anInt2156": 32,
+  "name": "Fancy Dan",
+  "recolorToReplace": [
+    792,
+    792,
+    4,
+    916,
+    -22006,
+    668
+  ],
+  "models": [
+    193,
+    214,
+    250,
+    15978,
+    15973,
+    177,
+    5218
+  ],
+  "models_2": [
+    52,
+    82,
+    36
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    "Join-Crew",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

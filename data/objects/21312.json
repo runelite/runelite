@@ -1,0 +1,53 @@
+{
+  "id": 21312,
+  "anInt2069": 16,
+  "isSolid": true,
+  "name": "Rope bridge",
+  "objectModels": [
+    22104,
+    22105,
+    22103
+  ],
+  "objectTypes": [
+    0,
+    3,
+    22
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": 1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 20,
+  "contrast": 20,
+  "actions": [
+    "Walk-across",
+    "Repair",
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 1,
+  "mapSceneID": 22,
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": true,
+  "anInt2105": 0,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": false
+}

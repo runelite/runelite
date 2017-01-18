@@ -1,0 +1,62 @@
+{
+  "id": 3381,
+  "resizeY": 0,
+  "xan2d": 256,
+  "cost": 1,
+  "inventoryModel": 4002,
+  "resizeZ": 0,
+  "colorFind": [
+    14866,
+    13194,
+    -713,
+    26747,
+    119
+  ],
+  "colorReplace": [
+    1579,
+    3745,
+    -713,
+    1597,
+    11173
+  ],
+  "name": "Cooked slimy eel",
+  "zoom2d": 1650,
+  "yan2d": 36,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 3382,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

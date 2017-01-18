@@ -1,0 +1,64 @@
+{
+  "id": 3920,
+  "recolorToFind": [
+    6798,
+    25238,
+    8741,
+    8078,
+    906
+  ],
+  "anInt2156": 32,
+  "name": "Manni the Reveller",
+  "recolorToReplace": [
+    7855,
+    24854,
+    10405,
+    10529,
+    4525
+  ],
+  "models": [
+    206,
+    252,
+    292,
+    162,
+    176,
+    4226,
+    4218,
+    326,
+    4390,
+    4396
+  ],
+  "models_2": [
+    46,
+    84
+  ],
+  "stanceAnimation": 1322,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1323,
+  "rotate90RightAnimation": 1325,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1324,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1326,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,59 @@
+{
+  "id": 2344,
+  "recolorToFind": [
+    5532,
+    5656,
+    5652,
+    20,
+    24,
+    11175
+  ],
+  "anInt2156": 32,
+  "name": "Barlak",
+  "recolorToReplace": [
+    7479,
+    7475,
+    7471,
+    7467,
+    7463,
+    7587
+  ],
+  "models": [
+    23661,
+    23708,
+    23630
+  ],
+  "models_2": [
+    23233,
+    23246
+  ],
+  "stanceAnimation": 6040,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6041,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

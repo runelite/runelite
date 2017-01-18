@@ -1,0 +1,52 @@
+{
+  "id": 250,
+  "recolorToFind": [
+    910,
+    912,
+    1938,
+    1814
+  ],
+  "anInt2156": 32,
+  "name": "Red dragon",
+  "recolorToReplace": [
+    2960,
+    2962,
+    3988,
+    2838
+  ],
+  "models": [
+    17410,
+    17425,
+    17419,
+    17423
+  ],
+  "stanceAnimation": 90,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 4,
+  "walkAnimation": 79,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 152,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 110,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,55 @@
+{
+  "id": 4157,
+  "recolorToFind": [
+    61,
+    10355,
+    21570
+  ],
+  "anInt2156": 32,
+  "name": "Burntmeat",
+  "recolorToReplace": [
+    8367,
+    10578,
+    7469
+  ],
+  "models": [
+    3754,
+    3758,
+    3756,
+    3772,
+    3764
+  ],
+  "models_2": [
+    3791,
+    2930
+  ],
+  "stanceAnimation": 286,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 283,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 156,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 156,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

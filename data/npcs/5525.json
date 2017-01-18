@@ -1,0 +1,54 @@
+{
+  "id": 5525,
+  "recolorToFind": [
+    25238
+  ],
+  "anInt2156": 32,
+  "name": "Toby",
+  "recolorToReplace": [
+    -21581
+  ],
+  "models": [
+    215,
+    28435,
+    28214,
+    11789,
+    10218,
+    267,
+    10313,
+    10683,
+    246
+  ],
+  "models_2": [
+    53
+  ],
+  "stanceAnimation": 2561,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2562,
+  "rotate90RightAnimation": 2562,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 2562,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 2562,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

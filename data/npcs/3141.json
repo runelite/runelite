@@ -1,0 +1,37 @@
+{
+  "id": 3141,
+  "anInt2156": 32,
+  "name": "Gorak",
+  "models": [
+    27698
+  ],
+  "stanceAnimation": 4299,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 4298,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 100,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 149,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 100,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

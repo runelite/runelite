@@ -1,0 +1,64 @@
+{
+  "id": 3835,
+  "recolorToFind": [
+    8615,
+    8741,
+    8865,
+    25238,
+    15009,
+    790
+  ],
+  "anInt2156": 32,
+  "name": "Oneiromancer",
+  "recolorToReplace": [
+    -22429,
+    -22431,
+    -22434,
+    -22434,
+    235,
+    -6025
+  ],
+  "models": [
+    16500,
+    12141,
+    16506,
+    16494,
+    16498,
+    10699,
+    16503,
+    270
+  ],
+  "models_2": [
+    12135,
+    16465
+  ],
+  "stanceAnimation": 4424,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4426,
+  "rotate90RightAnimation": 4428,
+  "aBool2170": true,
+  "resizeX": 135,
+  "contrast": 15,
+  "rotate180Animation": 4427,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 4429,
+  "resizeY": 135,
+  "hasRenderPriority": true,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

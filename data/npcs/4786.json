@@ -1,0 +1,67 @@
+{
+  "id": 4786,
+  "recolorToFind": [
+    10828,
+    10692,
+    25238,
+    6038,
+    8741,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "null",
+  "recolorToReplace": [
+    -18034,
+    -16228,
+    -18034,
+    -22469,
+    -16228,
+    8646
+  ],
+  "models": [
+    11330,
+    18192,
+    18346,
+    18197,
+    15008,
+    330,
+    10301,
+    177,
+    10218,
+    263,
+    14374
+  ],
+  "models_2": [
+    11402,
+    18335
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 146,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 120,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": false,
+  "anInt2189": -1,
+  "aBool2190": false
+}

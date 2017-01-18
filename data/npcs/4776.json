@@ -1,0 +1,64 @@
+{
+  "id": 4776,
+  "recolorToFind": [
+    25238,
+    8741,
+    57,
+    7952,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Fortress Guard",
+  "recolorToReplace": [
+    12,
+    12,
+    5652,
+    -11126,
+    5652
+  ],
+  "models": [
+    7668,
+    252,
+    294,
+    317,
+    151,
+    177,
+    518,
+    541,
+    254,
+    185
+  ],
+  "models_2": [
+    7667,
+    84
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 20,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

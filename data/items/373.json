@@ -1,0 +1,56 @@
+{
+  "id": 373,
+  "resizeY": 0,
+  "xan2d": 368,
+  "cost": 200,
+  "inventoryModel": 2494,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    103
+  ],
+  "colorReplace": [
+    -12995,
+    -12850
+  ],
+  "name": "Swordfish",
+  "zoom2d": 1710,
+  "yan2d": 1960,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -7,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 374,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

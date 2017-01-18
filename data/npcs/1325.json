@@ -1,0 +1,60 @@
+{
+  "id": 1325,
+  "recolorToFind": [
+    4550,
+    -22464,
+    25238,
+    13122
+  ],
+  "anInt2156": 32,
+  "name": "Hari",
+  "recolorToReplace": [
+    4535,
+    4535,
+    -27475,
+    5157
+  ],
+  "models": [
+    12083,
+    244,
+    12085,
+    173,
+    177,
+    12087,
+    5218
+  ],
+  "models_2": [
+    12025,
+    77,
+    12026
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 134,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 145,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

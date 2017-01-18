@@ -1,0 +1,54 @@
+{
+  "id": 3989,
+  "recolorToFind": [
+    127,
+    123,
+    115,
+    103,
+    99,
+    90
+  ],
+  "anInt2156": 32,
+  "name": "Sick-looking sheep (4)",
+  "recolorToReplace": [
+    10570,
+    10566,
+    10564,
+    10560,
+    10555,
+    10551
+  ],
+  "models": [
+    20290,
+    20291
+  ],
+  "stanceAnimation": 5335,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5334,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Prod",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

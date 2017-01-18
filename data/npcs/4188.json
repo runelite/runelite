@@ -1,0 +1,45 @@
+{
+  "id": 4188,
+  "recolorToFind": [
+    15013,
+    15017
+  ],
+  "anInt2156": 32,
+  "name": "Plague frog",
+  "recolorToReplace": [
+    11707,
+    11707
+  ],
+  "models": [
+    3447
+  ],
+  "stanceAnimation": 1018,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1021,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 11,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

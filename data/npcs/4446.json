@@ -1,0 +1,61 @@
+{
+  "id": 4446,
+  "recolorToFind": [
+    -22464,
+    25238,
+    8741,
+    4550,
+    933
+  ],
+  "anInt2156": 32,
+  "name": "Sorin",
+  "recolorToReplace": [
+    4323,
+    10388,
+    10394,
+    10450,
+    -22510
+  ],
+  "models": [
+    9452,
+    246,
+    310,
+    326,
+    163,
+    176,
+    274,
+    185
+  ],
+  "models_2": [
+    9448
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 117,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 122,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

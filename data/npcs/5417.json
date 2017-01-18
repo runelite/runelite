@@ -1,0 +1,65 @@
+{
+  "id": 5417,
+  "recolorToFind": [
+    25238,
+    8741,
+    8078,
+    -16116,
+    11844
+  ],
+  "anInt2156": 32,
+  "name": "Chief servant",
+  "recolorToReplace": [
+    920,
+    920,
+    9164,
+    0,
+    0
+  ],
+  "models": [
+    15121,
+    230,
+    5215,
+    12751,
+    322,
+    162,
+    4924,
+    15147,
+    254,
+    181
+  ],
+  "models_2": [
+    63,
+    15118,
+    5207
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

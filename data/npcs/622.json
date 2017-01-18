@@ -1,0 +1,60 @@
+{
+  "id": 622,
+  "recolorToFind": [
+    28744,
+    28740,
+    28736,
+    28731,
+    127
+  ],
+  "anInt2156": 32,
+  "name": "Zombie swab",
+  "recolorToReplace": [
+    16466,
+    15434,
+    16454,
+    15421,
+    404
+  ],
+  "models": [
+    21434,
+    21479,
+    21418,
+    21441,
+    21462,
+    21449,
+    21425
+  ],
+  "models_2": [
+    21400
+  ],
+  "stanceAnimation": 5650,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5652,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 116,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    "Intimidate",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 55,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 116,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

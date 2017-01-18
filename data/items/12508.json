@@ -1,0 +1,62 @@
+{
+  "id": 12508,
+  "resizeY": 0,
+  "xan2d": 452,
+  "cost": 13000,
+  "inventoryModel": 28668,
+  "resizeZ": 0,
+  "colorFind": [
+    912,
+    24082,
+    22168,
+    22156,
+    920
+  ],
+  "colorReplace": [
+    119,
+    94,
+    -27417,
+    107,
+    119
+  ],
+  "name": "Armadyl d\u0027hide",
+  "zoom2d": 1180,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -1,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 28530,
+  "maleModel1": 20121,
+  "femaleModel1": 20177,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 12509,
+  "femaleModel0": 28610,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

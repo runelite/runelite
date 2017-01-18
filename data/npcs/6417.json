@@ -1,0 +1,62 @@
+{
+  "id": 6417,
+  "recolorToFind": [
+    9152,
+    41,
+    4886,
+    61,
+    4550,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Mamma Bufetta",
+  "recolorToReplace": [
+    4886,
+    5572,
+    5914,
+    5572,
+    5532,
+    10328
+  ],
+  "models": [
+    387,
+    445,
+    8943,
+    341,
+    8933,
+    8940,
+    8934
+  ],
+  "models_2": [
+    110
+  ],
+  "stanceAnimation": -1,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

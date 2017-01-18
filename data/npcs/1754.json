@@ -1,0 +1,55 @@
+{
+  "id": 1754,
+  "recolorToFind": [
+    -11149,
+    -11033,
+    -10792,
+    -10317,
+    -10333
+  ],
+  "anInt2156": 0,
+  "name": "Portal",
+  "recolorToReplace": [
+    -2125,
+    -2249,
+    -2373,
+    -2490,
+    -2490
+  ],
+  "models": [
+    14533,
+    14523,
+    14524,
+    14525,
+    27179
+  ],
+  "stanceAnimation": 6878,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 6878,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

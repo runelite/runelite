@@ -1,0 +1,54 @@
+{
+  "id": 954,
+  "resizeY": 0,
+  "xan2d": 188,
+  "cost": 18,
+  "inventoryModel": 1842,
+  "resizeZ": 0,
+  "colorFind": [
+    6558
+  ],
+  "colorReplace": [
+    7054
+  ],
+  "name": "Rope",
+  "zoom2d": 1240,
+  "yan2d": 1976,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -30,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 10131,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 955,
+  "femaleModel0": 10131,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

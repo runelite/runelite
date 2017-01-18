@@ -1,0 +1,59 @@
+{
+  "id": 2106,
+  "recolorToFind": [
+    10520,
+    10644,
+    10768,
+    10892
+  ],
+  "anInt2156": 32,
+  "name": "Ork",
+  "recolorToReplace": [
+    16549,
+    16668,
+    16788,
+    16912
+  ],
+  "models": [
+    16301,
+    16305,
+    16309,
+    16323,
+    16328,
+    16317,
+    16315,
+    16316
+  ],
+  "models_2": [
+    16216
+  ],
+  "stanceAnimation": 4318,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4319,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 20,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

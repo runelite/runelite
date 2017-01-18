@@ -1,0 +1,54 @@
+{
+  "id": 1313,
+  "resizeY": 0,
+  "xan2d": 204,
+  "cost": 1920,
+  "inventoryModel": 2754,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    0
+  ],
+  "name": "Black 2h sword",
+  "zoom2d": 1380,
+  "yan2d": 1396,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -9,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 546,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1314,
+  "femaleModel0": 546,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

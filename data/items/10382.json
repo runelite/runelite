@@ -1,0 +1,58 @@
+{
+  "id": 10382,
+  "resizeY": 0,
+  "xan2d": 194,
+  "cost": 2000,
+  "inventoryModel": 20231,
+  "resizeZ": 0,
+  "colorFind": [
+    920,
+    912,
+    8070
+  ],
+  "colorReplace": [
+    27210,
+    24014,
+    19788
+  ],
+  "name": "Guthix coif",
+  "zoom2d": 789,
+  "yan2d": 1784,
+  "zan2d": 2047,
+  "maleOffset": 0,
+  "yOffset2d": -35,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 20131,
+  "maleModel1": 230,
+  "femaleModel1": 403,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 63,
+  "maleHeadModel2": 20107,
+  "femaleHeadModel": 120,
+  "femaleHeadModel2": 20107,
+  "femaleModel2": -1,
+  "notedID": 10383,
+  "femaleModel0": 20184,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

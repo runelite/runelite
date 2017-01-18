@@ -1,0 +1,63 @@
+{
+  "id": 4586,
+  "recolorToFind": [
+    127,
+    4550,
+    8741,
+    25238,
+    4626,
+    -22464
+  ],
+  "anInt2156": 32,
+  "name": "Grimesquit",
+  "recolorToReplace": [
+    -32746,
+    5435,
+    6319,
+    21658,
+    5268,
+    7461
+  ],
+  "models": [
+    10078,
+    8849,
+    332,
+    353,
+    428,
+    358,
+    418
+  ],
+  "models_2": [
+    10034,
+    137
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 115,
+  "contrast": 10,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 136,
+  "hasRenderPriority": true,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,56 @@
+{
+  "id": 4592,
+  "recolorToFind": [
+    8485,
+    61,
+    10330,
+    10347
+  ],
+  "anInt2156": 32,
+  "name": "Smokin\u0027 Joe",
+  "recolorToReplace": [
+    8481,
+    -32723,
+    10312,
+    10312
+  ],
+  "models": [
+    7026,
+    7062,
+    2979,
+    7046,
+    2985
+  ],
+  "models_2": [
+    10025
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 140,
+  "contrast": 10,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 130,
+  "hasRenderPriority": true,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

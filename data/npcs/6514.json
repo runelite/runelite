@@ -1,0 +1,51 @@
+{
+  "id": 6514,
+  "recolorToFind": [
+    17467
+  ],
+  "anInt2156": 32,
+  "name": "Financial Wizard",
+  "recolorToReplace": [
+    18626
+  ],
+  "models": [
+    29663,
+    5212,
+    5220,
+    5209,
+    5216
+  ],
+  "models_2": [
+    5203,
+    29664
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 808,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 112,
+  "contrast": 40,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Bank",
+    "Collect",
+    "Deposit-box"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 112,
+  "hasRenderPriority": false,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

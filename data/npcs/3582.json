@@ -1,0 +1,59 @@
+{
+  "id": 3582,
+  "recolorToFind": [
+    8741,
+    25238,
+    4550,
+    908,
+    4886
+  ],
+  "anInt2156": 32,
+  "name": "Akthanakos",
+  "recolorToReplace": [
+    5157,
+    5157,
+    5202,
+    5157,
+    5161
+  ],
+  "models": [
+    10835,
+    292,
+    170,
+    10218,
+    265,
+    8919
+  ],
+  "models_2": [
+    11018
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

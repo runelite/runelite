@@ -1,0 +1,37 @@
+{
+  "id": 5863,
+  "anInt2156": 0,
+  "name": "Cerberus",
+  "models": [
+    29270
+  ],
+  "stanceAnimation": 4485,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 4488,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 318,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 120,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

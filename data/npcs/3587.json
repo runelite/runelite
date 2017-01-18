@@ -1,0 +1,53 @@
+{
+  "id": 3587,
+  "recolorToFind": [
+    -22431
+  ],
+  "anInt2156": 0,
+  "name": "Bonafido",
+  "recolorToReplace": [
+    4550
+  ],
+  "models": [
+    22600,
+    22599,
+    22603,
+    22595,
+    22598,
+    22601,
+    19947,
+    22606
+  ],
+  "models_2": [
+    22593
+  ],
+  "stanceAnimation": 5814,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 140,
+  "contrast": 25,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 140,
+  "hasRenderPriority": true,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

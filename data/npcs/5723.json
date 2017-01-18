@@ -1,0 +1,46 @@
+{
+  "id": 5723,
+  "recolorToFind": [
+    5669,
+    2396
+  ],
+  "anInt2156": 32,
+  "name": "Barricade",
+  "recolorToReplace": [
+    4762,
+    2376
+  ],
+  "models": [
+    14205,
+    4495
+  ],
+  "stanceAnimation": 475,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    "Extinguish",
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

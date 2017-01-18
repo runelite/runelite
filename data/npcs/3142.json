@@ -1,0 +1,55 @@
+{
+  "id": 3142,
+  "recolorToFind": [
+    22426,
+    22424,
+    6587,
+    127
+  ],
+  "anInt2156": 32,
+  "name": "Gnome Coach",
+  "recolorToReplace": [
+    5563,
+    3123,
+    5524,
+    5351
+  ],
+  "models": [
+    9832,
+    4245,
+    2915,
+    9833
+  ],
+  "models_2": [
+    9364
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

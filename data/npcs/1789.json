@@ -1,0 +1,67 @@
+{
+  "id": 1789,
+  "recolorToFind": [
+    -22464,
+    8741,
+    25238,
+    10659,
+    9104,
+    5652
+  ],
+  "anInt2156": 32,
+  "name": "Grum",
+  "recolorToReplace": [
+    4550,
+    -12377,
+    -19172,
+    -19172,
+    -10949,
+    -10358
+  ],
+  "models": [
+    198,
+    215,
+    245,
+    247,
+    292,
+    327,
+    151,
+    176,
+    257
+  ],
+  "models_2": [
+    53,
+    79,
+    40,
+    78
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

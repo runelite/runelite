@@ -1,0 +1,64 @@
+{
+  "id": 6648,
+  "recolorToFind": [
+    25238,
+    6798,
+    11200,
+    8078,
+    6587
+  ],
+  "anInt2156": 32,
+  "name": "Lokar Searunner",
+  "recolorToReplace": [
+    8369,
+    9670,
+    10157,
+    10394,
+    7605
+  ],
+  "models": [
+    214,
+    4221,
+    252,
+    292,
+    4391,
+    162,
+    3660,
+    533,
+    4226,
+    4218
+  ],
+  "models_2": [
+    52,
+    84
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 131,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 121,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,62 @@
+{
+  "id": 544,
+  "recolorToFind": [
+    28744,
+    28740,
+    28727,
+    4550,
+    4541,
+    4657
+  ],
+  "anInt2156": 32,
+  "name": "Monk",
+  "recolorToReplace": [
+    5541,
+    5541,
+    5541,
+    5541,
+    5541,
+    5784
+  ],
+  "models": [
+    21429,
+    21468,
+    21412,
+    21440,
+    21460,
+    21446,
+    21422
+  ],
+  "models_2": [
+    22784
+  ],
+  "stanceAnimation": 5877,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5876,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

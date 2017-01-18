@@ -1,0 +1,43 @@
+{
+  "id": 1818,
+  "recolorToFind": [
+    12
+  ],
+  "anInt2156": 32,
+  "name": "Swarm",
+  "recolorToReplace": [
+    3988
+  ],
+  "models": [
+    2950
+  ],
+  "stanceAnimation": 0,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 0,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

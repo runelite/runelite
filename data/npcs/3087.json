@@ -1,0 +1,61 @@
+{
+  "id": 3087,
+  "recolorToFind": [
+    25238,
+    8741,
+    9096,
+    906,
+    -22464
+  ],
+  "anInt2156": 32,
+  "name": "Farmer",
+  "recolorToReplace": [
+    7843,
+    14748,
+    6028,
+    6930,
+    4550
+  ],
+  "models": [
+    215,
+    247,
+    292,
+    151,
+    176,
+    274,
+    185,
+    495
+  ],
+  "models_2": [
+    53
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 7,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

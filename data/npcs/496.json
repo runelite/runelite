@@ -1,0 +1,37 @@
+{
+  "id": 496,
+  "anInt2156": 32,
+  "name": "Whirlpool",
+  "models": [
+    26699
+  ],
+  "stanceAnimation": 6737,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 6737,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 170,
+  "contrast": 30,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Disturb",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 170,
+  "hasRenderPriority": false,
+  "ambient": 30,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

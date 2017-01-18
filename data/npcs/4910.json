@@ -1,0 +1,58 @@
+{
+  "id": 4910,
+  "recolorToFind": [
+    22426,
+    22422,
+    6798,
+    6430,
+    926,
+    8598
+  ],
+  "anInt2156": 32,
+  "name": "Gnome soldier",
+  "recolorToReplace": [
+    21793,
+    21784,
+    1556,
+    21908,
+    -24166,
+    22032
+  ],
+  "models": [
+    14806,
+    2914,
+    14811
+  ],
+  "models_2": [
+    22
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,58 @@
+{
+  "id": 2327,
+  "resizeY": 0,
+  "xan2d": 192,
+  "cost": 15,
+  "inventoryModel": 2767,
+  "resizeZ": 0,
+  "colorFind": [
+    8670,
+    5006,
+    61
+  ],
+  "colorReplace": [
+    5689,
+    3623,
+    4416
+  ],
+  "name": "Meat pie",
+  "zoom2d": 950,
+  "yan2d": 104,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -9,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 2328,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

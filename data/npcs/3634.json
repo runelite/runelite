@@ -1,0 +1,62 @@
+{
+  "id": 3634,
+  "recolorToFind": [
+    6798,
+    8741,
+    25238,
+    908,
+    10004,
+    22449
+  ],
+  "anInt2156": 32,
+  "name": "Student",
+  "recolorToReplace": [
+    7626,
+    -7652,
+    -6514,
+    -6762,
+    6806,
+    103
+  ],
+  "models": [
+    399,
+    447,
+    456,
+    332,
+    356,
+    429,
+    361
+  ],
+  "models_2": [
+    118
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

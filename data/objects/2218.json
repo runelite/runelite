@@ -1,0 +1,62 @@
+{
+  "id": 2218,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Fissure",
+  "objectModels": [
+    830
+  ],
+  "recolorToFind": [
+    5425,
+    61,
+    45,
+    57,
+    28,
+    16156
+  ],
+  "mapIconID": -1,
+  "sizeX": 3,
+  "sizeY": 3,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "actions": [
+    "Look-at",
+    "Search",
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    6798,
+    5908,
+    5772,
+    8086,
+    5388,
+    6798
+  ],
+  "aBool2097": true,
+  "modelSizeX": 192,
+  "modelSizeHeight": 128,
+  "modelSizeY": 192,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": 0,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": true,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

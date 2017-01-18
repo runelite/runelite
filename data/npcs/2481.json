@@ -1,0 +1,53 @@
+{
+  "id": 2481,
+  "recolorToFind": [
+    6798,
+    6554,
+    6430,
+    6435,
+    6439,
+    922
+  ],
+  "anInt2156": 32,
+  "name": "Minotaur",
+  "recolorToReplace": [
+    8,
+    16,
+    20,
+    24,
+    28,
+    939
+  ],
+  "models": [
+    15915
+  ],
+  "stanceAnimation": 4264,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4263,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 12,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

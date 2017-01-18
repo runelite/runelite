@@ -1,0 +1,58 @@
+{
+  "id": 2333,
+  "recolorToFind": [
+    417,
+    412,
+    3873,
+    3868,
+    3235,
+    3230
+  ],
+  "anInt2156": 32,
+  "name": "Cave goblin child",
+  "recolorToReplace": [
+    6598,
+    6594,
+    8,
+    12,
+    -32595,
+    -32599
+  ],
+  "models": [
+    23640,
+    23689,
+    23627
+  ],
+  "models_2": [
+    23238
+  ],
+  "stanceAnimation": 6040,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6042,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 86,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 86,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

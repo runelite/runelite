@@ -1,0 +1,53 @@
+{
+  "id": 4496,
+  "recolorToFind": [
+    -27603,
+    21534,
+    21543,
+    5276
+  ],
+  "anInt2156": 32,
+  "name": "Skeleton fremennik",
+  "recolorToReplace": [
+    26772,
+    -29542,
+    -29538,
+    24
+  ],
+  "models": [
+    24182,
+    24190,
+    24186,
+    24192,
+    24053
+  ],
+  "stanceAnimation": 6113,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6112,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 50,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

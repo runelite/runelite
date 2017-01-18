@@ -1,0 +1,63 @@
+{
+  "id": 1031,
+  "recolorToFind": [
+    6798,
+    -22464,
+    8741,
+    25238,
+    4626,
+    -11139
+  ],
+  "anInt2156": 32,
+  "name": "Candle maker",
+  "recolorToReplace": [
+    7070,
+    4550,
+    -32684,
+    8,
+    8,
+    4391
+  ],
+  "models": [
+    217,
+    302,
+    167,
+    176,
+    274,
+    185,
+    249
+  ],
+  "models_2": [
+    55,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

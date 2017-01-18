@@ -1,0 +1,66 @@
+{
+  "id": 4635,
+  "recolorToFind": [
+    -16482,
+    25238,
+    10512,
+    10378,
+    4550,
+    7952
+  ],
+  "anInt2156": 32,
+  "name": "Mercenary Captain",
+  "recolorToReplace": [
+    6932,
+    6579,
+    5555,
+    6550,
+    5685,
+    5281
+  ],
+  "models": [
+    6130,
+    10561,
+    9458,
+    7605,
+    179,
+    19336,
+    15417,
+    7609,
+    16473,
+    317
+  ],
+  "models_2": [
+    6128,
+    10560
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    "Watch",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 47,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

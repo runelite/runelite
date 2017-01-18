@@ -1,0 +1,60 @@
+{
+  "id": 2223,
+  "recolorToFind": [
+    4550,
+    2578,
+    5181,
+    61,
+    8604
+  ],
+  "anInt2156": 32,
+  "name": "Green Gemstone Director",
+  "recolorToReplace": [
+    4694,
+    18074,
+    5421,
+    19769,
+    18074
+  ],
+  "models": [
+    7029,
+    7069,
+    6017,
+    2978,
+    7044,
+    2985
+  ],
+  "models_2": [
+    6988,
+    6949
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 138,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 135,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

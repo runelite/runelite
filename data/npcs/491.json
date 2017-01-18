@@ -1,0 +1,42 @@
+{
+  "id": 491,
+  "anInt2156": 0,
+  "name": "Entomologist",
+  "models": [
+    194,
+    209,
+    292,
+    327,
+    162,
+    4227
+  ],
+  "stanceAnimation": 7136,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 7136,
+  "rotate90RightAnimation": 7136,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 7136,
+  "anInt2174": -1,
+  "options": [
+    "Search",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 7136,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

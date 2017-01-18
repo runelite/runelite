@@ -1,0 +1,59 @@
+{
+  "id": 3927,
+  "recolorToFind": [
+    6550,
+    22424,
+    8741,
+    22426,
+    6044
+  ],
+  "anInt2156": 32,
+  "name": "Askeladden",
+  "recolorToReplace": [
+    8768,
+    3365,
+    4391,
+    4391,
+    2328
+  ],
+  "models": [
+    2906,
+    4245,
+    2922,
+    4244,
+    4398
+  ],
+  "models_2": [
+    139,
+    4217
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

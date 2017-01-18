@@ -1,0 +1,61 @@
+{
+  "id": 732,
+  "recolorToFind": [
+    25238,
+    -22464,
+    8741,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Fred the Farmer",
+  "recolorToReplace": [
+    -25299,
+    4550,
+    4550,
+    12180
+  ],
+  "models": [
+    4843,
+    217,
+    246,
+    10705,
+    173,
+    10218,
+    254,
+    185,
+    13947
+  ],
+  "models_2": [
+    55,
+    5534
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

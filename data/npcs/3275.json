@@ -1,0 +1,65 @@
+{
+  "id": 3275,
+  "recolorToFind": [
+    8741,
+    -25299,
+    -25419,
+    25238,
+    57,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Gardener",
+  "recolorToReplace": [
+    6689,
+    6806,
+    6682,
+    6682,
+    6806,
+    7585
+  ],
+  "models": [
+    6848,
+    249,
+    10705,
+    170,
+    179,
+    495,
+    274,
+    185,
+    4390
+  ],
+  "models_2": [
+    5787,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 4,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

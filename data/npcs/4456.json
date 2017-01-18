@@ -1,0 +1,56 @@
+{
+  "id": 4456,
+  "recolorToFind": [
+    4550,
+    8741,
+    11162,
+    25238,
+    22426
+  ],
+  "anInt2156": 32,
+  "name": "Ivan",
+  "recolorToReplace": [
+    10450,
+    14868,
+    10450,
+    16912,
+    10002
+  ],
+  "models": [
+    2906,
+    2910,
+    2918
+  ],
+  "models_2": [
+    139
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 109,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

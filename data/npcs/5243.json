@@ -1,0 +1,52 @@
+{
+  "id": 5243,
+  "recolorToFind": [
+    -9280,
+    -31808,
+    -15437,
+    22443,
+    960
+  ],
+  "anInt2156": 32,
+  "name": "Jungle spider",
+  "recolorToReplace": [
+    1835,
+    12589,
+    1690,
+    12833,
+    12597
+  ],
+  "models": [
+    20309,
+    20310
+  ],
+  "stanceAnimation": 5326,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5325,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 100,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 37,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 100,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": 5320,
+  "recolorToFind": [
+    10357,
+    5543,
+    5667,
+    6697,
+    6573,
+    5551
+  ],
+  "anInt2156": 1024,
+  "name": "Eagle",
+  "recolorToReplace": [
+    -22458,
+    -22415,
+    -22423,
+    -22431,
+    -22440,
+    -22448
+  ],
+  "models": [
+    5727,
+    5729
+  ],
+  "stanceAnimation": 1773,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 1773,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

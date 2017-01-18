@@ -1,0 +1,51 @@
+{
+  "id": 1659,
+  "anInt2156": 32,
+  "name": "Private Pendron",
+  "models": [
+    11740,
+    230,
+    249,
+    11759,
+    11764,
+    11727,
+    11732,
+    11792,
+    19250,
+    11735
+  ],
+  "models_2": [
+    63,
+    19238,
+    81
+  ],
+  "stanceAnimation": 2561,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2562,
+  "rotate90RightAnimation": 2562,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 2562,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 2562,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

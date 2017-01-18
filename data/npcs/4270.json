@@ -1,0 +1,64 @@
+{
+  "id": 4270,
+  "recolorToFind": [
+    -22464,
+    25238,
+    8741,
+    4550,
+    6798,
+    4661
+  ],
+  "anInt2156": 32,
+  "name": "Man",
+  "recolorToReplace": [
+    4550,
+    6032,
+    6449,
+    7384,
+    7446,
+    7380
+  ],
+  "models": [
+    214,
+    250,
+    299,
+    159,
+    179,
+    271,
+    185
+  ],
+  "models_2": [
+    52,
+    82,
+    11427
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

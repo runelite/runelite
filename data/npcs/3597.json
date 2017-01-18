@@ -1,0 +1,66 @@
+{
+  "id": 3597,
+  "recolorToFind": [
+    -25303,
+    8656,
+    8741,
+    5541,
+    -24164,
+    -25299
+  ],
+  "anInt2156": 0,
+  "name": "\u0027No fingers\u0027",
+  "recolorToReplace": [
+    5772,
+    809,
+    809,
+    2576,
+    7331,
+    7331
+  ],
+  "models": [
+    230,
+    22599,
+    10561,
+    18498,
+    19329,
+    19332,
+    14381,
+    18128,
+    22609
+  ],
+  "models_2": [
+    63,
+    22592,
+    10560
+  ],
+  "stanceAnimation": 5815,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 25,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 120,
+  "hasRenderPriority": true,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,59 @@
+{
+  "id": 3265,
+  "recolorToFind": [
+    8741,
+    25238,
+    -21967
+  ],
+  "anInt2156": 32,
+  "name": "Man",
+  "recolorToReplace": [
+    425,
+    5652,
+    -3161
+  ],
+  "models": [
+    6848,
+    253,
+    8970,
+    9450,
+    10218,
+    267,
+    181,
+    194
+  ],
+  "models_2": [
+    5787,
+    85,
+    37
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 2,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,53 @@
+{
+  "id": 2647,
+  "recolorToFind": [
+    10545,
+    12589,
+    12713,
+    6466,
+    6577,
+    6697
+  ],
+  "anInt2156": 32,
+  "name": "Bruise Blamish Snail",
+  "recolorToReplace": [
+    10423,
+    13493,
+    14387,
+    -20284,
+    -20295,
+    -20175
+  ],
+  "models": [
+    4108
+  ],
+  "stanceAnimation": 1276,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1274,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 20,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

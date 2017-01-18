@@ -1,0 +1,55 @@
+{
+  "id": 1193,
+  "recolorToFind": [
+    14238,
+    8086,
+    2974
+  ],
+  "anInt2156": 0,
+  "name": "General Bentnoze",
+  "recolorToReplace": [
+    10782,
+    8732,
+    916
+  ],
+  "models": [
+    5535,
+    16426,
+    16425,
+    5551,
+    5547,
+    15485
+  ],
+  "models_2": [
+    15551
+  ],
+  "stanceAnimation": 3391,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3391,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 148,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 148,
+  "hasRenderPriority": true,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

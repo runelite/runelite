@@ -1,0 +1,62 @@
+{
+  "id": 3954,
+  "recolorToFind": [
+    25238,
+    11200,
+    926,
+    9104
+  ],
+  "anInt2156": 32,
+  "name": "Jungle forester",
+  "recolorToReplace": [
+    8741,
+    8741,
+    7952,
+    7952
+  ],
+  "models": [
+    207,
+    250,
+    292,
+    167,
+    179,
+    254,
+    185,
+    323,
+    324,
+    566
+  ],
+  "models_2": [
+    47,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

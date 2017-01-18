@@ -1,0 +1,60 @@
+{
+  "id": 4547,
+  "recolorToFind": [
+    4626,
+    -10338,
+    -22464
+  ],
+  "anInt2156": 32,
+  "name": "Sir Harry",
+  "recolorToReplace": [
+    24,
+    -30510,
+    4550
+  ],
+  "models": [
+    214,
+    250,
+    313,
+    156,
+    176,
+    268,
+    185,
+    518,
+    541,
+    3330
+  ],
+  "models_2": [
+    52,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 62,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

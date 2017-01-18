@@ -1,0 +1,53 @@
+{
+  "id": 791,
+  "recolorToFind": [
+    10287,
+    10283,
+    7506,
+    6040,
+    3988
+  ],
+  "anInt2156": 32,
+  "name": "Suqah",
+  "recolorToReplace": [
+    10299,
+    10291,
+    8412,
+    -3803,
+    -18907
+  ],
+  "models": [
+    16589,
+    16593,
+    16592
+  ],
+  "stanceAnimation": 4386,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 4383,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 8,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 111,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 14,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

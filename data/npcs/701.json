@@ -1,0 +1,49 @@
+{
+  "id": 701,
+  "recolorToFind": [
+    61,
+    21570
+  ],
+  "anInt2156": 32,
+  "name": "Ice troll",
+  "recolorToReplace": [
+    -22431,
+    -22316
+  ],
+  "models": [
+    4942,
+    3758,
+    3756,
+    3762,
+    4948
+  ],
+  "stanceAnimation": 926,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1139,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 139,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 120,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 139,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

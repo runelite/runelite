@@ -1,0 +1,60 @@
+{
+  "id": 11381,
+  "resizeY": 0,
+  "xan2d": 2047,
+  "cost": 26,
+  "inventoryModel": 26669,
+  "resizeZ": 0,
+  "colorFind": [
+    72,
+    59,
+    33,
+    5652
+  ],
+  "colorReplace": [
+    6439,
+    6558,
+    6806,
+    2576
+  ],
+  "name": "Bronze hasta(kp)",
+  "zoom2d": 1762,
+  "yan2d": 1923,
+  "zan2d": 318,
+  "maleOffset": 0,
+  "yOffset2d": -4,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 26656,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 5,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 26656,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

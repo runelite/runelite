@@ -1,0 +1,60 @@
+{
+  "id": 3534,
+  "recolorToFind": [
+    8741,
+    25238,
+    4550,
+    -22464
+  ],
+  "anInt2156": 0,
+  "name": "Drunken Ali",
+  "recolorToReplace": [
+    10351,
+    10351,
+    5555,
+    5555
+  ],
+  "models": [
+    211,
+    6087,
+    292,
+    173,
+    3599,
+    176,
+    6098,
+    4234
+  ],
+  "models_2": [
+    6081,
+    50
+  ],
+  "stanceAnimation": 1322,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,55 @@
+{
+  "id": 4919,
+  "recolorToFind": [
+    -26391,
+    11142,
+    5442
+  ],
+  "anInt2156": 32,
+  "name": "Grip",
+  "recolorToReplace": [
+    61,
+    9104,
+    4550
+  ],
+  "models": [
+    218,
+    294,
+    246,
+    165,
+    259,
+    550
+  ],
+  "models_2": [
+    56
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 22,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

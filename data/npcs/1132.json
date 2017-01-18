@@ -1,0 +1,57 @@
+{
+  "id": 1132,
+  "recolorToFind": [
+    25238,
+    22426,
+    11162,
+    4550,
+    4292
+  ],
+  "anInt2156": 32,
+  "name": "Child",
+  "recolorToReplace": [
+    3980,
+    21534,
+    8596,
+    4300,
+    4661
+  ],
+  "models": [
+    2897,
+    2910,
+    2918
+  ],
+  "models_2": [
+    139,
+    11430
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

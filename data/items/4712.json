@@ -1,0 +1,56 @@
+{
+  "id": 4712,
+  "resizeY": 0,
+  "xan2d": 468,
+  "cost": 50000,
+  "inventoryModel": 6578,
+  "resizeZ": 0,
+  "colorFind": [
+    8741,
+    14490
+  ],
+  "colorReplace": [
+    10512,
+    10512
+  ],
+  "name": "Ahrim\u0027s robetop",
+  "zoom2d": 1250,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6669,
+  "maleModel1": 170,
+  "femaleModel1": 348,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 4713,
+  "femaleModel0": 6697,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

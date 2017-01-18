@@ -1,0 +1,54 @@
+{
+  "id": 7325,
+  "resizeY": 0,
+  "xan2d": 166,
+  "cost": 225,
+  "inventoryModel": 11399,
+  "resizeZ": 0,
+  "colorFind": [
+    926
+  ],
+  "colorReplace": [
+    -21568
+  ],
+  "name": "Blue boater",
+  "zoom2d": 724,
+  "yan2d": 1784,
+  "zan2d": 1978,
+  "maleOffset": 0,
+  "yOffset2d": -11,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 11330,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 0,
+  "maleHeadModel": 11402,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 11406,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 7326,
+  "femaleModel0": 11353,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

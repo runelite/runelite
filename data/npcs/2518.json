@@ -1,0 +1,50 @@
+{
+  "id": 2518,
+  "recolorToFind": [
+    27955,
+    29113,
+    20715,
+    22488
+  ],
+  "anInt2156": 32,
+  "name": "Ankou",
+  "recolorToReplace": [
+    -4437,
+    819,
+    8394,
+    960
+  ],
+  "models": [
+    16016,
+    16017
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 82,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

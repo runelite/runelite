@@ -1,0 +1,54 @@
+{
+  "id": 7394,
+  "resizeY": 0,
+  "xan2d": 152,
+  "cost": 2,
+  "inventoryModel": 11400,
+  "resizeZ": 0,
+  "colorFind": [
+    24
+  ],
+  "colorReplace": [
+    7114
+  ],
+  "name": "Blue wizard hat (g)",
+  "zoom2d": 800,
+  "yan2d": 156,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -10,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 11331,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 5,
+  "maleHeadModel": 11403,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 11407,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 7395,
+  "femaleModel0": 11354,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

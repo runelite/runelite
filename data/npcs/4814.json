@@ -1,0 +1,59 @@
+{
+  "id": 4814,
+  "recolorToFind": [
+    -26391,
+    11162,
+    28318,
+    22177,
+    8741
+  ],
+  "anInt2156": 0,
+  "name": "Pirate Pete",
+  "recolorToReplace": [
+    6938,
+    5008,
+    8,
+    12,
+    10902
+  ],
+  "models": [
+    190,
+    211,
+    236,
+    11190,
+    5222,
+    162,
+    177,
+    259,
+    12760
+  ],
+  "stanceAnimation": 3396,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3396,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

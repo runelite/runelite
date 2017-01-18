@@ -1,0 +1,54 @@
+{
+  "id": 1949,
+  "resizeY": 0,
+  "xan2d": 668,
+  "cost": 2,
+  "inventoryModel": 2782,
+  "resizeZ": 0,
+  "colorFind": [
+    61
+  ],
+  "colorReplace": [
+    127
+  ],
+  "name": "Chef\u0027s hat",
+  "zoom2d": 580,
+  "yan2d": 0,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 199,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -4,
+  "maleHeadModel": 41,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 99,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1950,
+  "femaleModel0": 374,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

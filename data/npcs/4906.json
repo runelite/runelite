@@ -1,0 +1,61 @@
+{
+  "id": 4906,
+  "recolorToFind": [
+    11941,
+    6331,
+    6348,
+    6356,
+    12060
+  ],
+  "anInt2156": 32,
+  "name": "Goblin",
+  "recolorToReplace": [
+    16685,
+    916,
+    922,
+    693,
+    16805
+  ],
+  "models": [
+    24464,
+    24486,
+    24433,
+    24477,
+    24444,
+    24448,
+    24502,
+    24491
+  ],
+  "models_2": [
+    24216
+  ],
+  "stanceAnimation": 6140,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6141,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 124,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 124,
+  "hasRenderPriority": false,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

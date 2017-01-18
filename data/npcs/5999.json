@@ -1,0 +1,60 @@
+{
+  "id": 5999,
+  "recolorToFind": [
+    -22477,
+    61,
+    5417,
+    5181,
+    4626,
+    2578
+  ],
+  "anInt2156": 32,
+  "name": "Blue Opal Director",
+  "recolorToReplace": [
+    -26302,
+    -23360,
+    -22485,
+    -29641,
+    -25718,
+    -29542
+  ],
+  "models": [
+    7027,
+    7055,
+    7037,
+    7044,
+    2985
+  ],
+  "models_2": [
+    6986
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 130,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 115,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

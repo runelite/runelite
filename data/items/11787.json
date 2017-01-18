@@ -1,0 +1,54 @@
+{
+  "id": 11787,
+  "resizeY": 0,
+  "xan2d": 148,
+  "cost": 17000,
+  "inventoryModel": 2810,
+  "resizeZ": 0,
+  "colorFind": [
+    -22419
+  ],
+  "colorReplace": [
+    -32537
+  ],
+  "name": "Steam battlestaff",
+  "zoom2d": 1490,
+  "yan2d": 1400,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 534,
+  "maleModel1": 567,
+  "femaleModel1": 567,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -5,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 11788,
+  "femaleModel0": 534,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

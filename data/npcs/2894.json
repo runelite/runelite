@@ -1,0 +1,61 @@
+{
+  "id": 2894,
+  "recolorToFind": [
+    25238,
+    926,
+    6798,
+    8741,
+    -22464,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Barbarian guard",
+  "recolorToReplace": [
+    5652,
+    61,
+    6854,
+    4769,
+    33,
+    6709
+  ],
+  "models": [
+    219,
+    252,
+    301,
+    159,
+    176,
+    274,
+    242,
+    185,
+    550
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 8,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

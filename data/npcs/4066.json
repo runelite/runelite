@@ -1,0 +1,67 @@
+{
+  "id": 4066,
+  "recolorToFind": [
+    4626,
+    61,
+    41,
+    4550,
+    9104,
+    57
+  ],
+  "anInt2156": 32,
+  "name": "The Fisher King",
+  "recolorToReplace": [
+    107,
+    107,
+    82,
+    5442,
+    107,
+    107
+  ],
+  "models": [
+    215,
+    14440,
+    165,
+    179,
+    268,
+    185,
+    534,
+    252,
+    192,
+    323
+  ],
+  "models_2": [
+    53,
+    35,
+    84
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

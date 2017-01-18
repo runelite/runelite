@@ -1,0 +1,47 @@
+{
+  "id": 6727,
+  "recolorToFind": [
+    3280,
+    5169,
+    0
+  ],
+  "anInt2156": 32,
+  "name": "Rock Golem",
+  "recolorToReplace": [
+    7841,
+    6812,
+    920
+  ],
+  "models": [
+    2969
+  ],
+  "stanceAnimation": 155,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 152,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 112,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 49,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 112,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

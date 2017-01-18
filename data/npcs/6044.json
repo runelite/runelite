@@ -1,0 +1,57 @@
+{
+  "id": 6044,
+  "recolorToFind": [
+    28,
+    61,
+    906,
+    908,
+    5181
+  ],
+  "anInt2156": 32,
+  "name": "Supreme Commander",
+  "recolorToReplace": [
+    8,
+    -5872,
+    9021,
+    8,
+    6565
+  ],
+  "models": [
+    7029,
+    7050,
+    7039,
+    7042
+  ],
+  "models_2": [
+    6988
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 135,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 135,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

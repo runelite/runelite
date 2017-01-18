@@ -1,0 +1,60 @@
+{
+  "id": 3707,
+  "recolorToFind": [
+    25238,
+    4626,
+    4550,
+    908,
+    7236
+  ],
+  "anInt2156": 32,
+  "name": "Angry vampyre",
+  "recolorToReplace": [
+    0,
+    94,
+    94,
+    0,
+    94
+  ],
+  "models": [
+    4089,
+    16346,
+    10133,
+    16345,
+    176,
+    275,
+    181
+  ],
+  "models_2": [
+    6216
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 190,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 64,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 158,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

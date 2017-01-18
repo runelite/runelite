@@ -1,0 +1,54 @@
+{
+  "id": 5295,
+  "recolorToFind": [
+    9152,
+    9137,
+    25886
+  ],
+  "anInt2156": 32,
+  "name": "Elf warrior",
+  "recolorToReplace": [
+    8910,
+    5429,
+    7646
+  ],
+  "models": [
+    8266,
+    4025,
+    4016,
+    4044,
+    4023
+  ],
+  "models_2": [
+    8261
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 127,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 90,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 120,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

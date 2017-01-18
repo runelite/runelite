@@ -1,0 +1,64 @@
+{
+  "id": 4753,
+  "recolorToFind": [
+    9019,
+    6740,
+    8741,
+    -30291,
+    -16482,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Zahur",
+  "recolorToReplace": [
+    6596,
+    6579,
+    6596,
+    7479,
+    3486,
+    4649
+  ],
+  "models": [
+    9022,
+    9025,
+    343,
+    353,
+    506,
+    10003,
+    358,
+    376
+  ],
+  "models_2": [
+    9015,
+    101
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Combine",
+    "Clean",
+    "Make unfinished potion(s)"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

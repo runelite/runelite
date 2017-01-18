@@ -1,0 +1,58 @@
+{
+  "id": 3991,
+  "resizeY": 0,
+  "xan2d": 471,
+  "cost": 1,
+  "inventoryModel": 15347,
+  "resizeZ": 0,
+  "colorFind": [
+    5813,
+    9139,
+    26006
+  ],
+  "colorReplace": [
+    -32667,
+    -27566,
+    -27554
+  ],
+  "name": "null",
+  "zoom2d": 560,
+  "yan2d": 687,
+  "zan2d": 162,
+  "maleOffset": 0,
+  "yOffset2d": -7,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 8,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

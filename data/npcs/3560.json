@@ -1,0 +1,57 @@
+{
+  "id": 3560,
+  "recolorToFind": [
+    8741,
+    25238,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Villager",
+  "recolorToReplace": [
+    10351,
+    10351,
+    5555
+  ],
+  "models": [
+    390,
+    364,
+    456,
+    348,
+    429,
+    358,
+    353
+  ],
+  "models_2": [
+    113,
+    88
+  ],
+  "stanceAnimation": -1,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    "Lure",
+    "Knock-Out"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 3,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

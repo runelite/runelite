@@ -1,0 +1,55 @@
+{
+  "id": 1347,
+  "recolorToFind": [
+    5008,
+    5532,
+    5537,
+    5413,
+    5417,
+    5656
+  ],
+  "anInt2156": 32,
+  "name": "Sabre-toothed kebbit",
+  "recolorToReplace": [
+    -25495,
+    -25489,
+    -24459,
+    -25479,
+    -32643,
+    -25495
+  ],
+  "models": [
+    19382,
+    19389,
+    19384
+  ],
+  "stanceAnimation": 5273,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5272,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

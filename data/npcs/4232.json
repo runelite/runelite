@@ -1,0 +1,47 @@
+{
+  "id": 4232,
+  "recolorToFind": [
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Beite",
+  "recolorToReplace": [
+    -22386
+  ],
+  "models": [
+    9386,
+    9388
+  ],
+  "models_2": [
+    6438
+  ],
+  "stanceAnimation": 2664,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2662,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 30,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 32,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

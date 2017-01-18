@@ -1,0 +1,58 @@
+{
+  "id": 6074,
+  "recolorToFind": [
+    8741,
+    25238,
+    5656,
+    5904
+  ],
+  "anInt2156": 32,
+  "name": "Ref",
+  "recolorToReplace": [
+    -22390,
+    -22390,
+    8,
+    4
+  ],
+  "models": [
+    6848,
+    10039,
+    11811,
+    10301,
+    12138,
+    9617
+  ],
+  "models_2": [
+    5787,
+    10030
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 131,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Claim-Tokens",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 117,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,60 @@
+{
+  "id": 21678,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Compost Bin",
+  "objectModels": [
+    7838,
+    7845,
+    7841
+  ],
+  "recolorToFind": [
+    8724,
+    7580,
+    7700,
+    7461
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 25,
+  "contrast": 0,
+  "actions": [
+    "Close",
+    null,
+    null,
+    null,
+    "Dump"
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    13074,
+    12942,
+    13194,
+    12818
+  ],
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

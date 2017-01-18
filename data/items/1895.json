@@ -1,0 +1,56 @@
+{
+  "id": 1895,
+  "resizeY": 0,
+  "xan2d": 160,
+  "cost": 10,
+  "inventoryModel": 2524,
+  "resizeZ": 0,
+  "colorFind": [
+    6036,
+    8094
+  ],
+  "colorReplace": [
+    8427,
+    7085
+  ],
+  "name": "Slice of cake",
+  "zoom2d": 600,
+  "yan2d": 1760,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -10,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 5,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 1896,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

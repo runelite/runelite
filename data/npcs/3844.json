@@ -1,0 +1,47 @@
+{
+  "id": 3844,
+  "anInt2156": 32,
+  "name": "Clan Guard",
+  "models": [
+    16480,
+    16484,
+    16487,
+    16471,
+    16475,
+    16482,
+    16474,
+    270
+  ],
+  "models_2": [
+    16468
+  ],
+  "stanceAnimation": 4424,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4426,
+  "rotate90RightAnimation": 4428,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 12,
+  "rotate180Animation": 4427,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 4429,
+  "resizeY": 120,
+  "hasRenderPriority": true,
+  "ambient": 12,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

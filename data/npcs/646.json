@@ -1,0 +1,51 @@
+{
+  "id": 646,
+  "recolorToFind": [
+    10304,
+    10312,
+    10328,
+    10337,
+    10295
+  ],
+  "anInt2156": 32,
+  "name": "Ice wolf",
+  "recolorToReplace": [
+    10320,
+    10324,
+    10345,
+    10349,
+    10310
+  ],
+  "models": [
+    26266
+  ],
+  "stanceAnimation": 6580,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 6556,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 96,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 110,
+  "hasRenderPriority": false,
+  "ambient": 60,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

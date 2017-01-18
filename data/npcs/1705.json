@@ -1,0 +1,53 @@
+{
+  "id": 1705,
+  "recolorToFind": [
+    21667,
+    13716,
+    10330,
+    103,
+    5557,
+    5547
+  ],
+  "anInt2156": 32,
+  "name": "Ravager",
+  "recolorToReplace": [
+    10403,
+    10644,
+    7390,
+    947,
+    4527,
+    5553
+  ],
+  "models": [
+    14547
+  ],
+  "stanceAnimation": 3913,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3914,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 53,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,56 @@
+{
+  "id": 3702,
+  "recolorToFind": [
+    4550,
+    78,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Former vampyre",
+  "recolorToReplace": [
+    5338,
+    7465,
+    78
+  ],
+  "models": [
+    18086,
+    246,
+    18097,
+    18078,
+    18083,
+    18093,
+    18080
+  ],
+  "models_2": [
+    18030
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

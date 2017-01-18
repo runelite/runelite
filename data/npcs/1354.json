@@ -1,0 +1,53 @@
+{
+  "id": 1354,
+  "recolorToFind": [
+    7473,
+    803
+  ],
+  "anInt2156": 32,
+  "name": "Dwarf gang member",
+  "recolorToReplace": [
+    0,
+    0
+  ],
+  "models": [
+    5621,
+    2979,
+    2985,
+    2981,
+    2983,
+    2993
+  ],
+  "models_2": [
+    5618
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 142,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 44,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 129,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

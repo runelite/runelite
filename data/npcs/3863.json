@@ -1,0 +1,63 @@
+{
+  "id": 3863,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798,
+    4550,
+    4626,
+    22177
+  ],
+  "anInt2156": 32,
+  "name": "Jake",
+  "recolorToReplace": [
+    10520,
+    8369,
+    10301,
+    4430,
+    5165,
+    908
+  ],
+  "models": [
+    211,
+    251,
+    292,
+    10980,
+    179,
+    271,
+    181
+  ],
+  "models_2": [
+    50,
+    83
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 136,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 37,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 129,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

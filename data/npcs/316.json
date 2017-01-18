@@ -1,0 +1,63 @@
+{
+  "id": 316,
+  "recolorToFind": [
+    94,
+    -22087,
+    -22097,
+    -22308,
+    -22421,
+    -22196
+  ],
+  "anInt2156": 32,
+  "name": "Emblem Trader",
+  "recolorToReplace": [
+    10776,
+    10892,
+    10776,
+    10892,
+    10892,
+    10892
+  ],
+  "models": [
+    5449,
+    181,
+    249,
+    5450,
+    28226,
+    176,
+    28223,
+    5036
+  ],
+  "models_2": [
+    10372
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    "Show-streaks",
+    "Skull"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

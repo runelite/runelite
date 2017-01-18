@@ -1,0 +1,60 @@
+{
+  "id": 4634,
+  "recolorToFind": [
+    25238,
+    908,
+    4550,
+    10297
+  ],
+  "anInt2156": 32,
+  "name": "Rowdy slave",
+  "recolorToReplace": [
+    8741,
+    8741,
+    4645,
+    11187
+  ],
+  "models": [
+    217,
+    250,
+    292,
+    170,
+    176,
+    265,
+    185,
+    509
+  ],
+  "models_2": [
+    55,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 10,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

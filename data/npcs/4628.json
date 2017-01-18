@@ -1,0 +1,64 @@
+{
+  "id": 4628,
+  "recolorToFind": [
+    908,
+    532,
+    536,
+    412,
+    417,
+    8741
+  ],
+  "anInt2156": 32,
+  "name": "Gillie Groats",
+  "recolorToReplace": [
+    -31864,
+    -31860,
+    -31984,
+    -32236,
+    -32232,
+    -32356
+  ],
+  "models": [
+    391,
+    417,
+    467,
+    14588,
+    10706,
+    11119,
+    358,
+    14794
+  ],
+  "models_2": [
+    114,
+    136
+  ],
+  "stanceAnimation": 3950,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3997,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

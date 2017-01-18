@@ -1,0 +1,63 @@
+{
+  "id": 1899,
+  "recolorToFind": [
+    25238,
+    8741,
+    6587,
+    908,
+    8078
+  ],
+  "anInt2156": 32,
+  "name": "Thorkel Silkbeard",
+  "recolorToReplace": [
+    7620,
+    10002,
+    11061,
+    11061,
+    11061
+  ],
+  "models": [
+    215,
+    244,
+    249,
+    21884,
+    162,
+    179,
+    4226,
+    4218
+  ],
+  "models_2": [
+    53,
+    81,
+    77
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

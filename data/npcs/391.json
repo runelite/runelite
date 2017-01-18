@@ -1,0 +1,53 @@
+{
+  "id": 391,
+  "recolorToFind": [
+    61,
+    16,
+    -1122,
+    4818
+  ],
+  "anInt2156": 0,
+  "name": "Evil Bob",
+  "recolorToReplace": [
+    12,
+    12,
+    -25819,
+    706
+  ],
+  "models": [
+    8838,
+    3010
+  ],
+  "models_2": [
+    8773
+  ],
+  "stanceAnimation": 2159,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 314,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 70,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 70,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

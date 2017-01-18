@@ -1,0 +1,63 @@
+{
+  "id": 4779,
+  "recolorToFind": [
+    6331,
+    6955,
+    7075,
+    5169,
+    5161,
+    4515
+  ],
+  "anInt2156": 32,
+  "name": "Greldo",
+  "recolorToReplace": [
+    12,
+    6028,
+    2952,
+    5652,
+    6028,
+    6028
+  ],
+  "models": [
+    24463,
+    24483,
+    24433,
+    24474,
+    24441,
+    24449,
+    24508,
+    24507
+  ],
+  "models_2": [
+    24215
+  ],
+  "stanceAnimation": 6200,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 6201,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

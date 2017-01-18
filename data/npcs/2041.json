@@ -1,0 +1,65 @@
+{
+  "id": 2041,
+  "recolorToFind": [
+    7756,
+    7845,
+    61,
+    24,
+    41,
+    57
+  ],
+  "anInt2156": 32,
+  "name": "Broken Handz",
+  "recolorToReplace": [
+    274,
+    1831,
+    -29403,
+    -29403,
+    -28266,
+    -29403
+  ],
+  "models": [
+    218,
+    306,
+    164,
+    10218,
+    490,
+    486,
+    268,
+    4954,
+    5590,
+    290
+  ],
+  "models_2": [
+    56
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

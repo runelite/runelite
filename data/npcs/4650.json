@@ -1,0 +1,53 @@
+{
+  "id": 4650,
+  "recolorToFind": [
+    10337,
+    10328,
+    10312,
+    10304,
+    10295,
+    10287
+  ],
+  "anInt2156": 32,
+  "name": "Desert Wolf",
+  "recolorToReplace": [
+    8615,
+    8737,
+    7706,
+    7700,
+    6798,
+    6024
+  ],
+  "models": [
+    26266
+  ],
+  "stanceAnimation": 6580,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 6556,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 116,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 27,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 116,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,62 @@
+{
+  "id": 3873,
+  "recolorToFind": [
+    8741,
+    7281,
+    10004,
+    25238,
+    28318,
+    22177
+  ],
+  "anInt2156": 32,
+  "name": "\u0027Lecherous\u0027 Lee",
+  "recolorToReplace": [
+    -22223,
+    15454,
+    16,
+    6439,
+    -221,
+    20
+  ],
+  "models": [
+    211,
+    249,
+    7611,
+    170,
+    179,
+    5218
+  ],
+  "models_2": [
+    50,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 124,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

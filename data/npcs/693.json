@@ -1,0 +1,65 @@
+{
+  "id": 693,
+  "recolorToFind": [
+    4550,
+    25238,
+    6798,
+    8741,
+    7700,
+    11200
+  ],
+  "anInt2156": 0,
+  "name": "Bandit",
+  "recolorToReplace": [
+    4647,
+    127,
+    10508,
+    127,
+    926,
+    926
+  ],
+  "models": [
+    215,
+    3599,
+    248,
+    170,
+    176,
+    292,
+    188,
+    6230
+  ],
+  "models_2": [
+    53,
+    80,
+    30
+  ],
+  "stanceAnimation": 1952,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

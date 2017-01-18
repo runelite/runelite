@@ -1,0 +1,60 @@
+{
+  "id": 1933,
+  "recolorToFind": [
+    25238,
+    933,
+    8741,
+    -25299,
+    -25419,
+    10004
+  ],
+  "anInt2156": 32,
+  "name": "Dig Site workman",
+  "recolorToReplace": [
+    -25299,
+    9106,
+    4288,
+    -25305,
+    -25297,
+    7054
+  ],
+  "models": [
+    215,
+    246,
+    10705,
+    167,
+    179,
+    5218,
+    10723,
+    25696
+  ],
+  "stanceAnimation": 6425,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

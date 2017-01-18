@@ -1,0 +1,62 @@
+{
+  "id": 4911,
+  "resizeY": 0,
+  "xan2d": 176,
+  "cost": 100000,
+  "inventoryModel": 6598,
+  "resizeZ": 0,
+  "colorFind": [
+    14511,
+    14503,
+    14494,
+    21555,
+    21563
+  ],
+  "colorReplace": [
+    10512,
+    10508,
+    10760,
+    21543,
+    21551
+  ],
+  "name": "Guthan\u0027s warspear 75",
+  "zoom2d": 1470,
+  "yan2d": 116,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -16,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    "Check",
+    null,
+    "Drop"
+  ],
+  "maleModel0": 6709,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -2,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 6709,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

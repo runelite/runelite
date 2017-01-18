@@ -1,0 +1,43 @@
+{
+  "id": 416,
+  "recolorToFind": [
+    4015
+  ],
+  "anInt2156": 32,
+  "name": "Abyssal demon",
+  "recolorToReplace": [
+    528
+  ],
+  "models": [
+    5062
+  ],
+  "stanceAnimation": 1536,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1534,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 64,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 124,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 64,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

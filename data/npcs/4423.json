@@ -1,0 +1,66 @@
+{
+  "id": 4423,
+  "recolorToFind": [
+    6798,
+    25238,
+    8741,
+    8078,
+    8084,
+    -21967
+  ],
+  "anInt2156": 32,
+  "name": "Jossik",
+  "recolorToReplace": [
+    2454,
+    5400,
+    2590,
+    2471,
+    2714,
+    2721
+  ],
+  "models": [
+    206,
+    292,
+    162,
+    4226,
+    253,
+    4218,
+    4391,
+    176,
+    194
+  ],
+  "models_2": [
+    46,
+    85,
+    37
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    "Rewards",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

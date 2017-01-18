@@ -1,0 +1,37 @@
+{
+  "id": 5963,
+  "anInt2156": 32,
+  "name": "Spinolyp",
+  "models": [
+    9947
+  ],
+  "stanceAnimation": 2867,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2863,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 40,
+  "contrast": 50,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 76,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 40,
+  "hasRenderPriority": false,
+  "ambient": 50,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,54 @@
+{
+  "id": 5764,
+  "recolorToFind": [
+    14387,
+    14395,
+    10425,
+    12475,
+    10427,
+    7485
+  ],
+  "anInt2156": 32,
+  "name": "Penance Ranger",
+  "recolorToReplace": [
+    14614,
+    14494,
+    10524,
+    12574,
+    10526,
+    8737
+  ],
+  "models": [
+    20719,
+    20720
+  ],
+  "stanceAnimation": 5393,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5394,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 64,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

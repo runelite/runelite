@@ -1,0 +1,56 @@
+{
+  "id": 6351,
+  "resizeY": 0,
+  "xan2d": 384,
+  "cost": 300,
+  "inventoryModel": 8879,
+  "resizeZ": 0,
+  "colorFind": [
+    4886,
+    5572
+  ],
+  "colorReplace": [
+    -29500,
+    2157
+  ],
+  "name": "Tribal top",
+  "zoom2d": 1130,
+  "yan2d": 2032,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 16,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 8928,
+  "maleModel1": 8916,
+  "femaleModel1": 8931,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 6352,
+  "femaleModel0": 8943,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,56 @@
+{
+  "id": 3126,
+  "recolorToFind": [
+    -1136,
+    -1138,
+    -1140,
+    906,
+    904,
+    -95
+  ],
+  "anInt2156": 32,
+  "name": "Ket-Zek",
+  "recolorToReplace": [
+    6055,
+    5027,
+    4003,
+    3998,
+    3996,
+    5933
+  ],
+  "models": [
+    9324,
+    9323,
+    9322,
+    9321
+  ],
+  "stanceAnimation": 2642,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 2643,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 360,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

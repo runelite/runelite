@@ -1,0 +1,50 @@
+{
+  "id": 296,
+  "recolorToFind": [
+    -22481
+  ],
+  "anInt2156": 32,
+  "name": "Dwarf",
+  "recolorToReplace": [
+    -32678
+  ],
+  "models": [
+    2970,
+    2980,
+    2977,
+    10325,
+    2985,
+    2990,
+    7070,
+    2991
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 10,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

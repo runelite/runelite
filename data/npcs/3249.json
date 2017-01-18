@@ -1,0 +1,56 @@
+{
+  "id": 3249,
+  "recolorToFind": [
+    -15069
+  ],
+  "anInt2156": 32,
+  "name": "Robe Store owner",
+  "recolorToReplace": [
+    -25152
+  ],
+  "models": [
+    215,
+    4955,
+    250,
+    5028,
+    4952,
+    4953,
+    4844,
+    5027,
+    18941
+  ],
+  "models_2": [
+    53,
+    4950,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

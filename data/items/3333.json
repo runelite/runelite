@@ -1,0 +1,60 @@
+{
+  "id": 3333,
+  "resizeY": 0,
+  "xan2d": 312,
+  "cost": 300,
+  "inventoryModel": 4106,
+  "resizeZ": 0,
+  "colorFind": [
+    6466,
+    6457,
+    6577,
+    6697
+  ],
+  "colorReplace": [
+    -20284,
+    -20573,
+    -20295,
+    -20175
+  ],
+  "name": "Bruise blue snelm",
+  "zoom2d": 730,
+  "yan2d": 1976,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 11,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 4099,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 3,
+  "maleHeadModel": 4095,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 4097,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 3334,
+  "femaleModel0": 4101,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

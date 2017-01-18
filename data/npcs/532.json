@@ -1,0 +1,64 @@
+{
+  "id": 532,
+  "recolorToFind": [
+    4550,
+    0,
+    -24618,
+    -25152,
+    119,
+    -26527
+  ],
+  "anInt2156": 32,
+  "name": "Zaff",
+  "recolorToReplace": [
+    6806,
+    10508,
+    8613,
+    7838,
+    7341,
+    8617
+  ],
+  "models": [
+    215,
+    251,
+    299,
+    4952,
+    4953,
+    553,
+    11338,
+    181
+  ],
+  "models_2": [
+    53,
+    83
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

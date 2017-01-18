@@ -1,0 +1,37 @@
+{
+  "id": 2990,
+  "anInt2156": 32,
+  "name": "null",
+  "models": [
+    5366
+  ],
+  "stanceAnimation": 1644,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 1645,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 50,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 90,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": false,
+  "anInt2189": -1,
+  "aBool2190": false
+}

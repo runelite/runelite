@@ -1,0 +1,60 @@
+{
+  "id": 11791,
+  "resizeY": 0,
+  "xan2d": 138,
+  "cost": 1000005,
+  "inventoryModel": 2810,
+  "resizeZ": 0,
+  "colorFind": [
+    17467,
+    -22419,
+    7073,
+    61
+  ],
+  "colorReplace": [
+    18626,
+    18626,
+    18626,
+    18626
+  ],
+  "name": "Staff of the dead",
+  "zoom2d": 1490,
+  "yan2d": 1300,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 2,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 5232,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -5,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 11792,
+  "femaleModel0": 5232,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

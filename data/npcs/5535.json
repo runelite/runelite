@@ -1,0 +1,49 @@
+{
+  "id": 5535,
+  "recolorToFind": [
+    11148,
+    10772,
+    10652,
+    10533
+  ],
+  "anInt2156": 32,
+  "name": "Enormous Tentacle",
+  "recolorToReplace": [
+    8097,
+    9121,
+    8092,
+    9118
+  ],
+  "models": [
+    13201
+  ],
+  "stanceAnimation": 3617,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 3617,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 200,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 112,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 200,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,60 @@
+{
+  "id": 353,
+  "recolorToFind": [
+    25238,
+    8741,
+    9529,
+    107,
+    908,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Suspect",
+  "recolorToReplace": [
+    939,
+    454,
+    454,
+    218,
+    218,
+    2997
+  ],
+  "models": [
+    399,
+    11360,
+    332,
+    10706,
+    429,
+    358,
+    15009,
+    14945
+  ],
+  "stanceAnimation": 3999,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3999,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

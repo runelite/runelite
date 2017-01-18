@@ -1,0 +1,61 @@
+{
+  "id": 321,
+  "recolorToFind": [
+    9104,
+    25238,
+    4626,
+    10004,
+    8741,
+    10659
+  ],
+  "anInt2156": 32,
+  "name": "Mime",
+  "recolorToReplace": [
+    -22419,
+    8,
+    8,
+    -22419,
+    8,
+    8
+  ],
+  "models": [
+    3598,
+    3667,
+    292,
+    163,
+    179,
+    254,
+    185,
+    198,
+    230
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

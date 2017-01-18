@@ -1,0 +1,66 @@
+{
+  "id": 1107,
+  "recolorToFind": [
+    6798,
+    8741,
+    25238,
+    -22464,
+    1942,
+    906
+  ],
+  "anInt2156": 32,
+  "name": "Hops",
+  "recolorToReplace": [
+    7353,
+    5409,
+    7442,
+    4550,
+    4764,
+    5400
+  ],
+  "models": [
+    6848,
+    250,
+    299,
+    9621,
+    170,
+    176,
+    3876,
+    274,
+    181,
+    9607
+  ],
+  "models_2": [
+    5787,
+    82
+  ],
+  "stanceAnimation": 2712,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

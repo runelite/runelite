@@ -1,0 +1,60 @@
+{
+  "id": 3837,
+  "recolorToFind": [
+    25238,
+    6798,
+    7073,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Baba Yaga",
+  "recolorToReplace": [
+    8615,
+    94,
+    3239,
+    4562
+  ],
+  "models": [
+    12140,
+    10078,
+    16506,
+    16494,
+    353,
+    534,
+    16503,
+    270
+  ],
+  "models_2": [
+    9358,
+    16466
+  ],
+  "stanceAnimation": 4424,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4426,
+  "rotate90RightAnimation": 4428,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 12,
+  "rotate180Animation": 4427,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 4429,
+  "resizeY": 110,
+  "hasRenderPriority": true,
+  "ambient": 12,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

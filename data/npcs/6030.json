@@ -1,0 +1,62 @@
+{
+  "id": 6030,
+  "recolorToFind": [
+    10347,
+    61,
+    90,
+    4626,
+    5417,
+    5784
+  ],
+  "anInt2156": 32,
+  "name": "Trader",
+  "recolorToReplace": [
+    -26302,
+    -23249,
+    -26302,
+    21642,
+    -27219,
+    10283
+  ],
+  "models": [
+    2972,
+    7071,
+    7062,
+    7037,
+    7044,
+    2985
+  ],
+  "models_2": [
+    2,
+    6996
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,62 @@
+{
+  "id": 4406,
+  "recolorToFind": [
+    6798,
+    10128,
+    2452
+  ],
+  "anInt2156": 32,
+  "name": "Colonel Radick",
+  "recolorToReplace": [
+    7073,
+    41,
+    61
+  ],
+  "models": [
+    214,
+    244,
+    250,
+    313,
+    164,
+    179,
+    268,
+    185,
+    323,
+    550,
+    3330
+  ],
+  "models_2": [
+    52,
+    77,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 38,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

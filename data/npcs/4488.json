@@ -1,0 +1,63 @@
+{
+  "id": 4488,
+  "recolorToFind": [
+    6466,
+    5541,
+    5665,
+    5660,
+    8844,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Olaf Hradson",
+  "recolorToReplace": [
+    4304,
+    3373,
+    4387,
+    4382,
+    4387,
+    5334
+  ],
+  "models": [
+    214,
+    250,
+    5674,
+    24191,
+    5668,
+    18131,
+    18128
+  ],
+  "models_2": [
+    52,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

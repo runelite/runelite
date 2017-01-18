@@ -1,0 +1,49 @@
+{
+  "id": 6304,
+  "recolorToFind": [
+    10291,
+    10287,
+    10283,
+    10279
+  ],
+  "anInt2156": 32,
+  "name": "Dagannoth mother (hard)",
+  "recolorToReplace": [
+    21815,
+    21811,
+    21807,
+    21803
+  ],
+  "models": [
+    4587
+  ],
+  "stanceAnimation": 1338,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 1339,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 155,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 201,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 155,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

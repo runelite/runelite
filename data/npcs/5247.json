@@ -1,0 +1,41 @@
+{
+  "id": 5247,
+  "anInt2156": 32,
+  "name": "Trefaji",
+  "models": [
+    4809,
+    4812
+  ],
+  "models_2": [
+    4662
+  ],
+  "stanceAnimation": 1401,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 1399,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,60 @@
+{
+  "id": 4549,
+  "recolorToFind": [
+    -22464,
+    4550,
+    27548,
+    -26722,
+    25238
+  ],
+  "anInt2156": 32,
+  "name": "Kardia",
+  "recolorToReplace": [
+    10419,
+    10419,
+    10419,
+    -6262,
+    -6262
+  ],
+  "models": [
+    405,
+    474,
+    347,
+    421,
+    353,
+    361,
+    479,
+    447,
+    534,
+    377
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

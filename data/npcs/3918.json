@@ -1,0 +1,65 @@
+{
+  "id": 3918,
+  "recolorToFind": [
+    7952,
+    -22464,
+    25238,
+    4550,
+    6798,
+    8741
+  ],
+  "anInt2156": 32,
+  "name": "Prince Brand",
+  "recolorToReplace": [
+    920,
+    2524,
+    1686,
+    2524,
+    7613,
+    920
+  ],
+  "models": [
+    235,
+    246,
+    311,
+    162,
+    179,
+    4226,
+    4218,
+    281,
+    317,
+    4394
+  ],
+  "models_2": [
+    67
+  ],
+  "stanceAnimation": 1321,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

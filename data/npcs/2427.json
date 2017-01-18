@@ -1,0 +1,63 @@
+{
+  "id": 2427,
+  "recolorToFind": [
+    61,
+    7473,
+    10330,
+    10659,
+    5784,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Cart conductor",
+  "recolorToReplace": [
+    10266,
+    28,
+    286,
+    22,
+    5937,
+    4537
+  ],
+  "models": [
+    2973,
+    6019,
+    7063,
+    2978,
+    2992,
+    7045,
+    2985
+  ],
+  "models_2": [
+    3,
+    6026
+  ],
+  "stanceAnimation": 900,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 104,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

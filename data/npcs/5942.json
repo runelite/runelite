@@ -1,0 +1,49 @@
+{
+  "id": 5942,
+  "recolorToFind": [
+    10291,
+    10287,
+    10283,
+    10279
+  ],
+  "anInt2156": 32,
+  "name": "Dagannoth",
+  "recolorToReplace": [
+    10293,
+    10289,
+    7343,
+    7339
+  ],
+  "models": [
+    4587
+  ],
+  "stanceAnimation": 1338,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1339,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 69,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 88,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 69,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

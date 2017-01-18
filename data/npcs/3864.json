@@ -1,0 +1,64 @@
+{
+  "id": 3864,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798,
+    4550,
+    4626,
+    22177
+  ],
+  "anInt2156": 32,
+  "name": "Bedread the bold",
+  "recolorToReplace": [
+    10520,
+    8493,
+    7081,
+    3408,
+    2576,
+    908
+  ],
+  "models": [
+    235,
+    248,
+    292,
+    10980,
+    8918,
+    4045,
+    271,
+    181
+  ],
+  "models_2": [
+    67,
+    80
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 126,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 136,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

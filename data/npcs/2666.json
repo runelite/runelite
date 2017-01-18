@@ -1,0 +1,64 @@
+{
+  "id": 2666,
+  "recolorToFind": [
+    8741,
+    25238,
+    -22464,
+    5169,
+    5173,
+    5181
+  ],
+  "anInt2156": 32,
+  "name": "Lyra",
+  "recolorToReplace": [
+    14746,
+    14990,
+    4550,
+    21679,
+    21555,
+    21563
+  ],
+  "models": [
+    385,
+    470,
+    483,
+    348,
+    353,
+    7368,
+    421,
+    361,
+    7366
+  ],
+  "models_2": [
+    109
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay (north-west)",
+    "Pay (south-east)",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

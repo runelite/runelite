@@ -1,0 +1,66 @@
+{
+  "id": 2460,
+  "recolorToFind": [
+    -11139,
+    5532,
+    41,
+    61,
+    57,
+    6798
+  ],
+  "anInt2156": 32,
+  "name": "Ajjat",
+  "recolorToReplace": [
+    49,
+    8,
+    8,
+    16,
+    -22510,
+    88
+  ],
+  "models": [
+    217,
+    10304,
+    3379,
+    8233,
+    10298,
+    15411,
+    15414,
+    268,
+    15410,
+    15318,
+    18919
+  ],
+  "models_2": [
+    15409
+  ],
+  "stanceAnimation": 2065,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2064,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 145,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Claim-Tokens",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 135,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,49 @@
+{
+  "id": 3000,
+  "recolorToFind": [
+    17467
+  ],
+  "anInt2156": 32,
+  "name": "Ghost shopkeeper",
+  "recolorToReplace": [
+    18626
+  ],
+  "models": [
+    5212,
+    5219,
+    5209,
+    5216
+  ],
+  "models_2": [
+    5203
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 40,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 110,
+  "hasRenderPriority": false,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,62 @@
+{
+  "id": 1300,
+  "recolorToFind": [
+    -22464,
+    6798,
+    8741,
+    25238,
+    4626,
+    5652
+  ],
+  "anInt2156": 32,
+  "name": "Frenita",
+  "recolorToReplace": [
+    4550,
+    127,
+    -7635,
+    11185,
+    -7635,
+    11844
+  ],
+  "models": [
+    378,
+    465,
+    346,
+    353,
+    428,
+    358
+  ],
+  "models_2": [
+    103,
+    137
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,61 @@
+{
+  "id": 6944,
+  "recolorToFind": [
+    25238,
+    -11139,
+    8078,
+    4626,
+    6798,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Vannah",
+  "recolorToReplace": [
+    26789,
+    26813,
+    26908,
+    6020,
+    7488,
+    4684
+  ],
+  "models": [
+    408,
+    467,
+    15123,
+    10706,
+    419,
+    358
+  ],
+  "models_2": [
+    125
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

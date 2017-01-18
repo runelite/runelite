@@ -1,0 +1,63 @@
+{
+  "id": 5066,
+  "recolorToFind": [
+    5338,
+    -22464,
+    33,
+    8741,
+    -11139,
+    6439
+  ],
+  "anInt2156": 32,
+  "name": "Bailey",
+  "recolorToReplace": [
+    4550,
+    4550,
+    6336,
+    6336,
+    -22454,
+    5532
+  ],
+  "models": [
+    11111,
+    247,
+    302,
+    18077,
+    176,
+    15104,
+    10124
+  ],
+  "models_2": [
+    11186,
+    79
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

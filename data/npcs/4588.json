@@ -1,0 +1,63 @@
+{
+  "id": 4588,
+  "recolorToFind": [
+    127,
+    4550,
+    8741,
+    25238,
+    4626,
+    10004
+  ],
+  "anInt2156": 32,
+  "name": "Hooknosed Jack",
+  "recolorToReplace": [
+    -32746,
+    5555,
+    6319,
+    21658,
+    5268,
+    10520
+  ],
+  "models": [
+    230,
+    246,
+    299,
+    4926,
+    167,
+    179,
+    263,
+    181
+  ],
+  "models_2": [
+    10029
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 140,
+  "contrast": 10,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 115,
+  "hasRenderPriority": true,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

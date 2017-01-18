@@ -1,0 +1,66 @@
+{
+  "id": 4803,
+  "recolorToFind": [
+    10353,
+    8741,
+    8860,
+    5305,
+    5289,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Jeb",
+  "recolorToReplace": [
+    -25419,
+    8648,
+    10576,
+    -22206,
+    -22475,
+    8646
+  ],
+  "models": [
+    18190,
+    230,
+    217,
+    10304,
+    10705,
+    10980,
+    177,
+    10218,
+    18195,
+    18188
+  ],
+  "models_2": [
+    18185,
+    18338
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4824,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,59 @@
+{
+  "id": 4099,
+  "recolorToFind": [
+    25238,
+    6798,
+    57
+  ],
+  "anInt2156": 32,
+  "name": "Guard",
+  "recolorToReplace": [
+    8741,
+    0,
+    61
+  ],
+  "models": [
+    219,
+    248,
+    294,
+    167,
+    179,
+    274,
+    185,
+    542,
+    541
+  ],
+  "models_2": [
+    57,
+    80
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 37,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

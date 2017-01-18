@@ -1,0 +1,65 @@
+{
+  "id": 3952,
+  "recolorToFind": [
+    7952,
+    61,
+    41,
+    926,
+    57,
+    10004
+  ],
+  "anInt2156": 32,
+  "name": "Legends guard",
+  "recolorToReplace": [
+    127,
+    -22318,
+    -22355,
+    127,
+    -22318,
+    127
+  ],
+  "models": [
+    219,
+    253,
+    306,
+    164,
+    179,
+    268,
+    184,
+    540,
+    317
+  ],
+  "models_2": [
+    57,
+    85
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

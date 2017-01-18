@@ -1,0 +1,63 @@
+{
+  "id": 5452,
+  "recolorToFind": [
+    -26333,
+    -26453,
+    61,
+    4292,
+    4626,
+    5784
+  ],
+  "anInt2156": 32,
+  "name": "Hofuthand (weapons and armour)",
+  "recolorToReplace": [
+    23843,
+    23723,
+    -31550,
+    23843,
+    33,
+    6057
+  ],
+  "models": [
+    23873,
+    16947,
+    7055,
+    2978,
+    7045,
+    2985,
+    8643
+  ],
+  "models_2": [
+    24532,
+    16945
+  ],
+  "stanceAnimation": 2336,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2335,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Prices",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

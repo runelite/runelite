@@ -1,0 +1,57 @@
+{
+  "id": 1192,
+  "recolorToFind": [
+    14238,
+    8086,
+    2974,
+    916
+  ],
+  "anInt2156": 0,
+  "name": "General Wartface",
+  "recolorToReplace": [
+    10782,
+    8732,
+    25121,
+    22414
+  ],
+  "models": [
+    2951,
+    16426,
+    16425,
+    5549,
+    5548,
+    15483
+  ],
+  "models_2": [
+    144
+  ],
+  "stanceAnimation": 3387,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3387,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 148,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 148,
+  "hasRenderPriority": true,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

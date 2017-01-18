@@ -1,0 +1,63 @@
+{
+  "id": 1205,
+  "recolorToFind": [
+    4550,
+    25238,
+    926,
+    -22464,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Hazeel",
+  "recolorToReplace": [
+    4205,
+    0,
+    20,
+    4205,
+    4205
+  ],
+  "models": [
+    231,
+    246,
+    315,
+    168,
+    176,
+    275,
+    181,
+    328,
+    239
+  ],
+  "models_2": [
+    64,
+    71
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 296,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

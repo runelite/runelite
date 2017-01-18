@@ -1,0 +1,52 @@
+{
+  "id": 3289,
+  "recolorToFind": [
+    6046,
+    5309,
+    28,
+    8877,
+    8078
+  ],
+  "anInt2156": 32,
+  "name": "Hobgoblin",
+  "recolorToReplace": [
+    5786,
+    6439,
+    5276,
+    5268,
+    5652
+  ],
+  "models": [
+    9463,
+    2995
+  ],
+  "stanceAnimation": 166,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 162,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 142,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 28,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 142,
+  "hasRenderPriority": false,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

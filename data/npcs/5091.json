@@ -1,0 +1,55 @@
+{
+  "id": 5091,
+  "recolorToFind": [
+    12,
+    280
+  ],
+  "anInt2156": 32,
+  "name": "Denath",
+  "recolorToReplace": [
+    10508,
+    10396
+  ],
+  "models": [
+    17523,
+    6131,
+    17530,
+    17513,
+    17524,
+    17519
+  ],
+  "models_2": [
+    63,
+    6129,
+    9997
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 4626,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 135,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 140,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

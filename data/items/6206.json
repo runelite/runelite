@@ -1,0 +1,60 @@
+{
+  "id": 6206,
+  "resizeY": 0,
+  "xan2d": 400,
+  "cost": 0,
+  "inventoryModel": 8804,
+  "resizeZ": 0,
+  "colorFind": [
+    -25644,
+    -25640,
+    -28447,
+    -27417
+  ],
+  "colorReplace": [
+    4651,
+    4531,
+    4416,
+    5578
+  ],
+  "name": "Fishlike thing",
+  "zoom2d": 1270,
+  "yan2d": 1928,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 18,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Eat",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

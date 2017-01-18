@@ -1,0 +1,59 @@
+{
+  "id": 4089,
+  "recolorToFind": [
+    8090,
+    61,
+    25238,
+    4626,
+    7952
+  ],
+  "anInt2156": 32,
+  "name": "Soldier",
+  "recolorToReplace": [
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "models": [
+    217,
+    295,
+    150,
+    264,
+    3710,
+    246
+  ],
+  "models_2": [
+    55
+  ],
+  "stanceAnimation": 1144,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1144,
+  "rotate90RightAnimation": 1144,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1144,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1144,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

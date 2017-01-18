@@ -1,0 +1,56 @@
+{
+  "id": 9074,
+  "resizeY": 0,
+  "xan2d": 636,
+  "cost": 200,
+  "inventoryModel": 16721,
+  "resizeZ": 0,
+  "colorFind": [
+    7700,
+    11200
+  ],
+  "colorReplace": [
+    1950,
+    2749
+  ],
+  "name": "Moonclan cape",
+  "zoom2d": 2023,
+  "yan2d": 0,
+  "zan2d": 83,
+  "maleOffset": 0,
+  "yOffset2d": 0,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 12086,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -3,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 16508,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

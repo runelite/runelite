@@ -1,0 +1,54 @@
+{
+  "id": 3997,
+  "recolorToFind": [
+    960,
+    -9280,
+    -31808,
+    -15437,
+    22443,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Witch\u0027s experiment (second form)",
+  "recolorToReplace": [
+    -10986,
+    21691,
+    -10866,
+    21679,
+    -10742,
+    21673
+  ],
+  "models": [
+    20309,
+    20312
+  ],
+  "stanceAnimation": 5326,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5325,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 30,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

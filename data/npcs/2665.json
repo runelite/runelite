@@ -1,0 +1,64 @@
+{
+  "id": 2665,
+  "recolorToFind": [
+    -22464,
+    25238,
+    9096,
+    6798,
+    908
+  ],
+  "anInt2156": 32,
+  "name": "Kragen",
+  "recolorToReplace": [
+    4550,
+    6689,
+    6808,
+    9630,
+    6689
+  ],
+  "models": [
+    4843,
+    235,
+    253,
+    315,
+    173,
+    176,
+    496,
+    274,
+    7121
+  ],
+  "models_2": [
+    67,
+    5534,
+    85
+  ],
+  "stanceAnimation": 2163,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2164,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay (north)",
+    "Pay (south)",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,57 @@
+{
+  "id": 139,
+  "recolorToFind": [
+    -22256,
+    -27364,
+    -27359,
+    -27479,
+    -27471,
+    -27446
+  ],
+  "anInt2156": 32,
+  "name": "Steel dragon",
+  "recolorToReplace": [
+    5161,
+    3123,
+    3131,
+    3140,
+    3148,
+    5202
+  ],
+  "models": [
+    24578,
+    24587,
+    24583,
+    17423,
+    24579
+  ],
+  "stanceAnimation": 6496,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 79,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 96,
+  "contrast": 15,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 246,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 96,
+  "hasRenderPriority": false,
+  "ambient": 15,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

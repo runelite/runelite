@@ -1,0 +1,56 @@
+{
+  "id": 4894,
+  "recolorToFind": [
+    61,
+    12,
+    5784
+  ],
+  "anInt2156": 32,
+  "name": "Rolad",
+  "recolorToReplace": [
+    6356,
+    4382,
+    7087
+  ],
+  "models": [
+    2971,
+    2980,
+    2978,
+    6017,
+    2985,
+    6020
+  ],
+  "models_2": [
+    1,
+    70
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

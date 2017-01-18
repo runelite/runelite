@@ -1,0 +1,41 @@
+{
+  "id": 1463,
+  "anInt2156": 32,
+  "name": "Medium ninja monkey",
+  "models": [
+    4821,
+    4828
+  ],
+  "models_2": [
+    4660
+  ],
+  "stanceAnimation": 1386,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1380,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 180,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 1,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 180,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

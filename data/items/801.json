@@ -1,0 +1,56 @@
+{
+  "id": 801,
+  "resizeY": 0,
+  "xan2d": 388,
+  "cost": 7,
+  "inventoryModel": 2752,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    57
+  ],
+  "colorReplace": [
+    24,
+    24
+  ],
+  "name": "Iron thrownaxe",
+  "zoom2d": 750,
+  "yan2d": 208,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 6,
+  "stackable": 1,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wield",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 545,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": 545,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

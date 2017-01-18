@@ -1,0 +1,62 @@
+{
+  "id": 2148,
+  "recolorToFind": [
+    8741,
+    25238,
+    8078,
+    7073,
+    -32506,
+    4626
+  ],
+  "anInt2156": 32,
+  "name": "Grand Exchange Clerk",
+  "recolorToReplace": [
+    -18154,
+    -18154,
+    -18154,
+    8113,
+    -18154,
+    4
+  ],
+  "models": [
+    215,
+    246,
+    17365,
+    163,
+    10218,
+    12138,
+    181
+  ],
+  "models_2": [
+    53
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 808,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Exchange",
+    "History",
+    "Sets"
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 20,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

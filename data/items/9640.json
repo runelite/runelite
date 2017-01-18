@@ -1,0 +1,58 @@
+{
+  "id": 9640,
+  "resizeY": 0,
+  "xan2d": 369,
+  "cost": 5,
+  "inventoryModel": 18020,
+  "resizeZ": 0,
+  "colorFind": [
+    21526,
+    8741,
+    4550
+  ],
+  "colorReplace": [
+    8720,
+    8720,
+    94
+  ],
+  "name": "Citizen top",
+  "zoom2d": 1380,
+  "yan2d": 111,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": 8,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 292,
+  "maleModel1": 18074,
+  "femaleModel1": 18104,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 9641,
+  "femaleModel0": 8849,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

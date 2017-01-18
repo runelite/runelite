@@ -1,0 +1,62 @@
+{
+  "id": 4114,
+  "recolorToFind": [
+    5400,
+    5648,
+    41,
+    61,
+    57,
+    10004
+  ],
+  "anInt2156": 32,
+  "name": "White Knight",
+  "recolorToReplace": [
+    5214,
+    5206,
+    5206,
+    5223,
+    7269,
+    5206
+  ],
+  "models": [
+    11744,
+    306,
+    164,
+    179,
+    546,
+    268,
+    4954
+  ],
+  "models_2": [
+    14336
+  ],
+  "stanceAnimation": 2561,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2562,
+  "rotate90RightAnimation": 2562,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 2562,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 36,
+  "rotate90LeftAnimation": 2562,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

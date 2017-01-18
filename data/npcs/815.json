@@ -1,0 +1,65 @@
+{
+  "id": 815,
+  "recolorToFind": [
+    926,
+    6323,
+    6435,
+    6674,
+    7700,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Duke Horacio",
+  "recolorToReplace": [
+    -21620,
+    -10866,
+    -11122,
+    -10364,
+    -21622,
+    -21602
+  ],
+  "models": [
+    235,
+    251,
+    281,
+    26605,
+    323,
+    26603,
+    176,
+    26604,
+    23921
+  ],
+  "models_2": [
+    67,
+    83
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

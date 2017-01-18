@@ -1,0 +1,63 @@
+{
+  "id": 25020,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Magical wheat",
+  "objectModels": [
+    26349
+  ],
+  "objectTypes": [
+    22
+  ],
+  "recolorToFind": [
+    12707,
+    12702,
+    12587,
+    10675,
+    10683
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": 1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 50,
+  "contrast": 60,
+  "actions": [
+    null,
+    null,
+    null,
+    null,
+    "Push-through"
+  ],
+  "anInt2094": 1,
+  "mapSceneID": 31,
+  "recolorToReplace": [
+    8745,
+    8615,
+    8623,
+    9653,
+    9661
+  ],
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 128,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": true,
+  "anInt2105": -1,
+  "anInt2106": -1,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": false
+}

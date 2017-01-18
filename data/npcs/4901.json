@@ -1,0 +1,58 @@
+{
+  "id": 4901,
+  "recolorToFind": [
+    2578,
+    61,
+    10659,
+    5784
+  ],
+  "anInt2156": 32,
+  "name": "Derni",
+  "recolorToReplace": [
+    6439,
+    6331,
+    7834,
+    10432
+  ],
+  "models": [
+    2972,
+    2980,
+    2978,
+    2984,
+    2985,
+    6019
+  ],
+  "models_2": [
+    2,
+    6026
+  ],
+  "stanceAnimation": 101,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 98,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 110,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 105,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

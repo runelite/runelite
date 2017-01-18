@@ -1,0 +1,66 @@
+{
+  "id": 6430,
+  "recolorToFind": [
+    4550,
+    7442,
+    4416,
+    -22464,
+    6443,
+    7073
+  ],
+  "anInt2156": 32,
+  "name": "Murcaily",
+  "recolorToReplace": [
+    5532,
+    5799,
+    5572,
+    5671,
+    5572,
+    5454
+  ],
+  "models": [
+    8921,
+    230,
+    246,
+    8928,
+    173,
+    8918,
+    534,
+    8925,
+    8919,
+    8947
+  ],
+  "models_2": [
+    63,
+    8909
+  ],
+  "stanceAnimation": -1,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": -1,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 130,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 131,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

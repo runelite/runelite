@@ -1,0 +1,62 @@
+{
+  "id": 5523,
+  "recolorToFind": [
+    21685,
+    21795,
+    103
+  ],
+  "anInt2156": 32,
+  "name": "Hatius Cosaintus",
+  "recolorToReplace": [
+    -29403,
+    -32083,
+    -14425
+  ],
+  "models": [
+    28518,
+    12137,
+    20138,
+    20154,
+    20120,
+    177,
+    4929,
+    28480,
+    28483,
+    8954,
+    28616,
+    246
+  ],
+  "models_2": [
+    28771,
+    14371
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

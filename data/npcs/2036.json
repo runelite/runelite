@@ -1,0 +1,56 @@
+{
+  "id": 2036,
+  "recolorToFind": [
+    22426,
+    25238,
+    933,
+    11162,
+    908
+  ],
+  "anInt2156": 32,
+  "name": "Zul-Gutusolly",
+  "recolorToReplace": [
+    17170,
+    17170,
+    30602,
+    4550,
+    18316
+  ],
+  "models": [
+    2910,
+    2899,
+    14178
+  ],
+  "models_2": [
+    16
+  ],
+  "stanceAnimation": 195,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 189,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 96,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 96,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

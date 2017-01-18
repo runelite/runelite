@@ -1,0 +1,39 @@
+{
+  "id": 1802,
+  "anInt2156": 32,
+  "name": "Summer Elemental",
+  "models": [
+    22269,
+    22270,
+    22271
+  ],
+  "stanceAnimation": 5801,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5802,
+  "rotate90RightAnimation": -1,
+  "aBool2170": false,
+  "resizeX": 80,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 80,
+  "hasRenderPriority": true,
+  "ambient": 40,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

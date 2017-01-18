@@ -1,0 +1,53 @@
+{
+  "id": 1481,
+  "recolorToFind": [
+    8792,
+    7595,
+    8741
+  ],
+  "anInt2156": 32,
+  "name": "Dalldav",
+  "recolorToReplace": [
+    7634,
+    13867,
+    13867
+  ],
+  "models": [
+    4021,
+    6977,
+    6975,
+    8267
+  ],
+  "models_2": [
+    4012
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 127,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 120,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

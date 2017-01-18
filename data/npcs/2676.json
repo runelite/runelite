@@ -1,0 +1,63 @@
+{
+  "id": 2676,
+  "recolorToFind": [
+    6798,
+    8741,
+    25238,
+    908
+  ],
+  "anInt2156": 32,
+  "name": "Rhazien",
+  "recolorToReplace": [
+    6701,
+    6558,
+    13840,
+    5648
+  ],
+  "models": [
+    214,
+    4219,
+    252,
+    292,
+    326,
+    162,
+    176,
+    496,
+    254,
+    7121
+  ],
+  "models_2": [
+    52,
+    84,
+    4210
+  ],
+  "stanceAnimation": 2163,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2164,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,37 @@
+{
+  "id": 388,
+  "anInt2156": 32,
+  "name": "Dark Core",
+  "models": [
+    11069
+  ],
+  "stanceAnimation": 1688,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2417,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 83,
+  "contrast": 30,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pick-up",
+    null,
+    null
+  ],
+  "renderOnMinimap": false,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 83,
+  "hasRenderPriority": false,
+  "ambient": 30,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

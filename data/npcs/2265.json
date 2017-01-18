@@ -1,0 +1,38 @@
+{
+  "id": 2265,
+  "anInt2156": 32,
+  "name": "Dagannoth Supreme",
+  "models": [
+    9941,
+    9943
+  ],
+  "stanceAnimation": 2850,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 2849,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 167,
+  "contrast": 30,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 303,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 165,
+  "hasRenderPriority": false,
+  "ambient": 30,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

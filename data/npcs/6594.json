@@ -1,0 +1,47 @@
+{
+  "id": 6594,
+  "recolorToFind": [
+    16920,
+    16796,
+    2838
+  ],
+  "anInt2156": 32,
+  "name": "Ent",
+  "recolorToReplace": [
+    -22380,
+    -22266,
+    794
+  ],
+  "models": [
+    28265
+  ],
+  "stanceAnimation": 7143,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 7142,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 101,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 25,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

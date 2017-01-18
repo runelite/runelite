@@ -1,0 +1,47 @@
+{
+  "id": 3903,
+  "recolorToFind": [
+    10145,
+    -21608,
+    117
+  ],
+  "anInt2156": 32,
+  "name": "Bunny",
+  "recolorToReplace": [
+    7958,
+    2952,
+    5435
+  ],
+  "models": [
+    4042
+  ],
+  "stanceAnimation": 1242,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1243,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 92,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 2,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 92,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

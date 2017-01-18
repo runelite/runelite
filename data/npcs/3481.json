@@ -1,0 +1,62 @@
+{
+  "id": 3481,
+  "recolorToFind": [
+    4550,
+    8741,
+    25238,
+    9104,
+    7952,
+    8078
+  ],
+  "anInt2156": 32,
+  "name": "Count Draynor",
+  "recolorToReplace": [
+    3303,
+    0,
+    0,
+    794,
+    914,
+    908
+  ],
+  "models": [
+    227,
+    238,
+    246,
+    292,
+    320,
+    162,
+    176,
+    256,
+    181,
+    317
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 34,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 140,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,56 @@
+{
+  "id": 9729,
+  "resizeY": 0,
+  "xan2d": 235,
+  "cost": 20,
+  "inventoryModel": 18655,
+  "resizeZ": 0,
+  "colorFind": [
+    -31821,
+    -28761
+  ],
+  "colorReplace": [
+    -18982,
+    -20251
+  ],
+  "name": "Elemental helmet",
+  "zoom2d": 659,
+  "yan2d": 221,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -45,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Equip",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 18567,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": 1,
+  "maleHeadModel": 18909,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": 18910,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 9730,
+  "femaleModel0": 18569,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

@@ -1,0 +1,49 @@
+{
+  "id": 1471,
+  "recolorToFind": [
+    8722,
+    5223
+  ],
+  "anInt2156": 32,
+  "name": "Fycie",
+  "recolorToReplace": [
+    5547,
+    11171
+  ],
+  "models": [
+    2878,
+    3441
+  ],
+  "models_2": [
+    3444
+  ],
+  "stanceAnimation": 357,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 358,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 90,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

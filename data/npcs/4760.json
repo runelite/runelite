@@ -1,0 +1,62 @@
+{
+  "id": 4760,
+  "recolorToFind": [
+    -16482,
+    9019,
+    6740,
+    -30291,
+    6596,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Shiratti the Custodian",
+  "recolorToReplace": [
+    -28381,
+    4428,
+    4428,
+    -28381,
+    8375,
+    4387
+  ],
+  "models": [
+    9021,
+    9026,
+    10126,
+    353,
+    6135,
+    10003,
+    361
+  ],
+  "models_2": [
+    9014
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1205,
+  "rotate90RightAnimation": 1207,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 1206,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 1208,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

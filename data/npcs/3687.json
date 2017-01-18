@@ -1,0 +1,66 @@
+{
+  "id": 3687,
+  "recolorToFind": [
+    6798,
+    25238,
+    8741,
+    7952,
+    10351,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Ragnvald",
+  "recolorToReplace": [
+    4771,
+    5413,
+    5413,
+    5532,
+    10574,
+    2524
+  ],
+  "models": [
+    208,
+    252,
+    292,
+    170,
+    176,
+    265,
+    185,
+    317,
+    4391,
+    3711
+  ],
+  "models_2": [
+    48,
+    84
+  ],
+  "stanceAnimation": 813,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1146,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 2,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

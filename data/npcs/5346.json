@@ -1,0 +1,59 @@
+{
+  "id": 5346,
+  "recolorToFind": [
+    13506,
+    13501,
+    13493,
+    13489,
+    13497,
+    13481
+  ],
+  "anInt2156": 32,
+  "name": "Undead one",
+  "recolorToReplace": [
+    7349,
+    7349,
+    7341,
+    7341,
+    8369,
+    8481
+  ],
+  "models": [
+    21108,
+    21064,
+    21046,
+    21093,
+    21122,
+    21078,
+    21140
+  ],
+  "stanceAnimation": 5565,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 5566,
+  "rotate90RightAnimation": 5788,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 5790,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 68,
+  "rotate90LeftAnimation": 5789,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

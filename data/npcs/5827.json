@@ -1,0 +1,65 @@
+{
+  "id": 5827,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798,
+    6032,
+    5276,
+    5400
+  ],
+  "anInt2156": 32,
+  "name": "Bork Sigmundson",
+  "recolorToReplace": [
+    6319,
+    7349,
+    4017,
+    6817,
+    10308,
+    10279
+  ],
+  "models": [
+    230,
+    11190,
+    299,
+    22164,
+    170,
+    10218,
+    4046,
+    4226,
+    4218
+  ],
+  "models_2": [
+    63,
+    11188
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Request-supplies",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

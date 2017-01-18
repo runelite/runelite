@@ -1,0 +1,66 @@
+{
+  "id": 994,
+  "recolorToFind": [
+    8741,
+    25238,
+    7952,
+    61,
+    8078,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Sigmund",
+  "recolorToReplace": [
+    -4189,
+    -4189,
+    -4189,
+    68,
+    -4189,
+    177
+  ],
+  "models": [
+    5430,
+    5215,
+    283,
+    296,
+    317,
+    24536,
+    177,
+    518,
+    24537,
+    181
+  ],
+  "models_2": [
+    5428,
+    5207
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 50,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": 1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

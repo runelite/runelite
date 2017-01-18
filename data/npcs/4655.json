@@ -1,0 +1,66 @@
+{
+  "id": 4655,
+  "recolorToFind": [
+    8741,
+    25238,
+    4626,
+    908,
+    -22464,
+    4550
+  ],
+  "anInt2156": 32,
+  "name": "Bedabin Nomad Fighter",
+  "recolorToReplace": [
+    127,
+    127,
+    127,
+    127,
+    127,
+    4645
+  ],
+  "models": [
+    230,
+    247,
+    191,
+    292,
+    170,
+    176,
+    265,
+    185,
+    490
+  ],
+  "models_2": [
+    63,
+    34,
+    79
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 56,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

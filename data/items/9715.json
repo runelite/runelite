@@ -1,0 +1,62 @@
+{
+  "id": 9715,
+  "resizeY": 0,
+  "xan2d": 346,
+  "cost": 10,
+  "inventoryModel": 18650,
+  "resizeZ": 0,
+  "colorFind": [
+    5018,
+    2991,
+    8101,
+    9152,
+    8107
+  ],
+  "colorReplace": [
+    -4834,
+    -5992,
+    4649,
+    4657,
+    4424
+  ],
+  "name": "Slashed book",
+  "zoom2d": 854,
+  "yan2d": 1895,
+  "zan2d": 1784,
+  "maleOffset": 0,
+  "yOffset2d": 3,
+  "stackable": 0,
+  "members": true,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    "Read",
+    null,
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": -1,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 0,
+  "maleModel2": -1,
+  "xOffset2d": -4,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": -1,
+  "femaleModel0": -1,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

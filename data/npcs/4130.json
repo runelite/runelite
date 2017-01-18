@@ -1,0 +1,53 @@
+{
+  "id": 4130,
+  "recolorToFind": [
+    61,
+    21570
+  ],
+  "anInt2156": 32,
+  "name": "Dad",
+  "recolorToReplace": [
+    7343,
+    5293
+  ],
+  "models": [
+    3753,
+    3759,
+    3756,
+    3773,
+    3761
+  ],
+  "models_2": [
+    3791,
+    3789
+  ],
+  "stanceAnimation": 925,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 1140,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 224,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 101,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 224,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

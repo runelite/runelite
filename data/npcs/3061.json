@@ -1,0 +1,63 @@
+{
+  "id": 3061,
+  "recolorToFind": [
+    943,
+    939,
+    935
+  ],
+  "anInt2156": 32,
+  "name": "Barbarian",
+  "recolorToReplace": [
+    1944,
+    1944,
+    1944
+  ],
+  "models": [
+    11737,
+    214,
+    11746,
+    249,
+    11758,
+    11763,
+    11729,
+    11731,
+    11754,
+    11733,
+    11788
+  ],
+  "models_2": [
+    52,
+    81,
+    11802,
+    11806
+  ],
+  "stanceAnimation": 2065,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2064,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 137,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 10,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

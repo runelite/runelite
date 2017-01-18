@@ -1,0 +1,66 @@
+{
+  "id": 1867,
+  "recolorToFind": [
+    70,
+    5532,
+    41,
+    61,
+    7700,
+    57
+  ],
+  "anInt2156": 0,
+  "name": "Sir Amik Varze",
+  "recolorToReplace": [
+    99,
+    82,
+    82,
+    99,
+    103,
+    99
+  ],
+  "models": [
+    215,
+    306,
+    164,
+    179,
+    268,
+    184,
+    201,
+    249,
+    12799
+  ],
+  "models_2": [
+    53,
+    81,
+    43
+  ],
+  "stanceAnimation": 3396,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 3396,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

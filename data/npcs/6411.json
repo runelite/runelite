@@ -1,0 +1,62 @@
+{
+  "id": 6411,
+  "recolorToFind": [
+    4550,
+    6585,
+    -30489,
+    -30489,
+    119,
+    -28092
+  ],
+  "anInt2156": 32,
+  "name": "Broodoo victim",
+  "recolorToReplace": [
+    10917,
+    8879,
+    4930,
+    7997,
+    4930,
+    4663
+  ],
+  "models": [
+    8923,
+    181,
+    315,
+    173,
+    176,
+    8926,
+    230
+  ],
+  "models_2": [
+    64
+  ],
+  "stanceAnimation": 2401,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 60,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

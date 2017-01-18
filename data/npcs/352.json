@@ -1,0 +1,63 @@
+{
+  "id": 352,
+  "recolorToFind": [
+    6740,
+    6604,
+    6596,
+    -30291,
+    8741,
+    24
+  ],
+  "anInt2156": 32,
+  "name": "Molly",
+  "recolorToReplace": [
+    8640,
+    8770,
+    7878,
+    8014,
+    10060,
+    10339
+  ],
+  "models": [
+    378,
+    15010,
+    11359,
+    332,
+    10706,
+    10003,
+    358
+  ],
+  "models_2": [
+    103,
+    15001
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

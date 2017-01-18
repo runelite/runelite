@@ -1,0 +1,66 @@
+{
+  "id": 5832,
+  "recolorToFind": [
+    8741,
+    25238,
+    6798,
+    9096,
+    -11139
+  ],
+  "anInt2156": 32,
+  "name": "Martin the Master Gardener",
+  "recolorToReplace": [
+    12583,
+    5400,
+    7465,
+    5400,
+    8497
+  ],
+  "models": [
+    6364,
+    217,
+    249,
+    292,
+    4391,
+    170,
+    176,
+    7367,
+    274,
+    7121,
+    18921
+  ],
+  "models_2": [
+    55,
+    81,
+    6212
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pickpocket",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

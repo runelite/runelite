@@ -1,0 +1,63 @@
+{
+  "id": 509,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798,
+    -22464,
+    -11139,
+    7475
+  ],
+  "anInt2156": 32,
+  "name": "Shop assistant",
+  "recolorToReplace": [
+    8844,
+    4769,
+    9903,
+    4550,
+    4391,
+    4391
+  ],
+  "models": [
+    217,
+    246,
+    305,
+    25867,
+    10980,
+    177,
+    11339,
+    181
+  ],
+  "models_2": [
+    55
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 120,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Trade",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 120,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,65 @@
+{
+  "id": 24063,
+  "anInt2069": 16,
+  "isSolid": false,
+  "name": "Castle door",
+  "objectModels": [
+    11662
+  ],
+  "objectTypes": [
+    0
+  ],
+  "recolorToFind": [
+    6697,
+    6945,
+    6814,
+    6940,
+    4638,
+    4762
+  ],
+  "mapIconID": -1,
+  "sizeX": 1,
+  "sizeY": 1,
+  "anInt2083": 0,
+  "offsetX": 0,
+  "nonFlatShading": false,
+  "anInt2088": -1,
+  "animationID": -1,
+  "varpID": -1,
+  "ambient": 20,
+  "contrast": 0,
+  "actions": [
+    "Close",
+    null,
+    null,
+    null,
+    null
+  ],
+  "anInt2094": 2,
+  "mapSceneID": -1,
+  "recolorToReplace": [
+    6453,
+    6449,
+    6445,
+    6569,
+    6565,
+    6689
+  ],
+  "aBool2097": true,
+  "modelSizeX": 128,
+  "modelSizeHeight": 152,
+  "modelSizeY": 128,
+  "objectID": 0,
+  "offsetHeight": 0,
+  "offsetY": 0,
+  "aBool2104": false,
+  "anInt2105": -1,
+  "anInt2106": 0,
+  "aBool2108": false,
+  "configId": -1,
+  "anInt2110": -1,
+  "aBool2111": false,
+  "anInt2112": 0,
+  "anInt2113": 0,
+  "aBool2114": true
+}

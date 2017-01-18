@@ -1,0 +1,62 @@
+{
+  "id": 1783,
+  "recolorToFind": [
+    8741,
+    25238,
+    7700,
+    926,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Malignius Mortifer",
+  "recolorToReplace": [
+    24,
+    24,
+    16,
+    8,
+    8
+  ],
+  "models": [
+    9454,
+    181,
+    250,
+    292,
+    170,
+    176,
+    265,
+    323
+  ],
+  "models_2": [
+    9444,
+    82
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

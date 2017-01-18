@@ -1,0 +1,53 @@
+{
+  "id": 5617,
+  "recolorToFind": [
+    3912,
+    3776,
+    3895,
+    17579,
+    17571,
+    17562
+  ],
+  "anInt2156": 32,
+  "name": "Swamp snake",
+  "recolorToReplace": [
+    14781,
+    14773,
+    14893,
+    14507,
+    14631,
+    14490
+  ],
+  "models": [
+    14171
+  ],
+  "stanceAnimation": 3535,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 3537,
+  "rotate90RightAnimation": 3537,
+  "aBool2170": true,
+  "resizeX": 161,
+  "contrast": 0,
+  "rotate180Animation": 3537,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 139,
+  "rotate90LeftAnimation": 3537,
+  "resizeY": 161,
+  "hasRenderPriority": true,
+  "ambient": 10,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

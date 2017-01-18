@@ -1,0 +1,63 @@
+{
+  "id": 2995,
+  "recolorToFind": [
+    4626,
+    25238,
+    8741,
+    7952
+  ],
+  "anInt2156": 32,
+  "name": "Robin",
+  "recolorToReplace": [
+    16912,
+    17818,
+    13731,
+    13596
+  ],
+  "models": [
+    215,
+    249,
+    292,
+    151,
+    179,
+    254,
+    181,
+    3378,
+    317,
+    563
+  ],
+  "models_2": [
+    53,
+    3384,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-To",
+    null,
+    "Claim-slime",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

@@ -1,0 +1,64 @@
+{
+  "id": 4069,
+  "recolorToFind": [
+    4550,
+    23326,
+    8887,
+    7097,
+    7446,
+    5815
+  ],
+  "anInt2156": 32,
+  "name": "Bonzo",
+  "recolorToReplace": [
+    7062,
+    13974,
+    8747,
+    7587,
+    7062,
+    8986
+  ],
+  "models": [
+    14339,
+    230,
+    246,
+    14383,
+    10980,
+    177,
+    14380,
+    14375
+  ],
+  "models_2": [
+    63,
+    14335
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

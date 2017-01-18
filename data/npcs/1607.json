@@ -1,0 +1,54 @@
+{
+  "id": 1607,
+  "recolorToFind": [
+    -32308,
+    -32432,
+    -32438,
+    -32448,
+    -31313,
+    -32424
+  ],
+  "anInt2156": 32,
+  "name": "Kolodion",
+  "recolorToReplace": [
+    -22460,
+    -22467,
+    -22483,
+    -22462,
+    -22483,
+    -22467
+  ],
+  "models": [
+    20306,
+    20305
+  ],
+  "stanceAnimation": 5318,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 3,
+  "walkAnimation": 5317,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 108,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 108,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

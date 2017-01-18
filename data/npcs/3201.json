@@ -1,0 +1,53 @@
+{
+  "id": 3201,
+  "recolorToFind": [
+    5157,
+    5161,
+    5165,
+    35,
+    5169,
+    5177
+  ],
+  "anInt2156": 32,
+  "name": "Albino bat",
+  "recolorToReplace": [
+    -6045,
+    -6041,
+    -6037,
+    -6062,
+    66,
+    72
+  ],
+  "models": [
+    18898
+  ],
+  "stanceAnimation": 4914,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 4913,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 52,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

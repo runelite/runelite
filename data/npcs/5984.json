@@ -1,0 +1,58 @@
+{
+  "id": 5984,
+  "recolorToFind": [
+    -22456,
+    -22460,
+    -22467,
+    -22473,
+    -22481
+  ],
+  "anInt2156": 32,
+  "name": "Rewards Guardian",
+  "recolorToReplace": [
+    9657,
+    8757,
+    9657,
+    7735,
+    -17097
+  ],
+  "models": [
+    10633,
+    10635,
+    10637,
+    10638,
+    10631
+  ],
+  "models_2": [
+    10695
+  ],
+  "stanceAnimation": 3033,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 3035,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 126,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    "Trade-with",
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 126,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

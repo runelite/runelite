@@ -1,0 +1,63 @@
+{
+  "id": 3311,
+  "recolorToFind": [
+    8741,
+    6798,
+    22177,
+    25238,
+    61
+  ],
+  "anInt2156": 32,
+  "name": "Mining Instructor",
+  "recolorToReplace": [
+    4550,
+    10159,
+    -11743,
+    -11743,
+    -29403
+  ],
+  "models": [
+    211,
+    249,
+    315,
+    167,
+    509,
+    271,
+    185,
+    280,
+    179
+  ],
+  "models_2": [
+    50,
+    81
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

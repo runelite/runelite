@@ -1,0 +1,47 @@
+{
+  "id": 1228,
+  "recolorToFind": [
+    -26148
+  ],
+  "anInt2156": 32,
+  "name": "Arzinian Avatar of Strength",
+  "recolorToReplace": [
+    18619
+  ],
+  "models": [
+    6011,
+    6010
+  ],
+  "models_2": [
+    5817
+  ],
+  "stanceAnimation": 1838,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1839,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 115,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 125,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 115,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

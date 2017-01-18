@@ -1,0 +1,51 @@
+{
+  "id": 438,
+  "recolorToFind": [
+    21557,
+    21565,
+    21570,
+    21574,
+    21578
+  ],
+  "anInt2156": 32,
+  "name": "Jelly",
+  "recolorToReplace": [
+    26677,
+    26685,
+    26690,
+    26694,
+    26698
+  ],
+  "models": [
+    5081
+  ],
+  "stanceAnimation": 1583,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 1584,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 108,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 78,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 108,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

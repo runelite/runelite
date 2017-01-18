@@ -1,0 +1,60 @@
+{
+  "id": 7348,
+  "resizeY": 0,
+  "xan2d": 344,
+  "cost": 54400,
+  "inventoryModel": 11381,
+  "resizeZ": 0,
+  "colorFind": [
+    61,
+    57,
+    935,
+    11187
+  ],
+  "colorReplace": [
+    -29403,
+    7054,
+    -10329,
+    6067
+  ],
+  "name": "Rune shield (h3)",
+  "zoom2d": 1560,
+  "yan2d": 1104,
+  "zan2d": 0,
+  "maleOffset": 0,
+  "yOffset2d": -14,
+  "stackable": 0,
+  "members": false,
+  "options": [
+    null,
+    null,
+    "Take",
+    null,
+    null
+  ],
+  "interfaceOptions": [
+    null,
+    "Wear",
+    null,
+    null,
+    "Drop"
+  ],
+  "maleModel0": 11421,
+  "maleModel1": -1,
+  "femaleModel1": -1,
+  "femaleOffset": 6,
+  "maleModel2": -1,
+  "xOffset2d": -6,
+  "maleHeadModel": -1,
+  "maleHeadModel2": -1,
+  "femaleHeadModel": -1,
+  "femaleHeadModel2": -1,
+  "femaleModel2": -1,
+  "notedID": 7349,
+  "femaleModel0": 11421,
+  "resizeX": 0,
+  "notedTemplate": -1,
+  "ambient": 0,
+  "contrast": 0,
+  "team": 0
+}

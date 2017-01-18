@@ -1,0 +1,39 @@
+{
+  "id": 6309,
+  "anInt2156": 32,
+  "name": "Flambeed (hard)",
+  "models": [
+    13905,
+    13906,
+    13907
+  ],
+  "stanceAnimation": 1749,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 5,
+  "walkAnimation": 1748,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 90,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 238,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 90,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

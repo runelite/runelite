@@ -1,0 +1,60 @@
+{
+  "id": 2688,
+  "recolorToFind": [
+    4550,
+    5572,
+    4886
+  ],
+  "anInt2156": 32,
+  "name": "Imiago",
+  "recolorToReplace": [
+    4645,
+    6065,
+    3173
+  ],
+  "models": [
+    230,
+    8921,
+    248,
+    8928,
+    8916,
+    8918,
+    8925,
+    8919,
+    496
+  ],
+  "models_2": [
+    63,
+    80,
+    8909
+  ],
+  "stanceAnimation": 2163,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 2164,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Pay",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

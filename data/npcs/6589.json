@@ -1,0 +1,67 @@
+{
+  "id": 6589,
+  "recolorToFind": [
+    -22464,
+    8741,
+    25238,
+    10004,
+    6798,
+    11183
+  ],
+  "anInt2156": 32,
+  "name": "Dr Ford",
+  "recolorToReplace": [
+    4550,
+    7289,
+    5243,
+    5243,
+    9325,
+    10270
+  ],
+  "models": [
+    6848,
+    238,
+    249,
+    302,
+    3190,
+    159,
+    176,
+    263,
+    185,
+    12816
+  ],
+  "models_2": [
+    5787,
+    81,
+    70
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    "Heal",
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

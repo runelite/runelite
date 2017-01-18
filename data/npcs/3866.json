@@ -1,0 +1,66 @@
+{
+  "id": 3866,
+  "recolorToFind": [
+    25238,
+    8741,
+    6798,
+    4550,
+    4626,
+    22177
+  ],
+  "anInt2156": 32,
+  "name": "Tommy 2-times",
+  "recolorToReplace": [
+    10520,
+    7054,
+    7081,
+    3408,
+    3408,
+    908
+  ],
+  "models": [
+    211,
+    236,
+    248,
+    292,
+    14373,
+    8918,
+    11201,
+    11112,
+    181
+  ],
+  "models_2": [
+    50,
+    80,
+    68
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 126,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    null,
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 0,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 117,
+  "hasRenderPriority": true,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

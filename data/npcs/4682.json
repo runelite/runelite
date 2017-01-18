@@ -1,0 +1,64 @@
+{
+  "id": 4682,
+  "recolorToFind": [
+    70,
+    5532,
+    41,
+    61,
+    7700,
+    24
+  ],
+  "anInt2156": 32,
+  "name": "Sir Leye",
+  "recolorToReplace": [
+    99,
+    82,
+    82,
+    99,
+    103,
+    103
+  ],
+  "models": [
+    233,
+    246,
+    3379,
+    323,
+    157,
+    176,
+    540,
+    268,
+    184
+  ],
+  "models_2": [
+    66
+  ],
+  "stanceAnimation": 808,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 1,
+  "walkAnimation": 819,
+  "rotate90RightAnimation": 821,
+  "aBool2170": true,
+  "resizeX": 128,
+  "contrast": 0,
+  "rotate180Animation": 820,
+  "anInt2174": -1,
+  "options": [
+    "Talk-to",
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 20,
+  "rotate90LeftAnimation": 822,
+  "resizeY": 128,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}

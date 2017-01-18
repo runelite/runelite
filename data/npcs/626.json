@@ -1,0 +1,54 @@
+{
+  "id": 626,
+  "recolorToFind": [
+    -9280,
+    960,
+    -31808,
+    22443,
+    -15437,
+    11200
+  ],
+  "anInt2156": 32,
+  "name": "Fever spider",
+  "recolorToReplace": [
+    6953,
+    4894,
+    20,
+    6930,
+    5029,
+    5388
+  ],
+  "models": [
+    20302,
+    20301
+  ],
+  "stanceAnimation": 5318,
+  "anInt2165": -1,
+  "tileSpacesOccupied": 2,
+  "walkAnimation": 5317,
+  "rotate90RightAnimation": -1,
+  "aBool2170": true,
+  "resizeX": 78,
+  "contrast": 0,
+  "rotate180Animation": -1,
+  "anInt2174": -1,
+  "options": [
+    null,
+    "Attack",
+    null,
+    null,
+    null
+  ],
+  "renderOnMinimap": true,
+  "combatLevel": 49,
+  "rotate90LeftAnimation": -1,
+  "resizeY": 78,
+  "hasRenderPriority": false,
+  "ambient": 0,
+  "headIcon": -1,
+  "anInt2184": 30,
+  "anInt2187": -1,
+  "isClickable": true,
+  "anInt2189": -1,
+  "aBool2190": false
+}
