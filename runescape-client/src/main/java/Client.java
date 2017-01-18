@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.io.IOException;
 import java.net.Socket;
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Hook;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
@@ -572,6 +573,7 @@ public final class Client extends GameEngine {
    static int[] realSkillLevels;
    @ObfuscatedName("hp")
    @Export("skillExperiences")
+   @Hook("experienceChanged")
    static int[] skillExperiences;
    @ObfuscatedName("ow")
    @ObfuscatedGetter(

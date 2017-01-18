@@ -67,16 +67,19 @@ public class Inject
 {
 	private static final Logger logger = LoggerFactory.getLogger(Inject.class);
 	
-	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
-	private static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
-	private static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
-	private static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
-	private static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
+	public static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/ObfuscatedName;");
+	public static final Type EXPORT = new Type("Lnet/runelite/mapping/Export;");
+	public static final Type IMPLEMENTS = new Type("Lnet/runelite/mapping/Implements;");
+	public static final Type OBFUSCATED_GETTER = new Type("Lnet/runelite/mapping/ObfuscatedGetter;");
+	public static final Type OBFUSCATED_SIGNATURE = new Type("Lnet/runelite/mapping/ObfuscatedSignature;");
+	public static final Type HOOK = new Type("Lnet/runelite/mapping/Hook;");
 
 	private static final String API_PACKAGE_BASE = "net.runelite.rs.api.";
 	
 	private static final java.lang.Class<?> clientClass = Client.class;
 	
+	private final InjectHook hooks = new InjectHook(this);
+
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
 
@@ -86,7 +89,7 @@ public class Inject
 		this.vanilla = vanilla;
 	}
 	
-	private Type toObType(Type t)
+	public Type toObType(Type t)
 	{
 		if (t.isPrimitive())
 			return t;
@@ -106,7 +109,7 @@ public class Inject
 		return new Type("L" + obfuscatedName + ";", t.getArrayDims());
 	}
 	
-	private Signature toObSignature(Signature s)
+	public Signature toObSignature(Signature s)
 	{
 		Signature sig = new Signature();
 		sig.setTypeOfReturnValue(toObType(s.getReturnValue()));
@@ -200,6 +203,8 @@ public class Inject
 			{
 				an = f.getAnnotations();
 				
+				hooks.process(f);
+
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported field
 				
@@ -607,5 +612,15 @@ public class Inject
 		ins.add(new Return(instructions, returnType));
 
 		clazz.getMethods().addMethod(invokerMethodSignature);
+	}
+
+	public ClassGroup getDeobfuscated()
+	{
+		return deobfuscated;
+	}
+
+	public ClassGroup getVanilla()
+	{
+		return vanilla;
 	}
 }
