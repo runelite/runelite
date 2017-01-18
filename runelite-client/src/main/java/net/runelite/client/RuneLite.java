@@ -25,6 +25,8 @@
 
 package net.runelite.client;
 
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionContext;
 import java.io.File;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -32,10 +34,14 @@ import net.runelite.api.Client;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.overlay.OverlayRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RuneLite
 {
+	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
+
 	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
 	public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
 
@@ -46,6 +52,7 @@ public class RuneLite
 	private ClientUI gui;
 	private PluginManager pluginManager;
 	private OverlayRenderer renderer;
+	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 
 	public static void main(String[] args) throws Exception
 	{
@@ -62,10 +69,15 @@ public class RuneLite
 		gui = new ClientUI();
 		gui.setVisible(true);
 
-		pluginManager = new PluginManager();
+		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
 
 		renderer = new OverlayRenderer();
+	}
+
+	private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
+	{
+		logger.warn("uncaught exception in event subscriber", exception);
 	}
 
 	public static Client getClient()
@@ -91,6 +103,11 @@ public class RuneLite
 	public OverlayRenderer getRenderer()
 	{
 		return renderer;
+	}
+
+	public EventBus getEventBus()
+	{
+		return eventBus;
 	}
 
 	public static OptionSet getOptions()
