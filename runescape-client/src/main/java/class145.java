@@ -471,7 +471,7 @@ public class class145 {
                      Widget var19;
                      if(Client.packetOpcode == 167) {
                         var2 = Client.field409.method2953();
-                        var3 = Client.field409.method2968();
+                        var3 = Client.field409.readShort();
                         var8 = Client.field409.method2819();
                         var19 = class44.method799(var8);
                         if(var19.field2194 != var3 || var19.field2195 != var2 || var19.field2230 != 0 || var19.field2191 != 0) {
@@ -785,7 +785,7 @@ public class class145 {
 
                      if(Client.packetOpcode == 184) {
                         class33.method695();
-                        Client.weight = Client.field409.method2968();
+                        Client.weight = Client.field409.readShort();
                         Client.field477 = Client.field446;
                         Client.packetOpcode = -1;
                         var15 = true;

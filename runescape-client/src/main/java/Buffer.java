@@ -891,7 +891,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1958457299"
    )
-   public int method2968() {
+   @Export("readShort")
+   public int readShort() {
       this.offset += 2;
       int var1 = ((this.payload[this.offset - 2] & 255) << 8) + (this.payload[this.offset - 1] & 255);
       if(var1 > 32767) {

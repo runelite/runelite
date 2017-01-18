@@ -92,11 +92,11 @@ public class class49 extends Renderable {
          int var2;
          int var3;
          if(this.field941 != 1 && this.field941 != 3) {
-            var2 = var12.field2895;
-            var3 = var12.field2931;
+            var2 = var12.sizeX;
+            var3 = var12.sizeY;
          } else {
-            var2 = var12.field2931;
-            var3 = var12.field2895;
+            var2 = var12.sizeY;
+            var3 = var12.sizeX;
          }
 
          int var4 = this.field945 + (var2 >> 1);

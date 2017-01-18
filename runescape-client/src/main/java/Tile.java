@@ -332,7 +332,7 @@ public final class Tile extends Node {
          }
 
          var1.method3600();
-         if(var1.field2919) {
+         if(var1.isSolid) {
             var1.field2923 = 0;
             var1.field2898 = false;
          }

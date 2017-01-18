@@ -581,8 +581,8 @@ public class Widget extends Node {
       this.type = var1.readUnsignedByte();
       this.field2188 = var1.readUnsignedByte();
       this.contentType = var1.readUnsignedShort();
-      this.field2194 = var1.method2968();
-      this.field2195 = var1.method2968();
+      this.field2194 = var1.readShort();
+      this.field2195 = var1.readShort();
       this.field2237 = var1.readUnsignedShort();
       this.field2279 = var1.readUnsignedShort();
       this.opacity = var1.readUnsignedByte();
@@ -673,8 +673,8 @@ public class Widget extends Node {
          for(var8 = 0; var8 < 20; ++var8) {
             int var9 = var1.readUnsignedByte();
             if(var9 == 1) {
-               this.field2253[var8] = var1.method2968();
-               this.field2254[var8] = var1.method2968();
+               this.field2253[var8] = var1.readShort();
+               this.field2254[var8] = var1.readShort();
                this.field2190[var8] = var1.method2780();
             } else {
                this.field2190[var8] = -1;
@@ -767,8 +767,8 @@ public class Widget extends Node {
 
          this.field2218 = var1.readUnsignedByte() == 1;
          this.textColor = var1.method2780();
-         this.field2251 = var1.method2968();
-         this.field2252 = var1.method2968();
+         this.field2251 = var1.readShort();
+         this.field2252 = var1.readShort();
          var4 = var1.readUnsignedByte();
          if(var4 == 1) {
             this.field2257 |= 1073741824;
@@ -1221,11 +1221,11 @@ public class Widget extends Node {
       this.field2184 = true;
       this.type = var1.readUnsignedByte();
       this.contentType = var1.readUnsignedShort();
-      this.field2194 = var1.method2968();
-      this.field2195 = var1.method2968();
+      this.field2194 = var1.readShort();
+      this.field2195 = var1.readShort();
       this.field2237 = var1.readUnsignedShort();
       if(this.type == 9) {
-         this.field2279 = var1.method2968();
+         this.field2279 = var1.readShort();
       } else {
          this.field2279 = var1.readUnsignedShort();
       }
@@ -1266,8 +1266,8 @@ public class Widget extends Node {
             this.modelId = -1;
          }
 
-         this.field2234 = var1.method2968();
-         this.field2178 = var1.method2968();
+         this.field2234 = var1.readShort();
+         this.field2178 = var1.readShort();
          this.rotationX = var1.readUnsignedShort();
          this.rotationZ = var1.readUnsignedShort();
          this.rotationY = var1.readUnsignedShort();

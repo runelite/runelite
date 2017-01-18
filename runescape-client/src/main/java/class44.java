@@ -93,12 +93,12 @@ final class class44 implements Comparator {
             if(var1 == 2) {
                class6.region.method1672(var0, var2, var3);
                var15 = Tile.getObjectDefinition(var12);
-               if(var2 + var15.field2895 > 103 || var3 + var15.field2895 > 103 || var2 + var15.field2931 > 103 || var3 + var15.field2931 > 103) {
+               if(var2 + var15.sizeX > 103 || var3 + var15.sizeX > 103 || var2 + var15.sizeY > 103 || var3 + var15.sizeY > 103) {
                   return;
                }
 
                if(var15.field2923 != 0) {
-                  Client.collisionMaps[var0].method2236(var2, var3, var15.field2895, var15.field2931, var14, var15.field2898);
+                  Client.collisionMaps[var0].method2236(var2, var3, var15.sizeX, var15.sizeY, var14, var15.field2898);
                }
             }
 

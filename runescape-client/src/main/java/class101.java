@@ -259,11 +259,11 @@ public class class101 extends RuntimeException {
                            int var20;
                            int var21;
                            if(var9 != 1 && var9 != 3) {
-                              var20 = var19.field2895;
-                              var21 = var19.field2931;
+                              var20 = var19.sizeX;
+                              var21 = var19.sizeY;
                            } else {
-                              var20 = var19.field2931;
-                              var21 = var19.field2895;
+                              var20 = var19.sizeY;
+                              var21 = var19.sizeX;
                            }
 
                            int var22 = var2 + (var20 >> 1);
@@ -321,7 +321,7 @@ public class class101 extends RuntimeException {
                         var2 = class25.field580 + (var0 & 7);
                         var3 = var1 + Client.field409.readByte();
                         var4 = var2 + Client.field409.readByte();
-                        var5 = Client.field409.method2968();
+                        var5 = Client.field409.readShort();
                         var35 = Client.field409.readUnsignedShort();
                         var8 = Client.field409.readUnsignedByte() * 4;
                         var39 = Client.field409.readUnsignedByte() * 4;
