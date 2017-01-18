@@ -43,7 +43,7 @@ public abstract class ArrayStore extends Instruction implements ArrayStoreInstru
 		super(instructions, type);
 	}
 	
-	private Field getMyField(InstructionContext thisIc)
+	public Field getMyField(InstructionContext thisIc)
 	{
 		StackContext sctx = thisIc.getPops().get(2);
 		InstructionContext pushed = sctx.getPushed();
