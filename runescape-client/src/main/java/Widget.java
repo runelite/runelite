@@ -523,7 +523,6 @@ public class Widget extends Node {
    @ObfuscatedGetter(
       intValue = -1591792007
    )
-   @Export("contentType")
    public int field2312;
    @ObfuscatedName("es")
    @ObfuscatedGetter(
