@@ -32,8 +32,8 @@ public class class88 {
          }
 
          var1.method3652();
-         if(var1.field2974 != -1) {
-            var1.method3636(getItemDefinition(var1.field2974), getItemDefinition(var1.note));
+         if(var1.notedTemplate != -1) {
+            var1.method3636(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
          }
 
          if(var1.field2983 != -1) {
@@ -49,7 +49,7 @@ public class class88 {
             var1.field2981 = false;
             var1.groundActions = null;
             var1.inventoryActions = null;
-            var1.field2954 = 0;
+            var1.team = 0;
          }
 
          ItemComposition.field2938.put(var1, (long)var0);

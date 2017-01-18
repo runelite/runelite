@@ -159,7 +159,7 @@ public final class Player extends Actor {
             }
 
             if(var4[var7] >= 512) {
-               int var8 = class88.getItemDefinition(var4[var7] - 512).field2954;
+               int var8 = class88.getItemDefinition(var4[var7] - 512).team;
                if(var8 != 0) {
                   this.team = var8;
                }

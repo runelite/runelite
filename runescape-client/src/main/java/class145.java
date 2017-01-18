@@ -2019,20 +2019,20 @@ public class class145 {
                            var37 = class88.getItemDefinition(var3);
                            var19.modelType = 4;
                            var19.modelId = var3;
-                           var19.rotationX = var37.field2949;
-                           var19.rotationZ = var37.field2937;
-                           var19.field2239 = var37.field2948 * 100 / var8;
+                           var19.rotationX = var37.xan2d;
+                           var19.rotationZ = var37.yan2d;
+                           var19.field2239 = var37.zoom2d * 100 / var8;
                            class6.method87(var19);
                         } else {
                            var19.item = var3;
                            var19.stackSize = var8;
                            var37 = class88.getItemDefinition(var3);
-                           var19.rotationX = var37.field2949;
-                           var19.rotationZ = var37.field2937;
-                           var19.rotationY = var37.field2951;
-                           var19.field2234 = var37.field2952;
-                           var19.field2178 = var37.field2953;
-                           var19.field2239 = var37.field2948;
+                           var19.rotationX = var37.xan2d;
+                           var19.rotationZ = var37.yan2d;
+                           var19.rotationY = var37.zan2d;
+                           var19.field2234 = var37.offsetX2d;
+                           var19.field2178 = var37.offsetY2d;
+                           var19.field2239 = var37.zoom2d;
                            if(var37.isStackable == 1) {
                               var19.field2244 = 1;
                            } else {

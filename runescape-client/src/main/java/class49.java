@@ -709,12 +709,12 @@ public class class49 extends Renderable {
                            var32.item = var23;
                            var32.stackSize = var24;
                            ItemComposition var64 = class88.getItemDefinition(var23);
-                           var32.rotationX = var64.field2949;
-                           var32.rotationZ = var64.field2937;
-                           var32.rotationY = var64.field2951;
-                           var32.field2234 = var64.field2952;
-                           var32.field2178 = var64.field2953;
-                           var32.field2239 = var64.field2948;
+                           var32.rotationX = var64.xan2d;
+                           var32.rotationZ = var64.yan2d;
+                           var32.rotationY = var64.zan2d;
+                           var32.field2234 = var64.offsetX2d;
+                           var32.field2178 = var64.offsetY2d;
+                           var32.field2239 = var64.zoom2d;
                            if(var16 == 1205) {
                               var32.field2244 = 0;
                            } else if(var16 == 1212 | var64.isStackable == 1) {
@@ -2740,7 +2740,7 @@ public class class49 extends Renderable {
                                           --var5;
                                           var17 = class32.field723[var5];
                                           var82 = class88.getItemDefinition(var17);
-                                          if(var82.field2974 == -1 && var82.note >= 0) {
+                                          if(var82.notedTemplate == -1 && var82.note >= 0) {
                                              class32.field723[var5++] = var82.note;
                                              continue;
                                           }
@@ -2753,7 +2753,7 @@ public class class49 extends Renderable {
                                           --var5;
                                           var17 = class32.field723[var5];
                                           var82 = class88.getItemDefinition(var17);
-                                          if(var82.field2974 >= 0 && var82.note >= 0) {
+                                          if(var82.notedTemplate >= 0 && var82.note >= 0) {
                                              class32.field723[var5++] = var82.note;
                                              continue;
                                           }
@@ -2824,7 +2824,7 @@ public class class49 extends Renderable {
                                              }
 
                                              ItemComposition var88 = class88.getItemDefinition(var41);
-                                             if((!var33 || var88.field2981) && var88.field2974 == -1 && var88.name.toLowerCase().indexOf(var22) != -1) {
+                                             if((!var33 || var88.field2981) && var88.notedTemplate == -1 && var88.name.toLowerCase().indexOf(var22) != -1) {
                                                 if(var20 >= 250) {
                                                    DecorativeObject.field1596 = -1;
                                                    Projectile.field874 = null;
