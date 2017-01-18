@@ -161,7 +161,6 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = -784529781
    )
-   @Export("maleModel")
    int maleModel = -1;
    @ObfuscatedName("g")
    @Export("itemModelCache")
