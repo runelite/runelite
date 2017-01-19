@@ -119,6 +119,9 @@ public interface Client extends GameEngine
 	@Import("username")
 	String getUsername();
 
+	@Import(value = "username", setter = true)
+	void setUsername(String username);
+
 	@Import("menuActions")
 	String[] getMenuActions();
 
@@ -148,8 +151,6 @@ public interface Client extends GameEngine
 
 	@Import("rootInterface")
 	int getRootInterface();
-
-	//void setUsername(String var1);
 
 	@Import("sendGameMessage")
 	void sendGameMessage(int var1, String var2, String var3);
