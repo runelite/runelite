@@ -1,939 +1,129 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ai")
+@ObfuscatedName("al")
 public final class class33 extends Renderable {
-   @ObfuscatedName("i")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 837194999
-   )
-   int field733;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1052781683
-   )
-   int field735;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -865326005
-   )
-   int field736;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -721934849
-   )
-   int field737;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 954859989
-   )
-   int field738;
-   @ObfuscatedName("d")
-   Sequence field739;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -1829856253
+      intValue = 1667481367
    )
    int field740 = 0;
-   @ObfuscatedName("u")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 85460389
+      intValue = 1102064015
    )
    int field741;
-   @ObfuscatedName("z")
-   boolean field742 = false;
-   @ObfuscatedName("l")
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1499478225
+      intValue = -718534115
    )
-   int field744 = 0;
-
-   class33(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
-      this.field741 = var1;
-      this.field735 = var2;
-      this.field736 = var3;
-      this.field737 = var4;
-      this.field738 = var5;
-      this.field733 = var6 + var7;
-      int var8 = class185.method3389(this.field741).field2772;
-      if(var8 != -1) {
-         this.field742 = false;
-         this.field739 = CombatInfo2.getAnimation(var8);
-      } else {
-         this.field742 = true;
-      }
-
-   }
-
+   int field742;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1125299401
+   )
+   int field743;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1466367783
+   )
+   int field744;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1015114367
+   )
+   int field745;
+   @ObfuscatedName("k")
+   Sequence field747;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1250584227
+   )
+   int field748;
+   @ObfuscatedName("x")
+   boolean field749 = false;
    @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "6"
+   @ObfuscatedGetter(
+      intValue = 1314294583
    )
-   final void method693(int var1) {
-      if(!this.field742) {
+   int field750 = 0;
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "1926748565"
+   )
+   final void method669(int var1) {
+      if(!this.field749) {
          this.field740 += var1;
 
-         while(this.field740 > this.field739.frameLenghts[this.field744]) {
-            this.field740 -= this.field739.frameLenghts[this.field744];
-            ++this.field744;
-            if(this.field744 >= this.field739.frameIDs.length) {
-               this.field742 = true;
+         while(this.field740 > this.field747.frameLenghts[this.field750]) {
+            this.field740 -= this.field747.frameLenghts[this.field750];
+            ++this.field750;
+            if(this.field750 >= this.field747.frameIDs.length) {
+               this.field749 = true;
                break;
             }
          }
-      }
 
+      }
    }
 
-   @ObfuscatedName("cl")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIIILjava/lang/String;Ljava/lang/String;IIB)V",
-      garbageValue = "66"
+      signature = "(III)I",
+      garbageValue = "1061373187"
    )
-   @Export("menuAction")
-   static final void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
-      if(var2 >= 2000) {
-         var2 -= 2000;
-      }
-
-      if(var2 == 30 && Client.field537 == null) {
-         class140.method2606(var1, var0);
-         Client.field537 = class157.method3011(var1, var0);
-         class6.method87(Client.field537);
-      }
-
-      NPC var8;
-      if(var2 == 9) {
-         var8 = Client.cachedNPCs[var3];
-         if(null != var8) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(145);
-            Client.field326.method2800(class105.field1700[82]?1:0);
-            Client.field326.method2809(var3);
-         }
-      }
-
-      if(var2 == 20) {
-         Client.field390 = var6;
-         Client.field391 = var7;
-         Client.field393 = 2;
-         Client.field392 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.field326.method3029(12);
-         Client.field326.method2918(FrameMap.baseX + var0);
-         Client.field326.method2807(XItemContainer.baseY + var1);
-         Client.field326.method2799(class105.field1700[82]?1:0);
-         Client.field326.method2942(var3);
-      }
-
-      if(var2 == 6) {
-         Client.field390 = var6;
-         Client.field391 = var7;
-         Client.field393 = 2;
-         Client.field392 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.field326.method3029(71);
-         Client.field326.method2800(class105.field1700[82]?1:0);
-         Client.field326.method2918(var0 + FrameMap.baseX);
-         Client.field326.method2807(var3 >> 14 & 32767);
-         Client.field326.method2942(var1 + XItemContainer.baseY);
-      }
-
-      if(var2 == 1003) {
-         Client.field390 = var6;
-         Client.field391 = var7;
-         Client.field393 = 2;
-         Client.field392 = 0;
-         var8 = Client.cachedNPCs[var3];
-         if(null != var8) {
-            NPCComposition var9 = var8.composition;
-            if(var9.field3016 != null) {
-               var9 = var9.method3705();
-            }
-
-            if(null != var9) {
-               Client.field326.method3029(208);
-               Client.field326.method2942(var9.id);
-            }
-         }
-      }
-
-      int var11;
-      Widget var13;
-      if(var2 == 25) {
-         var13 = class157.method3011(var1, var0);
-         if(var13 != null) {
-            class18.method187();
-            int var10 = GameObject.method1872(var13);
-            var11 = var10 >> 11 & 63;
-            class32.method692(var1, var0, var11, var13.item);
-            Client.field447 = 0;
-            Client.field438 = class32.method690(var13);
-            if(Client.field438 == null) {
-               Client.field438 = "Null";
-            }
-
-            if(var13.field2184) {
-               Client.field282 = var13.name + class32.method691(16777215);
-            } else {
-               Client.field282 = class32.method691('\uff00') + var13.field2301 + class32.method691(16777215);
-            }
-         }
-      } else {
-         if(var2 == 33) {
-            Client.field326.method3029(2);
-            Client.field326.method2818(var1);
-            Client.field326.method2809(var0);
-            Client.field326.method2918(var3);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 13) {
-            var8 = Client.cachedNPCs[var3];
-            if(var8 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(192);
-               Client.field326.method2809(var3);
-               Client.field326.method2760(class105.field1700[82]?1:0);
-            }
-         }
-
-         if(var2 == 11) {
-            var8 = Client.cachedNPCs[var3];
-            if(var8 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(159);
-               Client.field326.method2809(var3);
-               Client.field326.method2800(class105.field1700[82]?1:0);
-            }
-         }
-
-         Player var14;
-         if(var2 == 44) {
-            var14 = Client.cachedPlayers[var3];
-            if(var14 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(240);
-               Client.field326.method2807(var3);
-               Client.field326.method2801(class105.field1700[82]?1:0);
-            }
-         }
-
-         if(var2 == 14) {
-            var14 = Client.cachedPlayers[var3];
-            if(var14 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(204);
-               Client.field326.method2942(class6.field52);
-               Client.field326.method2763(ObjectComposition.field2930);
-               Client.field326.method2918(class15.field169);
-               Client.field326.method2801(class105.field1700[82]?1:0);
-               Client.field326.method2918(var3);
-            }
-         }
-
-         if(var2 == 22) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(74);
-            Client.field326.method2807(XItemContainer.baseY + var1);
-            Client.field326.method2942(var0 + FrameMap.baseX);
-            Client.field326.method2760(class105.field1700[82]?1:0);
-            Client.field326.method2807(var3);
-         }
-
-         if(var2 == 1002) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.field326.method3029(205);
-            Client.field326.method2809(var3 >> 14 & 32767);
-         }
-
-         if(var2 == 23) {
-            class6.region.method1707(class60.plane, var0, var1);
-         }
-
-         if(var2 == 31) {
-            Client.field326.method3029(225);
-            Client.field326.method2918(var0);
-            Client.field326.method2918(class15.field169);
-            Client.field326.method2817(var1);
-            Client.field326.method2809(class6.field52);
-            Client.field326.method2817(ObjectComposition.field2930);
-            Client.field326.method2942(var3);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 18) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(20);
-            Client.field326.method2809(XItemContainer.baseY + var1);
-            Client.field326.method2942(FrameMap.baseX + var0);
-            Client.field326.method2942(var3);
-            Client.field326.method2799(class105.field1700[82]?1:0);
-         }
-
-         if(var2 == 32) {
-            Client.field326.method3029(194);
-            Client.field326.method2942(Client.field436);
-            Client.field326.method2942(var0);
-            Client.field326.method2818(var1);
-            Client.field326.method2942(var3);
-            Client.field326.method2848(class2.field16);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 45) {
-            var14 = Client.cachedPlayers[var3];
-            if(var14 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(139);
-               Client.field326.method2800(class105.field1700[82]?1:0);
-               Client.field326.method2918(var3);
-            }
-         }
-
-         if(var2 == 21) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(11);
-            Client.field326.method2942(var1 + XItemContainer.baseY);
-            Client.field326.method2809(FrameMap.baseX + var0);
-            Client.field326.method2760(class105.field1700[82]?1:0);
-            Client.field326.method2809(var3);
-         }
-
-         if(var2 == 58) {
-            var13 = class157.method3011(var1, var0);
-            if(null != var13) {
-               Client.field326.method3029(199);
-               Client.field326.method2942(Client.field436);
-               Client.field326.method2807(Client.field437);
-               Client.field326.method2942(var0);
-               Client.field326.method2848(var1);
-               Client.field326.method2817(class2.field16);
-               Client.field326.method2809(var13.item);
-            }
-         }
-
-         if(var2 == 29) {
-            Client.field326.method3029(253);
-            Client.field326.method2763(var1);
-            var13 = class44.method799(var1);
-            if(var13.dynamicValues != null && var13.dynamicValues[0][0] == 5) {
-               var11 = var13.dynamicValues[0][1];
-               if(class165.widgetSettings[var11] != var13.field2207[0]) {
-                  class165.widgetSettings[var11] = var13.field2207[0];
-                  CombatInfo2.method3532(var11);
-               }
-            }
-         }
-
-         if(var2 == 12) {
-            var8 = Client.cachedNPCs[var3];
-            if(var8 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(180);
-               Client.field326.method2918(var3);
-               Client.field326.method2799(class105.field1700[82]?1:0);
-            }
-         }
-
-         if(var2 == 1) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(250);
-            Client.field326.method2918(XItemContainer.baseY + var1);
-            Client.field326.method2760(class105.field1700[82]?1:0);
-            Client.field326.method2817(ObjectComposition.field2930);
-            Client.field326.method2809(var3 >> 14 & 32767);
-            Client.field326.method2942(class6.field52);
-            Client.field326.method2942(class15.field169);
-            Client.field326.method2942(var0 + FrameMap.baseX);
-         }
-
-         if(var2 == 26) {
-            Client.field326.method3029(249);
-            WidgetNode var12 = (WidgetNode)Client.componentTable.method2344();
-
-            while(true) {
-               if(var12 == null) {
-                  if(null != Client.field537) {
-                     class6.method87(Client.field537);
-                     Client.field537 = null;
-                  }
-                  break;
-               }
-
-               if(var12.field182 == 0 || var12.field182 == 3) {
-                  class3.method31(var12, true);
-               }
-
-               var12 = (WidgetNode)Client.componentTable.method2343();
-            }
-         }
-
-         if(var2 == 49) {
-            var14 = Client.cachedPlayers[var3];
-            if(null != var14) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(245);
-               Client.field326.method2807(var3);
-               Client.field326.method2799(class105.field1700[82]?1:0);
-            }
-         }
-
-         if(var2 == 42) {
-            Client.field326.method3029(179);
-            Client.field326.method2942(var3);
-            Client.field326.method2809(var0);
-            Client.field326.method2817(var1);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 46) {
-            var14 = Client.cachedPlayers[var3];
-            if(var14 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(144);
-               Client.field326.method2807(var3);
-               Client.field326.method2799(class105.field1700[82]?1:0);
-            }
-         }
-
-         if(var2 == 2) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(3);
-            Client.field326.method2918(var3 >> 14 & 32767);
-            Client.field326.method2942(var0 + FrameMap.baseX);
-            Client.field326.method2918(Client.field436);
-            Client.field326.method2763(class2.field16);
-            Client.field326.method2942(var1 + XItemContainer.baseY);
-            Client.field326.method2801(class105.field1700[82]?1:0);
-         }
-
-         if(var2 == 47) {
-            var14 = Client.cachedPlayers[var3];
-            if(null != var14) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(175);
-               Client.field326.method2801(class105.field1700[82]?1:0);
-               Client.field326.method2942(var3);
-            }
-         }
-
-         if(var2 == 1001) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(229);
-            Client.field326.method2799(class105.field1700[82]?1:0);
-            Client.field326.method2918(FrameMap.baseX + var0);
-            Client.field326.method2807(var1 + XItemContainer.baseY);
-            Client.field326.method2809(var3 >> 14 & 32767);
-         }
-
-         if(var2 == 28) {
-            Client.field326.method3029(253);
-            Client.field326.method2763(var1);
-            var13 = class44.method799(var1);
-            if(var13.dynamicValues != null && var13.dynamicValues[0][0] == 5) {
-               var11 = var13.dynamicValues[0][1];
-               class165.widgetSettings[var11] = 1 - class165.widgetSettings[var11];
-               CombatInfo2.method3532(var11);
-            }
-         }
-
-         if(var2 == 34) {
-            Client.field326.method3029(244);
-            Client.field326.method2809(var3);
-            Client.field326.method2848(var1);
-            Client.field326.method2942(var0);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 57 || var2 == 1007) {
-            var13 = class157.method3011(var1, var0);
-            if(null != var13) {
-               class8.method111(var3, var1, var0, var13.item, var5);
-            }
-         }
-
-         if(var2 == 1005) {
-            var13 = class44.method799(var1);
-            if(var13 != null && var13.itemQuantities[var0] >= 100000) {
-               class7.method99(27, "", var13.itemQuantities[var0] + " x " + class88.getItemDefinition(var3).name);
-            } else {
-               Client.field326.method3029(72);
-               Client.field326.method2809(var3);
-            }
-
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 37) {
-            Client.field326.method3029(236);
-            Client.field326.method2807(var3);
-            Client.field326.method2818(var1);
-            Client.field326.method2942(var0);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 3) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(203);
-            Client.field326.method2799(class105.field1700[82]?1:0);
-            Client.field326.method2918(var1 + XItemContainer.baseY);
-            Client.field326.method2918(var3 >> 14 & 32767);
-            Client.field326.method2918(var0 + FrameMap.baseX);
-         }
-
-         if(var2 == 39) {
-            Client.field326.method3029(146);
-            Client.field326.method2807(var3);
-            Client.field326.method2763(var1);
-            Client.field326.method2809(var0);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 35) {
-            Client.field326.method3029(171);
-            Client.field326.method2807(var0);
-            Client.field326.method2807(var3);
-            Client.field326.method2848(var1);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 17) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(166);
-            Client.field326.method2918(Client.field436);
-            Client.field326.method2807(XItemContainer.baseY + var1);
-            Client.field326.method2799(class105.field1700[82]?1:0);
-            Client.field326.method2918(FrameMap.baseX + var0);
-            Client.field326.method2763(class2.field16);
-            Client.field326.method2809(var3);
-         }
-
-         if(var2 == 51) {
-            var14 = Client.cachedPlayers[var3];
-            if(var14 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(141);
-               Client.field326.method2918(var3);
-               Client.field326.method2799(class105.field1700[82]?1:0);
-            }
-         }
-
-         if(var2 == 36) {
-            Client.field326.method3029(152);
-            Client.field326.method2807(var3);
-            Client.field326.method2809(var0);
-            Client.field326.method2818(var1);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 50) {
-            var14 = Client.cachedPlayers[var3];
-            if(null != var14) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(103);
-               Client.field326.method2801(class105.field1700[82]?1:0);
-               Client.field326.method2807(var3);
-            }
-         }
-
-         if(var2 == 19) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(46);
-            Client.field326.method2942(var3);
-            Client.field326.method2760(class105.field1700[82]?1:0);
-            Client.field326.method2918(XItemContainer.baseY + var1);
-            Client.field326.method2807(var0 + FrameMap.baseX);
-         }
-
-         if(var2 == 8) {
-            var8 = Client.cachedNPCs[var3];
-            if(var8 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(129);
-               Client.field326.method2807(var3);
-               Client.field326.method2800(class105.field1700[82]?1:0);
-               Client.field326.method2763(class2.field16);
-               Client.field326.method2942(Client.field436);
-            }
-         }
-
-         if(var2 == 48) {
-            var14 = Client.cachedPlayers[var3];
-            if(null != var14) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(202);
-               Client.field326.method2801(class105.field1700[82]?1:0);
-               Client.field326.method2809(var3);
-            }
-         }
-
-         if(var2 == 16) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.field326.method3029(228);
-            Client.field326.method2801(class105.field1700[82]?1:0);
-            Client.field326.method2763(ObjectComposition.field2930);
-            Client.field326.method2918(class6.field52);
-            Client.field326.method2942(class15.field169);
-            Client.field326.method2918(var0 + FrameMap.baseX);
-            Client.field326.method2918(XItemContainer.baseY + var1);
-            Client.field326.method2807(var3);
-         }
-
-         if(var2 == 43) {
-            Client.field326.method3029(119);
-            Client.field326.method2918(var3);
-            Client.field326.method2817(var1);
-            Client.field326.method2942(var0);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 41) {
-            Client.field326.method3029(53);
-            Client.field326.method2809(var3);
-            Client.field326.method2848(var1);
-            Client.field326.method2809(var0);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 15) {
-            var14 = Client.cachedPlayers[var3];
-            if(var14 != null) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(84);
-               Client.field326.method2942(var3);
-               Client.field326.method2801(class105.field1700[82]?1:0);
-               Client.field326.method2942(Client.field436);
-               Client.field326.method2763(class2.field16);
-            }
-         }
-
-         if(var2 == 1004) {
-            Client.field390 = var6;
-            Client.field391 = var7;
-            Client.field393 = 2;
-            Client.field392 = 0;
-            Client.field326.method3029(72);
-            Client.field326.method2809(var3);
-         }
-
-         if(var2 == 40) {
-            Client.field326.method3029(181);
-            Client.field326.method2942(var0);
-            Client.field326.method2918(var3);
-            Client.field326.method2763(var1);
-            Client.field531 = 0;
-            PlayerComposition.field2164 = class44.method799(var1);
-            Client.field395 = var0;
-         }
-
-         if(var2 == 38) {
-            class18.method187();
-            var13 = class44.method799(var1);
-            Client.field447 = 1;
-            class15.field169 = var0;
-            ObjectComposition.field2930 = var1;
-            class6.field52 = var3;
-            class6.method87(var13);
-            Client.field468 = class32.method691(16748608) + class88.getItemDefinition(var3).name + class32.method691(16777215);
-            if(null == Client.field468) {
-               Client.field468 = "null";
-            }
-         } else {
-            if(var2 == 4) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(241);
-               Client.field326.method2800(class105.field1700[82]?1:0);
-               Client.field326.method2809(var3 >> 14 & 32767);
-               Client.field326.method2807(FrameMap.baseX + var0);
-               Client.field326.method2807(var1 + XItemContainer.baseY);
-            }
-
-            if(var2 == 5) {
-               Client.field390 = var6;
-               Client.field391 = var7;
-               Client.field393 = 2;
-               Client.field392 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.field326.method3029(26);
-               Client.field326.method2918(var3 >> 14 & 32767);
-               Client.field326.method2800(class105.field1700[82]?1:0);
-               Client.field326.method2918(var1 + XItemContainer.baseY);
-               Client.field326.method2918(var0 + FrameMap.baseX);
-            }
-
-            if(var2 == 10) {
-               var8 = Client.cachedNPCs[var3];
-               if(var8 != null) {
-                  Client.field390 = var6;
-                  Client.field391 = var7;
-                  Client.field393 = 2;
-                  Client.field392 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
-                  Client.field326.method3029(189);
-                  Client.field326.method2800(class105.field1700[82]?1:0);
-                  Client.field326.method2809(var3);
-               }
-            }
-
-            if(var2 == 24) {
-               var13 = class44.method799(var1);
-               boolean var15 = true;
-               if(var13.contentType > 0) {
-                  var15 = class2.method26(var13);
-               }
-
-               if(var15) {
-                  Client.field326.method3029(253);
-                  Client.field326.method2763(var1);
-               }
-            }
-
-            if(var2 == 7) {
-               var8 = Client.cachedNPCs[var3];
-               if(var8 != null) {
-                  Client.field390 = var6;
-                  Client.field391 = var7;
-                  Client.field393 = 2;
-                  Client.field392 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
-                  Client.field326.method3029(106);
-                  Client.field326.method2942(class15.field169);
-                  Client.field326.method2942(class6.field52);
-                  Client.field326.method2817(ObjectComposition.field2930);
-                  Client.field326.method2807(var3);
-                  Client.field326.method2799(class105.field1700[82]?1:0);
-               }
-            }
-
-            if(Client.field447 != 0) {
-               Client.field447 = 0;
-               class6.method87(class44.method799(ObjectComposition.field2930));
-            }
-
-            if(Client.field435) {
-               class18.method187();
-            }
-
-            if(PlayerComposition.field2164 != null && Client.field531 == 0) {
-               class6.method87(PlayerComposition.field2164);
-            }
-         }
-      }
-
+   static final int method670(int var0, int var1) {
+      int var2 = Actor.method579(var0 - 1, var1 - 1) + Actor.method579(var0 + 1, var1 - 1) + Actor.method579(var0 - 1, var1 + 1) + Actor.method579(1 + var0, var1 + 1);
+      int var3 = Actor.method579(var0 - 1, var1) + Actor.method579(1 + var0, var1) + Actor.method579(var0, var1 - 1) + Actor.method579(var0, var1 + 1);
+      int var4 = Actor.method579(var0, var1);
+      return var4 / 4 + var2 / 16 + var3 / 8;
    }
 
-   @ObfuscatedName("dw")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "587697724"
-   )
-   static void method695() {
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2344(); null != var0; var0 = (WidgetNode)Client.componentTable.method2343()) {
-         int var1 = var0.id;
-         if(class94.method1870(var1)) {
-            boolean var2 = true;
-            Widget[] var3 = Widget.widgets[var1];
-
-            int var4;
-            for(var4 = 0; var4 < var3.length; ++var4) {
-               if(null != var3[var4]) {
-                  var2 = var3[var4].field2184;
-                  break;
-               }
-            }
-
-            if(!var2) {
-               var4 = (int)var0.hash;
-               Widget var5 = class44.method799(var4);
-               if(var5 != null) {
-                  class6.method87(var5);
-               }
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)LModel;",
-      garbageValue = "25"
+      signature = "(I)LModel;",
+      garbageValue = "2062912069"
    )
    protected final Model getModel() {
-      class190 var1 = class185.method3389(this.field741);
+      class190 var1 = class48.method844(this.field743);
       Model var2;
-      if(!this.field742) {
-         var2 = var1.method3446(this.field744);
+      if(!this.field749) {
+         var2 = var1.method3353(this.field750);
       } else {
-         var2 = var1.method3446(-1);
+         var2 = var1.method3353(-1);
       }
 
       return null == var2?null:var2;
+   }
+
+   class33(int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+      this.field743 = var1;
+      this.field742 = var2;
+      this.field741 = var3;
+      this.field744 = var4;
+      this.field745 = var5;
+      this.field748 = var6 + var7;
+      int var8 = class48.method844(this.field743).field2801;
+      if(var8 != -1) {
+         this.field749 = false;
+         this.field747 = class110.getAnimation(var8);
+      } else {
+         this.field749 = true;
+      }
+
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;Lclass182;I)V",
+      garbageValue = "1485014439"
+   )
+   public static void method677(class182 var0, class182 var1, class182 var2) {
+      Sequence.field3061 = var0;
+      Sequence.field3066 = var1;
+      Sequence.field3058 = var2;
    }
 }
