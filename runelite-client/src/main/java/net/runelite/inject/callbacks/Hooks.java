@@ -37,6 +37,12 @@ public class Hooks
 
 	public static void callHook(String name, Object object)
 	{
+		if (RuneLite.getClient() == null)
+		{
+			logger.warn("Event {} triggered prior to client being ready", name);
+			return;
+		}
+
 		switch (name)
 		{
 			case "experienceChanged":
