@@ -58,6 +58,7 @@ import net.runelite.asm.attributes.code.instructions.SiPush;
 import net.runelite.asm.pool.Class;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
+import net.runelite.deob.deobfuscators.arithmetic.DMath;
 import net.runelite.mapping.Import;
 import net.runelite.rs.api.Client;
 import org.slf4j.Logger;
@@ -79,6 +80,8 @@ public class Inject
 	private static final java.lang.Class<?> clientClass = Client.class;
 	
 	private final InjectHook hooks = new InjectHook(this);
+
+	private final InjectSetter setters = new InjectSetter(this);
 
 	// deobfuscated contains exports etc to apply to vanilla
 	private final ClassGroup deobfuscated, vanilla;
@@ -118,7 +121,12 @@ public class Inject
 		return sig;
 	}
 
-	private Type classToType(java.lang.Class<?> c)
+	/**
+	 * Convert a java.lang.Class to a Type
+	 * @param c
+	 * @return
+	 */
+	public Type classToType(java.lang.Class<?> c)
 	{
 		int dimms = 0;
 		while (c.isArray())
@@ -207,8 +215,14 @@ public class Inject
 
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported field
-				
-				String exportedName = an.find(EXPORT).getElement().getString();
+
+				Annotation exportAnnotation = an.find(EXPORT);
+				String exportedName = exportAnnotation.getElement().getString();
+
+				boolean isSetter = false;
+				if (exportAnnotation.getElements().size() == 2)
+					isSetter = (boolean) exportAnnotation.getElements().get(1).getValue();
+
 				obfuscatedName = an.find(OBFUSCATED_NAME).getElement().getString();
 				
 				Annotation getterAnnotation = an.find(OBFUSCATED_GETTER);
@@ -234,8 +248,19 @@ public class Inject
 					logger.warn("Non static exported field {} on non exported interface", exportedName);
 					continue;
 				}
+
+				if (isSetter)
+				{
+					Number setter = null;
+					if (getter != null)
+					{
+						setter = DMath.modInverse(getter); // inverse getter to get the setter
+					}
+
+					setters.injectSetter(targetClass, targetApiClass, otherf, exportedName, setter);
+				}
 				
-				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName);
+				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetApiClass, exportedName, false);
 				if (apiMethod == null)
 				{
 					logger.info("Unable to find import method on api class {} with imported name {}, not injecting getter", targetApiClass, exportedName);
@@ -301,7 +326,7 @@ public class Inject
 					continue;
 				}
 				
-				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetClassJava, exportedName); // api method to invoke 'otherm'
+				java.lang.reflect.Method apiMethod = findImportMethodOnApi(targetClassJava, exportedName, false); // api method to invoke 'otherm'
 				if (apiMethod == null)
 				{
 					logger.info("Unable to find api method on {} with imported name {}, not injecting invoker", targetClassJava, exportedName);
@@ -350,13 +375,13 @@ public class Inject
 		return apiClass;
 	}
 
-	private java.lang.reflect.Method findImportMethodOnApi(java.lang.Class<?> clazz, String name)
+	public java.lang.reflect.Method findImportMethodOnApi(java.lang.Class<?> clazz, String name, boolean setter)
 	{
 		for (java.lang.reflect.Method method : clazz.getMethods())
 		{
 			Import i = method.getAnnotation(Import.class);
 			
-			if (i == null || !name.equals(i.value()))
+			if (i == null || !name.equals(i.value()) || i.setter() != setter)
 				continue;
 			
 			return method;
@@ -504,36 +529,12 @@ public class Inject
 		{
 			Type type = deobfuscatedMethod.getDescriptor().getTypeOfArg(i);
 
-			if (type.getArrayDims() > 0 || !type.isPrimitive())
-			{
-				ins.add(new ALoad(instructions, index++));
-			}
+			Instruction loadInstruction = createLoadForTypeIndex(instructions, type, index);
+
+			if (loadInstruction instanceof DLoad || loadInstruction instanceof LLoad)
+				index += 2;
 			else
-			{
-				switch (type.getType())
-				{
-					case "B":
-					case "C":
-					case "I":
-					case "S":
-					case "Z":
-						ins.add(new ILoad(instructions, index++));
-						break;
-					case "D":
-						ins.add(new DLoad(instructions, index++));
-						++index; // takes two slots
-						break;
-					case "F":
-						ins.add(new FLoad(instructions, index++));
-						break;
-					case "J":
-						ins.add(new LLoad(instructions, index++));
-						++index;
-						break;
-					default:
-						throw new RuntimeException("Unknown type");
-				}
-			}
+				index += 1;
 		}
 
 		if (lastGarbageArgumentType != null)
@@ -612,6 +613,40 @@ public class Inject
 		ins.add(new Return(instructions, returnType));
 
 		clazz.getMethods().addMethod(invokerMethodSignature);
+	}
+
+	/**
+	 * create a load instruction for a variable of type from a given index
+	 *
+	 * @param instructions
+	 * @param type
+	 * @param index
+	 * @return
+	 */
+	public Instruction createLoadForTypeIndex(Instructions instructions, Type type, int index)
+	{
+		if (type.getArrayDims() > 0 || !type.isPrimitive())
+		{
+			return new ALoad(instructions, index).makeSpecific();
+		}
+
+		switch (type.getType())
+		{
+			case "B":
+			case "C":
+			case "I":
+			case "S":
+			case "Z":
+				return new ILoad(instructions, index).makeSpecific();
+			case "D":
+				return new DLoad(instructions, index).makeSpecific();
+			case "F":
+				return new FLoad(instructions, index).makeSpecific();
+			case "J":
+				return new LLoad(instructions, index).makeSpecific();
+			default:
+				throw new RuntimeException("Unknown type");
+		}
 	}
 
 	public ClassGroup getDeobfuscated()

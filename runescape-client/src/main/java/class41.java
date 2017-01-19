@@ -86,7 +86,7 @@ public class class41 {
    @Export("loginMessage3")
    static String loginMessage3;
    @ObfuscatedName("as")
-   @Export("username")
+   @Export(value = "username", setter = true)
    static String username;
    @ObfuscatedName("ar")
    @Export("loginMessage2")
