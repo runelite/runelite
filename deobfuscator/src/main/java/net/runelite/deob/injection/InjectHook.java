@@ -57,6 +57,8 @@ public class InjectHook
 	private static final String HOOK_METHOD = "callHook";
 	private static final String HOOK_METHOD_SIGNATURE = "(Ljava/lang/String;Ljava/lang/Object;)V";
 
+	private static final String CLINIT = "<clinit>";
+
 	private final Inject inject;
 
 	public InjectHook(Inject inject)
@@ -87,7 +89,8 @@ public class InjectHook
 			{
 				Code code = method.getCode();
 
-				if (code == null)
+				// Don't inject hooks into class initialization methods
+				if (code == null || method.getName().equals(CLINIT))
 				{
 					continue;
 				}
