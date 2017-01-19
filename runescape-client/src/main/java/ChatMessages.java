@@ -5,237 +5,124 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("av")
 @Implements("ChatMessages")
 public class ChatMessages {
-   @ObfuscatedName("y")
-   static Buffer field905;
-   @ObfuscatedName("i")
-   boolean[] field907;
-   @ObfuscatedName("l")
+   @ObfuscatedName("qy")
    @ObfuscatedGetter(
-      longValue = 8388379899530233827L
+      intValue = -1762249067
+   )
+   protected static int field907;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      longValue = -6131008743891394631L
    )
    long field908;
-   @ObfuscatedName("a")
-   boolean[] field909;
-   @ObfuscatedName("c")
+   @ObfuscatedName("h")
+   boolean[] field910;
+   @ObfuscatedName("g")
    @Export("messages")
    String[] messages;
-   @ObfuscatedName("d")
-   boolean field911 = false;
-   @ObfuscatedName("m")
-   public static class144 field914;
+   @ObfuscatedName("k")
+   boolean field913 = false;
    @ObfuscatedName("f")
-   int[] field915;
-   @ObfuscatedName("t")
-   public static boolean field916;
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-1793134309"
+   boolean[] field914;
+   @ObfuscatedName("hs")
+   @ObfuscatedGetter(
+      intValue = -977171249
    )
-   void method821(int var1, int var2) {
-      this.field915[var1] = var2;
-      if(this.field907[var1]) {
-         this.field911 = true;
+   @Export("menuHeight")
+   static int menuHeight;
+   @ObfuscatedName("a")
+   int[] field917;
+   @ObfuscatedName("pg")
+   @ObfuscatedGetter(
+      intValue = 1124130707
+   )
+   static int field918;
+   @ObfuscatedName("ab")
+   static class184 field919;
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIS)V",
+      garbageValue = "-20707"
+   )
+   void method800(int var1, int var2) {
+      this.field917[var1] = var2;
+      if(this.field914[var1]) {
+         this.field913 = true;
       }
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "85"
+      signature = "(II)I",
+      garbageValue = "-77102159"
    )
-   int method822(int var1) {
-      return this.field915[var1];
+   int method801(int var1) {
+      return this.field917[var1];
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(ILjava/lang/String;B)V",
-      garbageValue = "2"
+      garbageValue = "65"
    )
-   void method823(int var1, String var2) {
+   void method802(int var1, String var2) {
       this.messages[var1] = var2;
-      if(this.field909[var1]) {
-         this.field911 = true;
+      if(this.field910[var1]) {
+         this.field913 = true;
       }
 
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(II)Ljava/lang/String;",
-      garbageValue = "-2000603419"
+      garbageValue = "-545179796"
    )
-   String method824(int var1) {
+   String method803(int var1) {
       return this.messages[var1];
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "55"
+      garbageValue = "-1"
    )
-   public static void method826() {
-      try {
-         class104.field1676.method1334();
-
-         for(int var0 = 0; var0 < class104.field1673; ++var0) {
-            class215.field3160[var0].method1334();
-         }
-
-         class104.field1677.method1334();
-         class104.field1682.method1334();
-      } catch (Exception var1) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1610838303"
-   )
-   void method828() {
-      FileOnDisk var1 = this.method841(false);
-
-      label196: {
-         try {
-            byte[] var2 = new byte[(int)var1.method1367()];
-
-            int var3;
-            for(int var4 = 0; var4 < var2.length; var4 += var3) {
-               var3 = var1.method1368(var2, var4, var2.length - var4);
-               if(var3 == -1) {
-                  throw new EOFException();
-               }
-            }
-
-            Buffer var23 = new Buffer(var2);
-            if(var23.payload.length - var23.offset >= 1) {
-               int var5 = var23.readUnsignedByte();
-               if(var5 >= 0 && var5 <= 1) {
-                  int var6 = var23.readUnsignedShort();
-
-                  int var7;
-                  int var8;
-                  int var9;
-                  for(var7 = 0; var7 < var6; ++var7) {
-                     var8 = var23.readUnsignedShort();
-                     var9 = var23.method2780();
-                     if(this.field907[var8]) {
-                        this.field915[var8] = var9;
-                     }
-                  }
-
-                  var7 = var23.readUnsignedShort();
-                  var8 = 0;
-
-                  while(true) {
-                     if(var8 >= var7) {
-                        break label196;
-                     }
-
-                     var9 = var23.readUnsignedShort();
-                     String var10 = var23.method2965();
-                     if(this.field909[var9]) {
-                        this.messages[var9] = var10;
-                     }
-
-                     ++var8;
-                  }
-               }
-
-               return;
-            }
-         } catch (Exception var21) {
-            break label196;
-         } finally {
-            try {
-               var1.method1365();
-            } catch (Exception var20) {
-               ;
-            }
-
-         }
-
-         return;
-      }
-
-      this.field911 = false;
-   }
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-100"
-   )
-   void method829() {
-      if(this.field911 && this.field908 < class9.method117() - 60000L) {
-         this.method842();
-      }
-
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1799567465"
-   )
-   void method830() {
+   void method804() {
       int var1;
-      for(var1 = 0; var1 < this.field915.length; ++var1) {
-         if(!this.field907[var1]) {
-            this.field915[var1] = -1;
+      for(var1 = 0; var1 < this.field917.length; ++var1) {
+         if(!this.field914[var1]) {
+            this.field917[var1] = -1;
          }
       }
 
       for(var1 = 0; var1 < this.messages.length; ++var1) {
-         if(!this.field909[var1]) {
+         if(!this.field910[var1]) {
             this.messages[var1] = null;
          }
       }
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1806553804"
+      signature = "(B)V",
+      garbageValue = "3"
    )
-   boolean method838() {
-      return this.field911;
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(ZS)LFileOnDisk;",
-      garbageValue = "10492"
-   )
-   FileOnDisk method841(boolean var1) {
-      return class47.method856("2", class13.field139.field2669, var1);
-   }
-
-   @ObfuscatedName("z")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1786857704"
-   )
-   void method842() {
-      FileOnDisk var1 = this.method841(true);
+   void method806() {
+      FileOnDisk var1 = this.method825(true);
 
       try {
          int var2 = 3;
          int var3 = 0;
 
          int var4;
-         for(var4 = 0; var4 < this.field915.length; ++var4) {
-            if(this.field907[var4] && this.field915[var4] != -1) {
+         for(var4 = 0; var4 < this.field917.length; ++var4) {
+            if(this.field914[var4] && this.field917[var4] != -1) {
                var2 += 6;
                ++var3;
             }
@@ -245,115 +132,281 @@ public class ChatMessages {
          var4 = 0;
 
          for(int var5 = 0; var5 < this.messages.length; ++var5) {
-            if(this.field909[var5] && this.messages[var5] != null) {
-               var2 += 2 + class148.method2740(this.messages[var5]);
+            if(this.field910[var5] && null != this.messages[var5]) {
+               String var8 = this.messages[var5];
+               int var7 = var8.length() + 1;
+               var2 += var7 + 2;
                ++var4;
             }
          }
 
-         Buffer var17 = new Buffer(var2);
-         var17.method2760(1);
-         var17.method2918(var3);
+         Buffer var11 = new Buffer(var2);
+         var11.method2708(1);
+         var11.method2709(var3);
 
          int var6;
-         for(var6 = 0; var6 < this.field915.length; ++var6) {
-            if(this.field907[var6] && this.field915[var6] != -1) {
-               var17.method2918(var6);
-               var17.method2763(this.field915[var6]);
+         for(var6 = 0; var6 < this.field917.length; ++var6) {
+            if(this.field914[var6] && this.field917[var6] != -1) {
+               var11.method2709(var6);
+               var11.method2711(this.field917[var6]);
             }
          }
 
-         var17.method2918(var4);
+         var11.method2709(var4);
 
          for(var6 = 0; var6 < this.messages.length; ++var6) {
-            if(this.field909[var6] && null != this.messages[var6]) {
-               var17.method2918(var6);
-               var17.method2811(this.messages[var6]);
+            if(this.field910[var6] && this.messages[var6] != null) {
+               var11.method2709(var6);
+               var11.method2714(this.messages[var6]);
             }
          }
 
-         var1.method1375(var17.payload, 0, var17.offset);
-      } catch (Exception var15) {
+         var1.method1396(var11.payload, 0, var11.offset);
+      } catch (Exception var19) {
          ;
       } finally {
          try {
-            var1.method1365();
-         } catch (Exception var14) {
+            var1.method1378();
+         } catch (Exception var18) {
             ;
          }
 
       }
 
-      this.field911 = false;
-      this.field908 = class9.method117();
+      this.field913 = false;
+      this.field908 = class2.method27();
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(B)LSpritePixels;",
-      garbageValue = "-43"
+      signature = "(I)V",
+      garbageValue = "-1898197245"
    )
-   static SpritePixels method850() {
-      SpritePixels var0 = new SpritePixels();
-      var0.field3205 = class225.field3214;
-      var0.field3207 = class202.field3060;
-      var0.field3209 = class225.field3213[0];
-      var0.field3208 = class225.field3216[0];
-      var0.width = class225.field3217[0];
-      var0.height = class178.field2653[0];
-      int var1 = var0.height * var0.width;
-      byte[] var2 = class119.field1845[0];
-      var0.image = new int[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.image[var3] = class225.field3218[var2[var3] & 255];
+   void method808() {
+      if(this.field913 && this.field908 < class2.method27() - 60000L) {
+         this.method806();
       }
 
-      class225.field3213 = null;
-      class225.field3216 = null;
-      class225.field3217 = null;
-      class178.field2653 = null;
-      class225.field3218 = null;
-      class119.field1845 = (byte[][])null;
-      return var0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "23"
+   )
+   void method809() {
+      FileOnDisk var1 = this.method825(false);
+
+      label189: {
+         try {
+            byte[] var2 = new byte[(int)var1.method1379()];
+
+            int var4;
+            for(int var3 = 0; var3 < var2.length; var3 += var4) {
+               var4 = var1.method1380(var2, var3, var2.length - var3);
+               if(var4 == -1) {
+                  throw new EOFException();
+               }
+            }
+
+            Buffer var13 = new Buffer(var2);
+            if(var13.payload.length - var13.offset < 1) {
+               return;
+            }
+
+            int var14 = var13.readUnsignedByte();
+            if(var14 >= 0 && var14 <= 1) {
+               int var15 = var13.readUnsignedShort();
+
+               int var7;
+               int var8;
+               int var9;
+               for(var7 = 0; var7 < var15; ++var7) {
+                  var8 = var13.readUnsignedShort();
+                  var9 = var13.method2727();
+                  if(this.field914[var8]) {
+                     this.field917[var8] = var9;
+                  }
+               }
+
+               var7 = var13.readUnsignedShort();
+               var8 = 0;
+
+               while(true) {
+                  if(var8 >= var7) {
+                     break label189;
+                  }
+
+                  var9 = var13.readUnsignedShort();
+                  String var10 = var13.method2911();
+                  if(this.field910[var9]) {
+                     this.messages[var9] = var10;
+                  }
+
+                  ++var8;
+               }
+            }
+         } catch (Exception var24) {
+            break label189;
+         } finally {
+            try {
+               var1.method1378();
+            } catch (Exception var23) {
+               ;
+            }
+
+         }
+
+         return;
+      }
+
+      this.field913 = false;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1588023011"
+   )
+   boolean method812() {
+      return this.field913;
    }
 
    ChatMessages() {
-      this.field915 = new int[class48.field936.method3323(19)];
-      this.messages = new String[class48.field936.method3323(15)];
-      this.field907 = new boolean[this.field915.length];
+      this.field917 = new int[field919.method3192(19)];
+      this.messages = new String[field919.method3192(15)];
+      this.field914 = new boolean[this.field917.length];
 
       int var1;
-      for(var1 = 0; var1 < this.field915.length; ++var1) {
-         class188 var2 = (class188)class188.field2754.get((long)var1);
-         class188 var3;
-         if(null != var2) {
-            var3 = var2;
-         } else {
-            byte[] var4 = class188.field2753.method3272(19, var1);
-            var2 = new class188();
-            if(var4 != null) {
-               var2.method3430(new Buffer(var4));
-            }
-
-            class188.field2754.put(var2, (long)var1);
-            var3 = var2;
-         }
-
-         this.field907[var1] = var3.field2755;
+      for(var1 = 0; var1 < this.field917.length; ++var1) {
+         class188 var2 = Client.method446(var1);
+         this.field914[var1] = var2.field2785;
       }
 
-      this.field909 = new boolean[this.messages.length];
+      this.field910 = new boolean[this.messages.length];
 
       for(var1 = 0; var1 < this.messages.length; ++var1) {
-         class189 var5 = class1.method16(var1);
-         this.field909[var1] = var5.field2761;
+         class189 var3 = (class189)class189.field2788.get((long)var1);
+         class189 var5;
+         if(var3 != null) {
+            var5 = var3;
+         } else {
+            byte[] var4 = class157.field2130.method3182(15, var1);
+            var3 = new class189();
+            if(null != var4) {
+               var3.method3348(new Buffer(var4));
+            }
+
+            class189.field2788.put(var3, (long)var1);
+            var5 = var3;
+         }
+
+         this.field910[var1] = var5.field2789;
       }
 
-      for(var1 = 0; var1 < this.field915.length; ++var1) {
-         this.field915[var1] = -1;
+      for(var1 = 0; var1 < this.field917.length; ++var1) {
+         this.field917[var1] = -1;
       }
 
-      this.method828();
+      this.method809();
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(ZI)LFileOnDisk;",
+      garbageValue = "327126049"
+   )
+   FileOnDisk method825(boolean var1) {
+      return class32.method667("2", class183.field2729.field2688, var1);
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "16"
+   )
+   public static int method829() {
+      return class105.keyboardIdleTicks;
+   }
+
+   @ObfuscatedName("az")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1973055622"
+   )
+   static final void method830() {
+      if(class47.field929 != null) {
+         class47.field929.method1033();
+      }
+
+      if(GameObject.field1626 != null) {
+         GameObject.field1626.method1033();
+      }
+
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;IZI)I",
+      garbageValue = "-363663110"
+   )
+   public static int method831(CharSequence var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         boolean var3 = false;
+         boolean var4 = false;
+         int var5 = 0;
+         int var6 = var0.length();
+
+         for(int var7 = 0; var7 < var6; ++var7) {
+            char var8 = var0.charAt(var7);
+            if(var7 == 0) {
+               if(var8 == 45) {
+                  var3 = true;
+                  continue;
+               }
+
+               if(var8 == 43) {
+                  continue;
+               }
+            }
+
+            int var10;
+            if(var8 >= 48 && var8 <= 57) {
+               var10 = var8 - 48;
+            } else if(var8 >= 65 && var8 <= 90) {
+               var10 = var8 - 55;
+            } else {
+               if(var8 < 97 || var8 > 122) {
+                  throw new NumberFormatException();
+               }
+
+               var10 = var8 - 87;
+            }
+
+            if(var10 >= var1) {
+               throw new NumberFormatException();
+            }
+
+            if(var3) {
+               var10 = -var10;
+            }
+
+            int var9 = var1 * var5 + var10;
+            if(var5 != var9 / var1) {
+               throw new NumberFormatException();
+            }
+
+            var5 = var9;
+            var4 = true;
+         }
+
+         if(!var4) {
+            throw new NumberFormatException();
+         } else {
+            return var5;
+         }
+      } else {
+         throw new IllegalArgumentException("");
+      }
    }
 }

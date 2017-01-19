@@ -1,21 +1,40 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("em")
 public class class155 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("p")
+   static String field2116;
+   @ObfuscatedName("qf")
    @ObfuscatedGetter(
-      longValue = 7801820130293312021L
+      intValue = 999829337
    )
-   static long field2091;
-   @ObfuscatedName("i")
+   protected static int field2118;
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1145517045
+      longValue = -3999357000017825037L
    )
-   public static int field2093;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      longValue = 4063631069373830445L
+   static long field2123;
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1995537132"
    )
-   static long field2095;
+   public static void method2927() {
+      while(true) {
+         Deque var1 = class183.field2733;
+         class180 var0;
+         synchronized(class183.field2733) {
+            var0 = (class180)class183.field2730.method2332();
+         }
+
+         if(var0 == null) {
+            return;
+         }
+
+         var0.field2703.method3275(var0.field2702, (int)var0.hash, var0.field2701, false);
+      }
+   }
 }

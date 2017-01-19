@@ -1,64 +1,71 @@
-import java.net.URL;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("cu")
 public class class97 implements class158 {
-   @ObfuscatedName("u")
-   public static final class97 field1619 = new class97(1, 0);
-   @ObfuscatedName("i")
-   public static final class97 field1620 = new class97(2, 2);
-   @ObfuscatedName("cx")
-   static class208 field1621;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1367917779
-   )
-   public final int field1622;
    @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1147706147
-   )
-   final int field1623;
+   public static final class97 field1629 = new class97(0, 1);
+   @ObfuscatedName("e")
+   static int[] field1630;
+   @ObfuscatedName("h")
+   public static final class97 field1632 = new class97(3, 3);
    @ObfuscatedName("a")
-   public static final class97 field1624 = new class97(0, 3);
-   @ObfuscatedName("x")
-   public static final class97 field1625 = new class97(3, 1);
-   @ObfuscatedName("ef")
-   static ModIcon[] field1626;
-   @ObfuscatedName("b")
-   static int[] field1627;
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(II)LCombatInfo2;",
-      garbageValue = "723314664"
+   @ObfuscatedGetter(
+      intValue = -971638869
    )
-   public static CombatInfo2 method1874(int var0) {
-      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field2815.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = CombatInfo2.field2821.method3272(33, var0);
-         var1 = new CombatInfo2();
-         if(var2 != null) {
-            var1.method3515(new Buffer(var2));
-         }
+   public final int field1633;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = 1789566979
+   )
+   final int field1634;
+   @ObfuscatedName("f")
+   public static final class97 field1636 = new class97(1, 2);
+   @ObfuscatedName("s")
+   public static final class97 field1637 = new class97(2, 0);
+   @ObfuscatedName("bm")
+   static class184 field1639;
 
-         CombatInfo2.field2815.put(var1, (long)var0);
-         return var1;
-      }
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(S)I",
+      garbageValue = "17064"
+   )
+   public int vmethod3916() {
+      return this.field1634;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "1"
+      signature = "(II)V",
+      garbageValue = "-605431509"
    )
-   public int vmethod4062() {
-      return this.field1623;
+   public static void method1866(int var0) {
+      if(var0 != -1) {
+         if(class157.validInterfaces[var0]) {
+            Widget.field2240.method3194(var0);
+            if(null != Widget.widgets[var0]) {
+               boolean var1 = true;
+
+               for(int var2 = 0; var2 < Widget.widgets[var0].length; ++var2) {
+                  if(null != Widget.widgets[var0][var2]) {
+                     if(Widget.widgets[var0][var2].type != 2) {
+                        Widget.widgets[var0][var2] = null;
+                     } else {
+                        var1 = false;
+                     }
+                  }
+               }
+
+               if(var1) {
+                  Widget.widgets[var0] = null;
+               }
+
+               class157.validInterfaces[var0] = false;
+            }
+         }
+      }
    }
 
    @ObfuscatedSignature(
@@ -66,66 +73,88 @@ public class class97 implements class158 {
       garbageValue = "0"
    )
    class97(int var1, int var2) {
-      this.field1622 = var1;
-      this.field1623 = var2;
+      this.field1633 = var1;
+      this.field1634 = var2;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1713265301"
+      signature = "(Lclass182;Lclass182;I)I",
+      garbageValue = "-13017548"
    )
-   @Export("loadWorlds")
-   static boolean loadWorlds() {
-      try {
-         if(Friend.worldServersDownload == null) {
-            Friend.worldServersDownload = new class26(class44.field881, new URL(class15.field170));
-         } else {
-            byte[] var0 = Friend.worldServersDownload.method595();
-            if(var0 != null) {
-               Buffer var1 = new Buffer(var0);
-               World.field684 = var1.readUnsignedShort();
-               World.worldList = new World[World.field684];
-
-               World var2;
-               for(int var3 = 0; var3 < World.field684; var2.index = var3++) {
-                  var2 = World.worldList[var3] = new World();
-                  var2.id = var1.readUnsignedShort();
-                  var2.mask = var1.method2780();
-                  var2.address = var1.method2965();
-                  var2.activity = var1.method2965();
-                  var2.location = var1.readUnsignedByte();
-                  var2.playerCount = var1.readShort();
-               }
-
-               VertexNormal.method1597(World.worldList, 0, World.worldList.length - 1, World.field674, World.field676);
-               Friend.worldServersDownload = null;
-               return true;
-            }
-         }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         Friend.worldServersDownload = null;
+   static int method1869(class182 var0, class182 var1) {
+      int var2 = 0;
+      if(var0.method3238("title.jpg", "")) {
+         ++var2;
       }
 
-      return false;
+      if(var1.method3238("logo", "")) {
+         ++var2;
+      }
+
+      if(var1.method3238("logo_deadman_mode", "")) {
+         ++var2;
+      }
+
+      if(var1.method3238("titlebox", "")) {
+         ++var2;
+      }
+
+      if(var1.method3238("titlebutton", "")) {
+         ++var2;
+      }
+
+      if(var1.method3238("runes", "")) {
+         ++var2;
+      }
+
+      if(var1.method3238("title_mute", "")) {
+         ++var2;
+      }
+
+      if(var1.method3248("options_radio_buttons,0")) {
+         ++var2;
+      }
+
+      if(var1.method3248("options_radio_buttons,2")) {
+         ++var2;
+      }
+
+      var1.method3238("sl_back", "");
+      var1.method3238("sl_flags", "");
+      var1.method3238("sl_arrows", "");
+      var1.method3238("sl_stars", "");
+      var1.method3238("sl_button", "");
+      return var2;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(II)Lclass178;",
-      garbageValue = "805146703"
+      signature = "(IB)Lclass196;",
+      garbageValue = "78"
    )
-   public static class178 method1877(int var0) {
-      class178[] var1 = class11.method154();
-
-      for(int var2 = 0; var2 < var1.length; ++var2) {
-         class178 var3 = var1[var2];
-         if(var3.field2652 == var0) {
-            return var3;
+   public static class196 method1871(int var0) {
+      class196 var1 = (class196)class196.field2875.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = class196.field2880.method3182(32, var0);
+         var1 = new class196();
+         if(null != var2) {
+            var1.method3453(new Buffer(var2));
          }
-      }
 
-      return null;
+         class196.field2875.put(var1, (long)var0);
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;II)I",
+      garbageValue = "-45391022"
+   )
+   public static int method1872(CharSequence var0, int var1) {
+      return ChatMessages.method831(var0, var1, true);
    }
 }

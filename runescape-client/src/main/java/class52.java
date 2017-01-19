@@ -1,105 +1,110 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("bt")
 public class class52 {
-   @ObfuscatedName("x")
-   int field970;
-   @ObfuscatedName("u")
-   int field971;
-   @ObfuscatedName("i")
-   int[] field972;
-   @ObfuscatedName("a")
-   int[] field973;
    @ObfuscatedName("f")
-   float[][] field974;
-   @ObfuscatedName("c")
    int[] field975;
+   @ObfuscatedName("c")
+   int field976;
+   @ObfuscatedName("h")
+   int[] field977;
+   @ObfuscatedName("s")
+   int field978;
+   @ObfuscatedName("a")
+   float[][] field979;
+   @ObfuscatedName("g")
+   int[] field980;
+
+   @ObfuscatedName("g")
+   float[] method904() {
+      return this.field979[this.method907()];
+   }
 
    class52() {
-      class54.method962(24);
-      this.field971 = class54.method962(16);
-      this.field970 = class54.method962(24);
-      this.field972 = new int[this.field970];
-      boolean var1 = class54.method961() != 0;
+      class54.method927(24);
+      this.field978 = class54.method927(16);
+      this.field976 = class54.method927(24);
+      this.field975 = new int[this.field976];
+      boolean var1 = class54.method926() != 0;
       int var2;
       int var3;
-      int var4;
+      int var5;
       if(var1) {
          var2 = 0;
 
-         for(var3 = class54.method962(5) + 1; var2 < this.field970; ++var3) {
-            int var5 = class54.method962(GameEngine.method2160(this.field970 - var2));
+         for(var3 = class54.method927(5) + 1; var2 < this.field976; ++var3) {
+            int var4 = class54.method927(Projectile.method763(this.field976 - var2));
 
-            for(var4 = 0; var4 < var5; ++var4) {
-               this.field972[var2++] = var3;
+            for(var5 = 0; var5 < var4; ++var5) {
+               this.field975[var2++] = var3;
             }
          }
       } else {
-         boolean var15 = class54.method961() != 0;
+         boolean var14 = class54.method926() != 0;
 
-         for(var3 = 0; var3 < this.field970; ++var3) {
-            if(var15 && class54.method961() == 0) {
-               this.field972[var3] = 0;
+         for(var3 = 0; var3 < this.field976; ++var3) {
+            if(var14 && class54.method926() == 0) {
+               this.field975[var3] = 0;
             } else {
-               this.field972[var3] = class54.method962(5) + 1;
+               this.field975[var3] = class54.method927(5) + 1;
             }
          }
       }
 
-      this.method932();
-      var2 = class54.method962(4);
+      this.method905();
+      var2 = class54.method927(4);
       if(var2 > 0) {
-         float var16 = class54.method986(class54.method962(32));
-         float var6 = class54.method986(class54.method962(32));
-         var4 = class54.method962(4) + 1;
-         boolean var7 = class54.method961() != 0;
-         int var8;
+         float var15 = class54.method937(class54.method927(32));
+         float var16 = class54.method937(class54.method927(32));
+         var5 = class54.method927(4) + 1;
+         boolean var6 = class54.method926() != 0;
+         int var7;
          if(var2 == 1) {
-            var8 = method939(this.field970, this.field971);
+            var7 = method906(this.field976, this.field978);
          } else {
-            var8 = this.field970 * this.field971;
+            var7 = this.field976 * this.field978;
          }
 
-         this.field973 = new int[var8];
+         this.field977 = new int[var7];
 
-         int var9;
-         for(var9 = 0; var9 < var8; ++var9) {
-            this.field973[var9] = class54.method962(var4);
+         int var8;
+         for(var8 = 0; var8 < var7; ++var8) {
+            this.field977[var8] = class54.method927(var5);
          }
 
-         this.field974 = new float[this.field970][this.field971];
-         float var10;
+         this.field979 = new float[this.field976][this.field978];
+         float var9;
+         int var10;
          int var11;
-         int var12;
          if(var2 == 1) {
-            for(var9 = 0; var9 < this.field970; ++var9) {
-               var10 = 0.0F;
-               var11 = 1;
+            for(var8 = 0; var8 < this.field976; ++var8) {
+               var9 = 0.0F;
+               var10 = 1;
 
-               for(var12 = 0; var12 < this.field971; ++var12) {
-                  int var13 = var9 / var11 % var8;
-                  float var14 = (float)this.field973[var13] * var6 + var16 + var10;
-                  this.field974[var9][var12] = var14;
-                  if(var7) {
-                     var10 = var14;
+               for(var11 = 0; var11 < this.field978; ++var11) {
+                  int var12 = var8 / var10 % var7;
+                  float var13 = (float)this.field977[var12] * var16 + var15 + var9;
+                  this.field979[var8][var11] = var13;
+                  if(var6) {
+                     var9 = var13;
                   }
 
-                  var11 *= var8;
+                  var10 *= var7;
                }
             }
          } else {
-            for(var9 = 0; var9 < this.field970; ++var9) {
-               var10 = 0.0F;
-               var11 = var9 * this.field971;
+            for(var8 = 0; var8 < this.field976; ++var8) {
+               var9 = 0.0F;
+               var10 = var8 * this.field978;
 
-               for(var12 = 0; var12 < this.field971; ++var12) {
-                  float var17 = (float)this.field973[var11] * var6 + var16 + var10;
-                  this.field974[var9][var12] = var17;
-                  if(var7) {
-                     var10 = var17;
+               for(var11 = 0; var11 < this.field978; ++var11) {
+                  float var17 = (float)this.field977[var10] * var16 + var15 + var9;
+                  this.field979[var8][var11] = var17;
+                  if(var6) {
+                     var9 = var17;
                   }
 
-                  ++var11;
+                  ++var10;
                }
             }
          }
@@ -107,9 +112,9 @@ public class class52 {
 
    }
 
-   @ObfuscatedName("x")
-   void method932() {
-      int[] var1 = new int[this.field970];
+   @ObfuscatedName("c")
+   void method905() {
+      int[] var1 = new int[this.field976];
       int[] var2 = new int[33];
 
       int var3;
@@ -118,51 +123,51 @@ public class class52 {
       int var6;
       int var7;
       int var8;
-      int var9;
       int var10;
-      for(var3 = 0; var3 < this.field970; ++var3) {
-         var4 = this.field972[var3];
+      for(var3 = 0; var3 < this.field976; ++var3) {
+         var4 = this.field975[var3];
          if(var4 != 0) {
             var5 = 1 << 32 - var4;
             var6 = var2[var4];
             var1[var3] = var6;
+            int var9;
             if((var6 & var5) != 0) {
                var7 = var2[var4 - 1];
             } else {
                var7 = var6 | var5;
 
                for(var8 = var4 - 1; var8 >= 1; --var8) {
-                  var10 = var2[var8];
-                  if(var10 != var6) {
+                  var9 = var2[var8];
+                  if(var9 != var6) {
                      break;
                   }
 
-                  var9 = 1 << 32 - var8;
-                  if((var10 & var9) != 0) {
+                  var10 = 1 << 32 - var8;
+                  if((var9 & var10) != 0) {
                      var2[var8] = var2[var8 - 1];
                      break;
                   }
 
-                  var2[var8] = var10 | var9;
+                  var2[var8] = var9 | var10;
                }
             }
 
             var2[var4] = var7;
 
             for(var8 = var4 + 1; var8 <= 32; ++var8) {
-               var10 = var2[var8];
-               if(var10 == var6) {
+               var9 = var2[var8];
+               if(var9 == var6) {
                   var2[var8] = var7;
                }
             }
          }
       }
 
-      this.field975 = new int[8];
-      var10 = 0;
+      this.field980 = new int[8];
+      int var11 = 0;
 
-      for(var3 = 0; var3 < this.field970; ++var3) {
-         var4 = this.field972[var3];
+      for(var3 = 0; var3 < this.field976; ++var3) {
+         var4 = this.field975[var3];
          if(var4 != 0) {
             var5 = var1[var3];
             var6 = 0;
@@ -170,59 +175,76 @@ public class class52 {
             for(var7 = 0; var7 < var4; ++var7) {
                var8 = Integer.MIN_VALUE >>> var7;
                if((var5 & var8) != 0) {
-                  if(this.field975[var6] == 0) {
-                     this.field975[var6] = var10;
+                  if(this.field980[var6] == 0) {
+                     this.field980[var6] = var11;
                   }
 
-                  var6 = this.field975[var6];
+                  var6 = this.field980[var6];
                } else {
                   ++var6;
                }
 
-               if(var6 >= this.field975.length) {
-                  int[] var11 = new int[this.field975.length * 2];
+               if(var6 >= this.field980.length) {
+                  int[] var12 = new int[this.field980.length * 2];
 
-                  for(var9 = 0; var9 < this.field975.length; ++var9) {
-                     var11[var9] = this.field975[var9];
+                  for(var10 = 0; var10 < this.field980.length; ++var10) {
+                     var12[var10] = this.field980[var10];
                   }
 
-                  this.field975 = var11;
+                  this.field980 = var12;
                }
 
                var8 >>>= 1;
             }
 
-            this.field975[var6] = ~var3;
-            if(var6 >= var10) {
-               var10 = var6 + 1;
+            this.field980[var6] = ~var3;
+            if(var6 >= var11) {
+               var11 = var6 + 1;
             }
          }
       }
 
    }
 
-   @ObfuscatedName("a")
-   float[] method934() {
-      return this.field974[this.method935()];
+   @ObfuscatedName("s")
+   static int method906(int var0, int var1) {
+      int var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1;
+
+      while(true) {
+         int var4 = var2;
+         int var5 = var1;
+
+         int var6;
+         for(var6 = 1; var5 > 1; var5 >>= 1) {
+            if((var5 & 1) != 0) {
+               var6 *= var4;
+            }
+
+            var4 *= var4;
+         }
+
+         int var3;
+         if(var5 == 1) {
+            var3 = var4 * var6;
+         } else {
+            var3 = var6;
+         }
+
+         if(var3 <= var0) {
+            return var2;
+         }
+
+         --var2;
+      }
    }
 
-   @ObfuscatedName("i")
-   int method935() {
+   @ObfuscatedName("f")
+   int method907() {
       int var1;
-      for(var1 = 0; this.field975[var1] >= 0; var1 = class54.method961() != 0?this.field975[var1]:var1 + 1) {
+      for(var1 = 0; this.field980[var1] >= 0; var1 = class54.method926() != 0?this.field980[var1]:var1 + 1) {
          ;
       }
 
-      return ~this.field975[var1];
-   }
-
-   @ObfuscatedName("u")
-   static int method939(int var0, int var1) {
-      int var2;
-      for(var2 = (int)Math.pow((double)var0, 1.0D / (double)var1) + 1; MessageNode.method200(var2, var1) > var0; --var2) {
-         ;
-      }
-
-      return var2;
+      return ~this.field980[var1];
    }
 }

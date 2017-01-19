@@ -1,117 +1,56 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fc")
 public final class class176 {
-   @ObfuscatedName("g")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1772390530"
+      signature = "(ZZS)I",
+      garbageValue = "1000"
    )
-   public static void method3242() {
-      class191.field2789.reset();
+   public static int method3154(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class185.field2751 + class185.field2753;
+      return var3;
    }
 
-   @ObfuscatedName("bm")
+   @ObfuscatedName("bt")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-125"
+      signature = "(B)V",
+      garbageValue = "116"
    )
-   static final int method3243(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
+   static final void method3155() {
+      for(Projectile var0 = (Projectile)Client.projectiles.method2330(); var0 != null; var0 = (Projectile)Client.projectiles.method2346()) {
+         if(var0.floor == class118.plane && Client.gameCycle <= var0.field872) {
+            if(Client.gameCycle >= var0.startTime) {
+               if(var0.interacting > 0) {
+                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
+                  if(null != var1 && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
+                     var0.method759(var1.x, var1.y, XClanMember.method223(var1.x, var1.y, var0.floor) - var0.field856, Client.gameCycle);
+                  }
+               }
+
+               if(var0.interacting < 0) {
+                  int var2 = -var0.interacting - 1;
+                  Player var3;
+                  if(var2 == Client.localInteractingIndex) {
+                     var3 = XItemContainer.localPlayer;
+                  } else {
+                     var3 = Client.cachedPlayers[var2];
+                  }
+
+                  if(var3 != null && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
+                     var0.method759(var3.x, var3.y, XClanMember.method223(var3.x, var3.y, var0.floor) - var0.field856, Client.gameCycle);
+                  }
+               }
+
+               var0.method758(Client.field533);
+               class0.region.method1713(class118.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.field871, -1, false);
+            }
+         } else {
+            var0.unlink();
          }
-
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = class10.tileHeights[var5][var3 + 1][var4] * var6 + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
-         int var9 = class10.tileHeights[var5][1 + var3][1 + var4] * var6 + (128 - var6) * class10.tileHeights[var5][var3][var4 + 1] >> 7;
-         return var7 * var9 + var8 * (128 - var7) >> 7;
-      } else {
-         return 0;
       }
-   }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(CI)C",
-      garbageValue = "-831680841"
-   )
-   static char method3244(char var0) {
-      switch(var0) {
-      case ' ':
-      case '-':
-      case '_':
-      case ' ':
-         return '_';
-      case '#':
-      case '[':
-      case ']':
-         return var0;
-      case 'À':
-      case 'Á':
-      case 'Â':
-      case 'Ã':
-      case 'Ä':
-      case 'à':
-      case 'á':
-      case 'â':
-      case 'ã':
-      case 'ä':
-         return 'a';
-      case 'Ç':
-      case 'ç':
-         return 'c';
-      case 'È':
-      case 'É':
-      case 'Ê':
-      case 'Ë':
-      case 'è':
-      case 'é':
-      case 'ê':
-      case 'ë':
-         return 'e';
-      case 'Í':
-      case 'Î':
-      case 'Ï':
-      case 'í':
-      case 'î':
-      case 'ï':
-         return 'i';
-      case 'Ñ':
-      case 'ñ':
-         return 'n';
-      case 'Ò':
-      case 'Ó':
-      case 'Ô':
-      case 'Õ':
-      case 'Ö':
-      case 'ò':
-      case 'ó':
-      case 'ô':
-      case 'õ':
-      case 'ö':
-         return 'o';
-      case 'Ù':
-      case 'Ú':
-      case 'Û':
-      case 'Ü':
-      case 'ù':
-      case 'ú':
-      case 'û':
-      case 'ü':
-         return 'u';
-      case 'ß':
-         return 'b';
-      case 'ÿ':
-      case 'Ÿ':
-         return 'y';
-      default:
-         return Character.toLowerCase(var0);
-      }
    }
 }

@@ -1,48 +1,69 @@
+import java.awt.Component;
 import java.math.BigInteger;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("as")
 public class class39 {
-   @ObfuscatedName("x")
-   static final BigInteger field793 = new BigInteger("b4942fc64bfd8db2870cc8f544fd34adead420faa3cac1cef2474d30064445d483ef0aa7173a86eaa4c1f7a43555801a0bf273cdcd5078b7bef29aa1d662c6dad5f2da491db1c68310acfa763d97a18e874a6e0419b395e5cf20cdfd27d64b473a1edd2fa6104bddd3fe97aa3b524c6781704a76801719d38df22d9fe175d4a7", 16);
-   @ObfuscatedName("q")
-   static int[] field796;
-   @ObfuscatedName("u")
-   static final BigInteger field797 = new BigInteger("10001", 16);
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Lclass159;IB)V",
-      garbageValue = "97"
+   @ObfuscatedName("s")
+   static final BigInteger field796 = new BigInteger("10001", 16);
+   @ObfuscatedName("c")
+   static final BigInteger field797 = new BigInteger("c523591a74bf6d1e73388051d92637dea2b35de376d341c60f75a14d1998c89828f6a9fe98e12053b19c2b6335345e8b6f8861d66e5644f57ff400e8d327b0ca96eacebccfc839b3406ed66a074354a394a2ebc2db015ef1dcfa5c7a09c5a9aa19947d2d7c352335d278819935a95ba1ed44a274d8c0808c8f16d383af41430b", 16);
+   @ObfuscatedName("k")
+   static SpritePixels field798;
+   @ObfuscatedName("ii")
+   @ObfuscatedGetter(
+      intValue = -1583136263
    )
-   static final void method735(class159 var0, int var1) {
-      int var2 = var0.offset;
-      class45.field895 = 0;
-      class6.method96(var0);
+   static int field800;
+   @ObfuscatedName("q")
+   static class20 field802;
 
-      for(int var3 = 0; var3 < class45.field895; ++var3) {
-         int var4 = class45.field904[var3];
-         Player var5 = Client.cachedPlayers[var4];
-         int var6 = var0.readUnsignedByte();
-         if((var6 & 32) != 0) {
-            var6 += var0.readUnsignedByte() << 8;
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(Lclass103;Ljava/awt/Component;IIB)Lclass57;",
+      garbageValue = "69"
+   )
+   public static final class57 method722(class103 var0, Component var1, int var2, int var3) {
+      if(class57.field1057 == 0) {
+         throw new IllegalStateException();
+      } else if(var2 >= 0 && var2 < 2) {
+         if(var3 < 256) {
+            var3 = 256;
          }
 
-         class10.method148(var0, var4, var5, var6);
-      }
+         try {
+            class59 var4 = new class59();
+            var4.field1051 = new int[256 * (class57.field1052?2:1)];
+            var4.field1048 = var3;
+            var4.vmethod1061(var1);
+            var4.field1044 = 1024 + (var3 & -1024);
+            if(var4.field1044 > 16384) {
+               var4.field1044 = 16384;
+            }
 
-      if(var1 != var0.offset - var2) {
-         throw new RuntimeException(var0.offset - var2 + " " + var1);
-      }
-   }
+            var4.vmethod1062(var4.field1044);
+            if(class231.field3281 > 0 && null == class57.field1038) {
+               class57.field1038 = new class63();
+               class57.field1038.field1090 = var0;
+               var0.method1912(class57.field1038, class231.field3281);
+            }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1749664736"
-   )
-   public static int method736(int var0) {
-      return var0 >> 17 & 7;
+            if(null != class57.field1038) {
+               if(class57.field1038.field1093[var2] != null) {
+                  throw new IllegalArgumentException();
+               }
+
+               class57.field1038.field1093[var2] = var4;
+            }
+
+            return var4;
+         } catch (Throwable var5) {
+            return new class57();
+         }
+      } else {
+         throw new IllegalArgumentException();
+      }
    }
 }

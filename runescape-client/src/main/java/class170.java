@@ -1,31 +1,31 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("ft")
 public class class170 {
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Z",
-      garbageValue = "1616658844"
+   @ObfuscatedName("gm")
+   static Widget field2345;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1596643659
    )
-   public static final boolean method3216(String var0, String var1, String var2, String var3) {
-      return var0 != null && null != var2?(!var0.startsWith("#") && !var2.startsWith("#")?var1.equals(var3):var0.equals(var2)):false;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(Lclass68;B)V",
-      garbageValue = "40"
+   public static int field2346;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -892393279
    )
-   static final void method3230(class68 var0) {
-      var0.field1135 = false;
-      if(null != var0.field1136) {
-         var0.field1136.field1167 = 0;
-      }
+   public static int field2347;
+   @ObfuscatedName("j")
+   static int[] field2349;
 
-      for(class68 var1 = var0.vmethod2671(); null != var1; var1 = var0.vmethod2672()) {
-         method3230(var1);
-      }
-
+   @ObfuscatedName("ed")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)I",
+      garbageValue = "-1788272709"
+   )
+   static int method3147(Widget var0) {
+      class133 var1 = (class133)Client.widgetFlags.method2274((long)var0.index + ((long)var0.id << 32));
+      return var1 != null?var1.field1901:var0.field2281;
    }
 }

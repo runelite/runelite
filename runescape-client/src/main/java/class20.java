@@ -3,194 +3,225 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("d")
 public class class20 implements Runnable {
-   @ObfuscatedName("x")
-   Object field213 = new Object();
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
+   @Export("overlayPaths")
+   static byte[][][] overlayPaths;
+   @ObfuscatedName("fm")
    @ObfuscatedGetter(
-      intValue = -1939524313
+      intValue = -1261916333
    )
-   int field214 = 0;
-   @ObfuscatedName("a")
-   int[] field215 = new int[500];
+   @Export("cameraY")
+   static int cameraY;
    @ObfuscatedName("f")
-   int[] field216 = new int[500];
-   @ObfuscatedName("u")
-   boolean field218 = true;
-   @ObfuscatedName("ri")
-   protected static boolean field219;
-   @ObfuscatedName("hk")
    @ObfuscatedGetter(
-      intValue = -1844226871
+      intValue = 1003866935
    )
-   @Export("menuWidth")
-   static int menuWidth;
-   @ObfuscatedName("z")
-   static int[] field221;
-   @ObfuscatedName("nd")
-   static class51 field222;
+   int field230 = 0;
+   @ObfuscatedName("s")
+   boolean field231 = true;
+   @ObfuscatedName("a")
+   int[] field232 = new int[500];
+   @ObfuscatedName("h")
+   int[] field233 = new int[500];
+   @ObfuscatedName("cx")
+   static Font field234;
+   @ObfuscatedName("c")
+   Object field235 = new Object();
+   @ObfuscatedName("p")
+   public static Buffer field236;
 
-   @ObfuscatedName("bn")
+   public void run() {
+      for(; this.field231; Projectile.method757(50L)) {
+         Object var1 = this.field235;
+         synchronized(this.field235) {
+            if(this.field230 < 500) {
+               this.field233[this.field230] = class115.field1810;
+               this.field232[this.field230] = class115.field1803;
+               ++this.field230;
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("as")
    @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1507253848"
+      signature = "(LPlayer;III)V",
+      garbageValue = "-2061224546"
    )
-   static final void method190(int var0, int var1) {
-      if(MessageNode.field231 != var0 || var1 != XGrandExchangeOffer.field31) {
-         MessageNode.field231 = var0;
-         XGrandExchangeOffer.field31 = var1;
-         Friend.setGameState(25);
-         VertexNormal.method1599("Loading - please wait.", true);
-         int var2 = FrameMap.baseX;
-         int var3 = XItemContainer.baseY;
-         FrameMap.baseX = (var0 - 6) * 8;
-         XItemContainer.baseY = (var1 - 6) * 8;
-         int var4 = FrameMap.baseX - var2;
-         int var5 = XItemContainer.baseY - var3;
-         var2 = FrameMap.baseX;
-         var3 = XItemContainer.baseY;
+   static void method172(Player var0, int var1, int var2) {
+      if(var1 == var0.animation && var1 != -1) {
+         int var3 = class110.getAnimation(var1).replyMode;
+         if(var3 == 1) {
+            var0.actionFrame = 0;
+            var0.field638 = 0;
+            var0.actionAnimationDisable = var2;
+            var0.field640 = 0;
+         }
 
-         int var6;
-         int var7;
-         for(var6 = 0; var6 < '耀'; ++var6) {
-            NPC var8 = Client.cachedNPCs[var6];
-            if(var8 != null) {
-               for(var7 = 0; var7 < 10; ++var7) {
-                  var8.pathX[var7] -= var4;
-                  var8.pathY[var7] -= var5;
-               }
+         if(var3 == 2) {
+            var0.field640 = 0;
+         }
+      } else if(var1 == -1 || var0.animation == -1 || class110.getAnimation(var1).forcedPriority >= class110.getAnimation(var0.animation).forcedPriority) {
+         var0.animation = var1;
+         var0.actionFrame = 0;
+         var0.field638 = 0;
+         var0.actionAnimationDisable = var2;
+         var0.field640 = 0;
+         var0.field663 = var0.field658;
+      }
 
-               var8.x -= var4 * 128;
-               var8.y -= var5 * 128;
+   }
+
+   @ObfuscatedName("dq")
+   @ObfuscatedSignature(
+      signature = "(LWidget;IIII)V",
+      garbageValue = "425296167"
+   )
+   static final void method173(Widget var0, int var1, int var2, int var3) {
+      ChatMessages.method830();
+      class164 var4 = var0.method3100(false);
+      if(var4 != null) {
+         Rasterizer2D.method3844(var1, var2, var1 + var4.field2164, var4.field2165 + var2);
+         if(Client.field347 != 2 && Client.field347 != 5) {
+            int var5 = Client.mapScale + Client.mapAngle & 2047;
+            int var6 = 48 + XItemContainer.localPlayer.x / 32;
+            int var7 = 464 - XItemContainer.localPlayer.y / 32;
+            class63.field1094.method3982(var1, var2, var4.field2164, var4.field2165, var6, var7, var5, 256 + Client.mapScaleDelta, var4.field2172, var4.field2166);
+
+            int var8;
+            int var10;
+            int var17;
+            for(var8 = 0; var8 < Client.field331; ++var8) {
+               var17 = Client.field523[var8] * 4 + 2 - XItemContainer.localPlayer.x / 32;
+               var10 = 2 + Client.field524[var8] * 4 - XItemContainer.localPlayer.y / 32;
+               NPC.method706(var1, var2, var17, var10, Client.field525[var8], var4);
             }
-         }
 
-         for(var6 = 0; var6 < 2048; ++var6) {
-            Player var19 = Client.cachedPlayers[var6];
-            if(var19 != null) {
-               for(var7 = 0; var7 < 10; ++var7) {
-                  var19.pathX[var7] -= var4;
-                  var19.pathY[var7] -= var5;
-               }
-
-               var19.x -= var4 * 128;
-               var19.y -= 128 * var5;
-            }
-         }
-
-         byte var20 = 0;
-         byte var9 = 104;
-         byte var10 = 1;
-         if(var4 < 0) {
-            var20 = 103;
-            var9 = -1;
-            var10 = -1;
-         }
-
-         byte var11 = 0;
-         byte var12 = 104;
-         byte var13 = 1;
-         if(var5 < 0) {
-            var11 = 103;
-            var12 = -1;
-            var13 = -1;
-         }
-
-         int var14;
-         for(int var15 = var20; var15 != var9; var15 += var10) {
-            for(var14 = var11; var14 != var12; var14 += var13) {
-               int var16 = var4 + var15;
-               int var17 = var5 + var14;
-
-               for(int var18 = 0; var18 < 4; ++var18) {
-                  if(var16 >= 0 && var17 >= 0 && var16 < 104 && var17 < 104) {
-                     Client.groundItemDeque[var18][var15][var14] = Client.groundItemDeque[var18][var16][var17];
-                  } else {
-                     Client.groundItemDeque[var18][var15][var14] = null;
+            int var11;
+            int var12;
+            for(var8 = 0; var8 < 104; ++var8) {
+               for(var17 = 0; var17 < 104; ++var17) {
+                  Deque var18 = Client.groundItemDeque[class118.plane][var8][var17];
+                  if(var18 != null) {
+                     var11 = var8 * 4 + 2 - XItemContainer.localPlayer.x / 32;
+                     var12 = var17 * 4 + 2 - XItemContainer.localPlayer.y / 32;
+                     NPC.method706(var1, var2, var11, var12, class116.field1821[0], var4);
                   }
                }
             }
-         }
 
-         for(class25 var21 = (class25)Client.field545.method2391(); var21 != null; var21 = (class25)Client.field545.method2393()) {
-            var21.field568 -= var4;
-            var21.field569 -= var5;
-            if(var21.field568 < 0 || var21.field569 < 0 || var21.field568 >= 104 || var21.field569 >= 104) {
-               var21.unlink();
+            for(var8 = 0; var8 < Client.field332; ++var8) {
+               NPC var9 = Client.cachedNPCs[Client.field333[var8]];
+               if(var9 != null && var9.vmethod699()) {
+                  NPCComposition var22 = var9.composition;
+                  if(null != var22 && null != var22.configs) {
+                     var22 = var22.method3576();
+                  }
+
+                  if(var22 != null && var22.isMinimapVisible && var22.field3037) {
+                     var11 = var9.x / 32 - XItemContainer.localPlayer.x / 32;
+                     var12 = var9.y / 32 - XItemContainer.localPlayer.y / 32;
+                     NPC.method706(var1, var2, var11, var12, class116.field1821[1], var4);
+                  }
+               }
             }
-         }
 
-         if(Client.flagX != 0) {
-            Client.flagX -= var4;
-            Client.flagY -= var5;
-         }
+            var8 = class45.field894;
+            int[] var20 = class45.field896;
 
-         Client.field516 = 0;
-         Client.field529 = false;
-         Client.field359 = -1;
-         Client.field405.method2385();
-         Client.projectiles.method2385();
+            for(var10 = 0; var10 < var8; ++var10) {
+               Player var19 = Client.cachedPlayers[var20[var10]];
+               if(var19 != null && var19.vmethod699() && !var19.field257 && var19 != XItemContainer.localPlayer) {
+                  var12 = var19.x / 32 - XItemContainer.localPlayer.x / 32;
+                  int var13 = var19.y / 32 - XItemContainer.localPlayer.y / 32;
+                  boolean var14 = false;
+                  if(class49.method854(var19.name, true)) {
+                     var14 = true;
+                  }
 
-         for(var14 = 0; var14 < 4; ++var14) {
-            Client.collisionMaps[var14].method2229();
-         }
-      }
+                  boolean var15 = false;
 
-   }
+                  for(int var16 = 0; var16 < class162.clanChatCount; ++var16) {
+                     if(var19.name.equals(class57.clanMembers[var16].username)) {
+                        var15 = true;
+                        break;
+                     }
+                  }
 
-   public void run() {
-      for(; this.field218; VertexNormal.method1598(50L)) {
-         Object var1 = this.field213;
-         Object var2 = this.field213;
-         synchronized(this.field213) {
-            if(this.field214 < 500) {
-               this.field215[this.field214] = class115.field1788;
-               this.field216[this.field214] = class115.field1789;
-               ++this.field214;
+                  boolean var21 = false;
+                  if(XItemContainer.localPlayer.team != 0 && var19.team != 0 && var19.team == XItemContainer.localPlayer.team) {
+                     var21 = true;
+                  }
+
+                  if(var14) {
+                     NPC.method706(var1, var2, var12, var13, class116.field1821[3], var4);
+                  } else if(var21) {
+                     NPC.method706(var1, var2, var12, var13, class116.field1821[4], var4);
+                  } else if(var15) {
+                     NPC.method706(var1, var2, var12, var13, class116.field1821[5], var4);
+                  } else {
+                     NPC.method706(var1, var2, var12, var13, class116.field1821[2], var4);
+                  }
+               }
             }
-         }
-      }
 
+            if(Client.field311 != 0 && Client.gameCycle % 20 < 10) {
+               if(Client.field311 == 1 && Client.field312 >= 0 && Client.field312 < Client.cachedNPCs.length) {
+                  NPC var23 = Client.cachedNPCs[Client.field312];
+                  if(var23 != null) {
+                     var11 = var23.x / 32 - XItemContainer.localPlayer.x / 32;
+                     var12 = var23.y / 32 - XItemContainer.localPlayer.y / 32;
+                     class10.method130(var1, var2, var11, var12, class26.field593[1], var4);
+                  }
+               }
+
+               if(Client.field311 == 2) {
+                  var10 = 2 + (Client.field314 * 4 - class22.baseX * 4) - XItemContainer.localPlayer.x / 32;
+                  var11 = 2 + (Client.field315 * 4 - class103.baseY * 4) - XItemContainer.localPlayer.y / 32;
+                  class10.method130(var1, var2, var10, var11, class26.field593[1], var4);
+               }
+
+               if(Client.field311 == 10 && Client.field313 >= 0 && Client.field313 < Client.cachedPlayers.length) {
+                  Player var24 = Client.cachedPlayers[Client.field313];
+                  if(null != var24) {
+                     var11 = var24.x / 32 - XItemContainer.localPlayer.x / 32;
+                     var12 = var24.y / 32 - XItemContainer.localPlayer.y / 32;
+                     class10.method130(var1, var2, var11, var12, class26.field593[1], var4);
+                  }
+               }
+            }
+
+            if(Client.flagX != 0) {
+               var10 = 2 + Client.flagX * 4 - XItemContainer.localPlayer.x / 32;
+               var11 = 2 + Client.flagY * 4 - XItemContainer.localPlayer.y / 32;
+               NPC.method706(var1, var2, var10, var11, class26.field593[0], var4);
+            }
+
+            if(!XItemContainer.localPlayer.field257) {
+               Rasterizer2D.method3876(var1 + var4.field2164 / 2 - 1, var4.field2165 / 2 + var2 - 1, 3, 3, 16777215);
+            }
+         } else {
+            Rasterizer2D.method3856(var1, var2, 0, var4.field2172, var4.field2166);
+         }
+
+         Client.field294[var3] = true;
+      }
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "605983678"
+      signature = "(IB)I",
+      garbageValue = "21"
    )
-   public static boolean method193() {
-      return class138.field1900 != 0?true:class138.field1899.method2484();
-   }
-
-   @ObfuscatedName("dt")
-   @ObfuscatedSignature(
-      signature = "(IIII)LWidgetNode;",
-      garbageValue = "-1707971283"
-   )
-   static final WidgetNode method194(int var0, int var1, int var2) {
-      WidgetNode var3 = new WidgetNode();
-      var3.id = var1;
-      var3.field182 = var2;
-      Client.componentTable.method2340(var3, (long)var0);
-      class157.method3024(var1);
-      Widget var4 = class44.method799(var0);
-      class6.method87(var4);
-      if(null != Client.field537) {
-         class6.method87(Client.field537);
-         Client.field537 = null;
-      }
-
-      class101.method1909();
-      class6.method97(Widget.widgets[var0 >> 16], var4, false);
-      class18.method186(var1);
-      if(Client.widgetRoot != -1) {
-         int var5 = Client.widgetRoot;
-         if(class94.method1870(var5)) {
-            class140.method2607(Widget.widgets[var5], 1);
-         }
-      }
-
-      return var3;
+   public static int method174(int var0) {
+      Varbit var1 = class110.method2026(var0);
+      int var2 = var1.leastSignificantBit;
+      int var3 = var1.configId;
+      int var4 = var1.mostSignificantBit;
+      int var5 = class165.field2173[var4 - var3];
+      return class165.widgetSettings[var2] >> var3 & var5;
    }
 }

@@ -1,93 +1,57 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ev")
+@ObfuscatedName("ee")
 public class class150 {
-   @ObfuscatedName("dk")
+   @ObfuscatedName("eo")
+   static SpritePixels[] field2053;
+
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "-1776560043"
+      signature = "(IB)LFrames;",
+      garbageValue = "53"
    )
-   static final String method2745(int var0) {
-      return var0 < 999999999?Integer.toString(var0):"*";
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(CII)C",
-      garbageValue = "-1270489486"
-   )
-   static char method2748(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
-      }
-
-      if(var0 == 338) {
-         return 'O';
-      } else if(var0 == 339) {
-         return 'o';
-      } else if(var0 == 376) {
-         return 'Y';
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.field3060.get((long)var0);
+      if(null != var1) {
+         return var1;
       } else {
-         return var0;
+         class182 var3 = Sequence.field3066;
+         class182 var4 = Sequence.field3058;
+         boolean var5 = true;
+         int[] var6 = var3.method3191(var0);
+
+         for(int var7 = 0; var7 < var6.length; ++var7) {
+            byte[] var8 = var3.method3237(var0, var6[var7]);
+            if(null == var8) {
+               var5 = false;
+            } else {
+               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
+               byte[] var10 = var4.method3237(var9, 0);
+               if(null == var10) {
+                  var5 = false;
+               }
+            }
+         }
+
+         Frames var2;
+         if(!var5) {
+            var2 = null;
+         } else {
+            try {
+               var2 = new Frames(var3, var4, var0, false);
+            } catch (Exception var12) {
+               var2 = null;
+            }
+         }
+
+         if(null != var2) {
+            Sequence.field3060.put(var2, (long)var0);
+         }
+
+         return var2;
       }
    }
 }

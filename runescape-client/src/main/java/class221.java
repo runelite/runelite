@@ -2,38 +2,38 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hg")
+@ObfuscatedName("ht")
 public class class221 implements class158 {
-   @ObfuscatedName("x")
-   public static final class221 field3182 = new class221(1, 1);
-   @ObfuscatedName("i")
-   public static final class221 field3183 = new class221(2, 2);
-   @ObfuscatedName("u")
-   public static final class221 field3184 = new class221(0, 0);
-   @ObfuscatedName("f")
-   public static final class221 field3185 = new class221(4, 4);
+   @ObfuscatedName("s")
+   public static final class221 field3187 = new class221(0, 0);
    @ObfuscatedName("c")
+   public static final class221 field3188 = new class221(1, 1);
+   @ObfuscatedName("h")
+   public static final class221 field3189 = new class221(3, 3);
+   @ObfuscatedName("f")
+   public static final class221 field3190 = new class221(2, 2);
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 395988699
+      intValue = 258050245
    )
-   public final int field3186;
-   @ObfuscatedName("d")
+   public final int field3191;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 630479207
+      intValue = 296294499
    )
-   final int field3187;
-   @ObfuscatedName("a")
-   public static final class221 field3188 = new class221(3, 3);
+   final int field3192;
    @ObfuscatedName("v")
-   static int[][][] field3189;
+   static int[] field3193;
+   @ObfuscatedName("a")
+   public static final class221 field3194 = new class221(4, 4);
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "1"
+      signature = "(S)I",
+      garbageValue = "17064"
    )
-   public int vmethod4062() {
-      return this.field3187;
+   public int vmethod3916() {
+      return this.field3192;
    }
 
    @ObfuscatedSignature(
@@ -41,7 +41,7 @@ public class class221 implements class158 {
       garbageValue = "0"
    )
    class221(int var1, int var2) {
-      this.field3186 = var1;
-      this.field3187 = var2;
+      this.field3191 = var1;
+      this.field3192 = var2;
    }
 }

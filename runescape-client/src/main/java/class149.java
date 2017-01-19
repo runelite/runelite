@@ -1,36 +1,23 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("ec")
 public class class149 {
-   @ObfuscatedName("pv")
-   @ObfuscatedGetter(
-      intValue = -2112451261
-   )
-   static int field2024;
+   @ObfuscatedName("mm")
+   static byte field2046;
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(Lclass182;II)Z",
-      garbageValue = "2138352013"
+      signature = "(IZII)V",
+      garbageValue = "-973836463"
    )
-   public static boolean method2743(class182 var0, int var1) {
-      byte[] var2 = var0.method3267(var1);
-      if(var2 == null) {
-         return false;
+   public static final void method2693(int var0, boolean var1, int var2) {
+      if(var0 >= 8000 && var0 <= '뮀') {
+         class57.field1057 = var0;
+         class57.field1052 = var1;
+         class231.field3281 = var2;
       } else {
-         class164.method3116(var2);
-         return true;
+         throw new IllegalArgumentException();
       }
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;B)V",
-      garbageValue = "65"
-   )
-   public static void method2744(class182 var0) {
-      Overlay.field3029 = var0;
    }
 }
