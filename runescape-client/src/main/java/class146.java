@@ -1,22 +1,13 @@
 import java.util.zip.Inflater;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eq")
+@ObfuscatedName("ej")
 public class class146 {
-   @ObfuscatedName("nm")
-   @ObfuscatedGetter(
-      intValue = 1335786041
-   )
-   static int field2004;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1211870777
-   )
-   static int field2005;
-   @ObfuscatedName("u")
-   Inflater field2006;
+   @ObfuscatedName("s")
+   Inflater field2028;
+   @ObfuscatedName("z")
+   static int[] field2031;
 
    @ObfuscatedSignature(
       signature = "(III)V",
@@ -25,42 +16,66 @@ public class class146 {
    class146(int var1, int var2, int var3) {
    }
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;ZLclass208;I)V",
-      garbageValue = "-1241915485"
-   )
-   public static void method2712(class182 var0, class182 var1, boolean var2, class208 var3) {
-      ItemComposition.field2935 = var0;
-      ItemComposition.field2976 = var1;
-      Buffer.isMembersWorld = var2;
-      ItemComposition.field2975 = ItemComposition.field2935.method3323(10);
-      class206.field3075 = var3;
-   }
-
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(LBuffer;[BI)V",
-      garbageValue = "-2146858314"
+      garbageValue = "-890907108"
    )
-   public void method2713(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && var1.payload[1 + var1.offset] == -117) {
-         if(this.field2006 == null) {
-            this.field2006 = new Inflater(true);
+   public void method2656(Buffer var1, byte[] var2) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
+         if(this.field2028 == null) {
+            this.field2028 = new Inflater(true);
          }
 
          try {
-            this.field2006.setInput(var1.payload, 10 + var1.offset, var1.payload.length - (8 + var1.offset + 10));
-            this.field2006.inflate(var2);
+            this.field2028.setInput(var1.payload, var1.offset + 10, var1.payload.length - (8 + var1.offset + 10));
+            this.field2028.inflate(var2);
          } catch (Exception var4) {
-            this.field2006.reset();
+            this.field2028.reset();
             throw new RuntimeException("");
          }
 
-         this.field2006.reset();
+         this.field2028.reset();
       } else {
          throw new RuntimeException("");
       }
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "81"
+   )
+   public static void method2658() {
+      KitDefinition.field2830.reset();
+   }
+
+   @ObfuscatedName("eq")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;ZI)Ljava/lang/String;",
+      garbageValue = "-270233107"
+   )
+   static String method2660(String var0, boolean var1) {
+      String var2 = var1?"https://":"http://";
+      if(Client.field297 == 1) {
+         var0 = var0 + "-wtrc";
+      } else if(Client.field297 == 2) {
+         var0 = var0 + "-wtqa";
+      } else if(Client.field297 == 3) {
+         var0 = var0 + "-wtwip";
+      } else if(Client.field297 == 5) {
+         var0 = var0 + "-wti";
+      } else if(Client.field297 == 4) {
+         var0 = "local";
+      }
+
+      String var3 = "";
+      if(null != class155.field2116) {
+         var3 = "/p=" + class155.field2116;
+      }
+
+      String var4 = "runescape.com";
+      return var2 + var0 + "." + var4 + "/l=" + Client.field300 + "/a=" + class65.field1107 + var3 + "/";
    }
 
    public class146() {

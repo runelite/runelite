@@ -1,200 +1,127 @@
-import net.runelite.mapping.Export;
+import java.awt.Component;
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("gl")
 public class class183 implements Runnable {
-   @ObfuscatedName("x")
-   static Deque field2703 = new Deque();
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -590669441
-   )
-   static int field2704 = 0;
    @ObfuscatedName("u")
-   static Deque field2705 = new Deque();
-   @ObfuscatedName("a")
-   static Object field2706 = new Object();
-   @ObfuscatedName("dn")
-   @Export("mapRegions")
-   static int[] mapRegions;
+   static class179 field2729;
+   @ObfuscatedName("c")
+   static Deque field2730 = new Deque();
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -866520163
+   )
+   public static int field2731 = 0;
+   @ObfuscatedName("h")
+   public static Object field2732 = new Object();
+   @ObfuscatedName("s")
+   static Deque field2733 = new Deque();
+   @ObfuscatedName("nf")
+   @ObfuscatedGetter(
+      intValue = -775225907
+   )
+   static int field2735;
 
    public void run() {
       try {
          while(true) {
-            Deque var1 = field2705;
-            Deque var3 = field2705;
-            class180 var2;
-            synchronized(field2705) {
-               var2 = (class180)field2705.method2391();
+            Deque var2 = field2733;
+            class180 var1;
+            synchronized(field2733) {
+               var1 = (class180)field2733.method2330();
             }
 
-            Object var4;
-            Object var15;
-            if(null != var2) {
-               Deque var16;
-               if(var2.field2673 == 0) {
-                  var2.field2670.method2224((int)var2.hash, var2.field2675, var2.field2675.length);
-                  var1 = field2705;
-                  var16 = field2705;
-                  synchronized(field2705) {
-                     var2.unlink();
+            Object var14;
+            if(null != var1) {
+               if(var1.field2704 == 0) {
+                  var1.field2702.method2172((int)var1.hash, var1.field2701, var1.field2701.length);
+                  var2 = field2733;
+                  synchronized(field2733) {
+                     var1.unlink();
                   }
-               } else if(var2.field2673 == 1) {
-                  var2.field2675 = var2.field2670.method2227((int)var2.hash);
-                  var1 = field2705;
-                  var16 = field2705;
-                  synchronized(field2705) {
-                     field2703.method2394(var2);
+               } else if(var1.field2704 == 1) {
+                  var1.field2701 = var1.field2702.method2171((int)var1.hash);
+                  var2 = field2733;
+                  synchronized(field2733) {
+                     field2730.method2333(var1);
                   }
                }
 
-               var15 = field2706;
-               var4 = field2706;
-               synchronized(field2706) {
-                  if(field2704 <= 1) {
-                     field2704 = 0;
-                     field2706.notifyAll();
+               var14 = field2732;
+               synchronized(field2732) {
+                  if(field2731 <= 1) {
+                     field2731 = 0;
+                     field2732.notifyAll();
                      return;
                   }
 
-                  field2704 = 600;
+                  field2731 = 600;
                }
             } else {
-               VertexNormal.method1598(100L);
-               var15 = field2706;
-               var4 = field2706;
-               synchronized(field2706) {
-                  if(field2704 <= 1) {
-                     field2704 = 0;
-                     field2706.notifyAll();
+               Projectile.method757(100L);
+               var14 = field2732;
+               synchronized(field2732) {
+                  if(field2731 <= 1) {
+                     field2731 = 0;
+                     field2732.notifyAll();
                      return;
                   }
 
-                  --field2704;
+                  --field2731;
                }
             }
          }
-      } catch (Exception var14) {
-         class174.method3240((String)null, var14);
+      } catch (Exception var13) {
+         NPC.method695((String)null, var13);
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "1946276839"
+      signature = "(ZI)V",
+      garbageValue = "-1771907553"
    )
-   public static String method3346(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var5 + var1] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class203.field3061[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
+   public static void method3266(boolean var0) {
+      if(class185.field2755 != null) {
+         try {
+            Buffer var1 = new Buffer(4);
+            var1.method2708(var0?2:3);
+            var1.method2710(0);
+            class185.field2755.method2015(var1.payload, 0, 4);
+         } catch (IOException var4) {
+            try {
+               class185.field2755.method2006();
+            } catch (Exception var3) {
+               ;
             }
 
-            var3[var4++] = (char)var6;
+            ++class185.field2756;
+            class185.field2755 = null;
          }
-      }
 
-      return new String(var3, 0, var4);
+      }
    }
 
-   @ObfuscatedName("dl")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "1772403928"
+      signature = "(Ljava/awt/Component;S)V",
+      garbageValue = "-229"
    )
-   static final void method3352(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(class94.method1870(var0)) {
-         Frames.method1850(Widget.widgets[var0], -1, var1, var2, var3, var4, var5, var6);
-      }
-
+   public static void method3267(Component var0) {
+      var0.setFocusTraversalKeysEnabled(false);
+      var0.addKeyListener(class105.keyboard);
+      var0.addFocusListener(class105.keyboard);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)[B",
-      garbageValue = "118303941"
+      signature = "(CI)Z",
+      garbageValue = "-968865046"
    )
-   public static byte[] method3353(CharSequence var0) {
-      int var1 = var0.length();
-      byte[] var2 = new byte[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         char var4 = var0.charAt(var3);
-         if((var4 <= 0 || var4 >= 128) && (var4 < 160 || var4 > 255)) {
-            if(var4 == 8364) {
-               var2[var3] = -128;
-            } else if(var4 == 8218) {
-               var2[var3] = -126;
-            } else if(var4 == 402) {
-               var2[var3] = -125;
-            } else if(var4 == 8222) {
-               var2[var3] = -124;
-            } else if(var4 == 8230) {
-               var2[var3] = -123;
-            } else if(var4 == 8224) {
-               var2[var3] = -122;
-            } else if(var4 == 8225) {
-               var2[var3] = -121;
-            } else if(var4 == 710) {
-               var2[var3] = -120;
-            } else if(var4 == 8240) {
-               var2[var3] = -119;
-            } else if(var4 == 352) {
-               var2[var3] = -118;
-            } else if(var4 == 8249) {
-               var2[var3] = -117;
-            } else if(var4 == 338) {
-               var2[var3] = -116;
-            } else if(var4 == 381) {
-               var2[var3] = -114;
-            } else if(var4 == 8216) {
-               var2[var3] = -111;
-            } else if(var4 == 8217) {
-               var2[var3] = -110;
-            } else if(var4 == 8220) {
-               var2[var3] = -109;
-            } else if(var4 == 8221) {
-               var2[var3] = -108;
-            } else if(var4 == 8226) {
-               var2[var3] = -107;
-            } else if(var4 == 8211) {
-               var2[var3] = -106;
-            } else if(var4 == 8212) {
-               var2[var3] = -105;
-            } else if(var4 == 732) {
-               var2[var3] = -104;
-            } else if(var4 == 8482) {
-               var2[var3] = -103;
-            } else if(var4 == 353) {
-               var2[var3] = -102;
-            } else if(var4 == 8250) {
-               var2[var3] = -101;
-            } else if(var4 == 339) {
-               var2[var3] = -100;
-            } else if(var4 == 382) {
-               var2[var3] = -98;
-            } else if(var4 == 376) {
-               var2[var3] = -97;
-            } else {
-               var2[var3] = 63;
-            }
-         } else {
-            var2[var3] = (byte)var4;
-         }
-      }
-
-      return var2;
+   public static boolean method3268(char var0) {
+      return var0 >= 48 && var0 <= 57;
    }
 }

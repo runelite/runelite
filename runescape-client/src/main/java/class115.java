@@ -8,87 +8,122 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
+@ObfuscatedName("du")
 public class class115 implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("z")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -2056429051
+      intValue = 687858089
    )
-   static volatile int field1782 = 0;
-   @ObfuscatedName("i")
+   public static int field1796 = 0;
+   @ObfuscatedName("s")
+   @Export("mouse")
+   public static class115 mouse = new class115();
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = -1038316589
+      intValue = 948246849
+   )
+   public static volatile int field1798 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1415218283
+   )
+   public static volatile int field1799 = -1;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1516273741
+   )
+   public static volatile int field1800 = -1;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -476911407
+   )
+   public static int field1801 = 0;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1036918637
    )
    @Export("mouseIdleTicks")
    public static volatile int mouseIdleTicks = 0;
-   @ObfuscatedName("a")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 108007311
+      intValue = 1180922193
    )
-   static volatile int field1784 = 0;
-   @ObfuscatedName("c")
+   public static int field1803 = 0;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1008543237
+      intValue = -180709479
    )
-   static volatile int field1786 = -1;
-   @ObfuscatedName("d")
+   public static volatile int field1804 = 0;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1204698877
+      longValue = -7686707105259146319L
    )
-   public static int field1787 = 0;
-   @ObfuscatedName("l")
+   public static volatile long field1805 = 0L;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -440377273
+      intValue = -1694870589
    )
-   public static int field1788 = 0;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1108065229
-   )
-   public static int field1789 = 0;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 707762175
-   )
-   static volatile int field1790 = 0;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -2090686463
-   )
-   public static int field1791 = 0;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 1772229657
-   )
-   static volatile int field1792 = 0;
+   public static volatile int field1806 = 0;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      longValue = -5721028226176254905L
+      intValue = 1974852359
    )
-   static volatile long field1793 = 0L;
-   @ObfuscatedName("q")
+   public static int field1807 = 0;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 166171281
+      intValue = -2047875659
    )
-   public static int field1794 = 0;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 613889931
-   )
-   static volatile int field1795 = -1;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 60718835
-   )
-   public static int field1796 = 0;
+   public static volatile int field1808 = 0;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      longValue = 5027948808930811561L
+      intValue = 1876513025
    )
-   public static long field1797 = 0L;
-   @ObfuscatedName("u")
-   @Export("mouse")
-   public static class115 mouse = new class115();
+   public static int field1809 = 0;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -551918433
+   )
+   public static int field1810 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      longValue = -8713727678770825245L
+   )
+   public static long field1811 = 0L;
+   @ObfuscatedName("d")
+   public static String field1812;
+
+   public final synchronized void mouseEntered(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field1799 = var1.getX();
+         field1800 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mousePressed(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field1808 = var1.getX();
+         field1806 = var1.getY();
+         field1805 = class2.method27();
+         if(var1.isAltDown()) {
+            field1804 = 4;
+            field1798 = 4;
+         } else if(var1.isMetaDown()) {
+            field1804 = 2;
+            field1798 = 2;
+         } else {
+            field1804 = 1;
+            field1798 = 1;
+         }
+      }
+
+      if(var1.isPopupTrigger()) {
+         var1.consume();
+      }
+
+   }
 
    public final void mouseClicked(MouseEvent var1) {
       if(var1.isPopupTrigger()) {
@@ -97,11 +132,11 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
 
    }
 
-   public final synchronized void mouseEntered(MouseEvent var1) {
+   public final synchronized void mouseMoved(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field1795 = var1.getX();
-         field1786 = var1.getY();
+         field1799 = var1.getX();
+         field1800 = var1.getY();
       }
 
    }
@@ -109,17 +144,17 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    public final synchronized void mouseExited(MouseEvent var1) {
       if(null != mouse) {
          mouseIdleTicks = 0;
-         field1795 = -1;
-         field1786 = -1;
+         field1799 = -1;
+         field1800 = -1;
       }
 
    }
 
-   public final synchronized void mouseMoved(MouseEvent var1) {
-      if(null != mouse) {
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(mouse != null) {
          mouseIdleTicks = 0;
-         field1795 = var1.getX();
-         field1786 = var1.getY();
+         field1799 = var1.getX();
+         field1800 = var1.getY();
       }
 
    }
@@ -129,124 +164,15 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
 
    public final synchronized void focusLost(FocusEvent var1) {
       if(null != mouse) {
-         field1784 = 0;
+         field1798 = 0;
       }
 
-   }
-
-   public final synchronized void mousePressed(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field1782 = var1.getX();
-         field1792 = var1.getY();
-         field1793 = class9.method117();
-         if(var1.isAltDown()) {
-            field1790 = 4;
-            field1784 = 4;
-         } else if(var1.isMetaDown()) {
-            field1790 = 2;
-            field1784 = 2;
-         } else {
-            field1790 = 1;
-            field1784 = 1;
-         }
-      }
-
-      if(var1.isPopupTrigger()) {
-         var1.consume();
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II[BII)I",
-      garbageValue = "406747573"
-   )
-   public static int method2182(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
-      int var5 = var2 - var1;
-
-      for(int var6 = 0; var6 < var5; ++var6) {
-         char var7 = var0.charAt(var6 + var1);
-         if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
-            if(var7 == 8364) {
-               var3[var4 + var6] = -128;
-            } else if(var7 == 8218) {
-               var3[var4 + var6] = -126;
-            } else if(var7 == 402) {
-               var3[var6 + var4] = -125;
-            } else if(var7 == 8222) {
-               var3[var4 + var6] = -124;
-            } else if(var7 == 8230) {
-               var3[var6 + var4] = -123;
-            } else if(var7 == 8224) {
-               var3[var6 + var4] = -122;
-            } else if(var7 == 8225) {
-               var3[var6 + var4] = -121;
-            } else if(var7 == 710) {
-               var3[var6 + var4] = -120;
-            } else if(var7 == 8240) {
-               var3[var4 + var6] = -119;
-            } else if(var7 == 352) {
-               var3[var6 + var4] = -118;
-            } else if(var7 == 8249) {
-               var3[var6 + var4] = -117;
-            } else if(var7 == 338) {
-               var3[var4 + var6] = -116;
-            } else if(var7 == 381) {
-               var3[var6 + var4] = -114;
-            } else if(var7 == 8216) {
-               var3[var4 + var6] = -111;
-            } else if(var7 == 8217) {
-               var3[var6 + var4] = -110;
-            } else if(var7 == 8220) {
-               var3[var4 + var6] = -109;
-            } else if(var7 == 8221) {
-               var3[var4 + var6] = -108;
-            } else if(var7 == 8226) {
-               var3[var6 + var4] = -107;
-            } else if(var7 == 8211) {
-               var3[var4 + var6] = -106;
-            } else if(var7 == 8212) {
-               var3[var4 + var6] = -105;
-            } else if(var7 == 732) {
-               var3[var6 + var4] = -104;
-            } else if(var7 == 8482) {
-               var3[var6 + var4] = -103;
-            } else if(var7 == 353) {
-               var3[var6 + var4] = -102;
-            } else if(var7 == 8250) {
-               var3[var6 + var4] = -101;
-            } else if(var7 == 339) {
-               var3[var6 + var4] = -100;
-            } else if(var7 == 382) {
-               var3[var4 + var6] = -98;
-            } else if(var7 == 376) {
-               var3[var6 + var4] = -97;
-            } else {
-               var3[var6 + var4] = 63;
-            }
-         } else {
-            var3[var6 + var4] = (byte)var7;
-         }
-      }
-
-      return var5;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "106"
-   )
-   static int method2186() {
-      return ++class47.field919 - 1;
    }
 
    public final synchronized void mouseReleased(MouseEvent var1) {
       if(null != mouse) {
          mouseIdleTicks = 0;
-         field1784 = 0;
+         field1798 = 0;
       }
 
       if(var1.isPopupTrigger()) {
@@ -255,12 +181,41 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
 
    }
 
-   public final synchronized void mouseDragged(MouseEvent var1) {
-      if(null != mouse) {
-         mouseIdleTicks = 0;
-         field1795 = var1.getX();
-         field1786 = var1.getY();
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "-52"
+   )
+   public static String method2169(String var0) {
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
+      byte var3 = 2;
+
+      for(int var4 = 0; var4 < var1; ++var4) {
+         char var5 = var0.charAt(var4);
+         if(var3 == 0) {
+            var5 = Character.toLowerCase(var5);
+         } else if(var3 == 2 || Character.isUpperCase(var5)) {
+            var5 = class156.method2942(var5);
+         }
+
+         if(Character.isLetter(var5)) {
+            var3 = 0;
+         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
+            if(Character.isSpaceChar(var5)) {
+               if(var3 != 2) {
+                  var3 = 1;
+               }
+            } else {
+               var3 = 1;
+            }
+         } else {
+            var3 = 2;
+         }
+
+         var2[var4] = var5;
       }
 
+      return new String(var2);
    }
 }

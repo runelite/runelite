@@ -1,59 +1,58 @@
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
+import java.awt.datatransfer.Clipboard;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cv")
 public class class88 {
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = -921443657
-   )
-   static int field1530;
-   @ObfuscatedName("o")
-   static int[] field1531;
+   @ObfuscatedName("pq")
+   static Clipboard field1541;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("dl")
    @ObfuscatedSignature(
-      signature = "(IB)LItemComposition;",
-      garbageValue = "-112"
+      signature = "(I)V",
+      garbageValue = "738254611"
    )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.field2938.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = ItemComposition.field2935.method3272(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.loadBuffer(new Buffer(var2));
-         }
+   static final void method1820() {
+      Client.field336.method2963(180);
 
-         var1.method3652();
-         if(var1.notedTemplate != -1) {
-            var1.method3636(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2283(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2277()) {
+         if(var0.field193 == 0 || var0.field193 == 3) {
+            WallObject.method1832(var0, true);
          }
-
-         if(var1.field2983 != -1) {
-            var1.method3637(getItemDefinition(var1.field2983), getItemDefinition(var1.field2941));
-         }
-
-         if(var1.field2942 != -1) {
-            var1.method3679(getItemDefinition(var1.field2942), getItemDefinition(var1.field2984));
-         }
-
-         if(!Buffer.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field2981 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = 0;
-         }
-
-         ItemComposition.field2938.put(var1, (long)var0);
-         return var1;
       }
+
+      if(Client.field455 != null) {
+         class204.method3671(Client.field455);
+         Client.field455 = null;
+      }
+
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;B)LModIcon;",
+      garbageValue = "-13"
+   )
+   public static ModIcon method1821(class182 var0, String var1, String var2) {
+      int var3 = var0.method3197(var1);
+      int var4 = var0.method3198(var3, var2);
+      ModIcon var5;
+      if(!class37.method718(var0, var3, var4)) {
+         var5 = null;
+      } else {
+         ModIcon var7 = new ModIcon();
+         var7.width = class225.field3218;
+         var7.originalHeight = class225.field3219;
+         var7.offsetX = class181.field2710[0];
+         var7.offsetY = class225.field3220[0];
+         var7.originalWidth = class119.field1865[0];
+         var7.height = class109.field1742[0];
+         var7.palette = class225.field3217;
+         var7.pixels = class44.field888[0];
+         class30.method648();
+         var5 = var7;
+      }
+
+      return var5;
    }
 }

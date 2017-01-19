@@ -1,65 +1,35 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ek")
+@ObfuscatedName("eh")
 public class class132 implements Iterator {
-   @ObfuscatedName("a")
-   Node field1877 = null;
-   @ObfuscatedName("x")
-   Node field1878;
-   @ObfuscatedName("i")
-   int field1879;
+   @ObfuscatedName("f")
+   int field1897;
+   @ObfuscatedName("c")
+   Node field1898;
+   @ObfuscatedName("s")
+   class121 field1899;
+   @ObfuscatedName("h")
+   Node field1900 = null;
+
    @ObfuscatedName("u")
-   class121 field1880;
-
-   public void remove() {
-      if(this.field1877 == null) {
-         throw new IllegalStateException();
-      } else {
-         this.field1877.unlink();
-         this.field1877 = null;
-      }
-   }
-
-   @ObfuscatedName("z")
-   void method2432() {
-      this.field1878 = this.field1880.field1848[0].next;
-      this.field1879 = 1;
-      this.field1877 = null;
-   }
-
-   public Object next() {
-      Node var1;
-      if(this.field1878 != this.field1880.field1848[this.field1879 - 1]) {
-         var1 = this.field1878;
-         this.field1878 = var1.next;
-         this.field1877 = var1;
-         return var1;
-      } else {
-         while(this.field1879 < this.field1880.field1847) {
-            var1 = this.field1880.field1848[this.field1879++].next;
-            if(var1 != this.field1880.field1848[this.field1879 - 1]) {
-               this.field1878 = var1.next;
-               this.field1877 = var1;
-               return var1;
-            }
-         }
-
-         return null;
-      }
+   void method2376() {
+      this.field1898 = this.field1899.field1868[0].next;
+      this.field1897 = 1;
+      this.field1900 = null;
    }
 
    public boolean hasNext() {
-      if(this.field1878 != this.field1880.field1848[this.field1879 - 1]) {
+      if(this.field1898 != this.field1899.field1868[this.field1897 - 1]) {
          return true;
       } else {
-         while(this.field1879 < this.field1880.field1847) {
-            if(this.field1880.field1848[this.field1879++].next != this.field1880.field1848[this.field1879 - 1]) {
-               this.field1878 = this.field1880.field1848[this.field1879 - 1].next;
+         while(this.field1897 < this.field1899.field1869) {
+            if(this.field1899.field1868[this.field1897++].next != this.field1899.field1868[this.field1897 - 1]) {
+               this.field1898 = this.field1899.field1868[this.field1897 - 1].next;
                return true;
             }
 
-            this.field1878 = this.field1880.field1848[this.field1879 - 1];
+            this.field1898 = this.field1899.field1868[this.field1897 - 1];
          }
 
          return false;
@@ -67,7 +37,38 @@ public class class132 implements Iterator {
    }
 
    class132(class121 var1) {
-      this.field1880 = var1;
-      this.method2432();
+      this.field1899 = var1;
+      this.method2376();
+   }
+
+   public void remove() {
+      if(this.field1900 == null) {
+         throw new IllegalStateException();
+      } else {
+         this.field1900.unlink();
+         this.field1900 = null;
+      }
+   }
+
+   public Object next() {
+      Node var1;
+      if(this.field1898 != this.field1899.field1868[this.field1897 - 1]) {
+         var1 = this.field1898;
+         this.field1898 = var1.next;
+         this.field1900 = var1;
+         return var1;
+      } else {
+         do {
+            if(this.field1897 >= this.field1899.field1869) {
+               return null;
+            }
+
+            var1 = this.field1899.field1868[this.field1897++].next;
+         } while(var1 == this.field1899.field1868[this.field1897 - 1]);
+
+         this.field1898 = var1.next;
+         this.field1900 = var1;
+         return var1;
+      }
    }
 }

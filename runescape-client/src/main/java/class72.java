@@ -1,187 +1,334 @@
 import java.io.EOFException;
-import java.io.File;
 import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bh")
+@ObfuscatedName("be")
 public class class72 {
-   @ObfuscatedName("x")
-   byte[] field1169;
-   @ObfuscatedName("u")
-   FileOnDisk field1170;
-   @ObfuscatedName("a")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -753804405
+      longValue = 6183027429238329571L
    )
-   int field1171;
-   @ObfuscatedName("f")
-   byte[] field1172;
+   long field1174;
    @ObfuscatedName("c")
+   byte[] field1175;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      longValue = -8306356363713647379L
+      longValue = 2591105923439583809L
    )
-   long field1173 = -1L;
-   @ObfuscatedName("d")
+   long field1176 = -1L;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1104528531
+      intValue = -569476753
    )
-   int field1174 = 0;
-   @ObfuscatedName("ad")
-   static class102 field1175;
-   @ObfuscatedName("g")
+   int field1178 = 0;
+   @ObfuscatedName("s")
+   FileOnDisk field1179;
+   @ObfuscatedName("ep")
+   static SpritePixels field1180;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      longValue = -4086655520996602049L
+      longValue = -1983828527766149087L
    )
-   long field1176;
-   @ObfuscatedName("z")
+   long field1181;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      longValue = 4865812290908579065L
-   )
-   long field1177;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      longValue = -4587461545545511719L
-   )
-   long field1178;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      longValue = 2128647052361037071L
-   )
-   long field1179 = -1L;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      longValue = -2842565589829403031L
+      longValue = -2499090424552105955L
    )
    long field1182;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      longValue = -7185418193345669005L
+   )
+   long field1183;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      longValue = 1394275572758932387L
+   )
+   long field1185 = -1L;
+   @ObfuscatedName("qm")
+   @ObfuscatedGetter(
+      intValue = -1911461919
+   )
+   protected static int field1187;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1332688261
+   )
+   int field1188;
+   @ObfuscatedName("a")
+   byte[] field1190;
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "40"
+   )
+   void method1343() throws IOException {
+      if(this.field1185 != -1L) {
+         if(this.field1174 != this.field1185) {
+            this.field1179.method1377(this.field1185);
+            this.field1174 = this.field1185;
+         }
+
+         this.field1179.method1396(this.field1190, 0, this.field1178);
+         this.field1174 += -569476753L * (long)(this.field1178 * -1482357361);
+         if(this.field1174 > this.field1182) {
+            this.field1182 = this.field1174;
+         }
+
+         long var1 = -1L;
+         long var3 = -1L;
+         if(this.field1185 >= this.field1176 && this.field1185 < this.field1176 + (long)this.field1188) {
+            var1 = this.field1185;
+         } else if(this.field1176 >= this.field1185 && this.field1176 < this.field1185 + (long)this.field1178) {
+            var1 = this.field1176;
+         }
+
+         if((long)this.field1178 + this.field1185 > this.field1176 && this.field1185 + (long)this.field1178 <= this.field1176 + (long)this.field1188) {
+            var3 = this.field1185 + (long)this.field1178;
+         } else if(this.field1176 + (long)this.field1188 > this.field1185 && (long)this.field1188 + this.field1176 <= (long)this.field1178 + this.field1185) {
+            var3 = this.field1176 + (long)this.field1188;
+         }
+
+         if(var1 > -1L && var3 > var1) {
+            int var5 = (int)(var3 - var1);
+            System.arraycopy(this.field1190, (int)(var1 - this.field1185), this.field1175, (int)(var1 - this.field1176), var5);
+         }
+
+         this.field1185 = -1L;
+         this.field1178 = 0;
+      }
+
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(I)J",
+      garbageValue = "371627703"
+   )
+   public long method1346() {
+      return this.field1183;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "([BI)V",
+      garbageValue = "502345399"
+   )
+   public void method1347(byte[] var1) throws IOException {
+      this.method1357(var1, 0, var1.length);
+   }
+
+   @ObfuscatedName("c")
+   public void method1348(long var1) throws IOException {
+      if(var1 < 0L) {
+         throw new IOException("");
+      } else {
+         this.field1181 = var1;
+      }
+   }
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-309292285"
+      garbageValue = "1107479916"
    )
-   public void method1334() throws IOException {
-      this.method1358();
-      this.field1170.method1365();
+   void method1349() throws IOException {
+      this.field1188 = 0;
+      if(this.field1174 != this.field1181) {
+         this.field1179.method1377(this.field1181);
+         this.field1174 = this.field1181;
+      }
+
+      int var1;
+      for(this.field1176 = this.field1181; this.field1188 < this.field1175.length; this.field1188 += var1) {
+         var1 = this.field1179.method1380(this.field1175, this.field1188, this.field1175.length - this.field1188);
+         if(var1 == -1) {
+            break;
+         }
+
+         this.field1174 += (long)var1;
+      }
+
    }
 
-   @ObfuscatedName("x")
-   public void method1335(long var1) throws IOException {
-      if(var1 < 0L) {
-         throw new IOException("");
-      } else {
-         this.field1182 = var1;
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "([BIIB)V",
+      garbageValue = "80"
+   )
+   public void method1350(byte[] var1, int var2, int var3) throws IOException {
+      try {
+         if((long)var3 + this.field1181 > this.field1183) {
+            this.field1183 = (long)var3 + this.field1181;
+         }
+
+         if(-1L != this.field1185 && (this.field1181 < this.field1185 || this.field1181 > this.field1185 + (long)this.field1178)) {
+            this.method1343();
+         }
+
+         if(-1L != this.field1185 && (long)var3 + this.field1181 > (long)this.field1190.length + this.field1185) {
+            int var4 = (int)((long)this.field1190.length - (this.field1181 - this.field1185));
+            System.arraycopy(var1, var2, this.field1190, (int)(this.field1181 - this.field1185), var4);
+            this.field1181 += (long)var4;
+            var2 += var4;
+            var3 -= var4;
+            this.field1178 = this.field1190.length;
+            this.method1343();
+         }
+
+         if(var3 <= this.field1190.length) {
+            if(var3 > 0) {
+               if(this.field1185 == -1L) {
+                  this.field1185 = this.field1181;
+               }
+
+               System.arraycopy(var1, var2, this.field1190, (int)(this.field1181 - this.field1185), var3);
+               this.field1181 += (long)var3;
+               if(this.field1181 - this.field1185 > (long)this.field1178) {
+                  this.field1178 = (int)(this.field1181 - this.field1185);
+               }
+
+            }
+         } else {
+            if(this.field1181 != this.field1174) {
+               this.field1179.method1377(this.field1181);
+               this.field1174 = this.field1181;
+            }
+
+            this.field1179.method1396(var1, var2, var3);
+            this.field1174 += (long)var3;
+            if(this.field1174 > this.field1182) {
+               this.field1182 = this.field1174;
+            }
+
+            long var11 = -1L;
+            long var6 = -1L;
+            if(this.field1181 >= this.field1176 && this.field1181 < (long)this.field1188 + this.field1176) {
+               var11 = this.field1181;
+            } else if(this.field1176 >= this.field1181 && this.field1176 < (long)var3 + this.field1181) {
+               var11 = this.field1176;
+            }
+
+            if((long)var3 + this.field1181 > this.field1176 && (long)var3 + this.field1181 <= (long)this.field1188 + this.field1176) {
+               var6 = (long)var3 + this.field1181;
+            } else if(this.field1176 + (long)this.field1188 > this.field1181 && (long)this.field1188 + this.field1176 <= this.field1181 + (long)var3) {
+               var6 = (long)this.field1188 + this.field1176;
+            }
+
+            if(var11 > -1L && var6 > var11) {
+               int var8 = (int)(var6 - var11);
+               System.arraycopy(var1, (int)((long)var2 + var11 - this.field1181), this.field1175, (int)(var11 - this.field1176), var8);
+            }
+
+            this.field1181 += (long)var3;
+         }
+      } catch (IOException var10) {
+         this.field1174 = -1L;
+         throw var10;
       }
    }
 
-   @ObfuscatedName("a")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "([BI)V",
-      garbageValue = "-1611366285"
+      signature = "([BIII)V",
+      garbageValue = "466121586"
    )
-   public void method1337(byte[] var1) throws IOException {
-      this.method1338(var1, 0, var1.length);
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "([BIIB)V",
-      garbageValue = "76"
-   )
-   public void method1338(byte[] var1, int var2, int var3) throws IOException {
+   public void method1357(byte[] var1, int var2, int var3) throws IOException {
       try {
-         if(var2 + var3 > var1.length) {
-            throw new ArrayIndexOutOfBoundsException(var3 + var2 - var1.length);
+         if(var3 + var2 > var1.length) {
+            throw new ArrayIndexOutOfBoundsException(var2 + var3 - var1.length);
          }
 
-         if(-1L != this.field1173 && this.field1182 >= this.field1173 && this.field1182 + (long)var3 <= (long)this.field1174 + this.field1173) {
-            System.arraycopy(this.field1172, (int)(this.field1182 - this.field1173), var1, var2, var3);
-            this.field1182 += (long)var3;
+         if(this.field1185 != -1L && this.field1181 >= this.field1185 && this.field1181 + (long)var3 <= (long)this.field1178 + this.field1185) {
+            System.arraycopy(this.field1190, (int)(this.field1181 - this.field1185), var1, var2, var3);
+            this.field1181 += (long)var3;
             return;
          }
 
-         long var4 = this.field1182;
-         int var6 = var3;
-         int var7;
-         if(this.field1182 >= this.field1179 && this.field1182 < this.field1179 + (long)this.field1171) {
-            var7 = (int)((long)this.field1171 - (this.field1182 - this.field1179));
-            if(var7 > var3) {
-               var7 = var3;
+         long var4 = this.field1181;
+         int var7 = var3;
+         int var8;
+         if(this.field1181 >= this.field1176 && this.field1181 < (long)this.field1188 + this.field1176) {
+            var8 = (int)((long)this.field1188 - (this.field1181 - this.field1176));
+            if(var8 > var3) {
+               var8 = var3;
             }
 
-            System.arraycopy(this.field1169, (int)(this.field1182 - this.field1179), var1, var2, var7);
-            this.field1182 += (long)var7;
-            var2 += var7;
-            var3 -= var7;
+            System.arraycopy(this.field1175, (int)(this.field1181 - this.field1176), var1, var2, var8);
+            this.field1181 += (long)var8;
+            var2 += var8;
+            var3 -= var8;
          }
 
-         if(var3 > this.field1169.length) {
-            this.field1170.method1369(this.field1182);
+         if(var3 > this.field1175.length) {
+            this.field1179.method1377(this.field1181);
 
-            for(this.field1178 = this.field1182; var3 > 0; var3 -= var7) {
-               var7 = this.field1170.method1368(var1, var2, var3);
-               if(var7 == -1) {
+            for(this.field1174 = this.field1181; var3 > 0; var3 -= var8) {
+               var8 = this.field1179.method1380(var1, var2, var3);
+               if(var8 == -1) {
                   break;
                }
 
-               this.field1178 += (long)var7;
-               this.field1182 += (long)var7;
-               var2 += var7;
+               this.field1174 += (long)var8;
+               this.field1181 += (long)var8;
+               var2 += var8;
             }
          } else if(var3 > 0) {
-            this.method1339();
-            var7 = var3;
-            if(var3 > this.field1171) {
-               var7 = this.field1171;
+            this.method1349();
+            var8 = var3;
+            if(var3 > this.field1188) {
+               var8 = this.field1188;
             }
 
-            System.arraycopy(this.field1169, 0, var1, var2, var7);
-            var2 += var7;
-            var3 -= var7;
-            this.field1182 += (long)var7;
+            System.arraycopy(this.field1175, 0, var1, var2, var8);
+            var2 += var8;
+            var3 -= var8;
+            this.field1181 += (long)var8;
          }
 
-         if(-1L != this.field1173) {
-            if(this.field1173 > this.field1182 && var3 > 0) {
-               var7 = (int)(this.field1173 - this.field1182) + var2;
-               if(var7 > var2 + var3) {
-                  var7 = var2 + var3;
+         if(-1L != this.field1185) {
+            if(this.field1185 > this.field1181 && var3 > 0) {
+               var8 = var2 + (int)(this.field1185 - this.field1181);
+               if(var8 > var2 + var3) {
+                  var8 = var3 + var2;
                }
 
-               while(var2 < var7) {
+               while(var2 < var8) {
                   var1[var2++] = 0;
                   --var3;
-                  ++this.field1182;
+                  ++this.field1181;
                }
             }
 
-            long var8 = -1L;
+            long var15 = -1L;
             long var10 = -1L;
-            if(this.field1173 >= var4 && this.field1173 < var4 + (long)var6) {
-               var8 = this.field1173;
-            } else if(var4 >= this.field1173 && var4 < this.field1173 + (long)this.field1174) {
-               var8 = var4;
+            if(this.field1185 >= var4 && this.field1185 < (long)var7 + var4) {
+               var15 = this.field1185;
+            } else if(var4 >= this.field1185 && var4 < (long)this.field1178 + this.field1185) {
+               var15 = var4;
             }
 
-            if((long)this.field1174 + this.field1173 > var4 && (long)this.field1174 + this.field1173 <= (long)var6 + var4) {
-               var10 = this.field1173 + (long)this.field1174;
-            } else if(var4 + (long)var6 > this.field1173 && (long)var6 + var4 <= this.field1173 + (long)this.field1174) {
-               var10 = var4 + (long)var6;
+            if(this.field1185 + (long)this.field1178 > var4 && this.field1185 + (long)this.field1178 <= var4 + (long)var7) {
+               var10 = (long)this.field1178 + this.field1185;
+            } else if((long)var7 + var4 > this.field1185 && var4 + (long)var7 <= (long)this.field1178 + this.field1185) {
+               var10 = (long)var7 + var4;
             }
 
-            if(var8 > -1L && var10 > var8) {
-               int var12 = (int)(var10 - var8);
-               System.arraycopy(this.field1172, (int)(var8 - this.field1173), var1, var2 + (int)(var8 - var4), var12);
-               if(var10 > this.field1182) {
-                  var3 = (int)((long)var3 - (var10 - this.field1182));
-                  this.field1182 = var10;
+            if(var15 > -1L && var10 > var15) {
+               int var12 = (int)(var10 - var15);
+               System.arraycopy(this.field1190, (int)(var15 - this.field1185), var1, (int)(var15 - var4) + var2, var12);
+               if(var10 > this.field1181) {
+                  var3 = (int)((long)var3 - (var10 - this.field1181));
+                  this.field1181 = var10;
                }
             }
          }
-      } catch (IOException var13) {
-         this.field1178 = -1L;
-         throw var13;
+      } catch (IOException var14) {
+         this.field1174 = -1L;
+         throw var14;
       }
 
       if(var3 > 0) {
@@ -189,37 +336,14 @@ public class class72 {
       }
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "66"
+      signature = "(I)V",
+      garbageValue = "47034150"
    )
-   void method1339() throws IOException {
-      this.field1171 = 0;
-      if(this.field1182 != this.field1178) {
-         this.field1170.method1369(this.field1182);
-         this.field1178 = this.field1182;
-      }
-
-      int var1;
-      for(this.field1179 = this.field1182; this.field1171 < this.field1169.length; this.field1171 += var1) {
-         var1 = this.field1170.method1368(this.field1169, this.field1171, this.field1169.length - this.field1171);
-         if(var1 == -1) {
-            break;
-         }
-
-         this.field1178 += (long)var1;
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(I)J",
-      garbageValue = "1470836048"
-   )
-   public long method1341() {
-      return this.field1177;
+   public void method1362() throws IOException {
+      this.method1343();
+      this.field1179.method1378();
    }
 
    @ObfuscatedSignature(
@@ -227,167 +351,44 @@ public class class72 {
       garbageValue = "0"
    )
    public class72(FileOnDisk var1, int var2, int var3) throws IOException {
-      this.field1170 = var1;
-      this.field1177 = this.field1176 = var1.method1367();
-      this.field1169 = new byte[var2];
-      this.field1172 = new byte[var3];
-      this.field1182 = 0L;
+      this.field1179 = var1;
+      long var10003 = var1.method1379();
+      this.field1182 = var10003 * -2499090424552105955L;
+      this.field1183 = var10003;
+      this.field1175 = new byte[var2];
+      this.field1190 = new byte[var3];
+      this.field1181 = 0L;
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1535763315"
+      signature = "([Lclass158;II)Lclass158;",
+      garbageValue = "-1315169032"
    )
-   void method1358() throws IOException {
-      if(-1L != this.field1173) {
-         if(this.field1173 != this.field1178) {
-            this.field1170.method1369(this.field1173);
-            this.field1178 = this.field1173;
-         }
+   public static class158 method1368(class158[] var0, int var1) {
+      class158[] var2 = var0;
 
-         this.field1170.method1375(this.field1172, 0, this.field1174);
-         this.field1178 += -1104528531L * (long)(this.field1174 * 309986917);
-         if(this.field1178 > this.field1176) {
-            this.field1176 = this.field1178;
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class158 var4 = var2[var3];
+         if(var1 == var4.vmethod3916()) {
+            return var4;
          }
-
-         long var1 = -1L;
-         long var3 = -1L;
-         if(this.field1173 >= this.field1179 && this.field1173 < (long)this.field1171 + this.field1179) {
-            var1 = this.field1173;
-         } else if(this.field1179 >= this.field1173 && this.field1179 < this.field1173 + (long)this.field1174) {
-            var1 = this.field1179;
-         }
-
-         if(this.field1173 + (long)this.field1174 > this.field1179 && (long)this.field1174 + this.field1173 <= this.field1179 + (long)this.field1171) {
-            var3 = this.field1173 + (long)this.field1174;
-         } else if((long)this.field1171 + this.field1179 > this.field1173 && (long)this.field1171 + this.field1179 <= this.field1173 + (long)this.field1174) {
-            var3 = (long)this.field1171 + this.field1179;
-         }
-
-         if(var1 > -1L && var3 > var1) {
-            int var5 = (int)(var3 - var1);
-            System.arraycopy(this.field1172, (int)(var1 - this.field1173), this.field1169, (int)(var1 - this.field1179), var5);
-         }
-
-         this.field1173 = -1L;
-         this.field1174 = 0;
       }
 
+      return null;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "([BIII)V",
-      garbageValue = "-717015163"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1732248694"
    )
-   public void method1360(byte[] var1, int var2, int var3) throws IOException {
-      try {
-         if(this.field1182 + (long)var3 > this.field1177) {
-            this.field1177 = (long)var3 + this.field1182;
-         }
-
-         if(this.field1173 != -1L && (this.field1182 < this.field1173 || this.field1182 > this.field1173 + (long)this.field1174)) {
-            this.method1358();
-         }
-
-         if(-1L != this.field1173 && this.field1182 + (long)var3 > this.field1173 + (long)this.field1172.length) {
-            int var4 = (int)((long)this.field1172.length - (this.field1182 - this.field1173));
-            System.arraycopy(var1, var2, this.field1172, (int)(this.field1182 - this.field1173), var4);
-            this.field1182 += (long)var4;
-            var2 += var4;
-            var3 -= var4;
-            this.field1174 = this.field1172.length;
-            this.method1358();
-         }
-
-         if(var3 <= this.field1172.length) {
-            if(var3 > 0) {
-               if(-1L == this.field1173) {
-                  this.field1173 = this.field1182;
-               }
-
-               System.arraycopy(var1, var2, this.field1172, (int)(this.field1182 - this.field1173), var3);
-               this.field1182 += (long)var3;
-               if(this.field1182 - this.field1173 > (long)this.field1174) {
-                  this.field1174 = (int)(this.field1182 - this.field1173);
-               }
-            }
-         } else {
-            if(this.field1178 != this.field1182) {
-               this.field1170.method1369(this.field1182);
-               this.field1178 = this.field1182;
-            }
-
-            this.field1170.method1375(var1, var2, var3);
-            this.field1178 += (long)var3;
-            if(this.field1178 > this.field1176) {
-               this.field1176 = this.field1178;
-            }
-
-            long var10 = -1L;
-            long var6 = -1L;
-            if(this.field1182 >= this.field1179 && this.field1182 < this.field1179 + (long)this.field1171) {
-               var10 = this.field1182;
-            } else if(this.field1179 >= this.field1182 && this.field1179 < this.field1182 + (long)var3) {
-               var10 = this.field1179;
-            }
-
-            if((long)var3 + this.field1182 > this.field1179 && this.field1182 + (long)var3 <= (long)this.field1171 + this.field1179) {
-               var6 = this.field1182 + (long)var3;
-            } else if(this.field1179 + (long)this.field1171 > this.field1182 && this.field1179 + (long)this.field1171 <= this.field1182 + (long)var3) {
-               var6 = (long)this.field1171 + this.field1179;
-            }
-
-            if(var10 > -1L && var6 > var10) {
-               int var8 = (int)(var6 - var10);
-               System.arraycopy(var1, (int)((long)var2 + var10 - this.field1182), this.field1169, (int)(var10 - this.field1179), var8);
-            }
-
-            this.field1182 += (long)var3;
-         }
-
-      } catch (IOException var9) {
-         this.field1178 = -1L;
-         throw var9;
+   public static String method1375(CharSequence var0) {
+      String var1 = class142.method2609(class22.method186(var0));
+      if(null == var1) {
+         var1 = "";
       }
-   }
 
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/io/File;I)V",
-      garbageValue = "-1737191461"
-   )
-   static void method1361(File var0) {
-      class107.field1715 = var0;
-      if(!class107.field1715.exists()) {
-         throw new RuntimeException("");
-      } else {
-         class107.field1717 = true;
-      }
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "835777340"
-   )
-   public static void method1362() {
-      PlayerComposition.field2159.reset();
-   }
-
-   @ObfuscatedName("dn")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1845193046"
-   )
-   static void method1363(int var0) {
-      class9.field89 = new class38();
-      class9.field89.field787 = Client.menuActionParams0[var0];
-      class9.field89.field785 = Client.menuActionParams1[var0];
-      class9.field89.field786 = Client.menuTypes[var0];
-      class9.field89.field784 = Client.menuIdentifiers[var0];
-      class9.field89.field790 = Client.menuOptions[var0];
+      return var1;
    }
 }

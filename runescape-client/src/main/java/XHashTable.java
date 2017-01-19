@@ -2,54 +2,52 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dy")
+@ObfuscatedName("dd")
 @Implements("XHashTable")
 public final class XHashTable {
+   @ObfuscatedName("h")
+   Node field1879;
    @ObfuscatedName("a")
-   Node field1859;
-   @ObfuscatedName("x")
+   int field1880 = 0;
+   @ObfuscatedName("f")
+   Node field1881;
+   @ObfuscatedName("c")
    @Export("buckets")
    Node[] buckets;
-   @ObfuscatedName("i")
-   Node field1861;
-   @ObfuscatedName("u")
+   @ObfuscatedName("s")
    @Export("size")
    int size;
-   @ObfuscatedName("f")
-   int field1863 = 0;
 
-   @ObfuscatedName("u")
-   public Node method2339(long var1) {
+   @ObfuscatedName("s")
+   public Node method2274(long var1) {
       Node var3 = this.buckets[(int)(var1 & (long)(this.size - 1))];
 
-      for(this.field1861 = var3.next; this.field1861 != var3; this.field1861 = this.field1861.next) {
-         if(this.field1861.hash == var1) {
-            Node var4 = this.field1861;
-            this.field1861 = this.field1861.next;
+      for(this.field1881 = var3.next; this.field1881 != var3; this.field1881 = this.field1881.next) {
+         if(this.field1881.hash == var1) {
+            Node var4 = this.field1881;
+            this.field1881 = this.field1881.next;
             return var4;
          }
       }
 
-      this.field1861 = null;
+      this.field1881 = null;
       return null;
    }
 
-   @ObfuscatedName("x")
-   public void method2340(Node var1, long var2) {
-      if(var1.previous != null) {
-         var1.unlink();
+   public XHashTable(int var1) {
+      this.size = var1;
+      this.buckets = new Node[var1];
+
+      for(int var2 = 0; var2 < var1; ++var2) {
+         Node var3 = this.buckets[var2] = new Node();
+         var3.next = var3;
+         var3.previous = var3;
       }
 
-      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
-      var1.previous = var4.previous;
-      var1.next = var4;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
-      var1.hash = var2;
    }
 
-   @ObfuscatedName("i")
-   void method2341() {
+   @ObfuscatedName("f")
+   void method2275() {
       for(int var1 = 0; var1 < this.size; ++var1) {
          Node var2 = this.buckets[var1];
 
@@ -63,45 +61,48 @@ public final class XHashTable {
          }
       }
 
-      this.field1861 = null;
-      this.field1859 = null;
+      this.field1881 = null;
+      this.field1879 = null;
+   }
+
+   @ObfuscatedName("k")
+   public Node method2277() {
+      Node var1;
+      if(this.field1880 > 0 && this.field1879 != this.buckets[this.field1880 - 1]) {
+         var1 = this.field1879;
+         this.field1879 = var1.next;
+         return var1;
+      } else {
+         do {
+            if(this.field1880 >= this.size) {
+               return null;
+            }
+
+            var1 = this.buckets[this.field1880++].next;
+         } while(var1 == this.buckets[this.field1880 - 1]);
+
+         this.field1879 = var1.next;
+         return var1;
+      }
    }
 
    @ObfuscatedName("c")
-   public Node method2343() {
-      Node var1;
-      if(this.field1863 > 0 && this.field1859 != this.buckets[this.field1863 - 1]) {
-         var1 = this.field1859;
-         this.field1859 = var1.next;
-         return var1;
-      } else {
-         while(this.field1863 < this.size) {
-            var1 = this.buckets[this.field1863++].next;
-            if(var1 != this.buckets[this.field1863 - 1]) {
-               this.field1859 = var1.next;
-               return var1;
-            }
-         }
-
-         return null;
-      }
-   }
-
-   @ObfuscatedName("a")
-   public Node method2344() {
-      this.field1863 = 0;
-      return this.method2343();
-   }
-
-   public XHashTable(int var1) {
-      this.size = var1;
-      this.buckets = new Node[var1];
-
-      for(int var2 = 0; var2 < var1; ++var2) {
-         Node var3 = this.buckets[var2] = new Node();
-         var3.next = var3;
-         var3.previous = var3;
+   public void method2282(Node var1, long var2) {
+      if(var1.previous != null) {
+         var1.unlink();
       }
 
+      Node var4 = this.buckets[(int)(var2 & (long)(this.size - 1))];
+      var1.previous = var4.previous;
+      var1.next = var4;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
+      var1.hash = var2;
+   }
+
+   @ObfuscatedName("g")
+   public Node method2283() {
+      this.field1880 = 0;
+      return this.method2277();
    }
 }
