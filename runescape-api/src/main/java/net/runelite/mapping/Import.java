@@ -35,4 +35,6 @@ import java.lang.annotation.Target;
 public @interface Import
 {
 	String value();
+
+	boolean setter() default false;
 }
