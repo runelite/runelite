@@ -34,59 +34,58 @@ import java.net.URL;
 
 public class RSStub implements AppletStub
 {
-	private final ConfigLoader config;
-	private final Applet app;
-	
-	public RSStub(ConfigLoader config, Applet app)
-	{
-		this.config = config;
-		this.app = app;
-	}
+    private final ConfigLoader config;
+    private final Applet app;
 
-	@Override
-	public boolean isActive()
-	{
-		return true;
-	}
+    public RSStub(ConfigLoader config, Applet app)
+    {
+        this.config = config;
+        this.app = app;
+    }
 
-	@Override
-	public URL getDocumentBase()
-	{
-		return getCodeBase();
-	}
+    @Override
+    public boolean isActive()
+    {
+        return true;
+    }
 
-	@Override
-	public URL getCodeBase()
-	{
-		try
-		{
-			return new URL(config.getProperty(ConfigLoader.CODEBASE));
-		}
-		catch (MalformedURLException ex)
-		{
-			return null;
-		}
-	}
+    @Override
+    public URL getDocumentBase()
+    {
+        return getCodeBase();
+    }
 
-	@Override
-	public String getParameter(String name)
-	{
-		return config.getAppletProperty(name);
-	}
+    @Override
+    public URL getCodeBase()
+    {
+        try
+        {
+            return new URL(config.getProperty(ConfigLoader.CODEBASE));
+        } catch (MalformedURLException ex)
+        {
+            return null;
+        }
+    }
 
-	@Override
-	public AppletContext getAppletContext()
-	{
-		return null;
-	}
+    @Override
+    public String getParameter(String name)
+    {
+        return config.getAppletProperty(name);
+    }
 
-	@Override
-	public void appletResize(int width, int height)
-	{
-		Dimension d = new Dimension(width, height);
+    @Override
+    public AppletContext getAppletContext()
+    {
+        return null;
+    }
 
-		app.setSize(d);
-		app.setPreferredSize(d);
-	}
-	
+    @Override
+    public void appletResize(int width, int height)
+    {
+        Dimension d = new Dimension(width, height);
+
+        app.setSize(d);
+        app.setPreferredSize(d);
+    }
+
 }

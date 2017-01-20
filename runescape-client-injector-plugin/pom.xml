@@ -23,53 +23,54 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>net.runelite</groupId>
-		<artifactId>runelite-parent</artifactId>
-		<version>1.1.18-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>net.runelite</groupId>
+        <artifactId>runelite-parent</artifactId>
+        <version>1.1.18-SNAPSHOT</version>
+    </parent>
 
-	<groupId>net.runelite.rs</groupId>
-	<artifactId>injector-plugin</artifactId>
-	<version>131.2-SNAPSHOT</version> <!-- rs version -->
-	<name>Injector Plugin</name>
-	<packaging>maven-plugin</packaging>
+    <groupId>net.runelite.rs</groupId>
+    <artifactId>injector-plugin</artifactId>
+    <version>131.2-SNAPSHOT</version> <!-- rs version -->
+    <name>Injector Plugin</name>
+    <packaging>maven-plugin</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>net.runelite</groupId>
-			<artifactId>deob</artifactId>
-			<version>1.2.18-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.apache.maven</groupId>
-			<artifactId>maven-plugin-api</artifactId>
-			<version>3.0.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.maven.plugin-tools</groupId>
-			<artifactId>maven-plugin-annotations</artifactId>
-			<version>3.4</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>net.runelite</groupId>
+            <artifactId>deob</artifactId>
+            <version>1.2.18-SNAPSHOT</version>
+        </dependency>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-plugin-plugin</artifactId>
-				<version>3.4</version>
-				<executions>
-					<execution>
-						<id>default-descriptor</id>
-						<phase>process-classes</phase>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-plugin-api</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.4</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.4</version>
+                <executions>
+                    <execution>
+                        <id>default-descriptor</id>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

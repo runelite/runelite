@@ -30,11 +30,11 @@ import net.runelite.client.ui.overlay.Overlay;
 
 public class Boosts extends Plugin
 {
-	private final Overlay overlay = new BoostsOverlay();
+    private final Overlay overlay = new BoostsOverlay();
 
-	@Override
-	public Overlay getOverlay()
-	{
-		return overlay;
-	}
+    @Override
+    public Overlay getOverlay()
+    {
+        return overlay;
+    }
 }

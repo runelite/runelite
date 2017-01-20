@@ -29,24 +29,24 @@ import net.runelite.mapping.Import;
 
 public interface Actor extends Renderable
 {
-	@Import("interacting")
-	int getInteracting();
+    @Import("interacting")
+    int getInteracting();
 
-	@Import("interactingObjects")
-	int getInteractingObjects();
+    @Import("interactingObjects")
+    int getInteractingObjects();
 
-	@Import("inSequence")
-	boolean inSequence();
+    @Import("inSequence")
+    boolean inSequence();
 
-	@Import("overhead")
-	String getOverhead();
+    @Import("overhead")
+    String getOverhead();
 
-	@Import("x")
-	int getX();
+    @Import("x")
+    int getX();
 
-	@Import("y")
-	int getY();
+    @Import("y")
+    int getY();
 
-	@Import("animation")
-	int getAnimation();
+    @Import("animation")
+    int getAnimation();
 }

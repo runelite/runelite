@@ -27,186 +27,195 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
+import java.awt.*;
+
 public interface Client extends GameEngine
 {
-	@Import("cameraX")
-	int getCameraX();
+    @Import("cameraX")
+    int getCameraX();
 
-	@Import("cameraY")
-	int getCameraY();
+    @Import("cameraY")
+    int getCameraY();
 
-	@Import("cameraZ")
-	int getCameraZ();
+    @Import("cameraZ")
+    int getCameraZ();
 
-	@Import("plane")
-	int getPlane();
+    @Import("plane")
+    int getPlane();
 
-	@Import("cameraPitch")
-	int getCameraPitch();
+    @Import("cameraPitch")
+    int getCameraPitch();
 
-	@Import("cameraYaw")
-	int getCameraYaw();
+    @Import("cameraYaw")
+    int getCameraYaw();
 
-	@Import("world")
-	int getWorld();
+    @Import("world")
+    int getWorld();
 
-	@Import("FPS")
-	int getFPS();
+    @Import("FPS")
+    int getFPS();
 
-	@Import("mapScale")
-	int getMapScale();
+    @Import("mapScale")
+    int getMapScale();
 
-	@Import("mapAngle")
-	int getMapAngle();
+    @Import("canvas")
+    Canvas getCanvas();
 
-	@Import("tileHeights")
-	int[][][] getTileHeights();
+    @Import("mapAngle")
+    int getMapAngle();
 
-	@Import("tileSettings")
-	byte[][][] getTileSettings();
+    @Import("tileHeights")
+    int[][][] getTileHeights();
 
-	@Import("settings")
-	int[] getSettings();
+    @Import("tileSettings")
+    byte[][][] getTileSettings();
 
-	@Import("widgetSettings")
-	int[] getWidgetSettings();
+    @Import("settings")
+    int[] getSettings();
 
-	@Import("energy")
-	int getEnergy();
+    @Import("widgetSettings")
+    int[] getWidgetSettings();
 
-	@Import("weight")
-	int getWeight();
+    @Import("energy")
+    int getEnergy();
 
-	@Import("baseX")
-	int getBaseX();
+    @Import("weight")
+    int getWeight();
 
-	@Import("baseY")
-	int getBaseY();
+    @Import("baseX")
+    int getBaseX();
 
-	@Import("boostedSkillLevels")
-	int[] getBoostedSkillLevels();
+    @Import("baseY")
+    int getBaseY();
 
-	@Import("realSkillLevels")
-	int[] getRealSkillLevels();
+    @Import("boostedSkillLevels")
+    int[] getBoostedSkillLevels();
 
-	@Import("skillExperiences")
-	int[] getSkillExperiences();
+    @Import("realSkillLevels")
+    int[] getRealSkillLevels();
 
-	@Import("gameState")
-	int getGameState();
+    @Import("skillExperiences")
+    int[] getSkillExperiences();
 
-	@Import("widgets")
-	Widget[][] getWidgets();
+    @Import("gameState")
+    int getGameState();
 
-	@Import("region")
-	Region getRegion();
+    @Import("widgets")
+    Widget[][] getWidgets();
 
-	@Import("localPlayer")
-	Player getLocalPlayer();
+    @Import("region")
+    Region getRegion();
 
-	@Import("cachedNPCs")
-	NPC[] getCachedNPCs();
+    @Import("localPlayer")
+    Player getLocalPlayer();
 
-	@Import("collisionMaps")
-	CollisionData[] getCollisionMaps();
+    @Import("cachedNPCs")
+    NPC[] getCachedNPCs();
 
-	@Import("cachedPlayers")
-	Player[] getCachedPlayers();
+    @Import("collisionMaps")
+    CollisionData[] getCollisionMaps();
 
-	@Import("groundItemDeque")
-	Deque[][][] getGroundItemDeque();
+    @Import("cachedPlayers")
+    Player[] getCachedPlayers();
 
-	@Import("username")
-	String getUsername();
+    @Import("groundItemDeque")
+    Deque[][][] getGroundItemDeque();
 
-	@Import(value = "username", setter = true)
-	void setUsername(String username);
+    @Import("username")
+    String getUsername();
 
-	@Import("menuActions")
-	String[] getMenuActions();
+    @Import(value = "username", setter = true)
+    void setUsername(String username);
 
-	@Import("menuTargets")
-	String[] getMenuTargets();
+    @Import("menuActions")
+    String[] getMenuActions();
 
-	@Import("menuOptions")
-	String[] getMenuOptions();
+    @Import("menuTargets")
+    String[] getMenuTargets();
 
-	@Import("menuOptionCount")
-	int getMenuOptionCount();
+    @Import("menuOptions")
+    String[] getMenuOptions();
 
-	@Import("menuTypes")
-	int[] getMenuTypes();
+    @Import("menuOptionCount")
+    int getMenuOptionCount();
 
-	@Import("menuIdentifiers")
-	int[] getMenuIdentifiers();
+    @Import("menuTypes")
+    int[] getMenuTypes();
 
-	@Import("friends")
-	Friend[] getFriends();
+    @Import("menuIdentifiers")
+    int[] getMenuIdentifiers();
 
-	@Import("ignores")
-	Ignore[] getIgnores();
+    @Import("friends")
+    Friend[] getFriends();
 
-	@Import("worldList")
-	World[] getWorldList();
+    @Import("ignores")
+    Ignore[] getIgnores();
 
-	@Import("rootInterface")
-	int getRootInterface();
+    @Import("worldList")
+    World[] getWorldList();
 
-	@Import("sendGameMessage")
-	void sendGameMessage(int var1, String var2, String var3);
+    @Import("rootInterface")
+    int getRootInterface();
 
-	//void hopToWorld(String var1, int var2, int var3);
+    @Import("sendGameMessage")
+    void sendGameMessage(int var1, String var2, String var3);
 
-	@Import("objectDefinition")
-	ObjectComposition getObjectDefinition(int var1);
+    //void hopToWorld(String var1, int var2, int var3);
 
-	//void setScale(int var1);
+    @Import("objectDefinition")
+    ObjectComposition getObjectDefinition(int var1);
 
-	@Import("scale")
-	int getScale();
+    //void setScale(int var1);
 
-	@Import("camera2")
-	int getCamera2();
+    @Import("scale")
+    int getScale();
 
-	@Import("camera3")
-	int getCamera3();
+    @Import("camera2")
+    int getCamera2();
 
-	@Import("validInterfaces")
-	boolean[] getValidInterfaces();
+    @Import("camera3")
+    int getCamera3();
 
-	@Import("isResized")
-	boolean isResized();
+    @Import("validInterfaces")
+    boolean[] getValidInterfaces();
 
-	@Import("widgetPositionX")
-	int[] getWidgetPositionsX();
+    @Import("isResized")
+    boolean isResized();
 
-	@Import("widgetPositionY")
-	int[] getWidgetPositionsY();
+    @Import("widgetPositionX")
+    int[] getWidgetPositionsX();
 
-	@Import("itemContainers")
-	XHashTable getItemContainers();
+    @Import("widgetPositionY")
+    int[] getWidgetPositionsY();
 
-	@Import("componentTable")
-	XHashTable getComponentTable();
+    @Import("itemContainers")
+    XHashTable getItemContainers();
 
-	@Import("grandExchangeOffers")
-	XGrandExchangeOffer[] getGrandExchangeOffers();
+    @Import("componentTable")
+    XHashTable getComponentTable();
 
-	@Import("activeInterface")
-	Widget getActiveInterface();
+    @Import("grandExchangeOffers")
+    XGrandExchangeOffer[] getGrandExchangeOffers();
 
-	@Import("clanMembers")
-	XClanMember[] getClanMembers();
+    @Import("activeInterface")
+    Widget getActiveInterface();
 
-	@Import("isMenuOpen")
-	boolean isMenuOpen();
+    @Import("clanMembers")
+    XClanMember[] getClanMembers();
 
-	@Import("packetOpcode")
-	int getPacketOpcode();
+    @Import("isMenuOpen")
+    boolean isMenuOpen();
 
-	@Import("gameCycle")
-	int getGameCycle();
+    @Import("packetOpcode")
+    int getPacketOpcode();
 
-	@Import("packetHandler")
-	void packetHandler();
+    @Import("gameCycle")
+    int getGameCycle();
+
+    @Import("packetHandler")
+    void packetHandler();
+
+    @Import("loginMessage2")
+    String getLoginMessage2();
+
 }

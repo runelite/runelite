@@ -29,24 +29,24 @@ import net.runelite.mapping.Import;
 
 public interface World
 {
-	@Import("mask")
-	int getMask();
+    @Import("mask")
+    int getMask();
 
-	@Import("playerCount")
-	int getPlayerCount();
+    @Import("playerCount")
+    int getPlayerCount();
 
-	@Import("location")
-	int getLocation();
+    @Import("location")
+    int getLocation();
 
-	@Import("index")
-	int getIndex();
+    @Import("index")
+    int getIndex();
 
-	@Import("id")
-	int getId();
+    @Import("id")
+    int getId();
 
-	@Import("activity")
-	String getActivity();
+    @Import("activity")
+    String getActivity();
 
-	@Import("address")
-	String getAddress();
+    @Import("address")
+    String getAddress();
 }

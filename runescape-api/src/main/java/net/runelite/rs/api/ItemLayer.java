@@ -29,27 +29,27 @@ import net.runelite.mapping.Import;
 
 public interface ItemLayer
 {
-	@Import("x")
-	int getX();
+    @Import("x")
+    int getX();
 
-	@Import("y")
-	int getY();
+    @Import("y")
+    int getY();
 
-	@Import("hash")
-	int getHash();
+    @Import("hash")
+    int getHash();
 
-	@Import("flags")
-	int getFlags();
+    @Import("flags")
+    int getFlags();
 
-	@Import("height")
-	int getHeight();
+    @Import("height")
+    int getHeight();
 
-	@Import("bottom")
-	Renderable getBottom();
+    @Import("bottom")
+    Renderable getBottom();
 
-	@Import("middle")
-	Renderable getMiddle();
+    @Import("middle")
+    Renderable getMiddle();
 
-	@Import("top")
-	Renderable getTop();
+    @Import("top")
+    Renderable getTop();
 }

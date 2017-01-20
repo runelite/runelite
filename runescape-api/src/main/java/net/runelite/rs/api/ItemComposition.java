@@ -29,12 +29,12 @@ import net.runelite.mapping.Import;
 
 public interface ItemComposition
 {
-	@Import("name")
-	String getName();
+    @Import("name")
+    String getName();
 
-	@Import("isMembers")
-	boolean isMembers();
+    @Import("isMembers")
+    boolean isMembers();
 
-	@Import("maleModel")
-	int getMaleModel();
+    @Import("maleModel")
+    int getMaleModel();
 }

@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface ObfuscatedGetter
 {
-	int intValue() default 0;
-	
-	long longValue() default 0L;
+    int intValue() default 0;
+
+    long longValue() default 0L;
 }

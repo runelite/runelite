@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface ObjectComposition
 {
-	@Import("name")
-	String getName();
+    @Import("name")
+    String getName();
 
-	@Import("actions")
-	String[] getActions();
+    @Import("actions")
+    String[] getActions();
 }

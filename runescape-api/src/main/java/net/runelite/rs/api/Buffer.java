@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface Buffer
 {
-	@Import("payload")
-	byte[] getPayload();
+    @Import("payload")
+    byte[] getPayload();
 
-	@Import("offset")
-	int getOffset();
+    @Import("offset")
+    int getOffset();
 }

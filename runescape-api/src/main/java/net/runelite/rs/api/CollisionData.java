@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface CollisionData
 {
-	@Import("flags")
-	int[][] getFlags();
+    @Import("flags")
+    int[][] getFlags();
 }

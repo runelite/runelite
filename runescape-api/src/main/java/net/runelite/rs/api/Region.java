@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface Region
 {
-	@Import("objects")
-	GameObject[] getObjects();
+    @Import("objects")
+    GameObject[] getObjects();
 
-	@Import("tiles")
-	Tile[][][] getTiles();
+    @Import("tiles")
+    Tile[][][] getTiles();
 }

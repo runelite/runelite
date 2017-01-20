@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Import
 {
-	String value();
+    String value();
 
-	boolean setter() default false;
+    boolean setter() default false;
 }
