@@ -36,7 +36,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-public final class ClientUI extends JFrame implements ComponentListener
+public final class ClientUI extends JFrame
 {
 	private ClientPanel panel;
 
@@ -48,7 +48,6 @@ public final class ClientUI extends JFrame implements ComponentListener
 		setLocationRelativeTo(getOwner());
 		setMinimumSize(getSize());
 		setResizable(true);
-		this.addComponentListener(this);
 	}
 	
 	private void init() throws Exception
@@ -85,25 +84,5 @@ public final class ClientUI extends JFrame implements ComponentListener
 		{
 			System.exit(0);
 		}
-	}
-
-	@Override
-	public void componentResized(ComponentEvent e)
-	{
-	}
-
-	@Override
-	public void componentMoved(ComponentEvent e)
-	{
-	}
-
-	@Override
-	public void componentShown(ComponentEvent e)
-	{
-	}
-
-	@Override
-	public void componentHidden(ComponentEvent e)
-	{
 	}
 }
