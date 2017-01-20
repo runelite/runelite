@@ -90,8 +90,6 @@ public final class ClientUI extends JFrame implements ComponentListener
 	@Override
 	public void componentResized(ComponentEvent e)
 	{
-		//Causes flickering when smaller than min size.
-		//SwingUtilities.invokeLater(() -> pack());
 	}
 
 	@Override
