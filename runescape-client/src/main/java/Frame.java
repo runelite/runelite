@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
@@ -5,7 +6,8 @@ import net.runelite.mapping.ObfuscatedName;
 @Implements("Frame")
 public class Frame {
    @ObfuscatedName("x")
-   int[] field1319;
+   @Export("translator_z")
+   int[] translator_z;
    @ObfuscatedName("c")
    static int[] field1320 = new int[500];
    @ObfuscatedName("f")
@@ -19,9 +21,11 @@ public class Frame {
    @ObfuscatedName("s")
    static int[] field1325 = new int[500];
    @ObfuscatedName("u")
-   int[] field1326;
+   @Export("translator_x")
+   int[] translator_x;
    @ObfuscatedName("b")
-   int[] field1327;
+   @Export("translator_y")
+   int[] translator_y;
    @ObfuscatedName("k")
    int[] field1328;
    @ObfuscatedName("r")
@@ -91,15 +95,15 @@ public class Frame {
       } else {
          this.field1324 = var7;
          this.field1328 = new int[var7];
-         this.field1326 = new int[var7];
-         this.field1327 = new int[var7];
-         this.field1319 = new int[var7];
+         this.translator_x = new int[var7];
+         this.translator_y = new int[var7];
+         this.translator_z = new int[var7];
 
          for(var8 = 0; var8 < var7; ++var8) {
             this.field1328[var8] = field1325[var8];
-            this.field1326[var8] = field1320[var8];
-            this.field1327[var8] = field1321[var8];
-            this.field1319[var8] = field1322[var8];
+            this.translator_x[var8] = field1320[var8];
+            this.translator_y[var8] = field1321[var8];
+            this.translator_z[var8] = field1322[var8];
          }
 
       }

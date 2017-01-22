@@ -425,7 +425,7 @@ public class Model extends Renderable {
                }
 
                if(var12 != var10 || var8.field1469[var12] == 0) {
-                  this.method1527(var8.field1469[var12], var8.field1471[var12], var6.field1326[var11], var6.field1327[var11], var6.field1319[var11]);
+                  this.method1527(var8.field1469[var12], var8.field1471[var12], var6.translator_x[var11], var6.translator_y[var11], var6.translator_z[var11]);
                }
             }
 
@@ -442,7 +442,7 @@ public class Model extends Renderable {
                }
 
                if(var12 == var10 || var8.field1469[var12] == 0) {
-                  this.method1527(var8.field1469[var12], var8.field1471[var12], var7.field1326[var11], var7.field1327[var11], var7.field1319[var11]);
+                  this.method1527(var8.field1469[var12], var8.field1471[var12], var7.translator_x[var11], var7.translator_y[var11], var7.translator_z[var11]);
                }
             }
 
@@ -616,7 +616,7 @@ public class Model extends Renderable {
 
             for(int var5 = 0; var5 < var3.field1324; ++var5) {
                int var6 = var3.field1328[var5];
-               this.method1527(var4.field1469[var6], var4.field1471[var6], var3.field1326[var5], var3.field1327[var5], var3.field1319[var5]);
+               this.method1527(var4.field1469[var6], var4.field1471[var6], var3.translator_x[var5], var3.translator_y[var5], var3.translator_z[var5]);
             }
 
             this.field1356 = 0;
