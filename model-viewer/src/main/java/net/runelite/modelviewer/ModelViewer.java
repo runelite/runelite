@@ -41,12 +41,15 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.NpcDefinition;
+import net.runelite.cache.definitions.ObjectDefinition;
 import net.runelite.cache.definitions.OverlayDefinition;
 import net.runelite.cache.definitions.TextureDefinition;
 import net.runelite.cache.definitions.UnderlayDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
 import net.runelite.cache.models.Vector3f;
 import net.runelite.cache.models.VertexNormal;
+import net.runelite.cache.region.Location;
+import net.runelite.cache.region.Position;
 import net.runelite.cache.region.Region;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -71,23 +74,35 @@ public class ModelViewer
 {
 	private static final Logger logger = LoggerFactory.getLogger(ModelViewer.class);
 
-	private static int NUM_UNDERLAYS = 150;
-	private static int NUM_OVERLAYS = 174;
-	private static int NUM_TEXTURES = 61;
+	private static final int NUM_UNDERLAYS = 150;
+	private static final int NUM_OVERLAYS = 174;
+	private static final int NUM_TEXTURES = 61;
+	private static final int NUM_OBJECTS = 28598;
+	private static final int NUM_MODELS = 31247;
+
+	/**
+	 * size of a tile in model coordinates
+	 */
+	private static final int TILE_SCALE = 128;
+	private static final int HEIGHT_MOD = 4;
 
 	private static UnderlayDefinition[] underlays = new UnderlayDefinition[NUM_UNDERLAYS];
 	private static OverlayDefinition[] overlays = new OverlayDefinition[NUM_OVERLAYS];
+
 	private static Map<Integer, Texture> textures = new HashMap<>();
+	private static ObjectDefinition[] objects = new ObjectDefinition[NUM_OBJECTS];
+	private static ModelDefinition[] models = new ModelDefinition[NUM_MODELS];
 
 	public static void main(String[] args) throws Exception
 	{
 		Options options = new Options();
 
 		options.addOption(null, "npcdir", true, "npc directory");
-		options.addOption(null, "modeldir", true, "model directory");
 		options.addOption(null, "mapdir", true, "maps directory");
+		options.addOption(null, "objectdir", true, "objects directory");
 
 		options.addOption(null, "npc", true, "npc to render");
+		options.addOption(null, "object", true, "object to render");
 		options.addOption(null, "model", true, "model to render");
 		options.addOption(null, "map", true, "map region to render");
 
@@ -95,10 +110,12 @@ public class ModelViewer
 		CommandLine cmd = parser.parse(options, args);
 
 		String npcdir = cmd.getOptionValue("npcdir");
-		String modeldir = cmd.getOptionValue("modeldir");
 		String mapdir = cmd.getOptionValue("mapdir");
+		String objectdir = cmd.getOptionValue("objectdir");
 
 		NpcDefinition npcdef = null;
+		ObjectDefinition objdef = null;
+
 		List<ModelDefinition> models = new ArrayList<>();
 		Region region = null;
 
@@ -107,9 +124,7 @@ public class ModelViewer
 			// render model
 			String model = cmd.getOptionValue("model");
 
-			ModelLoader loader = new ModelLoader();
-			byte[] b = Files.readAllBytes(new File(modeldir + "/" + model + ".model").toPath());
-			ModelDefinition md = loader.load(b);
+			ModelDefinition md = getModel(Integer.parseInt(model));
 			models.add(md);
 		}
 		if (cmd.hasOption("npc"))
@@ -123,9 +138,22 @@ public class ModelViewer
 
 			for (int model : npcdef.models)
 			{
-				ModelLoader mloader = new ModelLoader();
-				byte[] b = Files.readAllBytes(new File(modeldir + "/" + model + ".model").toPath());
-				ModelDefinition md = mloader.load(b);
+				ModelDefinition md = getModel(model);
+				models.add(md);
+			}
+		}
+		if (cmd.hasOption("object"))
+		{
+			String obj = cmd.getOptionValue("object");
+
+			try (FileInputStream fin = new FileInputStream(objectdir + "/" + obj + ".json"))
+			{
+				objdef = new Gson().fromJson(new InputStreamReader(fin), ObjectDefinition.class);
+			}
+
+			for (int model : objdef.getObjectModels())
+			{
+				ModelDefinition md = getModel(model);
 				models.add(md);
 			}
 		}
@@ -144,6 +172,16 @@ public class ModelViewer
 				region.loadTerrain(b);
 			}
 
+			try (FileInputStream fin = new FileInputStream(mapdir + "/l" + x + "_" + y + ".dat"))
+			{
+				byte[] b = IOUtils.toByteArray(fin);
+				region.loadLocations(b);
+			}
+			catch (FileNotFoundException ex)
+			{
+				logger.info("No landscape file for {},{}", x, y);
+			}
+
 			loadUnderlays();
 			loadOverlays();
 		}
@@ -160,6 +198,7 @@ public class ModelViewer
 		double far = 10000;
 		double fov = 1; // 1 gives you a 90° field of view. It's tan(fov_angle)/2.
 		GL11.glFrustum(-aspect * near * fov, aspect * near * fov, -fov, fov, near, far);
+		GL11.glPopMatrix();
 
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 
@@ -176,7 +215,19 @@ public class ModelViewer
 
 			for (ModelDefinition def : models)
 			{
-				drawModel(npcdef, def);
+				short[] recolourToFind = null, recolourToReplace = null;
+				if (npcdef != null)
+				{
+					recolourToFind = npcdef.recolorToFind;
+					recolourToReplace = npcdef.recolorToReplace;
+				}
+				if (objdef != null)
+				{
+					recolourToFind = objdef.getRecolorToFind();
+					recolourToReplace = objdef.getRecolorToReplace();
+				}
+
+				drawModel(def, recolourToFind, recolourToReplace);
 			}
 
 			drawRegion(region);
@@ -194,10 +245,8 @@ public class ModelViewer
 		Display.destroy();
 	}
 
-	private static void drawModel(NpcDefinition npcdef, ModelDefinition md)
+	private static void drawModel(ModelDefinition md, short[] recolourToFind, short[] recolourToReplace)
 	{
-		GL11.glBegin(GL11.GL_TRIANGLES);
-
 		for (int i = 0; i < md.triangleFaceCount; ++i)
 		{
 			int vertexA = md.trianglePointsX[i];
@@ -232,13 +281,13 @@ public class ModelViewer
 			short hsb = md.faceColor[i];
 
 			// Check recolor
-			if (npcdef != null && npcdef.recolorToFind != null)
+			if (recolourToFind != null)
 			{
-				for (int j = 0; j < npcdef.recolorToFind.length; ++j)
+				for (int j = 0; j < recolourToFind.length; ++j)
 				{
-					if (npcdef.recolorToFind[j] == hsb)
+					if (recolourToFind[j] == hsb)
 					{
-						hsb = npcdef.recolorToReplace[j];
+						hsb = recolourToReplace[j];
 					}
 				}
 			}
@@ -250,6 +299,8 @@ public class ModelViewer
 			float rf = (float) c.getRed() / 255f;
 			float gf = (float) c.getGreen() / 255f;
 			float bf = (float) c.getBlue() / 255f;
+
+			GL11.glBegin(GL11.GL_TRIANGLES);
 
 			GL11.glColor3f(rf, gf, bf);
 
@@ -264,9 +315,9 @@ public class ModelViewer
 
 			GL11.glNormal3f(nB.x, nB.y, nB.z);
 			GL11.glVertex3i(vertexBx, -vertexBy, vertexBz);
-		}
 
-		GL11.glEnd();
+			GL11.glEnd();
+		}
 	}
 
 	private static void drawRegion(Region region)
@@ -283,7 +334,6 @@ public class ModelViewer
 				int x = regionX;
 				int y = regionY;
 
-				int TILE_SCALE = 16;
 				x *= TILE_SCALE;
 				y *= TILE_SCALE;
 
@@ -311,11 +361,11 @@ public class ModelViewer
 				int z3 = regionY + 1 < Region.Y ? -region.getTileHeight(0, regionX, regionY + 1) : z1;
 				int z4 = regionX + 1 < Region.X && regionY + 1 < Region.Y ? -region.getTileHeight(0, regionX + 1, regionY + 1) : z1;
 
-				// scale down height (I randomally picked this)
-				z1 /= 4;
-				z2 /= 4;
-				z3 /= 4;
-				z4 /= 4;
+				// scale down height
+				z1 /= HEIGHT_MOD;
+				z2 /= HEIGHT_MOD;
+				z3 /= HEIGHT_MOD;
+				z4 /= HEIGHT_MOD;
 
 				int underlayId = region.getUnderlayId(0, regionX, regionY);
 				int overlayId = region.getOverlayId(0, regionX, regionY);
@@ -401,6 +451,52 @@ public class ModelViewer
 
 			}
 		}
+
+		drawLocations(region);
+	}
+
+	private static void drawLocations(Region region)
+	{
+		for (Location location : region.getLocations())
+		{
+			int id = location.getId();
+			ObjectDefinition object = getObject(id);
+
+			if (object == null || object.getObjectModels() == null)
+				continue;
+
+			Position objectPos = location.getPosition();
+
+			if (location.getPosition().getZ() != 0)
+				continue;
+
+			int regionX = objectPos.getX() - region.getBaseX();
+			int regionY = objectPos.getY() - region.getBaseY();
+			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY) / HEIGHT_MOD;
+
+			//byte overlayRotation = region.getOverlayRotation(objectPos.getZ(), regionX, regionY);
+
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
+			// TILE_SCALE/2 to draw the object from the center of the tile it is on
+			GL11.glTranslatef(regionX * TILE_SCALE + (TILE_SCALE / 2), height, -regionY * TILE_SCALE - (TILE_SCALE / 2));
+
+			for (int i = 0; i < object.getObjectModels().length; ++i)
+			{
+				ModelDefinition md = getModel(object.getObjectModels()[i]);
+
+				if (object.getObjectTypes() != null)
+				{
+					if (object.getObjectTypes()[i] != location.getType())
+						continue;
+				}
+
+				drawModel(md, object.getRecolorToFind(), object.getRecolorToReplace());
+			}
+
+			GL11.glTranslatef(-regionX * TILE_SCALE - (TILE_SCALE / 2), -height, regionY * TILE_SCALE + (TILE_SCALE / 2));
+			GL11.glPopMatrix();
+		}
 	}
 
 	private static void loadUnderlays() throws IOException
@@ -430,6 +526,46 @@ public class ModelViewer
 			catch (FileNotFoundException ex)
 			{
 			}
+		}
+	}
+
+	private static ObjectDefinition getObject(int id)
+	{
+		ObjectDefinition object = objects[id];
+		if (object != null)
+			return object;
+
+		try (FileInputStream fin = new FileInputStream("objects/" + id + ".json"))
+		{
+			object = new Gson().fromJson(new InputStreamReader(fin), ObjectDefinition.class);
+			objects[id] = object;
+			return object;
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
+		}
+	}
+
+	private static ModelDefinition getModel(int id)
+	{
+		ModelDefinition md = models[id];
+		if (md != null)
+			return md;
+
+		try
+		{
+			ModelLoader loader = new ModelLoader();
+			byte[] b = Files.readAllBytes(new File("models/" + id + ".model").toPath());
+			md = loader.load(b);
+			models[id] = md;
+			return md;
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+			return null;
 		}
 	}
 
