@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
 import net.runelite.asm.execution.Execution;
+import net.runelite.asm.signature.Signature;
 import net.runelite.deob.Deobfuscator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,19 +42,22 @@ public class UnreachedCode implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(UnreachedCode.class);
 
+	private static final String INIT = "<init>";
+	private static final Signature INIT_SIG = new Signature("()V");
+
 	private Execution execution;
-	
+
 	private int removeUnused(Method m)
 	{
 		Instructions ins = m.getCode().getInstructions();
-		
+
 		int count = 0;
 		List<Instruction> insCopy = new ArrayList<>(ins.getInstructions());
-		
+
 		for (int j = 0; j < insCopy.size(); ++j)
 		{
 			Instruction i = insCopy.get(j);
-			
+
 			if (!execution.executed.contains(i))
 			{
 				// if this is an exception handler, the exception handler is never used...
@@ -77,33 +80,43 @@ public class UnreachedCode implements Deobfuscator
 				}
 
 				if (i instanceof Label)
+				{
 					continue;
-				
+				}
+
 				ins.remove(i);
 				++count;
 			}
 		}
 		return count;
 	}
-	
+
 	@Override
 	public void run(ClassGroup group)
 	{
 		group.buildClassGraph();
-		
+
 		execution = new Execution(group);
 		execution.populateInitialMethods();
 		execution.run();
-		
+
 		int count = 0;
-		
+
 		for (ClassFile cf : group.getClasses())
 		{
 			for (Method m : cf.getMethods().getMethods())
 			{
 				if (m.getCode() == null)
+				{
 					continue;
+				}
 				
+				if (m.getName().endsWith(INIT) && m.getDescriptor().equals(INIT_SIG))
+				{
+					// never remove default constructor
+					continue;
+				}
+
 				count += removeUnused(m);
 			}
 		}
