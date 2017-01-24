@@ -62,8 +62,18 @@ class Mappings
 			Integer newIdx = newIdxMap.get(idx);
 			if (newIdx == null)
 			{
-				newIdx = maxVariables + offset++;
+				newIdx = maxVariables + offset;
 				newIdxMap.put(idx, newIdx);
+				
+				switch (type)
+				{
+					case LONG:
+					case DOUBLE:
+						offset += 2;
+						break;
+					default:
+						offset += 1;
+				}
 			}
 
 			return newIdx;
