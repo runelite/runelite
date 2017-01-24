@@ -112,7 +112,7 @@ public class JarUtil
 			ClassVisitor cv = new CheckClassAdapter(cw, true);
 			cr.accept(cv, 0);
 		}
-		catch (IllegalArgumentException | IllegalStateException ex)
+		catch (Exception ex)
 		{
 			logger.warn("Class {} failed validation", name, ex);
 			return;
