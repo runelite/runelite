@@ -148,4 +148,8 @@ public abstract class Instruction implements Cloneable
 	{
 		return this;
 	}
+
+	public void renameClass(String oldName, String newName)
+	{
+	}
 }
