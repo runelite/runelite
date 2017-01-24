@@ -27,7 +27,7 @@ public class class180 extends Node {
       garbageValue = "5"
    )
    public static Font method3174(class182 var0, class182 var1, int var2, int var3) {
-      return !class37.method718(var0, var2, var3)?null:Actor.method591(var1.method3182(var2, var3));
+      return !class37.method718(var0, var2, var3)?null:Actor.method591(var1.getConfigData(var2, var3));
    }
 
    @ObfuscatedName("af")

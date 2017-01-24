@@ -1888,7 +1888,7 @@ public final class class160 {
                   if(null != var74) {
                      var87 = var74;
                   } else {
-                     byte[] var45 = class187.field2777.method3182(16, var43);
+                     byte[] var45 = class187.field2777.getConfigData(16, var43);
                      var74 = new class187();
                      if(null != var45) {
                         var74.method3334(new Buffer(var45));

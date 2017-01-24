@@ -53,7 +53,7 @@ public class class48 extends CacheableNode {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = class190.field2804.method3182(13, var0);
+         byte[] var2 = class190.field2804.getConfigData(13, var0);
          var1 = new class190();
          var1.field2797 = var0;
          if(null != var2) {

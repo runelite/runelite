@@ -406,7 +406,7 @@ public class class144 extends Node {
 
    @ObfuscatedName("s")
    public static class144 method2637(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.method3182(var1, var2);
+      byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new class144(new Buffer(var3));
    }
 

@@ -987,7 +987,7 @@ public class Buffer extends Node {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = NPCComposition.field3012.method3182(9, var0);
+         byte[] var2 = NPCComposition.field3012.getConfigData(9, var0);
          var1 = new NPCComposition();
          var1.id = var0;
          if(null != var2) {

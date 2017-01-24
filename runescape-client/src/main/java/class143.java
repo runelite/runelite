@@ -171,7 +171,7 @@ public class class143 extends class68 {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = ObjectComposition.field2918.method3182(6, var0);
+         byte[] var2 = ObjectComposition.field2918.getConfigData(6, var0);
          var1 = new ObjectComposition();
          var1.field2942 = var0;
          if(var2 != null) {

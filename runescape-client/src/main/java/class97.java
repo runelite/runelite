@@ -138,7 +138,7 @@ public class class97 implements class158 {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = class196.field2880.method3182(32, var0);
+         byte[] var2 = class196.field2880.getConfigData(32, var0);
          var1 = new class196();
          if(null != var2) {
             var1.method3453(new Buffer(var2));

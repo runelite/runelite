@@ -408,7 +408,7 @@ public class ModelData extends Renderable {
       garbageValue = "0"
    )
    public static ModelData method1426(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.method3182(var1, var2);
+      byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new ModelData(var3);
    }
 

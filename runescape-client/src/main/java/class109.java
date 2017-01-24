@@ -42,7 +42,7 @@ public abstract class class109 {
 
             for(int var2 = 0; var2 < var1; ++var2) {
                if(Widget.widgets[var0][var2] == null) {
-                  byte[] var3 = Widget.field2240.method3182(var0, var2);
+                  byte[] var3 = Widget.field2240.getConfigData(var0, var2);
                   if(null != var3) {
                      Widget.widgets[var0][var2] = new Widget();
                      Widget.widgets[var0][var2].id = var2 + (var0 << 16);

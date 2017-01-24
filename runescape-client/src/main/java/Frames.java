@@ -21,7 +21,7 @@ public class Frames extends CacheableNode {
       int[] var7 = var1.method3191(var3);
 
       for(int var8 = 0; var8 < var7.length; ++var8) {
-         byte[] var9 = var1.method3182(var3, var7[var8]);
+         byte[] var9 = var1.getConfigData(var3, var7[var8]);
          FrameMap var10 = null;
          int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
 

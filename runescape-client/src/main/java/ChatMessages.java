@@ -291,7 +291,7 @@ public class ChatMessages {
          if(var3 != null) {
             var5 = var3;
          } else {
-            byte[] var4 = class157.field2130.method3182(15, var1);
+            byte[] var4 = class157.field2130.getConfigData(15, var1);
             var3 = new class189();
             if(null != var4) {
                var3.method3348(new Buffer(var4));
