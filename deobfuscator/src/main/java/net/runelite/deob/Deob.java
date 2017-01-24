@@ -25,6 +25,7 @@
 
 package net.runelite.deob;
 
+import com.google.common.base.Stopwatch;
 import java.io.File;
 import java.io.IOException;
 import net.runelite.asm.ClassGroup;
@@ -49,12 +50,16 @@ import net.runelite.deob.deobfuscators.arithmetic.MultiplyOneDeobfuscator;
 import net.runelite.deob.deobfuscators.arithmetic.MultiplyZeroDeobfuscator;
 import net.runelite.deob.deobfuscators.transformers.ClientErrorTransformer;
 import net.runelite.deob.util.JarUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Deob
 {
+	private static final Logger logger = LoggerFactory.getLogger(Deob.class);
+	
 	public static void main(String[] args) throws IOException
-	{	
-		long start = System.currentTimeMillis();
+	{
+		Stopwatch stopwatch = Stopwatch.createStarted();
 		
 		ClassGroup group = JarUtil.loadJar(new File(args[0]));
 		
@@ -121,8 +126,8 @@ public class Deob
 
 		JarUtil.saveJar(group, new File(args[1]));
 		
-		long end = System.currentTimeMillis();
-		System.out.println("Done in " + ((end - start) / 1000L) + "s");
+		stopwatch.stop();
+		logger.info("Done in {}", stopwatch);
 	}
 
 	public static final int OBFUSCATED_NAME_MAX_LEN = 2;
@@ -134,13 +139,11 @@ public class Deob
 	
 	private static void run(ClassGroup group, Deobfuscator deob)
 	{
-		long bstart, bdur;
-		
-		bstart = System.currentTimeMillis();
+		Stopwatch stopwatch = Stopwatch.createStarted();
 		deob.run(group);
-		bdur = System.currentTimeMillis() - bstart;
+		stopwatch.stop();
 		
-		System.out.println(deob.getClass().getName() + " took " + (bdur / 1000L) + " seconds");
+		logger.info("{} took {}", deob.getClass().getSimpleName(), stopwatch);
 		
 		// check code is still correct
 		Execution execution = new Execution(group);
