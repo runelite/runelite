@@ -22,15 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
-import java.io.File;
 import java.io.IOException;
+import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.ClassUtil;
+import net.runelite.asm.Method;
+import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.deob.TemporyFolderLocation;
 import net.runelite.deob.util.JarUtil;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -38,8 +42,6 @@ import org.junit.rules.TemporaryFolder;
 
 public class UnreachedCodeTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
-
 	@Rule
 	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
 
@@ -48,7 +50,11 @@ public class UnreachedCodeTest
 	@Before
 	public void before() throws IOException
 	{
-		group = JarUtil.loadJar(GAMEPACK);
+		ClassFile cf = ClassUtil.loadClass(UnreachedCodeTest.class.getResourceAsStream("unreachedcode/UnreachableTest.class"));
+		Assert.assertNotNull(cf);
+
+		group = new ClassGroup();
+		group.addClass(cf);
 	}
 
 	@After
@@ -58,9 +64,24 @@ public class UnreachedCodeTest
 	}
 
 	@Test
-	public void testRun()
+	public void testRun() throws IOException
 	{
 		UnreachedCode uc = new UnreachedCode();
 		uc.run(group);
+
+		ClassFile cf = group.getClasses().get(0);
+
+		Method method = cf.findMethod("method1Unused");
+		Assert.assertNotNull(method);
+		Assert.assertFalse(method.getCode().getInstructions().getInstructions().stream().filter(i -> !(i instanceof Label)).findAny().isPresent());
+		Assert.assertTrue(method.getCode().getExceptions().getExceptions().isEmpty());
+		
+		// Method is now invalid, prevent 
+		cf.getMethods().removeMethod(method);
+
+		// constructor shouldn't have instructions removed
+		method = cf.findMethod("<init>");
+		Assert.assertNotNull(method);
+		Assert.assertTrue(method.getCode().getInstructions().getInstructions().stream().filter(i -> i instanceof VReturn).findAny().isPresent());
 	}
 }
