@@ -33,7 +33,7 @@ public class class157 {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class6.field73.method3182(33, var0);
+         byte[] var2 = class6.field73.getConfigData(33, var0);
          var1 = new CombatInfo2();
          if(null != var2) {
             var1.method3408(new Buffer(var2));

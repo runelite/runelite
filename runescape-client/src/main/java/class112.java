@@ -2693,7 +2693,7 @@ public abstract class class112 {
                                              var5 -= 2;
                                              var38 = class32.field728[var5];
                                              var17 = class32.field728[1 + var5];
-                                             var95 = class6.field68.method3182(var17, 0);
+                                             var95 = class6.field68.getConfigData(var17, 0);
                                              var91 = new Font(var95);
                                              class32.field728[var5++] = var91.method3744(var103, var38);
                                              continue;
@@ -2705,7 +2705,7 @@ public abstract class class112 {
                                              var5 -= 2;
                                              var38 = class32.field728[var5];
                                              var17 = class32.field728[1 + var5];
-                                             var95 = class6.field68.method3182(var17, 0);
+                                             var95 = class6.field68.getConfigData(var17, 0);
                                              var91 = new Font(var95);
                                              class32.field728[var5++] = var91.method3724(var103, var38);
                                              continue;

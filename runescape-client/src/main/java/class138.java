@@ -255,7 +255,7 @@ public class class138 {
                               if(var35 != null) {
                                  var46 = var35;
                               } else {
-                                 byte[] var36 = class32.field737.method3182(4, var34);
+                                 byte[] var36 = class32.field737.getConfigData(4, var34);
                                  var35 = new Overlay();
                                  if(null != var36) {
                                     var35.method3596(new Buffer(var36), var34);

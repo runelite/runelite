@@ -219,7 +219,7 @@ public final class NPC extends Actor {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Ignore.field224.method3182(10, var0);
+         byte[] var2 = Ignore.field224.getConfigData(10, var0);
          var1 = new ItemComposition();
          var1.id = var0;
          if(null != var2) {

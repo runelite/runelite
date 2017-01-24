@@ -40,7 +40,7 @@ public class Varbit extends CacheableNode {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class195.field2863.method3182(8, var0);
+         byte[] var2 = class195.field2863.getConfigData(8, var0);
          var1 = new class195();
          if(null != var2) {
             var1.method3449(new Buffer(var2));
@@ -61,7 +61,7 @@ public class Varbit extends CacheableNode {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = WidgetNode.field201.method3182(var0, 0);
+         byte[] var2 = WidgetNode.field201.getConfigData(var0, 0);
          if(null == var2) {
             return null;
          } else {
