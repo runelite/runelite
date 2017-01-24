@@ -42,6 +42,7 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
+import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.util.VirtualMethods;
@@ -160,9 +161,7 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 		ClassFile otherClass = group.findClass(method.getClazz().getName());
 		if (otherClass == null)
 			return null; // not our class
-		
-		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
-		
+	
 		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getName(), method.getType());
 		if (m == null)
 			return null;
@@ -324,5 +323,15 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	public void setMethod(Method method)
 	{
 		this.method = method;
+	}
+
+	@Override
+	public void renameClass(String oldName, String newName)
+	{
+		if (myMethods != null)
+			return;
+
+		if (method.getClazz().getName().equals(oldName))
+			method = new Method(new Class(newName), method.getName(), method.getType());
 	}
 }
