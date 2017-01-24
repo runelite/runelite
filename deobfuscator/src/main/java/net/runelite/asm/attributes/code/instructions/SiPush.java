@@ -56,7 +56,7 @@ public class SiPush extends Instruction implements PushConstantInstruction, IntI
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
-		visitor.visitIntInsn(this.getType().getCode(), s & 0xFFFF);
+		visitor.visitIntInsn(this.getType().getCode(), s);
 	}
 
 	@Override

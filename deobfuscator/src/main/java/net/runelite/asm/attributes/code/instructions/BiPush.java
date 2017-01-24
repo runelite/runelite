@@ -56,7 +56,7 @@ public class BiPush extends Instruction implements PushConstantInstruction, IntI
 	@Override
 	public void accept(MethodVisitor visitor)
 	{
-		visitor.visitIntInsn(this.getType().getCode(), b & 0xFF);
+		visitor.visitIntInsn(this.getType().getCode(), b);
 	}
 
 	@Override
