@@ -148,7 +148,7 @@ public class TextureProvider implements class93 {
       this.field1202 = new class79[var1.method3192(0)];
 
       for(int var9 = 0; var9 < var8; ++var9) {
-         Buffer var10 = new Buffer(var1.method3182(0, var7[var9]));
+         Buffer var10 = new Buffer(var1.getConfigData(0, var7[var9]));
          this.field1202[var7[var9]] = new class79(var10);
       }
 

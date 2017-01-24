@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -74,8 +75,9 @@ public abstract class class182 {
       signature = "(III)[B",
       garbageValue = "-1934026985"
    )
-   public byte[] method3182(int var1, int var2) {
-      return this.method3183(var1, var2, (int[])null);
+   @Export("getConfigData")
+   public byte[] getConfigData(int var1, int var2) {
+      return this.getConfigData(var1, var2, (int[])null);
    }
 
    @ObfuscatedName("g")
@@ -83,7 +85,8 @@ public abstract class class182 {
       signature = "(II[II)[B",
       garbageValue = "-820191958"
    )
-   public byte[] method3183(int var1, int var2, int[] var3) {
+   @Export("getConfigData")
+   public byte[] getConfigData(int var1, int var2, int[] var3) {
       if(var1 >= 0 && var1 < this.field2726.length && null != this.field2726[var1] && var2 >= 0 && var2 < this.field2726[var1].length) {
          if(this.field2726[var1][var2] == null) {
             boolean var4 = this.method3196(var1, var3);
@@ -169,9 +172,9 @@ public abstract class class182 {
    )
    public byte[] method3187(int var1) {
       if(this.field2726.length == 1) {
-         return this.method3182(0, var1);
+         return this.getConfigData(0, var1);
       } else if(this.field2726[var1].length == 1) {
-         return this.method3182(var1, 0);
+         return this.getConfigData(var1, 0);
       } else {
          throw new RuntimeException();
       }
@@ -365,7 +368,7 @@ public abstract class class182 {
       var2 = var2.toLowerCase();
       int var3 = this.field2714.method2255(FileOnDisk.method1397(var1));
       int var4 = this.field2720[var3].method2255(FileOnDisk.method1397(var2));
-      return this.method3182(var3, var4);
+      return this.getConfigData(var3, var4);
    }
 
    @ObfuscatedName("p")

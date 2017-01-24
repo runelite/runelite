@@ -37,7 +37,7 @@ public class class178 {
       int var1;
       for(var1 = 0; var1 < class137.field1918.length; ++var1) {
          if(class112.field1769[var1] != -1 && class137.field1918[var1] == null) {
-            class137.field1918[var1] = class1.field16.method3182(class112.field1769[var1], 0);
+            class137.field1918[var1] = class1.field16.getConfigData(class112.field1769[var1], 0);
             if(null == class137.field1918[var1]) {
                var0 = false;
                ++Client.field348;
@@ -45,7 +45,7 @@ public class class178 {
          }
 
          if(RSCanvas.field1759[var1] != -1 && null == FileOnDisk.field1194[var1]) {
-            FileOnDisk.field1194[var1] = class1.field16.method3183(RSCanvas.field1759[var1], 0, class49.xteaKeys[var1]);
+            FileOnDisk.field1194[var1] = class1.field16.getConfigData(RSCanvas.field1759[var1], 0, class49.xteaKeys[var1]);
             if(null == FileOnDisk.field1194[var1]) {
                var0 = false;
                ++Client.field348;

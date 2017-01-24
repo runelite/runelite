@@ -23,7 +23,7 @@ public class class37 {
       garbageValue = "-1316607095"
    )
    static boolean method718(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.method3182(var1, var2);
+      byte[] var3 = var0.getConfigData(var1, var2);
       if(var3 == null) {
          return false;
       } else {

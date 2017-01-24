@@ -61,7 +61,7 @@ public class class186 extends CacheableNode {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = KitDefinition.field2824.method3182(3, var0);
+         byte[] var2 = KitDefinition.field2824.getConfigData(3, var0);
          var1 = new KitDefinition();
          if(null != var2) {
             var1.method3403(new Buffer(var2));

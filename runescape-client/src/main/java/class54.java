@@ -515,7 +515,7 @@ public class class54 extends Node {
    @ObfuscatedName("x")
    static boolean method931(class182 var0) {
       if(!field997) {
-         byte[] var1 = var0.method3182(0, 0);
+         byte[] var1 = var0.getConfigData(0, 0);
          if(var1 == null) {
             return false;
          }
@@ -595,7 +595,7 @@ public class class54 extends Node {
          var0.method3184(var1, var2);
          return null;
       } else {
-         byte[] var3 = var0.method3182(var1, var2);
+         byte[] var3 = var0.getConfigData(var1, var2);
          return var3 == null?null:new class54(var3);
       }
    }

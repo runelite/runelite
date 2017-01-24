@@ -478,7 +478,7 @@ public class CombatInfoListHolder extends Node {
                      if(var9 != null) {
                         var10 = var9;
                      } else {
-                        byte[] var17 = class187.field2777.method3182(16, var0);
+                        byte[] var17 = class187.field2777.getConfigData(16, var0);
                         var9 = new class187();
                         if(null != var17) {
                            var9.method3334(new Buffer(var17));

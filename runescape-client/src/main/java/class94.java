@@ -277,7 +277,7 @@ public final class class94 {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = class32.field737.method3182(4, var0);
+         byte[] var2 = class32.field737.getConfigData(4, var0);
          var1 = new Overlay();
          if(var2 != null) {
             var1.method3596(new Buffer(var2), var0);

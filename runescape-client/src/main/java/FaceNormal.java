@@ -64,7 +64,7 @@ public class FaceNormal {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class186.field2774.method3182(5, var0);
+         byte[] var2 = class186.field2774.getConfigData(5, var0);
          var1 = new class186();
          if(null != var2) {
             var1.method3326(new Buffer(var2));

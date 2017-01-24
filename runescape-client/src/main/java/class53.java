@@ -102,7 +102,7 @@ public class class53 {
 
    @ObfuscatedName("s")
    public static class53 method921(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.method3182(var1, var2);
+      byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new class53(new Buffer(var3));
    }
 }

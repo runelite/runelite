@@ -2173,7 +2173,7 @@ public final class Client extends GameEngine {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = class188.field2786.method3182(19, var0);
+         byte[] var2 = class188.field2786.getConfigData(19, var0);
          var1 = new class188();
          if(var2 != null) {
             var1.method3344(new Buffer(var2));
@@ -2194,7 +2194,7 @@ public final class Client extends GameEngine {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = FloorUnderlayDefinition.field2814.method3182(1, var0);
+         byte[] var2 = FloorUnderlayDefinition.field2814.getConfigData(1, var0);
          var1 = new FloorUnderlayDefinition();
          if(null != var2) {
             var1.method3377(new Buffer(var2), var0);

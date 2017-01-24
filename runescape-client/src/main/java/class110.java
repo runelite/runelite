@@ -389,7 +389,7 @@ public final class class110 implements Runnable {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Varbit.field2857.method3182(14, var0);
+         byte[] var2 = Varbit.field2857.getConfigData(14, var0);
          var1 = new Varbit();
          if(var2 != null) {
             var1.method3439(new Buffer(var2));
@@ -411,7 +411,7 @@ public final class class110 implements Runnable {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = Sequence.field3061.method3182(12, var0);
+         byte[] var2 = Sequence.field3061.getConfigData(12, var0);
          var1 = new Sequence();
          if(null != var2) {
             var1.method3609(new Buffer(var2));
