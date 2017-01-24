@@ -34,6 +34,7 @@ import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.annotation.Annotation;
 import net.runelite.asm.attributes.code.Exceptions;
+import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.Type;
 import net.runelite.asm.signature.util.VirtualMethods;
@@ -85,8 +86,14 @@ public class Renamer implements Deobfuscator
 				// rename on instructions. this includes method calls and field accesses.
 				if (method.getCode() != null)
 				{
+					Code code = method.getCode();
+
+					// rename on instructions
+					for (Instruction i : code.getInstructions().getInstructions())
+						i.renameClass(cf.getName(), name);
+
 					// rename on exception handlers
-					Exceptions exceptions = method.getCode().getExceptions();
+					Exceptions exceptions = code.getExceptions();
 					exceptions.renameClass(cf, name);
 				}
 				
