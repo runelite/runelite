@@ -159,14 +159,14 @@ public class class18 extends Node {
                   Friend var3 = Client.friends[var2];
                   var4 = class137.method2397(var3.name, class1.field15);
                   if(null != var4 && var4.equals(var1)) {
-                     Player.method220(30, "", var0 + " is already on your friend list");
+                     Player.sendGameMessage(30, "", var0 + " is already on your friend list");
                      return;
                   }
 
                   if(null != var3.previousName) {
                      var5 = class137.method2397(var3.previousName, class1.field15);
                      if(var5 != null && var5.equals(var1)) {
-                        Player.method220(30, "", var0 + " is already on your friend list");
+                        Player.sendGameMessage(30, "", var0 + " is already on your friend list");
                         return;
                      }
                   }
@@ -176,21 +176,21 @@ public class class18 extends Node {
                   Ignore var8 = Client.ignores[var2];
                   var4 = class137.method2397(var8.name, class1.field15);
                   if(null != var4 && var4.equals(var1)) {
-                     Player.method220(30, "", "Please remove " + var0 + " from your ignore list first");
+                     Player.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
                      return;
                   }
 
                   if(var8.previousName != null) {
                      var5 = class137.method2397(var8.previousName, class1.field15);
                      if(var5 != null && var5.equals(var1)) {
-                        Player.method220(30, "", "Please remove " + var0 + " from your ignore list first");
+                        Player.sendGameMessage(30, "", "Please remove " + var0 + " from your ignore list first");
                         return;
                      }
                   }
                }
 
                if(class137.method2397(XItemContainer.localPlayer.name, class1.field15).equals(var1)) {
-                  Player.method220(30, "", "You can\'t add yourself to your own friend list");
+                  Player.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                } else {
                   Client.field336.method2963(81);
                   class159 var6 = Client.field336;
@@ -200,7 +200,7 @@ public class class18 extends Node {
                }
             }
          } else {
-            Player.method220(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
+            Player.sendGameMessage(30, "", "Your friend list is full. Max of 200 for free users, and 400 for members");
          }
       }
    }

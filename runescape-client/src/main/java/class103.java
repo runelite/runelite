@@ -231,9 +231,9 @@ public class class103 implements Runnable {
          class38.field794.field699 = !class38.field794.field699;
          PlayerComposition.method3057();
          if(class38.field794.field699) {
-            Player.method220(99, "", "Roofs are now all hidden");
+            Player.sendGameMessage(99, "", "Roofs are now all hidden");
          } else {
-            Player.method220(99, "", "Roofs will only be removed selectively");
+            Player.sendGameMessage(99, "", "Roofs will only be removed selectively");
          }
       }
 

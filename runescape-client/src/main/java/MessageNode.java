@@ -196,9 +196,9 @@ public class MessageNode extends CacheableNode {
          var2.overhead = var0.method2911();
          if(var2.overhead.charAt(0) == 126) {
             var2.overhead = var2.overhead.substring(1);
-            Player.method220(2, var2.name, var2.overhead);
+            Player.sendGameMessage(2, var2.name, var2.overhead);
          } else if(XItemContainer.localPlayer == var2) {
-            Player.method220(2, var2.name, var2.overhead);
+            Player.sendGameMessage(2, var2.name, var2.overhead);
          }
 
          var2.field625 = false;
@@ -312,9 +312,9 @@ public class MessageNode extends CacheableNode {
                if(var25.field2675 != -1) {
                   int var17 = var25.field2675;
                   var16 = "<img=" + var17 + ">";
-                  Player.method220(var14, var16 + var2.name, var13);
+                  Player.sendGameMessage(var14, var16 + var2.name, var13);
                } else {
-                  Player.method220(var14, var2.name, var13);
+                  Player.sendGameMessage(var14, var2.name, var13);
                }
             }
          }

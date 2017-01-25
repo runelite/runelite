@@ -1347,7 +1347,7 @@ public abstract class class112 {
                                  if(var44 == 3100) {
                                     --var6;
                                     var103 = class32.chatboxSegments[var6];
-                                    Player.method220(0, "", var103);
+                                    Player.sendGameMessage(0, "", var103);
                                     continue;
                                  }
 
@@ -1431,7 +1431,7 @@ public abstract class class112 {
                                     }
 
                                     if(!var50) {
-                                       Player.method220(4, "", "Unable to find " + var46);
+                                       Player.sendGameMessage(4, "", "Unable to find " + var46);
                                     }
                                     continue;
                                  }
@@ -1923,14 +1923,14 @@ public abstract class class112 {
                                                 var90 = Client.ignores[var17];
                                                 var83 = class137.method2397(var90.name, class1.field15);
                                                 if(var83 != null && var83.equals(var46)) {
-                                                   Player.method220(31, "", var103 + " is already on your ignore list");
+                                                   Player.sendGameMessage(31, "", var103 + " is already on your ignore list");
                                                    continue label3684;
                                                 }
 
                                                 if(null != var90.previousName) {
                                                    var80 = class137.method2397(var90.previousName, class1.field15);
                                                    if(null != var80 && var80.equals(var46)) {
-                                                      Player.method220(31, "", var103 + " is already on your ignore list");
+                                                      Player.sendGameMessage(31, "", var103 + " is already on your ignore list");
                                                       continue label3684;
                                                    }
                                                 }
@@ -1940,21 +1940,21 @@ public abstract class class112 {
                                                 var93 = Client.friends[var17];
                                                 var83 = class137.method2397(var93.name, class1.field15);
                                                 if(null != var83 && var83.equals(var46)) {
-                                                   Player.method220(31, "", "Please remove " + var103 + " from your friend list first");
+                                                   Player.sendGameMessage(31, "", "Please remove " + var103 + " from your friend list first");
                                                    continue label3684;
                                                 }
 
                                                 if(var93.previousName != null) {
                                                    var80 = class137.method2397(var93.previousName, class1.field15);
                                                    if(var80 != null && var80.equals(var46)) {
-                                                      Player.method220(31, "", "Please remove " + var103 + " from your friend list first");
+                                                      Player.sendGameMessage(31, "", "Please remove " + var103 + " from your friend list first");
                                                       continue label3684;
                                                    }
                                                 }
                                              }
 
                                              if(class137.method2397(XItemContainer.localPlayer.name, class1.field15).equals(var46)) {
-                                                Player.method220(31, "", "You can\'t add yourself to your own ignore list");
+                                                Player.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                              } else {
                                                 Client.field336.method2963(189);
                                                 class159 var81 = Client.field336;
@@ -1965,7 +1965,7 @@ public abstract class class112 {
                                              continue;
                                           }
 
-                                          Player.method220(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
+                                          Player.sendGameMessage(31, "", "Your ignore list is full. Max of 100 for free users, and 400 for members");
                                           continue;
                                        }
 
