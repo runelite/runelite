@@ -530,6 +530,7 @@ public class Inject
 			Type type = deobfuscatedMethod.getDescriptor().getTypeOfArg(i);
 
 			Instruction loadInstruction = createLoadForTypeIndex(instructions, type, index);
+			ins.add(loadInstruction);
 
 			if (loadInstruction instanceof DLoad || loadInstruction instanceof LLoad)
 				index += 2;
