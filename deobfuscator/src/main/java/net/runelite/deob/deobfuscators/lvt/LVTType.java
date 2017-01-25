@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm.attributes.code.instruction.types;
+package net.runelite.deob.deobfuscators.lvt;
 
-public enum LVTInstructionType
+public enum LVTType
 {
-	INT(1),
-	LONG(2),
-	FLOAT(1),
-	DOUBLE(2),
-	OBJECT(1);
-
-	private final int slots;
-
-	private LVTInstructionType(int slots)
-	{
-		this.slots = slots;
-	}
-
-	public int getSlots()
-	{
-		return slots;
-	}
+	INT,
+	LONG,
+	OBJECT
 }

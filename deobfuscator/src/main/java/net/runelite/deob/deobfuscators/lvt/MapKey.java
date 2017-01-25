@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,25 +22,54 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm.attributes.code.instruction.types;
+package net.runelite.deob.deobfuscators.lvt;
 
-public enum LVTInstructionType
+import java.util.Objects;
+
+public class MapKey
 {
-	INT(1),
-	LONG(2),
-	FLOAT(1),
-	DOUBLE(2),
-	OBJECT(1);
+	private final int idx;
+	private final LVTType type;
 
-	private final int slots;
-
-	private LVTInstructionType(int slots)
+	public MapKey(int idx, LVTType type)
 	{
-		this.slots = slots;
+		this.idx = idx;
+		this.type = type;
 	}
 
-	public int getSlots()
+	@Override
+	public int hashCode()
 	{
-		return slots;
+		int hash = 7;
+		hash = 89 * hash + this.idx;
+		hash = 89 * hash + Objects.hashCode(this.type);
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null)
+		{
+			return false;
+		}
+		if (getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final MapKey other = (MapKey) obj;
+		if (this.idx != other.idx)
+		{
+			return false;
+		}
+		if (this.type != other.type)
+		{
+			return false;
+		}
+		return true;
 	}
 }

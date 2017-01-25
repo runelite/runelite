@@ -65,13 +65,17 @@ public class Code
 	private int getMaxLocalsFromSig()
 	{
 		Method m = getMethod();
-		int num = m.isStatic() ? -1 : 0;
+		int num = m.isStatic() ? 0 : 1;
 		Signature sig = m.getDescriptor();
 		for (int i = 0; i < sig.size(); ++i)
 			num += sig.getTypeOfArg(i).getSlots();
 		return num;
 	}
 
+	/**
+	 * calculates the size of the lvt required for this method
+	 * @return
+	 */
 	public int getMaxLocals()
 	{
 		int max = -1;
@@ -81,9 +85,12 @@ public class Code
 			if (ins instanceof LVTInstruction)
 			{
 				LVTInstruction lvt = (LVTInstruction) ins;
-				
-				if (lvt.getVariableIndex() > max)
-					max = lvt.getVariableIndex(); // XXX if this is long or double and highest lvt, requires 2 slots
+
+				int sizeRequired = lvt.getVariableIndex() + lvt.type().getSlots();
+				if (sizeRequired > max)
+				{
+					max = sizeRequired;
+				}
 			}
 		}
 		
@@ -91,7 +98,7 @@ public class Code
 		if (fromSig > max)
 			max = fromSig;
 		
-		return max + 1;
+		return max;
 	}
 	
 	public Exceptions getExceptions()
