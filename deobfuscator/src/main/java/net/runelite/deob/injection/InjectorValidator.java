@@ -86,7 +86,7 @@ public class InjectorValidator
 				// could check method signature here too but it is
 				// annoying to deal with both runelite api and java
 				// reflection api
-				if (cf.findMethod(method.getName()) == null)
+				if (cf.findMethodDeep(method.getName()) == null)
 				{
 					logger.warn("Class {} implements interface {} but not does implement method {}",
 						cf.getName(), c.getSimpleName(), method);
