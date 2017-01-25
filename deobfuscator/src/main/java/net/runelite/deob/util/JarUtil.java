@@ -88,19 +88,26 @@ public class JarUtil
 				JarEntry entry = new JarEntry(cf.getName() + ".class");
 				jout.putNextEntry(entry);
 
-				ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-				CheckClassAdapter cca = new CheckClassAdapter(writer, false);
-
-				cf.accept(cca);
-
-				byte[] data = writer.toByteArray();
-
-				validateDataFlow(cf.getName(), data);
+				byte[] data = writeClass(group, cf);
 
 				jout.write(data);
 				jout.closeEntry();
 			}
 		}
+	}
+
+	public static byte[] writeClass(ClassGroup group, ClassFile cf) throws IOException
+	{
+		ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		CheckClassAdapter cca = new CheckClassAdapter(writer, false);
+
+		cf.accept(cca);
+
+		byte[] data = writer.toByteArray();
+
+		validateDataFlow(cf.getName(), data);
+
+		return data;
 	}
 
 	private static void validateDataFlow(String name, byte[] data)
