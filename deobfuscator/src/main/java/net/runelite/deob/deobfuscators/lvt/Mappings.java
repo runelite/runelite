@@ -22,25 +22,71 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.asm.attributes.code.instruction.types;
+package net.runelite.deob.deobfuscators.lvt;
 
-public enum LVTInstructionType
+import java.util.HashMap;
+import java.util.Map;
+import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Mappings
 {
-	INT(1),
-	LONG(2),
-	FLOAT(1),
-	DOUBLE(2),
-	OBJECT(1);
+	private static final Logger logger = LoggerFactory.getLogger(Mappings.class);
 
-	private final int slots;
+	private final int maxVariables;
+	private int offset;
+	private Map<Integer, LVTType> map = new HashMap<>();
+	private Map<MapKey, Integer> newIdxMap = new HashMap<>();
 
-	private LVTInstructionType(int slots)
+	public Mappings(int maxVariables)
 	{
-		this.slots = slots;
+		this.maxVariables = maxVariables;
 	}
 
-	public int getSlots()
+	private static LVTType toLvtType(LVTInstructionType type)
 	{
-		return slots;
+		switch (type)
+		{
+			case DOUBLE:
+			case LONG:
+				return LVTType.LONG;
+			case FLOAT:
+			case INT:
+				return LVTType.INT;
+			case OBJECT:
+				return LVTType.OBJECT;
+			default:
+				throw new IllegalArgumentException("Unknown type " + type);
+		}
+	}
+
+	public Integer remap(int idx, LVTInstructionType type)
+	{
+		LVTType seen = map.get(idx);
+
+		if (seen == null)
+		{
+			map.put(idx, toLvtType(type));
+		}
+		else if (toLvtType(type) != seen)
+		{
+			MapKey key = new MapKey(idx, toLvtType(type));
+
+			Integer newIdx = newIdxMap.get(key);
+			if (newIdx == null)
+			{
+				newIdx = maxVariables + offset;
+				newIdxMap.put(key, newIdx);
+
+				logger.debug("Mapping {} -> {}", idx, newIdx);
+
+				offset += type.getSlots();
+			}
+
+			return newIdx;
+		}
+
+		return null;
 	}
 }
