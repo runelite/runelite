@@ -1046,11 +1046,11 @@ public class XClanMember extends Node {
                                              for(class16 var43 = (class16)Client.field562.method2367(); var43 != null; var43 = (class16)Client.field562.method2368()) {
                                                 if((long)var43.field191 < class2.method27() / 1000L - 5L) {
                                                    if(var43.field183 > 0) {
-                                                      Player.method220(5, "", var43.field182 + " has logged in.");
+                                                      Player.sendGameMessage(5, "", var43.field182 + " has logged in.");
                                                    }
 
                                                    if(var43.field183 == 0) {
-                                                      Player.method220(5, "", var43.field182 + " has logged out.");
+                                                      Player.sendGameMessage(5, "", var43.field182 + " has logged out.");
                                                    }
 
                                                    var43.method2373();

@@ -491,7 +491,7 @@ public final class Player extends Actor {
       if(var2 == 1005) {
          var17 = class108.method1988(var1);
          if(var17 != null && var17.itemQuantities[var0] >= 100000) {
-            method220(27, "", var17.itemQuantities[var0] + " x " + NPC.getItemDefinition(var3).name);
+            sendGameMessage(27, "", var17.itemQuantities[var0] + " x " + NPC.getItemDefinition(var3).name);
          } else {
             Client.field336.method2963(173);
             Client.field336.method2754(var3);
@@ -1237,7 +1237,8 @@ public final class Player extends Actor {
       signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "-965254444"
    )
-   static void method220(int var0, String var1, String var2) {
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
       class202.addChatMessage(var0, var1, var2, (String)null);
    }
 

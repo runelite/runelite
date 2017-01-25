@@ -1048,7 +1048,7 @@ public final class class160 {
 
                var81 = Client.field352.method2911();
                if(!var76) {
-                  Player.method220(var43, var18, var81);
+                  Player.sendGameMessage(var43, var18, var81);
                }
 
                Client.packetOpcode = -1;
@@ -1757,9 +1757,9 @@ public final class class160 {
                   if(var50.field2675 != -1) {
                      var32 = var50.field2675;
                      var31 = "<img=" + var32 + ">";
-                     Player.method220(var71, var31 + var21, var113);
+                     Player.sendGameMessage(var71, var31 + var21, var113);
                   } else {
-                     Player.method220(var71, var21, var113);
+                     Player.sendGameMessage(var71, var21, var113);
                   }
                }
 
@@ -1929,7 +1929,7 @@ public final class class160 {
                }
 
                var44 = FontTypeFace.method3726(class115.method2169(var44));
-               Player.method220(6, var21, var44);
+               Player.sendGameMessage(6, var21, var44);
                Client.packetOpcode = -1;
                return true;
             }
