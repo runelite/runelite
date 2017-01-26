@@ -1,48 +1,33 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dh")
+@ObfuscatedName("de")
 public class class108 {
-   @ObfuscatedName("bp")
-   static class184 field1736;
+   @ObfuscatedName("bm")
+   static class184 field1738;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)LWidget;",
-      garbageValue = "-1793790115"
+      signature = "(II)Lclass196;",
+      garbageValue = "199283834"
    )
-   public static Widget method1988(int var0) {
-      int var1 = var0 >> 16;
-      int var2 = var0 & '\uffff';
-      if(Widget.widgets[var1] == null || null == Widget.widgets[var1][var2]) {
-         boolean var3 = class109.method1999(var1);
-         if(!var3) {
-            return null;
+   public static class196 method2038(int var0) {
+      class196 var1 = (class196)class196.field2862.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class196.field2865.getConfigData(32, var0);
+         var1 = new class196();
+         if(var2 != null) {
+            var1.method3546(new Buffer(var2));
          }
+
+         class196.field2862.put(var1, (long)var0);
+         return var1;
       }
-
-      return Widget.widgets[var1][var2];
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;ZLFont;B)V",
-      garbageValue = "-55"
-   )
-   public static void method1989(class182 var0, class182 var1, boolean var2, Font var3) {
-      Ignore.field224 = var0;
-      Frames.field1570 = var1;
-      ItemComposition.isMembersWorld = var2;
-      ItemComposition.field2962 = Ignore.field224.method3192(10);
-      ItemComposition.field2957 = var3;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "1344833688"
-   )
-   public static int method1990(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
+   class108() throws Throwable {
+      throw new Error();
    }
 }

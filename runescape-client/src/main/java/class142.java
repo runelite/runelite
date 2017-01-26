@@ -2,48 +2,48 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("es")
 public class class142 extends Node {
-   @ObfuscatedName("k")
-   byte[] field2000 = new byte[128];
-   @ObfuscatedName("c")
-   class55[] field2001 = new class55[128];
-   @ObfuscatedName("f")
-   short[] field2002 = new short[128];
-   @ObfuscatedName("h")
-   byte[] field2003 = new byte[128];
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1875563421
-   )
-   int field2004;
+   @ObfuscatedName("d")
+   byte[] field1996 = new byte[128];
+   @ObfuscatedName("q")
+   byte[] field1997 = new byte[128];
+   @ObfuscatedName("x")
+   short[] field1998 = new short[128];
    @ObfuscatedName("g")
-   class137[] field2005 = new class137[128];
-   @ObfuscatedName("a")
-   byte[] field2006 = new byte[128];
-   @ObfuscatedName("u")
-   int[] field2007 = new int[128];
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lclass60;[B[II)Z",
-      garbageValue = "1723438325"
+   class55[] field1999 = new class55[128];
+   @ObfuscatedName("k")
+   class137[] field2001 = new class137[128];
+   @ObfuscatedName("j")
+   byte[] field2002 = new byte[128];
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1010500023
    )
-   boolean method2604(class60 var1, byte[] var2, int[] var3) {
+   int field2003;
+   @ObfuscatedName("s")
+   int[] field2004 = new int[128];
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lclass60;[B[IB)Z",
+      garbageValue = "90"
+   )
+   boolean method2691(class60 var1, byte[] var2, int[] var3) {
       boolean var4 = true;
       int var5 = 0;
       class55 var6 = null;
 
       for(int var7 = 0; var7 < 128; ++var7) {
          if(var2 == null || var2[var7] != 0) {
-            int var8 = this.field2007[var7];
+            int var8 = this.field2004[var7];
             if(var8 != 0) {
                if(var5 != var8) {
                   var5 = var8--;
                   if((var8 & 1) == 0) {
-                     var6 = var1.method1081(var8 >> 2, var3);
+                     var6 = var1.method1120(var8 >> 2, var3);
                   } else {
-                     var6 = var1.method1082(var8 >> 2, var3);
+                     var6 = var1.method1107(var8 >> 2, var3);
                   }
 
                   if(var6 == null) {
@@ -51,9 +51,9 @@ public class class142 extends Node {
                   }
                }
 
-               if(null != var6) {
-                  this.field2001[var7] = var6;
-                  this.field2007[var7] = 0;
+               if(var6 != null) {
+                  this.field1999[var7] = var6;
+                  this.field2004[var7] = 0;
                }
             }
          }
@@ -62,35 +62,20 @@ public class class142 extends Node {
       return var4;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "16256"
+      signature = "(B)V",
+      garbageValue = "26"
    )
-   void method2605() {
-      this.field2007 = null;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(CII)I",
-      garbageValue = "2061586729"
-   )
-   public static int method2606(char var0, int var1) {
-      int var2 = var0 << 4;
-      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-         var0 = Character.toLowerCase(var0);
-         var2 = 1 + (var0 << 4);
-      }
-
-      return var2;
+   void method2692() {
+      this.field2004 = null;
    }
 
    class142(byte[] var1) {
       Buffer var2 = new Buffer(var1);
 
       int var3;
-      for(var3 = 0; var2.payload[var2.offset + var3] != 0; ++var3) {
+      for(var3 = 0; var2.payload[var3 + var2.offset] != 0; ++var3) {
          ;
       }
 
@@ -107,7 +92,7 @@ public class class142 extends Node {
       var2.offset += var3;
 
       int var6;
-      for(var6 = 0; var2.payload[var2.offset + var6] != 0; ++var6) {
+      for(var6 = 0; var2.payload[var6 + var2.offset] != 0; ++var6) {
          ;
       }
 
@@ -124,68 +109,68 @@ public class class142 extends Node {
       var2.offset += var6;
 
       int var9;
-      for(var9 = 0; var2.payload[var2.offset + var9] != 0; ++var9) {
+      for(var9 = 0; var2.payload[var9 + var2.offset] != 0; ++var9) {
          ;
       }
 
       byte[] var10 = new byte[var9];
 
-      for(int var36 = 0; var36 < var9; ++var36) {
-         var10[var36] = var2.readByte();
+      for(int var11 = 0; var11 < var9; ++var11) {
+         var10[var11] = var2.readByte();
       }
 
       ++var2.offset;
       ++var9;
-      byte[] var11 = new byte[var9];
+      byte[] var37 = new byte[var9];
       int var12;
       int var14;
       if(var9 > 1) {
-         var11[1] = 1;
-         int var37 = 1;
+         var37[1] = 1;
+         int var13 = 1;
          var12 = 2;
 
          for(var14 = 2; var14 < var9; ++var14) {
             int var15 = var2.readUnsignedByte();
             if(var15 == 0) {
-               var37 = var12++;
+               var13 = var12++;
             } else {
-               if(var15 <= var37) {
+               if(var15 <= var13) {
                   --var15;
                }
 
-               var37 = var15;
+               var13 = var15;
             }
 
-            var11[var14] = (byte)var37;
+            var37[var14] = (byte)var13;
          }
       } else {
          var12 = var9;
       }
 
-      class137[] var13 = new class137[var12];
+      class137[] var38 = new class137[var12];
 
-      class137 var38;
-      for(var14 = 0; var14 < var13.length; ++var14) {
-         var38 = var13[var14] = new class137();
-         int var40 = var2.readUnsignedByte();
-         if(var40 > 0) {
-            var38.field1916 = new byte[var40 * 2];
+      class137 var36;
+      for(var14 = 0; var14 < var38.length; ++var14) {
+         var36 = var38[var14] = new class137();
+         int var16 = var2.readUnsignedByte();
+         if(var16 > 0) {
+            var36.field1908 = new byte[2 * var16];
          }
 
-         var40 = var2.readUnsignedByte();
-         if(var40 > 0) {
-            var38.field1908 = new byte[2 * var40 + 2];
-            var38.field1908[1] = 64;
+         var16 = var2.readUnsignedByte();
+         if(var16 > 0) {
+            var36.field1904 = new byte[2 * var16 + 2];
+            var36.field1904[1] = 64;
          }
       }
 
       var14 = var2.readUnsignedByte();
-      byte[] var46 = var14 > 0?new byte[var14 * 2]:null;
+      byte[] var45 = var14 > 0?new byte[var14 * 2]:null;
       var14 = var2.readUnsignedByte();
-      byte[] var16 = var14 > 0?new byte[2 * var14]:null;
+      byte[] var41 = var14 > 0?new byte[var14 * 2]:null;
 
       int var17;
-      for(var17 = 0; var2.payload[var2.offset + var17] != 0; ++var17) {
+      for(var17 = 0; var2.payload[var17 + var2.offset] != 0; ++var17) {
          ;
       }
 
@@ -203,14 +188,14 @@ public class class142 extends Node {
       int var20;
       for(var20 = 0; var20 < 128; ++var20) {
          var19 += var2.readUnsignedByte();
-         this.field2002[var20] = (short)var19;
+         this.field1998[var20] = (short)var19;
       }
 
       var19 = 0;
 
       for(var20 = 0; var20 < 128; ++var20) {
          var19 += var2.readUnsignedByte();
-         this.field2002[var20] = (short)(this.field2002[var20] + (var19 << 8));
+         this.field1998[var20] = (short)(this.field1998[var20] + (var19 << 8));
       }
 
       var20 = 0;
@@ -226,11 +211,11 @@ public class class142 extends Node {
                var20 = -1;
             }
 
-            var22 = var2.method2851();
+            var22 = var2.method2859();
          }
 
-         this.field2002[var23] = (short)(this.field2002[var23] + ((var22 - 1 & 2) << 14));
-         this.field2007[var23] = var22;
+         this.field1998[var23] = (short)(this.field1998[var23] + ((var22 - 1 & 2) << 14));
+         this.field2004[var23] = var22;
          --var20;
       }
 
@@ -240,7 +225,7 @@ public class class142 extends Node {
 
       int var24;
       for(var24 = 0; var24 < 128; ++var24) {
-         if(this.field2007[var24] != 0) {
+         if(this.field2004[var24] != 0) {
             if(var20 == 0) {
                if(var21 < var4.length) {
                   var20 = var4[var21++];
@@ -251,7 +236,7 @@ public class class142 extends Node {
                var23 = var2.payload[var5++] - 1;
             }
 
-            this.field2000[var24] = (byte)var23;
+            this.field2002[var24] = (byte)var23;
             --var20;
          }
       }
@@ -260,8 +245,8 @@ public class class142 extends Node {
       var21 = 0;
       var24 = 0;
 
-      for(int var41 = 0; var41 < 128; ++var41) {
-         if(this.field2007[var41] != 0) {
+      for(int var40 = 0; var40 < 128; ++var40) {
+         if(this.field2004[var40] != 0) {
             if(var20 == 0) {
                if(var21 < var7.length) {
                   var20 = var7[var21++];
@@ -272,7 +257,7 @@ public class class142 extends Node {
                var24 = var2.payload[var8++] + 16 << 2;
             }
 
-            this.field2006[var41] = (byte)var24;
+            this.field1996[var40] = (byte)var24;
             --var20;
          }
       }
@@ -283,9 +268,9 @@ public class class142 extends Node {
 
       int var26;
       for(var26 = 0; var26 < 128; ++var26) {
-         if(this.field2007[var26] != 0) {
+         if(this.field2004[var26] != 0) {
             if(var20 == 0) {
-               var25 = var13[var11[var21]];
+               var25 = var38[var37[var21]];
                if(var21 < var10.length) {
                   var20 = var10[var21++];
                } else {
@@ -293,7 +278,7 @@ public class class142 extends Node {
                }
             }
 
-            this.field2005[var26] = var25;
+            this.field2001[var26] = var25;
             --var20;
          }
       }
@@ -311,48 +296,60 @@ public class class142 extends Node {
                var20 = -1;
             }
 
-            if(this.field2007[var27] > 0) {
+            if(this.field2004[var27] > 0) {
                var26 = var2.readUnsignedByte() + 1;
             }
          }
 
-         this.field2003[var27] = (byte)var26;
+         this.field1997[var27] = (byte)var26;
          --var20;
       }
 
-      this.field2004 = var2.readUnsignedByte() + 1;
+      this.field2003 = var2.readUnsignedByte() + 1;
 
       class137 var28;
       int var29;
       for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var13[var27];
-         if(var28.field1916 != null) {
-            for(var29 = 1; var29 < var28.field1916.length; var29 += 2) {
-               var28.field1916[var29] = var2.readByte();
-            }
-         }
-
-         if(null != var28.field1908) {
-            for(var29 = 3; var29 < var28.field1908.length - 2; var29 += 2) {
+         var28 = var38[var27];
+         if(var28.field1908 != null) {
+            for(var29 = 1; var29 < var28.field1908.length; var29 += 2) {
                var28.field1908[var29] = var2.readByte();
             }
          }
-      }
 
-      if(null != var46) {
-         for(var27 = 1; var27 < var46.length; var27 += 2) {
-            var46[var27] = var2.readByte();
+         if(var28.field1904 != null) {
+            for(var29 = 3; var29 < var28.field1904.length - 2; var29 += 2) {
+               var28.field1904[var29] = var2.readByte();
+            }
          }
       }
 
-      if(var16 != null) {
-         for(var27 = 1; var27 < var16.length; var27 += 2) {
-            var16[var27] = var2.readByte();
+      if(null != var45) {
+         for(var27 = 1; var27 < var45.length; var27 += 2) {
+            var45[var27] = var2.readByte();
+         }
+      }
+
+      if(null != var41) {
+         for(var27 = 1; var27 < var41.length; var27 += 2) {
+            var41[var27] = var2.readByte();
          }
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var13[var27];
+         var28 = var38[var27];
+         if(null != var28.field1904) {
+            var19 = 0;
+
+            for(var29 = 2; var29 < var28.field1904.length; var29 += 2) {
+               var19 = 1 + var19 + var2.readUnsignedByte();
+               var28.field1904[var29] = (byte)var19;
+            }
+         }
+      }
+
+      for(var27 = 0; var27 < var12; ++var27) {
+         var28 = var38[var27];
          if(var28.field1908 != null) {
             var19 = 0;
 
@@ -363,96 +360,84 @@ public class class142 extends Node {
          }
       }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var13[var27];
-         if(null != var28.field1916) {
-            var19 = 0;
-
-            for(var29 = 2; var29 < var28.field1916.length; var29 += 2) {
-               var19 = 1 + var19 + var2.readUnsignedByte();
-               var28.field1916[var29] = (byte)var19;
-            }
-         }
-      }
-
       byte var30;
       int var32;
       int var33;
       int var34;
-      int var43;
-      byte var45;
-      if(var46 != null) {
+      int var42;
+      byte var44;
+      if(null != var45) {
          var19 = var2.readUnsignedByte();
-         var46[0] = (byte)var19;
+         var45[0] = (byte)var19;
 
-         for(var27 = 2; var27 < var46.length; var27 += 2) {
+         for(var27 = 2; var27 < var45.length; var27 += 2) {
             var19 = 1 + var19 + var2.readUnsignedByte();
-            var46[var27] = (byte)var19;
+            var45[var27] = (byte)var19;
          }
 
-         var45 = var46[0];
-         byte var39 = var46[1];
+         var44 = var45[0];
+         byte var39 = var45[1];
 
-         for(var29 = 0; var29 < var45; ++var29) {
-            this.field2003[var29] = (byte)(32 + var39 * this.field2003[var29] >> 6);
+         for(var29 = 0; var29 < var44; ++var29) {
+            this.field1997[var29] = (byte)(this.field1997[var29] * var39 + 32 >> 6);
          }
 
-         for(var29 = 2; var29 < var46.length; var29 += 2) {
-            var30 = var46[var29];
-            byte var31 = var46[var29 + 1];
-            var32 = var39 * (var30 - var45) + (var30 - var45) / 2;
+         for(var29 = 2; var29 < var45.length; var29 += 2) {
+            var30 = var45[var29];
+            byte var31 = var45[var29 + 1];
+            var32 = (var30 - var44) / 2 + (var30 - var44) * var39;
 
-            for(var33 = var45; var33 < var30; ++var33) {
-               var34 = Renderable.calculateHeight(var32, var30 - var45);
-               this.field2003[var33] = (byte)(this.field2003[var33] * var34 + 32 >> 6);
+            for(var33 = var44; var33 < var30; ++var33) {
+               var34 = class6.calculateHeight(var32, var30 - var44);
+               this.field1997[var33] = (byte)(this.field1997[var33] * var34 + 32 >> 6);
                var32 += var31 - var39;
             }
 
-            var45 = var30;
+            var44 = var30;
             var39 = var31;
          }
 
-         for(var43 = var45; var43 < 128; ++var43) {
-            this.field2003[var43] = (byte)(var39 * this.field2003[var43] + 32 >> 6);
+         for(var42 = var44; var42 < 128; ++var42) {
+            this.field1997[var42] = (byte)(32 + var39 * this.field1997[var42] >> 6);
          }
 
-         var38 = null;
+         var36 = null;
       }
 
-      if(null != var16) {
+      if(null != var41) {
          var19 = var2.readUnsignedByte();
-         var16[0] = (byte)var19;
+         var41[0] = (byte)var19;
 
-         for(var27 = 2; var27 < var16.length; var27 += 2) {
-            var19 = 1 + var19 + var2.readUnsignedByte();
-            var16[var27] = (byte)var19;
+         for(var27 = 2; var27 < var41.length; var27 += 2) {
+            var19 = var19 + 1 + var2.readUnsignedByte();
+            var41[var27] = (byte)var19;
          }
 
-         var45 = var16[0];
-         int var47 = var16[1] << 1;
+         var44 = var41[0];
+         int var46 = var41[1] << 1;
 
-         for(var29 = 0; var29 < var45; ++var29) {
-            var43 = var47 + (this.field2006[var29] & 255);
-            if(var43 < 0) {
-               var43 = 0;
+         for(var29 = 0; var29 < var44; ++var29) {
+            var42 = (this.field1996[var29] & 255) + var46;
+            if(var42 < 0) {
+               var42 = 0;
             }
 
-            if(var43 > 128) {
-               var43 = 128;
+            if(var42 > 128) {
+               var42 = 128;
             }
 
-            this.field2006[var29] = (byte)var43;
+            this.field1996[var29] = (byte)var42;
          }
 
-         int var44;
-         for(var29 = 2; var29 < var16.length; var29 += 2) {
-            var30 = var16[var29];
-            var44 = var16[1 + var29] << 1;
-            var32 = (var30 - var45) / 2 + var47 * (var30 - var45);
+         int var43;
+         for(var29 = 2; var29 < var41.length; var29 += 2) {
+            var30 = var41[var29];
+            var43 = var41[1 + var29] << 1;
+            var32 = var46 * (var30 - var44) + (var30 - var44) / 2;
 
-            for(var33 = var45; var33 < var30; ++var33) {
-               var34 = Renderable.calculateHeight(var32, var30 - var45);
-               int var35 = var34 + (this.field2006[var33] & 255);
+            for(var33 = var44; var33 < var30; ++var33) {
+               var34 = class6.calculateHeight(var32, var30 - var44);
+               int var35 = (this.field1996[var33] & 255) + var34;
                if(var35 < 0) {
                   var35 = 0;
                }
@@ -461,100 +446,87 @@ public class class142 extends Node {
                   var35 = 128;
                }
 
-               this.field2006[var33] = (byte)var35;
-               var32 += var44 - var47;
+               this.field1996[var33] = (byte)var35;
+               var32 += var43 - var46;
             }
 
-            var45 = var30;
-            var47 = var44;
+            var44 = var30;
+            var46 = var43;
          }
 
-         for(var43 = var45; var43 < 128; ++var43) {
-            var44 = var47 + (this.field2006[var43] & 255);
-            if(var44 < 0) {
-               var44 = 0;
+         for(var42 = var44; var42 < 128; ++var42) {
+            var43 = var46 + (this.field1996[var42] & 255);
+            if(var43 < 0) {
+               var43 = 0;
             }
 
-            if(var44 > 128) {
-               var44 = 128;
+            if(var43 > 128) {
+               var43 = 128;
             }
 
-            this.field2006[var43] = (byte)var44;
+            this.field1996[var42] = (byte)var43;
          }
 
-         Object var42 = null;
+         Object var47 = null;
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
-         var13[var27].field1917 = var2.readUnsignedByte();
+         var38[var27].field1912 = var2.readUnsignedByte();
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var13[var27];
-         if(var28.field1916 != null) {
-            var28.field1915 = var2.readUnsignedByte();
-         }
-
+         var28 = var38[var27];
          if(var28.field1908 != null) {
-            var28.field1910 = var2.readUnsignedByte();
+            var28.field1906 = var2.readUnsignedByte();
          }
 
-         if(var28.field1917 > 0) {
-            var28.field1912 = var2.readUnsignedByte();
+         if(null != var28.field1904) {
+            var28.field1907 = var2.readUnsignedByte();
          }
-      }
 
-      for(var27 = 0; var27 < var12; ++var27) {
-         var13[var27].field1914 = var2.readUnsignedByte();
-      }
-
-      for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var13[var27];
-         if(var28.field1914 > 0) {
-            var28.field1913 = var2.readUnsignedByte();
+         if(var28.field1912 > 0) {
+            var28.field1905 = var2.readUnsignedByte();
          }
       }
 
       for(var27 = 0; var27 < var12; ++var27) {
-         var28 = var13[var27];
-         if(var28.field1913 > 0) {
+         var38[var27].field1910 = var2.readUnsignedByte();
+      }
+
+      for(var27 = 0; var27 < var12; ++var27) {
+         var28 = var38[var27];
+         if(var28.field1910 > 0) {
             var28.field1911 = var2.readUnsignedByte();
+         }
+      }
+
+      for(var27 = 0; var27 < var12; ++var27) {
+         var28 = var38[var27];
+         if(var28.field1911 > 0) {
+            var28.field1903 = var2.readUnsignedByte();
          }
       }
 
    }
 
-   @ObfuscatedName("f")
-   public static String method2609(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(0L == var0 % 37L) {
-            return null;
-         } else {
-            int var2 = 0;
-
-            for(long var3 = var0; 0L != var3; var3 /= 37L) {
-               ++var2;
-            }
-
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); 0L != var0; var5.append(var8)) {
-               long var6 = var0;
-               var0 /= 37L;
-               var8 = class205.field3086[(int)(var6 - var0 * 37L)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
-               }
-            }
-
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
-         }
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(II)LCombatInfo2;",
+      garbageValue = "-808377266"
+   )
+   public static CombatInfo2 method2699(int var0) {
+      CombatInfo2 var1 = (CombatInfo2)CombatInfo2.field2838.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         return null;
+         byte[] var2 = class168.field2183.getConfigData(33, var0);
+         var1 = new CombatInfo2();
+         if(null != var2) {
+            var1.method3512(new Buffer(var2));
+         }
+
+         CombatInfo2.field2838.put(var1, (long)var0);
+         return var1;
       }
    }
 }

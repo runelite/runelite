@@ -1,137 +1,64 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("cg")
+@ObfuscatedName("cf")
 public class class79 extends Node {
-   @ObfuscatedName("b")
-   int[] field1305;
+   @ObfuscatedName("o")
+   int[] field1303;
+   @ObfuscatedName("d")
+   int field1304;
    @ObfuscatedName("k")
-   int[] field1306;
-   @ObfuscatedName("a")
-   int field1308;
-   @ObfuscatedName("g")
-   boolean field1309;
-   @ObfuscatedName("u")
-   int[] field1311;
-   @ObfuscatedName("w")
-   static int[] field1312;
-   @ObfuscatedName("x")
-   int[] field1313;
-   @ObfuscatedName("r")
-   int field1314;
-   @ObfuscatedName("n")
-   int field1315;
+   boolean field1305;
    @ObfuscatedName("j")
-   boolean field1317 = false;
+   int[] field1306;
+   @ObfuscatedName("h")
+   int[] field1307;
+   @ObfuscatedName("a")
+   int[] field1309;
+   @ObfuscatedName("c")
+   int field1310;
    @ObfuscatedName("m")
-   int[] field1318;
-
-   @ObfuscatedName("f")
-   void method1506(int var1) {
-      if(this.field1318 != null) {
-         short var2;
-         int var3;
-         int var4;
-         int var5;
-         int[] var6;
-         int var7;
-         int var10;
-         if(this.field1314 == 1 || this.field1314 == 3) {
-            if(field1312 == null || field1312.length < this.field1318.length) {
-               field1312 = new int[this.field1318.length];
-            }
-
-            if(this.field1318.length == 4096) {
-               var2 = 64;
-            } else {
-               var2 = 128;
-            }
-
-            var3 = this.field1318.length;
-            var4 = var2 * var1 * this.field1315;
-            var5 = var3 - 1;
-            if(this.field1314 == 1) {
-               var4 = -var4;
-            }
-
-            for(var10 = 0; var10 < var3; ++var10) {
-               var7 = var10 + var4 & var5;
-               field1312[var10] = this.field1318[var7];
-            }
-
-            var6 = this.field1318;
-            this.field1318 = field1312;
-            field1312 = var6;
-         }
-
-         if(this.field1314 == 2 || this.field1314 == 4) {
-            if(field1312 == null || field1312.length < this.field1318.length) {
-               field1312 = new int[this.field1318.length];
-            }
-
-            if(this.field1318.length == 4096) {
-               var2 = 64;
-            } else {
-               var2 = 128;
-            }
-
-            var3 = this.field1318.length;
-            var4 = var1 * this.field1315;
-            var5 = var2 - 1;
-            if(this.field1314 == 2) {
-               var4 = -var4;
-            }
-
-            for(var10 = 0; var10 < var3; var10 += var2) {
-               for(var7 = 0; var7 < var2; ++var7) {
-                  int var8 = var10 + var7;
-                  int var9 = var10 + (var7 + var4 & var5);
-                  field1312[var8] = this.field1318[var9];
-               }
-            }
-
-            var6 = this.field1318;
-            this.field1318 = field1312;
-            field1312 = var6;
-         }
-
-      }
-   }
-
+   int field1311;
    @ObfuscatedName("s")
-   boolean method1507(double var1, int var3, class182 var4) {
+   int[] field1312;
+   @ObfuscatedName("r")
+   boolean field1313 = false;
+   @ObfuscatedName("u")
+   static int[] field1314;
+
+   @ObfuscatedName("p")
+   boolean method1541(double var1, int var3, class182 var4) {
       int var5;
       for(var5 = 0; var5 < this.field1306.length; ++var5) {
-         if(var4.method3189(this.field1306[var5]) == null) {
+         if(var4.method3337(this.field1306[var5]) == null) {
             return false;
          }
       }
 
       var5 = var3 * var3;
-      this.field1318 = new int[var5];
+      this.field1307 = new int[var5];
 
       for(int var6 = 0; var6 < this.field1306.length; ++var6) {
          int var8 = this.field1306[var6];
-         ModIcon var7;
-         if(!class154.method2922(var4, var8)) {
-            var7 = null;
+         byte[] var10 = var4.method3292(var8);
+         boolean var9;
+         if(var10 == null) {
+            var9 = false;
          } else {
-            ModIcon var10 = new ModIcon();
-            var10.width = class225.field3218;
-            var10.originalHeight = class225.field3219;
-            var10.offsetX = class181.field2710[0];
-            var10.offsetY = class225.field3220[0];
-            var10.originalWidth = class119.field1865[0];
-            var10.height = class109.field1742[0];
-            var10.palette = class225.field3217;
-            var10.pixels = class44.field888[0];
-            class30.method648();
-            var7 = var10;
+            ItemLayer.method1455(var10);
+            var9 = true;
          }
 
-         var7.method3923();
-         byte[] var17 = var7.pixels;
+         ModIcon var7;
+         if(!var9) {
+            var7 = null;
+         } else {
+            var7 = class186.method3418();
+         }
+
+         var7.method4081();
+         var10 = var7.pixels;
          int[] var11 = var7.palette;
-         int var12 = this.field1313[var6];
+         int var12 = this.field1309[var6];
          if((var12 & -16777216) == 16777216) {
             ;
          }
@@ -158,13 +85,13 @@ public class class79 extends Node {
          }
 
          for(var13 = 0; var13 < var11.length; ++var13) {
-            var11[var13] = class84.method1600(var11[var13], var1);
+            var11[var13] = class84.method1636(var11[var13], var1);
          }
 
          if(var6 == 0) {
             var13 = 0;
          } else {
-            var13 = this.field1311[var6 - 1];
+            var13 = this.field1312[var6 - 1];
          }
 
          if(var6 == 0) {
@@ -174,14 +101,14 @@ public class class79 extends Node {
          if(var13 == 0) {
             if(var7.originalWidth == var3) {
                for(var14 = 0; var14 < var5; ++var14) {
-                  this.field1318[var14] = var11[var17[var14] & 255];
+                  this.field1307[var14] = var11[var10[var14] & 255];
                }
             } else if(var7.originalWidth == 64 && var3 == 128) {
                var14 = 0;
 
                for(var15 = 0; var15 < var3; ++var15) {
                   for(var16 = 0; var16 < var3; ++var16) {
-                     this.field1318[var14++] = var11[var17[(var16 >> 1) + (var15 >> 1 << 6)] & 255];
+                     this.field1307[var14++] = var11[var10[(var16 >> 1) + (var15 >> 1 << 6)] & 255];
                   }
                }
             } else {
@@ -193,7 +120,7 @@ public class class79 extends Node {
 
                for(var15 = 0; var15 < var3; ++var15) {
                   for(var16 = 0; var16 < var3; ++var16) {
-                     this.field1318[var14++] = var11[var17[(var16 << 1) + (var15 << 1 << 7)] & 255];
+                     this.field1307[var14++] = var11[var10[(var16 << 1) + (var15 << 1 << 7)] & 255];
                   }
                }
             }
@@ -215,9 +142,86 @@ public class class79 extends Node {
       return true;
    }
 
+   @ObfuscatedName("g")
+   void method1543() {
+      this.field1307 = null;
+   }
+
+   @ObfuscatedName("x")
+   void method1544(int var1) {
+      if(this.field1307 != null) {
+         short var2;
+         int var3;
+         int var4;
+         int var5;
+         int var6;
+         int var7;
+         int[] var10;
+         if(this.field1310 == 1 || this.field1310 == 3) {
+            if(field1314 == null || field1314.length < this.field1307.length) {
+               field1314 = new int[this.field1307.length];
+            }
+
+            if(this.field1307.length == 4096) {
+               var2 = 64;
+            } else {
+               var2 = 128;
+            }
+
+            var3 = this.field1307.length;
+            var4 = var2 * var1 * this.field1311;
+            var5 = var3 - 1;
+            if(this.field1310 == 1) {
+               var4 = -var4;
+            }
+
+            for(var6 = 0; var6 < var3; ++var6) {
+               var7 = var6 + var4 & var5;
+               field1314[var6] = this.field1307[var7];
+            }
+
+            var10 = this.field1307;
+            this.field1307 = field1314;
+            field1314 = var10;
+         }
+
+         if(this.field1310 == 2 || this.field1310 == 4) {
+            if(field1314 == null || field1314.length < this.field1307.length) {
+               field1314 = new int[this.field1307.length];
+            }
+
+            if(this.field1307.length == 4096) {
+               var2 = 64;
+            } else {
+               var2 = 128;
+            }
+
+            var3 = this.field1307.length;
+            var4 = var1 * this.field1311;
+            var5 = var2 - 1;
+            if(this.field1310 == 2) {
+               var4 = -var4;
+            }
+
+            for(var6 = 0; var6 < var3; var6 += var2) {
+               for(var7 = 0; var7 < var2; ++var7) {
+                  int var8 = var6 + var7;
+                  int var9 = var6 + (var7 + var4 & var5);
+                  field1314[var8] = this.field1307[var9];
+               }
+            }
+
+            var10 = this.field1307;
+            this.field1307 = field1314;
+            field1314 = var10;
+         }
+
+      }
+   }
+
    class79(Buffer var1) {
-      this.field1308 = var1.readUnsignedShort();
-      this.field1309 = var1.readUnsignedByte() == 1;
+      this.field1304 = var1.readUnsignedShort();
+      this.field1305 = var1.readUnsignedByte() == 1;
       int var2 = var1.readUnsignedByte();
       if(var2 >= 1 && var2 <= 4) {
          this.field1306 = new int[var2];
@@ -228,37 +232,32 @@ public class class79 extends Node {
          }
 
          if(var2 > 1) {
-            this.field1311 = new int[var2 - 1];
+            this.field1312 = new int[var2 - 1];
 
             for(var3 = 0; var3 < var2 - 1; ++var3) {
-               this.field1311[var3] = var1.readUnsignedByte();
+               this.field1312[var3] = var1.readUnsignedByte();
             }
          }
 
          if(var2 > 1) {
-            this.field1305 = new int[var2 - 1];
+            this.field1303 = new int[var2 - 1];
 
             for(var3 = 0; var3 < var2 - 1; ++var3) {
-               this.field1305[var3] = var1.readUnsignedByte();
+               this.field1303[var3] = var1.readUnsignedByte();
             }
          }
 
-         this.field1313 = new int[var2];
+         this.field1309 = new int[var2];
 
          for(var3 = 0; var3 < var2; ++var3) {
-            this.field1313[var3] = var1.method2727();
+            this.field1309[var3] = var1.method2819();
          }
 
-         this.field1314 = var1.readUnsignedByte();
-         this.field1315 = var1.readUnsignedByte();
-         this.field1318 = null;
+         this.field1310 = var1.readUnsignedByte();
+         this.field1311 = var1.readUnsignedByte();
+         this.field1307 = null;
       } else {
          throw new RuntimeException();
       }
-   }
-
-   @ObfuscatedName("c")
-   void method1509() {
-      this.field1318 = null;
    }
 }

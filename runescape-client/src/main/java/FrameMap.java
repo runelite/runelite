@@ -3,92 +3,129 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cn")
+@ObfuscatedName("cd")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1336961813
+      intValue = -1281248939
    )
-   int field1467;
-   @ObfuscatedName("c")
+   int field1464;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 861150163
+      intValue = -286881175
    )
-   int field1468;
-   @ObfuscatedName("f")
+   int field1465;
+   @ObfuscatedName("q")
+   int[][] field1466;
+   @ObfuscatedName("x")
    int[] field1469;
-   @ObfuscatedName("ai")
-   static int[] field1470;
-   @ObfuscatedName("h")
-   int[][] field1471;
-   @ObfuscatedName("m")
-   public static class60 field1472;
-   @ObfuscatedName("jq")
-   @ObfuscatedGetter(
-      intValue = 2058327405
-   )
-   static int field1473;
 
    FrameMap(int var1, byte[] var2) {
-      this.field1467 = var1;
+      this.field1465 = var1;
       Buffer var3 = new Buffer(var2);
-      this.field1468 = var3.readUnsignedByte();
-      this.field1469 = new int[this.field1468];
-      this.field1471 = new int[this.field1468][];
+      this.field1464 = var3.readUnsignedByte();
+      this.field1469 = new int[this.field1464];
+      this.field1466 = new int[this.field1464][];
 
       int var4;
-      for(var4 = 0; var4 < this.field1468; ++var4) {
+      for(var4 = 0; var4 < this.field1464; ++var4) {
          this.field1469[var4] = var3.readUnsignedByte();
       }
 
-      for(var4 = 0; var4 < this.field1468; ++var4) {
-         this.field1471[var4] = new int[var3.readUnsignedByte()];
+      for(var4 = 0; var4 < this.field1464; ++var4) {
+         this.field1466[var4] = new int[var3.readUnsignedByte()];
       }
 
-      for(var4 = 0; var4 < this.field1468; ++var4) {
-         for(int var5 = 0; var5 < this.field1471[var4].length; ++var5) {
-            this.field1471[var4][var5] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field1464; ++var4) {
+         for(int var5 = 0; var5 < this.field1466[var4].length; ++var5) {
+            this.field1466[var4][var5] = var3.readUnsignedByte();
          }
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-2052999570"
+      signature = "(S)J",
+      garbageValue = "-8518"
    )
-   static final int method1655(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
+   public static synchronized long method1695() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class88.field1539) {
+         class155.field2106 += class88.field1539 - var0;
+      }
 
-         return var1;
+      class88.field1539 = var0;
+      return var0 + class155.field2106;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "2018062187"
+   )
+   public static void method1696() {
+      if(class185.field2757 != null) {
+         class185.field2757.method2059();
+      }
+
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;Lclass228;B)Ljava/lang/String;",
+      garbageValue = "7"
+   )
+   public static String method1697(CharSequence var0, class228 var1) {
+      if(var0 == null) {
+         return null;
       } else {
-         var1 = (var0 & 127) * var1 / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
+         int var2 = 0;
+
+         int var3;
+         boolean var4;
+         char var5;
+         for(var3 = var0.length(); var2 < var3; ++var2) {
+            var5 = var0.charAt(var2);
+            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
+            if(!var4) {
+               break;
+            }
          }
 
-         return var1 + (var0 & 'ﾀ');
-      }
-   }
+         while(var3 > var2) {
+            var5 = var0.charAt(var3 - 1);
+            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
+            if(!var4) {
+               break;
+            }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;B)V",
-      garbageValue = "-124"
-   )
-   public static void method1656(class182 var0, class182 var1) {
-      NPCComposition.field3012 = var0;
-      NPCComposition.field3005 = var1;
+            --var3;
+         }
+
+         int var10 = var3 - var2;
+         if(var10 >= 1 && var10 <= class188.method3439(var1)) {
+            StringBuilder var9 = new StringBuilder(var10);
+
+            for(int var6 = var2; var6 < var3; ++var6) {
+               char var7 = var0.charAt(var6);
+               if(class36.method722(var7)) {
+                  char var8 = class97.method1918(var7);
+                  if(var8 != 0) {
+                     var9.append(var8);
+                  }
+               }
+            }
+
+            if(var9.length() == 0) {
+               return null;
+            } else {
+               return var9.toString();
+            }
+         } else {
+            return null;
+         }
+      }
    }
 }
