@@ -171,6 +171,22 @@ public class PutField extends Instruction implements SetFieldInstruction
 			}
 		}
 	}
+	
+	private boolean isMaybeEqual(InstructionContext base1, InstructionContext base2)
+	{
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			net.runelite.asm.Field f1 = gf1.getMyField();
+			net.runelite.asm.Field f2 = gf2.getMyField();
+			
+			return MappingExecutorUtil.isMaybeEqual(f1, f2);
+		}
+		
+		return true;
+	}
 
 	@Override
 	public boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
@@ -187,8 +203,37 @@ public class PutField extends Instruction implements SetFieldInstruction
 		if ((f1 != null) != (f2 != null))
 			return false;
 
-		return MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
-			&& MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
+		if (!MappingExecutorUtil.isMaybeEqual(f1.getFields().getClassFile(), f2.getFields().getClassFile())
+			|| !MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType()))
+			return false;
+
+		// check assignment
+		
+		StackContext object1 = thisIc.getPops().get(1),
+			object2 = otherIc.getPops().get(1);
+
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (!isMaybeEqual(base1, base2))
+		{
+			return false;
+		}
+
+		// check value
+
+		object1 = thisIc.getPops().get(0);
+		object2 = otherIc.getPops().get(0);
+
+		base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (!isMaybeEqual(base1, base2))
+		{
+			return false;
+		}
+		
+		return true;
 	}
 	
 	@Override

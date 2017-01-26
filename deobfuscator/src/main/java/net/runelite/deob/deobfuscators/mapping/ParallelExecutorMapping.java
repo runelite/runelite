@@ -111,10 +111,23 @@ public class ParallelExecutorMapping
 		
 		belongs(one, group);
 		belongs(two, group2);
+		
+		sanityCheck(one, two);
 
 		m.inc();
 
 		return m;
+	}
+	
+	private void sanityCheck(Object one, Object two)
+	{
+		if (one instanceof Field && two instanceof Field)
+		{
+			Field f1 = (Field) one;
+			Field f2 = (Field) two;
+			
+			assert f1.isStatic() == f2.isStatic();
+		}
 	}
 
 	private void mapClass(Object one, Object two)
