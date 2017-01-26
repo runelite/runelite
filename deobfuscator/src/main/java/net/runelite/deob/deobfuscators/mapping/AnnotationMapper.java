@@ -130,10 +130,18 @@ public class AnnotationMapper
 		{
 			if (isCopyable(a))
 			{
-				assert a.getElements().size() == 1;
-				Element e = a.getElements().get(0);
+				Annotation annotation = new Annotation(to);
+				annotation.setType(a.getType());
+				to.addAnnotation(annotation);
 
-				to.addAnnotation(a.getType(), e.getName(), e.getValue());
+				for (Element e : a.getElements())
+				{
+					Element element = new Element(annotation);
+					element.setName(e.getName());
+					element.setValue(e.getValue());
+					annotation.addElement(element);
+				}
+
 				++count;
 			}
 		}
