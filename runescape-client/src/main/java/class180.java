@@ -1,83 +1,71 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fa")
+@ObfuscatedName("fr")
 public class class180 extends Node {
-   @ObfuscatedName("c")
-   byte[] field2701;
-   @ObfuscatedName("f")
-   class116 field2702;
-   @ObfuscatedName("h")
-   class184 field2703;
-   @ObfuscatedName("s")
+   @ObfuscatedName("q")
+   class184 field2689;
+   @ObfuscatedName("x")
+   class116 field2690;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 1520265473
+      intValue = -207831159
    )
-   int field2704;
-   @ObfuscatedName("nc")
-   @ObfuscatedGetter(
-      intValue = -1177269665
-   )
-   static int field2705;
-
+   int field2691;
    @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;IIB)LFont;",
-      garbageValue = "5"
-   )
-   public static Font method3174(class182 var0, class182 var1, int var2, int var3) {
-      return !class37.method718(var0, var2, var3)?null:Actor.method591(var1.getConfigData(var2, var3));
-   }
+   byte[] field2693;
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("a")
    @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "-39"
+      signature = "(IB)LFrames;",
+      garbageValue = "0"
    )
-   static void method3175(int var0) {
-      Client.field557 = 0L;
-      if(var0 >= 2) {
-         Client.isResized = true;
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.field3050.get((long)var0);
+      if(var1 != null) {
+         return var1;
       } else {
-         Client.isResized = false;
-      }
+         var1 = class204.method3805(Sequence.field3045, Sequence.field3044, var0, false);
+         if(var1 != null) {
+            Sequence.field3050.put(var1, (long)var0);
+         }
 
-      class45.method789();
-      if(Client.gameState >= 25) {
-         Client.field336.method2963(104);
-         Client.field336.method2708(Tile.method1515());
-         Client.field336.method2709(class16.field186);
-         Client.field336.method2709(ChatMessages.field907);
+         return var1;
       }
-
-      GameEngine.field1783 = true;
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("bx")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "-1507738006"
+      signature = "(IIIIIIIIII)V",
+      garbageValue = "1043583457"
    )
-   public static int method3176(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
+   static final void method3267(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+      class25 var9 = null;
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+      for(class25 var10 = (class25)Client.field410.method2412(); null != var10; var10 = (class25)Client.field410.method2426()) {
+         if(var0 == var10.field565 && var1 == var10.field560 && var10.field562 == var2 && var3 == var10.field559) {
+            var9 = var10;
+            break;
+         }
       }
 
-      return var2;
-   }
+      if(var9 == null) {
+         var9 = new class25();
+         var9.field565 = var0;
+         var9.field559 = var3;
+         var9.field560 = var1;
+         var9.field562 = var2;
+         class33.method683(var9);
+         Client.field410.method2407(var9);
+      }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;Lclass182;I)V",
-      garbageValue = "1160535928"
-   )
-   public static void method3177(class182 var0, class182 var1, class182 var2) {
-      class196.field2880 = var0;
-      class196.field2873 = var1;
-      class196.field2872 = var2;
+      var9.field572 = var4;
+      var9.field568 = var5;
+      var9.field567 = var6;
+      var9.field569 = var7;
+      var9.field570 = var8;
    }
 }

@@ -4,33 +4,210 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("ay")
 @Implements("NPC")
 public final class NPC extends Actor {
-   @ObfuscatedName("s")
+   @ObfuscatedName("h")
+   static int[] field759;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 395775309
+   )
+   static int field761;
+   @ObfuscatedName("p")
    @Export("composition")
    NPCComposition composition;
-   @ObfuscatedName("ip")
-   @ObfuscatedGetter(
-      intValue = 1278854075
-   )
-   static int field760;
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/Throwable;I)V",
-      garbageValue = "32768"
+      signature = "(I)LModel;",
+      garbageValue = "2063755858"
    )
-   public static void method695(String var0, Throwable var1) {
-      var1.printStackTrace();
+   protected final Model getModel() {
+      if(this.composition == null) {
+         return null;
+      } else {
+         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class146.getAnimation(super.animation):null;
+         Sequence var2 = super.poseAnimation != -1 && (super.idlePoseAnimation != super.poseAnimation || null == var1)?class146.getAnimation(super.poseAnimation):null;
+         Model var3 = this.composition.method3707(var1, super.actionFrame, var2, super.poseFrame);
+         if(null == var3) {
+            return null;
+         } else {
+            var3.method1602();
+            super.field642 = var3.modelHeight;
+            if(super.graphic != -1 && super.field630 != -1) {
+               Model var4 = TextureProvider.method1452(super.graphic).method3456(super.field630);
+               if(null != var4) {
+                  var4.method1590(0, -super.field633, 0);
+                  Model[] var5 = new Model[]{var3, var4};
+                  var3 = new Model(var5, 2);
+               }
+            }
+
+            if(this.composition.field2999 == 1) {
+               var3.field1380 = true;
+            }
+
+            return var3;
+         }
+      }
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIZI)V",
+      garbageValue = "-1810094731"
+   )
+   final void method700(int var1, int var2, boolean var3) {
+      if(super.animation != -1 && class146.getAnimation(super.animation).priority == 1) {
+         super.animation = -1;
+      }
+
+      if(!var3) {
+         int var4 = var1 - super.pathX[0];
+         int var5 = var2 - super.pathY[0];
+         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
+            if(super.field646 < 9) {
+               ++super.field646;
+            }
+
+            for(int var6 = super.field646; var6 > 0; --var6) {
+               super.pathX[var6] = super.pathX[var6 - 1];
+               super.pathY[var6] = super.pathY[var6 - 1];
+               super.field649[var6] = super.field649[var6 - 1];
+            }
+
+            super.pathX[0] = var1;
+            super.pathY[0] = var2;
+            super.field649[0] = 1;
+            return;
+         }
+      }
+
+      super.field646 = 0;
+      super.field651 = 0;
+      super.field627 = 0;
+      super.pathX[0] = var1;
+      super.pathY[0] = var2;
+      super.x = super.pathX[0] * 128 + super.field596 * 64;
+      super.y = 128 * super.pathY[0] + super.field596 * 64;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lclass159;I)I",
+      garbageValue = "1380357929"
+   )
+   static int method701(class159 var0) {
+      int var1 = var0.method3061(2);
+      int var2;
+      if(var1 == 0) {
+         var2 = 0;
+      } else if(var1 == 1) {
+         var2 = var0.method3061(5);
+      } else if(var1 == 2) {
+         var2 = var0.method3061(8);
+      } else {
+         var2 = var0.method3061(11);
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "-94"
+   )
+   final boolean vmethod702() {
+      return null != this.composition;
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(CII)C",
+      garbageValue = "1587633550"
+   )
+   public static char method706(char var0, int var1) {
+      if(var0 >= 192 && var0 <= 255) {
+         if(var0 >= 192 && var0 <= 198) {
+            return 'A';
+         }
+
+         if(var0 == 199) {
+            return 'C';
+         }
+
+         if(var0 >= 200 && var0 <= 203) {
+            return 'E';
+         }
+
+         if(var0 >= 204 && var0 <= 207) {
+            return 'I';
+         }
+
+         if(var0 >= 210 && var0 <= 214) {
+            return 'O';
+         }
+
+         if(var0 >= 217 && var0 <= 220) {
+            return 'U';
+         }
+
+         if(var0 == 221) {
+            return 'Y';
+         }
+
+         if(var0 == 223) {
+            return 's';
+         }
+
+         if(var0 >= 224 && var0 <= 230) {
+            return 'a';
+         }
+
+         if(var0 == 231) {
+            return 'c';
+         }
+
+         if(var0 >= 232 && var0 <= 235) {
+            return 'e';
+         }
+
+         if(var0 >= 236 && var0 <= 239) {
+            return 'i';
+         }
+
+         if(var0 >= 242 && var0 <= 246) {
+            return 'o';
+         }
+
+         if(var0 >= 249 && var0 <= 252) {
+            return 'u';
+         }
+
+         if(var0 == 253 || var0 == 255) {
+            return 'y';
+         }
+      }
+
+      if(var0 == 338) {
+         return 'O';
+      } else if(var0 == 339) {
+         return 'o';
+      } else if(var0 == 376) {
+         return 'Y';
+      } else {
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
       signature = "(IBI)V",
-      garbageValue = "2075849867"
+      garbageValue = "1338978079"
    )
-   final void method696(int var1, byte var2) {
+   final void method710(int var1, byte var2) {
       int var3 = super.pathX[0];
       int var4 = super.pathY[0];
       if(var1 == 0) {
@@ -69,186 +246,83 @@ public final class NPC extends Actor {
          --var4;
       }
 
-      if(super.animation != -1 && class110.getAnimation(super.animation).priority == 1) {
+      if(super.animation != -1 && class146.getAnimation(super.animation).priority == 1) {
          super.animation = -1;
       }
 
-      if(super.field658 < 9) {
-         ++super.field658;
+      if(super.field646 < 9) {
+         ++super.field646;
       }
 
-      for(int var5 = super.field658; var5 > 0; --var5) {
+      for(int var5 = super.field646; var5 > 0; --var5) {
          super.pathX[var5] = super.pathX[var5 - 1];
          super.pathY[var5] = super.pathY[var5 - 1];
-         super.field624[var5] = super.field624[var5 - 1];
+         super.field649[var5] = super.field649[var5 - 1];
       }
 
       super.pathX[0] = var3;
       super.pathY[0] = var4;
-      super.field624[0] = var2;
+      super.field649[0] = var2;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1373848960"
+      signature = "(I)V",
+      garbageValue = "1612891490"
    )
-   public static int method697(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var0:(var2 == 1?var1:(var2 == 2?7 - var0:7 - var1));
-   }
+   public static void method713() {
+      class105 var0 = class105.keyboard;
+      synchronized(class105.keyboard) {
+         ++class105.keyboardIdleTicks;
+         class105.field1701 = class105.field1718;
+         class105.field1715 = 0;
+         int var1;
+         if(class105.field1711 < 0) {
+            for(var1 = 0; var1 < 112; ++var1) {
+               class105.field1708[var1] = false;
+            }
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(I)LModel;",
-      garbageValue = "2062912069"
-   )
-   protected final Model getModel() {
-      if(this.composition == null) {
-         return null;
-      } else {
-         Sequence var1 = super.animation != -1 && super.actionAnimationDisable == 0?class110.getAnimation(super.animation):null;
-         Sequence var2 = super.poseAnimation == -1 || super.poseAnimation == super.idlePoseAnimation && null != var1?null:class110.getAnimation(super.poseAnimation);
-         Model var3 = this.composition.method3591(var1, super.actionFrame, var2, super.poseFrame);
-         if(var3 == null) {
-            return null;
+            class105.field1711 = class105.field1710;
          } else {
-            var3.method1518();
-            super.field654 = var3.modelHeight;
-            if(super.graphic != -1 && super.field642 != -1) {
-               Model var4 = class48.method844(super.graphic).method3353(super.field642);
-               if(var4 != null) {
-                  var4.method1517(0, -super.field631, 0);
-                  Model[] var5 = new Model[]{var3, var4};
-                  var3 = new Model(var5, 2);
+            while(class105.field1710 != class105.field1711) {
+               var1 = class105.field1719[class105.field1710];
+               class105.field1710 = class105.field1710 + 1 & 127;
+               if(var1 < 0) {
+                  class105.field1708[~var1] = false;
+               } else {
+                  if(!class105.field1708[var1] && class105.field1715 < class105.field1714.length - 1) {
+                     class105.field1714[++class105.field1715 - 1] = var1;
+                  }
+
+                  class105.field1708[var1] = true;
                }
             }
-
-            if(this.composition.field3010 == 1) {
-               var3.field1382 = true;
-            }
-
-            return var3;
          }
+
+         class105.field1718 = class105.field1717;
       }
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-1377545017"
+      signature = "(Ljava/lang/String;ZZI)V",
+      garbageValue = "359698120"
    )
-   final boolean vmethod699() {
-      return null != this.composition;
+   public static void method714(String var0, boolean var1, boolean var2) {
+      RSCanvas.method2079(var0, var1, "openjs", var2);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("bw")
    @ObfuscatedSignature(
-      signature = "(IIZB)V",
-      garbageValue = "91"
+      signature = "(IIIII)V",
+      garbageValue = "-1778159098"
    )
-   final void method704(int var1, int var2, boolean var3) {
-      if(super.animation != -1 && class110.getAnimation(super.animation).priority == 1) {
-         super.animation = -1;
-      }
-
-      if(!var3) {
-         int var4 = var1 - super.pathX[0];
-         int var5 = var2 - super.pathY[0];
-         if(var4 >= -8 && var4 <= 8 && var5 >= -8 && var5 <= 8) {
-            if(super.field658 < 9) {
-               ++super.field658;
-            }
-
-            for(int var6 = super.field658; var6 > 0; --var6) {
-               super.pathX[var6] = super.pathX[var6 - 1];
-               super.pathY[var6] = super.pathY[var6 - 1];
-               super.field624[var6] = super.field624[var6 - 1];
-            }
-
-            super.pathX[0] = var1;
-            super.pathY[0] = var2;
-            super.field624[0] = 1;
-            return;
+   static final void method717(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field480; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
+            Client.field482[var4] = true;
          }
       }
 
-      super.field658 = 0;
-      super.field663 = 0;
-      super.field647 = 0;
-      super.pathX[0] = var1;
-      super.pathY[0] = var2;
-      super.x = super.field645 * 64 + 128 * super.pathX[0];
-      super.y = super.field645 * 64 + 128 * super.pathY[0];
-   }
-
-   @ObfuscatedName("dx")
-   @ObfuscatedSignature(
-      signature = "(IIIILSpritePixels;Lclass164;I)V",
-      garbageValue = "1971693514"
-   )
-   static final void method706(int var0, int var1, int var2, int var3, SpritePixels var4, class164 var5) {
-      if(null != var4) {
-         int var6 = Client.mapAngle + Client.mapScale & 2047;
-         int var7 = var3 * var3 + var2 * var2;
-         if(var7 <= 6400) {
-            int var8 = class84.field1444[var6];
-            int var9 = class84.field1453[var6];
-            var8 = 256 * var8 / (256 + Client.mapScaleDelta);
-            var9 = 256 * var9 / (Client.mapScaleDelta + 256);
-            int var10 = var9 * var2 + var8 * var3 >> 16;
-            int var11 = var3 * var9 - var8 * var2 >> 16;
-            if(var7 > 2500) {
-               var4.method3967(var10 + var5.field2164 / 2 - var4.maxWidth / 2, var5.field2165 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2164, var5.field2165, var5.field2172, var5.field2166);
-            } else {
-               var4.method3971(var10 + var0 + var5.field2164 / 2 - var4.maxWidth / 2, var5.field2165 / 2 + var1 - var11 - var4.maxHeight / 2);
-            }
-
-         }
-      }
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(II)LItemComposition;",
-      garbageValue = "-1785019990"
-   )
-   @Export("getItemDefinition")
-   public static ItemComposition getItemDefinition(int var0) {
-      ItemComposition var1 = (ItemComposition)ItemComposition.field2986.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Ignore.field224.getConfigData(10, var0);
-         var1 = new ItemComposition();
-         var1.id = var0;
-         if(null != var2) {
-            var1.loadBuffer(new Buffer(var2));
-         }
-
-         var1.method3525();
-         if(var1.notedTemplate != -1) {
-            var1.method3528(getItemDefinition(var1.notedTemplate), getItemDefinition(var1.note));
-         }
-
-         if(var1.field2954 != -1) {
-            var1.method3529(getItemDefinition(var1.field2954), getItemDefinition(var1.field2999));
-         }
-
-         if(var1.field3002 != -1) {
-            var1.method3530(getItemDefinition(var1.field3002), getItemDefinition(var1.field3001));
-         }
-
-         if(!ItemComposition.isMembersWorld && var1.isMembers) {
-            var1.name = "Members object";
-            var1.field2998 = false;
-            var1.groundActions = null;
-            var1.inventoryActions = null;
-            var1.team = 0;
-         }
-
-         ItemComposition.field2986.put(var1, (long)var0);
-         return var1;
-      }
    }
 }

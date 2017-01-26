@@ -1,220 +1,112 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("b")
+@ObfuscatedName("o")
 public class class8 {
-   @ObfuscatedName("m")
-   static boolean field85;
-   @ObfuscatedName("au")
-   static class184 field86;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lclass159;IS)V",
-      garbageValue = "29845"
+   @ObfuscatedName("bj")
+   static class184 field74;
+   @ObfuscatedName("qj")
+   @ObfuscatedGetter(
+      intValue = 1985779085
    )
-   static void method94(class159 var0, int var1) {
-      boolean var2 = var0.method2973(1) == 1;
-      if(var2) {
-         class45.field904[++class45.field901 - 1] = var1;
-      }
+   protected static int field75;
+   @ObfuscatedName("c")
+   static Widget field76;
+   @ObfuscatedName("d")
+   public static class182 field77;
 
-      int var3 = var0.method2973(2);
-      Player var4 = Client.cachedPlayers[var1];
-      if(var3 == 0) {
-         if(var2) {
-            var4.field279 = false;
-         } else if(var1 == Client.localInteractingIndex) {
-            throw new RuntimeException();
-         } else {
-            class45.field898[var1] = (var4.pathY[0] + class103.baseY >> 6) + (var4.field277 << 28) + (class22.baseX + var4.pathX[0] >> 6 << 14);
-            if(var4.field632 != -1) {
-               class45.field899[var1] = var4.field632;
-            } else {
-               class45.field899[var1] = var4.field655;
-            }
-
-            class45.field900[var1] = var4.interacting;
-            Client.cachedPlayers[var1] = null;
-            if(var0.method2973(1) != 0) {
-               class94.method1855(var0, var1);
-            }
-
-         }
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-283927102"
+   )
+   public static int method114(int var0) {
+      Varbit var2 = (Varbit)Varbit.field2845.get((long)var0);
+      Varbit var1;
+      if(null != var2) {
+         var1 = var2;
       } else {
-         int var5;
-         int var6;
-         int var7;
-         if(var3 == 1) {
-            var5 = var0.method2973(3);
-            var6 = var4.pathX[0];
-            var7 = var4.pathY[0];
-            if(var5 == 0) {
-               --var6;
-               --var7;
-            } else if(var5 == 1) {
-               --var7;
-            } else if(var5 == 2) {
-               ++var6;
-               --var7;
-            } else if(var5 == 3) {
-               --var6;
-            } else if(var5 == 4) {
-               ++var6;
-            } else if(var5 == 5) {
-               --var6;
-               ++var7;
-            } else if(var5 == 6) {
-               ++var7;
-            } else if(var5 == 7) {
-               ++var6;
-               ++var7;
+         byte[] var3 = class44.field892.getConfigData(14, var0);
+         var2 = new Varbit();
+         if(null != var3) {
+            var2.method3528(new Buffer(var3));
+         }
+
+         Varbit.field2845.put(var2, (long)var0);
+         var1 = var2;
+      }
+
+      int var7 = var1.leastSignificantBit;
+      int var4 = var1.configId;
+      int var5 = var1.mostSignificantBit;
+      int var6 = class165.field2162[var5 - var4];
+      return class165.widgetSettings[var7] >> var4 & var6;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(LModIcon;I)V",
+      garbageValue = "68755294"
+   )
+   static final void method115(ModIcon var0) {
+      short var1 = 256;
+
+      int var2;
+      for(var2 = 0; var2 < CollisionData.field1841.length; ++var2) {
+         CollisionData.field1841[var2] = 0;
+      }
+
+      int var3;
+      for(var2 = 0; var2 < 5000; ++var2) {
+         var3 = (int)(Math.random() * 128.0D * (double)var1);
+         CollisionData.field1841[var3] = (int)(Math.random() * 256.0D);
+      }
+
+      int var4;
+      int var5;
+      for(var2 = 0; var2 < 20; ++var2) {
+         for(var3 = 1; var3 < var1 - 1; ++var3) {
+            for(var4 = 1; var4 < 127; ++var4) {
+               var5 = var4 + (var3 << 7);
+               FileOnDisk.field1191[var5] = (CollisionData.field1841[var5 + 1] + CollisionData.field1841[var5 - 1] + CollisionData.field1841[var5 - 128] + CollisionData.field1841[128 + var5]) / 4;
             }
+         }
 
-            if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-               if(var2) {
-                  var4.field279 = true;
-                  var4.field280 = var6;
-                  var4.field281 = var7;
-               } else {
-                  var4.field279 = false;
-                  var4.method197(var6, var7, class45.field892[var1]);
+         int[] var8 = CollisionData.field1841;
+         CollisionData.field1841 = FileOnDisk.field1191;
+         FileOnDisk.field1191 = var8;
+      }
+
+      if(var0 != null) {
+         var2 = 0;
+
+         for(var3 = 0; var3 < var0.height; ++var3) {
+            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
+               if(var0.pixels[var2++] != 0) {
+                  var5 = var0.offsetX + 16 + var4;
+                  int var6 = var3 + 16 + var0.offsetY;
+                  int var7 = (var6 << 7) + var5;
+                  CollisionData.field1841[var7] = 0;
                }
-            } else {
-               var4.method198(var6, var7);
-               var4.field279 = false;
-            }
-
-         } else if(var3 == 2) {
-            var5 = var0.method2973(4);
-            var6 = var4.pathX[0];
-            var7 = var4.pathY[0];
-            if(var5 == 0) {
-               var6 -= 2;
-               var7 -= 2;
-            } else if(var5 == 1) {
-               --var6;
-               var7 -= 2;
-            } else if(var5 == 2) {
-               var7 -= 2;
-            } else if(var5 == 3) {
-               ++var6;
-               var7 -= 2;
-            } else if(var5 == 4) {
-               var6 += 2;
-               var7 -= 2;
-            } else if(var5 == 5) {
-               var6 -= 2;
-               --var7;
-            } else if(var5 == 6) {
-               var6 += 2;
-               --var7;
-            } else if(var5 == 7) {
-               var6 -= 2;
-            } else if(var5 == 8) {
-               var6 += 2;
-            } else if(var5 == 9) {
-               var6 -= 2;
-               ++var7;
-            } else if(var5 == 10) {
-               var6 += 2;
-               ++var7;
-            } else if(var5 == 11) {
-               var6 -= 2;
-               var7 += 2;
-            } else if(var5 == 12) {
-               --var6;
-               var7 += 2;
-            } else if(var5 == 13) {
-               var7 += 2;
-            } else if(var5 == 14) {
-               ++var6;
-               var7 += 2;
-            } else if(var5 == 15) {
-               var6 += 2;
-               var7 += 2;
-            }
-
-            if(var1 != Client.localInteractingIndex || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-               if(var2) {
-                  var4.field279 = true;
-                  var4.field280 = var6;
-                  var4.field281 = var7;
-               } else {
-                  var4.field279 = false;
-                  var4.method197(var6, var7, class45.field892[var1]);
-               }
-            } else {
-               var4.method198(var6, var7);
-               var4.field279 = false;
-            }
-
-         } else {
-            var5 = var0.method2973(1);
-            int var8;
-            int var9;
-            int var10;
-            int var11;
-            if(var5 == 0) {
-               var6 = var0.method2973(12);
-               var7 = var6 >> 10;
-               var8 = var6 >> 5 & 31;
-               if(var8 > 15) {
-                  var8 -= 32;
-               }
-
-               var9 = var6 & 31;
-               if(var9 > 15) {
-                  var9 -= 32;
-               }
-
-               var10 = var8 + var4.pathX[0];
-               var11 = var9 + var4.pathY[0];
-               if(Client.localInteractingIndex == var1 && (var4.x < 1536 || var4.y < 1536 || var4.x >= 11776 || var4.y >= 11776)) {
-                  var4.method198(var10, var11);
-                  var4.field279 = false;
-               } else if(var2) {
-                  var4.field279 = true;
-                  var4.field280 = var10;
-                  var4.field281 = var11;
-               } else {
-                  var4.field279 = false;
-                  var4.method197(var10, var11, class45.field892[var1]);
-               }
-
-               var4.field277 = (byte)(var4.field277 + var7 & 3);
-               if(Client.localInteractingIndex == var1) {
-                  class118.plane = var4.field277;
-               }
-
-            } else {
-               var6 = var0.method2973(30);
-               var7 = var6 >> 28;
-               var8 = var6 >> 14 & 16383;
-               var9 = var6 & 16383;
-               var10 = (var8 + class22.baseX + var4.pathX[0] & 16383) - class22.baseX;
-               var11 = (var4.pathY[0] + class103.baseY + var9 & 16383) - class103.baseY;
-               if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
-                  if(var2) {
-                     var4.field279 = true;
-                     var4.field280 = var10;
-                     var4.field281 = var11;
-                  } else {
-                     var4.field279 = false;
-                     var4.method197(var10, var11, class45.field892[var1]);
-                  }
-               } else {
-                  var4.method198(var10, var11);
-                  var4.field279 = false;
-               }
-
-               var4.field277 = (byte)(var4.field277 + var7 & 3);
-               if(Client.localInteractingIndex == var1) {
-                  class118.plane = var4.field277;
-               }
-
             }
          }
       }
+
+   }
+
+   class8() throws Throwable {
+      throw new Error();
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
+      garbageValue = "1561932551"
+   )
+   public static ModIcon[] method116(class182 var0, String var1, String var2) {
+      int var3 = var0.method3276(var1);
+      int var4 = var0.method3287(var3, var2);
+      return Overlay.method3745(var0, var3, var4);
    }
 }

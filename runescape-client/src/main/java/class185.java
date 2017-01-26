@@ -1,91 +1,108 @@
 import java.util.zip.CRC32;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gh")
+@ObfuscatedName("ga")
 public class class185 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
+   public static XHashTable field2741 = new XHashTable(4096);
+   @ObfuscatedName("hx")
    @ObfuscatedGetter(
-      intValue = -836157337
+      intValue = -1017284957
+   )
+   @Export("menuX")
+   static int menuX;
+   @ObfuscatedName("q")
+   public static XHashTable field2743 = new XHashTable(4096);
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1191174545
+   )
+   public static int field2745 = 0;
+   @ObfuscatedName("f")
+   public static byte field2746 = 0;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1905313961
    )
    public static int field2747 = 0;
-   @ObfuscatedName("q")
+   @ObfuscatedName("s")
+   public static Node2LinkedList field2748 = new Node2LinkedList();
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 836474721
+      intValue = -1262162029
    )
-   public static int field2748 = 0;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      longValue = 1856595886775407821L
-   )
-   public static long field2749;
-   @ObfuscatedName("h")
-   public static XHashTable field2750 = new XHashTable(4096);
+   public static int field2749 = 0;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1593982517
+      intValue = -2138021085
+   )
+   public static int field2750 = 0;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -707286677
    )
    public static int field2751 = 0;
-   @ObfuscatedName("g")
-   public static XHashTable field2752 = new XHashTable(32);
-   @ObfuscatedName("k")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1761494481
+      intValue = -597946607
    )
-   public static int field2753 = 0;
-   @ObfuscatedName("u")
-   public static Node2LinkedList field2754 = new Node2LinkedList();
-   @ObfuscatedName("c")
-   public static class110 field2755;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 115900599
-   )
-   public static int field2756 = 0;
+   public static int field2752 = 0;
    @ObfuscatedName("r")
-   public static XHashTable field2757 = new XHashTable(4096);
-   @ObfuscatedName("n")
+   public static class181 field2753;
+   @ObfuscatedName("u")
+   public static Buffer field2754 = new Buffer(8);
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 160997417
+      intValue = -1657519739
    )
-   public static int field2758 = 0;
+   public static int field2755 = 0;
    @ObfuscatedName("w")
-   public static Buffer field2759 = new Buffer(8);
-   @ObfuscatedName("s")
+   public static CRC32 field2756 = new CRC32();
+   @ObfuscatedName("p")
+   public static class110 field2757;
+   @ObfuscatedName("v")
+   public static class184[] field2758 = new class184[256];
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 558905725
+      longValue = -1589096370494624139L
+   )
+   public static long field2759;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 163393025
    )
    public static int field2760 = 0;
-   @ObfuscatedName("z")
-   static CRC32 field2761 = new CRC32();
-   @ObfuscatedName("t")
-   public static byte field2763 = 0;
-   @ObfuscatedName("d")
-   static class184[] field2764 = new class184[256];
-   @ObfuscatedName("b")
-   public static XHashTable field2765 = new XHashTable(4096);
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1031961013
-   )
-   public static int field2767 = 0;
-
+   @ObfuscatedName("k")
+   public static XHashTable field2761 = new XHashTable(32);
    @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-1295431123"
-   )
-   static final boolean method3298(char var0) {
-      return var0 == 160 || var0 == 32 || var0 == 95 || var0 == 45;
+   public static XHashTable field2762 = new XHashTable(4096);
+
+   class185() throws Throwable {
+      throw new Error();
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "87"
+      signature = "(II)LKitDefinition;",
+      garbageValue = "-1822411187"
    )
-   public static void method3319() {
-      Overlay.field3046.reset();
+   @Export("getKitDefinition")
+   public static KitDefinition getKitDefinition(int var0) {
+      KitDefinition var1 = (KitDefinition)KitDefinition.field2815.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class231.field3282.getConfigData(3, var0);
+         var1 = new KitDefinition();
+         if(var2 != null) {
+            var1.method3490(new Buffer(var2));
+         }
+
+         KitDefinition.field2815.put(var1, (long)var0);
+         return var1;
+      }
    }
 }
