@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,51 +22,30 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.asm.attributes.code.instruction.types;
 
-package net.runelite.asm.attributes.code.instructions;
-
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.attributes.code.InstructionType;
-import net.runelite.asm.attributes.code.Instructions;
-import net.runelite.asm.attributes.code.instruction.types.AdditionInstruction;
-import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
-import net.runelite.asm.execution.Stack;
-import net.runelite.asm.execution.StackContext;
-import net.runelite.asm.execution.Value;
+import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 
-public class FAdd extends Instruction implements AdditionInstruction
+public interface AdditionInstruction extends MappableInstruction
 {
-	public FAdd(Instructions instructions, InstructionType type)
+	@Override
+	default void map(ParallelExecutorMapping mappings, InstructionContext ctx, InstructionContext other)
 	{
-		super(instructions, type);
+		/* lhs/rhs of addition instructions are randomally swapped, but
+		 * we could still map if only one side was a field here
+		 */
 	}
 
 	@Override
-	public InstructionContext execute(Frame frame)
+	default boolean isSame(InstructionContext thisIc, InstructionContext otherIc)
 	{
-		InstructionContext ins = new InstructionContext(this, frame);
-		Stack stack = frame.getStack();
-		
-		StackContext two = stack.pop();
-		StackContext one = stack.pop();
-		
-		ins.pop(two, one);
-		
-		Value result = Value.UNKNOWN;
-		if (!two.getValue().isUnknownOrNull() && !one.getValue().isUnknownOrNull())
-		{
-			float f2 = (float) two.getValue().getValue(),
-				f1 = (float) one.getValue().getValue();
-			
-			result = new Value(f1 + f2);
-		}
-		
-		StackContext ctx = new StackContext(ins, float.class, result);
-		stack.push(ctx);
-		
-		ins.push(ctx);
-		
-		return ins;
+		return this.getClass() == otherIc.getInstruction().getClass();
+	}
+
+	@Override
+	default boolean canMap(InstructionContext thisIc)
+	{
+		return true;
 	}
 }
