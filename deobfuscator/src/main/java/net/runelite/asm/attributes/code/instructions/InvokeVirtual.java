@@ -310,6 +310,50 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			break; // descriptors for all methods must be the same
 		}
 		
+		/* check arguments */
+		assert thisIc.getPops().size() == otherIc.getPops().size();
+		
+		for (int i = 0; i < thisIc.getPops().size(); ++i)
+		{
+			StackContext s1 = thisIc.getPops().get(i),
+				s2 = otherIc.getPops().get(i);
+			
+			InstructionContext base1 = MappingExecutorUtil.resolve(s1.getPushed(), s1);
+			InstructionContext base2 = MappingExecutorUtil.resolve(s2.getPushed(), s2);
+			
+			if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+			{
+				GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+					gf2 = (GetFieldInstruction) base2.getInstruction();
+				
+				Field f1 = gf1.getMyField(),
+					f2 = gf2.getMyField();
+				
+				if (!MappingExecutorUtil.isMaybeEqual(f1, f2))
+					return false;
+			}
+		}
+		
+		/* check field that was invoked on */
+		
+		StackContext object1 = thisIc.getPops().get(thisIi.method.getType().size()),
+			object2 = otherIc.getPops().get(otherIi.method.getType().size());
+		
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+
+			if (!MappingExecutorUtil.isMaybeEqual(f1, f2))
+				return false;
+		}
+		
 		return true;
 	}
 	
