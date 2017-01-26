@@ -4,75 +4,70 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cm")
+@ObfuscatedName("ch")
 @Implements("Renderable")
 public abstract class Renderable extends CacheableNode {
-   @ObfuscatedName("nv")
+   @ObfuscatedName("eo")
+   static ModIcon[] field1540;
+   @ObfuscatedName("ds")
+   @Export("region")
+   static Region region;
+   @ObfuscatedName("dr")
+   static int[] field1542;
+   @ObfuscatedName("cg")
    @ObfuscatedGetter(
-      intValue = 1154585581
-   )
-   static int field1544;
-   @ObfuscatedName("cv")
-   @ObfuscatedGetter(
-      intValue = -416491117
+      intValue = 253578329
    )
    @Export("modelHeight")
    public int modelHeight = 1000;
+   @ObfuscatedName("mk")
+   @Export("clanMembers")
+   static XClanMember[] clanMembers;
 
-   @ObfuscatedName("ca")
-   void vmethod1823(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
+   @ObfuscatedName("cs")
+   void vmethod1886(int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9) {
       Model var10 = this.getModel();
       if(null != var10) {
          this.modelHeight = var10.modelHeight;
-         var10.vmethod1823(var1, var2, var3, var4, var5, var6, var7, var8, var9);
+         var10.vmethod1886(var1, var2, var3, var4, var5, var6, var7, var8, var9);
       }
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)LModel;",
-      garbageValue = "2062912069"
+      garbageValue = "2063755858"
    )
    @Export("getModel")
    protected Model getModel() {
       return null;
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("cy")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-270558043"
+      signature = "([LWidget;LWidget;ZI)V",
+      garbageValue = "-2128338253"
    )
-   public static void method1825(int var0) {
-      class138.field1933 = 1;
-      ChatLineBuffer.field967 = null;
-      GroundObject.field1298 = -1;
-      class207.field3097 = -1;
-      class138.field1921 = 0;
-      class138.field1927 = false;
-      class138.field1926 = var0;
-   }
+   static void method1892(Widget[] var0, Widget var1, boolean var2) {
+      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
+      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
+      class205.method3818(var0, var1.id, var3, var4, var2);
+      if(null != var1.children) {
+         class205.method3818(var1.children, var1.id, var3, var4, var2);
+      }
 
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "1959266328"
-   )
-   @Export("calculateHeight")
-   public static int calculateHeight(int var0, int var1) {
-      int var2 = var0 >>> 31;
-      return (var0 + var2) / var1 - var2;
-   }
+      WidgetNode var5 = (WidgetNode)Client.componentTable.method2374((long)var1.id);
+      if(null != var5) {
+         int var6 = var5.id;
+         if(class103.method1973(var6)) {
+            class205.method3818(Widget.widgets[var6], -1, var3, var4, var2);
+         }
+      }
 
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
-      garbageValue = "-1521435463"
-   )
-   public static ModIcon[] method1831(class182 var0, String var1, String var2) {
-      int var3 = var0.method3197(var1);
-      int var4 = var0.method3198(var3, var2);
-      return class13.method148(var0, var3, var4);
+      if(var1.contentType == 1337) {
+         ;
+      }
+
    }
 }

@@ -1,31 +1,47 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ft")
+@ObfuscatedName("fe")
 public class class170 {
-   @ObfuscatedName("gm")
-   static Widget field2345;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1596643659
-   )
-   public static int field2346;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -892393279
-   )
-   public static int field2347;
-   @ObfuscatedName("j")
-   static int[] field2349;
+   class170() throws Throwable {
+      throw new Error();
+   }
 
-   @ObfuscatedName("ed")
+   @ObfuscatedName("di")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)I",
-      garbageValue = "-1788272709"
+      signature = "(Ljava/lang/String;I)Z",
+      garbageValue = "1997218729"
    )
-   static int method3147(Widget var0) {
-      class133 var1 = (class133)Client.widgetFlags.method2274((long)var0.index + ((long)var0.id << 32));
-      return var1 != null?var1.field1901:var0.field2281;
+   static boolean method3237(String var0) {
+      if(var0 == null) {
+         return false;
+      } else {
+         String var1 = FrameMap.method1697(var0, FaceNormal.field1561);
+
+         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
+            Ignore var3 = Client.ignores[var2];
+            if(var1.equalsIgnoreCase(FrameMap.method1697(var3.name, FaceNormal.field1561))) {
+               return true;
+            }
+
+            if(var1.equalsIgnoreCase(FrameMap.method1697(var3.previousName, FaceNormal.field1561))) {
+               return true;
+            }
+         }
+
+         return false;
+      }
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IZIZI)V",
+      garbageValue = "-591399513"
+   )
+   static void method3238(int var0, boolean var1, int var2, boolean var3) {
+      if(null != class5.worldList) {
+         XClanMember.method250(0, class5.worldList.length - 1, var0, var1, var2, var3);
+      }
+
    }
 }

@@ -2,46 +2,47 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fn")
+@ObfuscatedName("fb")
 public class class164 extends CacheableNode {
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
+   public final int[] field2150;
+   @ObfuscatedName("q")
+   public final int[] field2152;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1094745323
+      intValue = 937892455
    )
-   public final int field2164;
-   @ObfuscatedName("c")
+   public final int field2153;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -488058525
+      intValue = -2050204903
    )
-   public final int field2165;
-   @ObfuscatedName("f")
-   public final int[] field2166;
-   @ObfuscatedName("bs")
-   static class184 field2170;
-   @ObfuscatedName("nb")
-   @ObfuscatedGetter(
-      intValue = -2028855819
-   )
-   static int field2171;
-   @ObfuscatedName("h")
-   public final int[] field2172;
+   public final int field2156;
 
-   class164(int var1, int var2, int[] var3, int[] var4, int var5) {
-      this.field2164 = var1;
-      this.field2165 = var2;
-      this.field2166 = var3;
-      this.field2172 = var4;
+   @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "-188803735"
+   )
+   static final String method3115(int var0) {
+      String var1 = Integer.toString(var0);
+
+      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
+         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+      }
+
+      return var1.length() > 9?" " + Client.method568('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + Client.method568(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + Client.method568(16776960) + var1 + "</col>");
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-433660486"
+      signature = "(IIB)Z",
+      garbageValue = "13"
    )
-   public boolean method3030(int var1, int var2) {
-      if(var2 >= 0 && var2 < this.field2172.length) {
-         int var3 = this.field2172[var2];
-         if(var1 >= var3 && var1 <= this.field2166[var2] + var3) {
+   public boolean method3116(int var1, int var2) {
+      if(var2 >= 0 && var2 < this.field2152.length) {
+         int var3 = this.field2152[var2];
+         if(var1 >= var3 && var1 <= var3 + this.field2150[var2]) {
             return true;
          }
       }
@@ -49,32 +50,28 @@ public class class164 extends CacheableNode {
       return false;
    }
 
-   @ObfuscatedName("n")
+   class164(int var1, int var2, int[] var3, int[] var4, int var5) {
+      this.field2156 = var1;
+      this.field2153 = var2;
+      this.field2150 = var3;
+      this.field2152 = var4;
+   }
+
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(B)[LSpritePixels;",
-      garbageValue = "-70"
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;B)LModIcon;",
+      garbageValue = "4"
    )
-   static SpritePixels[] method3034() {
-      SpritePixels[] var0 = new SpritePixels[class225.field3221];
-
-      for(int var1 = 0; var1 < class225.field3221; ++var1) {
-         SpritePixels var2 = var0[var1] = new SpritePixels();
-         var2.maxWidth = class225.field3218;
-         var2.maxHeight = class225.field3219;
-         var2.offsetX = class181.field2710[var1];
-         var2.offsetY = class225.field3220[var1];
-         var2.width = class119.field1865[var1];
-         var2.height = class109.field1742[var1];
-         int var3 = var2.height * var2.width;
-         byte[] var4 = class44.field888[var1];
-         var2.image = new int[var3];
-
-         for(int var5 = 0; var5 < var3; ++var5) {
-            var2.image[var5] = class225.field3217[var4[var5] & 255];
-         }
+   public static ModIcon method3118(class182 var0, String var1, String var2) {
+      int var3 = var0.method3276(var1);
+      int var4 = var0.method3287(var3, var2);
+      ModIcon var5;
+      if(!class196.method3575(var0, var3, var4)) {
+         var5 = null;
+      } else {
+         var5 = class186.method3418();
       }
 
-      class30.method648();
-      return var0;
+      return var5;
    }
 }

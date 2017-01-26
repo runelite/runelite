@@ -2,17 +2,28 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("di")
+@ObfuscatedName("dh")
 @Implements("Node2LinkedList")
 public final class Node2LinkedList {
-   @ObfuscatedName("s")
+   @ObfuscatedName("p")
    @Export("sentinel")
    CacheableNode sentinel = new CacheableNode();
 
-   @ObfuscatedName("s")
-   public void method2226(CacheableNode var1) {
+   @ObfuscatedName("x")
+   CacheableNode method2302() {
+      CacheableNode var1 = this.sentinel.previous;
+      if(var1 == this.sentinel) {
+         return null;
+      } else {
+         var1.method2440();
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("p")
+   public void method2304(CacheableNode var1) {
       if(var1.next != null) {
-         var1.method2361();
+         var1.method2440();
       }
 
       var1.next = this.sentinel.next;
@@ -21,10 +32,27 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
-   @ObfuscatedName("c")
-   public void method2227(CacheableNode var1) {
+   public Node2LinkedList() {
+      this.sentinel.previous = this.sentinel;
+      this.sentinel.next = this.sentinel;
+   }
+
+   @ObfuscatedName("d")
+   void method2305() {
+      while(true) {
+         CacheableNode var1 = this.sentinel.previous;
+         if(var1 == this.sentinel) {
+            return;
+         }
+
+         var1.method2440();
+      }
+   }
+
+   @ObfuscatedName("g")
+   public void method2306(CacheableNode var1) {
       if(var1.next != null) {
-         var1.method2361();
+         var1.method2440();
       }
 
       var1.next = this.sentinel;
@@ -33,37 +61,9 @@ public final class Node2LinkedList {
       var1.previous.next = var1;
    }
 
-   @ObfuscatedName("f")
-   CacheableNode method2228() {
-      CacheableNode var1 = this.sentinel.previous;
-      if(var1 == this.sentinel) {
-         return null;
-      } else {
-         var1.method2361();
-         return var1;
-      }
-   }
-
-   public Node2LinkedList() {
-      this.sentinel.previous = this.sentinel;
-      this.sentinel.next = this.sentinel;
-   }
-
-   @ObfuscatedName("g")
-   public CacheableNode method2229() {
+   @ObfuscatedName("q")
+   public CacheableNode method2314() {
       CacheableNode var1 = this.sentinel.previous;
       return var1 == this.sentinel?null:var1;
-   }
-
-   @ObfuscatedName("k")
-   void method2230() {
-      while(true) {
-         CacheableNode var1 = this.sentinel.previous;
-         if(var1 == this.sentinel) {
-            return;
-         }
-
-         var1.method2361();
-      }
    }
 }

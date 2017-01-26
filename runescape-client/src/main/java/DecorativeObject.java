@@ -1,96 +1,118 @@
+import java.awt.Canvas;
+import java.awt.Color;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cp")
 @Implements("DecorativeObject")
 public final class DecorativeObject {
-   @ObfuscatedName("b")
-   @Export("renderable2")
-   public Renderable renderable2;
-   @ObfuscatedName("c")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1774449663
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1072334739
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 24898527
-   )
-   @Export("renderFlag")
-   int renderFlag;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1669725043
-   )
-   @Export("rotation")
-   int rotation;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -376041533
-   )
-   @Export("offsetX")
-   int offsetX;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 306065331
+      intValue = -87904951
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("u")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1304777155
+      intValue = 705668615
    )
-   @Export("floor")
-   int floor;
+   @Export("x")
+   int x;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 806407347
+      intValue = 800423499
    )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("pf")
-   static class230 field1604;
-   @ObfuscatedName("r")
+   @Export("y")
+   int y;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1352534591
+      intValue = -1718065305
+   )
+   @Export("renderFlag")
+   int renderFlag;
+   @ObfuscatedName("al")
+   static class102 field1600;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1529701103
+   )
+   @Export("offsetX")
+   int offsetX;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 1277473667
    )
    @Export("renderInfoBitPacked")
    int renderInfoBitPacked = 0;
-
-   @ObfuscatedName("bv")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-8430249"
+   @ObfuscatedName("s")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -205852319
    )
-   static final void method1862(int var0, int var1) {
-      if(Client.menuOptionCount >= 2 || Client.field412 != 0 || Client.field446) {
-         String var2;
-         if(Client.field412 == 1 && Client.menuOptionCount < 2) {
-            var2 = "Use" + " " + Client.field322 + " " + "->";
-         } else if(Client.field446 && Client.menuOptionCount < 2) {
-            var2 = Client.field449 + " " + Client.field450 + " " + "->";
-         } else {
-            var2 = class3.method38(Client.menuOptionCount - 1);
-         }
+   @Export("hash")
+   public int hash = 0;
+   @ObfuscatedName("o")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = -1577351627
+   )
+   @Export("floor")
+   int floor;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1139257251
+   )
+   @Export("rotation")
+   int rotation;
 
-         if(Client.menuOptionCount > 2) {
-            var2 = var2 + Actor.method574(16777215) + " " + '/' + " " + (Client.menuOptionCount - 2) + " more options";
-         }
-
-         class16.field187.method3753(var2, 4 + var0, var1 + 15, 16777215, 0, Client.gameCycle / 1000);
+   @ObfuscatedName("av")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "58"
+   )
+   static void method1913() {
+      Canvas var0 = class157.canvas;
+      var0.removeKeyListener(class105.keyboard);
+      var0.removeFocusListener(class105.keyboard);
+      class105.field1711 = -1;
+      class72.method1398(class157.canvas);
+      if(class138.field1917 != null) {
+         class138.field1917.vmethod2084(class157.canvas);
       }
+
+      class88.field1536.method2137();
+      class157.canvas.setBackground(Color.black);
+      Canvas var1 = class157.canvas;
+      var1.setFocusTraversalKeysEnabled(false);
+      var1.addKeyListener(class105.keyboard);
+      var1.addFocusListener(class105.keyboard);
+      FileOnDisk.method1428(class157.canvas);
+      if(class138.field1917 != null) {
+         class138.field1917.vmethod2092(class157.canvas);
+      }
+
+      if(Client.widgetRoot != -1) {
+         class41.method756(false);
+      }
+
+      GameEngine.field1783 = true;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1803332362"
+   )
+   public static void method1914() {
+      ItemComposition.field2942.reset();
+      ItemComposition.itemModelCache.reset();
+      ItemComposition.itemSpriteCache.reset();
    }
 }

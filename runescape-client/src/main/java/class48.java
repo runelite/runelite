@@ -1,92 +1,113 @@
+import java.applet.Applet;
+import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ak")
+@ObfuscatedName("aq")
 public class class48 extends CacheableNode {
-   @ObfuscatedName("f")
-   int[] field934;
-   @ObfuscatedName("h")
-   String[] field935;
-   @ObfuscatedName("c")
-   int[] field936;
+   @ObfuscatedName("ag")
+   static boolean field937;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = -1647840767
+   )
+   int field938;
+   @ObfuscatedName("q")
+   String[] field940;
    @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -774048689
-   )
-   int field937;
-   @ObfuscatedName("s")
-   static NodeCache field938 = new NodeCache(128);
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -238057711
-   )
-   int field939;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 626236105
-   )
-   int field940;
-   @ObfuscatedName("ak")
-   @ObfuscatedGetter(
-      longValue = -1042210312971959337L
-   )
-   static long field941;
-   @ObfuscatedName("nu")
-   @ObfuscatedGetter(
-      intValue = -1706476923
-   )
-   static int field942;
+   int[] field941;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 142405077
+      intValue = 317936149
+   )
+   int field942;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 667846083
    )
    int field943;
-
    @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass190;",
-      garbageValue = "1049388055"
+   @ObfuscatedGetter(
+      intValue = 1218688637
    )
-   public static class190 method844(int var0) {
-      class190 var1 = (class190)class190.field2807.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = class190.field2804.getConfigData(13, var0);
-         var1 = new class190();
-         var1.field2797 = var0;
-         if(null != var2) {
-            var1.method3364(new Buffer(var2));
+   int field944;
+   @ObfuscatedName("pf")
+   @ObfuscatedGetter(
+      intValue = -234960557
+   )
+   static int field945;
+   @ObfuscatedName("x")
+   int[] field947;
+   @ObfuscatedName("o")
+   static byte[][] field949;
+   @ObfuscatedName("p")
+   static NodeCache field952 = new NodeCache(128);
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;IIIZB)V",
+      garbageValue = "-72"
+   )
+   public static void method875(class182 var0, int var1, int var2, int var3, boolean var4) {
+      class138.field1921 = 1;
+      Item.field887 = var0;
+      class181.field2695 = var1;
+      Frames.field1569 = var2;
+      class105.field1721 = var3;
+      class138.field1922 = var4;
+      class138.field1926 = 10000;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;I)V",
+      garbageValue = "30586861"
+   )
+   public static void method877(Buffer var0) {
+      byte[] var1 = new byte[24];
+
+      try {
+         class104.field1683.method1369(0L);
+         class104.field1683.method1370(var1);
+
+         int var2;
+         for(var2 = 0; var2 < 24 && var1[var2] == 0; ++var2) {
+            ;
          }
 
-         class190.field2807.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IIIIIIB)I",
-      garbageValue = "-56"
-   )
-   public static int method849(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
+         if(var2 >= 24) {
+            throw new IOException();
+         }
+      } catch (Exception var5) {
+         for(int var3 = 0; var3 < 24; ++var3) {
+            var1[var3] = -1;
+         }
       }
 
-      var2 &= 3;
-      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+      var0.method2808(var1, 0, 24);
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZB)V",
-      garbageValue = "-82"
+      signature = "(Ljava/applet/Applet;Ljava/lang/String;B)V",
+      garbageValue = "-20"
    )
-   public static void method850(String var0, boolean var1, boolean var2) {
-      RSCanvas.method2034(var0, var1, "openjs", var2);
+   public static void method878(Applet var0, String var1) {
+      class114.field1793 = var0;
+      class114.field1792 = var1;
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-913934666"
+   )
+   static void method879(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      class181 var4 = (class181)class185.field2741.method2374(var2);
+      if(null != var4) {
+         class185.field2748.method2306(var4);
+      }
    }
 }

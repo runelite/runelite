@@ -1,206 +1,184 @@
+import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("w")
+@ObfuscatedName("u")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("c")
+   @ObfuscatedName("p")
+   @Export("name")
+   String name;
+   @ObfuscatedName("g")
    @Export("previousName")
    String previousName;
-   @ObfuscatedName("f")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -440131327
+      intValue = -962935221
    )
    @Export("world")
    int world;
-   @ObfuscatedName("s")
-   @Export("name")
-   String name;
-   @ObfuscatedName("a")
-   boolean field161;
-   @ObfuscatedName("h")
+   @ObfuscatedName("d")
+   boolean field146;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 879264497
+      intValue = 1808119225
    )
    @Export("rank")
    int rank;
-   @ObfuscatedName("qn")
-   protected static java.awt.Font field164;
-   @ObfuscatedName("g")
-   boolean field166;
-
-   @ObfuscatedName("c")
-   static final void method151(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
-      }
-
-   }
-
    @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "([BIIS)Ljava/lang/String;",
-      garbageValue = "-3905"
-   )
-   public static String method152(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
+   boolean field148;
+   @ObfuscatedName("mb")
+   static byte field149;
+   @ObfuscatedName("r")
+   public static class72[] field151;
+   @ObfuscatedName("cc")
+   static class110 field152;
 
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var1 + var5] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class203.field3077[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
-         }
-      }
-
-      return new String(var3, 0, var4);
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(Lclass228;B)I",
-      garbageValue = "0"
-   )
-   static final int method153(class228 var0) {
-      if(null == var0) {
-         return 12;
-      } else {
-         switch(var0.field3243) {
-         case 6:
-            return 20;
-         default:
-            return 12;
-         }
-      }
-   }
-
-   @ObfuscatedName("al")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "14"
+      garbageValue = "30"
    )
-   static final void method154() {
-      int var0 = 64 + class189.field2793 * 128;
-      int var1 = class5.field57 * 128 + 64;
-      int var2 = XClanMember.method223(var0, var1, class118.plane) - Renderable.field1544;
-      if(XItemContainer.cameraX < var0) {
-         XItemContainer.cameraX += (var0 - XItemContainer.cameraX) * class0.field3 / 1000 + class5.field59;
-         if(XItemContainer.cameraX > var0) {
-            XItemContainer.cameraX = var0;
+   public static void method178() {
+      CombatInfo2.field2838.reset();
+      CombatInfo2.field2827.reset();
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lclass103;Ljava/awt/Component;III)Lclass57;",
+      garbageValue = "-1741649751"
+   )
+   public static final class57 method179(class103 var0, Component var1, int var2, int var3) {
+      if(class57.field1047 == 0) {
+         throw new IllegalStateException();
+      } else if(var2 >= 0 && var2 < 2) {
+         if(var3 < 256) {
+            var3 = 256;
          }
-      }
 
-      if(XItemContainer.cameraX > var0) {
-         XItemContainer.cameraX -= class0.field3 * (XItemContainer.cameraX - var0) / 1000 + class5.field59;
-         if(XItemContainer.cameraX < var0) {
-            XItemContainer.cameraX = var0;
+         try {
+            class59 var4 = new class59();
+            var4.field1045 = new int[(class57.field1042?2:1) * 256];
+            var4.field1040 = var3;
+            var4.vmethod1086(var1);
+            var4.field1049 = (var3 & -1024) + 1024;
+            if(var4.field1049 > 16384) {
+               var4.field1049 = 16384;
+            }
+
+            var4.vmethod1088(var4.field1049);
+            if(class211.field3122 > 0 && null == class57.field1056) {
+               class57.field1056 = new class63();
+               class57.field1056.field1093 = var0;
+               var0.method1968(class57.field1056, class211.field3122);
+            }
+
+            if(class57.field1056 != null) {
+               if(class57.field1056.field1092[var2] != null) {
+                  throw new IllegalArgumentException();
+               }
+
+               class57.field1056.field1092[var2] = var4;
+            }
+
+            return var4;
+         } catch (Throwable var5) {
+            return new class57();
          }
+      } else {
+         throw new IllegalArgumentException();
+      }
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "-46"
+   )
+   static final int method180(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
       }
 
-      if(class11.cameraZ < var2) {
-         class11.cameraZ += class0.field3 * (var2 - class11.cameraZ) / 1000 + class5.field59;
-         if(class11.cameraZ > var2) {
-            class11.cameraZ = var2;
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
+   }
+
+   @ObfuscatedName("ai")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "2073151908"
+   )
+   static final byte[] method181(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.method2819();
+      if(var3 >= 0 && (class182.field2701 == 0 || var3 <= class182.field2701)) {
+         if(var2 == 0) {
+            byte[] var6 = new byte[var3];
+            var1.method2824(var6, 0, var3);
+            return var6;
+         } else {
+            int var4 = var1.method2819();
+            if(var4 < 0 || class182.field2701 != 0 && var4 > class182.field2701) {
+               throw new RuntimeException();
+            } else {
+               byte[] var5 = new byte[var4];
+               if(var2 == 1) {
+                  class147.method2756(var5, var4, var0, var3, 9);
+               } else {
+                  class182.field2711.method2749(var1, var5);
+               }
+
+               return var5;
+            }
          }
+      } else {
+         throw new RuntimeException();
       }
+   }
 
-      if(class11.cameraZ > var2) {
-         class11.cameraZ -= class5.field59 + class0.field3 * (class11.cameraZ - var2) / 1000;
-         if(class11.cameraZ < var2) {
-            class11.cameraZ = var2;
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;IIB)LFont;",
+      garbageValue = "3"
+   )
+   public static Font method182(class182 var0, class182 var1, int var2, int var3) {
+      if(!class196.method3575(var0, var2, var3)) {
+         return null;
+      } else {
+         byte[] var5 = var1.getConfigData(var2, var3);
+         Font var4;
+         if(null == var5) {
+            var4 = null;
+         } else {
+            Font var6 = new Font(var5, class225.field3216, class225.field3215, class22.field231, class225.field3218, class183.field2719, class48.field949);
+            class225.field3216 = null;
+            class225.field3215 = null;
+            class22.field231 = null;
+            class225.field3218 = null;
+            class183.field2719 = null;
+            class48.field949 = null;
+            var4 = var6;
          }
-      }
 
-      if(class20.cameraY < var1) {
-         class20.cameraY += class5.field59 + (var1 - class20.cameraY) * class0.field3 / 1000;
-         if(class20.cameraY > var1) {
-            class20.cameraY = var1;
-         }
+         return var4;
       }
-
-      if(class20.cameraY > var1) {
-         class20.cameraY -= (class20.cameraY - var1) * class0.field3 / 1000 + class5.field59;
-         if(class20.cameraY < var1) {
-            class20.cameraY = var1;
-         }
-      }
-
-      var0 = 64 + class164.field2171 * 128;
-      var1 = class180.field2705 * 128 + 64;
-      var2 = XClanMember.method223(var0, var1, class118.plane) - class48.field942;
-      int var3 = var0 - XItemContainer.cameraX;
-      int var4 = var2 - class11.cameraZ;
-      int var5 = var1 - class20.cameraY;
-      int var6 = (int)Math.sqrt((double)(var5 * var5 + var3 * var3));
-      int var7 = (int)(Math.atan2((double)var4, (double)var6) * 325.949D) & 2047;
-      int var8 = (int)(Math.atan2((double)var3, (double)var5) * -325.949D) & 2047;
-      if(var7 < 128) {
-         var7 = 128;
-      }
-
-      if(var7 > 383) {
-         var7 = 383;
-      }
-
-      if(class13.cameraPitch < var7) {
-         class13.cameraPitch += class6.field69 + (var7 - class13.cameraPitch) * class183.field2735 / 1000;
-         if(class13.cameraPitch > var7) {
-            class13.cameraPitch = var7;
-         }
-      }
-
-      if(class13.cameraPitch > var7) {
-         class13.cameraPitch -= class183.field2735 * (class13.cameraPitch - var7) / 1000 + class6.field69;
-         if(class13.cameraPitch < var7) {
-            class13.cameraPitch = var7;
-         }
-      }
-
-      int var9 = var8 - class105.cameraYaw;
-      if(var9 > 1024) {
-         var9 -= 2048;
-      }
-
-      if(var9 < -1024) {
-         var9 += 2048;
-      }
-
-      if(var9 > 0) {
-         class105.cameraYaw += class183.field2735 * var9 / 1000 + class6.field69;
-         class105.cameraYaw &= 2047;
-      }
-
-      if(var9 < 0) {
-         class105.cameraYaw -= class6.field69 + -var9 * class183.field2735 / 1000;
-         class105.cameraYaw &= 2047;
-      }
-
-      int var10 = var8 - class105.cameraYaw;
-      if(var10 > 1024) {
-         var10 -= 2048;
-      }
-
-      if(var10 < -1024) {
-         var10 += 2048;
-      }
-
-      if(var10 < 0 && var9 > 0 || var10 > 0 && var9 < 0) {
-         class105.cameraYaw = var8;
-      }
-
    }
 }

@@ -1,44 +1,40 @@
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("do")
+@ObfuscatedName("df")
 public class class123 implements Iterator {
-   @ObfuscatedName("s")
-   CombatInfoList field1871;
-   @ObfuscatedName("c")
-   Node field1872;
-   @ObfuscatedName("f")
-   Node field1873 = null;
+   @ObfuscatedName("g")
+   Node field1867;
+   @ObfuscatedName("p")
+   CombatInfoList field1868;
+   @ObfuscatedName("x")
+   Node field1869 = null;
 
    public Object next() {
-      Node var1 = this.field1872;
-      if(var1 == this.field1871.node) {
+      Node var1 = this.field1867;
+      if(var1 == this.field1868.node) {
          var1 = null;
-         this.field1872 = null;
+         this.field1867 = null;
       } else {
-         this.field1872 = var1.next;
+         this.field1867 = var1.next;
       }
 
-      this.field1873 = var1;
+      this.field1869 = var1;
       return var1;
    }
 
-   public boolean hasNext() {
-      return this.field1872 != this.field1871.node;
-   }
-
    public void remove() {
-      if(this.field1873 == null) {
-         throw new IllegalStateException();
-      } else {
-         this.field1873.unlink();
-         this.field1873 = null;
-      }
+      this.field1869.unlink();
+      this.field1869 = null;
    }
 
    class123(CombatInfoList var1) {
-      this.field1871 = var1;
-      this.field1872 = this.field1871.node.next;
-      this.field1873 = null;
+      this.field1868 = var1;
+      this.field1867 = this.field1868.node.next;
+      this.field1869 = null;
+   }
+
+   public boolean hasNext() {
+      return this.field1867 != this.field1868.node;
    }
 }
