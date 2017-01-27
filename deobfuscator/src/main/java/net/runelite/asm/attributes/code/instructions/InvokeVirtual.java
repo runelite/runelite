@@ -53,6 +53,7 @@ import org.objectweb.asm.MethodVisitor;
 public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
 	private Method method;
+	private net.runelite.asm.Method myMethod;
 	private List<net.runelite.asm.Method> myMethods;
 
 	public InvokeVirtual(Instructions instructions, InstructionType type)
@@ -156,31 +157,43 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	
 	private List<net.runelite.asm.Method> lookupMethods()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
-		
-		ClassFile otherClass = group.findClass(method.getClazz().getName());
-		if (otherClass == null)
-			return null; // not our class
-	
-		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getName(), method.getType());
+		net.runelite.asm.Method m = lookupMethod();
 		if (m == null)
 			return null;
 
 		return VirtualMethods.getVirutalMethods(m);
 	}
 
+	private net.runelite.asm.Method lookupMethod()
+	{
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+
+		ClassFile otherClass = group.findClass(method.getClazz().getName());
+		if (otherClass == null)
+		{
+			return null; // not our class
+		}
+
+		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getName(), method.getType());
+		return m;
+	}
+
 	@Override
 	public void lookup()
 	{
 		myMethods = lookupMethods();
+		myMethod = lookupMethod();
 	}
 	
 	@Override
 	public void regeneratePool()
 	{
-		if (myMethods != null && !myMethods.isEmpty())
-			if (!myMethods.equals(lookupMethods()))
-				method = myMethods.get(0).getPoolMethod(); // is this right?
+		if (myMethods == null)
+		{
+			return;
+		}
+
+		method = myMethod.getPoolMethod();
 	}
 	
 	@Override
