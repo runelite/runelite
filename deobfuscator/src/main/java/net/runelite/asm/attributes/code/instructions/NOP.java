@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.Instruction;
@@ -30,7 +29,7 @@ import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.execution.Frame;
 import net.runelite.asm.execution.InstructionContext;
-
+import org.objectweb.asm.MethodVisitor;
 
 public class NOP extends Instruction
 {
@@ -38,7 +37,7 @@ public class NOP extends Instruction
 	{
 		super(instructions, type);
 	}
-	
+
 	public NOP(Instructions instructions)
 	{
 		super(instructions, InstructionType.NOP);
@@ -48,5 +47,10 @@ public class NOP extends Instruction
 	public InstructionContext execute(Frame frame)
 	{
 		return new InstructionContext(this, frame);
+	}
+
+	@Override
+	public void accept(MethodVisitor visitor)
+	{
 	}
 }
