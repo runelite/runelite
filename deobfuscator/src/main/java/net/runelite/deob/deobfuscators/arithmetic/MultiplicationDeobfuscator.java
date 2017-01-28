@@ -46,6 +46,7 @@ import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.LSub;
 import net.runelite.asm.attributes.code.instructions.SiPush;
+import net.runelite.asm.attributes.code.instructions.Swap;
 import net.runelite.asm.execution.Execution;
 import net.runelite.asm.execution.InstructionContext;
 import net.runelite.asm.execution.MethodContext;
@@ -53,9 +54,13 @@ import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.VariableContext;
 import net.runelite.asm.execution.Variables;
 import net.runelite.deob.Deobfuscator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MultiplicationDeobfuscator implements Deobfuscator
 {
+	private static final Logger logger = LoggerFactory.getLogger(MultiplicationDeobfuscator.class);
+	
 	private ClassGroup group;
 	
 	@Override
@@ -135,6 +140,16 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 			// if this instruction is imul, look at pops
 			if (ctx.getInstruction().getClass() == want)
 			{
+				if (i.getInstruction() instanceof Swap)
+				{
+					String mname = i.getInstruction().getInstructions().getCode().getMethod().getName();
+					logger.debug("Resolving swap");
+					
+					Swap swap = (Swap) i.getInstruction();
+					sctx = swap.getOriginal(sctx);
+					i = sctx.getPushed();
+				}
+
 				if (i.getInstruction() instanceof PushConstantInstruction)
 				{
 					if (i.getInstruction() instanceof BiPush || i.getInstruction() instanceof SiPush)
@@ -149,8 +164,14 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					try
 					{
 						MultiplicationExpression other = parseExpression(i, want);
+						if (other.dupmagic != null)
+						{
+							assert me.dupmagic == null;
+							me.dupmagic = other.dupmagic;
+						}
 
 						me.instructions.addAll(other.instructions);
+						me.dupedInstructions.addAll(other.dupedInstructions);
 						me.subexpressions.addAll(other.subexpressions);
 					}
 					catch (IllegalStateException ex)
@@ -165,6 +186,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					try
 					{
 						MultiplicationExpression other = parseExpression(i, want);
+						assert other.dupmagic == null;
 
 						// subexpr
 						me.subexpressions.add(other);
@@ -182,13 +204,13 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 					// find other branch of the dup instruction
 					// sctx = what dup pushed, find other
 					StackContext otherCtx = dup.getOtherBranch(sctx); // other side of dup
-					InstructionContext otherCtxI = otherCtx.getPopped().get(0); // is this irght?
+					InstructionContext otherCtxI = otherCtx.getPopped().get(0); // what popped other side of dup. is this right?
 
 					if (otherCtxI.getInstruction().getClass() == want)
 					{
 						//assert otherCtxI.getInstruction() instanceof IMul;
 
-						InstructionContext pushConstant = otherCtxI.getPops().get(0).getPushed();
+						InstructionContext pushConstant = otherCtxI.getPops().get(0).getPushed(); // other side of that imul
 						assert pushConstant.getInstruction() instanceof LDC_W || pushConstant.getInstruction() instanceof LDC2_W;
 
 						me.dupmagic = pushConstant;
@@ -206,6 +228,7 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 							}
 							else
 							{
+								assert other.dupmagic == null;
 								me.instructions.addAll(other.instructions);
 								me.dupedInstructions.addAll(other.instructions);
 								me.subexpressions.addAll(other.subexpressions);
@@ -246,9 +269,12 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		return me;
 	}
-	
+
+	// one = imul, two = other executeion of instruction of one, sctx = popped by imul
 	private static boolean ictxEqualsDir(InstructionContext one, InstructionContext two, StackContext sctx)
 	{
+		assert one.getInstruction() == two.getInstruction();
+		
 		if (one.getInstruction() != two.getInstruction())
 			return false;
 		
@@ -262,7 +288,8 @@ public class MultiplicationDeobfuscator implements Deobfuscator
 		
 		return true;
 	}
-	
+
+	// ctx = imul, sctx = popped by imul
 	public static boolean isOnlyPath(InstructionContext ctx, StackContext sctx)
 	{
 		assert ctx.getInstruction() instanceof IMul || ctx.getInstruction() instanceof LMul;
