@@ -30,11 +30,13 @@ import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.Instructions;
 import net.runelite.asm.attributes.code.Label;
+import net.runelite.asm.attributes.code.instructions.AConstNull;
 import net.runelite.asm.attributes.code.instructions.Dup2_X1;
 import net.runelite.asm.attributes.code.instructions.Dup_X1;
 import net.runelite.asm.attributes.code.instructions.Goto;
 import net.runelite.asm.attributes.code.instructions.IAdd;
 import net.runelite.asm.attributes.code.instructions.IConst_0;
+import net.runelite.asm.attributes.code.instructions.IConst_1;
 import net.runelite.asm.attributes.code.instructions.IConst_2;
 import net.runelite.asm.attributes.code.instructions.IConst_3;
 import net.runelite.asm.attributes.code.instructions.IConst_M1;
@@ -51,6 +53,8 @@ import net.runelite.asm.attributes.code.instructions.LLoad;
 import net.runelite.asm.attributes.code.instructions.LMul;
 import net.runelite.asm.attributes.code.instructions.LStore_0;
 import net.runelite.asm.attributes.code.instructions.Pop;
+import net.runelite.asm.attributes.code.instructions.Pop2;
+import net.runelite.asm.attributes.code.instructions.Swap;
 import net.runelite.asm.attributes.code.instructions.VReturn;
 import net.runelite.asm.execution.Execution;
 import net.runelite.deob.ClassGroupFactory;
@@ -664,6 +668,159 @@ public class MultiplicationDeobfuscatorTest
 			ins.addInstruction(i);
 
 		// check execution runs ok
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
+	}
+
+	//020   aload_0
+	//021   aload_0
+	//022   iload_1
+	//023   ldc                   1129258489
+	//024   imul
+	//025   dup_x1
+	//026   ldc                   -1692330935
+	//027   imul
+	//028   putfield              class81/field1351 I
+	//029   ldc                   1641298955
+	//030   imul                                         // this pops other side of dup_x1
+	//031   ldc                   1043501435
+	//032   imul
+	//033   putfield              class81/field1326 I
+	@Test
+	public void test11()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(5);
+
+		Instruction[] prepareVariables = {
+			new IConst_1(ins),
+			new IStore(ins, 0)
+		};
+
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+
+		LDC_W constant1 = new LDC_W(ins, 1129258489),
+			constant2 = new LDC_W(ins, -1692330935),
+			constant3 = new LDC_W(ins, 1641298955),
+			constant4 = new LDC_W(ins, 1043501435);
+
+		Instruction body[] = {
+			new AConstNull(ins), // this
+			new AConstNull(ins), // this
+			new ILoad(ins, 0),
+			constant1,
+			new IMul(ins),
+
+			new Dup_X1(ins),
+
+			constant2,
+			new IMul(ins),
+
+			new Pop2(ins), // putfield
+
+			constant3,
+			new IMul(ins),
+			constant4,
+			new IMul(ins),
+
+			new Pop2(ins), // putfield
+
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+			ins.addInstruction(i);
+		
+		Execution e = new Execution(group);
+		e.populateInitialMethods();
+		e.run();
+
+		assert constant1.getConstantAsInt() * constant2.getConstantAsInt() == 1;
+		assert constant3.getConstantAsInt() * constant4.getConstantAsInt() * constant1.getConstantAsInt() == 1;
+;
+		Deobfuscator d = new MultiplicationDeobfuscator();
+		d.run(group);
+
+		Assert.assertEquals(1, constant1.getConstantAsInt());
+		Assert.assertEquals(1, constant2.getConstantAsInt());
+		Assert.assertEquals(1, constant3.getConstantAsInt());
+		Assert.assertEquals(1, constant4.getConstantAsInt());
+	}
+
+	//020   aload_0
+	//021   aload_0
+	//022   iload_1
+	//023   ldc                   1129258489
+	//024   imul						// this, this, mul
+	//025   swap						// this, mul s, this
+	//026   iload_1
+	//027   iconst_1
+	//028   imul						// this, mul s, this, mul
+	//029   iconst_1
+	//030   imul
+	//031   putfield              class81/field1351 I       // this, mul
+	//032   iconst_1
+	//033   imul
+	//034   ldc                   -1692330935
+	//035   imul
+	//036   putfield              class81/field1326 I
+	@Test
+	public void test12()
+	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		code.setMaxStack(5);
+
+		Instruction[] prepareVariables = {
+			new IConst_1(ins),
+			new IStore(ins, 0)
+		};
+
+		for (Instruction i : prepareVariables)
+			ins.addInstruction(i);
+
+		LDC_W constant1 = new LDC_W(ins, 1129258489),
+			constant2 = new LDC_W(ins, -1692330935);
+
+		Instruction body[] = {
+			new AConstNull(ins), // this
+			new AConstNull(ins), // this
+			new ILoad(ins, 0),
+			constant1,
+			new IMul(ins),
+
+			new Swap(ins), // null, mul, null
+
+			new ILoad(ins, 0),
+
+			new Pop2(ins), // putfield
+
+			constant2,
+			new IMul(ins),
+
+			new Pop2(ins), // putfield
+
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+			ins.addInstruction(i);
+
 		Execution e = new Execution(group);
 		e.populateInitialMethods();
 		e.run();
