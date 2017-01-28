@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.asm.attributes.code.instructions;
 
 import net.runelite.asm.attributes.code.Instruction;
@@ -40,33 +39,51 @@ public class Swap extends Instruction
 		super(instructions, type);
 	}
 
+	public Swap(Instructions instructions)
+	{
+		super(instructions, InstructionType.SWAP);
+	}
+
 	@Override
 	public InstructionContext execute(Frame frame)
 	{
 		InstructionContext ins = new InstructionContext(this, frame);
 		Stack stack = frame.getStack();
-		
+
 		StackContext one = stack.pop();
 		StackContext two = stack.pop();
-		
+
 		ins.pop(one, two);
-		
+
 		StackContext ctx = new StackContext(ins, one.getType(), one.getValue());
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		ctx = new StackContext(ins, two.getType(), two.getValue());
 		stack.push(ctx);
-		
+
 		ins.push(ctx);
-		
+
 		return ins;
 	}
-	
+
 	@Override
 	public boolean removeStack()
 	{
 		throw new UnsupportedOperationException();
+	}
+
+	public StackContext getOriginal(StackContext sctx)
+	{
+		// sctx = stack pushed by this instruction, return stack popped by this instruction
+		InstructionContext ctx = sctx.getPushed();
+
+		assert ctx.getInstruction() == this;
+
+		int idx = ctx.getPushes().indexOf(sctx);
+		assert idx == 0 || idx == 1;
+
+		return ctx.getPops().get(idx);
 	}
 }
