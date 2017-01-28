@@ -96,7 +96,14 @@ public class Instructions
 	
 	public void addInstruction(Instruction i)
 	{
+		assert i.getInstructions() == this;
 		instructions.add(i);
+	}
+
+	public void addInstruction(int idx, Instruction i)
+	{
+		assert i.getInstructions() == this;
+		instructions.add(idx, i);
 	}
 	
 	public void remove(Instruction ins)
@@ -134,7 +141,7 @@ public class Instructions
 			i.regeneratePool();
 	}
 
-	public void replace(Instruction oldi, Instruction newi)
+	public int replace(Instruction oldi, Instruction newi)
 	{
 		assert oldi != newi;
 		
@@ -148,5 +155,7 @@ public class Instructions
 		instructions.remove(oldi);
 		oldi.setInstructions(null);
 		instructions.add(i, newi);
+
+		return i;
 	}
 }

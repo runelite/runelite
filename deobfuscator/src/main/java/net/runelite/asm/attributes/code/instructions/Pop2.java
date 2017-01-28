@@ -42,6 +42,11 @@ public class Pop2 extends Instruction
 		super(instructions, type);
 	}
 
+	public Pop2(Instructions instructions)
+	{
+		super(instructions, InstructionType.POP2);
+	}
+
 	@Override
 	public InstructionContext execute(Frame frame)
 	{
