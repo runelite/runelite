@@ -25,6 +25,8 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import java.util.Arrays;
+import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
 import net.runelite.asm.attributes.code.Instructions;
@@ -220,5 +222,42 @@ public class Dup2_X1 extends Instruction implements DupInstruction
 		}
 				
 		return ctx.getPushes().get(other);
+	}
+
+	@Override
+	public List<StackContext> getDuplicated(InstructionContext ictx)
+	{
+		if (ictx.getPushes().size() == 5)
+		{
+			// 0, 1
+			return Arrays.asList(ictx.getPops().get(0), ictx.getPops().get(1));
+		}
+		else if (ictx.getPushes().size() == 3)
+		{
+			// 0
+			return Arrays.asList(ictx.getPops().get(0));
+		}
+		else
+		{
+			throw new IllegalStateException();
+		}
+	}
+
+	@Override
+	public List<StackContext> getCopies(InstructionContext ictx)
+	{
+		if (ictx.getPushes().size() == 5)
+		{
+			return Arrays.asList(ictx.getPushes().get(0), ictx.getPushes().get(1));
+		}
+		else if (ictx.getPushes().size() == 3)
+		{
+			// 0
+			return Arrays.asList(ictx.getPushes().get(0));
+		}
+		else
+		{
+			throw new IllegalStateException();
+		}
 	}
 }
