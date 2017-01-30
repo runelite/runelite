@@ -35,7 +35,7 @@ public class Hooks
 
 	private static final RuneLite runelite = RuneLite.getRunelite();
 
-	public static void callHook(String name, Object object)
+	public static void callHook(String name, int idx, Object object)
 	{
 		if (RuneLite.getClient() == null)
 		{
@@ -46,8 +46,12 @@ public class Hooks
 		switch (name)
 		{
 			case "experienceChanged":
-				runelite.getEventBus().post(new ExperienceChanged());
+			{
+				ExperienceChanged experienceChanged = new ExperienceChanged();
+				experienceChanged.setIndex(idx);
+				runelite.getEventBus().post(experienceChanged);
 				break;
+			}
 			default:
 				logger.warn("Unknown event {} triggered on {}", name, object);
 				return;
