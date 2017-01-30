@@ -233,8 +233,9 @@ public class InjectHook
 	private void injectCallback(Method method, Instructions ins, int idx, String hookName, Instruction indexPusher)
 	{
 		// Insert:
-		// aload 0 (or aconst_null)
 		// ldc hookName
+		// <indexPusher>
+		// aload 0 (or aconst_null)
 		// invokestatic net/runelite/inject/callbacks/Hooks/callHook(Ljava/lang/String;ILjava/lang/Object;)V
 
 		// hook name
