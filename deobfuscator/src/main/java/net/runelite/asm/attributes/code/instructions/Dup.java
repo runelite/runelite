@@ -25,6 +25,7 @@
 
 package net.runelite.asm.attributes.code.instructions;
 
+import java.util.ArrayList;
 import java.util.List;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.InstructionType;
@@ -40,6 +41,11 @@ public class Dup extends Instruction implements DupInstruction
 	public Dup(Instructions instructions, InstructionType type)
 	{
 		super(instructions, type);
+	}
+
+	public Dup(Instructions instructions)
+	{
+		super(instructions, InstructionType.DUP);
 	}
 
 	@Override
@@ -104,5 +110,18 @@ public class Dup extends Instruction implements DupInstruction
 		assert idx == 0 || idx == 1;
 		
 		return pushes.get(~idx & 1);
+	}
+
+	@Override
+	public List<StackContext> getDuplicated(InstructionContext ictx)
+	{
+		assert ictx.getInstruction() == this;
+		return new ArrayList<>(ictx.getPops());
+	}
+
+	@Override
+	public List<StackContext> getCopies(InstructionContext ictx)
+	{
+		return new ArrayList<>(ictx.getPushes());
 	}
 }

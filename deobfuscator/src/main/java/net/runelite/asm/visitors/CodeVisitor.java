@@ -43,6 +43,7 @@ import net.runelite.asm.attributes.code.instruction.types.JumpingInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.TypeInstruction;
 import net.runelite.asm.attributes.code.instructions.IInc;
+import net.runelite.asm.attributes.code.instructions.InvokeInterface;
 import net.runelite.asm.attributes.code.instructions.LDC2_W;
 import net.runelite.asm.attributes.code.instructions.LDC_W;
 import net.runelite.asm.attributes.code.instructions.LookupSwitch;
@@ -155,6 +156,8 @@ public class CodeVisitor extends MethodVisitor
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf)
 	{
 		InvokeInstruction ii = (InvokeInstruction) createInstructionFromOpcode(opcode);
+
+		assert ii instanceof InvokeInterface == itf;
 
 		net.runelite.asm.pool.Method entry = new net.runelite.asm.pool.Method(
 			new net.runelite.asm.pool.Class(owner),

@@ -5,105 +5,116 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ax")
 public final class class31 extends Node {
    @ObfuscatedName("c")
-   static Deque field703 = new Deque();
-   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1981548785
+      intValue = 85948385
    )
-   int field704;
-   @ObfuscatedName("h")
+   int field695;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 164239323
+      intValue = 585540477
    )
-   int field705;
-   @ObfuscatedName("g")
+   int field696;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1618461165
+      intValue = 917894189
    )
-   int field706;
-   @ObfuscatedName("b")
+   int field697;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1170639071
+      intValue = -719903629
    )
-   int field707;
+   int field698;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -25967067
+      intValue = 535367421
    )
-   int field708;
+   int field699;
    @ObfuscatedName("m")
-   int[] field709;
-   @ObfuscatedName("u")
+   int[] field700;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -2075486419
+      intValue = -1408202065
    )
-   int field710;
-   @ObfuscatedName("x")
-   class66 field711;
+   int field701;
+   @ObfuscatedName("a")
+   class66 field702;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 932616723
+      intValue = -247972047
    )
-   int field712;
-   @ObfuscatedName("n")
+   int field703;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -554650095
+      intValue = -769358321
    )
-   int field713;
+   int field704;
+   @ObfuscatedName("u")
+   class66 field706;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -310389059
+   )
+   int field707;
+   @ObfuscatedName("r")
+   ObjectComposition field708;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 861323969
+      intValue = -1370583125
    )
-   int field714;
-   @ObfuscatedName("a")
+   int field709;
+   @ObfuscatedName("bu")
+   static ModIcon[] field710;
+   @ObfuscatedName("p")
+   static Deque field711 = new Deque();
+   @ObfuscatedName("qw")
    @ObfuscatedGetter(
-      intValue = 1410346775
+      intValue = 1534193155
    )
-   int field715;
-   @ObfuscatedName("w")
-   class66 field716;
-   @ObfuscatedName("r")
-   ObjectComposition field717;
+   static int field712;
+   @ObfuscatedName("an")
+   @ObfuscatedGetter(
+      intValue = -1571404143
+   )
+   static int field713;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1321185672"
+      garbageValue = "-399049195"
    )
-   void method653() {
-      int var1 = this.field707;
-      ObjectComposition var2 = this.field717.getImpostor();
-      if(var2 != null) {
-         this.field707 = var2.ambientSoundId;
-         this.field710 = var2.field2944 * 128;
-         this.field712 = var2.field2945;
-         this.field713 = var2.field2946;
-         this.field709 = var2.field2937;
+   void method662() {
+      int var1 = this.field704;
+      ObjectComposition var2 = this.field708.getImpostor();
+      if(null != var2) {
+         this.field704 = var2.ambientSoundId;
+         this.field709 = var2.field2910 * 128;
+         this.field703 = var2.field2888;
+         this.field695 = var2.field2911;
+         this.field700 = var2.field2937;
       } else {
-         this.field707 = -1;
-         this.field710 = 0;
-         this.field712 = 0;
-         this.field713 = 0;
-         this.field709 = null;
+         this.field704 = -1;
+         this.field709 = 0;
+         this.field703 = 0;
+         this.field695 = 0;
+         this.field700 = null;
       }
 
-      if(this.field707 != var1 && null != this.field711) {
-         CombatInfoListHolder.field758.method869(this.field711);
-         this.field711 = null;
+      if(var1 != this.field704 && null != this.field702) {
+         CombatInfoListHolder.field753.method899(this.field702);
+         this.field702 = null;
       }
 
    }
 
-   @ObfuscatedName("cy")
+   @ObfuscatedName("am")
    @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "-1619458544"
+      signature = "(III)V",
+      garbageValue = "-16711936"
    )
-   static final void method659(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field404; ++var4) {
-         if(Client.widgetPositionX[var4] + Client.widgetBoundsWidth[var4] > var0 && Client.widgetPositionX[var4] < var2 + var0 && Client.widgetBoundsHeight[var4] + Client.widgetPositionY[var4] > var1 && Client.widgetPositionY[var4] < var3 + var1) {
-            Client.field497[var4] = true;
-         }
+   static void method668(int var0, int var1) {
+      if(Client.field536 != 0 && var0 != -1) {
+         class48.method875(class49.field962, var0, 0, Client.field536, false);
+         Client.field516 = true;
       }
 
    }

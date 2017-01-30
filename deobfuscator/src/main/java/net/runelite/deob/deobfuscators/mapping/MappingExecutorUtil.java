@@ -27,6 +27,7 @@ package net.runelite.deob.deobfuscators.mapping;
 
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
+import net.runelite.asm.Field;
 import net.runelite.asm.Interfaces;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.code.Instruction;
@@ -359,5 +360,19 @@ public class MappingExecutorUtil
 			return false;
 		
 		return true;
+	}
+	
+	public static boolean isMaybeEqual(Field f1, Field f2)
+	{
+		if (f1 == null && f2 == null)
+			return true;
+		
+		if (f1 == null || f2 == null)
+			return false;
+		
+		if (f1.isStatic() != f2.isStatic())
+			return false;
+		
+		return isMaybeEqual(f1.getType(), f2.getType());
 	}
 }

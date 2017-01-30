@@ -1,9 +1,9 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("fp")
+@ObfuscatedName("fv")
 public class class163 {
-   @ObfuscatedName("n")
-   public static void method3010(int[] var0, int var1, int var2) {
+   @ObfuscatedName("a")
+   public static void method3092(int[] var0, int var1, int var2) {
       for(var2 = var1 + var2 - 7; var1 < var2; var0[var1++] = 0) {
          var0[var1++] = 0;
          var0[var1++] = 0;
@@ -18,5 +18,9 @@ public class class163 {
          ;
       }
 
+   }
+
+   class163() throws Throwable {
+      throw new Error();
    }
 }

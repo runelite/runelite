@@ -1,58 +1,141 @@
-import java.awt.datatransfer.Clipboard;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cv")
+@ObfuscatedName("cg")
 public class class88 {
-   @ObfuscatedName("pq")
-   static Clipboard field1541;
-
-   @ObfuscatedName("dl")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "738254611"
+   @ObfuscatedName("y")
+   public static String field1534;
+   @ObfuscatedName("g")
+   static Client field1536;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      longValue = -1005585117395808553L
    )
-   static final void method1820() {
-      Client.field336.method2963(180);
+   static long field1539;
 
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2283(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2277()) {
-         if(var0.field193 == 0 || var0.field193 == 3) {
-            WallObject.method1832(var0, true);
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass159;B)V",
+      garbageValue = "77"
+   )
+   static final void method1884(class159 var0) {
+      int var1 = 0;
+      var0.method3054();
+
+      int var2;
+      int var3;
+      int var4;
+      for(var2 = 0; var2 < class45.field898; ++var2) {
+         var3 = class45.field895[var2];
+         if((class45.field908[var3] & 1) == 0) {
+            if(var1 > 0) {
+               --var1;
+               class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+            } else {
+               var4 = var0.method3061(1);
+               if(var4 == 0) {
+                  var1 = NPC.method701(var0);
+                  class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+               } else {
+                  Ignore.method193(var0, var3);
+               }
+            }
          }
       }
 
-      if(Client.field455 != null) {
-         class204.method3671(Client.field455);
-         Client.field455 = null;
-      }
-
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;B)LModIcon;",
-      garbageValue = "-13"
-   )
-   public static ModIcon method1821(class182 var0, String var1, String var2) {
-      int var3 = var0.method3197(var1);
-      int var4 = var0.method3198(var3, var2);
-      ModIcon var5;
-      if(!class37.method718(var0, var3, var4)) {
-         var5 = null;
+      var0.method3043();
+      if(var1 != 0) {
+         throw new RuntimeException();
       } else {
-         ModIcon var7 = new ModIcon();
-         var7.width = class225.field3218;
-         var7.originalHeight = class225.field3219;
-         var7.offsetX = class181.field2710[0];
-         var7.offsetY = class225.field3220[0];
-         var7.originalWidth = class119.field1865[0];
-         var7.height = class109.field1742[0];
-         var7.palette = class225.field3217;
-         var7.pixels = class44.field888[0];
-         class30.method648();
-         var5 = var7;
-      }
+         var0.method3054();
 
-      return var5;
+         for(var2 = 0; var2 < class45.field898; ++var2) {
+            var3 = class45.field895[var2];
+            if((class45.field908[var3] & 1) != 0) {
+               if(var1 > 0) {
+                  --var1;
+                  class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+               } else {
+                  var4 = var0.method3061(1);
+                  if(var4 == 0) {
+                     var1 = NPC.method701(var0);
+                     class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                  } else {
+                     Ignore.method193(var0, var3);
+                  }
+               }
+            }
+         }
+
+         var0.method3043();
+         if(var1 != 0) {
+            throw new RuntimeException();
+         } else {
+            var0.method3054();
+
+            for(var2 = 0; var2 < class45.field900; ++var2) {
+               var3 = class45.field905[var2];
+               if((class45.field908[var3] & 1) != 0) {
+                  if(var1 > 0) {
+                     --var1;
+                     class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                  } else {
+                     var4 = var0.method3061(1);
+                     if(var4 == 0) {
+                        var1 = NPC.method701(var0);
+                        class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                     } else if(class104.method1989(var0, var3)) {
+                        class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                     }
+                  }
+               }
+            }
+
+            var0.method3043();
+            if(var1 != 0) {
+               throw new RuntimeException();
+            } else {
+               var0.method3054();
+
+               for(var2 = 0; var2 < class45.field900; ++var2) {
+                  var3 = class45.field905[var2];
+                  if((class45.field908[var3] & 1) == 0) {
+                     if(var1 > 0) {
+                        --var1;
+                        class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                     } else {
+                        var4 = var0.method3061(1);
+                        if(var4 == 0) {
+                           var1 = NPC.method701(var0);
+                           class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                        } else if(class104.method1989(var0, var3)) {
+                           class45.field908[var3] = (byte)(class45.field908[var3] | 2);
+                        }
+                     }
+                  }
+               }
+
+               var0.method3043();
+               if(var1 != 0) {
+                  throw new RuntimeException();
+               } else {
+                  class45.field898 = 0;
+                  class45.field900 = 0;
+
+                  for(var2 = 1; var2 < 2048; ++var2) {
+                     class45.field908[var2] = (byte)(class45.field908[var2] >> 1);
+                     Player var5 = Client.cachedPlayers[var2];
+                     if(null != var5) {
+                        class45.field895[++class45.field898 - 1] = var2;
+                     } else {
+                        class45.field905[++class45.field900 - 1] = var2;
+                     }
+                  }
+
+               }
+            }
+         }
+      }
    }
 }

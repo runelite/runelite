@@ -42,6 +42,7 @@ import net.runelite.asm.execution.Stack;
 import net.runelite.asm.execution.StackContext;
 import net.runelite.asm.execution.Type;
 import net.runelite.asm.execution.Value;
+import net.runelite.asm.pool.Class;
 import net.runelite.asm.pool.Method;
 import net.runelite.asm.signature.Signature;
 import net.runelite.asm.signature.util.VirtualMethods;
@@ -52,6 +53,7 @@ import org.objectweb.asm.MethodVisitor;
 public class InvokeVirtual extends Instruction implements InvokeInstruction
 {
 	private Method method;
+	private net.runelite.asm.Method myMethod;
 	private List<net.runelite.asm.Method> myMethods;
 
 	public InvokeVirtual(Instructions instructions, InstructionType type)
@@ -155,33 +157,43 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	
 	private List<net.runelite.asm.Method> lookupMethods()
 	{
-		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
-		
-		ClassFile otherClass = group.findClass(method.getClazz().getName());
-		if (otherClass == null)
-			return null; // not our class
-		
-		// when I recompile classes I can see the class of invokevirtuals methods change, get all methods
-		
-		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getName(), method.getType());
+		net.runelite.asm.Method m = lookupMethod();
 		if (m == null)
 			return null;
 
 		return VirtualMethods.getVirutalMethods(m);
 	}
 
+	private net.runelite.asm.Method lookupMethod()
+	{
+		ClassGroup group = this.getInstructions().getCode().getMethod().getMethods().getClassFile().getGroup();
+
+		ClassFile otherClass = group.findClass(method.getClazz().getName());
+		if (otherClass == null)
+		{
+			return null; // not our class
+		}
+
+		net.runelite.asm.Method m = otherClass.findMethodDeep(method.getName(), method.getType());
+		return m;
+	}
+
 	@Override
 	public void lookup()
 	{
 		myMethods = lookupMethods();
+		myMethod = lookupMethod();
 	}
 	
 	@Override
 	public void regeneratePool()
 	{
-		if (myMethods != null && !myMethods.isEmpty())
-			if (!myMethods.equals(lookupMethods()))
-				method = myMethods.get(0).getPoolMethod(); // is this right?
+		if (myMethods == null)
+		{
+			return;
+		}
+
+		method = myMethod.getPoolMethod();
 	}
 	
 	@Override
@@ -311,6 +323,50 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 			break; // descriptors for all methods must be the same
 		}
 		
+		/* check arguments */
+		assert thisIc.getPops().size() == otherIc.getPops().size();
+		
+		for (int i = 0; i < thisIc.getPops().size(); ++i)
+		{
+			StackContext s1 = thisIc.getPops().get(i),
+				s2 = otherIc.getPops().get(i);
+			
+			InstructionContext base1 = MappingExecutorUtil.resolve(s1.getPushed(), s1);
+			InstructionContext base2 = MappingExecutorUtil.resolve(s2.getPushed(), s2);
+			
+			if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+			{
+				GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+					gf2 = (GetFieldInstruction) base2.getInstruction();
+				
+				Field f1 = gf1.getMyField(),
+					f2 = gf2.getMyField();
+				
+				if (!MappingExecutorUtil.isMaybeEqual(f1, f2))
+					return false;
+			}
+		}
+		
+		/* check field that was invoked on */
+		
+		StackContext object1 = thisIc.getPops().get(thisIi.method.getType().size()),
+			object2 = otherIc.getPops().get(otherIi.method.getType().size());
+		
+		InstructionContext base1 = MappingExecutorUtil.resolve(object1.getPushed(), object1);
+		InstructionContext base2 = MappingExecutorUtil.resolve(object2.getPushed(), object2);
+
+		if (base1.getInstruction() instanceof GetFieldInstruction && base2.getInstruction() instanceof GetFieldInstruction)
+		{
+			GetFieldInstruction gf1 = (GetFieldInstruction) base1.getInstruction(),
+				gf2 = (GetFieldInstruction) base2.getInstruction();
+
+			Field f1 = gf1.getMyField(),
+				f2 = gf2.getMyField();
+
+			if (!MappingExecutorUtil.isMaybeEqual(f1, f2))
+				return false;
+		}
+		
 		return true;
 	}
 	
@@ -324,5 +380,15 @@ public class InvokeVirtual extends Instruction implements InvokeInstruction
 	public void setMethod(Method method)
 	{
 		this.method = method;
+	}
+
+	@Override
+	public void renameClass(String oldName, String newName)
+	{
+		if (myMethods != null)
+			return;
+
+		if (method.getClazz().getName().equals(oldName))
+			method = new Method(new Class(newName), method.getName(), method.getType());
 	}
 }

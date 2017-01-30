@@ -33,6 +33,7 @@ import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
+import net.runelite.asm.attributes.code.instructions.Swap;
 
 public class InstructionContext
 {
@@ -229,6 +230,13 @@ public class InstructionContext
 				
 				return storedCtx.resolve(null);
 			}
+		}
+
+		if (ctx.getInstruction() instanceof Swap)
+		{
+			Swap swap = (Swap) ctx.getInstruction();
+			StackContext s = swap.getOriginal(from);
+			return s.getPushed().resolve(s);
 		}
 		
 		return ctx;

@@ -36,12 +36,10 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 public class ClassFile
 {
-	private static final short ACC_FINAL = 0x0010;
-	private static final short ACC_ABSTRACT = 0x0400;
-	
 	private ClassGroup group;
 
 	private ClassFile parent; // super class
@@ -325,21 +323,26 @@ public class ClassFile
 
 	public boolean isAbstract()
 	{
-		return (this.access & ACC_ABSTRACT) != 0;
+		return (this.access & Opcodes.ACC_ABSTRACT) != 0;
 	}
 
 	public boolean isFinal()
 	{
-		return (this.access & ACC_FINAL) != 0;
+		return (this.access & Opcodes.ACC_FINAL) != 0;
+	}
+
+	public boolean isInterface()
+	{
+		return (this.access & Opcodes.ACC_INTERFACE) != 0;
 	}
 
 	public void clearFinal()
 	{
-		this.access &= ~ACC_FINAL;
+		this.access &= ~Opcodes.ACC_FINAL;
 	}
 
 	public void clearAbstract()
 	{
-		this.access &= ~ACC_ABSTRACT;
+		this.access &= ~Opcodes.ACC_ABSTRACT;
 	}
 }

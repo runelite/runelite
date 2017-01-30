@@ -4,152 +4,215 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bn")
+@ObfuscatedName("by")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -1530328407
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("p")
-   public static String[] field1210;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = 858775773
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("h")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("a")
+   @ObfuscatedName("d")
    @Export("middle")
    Renderable middle;
    @ObfuscatedName("g")
-   @Export("top")
-   Renderable top;
-   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 229433945
-   )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("ic")
-   @ObfuscatedGetter(
-      intValue = -700930213
-   )
-   static int field1216;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1539425809
+      intValue = 1327191055
    )
    @Export("x")
    int x;
-   @ObfuscatedName("s")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1180651757
+      intValue = -1316448377
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("q")
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 677454735
+   )
+   @Export("flags")
+   int flags;
+   @ObfuscatedName("k")
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 857599865
    )
    @Export("hash")
    int hash;
-
-   @ObfuscatedName("bw")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-424486447"
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1017830469
    )
-   static final void method1423() {
-      for(class33 var0 = (class33)Client.field426.method2330(); var0 != null; var0 = (class33)Client.field426.method2346()) {
-         if(var0.field742 == class118.plane && !var0.field749) {
-            if(Client.gameCycle >= var0.field748) {
-               var0.method669(Client.field533);
-               if(var0.field749) {
-                  var0.unlink();
-               } else {
-                  class0.region.method1713(var0.field742, var0.field741, var0.field744, var0.field745, 60, var0, 0, -1, false);
+   @Export("height")
+   int height;
+   @ObfuscatedName("dz")
+   @Export("mapRegions")
+   static int[] mapRegions;
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "([BB)V",
+      garbageValue = "13"
+   )
+   public static void method1455(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      var1.offset = var0.length - 2;
+      class225.field3217 = var1.readUnsignedShort();
+      class225.field3216 = new int[class225.field3217];
+      class225.field3215 = new int[class225.field3217];
+      class22.field231 = new int[class225.field3217];
+      class225.field3218 = new int[class225.field3217];
+      class48.field949 = new byte[class225.field3217][];
+      var1.offset = var0.length - 7 - class225.field3217 * 8;
+      class225.field3214 = var1.readUnsignedShort();
+      NPC.field761 = var1.readUnsignedShort();
+      int var2 = (var1.readUnsignedByte() & 255) + 1;
+
+      int var3;
+      for(var3 = 0; var3 < class225.field3217; ++var3) {
+         class225.field3216[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3217; ++var3) {
+         class225.field3215[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3217; ++var3) {
+         class22.field231[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3217; ++var3) {
+         class225.field3218[var3] = var1.readUnsignedShort();
+      }
+
+      var1.offset = var0.length - 7 - class225.field3217 * 8 - (var2 - 1) * 3;
+      class183.field2719 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         class183.field2719[var3] = var1.read24BitInt();
+         if(class183.field2719[var3] == 0) {
+            class183.field2719[var3] = 1;
+         }
+      }
+
+      var1.offset = 0;
+
+      for(var3 = 0; var3 < class225.field3217; ++var3) {
+         int var4 = class22.field231[var3];
+         int var5 = class225.field3218[var3];
+         int var6 = var4 * var5;
+         byte[] var7 = new byte[var6];
+         class48.field949[var3] = var7;
+         int var8 = var1.readUnsignedByte();
+         int var9;
+         if(var8 == 0) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.readByte();
+            }
+         } else if(var8 == 1) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var9 + var10 * var4] = var1.readByte();
                }
             }
-         } else {
-            var0.unlink();
          }
       }
 
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II[BII)I",
-      garbageValue = "1279483704"
+      signature = "(ILclass116;Lclass184;I)V",
+      garbageValue = "1283734077"
    )
-   public static int method1424(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
-      int var5 = var2 - var1;
-
-      for(int var6 = 0; var6 < var5; ++var6) {
-         char var7 = var0.charAt(var6 + var1);
-         if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
-            if(var7 == 8364) {
-               var3[var6 + var4] = -128;
-            } else if(var7 == 8218) {
-               var3[var6 + var4] = -126;
-            } else if(var7 == 402) {
-               var3[var6 + var4] = -125;
-            } else if(var7 == 8222) {
-               var3[var6 + var4] = -124;
-            } else if(var7 == 8230) {
-               var3[var6 + var4] = -123;
-            } else if(var7 == 8224) {
-               var3[var6 + var4] = -122;
-            } else if(var7 == 8225) {
-               var3[var4 + var6] = -121;
-            } else if(var7 == 710) {
-               var3[var6 + var4] = -120;
-            } else if(var7 == 8240) {
-               var3[var4 + var6] = -119;
-            } else if(var7 == 352) {
-               var3[var4 + var6] = -118;
-            } else if(var7 == 8249) {
-               var3[var4 + var6] = -117;
-            } else if(var7 == 338) {
-               var3[var4 + var6] = -116;
-            } else if(var7 == 381) {
-               var3[var4 + var6] = -114;
-            } else if(var7 == 8216) {
-               var3[var4 + var6] = -111;
-            } else if(var7 == 8217) {
-               var3[var4 + var6] = -110;
-            } else if(var7 == 8220) {
-               var3[var4 + var6] = -109;
-            } else if(var7 == 8221) {
-               var3[var4 + var6] = -108;
-            } else if(var7 == 8226) {
-               var3[var6 + var4] = -107;
-            } else if(var7 == 8211) {
-               var3[var6 + var4] = -106;
-            } else if(var7 == 8212) {
-               var3[var6 + var4] = -105;
-            } else if(var7 == 732) {
-               var3[var4 + var6] = -104;
-            } else if(var7 == 8482) {
-               var3[var6 + var4] = -103;
-            } else if(var7 == 353) {
-               var3[var4 + var6] = -102;
-            } else if(var7 == 8250) {
-               var3[var6 + var4] = -101;
-            } else if(var7 == 339) {
-               var3[var6 + var4] = -100;
-            } else if(var7 == 382) {
-               var3[var6 + var4] = -98;
-            } else if(var7 == 376) {
-               var3[var4 + var6] = -97;
-            } else {
-               var3[var4 + var6] = 63;
+   static void method1456(int var0, class116 var1, class184 var2) {
+      byte[] var3 = null;
+      Deque var4 = class183.field2727;
+      synchronized(class183.field2727) {
+         for(class180 var5 = (class180)class183.field2727.method2412(); null != var5; var5 = (class180)class183.field2727.method2426()) {
+            if(var5.hash == (long)var0 && var5.field2690 == var1 && var5.field2691 == 0) {
+               var3 = var5.field2693;
+               break;
             }
-         } else {
-            var3[var4 + var6] = (byte)var7;
          }
       }
 
-      return var5;
+      if(null != var3) {
+         var2.method3366(var1, var0, var3, true);
+      } else {
+         byte[] var8 = var1.method2240(var0);
+         var2.method3366(var1, var0, var8, true);
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(CI)B",
+      garbageValue = "-1516161179"
+   )
+   public static byte method1457(char var0) {
+      byte var1;
+      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
+         var1 = (byte)var0;
+      } else if(var0 == 8364) {
+         var1 = -128;
+      } else if(var0 == 8218) {
+         var1 = -126;
+      } else if(var0 == 402) {
+         var1 = -125;
+      } else if(var0 == 8222) {
+         var1 = -124;
+      } else if(var0 == 8230) {
+         var1 = -123;
+      } else if(var0 == 8224) {
+         var1 = -122;
+      } else if(var0 == 8225) {
+         var1 = -121;
+      } else if(var0 == 710) {
+         var1 = -120;
+      } else if(var0 == 8240) {
+         var1 = -119;
+      } else if(var0 == 352) {
+         var1 = -118;
+      } else if(var0 == 8249) {
+         var1 = -117;
+      } else if(var0 == 338) {
+         var1 = -116;
+      } else if(var0 == 381) {
+         var1 = -114;
+      } else if(var0 == 8216) {
+         var1 = -111;
+      } else if(var0 == 8217) {
+         var1 = -110;
+      } else if(var0 == 8220) {
+         var1 = -109;
+      } else if(var0 == 8221) {
+         var1 = -108;
+      } else if(var0 == 8226) {
+         var1 = -107;
+      } else if(var0 == 8211) {
+         var1 = -106;
+      } else if(var0 == 8212) {
+         var1 = -105;
+      } else if(var0 == 732) {
+         var1 = -104;
+      } else if(var0 == 8482) {
+         var1 = -103;
+      } else if(var0 == 353) {
+         var1 = -102;
+      } else if(var0 == 8250) {
+         var1 = -101;
+      } else if(var0 == 339) {
+         var1 = -100;
+      } else if(var0 == 382) {
+         var1 = -98;
+      } else if(var0 == 376) {
+         var1 = -97;
+      } else {
+         var1 = 63;
+      }
+
+      return var1;
    }
 }

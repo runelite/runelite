@@ -3,77 +3,32 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ck")
+@ObfuscatedName("cr")
 public class class101 extends RuntimeException {
-   @ObfuscatedName("s")
-   static Applet field1652;
-   @ObfuscatedName("f")
+   @ObfuscatedName("q")
+   String field1652;
+   @ObfuscatedName("g")
+   public static String field1653;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 366809927
+      intValue = 25868545
    )
-   static int field1653;
-   @ObfuscatedName("qv")
-   protected static class109 field1654;
-   @ObfuscatedName("h")
-   String field1655;
-   @ObfuscatedName("a")
+   static int field1654;
+   @ObfuscatedName("d")
    Throwable field1656;
-   @ObfuscatedName("c")
-   public static String field1657;
-   @ObfuscatedName("eg")
-   static SpritePixels[] field1658;
+   @ObfuscatedName("em")
+   static SpritePixels field1657;
+   @ObfuscatedName("p")
+   static Applet field1658;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-905615855"
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "-1677461655"
    )
-   public static void method1902() {
-      Widget.field2203.reset();
-      Widget.field2204.reset();
-      Widget.field2327.reset();
-      Widget.field2206.reset();
-   }
-
-   @ObfuscatedName("cu")
-   @ObfuscatedSignature(
-      signature = "(LWidget;I)V",
-      garbageValue = "1070561070"
-   )
-   static void method1903(Widget var0) {
-      Widget var1 = var0.parentId == -1?null:class108.method1988(var0.parentId);
-      int var2;
-      int var3;
-      if(var1 == null) {
-         var2 = class16.field186;
-         var3 = ChatMessages.field907;
-      } else {
-         var2 = var1.width;
-         var3 = var1.height;
-      }
-
-      class94.method1861(var0, var2, var3, false);
-      class10.method99(var0, var2, var3);
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1064255568"
-   )
-   static void method1904(int var0) {
-      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.method2274((long)var0);
-      if(null != var1) {
-         var1.unlink();
-      }
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1264562497"
-   )
-   public static boolean method1905(int var0) {
-      return (var0 >> 21 & 1) != 0;
+   public static void method1945(class182 var0, String var1, String var2, int var3, boolean var4) {
+      int var5 = var0.method3276(var1);
+      int var6 = var0.method3287(var5, var2);
+      class48.method875(var0, var5, var6, var3, var4);
    }
 }

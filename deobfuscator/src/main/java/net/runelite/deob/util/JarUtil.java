@@ -38,10 +38,16 @@ import net.runelite.asm.ClassGroup;
 import net.runelite.asm.objectwebasm.NonloadingClassWriter;
 import net.runelite.asm.visitors.ClassFileVisitor;
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.util.CheckClassAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JarUtil
 {
+	private static final Logger logger = LoggerFactory.getLogger(JarUtil.class);
+
 	public static ClassGroup loadJar(File jarfile) throws IOException
 	{
 		ClassGroup group = new ClassGroup();
@@ -82,15 +88,43 @@ public class JarUtil
 				JarEntry entry = new JarEntry(cf.getName() + ".class");
 				jout.putNextEntry(entry);
 
-				ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-
-				cf.accept(writer);
-
-				byte[] data = writer.toByteArray();
+				byte[] data = writeClass(group, cf);
 
 				jout.write(data);
 				jout.closeEntry();
 			}
 		}
+	}
+
+	public static byte[] writeClass(ClassGroup group, ClassFile cf) throws IOException
+	{
+		ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+		CheckClassAdapter cca = new CheckClassAdapter(writer, false);
+
+		cf.accept(cca);
+
+		byte[] data = writer.toByteArray();
+
+		validateDataFlow(cf.getName(), data);
+
+		return data;
+	}
+
+	private static void validateDataFlow(String name, byte[] data)
+	{
+		try
+		{
+			ClassReader cr = new ClassReader(data);
+			ClassWriter cw = new ClassWriter(cr, 0);
+			ClassVisitor cv = new CheckClassAdapter(cw, true);
+			cr.accept(cv, 0);
+		}
+		catch (Exception ex)
+		{
+			logger.warn("Class {} failed validation", name, ex);
+			return;
+		}
+
+		logger.debug("Class {} passed validation", name);
 	}
 }

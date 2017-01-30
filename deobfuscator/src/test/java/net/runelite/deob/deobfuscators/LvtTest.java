@@ -22,50 +22,91 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.deob.deobfuscators;
 
-import java.io.File;
-import java.io.IOException;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.execution.Execution;
-import net.runelite.deob.TemporyFolderLocation;
-import net.runelite.deob.util.JarUtil;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
+import net.runelite.asm.attributes.Code;
+import net.runelite.asm.attributes.code.Instruction;
+import net.runelite.asm.attributes.code.Instructions;
+import net.runelite.asm.attributes.code.instructions.AConstNull;
+import net.runelite.asm.attributes.code.instructions.AStore;
+import net.runelite.asm.attributes.code.instructions.IConst_0;
+import net.runelite.asm.attributes.code.instructions.IStore;
+import net.runelite.asm.attributes.code.instructions.LConst_0;
+import net.runelite.asm.attributes.code.instructions.LStore;
+import net.runelite.asm.attributes.code.instructions.VReturn;
+import net.runelite.deob.ClassGroupFactory;
+import org.junit.Assert;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LvtTest
 {
-	private static final File GAMEPACK = new File(RenameUniqueTest.class.getResource("/gamepack_v16.jar").getFile());
-
-	@Rule
-	public TemporaryFolder folder = TemporyFolderLocation.getTemporaryFolder();
-
-	private ClassGroup group;
-
-	@Before
-	public void before() throws IOException
-	{
-		group = JarUtil.loadJar(GAMEPACK);
-	}
-
-	@After
-	public void after() throws IOException
-	{
-		JarUtil.saveJar(group, folder.newFile());
-	}
+	private static final Logger logger = LoggerFactory.getLogger(LvtTest.class);
 
 	@Test
-	public void testRun()
+	public void testReuseIndex()
 	{
+		ClassGroup group = ClassGroupFactory.generateGroup();
+		Code code = group.findClass("test").findMethod("func").getCode();
+		Instructions ins = code.getInstructions();
+
+		Instruction body[] =
+		{
+			// var0 = null
+			new AConstNull(ins),
+			new AStore(ins, 0),
+			// var0 = 0
+			// this forces a reindex to varn
+			new IConst_0(ins),
+			new IStore(ins, 0),
+			// var2 = null
+			new AConstNull(ins),
+			new AStore(ins, 2),
+			// var2 = 0
+			// this forces a reindex to varn+1
+			new IConst_0(ins),
+			new IStore(ins, 2),
+			//var0 = 0L
+			new LConst_0(ins),
+			new LStore(ins, 0),
+			new VReturn(ins)
+		};
+
+		for (Instruction i : body)
+		{
+			ins.addInstruction(i);
+		}
+
 		Lvt lvt = new Lvt();
 		lvt.run(group);
 
-		Execution execution = new Execution(group);
-		execution.populateInitialMethods();
-		execution.run();
+		AStore astore1 = (AStore) body[1];
+		IStore istore1 = (IStore) body[3];
+		AStore astore2 = (AStore) body[5];
+		IStore istore2 = (IStore) body[7];
+		LStore lstore1 = (LStore) body[9];
+
+		int astore1Idx = astore1.getVariableIndex();
+		int istore1Idx = istore1.getVariableIndex();
+		int astore2Idx = astore2.getVariableIndex();
+		int istore2Idx = istore2.getVariableIndex();
+		int lstore1Idx = lstore1.getVariableIndex();
+
+		logger.debug("{} -> {}", astore1, astore1.getVariableIndex());
+		logger.debug("{} -> {}", istore1, istore1.getVariableIndex());
+		logger.debug("{} -> {}", astore2, astore2.getVariableIndex());
+		logger.debug("{} -> {}", istore2, istore2.getVariableIndex());
+		logger.debug("{} -> {}", lstore1, lstore1.getVariableIndex());
+
+		Assert.assertNotEquals(astore1Idx, istore1Idx);
+		Assert.assertNotEquals(astore2Idx, istore2Idx);
+
+		// assert that the lstore doesn't overwrite an existing index
+		Assert.assertNotEquals(lstore1Idx + 1, astore1Idx);
+		Assert.assertNotEquals(lstore1Idx + 1, istore1Idx);
+		Assert.assertNotEquals(lstore1Idx + 1, astore2Idx);
+		Assert.assertNotEquals(lstore1Idx + 1, istore2Idx);
 	}
 }

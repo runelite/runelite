@@ -29,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.objectwebasm.NonloadingClassWriter;
 import net.runelite.deob.clientver.ClientVersion;
 import net.runelite.deob.injection.Injector;
 import net.runelite.deob.util.JarUtil;
@@ -40,7 +39,6 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.objectweb.asm.ClassWriter;
 
 @Mojo(
 	name = "runelite-injector",
@@ -107,14 +105,12 @@ public class InjectMojo extends AbstractMojo
 	{
 		for (ClassFile cf : group.getClasses())
 		{
-			ClassWriter writer = new NonloadingClassWriter(group, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-			cf.accept(writer);
-
 			File classFile = getClassFile(outputDirectory, cf);
+			byte[] classData = JarUtil.writeClass(group, cf);
 
 			try (FileOutputStream fout = new FileOutputStream(classFile, false))
 			{
-				fout.write(writer.toByteArray());
+				fout.write(classData);
 			}
 		}
 	}

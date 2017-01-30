@@ -23,64 +23,63 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>net.runelite</groupId>
-        <artifactId>runelite-parent</artifactId>
-        <version>1.1.18-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>net.runelite</groupId>
+		<artifactId>runelite-parent</artifactId>
+		<version>1.1.19-SNAPSHOT</version>
+	</parent>
 
-    <groupId>net.runelite</groupId>
-    <artifactId>client</artifactId>
-    <version>1.0.19-SNAPSHOT</version>
-    <name>Runelite Client</name>
+	<groupId>net.runelite</groupId>
+	<artifactId>client</artifactId>
+	<version>1.0.20-SNAPSHOT</version>
+	<name>Runelite Client</name>
 
-    <properties>
-        <slf4j.version>1.7.12</slf4j.version>
-    </properties>
+	<properties>
+		<slf4j.version>1.7.12</slf4j.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.jopt-simple</groupId>
-            <artifactId>jopt-simple</artifactId>
-            <version>5.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>21.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.runelite</groupId>
-            <artifactId>api</artifactId>
-            <version>1.0.19-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>net.runelite.rs</groupId>
-            <artifactId>client</artifactId>
-            <version>131.2-SNAPSHOT</version> <!-- rs version -->
-            <scope>runtime</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jopt-simple</groupId>
+			<artifactId>jopt-simple</artifactId>
+			<version>5.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>21.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.runelite</groupId>
+			<artifactId>api</artifactId>
+			<version>1.0.20-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.runelite.rs</groupId>
+			<artifactId>client</artifactId>
+			<version>132.2-SNAPSHOT</version> <!-- rs version -->
+			<scope>runtime</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

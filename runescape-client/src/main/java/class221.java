@@ -2,38 +2,36 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ht")
+@ObfuscatedName("hb")
 public class class221 implements class158 {
-   @ObfuscatedName("s")
-   public static final class221 field3187 = new class221(0, 0);
-   @ObfuscatedName("c")
-   public static final class221 field3188 = new class221(1, 1);
-   @ObfuscatedName("h")
-   public static final class221 field3189 = new class221(3, 3);
-   @ObfuscatedName("f")
-   public static final class221 field3190 = new class221(2, 2);
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 258050245
-   )
-   public final int field3191;
    @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 296294499
+      intValue = -654184695
    )
-   final int field3192;
-   @ObfuscatedName("v")
-   static int[] field3193;
-   @ObfuscatedName("a")
-   public static final class221 field3194 = new class221(4, 4);
+   public final int field3184;
+   @ObfuscatedName("g")
+   static final class221 field3185 = new class221(1, 1);
+   @ObfuscatedName("p")
+   public static final class221 field3186 = new class221(0, 0);
+   @ObfuscatedName("q")
+   static final class221 field3187 = new class221(3, 3);
+   @ObfuscatedName("x")
+   static final class221 field3188 = new class221(2, 2);
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = -1350083631
+   )
+   final int field3189;
+   @ObfuscatedName("d")
+   static final class221 field3190 = new class221(4, 4);
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(S)I",
-      garbageValue = "17064"
+      garbageValue = "9241"
    )
-   public int vmethod3916() {
-      return this.field3192;
+   public int vmethod4074() {
+      return this.field3189;
    }
 
    @ObfuscatedSignature(
@@ -41,7 +39,7 @@ public class class221 implements class158 {
       garbageValue = "0"
    )
    class221(int var1, int var2) {
-      this.field3191 = var1;
-      this.field3192 = var2;
+      this.field3184 = var1;
+      this.field3189 = var2;
    }
 }

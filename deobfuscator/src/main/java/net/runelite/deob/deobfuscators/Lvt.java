@@ -24,80 +24,54 @@
  */
 package net.runelite.deob.deobfuscators;
 
-import java.util.HashMap;
-import java.util.Map;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
 import net.runelite.asm.Method;
 import net.runelite.asm.attributes.Code;
 import net.runelite.asm.attributes.code.Instruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
-import net.runelite.asm.attributes.code.instruction.types.LVTInstructionType;
 import net.runelite.deob.Deobfuscator;
+import net.runelite.deob.deobfuscators.lvt.Mappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class Mappings
-{
-	int maxVariables;
-	int offset;
-	Map<Integer, LVTInstructionType> map = new HashMap<>();
-	Map<Integer, Integer> newIdxMap = new HashMap<>();
-
-	static boolean isSame(LVTInstructionType one, LVTInstructionType two)
-	{
-		return (one == LVTInstructionType.OBJECT) == (two == LVTInstructionType.OBJECT);
-	}
-
-	Integer remap(int idx, LVTInstructionType type)
-	{
-		LVTInstructionType seen = map.get(idx);
-
-		if (seen == null)
-		{
-			map.put(idx, type);
-		}
-		else if (!isSame(type, seen))
-		{
-			Integer newIdx = newIdxMap.get(idx);
-			if (newIdx == null)
-			{
-				newIdx = maxVariables + offset++;
-				newIdxMap.put(idx, newIdx);
-			}
-
-			return newIdx;
-		}
-
-		return null;
-	}
-}
-
+/**
+ * This deobfuscator is only required for fernflower which has a difficult time
+ * when the same lvt index is used for variables of differing types (like object
+ * and int), see IDEABKL-7230.
+ * 
+ * @author Adam
+ */
 public class Lvt implements Deobfuscator
 {
 	private static final Logger logger = LoggerFactory.getLogger(Lvt.class);
-	
+
 	private int count = 0;
 
 	private void process(Method method)
 	{
 		Code code = method.getCode();
 		if (code == null)
+		{
 			return;
+		}
 
-		Mappings mappings = new Mappings();
-		mappings.maxVariables = code.getMaxLocals();
+		Mappings mappings = new Mappings(code.getMaxLocals());
 
 		for (Instruction ins : code.getInstructions().getInstructions())
 		{
 			if (!(ins instanceof LVTInstruction))
+			{
 				continue;
+			}
 
 			LVTInstruction lv = (LVTInstruction) ins;
 			Integer newIdx = mappings.remap(lv.getVariableIndex(), lv.type());
 
 			if (newIdx == null)
+			{
 				continue;
+			}
 
 			assert newIdx != lv.getVariableIndex();
 
@@ -112,8 +86,12 @@ public class Lvt implements Deobfuscator
 	public void run(ClassGroup group)
 	{
 		for (ClassFile cf : group.getClasses())
+		{
 			for (Method m : cf.getMethods().getMethods())
+			{
 				process(m);
+			}
+		}
 
 		logger.info("Remapped {} lvt indexes", count);
 	}
