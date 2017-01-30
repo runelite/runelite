@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface XItemContainer extends Node
 {
-	@Import("itemIds")
-	int[] getItemIds();
+    @Import("itemIds")
+    int[] getItemIds();
 
-	@Import("stackSizes")
-	int[] getStackSizes();
+    @Import("stackSizes")
+    int[] getStackSizes();
 }

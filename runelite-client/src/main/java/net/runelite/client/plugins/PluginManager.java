@@ -28,34 +28,41 @@ package net.runelite.client.plugins;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.boosts.Boosts;
+import net.runelite.client.plugins.debug.Debug;
+import net.runelite.client.plugins.experiencedrops.ExperienceDrops;
+import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 
 public class PluginManager
 {
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
+    private final RuneLite runelite;
+    private final List<Plugin> plugins = new ArrayList<>();
 
-	public PluginManager(RuneLite runelite)
-	{
-		this.runelite = runelite;
-	}
+    public PluginManager(RuneLite runelite)
+    {
+        this.runelite = runelite;
+    }
 
-	public void loadAll()
-	{
-		load(new Boosts());
-		load(new OpponentInfo());
-	}
+    public void loadAll()
+    {
+        load(new Boosts());
+        load(new OpponentInfo());
+        load(new FPS());
+        load(new ExperienceDrops());
+        load(new Debug());
+    }
 
-	private void load(Plugin plugin)
-	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
-	}
+    private void load(Plugin plugin)
+    {
+        plugins.add(plugin);
+        runelite.getEventBus().register(plugin);
+    }
 
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
-	}
+    public Collection<Plugin> getPlugins()
+    {
+        return plugins;
+    }
 }

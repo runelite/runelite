@@ -31,28 +31,28 @@ import org.slf4j.LoggerFactory;
 
 public class Hooks
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+    private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
+    private static final RuneLite runelite = RuneLite.getRunelite();
 
-	public static void callHook(String name, Object object)
-	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
+    public static void callHook(String name, Object object)
+    {
+        if (RuneLite.getClient() == null)
+        {
+            logger.warn("Event {} triggered prior to client being ready", name);
+            return;
+        }
 
-		switch (name)
-		{
-			case "experienceChanged":
-				runelite.getEventBus().post(new ExperienceChanged());
-				break;
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
+        switch (name)
+        {
+            case "experienceChanged":
+                runelite.getEventBus().post(new ExperienceChanged());
+                break;
+            default:
+                logger.warn("Unknown event {} triggered on {}", name, object);
+                return;
+        }
 
-		logger.debug("Event {} triggered on {}", name, object);
-	}
+        logger.debug("Event {} triggered on {}", name, object);
+    }
 }

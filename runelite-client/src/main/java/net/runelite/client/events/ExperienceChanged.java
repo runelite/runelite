@@ -25,7 +25,12 @@
 
 package net.runelite.client.events;
 
+import net.runelite.client.plugins.experiencedrops.ExpDropsOverlay;
+
 public class ExperienceChanged
 {
-
+    public ExperienceChanged()
+    {
+        ExpDropsOverlay.expChangeFlag = true;
+    }
 }

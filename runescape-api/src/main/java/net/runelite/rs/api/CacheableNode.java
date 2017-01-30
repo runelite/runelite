@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface CacheableNode
 {
-	@Import("next")
-	CacheableNode getNext();
+    @Import("next")
+    CacheableNode getNext();
 
-	@Import("previous")
-	CacheableNode getPrevious();
+    @Import("previous")
+    CacheableNode getPrevious();
 }

@@ -29,9 +29,9 @@ import net.runelite.mapping.Import;
 
 public interface Deque
 {
-	@Import("current")
-	Node getCurrent();
+    @Import("current")
+    Node getCurrent();
 
-	@Import("head")
-	Node getHead();
+    @Import("head")
+    Node getHead();
 }

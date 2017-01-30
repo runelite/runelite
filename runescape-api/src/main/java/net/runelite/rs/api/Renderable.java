@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface Renderable extends Node
 {
-	@Import("modelHeight")
-	int getModelHeight();
+    @Import("modelHeight")
+    int getModelHeight();
 }

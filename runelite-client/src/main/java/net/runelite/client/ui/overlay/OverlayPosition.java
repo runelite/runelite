@@ -27,5 +27,7 @@ package net.runelite.client.ui.overlay;
 
 public enum OverlayPosition
 {
-	TOP_LEFT;
+    TOP_LEFT,
+    TOP_RIGHT,
+    CUSTOM
 }

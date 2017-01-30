@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface WidgetNode
 {
-	@Import("id")
-	int getId();
+    @Import("id")
+    int getId();
 }

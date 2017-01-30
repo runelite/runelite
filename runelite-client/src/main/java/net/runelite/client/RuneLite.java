@@ -27,7 +27,9 @@ package net.runelite.client;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;
+
 import java.io.File;
+
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import net.runelite.api.Client;
@@ -40,78 +42,78 @@ import org.slf4j.LoggerFactory;
 
 public class RuneLite
 {
-	private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
+    private static final Logger logger = LoggerFactory.getLogger(RuneLite.class);
 
-	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
-	public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
+    public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+    public static final File REPO_DIR = new File(RUNELITE_DIR, "repository");
 
-	private static OptionSet options;
-	private static Client client;
-	private static RuneLite runelite;
+    private static OptionSet options;
+    private static Client client;
+    private static RuneLite runelite;
 
-	private ClientUI gui;
-	private PluginManager pluginManager;
-	private OverlayRenderer renderer;
-	private EventBus eventBus = new EventBus(this::eventExceptionHandler);
+    private ClientUI gui;
+    private PluginManager pluginManager;
+    private OverlayRenderer renderer;
+    private EventBus eventBus = new EventBus(this::eventExceptionHandler);
 
-	public static void main(String[] args) throws Exception
-	{
-		OptionParser parser = new OptionParser();
-		parser.accepts("developer-mode");
-		options = parser.parse(args);
-		
-		runelite = new RuneLite();
-		runelite.start();
-	}
+    public static void main(String[] args) throws Exception
+    {
+        OptionParser parser = new OptionParser();
+        parser.accepts("developer-mode");
+        options = parser.parse(args);
 
-	public void start() throws Exception
-	{
-		gui = new ClientUI();
-		gui.setVisible(true);
+        runelite = new RuneLite();
+        runelite.start();
+    }
 
-		pluginManager = new PluginManager(this);
-		pluginManager.loadAll();
+    public void start() throws Exception
+    {
+        gui = new ClientUI();
+        gui.setVisible(true);
 
-		renderer = new OverlayRenderer();
-	}
+        pluginManager = new PluginManager(this);
+        pluginManager.loadAll();
 
-	private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
-	{
-		logger.warn("uncaught exception in event subscriber", exception);
-	}
+        renderer = new OverlayRenderer();
+    }
 
-	public static Client getClient()
-	{
-		return client;
-	}
+    private void eventExceptionHandler(Throwable exception, SubscriberExceptionContext context)
+    {
+        logger.warn("uncaught exception in event subscriber", exception);
+    }
 
-	public static void setClient(Client client)
-	{
-		RuneLite.client = client;
-	}
+    public static Client getClient()
+    {
+        return client;
+    }
 
-	public static RuneLite getRunelite()
-	{
-		return runelite;
-	}
+    public static void setClient(Client client)
+    {
+        RuneLite.client = client;
+    }
 
-	public PluginManager getPluginManager()
-	{
-		return pluginManager;
-	}
+    public static RuneLite getRunelite()
+    {
+        return runelite;
+    }
 
-	public OverlayRenderer getRenderer()
-	{
-		return renderer;
-	}
+    public PluginManager getPluginManager()
+    {
+        return pluginManager;
+    }
 
-	public EventBus getEventBus()
-	{
-		return eventBus;
-	}
+    public OverlayRenderer getRenderer()
+    {
+        return renderer;
+    }
 
-	public static OptionSet getOptions()
-	{
-		return options;
-	}
+    public EventBus getEventBus()
+    {
+        return eventBus;
+    }
+
+    public static OptionSet getOptions()
+    {
+        return options;
+    }
 }

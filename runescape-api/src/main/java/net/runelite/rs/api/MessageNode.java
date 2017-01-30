@@ -29,12 +29,12 @@ import net.runelite.mapping.Import;
 
 public interface MessageNode
 {
-	@Import("type")
-	int getType();
+    @Import("type")
+    int getType();
 
-	@Import("sender")
-	String getSender();
+    @Import("sender")
+    String getSender();
 
-	@Import("value")
-	String getValue();
+    @Import("value")
+    String getValue();
 }

@@ -34,5 +34,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface ObfuscatedOverride
 {
-	String value();
+    String value();
 }

@@ -25,61 +25,102 @@
 
 package net.runelite.api;
 
+import java.awt.*;
 import java.util.Arrays;
 
 public class Client
 {
-	private net.runelite.rs.api.Client client;
+    private net.runelite.rs.api.Client client;
 
-	public Client(net.runelite.rs.api.Client client)
-	{
-		this.client = client;
-	}
+    public Client(net.runelite.rs.api.Client client)
+    {
+        this.client = client;
+    }
 
-	public Player getLocalPlayer()
-	{
-		if (client.getLocalPlayer() == null)
-			return null;
-		
-		return new Player(this, client.getLocalPlayer());
-	}
+    public Player getLocalPlayer()
+    {
+        if (client.getLocalPlayer() == null)
+            return null;
 
-	public NPC[] getNpcs()
-	{
-		return Arrays.stream(client.getCachedNPCs())
-			.map(npc -> npc != null ? new NPC(this, npc) : null)
-			.toArray(size -> new NPC[size]);
-	}
+        return new Player(this, client.getLocalPlayer());
+    }
 
-	public Player[] getPlayers()
-	{
-		return Arrays.stream(client.getCachedPlayers())
-			.map(player -> player != null ? new Player(this, player) : null)
-			.toArray(size -> new Player[size]);
-	}
+    public NPC[] getNpcs()
+    {
+        return Arrays.stream(client.getCachedNPCs())
+                .map(npc -> npc != null ? new NPC(this, npc) : null)
+                .toArray(size -> new NPC[size]);
+    }
 
-	public int[] getBoostedSkillLevels()
-	{
-		return client.getBoostedSkillLevels();
-	}
+    public Player[] getPlayers()
+    {
+        return Arrays.stream(client.getCachedPlayers())
+                .map(player -> player != null ? new Player(this, player) : null)
+                .toArray(size -> new Player[size]);
+    }
 
-	public int[] getRealSkillLevels()
-	{
-		return client.getRealSkillLevels();
-	}
+    public int[] getBoostedSkillLevels()
+    {
+        return client.getBoostedSkillLevels();
+    }
 
-	public int[] getSkillExperiences()
-	{
-		return client.getSkillExperiences();
-	}
+    public int[] getRealSkillLevels()
+    {
+        return client.getRealSkillLevels();
+    }
 
-	public void sendGameMessage(String message)
-	{
-		client.sendGameMessage(99, "", message);
-	}
+    public int[] getSkillExperiences()
+    {
+        return client.getSkillExperiences();
+    }
 
-	public GameState getGameState()
-	{
-		return GameState.of(client.getGameState());
-	}
+    public void sendGameMessage(String message)
+    {
+        client.sendGameMessage(99, "", message);
+    }
+
+    public GameState getGameState()
+    {
+        return GameState.of(client.getGameState());
+    }
+
+    public int getFPS()
+    {
+        return client.getFPS();
+    }
+
+    public Canvas getCanvas()
+    {
+        return client.getCanvas();
+    }
+
+    public int getClientWidth()
+    {
+        return client.getCanvas().getWidth();
+    }
+
+    public int getClientHeight()
+    {
+        return client.getCanvas().getHeight();
+    }
+
+    public String getUsername()
+    {
+        return client.getUsername();
+    }
+
+    public String getLoginMessage2()
+    {
+        return client.getLoginMessage2();
+    }
+
+    public int[] getWidgetSettings()
+    {
+        return client.getWidgetSettings();
+    }
+
+    public boolean isResized()
+    {
+        return client.isResized();
+    }
 }

@@ -29,6 +29,6 @@ import net.runelite.mapping.Import;
 
 public interface NPC extends Actor
 {
-	@Import("composition")
-	NPCComposition getComposition();
+    @Import("composition")
+    NPCComposition getComposition();
 }

@@ -29,18 +29,18 @@ import net.runelite.mapping.Import;
 
 public interface Sequence
 {
-	@Import("stretches")
-	boolean getStretches();
+    @Import("stretches")
+    boolean getStretches();
 
-	@Import("maxLoops")
-	int getMaxLoops();
+    @Import("maxLoops")
+    int getMaxLoops();
 
-	@Import("precedenceAnimating")
-	int getPrecedenceAnimating();
+    @Import("precedenceAnimating")
+    int getPrecedenceAnimating();
 
-	@Import("replyMode")
-	int getReplyMode();
+    @Import("replyMode")
+    int getReplyMode();
 
-	@Import("interleaveLeave")
-	int[] getInterleaveLeave();
+    @Import("interleaveLeave")
+    int[] getInterleaveLeave();
 }
