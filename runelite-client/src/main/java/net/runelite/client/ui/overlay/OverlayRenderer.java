@@ -34,18 +34,20 @@ public class OverlayRenderer
 {
 	public void render(BufferedImage clientBuffer)
 	{
-		TopDownRenderer td = new TopDownRenderer();
+		TopDownRendererLeft tdl = new TopDownRendererLeft();
+		TopDownRendererRight tdr = new TopDownRendererRight();
 
 		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
 		{
 			Overlay overlay = plugin.getOverlay();
 
 			if (overlay.getPosition() == OverlayPosition.TOP_LEFT)
-				td.add(overlay);
+				tdl.add(overlay);
 			if (overlay.getPosition() == OverlayPosition.TOP_RIGHT)
-				td.add(overlay);
+				tdr.add(overlay);
 		}
 
-		td.render(clientBuffer);
+		tdl.render(clientBuffer);
+		tdr.render(clientBuffer);
 	}
 }

@@ -25,16 +25,13 @@
 
 package net.runelite.client.ui.overlay;
 
-import net.runelite.api.Client;
-import net.runelite.client.RuneLite;
-
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopDownRenderer
+public class TopDownRendererLeft
 {
 	private static final int BORDER_TOP = 25;
 	private static final int BORDER_LEFT = 10;
@@ -49,23 +46,12 @@ public class TopDownRenderer
 
 	public void render(BufferedImage clientBuffer)
 	{
-		Client c = RuneLite.getClient();
-
 		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
 		int y = BORDER_TOP;
 
 		for (Overlay overlay : overlays)
 		{
 			BufferedImage image = clientBuffer.getSubimage(BORDER_LEFT, y, clientBuffer.getWidth() - BORDER_LEFT, clientBuffer.getHeight() - y);//(int) dimension.getWidth(), (int) dimension.getHeight());
-			switch (overlay.getPosition())
-			{
-				case TOP_LEFT:
-					image = clientBuffer.getSubimage(BORDER_LEFT, y, clientBuffer.getWidth() - BORDER_LEFT, clientBuffer.getHeight() - y);//(int) dimension.getWidth(), (int) dimension.getHeight());
-					break;
-				case TOP_RIGHT:
-					image = clientBuffer.getSubimage(0, 0, c.getClientWidth(), 30);
-					break;
-			}
 			Graphics2D graphics = image.createGraphics();
 			Dimension dimension = overlay.render(graphics);
 			graphics.dispose();
@@ -73,8 +59,7 @@ public class TopDownRenderer
 			if (dimension == null)
 				continue;
 
-			if (overlay.getPosition() == OverlayPosition.TOP_LEFT)
-				y += dimension.getHeight() + PADDING;
+			y += dimension.getHeight() + PADDING;
 		}
 	}
 }

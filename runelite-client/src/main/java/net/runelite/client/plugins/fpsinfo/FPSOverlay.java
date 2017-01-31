@@ -31,8 +31,17 @@ public class FPSOverlay extends Overlay
 		FontMetrics fm = graphics.getFontMetrics();
 		String str = String.valueOf(client.getFPS());
 
+		int x = (int) (client.getClientWidth() - fm.getStringBounds(str, graphics).getWidth());
+		int y = (fm.getHeight());
+		//outline
+		graphics.setColor(Color.black);
+		graphics.drawString(str, x - 1, y + 1);
+		graphics.drawString(str, x - 1, y - 1);
+		graphics.drawString(str, x + 1, y + 1);
+		graphics.drawString(str, x + 1, y - 1);
+		//actual text
 		graphics.setColor(Color.white);
-		graphics.drawString(str, (int) (client.getClientWidth() - fm.getStringBounds(str, graphics).getWidth()), fm.getHeight());
+		graphics.drawString(str, x, y);
 
 		return new Dimension((int) fm.getStringBounds(str, graphics).getWidth(), (int) (fm.getStringBounds(str, graphics).getHeight()));
 	}
