@@ -25,8 +25,6 @@
 
 package net.runelite.asm.pool;
 
-import net.runelite.asm.execution.Type;
-
 public class Class
 {
 	private java.lang.String name;

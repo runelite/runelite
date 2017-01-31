@@ -50,6 +50,13 @@ public class ANewArray extends Instruction implements TypeInstruction
 	{
 		super(instructions, type);
 	}
+	
+	public ANewArray(Instructions instructions, Class clazz, int dimensions)
+	{
+		super(instructions, InstructionType.ANEWARRAY);
+		this.clazz = clazz;
+		this.dimensions = dimensions;
+	}
 
 	@Override
 	public void accept(MethodVisitor visitor)

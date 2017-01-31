@@ -80,6 +80,7 @@ public class Inject
 	private static final java.lang.Class<?> clientClass = Client.class;
 	
 	private final InjectHook hooks = new InjectHook(this);
+	private final InjectHookMethod hookMethod = new InjectHookMethod(this);
 
 	private final InjectSetter setters = new InjectSetter(this);
 
@@ -274,6 +275,8 @@ public class Inject
 			{
 				an = m.getAnnotations();
 				
+				hookMethod.process(m);
+				
 				if (an == null || an.find(EXPORT) == null)
 					continue; // not an exported method
 				
@@ -284,32 +287,9 @@ public class Inject
 					obfuscatedName = obAn.getElement().getString();
 				else
 					obfuscatedName = m.getName();
-				
-				Method otherm;
 
-				Annotation obfuscatedSignature = an.find(OBFUSCATED_SIGNATURE);
-
-				String garbage = null;
-				if (obfuscatedSignature != null)
-				{
-					List<Element> elements = obfuscatedSignature.getElements();
-
-					String signatureString = elements.get(0).getString();
-					if (elements.size() == 2)
-						garbage = obfuscatedSignature.getElements().get(1).getString();
-
-					Signature signature = new Signature(signatureString); // parse signature
-
-					// The obfuscated signature annotation is generated post rename unique, so class
-					// names in the signature match our class names and not theirs, so we toObSignature() it
-					otherm = other.findMethod(obfuscatedName, toObSignature(signature));
-				}
-				else
-				{
-					// No obfuscated signature annotation, so the annotation wasn't changed during deobfuscation.
-					// We should be able to just find it normally.
-					otherm = other.findMethod(obfuscatedName, toObSignature(m.getDescriptor()));
-				}
+				String garbage = this.getGarbage(m);
+				Method otherm = other.findMethod(obfuscatedName, this.getObfuscatedSignature(m));
 
 				assert otherm != null;
 				assert m.isStatic() == otherm.isStatic();
@@ -648,6 +628,59 @@ public class Inject
 			default:
 				throw new RuntimeException("Unknown type");
 		}
+	}
+	
+	/**
+	 * get the obfuscated signature for a deobfuscated method
+	 *
+	 * @param method
+	 * @return
+	 */
+	public Signature getObfuscatedSignature(Method method)
+	{
+		Annotations an = method.getAnnotations();
+		Annotation obfuscatedSignature = an.find(OBFUSCATED_SIGNATURE);
+
+		if (obfuscatedSignature != null)
+		{
+			List<Element> elements = obfuscatedSignature.getElements();
+			String signatureString = elements.get(0).getString();
+
+			Signature signature = new Signature(signatureString); // parse signature
+
+			// The obfuscated signature annotation is generated post rename unique, so class
+			// names in the signature match our class names and not theirs, so we toObSignature() it
+			return toObSignature(signature);
+		}
+		else
+		{
+			// No obfuscated signature annotation, so the annotation wasn't changed during deobfuscation.
+			// We should be able to just find it normally.
+			return toObSignature(method.getDescriptor());
+		}
+	}
+	
+	/** retrieve the garbage parameter
+	 * 
+	 * @param method
+	 * @return 
+	 */
+	public String getGarbage(Method method)
+	{
+		Annotations an = method.getAnnotations();
+		Annotation obfuscatedSignature = an.find(OBFUSCATED_SIGNATURE);
+
+		if (obfuscatedSignature != null)
+		{
+			List<Element> elements = obfuscatedSignature.getElements();
+
+			if (elements.size() == 2)
+			{
+				return obfuscatedSignature.getElements().get(1).getString();
+			}
+		}
+
+		return null;
 	}
 
 	public ClassGroup getDeobfuscated()
