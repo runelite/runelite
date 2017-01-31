@@ -124,6 +124,11 @@ public class Signature
 		arguments.add(type);
 	}
 	
+	public void insertArg(int idx, Type type)
+	{
+		arguments.add(idx, type);
+	}
+	
 	public Type getReturnValue()
 	{
 		return rv;
