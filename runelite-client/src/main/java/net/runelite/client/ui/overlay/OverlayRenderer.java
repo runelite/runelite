@@ -26,6 +26,7 @@
 package net.runelite.client.ui.overlay;
 
 import java.awt.image.BufferedImage;
+
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 
@@ -40,6 +41,8 @@ public class OverlayRenderer
 			Overlay overlay = plugin.getOverlay();
 
 			if (overlay.getPosition() == OverlayPosition.TOP_LEFT)
+				td.add(overlay);
+			if (overlay.getPosition() == OverlayPosition.TOP_RIGHT)
 				td.add(overlay);
 		}
 

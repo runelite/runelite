@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.boosts.Boosts;
+import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
 
 public class PluginManager
@@ -46,6 +47,7 @@ public class PluginManager
 	{
 		load(new Boosts());
 		load(new OpponentInfo());
+		load(new FPS());
 	}
 
 	private void load(Plugin plugin)

@@ -25,6 +25,7 @@
 
 package net.runelite.api;
 
+import java.awt.*;
 import java.util.Arrays;
 
 public class Client
@@ -40,22 +41,22 @@ public class Client
 	{
 		if (client.getLocalPlayer() == null)
 			return null;
-		
+
 		return new Player(this, client.getLocalPlayer());
 	}
 
 	public NPC[] getNpcs()
 	{
 		return Arrays.stream(client.getCachedNPCs())
-			.map(npc -> npc != null ? new NPC(this, npc) : null)
-			.toArray(size -> new NPC[size]);
+				.map(npc -> npc != null ? new NPC(this, npc) : null)
+				.toArray(size -> new NPC[size]);
 	}
 
 	public Player[] getPlayers()
 	{
 		return Arrays.stream(client.getCachedPlayers())
-			.map(player -> player != null ? new Player(this, player) : null)
-			.toArray(size -> new Player[size]);
+				.map(player -> player != null ? new Player(this, player) : null)
+				.toArray(size -> new Player[size]);
 	}
 
 	public int[] getBoostedSkillLevels()
@@ -81,5 +82,25 @@ public class Client
 	public GameState getGameState()
 	{
 		return GameState.of(client.getGameState());
+	}
+
+	public Canvas getCanvas()
+	{
+		return client.getCanvas();
+	}
+
+	public int getFPS()
+	{
+		return client.getFPS();
+	}
+
+	public int getClientHeight()
+	{
+		return client.getCanvas().getHeight();
+	}
+
+	public int getClientWidth()
+	{
+		return client.getCanvas().getWidth();
 	}
 }
