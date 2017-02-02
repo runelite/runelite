@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Cameron Moberg <moberg@tuta.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,41 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.fpsinfo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 
-public class PluginManager
+import java.awt.*;
+
+public class FPSOverlay extends Overlay
 {
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
+	private static Client client = RuneLite.getClient();
 
-	public PluginManager(RuneLite runelite)
+	public FPSOverlay()
 	{
-		this.runelite = runelite;
+		super(OverlayPosition.TOP_RIGHT, OverlayPriority.HIGH);
 	}
 
-	public void loadAll()
+	@Override
+	public Dimension render(Graphics2D graphics)
 	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-	}
 
-	private void load(Plugin plugin)
-	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
-	}
+		if (client.getGameState() != GameState.LOGGED_IN)
+			return null;
 
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
+		FontMetrics fm = graphics.getFontMetrics();
+		String str = String.valueOf(client.getFPS());
+
+		int x = (int) (client.getClientWidth() - fm.getStringBounds(str, graphics).getWidth());
+		int y = (fm.getHeight());
+		//outline
+		graphics.setColor(Color.black);
+		graphics.drawString(str, x - 1, y + 1);
+		graphics.drawString(str, x - 1, y - 1);
+		graphics.drawString(str, x + 1, y + 1);
+		graphics.drawString(str, x + 1, y - 1);
+		//actual text
+		graphics.setColor(Color.white);
+		graphics.drawString(str, x, y);
+
+		return new Dimension((int) fm.getStringBounds(str, graphics).getWidth(), (int) (fm.getStringBounds(str, graphics).getHeight()));
 	}
 }
