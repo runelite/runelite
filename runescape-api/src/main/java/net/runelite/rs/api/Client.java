@@ -27,6 +27,8 @@ package net.runelite.rs.api;
 
 import net.runelite.mapping.Import;
 
+import java.awt.*;
+
 public interface Client extends GameEngine
 {
 	@Import("cameraX")
@@ -209,4 +211,7 @@ public interface Client extends GameEngine
 
 	@Import("packetHandler")
 	void packetHandler();
+
+	@Import("canvas")
+	Canvas getCanvas();
 }

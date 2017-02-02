@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Cameron Moberg <moberg@tuta.io>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,41 +23,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.client.plugins;
+package net.runelite.client.plugins.fpsinfo;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
 
-public class PluginManager
+public class FPS extends Plugin
 {
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
+	private final Overlay overlay = new FPSOverlay();
 
-	public PluginManager(RuneLite runelite)
+	@Override
+	public Overlay getOverlay()
 	{
-		this.runelite = runelite;
-	}
-
-	public void loadAll()
-	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-	}
-
-	private void load(Plugin plugin)
-	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
-	}
-
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
+		return overlay;
 	}
 }

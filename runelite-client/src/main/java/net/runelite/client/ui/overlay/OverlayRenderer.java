@@ -26,6 +26,7 @@
 package net.runelite.client.ui.overlay;
 
 import java.awt.image.BufferedImage;
+
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 
@@ -33,16 +34,25 @@ public class OverlayRenderer
 {
 	public void render(BufferedImage clientBuffer)
 	{
-		TopDownRenderer td = new TopDownRenderer();
+		TopDownRendererLeft tdl = new TopDownRendererLeft();
+		TopDownRendererRight tdr = new TopDownRendererRight();
 
 		for (Plugin plugin : RuneLite.getRunelite().getPluginManager().getPlugins())
 		{
 			Overlay overlay = plugin.getOverlay();
 
-			if (overlay.getPosition() == OverlayPosition.TOP_LEFT)
-				td.add(overlay);
+			switch (overlay.getPosition())
+			{
+				case TOP_RIGHT:
+					tdr.add(overlay);
+					break;
+				case TOP_LEFT:
+					tdl.add(overlay);
+					break;
+			}
 		}
 
-		td.render(clientBuffer);
+		tdl.render(clientBuffer);
+		tdr.render(clientBuffer);
 	}
 }
