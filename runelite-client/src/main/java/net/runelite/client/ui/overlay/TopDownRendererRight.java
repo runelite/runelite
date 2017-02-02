@@ -23,84 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.api;
+package net.runelite.client.ui.overlay;
+
+import net.runelite.api.Client;
+import net.runelite.client.RuneLite;
 
 import java.awt.*;
-import java.util.Arrays;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Client
+public class TopDownRendererRight
 {
-	private net.runelite.rs.api.Client client;
+	private static final int BORDER_TOP = 0;
+	private static final int BORDER_RIGHT = 0;
+	private static final int PADDING = 10;
 
-	public Client(net.runelite.rs.api.Client client)
+	private final List<Overlay> overlays = new ArrayList<>();
+
+	public void add(Overlay overlay)
 	{
-		this.client = client;
+		overlays.add(overlay);
 	}
 
-	public Player getLocalPlayer()
+	public void render(BufferedImage clientBuffer)
 	{
-		if (client.getLocalPlayer() == null)
-			return null;
+		Client client = RuneLite.getClient();
+		overlays.sort((o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
+		int y = BORDER_TOP;
 
-		return new Player(this, client.getLocalPlayer());
+		for (Overlay overlay : overlays)
+		{
+			BufferedImage image = clientBuffer.getSubimage(BORDER_RIGHT, y, client.getClientWidth(), 25);
+
+			Graphics2D graphics = image.createGraphics();
+			Dimension dimension = overlay.render(graphics);
+			graphics.dispose();
+
+			if (dimension == null)
+				continue;
+
+			y += dimension.getHeight() + PADDING;
+		}
 	}
 
-	public NPC[] getNpcs()
-	{
-		return Arrays.stream(client.getCachedNPCs())
-				.map(npc -> npc != null ? new NPC(this, npc) : null)
-				.toArray(size -> new NPC[size]);
-	}
-
-	public Player[] getPlayers()
-	{
-		return Arrays.stream(client.getCachedPlayers())
-				.map(player -> player != null ? new Player(this, player) : null)
-				.toArray(size -> new Player[size]);
-	}
-
-	public int[] getBoostedSkillLevels()
-	{
-		return client.getBoostedSkillLevels();
-	}
-
-	public int[] getRealSkillLevels()
-	{
-		return client.getRealSkillLevels();
-	}
-
-	public int[] getSkillExperiences()
-	{
-		return client.getSkillExperiences();
-	}
-
-	public void sendGameMessage(String message)
-	{
-		client.sendGameMessage(99, "", message);
-	}
-
-	public GameState getGameState()
-	{
-		return GameState.of(client.getGameState());
-	}
-
-	public Canvas getCanvas()
-	{
-		return client.getCanvas();
-	}
-
-	public int getFPS()
-	{
-		return client.getFPS();
-	}
-
-	public int getClientHeight()
-	{
-		return client.getCanvas().getHeight();
-	}
-
-	public int getClientWidth()
-	{
-		return client.getCanvas().getWidth();
-	}
 }
