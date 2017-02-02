@@ -41,10 +41,15 @@ public class OverlayRenderer
 		{
 			Overlay overlay = plugin.getOverlay();
 
-			if (overlay.getPosition() == OverlayPosition.TOP_LEFT)
-				tdl.add(overlay);
-			if (overlay.getPosition() == OverlayPosition.TOP_RIGHT)
-				tdr.add(overlay);
+			switch (overlay.getPosition())
+			{
+				case TOP_RIGHT:
+					tdr.add(overlay);
+					break;
+				case TOP_LEFT:
+					tdl.add(overlay);
+					break;
+			}
 		}
 
 		tdl.render(clientBuffer);
