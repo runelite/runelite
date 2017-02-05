@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
 @ObfuscatedName("l")
 public class class22 extends class119 {
@@ -1542,8 +1543,8 @@ public class class22 extends class119 {
 
                                     for(int var49 = 0; var49 < var17.length; ++var49) {
                                        Method var19 = var17[var49];
-                                       if(var19.getName().equals(var126)) {
-                                          Class[] var20 = var19.getParameterTypes();
+                                       if(Reflection.getMethodName(var19).equals(var126)) {
+                                          Class[] var20 = Reflection.getParameterTypes(var19);
                                           if(var20.length == var110.length) {
                                              boolean var21 = true;
 
@@ -1577,7 +1578,7 @@ public class class22 extends class119 {
                                     throw new SecurityException();
                                  }
 
-                                 var85.fields[var31] = class37.method733(var97).getDeclaredField(var126);
+                                 var85.fields[var31] = Reflection.findField(class37.method733(var97), var126);
                               }
                            } catch (ClassNotFoundException var70) {
                               var85.field3222[var31] = -1;
@@ -3202,12 +3203,12 @@ public class class22 extends class119 {
                   int var6;
                   if(var4 == 0) {
                      var5 = var1.fields[var3];
-                     var6 = var5.getInt((Object)null);
+                     var6 = Reflection.getInt(var5, (Object)null);
                      var0.method2799(0);
                      var0.method2802(var6);
                   } else if(var4 == 1) {
                      var5 = var1.fields[var3];
-                     var5.setInt((Object)null, var1.field3220[var3]);
+                     Reflection.setInt(var5, (Object)null, var1.field3220[var3]);
                      var0.method2799(0);
                   } else if(var4 == 2) {
                      var5 = var1.fields[var3];
@@ -3234,7 +3235,7 @@ public class class22 extends class119 {
                         var7[var8] = var9.readObject();
                      }
 
-                     Object var11 = var25.invoke((Object)null, var7);
+                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
                      if(var11 == null) {
                         var0.method2799(0);
                      } else if(var11 instanceof Number) {
