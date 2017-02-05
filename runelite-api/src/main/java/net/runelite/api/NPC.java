@@ -42,4 +42,15 @@ public class NPC extends Actor
 	{
 		return npc.getComposition().getName();
 	}
+
+	public int getCombatLevel()
+	{
+		return npc.getComposition().getCombatLevel();
+	}
+
+	public int getID()
+	{
+		return npc.getComposition().getId();
+	}
+
 }

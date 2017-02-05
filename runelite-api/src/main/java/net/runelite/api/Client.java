@@ -103,4 +103,9 @@ public class Client
 	{
 		return client.getCanvas().getWidth();
 	}
+
+	public boolean isResized()
+	{
+		return client.isResized();
+	}
 }

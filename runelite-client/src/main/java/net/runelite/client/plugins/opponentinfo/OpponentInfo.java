@@ -28,6 +28,14 @@ package net.runelite.client.plugins.opponentinfo;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.overlay.Overlay;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.Map;
+
 public class OpponentInfo extends Plugin
 {
 	private final Overlay overlay = new OpponentInfoOverlay();
@@ -36,5 +44,16 @@ public class OpponentInfo extends Plugin
 	public Overlay getOverlay()
 	{
 		return overlay;
+	}
+
+	public static Map<String, Integer> loadJSON()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<Map<String, Integer>>(){}.getType();
+
+		InputStream healthFile = OpponentInfo.class.getClassLoader().getResourceAsStream("npcHealth.json");
+		Map<String, Integer> myMap = gson.fromJson(new InputStreamReader(healthFile), type);
+
+		return myMap;
 	}
 }
