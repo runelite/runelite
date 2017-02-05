@@ -23,31 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package net.runelite.api;
+package net.runelite.rs.api;
 
-public class Player extends Actor
+import net.runelite.mapping.Import;
+
+/**
+ * Created by bold on 2/2/17.
+ */
+public interface CombatInfoList
 {
-	private Client client;
-	private net.runelite.rs.api.Player player;
-
-	public Player(Client client, net.runelite.rs.api.Player player)
-	{
-		super(client, player);
-
-		this.player = player;
-		this.client = client;
-	}
-
-	@Override
-	public String getName()
-	{
-		return player.getName();
-	}
-
-	@Override
-	public int getCombatLevel()
-	{
-		return player.getCombatLevel();
-	}
+	@Import("node")
+	Node getNode();
 }
-

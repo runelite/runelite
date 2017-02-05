@@ -49,4 +49,7 @@ public interface Actor extends Renderable
 
 	@Import("animation")
 	int getAnimation();
+
+	@Import("combatInfoList")
+	CombatInfoList getCombatInfoList();
 }
