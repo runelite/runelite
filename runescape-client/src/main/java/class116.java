@@ -151,7 +151,7 @@ public final class class116 {
 
             while(true) {
                if(var7 < var3) {
-                  label145: {
+                  label144: {
                      int var9 = 0;
                      int var14;
                      if(var4) {
@@ -160,7 +160,7 @@ public final class class116 {
                         try {
                            this.field1818.method1371(field1819, 0, 8);
                         } catch (EOFException var16) {
-                           break label145;
+                           break label144;
                         }
 
                         var14 = (field1819[1] & 255) + ((field1819[0] & 255) << 8);
