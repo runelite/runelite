@@ -31,11 +31,16 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import net.runelite.api.Actor;
 import net.runelite.api.Client;
+import net.runelite.api.GameState;
 import net.runelite.api.Player;
 import net.runelite.client.RuneLite;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
+import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
 
 class OpponentInfoOverlay extends Overlay
 {
@@ -50,6 +55,15 @@ class OpponentInfoOverlay extends Overlay
 	private static final Color BACKGROUND = new Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue(), 127);
 	private static final Color HP_GREEN = new Color(0, 146, 54, 230);
 	private static final Color HP_RED = new Color(102, 15, 16, 230);
+
+	private static final Duration WAIT = Duration.ofSeconds(3);
+
+	private Integer lastMaxHealth;
+	private DecimalFormat df = new DecimalFormat("0.0");
+	private float lastRatio = 0;
+	private Instant lastTime = Instant.now();
+	private String opponentName;
+	private Map<String, Integer> oppInfoHealth = OpponentInfo.loadNpcHealth();
 
 	OpponentInfoOverlay()
 	{
@@ -70,42 +84,42 @@ class OpponentInfoOverlay extends Overlay
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		Actor opponent = getOpponent();
-
-		if (opponent == null)
+		if (RuneLite.getClient().getGameState() != GameState.LOGGED_IN)
 			return null;
 
-//		int cur = opponent.getHealth();
-//		int max = opponent.getMaxHealth();
-		int cur = 0, max = 0; // XXX
+		Actor opponent = getOpponent();
+
+		if (opponent != null && opponent.getHealth() > 0)
+		{
+			lastTime = Instant.now();
+			lastRatio = (float) opponent.getHealthRatio() / (float) opponent.getHealth();
+			opponentName = opponent.getName();
+			lastMaxHealth = oppInfoHealth.get(opponent.getName() + "_" + opponent.getCombatLevel());
+		}
+
+		if (Duration.between(Instant.now(), lastTime).abs().compareTo(WAIT) > 0)
+			return null; //don't draw anything.
 
 		FontMetrics fm = graphics.getFontMetrics();
 
-		int height = TOP_BORDER
-			+ fm.getHeight(); // opponent name
-		if (max > 0)
-			height += 1 // between name and hp bar
+		int height = TOP_BORDER + fm.getHeight(); // opponent name
+		if (lastRatio >= 0)
+		{
+			height += 2 // between name and hp bar
 				+ BAR_HEIGHT; // bar
+		}
 		height += BOTTOM_BORDER;
 
 		graphics.setColor(BACKGROUND);
 		graphics.fillRect(0, 0, WIDTH, height);
 
-		String str = opponent.getName();
-
-		int x = (WIDTH - fm.stringWidth(str)) / 2;
+		int x = (WIDTH - fm.stringWidth(opponentName)) / 2;
 		graphics.setColor(Color.white);
-		graphics.drawString(str, x, fm.getHeight() + TOP_BORDER);
+		graphics.drawString(opponentName, x, fm.getHeight() + TOP_BORDER);
 
-		// hp bar
-
-		if (max > 0)
+		if (lastRatio >= 0)
 		{
-			float percent = (float) cur / (float) max;
-			if (percent > 100f)
-				percent = 100f;
-
-			int barWidth = (int) (percent * (float) BAR_WIDTH);
+			int barWidth = (int) (lastRatio * (float) BAR_WIDTH);
 			int barY = TOP_BORDER + fm.getHeight() + 1;
 
 			graphics.setColor(HP_GREEN);
@@ -114,10 +128,21 @@ class OpponentInfoOverlay extends Overlay
 			graphics.setColor(HP_RED);
 			graphics.fillRect(((WIDTH - BAR_WIDTH) / 2) + barWidth, barY, BAR_WIDTH - barWidth, BAR_HEIGHT);
 
-			str = cur + " / " + max;
-			x = (WIDTH - fm.stringWidth(str)) / 2;
 			graphics.setColor(Color.white);
-			graphics.drawString(str, x, barY + fm.getHeight());
+
+			String str;
+
+			if (lastMaxHealth != null)
+			{
+				int currHealth = (int) (lastRatio * lastMaxHealth);
+				str = currHealth + "/" + lastMaxHealth;
+			}
+			else
+			{
+				str = df.format(lastRatio * 100) + "%";
+			}
+
+			graphics.drawString(str, (WIDTH - fm.stringWidth(str)) / 2, barY + fm.getHeight());
 		}
 
 		return new Dimension(WIDTH, height);
