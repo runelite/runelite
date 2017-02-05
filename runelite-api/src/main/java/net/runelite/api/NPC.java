@@ -42,4 +42,11 @@ public class NPC extends Actor
 	{
 		return npc.getComposition().getName();
 	}
+
+	@Override
+	public int getCombatLevel()
+	{
+		return npc.getComposition().getCombatLevel();
+	}
+
 }
