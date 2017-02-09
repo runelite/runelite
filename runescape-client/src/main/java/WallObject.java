@@ -2,61 +2,69 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cy")
+@ObfuscatedName("cz")
 @Implements("WallObject")
 public final class WallObject {
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -118988153
-   )
-   int field1545;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 1787362177
-   )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1965937459
+      intValue = -151355893
    )
    @Export("y")
    int y;
-   @ObfuscatedName("j")
-   @Export("renderable2")
-   public Renderable renderable2;
-   @ObfuscatedName("k")
-   @Export("renderable1")
-   public Renderable renderable1;
-   @ObfuscatedName("qd")
-   protected static java.awt.Font field1551;
-   @ObfuscatedName("q")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 515707205
-   )
-   int field1552;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1344114115
-   )
-   int field1553 = 0;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1204657031
-   )
-   @Export("floor")
-   int floor;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 594085199
+      intValue = -1960985619
    )
    @Export("x")
    int x;
-   @ObfuscatedName("gc")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -97389269
+      intValue = 237331929
    )
-   @Export("plane")
-   static int plane;
+   int field1547 = 0;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -825712711
+   )
+   int field1548;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 390668661
+   )
+   int field1549;
+   @ObfuscatedName("j")
+   @Export("renderable1")
+   public Renderable renderable1;
+   @ObfuscatedName("q")
+   @Export("renderable2")
+   public Renderable renderable2;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 361638875
+   )
+   @Export("hash")
+   public int hash = 0;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 881373909
+   )
+   @Export("floor")
+   int floor;
+   @ObfuscatedName("m")
+   static class20 field1557;
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;Ljava/lang/String;I)I",
+      garbageValue = "-1971175514"
+   )
+   public static int method1884(Buffer var0, String var1) {
+      int var2 = var0.offset;
+      byte[] var3 = class63.method1174(var1);
+      var0.method2925(var3.length);
+      var0.offset += class210.field3110.method2851(var3, 0, var3.length, var0.payload, var0.offset);
+      return var0.offset - var2;
+   }
 }

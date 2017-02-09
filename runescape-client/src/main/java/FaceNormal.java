@@ -1,47 +1,27 @@
-import java.util.Iterator;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cv")
 @Implements("FaceNormal")
 public class FaceNormal {
-   @ObfuscatedName("a")
-   static class228 field1561;
-   @ObfuscatedName("g")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 2022334511
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -538913947
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -752536613
+      intValue = 827260873
    )
    @Export("z")
    int z;
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "1345744345"
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -51785355
    )
-   static String method1893() {
-      String var0 = "";
-
-      MessageNode var2;
-      for(Iterator var1 = class47.field928.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
-         var2 = (MessageNode)var1.next();
-      }
-
-      return var0;
-   }
+   @Export("y")
+   int y;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 124344315
+   )
+   @Export("x")
+   int x;
 }

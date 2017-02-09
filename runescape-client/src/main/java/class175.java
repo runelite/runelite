@@ -1,59 +1,70 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fj")
+@ObfuscatedName("fn")
 public class class175 {
-   @ObfuscatedName("hg")
+   @ObfuscatedName("nj")
    @ObfuscatedGetter(
-      intValue = -712215183
+      intValue = 421046659
    )
-   @Export("menuHeight")
-   static int menuHeight;
-   @ObfuscatedName("ek")
-   static SpritePixels[] field2644;
+   static int field2635;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("bj")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;I)V",
-      garbageValue = "-172563408"
+      signature = "(I)V",
+      garbageValue = "2066828613"
    )
-   public static void method3241(class182 var0, class182 var1) {
-      class168.field2183 = var0;
-      class217.field3170 = var1;
+   static final void method3253() {
+      for(class25 var0 = (class25)Client.field300.method2403(); var0 != null; var0 = (class25)Client.field300.method2398()) {
+         if(var0.field573 > 0) {
+            --var0.field573;
+         }
+
+         if(var0.field573 == 0) {
+            if(var0.field562 < 0 || class10.method126(var0.field562, var0.field572)) {
+               Item.method811(var0.field575, var0.field563, var0.field564, var0.field565, var0.field562, var0.field567, var0.field572);
+               var0.unlink();
+            }
+         } else {
+            if(var0.field566 > 0) {
+               --var0.field566;
+            }
+
+            if(var0.field566 == 0 && var0.field564 >= 1 && var0.field565 >= 1 && var0.field564 <= 102 && var0.field565 <= 102 && (var0.field569 < 0 || class10.method126(var0.field569, var0.field571))) {
+               Item.method811(var0.field575, var0.field563, var0.field564, var0.field565, var0.field569, var0.field570, var0.field571);
+               var0.field566 = -1;
+               if(var0.field562 == var0.field569 && var0.field562 == -1) {
+                  var0.unlink();
+               } else if(var0.field569 == var0.field562 && var0.field570 == var0.field567 && var0.field572 == var0.field571) {
+                  var0.unlink();
+               }
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("c")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "698398144"
+   )
+   static final int method3254(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = class45.method832(var3, var5);
+      int var8 = class45.method832(var3 + 1, var5);
+      int var9 = class45.method832(var3, 1 + var5);
+      int var10 = class45.method832(var3 + 1, 1 + var5);
+      int var11 = class8.method115(var7, var8, var4, var2);
+      int var12 = class8.method115(var9, var10, var4, var2);
+      return class8.method115(var11, var12, var6, var2);
    }
 
    class175() throws Throwable {
       throw new Error();
-   }
-
-   @ObfuscatedName("af")
-   @ObfuscatedSignature(
-      signature = "(LPlayer;IIB)V",
-      garbageValue = "-81"
-   )
-   static void method3242(Player var0, int var1, int var2) {
-      if(var1 == var0.animation && var1 != -1) {
-         int var3 = class146.getAnimation(var1).replyMode;
-         if(var3 == 1) {
-            var0.actionFrame = 0;
-            var0.field626 = 0;
-            var0.actionAnimationDisable = var2;
-            var0.field648 = 0;
-         }
-
-         if(var3 == 2) {
-            var0.field648 = 0;
-         }
-      } else if(var1 == -1 || var0.animation == -1 || class146.getAnimation(var1).forcedPriority >= class146.getAnimation(var0.animation).forcedPriority) {
-         var0.animation = var1;
-         var0.actionFrame = 0;
-         var0.field626 = 0;
-         var0.actionAnimationDisable = var2;
-         var0.field648 = 0;
-         var0.field651 = var0.field646;
-      }
-
    }
 }

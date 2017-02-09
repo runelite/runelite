@@ -2,139 +2,157 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("eg")
 public class class140 extends Node {
-   @ObfuscatedName("o")
+   @ObfuscatedName("y")
+   class142 field1949;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1245378183
+      intValue = -2031446033
    )
-   int field1957;
-   @ObfuscatedName("h")
+   int field1950;
+   @ObfuscatedName("r")
+   class137 field1951;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1509601479
+      intValue = -395912093
    )
-   int field1958;
-   @ObfuscatedName("q")
-   class137 field1959;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 419582791
-   )
-   int field1960;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 340267183
-   )
-   int field1961;
+   int field1952;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -581474687
+      intValue = 1361522805
    )
-   int field1963;
-   @ObfuscatedName("a")
+   int field1953;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 517019115
+      intValue = 1020469627
    )
-   int field1964;
-   @ObfuscatedName("g")
-   class142 field1965;
-   @ObfuscatedName("y")
+   int field1954;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 1549279753
+      intValue = -733758451
    )
-   int field1966;
-   @ObfuscatedName("m")
+   int field1955;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1239863023
+      intValue = -1728679693
    )
-   int field1967;
-   @ObfuscatedName("x")
-   class55 field1968;
-   @ObfuscatedName("k")
+   int field1956;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 18684061
+      intValue = -1592778831
    )
-   int field1969;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 1285245939
-   )
-   int field1970;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -771198091
-   )
-   int field1971;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1376104135
-   )
-   int field1972;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -1258919037
-   )
-   int field1973;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1536177471
-   )
-   int field1974;
-   @ObfuscatedName("w")
-   class66 field1975;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -178163805
-   )
-   int field1976;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -110765543
-   )
-   int field1977;
-   @ObfuscatedName("es")
-   static SpritePixels[] field1978;
-   @ObfuscatedName("cm")
-   static class102 field1979;
+   int field1957;
    @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = 1819443433
+      intValue = -316828837
    )
-   int field1981;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(CI)Z",
-      garbageValue = "-2109382875"
+   int field1958;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -211009617
    )
-   public static boolean method2636(char var0) {
-      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
-         return true;
-      } else {
-         if(var0 != 0) {
-            char[] var1 = class203.field3069;
+   int field1959;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 1595194559
+   )
+   int field1960;
+   @ObfuscatedName("o")
+   class55 field1961;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1790939323
+   )
+   int field1962;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 1348417117
+   )
+   int field1963;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 520768635
+   )
+   int field1964;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 2060480643
+   )
+   int field1965;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -296499661
+   )
+   int field1966;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = -1998882217
+   )
+   int field1967;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 867063341
+   )
+   int field1968;
+   @ObfuscatedName("f")
+   class66 field1970;
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               char var3 = var1[var2];
-               if(var0 == var3) {
-                  return true;
-               }
-            }
-         }
-
-         return false;
-      }
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-152720678"
+      garbageValue = "-393602003"
    )
-   void method2637() {
-      this.field1965 = null;
-      this.field1968 = null;
-      this.field1959 = null;
-      this.field1975 = null;
+   void method2612() {
+      this.field1949 = null;
+      this.field1961 = null;
+      this.field1951 = null;
+      this.field1970 = null;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass48;",
+      garbageValue = "2125432917"
+   )
+   static class48 method2613(int var0) {
+      class48 var1 = (class48)class48.field944.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = class112.field1763.getConfigData(var0, 0);
+         if(null == var2) {
+            return null;
+         } else {
+            var1 = new class48();
+            Buffer var3 = new Buffer(var2);
+            var3.offset = var3.payload.length - 12;
+            int var4 = var3.method3062();
+            var1.field942 = var3.readUnsignedShort();
+            var1.field938 = var3.readUnsignedShort();
+            var1.field939 = var3.readUnsignedShort();
+            var1.field941 = var3.readUnsignedShort();
+            var3.offset = 0;
+            var3.method3113();
+            var1.field934 = new int[var4];
+            var1.field935 = new int[var4];
+            var1.field937 = new String[var4];
+
+            int var6;
+            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.field934[var5++] = var6) {
+               var6 = var3.readUnsignedShort();
+               if(var6 == 3) {
+                  var1.field937[var5] = var3.method2934();
+               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
+                  var1.field935[var5] = var3.method3062();
+               } else {
+                  var1.field935[var5] = var3.readUnsignedByte();
+               }
+            }
+
+            class48.field944.put(var1, (long)var0);
+            return var1;
+         }
+      }
    }
 }

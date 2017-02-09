@@ -1,79 +1,84 @@
-import java.io.File;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("b")
+@ObfuscatedName("l")
 @Implements("XClanMember")
 public class XClanMember extends Node {
-   @ObfuscatedName("p")
+   @ObfuscatedName("y")
+   String field268;
+   @ObfuscatedName("k")
    @Export("username")
    String username;
-   @ObfuscatedName("q")
+   @ObfuscatedName("r")
    @Export("rank")
    byte rank;
-   @ObfuscatedName("x")
+   @ObfuscatedName("ca")
+   public static char field273;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -531052999
+      intValue = 749355327
    )
    @Export("world")
    int world;
-   @ObfuscatedName("by")
-   @ObfuscatedGetter(
-      intValue = -1788476517
-   )
-   static int field272;
-   @ObfuscatedName("hv")
-   @ObfuscatedGetter(
-      intValue = -638939325
-   )
-   @Export("menuWidth")
-   static int menuWidth;
-   @ObfuscatedName("g")
-   String field277;
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(IIIZIZB)V",
-      garbageValue = "-101"
+      signature = "(B)V",
+      garbageValue = "51"
    )
-   static void method250(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if(var0 < var1) {
-         int var6 = (var0 + var1) / 2;
-         int var7 = var0;
-         World var8 = class5.worldList[var6];
-         class5.worldList[var6] = class5.worldList[var1];
-         class5.worldList[var1] = var8;
-
-         for(int var9 = var0; var9 < var1; ++var9) {
-            if(class112.method2099(class5.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
-               World var10 = class5.worldList[var9];
-               class5.worldList[var9] = class5.worldList[var7];
-               class5.worldList[var7++] = var10;
-            }
-         }
-
-         class5.worldList[var1] = class5.worldList[var7];
-         class5.worldList[var7] = var8;
-         method250(var0, var7 - 1, var2, var3, var4, var5);
-         method250(1 + var7, var1, var2, var3, var4, var5);
+   public static void method261() {
+      class115 var0 = class115.mouse;
+      synchronized(class115.mouse) {
+         class115.field1805 = class115.field1795;
+         class115.field1799 = class115.field1796;
+         class115.field1794 = class115.field1797;
+         class115.field1804 = class115.field1801;
+         class115.field1800 = class115.field1802;
+         class115.field1807 = class115.field1803;
+         class115.field1806 = class115.field1798;
+         class115.field1801 = 0;
       }
-
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/io/File;B)V",
-      garbageValue = "-3"
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "1331959270"
    )
-   static void method251(File var0) {
-      class107.field1726 = var0;
-      if(!class107.field1726.exists()) {
-         throw new RuntimeException("");
-      } else {
-         class107.field1731 = true;
+   public static String method262(CharSequence var0) {
+      int var1 = var0.length();
+      StringBuilder var2 = new StringBuilder(var1);
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         char var4 = var0.charAt(var3);
+         if((var4 < 97 || var4 > 122) && (var4 < 65 || var4 > 90) && (var4 < 48 || var4 > 57) && var4 != 46 && var4 != 45 && var4 != 42 && var4 != 95) {
+            if(var4 == 32) {
+               var2.append('+');
+            } else {
+               byte var5 = class38.method765(var4);
+               var2.append('%');
+               int var6 = var5 >> 4 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(55 + var6));
+               } else {
+                  var2.append((char)(var6 + 48));
+               }
+
+               var6 = var5 & 15;
+               if(var6 >= 10) {
+                  var2.append((char)(var6 + 55));
+               } else {
+                  var2.append((char)(48 + var6));
+               }
+            }
+         } else {
+            var2.append(var4);
+         }
       }
+
+      return var2.toString();
    }
 }

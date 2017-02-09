@@ -1,72 +1,79 @@
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.Iterator;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fs")
+@ObfuscatedName("fb")
 public class class162 {
-   @ObfuscatedName("p")
-   public static final String[][] field2145 = new String[][]{{"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"}, {"Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"}};
-   @ObfuscatedName("x")
-   public static Calendar field2146;
-   @ObfuscatedName("g")
-   public static final String[] field2148 = new String[]{"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      longValue = -7794149063651249427L
+   )
+   static long field2277;
+   @ObfuscatedName("px")
+   @ObfuscatedGetter(
+      intValue = -1710726819
+   )
+   static int field2279;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      longValue = -818203574302375933L
+   )
+   static long field2280;
+   @ObfuscatedName("no")
+   @ObfuscatedGetter(
+      intValue = 1494643699
+   )
+   static int field2282;
+   @ObfuscatedName("de")
+   static byte[][] field2283;
 
-   static {
-      Calendar.getInstance(TimeZone.getTimeZone("Europe/London"));
-      field2146 = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+   @ObfuscatedName("ep")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-1"
+   )
+   static final void method3139() {
+      Client.field321.method3195(84);
+      Client.field321.method2912(0);
    }
 
    class162() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("ar")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LActor;B)V",
-      garbageValue = "1"
+      signature = "(I)V",
+      garbageValue = "930349307"
    )
-   static final void method3080(Actor var0) {
-      int var1 = var0.field652 - Client.gameCycle;
-      int var2 = var0.field596 * 64 + var0.field634 * 128;
-      int var3 = var0.field636 * 128 + var0.field596 * 64;
-      var0.x += (var2 - var0.x) / var1;
-      var0.y += (var3 - var0.y) / var1;
-      var0.field627 = 0;
-      var0.field643 = var0.field592;
+   public static void method3141() {
+      NPCComposition.field2986.reset();
+      NPCComposition.npcModelCache.reset();
    }
 
-   @ObfuscatedName("br")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIII)V",
-      garbageValue = "1237057038"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-2003821592"
    )
-   static final void method3081(int var0, int var1, int var2) {
-      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
-         int var3 = class65.method1153(var0, var1, WallObject.plane) - var2;
-         var0 -= GameEngine.cameraX;
-         var3 -= class40.cameraZ;
-         var1 -= class149.cameraY;
-         int var4 = class84.field1438[class13.cameraPitch];
-         int var5 = class84.field1452[class13.cameraPitch];
-         int var6 = class84.field1438[World.cameraYaw];
-         int var7 = class84.field1452[World.cameraYaw];
-         int var8 = var6 * var1 + var0 * var7 >> 16;
-         var1 = var7 * var1 - var6 * var0 >> 16;
-         var0 = var8;
-         var8 = var3 * var5 - var1 * var4 >> 16;
-         var1 = var5 * var1 + var4 * var3 >> 16;
-         if(var1 >= 50) {
-            Client.field398 = Client.scale * var0 / var1 + Client.camera2 / 2;
-            Client.field317 = var8 * Client.scale / var1 + Client.camera3 / 2;
-         } else {
-            Client.field398 = -1;
-            Client.field317 = -1;
-         }
+   static String method3142() {
+      String var0 = "";
 
-      } else {
-         Client.field398 = -1;
-         Client.field317 = -1;
+      MessageNode var2;
+      for(Iterator var1 = class47.field925.iterator(); var1.hasNext(); var0 = var0 + var2.name + ':' + var2.value + '\n') {
+         var2 = (MessageNode)var1.next();
       }
+
+      return var0;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(I)I",
+      garbageValue = "1218505904"
+   )
+   static int method3144() {
+      return ++class47.field928 - 1;
    }
 }

@@ -4,127 +4,131 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cz")
+@ObfuscatedName("cr")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("k")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -476245549
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -347666479
+      intValue = 40754033
    )
    @Export("height")
    int height;
-   @ObfuscatedName("d")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -640105555
+      intValue = -86230869
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 691719557
    )
    @Export("y")
    int y;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1235532091
+      intValue = -484814025
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -471364253
    )
    @Export("relativeX")
    int relativeX;
-   @ObfuscatedName("p")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 952629845
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -1893916709
+      intValue = 1028189815
    )
    @Export("offsetX")
    int offsetX;
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 501345255
-   )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -1010420433
+      intValue = -627130765
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("a")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -765188891
+      intValue = 2076095165
    )
    @Export("offsetY")
    int offsetY;
-   @ObfuscatedName("q")
+   @ObfuscatedName("s")
    @ObfuscatedGetter(
-      intValue = -1500262413
+      intValue = 1916379899
    )
-   @Export("x")
-   int x;
-   @ObfuscatedName("m")
+   int field1614;
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = 63953377
+      intValue = -1974480323
    )
-   int field1621;
-   @ObfuscatedName("c")
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -739510581
+      intValue = -1720341121
    )
-   int field1622;
-   @ObfuscatedName("r")
+   @Export("hash")
+   public int hash = 0;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 813624143
+      intValue = -1821318125
    )
    @Export("flags")
    int flags = 0;
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-307136958"
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -557654909
    )
-   static final void method1915() {
-      if(Friend.field152 != null) {
-         Friend.field152.method2059();
-         Friend.field152 = null;
+   int field1618;
+   @ObfuscatedName("w")
+   @Export("renderable")
+   public Renderable renderable;
+
+   @ObfuscatedName("ei")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "544438409"
+   )
+   static final void method1909(String var0) {
+      if(null != class85.clanMembers) {
+         Client.field321.method3195(40);
+         Client.field321.method2912(class105.method1999(var0));
+         Client.field321.method3097(var0);
       }
-
-      class63.method1132();
-      Renderable.region.method1796();
-
-      for(int var0 = 0; var0 < 4; ++var0) {
-         Client.collisionMaps[var0].method2264();
-      }
-
-      System.gc();
-      class138.field1921 = 1;
-      Item.field887 = null;
-      class181.field2695 = -1;
-      Frames.field1569 = -1;
-      class105.field1721 = 0;
-      class138.field1922 = false;
-      class138.field1926 = 2;
-      Client.field515 = -1;
-      Client.field516 = false;
-      ItemComposition.method3701();
-      class212.setGameState(10);
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("ah")
    @ObfuscatedSignature(
-      signature = "(III)Z",
-      garbageValue = "-1303059927"
+      signature = "(I)V",
+      garbageValue = "43862053"
    )
-   static boolean method1916(int var0, int var1) {
-      return var0 != 4 || var1 < 8;
+   static final void method1910() {
+      int[] var0 = class45.field902;
+
+      int var1;
+      for(var1 = 0; var1 < class45.field901; ++var1) {
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(null != var2 && var2.field606 > 0) {
+            --var2.field606;
+            if(var2.field606 == 0) {
+               var2.overhead = null;
+            }
+         }
+      }
+
+      for(var1 = 0; var1 < Client.field317; ++var1) {
+         int var4 = Client.field554[var1];
+         NPC var3 = Client.cachedNPCs[var4];
+         if(var3 != null && var3.field606 > 0) {
+            --var3.field606;
+            if(var3.field606 == 0) {
+               var3.overhead = null;
+            }
+         }
+      }
+
    }
 }

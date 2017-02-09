@@ -1,258 +1,105 @@
 import java.io.File;
 import java.util.Hashtable;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dv")
+@ObfuscatedName("dq")
 public class class107 {
-   @ObfuscatedName("g")
-   static File field1726;
-   @ObfuscatedName("df")
-   @ObfuscatedGetter(
-      intValue = -596569179
-   )
-   static int field1729;
-   @ObfuscatedName("p")
-   static boolean field1731 = false;
-   @ObfuscatedName("x")
-   static Hashtable field1732 = new Hashtable(16);
-   @ObfuscatedName("pk")
-   static class30 field1733;
+   @ObfuscatedName("y")
+   static File field1727;
+   @ObfuscatedName("k")
+   static boolean field1728 = false;
+   @ObfuscatedName("o")
+   static Hashtable field1729 = new Hashtable(16);
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(IZZZI)Lclass184;",
-      garbageValue = "1650991230"
+      signature = "(IB)V",
+      garbageValue = "115"
    )
-   static class184 method2035(int var0, boolean var1, boolean var2, boolean var3) {
-      class116 var4 = null;
-      if(null != class104.field1688) {
-         var4 = new class116(var0, class104.field1688, Friend.field151[var0], 1000000);
+   static void method2031(int var0) {
+      if(var0 == -3) {
+         PlayerComposition.method2762("Connection timed out.", "Please try using a different world.", "");
+      } else if(var0 == -2) {
+         PlayerComposition.method2762("", "Error connecting to server.", "");
+      } else if(var0 == -1) {
+         PlayerComposition.method2762("No response from server.", "Please try using a different world.", "");
+      } else if(var0 == 3) {
+         class41.loginIndex = 3;
+      } else if(var0 == 4) {
+         PlayerComposition.method2762("Your account has been disabled.", "Please check your message-centre for details.", "");
+      } else if(var0 == 5) {
+         PlayerComposition.method2762("Your account is already logged in.", "Try again in 60 secs...", "");
+      } else if(var0 == 6) {
+         PlayerComposition.method2762("RuneScape has been updated!", "Please reload this page.", "");
+      } else if(var0 == 7) {
+         PlayerComposition.method2762("This world is full.", "Please use a different world.", "");
+      } else if(var0 == 8) {
+         PlayerComposition.method2762("Unable to connect.", "Login server offline.", "");
+      } else if(var0 == 9) {
+         PlayerComposition.method2762("Login limit exceeded.", "Too many connections from your address.", "");
+      } else if(var0 == 10) {
+         PlayerComposition.method2762("Unable to connect.", "Bad session id.", "");
+      } else if(var0 == 11) {
+         PlayerComposition.method2762("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
+      } else if(var0 == 12) {
+         PlayerComposition.method2762("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+      } else if(var0 == 13) {
+         PlayerComposition.method2762("Could not complete login.", "Please try using a different world.", "");
+      } else if(var0 == 14) {
+         PlayerComposition.method2762("The server is being updated.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 16) {
+         PlayerComposition.method2762("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+      } else if(var0 == 17) {
+         PlayerComposition.method2762("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+      } else if(var0 == 18) {
+         PlayerComposition.method2762("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
+      } else if(var0 == 19) {
+         PlayerComposition.method2762("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+      } else if(var0 == 20) {
+         PlayerComposition.method2762("Invalid loginserver requested.", "Please try using a different world.", "");
+      } else if(var0 == 22) {
+         PlayerComposition.method2762("Malformed login packet.", "Please try again.", "");
+      } else if(var0 == 23) {
+         PlayerComposition.method2762("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 24) {
+         PlayerComposition.method2762("Error loading your profile.", "Please contact customer support.", "");
+      } else if(var0 == 25) {
+         PlayerComposition.method2762("Unexpected loginserver response.", "Please try using a different world.", "");
+      } else if(var0 == 26) {
+         PlayerComposition.method2762("This computers address has been blocked", "as it was used to break our rules.", "");
+      } else if(var0 == 27) {
+         PlayerComposition.method2762("", "Service unavailable.", "");
+      } else if(var0 == 31) {
+         PlayerComposition.method2762("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+      } else if(var0 == 32) {
+         PlayerComposition.method2762("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
+      } else if(var0 == 37) {
+         PlayerComposition.method2762("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+      } else if(var0 == 38) {
+         PlayerComposition.method2762("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+      } else if(var0 == 55) {
+         PlayerComposition.method2762("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+      } else {
+         if(var0 == 56) {
+            PlayerComposition.method2762("Enter the 6-digit code generated by your", "authenticator app.", "");
+            class11.setGameState(11);
+            return;
+         }
+
+         if(var0 == 57) {
+            PlayerComposition.method2762("The code you entered was incorrect.", "Please try again.", "");
+            class11.setGameState(11);
+            return;
+         }
+
+         PlayerComposition.method2762("Unexpected server response", "Please try using a different world.", "");
       }
 
-      return new class184(var4, class2.field26, var0, var1, var2, var3);
+      class11.setGameState(10);
    }
 
    class107() throws Throwable {
       throw new Error();
-   }
-
-   @ObfuscatedName("cq")
-   @ObfuscatedSignature(
-      signature = "(IIIII)V",
-      garbageValue = "1901393764"
-   )
-   static final void method2036(int var0, int var1, int var2, int var3) {
-      if(Client.field429 == 0 && !Client.field432) {
-         class72.addMenuEntry("Walk here", "", 23, 0, var0 - var2, var1 - var3);
-      }
-
-      int var4 = -1;
-      int var5 = -1;
-
-      int var6;
-      int var7;
-      for(var6 = 0; var6 < Model.field1412; ++var6) {
-         var7 = Model.field1391[var6];
-         int var8 = var7 & 127;
-         int var9 = var7 >> 7 & 127;
-         int var10 = var7 >> 29 & 3;
-         int var11 = var7 >> 14 & 32767;
-         if(var7 != var5) {
-            var5 = var7;
-            if(var10 == 2 && Renderable.region.method1729(WallObject.plane, var8, var9, var7) >= 0) {
-               ObjectComposition var12 = class217.getObjectDefinition(var11);
-               if(var12.impostorIds != null) {
-                  var12 = var12.getImpostor();
-               }
-
-               if(null == var12) {
-                  continue;
-               }
-
-               if(Client.field429 == 1) {
-                  class72.addMenuEntry("Use", Client.field431 + " " + "->" + " " + Client.method568('\uffff') + var12.name, 1, var7, var8, var9);
-               } else if(Client.field432) {
-                  if((class3.field29 & 4) == 4) {
-                     class72.addMenuEntry(Client.field406, Client.field436 + " " + "->" + " " + Client.method568('\uffff') + var12.name, 2, var7, var8, var9);
-                  }
-               } else {
-                  String[] var13 = var12.actions;
-                  if(Client.field502) {
-                     var13 = class159.method3042(var13);
-                  }
-
-                  if(var13 != null) {
-                     for(int var19 = 4; var19 >= 0; --var19) {
-                        if(var13[var19] != null) {
-                           short var15 = 0;
-                           if(var19 == 0) {
-                              var15 = 3;
-                           }
-
-                           if(var19 == 1) {
-                              var15 = 4;
-                           }
-
-                           if(var19 == 2) {
-                              var15 = 5;
-                           }
-
-                           if(var19 == 3) {
-                              var15 = 6;
-                           }
-
-                           if(var19 == 4) {
-                              var15 = 1001;
-                           }
-
-                           class72.addMenuEntry(var13[var19], Client.method568('\uffff') + var12.name, var15, var7, var8, var9);
-                        }
-                     }
-                  }
-
-                  class72.addMenuEntry("Examine", Client.method568('\uffff') + var12.name, 1002, var12.field2896 << 14, var8, var9);
-               }
-            }
-
-            NPC var14;
-            Player var16;
-            int var18;
-            int[] var27;
-            int var29;
-            if(var10 == 1) {
-               NPC var23 = Client.cachedNPCs[var11];
-               if(var23 == null) {
-                  continue;
-               }
-
-               if(var23.composition.field2999 == 1 && (var23.x & 127) == 64 && (var23.y & 127) == 64) {
-                  for(var18 = 0; var18 < Client.field316; ++var18) {
-                     var14 = Client.cachedNPCs[Client.field419[var18]];
-                     if(null != var14 && var14 != var23 && var14.composition.field2999 == 1 && var23.x == var14.x && var23.y == var14.y) {
-                        class13.method174(var14.composition, Client.field419[var18], var8, var9);
-                     }
-                  }
-
-                  var18 = class45.field898;
-                  var27 = class45.field895;
-
-                  for(var29 = 0; var29 < var18; ++var29) {
-                     var16 = Client.cachedPlayers[var27[var29]];
-                     if(null != var16 && var16.x == var23.x && var23.y == var16.y) {
-                        Actor.method579(var16, var27[var29], var8, var9);
-                     }
-                  }
-               }
-
-               class13.method174(var23.composition, var11, var8, var9);
-            }
-
-            if(var10 == 0) {
-               Player var24 = Client.cachedPlayers[var11];
-               if(var24 == null) {
-                  continue;
-               }
-
-               if((var24.x & 127) == 64 && (var24.y & 127) == 64) {
-                  for(var18 = 0; var18 < Client.field316; ++var18) {
-                     var14 = Client.cachedNPCs[Client.field419[var18]];
-                     if(var14 != null && var14.composition.field2999 == 1 && var24.x == var14.x && var14.y == var24.y) {
-                        class13.method174(var14.composition, Client.field419[var18], var8, var9);
-                     }
-                  }
-
-                  var18 = class45.field898;
-                  var27 = class45.field895;
-
-                  for(var29 = 0; var29 < var18; ++var29) {
-                     var16 = Client.cachedPlayers[var27[var29]];
-                     if(null != var16 && var16 != var24 && var24.x == var16.x && var16.y == var24.y) {
-                        Actor.method579(var16, var27[var29], var8, var9);
-                     }
-                  }
-               }
-
-               if(var11 != Client.field336) {
-                  Actor.method579(var24, var11, var8, var9);
-               } else {
-                  var4 = var7;
-               }
-            }
-
-            if(var10 == 3) {
-               Deque var25 = Client.groundItemDeque[WallObject.plane][var8][var9];
-               if(var25 != null) {
-                  for(Item var26 = (Item)var25.method2413(); null != var26; var26 = (Item)var25.method2415()) {
-                     ItemComposition var28 = class36.getItemDefinition(var26.id);
-                     if(Client.field429 == 1) {
-                        class72.addMenuEntry("Use", Client.field431 + " " + "->" + " " + Client.method568(16748608) + var28.name, 16, var26.id, var8, var9);
-                     } else if(Client.field432) {
-                        if((class3.field29 & 1) == 1) {
-                           class72.addMenuEntry(Client.field406, Client.field436 + " " + "->" + " " + Client.method568(16748608) + var28.name, 17, var26.id, var8, var9);
-                        }
-                     } else {
-                        String[] var20 = var28.groundActions;
-                        if(Client.field502) {
-                           var20 = class159.method3042(var20);
-                        }
-
-                        for(int var22 = 4; var22 >= 0; --var22) {
-                           if(null != var20 && var20[var22] != null) {
-                              byte var17 = 0;
-                              if(var22 == 0) {
-                                 var17 = 18;
-                              }
-
-                              if(var22 == 1) {
-                                 var17 = 19;
-                              }
-
-                              if(var22 == 2) {
-                                 var17 = 20;
-                              }
-
-                              if(var22 == 3) {
-                                 var17 = 21;
-                              }
-
-                              if(var22 == 4) {
-                                 var17 = 22;
-                              }
-
-                              class72.addMenuEntry(var20[var22], Client.method568(16748608) + var28.name, var17, var26.id, var8, var9);
-                           } else if(var22 == 2) {
-                              class72.addMenuEntry("Take", Client.method568(16748608) + var28.name, 20, var26.id, var8, var9);
-                           }
-                        }
-
-                        class72.addMenuEntry("Examine", Client.method568(16748608) + var28.name, 1004, var26.id, var8, var9);
-                     }
-                  }
-               }
-            }
-         }
-      }
-
-      if(var4 != -1) {
-         var6 = var4 & 127;
-         var7 = var4 >> 7 & 127;
-         Player var21 = Client.cachedPlayers[Client.field336];
-         Actor.method579(var21, Client.field336, var6, var7);
-      }
-
-   }
-
-   @ObfuscatedName("do")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)V",
-      garbageValue = "-1612989014"
-   )
-   static final void method2037(String var0, int var1) {
-      Client.field394.method3037(121);
-      Client.field394.method2799(class37.method737(var0) + 1);
-      Client.field394.method2805(var0);
-      Client.field394.method2955(var1);
    }
 }

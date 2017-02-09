@@ -1,62 +1,40 @@
-import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ec")
+@ObfuscatedName("ez")
 public class class148 {
-   static {
-      new HashMap();
-   }
-
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(IIZI)Ljava/lang/String;",
-      garbageValue = "-108715856"
-   )
-   public static String method2781(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var0 < 0) {
-            return Integer.toString(var0, var1);
-         } else {
-            int var3 = 2;
-
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
-
-            char[] var5 = new char[var3];
-            var5[0] = 43;
-
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(var8 + 87);
-               } else {
-                  var5[var6] = (char)(var8 + 48);
-               }
-            }
-
-            return new String(var5);
-         }
-      } else {
-         throw new IllegalArgumentException("");
-      }
-   }
+   @ObfuscatedName("y")
+   public static final short[][] field2029 = new short[][]{{(short)6798, (short)107, (short)10283, (short)16, (short)4797, (short)7744, (short)5799, (short)4634, (short)-31839, (short)22433, (short)2983, (short)-11343, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)8741, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)25239, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)25238, (short)8742, (short)12, (short)-1506, (short)-22374, (short)7735, (short)8404, (short)1701, (short)-27106, (short)24094, (short)10153, (short)-8915, (short)4783, (short)1341, (short)16578, (short)-30533, (short)8, (short)5281, (short)10438, (short)3650, (short)-27322, (short)-21845, (short)200, (short)571, (short)908, (short)21830, (short)28946, (short)-15701, (short)-14010}, {(short)4626, (short)11146, (short)6439, (short)12, (short)4758, (short)10270}, {(short)4550, (short)4537, (short)5681, (short)5673, (short)5790, (short)6806, (short)8076, (short)4574, (short)17050, (short)0, (short)127}};
+   @ObfuscatedName("o")
+   public static final short[] field2030 = new short[]{(short)-10304, (short)9104, (short)-1, (short)-1, (short)-1};
+   @ObfuscatedName("k")
+   public static final short[] field2031 = new short[]{(short)6798, (short)8741, (short)25238, (short)4626, (short)4550};
+   @ObfuscatedName("q")
+   static SpritePixels field2032;
+   @ObfuscatedName("r")
+   public static final short[][] field2034 = new short[][]{{(short)6554, (short)115, (short)10304, (short)28, (short)5702, (short)7756, (short)5681, (short)4510, (short)-31835, (short)22437, (short)2859, (short)-11339, (short)16, (short)5157, (short)10446, (short)3658, (short)-27314, (short)-21965, (short)472, (short)580, (short)784, (short)21966, (short)28950, (short)-15697, (short)-14002}, {(short)9104, (short)10275, (short)7595, (short)3610, (short)7975, (short)8526, (short)918, (short)-26734, (short)24466, (short)10145, (short)-6882, (short)5027, (short)1457, (short)16565, (short)-30545, (short)25486, (short)24, (short)5392, (short)10429, (short)3673, (short)-27335, (short)-21957, (short)192, (short)687, (short)412, (short)21821, (short)28835, (short)-15460, (short)-14019}, new short[0], new short[0], new short[0]};
 
    class148() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("cx")
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(CB)C",
+      garbageValue = "53"
+   )
+   static char method2768(char var0) {
+      return var0 != 181 && var0 != 402?Character.toTitleCase(var0):var0;
+   }
+
+   @ObfuscatedName("dm")
    @ObfuscatedSignature(
       signature = "(III)V",
-      garbageValue = "-884514968"
+      garbageValue = "-1477166846"
    )
-   static final void method2783(int var0, int var1) {
-      if(class103.method1973(var0)) {
-         class5.method65(Widget.widgets[var0], var1);
+   static final void method2769(int var0, int var1) {
+      if(class15.method193(var0)) {
+         Actor.method641(Widget.widgets[var0], var1);
       }
    }
 }

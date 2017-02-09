@@ -2,87 +2,100 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gz")
+@ObfuscatedName("gq")
 public class class195 extends CacheableNode {
-   @ObfuscatedName("g")
-   static NodeCache field2848 = new NodeCache(64);
-   @ObfuscatedName("x")
-   public char field2850;
-   @ObfuscatedName("q")
-   public char field2851;
-   @ObfuscatedName("a")
-   public String[] field2852;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -539193675
-   )
-   public int field2853;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -260905551
+      intValue = -439110967
    )
-   public int field2854 = 0;
-   @ObfuscatedName("s")
-   public int[] field2855;
+   public int field2837;
+   @ObfuscatedName("y")
+   static NodeCache field2838 = new NodeCache(64);
    @ObfuscatedName("o")
-   public int[] field2856;
-   @ObfuscatedName("p")
-   public static class182 field2857;
+   public char field2839;
+   @ObfuscatedName("r")
+   public char field2841;
    @ObfuscatedName("d")
-   public String field2858 = "null";
+   public int[] field2842;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -631808367
+   )
+   public int field2843 = 0;
+   @ObfuscatedName("n")
+   public int[] field2844;
+   @ObfuscatedName("c")
+   public String[] field2846;
+   @ObfuscatedName("w")
+   public String field2847 = "null";
+   @ObfuscatedName("k")
+   static class182 field2848;
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "-317942081"
+      garbageValue = "-1035126177"
    )
-   void method3537(Buffer var1) {
+   void method3548(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3538(var1, var2);
+         this.method3552(var1, var2);
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(LBuffer;II)V",
-      garbageValue = "-550648705"
+      garbageValue = "-162014590"
    )
-   void method3538(Buffer var1, int var2) {
+   void method3552(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2850 = (char)var1.readUnsignedByte();
+         this.field2839 = (char)var1.readUnsignedByte();
       } else if(var2 == 2) {
-         this.field2851 = (char)var1.readUnsignedByte();
+         this.field2841 = (char)var1.readUnsignedByte();
       } else if(var2 == 3) {
-         this.field2858 = var1.method2846();
+         this.field2847 = var1.method2934();
       } else if(var2 == 4) {
-         this.field2853 = var1.method2819();
+         this.field2837 = var1.method3062();
       } else {
          int var3;
          if(var2 == 5) {
-            this.field2854 = var1.readUnsignedShort();
-            this.field2855 = new int[this.field2854];
-            this.field2852 = new String[this.field2854];
+            this.field2843 = var1.readUnsignedShort();
+            this.field2842 = new int[this.field2843];
+            this.field2846 = new String[this.field2843];
 
-            for(var3 = 0; var3 < this.field2854; ++var3) {
-               this.field2855[var3] = var1.method2819();
-               this.field2852[var3] = var1.method2846();
+            for(var3 = 0; var3 < this.field2843; ++var3) {
+               this.field2842[var3] = var1.method3062();
+               this.field2846[var3] = var1.method2934();
             }
          } else if(var2 == 6) {
-            this.field2854 = var1.readUnsignedShort();
-            this.field2855 = new int[this.field2854];
-            this.field2856 = new int[this.field2854];
+            this.field2843 = var1.readUnsignedShort();
+            this.field2842 = new int[this.field2843];
+            this.field2844 = new int[this.field2843];
 
-            for(var3 = 0; var3 < this.field2854; ++var3) {
-               this.field2855[var3] = var1.method2819();
-               this.field2856[var3] = var1.method2819();
+            for(var3 = 0; var3 < this.field2843; ++var3) {
+               this.field2842[var3] = var1.method3062();
+               this.field2844[var3] = var1.method3062();
             }
          }
       }
 
+   }
+
+   @ObfuscatedName("k")
+   public static final void method3560(long var0) {
+      if(var0 > 0L) {
+         if(var0 % 10L == 0L) {
+            class3.method45(var0 - 1L);
+            class3.method45(1L);
+         } else {
+            class3.method45(var0);
+         }
+
+      }
    }
 }
