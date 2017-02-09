@@ -1,33 +1,33 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cj")
+@ObfuscatedName("cx")
 public interface class93 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(II)I",
-      garbageValue = "-2061564768"
+      garbageValue = "-390751284"
    )
-   int vmethod1900(int var1);
+   int vmethod1888(int var1);
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "35"
-   )
-   boolean vmethod1901(int var1);
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-40"
-   )
-   boolean vmethod1902(int var1);
-
-   @ObfuscatedName("g")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(II)[I",
-      garbageValue = "1782998639"
+      garbageValue = "2003417490"
    )
    int[] load(int var1);
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "-14"
+   )
+   boolean vmethod1891(int var1);
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "842871084"
+   )
+   boolean vmethod1895(int var1);
 }

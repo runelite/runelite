@@ -1,108 +1,114 @@
 import java.util.zip.CRC32;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ga")
+@ObfuscatedName("gi")
 public class class185 {
-   @ObfuscatedName("o")
-   public static XHashTable field2741 = new XHashTable(4096);
-   @ObfuscatedName("hx")
-   @ObfuscatedGetter(
-      intValue = -1017284957
-   )
-   @Export("menuX")
-   static int menuX;
-   @ObfuscatedName("q")
-   public static XHashTable field2743 = new XHashTable(4096);
+   @ObfuscatedName("b")
+   public static byte field2728 = 0;
    @ObfuscatedName("d")
+   public static Node2LinkedList field2729 = new Node2LinkedList();
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 1191174545
+      longValue = 2020465102466276561L
    )
-   public static int field2745 = 0;
-   @ObfuscatedName("f")
-   public static byte field2746 = 0;
+   public static long field2730;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1617578569
+   )
+   public static int field2731 = 0;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -111847277
+   )
+   public static int field2732 = 0;
    @ObfuscatedName("j")
+   public static XHashTable field2733 = new XHashTable(32);
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -1905313961
+      intValue = 1012985129
    )
-   public static int field2747 = 0;
-   @ObfuscatedName("s")
-   public static Node2LinkedList field2748 = new Node2LinkedList();
-   @ObfuscatedName("l")
+   public static int field2734 = 0;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1262162029
+      intValue = -1360002581
    )
-   public static int field2749 = 0;
-   @ObfuscatedName("a")
+   public static int field2735 = 0;
+   @ObfuscatedName("r")
+   public static XHashTable field2736 = new XHashTable(4096);
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -2138021085
+      intValue = 520200919
    )
-   public static int field2750 = 0;
+   public static int field2738 = 0;
    @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -707286677
+      intValue = 1117110553
    )
-   public static int field2751 = 0;
+   public static int field2739 = 0;
+   @ObfuscatedName("s")
+   public static XHashTable field2740 = new XHashTable(4096);
+   @ObfuscatedName("n")
+   public static XHashTable field2741 = new XHashTable(4096);
+   @ObfuscatedName("f")
+   static CRC32 field2742 = new CRC32();
+   @ObfuscatedName("u")
+   static class184[] field2743 = new class184[256];
+   @ObfuscatedName("a")
+   public static Buffer field2744 = new Buffer(8);
    @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = -597946607
+      intValue = 1671101973
    )
-   public static int field2752 = 0;
-   @ObfuscatedName("r")
-   public static class181 field2753;
-   @ObfuscatedName("u")
-   public static Buffer field2754 = new Buffer(8);
-   @ObfuscatedName("z")
+   public static int field2745 = 0;
+   @ObfuscatedName("e")
    @ObfuscatedGetter(
-      intValue = -1657519739
+      intValue = 939683469
    )
-   public static int field2755 = 0;
-   @ObfuscatedName("w")
-   public static CRC32 field2756 = new CRC32();
-   @ObfuscatedName("p")
-   public static class110 field2757;
-   @ObfuscatedName("v")
-   public static class184[] field2758 = new class184[256];
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      longValue = -1589096370494624139L
-   )
-   public static long field2759;
-   @ObfuscatedName("t")
-   @ObfuscatedGetter(
-      intValue = 163393025
-   )
-   public static int field2760 = 0;
+   public static int field2746 = 0;
    @ObfuscatedName("k")
-   public static XHashTable field2761 = new XHashTable(32);
-   @ObfuscatedName("c")
-   public static XHashTable field2762 = new XHashTable(4096);
+   public static class110 field2748;
 
    class185() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("g")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(II)LKitDefinition;",
-      garbageValue = "-1822411187"
+      signature = "(IIZB)Ljava/lang/String;",
+      garbageValue = "21"
    )
-   @Export("getKitDefinition")
-   public static KitDefinition getKitDefinition(int var0) {
-      KitDefinition var1 = (KitDefinition)KitDefinition.field2815.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class231.field3282.getConfigData(3, var0);
-         var1 = new KitDefinition();
-         if(var2 != null) {
-            var1.method3490(new Buffer(var2));
-         }
+   static String method3407(int var0, int var1, boolean var2) {
+      if(var1 >= 2 && var1 <= 36) {
+         if(var2 && var0 >= 0) {
+            int var3 = 2;
 
-         KitDefinition.field2815.put(var1, (long)var0);
-         return var1;
+            for(int var4 = var0 / var1; var4 != 0; ++var3) {
+               var4 /= var1;
+            }
+
+            char[] var5 = new char[var3];
+            var5[0] = 43;
+
+            for(int var6 = var3 - 1; var6 > 0; --var6) {
+               int var7 = var0;
+               var0 /= var1;
+               int var8 = var7 - var0 * var1;
+               if(var8 >= 10) {
+                  var5[var6] = (char)(87 + var8);
+               } else {
+                  var5[var6] = (char)(48 + var8);
+               }
+            }
+
+            return new String(var5);
+         } else {
+            return Integer.toString(var0, var1);
+         }
+      } else {
+         throw new IllegalArgumentException("");
       }
    }
 }

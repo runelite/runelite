@@ -1,171 +1,76 @@
-import java.io.IOException;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ds")
+@ObfuscatedName("dl")
 public abstract class class119 {
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1285519265
+      intValue = -1915939163
    )
-   public int field1856;
-   @ObfuscatedName("x")
+   public int field1846;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1125799215
+      intValue = -1779926033
    )
-   public int field1857;
-   @ObfuscatedName("p")
+   public int field1847;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -431616281
+      intValue = -1153052327
    )
-   public int field1858;
-   @ObfuscatedName("q")
+   public int field1848;
+   @ObfuscatedName("br")
+   static class184 field1849;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 282719355
+      intValue = 1548984237
    )
-   public int field1860;
+   public int field1850;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "2050735558"
+      signature = "(IIILCollisionData;I)Z",
+      garbageValue = "2140491642"
    )
-   public static void method2295(boolean var0) {
-      if(null != class185.field2757) {
-         try {
-            Buffer var1 = new Buffer(4);
-            var1.method2799(var0?2:3);
-            var1.method2801(0);
-            class185.field2757.method2073(var1.payload, 0, 4);
-         } catch (IOException var4) {
-            try {
-               class185.field2757.method2059();
-            } catch (Exception var3) {
-               ;
-            }
+   public abstract boolean vmethod2275(int var1, int var2, int var3, CollisionData var4);
 
-            ++class185.field2760;
-            class185.field2757 = null;
-         }
-
-      }
-   }
-
-   @ObfuscatedName("p")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "([BIII)I",
-      garbageValue = "-1007774675"
+      signature = "([BIIB)I",
+      garbageValue = "-62"
    )
-   public static int method2296(byte[] var0, int var1, int var2) {
+   static int method2279(byte[] var0, int var1, int var2) {
       int var3 = -1;
 
       for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.field2092[(var3 ^ var0[var4]) & 255];
+         var3 = var3 >>> 8 ^ Buffer.field2259[(var3 ^ var0[var4]) & 255];
       }
 
       var3 = ~var3;
       return var3;
    }
 
-   @ObfuscatedName("cn")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
-      garbageValue = "1289510622"
+      signature = "(II)V",
+      garbageValue = "-98213361"
    )
-   static final void method2299(Widget var0, int var1, int var2) {
-      if(Client.field368 == null && !Client.isMenuOpen) {
-         if(var0 != null) {
-            Widget var5 = var0;
-            int var7 = class36.method724(var0);
-            int var10 = var7 >> 17 & 7;
-            int var8 = var10;
-            Widget var4;
-            int var9;
-            if(var10 == 0) {
-               var4 = null;
-            } else {
-               var9 = 0;
+   static void method2280(int var0) {
+      if(var0 != -1) {
+         if(class15.method193(var0)) {
+            Widget[] var1 = Widget.widgets[var0];
 
-               while(true) {
-                  if(var9 >= var8) {
-                     var4 = var5;
-                     break;
-                  }
-
-                  var5 = class37.method736(var5.parentId);
-                  if(null == var5) {
-                     var4 = null;
-                     break;
-                  }
-
-                  ++var9;
+            for(int var2 = 0; var2 < var1.length; ++var2) {
+               Widget var3 = var1[var2];
+               if(null != var3.field2130) {
+                  class18 var4 = new class18();
+                  var4.field190 = var3;
+                  var4.field198 = var3.field2130;
+                  class99.method1923(var4, 2000000);
                }
             }
 
-            Widget var6 = var4;
-            if(var4 == null) {
-               var6 = var0.parent;
-            }
-
-            if(null != var6) {
-               Client.field368 = var0;
-               var5 = var0;
-               var7 = class36.method724(var0);
-               var10 = var7 >> 17 & 7;
-               var8 = var10;
-               if(var10 == 0) {
-                  var4 = null;
-               } else {
-                  var9 = 0;
-
-                  while(true) {
-                     if(var9 >= var8) {
-                        var4 = var5;
-                        break;
-                     }
-
-                     var5 = class37.method736(var5.parentId);
-                     if(var5 == null) {
-                        var4 = null;
-                        break;
-                     }
-
-                     ++var9;
-                  }
-               }
-
-               var6 = var4;
-               if(null == var4) {
-                  var6 = var0.parent;
-               }
-
-               Client.field430 = var6;
-               Client.field452 = var1;
-               Client.field551 = var2;
-               class176.field2653 = 0;
-               Client.field461 = false;
-               if(Client.menuOptionCount > 0) {
-                  int var11 = Client.menuOptionCount - 1;
-                  class15.field164 = new class38();
-                  class15.field164.field794 = Client.menuActionParams0[var11];
-                  class15.field164.field791 = Client.menuActionParams1[var11];
-                  class15.field164.field790 = Client.menuTypes[var11];
-                  class15.field164.field793 = Client.menuIdentifiers[var11];
-                  class15.field164.field796 = Client.menuOptions[var11];
-               }
-
-               return;
-            }
          }
-
       }
    }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(IIILCollisionData;I)Z",
-      garbageValue = "1167824572"
-   )
-   public abstract boolean vmethod2300(int var1, int var2, int var3, CollisionData var4);
 }

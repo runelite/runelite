@@ -1,13 +1,11 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hj")
+@ObfuscatedName("hw")
 public class class227 {
-   @ObfuscatedName("br")
-   static class184 field3228;
-   @ObfuscatedName("j")
-   public static short[] field3229;
-   @ObfuscatedName("p")
-   public static CombatInfoList field3230 = new CombatInfoList();
+   @ObfuscatedName("n")
+   public static short[] field3231;
+   @ObfuscatedName("k")
+   public static CombatInfoList field3232 = new CombatInfoList();
 
    class227() throws Throwable {
       throw new Error();

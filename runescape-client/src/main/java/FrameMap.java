@@ -1,131 +1,102 @@
+import java.awt.Component;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("co")
 @Implements("FrameMap")
 public class FrameMap extends Node {
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1281248939
+      intValue = 810453267
    )
-   int field1464;
-   @ObfuscatedName("p")
+   int field1467;
+   @ObfuscatedName("r")
+   int[][] field1468;
+   @ObfuscatedName("o")
+   int[] field1471;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -286881175
+      intValue = 1921210619
    )
-   int field1465;
-   @ObfuscatedName("q")
-   int[][] field1466;
-   @ObfuscatedName("x")
-   int[] field1469;
+   int field1473;
 
    FrameMap(int var1, byte[] var2) {
-      this.field1465 = var1;
+      this.field1467 = var1;
       Buffer var3 = new Buffer(var2);
-      this.field1464 = var3.readUnsignedByte();
-      this.field1469 = new int[this.field1464];
-      this.field1466 = new int[this.field1464][];
+      this.field1473 = var3.readUnsignedByte();
+      this.field1471 = new int[this.field1473];
+      this.field1468 = new int[this.field1473][];
 
       int var4;
-      for(var4 = 0; var4 < this.field1464; ++var4) {
-         this.field1469[var4] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field1473; ++var4) {
+         this.field1471[var4] = var3.readUnsignedByte();
       }
 
-      for(var4 = 0; var4 < this.field1464; ++var4) {
-         this.field1466[var4] = new int[var3.readUnsignedByte()];
+      for(var4 = 0; var4 < this.field1473; ++var4) {
+         this.field1468[var4] = new int[var3.readUnsignedByte()];
       }
 
-      for(var4 = 0; var4 < this.field1464; ++var4) {
-         for(int var5 = 0; var5 < this.field1466[var4].length; ++var5) {
-            this.field1466[var4][var5] = var3.readUnsignedByte();
+      for(var4 = 0; var4 < this.field1473; ++var4) {
+         for(int var5 = 0; var5 < this.field1468[var4].length; ++var5) {
+            this.field1468[var4][var5] = var3.readUnsignedByte();
          }
       }
 
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(S)J",
-      garbageValue = "-8518"
+      signature = "(IB)I",
+      garbageValue = "3"
    )
-   public static synchronized long method1695() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class88.field1539) {
-         class155.field2106 += class88.field1539 - var0;
-      }
-
-      class88.field1539 = var0;
-      return var0 + class155.field2106;
+   static int method1703(int var0) {
+      ChatLineBuffer var1 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
+      return var1 == null?0:var1.method906();
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "2018062187"
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "20"
    )
-   public static void method1696() {
-      if(class185.field2757 != null) {
-         class185.field2757.method2059();
-      }
-
+   public static void method1704(Component var0) {
+      var0.addMouseListener(class115.mouse);
+      var0.addMouseMotionListener(class115.mouse);
+      var0.addFocusListener(class115.mouse);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;Lclass228;B)Ljava/lang/String;",
-      garbageValue = "7"
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
+      garbageValue = "2020047359"
    )
-   public static String method1697(CharSequence var0, class228 var1) {
-      if(var0 == null) {
-         return null;
+   public static ModIcon[] method1705(class182 var0, String var1, String var2) {
+      int var3 = var0.method3284(var1);
+      int var4 = var0.method3285(var3, var2);
+      ModIcon[] var5;
+      if(!class63.method1175(var0, var3, var4)) {
+         var5 = null;
       } else {
-         int var2 = 0;
+         ModIcon[] var7 = new ModIcon[class225.field3216];
 
-         int var3;
-         boolean var4;
-         char var5;
-         for(var3 = var0.length(); var2 < var3; ++var2) {
-            var5 = var0.charAt(var2);
-            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
-            if(!var4) {
-               break;
-            }
+         for(int var8 = 0; var8 < class225.field3216; ++var8) {
+            ModIcon var9 = var7[var8] = new ModIcon();
+            var9.width = class225.field3212;
+            var9.originalHeight = class225.field3213;
+            var9.offsetX = class163.field2287[var8];
+            var9.offsetY = class225.field3214[var8];
+            var9.originalWidth = class47.field932[var8];
+            var9.height = class225.field3211[var8];
+            var9.palette = class225.field3215;
+            var9.pixels = class225.field3218[var8];
          }
 
-         while(var3 > var2) {
-            var5 = var0.charAt(var3 - 1);
-            var4 = var5 == 160 || var5 == 32 || var5 == 95 || var5 == 45;
-            if(!var4) {
-               break;
-            }
-
-            --var3;
-         }
-
-         int var10 = var3 - var2;
-         if(var10 >= 1 && var10 <= class188.method3439(var1)) {
-            StringBuilder var9 = new StringBuilder(var10);
-
-            for(int var6 = var2; var6 < var3; ++var6) {
-               char var7 = var0.charAt(var6);
-               if(class36.method722(var7)) {
-                  char var8 = class97.method1918(var7);
-                  if(var8 != 0) {
-                     var9.append(var8);
-                  }
-               }
-            }
-
-            if(var9.length() == 0) {
-               return null;
-            } else {
-               return var9.toString();
-            }
-         } else {
-            return null;
-         }
+         class221.method4056();
+         var5 = var7;
       }
+
+      return var5;
    }
 }

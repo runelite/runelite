@@ -1,33 +1,40 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("de")
+@ObfuscatedName("dt")
 public class class108 {
-   @ObfuscatedName("bm")
-   static class184 field1738;
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)Lclass196;",
-      garbageValue = "199283834"
-   )
-   public static class196 method2038(int var0) {
-      class196 var1 = (class196)class196.field2862.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = class196.field2865.getConfigData(32, var0);
-         var1 = new class196();
-         if(var2 != null) {
-            var1.method3546(new Buffer(var2));
-         }
-
-         class196.field2862.put(var1, (long)var0);
-         return var1;
-      }
-   }
-
    class108() throws Throwable {
       throw new Error();
+   }
+
+   @ObfuscatedName("df")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "20"
+   )
+   static final void method2037() {
+      Client.field321.method3195(158);
+
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2334(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2335()) {
+         if(var0.field178 == 0 || var0.field178 == 3) {
+            class39.method768(var0, true);
+         }
+      }
+
+      if(null != Client.field309) {
+         class2.method28(Client.field309);
+         Client.field309 = null;
+      }
+
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;B)V",
+      garbageValue = "116"
+   )
+   public static void method2038(class182 var0, class182 var1) {
+      NPCComposition.field3008 = var0;
+      NPCComposition.field2982 = var1;
    }
 }

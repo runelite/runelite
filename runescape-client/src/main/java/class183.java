@@ -1,78 +1,71 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gx")
+@ObfuscatedName("ga")
 public class class183 implements Runnable {
-   @ObfuscatedName("s")
-   static int[] field2719;
-   @ObfuscatedName("g")
-   static Deque field2720 = new Deque();
-   @ObfuscatedName("dc")
+   @ObfuscatedName("r")
+   public static Object field2712 = new Object();
+   @ObfuscatedName("y")
+   static Deque field2713 = new Deque();
+   @ObfuscatedName("k")
+   static Deque field2714 = new Deque();
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = -2068999947
+      intValue = 654450083
    )
-   static int field2721;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 697727723
-   )
-   static int field2725 = 0;
-   @ObfuscatedName("p")
-   static Deque field2727 = new Deque();
-   @ObfuscatedName("q")
-   static Object field2728 = new Object();
+   public static int field2715 = 0;
 
    public void run() {
       try {
          while(true) {
-            Deque var2 = field2727;
+            Deque var2 = field2714;
             class180 var1;
-            synchronized(field2727) {
-               var1 = (class180)field2727.method2412();
+            synchronized(field2714) {
+               var1 = (class180)field2714.method2403();
             }
 
             Object var14;
-            if(var1 != null) {
-               if(var1.field2691 == 0) {
-                  var1.field2690.method2246((int)var1.hash, var1.field2693, var1.field2693.length);
-                  var2 = field2727;
-                  synchronized(field2727) {
+            if(null != var1) {
+               if(var1.field2685 == 0) {
+                  var1.field2683.method2227((int)var1.hash, var1.field2682, var1.field2682.length);
+                  var2 = field2714;
+                  synchronized(field2714) {
                      var1.unlink();
                   }
-               } else if(var1.field2691 == 1) {
-                  var1.field2693 = var1.field2690.method2240((int)var1.hash);
-                  var2 = field2727;
-                  synchronized(field2727) {
-                     field2720.method2407(var1);
+               } else if(var1.field2685 == 1) {
+                  var1.field2682 = var1.field2683.method2236((int)var1.hash);
+                  var2 = field2714;
+                  synchronized(field2714) {
+                     field2713.method2380(var1);
                   }
                }
 
-               var14 = field2728;
-               synchronized(field2728) {
-                  if(field2725 <= 1) {
-                     field2725 = 0;
-                     field2728.notifyAll();
+               var14 = field2712;
+               synchronized(field2712) {
+                  if(field2715 <= 1) {
+                     field2715 = 0;
+                     field2712.notifyAll();
                      return;
                   }
 
-                  field2725 = 600;
+                  field2715 = 600;
                }
             } else {
-               class104.method1988(100L);
-               var14 = field2728;
-               synchronized(field2728) {
-                  if(field2725 <= 1) {
-                     field2725 = 0;
-                     field2728.notifyAll();
+               class195.method3560(100L);
+               var14 = field2712;
+               synchronized(field2712) {
+                  if(field2715 <= 1) {
+                     field2715 = 0;
+                     field2712.notifyAll();
                      return;
                   }
 
-                  --field2725;
+                  --field2715;
                }
             }
          }
       } catch (Exception var13) {
-         class65.method1151((String)null, var13);
+         class32.method709((String)null, var13);
       }
    }
 }

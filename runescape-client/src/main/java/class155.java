@@ -1,15 +1,14 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.util.HashMap;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ep")
+@ObfuscatedName("en")
 public class class155 {
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      longValue = -4719244204445434557L
-   )
-   static long field2106;
-   @ObfuscatedName("o")
-   static class179 field2107;
+   @ObfuscatedName("u")
+   public static String field2207;
+
+   static {
+      new HashMap();
+   }
 
    class155() throws Throwable {
       throw new Error();

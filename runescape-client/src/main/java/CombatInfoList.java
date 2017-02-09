@@ -3,62 +3,29 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("do")
 @Implements("CombatInfoList")
 public class CombatInfoList implements Iterable {
-   @ObfuscatedName("p")
+   @ObfuscatedName("y")
+   Node field1870;
+   @ObfuscatedName("k")
    @Export("node")
    Node node = new Node();
-   @ObfuscatedName("g")
-   Node field1881;
 
-   @ObfuscatedName("x")
-   public static void method2380(Node var0, Node var1) {
-      if(var0.previous != null) {
-         var0.unlink();
+   @ObfuscatedName("k")
+   public void method2347(Node var1) {
+      if(var1.previous != null) {
+         var1.unlink();
       }
 
-      var0.previous = var1;
-      var0.next = var1.next;
-      var0.previous.next = var0;
-      var0.next.previous = var0;
+      var1.previous = this.node.previous;
+      var1.next = this.node;
+      var1.previous.next = var1;
+      var1.next.previous = var1;
    }
 
-   @ObfuscatedName("q")
-   public Node method2381() {
-      return this.method2382((Node)null);
-   }
-
-   @ObfuscatedName("d")
-   Node method2382(Node var1) {
-      Node var2;
-      if(var1 == null) {
-         var2 = this.node.next;
-      } else {
-         var2 = var1;
-      }
-
-      if(var2 == this.node) {
-         this.field1881 = null;
-         return null;
-      } else {
-         this.field1881 = var2.next;
-         return var2;
-      }
-   }
-
-   public CombatInfoList() {
-      this.node.next = this.node;
-      this.node.previous = this.node;
-   }
-
-   @ObfuscatedName("j")
-   public boolean method2383() {
-      return this.node.next == this.node;
-   }
-
-   @ObfuscatedName("g")
-   public void method2384(Node var1) {
+   @ObfuscatedName("y")
+   public void method2348(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -69,14 +36,49 @@ public class CombatInfoList implements Iterable {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("k")
-   public Node method2389() {
-      Node var1 = this.field1881;
-      if(var1 == this.node) {
-         this.field1881 = null;
+   @ObfuscatedName("o")
+   public static void method2350(Node var0, Node var1) {
+      if(var0.previous != null) {
+         var0.unlink();
+      }
+
+      var0.previous = var1;
+      var0.next = var1.next;
+      var0.previous.next = var0;
+      var0.next.previous = var0;
+   }
+
+   @ObfuscatedName("r")
+   public Node method2351() {
+      return this.method2352((Node)null);
+   }
+
+   @ObfuscatedName("w")
+   Node method2352(Node var1) {
+      Node var2;
+      if(var1 == null) {
+         var2 = this.node.next;
+      } else {
+         var2 = var1;
+      }
+
+      if(var2 == this.node) {
+         this.field1870 = null;
          return null;
       } else {
-         this.field1881 = var1.next;
+         this.field1870 = var2.next;
+         return var2;
+      }
+   }
+
+   @ObfuscatedName("j")
+   public Node method2353() {
+      Node var1 = this.field1870;
+      if(var1 == this.node) {
+         this.field1870 = null;
+         return null;
+      } else {
+         this.field1870 = var1.next;
          return var1;
       }
    }
@@ -85,15 +87,13 @@ public class CombatInfoList implements Iterable {
       return new class123(this);
    }
 
-   @ObfuscatedName("p")
-   public void method2398(Node var1) {
-      if(var1.previous != null) {
-         var1.unlink();
-      }
+   public CombatInfoList() {
+      this.node.next = this.node;
+      this.node.previous = this.node;
+   }
 
-      var1.previous = this.node.previous;
-      var1.next = this.node;
-      var1.previous.next = var1;
-      var1.next.previous = var1;
+   @ObfuscatedName("c")
+   public boolean method2368() {
+      return this.node.next == this.node;
    }
 }

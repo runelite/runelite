@@ -1,184 +1,159 @@
-import java.awt.Component;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("u")
+@ObfuscatedName("a")
 @Implements("Friend")
 public class Friend {
-   @ObfuscatedName("p")
-   @Export("name")
-   String name;
-   @ObfuscatedName("g")
-   @Export("previousName")
-   String previousName;
-   @ObfuscatedName("x")
+   @ObfuscatedName("bc")
+   static class184 field147;
+   @ObfuscatedName("j")
+   boolean field148;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -962935221
-   )
-   @Export("world")
-   int world;
-   @ObfuscatedName("d")
-   boolean field146;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1808119225
+      intValue = -1109862945
    )
    @Export("rank")
    int rank;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1712852521
+   )
+   @Export("world")
+   int world;
+   @ObfuscatedName("y")
+   @Export("previousName")
+   String previousName;
+   @ObfuscatedName("bm")
+   static class184 field152;
+   @ObfuscatedName("dp")
+   @ObfuscatedGetter(
+      intValue = 310373979
+   )
+   static int field153;
    @ObfuscatedName("k")
-   boolean field148;
-   @ObfuscatedName("mb")
-   static byte field149;
-   @ObfuscatedName("r")
-   public static class72[] field151;
-   @ObfuscatedName("cc")
-   static class110 field152;
+   @Export("name")
+   String name;
+   @ObfuscatedName("id")
+   static class38 field158;
+   @ObfuscatedName("w")
+   boolean field159;
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("ed")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "30"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-895558684"
    )
-   public static void method178() {
-      CombatInfo2.field2838.reset();
-      CombatInfo2.field2827.reset();
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(Lclass103;Ljava/awt/Component;III)Lclass57;",
-      garbageValue = "-1741649751"
-   )
-   public static final class57 method179(class103 var0, Component var1, int var2, int var3) {
-      if(class57.field1047 == 0) {
-         throw new IllegalStateException();
-      } else if(var2 >= 0 && var2 < 2) {
-         if(var3 < 256) {
-            var3 = 256;
-         }
-
-         try {
-            class59 var4 = new class59();
-            var4.field1045 = new int[(class57.field1042?2:1) * 256];
-            var4.field1040 = var3;
-            var4.vmethod1086(var1);
-            var4.field1049 = (var3 & -1024) + 1024;
-            if(var4.field1049 > 16384) {
-               var4.field1049 = 16384;
-            }
-
-            var4.vmethod1088(var4.field1049);
-            if(class211.field3122 > 0 && null == class57.field1056) {
-               class57.field1056 = new class63();
-               class57.field1056.field1093 = var0;
-               var0.method1968(class57.field1056, class211.field3122);
-            }
-
-            if(class57.field1056 != null) {
-               if(class57.field1056.field1092[var2] != null) {
-                  throw new IllegalArgumentException();
-               }
-
-               class57.field1056.field1092[var2] = var4;
-            }
-
-            return var4;
-         } catch (Throwable var5) {
-            return new class57();
-         }
-      } else {
-         throw new IllegalArgumentException();
-      }
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "-46"
-   )
-   static final int method180(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
-      return var3;
-   }
-
-   @ObfuscatedName("ai")
-   @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "2073151908"
-   )
-   static final byte[] method181(byte[] var0) {
-      Buffer var1 = new Buffer(var0);
-      int var2 = var1.readUnsignedByte();
-      int var3 = var1.method2819();
-      if(var3 >= 0 && (class182.field2701 == 0 || var3 <= class182.field2701)) {
-         if(var2 == 0) {
-            byte[] var6 = new byte[var3];
-            var1.method2824(var6, 0, var3);
-            return var6;
-         } else {
-            int var4 = var1.method2819();
-            if(var4 < 0 || class182.field2701 != 0 && var4 > class182.field2701) {
-               throw new RuntimeException();
-            } else {
-               byte[] var5 = new byte[var4];
-               if(var2 == 1) {
-                  class147.method2756(var5, var4, var0, var3, 9);
+   static final void method189(String var0) {
+      if(null != var0) {
+         String var1 = Overlay.method3751(var0, Client.field282);
+         if(var1 != null) {
+            for(int var2 = 0; var2 < Client.friendCount; ++var2) {
+               Friend var3 = Client.friends[var2];
+               String var4 = var3.name;
+               String var5 = Overlay.method3751(var4, Client.field282);
+               boolean var6;
+               if(null != var0 && var4 != null) {
+                  if(!var0.startsWith("#") && !var4.startsWith("#")) {
+                     var6 = var1.equals(var5);
+                  } else {
+                     var6 = var0.equals(var4);
+                  }
                } else {
-                  class182.field2711.method2749(var1, var5);
+                  var6 = false;
                }
 
-               return var5;
+               if(var6) {
+                  --Client.friendCount;
+
+                  for(int var7 = var2; var7 < Client.friendCount; ++var7) {
+                     Client.friends[var7] = Client.friends[1 + var7];
+                  }
+
+                  Client.field470 = Client.field462;
+                  Client.field321.method3195(114);
+                  Client.field321.method2912(class105.method1999(var0));
+                  Client.field321.method3097(var0);
+                  break;
+               }
             }
+
          }
-      } else {
-         throw new RuntimeException();
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("cp")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;IIB)LFont;",
-      garbageValue = "3"
+      signature = "(LPlayer;IIIB)V",
+      garbageValue = "109"
    )
-   public static Font method182(class182 var0, class182 var1, int var2, int var3) {
-      if(!class196.method3575(var0, var2, var3)) {
-         return null;
-      } else {
-         byte[] var5 = var1.getConfigData(var2, var3);
-         Font var4;
-         if(null == var5) {
-            var4 = null;
-         } else {
-            Font var6 = new Font(var5, class225.field3216, class225.field3215, class22.field231, class225.field3218, class183.field2719, class48.field949);
-            class225.field3216 = null;
-            class225.field3215 = null;
-            class22.field231 = null;
-            class225.field3218 = null;
-            class183.field2719 = null;
-            class48.field949 = null;
-            var4 = var6;
-         }
+   static final void method190(Player var0, int var1, int var2, int var3) {
+      if(var0 != VertexNormal.localPlayer) {
+         if(Client.menuOptionCount < 400) {
+            String var4;
+            if(var0.field248 == 0) {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + class10.method128(var0.combatLevel, VertexNormal.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")" + var0.actions[2];
+            } else {
+               var4 = var0.actions[0] + var0.name + var0.actions[1] + " " + " (" + "skill-" + var0.field248 + ")" + var0.actions[2];
+            }
 
-         return var4;
+            int var5;
+            if(Client.field525 == 1) {
+               class20.addMenuEntry("Use", Client.field431 + " " + "->" + " " + class163.method3157(16777215) + var4, 14, var1, var2, var3);
+            } else if(Client.field432) {
+               if((ItemComposition.field2939 & 8) == 8) {
+                  class20.addMenuEntry(Client.field435, Client.field436 + " " + "->" + " " + class163.method3157(16777215) + var4, 15, var1, var2, var3);
+               }
+            } else {
+               for(var5 = 7; var5 >= 0; --var5) {
+                  if(null != Client.playerOptions[var5]) {
+                     short var6 = 0;
+                     if(Client.playerOptions[var5].equalsIgnoreCase("Attack")) {
+                        if(Client.field304 == class40.field810) {
+                           continue;
+                        }
+
+                        if(Client.field304 == class40.field817 || class40.field818 == Client.field304 && var0.combatLevel > VertexNormal.localPlayer.combatLevel) {
+                           var6 = 2000;
+                        }
+
+                        if(VertexNormal.localPlayer.team != 0 && var0.team != 0) {
+                           if(var0.team == VertexNormal.localPlayer.team) {
+                              var6 = 2000;
+                           } else {
+                              var6 = 0;
+                           }
+                        }
+                     } else if(Client.playerOptionsPriority[var5]) {
+                        var6 = 2000;
+                     }
+
+                     boolean var7 = false;
+                     int var8 = var6 + Client.field418[var5];
+                     class20.addMenuEntry(Client.playerOptions[var5], class163.method3157(16777215) + var4, var8, var1, var2, var3);
+                  }
+               }
+            }
+
+            for(var5 = 0; var5 < Client.menuOptionCount; ++var5) {
+               if(Client.menuTypes[var5] == 23) {
+                  Client.menuTargets[var5] = class163.method3157(16777215) + var4;
+                  break;
+               }
+            }
+
+         }
       }
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "([BII)I",
+      garbageValue = "619619465"
+   )
+   public static int method191(byte[] var0, int var1) {
+      return class119.method2279(var0, 0, var1);
    }
 }

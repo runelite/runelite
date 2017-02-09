@@ -1,39 +1,74 @@
 import java.math.BigInteger;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("ao")
 public class class39 {
-   @ObfuscatedName("g")
-   static final BigInteger field800 = new BigInteger("c8506b430570b2255380b829d3c6408f2f12862103e140b97017add3877dd23d8cebfd88dfb792ac4003f6f5f90b4809a7274cb466919c9c98e7f86c9def40edddcc2f37edbb369899f9d06ff469dcd306879cd37d7cec5a54ac8f8c6665fb7237d7687d3a5b5245685e7a21a2917b6917884706242c508bef2c8dbb2be2f221", 16);
-   @ObfuscatedName("gz")
-   static Widget field802;
-   @ObfuscatedName("p")
-   static final BigInteger field804 = new BigInteger("10001", 16);
+   @ObfuscatedName("d")
+   static byte[][][] field798;
+   @ObfuscatedName("y")
+   static final BigInteger field799 = new BigInteger("c7ad30019a1c344d954a939ec8c138934f071024875e5e8df0b1a00656d9040295760e2b07e7594cd673dfceec1e4b0b79d920d27c6d336fa03e823a59315ef2455a76713a0d96928a9edfb5d4e045d3883c9f366dbe2101914e8698eed249d129cc9cc15682d3c24f78d0b8bf6c9fa78a8bdb22fd526c3753428e9e55d19a8d", 16);
+   @ObfuscatedName("iv")
+   @ObfuscatedGetter(
+      intValue = -48587321
+   )
+   static int field800;
+   @ObfuscatedName("k")
+   static final BigInteger field806 = new BigInteger("10001", 16);
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-1121612387"
+   )
+   public static int method766(int var0) {
+      var0 = (var0 & 1431655765) + (var0 >>> 1 & 1431655765);
+      var0 = (var0 & 858993459) + (var0 >>> 2 & 858993459);
+      var0 = var0 + (var0 >>> 4) & 252645135;
+      var0 += var0 >>> 8;
+      var0 += var0 >>> 16;
+      return var0 & 255;
+   }
+
+   @ObfuscatedName("dz")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "-822198189"
+   )
+   static final void method767(int var0) {
+      if(class15.method193(var0)) {
+         ObjectComposition.method3639(Widget.widgets[var0], -1);
+      }
+   }
 
    class39() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("dw")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-885189021"
+      signature = "(LWidgetNode;ZI)V",
+      garbageValue = "-7672971"
    )
-   public static boolean method738(int var0) {
-      return (var0 & 1) != 0;
-   }
-
-   @ObfuscatedName("df")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "372371525"
-   )
-   static final void method739(String var0) {
-      if(null != Renderable.clanMembers) {
-         Client.field394.method3037(79);
-         Client.field394.method2799(class37.method737(var0));
-         Client.field394.method2805(var0);
+   static final void method768(WidgetNode var0, boolean var1) {
+      int var2 = var0.id;
+      int var3 = (int)var0.hash;
+      var0.unlink();
+      if(var1) {
+         Ignore.method205(var2);
       }
+
+      Item.method816(var2);
+      Widget var4 = class37.method759(var3);
+      if(null != var4) {
+         class2.method28(var4);
+      }
+
+      class9.method124();
+      if(Client.widgetRoot != -1) {
+         class148.method2769(Client.widgetRoot, 1);
+      }
+
    }
 }

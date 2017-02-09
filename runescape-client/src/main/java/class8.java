@@ -1,112 +1,107 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import java.net.URL;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("o")
+@ObfuscatedName("n")
 public class class8 {
-   @ObfuscatedName("bj")
-   static class184 field74;
-   @ObfuscatedName("qj")
-   @ObfuscatedGetter(
-      intValue = 1985779085
-   )
-   protected static int field75;
-   @ObfuscatedName("c")
-   static Widget field76;
-   @ObfuscatedName("d")
-   public static class182 field77;
+   @ObfuscatedName("bz")
+   static ModIcon field70;
+   @ObfuscatedName("kx")
+   static class112 field76;
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-283927102"
+      signature = "(Ljava/lang/CharSequence;B)I",
+      garbageValue = "0"
    )
-   public static int method114(int var0) {
-      Varbit var2 = (Varbit)Varbit.field2845.get((long)var0);
-      Varbit var1;
-      if(null != var2) {
-         var1 = var2;
-      } else {
-         byte[] var3 = class44.field892.getConfigData(14, var0);
-         var2 = new Varbit();
-         if(null != var3) {
-            var2.method3528(new Buffer(var3));
-         }
+   public static int method113(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
 
-         Varbit.field2845.put(var2, (long)var0);
-         var1 = var2;
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class38.method765(var0.charAt(var3));
       }
 
-      int var7 = var1.leastSignificantBit;
-      int var4 = var1.configId;
-      int var5 = var1.mostSignificantBit;
-      int var6 = class165.field2162[var5 - var4];
-      return class165.widgetSettings[var7] >> var4 & var6;
+      return var2;
    }
 
    @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(LModIcon;I)V",
-      garbageValue = "68755294"
+      signature = "(I)Z",
+      garbageValue = "2132187207"
    )
-   static final void method115(ModIcon var0) {
-      short var1 = 256;
+   @Export("loadWorlds")
+   static boolean loadWorlds() {
+      try {
+         if(World.worldServersDownload == null) {
+            World.worldServersDownload = new class26(class63.field1093, new URL(class20.field214));
+         } else {
+            byte[] var0 = World.worldServersDownload.method616();
+            if(var0 != null) {
+               Buffer var1 = new Buffer(var0);
+               World.field677 = var1.readUnsignedShort();
+               WidgetNode.worldList = new World[World.field677];
 
-      int var2;
-      for(var2 = 0; var2 < CollisionData.field1841.length; ++var2) {
-         CollisionData.field1841[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         CollisionData.field1841[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               FileOnDisk.field1191[var5] = (CollisionData.field1841[var5 + 1] + CollisionData.field1841[var5 - 1] + CollisionData.field1841[var5 - 128] + CollisionData.field1841[128 + var5]) / 4;
-            }
-         }
-
-         int[] var8 = CollisionData.field1841;
-         CollisionData.field1841 = FileOnDisk.field1191;
-         FileOnDisk.field1191 = var8;
-      }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var0.offsetX + 16 + var4;
-                  int var6 = var3 + 16 + var0.offsetY;
-                  int var7 = (var6 << 7) + var5;
-                  CollisionData.field1841[var7] = 0;
+               World var3;
+               for(int var2 = 0; var2 < World.field677; var3.index = var2++) {
+                  var3 = WidgetNode.worldList[var2] = new World();
+                  var3.id = var1.readUnsignedShort();
+                  var3.mask = var1.method3062();
+                  var3.address = var1.method2934();
+                  var3.activity = var1.method2934();
+                  var3.location = var1.readUnsignedByte();
+                  var3.playerCount = var1.readShort();
                }
+
+               class103.method1962(WidgetNode.worldList, 0, WidgetNode.worldList.length - 1, World.field669, World.field674);
+               World.worldServersDownload = null;
+               return true;
             }
          }
+      } catch (Exception var4) {
+         var4.printStackTrace();
+         World.worldServersDownload = null;
       }
 
+      return false;
+   }
+
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(IIIII)I",
+      garbageValue = "1453179168"
+   )
+   static final int method115(int var0, int var1, int var2, int var3) {
+      int var4 = 65536 - class84.field1452[1024 * var2 / var3] >> 1;
+      return (var1 * var4 >> 16) + ((65536 - var4) * var0 >> 16);
+   }
+
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(CI)C",
+      garbageValue = "-1487963387"
+   )
+   public static char method116(char var0) {
+      return (char)(var0 == 198?'E':(var0 == 230?'e':(var0 == 223?'s':(var0 == 338?'E':(var0 == 339?'e':'\u0000')))));
    }
 
    class8() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("cj")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
-      garbageValue = "1561932551"
+      signature = "(ZB)V",
+      garbageValue = "-40"
    )
-   public static ModIcon[] method116(class182 var0, String var1, String var2) {
-      int var3 = var0.method3276(var1);
-      int var4 = var0.method3287(var3, var2);
-      return Overlay.method3745(var0, var3, var4);
+   static final void method117(boolean var0) {
+      int var1 = Client.widgetRoot;
+      int var2 = XItemContainer.field123;
+      int var3 = class143.field1999;
+      if(class15.method193(var1)) {
+         TextureProvider.method1460(Widget.widgets[var1], -1, var2, var3, var0);
+      }
+
    }
 }

@@ -1,60 +1,87 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("c")
-public final class class10 {
-   @ObfuscatedName("l")
-   static final int[] field85 = new int[]{1, -1, -1, 1};
-   @ObfuscatedName("g")
-   @Export("tileSettings")
-   static byte[][][] tileSettings = new byte[4][104][104];
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 642192899
-   )
-   static int field87 = 99;
-   @ObfuscatedName("q")
-   @Export("underlayIds")
-   static byte[][][] underlayIds;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = -715638105
-   )
-   static int field90 = (int)(Math.random() * 33.0D) - 16;
-   @ObfuscatedName("w")
-   static final int[] field91 = new int[]{1, 2, 4, 8};
+@ObfuscatedName("s")
+public class class10 {
    @ObfuscatedName("y")
-   static final int[] field92 = new int[]{16, 32, 64, 128};
-   @ObfuscatedName("p")
-   @Export("tileHeights")
-   static int[][][] tileHeights = new int[4][105][105];
-   @ObfuscatedName("f")
-   static final int[] field94 = new int[]{0, -1, 0, 1};
-   @ObfuscatedName("v")
-   static final int[] field95 = new int[]{1, 0, -1, 0};
-   @ObfuscatedName("t")
-   static final int[] field96 = new int[]{-1, -1, 1, 1};
-   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1595289381
+      intValue = 1761113109
    )
-   static int field97 = (int)(Math.random() * 17.0D) - 8;
-   @ObfuscatedName("d")
-   @Export("overlayIds")
-   static byte[][][] overlayIds;
-   @ObfuscatedName("mx")
-   @ObfuscatedGetter(
-      intValue = 1673475879
-   )
-   @Export("clanChatCount")
-   static int clanChatCount;
+   int field86 = -1;
    @ObfuscatedName("o")
-   static int[][] field100;
-   @ObfuscatedName("am")
-   static int[] field101;
+   int[] field88;
+   @ObfuscatedName("r")
+   String[] field89;
+   @ObfuscatedName("k")
+   class48 field90;
+   @ObfuscatedName("bv")
+   @Export("host")
+   static String host;
 
-   class10() throws Throwable {
-      throw new Error();
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "2147367971"
+   )
+   public static Object method125(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
+      } else {
+         if(var0.length > 136 && !class163.field2284) {
+            try {
+               class158 var2 = new class158();
+               var2.vmethod3148(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class163.field2284 = true;
+            }
+         }
+
+         return var0;
+      }
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(III)Z",
+      garbageValue = "-1151797488"
+   )
+   static final boolean method126(int var0, int var1) {
+      ObjectComposition var2 = class156.getObjectDefinition(var0);
+      if(var1 == 11) {
+         var1 = 10;
+      }
+
+      if(var1 >= 5 && var1 <= 8) {
+         var1 = 4;
+      }
+
+      return var2.method3617(var1);
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "-2013500937"
+   )
+   public static int method127(int var0) {
+      Varbit var1 = class0.method13(var0);
+      int var2 = var1.leastSignificantBit;
+      int var3 = var1.configId;
+      int var4 = var1.mostSignificantBit;
+      int var5 = class146.field2013[var4 - var3];
+      return class146.widgetSettings[var2] >> var3 & var5;
+   }
+
+   @ObfuscatedName("cx")
+   @ObfuscatedSignature(
+      signature = "(III)Ljava/lang/String;",
+      garbageValue = "-1124687927"
+   )
+   static final String method128(int var0, int var1) {
+      int var2 = var1 - var0;
+      return var2 < -9?class163.method3157(16711680):(var2 < -6?class163.method3157(16723968):(var2 < -3?class163.method3157(16740352):(var2 < 0?class163.method3157(16756736):(var2 > 9?class163.method3157('\uff00'):(var2 > 6?class163.method3157(4259584):(var2 > 3?class163.method3157(8453888):(var2 > 0?class163.method3157(12648192):class163.method3157(16776960))))))));
    }
 }
