@@ -29,19 +29,19 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.19-SNAPSHOT</version>
+		<version>1.1.19</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
 	<artifactId>modelviewer</artifactId>
-	<version>1.0.19-SNAPSHOT</version>
+	<version>1.0.19</version>
 	<name>Model Viewer</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>cache</artifactId>
-			<version>1.1.19-SNAPSHOT</version>
+			<version>1.1.19</version>
 		</dependency>
 
 		<dependency>
