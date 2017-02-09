@@ -1,84 +1,104 @@
 import java.awt.Canvas;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.Graphics;
-import java.awt.Desktop.Action;
-import java.net.URI;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.mapping.Replace;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("dm")
 @Implements("RSCanvas")
 @Replace("net.runelite.inject.RSCanvas")
 public final class RSCanvas extends Canvas {
-   @ObfuscatedName("p")
-   Component field1762;
+   @ObfuscatedName("qr")
+   @ObfuscatedGetter(
+      intValue = -1009638523
+   )
+   protected static int field1755;
+   @ObfuscatedName("k")
+   Component field1758;
+   @ObfuscatedName("qq")
+   @ObfuscatedGetter(
+      intValue = 293037491
+   )
+   protected static int field1759;
 
-   public final void update(Graphics var1) {
-      this.field1762.update(var1);
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;B)Ljava/lang/String;",
+      garbageValue = "-6"
+   )
+   public static String method2070(String var0) {
+      int var1 = var0.length();
+      char[] var2 = new char[var1];
+      byte var3 = 2;
+
+      for(int var4 = 0; var4 < var1; ++var4) {
+         char var5 = var0.charAt(var4);
+         if(var3 == 0) {
+            var5 = Character.toLowerCase(var5);
+         } else if(var3 == 2 || Character.isUpperCase(var5)) {
+            var5 = class148.method2768(var5);
+         }
+
+         if(Character.isLetter(var5)) {
+            var3 = 0;
+         } else if(var5 != 46 && var5 != 63 && var5 != 33) {
+            if(Character.isSpaceChar(var5)) {
+               if(var3 != 2) {
+                  var3 = 1;
+               }
+            } else {
+               var3 = 1;
+            }
+         } else {
+            var3 = 2;
+         }
+
+         var2[var4] = var5;
+      }
+
+      return new String(var2);
    }
 
-   RSCanvas(Component var1) {
-      this.field1762 = var1;
+   public final void update(Graphics var1) {
+      this.field1758.update(var1);
    }
 
    public final void paint(Graphics var1) {
-      this.field1762.paint(var1);
+      this.field1758.paint(var1);
    }
 
-   @ObfuscatedName("x")
+   RSCanvas(Component var1) {
+      this.field1758 = var1;
+   }
+
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZLjava/lang/String;ZB)V",
-      garbageValue = "-98"
+      signature = "(IB)Lclass216;",
+      garbageValue = "94"
    )
-   static void method2079(String var0, boolean var1, String var2, boolean var3) {
-      if(var1) {
-         if(!var3 && Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Action.BROWSE)) {
-            try {
-               Desktop.getDesktop().browse(new URI(var0));
-               return;
-            } catch (Exception var5) {
-               ;
-            }
-         }
+   public static class216 method2072(int var0) {
+      class216[] var1 = new class216[]{class216.field3159, class216.field3156, class216.field3155};
+      class216[] var2 = var1;
 
-         if(class114.field1792.startsWith("win") && !var3) {
-            TextureProvider.method1451(var0, 0);
-            return;
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class216 var4 = var2[var3];
+         if(var0 == var4.field3158) {
+            return var4;
          }
-
-         if(class114.field1792.startsWith("mac")) {
-            Ignore.method191(var0, 1, var2);
-            return;
-         }
-
-         TextureProvider.method1451(var0, 2);
-      } else {
-         TextureProvider.method1451(var0, 3);
       }
 
+      return null;
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "188615624"
+      signature = "(CI)Z",
+      garbageValue = "-83567474"
    )
-   public static boolean method2080(int var0) {
-      return (var0 >> 31 & 1) != 0;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1565990949"
-   )
-   public static void method2081() {
-      ObjectComposition.field2928.reset();
-      ObjectComposition.field2913.reset();
-      ObjectComposition.field2930.reset();
-      ObjectComposition.field2894.reset();
+   public static boolean method2075(char var0) {
+      return var0 >= 48 && var0 <= 57;
    }
 }

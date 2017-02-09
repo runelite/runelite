@@ -1,78 +1,88 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fk")
+@ObfuscatedName("fq")
 public class class161 {
-   class161() throws Throwable {
-      throw new Error();
-   }
-
-   @ObfuscatedName("dw")
-   @ObfuscatedSignature(
-      signature = "([LWidget;IB)V",
-      garbageValue = "-3"
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1473084047
    )
-   static final void method3079(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null && var1 == var3.parentId && (!var3.hasScript || !class97.method1917(var3))) {
-            int var5;
-            if(var3.type == 0) {
-               if(!var3.hasScript && class97.method1917(var3) && class15.field167 != var3) {
-                  continue;
-               }
+   static int field2268 = 0;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = -2001990417
+   )
+   static int field2269 = 0;
+   @ObfuscatedName("r")
+   static byte[][] field2270 = new byte[1000][];
+   @ObfuscatedName("w")
+   static byte[][] field2271 = new byte[250][];
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 348172173
+   )
+   static int field2272 = 0;
+   @ObfuscatedName("j")
+   static byte[][] field2273 = new byte[50][];
+   @ObfuscatedName("hk")
+   @ObfuscatedGetter(
+      intValue = -1705421671
+   )
+   @Export("menuX")
+   static int menuX;
 
-               method3079(var0, var3.id);
-               if(var3.children != null) {
-                  method3079(var3.children, var3.id);
-               }
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(B)LSpritePixels;",
+      garbageValue = "-55"
+   )
+   static SpritePixels method3135() {
+      SpritePixels var0 = new SpritePixels();
+      var0.maxWidth = class225.field3212;
+      var0.maxHeight = class225.field3213;
+      var0.offsetX = class163.field2287[0];
+      var0.offsetY = class225.field3214[0];
+      var0.width = class47.field932[0];
+      var0.height = class225.field3211[0];
+      int var1 = var0.height * var0.width;
+      byte[] var2 = class225.field3218[0];
+      var0.image = new int[var1];
 
-               WidgetNode var4 = (WidgetNode)Client.componentTable.method2374((long)var3.id);
-               if(null != var4) {
-                  var5 = var4.id;
-                  if(class103.method1973(var5)) {
-                     method3079(Widget.widgets[var5], -1);
-                  }
-               }
-            }
-
-            if(var3.type == 6) {
-               if(var3.field2243 != -1 || var3.field2299 != -1) {
-                  boolean var7 = ChatMessages.method829(var3);
-                  if(var7) {
-                     var5 = var3.field2299;
-                  } else {
-                     var5 = var3.field2243;
-                  }
-
-                  if(var5 != -1) {
-                     Sequence var6 = class146.getAnimation(var5);
-
-                     for(var3.field2319 += Client.field354; var3.field2319 > var6.frameLenghts[var3.field2221]; class33.method682(var3)) {
-                        var3.field2319 -= var6.frameLenghts[var3.field2221];
-                        ++var3.field2221;
-                        if(var3.field2221 >= var6.frameIDs.length) {
-                           var3.field2221 -= var6.frameStep;
-                           if(var3.field2221 < 0 || var3.field2221 >= var6.frameIDs.length) {
-                              var3.field2221 = 0;
-                           }
-                        }
-                     }
-                  }
-               }
-
-               if(var3.field2192 != 0 && !var3.hasScript) {
-                  int var8 = var3.field2192 >> 16;
-                  var5 = var3.field2192 << 16 >> 16;
-                  var8 *= Client.field354;
-                  var5 *= Client.field354;
-                  var3.rotationX = var3.rotationX + var8 & 2047;
-                  var3.rotationZ = var5 + var3.rotationZ & 2047;
-                  class33.method682(var3);
-               }
-            }
-         }
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var0.image[var3] = class225.field3215[var2[var3] & 255];
       }
 
+      class221.method4056();
+      return var0;
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(II)[B",
+      garbageValue = "-1934989934"
+   )
+   static synchronized byte[] method3136(int var0) {
+      byte[] var1;
+      if(var0 == 100 && field2268 > 0) {
+         var1 = field2270[--field2268];
+         field2270[field2268] = null;
+         return var1;
+      } else if(var0 == 5000 && field2272 > 0) {
+         var1 = field2271[--field2272];
+         field2271[field2272] = null;
+         return var1;
+      } else if(var0 == 30000 && field2269 > 0) {
+         var1 = field2273[--field2269];
+         field2273[field2269] = null;
+         return var1;
+      } else {
+         return new byte[var0];
+      }
+   }
+
+   class161() throws Throwable {
+      throw new Error();
    }
 }
