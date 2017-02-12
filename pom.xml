@@ -72,6 +72,8 @@
 		<module>runescape-client</module>
 		<module>runescape-client-injector</module>
 		<module>runescape-client-injector-plugin</module>
+		<module>http-api</module>
+		<module>http-service</module>
 	</modules>
 
 	<build>
@@ -79,7 +81,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19</version>
 				<configuration>
 					<enableAssertions>true</enableAssertions>
 					<argLine>-Xmx512m</argLine>
