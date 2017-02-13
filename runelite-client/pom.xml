@@ -70,7 +70,7 @@
 		<dependency>
 			<groupId>net.runelite</groupId>
 			<artifactId>api</artifactId>
-			<version>1.0.21-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
