@@ -39,6 +39,5 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>modelviewer-rsmv</artifactId>
-	<version>1.0.20-SNAPSHOT</version>
 	<name>Model Viewer (RSMV)</name>
 </project>
