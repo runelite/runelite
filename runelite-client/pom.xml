@@ -34,7 +34,6 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>client</artifactId>
-	<version>1.0.21-SNAPSHOT</version>
 	<name>Runelite Client</name>
 
 	<properties>
