@@ -24,10 +24,34 @@
  */
 package net.runelite.http.api;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RuneliteAPI
 {
+	private static final Logger logger = LoggerFactory.getLogger(RuneliteAPI.class);
+
 	private static final String BASE = "https://api.runelite.net/runelite-";
-	private static String version = RuneliteAPI.class.getPackage().getImplementationVersion();
+	private static final Properties properties = new Properties();
+	private static String version;
+
+	static
+	{
+		try
+		{
+			InputStream in = RuneliteAPI.class.getResourceAsStream("/runelite.properties");
+			properties.load(in);
+
+			version = properties.getProperty("runelite.version");
+		}
+		catch (IOException ex)
+		{
+			logger.error(null, ex);
+		}
+	}
 
 	public static String getApiBase()
 	{
