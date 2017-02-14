@@ -41,6 +41,11 @@ public class OverlayRenderer
 		{
 			Overlay overlay = plugin.getOverlay();
 
+			if (overlay == null)
+			{
+				continue;
+			}
+
 			switch (overlay.getPosition())
 			{
 				case TOP_RIGHT:

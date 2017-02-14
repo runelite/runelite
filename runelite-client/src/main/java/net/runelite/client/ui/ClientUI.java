@@ -22,23 +22,25 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.client.ui;
 
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public final class ClientUI extends JFrame
 {
+	private JPanel container;
 	private ClientPanel panel;
+	private NavigationPanel navigationPanel;
+	private PluginPanel pluginPanel;
+	private boolean expanded;
 
 	public ClientUI() throws Exception
 	{
@@ -46,10 +48,10 @@ public final class ClientUI extends JFrame
 		pack();
 		setTitle("RuneLite");
 		setLocationRelativeTo(getOwner());
-		setMinimumSize(getSize());
 		setResizable(true);
+		setVisible(true);
 	}
-	
+
 	private void init() throws Exception
 	{
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -62,7 +64,7 @@ public final class ClientUI extends JFrame
 				checkExit();
 			}
 		});
-		
+
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		try
 		{
@@ -72,17 +74,60 @@ public final class ClientUI extends JFrame
 		{
 		}
 
+		container = new JPanel();
+		container.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
 		panel = new ClientPanel();
-		add(panel);
+		container.add(panel);
+
+		navigationPanel = new NavigationPanel();
+		container.add(navigationPanel);
+
+		add(container);
+	}
+
+	public void expand()
+	{
+		if (!expanded)
+		{
+			container.add(pluginPanel, null, 1);
+
+			container.revalidate();
+
+			this.setSize(this.getWidth() + PluginPanel.PANEL_WIDTH, this.getHeight());
+			expanded = true;
+		}
+		else
+		{
+			container.remove(1);
+			container.revalidate();
+			this.setSize(this.getWidth() - PluginPanel.PANEL_WIDTH, this.getHeight());
+			expanded = false;
+		}
 	}
 
 	private void checkExit()
 	{
 		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to exit?", "Exit", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-		
+
 		if (result == JOptionPane.OK_OPTION)
 		{
 			System.exit(0);
 		}
+	}
+
+	public NavigationPanel getNavigationPanel()
+	{
+		return navigationPanel;
+	}
+
+	public PluginPanel getPluginPanel()
+	{
+		return pluginPanel;
+	}
+
+	public void setPluginPanel(PluginPanel pluginPanel)
+	{
+		this.pluginPanel = pluginPanel;
 	}
 }
