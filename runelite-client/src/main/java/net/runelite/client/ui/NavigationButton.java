@@ -24,32 +24,18 @@
  */
 package net.runelite.client.ui;
 
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.JPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.swing.JButton;
 
-public class NavigationPanel extends JPanel
+public class NavigationButton
 {
-	private static final Logger logger = LoggerFactory.getLogger(NavigationPanel.class);
+	private final JButton button = new JButton();
 
-	private static final int PANEL_WIDTH = 20, PANEL_HEIGHT = 503;
-
-	private final List<NavigationButton> buttons = new ArrayList<>();
-
-	public NavigationPanel()
+	public NavigationButton(String name)
 	{
-		setSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 	}
 
-	public void addNavigation(NavigationButton button)
+	public JButton getButton()
 	{
-		buttons.add(button);
-		add(button.getButton());
-		revalidate();
+		return button;
 	}
 }
