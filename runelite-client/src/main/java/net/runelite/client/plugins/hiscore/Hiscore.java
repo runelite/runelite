@@ -26,19 +26,41 @@ package net.runelite.client.plugins.hiscore;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.NavigationButton;
 import net.runelite.client.ui.overlay.Overlay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Hiscore extends Plugin implements ActionListener
 {
+	private static final Logger logger = LoggerFactory.getLogger(Hiscore.class);
+
+	private final NavigationButton navButton = new NavigationButton("Hiscore");
 	private final HiscorePanel hiscorePanel = new HiscorePanel();
+
 	private final ClientUI ui = RuneLite.getRunelite().getGui();
 
 	public Hiscore()
 	{
-		ui.getNavigationPanel().getHiscores().addActionListener(this);
+		navButton.getButton().addActionListener(this);
+
+		try
+		{
+			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("hiscore.gif")));
+			navButton.getButton().setIcon(icon);
+		}
+		catch (IOException ex)
+		{
+			logger.warn(null, ex);
+		}
+
+		ui.getNavigationPanel().addNavigation(navButton);
 	}
 
 	@Override
