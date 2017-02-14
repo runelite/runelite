@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,44 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+package net.runelite.client.plugins.hiscore;
 
-package net.runelite.client.plugins;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import net.runelite.client.RuneLite;
-import net.runelite.client.plugins.boosts.Boosts;
-import net.runelite.client.plugins.fpsinfo.FPS;
-import net.runelite.client.plugins.hiscore.Hiscore;
-import net.runelite.client.plugins.opponentinfo.OpponentInfo;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.ClientUI;
+import net.runelite.client.ui.overlay.Overlay;
 
-public class PluginManager
+public class Hiscore extends Plugin implements ActionListener
 {
-	private final RuneLite runelite;
-	private final List<Plugin> plugins = new ArrayList<>();
+	private final HiscorePanel hiscorePanel = new HiscorePanel();
+	private final ClientUI ui = RuneLite.getRunelite().getGui();
 
-	public PluginManager(RuneLite runelite)
+	public Hiscore()
 	{
-		this.runelite = runelite;
+		ui.getNavigationPanel().getHiscores().addActionListener(this);
 	}
 
-	public void loadAll()
+	@Override
+	public Overlay getOverlay()
 	{
-		load(new Boosts());
-		load(new OpponentInfo());
-		load(new FPS());
-		load(new Hiscore());
+		return null;
 	}
 
-	private void load(Plugin plugin)
+	@Override
+	public void actionPerformed(ActionEvent e)
 	{
-		plugins.add(plugin);
-		runelite.getEventBus().register(plugin);
+		ui.setPluginPanel(hiscorePanel);
+		ui.expand();
 	}
 
-	public Collection<Plugin> getPlugins()
-	{
-		return plugins;
-	}
 }
