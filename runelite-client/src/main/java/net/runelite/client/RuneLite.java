@@ -67,7 +67,6 @@ public class RuneLite
 	public void start() throws Exception
 	{
 		gui = new ClientUI();
-		gui.setVisible(true);
 
 		pluginManager = new PluginManager(this);
 		pluginManager.loadAll();
@@ -93,6 +92,11 @@ public class RuneLite
 	public static RuneLite getRunelite()
 	{
 		return runelite;
+	}
+
+	public ClientUI getGui()
+	{
+		return gui;
 	}
 
 	public PluginManager getPluginManager()
