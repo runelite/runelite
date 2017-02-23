@@ -50,16 +50,18 @@ public class ConstructorMapper
 	private Type toOtherType(Type type)
 	{
 		if (type.isPrimitive())
+		{
 			return type;
+		}
 
-		if (!type.isObfuscatedType() && !type.getType().equals("client"))
-			return type;
-		
 		String className = type.getType();
 		className = className.substring(1, className.length() - 1); // remove L ;
 		ClassFile cf = source.findClass(className);
-		assert cf != null;
-		
+		if (cf == null)
+		{
+			return type;
+		}
+
 		ClassFile other = (ClassFile) mapping.get(cf);
 		return new Type("L" + other.getName() + ";");
 	}
@@ -97,7 +99,7 @@ public class ConstructorMapper
 				Method m2 = other.findMethod(m.getName(), otherSig);
 				if (m2 == null)
 				{
-					logger.warn("Unable to find other constructor for {}, looking for signature {}", m, otherSig);
+					logger.warn("Unable to find other constructor for {}, looking for signature {} on class {}", m, otherSig, other);
 					continue;
 				}
 
