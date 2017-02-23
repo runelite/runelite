@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 import net.runelite.client.RuneLite;
 import net.runelite.client.plugins.boosts.Boosts;
+import net.runelite.client.plugins.bosstimer.BossTimers;
 import net.runelite.client.plugins.fpsinfo.FPS;
 import net.runelite.client.plugins.hiscore.Hiscore;
 import net.runelite.client.plugins.opponentinfo.OpponentInfo;
@@ -50,6 +51,7 @@ public class PluginManager
 		load(new OpponentInfo());
 		load(new FPS());
 		load(new Hiscore());
+		load(new BossTimers());
 	}
 
 	private void load(Plugin plugin)

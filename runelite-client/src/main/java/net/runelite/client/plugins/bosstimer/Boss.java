@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2016-2017, Cameron Moberg <Moberg@tuta.io>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,44 +23,20 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
+package net.runelite.client.plugins.bosstimer;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class Hooks
+public class Boss
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+	private String name;
+	private int spawnTime;
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
-
-	public static void callHook(String name, int idx, Object object)
+	public String getName()
 	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
+		return name;
+	}
 
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setIndex(idx);
-				runelite.getEventBus().post(experienceChanged);
-				break;
-			}
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
-
-		if (object != null)
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
-		else
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+	public int getSpawnTime()
+	{
+		return spawnTime;
 	}
 }
