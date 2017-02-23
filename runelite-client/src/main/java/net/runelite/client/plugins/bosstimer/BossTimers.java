@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2016-2017, Cameron Moberg <Moberg@tuta.io>
  * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
@@ -22,44 +23,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
+package net.runelite.client.plugins.bosstimer;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.List;
+import net.runelite.client.plugins.Plugin;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Hooks
+public class BossTimers extends Plugin
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+	private static final Logger logger = LoggerFactory.getLogger(BossTimers.class);
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
+	private final BossTimersOverlay overlay = new BossTimersOverlay(this, OverlayPosition.TOP_LEFT, OverlayPriority.LOW);
 
-	public static void callHook(String name, int idx, Object object)
+	private final List<Boss> bosses = loadBossData();
+
+	@Override
+	public Overlay getOverlay()
 	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
-
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setIndex(idx);
-				runelite.getEventBus().post(experienceChanged);
-				break;
-			}
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
-
-		if (object != null)
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
-		else
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+		return overlay;
 	}
+
+	public Boss findBoss(String name)
+	{
+		for (Boss boss : bosses)
+		{
+			if (boss.getName().equals(name))
+			{
+				return boss;
+			}
+		}
+		return null;
+	}
+
+	private static List<Boss> loadBossData()
+	{
+		Gson gson = new Gson();
+		Type type = new TypeToken<List<Boss>>()
+		{
+		}.getType();
+
+		InputStream in = BossTimers.class.getResourceAsStream("boss_timers.json");
+		return gson.fromJson(new InputStreamReader(in), type);
+	}
+
 }
