@@ -22,44 +22,28 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.inject.callbacks;
+package net.runelite.client.plugins.bosstimer;
 
-import net.runelite.client.RuneLite;
-import net.runelite.client.events.ExperienceChanged;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.Instant;
 
-public class Hooks
+public class RespawnTimer
 {
-	private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+	private final Boss boss;
+	private final Instant respawnTime;
 
-	private static final RuneLite runelite = RuneLite.getRunelite();
-
-	public static void callHook(String name, int idx, Object object)
+	public RespawnTimer(Boss boss, Instant respawnTime)
 	{
-		if (RuneLite.getClient() == null)
-		{
-			logger.warn("Event {} triggered prior to client being ready", name);
-			return;
-		}
+		this.boss = boss;
+		this.respawnTime = respawnTime;
+	}
 
-		switch (name)
-		{
-			case "experienceChanged":
-			{
-				ExperienceChanged experienceChanged = new ExperienceChanged();
-				experienceChanged.setIndex(idx);
-				runelite.getEventBus().post(experienceChanged);
-				break;
-			}
-			default:
-				logger.warn("Unknown event {} triggered on {}", name, object);
-				return;
-		}
+	public Boss getBoss()
+	{
+		return boss;
+	}
 
-		if (object != null)
-			logger.trace("Event {} (idx {}) triggered on {}", name, idx, object);
-		else
-			logger.trace("Event {} (idx {}) triggered", name, idx);
+	public Instant getRespawnTime()
+	{
+		return respawnTime;
 	}
 }
