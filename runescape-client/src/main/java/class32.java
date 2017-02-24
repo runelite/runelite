@@ -1,4 +1,5 @@
 import java.util.Calendar;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -12,7 +13,8 @@ public class class32 {
    @ObfuscatedName("r")
    static int[] field747 = new int[1000];
    @ObfuscatedName("i")
-   static String[] field748 = new String[1000];
+   @Export("chatboxSegments")
+   static String[] chatboxSegments = new String[1000];
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 19963481

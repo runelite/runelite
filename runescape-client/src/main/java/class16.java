@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -68,7 +69,8 @@ public class class16 extends class131 {
       signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "-1964432721"
    )
-   static void method186(int var0, String var1, String var2) {
+   @Export("sendGameMessage")
+   static void sendGameMessage(int var0, String var1, String var2) {
       class110.addChatMessage(var0, var1, var2, (String)null);
    }
 

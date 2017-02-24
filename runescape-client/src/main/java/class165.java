@@ -6,7 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("fp")
 public class class165 {
    @ObfuscatedName("d")
-   public static int[] field2161;
+   @Export("settings")
+   public static int[] settings;
    @ObfuscatedName("h")
    @Export("widgetSettings")
    public static int[] widgetSettings;
@@ -36,7 +37,7 @@ public class class165 {
          var0 += var0;
       }
 
-      field2161 = new int[2000];
+      settings = new int[2000];
       widgetSettings = new int[2000];
    }
 
@@ -91,7 +92,7 @@ public class class165 {
             byte[] var2 = class31.field738[var1];
             if(var2 != null) {
                var3 = (class119.mapRegions[var1] >> 8) * 64 - class5.baseX;
-               var4 = 64 * (class119.mapRegions[var1] & 255) - class24.baseY;
+               var4 = 64 * (class119.mapRegions[var1] & 255) - XClanMember.baseY;
                if(Client.isDynamicRegion) {
                   var3 = 10;
                   var4 = 10;
@@ -187,7 +188,7 @@ public class class165 {
             class10.field118 = new byte[4][105][105];
             class10.field99 = new int[105][105];
             class2.field24 = new int[104];
-            class24.field291 = new int[104];
+            XClanMember.field291 = new int[104];
             class10.field98 = new int[104];
             class154.field2108 = new int[104];
             class10.field102 = new int[104];
@@ -203,7 +204,7 @@ public class class165 {
                byte[] var51;
                for(var49 = 0; var49 < var1; ++var49) {
                   var3 = (class119.mapRegions[var49] >> 8) * 64 - class5.baseX;
-                  var4 = 64 * (class119.mapRegions[var49] & 255) - class24.baseY;
+                  var4 = 64 * (class119.mapRegions[var49] & 255) - XClanMember.baseY;
                   var51 = class40.field828[var49];
                   if(null != var51) {
                      class7.method91();
@@ -213,7 +214,7 @@ public class class165 {
 
                for(var49 = 0; var49 < var1; ++var49) {
                   var3 = 64 * (class119.mapRegions[var49] >> 8) - class5.baseX;
-                  var4 = 64 * (class119.mapRegions[var49] & 255) - class24.baseY;
+                  var4 = 64 * (class119.mapRegions[var49] & 255) - XClanMember.baseY;
                   var51 = class40.field828[var49];
                   if(var51 == null && MessageNode.field239 < 800) {
                      class7.method91();
@@ -227,7 +228,7 @@ public class class165 {
                   byte[] var52 = class31.field738[var49];
                   if(null != var52) {
                      var4 = (class119.mapRegions[var49] >> 8) * 64 - class5.baseX;
-                     var5 = 64 * (class119.mapRegions[var49] & 255) - class24.baseY;
+                     var5 = 64 * (class119.mapRegions[var49] & 255) - XClanMember.baseY;
                      class7.method91();
                      Region var53 = class48.region;
                      CollisionData[] var58 = Client.collisionMaps;
@@ -350,9 +351,9 @@ public class class165 {
                                                 var27 = var28;
                                              }
 
-                                             class24.method251(var71, var49, var25, var27 + var15, 0, 0, var48);
+                                             XClanMember.method251(var71, var49, var25, var27 + var15, 0, 0, var48);
                                           } else {
-                                             class24.method251(var71, 0, -1, -1, 0, 0, 0);
+                                             XClanMember.method251(var71, 0, -1, -1, 0, 0, 0);
                                           }
                                        }
                                     }
@@ -541,7 +542,7 @@ public class class165 {
 
                for(var13 = 0; var13 < 104; ++var13) {
                   class2.field24[var13] = 0;
-                  class24.field291[var13] = 0;
+                  XClanMember.field291[var13] = 0;
                   class10.field98[var13] = 0;
                   class154.field2108[var13] = 0;
                   class10.field102[var13] = 0;
@@ -571,7 +572,7 @@ public class class165 {
                            }
 
                            class2.field24[var14] += var77.field2814;
-                           class24.field291[var14] += var77.field2812;
+                           XClanMember.field291[var14] += var77.field2812;
                            class10.field98[var14] += var77.field2816;
                            class154.field2108[var14] += var77.field2815;
                            ++class10.field102[var14];
@@ -600,7 +601,7 @@ public class class165 {
                            }
 
                            class2.field24[var14] -= var70.field2814;
-                           class24.field291[var14] -= var70.field2812;
+                           XClanMember.field291[var14] -= var70.field2812;
                            class10.field98[var14] -= var70.field2816;
                            class154.field2108[var14] -= var70.field2815;
                            --class10.field102[var14];
@@ -619,7 +620,7 @@ public class class165 {
                         var47 = 5 + var55;
                         if(var47 >= 0 && var47 < 104) {
                            var14 += class2.field24[var47];
-                           var15 += class24.field291[var47];
+                           var15 += XClanMember.field291[var47];
                            var16 += class10.field98[var47];
                            var17 += class154.field2108[var47];
                            var46 += class10.field102[var47];
@@ -628,7 +629,7 @@ public class class165 {
                         var21 = var55 - 5;
                         if(var21 >= 0 && var21 < 104) {
                            var14 -= class2.field24[var21];
-                           var15 -= class24.field291[var21];
+                           var15 -= XClanMember.field291[var21];
                            var16 -= class10.field98[var21];
                            var17 -= class154.field2108[var21];
                            var46 -= class10.field102[var21];
@@ -1015,7 +1016,7 @@ public class class165 {
             class10.field118 = null;
             class10.field99 = null;
             class2.field24 = null;
-            class24.field291 = null;
+            XClanMember.field291 = null;
             class10.field98 = null;
             class154.field2108 = null;
             class10.field102 = null;
@@ -1274,7 +1275,7 @@ public class class165 {
          class32.field747[++class103.field1686 - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 2602) {
-         class32.field748[++class32.field749 - 1] = var3.text;
+         class32.chatboxSegments[++class32.field749 - 1] = var3.text;
          return 1;
       } else if(var0 == 2603) {
          class32.field747[++class103.field1686 - 1] = var3.scrollWidth;

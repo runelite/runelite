@@ -91,48 +91,48 @@ public class class2 {
       int var3;
       if(var0 == 3903) {
          var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.field581[var3].method43();
+         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].method43();
          return 1;
       } else if(var0 == 3904) {
          var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.field581[var3].itemId;
+         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].itemId;
          return 1;
       } else if(var0 == 3905) {
          var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.field581[var3].price;
+         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].price;
          return 1;
       } else if(var0 == 3906) {
          var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.field581[var3].totalQuantity;
+         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].totalQuantity;
          return 1;
       } else if(var0 == 3907) {
          var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.field581[var3].quantitySold;
+         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].quantitySold;
          return 1;
       } else if(var0 == 3908) {
          var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.field581[var3].spent;
+         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].spent;
          return 1;
       } else {
          int var13;
          if(var0 == 3910) {
             var3 = class32.field747[--class103.field1686];
-            var13 = Client.field581[var3].method55();
+            var13 = Client.grandExchangeOffers[var3].method55();
             class32.field747[++class103.field1686 - 1] = var13 == 0?1:0;
             return 1;
          } else if(var0 == 3911) {
             var3 = class32.field747[--class103.field1686];
-            var13 = Client.field581[var3].method55();
+            var13 = Client.grandExchangeOffers[var3].method55();
             class32.field747[++class103.field1686 - 1] = var13 == 2?1:0;
             return 1;
          } else if(var0 == 3912) {
             var3 = class32.field747[--class103.field1686];
-            var13 = Client.field581[var3].method55();
+            var13 = Client.grandExchangeOffers[var3].method55();
             class32.field747[++class103.field1686 - 1] = var13 == 5?1:0;
             return 1;
          } else if(var0 == 3913) {
             var3 = class32.field747[--class103.field1686];
-            var13 = Client.field581[var3].method55();
+            var13 = Client.grandExchangeOffers[var3].method55();
             class32.field747[++class103.field1686 - 1] = var13 == 1?1:0;
             return 1;
          } else {
@@ -187,12 +187,12 @@ public class class2 {
                } else if(var0 == 3921) {
                   var3 = class32.field747[--class103.field1686];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.field748[++class32.field749 - 1] = var4.method20();
+                  class32.chatboxSegments[++class32.field749 - 1] = var4.method20();
                   return 1;
                } else if(var0 == 3922) {
                   var3 = class32.field747[--class103.field1686];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.field748[++class32.field749 - 1] = var4.method29();
+                  class32.chatboxSegments[++class32.field749 - 1] = var4.method29();
                   return 1;
                } else if(var0 == 3923) {
                   var3 = class32.field747[--class103.field1686];
@@ -202,7 +202,7 @@ public class class2 {
                   int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
                   int var9 = (int)((var5 - (long)(3600000 * var7) - (long)('\uea60' * var8)) / 1000L);
                   String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
-                  class32.field748[++class32.field749 - 1] = var10;
+                  class32.chatboxSegments[++class32.field749 - 1] = var10;
                   return 1;
                } else if(var0 == 3924) {
                   var3 = class32.field747[--class103.field1686];

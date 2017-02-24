@@ -178,7 +178,7 @@ public class class26 {
    static final void method612() {
       Client.field424 = 0;
       int var0 = class5.baseX + (class36.localPlayer.x >> 7);
-      int var1 = (class36.localPlayer.y >> 7) + class24.baseY;
+      int var1 = (class36.localPlayer.y >> 7) + XClanMember.baseY;
       if(var0 >= 3053 && var0 <= 3156 && var1 >= 3056 && var1 <= 3136) {
          Client.field424 = 1;
       }

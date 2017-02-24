@@ -1,5 +1,6 @@
 import java.io.EOFException;
 import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -55,7 +56,8 @@ public class class72 {
    @ObfuscatedName("q")
    FileOnDisk field1203;
    @ObfuscatedName("mz")
-   static class24[] field1204;
+   @Export("clanMembers")
+   static XClanMember[] clanMembers;
 
    @ObfuscatedName("q")
    @ObfuscatedSignature(

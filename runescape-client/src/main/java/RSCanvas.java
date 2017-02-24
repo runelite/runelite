@@ -28,7 +28,7 @@ public final class RSCanvas extends Canvas {
          var0 -= 1000;
          var3 = class179.method3296(class32.field747[--class103.field1686]);
       } else {
-         var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+         var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
       class174.method3276(var3);

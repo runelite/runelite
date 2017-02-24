@@ -708,7 +708,7 @@ public final class class159 extends Buffer {
                }
 
                if(var6 == 1) {
-                  var7 = Client.field384[var2[var4++]];
+                  var7 = Client.boostedSkillLevels[var2[var4++]];
                }
 
                if(var6 == 2) {
@@ -716,7 +716,7 @@ public final class class159 extends Buffer {
                }
 
                if(var6 == 3) {
-                  var7 = Client.field441[var2[var4++]];
+                  var7 = Client.skillExperiences[var2[var4++]];
                }
 
                int var9;
@@ -777,11 +777,11 @@ public final class class159 extends Buffer {
                }
 
                if(var6 == 11) {
-                  var7 = Client.field470;
+                  var7 = Client.energy;
                }
 
                if(var6 == 12) {
-                  var7 = Client.field471;
+                  var7 = Client.weight;
                }
 
                if(var6 == 13) {
@@ -812,7 +812,7 @@ public final class class159 extends Buffer {
                }
 
                if(var6 == 19) {
-                  var7 = class24.baseY + (class36.localPlayer.y >> 7);
+                  var7 = XClanMember.baseY + (class36.localPlayer.y >> 7);
                }
 
                if(var6 == 20) {

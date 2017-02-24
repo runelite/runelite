@@ -130,7 +130,7 @@ public class XGrandExchangeOffer {
          } else if(var1 == Client.localInteractingIndex) {
             throw new RuntimeException();
          } else {
-            class45.field925[var1] = (var4.pathY[0] + class24.baseY >> 13) + (var4.field277 << 28) + (var4.pathX[0] + class5.baseX >> 13 << 14);
+            class45.field925[var1] = (var4.pathY[0] + XClanMember.baseY >> 13) + (var4.field277 << 28) + (var4.pathX[0] + class5.baseX >> 13 << 14);
             if(var4.field651 != -1) {
                class45.field926[var1] = var4.field651;
             } else {
@@ -296,7 +296,7 @@ public class XGrandExchangeOffer {
                var8 = var6 >> 14 & 16383;
                var9 = var6 & 16383;
                var10 = (var4.pathX[0] + class5.baseX + var8 & 16383) - class5.baseX;
-               var11 = (class24.baseY + var4.pathY[0] + var9 & 16383) - class24.baseY;
+               var11 = (XClanMember.baseY + var4.pathY[0] + var9 & 16383) - XClanMember.baseY;
                if(Client.localInteractingIndex != var1 || var4.x >= 1536 && var4.y >= 1536 && var4.x < 11776 && var4.y < 11776) {
                   if(var2) {
                      var4.field261 = true;

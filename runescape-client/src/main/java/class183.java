@@ -607,7 +607,7 @@ public class class183 implements Runnable {
                         }
 
                         if(Client.field551 == 2) {
-                           class176.method3278(Client.field329 + (Client.field326 - class5.baseX << 7), (Client.field520 - class24.baseY << 7) + Client.field330, Client.field328 * 2);
+                           class176.method3278(Client.field329 + (Client.field326 - class5.baseX << 7), (Client.field520 - XClanMember.baseY << 7) + Client.field330, Client.field328 * 2);
                            if(Client.field410 > -1 && Client.gameCycle % 20 < 10) {
                               class177.field2672[0].method4173(Client.field410 + var19 - 12, Client.field411 + var20 - 28);
                            }
@@ -700,7 +700,7 @@ public class class183 implements Runnable {
                                           boolean var66 = false;
 
                                           for(var31 = 0; var31 < Player.clanChatCount; ++var31) {
-                                             if(var53.name.equals(class72.field1204[var31].field295)) {
+                                             if(var53.name.equals(class72.clanMembers[var31].username)) {
                                                 var66 = true;
                                                 break;
                                              }
@@ -735,7 +735,7 @@ public class class183 implements Runnable {
 
                                        if(Client.field551 == 2) {
                                           var49 = 2 + (Client.field326 * 4 - class5.baseX * 4) - class36.localPlayer.x / 32;
-                                          var26 = Client.field520 * 4 - class24.baseY * 4 + 2 - class36.localPlayer.y / 32;
+                                          var26 = Client.field520 * 4 - XClanMember.baseY * 4 + 2 - class36.localPlayer.y / 32;
                                           class104.method2055(var12, var13, var49, var26, World.field709[1], var73);
                                        }
 
