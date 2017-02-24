@@ -335,7 +335,8 @@ public final class Client extends GameEngine {
    )
    static int field383;
    @ObfuscatedName("hu")
-   static int[] field384;
+   @Export("boostedSkillLevels")
+   static int[] boostedSkillLevels;
    @ObfuscatedName("ob")
    static short field385;
    @ObfuscatedName("er")
@@ -483,7 +484,8 @@ public final class Client extends GameEngine {
    )
    static int field421;
    @ObfuscatedName("oz")
-   static Friend[] field422;
+   @Export("friends")
+   static Friend[] friends;
    @ObfuscatedName("gf")
    @ObfuscatedGetter(
       intValue = 2127817149
@@ -551,7 +553,8 @@ public final class Client extends GameEngine {
    )
    static int field440;
    @ObfuscatedName("hm")
-   static int[] field441;
+   @Export("skillExperiences")
+   static int[] skillExperiences;
    @ObfuscatedName("hy")
    @ObfuscatedGetter(
       intValue = 1184781199
@@ -661,12 +664,14 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -1436926433
    )
-   static int field470;
+   @Export("energy")
+   static int energy;
    @ObfuscatedName("jt")
    @ObfuscatedGetter(
       intValue = -791817503
    )
-   static int field471;
+   @Export("weight")
+   static int weight;
    @ObfuscatedName("jk")
    @ObfuscatedGetter(
       intValue = -71924963
@@ -794,7 +799,8 @@ public final class Client extends GameEngine {
    )
    static int field503;
    @ObfuscatedName("pw")
-   static Ignore[] field504;
+   @Export("ignores")
+   static Ignore[] ignores;
    @ObfuscatedName("jj")
    static boolean field505;
    @ObfuscatedName("kq")
@@ -894,7 +900,8 @@ public final class Client extends GameEngine {
    @ObfuscatedName("mi")
    static String field532;
    @ObfuscatedName("mj")
-   static String field533;
+   @Export("clanChatOwner")
+   static String clanChatOwner;
    @ObfuscatedName("mx")
    @ObfuscatedGetter(
       intValue = 386830267
@@ -1083,7 +1090,8 @@ public final class Client extends GameEngine {
    )
    static int field580;
    @ObfuscatedName("py")
-   static XGrandExchangeOffer[] field581;
+   @Export("grandExchangeOffers")
+   static XGrandExchangeOffer[] grandExchangeOffers;
    @ObfuscatedName("pc")
    static GarbageCollectorMXBean field582;
    @ObfuscatedName("pi")
@@ -1285,7 +1293,7 @@ public final class Client extends GameEngine {
 
          ChatMessages.field944 = 0;
       } else if(gameState == 5) {
-         class24.method252(this);
+         XClanMember.method252(this);
          WallObject.method1954();
          class159.field2135.vmethod2107();
 
@@ -1300,13 +1308,13 @@ public final class Client extends GameEngine {
          ChatMessages.field944 = 0;
       } else if(gameState != 10 && gameState != 11) {
          if(gameState == 20) {
-            class24.method252(this);
+            XClanMember.method252(this);
             Ignore.method202();
          } else if(gameState == 25) {
             class165.method3161();
          }
       } else {
-         class24.method252(this);
+         XClanMember.method252(this);
       }
 
       if(gameState == 30) {
@@ -1642,12 +1650,12 @@ public final class Client extends GameEngine {
                   var1.method2821(135);
                   Item.field907.method2114(var1.payload, 0, 5);
                   ++field334;
-                  class24.field292 = class0.method11();
+                  XClanMember.field292 = class0.method11();
                }
 
                if(field334 == 3) {
                   if(gameState > 5 && Item.field907.method2128() <= 0) {
-                     if(class0.method11() - class24.field292 > 30000L) {
+                     if(class0.method11() - XClanMember.field292 > 30000L) {
                         this.method266(-2);
                         return;
                      }
@@ -1880,9 +1888,9 @@ public final class Client extends GameEngine {
       field436 = new Deque();
       projectiles = new Deque();
       field418 = new Deque();
-      field384 = new int[25];
+      boostedSkillLevels = new int[25];
       realSkillLevels = new int[25];
-      field441 = new int[25];
+      skillExperiences = new int[25];
       field442 = 0;
       isMenuOpen = false;
       menuOptionCount = 0;
@@ -1911,8 +1919,8 @@ public final class Client extends GameEngine {
       field338 = 0;
       field468 = 0;
       field469 = null;
-      field470 = 0;
-      field471 = 0;
+      energy = 0;
+      weight = 0;
       field472 = 0;
       field514 = -1;
       field474 = false;
@@ -1974,7 +1982,7 @@ public final class Client extends GameEngine {
       field323 = new int[128];
       field419 = -1L;
       field532 = null;
-      field533 = null;
+      clanChatOwner = null;
       field534 = -1;
       field512 = 0;
       field536 = new int[1000];
@@ -2015,14 +2023,14 @@ public final class Client extends GameEngine {
       scale = 0;
       friendCount = 0;
       field573 = 0;
-      field422 = new Friend[400];
+      friends = new Friend[400];
       field575 = new class130();
       ignoreCount = 0;
-      field504 = new Ignore[400];
+      ignores = new Ignore[400];
       field432 = new PlayerComposition();
       field579 = -1;
       field580 = 1;
-      field581 = new XGrandExchangeOffer[8];
+      grandExchangeOffers = new XGrandExchangeOffer[8];
       field583 = -1L;
       field456 = -1L;
       field585 = new class22();

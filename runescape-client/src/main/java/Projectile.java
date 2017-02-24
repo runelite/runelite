@@ -163,7 +163,7 @@ public final class Projectile extends Renderable {
             var10 = var7 & 255;
             var11.field680[0] = class45.field923[var1];
             var11.field277 = (byte)var8;
-            var11.method230(var3 + (var9 << 13) - class5.baseX, var4 + (var10 << 13) - class24.baseY);
+            var11.method230(var3 + (var9 << 13) - class5.baseX, var4 + (var10 << 13) - XClanMember.baseY);
             var11.field261 = false;
             return true;
          }

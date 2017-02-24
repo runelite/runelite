@@ -39,9 +39,9 @@ final class class44 implements Comparator {
          class184.field2735.field714 = !class184.field2735.field714;
          class99.method1996();
          if(class184.field2735.field714) {
-            class16.method186(99, "", "Roofs are now all hidden");
+            class16.sendGameMessage(99, "", "Roofs are now all hidden");
          } else {
-            class16.method186(99, "", "Roofs will only be removed selectively");
+            class16.sendGameMessage(99, "", "Roofs will only be removed selectively");
          }
       }
 

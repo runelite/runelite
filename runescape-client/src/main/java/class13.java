@@ -98,7 +98,7 @@ public class class13 {
       for(var7 = 0; var7 < 4; ++var7) {
          for(var8 = 0; var8 < 64; ++var8) {
             for(int var9 = 0; var9 < 64; ++var9) {
-               class24.method251(var10, var7, var8 + var1, var2 + var9, var3, var4, 0);
+               XClanMember.method251(var10, var7, var8 + var1, var2 + var9, var3, var4, 0);
             }
          }
       }

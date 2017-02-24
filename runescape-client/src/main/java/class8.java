@@ -41,7 +41,7 @@ public class class8 {
          int var9;
          int var10;
          if(var0 == 5002) {
-            var3 = class32.field748[--class32.field749];
+            var3 = class32.chatboxSegments[--class32.field749];
             class103.field1686 -= 2;
             var9 = class32.field747[class103.field1686];
             var10 = class32.field747[class103.field1686 + 1];
@@ -61,15 +61,15 @@ public class class8 {
                if(var15 != null) {
                   class32.field747[++class103.field1686 - 1] = var15.id;
                   class32.field747[++class103.field1686 - 1] = var15.tick;
-                  class32.field748[++class32.field749 - 1] = var15.name != null?var15.name:"";
-                  class32.field748[++class32.field749 - 1] = var15.sender != null?var15.sender:"";
-                  class32.field748[++class32.field749 - 1] = null != var15.value?var15.value:"";
+                  class32.chatboxSegments[++class32.field749 - 1] = var15.name != null?var15.name:"";
+                  class32.chatboxSegments[++class32.field749 - 1] = var15.sender != null?var15.sender:"";
+                  class32.chatboxSegments[++class32.field749 - 1] = null != var15.value?var15.value:"";
                } else {
                   class32.field747[++class103.field1686 - 1] = -1;
                   class32.field747[++class103.field1686 - 1] = 0;
-                  class32.field748[++class32.field749 - 1] = "";
-                  class32.field748[++class32.field749 - 1] = "";
-                  class32.field748[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
                }
 
                return 1;
@@ -79,15 +79,15 @@ public class class8 {
                if(null != var14) {
                   class32.field747[++class103.field1686 - 1] = var14.type;
                   class32.field747[++class103.field1686 - 1] = var14.tick;
-                  class32.field748[++class32.field749 - 1] = var14.name != null?var14.name:"";
-                  class32.field748[++class32.field749 - 1] = null != var14.sender?var14.sender:"";
-                  class32.field748[++class32.field749 - 1] = null != var14.value?var14.value:"";
+                  class32.chatboxSegments[++class32.field749 - 1] = var14.name != null?var14.name:"";
+                  class32.chatboxSegments[++class32.field749 - 1] = null != var14.sender?var14.sender:"";
+                  class32.chatboxSegments[++class32.field749 - 1] = null != var14.value?var14.value:"";
                } else {
                   class32.field747[++class103.field1686 - 1] = -1;
                   class32.field747[++class103.field1686 - 1] = 0;
-                  class32.field748[++class32.field749 - 1] = "";
-                  class32.field748[++class32.field749 - 1] = "";
-                  class32.field748[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
                }
 
                return 1;
@@ -100,7 +100,7 @@ public class class8 {
 
                return 1;
             } else if(var0 == 5008) {
-               var3 = class32.field748[--class32.field749];
+               var3 = class32.chatboxSegments[--class32.field749];
                var9 = class32.field747[--class103.field1686];
                String var5 = var3.toLowerCase();
                byte var16 = 0;
@@ -227,8 +227,8 @@ public class class8 {
                return 1;
             } else if(var0 == 5009) {
                class32.field749 -= 2;
-               var3 = class32.field748[class32.field749];
-               String var13 = class32.field748[1 + class32.field749];
+               var3 = class32.chatboxSegments[class32.field749];
+               String var13 = class32.chatboxSegments[1 + class32.field749];
                Client.field348.method3073(56);
                Client.field348.method2831(0);
                var10 = Client.field348.offset;
@@ -263,14 +263,14 @@ public class class8 {
                   class32.field747[++class103.field1686 - 1] = class188.method3457(var11);
                   return 1;
                } else if(var0 == 5020) {
-                  var3 = class32.field748[--class32.field749];
+                  var3 = class32.chatboxSegments[--class32.field749];
                   class44.method886(var3);
                   return 1;
                } else if(var0 == 5021) {
-                  Client.field525 = class32.field748[--class32.field749].toLowerCase().trim();
+                  Client.field525 = class32.chatboxSegments[--class32.field749].toLowerCase().trim();
                   return 1;
                } else if(var0 == 5022) {
-                  class32.field748[++class32.field749 - 1] = Client.field525;
+                  class32.chatboxSegments[++class32.field749 - 1] = Client.field525;
                   return 1;
                } else {
                   return 2;
@@ -282,7 +282,7 @@ public class class8 {
                   var3 = "";
                }
 
-               class32.field748[++class32.field749 - 1] = var3;
+               class32.chatboxSegments[++class32.field749 - 1] = var3;
                return 1;
             }
          }
@@ -300,10 +300,10 @@ public class class8 {
          var0 -= 1000;
          var3 = class179.method3296(class32.field747[--class103.field1686]);
       } else {
-         var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+         var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
-      String var4 = class32.field748[--class32.field749];
+      String var4 = class32.chatboxSegments[--class32.field749];
       int[] var5 = null;
       if(var4.length() > 0 && var4.charAt(var4.length() - 1) == 89) {
          int var8 = class32.field747[--class103.field1686];
@@ -321,7 +321,7 @@ public class class8 {
       int var7;
       for(var7 = var6.length - 1; var7 >= 1; --var7) {
          if(var4.charAt(var7 - 1) == 115) {
-            var6[var7] = class32.field748[--class32.field749];
+            var6[var7] = class32.chatboxSegments[--class32.field749];
          } else {
             var6[var7] = new Integer(class32.field747[--class103.field1686]);
          }

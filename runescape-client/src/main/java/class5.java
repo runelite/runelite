@@ -45,8 +45,8 @@ final class class5 implements Comparator {
    static int method64(int var0, class48 var1, boolean var2) {
       String var3;
       if(var0 == 3100) {
-         var3 = class32.field748[--class32.field749];
-         class16.method186(0, "", var3);
+         var3 = class32.chatboxSegments[--class32.field749];
+         class16.sendGameMessage(0, "", var3);
          return 1;
       } else if(var0 == 3101) {
          class103.field1686 -= 2;
@@ -58,7 +58,7 @@ final class class5 implements Comparator {
       } else {
          int var13;
          if(var0 == 3104) {
-            var3 = class32.field748[--class32.field749];
+            var3 = class32.chatboxSegments[--class32.field749];
             var13 = 0;
             if(class105.method2082(var3)) {
                var13 = class145.method2759(var3);
@@ -68,13 +68,13 @@ final class class5 implements Comparator {
             Client.field348.method2821(var13);
             return 1;
          } else if(var0 == 3105) {
-            var3 = class32.field748[--class32.field749];
+            var3 = class32.chatboxSegments[--class32.field749];
             Client.field348.method3073(191);
             Client.field348.method2918(var3.length() + 1);
             Client.field348.method2824(var3);
             return 1;
          } else if(var0 == 3106) {
-            var3 = class32.field748[--class32.field749];
+            var3 = class32.chatboxSegments[--class32.field749];
             Client.field348.method3073(41);
             Client.field348.method2918(var3.length() + 1);
             Client.field348.method2824(var3);
@@ -96,7 +96,7 @@ final class class5 implements Comparator {
                   class103.field1686 -= 2;
                   var11 = class32.field747[class103.field1686];
                   var13 = class32.field747[1 + class103.field1686];
-                  Widget var14 = var2?XGrandExchangeOffer.field58:class24.field297;
+                  Widget var14 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
                   Friend.method176(var14, var11, var13);
                   return 1;
                } else if(var0 == 3110) {
@@ -110,7 +110,7 @@ final class class5 implements Comparator {
                   class99.method1996();
                   return 1;
                } else if(var0 == 3113) {
-                  var3 = class32.field748[--class32.field749];
+                  var3 = class32.chatboxSegments[--class32.field749];
                   boolean var4 = class32.field747[--class103.field1686] == 1;
                   TextureProvider.method1507(var3, var4, "openjs", false);
                   return 1;
@@ -122,8 +122,8 @@ final class class5 implements Comparator {
                } else if(var0 == 3116) {
                   var11 = class32.field747[--class103.field1686];
                   class32.field749 -= 2;
-                  var10 = class32.field748[class32.field749];
-                  String var5 = class32.field748[class32.field749 + 1];
+                  var10 = class32.chatboxSegments[class32.field749];
+                  String var5 = class32.chatboxSegments[class32.field749 + 1];
                   if(var10.length() > 500) {
                      return 1;
                   } else if(var5.length() > 500) {
@@ -144,7 +144,7 @@ final class class5 implements Comparator {
                }
             } else {
                var11 = class32.field747[--class103.field1686];
-               var10 = class32.field748[--class32.field749];
+               var10 = class32.chatboxSegments[--class32.field749];
                var12 = class45.field921;
                int[] var6 = class45.field931;
                boolean var7 = false;
@@ -176,7 +176,7 @@ final class class5 implements Comparator {
                }
 
                if(!var7) {
-                  class16.method186(4, "", "Unable to find " + var10);
+                  class16.sendGameMessage(4, "", "Unable to find " + var10);
                }
 
                return 1;

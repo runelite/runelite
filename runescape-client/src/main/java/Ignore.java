@@ -394,7 +394,7 @@ public class Ignore {
                   for(var0 = 0; var0 < class187.field2782; ++var0) {
                      class187 var21 = class182.method3356(var0);
                      if(var21 != null) {
-                        class165.field2161[var0] = 0;
+                        class165.settings[var0] = 0;
                         class165.widgetSettings[var0] = 0;
                      }
                   }
@@ -452,10 +452,10 @@ public class Ignore {
                   class8.method96();
                   Client.field532 = null;
                   Player.clanChatCount = 0;
-                  class72.field1204 = null;
+                  class72.clanMembers = null;
 
                   for(var0 = 0; var0 < 8; ++var0) {
-                     Client.field581[var0] = new XGrandExchangeOffer();
+                     Client.grandExchangeOffers[var0] = new XGrandExchangeOffer();
                   }
 
                   class105.field1703 = null;
@@ -664,7 +664,7 @@ public class Ignore {
          String var1 = GroundObject.method1594(var0, MessageNode.field244);
 
          for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.field504[var2];
+            Ignore var3 = Client.ignores[var2];
             if(var1.equalsIgnoreCase(GroundObject.method1594(var3.name, MessageNode.field244))) {
                return true;
             }

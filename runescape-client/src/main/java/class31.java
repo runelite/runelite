@@ -136,7 +136,7 @@ public final class class31 extends Node {
          var3 = class32.field747[--class103.field1686];
          var4 = class179.method3296(var3);
       } else {
-         var4 = var2?XGrandExchangeOffer.field58:class24.field297;
+         var4 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
       if(var0 == 1000) {

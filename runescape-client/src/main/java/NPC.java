@@ -738,7 +738,7 @@ public final class NPC extends Actor {
                                                 Client.field348.method2918(5);
                                                 Client.field348.method2865(var2 + class5.baseX);
                                                 Client.field348.method2918(class105.field1713[82]?(class105.field1713[81]?2:1):0);
-                                                Client.field348.method2864(var3 + class24.baseY);
+                                                Client.field348.method2864(var3 + XClanMember.baseY);
                                                 Region.method1787();
                                                 Client.field412 = class115.field1796;
                                                 Client.field413 = class115.field1806;
@@ -976,11 +976,11 @@ public final class NPC extends Actor {
                                              for(class16 var40 = (class16)Client.field575.method2488(); var40 != null; var40 = (class16)Client.field575.method2489()) {
                                                 if((long)var40.field181 < class0.method11() / 1000L - 5L) {
                                                    if(var40.field182 > 0) {
-                                                      class16.method186(5, "", var40.field180 + " has logged in.");
+                                                      class16.sendGameMessage(5, "", var40.field180 + " has logged in.");
                                                    }
 
                                                    if(var40.field182 == 0) {
-                                                      class16.method186(5, "", var40.field180 + " has logged out.");
+                                                      class16.sendGameMessage(5, "", var40.field180 + " has logged out.");
                                                    }
 
                                                    var40.method2496();

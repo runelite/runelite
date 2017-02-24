@@ -75,7 +75,7 @@ public final class Item extends Renderable {
       int var6 = var3 & 16383;
       var2.pathX[0] = var5 - class5.baseX;
       var2.x = (var2.pathX[0] << 7) + (var2.method227() << 6);
-      var2.pathY[0] = var6 - class24.baseY;
+      var2.pathY[0] = var6 - XClanMember.baseY;
       var2.y = (var2.pathY[0] << 7) + (var2.method227() << 6);
       WallObject.plane = var2.field277 = var4;
       if(class45.field920[var1] != null) {

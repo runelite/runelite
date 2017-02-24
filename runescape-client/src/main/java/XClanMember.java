@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("g")
-public class class24 extends Node {
+@Implements("XClanMember")
+public class XClanMember extends Node {
    @ObfuscatedName("d")
    String field288;
    @ObfuscatedName("dh")
@@ -17,7 +19,8 @@ public class class24 extends Node {
    @ObfuscatedGetter(
       intValue = -718974869
    )
-   int field290;
+   @Export("world")
+   int world;
    @ObfuscatedName("m")
    static int[] field291;
    @ObfuscatedName("ay")
@@ -26,11 +29,13 @@ public class class24 extends Node {
    )
    static long field292;
    @ObfuscatedName("q")
-   String field295;
+   @Export("username")
+   String username;
    @ObfuscatedName("u")
    static Widget field297;
    @ObfuscatedName("p")
-   byte field298;
+   @Export("rank")
+   byte rank;
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(
@@ -709,17 +714,17 @@ public class class24 extends Node {
                var28 = class32.field747[--class103.field1686];
                --var28;
                if(var32.actions != null && var28 < var32.actions.length && var32.actions[var28] != null) {
-                  class32.field748[++class32.field749 - 1] = var32.actions[var28];
+                  class32.chatboxSegments[++class32.field749 - 1] = var32.actions[var28];
                } else {
-                  class32.field748[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
                }
 
                var3 = 1;
             } else if(var0 == 1802) {
                if(null == var32.name) {
-                  class32.field748[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
                } else {
-                  class32.field748[++class32.field749 - 1] = var32.name;
+                  class32.chatboxSegments[++class32.field749 - 1] = var32.name;
                }
 
                var3 = 1;
@@ -789,17 +794,17 @@ public class class24 extends Node {
                var28 = class32.field747[--class103.field1686];
                --var28;
                if(var32.actions != null && var28 < var32.actions.length && null != var32.actions[var28]) {
-                  class32.field748[++class32.field749 - 1] = var32.actions[var28];
+                  class32.chatboxSegments[++class32.field749 - 1] = var32.actions[var28];
                } else {
-                  class32.field748[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
                }
 
                var3 = 1;
             } else if(var0 == 2802) {
                if(null == var32.name) {
-                  class32.field748[++class32.field749 - 1] = "";
+                  class32.chatboxSegments[++class32.field749 - 1] = "";
                } else {
-                  class32.field748[++class32.field749 - 1] = var32.name;
+                  class32.chatboxSegments[++class32.field749 - 1] = var32.name;
                }
 
                var3 = 1;
@@ -856,7 +861,7 @@ public class class24 extends Node {
                   var3 = 1;
                } else if(var0 == 3305) {
                   var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = Client.field384[var4];
+                  class32.field747[++class103.field1686 - 1] = Client.boostedSkillLevels[var4];
                   var3 = 1;
                } else if(var0 == 3306) {
                   var4 = class32.field747[--class103.field1686];
@@ -864,7 +869,7 @@ public class class24 extends Node {
                   var3 = 1;
                } else if(var0 == 3307) {
                   var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = Client.field441[var4];
+                  class32.field747[++class103.field1686 - 1] = Client.skillExperiences[var4];
                   var3 = 1;
                } else if(var0 == 3308) {
                   var4 = WallObject.plane;
@@ -942,10 +947,10 @@ public class class24 extends Node {
                   class32.field747[++class103.field1686 - 1] = Client.world;
                   var3 = 1;
                } else if(var0 == 3321) {
-                  class32.field747[++class103.field1686 - 1] = Client.field470;
+                  class32.field747[++class103.field1686 - 1] = Client.energy;
                   var3 = 1;
                } else if(var0 == 3322) {
-                  class32.field747[++class103.field1686 - 1] = Client.field471;
+                  class32.field747[++class103.field1686 - 1] = Client.weight;
                   var3 = 1;
                } else if(var0 == 3323) {
                   if(Client.field474) {
@@ -1097,7 +1102,7 @@ public class class24 extends Node {
             if(var0 < 4300) {
                if(var0 == 4200) {
                   var4 = class32.field747[--class103.field1686];
-                  class32.field748[++class32.field749 - 1] = class103.getItemDefinition(var4).name;
+                  class32.chatboxSegments[++class32.field749 - 1] = class103.getItemDefinition(var4).name;
                   var3 = 1;
                } else {
                   ItemComposition var17;
@@ -1107,9 +1112,9 @@ public class class24 extends Node {
                      var28 = class32.field747[1 + class103.field1686];
                      var17 = class103.getItemDefinition(var4);
                      if(var28 >= 1 && var28 <= 5 && var17.groundActions[var28 - 1] != null) {
-                        class32.field748[++class32.field749 - 1] = var17.groundActions[var28 - 1];
+                        class32.chatboxSegments[++class32.field749 - 1] = var17.groundActions[var28 - 1];
                      } else {
-                        class32.field748[++class32.field749 - 1] = "";
+                        class32.chatboxSegments[++class32.field749 - 1] = "";
                      }
 
                      var3 = 1;
@@ -1119,9 +1124,9 @@ public class class24 extends Node {
                      var28 = class32.field747[class103.field1686 + 1];
                      var17 = class103.getItemDefinition(var4);
                      if(var28 >= 1 && var28 <= 5 && var17.inventoryActions[var28 - 1] != null) {
-                        class32.field748[++class32.field749 - 1] = var17.inventoryActions[var28 - 1];
+                        class32.chatboxSegments[++class32.field749 - 1] = var17.inventoryActions[var28 - 1];
                      } else {
-                        class32.field748[++class32.field749 - 1] = "";
+                        class32.chatboxSegments[++class32.field749 - 1] = "";
                      }
 
                      var3 = 1;
@@ -1180,7 +1185,7 @@ public class class24 extends Node {
 
                         var3 = 1;
                      } else if(var0 == 4210) {
-                        String var31 = class32.field748[--class32.field749];
+                        String var31 = class32.chatboxSegments[--class32.field749];
                         var28 = class32.field747[--class103.field1686];
                         var16 = var28 == 1;
                         String var36 = var31.toLowerCase();
@@ -1334,17 +1339,17 @@ public class class24 extends Node {
                      if(null != var14) {
                         class32.field747[++class103.field1686 - 1] = var14.id;
                         class32.field747[++class103.field1686 - 1] = var14.mask;
-                        class32.field748[++class32.field749 - 1] = var14.activity;
+                        class32.chatboxSegments[++class32.field749 - 1] = var14.activity;
                         class32.field747[++class103.field1686 - 1] = var14.location;
                         class32.field747[++class103.field1686 - 1] = var14.playerCount;
-                        class32.field748[++class32.field749 - 1] = var14.address;
+                        class32.chatboxSegments[++class32.field749 - 1] = var14.address;
                      } else {
                         class32.field747[++class103.field1686 - 1] = -1;
                         class32.field747[++class103.field1686 - 1] = 0;
-                        class32.field748[++class32.field749 - 1] = "";
+                        class32.chatboxSegments[++class32.field749 - 1] = "";
                         class32.field747[++class103.field1686 - 1] = 0;
                         class32.field747[++class103.field1686 - 1] = 0;
-                        class32.field748[++class32.field749 - 1] = "";
+                        class32.chatboxSegments[++class32.field749 - 1] = "";
                      }
 
                      var3 = 1;
@@ -1353,17 +1358,17 @@ public class class24 extends Node {
                      if(null != var14) {
                         class32.field747[++class103.field1686 - 1] = var14.id;
                         class32.field747[++class103.field1686 - 1] = var14.mask;
-                        class32.field748[++class32.field749 - 1] = var14.activity;
+                        class32.chatboxSegments[++class32.field749 - 1] = var14.activity;
                         class32.field747[++class103.field1686 - 1] = var14.location;
                         class32.field747[++class103.field1686 - 1] = var14.playerCount;
-                        class32.field748[++class32.field749 - 1] = var14.address;
+                        class32.chatboxSegments[++class32.field749 - 1] = var14.address;
                      } else {
                         class32.field747[++class103.field1686 - 1] = -1;
                         class32.field747[++class103.field1686 - 1] = 0;
-                        class32.field748[++class32.field749 - 1] = "";
+                        class32.chatboxSegments[++class32.field749 - 1] = "";
                         class32.field747[++class103.field1686 - 1] = 0;
                         class32.field747[++class103.field1686 - 1] = 0;
-                        class32.field748[++class32.field749 - 1] = "";
+                        class32.chatboxSegments[++class32.field749 - 1] = "";
                      }
 
                      var3 = 1;
@@ -1383,17 +1388,17 @@ public class class24 extends Node {
                         if(null != var15) {
                            class32.field747[++class103.field1686 - 1] = var15.id;
                            class32.field747[++class103.field1686 - 1] = var15.mask;
-                           class32.field748[++class32.field749 - 1] = var15.activity;
+                           class32.chatboxSegments[++class32.field749 - 1] = var15.activity;
                            class32.field747[++class103.field1686 - 1] = var15.location;
                            class32.field747[++class103.field1686 - 1] = var15.playerCount;
-                           class32.field748[++class32.field749 - 1] = var15.address;
+                           class32.chatboxSegments[++class32.field749 - 1] = var15.address;
                         } else {
                            class32.field747[++class103.field1686 - 1] = -1;
                            class32.field747[++class103.field1686 - 1] = 0;
-                           class32.field748[++class32.field749 - 1] = "";
+                           class32.chatboxSegments[++class32.field749 - 1] = "";
                            class32.field747[++class103.field1686 - 1] = 0;
                            class32.field747[++class103.field1686 - 1] = 0;
-                           class32.field748[++class32.field749 - 1] = "";
+                           class32.chatboxSegments[++class32.field749 - 1] = "";
                         }
 
                         var3 = 1;
@@ -1414,17 +1419,17 @@ public class class24 extends Node {
                            var15 = World.worldList[var4];
                            class32.field747[++class103.field1686 - 1] = var15.id;
                            class32.field747[++class103.field1686 - 1] = var15.mask;
-                           class32.field748[++class32.field749 - 1] = var15.activity;
+                           class32.chatboxSegments[++class32.field749 - 1] = var15.activity;
                            class32.field747[++class103.field1686 - 1] = var15.location;
                            class32.field747[++class103.field1686 - 1] = var15.playerCount;
-                           class32.field748[++class32.field749 - 1] = var15.address;
+                           class32.chatboxSegments[++class32.field749 - 1] = var15.address;
                         } else {
                            class32.field747[++class103.field1686 - 1] = -1;
                            class32.field747[++class103.field1686 - 1] = 0;
-                           class32.field748[++class32.field749 - 1] = "";
+                           class32.chatboxSegments[++class32.field749 - 1] = "";
                            class32.field747[++class103.field1686 - 1] = 0;
                            class32.field747[++class103.field1686 - 1] = 0;
-                           class32.field748[++class32.field749 - 1] = "";
+                           class32.chatboxSegments[++class32.field749 - 1] = "";
                         }
 
                         var3 = 1;
