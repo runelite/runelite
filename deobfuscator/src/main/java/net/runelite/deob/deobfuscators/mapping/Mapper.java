@@ -31,12 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import net.runelite.asm.ClassFile;
 import net.runelite.asm.ClassGroup;
-import net.runelite.asm.Field;
 import net.runelite.asm.Method;
-import net.runelite.asm.attributes.Annotations;
-import net.runelite.asm.attributes.code.Instruction;
-import net.runelite.asm.execution.ParallellMappingExecutor;
-import net.runelite.asm.signature.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +59,6 @@ public class Mapper
 
 		finalm.merge(mapStaticMethods());
 		finalm.merge(mapMethods());
-		finalm.merge(mapPackets(finalm));
 		
 		finalm.reduce();
 
@@ -140,113 +134,6 @@ public class Mapper
 			finalm.merge(pme);
 
 		return finalm;
-	}
-
-	private ParallelExecutorMapping mapPackets(ParallelExecutorMapping pem)
-	{
-		Method packetMethod = this.findPacketMethod();
-		Field packetField = this.findPacketField();
-
-		assert packetMethod != null;
-		assert packetField != null;
-
-		Method otherPacketMethod = (Method) pem.get(packetMethod);
-		Field otherPacketField = (Field) pem.get(packetField);
-
-		assert otherPacketMethod != null;
-		assert otherPacketField != null;
-
-		packetField.packetHandler = true;
-		otherPacketField.packetHandler = true;
-
-		ParallelExecutorMapping mappings = MappingExecutorUtil.map(packetMethod, otherPacketMethod);
-
-		System.out.println(mappings.packetHandler1.size() + " vs " + mappings.packetHandler2.size() + " handlers");
-
-		assert mappings.packetHandler1.size() == mappings.packetHandler2.size();
-
-		ParallelExecutorMapping all = new ParallelExecutorMapping(source, target);
-
-		for (int i = 0; i < mappings.packetHandler1.size(); ++i)
-		{
-			PacketHandler if1 = mappings.packetHandler1.get(i);
-
-			PacketHandler highestHandler = null;
-			ParallelExecutorMapping highest = null;
-
-			for (int j = 0; j < mappings.packetHandler2.size(); ++j)
-			{
-				PacketHandler if2 = mappings.packetHandler2.get(j);
-
-				Instruction i1 = if1.getFirstInsOfHandler(),
-					i2 = if2.getFirstInsOfHandler();
-
-				ParallelExecutorMapping mapping = MappingExecutorUtil.mapFrame(source, target, i1, i2);
-
-				if (mapping.getMap().isEmpty())
-					continue;
-
-				if (mapping.hasAnyMultiples())
-					continue;
-
-				int p = pem.contradicts(mapping);
-
-				if (highest == null || mapping.getMap().size() > highest.getMap().size())
-				{
-					if (p == 0 && mapping.crashed == false)
-					{
-						highest = mapping;
-						highestHandler = if2;
-					}
-				}
-			}
-
-			if (highest == null)
-			{
-				continue;
-			}
-			System.out.println(if1 + " <-> " + highestHandler + " <-> " + highest.getMap().size() + " " + highest.crashed);
-			all.merge(highest);
-		}
-
-		return all;
-	}
-
-
-	private static final Type OBFUSCATED_NAME = new Type("Lnet/runelite/mapping/Export;");
-
-	private Field findPacketField()
-	{
-		for (ClassFile cf : source.getClasses())
-		{
-			for (Field f : cf.getFields().getFields())
-			{
-				Annotations an = f.getAnnotations();
-
-				if (an == null || an.find(OBFUSCATED_NAME) == null)
-					continue;
-
-				if (an.find(OBFUSCATED_NAME).getElement().getString().equals("packetOpcode"))
-					return f;
-			}
-		}
-		return null;
-	}
-
-	private Method findPacketMethod()
-	{
-		for (Method m : source.findClass("Client").getMethods().getMethods()) // source jar has client renamed to Client
-		{
-			Annotations an = m.getAnnotations();
-
-			if (an == null || an.find(OBFUSCATED_NAME) == null)
-				continue;
-
-			if (an.find(OBFUSCATED_NAME).getElement().getString().equals("packetHandler"))
-				return m;
-		}
-
-		return null;
 	}
 	
 	private void mapMemberMethods(ParallelExecutorMapping mapping)
