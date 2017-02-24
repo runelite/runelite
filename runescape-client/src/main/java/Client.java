@@ -1706,7 +1706,6 @@ public final class Client extends GameEngine {
       signature = "(I)V",
       garbageValue = "-690063341"
    )
-   @Export("packetHandler")
    protected final void packetHandler() {
       ++gameCycle;
       this.method463();

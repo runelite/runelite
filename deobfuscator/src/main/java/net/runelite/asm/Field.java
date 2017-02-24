@@ -50,7 +50,6 @@ public class Field
 	private Type type;
 	private Object value; // ConstantValue
 	private Annotations annotations;
-	public boolean packetHandler;
 	
 	public Field(Fields fields, String name, Type type)
 	{

@@ -175,20 +175,6 @@ public abstract class If extends Instruction implements JumpingInstruction, Comp
 			assert MappingExecutorUtil.isMaybeEqual(f1.getType(), f2.getType());
 
 			mapping.map(this, f1, f2);
-
-			if (f1.packetHandler && f2.packetHandler)
-			{
-				int pc1 = this.getConstantInstruction(ctx),
-					pc2 = this.getConstantInstruction(other);
-
-				assert (pc1 != -1) == (pc2 != -1);
-
-				if (pc1 == -1 && pc2 == -1)
-					return;
-
-				mapping.packetHandler1.add(new PacketHandler(this, pc1));
-				mapping.packetHandler2.add(new PacketHandler((If) other.getInstruction(), pc2));
-			}
 		}
 		else if (f1s.size() == 2)
 		{
