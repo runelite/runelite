@@ -33,9 +33,13 @@ import net.runelite.deob.deobfuscators.mapping.AnnotationMapper;
 import net.runelite.deob.deobfuscators.mapping.Mapper;
 import net.runelite.deob.deobfuscators.mapping.ParallelExecutorMapping;
 import net.runelite.deob.util.JarUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UpdateMappings
 {
+	private static final Logger logger = LoggerFactory.getLogger(UpdateMappings.class);
+
 	private final ClassGroup group1, group2;
 
 	public UpdateMappings(ClassGroup group1, ClassGroup group2)
@@ -54,7 +58,13 @@ public class UpdateMappings
 		amapper.run();
 
 		AnnotationIntegrityChecker aic = new AnnotationIntegrityChecker(group1, group2, mapping);
-		aic.run();
+		int errors = aic.run();
+		
+		if (errors > 0)
+		{
+			logger.warn("Errors in annotation checker, exiting");
+			System.exit(-1);
+		}
 
 		AnnotationRenamer an = new AnnotationRenamer(group2);
 		an.run();
