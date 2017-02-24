@@ -53,8 +53,10 @@ public class AnnotationIntegrityChecker
 		this.mapping = mapping;
 	}
 
-	public void run()
+	public int run()
 	{
+		int errors = 0;
+		
 		for (ClassFile cf : one.getClasses())
 		{
 			ClassFile other = (ClassFile) mapping.get(cf);
@@ -74,6 +76,7 @@ public class AnnotationIntegrityChecker
 					logger.warn("Missing exported field on {} named {}",
 						other,
 						getExportedName(f1.getAnnotations()));
+					++errors;
 				}
 			}
 
@@ -89,6 +92,7 @@ public class AnnotationIntegrityChecker
 					logger.warn("Missing exported method on {} named {}",
 						other,
 						getExportedName(m1.getAnnotations()));
+					++errors;
 				}
 			}
 		}
@@ -102,6 +106,7 @@ public class AnnotationIntegrityChecker
 				if (num > 1)
 				{
 					logger.warn("Field {} has more than 1 export", f);
+					++errors;
 				}
 			}
 
@@ -112,9 +117,12 @@ public class AnnotationIntegrityChecker
 				if (num > 1)
 				{
 					logger.warn("Method {} has more than 1 export", m);
+					++errors;
 				}
 			}
 		}
+		
+		return errors;
 	}
 
 	private List<Field> getExportedFields(ClassFile clazz)
