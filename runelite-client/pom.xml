@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>net.runelite</groupId>
 		<artifactId>runelite-parent</artifactId>
-		<version>1.1.21-SNAPSHOT</version>
+		<version>1.1.21</version>
 	</parent>
 
 	<groupId>net.runelite</groupId>
@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>net.runelite.rs</groupId>
 			<artifactId>client</artifactId>
-			<version>135.1-SNAPSHOT</version> <!-- rs version -->
+			<version>135.1</version> <!-- rs version -->
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
