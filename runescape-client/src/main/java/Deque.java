@@ -2,18 +2,23 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dk")
+@ObfuscatedName("db")
 @Implements("Deque")
 public class Deque {
-   @ObfuscatedName("y")
-   @Export("current")
-   Node current;
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @Export("head")
    public Node head = new Node();
+   @ObfuscatedName("d")
+   @Export("current")
+   Node current;
 
-   @ObfuscatedName("k")
-   public void method2379() {
+   public Deque() {
+      this.head.next = this.head;
+      this.head.previous = this.head;
+   }
+
+   @ObfuscatedName("q")
+   public void method2452() {
       while(true) {
          Node var1 = this.head.next;
          if(var1 == this.head) {
@@ -25,8 +30,8 @@ public class Deque {
       }
    }
 
-   @ObfuscatedName("y")
-   public void method2380(Node var1) {
+   @ObfuscatedName("d")
+   public void method2453(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -37,8 +42,8 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("o")
-   public void method2381(Node var1) {
+   @ObfuscatedName("h")
+   public void method2454(Node var1) {
       if(var1.previous != null) {
          var1.unlink();
       }
@@ -49,8 +54,8 @@ public class Deque {
       var1.next.previous = var1;
    }
 
-   @ObfuscatedName("r")
-   public static void method2382(Node var0, Node var1) {
+   @ObfuscatedName("p")
+   public static void method2455(Node var0, Node var1) {
       if(var0.previous != null) {
          var0.unlink();
       }
@@ -61,54 +66,19 @@ public class Deque {
       var0.next.previous = var0;
    }
 
-   @ObfuscatedName("w")
-   public Node method2383() {
-      Node var1 = this.head.next;
-      if(var1 == this.head) {
-         return null;
-      } else {
-         var1.unlink();
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("j")
-   public Node method2384() {
+   @ObfuscatedName("n")
+   public Node method2457() {
       Node var1 = this.head.previous;
       if(var1 == this.head) {
          return null;
       } else {
          var1.unlink();
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("g")
-   public Node method2386() {
-      Node var1 = this.head.previous;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.previous;
-         return var1;
-      }
-   }
-
-   @ObfuscatedName("i")
-   public Node method2398() {
-      Node var1 = this.current;
-      if(var1 == this.head) {
-         this.current = null;
-         return null;
-      } else {
-         this.current = var1.next;
          return var1;
       }
    }
 
    @ObfuscatedName("c")
-   public Node method2403() {
+   public Node method2458() {
       Node var1 = this.head.next;
       if(var1 == this.head) {
          this.current = null;
@@ -119,19 +89,49 @@ public class Deque {
       }
    }
 
-   public Deque() {
-      this.head.next = this.head;
-      this.head.previous = this.head;
+   @ObfuscatedName("j")
+   public Node method2459() {
+      Node var1 = this.head.next;
+      if(var1 == this.head) {
+         return null;
+      } else {
+         var1.unlink();
+         return var1;
+      }
    }
 
-   @ObfuscatedName("v")
-   public Node method2409() {
+   @ObfuscatedName("u")
+   public Node method2461() {
       Node var1 = this.current;
       if(var1 == this.head) {
          this.current = null;
          return null;
       } else {
          this.current = var1.previous;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("o")
+   public Node method2471() {
+      Node var1 = this.head.previous;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.previous;
+         return var1;
+      }
+   }
+
+   @ObfuscatedName("s")
+   public Node method2472() {
+      Node var1 = this.current;
+      if(var1 == this.head) {
+         this.current = null;
+         return null;
+      } else {
+         this.current = var1.next;
          return var1;
       }
    }

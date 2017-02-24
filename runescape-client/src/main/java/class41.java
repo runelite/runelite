@@ -3,163 +3,165 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ag")
+@ObfuscatedName("ak")
 public class class41 {
    @ObfuscatedName("am")
-   static String field819;
-   @ObfuscatedName("r")
-   static ModIcon field820;
-   @ObfuscatedName("o")
-   static ModIcon field821;
-   @ObfuscatedName("av")
-   @Export("worldSelectShown")
-   static boolean worldSelectShown;
-   @ObfuscatedName("w")
-   static ModIcon[] field823;
-   @ObfuscatedName("n")
-   static ModIcon[] field824;
-   @ObfuscatedName("aw")
    @ObfuscatedGetter(
-      intValue = -1911383999
+      intValue = 631216723
    )
-   static int field825;
-   @ObfuscatedName("h")
+   static int field838;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 804168219
+      intValue = -2040671971
+   )
+   static int field839 = 0;
+   @ObfuscatedName("q")
+   static boolean field841;
+   @ObfuscatedName("m")
+   static ModIcon field842;
+   @ObfuscatedName("gc")
+   static Widget field843;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1581039503
    )
    @Export("loginWindowX")
    static int loginWindowX;
    @ObfuscatedName("t")
-   static int[] field827;
-   @ObfuscatedName("f")
-   static int[] field828;
-   @ObfuscatedName("b")
-   static int[] field829;
-   @ObfuscatedName("m")
+   static int[] field846;
+   @ObfuscatedName("y")
+   static int[] field847;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1325889707
+      intValue = 75892571
    )
-   static int field830;
-   @ObfuscatedName("e")
+   static int field848;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 658871157
+      intValue = 569669247
    )
-   static int field831;
-   @ObfuscatedName("ay")
-   @Export("loginMessage3")
-   static String loginMessage3;
-   @ObfuscatedName("aq")
-   static int[] field833;
-   @ObfuscatedName("aj")
+   static int field849;
+   @ObfuscatedName("av")
+   @Export("worldSelectShown")
+   static boolean worldSelectShown;
+   @ObfuscatedName("ai")
    @ObfuscatedGetter(
-      intValue = -1477391647
+      intValue = 1261268447
+   )
+   static int field851;
+   @ObfuscatedName("at")
+   @ObfuscatedGetter(
+      intValue = 678742627
+   )
+   static int field852;
+   @ObfuscatedName("au")
+   @ObfuscatedGetter(
+      intValue = -1624825421
+   )
+   static int field853;
+   @ObfuscatedName("g")
+   static int[] field854;
+   @ObfuscatedName("ad")
+   @ObfuscatedGetter(
+      intValue = 1748391863
+   )
+   static int field855;
+   @ObfuscatedName("ao")
+   @ObfuscatedGetter(
+      intValue = -1597557731
    )
    @Export("loginIndex")
    static int loginIndex;
    @ObfuscatedName("as")
-   @ObfuscatedGetter(
-      intValue = -1005305901
-   )
-   static int field835;
-   @ObfuscatedName("ah")
-   @ObfuscatedGetter(
-      intValue = -1490448823
-   )
-   static int field836;
+   static String field859;
    @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = 1793062491
-   )
-   static int field837;
-   @ObfuscatedName("af")
-   static String field839;
-   @ObfuscatedName("ao")
+   @Export("loginMessage1")
+   static String loginMessage1;
+   @ObfuscatedName("ah")
+   @Export("loginMessage2")
+   static String loginMessage2;
+   @ObfuscatedName("r")
+   static int[] field862;
+   @ObfuscatedName("aw")
    @Export(
       value = "username",
       setter = true
    )
    static String username;
-   @ObfuscatedName("ae")
+   @ObfuscatedName("ap")
+   static String field864;
+   @ObfuscatedName("ak")
+   static class97 field865;
+   @ObfuscatedName("an")
+   static boolean field866;
+   @ObfuscatedName("ar")
    @ObfuscatedGetter(
-      intValue = 2067547347
+      intValue = -72878417
    )
    @Export("loginIndex2")
    static int loginIndex2;
-   @ObfuscatedName("ar")
-   @Export("loginMessage1")
-   static String loginMessage1;
-   @ObfuscatedName("ad")
-   @Export("loginMessage2")
-   static String loginMessage2;
+   @ObfuscatedName("bj")
+   @ObfuscatedGetter(
+      intValue = 2118621693
+   )
+   static int field868;
+   @ObfuscatedName("aj")
+   @Export("loginMessage3")
+   static String loginMessage3;
+   @ObfuscatedName("h")
+   static ModIcon field871;
+   @ObfuscatedName("ae")
+   static int[] field872;
+   @ObfuscatedName("ne")
+   @ObfuscatedGetter(
+      intValue = 1825533003
+   )
+   static int field873;
+   @ObfuscatedName("i")
+   static ModIcon[] field874;
    @ObfuscatedName("ac")
-   static String field844;
-   @ObfuscatedName("k")
-   static boolean field845;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1987440869
-   )
-   static int field846 = 0;
-   @ObfuscatedName("ap")
-   static int[] field847;
-   @ObfuscatedName("ax")
-   static boolean field848;
-   @ObfuscatedName("ai")
-   @ObfuscatedGetter(
-      intValue = 798350095
-   )
-   static int field849;
-   @ObfuscatedName("bl")
-   @ObfuscatedGetter(
-      intValue = -1457154467
-   )
-   static int field853;
-   @ObfuscatedName("ag")
-   static class97 field854;
-   @ObfuscatedName("ce")
-   static Font field855;
-
-   @ObfuscatedName("az")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "-529896670"
-   )
-   static final void method777(int var0, int var1) {
-      if(Client.field296 == 2) {
-         class18.method203((Client.field348 - class114.baseX << 7) + Client.field302, (Client.field428 - CombatInfo1.baseY << 7) + Client.field303, Client.field301 * 2);
-         if(Client.field383 > -1 && Client.gameCycle % 20 < 10) {
-            class49.field963[0].method4121(var0 + Client.field383 - 12, var1 + Client.field384 - 28);
-         }
-
-      }
-   }
+   static String field876;
 
    static {
-      loginWindowX = field846 + 202;
-      field827 = new int[256];
-      field830 = 0;
-      field831 = 0;
-      field825 = 0;
-      field835 = 0;
-      field836 = 0;
-      field837 = 0;
-      field849 = 10;
-      field839 = "";
+      loginWindowX = 202 + field839;
+      field846 = new int[256];
+      field848 = 0;
+      field849 = 0;
+      field852 = 0;
+      field853 = 0;
+      field838 = 0;
+      field855 = 0;
+      field851 = 10;
+      field876 = "";
       loginIndex = 0;
-      field819 = "";
+      field859 = "";
       loginMessage1 = "";
       loginMessage2 = "";
       loginMessage3 = "";
       username = "";
-      field844 = "";
-      field854 = class97.field1624;
-      field848 = true;
+      field864 = "";
+      field865 = class97.field1634;
+      field866 = true;
       loginIndex2 = 0;
       worldSelectShown = false;
-      field853 = -1;
+      field868 = -1;
    }
 
    class41() throws Throwable {
       throw new Error();
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IZZZI)Lclass184;",
+      garbageValue = "210128019"
+   )
+   static class184 method865(int var0, boolean var1, boolean var2, boolean var3) {
+      class116 var4 = null;
+      if(class104.field1695 != null) {
+         var4 = new class116(var0, class104.field1695, TextureProvider.field1222[var0], 1000000);
+      }
+
+      return new class184(var4, class187.field2781, var0, var1, var2, var3);
    }
 }

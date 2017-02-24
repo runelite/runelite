@@ -1,40 +1,39 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dt")
+@ObfuscatedName("dm")
 public class class108 {
    class108() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("df")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "20"
+      signature = "(Lclass182;I)V",
+      garbageValue = "79297487"
    )
-   static final void method2037() {
-      Client.field321.method3195(158);
-
-      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2334(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2335()) {
-         if(var0.field178 == 0 || var0.field178 == 3) {
-            class39.method768(var0, true);
-         }
-      }
-
-      if(null != Client.field309) {
-         class2.method28(Client.field309);
-         Client.field309 = null;
-      }
-
+   public static void method2104(class182 var0) {
+      Overlay.field3038 = var0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("ck")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;B)V",
-      garbageValue = "116"
+      signature = "(LWidget;I)V",
+      garbageValue = "524241330"
    )
-   public static void method2038(class182 var0, class182 var1) {
-      NPCComposition.field3008 = var0;
-      NPCComposition.field2982 = var1;
+   static void method2105(Widget var0) {
+      Widget var1 = var0.parentId == -1?null:class179.method3296(var0.parentId);
+      int var2;
+      int var3;
+      if(var1 == null) {
+         var2 = class32.field758;
+         var3 = class47.field950;
+      } else {
+         var2 = var1.width;
+         var3 = var1.height;
+      }
+
+      class140.method2662(var0, var2, var3, false);
+      ObjectComposition.method3660(var0, var2, var3);
    }
 }

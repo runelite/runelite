@@ -1,80 +1,125 @@
 import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("i")
+@ObfuscatedName("u")
 @Implements("XItemContainer")
 public class XItemContainer extends Node {
-   @ObfuscatedName("o")
-   @Export("stackSizes")
-   int[] stackSizes = new int[]{0};
-   @ObfuscatedName("v")
-   public static class72[] field120;
-   @ObfuscatedName("k")
-   @Export("itemContainers")
-   static XHashTable itemContainers = new XHashTable(32);
-   @ObfuscatedName("y")
+   @ObfuscatedName("bl")
+   static class184 field137;
+   @ObfuscatedName("d")
    @Export("itemIds")
    int[] itemIds = new int[]{-1};
-   @ObfuscatedName("qw")
-   @ObfuscatedGetter(
-      intValue = -1722471545
-   )
-   public static int field123;
+   @ObfuscatedName("h")
+   @Export("stackSizes")
+   int[] stackSizes = new int[]{0};
+   @ObfuscatedName("cz")
+   static class102 field143;
+   @ObfuscatedName("q")
+   @Export("itemContainers")
+   static XHashTable itemContainers = new XHashTable(32);
 
-   @ObfuscatedName("dy")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
-      garbageValue = "-2060656868"
+      signature = "(Lclass182;I)V",
+      garbageValue = "1404792513"
    )
-   static final String[] method170(String[] var0) {
-      String[] var1 = new String[5];
+   public static void method157(class182 var0) {
+      class186.field2772 = var0;
+   }
 
-      for(int var2 = 0; var2 < 5; ++var2) {
-         var1[var2] = var2 + ": ";
-         if(null != var0 && var0[var2] != null) {
-            var1[var2] = var1[var2] + var0[var2];
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)I",
+      garbageValue = "1830143793"
+   )
+   public static int method159(CharSequence var0) {
+      int var1 = var0.length();
+      int var2 = 0;
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2 = (var2 << 5) - var2 + class3.method39(var0.charAt(var3));
+      }
+
+      return var2;
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "([BIIS)Ljava/lang/String;",
+      garbageValue = "-4477"
+   )
+   public static String method164(byte[] var0, int var1, int var2) {
+      char[] var3 = new char[var2];
+      int var4 = 0;
+      int var5 = var1;
+
+      int var8;
+      for(int var6 = var1 + var2; var5 < var6; var3[var4++] = (char)var8) {
+         int var7 = var0[var5++] & 255;
+         if(var7 < 128) {
+            if(var7 == 0) {
+               var8 = '�';
+            } else {
+               var8 = var7;
+            }
+         } else if(var7 < 192) {
+            var8 = '�';
+         } else if(var7 < 224) {
+            if(var5 < var6 && (var0[var5] & 192) == 128) {
+               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
+               if(var8 < 128) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 240) {
+            if(1 + var5 < var6 && (var0[var5] & 192) == 128 && (var0[1 + var5] & 192) == 128) {
+               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 < 2048) {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else if(var7 < 248) {
+            if(var5 + 2 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
+               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
+               if(var8 >= 65536 && var8 <= 1114111) {
+                  var8 = '�';
+               } else {
+                  var8 = '�';
+               }
+            } else {
+               var8 = '�';
+            }
+         } else {
+            var8 = '�';
          }
       }
 
-      return var1;
+      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(IZZZI)Lclass184;",
-      garbageValue = "-1033112145"
+      signature = "(II)Z",
+      garbageValue = "-2138588970"
    )
-   static class184 method185(int var0, boolean var1, boolean var2, boolean var3) {
-      class116 var4 = null;
-      if(class104.field1694 != null) {
-         var4 = new class116(var0, class104.field1694, field120[var0], 1000000);
-      }
-
-      return new class184(var4, class103.field1684, var0, var1, var2, var3);
+   public static boolean method166(int var0) {
+      return (var0 >> 31 & 1) != 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(II)LSpotanim;",
-      garbageValue = "1234368900"
+      signature = "(ILclass182;Ljava/lang/String;Ljava/lang/String;IZI)V",
+      garbageValue = "-1982464065"
    )
-   public static Spotanim method187(int var0) {
-      Spotanim var1 = (Spotanim)Spotanim.field2786.get((long)var0);
-      if(var1 != null) {
-         return var1;
-      } else {
-         byte[] var2 = Spotanim.field2773.getConfigData(13, var0);
-         var1 = new Spotanim();
-         var1.field2776 = var0;
-         if(null != var2) {
-            var1.method3456(new Buffer(var2));
-         }
-
-         Spotanim.field2786.put(var1, (long)var0);
-         return var1;
-      }
+   public static void method167(int var0, class182 var1, String var2, String var3, int var4, boolean var5) {
+      int var6 = var1.method3335(var2);
+      int var7 = var1.method3319(var6, var3);
+      class152.method2815(var0, var1, var6, var7, var4, var5);
    }
 }

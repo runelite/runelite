@@ -4,67 +4,79 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bo")
+@ObfuscatedName("bv")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("k")
+   @ObfuscatedName("n")
+   @Export("top")
+   Renderable top;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 733131611
-   )
-   @Export("hash")
-   int hash;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = -568153711
+      intValue = -1001357227
    )
    @Export("x")
    int x;
-   @ObfuscatedName("o")
+   @ObfuscatedName("p")
+   @Export("bottom")
+   Renderable bottom;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 751488249
+      intValue = -713957811
+   )
+   @Export("hash")
+   int hash;
+   @ObfuscatedName("j")
+   @Export("middle")
+   Renderable middle;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -707337707
    )
    @Export("y")
    int y;
    @ObfuscatedName("r")
-   @Export("bottom")
-   Renderable bottom;
-   @ObfuscatedName("w")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("j")
-   @Export("top")
-   Renderable top;
-   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -789564289
+      intValue = -1172187263
    )
    @Export("flags")
    int flags;
-   @ObfuscatedName("d")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = -433876719
+      intValue = 34931389
    )
    @Export("height")
    int height;
-   @ObfuscatedName("dy")
-   static byte[][] field1220;
 
-   @ObfuscatedName("dv")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(II)Ljava/lang/String;",
-      garbageValue = "422115324"
+      signature = "(S)I",
+      garbageValue = "22781"
    )
-   static final String method1467(int var0) {
-      return var0 < 999999999?Integer.toString(var0):"*";
+   static int method1510() {
+      return 9;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(IIB)LWidget;",
-      garbageValue = "71"
+      signature = "(LBuffer;I)Ljava/lang/String;",
+      garbageValue = "1473557078"
    )
-   public static Widget method1468(int var0, int var1) {
-      Widget var2 = class37.method759(var0);
-      return var1 == -1?var2:(null != var2 && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
+   public static String method1511(Buffer var0) {
+      String var1;
+      try {
+         int var2 = var0.method2846();
+         if(var2 > 32767) {
+            var2 = 32767;
+         }
+
+         byte[] var3 = new byte[var2];
+         var0.offset += class210.field3126.method2752(var0.payload, var0.offset, var3, 0, var2);
+         String var4 = Client.method343(var3, 0, var2);
+         var1 = var4;
+      } catch (Exception var6) {
+         var1 = "Cabbage";
+      }
+
+      return var1;
    }
 }

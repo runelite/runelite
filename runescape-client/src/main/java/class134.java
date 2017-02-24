@@ -1,11 +1,11 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("et")
+@ObfuscatedName("ef")
 public class class134 extends Node {
-   @ObfuscatedName("k")
-   public byte[] field1888;
+   @ObfuscatedName("q")
+   public byte[] field1896;
 
    public class134(byte[] var1) {
-      this.field1888 = var1;
+      this.field1896 = var1;
    }
 }

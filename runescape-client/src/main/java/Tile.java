@@ -7,115 +7,125 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ct")
 @Implements("Tile")
 public final class Tile extends Node {
-   @ObfuscatedName("t")
-   boolean field1327;
-   @ObfuscatedName("y")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1634730239
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1451832763
+      intValue = 1547307829
    )
    @Export("y")
    int y;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = -775313813
-   )
-   int field1330;
-   @ObfuscatedName("j")
-   class77 field1332;
-   @ObfuscatedName("w")
-   class85 field1333;
    @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1871319677
+   )
+   @Export("x")
+   int x;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 780044059
+   )
+   int field1350;
+   @ObfuscatedName("j")
+   class85 field1351;
+   @ObfuscatedName("l")
+   Tile field1352;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -88527635
+   )
+   int field1353 = 0;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1852374485
+   )
+   int field1354;
+   @ObfuscatedName("ea")
+   static SpritePixels[] field1355;
+   @ObfuscatedName("o")
+   @Export("itemLayer")
+   ItemLayer itemLayer;
+   @ObfuscatedName("t")
+   boolean field1357;
+   @ObfuscatedName("s")
+   @Export("objects")
+   GameObject[] objects = new GameObject[5];
+   @ObfuscatedName("u")
+   int[] field1359 = new int[5];
+   @ObfuscatedName("c")
    @Export("decorativeObject")
    DecorativeObject decorativeObject;
-   @ObfuscatedName("n")
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = -537721721
+   )
+   int field1361;
+   @ObfuscatedName("f")
+   boolean field1362;
+   @ObfuscatedName("z")
+   boolean field1363;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = 494947857
+   )
+   int field1364;
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 1293561549
+   )
+   int field1365;
+   @ObfuscatedName("i")
    @Export("groundObject")
    GroundObject groundObject;
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = -845558449
+      intValue = -1448155057
    )
    @Export("plane")
    int plane;
-   @ObfuscatedName("s")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -357308593
+      intValue = 581824433
    )
-   int field1337;
-   @ObfuscatedName("g")
-   @Export("objects")
-   GameObject[] objects = new GameObject[5];
+   int field1368;
    @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 962963345
-   )
-   int field1339;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -564546753
-   )
-   int field1340 = 0;
-   @ObfuscatedName("a")
-   @ObfuscatedGetter(
-      intValue = 1770489849
-   )
-   int field1341;
-   @ObfuscatedName("h")
-   boolean field1342;
-   @ObfuscatedName("p")
-   boolean field1343;
-   @ObfuscatedName("i")
-   int[] field1344 = new int[5];
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -50302689
-   )
-   int field1345;
-   @ObfuscatedName("c")
-   @Export("itemLayer")
-   ItemLayer itemLayer;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = -319242145
-   )
-   int field1347;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -58047795
-   )
-   int field1348;
-   @ObfuscatedName("m")
-   Tile field1349;
-   @ObfuscatedName("q")
    @Export("wallObject")
    WallObject wallObject;
-   @ObfuscatedName("qs")
-   protected static java.awt.Frame field1351;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1673789417
+   )
+   int field1371;
+   @ObfuscatedName("n")
+   class77 field1372;
 
    Tile(int var1, int var2, int var3) {
-      this.field1339 = this.plane = var1;
+      this.field1350 = this.plane = var1;
       this.x = var2;
       this.y = var3;
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("dj")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "17282205"
+      signature = "(IIIILSpritePixels;Lclass164;I)V",
+      garbageValue = "1564473022"
    )
-   public static int method1561(CharSequence var0) {
-      int var1 = var0.length();
-      int var2 = 0;
+   static final void method1610(int var0, int var1, int var2, int var3, SpritePixels var4, class164 var5) {
+      if(var4 != null) {
+         int var6 = Client.mapAngle + Client.mapScale & 2047;
+         int var7 = var3 * var3 + var2 * var2;
+         if(var7 <= 6400) {
+            int var8 = class84.field1468[var6];
+            int var9 = class84.field1462[var6];
+            var8 = 256 * var8 / (Client.mapScaleDelta + 256);
+            var9 = 256 * var9 / (Client.mapScaleDelta + 256);
+            int var10 = var9 * var2 + var8 * var3 >> 16;
+            int var11 = var3 * var9 - var8 * var2 >> 16;
+            if(var7 > 2500) {
+               var4.method4196(var5.field2156 / 2 + var10 - var4.maxWidth / 2, var5.field2157 / 2 - var11 - var4.maxHeight / 2, var0, var1, var5.field2156, var5.field2157, var5.field2155, var5.field2154);
+            } else {
+               var4.method4173(var0 + var5.field2156 / 2 + var10 - var4.maxWidth / 2, var1 + var5.field2157 / 2 - var11 - var4.maxHeight / 2);
+            }
 
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var2 = (var2 << 5) - var2 + var0.charAt(var3);
+         }
       }
-
-      return var2;
    }
 }

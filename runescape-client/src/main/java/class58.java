@@ -1,83 +1,83 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bx")
+@ObfuscatedName("bu")
 public class class58 {
-   @ObfuscatedName("w")
-   int field1063;
+   @ObfuscatedName("m")
+   int field1083;
    @ObfuscatedName("o")
-   int[] field1064 = new int[2];
-   @ObfuscatedName("r")
-   int[] field1065 = new int[2];
-   @ObfuscatedName("q")
-   int field1066;
+   int field1084;
+   @ObfuscatedName("h")
+   int[] field1085 = new int[2];
+   @ObfuscatedName("p")
+   int field1086;
    @ObfuscatedName("j")
-   int field1067;
-   @ObfuscatedName("k")
-   int field1068 = 2;
-   @ObfuscatedName("s")
-   int field1069;
+   int field1087;
    @ObfuscatedName("n")
-   int field1070;
+   int field1088;
+   @ObfuscatedName("q")
+   int field1089 = 2;
    @ObfuscatedName("c")
-   int field1071;
-   @ObfuscatedName("d")
-   int field1072;
-   @ObfuscatedName("y")
-   int field1073;
-
-   @ObfuscatedName("o")
-   final void method1106() {
-      this.field1072 = 0;
-      this.field1070 = 0;
-      this.field1071 = 0;
-      this.field1069 = 0;
-      this.field1073 = 0;
-   }
-
-   @ObfuscatedName("y")
-   final void method1108(Buffer var1) {
-      this.field1068 = var1.readUnsignedByte();
-      this.field1064 = new int[this.field1068];
-      this.field1065 = new int[this.field1068];
-
-      for(int var2 = 0; var2 < this.field1068; ++var2) {
-         this.field1064[var2] = var1.readUnsignedShort();
-         this.field1065[var2] = var1.readUnsignedShort();
-      }
-
-   }
-
+   int field1090;
    @ObfuscatedName("r")
-   final int method1110(int var1) {
-      if(this.field1073 >= this.field1072) {
-         this.field1069 = this.field1065[this.field1070++] << 15;
-         if(this.field1070 >= this.field1068) {
-            this.field1070 = this.field1068 - 1;
+   int field1091;
+   @ObfuscatedName("d")
+   int[] field1092 = new int[2];
+   @ObfuscatedName("i")
+   int field1093;
+
+   @ObfuscatedName("q")
+   final void method1161(Buffer var1) {
+      this.field1088 = var1.readUnsignedByte();
+      this.field1086 = var1.method2965();
+      this.field1087 = var1.method2965();
+      this.method1172(var1);
+   }
+
+   @ObfuscatedName("h")
+   final void method1163() {
+      this.field1091 = 0;
+      this.field1090 = 0;
+      this.field1093 = 0;
+      this.field1084 = 0;
+      this.field1083 = 0;
+   }
+
+   @ObfuscatedName("p")
+   final int method1164(int var1) {
+      if(this.field1083 >= this.field1091) {
+         this.field1084 = this.field1085[this.field1090++] << 15;
+         if(this.field1090 >= this.field1089) {
+            this.field1090 = this.field1089 - 1;
          }
 
-         this.field1072 = (int)((double)this.field1064[this.field1070] / 65536.0D * (double)var1);
-         if(this.field1072 > this.field1073) {
-            this.field1071 = ((this.field1065[this.field1070] << 15) - this.field1069) / (this.field1072 - this.field1073);
+         this.field1091 = (int)((double)this.field1092[this.field1090] / 65536.0D * (double)var1);
+         if(this.field1091 > this.field1083) {
+            this.field1093 = ((this.field1085[this.field1090] << 15) - this.field1084) / (this.field1091 - this.field1083);
          }
       }
 
-      this.field1069 += this.field1071;
-      ++this.field1073;
-      return this.field1069 - this.field1071 >> 15;
+      this.field1084 += this.field1093;
+      ++this.field1083;
+      return this.field1084 - this.field1093 >> 15;
    }
 
    class58() {
-      this.field1064[0] = 0;
-      this.field1064[1] = '\uffff';
-      this.field1065[0] = 0;
-      this.field1065[1] = '\uffff';
+      this.field1092[0] = 0;
+      this.field1092[1] = '\uffff';
+      this.field1085[0] = 0;
+      this.field1085[1] = '\uffff';
    }
 
-   @ObfuscatedName("k")
-   final void method1116(Buffer var1) {
-      this.field1066 = var1.readUnsignedByte();
-      this.field1063 = var1.method3062();
-      this.field1067 = var1.method3062();
-      this.method1108(var1);
+   @ObfuscatedName("d")
+   final void method1172(Buffer var1) {
+      this.field1089 = var1.readUnsignedByte();
+      this.field1092 = new int[this.field1089];
+      this.field1085 = new int[this.field1089];
+
+      for(int var2 = 0; var2 < this.field1089; ++var2) {
+         this.field1092[var2] = var1.readUnsignedShort();
+         this.field1085[var2] = var1.readUnsignedShort();
+      }
+
    }
 }

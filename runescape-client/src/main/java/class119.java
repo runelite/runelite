@@ -1,76 +1,83 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dl")
+@ObfuscatedName("do")
 public abstract class class119 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -1915939163
+      intValue = 1243662583
    )
-   public int field1846;
-   @ObfuscatedName("y")
+   public int field1852;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1779926033
+      intValue = 1810138857
    )
-   public int field1847;
-   @ObfuscatedName("o")
+   public int field1854;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1153052327
+      intValue = -606318035
    )
-   public int field1848;
-   @ObfuscatedName("br")
-   static class184 field1849;
-   @ObfuscatedName("r")
+   public int field1855;
+   @ObfuscatedName("de")
+   @Export("mapRegions")
+   static int[] mapRegions;
+   @ObfuscatedName("q")
    @ObfuscatedGetter(
-      intValue = 1548984237
+      intValue = -1512401891
    )
-   public int field1850;
+   public int field1857;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(IIILCollisionData;I)Z",
-      garbageValue = "2140491642"
+      garbageValue = "245014910"
    )
-   public abstract boolean vmethod2275(int var1, int var2, int var3, CollisionData var4);
+   protected abstract boolean vmethod2339(int var1, int var2, int var3, CollisionData var4);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "([BIIB)I",
-      garbageValue = "-62"
+      signature = "(Ljava/lang/String;B)I",
+      garbageValue = "-121"
    )
-   static int method2279(byte[] var0, int var1, int var2) {
-      int var3 = -1;
-
-      for(int var4 = var1; var4 < var2; ++var4) {
-         var3 = var3 >>> 8 ^ Buffer.field2259[(var3 ^ var0[var4]) & 255];
-      }
-
-      var3 = ~var3;
-      return var3;
+   public static int method2340(String var0) {
+      return var0.length() + 1;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-98213361"
+      signature = "([Lclass158;II)Lclass158;",
+      garbageValue = "-1697923377"
    )
-   static void method2280(int var0) {
-      if(var0 != -1) {
-         if(class15.method193(var0)) {
-            Widget[] var1 = Widget.widgets[var0];
+   public static class158 method2341(class158[] var0, int var1) {
+      class158[] var2 = var0;
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(null != var3.field2130) {
-                  class18 var4 = new class18();
-                  var4.field190 = var3;
-                  var4.field198 = var3.field2130;
-                  class99.method1923(var4, 2000000);
-               }
-            }
-
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class158 var4 = var2[var3];
+         if(var1 == var4.vmethod4101()) {
+            return var4;
          }
       }
+
+      return null;
+   }
+
+   @ObfuscatedName("dq")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;B)[Ljava/lang/String;",
+      garbageValue = "-8"
+   )
+   static final String[] method2343(String[] var0) {
+      String[] var1 = new String[5];
+
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && var0[var2] != null) {
+            var1[var2] = var1[var2] + var0[var2];
+         }
+      }
+
+      return var1;
    }
 }

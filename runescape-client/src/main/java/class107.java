@@ -1,105 +1,137 @@
 import java.io.File;
 import java.util.Hashtable;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("dx")
 public class class107 {
-   @ObfuscatedName("y")
-   static File field1727;
-   @ObfuscatedName("k")
-   static boolean field1728 = false;
-   @ObfuscatedName("o")
-   static Hashtable field1729 = new Hashtable(16);
-
-   @ObfuscatedName("m")
-   @ObfuscatedSignature(
-      signature = "(IB)V",
-      garbageValue = "115"
+   @ObfuscatedName("q")
+   static boolean field1731 = false;
+   @ObfuscatedName("d")
+   static File field1732;
+   @ObfuscatedName("h")
+   static Hashtable field1733 = new Hashtable(16);
+   @ObfuscatedName("hh")
+   @ObfuscatedGetter(
+      intValue = 740660459
    )
-   static void method2031(int var0) {
-      if(var0 == -3) {
-         PlayerComposition.method2762("Connection timed out.", "Please try using a different world.", "");
-      } else if(var0 == -2) {
-         PlayerComposition.method2762("", "Error connecting to server.", "");
-      } else if(var0 == -1) {
-         PlayerComposition.method2762("No response from server.", "Please try using a different world.", "");
-      } else if(var0 == 3) {
-         class41.loginIndex = 3;
-      } else if(var0 == 4) {
-         PlayerComposition.method2762("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(var0 == 5) {
-         PlayerComposition.method2762("Your account is already logged in.", "Try again in 60 secs...", "");
-      } else if(var0 == 6) {
-         PlayerComposition.method2762("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         PlayerComposition.method2762("This world is full.", "Please use a different world.", "");
-      } else if(var0 == 8) {
-         PlayerComposition.method2762("Unable to connect.", "Login server offline.", "");
-      } else if(var0 == 9) {
-         PlayerComposition.method2762("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         PlayerComposition.method2762("Unable to connect.", "Bad session id.", "");
-      } else if(var0 == 11) {
-         PlayerComposition.method2762("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         PlayerComposition.method2762("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         PlayerComposition.method2762("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         PlayerComposition.method2762("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         PlayerComposition.method2762("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(var0 == 17) {
-         PlayerComposition.method2762("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         PlayerComposition.method2762("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         PlayerComposition.method2762("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(var0 == 20) {
-         PlayerComposition.method2762("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(var0 == 22) {
-         PlayerComposition.method2762("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         PlayerComposition.method2762("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         PlayerComposition.method2762("Error loading your profile.", "Please contact customer support.", "");
-      } else if(var0 == 25) {
-         PlayerComposition.method2762("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         PlayerComposition.method2762("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(var0 == 27) {
-         PlayerComposition.method2762("", "Service unavailable.", "");
-      } else if(var0 == 31) {
-         PlayerComposition.method2762("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         PlayerComposition.method2762("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         PlayerComposition.method2762("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         PlayerComposition.method2762("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(var0 == 55) {
-         PlayerComposition.method2762("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
-      } else {
-         if(var0 == 56) {
-            PlayerComposition.method2762("Enter the 6-digit code generated by your", "authenticator app.", "");
-            class11.setGameState(11);
-            return;
-         }
-
-         if(var0 == 57) {
-            PlayerComposition.method2762("The code you entered was incorrect.", "Please try again.", "");
-            class11.setGameState(11);
-            return;
-         }
-
-         PlayerComposition.method2762("Unexpected server response", "Please try using a different world.", "");
-      }
-
-      class11.setGameState(10);
-   }
+   @Export("menuWidth")
+   static int menuWidth;
+   @ObfuscatedName("bu")
+   static class184 field1738;
 
    class107() throws Throwable {
       throw new Error();
+   }
+
+   @ObfuscatedName("au")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-122"
+   )
+   static final void method2099() {
+      int var0 = Client.field481 + class36.localPlayer.x;
+      int var1 = class36.localPlayer.y + Client.field371;
+      if(class85.field1473 - var0 < -500 || class85.field1473 - var0 > 500 || class180.field2698 - var1 < -500 || class180.field2698 - var1 > 500) {
+         class85.field1473 = var0;
+         class180.field2698 = var1;
+      }
+
+      if(var0 != class85.field1473) {
+         class85.field1473 += (var0 - class85.field1473) / 16;
+      }
+
+      if(var1 != class180.field2698) {
+         class180.field2698 += (var1 - class180.field2698) / 16;
+      }
+
+      int var2;
+      int var3;
+      if(class115.field1794 == 4 && class15.field173) {
+         var2 = class115.field1799 - Client.field393;
+         Client.field391 = var2 * 2;
+         Client.field393 = var2 != -1 && var2 != 1?(Client.field393 + class115.field1799) / 2:class115.field1799;
+         var3 = Client.field392 - class115.field1792;
+         Client.field390 = var3 * 2;
+         Client.field392 = var3 != -1 && var3 != 1?(class115.field1792 + Client.field392) / 2:class115.field1792;
+      } else {
+         if(class105.field1713[96]) {
+            Client.field390 += (-24 - Client.field390) / 2;
+         } else if(class105.field1713[97]) {
+            Client.field390 += (24 - Client.field390) / 2;
+         } else {
+            Client.field390 /= 2;
+         }
+
+         if(class105.field1713[98]) {
+            Client.field391 += (12 - Client.field391) / 2;
+         } else if(class105.field1713[99]) {
+            Client.field391 += (-12 - Client.field391) / 2;
+         } else {
+            Client.field391 /= 2;
+         }
+
+         Client.field393 = class115.field1799;
+         Client.field392 = class115.field1792;
+      }
+
+      Client.mapAngle = Client.field390 / 2 + Client.mapAngle & 2047;
+      Client.field541 += Client.field391 / 2;
+      if(Client.field541 < 128) {
+         Client.field541 = 128;
+      }
+
+      if(Client.field541 > 383) {
+         Client.field541 = 383;
+      }
+
+      var2 = class85.field1473 >> 7;
+      var3 = class180.field2698 >> 7;
+      int var4 = class2.method19(class85.field1473, class180.field2698, WallObject.plane);
+      int var5 = 0;
+      int var6;
+      if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
+         for(var6 = var2 - 4; var6 <= 4 + var2; ++var6) {
+            for(int var7 = var3 - 4; var7 <= 4 + var3; ++var7) {
+               int var8 = WallObject.plane;
+               if(var8 < 3 && (class10.tileSettings[1][var6][var7] & 2) == 2) {
+                  ++var8;
+               }
+
+               int var9 = var4 - class10.tileHeights[var8][var6][var7];
+               if(var9 > var5) {
+                  var5 = var9;
+               }
+            }
+         }
+      }
+
+      var6 = var5 * 192;
+      if(var6 > 98048) {
+         var6 = 98048;
+      }
+
+      if(var6 < '耀') {
+         var6 = '耀';
+      }
+
+      if(var6 > Client.field397) {
+         Client.field397 += (var6 - Client.field397) / 24;
+      } else if(var6 < Client.field397) {
+         Client.field397 += (var6 - Client.field397) / 80;
+      }
+
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "100"
+   )
+   public static void method2100() {
+      Spotanim.field2803.reset();
+      Spotanim.field2798.reset();
    }
 }

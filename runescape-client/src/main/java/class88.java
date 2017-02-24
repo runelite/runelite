@@ -1,43 +1,68 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cw")
+@ObfuscatedName("cs")
 public class class88 {
-   @ObfuscatedName("dx")
-   @Export("xteaKeys")
-   static int[][] xteaKeys;
-   @ObfuscatedName("l")
-   static int[] field1541;
-
-   @ObfuscatedName("eh")
-   @ObfuscatedSignature(
-      signature = "(LWidget;B)I",
-      garbageValue = "-35"
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1915393825
    )
-   static int method1872(Widget var0) {
-      class133 var1 = (class133)Client.widgetFlags.method2331(((long)var0.id << 32) + (long)var0.index);
-      return var1 != null?var1.field1887:var0.field2169;
-   }
+   static int field1552;
+   @ObfuscatedName("g")
+   static int[] field1556;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("bb")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1101267417"
+      signature = "(III)V",
+      garbageValue = "-717037893"
    )
-   public static void method1873() {
-      while(true) {
-         Deque var1 = class183.field2714;
-         class180 var0;
-         synchronized(class183.field2714) {
-            var0 = (class180)class183.field2713.method2383();
+   @Export("groundItemSpawned")
+   static final void groundItemSpawned(int var0, int var1) {
+      Deque var2 = Client.groundItemDeque[WallObject.plane][var0][var1];
+      if(null == var2) {
+         class48.region.method1768(WallObject.plane, var0, var1);
+      } else {
+         long var3 = -99999999L;
+         Item var5 = null;
+
+         Item var6;
+         for(var6 = (Item)var2.method2458(); var6 != null; var6 = (Item)var2.method2472()) {
+            ItemComposition var7 = class103.getItemDefinition(var6.id);
+            long var8 = (long)var7.price;
+            if(var7.isStackable == 1) {
+               var8 *= (long)(var6.quantity + 1);
+            }
+
+            if(var8 > var3) {
+               var3 = var8;
+               var5 = var6;
+            }
          }
 
-         if(var0 == null) {
-            return;
-         }
+         if(var5 == null) {
+            class48.region.method1768(WallObject.plane, var0, var1);
+         } else {
+            var2.method2454(var5);
+            Item var11 = null;
+            Item var10 = null;
 
-         var0.field2681.method3387(var0.field2683, (int)var0.hash, var0.field2682, false);
+            for(var6 = (Item)var2.method2458(); var6 != null; var6 = (Item)var2.method2472()) {
+               if(var6.id != var5.id) {
+                  if(var11 == null) {
+                     var11 = var6;
+                  }
+
+                  if(var6.id != var11.id && null == var10) {
+                     var10 = var6;
+                  }
+               }
+            }
+
+            int var9 = 1610612736 + var0 + (var1 << 7);
+            class48.region.method1754(WallObject.plane, var0, var1, class2.method19(var0 * 128 + 64, var1 * 128 + 64, WallObject.plane), var5, var9, var11, var10);
+         }
       }
    }
 }

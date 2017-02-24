@@ -3,83 +3,67 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("az")
+@ObfuscatedName("ay")
 public class class48 extends CacheableNode {
-   @ObfuscatedName("c")
-   static int[] field933;
-   @ObfuscatedName("y")
-   int[] field934;
-   @ObfuscatedName("o")
-   int[] field935;
-   @ObfuscatedName("gu")
+   @ObfuscatedName("d")
+   int[] field959;
+   @ObfuscatedName("h")
+   int[] field960;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -202288423
+      intValue = 1977718259
    )
-   @Export("plane")
-   static int plane;
-   @ObfuscatedName("r")
-   String[] field937;
+   int field961;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 22353007
+   )
+   int field963;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1212778097
+      intValue = -1721726273
    )
-   int field938;
+   int field964;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 369322755
+   )
+   int field965;
+   @ObfuscatedName("p")
+   String[] field968;
+   @ObfuscatedName("do")
+   @Export("region")
+   static Region region;
    @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1010022259
-   )
-   int field939;
+   static NodeCache field970 = new NodeCache(128);
+
    @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = 1655120027
-   )
-   int field941;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1508396129
-   )
-   int field942;
-   @ObfuscatedName("k")
-   static NodeCache field944 = new NodeCache(128);
-
-   @ObfuscatedName("et")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1108428937"
+      signature = "(II)Lclass196;",
+      garbageValue = "-1792566079"
    )
-   static final void method893(String var0) {
-      if(!var0.equals("")) {
-         Client.field321.method3195(84);
-         Client.field321.method2912(class105.method1999(var0));
-         Client.field321.method3097(var0);
+   public static class196 method970(int var0) {
+      class196 var1 = (class196)class196.field2870.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = class196.field2890.getConfigData(32, var0);
+         var1 = new class196();
+         if(null != var2) {
+            var1.method3574(new Buffer(var2));
+         }
+
+         class196.field2870.put(var1, (long)var0);
+         return var1;
       }
    }
 
-   @ObfuscatedName("er")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(LWidget;I)Z",
-      garbageValue = "-9005894"
+      signature = "(I)V",
+      garbageValue = "-2139167721"
    )
-   static boolean method894(Widget var0) {
-      if(Client.field486) {
-         if(class88.method1872(var0) != 0) {
-            return false;
-         }
-
-         if(var0.type == 0) {
-            return false;
-         }
-      }
-
-      return var0.isHidden;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "194591067"
-   )
-   public static boolean method896(int var0) {
-      return (var0 & 1) != 0;
+   public static void method971() {
+      ItemComposition.itemSpriteCache.reset();
    }
 }
