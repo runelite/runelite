@@ -1,15 +1,18 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fe")
+@ObfuscatedName("fk")
 public class class157 {
-   @ObfuscatedName("bt")
-   @ObfuscatedGetter(
-      intValue = -225093459
-   )
-   static int field2216;
-
    class157() throws Throwable {
       throw new Error();
+   }
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;B)V",
+      garbageValue = "42"
+   )
+   public static void method3058(class182 var0) {
+      class150.field2041 = var0;
    }
 }

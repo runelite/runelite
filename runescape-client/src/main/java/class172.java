@@ -1,21 +1,12 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("fs")
 public class class172 {
-   @ObfuscatedName("y")
-   public static final boolean[] field2333 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
-   @ObfuscatedName("o")
-   public static int[] field2334 = new int[99];
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(B)[Lclass214;",
-      garbageValue = "102"
-   )
-   public static class214[] method3249() {
-      return new class214[]{class214.field3144, class214.field3141, class214.field3150, class214.field3149, class214.field3137, class214.field3138, class214.field3148, class214.field3147, class214.field3139, class214.field3145, class214.field3146, class214.field3136, class214.field3140, class214.field3142, class214.field3143};
-   }
+   @ObfuscatedName("h")
+   public static int[] field2352 = new int[99];
+   @ObfuscatedName("d")
+   public static final boolean[] field2354 = new boolean[]{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, false, false};
 
    static {
       int var0 = 0;
@@ -24,7 +15,7 @@ public class class172 {
          int var2 = var1 + 1;
          int var3 = (int)((double)var2 + 300.0D * Math.pow(2.0D, (double)var2 / 7.0D));
          var0 += var3;
-         field2334[var1] = var0 / 4;
+         field2352[var1] = var0 / 4;
       }
 
    }
@@ -33,24 +24,32 @@ public class class172 {
       throw new Error();
    }
 
-   @ObfuscatedName("p")
+   @ObfuscatedName("dg")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "-86"
+      signature = "(Ljava/lang/String;IB)V",
+      garbageValue = "-6"
    )
-   public static int method3250(int var0) {
-      return var0 > 0?1:(var0 < 0?-1:0);
+   static final void method3273(String var0, int var1) {
+      Client.field348.method3073(241);
+      Client.field348.method2918(class119.method2340(var0) + 1);
+      Client.field348.method2918(var1);
+      Client.field348.method2824(var0);
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("bv")
    @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "2086668818"
+      signature = "(II)V",
+      garbageValue = "-1137285500"
    )
-   static final int method3251(int var0, int var1) {
-      int var2 = var0 + 57 * var1;
-      var2 ^= var2 << 13;
-      int var3 = 1376312589 + var2 * (var2 * var2 * 15731 + 789221) & Integer.MAX_VALUE;
-      return var3 >> 19 & 255;
+   static final void method3274(int var0) {
+      if(var0 >= 0) {
+         int var1 = Client.menuActionParams0[var0];
+         int var2 = Client.menuActionParams1[var0];
+         int var3 = Client.menuTypes[var0];
+         int var4 = Client.menuIdentifiers[var0];
+         String var5 = Client.menuOptions[var0];
+         String var6 = Client.menuTargets[var0];
+         class171.menuAction(var1, var2, var3, var4, var5, var6, class115.field1796, class115.field1806);
+      }
    }
 }

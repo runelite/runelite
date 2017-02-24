@@ -3,112 +3,192 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gi")
+@ObfuscatedName("gl")
 public class class185 {
-   @ObfuscatedName("b")
-   public static byte field2728 = 0;
+   @ObfuscatedName("a")
+   static class184[] field2746 = new class184[256];
    @ObfuscatedName("d")
-   public static Node2LinkedList field2729 = new Node2LinkedList();
+   @ObfuscatedGetter(
+      intValue = 883734745
+   )
+   public static int field2747 = 0;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1130111741
+   )
+   public static int field2748 = 0;
+   @ObfuscatedName("p")
+   public static XHashTable field2749 = new XHashTable(4096);
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -371323499
+   )
+   public static int field2750 = 0;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
-      longValue = 2020465102466276561L
+      intValue = 1116818527
    )
-   public static long field2730;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1617578569
-   )
-   public static int field2731 = 0;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -111847277
-   )
-   public static int field2732 = 0;
-   @ObfuscatedName("j")
-   public static XHashTable field2733 = new XHashTable(32);
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 1012985129
-   )
-   public static int field2734 = 0;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1360002581
-   )
-   public static int field2735 = 0;
+   public static int field2751 = 0;
    @ObfuscatedName("r")
-   public static XHashTable field2736 = new XHashTable(4096);
-   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 520200919
+      intValue = 55745641
    )
-   public static int field2738 = 0;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 1117110553
-   )
-   public static int field2739 = 0;
-   @ObfuscatedName("s")
-   public static XHashTable field2740 = new XHashTable(4096);
+   public static int field2752 = 0;
+   @ObfuscatedName("c")
+   public static Node2LinkedList field2753 = new Node2LinkedList();
+   @ObfuscatedName("i")
+   public static XHashTable field2754 = new XHashTable(4096);
+   @ObfuscatedName("dq")
+   static int[] field2755;
    @ObfuscatedName("n")
-   public static XHashTable field2741 = new XHashTable(4096);
-   @ObfuscatedName("f")
-   static CRC32 field2742 = new CRC32();
-   @ObfuscatedName("u")
-   static class184[] field2743 = new class184[256];
-   @ObfuscatedName("a")
-   public static Buffer field2744 = new Buffer(8);
-   @ObfuscatedName("m")
+   public static XHashTable field2756 = new XHashTable(32);
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1671101973
+      longValue = -2498272970275941843L
    )
-   public static int field2745 = 0;
-   @ObfuscatedName("e")
-   @ObfuscatedGetter(
-      intValue = 939683469
-   )
-   public static int field2746 = 0;
+   public static long field2757;
+   @ObfuscatedName("v")
+   public static Buffer field2758 = new Buffer(8);
+   @ObfuscatedName("q")
+   public static class110 field2759;
+   @ObfuscatedName("y")
+   static CRC32 field2760 = new CRC32();
+   @ObfuscatedName("w")
+   static Buffer field2761;
    @ObfuscatedName("k")
-   public static class110 field2748;
+   public static byte field2762 = 0;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1014525511
+   )
+   public static int field2763 = 0;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 2045420675
+   )
+   public static int field2764 = 0;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1921755079
+   )
+   public static int field2765 = 0;
+   @ObfuscatedName("m")
+   public static XHashTable field2767 = new XHashTable(4096);
+   @ObfuscatedName("u")
+   static Font field2768;
+
+   @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "(IS)Ljava/lang/String;",
+      garbageValue = "500"
+   )
+   static final String method3423(int var0) {
+      String var1 = Integer.toString(var0);
+
+      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
+         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+      }
+
+      return var1.length() > 9?" " + class18.method199('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class18.method199(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class18.method199(16776960) + var1 + "</col>");
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(II)V",
+      garbageValue = "693588629"
+   )
+   static void method3426(int var0) {
+      if(var0 == -3) {
+         class138.method2536("Connection timed out.", "Please try using a different world.", "");
+      } else if(var0 == -2) {
+         class138.method2536("", "Error connecting to server.", "");
+      } else if(var0 == -1) {
+         class138.method2536("No response from server.", "Please try using a different world.", "");
+      } else if(var0 == 3) {
+         class41.loginIndex = 3;
+      } else if(var0 == 4) {
+         class138.method2536("Your account has been disabled.", "Please check your message-centre for details.", "");
+      } else if(var0 == 5) {
+         class138.method2536("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
+      } else if(var0 == 6) {
+         class138.method2536("RuneScape has been updated!", "Please reload this page.", "");
+      } else if(var0 == 7) {
+         class138.method2536("This world is full.", "Please use a different world.", "");
+      } else if(var0 == 8) {
+         class138.method2536("Unable to connect.", "Login server offline.", "");
+      } else if(var0 == 9) {
+         class138.method2536("Login limit exceeded.", "Too many connections from your address.", "");
+      } else if(var0 == 10) {
+         class138.method2536("Unable to connect.", "Bad session id.", "");
+      } else if(var0 == 11) {
+         class138.method2536("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
+      } else if(var0 == 12) {
+         class138.method2536("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
+      } else if(var0 == 13) {
+         class138.method2536("Could not complete login.", "Please try using a different world.", "");
+      } else if(var0 == 14) {
+         class138.method2536("The server is being updated.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 16) {
+         class138.method2536("Too many login attempts.", "Please wait a few minutes before trying again.", "");
+      } else if(var0 == 17) {
+         class138.method2536("You are standing in a members-only area.", "To play on this world move to a free area first", "");
+      } else if(var0 == 18) {
+         class138.method2536("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
+      } else if(var0 == 19) {
+         class138.method2536("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
+      } else if(var0 == 20) {
+         class138.method2536("Invalid loginserver requested.", "Please try using a different world.", "");
+      } else if(var0 == 22) {
+         class138.method2536("Malformed login packet.", "Please try again.", "");
+      } else if(var0 == 23) {
+         class138.method2536("No reply from loginserver.", "Please wait 1 minute and try again.", "");
+      } else if(var0 == 24) {
+         class138.method2536("Error loading your profile.", "Please contact customer support.", "");
+      } else if(var0 == 25) {
+         class138.method2536("Unexpected loginserver response.", "Please try using a different world.", "");
+      } else if(var0 == 26) {
+         class138.method2536("This computers address has been blocked", "as it was used to break our rules.", "");
+      } else if(var0 == 27) {
+         class138.method2536("", "Service unavailable.", "");
+      } else if(var0 == 31) {
+         class138.method2536("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
+      } else if(var0 == 32) {
+         class138.method2536("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
+      } else if(var0 == 37) {
+         class138.method2536("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
+      } else if(var0 == 38) {
+         class138.method2536("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
+      } else if(var0 == 55) {
+         class138.method2536("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
+      } else {
+         if(var0 == 56) {
+            class138.method2536("Enter the 6-digit code generated by your", "authenticator app.", "");
+            class8.setGameState(11);
+            return;
+         }
+
+         if(var0 == 57) {
+            class138.method2536("The code you entered was incorrect.", "Please try again.", "");
+            class8.setGameState(11);
+            return;
+         }
+
+         class138.method2536("Unexpected server response", "Please try using a different world.", "");
+      }
+
+      class8.setGameState(10);
+   }
 
    class185() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(IIZB)Ljava/lang/String;",
-      garbageValue = "21"
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "0"
    )
-   static String method3407(int var0, int var1, boolean var2) {
-      if(var1 >= 2 && var1 <= 36) {
-         if(var2 && var0 >= 0) {
-            int var3 = 2;
-
-            for(int var4 = var0 / var1; var4 != 0; ++var3) {
-               var4 /= var1;
-            }
-
-            char[] var5 = new char[var3];
-            var5[0] = 43;
-
-            for(int var6 = var3 - 1; var6 > 0; --var6) {
-               int var7 = var0;
-               var0 /= var1;
-               int var8 = var7 - var0 * var1;
-               if(var8 >= 10) {
-                  var5[var6] = (char)(87 + var8);
-               } else {
-                  var5[var6] = (char)(48 + var8);
-               }
-            }
-
-            return new String(var5);
-         } else {
-            return Integer.toString(var0, var1);
-         }
-      } else {
-         throw new IllegalArgumentException("");
-      }
+   static final String method3429(int var0) {
+      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
    }
 }

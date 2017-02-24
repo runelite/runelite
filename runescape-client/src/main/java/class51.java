@@ -1,148 +1,128 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("an")
+@ObfuscatedName("ax")
 public class class51 extends class68 {
-   @ObfuscatedName("r")
-   int field975 = -1;
-   @ObfuscatedName("y")
-   Deque field976 = new Deque();
-   @ObfuscatedName("o")
-   int field977 = 0;
-   @ObfuscatedName("k")
-   Deque field978 = new Deque();
+   @ObfuscatedName("q")
+   Deque field995 = new Deque();
+   @ObfuscatedName("d")
+   Deque field996 = new Deque();
+   @ObfuscatedName("h")
+   int field997 = 0;
+   @ObfuscatedName("p")
+   int field998 = -1;
 
-   @ObfuscatedName("k")
-   public final synchronized void method918(class68 var1) {
-      this.field978.method2381(var1);
+   @ObfuscatedName("q")
+   public final synchronized void method985(class68 var1) {
+      this.field995.method2454(var1);
    }
 
-   @ObfuscatedName("y")
-   public final synchronized void method919(class68 var1) {
-      var1.unlink();
-   }
+   @ObfuscatedName("h")
+   void method987() {
+      if(this.field997 > 0) {
+         for(class61 var1 = (class61)this.field996.method2458(); var1 != null; var1 = (class61)this.field996.method2472()) {
+            var1.field1103 -= this.field997;
+         }
 
-   @ObfuscatedName("r")
-   void method921(Node var1, class62 var2) {
-      while(var1 != this.field976.head && ((class62)var1).field1088 <= var2.field1088) {
-         var1 = var1.next;
-      }
-
-      Deque.method2382(var2, var1);
-      this.field975 = ((class62)this.field976.head.next).field1088;
-   }
-
-   @ObfuscatedName("w")
-   void method922(class62 var1) {
-      var1.unlink();
-      var1.method1161();
-      Node var2 = this.field976.head.next;
-      if(var2 == this.field976.head) {
-         this.field975 = -1;
-      } else {
-         this.field975 = ((class62)var2).field1088;
+         this.field998 -= this.field997;
+         this.field997 = 0;
       }
 
    }
 
    @ObfuscatedName("j")
-   protected class68 vmethod2708() {
-      return (class68)this.field978.method2403();
+   void method989(class61 var1) {
+      var1.unlink();
+      var1.method1206();
+      Node var2 = this.field996.head.next;
+      if(var2 == this.field996.head) {
+         this.field998 = -1;
+      } else {
+         this.field998 = ((class61)var2).field1103;
+      }
+
+   }
+
+   @ObfuscatedName("d")
+   public final synchronized void method990(class68 var1) {
+      var1.unlink();
    }
 
    @ObfuscatedName("c")
-   protected class68 vmethod2687() {
-      return (class68)this.field978.method2398();
+   protected class68 vmethod2717() {
+      return (class68)this.field995.method2472();
    }
 
-   @ObfuscatedName("g")
-   protected int vmethod2688() {
-      return 0;
-   }
-
-   @ObfuscatedName("o")
-   void method926() {
-      if(this.field977 > 0) {
-         for(class62 var1 = (class62)this.field976.method2403(); var1 != null; var1 = (class62)this.field976.method2398()) {
-            var1.field1088 -= this.field977;
-         }
-
-         this.field975 -= this.field977;
-         this.field977 = 0;
-      }
-
-   }
-
-   @ObfuscatedName("h")
-   void method929(int var1) {
-      for(class68 var2 = (class68)this.field978.method2403(); var2 != null; var2 = (class68)this.field978.method2398()) {
-         var2.vmethod2690(var1);
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   public final synchronized void vmethod2689(int[] var1, int var2, int var3) {
+   @ObfuscatedName("s")
+   public final synchronized void vmethod2718(int[] var1, int var2, int var3) {
       do {
-         if(this.field975 < 0) {
-            this.method956(var1, var2, var3);
+         if(this.field998 < 0) {
+            this.method994(var1, var2, var3);
             return;
          }
 
-         if(this.field977 + var3 < this.field975) {
-            this.field977 += var3;
-            this.method956(var1, var2, var3);
+         if(this.field997 + var3 < this.field998) {
+            this.field997 += var3;
+            this.method994(var1, var2, var3);
             return;
          }
 
-         int var4 = this.field975 - this.field977;
-         this.method956(var1, var2, var4);
+         int var4 = this.field998 - this.field997;
+         this.method994(var1, var2, var4);
          var2 += var4;
          var3 -= var4;
-         this.field977 += var4;
-         this.method926();
-         class62 var5 = (class62)this.field976.method2403();
+         this.field997 += var4;
+         this.method987();
+         class61 var5 = (class61)this.field996.method2458();
          synchronized(var5) {
-            int var7 = var5.method1162(this);
+            int var7 = var5.method1207(this);
             if(var7 < 0) {
-               var5.field1088 = 0;
-               this.method922(var5);
+               var5.field1103 = 0;
+               this.method989(var5);
             } else {
-               var5.field1088 = var7;
-               this.method921(var5.next, var5);
+               var5.field1103 = var7;
+               this.method998(var5.next, var5);
             }
          }
       } while(var3 != 0);
 
    }
 
-   @ObfuscatedName("a")
-   public final synchronized void vmethod2690(int var1) {
+   @ObfuscatedName("u")
+   void method994(int[] var1, int var2, int var3) {
+      for(class68 var4 = (class68)this.field995.method2458(); var4 != null; var4 = (class68)this.field995.method2472()) {
+         var4.method1402(var1, var2, var3);
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   public final synchronized void vmethod2719(int var1) {
       do {
-         if(this.field975 < 0) {
-            this.method929(var1);
+         if(this.field998 < 0) {
+            this.method996(var1);
             return;
          }
 
-         if(this.field977 + var1 < this.field975) {
-            this.field977 += var1;
-            this.method929(var1);
+         if(this.field997 + var1 < this.field998) {
+            this.field997 += var1;
+            this.method996(var1);
             return;
          }
 
-         int var2 = this.field975 - this.field977;
-         this.method929(var2);
+         int var2 = this.field998 - this.field997;
+         this.method996(var2);
          var1 -= var2;
-         this.field977 += var2;
-         this.method926();
-         class62 var3 = (class62)this.field976.method2403();
+         this.field997 += var2;
+         this.method987();
+         class61 var3 = (class61)this.field996.method2458();
          synchronized(var3) {
-            int var5 = var3.method1162(this);
+            int var5 = var3.method1207(this);
             if(var5 < 0) {
-               var3.field1088 = 0;
-               this.method922(var3);
+               var3.field1103 = 0;
+               this.method989(var3);
             } else {
-               var3.field1088 = var5;
-               this.method921(var3.next, var3);
+               var3.field1103 = var5;
+               this.method998(var3.next, var3);
             }
          }
       } while(var1 != 0);
@@ -150,10 +130,30 @@ public class class51 extends class68 {
    }
 
    @ObfuscatedName("v")
-   void method956(int[] var1, int var2, int var3) {
-      for(class68 var4 = (class68)this.field978.method2403(); var4 != null; var4 = (class68)this.field978.method2398()) {
-         var4.method1355(var1, var2, var3);
+   void method996(int var1) {
+      for(class68 var2 = (class68)this.field995.method2458(); var2 != null; var2 = (class68)this.field995.method2472()) {
+         var2.vmethod2719(var1);
       }
 
+   }
+
+   @ObfuscatedName("p")
+   void method998(Node var1, class61 var2) {
+      while(var1 != this.field996.head && ((class61)var1).field1103 <= var2.field1103) {
+         var1 = var1.next;
+      }
+
+      Deque.method2455(var2, var1);
+      this.field998 = ((class61)this.field996.head.next).field1103;
+   }
+
+   @ObfuscatedName("n")
+   protected class68 vmethod2734() {
+      return (class68)this.field995.method2458();
+   }
+
+   @ObfuscatedName("o")
+   protected int vmethod2716() {
+      return 0;
    }
 }

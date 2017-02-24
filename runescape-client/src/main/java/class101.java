@@ -1,114 +1,154 @@
 import java.applet.Applet;
-import java.awt.Graphics;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cd")
+@ObfuscatedName("ce")
 public class class101 extends RuntimeException {
-   @ObfuscatedName("k")
-   static Applet field1657;
-   @ObfuscatedName("y")
-   public static String field1658;
-   @ObfuscatedName("o")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -582863171
+      intValue = 1585230683
    )
-   static int field1659;
-   @ObfuscatedName("r")
-   String field1660;
-   @ObfuscatedName("d")
-   public static short[][] field1661;
-   @ObfuscatedName("w")
-   Throwable field1662;
-   @ObfuscatedName("eo")
-   static SpritePixels[] field1666;
-
+   static int field1655;
+   @ObfuscatedName("q")
+   static Applet field1657;
+   @ObfuscatedName("p")
+   String field1658;
    @ObfuscatedName("j")
+   Throwable field1659;
+   @ObfuscatedName("d")
+   public static String field1660;
+   @ObfuscatedName("ba")
+   @Export("host")
+   static String host;
+
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(LModIcon;I)V",
-      garbageValue = "2078664886"
+      signature = "(ILclass48;ZI)I",
+      garbageValue = "18380328"
    )
-   static final void method1939(ModIcon var0) {
-      short var1 = 256;
-
-      int var2;
-      for(var2 = 0; var2 < class60.field1083.length; ++var2) {
-         class60.field1083[var2] = 0;
+   static int method2019(int var0, class48 var1, boolean var2) {
+      Widget var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+      if(var0 == 1600) {
+         class32.field747[++class103.field1686 - 1] = var3.scrollX;
+         return 1;
+      } else if(var0 == 1601) {
+         class32.field747[++class103.field1686 - 1] = var3.scrollY;
+         return 1;
+      } else if(var0 == 1602) {
+         class32.field748[++class32.field749 - 1] = var3.text;
+         return 1;
+      } else if(var0 == 1603) {
+         class32.field747[++class103.field1686 - 1] = var3.scrollWidth;
+         return 1;
+      } else if(var0 == 1604) {
+         class32.field747[++class103.field1686 - 1] = var3.scrollHeight;
+         return 1;
+      } else if(var0 == 1605) {
+         class32.field747[++class103.field1686 - 1] = var3.field2259;
+         return 1;
+      } else if(var0 == 1606) {
+         class32.field747[++class103.field1686 - 1] = var3.rotationX;
+         return 1;
+      } else if(var0 == 1607) {
+         class32.field747[++class103.field1686 - 1] = var3.rotationY;
+         return 1;
+      } else if(var0 == 1608) {
+         class32.field747[++class103.field1686 - 1] = var3.rotationZ;
+         return 1;
+      } else if(var0 == 1609) {
+         class32.field747[++class103.field1686 - 1] = var3.opacity;
+         return 1;
+      } else if(var0 == 1610) {
+         class32.field747[++class103.field1686 - 1] = var3.field2237;
+         return 1;
+      } else if(var0 == 1611) {
+         class32.field747[++class103.field1686 - 1] = var3.textColor;
+         return 1;
+      } else if(var0 == 1612) {
+         class32.field747[++class103.field1686 - 1] = var3.field2313;
+         return 1;
+      } else if(var0 == 1613) {
+         class32.field747[++class103.field1686 - 1] = var3.field2235.vmethod4101();
+         return 1;
+      } else {
+         return 2;
       }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         class60.field1083[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class116.field1818[var5] = (class60.field1083[128 + var5] + class60.field1083[var5 + 1] + class60.field1083[var5 - 1] + class60.field1083[var5 - 128]) / 4;
-            }
-         }
-
-         int[] var8 = class60.field1083;
-         class60.field1083 = class116.field1818;
-         class116.field1818 = var8;
-      }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var0.offsetY + 16 + var3;
-                  int var7 = (var6 << 7) + var5;
-                  class60.field1083[var7] = 0;
-               }
-            }
-         }
-      }
-
    }
 
-   @ObfuscatedName("ag")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZB)V",
-      garbageValue = "-2"
+      signature = "(ILclass48;ZI)I",
+      garbageValue = "143377555"
    )
-   static final void method1940(String var0, boolean var1) {
-      byte var2 = 4;
-      int var3 = 6 + var2;
-      int var4 = var2 + 6;
-      int var5 = class49.field961.method3868(var0, 250);
-      int var6 = class49.field961.method3869(var0, 250) * 13;
-      Rasterizer2D.method4004(var3 - var2, var4 - var2, var2 + var5 + var2, var6 + var2 + var2, 0);
-      Rasterizer2D.method3985(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var6 + var2, 16777215);
-      class49.field961.method3875(var0, var3, var4, var5, var6, 16777215, -1, 1, 1, 0);
-      class45.method837(var3 - var2, var4 - var2, var2 + var5 + var2, var2 + var2 + var6);
-      if(var1) {
-         try {
-            Graphics var7 = class32.canvas.getGraphics();
-            class13.bufferProvider.draw(var7, 0, 0);
-         } catch (Exception var13) {
-            class32.canvas.repaint();
+   static int method2020(int var0, class48 var1, boolean var2) {
+      int var3;
+      int var4;
+      int var6;
+      if(var0 == 3400) {
+         class103.field1686 -= 2;
+         var3 = class32.field747[class103.field1686];
+         var4 = class32.field747[class103.field1686 + 1];
+         class195 var5 = PlayerComposition.method3198(var3);
+         if(var5.field2857 != 115) {
+            ;
          }
-      } else {
-         int var12 = var3;
-         int var8 = var4;
-         int var9 = var5;
-         int var10 = var6;
 
-         for(int var11 = 0; var11 < Client.field288; ++var11) {
-            if(Client.widgetPositionX[var11] + Client.widgetBoundsWidth[var11] > var12 && Client.widgetPositionX[var11] < var12 + var9 && Client.widgetBoundsHeight[var11] + Client.widgetPositionY[var11] > var8 && Client.widgetPositionY[var11] < var8 + var10) {
-               Client.field483[var11] = true;
+         for(var6 = 0; var6 < var5.field2858; ++var6) {
+            if(var5.field2862[var6] == var4) {
+               class32.field748[++class32.field749 - 1] = var5.field2860[var6];
+               var5 = null;
+               break;
             }
          }
-      }
 
+         if(var5 != null) {
+            class32.field748[++class32.field749 - 1] = var5.field2861;
+         }
+
+         return 1;
+      } else if(var0 != 3408) {
+         return 2;
+      } else {
+         class103.field1686 -= 4;
+         var3 = class32.field747[class103.field1686];
+         var4 = class32.field747[class103.field1686 + 1];
+         int var9 = class32.field747[2 + class103.field1686];
+         var6 = class32.field747[3 + class103.field1686];
+         class195 var7 = PlayerComposition.method3198(var9);
+         if(var7.field2856 == var3 && var7.field2857 == var4) {
+            for(int var8 = 0; var8 < var7.field2858; ++var8) {
+               if(var6 == var7.field2862[var8]) {
+                  if(var4 == 115) {
+                     class32.field748[++class32.field749 - 1] = var7.field2860[var8];
+                  } else {
+                     class32.field747[++class103.field1686 - 1] = var7.field2865[var8];
+                  }
+
+                  var7 = null;
+                  break;
+               }
+            }
+
+            if(null != var7) {
+               if(var4 == 115) {
+                  class32.field748[++class32.field749 - 1] = var7.field2861;
+               } else {
+                  class32.field747[++class103.field1686 - 1] = var7.field2863;
+               }
+            }
+
+            return 1;
+         } else {
+            if(var4 == 115) {
+               class32.field748[++class32.field749 - 1] = "null";
+            } else {
+               class32.field747[++class103.field1686 - 1] = 0;
+            }
+
+            return 1;
+         }
+      }
    }
 }

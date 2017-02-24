@@ -3,86 +3,77 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fc")
 public class class161 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("no")
    @ObfuscatedGetter(
-      intValue = -1473084047
+      intValue = -932752509
    )
-   static int field2268 = 0;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -2001990417
-   )
-   static int field2269 = 0;
-   @ObfuscatedName("r")
-   static byte[][] field2270 = new byte[1000][];
-   @ObfuscatedName("w")
-   static byte[][] field2271 = new byte[250][];
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 348172173
-   )
-   static int field2272 = 0;
-   @ObfuscatedName("j")
-   static byte[][] field2273 = new byte[50][];
-   @ObfuscatedName("hk")
-   @ObfuscatedGetter(
-      intValue = -1705421671
-   )
-   @Export("menuX")
-   static int menuX;
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(B)LSpritePixels;",
-      garbageValue = "-55"
-   )
-   static SpritePixels method3135() {
-      SpritePixels var0 = new SpritePixels();
-      var0.maxWidth = class225.field3212;
-      var0.maxHeight = class225.field3213;
-      var0.offsetX = class163.field2287[0];
-      var0.offsetY = class225.field3214[0];
-      var0.width = class47.field932[0];
-      var0.height = class225.field3211[0];
-      int var1 = var0.height * var0.width;
-      byte[] var2 = class225.field3218[0];
-      var0.image = new int[var1];
-
-      for(int var3 = 0; var3 < var1; ++var3) {
-         var0.image[var3] = class225.field3215[var2[var3] & 255];
-      }
-
-      class221.method4056();
-      return var0;
-   }
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(II)[B",
-      garbageValue = "-1934989934"
-   )
-   static synchronized byte[] method3136(int var0) {
-      byte[] var1;
-      if(var0 == 100 && field2268 > 0) {
-         var1 = field2270[--field2268];
-         field2270[field2268] = null;
-         return var1;
-      } else if(var0 == 5000 && field2272 > 0) {
-         var1 = field2271[--field2272];
-         field2271[field2272] = null;
-         return var1;
-      } else if(var0 == 30000 && field2269 > 0) {
-         var1 = field2273[--field2269];
-         field2273[field2269] = null;
-         return var1;
-      } else {
-         return new byte[var0];
-      }
-   }
+   static int field2149;
 
    class161() throws Throwable {
       throw new Error();
+   }
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(ILclass48;ZI)I",
+      garbageValue = "-962381574"
+   )
+   static int method3114(int var0, class48 var1, boolean var2) {
+      if(var0 == 3200) {
+         class103.field1686 -= 3;
+         VertexNormal.method1684(class32.field747[class103.field1686], class32.field747[1 + class103.field1686], class32.field747[2 + class103.field1686]);
+         return 1;
+      } else {
+         int var3;
+         if(var0 != 3201) {
+            if(var0 == 3202) {
+               class103.field1686 -= 2;
+               var3 = class32.field747[class103.field1686];
+               int var4 = class32.field747[1 + class103.field1686];
+               if(Client.field542 != 0 && var3 != -1) {
+                  class72.method1464(class150.field2044, var3, 0, Client.field542, false);
+                  Client.field545 = true;
+               }
+
+               return 1;
+            } else {
+               return 2;
+            }
+         } else {
+            var3 = class32.field747[--class103.field1686];
+            if(var3 == -1 && !Client.field545) {
+               class138.field1916.method2620();
+               class138.field1919 = 1;
+               class167.field2182 = null;
+            } else if(var3 != -1 && var3 != Client.field421 && Client.field542 != 0 && !Client.field545) {
+               class152.method2815(2, class11.field127, var3, 0, Client.field542, false);
+            }
+
+            Client.field421 = var3;
+            return 1;
+         }
+      }
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(IS)LFrames;",
+      garbageValue = "-28796"
+   )
+   @Export("getFrames")
+   static Frames getFrames(int var0) {
+      Frames var1 = (Frames)Sequence.field3055.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         var1 = class16.method185(NPC.field785, class210.field3124, var0, false);
+         if(var1 != null) {
+            Sequence.field3055.put(var1, (long)var0);
+         }
+
+         return var1;
+      }
    }
 }

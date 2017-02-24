@@ -1,50 +1,50 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("em")
+@ObfuscatedName("ek")
 public class class130 {
-   @ObfuscatedName("y")
-   class131 field1879;
-   @ObfuscatedName("k")
-   class131 field1880 = new class131();
+   @ObfuscatedName("q")
+   class131 field1887 = new class131();
+   @ObfuscatedName("d")
+   class131 field1888;
 
-   @ObfuscatedName("k")
-   public void method2416(class131 var1) {
-      if(var1.field1881 != null) {
-         var1.method2426();
+   @ObfuscatedName("q")
+   public void method2487(class131 var1) {
+      if(var1.field1889 != null) {
+         var1.method2496();
       }
 
-      var1.field1881 = this.field1880.field1881;
-      var1.field1882 = this.field1880;
-      var1.field1881.field1882 = var1;
-      var1.field1882.field1881 = var1;
+      var1.field1889 = this.field1887.field1889;
+      var1.field1890 = this.field1887;
+      var1.field1889.field1890 = var1;
+      var1.field1890.field1889 = var1;
    }
 
-   @ObfuscatedName("y")
-   public class131 method2417() {
-      class131 var1 = this.field1880.field1882;
-      if(var1 == this.field1880) {
-         this.field1879 = null;
+   @ObfuscatedName("d")
+   public class131 method2488() {
+      class131 var1 = this.field1887.field1890;
+      if(var1 == this.field1887) {
+         this.field1888 = null;
          return null;
       } else {
-         this.field1879 = var1.field1882;
+         this.field1888 = var1.field1890;
          return var1;
       }
    }
 
-   @ObfuscatedName("o")
-   public class131 method2418() {
-      class131 var1 = this.field1879;
-      if(var1 == this.field1880) {
-         this.field1879 = null;
+   @ObfuscatedName("h")
+   public class131 method2489() {
+      class131 var1 = this.field1888;
+      if(var1 == this.field1887) {
+         this.field1888 = null;
          return null;
       } else {
-         this.field1879 = var1.field1882;
+         this.field1888 = var1.field1890;
          return var1;
       }
    }
 
    public class130() {
-      this.field1880.field1882 = this.field1880;
-      this.field1880.field1881 = this.field1880;
+      this.field1887.field1890 = this.field1887;
+      this.field1887.field1889 = this.field1887;
    }
 }

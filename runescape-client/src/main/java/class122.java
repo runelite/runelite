@@ -1,28 +1,9 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("di")
+@ObfuscatedName("dz")
 public class class122 {
-   @ObfuscatedName("k")
-   int[] field1856;
-
-   @ObfuscatedName("k")
-   public int method2308(int var1) {
-      int var2 = (this.field1856.length >> 1) - 1;
-      int var3 = var1 & var2;
-
-      while(true) {
-         int var4 = this.field1856[var3 + var3 + 1];
-         if(var4 == -1) {
-            return -1;
-         }
-
-         if(this.field1856[var3 + var3] == var1) {
-            return var4;
-         }
-
-         var3 = var3 + 1 & var2;
-      }
-   }
+   @ObfuscatedName("q")
+   int[] field1864;
 
    public class122(int[] var1) {
       int var2;
@@ -30,21 +11,40 @@ public class class122 {
          ;
       }
 
-      this.field1856 = new int[var2 + var2];
+      this.field1864 = new int[var2 + var2];
 
       int var3;
       for(var3 = 0; var3 < var2 + var2; ++var3) {
-         this.field1856[var3] = -1;
+         this.field1864[var3] = -1;
       }
 
       int var4;
-      for(var3 = 0; var3 < var1.length; this.field1856[var4 + var4 + 1] = var3++) {
-         for(var4 = var1[var3] & var2 - 1; this.field1856[var4 + var4 + 1] != -1; var4 = var4 + 1 & var2 - 1) {
+      for(var3 = 0; var3 < var1.length; this.field1864[var4 + var4 + 1] = var3++) {
+         for(var4 = var1[var3] & var2 - 1; this.field1864[var4 + var4 + 1] != -1; var4 = var4 + 1 & var2 - 1) {
             ;
          }
 
-         this.field1856[var4 + var4] = var1[var3];
+         this.field1864[var4 + var4] = var1[var3];
       }
 
+   }
+
+   @ObfuscatedName("q")
+   public int method2376(int var1) {
+      int var2 = (this.field1864.length >> 1) - 1;
+      int var3 = var1 & var2;
+
+      while(true) {
+         int var4 = this.field1864[var3 + var3 + 1];
+         if(var4 == -1) {
+            return -1;
+         }
+
+         if(this.field1864[var3 + var3] == var1) {
+            return var4;
+         }
+
+         var3 = var3 + 1 & var2;
+      }
    }
 }

@@ -1,6 +1,6 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gj")
+@ObfuscatedName("gn")
 public final class class207 {
    class207() throws Throwable {
       throw new Error();
