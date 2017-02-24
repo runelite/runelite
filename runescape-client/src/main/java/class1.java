@@ -2,88 +2,53 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("y")
+@ObfuscatedName("d")
 public class class1 {
-   @ObfuscatedName("y")
-   public static Comparator field6 = new class7();
-   @ObfuscatedName("o")
-   public static Comparator field7;
-   @ObfuscatedName("r")
-   public static Comparator field8;
-   @ObfuscatedName("j")
-   public static class182 field10;
+   @ObfuscatedName("q")
+   public final List field9;
    @ObfuscatedName("d")
-   static ModIcon field11;
+   public static Comparator field10 = new class7();
    @ObfuscatedName("h")
-   static String field12;
-   @ObfuscatedName("w")
-   public static Comparator field14;
-   @ObfuscatedName("k")
-   public final List field19;
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZB)V",
-      garbageValue = "0"
+   public static Comparator field11;
+   @ObfuscatedName("j")
+   public static Comparator field13;
+   @ObfuscatedName("pe")
+   static short[] field14;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -345150543
    )
-   public void method15(Comparator var1, boolean var2) {
+   public static int field16;
+   @ObfuscatedName("p")
+   public static Comparator field20;
+   @ObfuscatedName("af")
+   static class184 field23;
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(Ljava/util/Comparator;ZI)V",
+      garbageValue = "1488862155"
+   )
+   public void method14(Comparator var1, boolean var2) {
       if(var2) {
-         Collections.sort(this.field19, var1);
+         Collections.sort(this.field9, var1);
       } else {
-         Collections.sort(this.field19, Collections.reverseOrder(var1));
+         Collections.sort(this.field9, Collections.reverseOrder(var1));
       }
 
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1848194096"
+      signature = "(IB)I",
+      garbageValue = "-83"
    )
-   static final void method16() {
-      if(Client.field331 > 0) {
-         class114.method2188();
-      } else {
-         class11.setGameState(40);
-         class167.field2308 = class177.field2657;
-         class177.field2657 = null;
-      }
-   }
-
-   static {
-      new class0();
-      field7 = new class5();
-      field8 = new class6();
-      field14 = new class3();
-   }
-
-   @ObfuscatedName("ec")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Z",
-      garbageValue = "-1412053086"
-   )
-   static boolean method20(String var0) {
-      if(null == var0) {
-         return false;
-      } else {
-         String var1 = Overlay.method3751(var0, Client.field282);
-
-         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(Overlay.method3751(var3.name, Client.field282))) {
-               return true;
-            }
-
-            if(var1.equalsIgnoreCase(Overlay.method3751(var3.previousName, Client.field282))) {
-               return true;
-            }
-         }
-
-         return false;
-      }
+   public static int method18(int var0) {
+      return var0 > 0?1:(var0 < 0?-1:0);
    }
 
    @ObfuscatedSignature(
@@ -101,20 +66,18 @@ public class class1 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field19 = new ArrayList(var6);
+      this.field9 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field19.add(new class2(var1, var5, var3));
+         this.field9.add(new class2(var1, var5, var3));
       }
 
    }
 
-   @ObfuscatedName("cg")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "296340394"
-   )
-   static boolean method21(int var0) {
-      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
+   static {
+      new class0();
+      field11 = new class5();
+      field20 = new class6();
+      field13 = new class3();
    }
 }

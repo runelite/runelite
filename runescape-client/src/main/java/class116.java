@@ -4,200 +4,56 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("ds")
 public final class class116 {
-   @ObfuscatedName("r")
+   @ObfuscatedName("d")
+   class72 field1813 = null;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = -574312905
+      intValue = -873631339
    )
-   int field1812;
-   @ObfuscatedName("k")
-   static byte[] field1813 = new byte[520];
-   @ObfuscatedName("o")
-   class72 field1814 = null;
-   @ObfuscatedName("w")
+   static int field1815;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1841581581
+      intValue = -703274027
    )
-   int field1816 = '\ufde8';
-   @ObfuscatedName("x")
-   static int[] field1818;
-   @ObfuscatedName("y")
-   class72 field1819 = null;
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(I[BIB)Z",
-      garbageValue = "-21"
+   int field1816;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1441718691
    )
-   public boolean method2227(int var1, byte[] var2, int var3) {
-      class72 var4 = this.field1819;
-      synchronized(this.field1819) {
-         if(var3 >= 0 && var3 <= this.field1816) {
-            boolean var5 = this.method2229(var1, var2, var3, true);
-            if(!var5) {
-               var5 = this.method2229(var1, var2, var3, false);
-            }
+   int field1817 = '\ufde8';
+   @ObfuscatedName("q")
+   static byte[] field1818 = new byte[520];
+   @ObfuscatedName("bn")
+   static class184 field1819;
+   @ObfuscatedName("h")
+   class72 field1824 = null;
+   @ObfuscatedName("pk")
+   static class230 field1825;
 
-            return var5;
-         } else {
-            throw new IllegalArgumentException();
-         }
-      }
-   }
-
-   @ObfuscatedName("o")
-   @ObfuscatedSignature(
-      signature = "(I[BIZI)Z",
-      garbageValue = "-2111630270"
-   )
-   boolean method2229(int var1, byte[] var2, int var3, boolean var4) {
-      class72 var5 = this.field1819;
-      synchronized(this.field1819) {
-         try {
-            int var6;
-            boolean var10000;
-            if(var4) {
-               if(this.field1814.method1412() < (long)(var1 * 6 + 6)) {
-                  var10000 = false;
-                  return var10000;
-               }
-
-               this.field1814.method1404((long)(var1 * 6));
-               this.field1814.method1413(field1813, 0, 6);
-               var6 = (field1813[5] & 255) + ((field1813[4] & 255) << 8) + ((field1813[3] & 255) << 16);
-               if(var6 <= 0 || (long)var6 > this.field1819.method1412() / 520L) {
-                  var10000 = false;
-                  return var10000;
-               }
-            } else {
-               var6 = (int)((this.field1819.method1412() + 519L) / 520L);
-               if(var6 == 0) {
-                  var6 = 1;
-               }
-            }
-
-            field1813[0] = (byte)(var3 >> 16);
-            field1813[1] = (byte)(var3 >> 8);
-            field1813[2] = (byte)var3;
-            field1813[3] = (byte)(var6 >> 16);
-            field1813[4] = (byte)(var6 >> 8);
-            field1813[5] = (byte)var6;
-            this.field1814.method1404((long)(var1 * 6));
-            this.field1814.method1394(field1813, 0, 6);
-            int var7 = 0;
-            int var8 = 0;
-
-            while(true) {
-               if(var7 < var3) {
-                  label145: {
-                     int var9 = 0;
-                     int var14;
-                     if(var4) {
-                        this.field1819.method1404((long)(520 * var6));
-
-                        try {
-                           this.field1819.method1413(field1813, 0, 8);
-                        } catch (EOFException var16) {
-                           break label145;
-                        }
-
-                        var14 = (field1813[1] & 255) + ((field1813[0] & 255) << 8);
-                        int var11 = (field1813[3] & 255) + ((field1813[2] & 255) << 8);
-                        var9 = (field1813[6] & 255) + ((field1813[5] & 255) << 8) + ((field1813[4] & 255) << 16);
-                        int var12 = field1813[7] & 255;
-                        if(var14 != var1 || var8 != var11 || this.field1812 != var12) {
-                           var10000 = false;
-                           return var10000;
-                        }
-
-                        if(var9 < 0 || (long)var9 > this.field1819.method1412() / 520L) {
-                           var10000 = false;
-                           return var10000;
-                        }
-                     }
-
-                     if(var9 == 0) {
-                        var4 = false;
-                        var9 = (int)((this.field1819.method1412() + 519L) / 520L);
-                        if(var9 == 0) {
-                           ++var9;
-                        }
-
-                        if(var9 == var6) {
-                           ++var9;
-                        }
-                     }
-
-                     if(var3 - var7 <= 512) {
-                        var9 = 0;
-                     }
-
-                     field1813[0] = (byte)(var1 >> 8);
-                     field1813[1] = (byte)var1;
-                     field1813[2] = (byte)(var8 >> 8);
-                     field1813[3] = (byte)var8;
-                     field1813[4] = (byte)(var9 >> 16);
-                     field1813[5] = (byte)(var9 >> 8);
-                     field1813[6] = (byte)var9;
-                     field1813[7] = (byte)this.field1812;
-                     this.field1819.method1404((long)(var6 * 520));
-                     this.field1819.method1394(field1813, 0, 8);
-                     var14 = var3 - var7;
-                     if(var14 > 512) {
-                        var14 = 512;
-                     }
-
-                     this.field1819.method1394(var2, var7, var14);
-                     var7 += var14;
-                     var6 = var9;
-                     ++var8;
-                     continue;
-                  }
-               }
-
-               var10000 = true;
-               return var10000;
-            }
-         } catch (IOException var17) {
-            return false;
-         }
-      }
-   }
-
-   @ObfuscatedSignature(
-      signature = "(ILclass72;Lclass72;I)V",
-      garbageValue = "500000"
-   )
-   public class116(int var1, class72 var2, class72 var3, int var4) {
-      this.field1812 = var1;
-      this.field1819 = var2;
-      this.field1814 = var3;
-      this.field1816 = var4;
-   }
-
-   @ObfuscatedName("k")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(II)[B",
-      garbageValue = "-1184803808"
+      garbageValue = "-1263553282"
    )
-   public byte[] method2236(int var1) {
-      class72 var2 = this.field1819;
-      synchronized(this.field1819) {
+   public byte[] method2293(int var1) {
+      class72 var2 = this.field1824;
+      synchronized(this.field1824) {
          try {
             Object var10000;
-            if(this.field1814.method1412() < (long)(6 + var1 * 6)) {
+            if(this.field1813.method1452() < (long)(6 + var1 * 6)) {
                var10000 = null;
                return (byte[])var10000;
             } else {
-               this.field1814.method1404((long)(var1 * 6));
-               this.field1814.method1413(field1813, 0, 6);
-               int var3 = (field1813[2] & 255) + ((field1813[1] & 255) << 8) + ((field1813[0] & 255) << 16);
-               int var4 = (field1813[5] & 255) + ((field1813[4] & 255) << 8) + ((field1813[3] & 255) << 16);
-               if(var3 < 0 || var3 > this.field1816) {
+               this.field1813.method1453((long)(6 * var1));
+               this.field1813.method1441(field1818, 0, 6);
+               int var3 = ((field1818[0] & 255) << 16) + ((field1818[1] & 255) << 8) + (field1818[2] & 255);
+               int var4 = (field1818[5] & 255) + ((field1818[3] & 255) << 16) + ((field1818[4] & 255) << 8);
+               if(var3 < 0 || var3 > this.field1817) {
                   var10000 = null;
                   return (byte[])var10000;
-               } else if(var4 <= 0 || (long)var4 > this.field1819.method1412() / 520L) {
+               } else if(var4 <= 0 || (long)var4 > this.field1824.method1452() / 520L) {
                   var10000 = null;
                   return (byte[])var10000;
                } else {
@@ -211,21 +67,21 @@ public final class class116 {
                         return (byte[])var10000;
                      }
 
-                     this.field1819.method1404((long)(var4 * 520));
+                     this.field1824.method1453((long)(var4 * 520));
                      int var8 = var3 - var6;
                      if(var8 > 512) {
                         var8 = 512;
                      }
 
-                     this.field1819.method1413(field1813, 0, var8 + 8);
-                     int var9 = ((field1813[0] & 255) << 8) + (field1813[1] & 255);
-                     int var10 = ((field1813[2] & 255) << 8) + (field1813[3] & 255);
-                     int var11 = ((field1813[4] & 255) << 16) + ((field1813[5] & 255) << 8) + (field1813[6] & 255);
-                     int var12 = field1813[7] & 255;
-                     if(var1 == var9 && var7 == var10 && this.field1812 == var12) {
-                        if(var11 >= 0 && (long)var11 <= this.field1819.method1412() / 520L) {
+                     this.field1824.method1441(field1818, 0, 8 + var8);
+                     int var9 = ((field1818[0] & 255) << 8) + (field1818[1] & 255);
+                     int var10 = ((field1818[2] & 255) << 8) + (field1818[3] & 255);
+                     int var11 = ((field1818[4] & 255) << 16) + ((field1818[5] & 255) << 8) + (field1818[6] & 255);
+                     int var12 = field1818[7] & 255;
+                     if(var1 == var9 && var10 == var7 && this.field1816 == var12) {
+                        if(var11 >= 0 && (long)var11 <= this.field1824.method1452() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
-                              var5[var6++] = field1813[var13 + 8];
+                              var5[var6++] = field1818[8 + var13];
                            }
 
                            var4 = var11;
@@ -249,5 +105,201 @@ public final class class116 {
             return null;
          }
       }
+   }
+
+   @ObfuscatedName("d")
+   @ObfuscatedSignature(
+      signature = "(I[BIB)Z",
+      garbageValue = "87"
+   )
+   public boolean method2295(int var1, byte[] var2, int var3) {
+      class72 var4 = this.field1824;
+      synchronized(this.field1824) {
+         if(var3 >= 0 && var3 <= this.field1817) {
+            boolean var5 = this.method2301(var1, var2, var3, true);
+            if(!var5) {
+               var5 = this.method2301(var1, var2, var3, false);
+            }
+
+            return var5;
+         } else {
+            throw new IllegalArgumentException();
+         }
+      }
+   }
+
+   @ObfuscatedSignature(
+      signature = "(ILclass72;Lclass72;I)V",
+      garbageValue = "500000"
+   )
+   public class116(int var1, class72 var2, class72 var3, int var4) {
+      this.field1816 = var1;
+      this.field1824 = var2;
+      this.field1813 = var3;
+      this.field1817 = var4;
+   }
+
+   @ObfuscatedName("h")
+   @ObfuscatedSignature(
+      signature = "(I[BIZI)Z",
+      garbageValue = "-1981895018"
+   )
+   boolean method2301(int var1, byte[] var2, int var3, boolean var4) {
+      class72 var5 = this.field1824;
+      synchronized(this.field1824) {
+         try {
+            int var6;
+            boolean var10000;
+            if(var4) {
+               if(this.field1813.method1452() < (long)(6 * var1 + 6)) {
+                  var10000 = false;
+                  return var10000;
+               }
+
+               this.field1813.method1453((long)(var1 * 6));
+               this.field1813.method1441(field1818, 0, 6);
+               var6 = ((field1818[3] & 255) << 16) + ((field1818[4] & 255) << 8) + (field1818[5] & 255);
+               if(var6 <= 0 || (long)var6 > this.field1824.method1452() / 520L) {
+                  var10000 = false;
+                  return var10000;
+               }
+            } else {
+               var6 = (int)((this.field1824.method1452() + 519L) / 520L);
+               if(var6 == 0) {
+                  var6 = 1;
+               }
+            }
+
+            field1818[0] = (byte)(var3 >> 16);
+            field1818[1] = (byte)(var3 >> 8);
+            field1818[2] = (byte)var3;
+            field1818[3] = (byte)(var6 >> 16);
+            field1818[4] = (byte)(var6 >> 8);
+            field1818[5] = (byte)var6;
+            this.field1813.method1453((long)(6 * var1));
+            this.field1813.method1436(field1818, 0, 6);
+            int var7 = 0;
+            int var8 = 0;
+
+            while(true) {
+               if(var7 < var3) {
+                  label142: {
+                     int var9 = 0;
+                     int var14;
+                     if(var4) {
+                        this.field1824.method1453((long)(520 * var6));
+
+                        try {
+                           this.field1824.method1441(field1818, 0, 8);
+                        } catch (EOFException var16) {
+                           break label142;
+                        }
+
+                        var14 = (field1818[1] & 255) + ((field1818[0] & 255) << 8);
+                        int var11 = ((field1818[2] & 255) << 8) + (field1818[3] & 255);
+                        var9 = ((field1818[4] & 255) << 16) + ((field1818[5] & 255) << 8) + (field1818[6] & 255);
+                        int var12 = field1818[7] & 255;
+                        if(var1 != var14 || var8 != var11 || this.field1816 != var12) {
+                           var10000 = false;
+                           return var10000;
+                        }
+
+                        if(var9 < 0 || (long)var9 > this.field1824.method1452() / 520L) {
+                           var10000 = false;
+                           return var10000;
+                        }
+                     }
+
+                     if(var9 == 0) {
+                        var4 = false;
+                        var9 = (int)((this.field1824.method1452() + 519L) / 520L);
+                        if(var9 == 0) {
+                           ++var9;
+                        }
+
+                        if(var6 == var9) {
+                           ++var9;
+                        }
+                     }
+
+                     if(var3 - var7 <= 512) {
+                        var9 = 0;
+                     }
+
+                     field1818[0] = (byte)(var1 >> 8);
+                     field1818[1] = (byte)var1;
+                     field1818[2] = (byte)(var8 >> 8);
+                     field1818[3] = (byte)var8;
+                     field1818[4] = (byte)(var9 >> 16);
+                     field1818[5] = (byte)(var9 >> 8);
+                     field1818[6] = (byte)var9;
+                     field1818[7] = (byte)this.field1816;
+                     this.field1824.method1453((long)(520 * var6));
+                     this.field1824.method1436(field1818, 0, 8);
+                     var14 = var3 - var7;
+                     if(var14 > 512) {
+                        var14 = 512;
+                     }
+
+                     this.field1824.method1436(var2, var7, var14);
+                     var7 += var14;
+                     var6 = var9;
+                     ++var8;
+                     continue;
+                  }
+               }
+
+               var10000 = true;
+               return var10000;
+            }
+         } catch (IOException var17) {
+            return false;
+         }
+      }
+   }
+
+   @ObfuscatedName("ca")
+   @ObfuscatedSignature(
+      signature = "(LWidget;IIIIIII)V",
+      garbageValue = "-470973957"
+   )
+   static final void method2304(Widget var0, int var1, int var2, int var3, int var4, int var5, int var6) {
+      if(Client.field386) {
+         Client.field478 = 32;
+      } else {
+         Client.field478 = 0;
+      }
+
+      Client.field386 = false;
+      int var7;
+      if(class115.field1794 == 1 || !class15.field173 && class115.field1794 == 4) {
+         if(var5 >= var1 && var5 < var1 + 16 && var6 >= var2 && var6 < var2 + 16) {
+            var0.scrollY -= 4;
+            class174.method3276(var0);
+         } else if(var5 >= var1 && var5 < var1 + 16 && var6 >= var3 + var2 - 16 && var6 < var3 + var2) {
+            var0.scrollY += 4;
+            class174.method3276(var0);
+         } else if(var5 >= var1 - Client.field478 && var5 < Client.field478 + 16 + var1 && var6 >= 16 + var2 && var6 < var2 + var3 - 16) {
+            var7 = var3 * (var3 - 32) / var4;
+            if(var7 < 8) {
+               var7 = 8;
+            }
+
+            int var8 = var6 - var2 - 16 - var7 / 2;
+            int var9 = var3 - 32 - var7;
+            var0.scrollY = var8 * (var4 - var3) / var9;
+            class174.method3276(var0);
+            Client.field386 = true;
+         }
+      }
+
+      if(Client.field503 != 0) {
+         var7 = var0.width;
+         if(var5 >= var1 - var7 && var6 >= var2 && var5 < var1 + 16 && var6 <= var2 + var3) {
+            var0.scrollY += Client.field503 * 45;
+            class174.method3276(var0);
+         }
+      }
+
    }
 }

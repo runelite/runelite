@@ -1,80 +1,82 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gv")
+@ObfuscatedName("gc")
 @Implements("FloorUnderlayDefinition")
 public class FloorUnderlayDefinition extends CacheableNode {
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -160820647
+      intValue = -1495728371
    )
-   public int field2788;
-   @ObfuscatedName("w")
+   public int field2812;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1909207397
+      intValue = -1383386977
    )
-   public int field2789;
-   @ObfuscatedName("o")
+   int field2813 = 0;
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 2031230541
+      intValue = -957611679
    )
-   int field2790 = 0;
+   public int field2814;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 318091349
+      intValue = 1282425495
    )
-   public int field2791;
-   @ObfuscatedName("k")
-   public static class182 field2792;
-   @ObfuscatedName("y")
-   public static NodeCache field2794 = new NodeCache(64);
-   @ObfuscatedName("fy")
+   public int field2815;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -1960299599
+      intValue = 978239695
    )
-   @Export("cameraPitch")
-   static int cameraPitch;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1061726509
-   )
-   public int field2796;
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      longValue = -8245324628046427169L
-   )
-   static long field2799;
+   public int field2816;
+   @ObfuscatedName("d")
+   public static NodeCache field2817 = new NodeCache(64);
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1528381903"
+      garbageValue = "322658869"
    )
-   public void method3476() {
-      this.method3481(this.field2790);
+   public void method3484() {
+      this.method3487(this.field2813);
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IIB)V",
-      garbageValue = "1"
+      signature = "(LBuffer;II)V",
+      garbageValue = "1671412801"
    )
-   void method3477(Buffer var1, int var2, int var3) {
+   public void method3485(Buffer var1, int var2) {
+      while(true) {
+         int var3 = var1.readUnsignedByte();
+         if(var3 == 0) {
+            return;
+         }
+
+         this.method3486(var1, var3, var2);
+      }
+   }
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;III)V",
+      garbageValue = "1031091663"
+   )
+   void method3486(Buffer var1, int var2, int var3) {
       if(var2 == 1) {
-         this.field2790 = var1.read24BitInt();
+         this.field2813 = var1.read24BitInt();
       }
 
    }
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IS)V",
-      garbageValue = "-4402"
+      signature = "(IB)V",
+      garbageValue = "1"
    )
-   void method3481(int var1) {
+   void method3487(int var1) {
       double var2 = (double)(var1 >> 16 & 255) / 256.0D;
       double var4 = (double)(var1 >> 8 & 255) / 256.0D;
       double var6 = (double)(var1 & 255) / 256.0D;
@@ -112,61 +114,55 @@ public class FloorUnderlayDefinition extends CacheableNode {
             var12 = (var4 - var6) / (var10 - var8);
          } else if(var4 == var10) {
             var12 = (var6 - var2) / (var10 - var8) + 2.0D;
-         } else if(var6 == var10) {
+         } else if(var10 == var6) {
             var12 = 4.0D + (var2 - var4) / (var10 - var8);
          }
       }
 
       var12 /= 6.0D;
-      this.field2789 = (int)(var14 * 256.0D);
-      this.field2788 = (int)(var16 * 256.0D);
-      if(this.field2789 < 0) {
-         this.field2789 = 0;
-      } else if(this.field2789 > 255) {
-         this.field2789 = 255;
+      this.field2812 = (int)(var14 * 256.0D);
+      this.field2816 = (int)(256.0D * var16);
+      if(this.field2812 < 0) {
+         this.field2812 = 0;
+      } else if(this.field2812 > 255) {
+         this.field2812 = 255;
       }
 
-      if(this.field2788 < 0) {
-         this.field2788 = 0;
-      } else if(this.field2788 > 255) {
-         this.field2788 = 255;
+      if(this.field2816 < 0) {
+         this.field2816 = 0;
+      } else if(this.field2816 > 255) {
+         this.field2816 = 255;
       }
 
       if(var16 > 0.5D) {
-         this.field2796 = (int)((1.0D - var16) * var14 * 512.0D);
+         this.field2815 = (int)(512.0D * (1.0D - var16) * var14);
       } else {
-         this.field2796 = (int)(512.0D * var16 * var14);
+         this.field2815 = (int)(512.0D * var14 * var16);
       }
 
-      if(this.field2796 < 1) {
-         this.field2796 = 1;
+      if(this.field2815 < 1) {
+         this.field2815 = 1;
       }
 
-      this.field2791 = (int)(var12 * (double)this.field2796);
+      this.field2814 = (int)(var12 * (double)this.field2815);
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "1275303705"
+      signature = "(Lclass18;I)V",
+      garbageValue = "-2040578708"
    )
-   public void method3487(Buffer var1, int var2) {
-      while(true) {
-         int var3 = var1.readUnsignedByte();
-         if(var3 == 0) {
-            return;
-         }
-
-         this.method3477(var1, var3, var2);
-      }
+   static void method3491(class18 var0) {
+      class174.method3275(var0, 200000);
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("h")
    @ObfuscatedSignature(
-      signature = "(Lclass182;I)V",
-      garbageValue = "-202288423"
+      signature = "(III)LMessageNode;",
+      garbageValue = "-1532659320"
    )
-   public static void method3489(class182 var0) {
-      class188.field2765 = var0;
+   static MessageNode method3496(int var0, int var1) {
+      ChatLineBuffer var2 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
+      return var2.method975(var1);
    }
 }

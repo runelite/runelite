@@ -1,305 +1,173 @@
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ey")
-public class class152 {
-   @ObfuscatedName("y")
-   byte[] field2189;
+@ObfuscatedName("ec")
+public final class class152 {
+   @ObfuscatedName("d")
+   final int field2048 = 16;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 656170179
+   )
+   int field2049;
+   @ObfuscatedName("p")
+   final int field2050 = 6;
+   @ObfuscatedName("j")
+   final int field2051 = 50;
+   @ObfuscatedName("ah")
+   int[] field2052 = new int[6];
+   @ObfuscatedName("r")
+   byte[] field2053;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = 857013681
+   )
+   int field2054 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -813418987
+   )
+   int field2055;
    @ObfuscatedName("o")
-   int[] field2190;
-   @ObfuscatedName("av")
-   static class184 field2191;
-   @ObfuscatedName("k")
-   int[] field2192;
-
-   @ObfuscatedName("k")
-   @ObfuscatedSignature(
-      signature = "([BII[BII)I",
-      garbageValue = "-1840876438"
+   byte[] field2056;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1882665813
    )
-   public int method2851(byte[] var1, int var2, int var3, byte[] var4, int var5) {
-      int var6 = 0;
-      int var7 = var5 << 3;
-
-      for(var3 += var2; var2 < var3; ++var2) {
-         int var8 = var1[var2] & 255;
-         int var9 = this.field2192[var8];
-         byte var10 = this.field2189[var8];
-         if(var10 == 0) {
-            throw new RuntimeException("");
-         }
-
-         int var11 = var7 >> 3;
-         int var12 = var7 & 7;
-         var6 &= -var12 >> 31;
-         int var13 = (var12 + var10 - 1 >> 3) + var11;
-         var12 += 24;
-         var4[var11] = (byte)(var6 |= var9 >>> var12);
-         if(var11 < var13) {
-            ++var11;
-            var12 -= 8;
-            var4[var11] = (byte)(var6 = var9 >>> var12);
-            if(var11 < var13) {
-               ++var11;
-               var12 -= 8;
-               var4[var11] = (byte)(var6 = var9 >>> var12);
-               if(var11 < var13) {
-                  ++var11;
-                  var12 -= 8;
-                  var4[var11] = (byte)(var6 = var9 >>> var12);
-                  if(var11 < var13) {
-                     ++var11;
-                     var12 -= 8;
-                     var4[var11] = (byte)(var6 = var9 << -var12);
-                  }
-               }
-            }
-         }
-
-         var7 += var10;
-      }
-
-      return (7 + var7 >> 3) - var5;
-   }
-
+   int field2057 = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1152007529
+   )
+   int field2058;
+   @ObfuscatedName("b")
+   byte field2060;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 740251415
+   )
+   int field2061;
+   @ObfuscatedName("ao")
+   int[][] field2062 = new int[6][258];
+   @ObfuscatedName("q")
+   final int field2063 = 4096;
+   @ObfuscatedName("x")
+   int[] field2064 = new int[257];
    @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "([BI[BIIS)I",
-      garbageValue = "726"
+   @ObfuscatedGetter(
+      intValue = -77184737
    )
-   public int method2852(byte[] var1, int var2, byte[] var3, int var4, int var5) {
-      if(var5 == 0) {
-         return 0;
-      } else {
-         int var6 = 0;
-         var5 += var4;
-         int var7 = var2;
+   int field2065;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -1045251159
+   )
+   int field2066;
+   @ObfuscatedName("h")
+   final int field2067 = 258;
+   @ObfuscatedName("k")
+   int[] field2068 = new int[256];
+   @ObfuscatedName("aj")
+   @ObfuscatedGetter(
+      intValue = -1789021831
+   )
+   int field2069;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -925082999
+   )
+   int field2070;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = -162291463
+   )
+   int field2071;
+   @ObfuscatedName("ae")
+   boolean[] field2072 = new boolean[256];
+   @ObfuscatedName("aq")
+   boolean[] field2073 = new boolean[16];
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -1862117043
+   )
+   int field2074;
+   @ObfuscatedName("au")
+   byte[] field2075 = new byte[4096];
+   @ObfuscatedName("am")
+   int[] field2076 = new int[16];
+   @ObfuscatedName("ad")
+   byte[] field2077 = new byte[18002];
+   @ObfuscatedName("ai")
+   byte[] field2078 = new byte[18002];
+   @ObfuscatedName("ac")
+   byte[][] field2079 = new byte[6][258];
+   @ObfuscatedName("at")
+   byte[] field2080 = new byte[256];
+   @ObfuscatedName("as")
+   int[][] field2081 = new int[6][258];
+   @ObfuscatedName("aa")
+   int[][] field2082 = new int[6][258];
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 139426095
+   )
+   int field2083;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -752426287
+   )
+   int field2084;
+   @ObfuscatedName("nb")
+   @ObfuscatedGetter(
+      intValue = 819185673
+   )
+   static int field2086;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1522662445
+   )
+   int field2087;
+   @ObfuscatedName("n")
+   final int field2088 = 18002;
 
-         while(true) {
-            byte var8 = var1[var7];
-            if(var8 < 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            int var9;
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 64) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 32) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 16) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 8) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 4) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 2) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            if((var8 & 1) != 0) {
-               var6 = this.field2190[var6];
-            } else {
-               ++var6;
-            }
-
-            if((var9 = this.field2190[var6]) < 0) {
-               var3[var4++] = (byte)(~var9);
-               if(var4 >= var5) {
-                  break;
-               }
-
-               var6 = 0;
-            }
-
-            ++var7;
-         }
-
-         return 1 + var7 - var2;
-      }
+   @ObfuscatedName("dn")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "1"
+   )
+   static void method2813(int var0) {
+      class9.field90 = new class38();
+      class9.field90.field820 = Client.menuActionParams0[var0];
+      class9.field90.field816 = Client.menuActionParams1[var0];
+      class9.field90.field817 = Client.menuTypes[var0];
+      class9.field90.field818 = Client.menuIdentifiers[var0];
+      class9.field90.field819 = Client.menuOptions[var0];
    }
 
-   public class152(byte[] var1) {
-      int var2 = var1.length;
-      this.field2192 = new int[var2];
-      this.field2189 = var1;
-      int[] var3 = new int[33];
-      this.field2190 = new int[8];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         byte var6 = var1[var5];
-         if(var6 != 0) {
-            int var7 = 1 << 32 - var6;
-            int var8 = var3[var6];
-            this.field2192[var5] = var8;
-            int var9;
-            int var10;
-            int var11;
-            int var12;
-            if((var8 & var7) != 0) {
-               var9 = var3[var6 - 1];
-            } else {
-               var9 = var8 | var7;
-
-               for(var10 = var6 - 1; var10 >= 1; --var10) {
-                  var11 = var3[var10];
-                  if(var8 != var11) {
-                     break;
-                  }
-
-                  var12 = 1 << 32 - var10;
-                  if((var11 & var12) != 0) {
-                     var3[var10] = var3[var10 - 1];
-                     break;
-                  }
-
-                  var3[var10] = var11 | var12;
-               }
-            }
-
-            var3[var6] = var9;
-
-            for(var10 = var6 + 1; var10 <= 32; ++var10) {
-               if(var3[var10] == var8) {
-                  var3[var10] = var9;
-               }
-            }
-
-            var10 = 0;
-
-            for(var11 = 0; var11 < var6; ++var11) {
-               var12 = Integer.MIN_VALUE >>> var11;
-               if((var8 & var12) != 0) {
-                  if(this.field2190[var10] == 0) {
-                     this.field2190[var10] = var4;
-                  }
-
-                  var10 = this.field2190[var10];
-               } else {
-                  ++var10;
-               }
-
-               if(var10 >= this.field2190.length) {
-                  int[] var13 = new int[this.field2190.length * 2];
-
-                  for(int var14 = 0; var14 < this.field2190.length; ++var14) {
-                     var13[var14] = this.field2190[var14];
-                  }
-
-                  this.field2190 = var13;
-               }
-
-               var12 >>>= 1;
-            }
-
-            this.field2190[var10] = ~var5;
-            if(var10 >= var4) {
-               var4 = 1 + var10;
-            }
-         }
-      }
-
+   @ObfuscatedName("bh")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "1788295142"
+   )
+   static void method2814() {
+      Client.menuOptionCount = 0;
+      Client.field433 = -1;
+      Client.isMenuOpen = false;
    }
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("p")
    @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "109737992"
+      signature = "(ILclass182;IIIZI)V",
+      garbageValue = "1219640738"
    )
-   public static int method2857(int var0) {
-      --var0;
-      var0 |= var0 >>> 1;
-      var0 |= var0 >>> 2;
-      var0 |= var0 >>> 4;
-      var0 |= var0 >>> 8;
-      var0 |= var0 >>> 16;
-      return var0 + 1;
+   public static void method2815(int var0, class182 var1, int var2, int var3, int var4, boolean var5) {
+      class138.field1919 = 1;
+      class167.field2182 = var1;
+      class11.field130 = var2;
+      class138.field1918 = var3;
+      class1.field16 = var4;
+      class165.field2163 = var5;
+      FileOnDisk.field1209 = var0;
    }
 }

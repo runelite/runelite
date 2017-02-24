@@ -1,47 +1,75 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ei")
 public class class137 {
-   @ObfuscatedName("io")
-   static Widget field1893;
-   @ObfuscatedName("y")
-   byte[] field1894;
-   @ObfuscatedName("q")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1406371035
+      intValue = 542343803
    )
-   int field1895;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = -606848985
-   )
-   int field1896;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -729189445
-   )
-   int field1897;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1180562223
-   )
-   int field1898;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -543998127
-   )
-   int field1899;
+   int field1901;
    @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -384442569
-   )
-   int field1900;
-   @ObfuscatedName("k")
-   byte[] field1901;
+   byte[] field1902;
+   @ObfuscatedName("q")
+   byte[] field1903;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1847082911
+      intValue = -1869304045
    )
-   int field1903;
+   int field1905;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 2010570243
+   )
+   int field1906;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = 826731951
+   )
+   int field1907;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1556582771
+   )
+   int field1908;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      intValue = -1337270891
+   )
+   int field1910;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 1693934427
+   )
+   int field1912;
+
+   @ObfuscatedName("q")
+   @ObfuscatedSignature(
+      signature = "(IB)Ljava/lang/String;",
+      garbageValue = "13"
+   )
+   public static String method2528(int var0) {
+      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
+   }
+
+   @ObfuscatedName("cx")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1670732120"
+   )
+   static void method2529() {
+      if(Client.field511) {
+         Widget var0 = class57.method1157(Friend.field166, Client.field461);
+         if(var0 != null && null != var0.field2206) {
+            class18 var1 = new class18();
+            var1.field198 = var0;
+            var1.field209 = var0.field2206;
+            FloorUnderlayDefinition.method3491(var1);
+         }
+
+         Client.field511 = false;
+         class174.method3276(var0);
+      }
+   }
 }
