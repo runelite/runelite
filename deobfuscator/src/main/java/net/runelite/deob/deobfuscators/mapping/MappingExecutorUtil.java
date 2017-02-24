@@ -37,7 +37,6 @@ import net.runelite.asm.attributes.code.instruction.types.DupInstruction;
 import net.runelite.asm.attributes.code.instruction.types.InvokeInstruction;
 import net.runelite.asm.attributes.code.instruction.types.LVTInstruction;
 import net.runelite.asm.attributes.code.instruction.types.MappableInstruction;
-import net.runelite.asm.attributes.code.instruction.types.PushConstantInstruction;
 import net.runelite.asm.attributes.code.instruction.types.SetFieldInstruction;
 import net.runelite.asm.attributes.code.instructions.InvokeStatic;
 import net.runelite.asm.execution.Execution;
@@ -110,80 +109,6 @@ public class MappingExecutorUtil
 
 		mappings.same = same;
 		
-		return mappings;
-	}
-
-	public static ParallelExecutorMapping mapFrame(ClassGroup group1, ClassGroup group2, Instruction i1, Instruction i2)
-	{
-		Execution e = new Execution(group1);
-		e.step = true;
-		Frame frame = new Frame(e, i1.getInstructions().getCode().getMethod(), i1);
-		e.frames.add(frame);
-
-		Execution e2 = new Execution(group2);
-		e2.step = true;
-		//Frame frame2 = new Frame(e2, m2);
-		Frame frame2 = new Frame(e2, i2.getInstructions().getCode().getMethod(), i2);
-		e2.frames.add(frame2);
-
-		frame.other = frame2;
-		frame2.other = frame;
-
-		ParallellMappingExecutor parallel = new ParallellMappingExecutor(e, e2);
-		ParallelExecutorMapping mappings = new ParallelExecutorMapping(group1, group2);
-
-		parallel.mappings = mappings;
-
-		while (parallel.step())
-		{
-			// get what each frame is paused/exited on
-			InstructionContext p1 = parallel.getP1(), p2 = parallel.getP2();
-
-			assert e.paused;
-			assert e2.paused;
-
-			assert p1.getInstruction() instanceof MappableInstruction;
-			assert p2.getInstruction() instanceof MappableInstruction;
-
-			MappableInstruction mi1 = (MappableInstruction) p1.getInstruction(),
-				mi2 = (MappableInstruction) p2.getInstruction();
-
-			if (!mi1.isSame(p1, p2))
-			{
-				mappings.crashed = true;
-				p1.getFrame().stop();
-				p2.getFrame().stop();
-				e.paused = e2.paused = false;
-				continue;
-			}
-
-			mi1.map(mappings, p1, p2);
-			e.paused = e2.paused = false;
-
-
-			// detect end of handler. this method is only used to map handlers.
-			if (mi1 instanceof SetFieldInstruction && mi2 instanceof SetFieldInstruction)
-			{
-				SetFieldInstruction sfi1 = (SetFieldInstruction) mi1,
-					sfi2 = (SetFieldInstruction) mi2;
-
-				if (sfi1.getMyField().packetHandler && sfi2.getMyField().packetHandler)
-				{
-					Instruction sfii = p1.getPops().get(0).getPushed().getInstruction();
-					if (sfii instanceof PushConstantInstruction)
-					{
-						Object o = ((PushConstantInstruction) sfii).getConstant();
-						if (o.equals(-1))
-						{
-							p1.getFrame().stop();
-							p2.getFrame().stop();
-							e.paused = e2.paused = false;
-						}
-					}
-				}
-			}
-		}
-
 		return mappings;
 	}
 	
