@@ -195,13 +195,13 @@ public class class174 {
                                                                                                                                                                            var21 = "null";
                                                                                                                                                                         }
 
-                                                                                                                                                                        class32.field748[++class32.field749 - 1] = var21;
+                                                                                                                                                                        class32.chatboxSegments[++class32.field749 - 1] = var21;
                                                                                                                                                                      } else {
                                                                                                                                                                         if(var31 != 48) {
                                                                                                                                                                            throw new IllegalStateException();
                                                                                                                                                                         }
 
-                                                                                                                                                                        class20.chatMessages.method909(var7[var5], class32.field748[--class32.field749]);
+                                                                                                                                                                        class20.chatMessages.method909(var7[var5], class32.chatboxSegments[--class32.field749]);
                                                                                                                                                                      }
                                                                                                                                                                   } else {
                                                                                                                                                                      class20.chatMessages.method907(var7[var5], class32.field747[--class103.field1686]);
@@ -220,7 +220,7 @@ public class class174 {
                                                                                                                                                                }
 
                                                                                                                                                                for(var22 = 0; var22 < var33.field963; ++var22) {
-                                                                                                                                                                  var25[var22] = class32.field748[class32.field749 - var33.field963 + var22];
+                                                                                                                                                                  var25[var22] = class32.chatboxSegments[class32.field749 - var33.field963 + var22];
                                                                                                                                                                }
 
                                                                                                                                                                class103.field1686 -= var33.field965;
@@ -247,7 +247,7 @@ public class class174 {
                                                                                                                                                    } else {
                                                                                                                                                       var12 = var7[var5];
                                                                                                                                                       class32.field749 -= var12;
-                                                                                                                                                      String[] var14 = class32.field748;
+                                                                                                                                                      String[] var14 = class32.chatboxSegments;
                                                                                                                                                       int var15 = class32.field749;
                                                                                                                                                       String var13;
                                                                                                                                                       if(var12 == 0) {
@@ -286,13 +286,13 @@ public class class174 {
                                                                                                                                                          var13 = var23.toString();
                                                                                                                                                       }
 
-                                                                                                                                                      class32.field748[++class32.field749 - 1] = var13;
+                                                                                                                                                      class32.chatboxSegments[++class32.field749 - 1] = var13;
                                                                                                                                                    }
                                                                                                                                                 } else {
-                                                                                                                                                   class32.field757[var7[var5]] = class32.field748[--class32.field749];
+                                                                                                                                                   class32.field757[var7[var5]] = class32.chatboxSegments[--class32.field749];
                                                                                                                                                 }
                                                                                                                                              } else {
-                                                                                                                                                class32.field748[++class32.field749 - 1] = class32.field757[var7[var5]];
+                                                                                                                                                class32.chatboxSegments[++class32.field749 - 1] = class32.field757[var7[var5]];
                                                                                                                                              }
                                                                                                                                           } else {
                                                                                                                                              class3.field37[var7[var5]] = class32.field747[--class103.field1686];
@@ -361,7 +361,7 @@ public class class174 {
                                                                                                             var5 += var7[var5];
                                                                                                          }
                                                                                                       } else {
-                                                                                                         class32.field748[++class32.field749 - 1] = var4.field968[var5];
+                                                                                                         class32.chatboxSegments[++class32.field749 - 1] = var4.field968[var5];
                                                                                                       }
                                                                                                    } else {
                                                                                                       var12 = var7[var5];
@@ -383,7 +383,7 @@ public class class174 {
                                                                                                 var36 = false;
                                                                                              }
 
-                                                                                             var26 = class24.method254(var31, var4, var36);
+                                                                                             var26 = XClanMember.method254(var31, var4, var36);
                                                                                              switch(var26) {
                                                                                              case 0:
                                                                                                 return;

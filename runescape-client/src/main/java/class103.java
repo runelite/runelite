@@ -261,26 +261,26 @@ public class class103 implements Runnable {
       String var3;
       int var4;
       if(var0 == 4100) {
-         var3 = class32.field748[--class32.field749];
+         var3 = class32.chatboxSegments[--class32.field749];
          var4 = class32.field747[--field1686];
-         class32.field748[++class32.field749 - 1] = var3 + var4;
+         class32.chatboxSegments[++class32.field749 - 1] = var3 + var4;
          return 1;
       } else {
          String var37;
          if(var0 == 4101) {
             class32.field749 -= 2;
-            var3 = class32.field748[class32.field749];
-            var37 = class32.field748[1 + class32.field749];
-            class32.field748[++class32.field749 - 1] = var3 + var37;
+            var3 = class32.chatboxSegments[class32.field749];
+            var37 = class32.chatboxSegments[1 + class32.field749];
+            class32.chatboxSegments[++class32.field749 - 1] = var3 + var37;
             return 1;
          } else if(var0 == 4102) {
-            var3 = class32.field748[--class32.field749];
+            var3 = class32.chatboxSegments[--class32.field749];
             var4 = class32.field747[--field1686];
-            class32.field748[++class32.field749 - 1] = var3 + class178.method3288(var4, true);
+            class32.chatboxSegments[++class32.field749 - 1] = var3 + class178.method3288(var4, true);
             return 1;
          } else if(var0 == 4103) {
-            var3 = class32.field748[--class32.field749];
-            class32.field748[++class32.field749 - 1] = var3.toLowerCase();
+            var3 = class32.chatboxSegments[--class32.field749];
+            class32.chatboxSegments[++class32.field749 - 1] = var3.toLowerCase();
             return 1;
          } else {
             int var8;
@@ -293,22 +293,22 @@ public class class103 implements Runnable {
                var29 = class32.field759.get(5);
                int var28 = class32.field759.get(2);
                var8 = class32.field759.get(1);
-               class32.field748[++class32.field749 - 1] = var29 + "-" + class32.field753[var28] + "-" + var8;
+               class32.chatboxSegments[++class32.field749 - 1] = var29 + "-" + class32.field753[var28] + "-" + var8;
                return 1;
             } else if(var0 == 4105) {
                class32.field749 -= 2;
-               var3 = class32.field748[class32.field749];
-               var37 = class32.field748[1 + class32.field749];
+               var3 = class32.chatboxSegments[class32.field749];
+               var37 = class32.chatboxSegments[1 + class32.field749];
                if(null != class36.localPlayer.composition && class36.localPlayer.composition.isFemale) {
-                  class32.field748[++class32.field749 - 1] = var37;
+                  class32.chatboxSegments[++class32.field749 - 1] = var37;
                } else {
-                  class32.field748[++class32.field749 - 1] = var3;
+                  class32.chatboxSegments[++class32.field749 - 1] = var3;
                }
 
                return 1;
             } else if(var0 == 4106) {
                var21 = class32.field747[--field1686];
-               class32.field748[++class32.field749 - 1] = Integer.toString(var21);
+               class32.chatboxSegments[++class32.field749 - 1] = Integer.toString(var21);
                return 1;
             } else {
                int var5;
@@ -316,8 +316,8 @@ public class class103 implements Runnable {
                   class32.field749 -= 2;
                   int[] var27 = class32.field747;
                   var4 = ++field1686 - 1;
-                  String var39 = class32.field748[class32.field749];
-                  String var40 = class32.field748[class32.field749 + 1];
+                  String var39 = class32.chatboxSegments[class32.field749];
+                  String var40 = class32.chatboxSegments[class32.field749 + 1];
                   var8 = Client.field309;
                   int var9 = var39.length();
                   int var10 = var40.length();
@@ -440,7 +440,7 @@ public class class103 implements Runnable {
                   byte[] var24;
                   Font var25;
                   if(var0 == 4108) {
-                     var3 = class32.field748[--class32.field749];
+                     var3 = class32.chatboxSegments[--class32.field749];
                      field1686 -= 2;
                      var4 = class32.field747[field1686];
                      var5 = class32.field747[field1686 + 1];
@@ -449,7 +449,7 @@ public class class103 implements Runnable {
                      class32.field747[++field1686 - 1] = var25.method3970(var3, var4);
                      return 1;
                   } else if(var0 == 4109) {
-                     var3 = class32.field748[--class32.field749];
+                     var3 = class32.chatboxSegments[--class32.field749];
                      field1686 -= 2;
                      var4 = class32.field747[field1686];
                      var5 = class32.field747[field1686 + 1];
@@ -459,23 +459,23 @@ public class class103 implements Runnable {
                      return 1;
                   } else if(var0 == 4110) {
                      class32.field749 -= 2;
-                     var3 = class32.field748[class32.field749];
-                     var37 = class32.field748[class32.field749 + 1];
+                     var3 = class32.chatboxSegments[class32.field749];
+                     var37 = class32.chatboxSegments[class32.field749 + 1];
                      if(class32.field747[--field1686] == 1) {
-                        class32.field748[++class32.field749 - 1] = var3;
+                        class32.chatboxSegments[++class32.field749 - 1] = var3;
                      } else {
-                        class32.field748[++class32.field749 - 1] = var37;
+                        class32.chatboxSegments[++class32.field749 - 1] = var37;
                      }
 
                      return 1;
                   } else if(var0 == 4111) {
-                     var3 = class32.field748[--class32.field749];
-                     class32.field748[++class32.field749 - 1] = FontTypeFace.method3958(var3);
+                     var3 = class32.chatboxSegments[--class32.field749];
+                     class32.chatboxSegments[++class32.field749 - 1] = FontTypeFace.method3958(var3);
                      return 1;
                   } else if(var0 == 4112) {
-                     var3 = class32.field748[--class32.field749];
+                     var3 = class32.chatboxSegments[--class32.field749];
                      var4 = class32.field747[--field1686];
-                     class32.field748[++class32.field749 - 1] = var3 + (char)var4;
+                     class32.chatboxSegments[++class32.field749 - 1] = var3 + (char)var4;
                      return 1;
                   } else {
                      char var7;
@@ -493,7 +493,7 @@ public class class103 implements Runnable {
                            class32.field747[++field1686 - 1] = class22.method218((char)var21)?1:0;
                            return 1;
                         } else if(var0 == 4117) {
-                           var3 = class32.field748[--class32.field749];
+                           var3 = class32.chatboxSegments[--class32.field749];
                            if(null != var3) {
                               class32.field747[++field1686 - 1] = var3.length();
                            } else {
@@ -502,14 +502,14 @@ public class class103 implements Runnable {
 
                            return 1;
                         } else if(var0 == 4118) {
-                           var3 = class32.field748[--class32.field749];
+                           var3 = class32.chatboxSegments[--class32.field749];
                            field1686 -= 2;
                            var4 = class32.field747[field1686];
                            var5 = class32.field747[field1686 + 1];
-                           class32.field748[++class32.field749 - 1] = var3.substring(var4, var5);
+                           class32.chatboxSegments[++class32.field749 - 1] = var3.substring(var4, var5);
                            return 1;
                         } else if(var0 == 4119) {
-                           var3 = class32.field748[--class32.field749];
+                           var3 = class32.chatboxSegments[--class32.field749];
                            StringBuilder var38 = new StringBuilder(var3.length());
                            boolean var26 = false;
 
@@ -524,17 +524,17 @@ public class class103 implements Runnable {
                               }
                            }
 
-                           class32.field748[++class32.field749 - 1] = var38.toString();
+                           class32.chatboxSegments[++class32.field749 - 1] = var38.toString();
                            return 1;
                         } else if(var0 == 4120) {
-                           var3 = class32.field748[--class32.field749];
+                           var3 = class32.chatboxSegments[--class32.field749];
                            var4 = class32.field747[--field1686];
                            class32.field747[++field1686 - 1] = var3.indexOf(var4);
                            return 1;
                         } else if(var0 == 4121) {
                            class32.field749 -= 2;
-                           var3 = class32.field748[class32.field749];
-                           var37 = class32.field748[class32.field749 + 1];
+                           var3 = class32.chatboxSegments[class32.field749];
+                           var37 = class32.chatboxSegments[class32.field749 + 1];
                            var5 = class32.field747[--field1686];
                            class32.field747[++field1686 - 1] = var3.indexOf(var37, var5);
                            return 1;

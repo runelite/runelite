@@ -24,7 +24,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 671357039
    )
-   public int field2952 = 0;
+   @Export("ambient")
+   public int ambient = 0;
    @ObfuscatedName("o")
    static NodeCache field2953 = new NodeCache(64);
    @ObfuscatedName("ab")
@@ -240,7 +241,8 @@ public class ItemComposition extends CacheableNode {
    @ObfuscatedGetter(
       intValue = 101850937
    )
-   public int field2995 = 0;
+   @Export("contrast")
+   public int contast = 0;
    @ObfuscatedName("t")
    @Export("colourToReplaceWith")
    short[] colourToReplaceWith;
@@ -379,9 +381,9 @@ public class ItemComposition extends CacheableNode {
          } else if(var2 == 112) {
             this.resizeZ = var1.readUnsignedShort();
          } else if(var2 == 113) {
-            this.field2952 = var1.readByte();
+            this.ambient = var1.readByte();
          } else if(var2 == 114) {
-            this.field2995 = var1.readByte() * 5;
+            this.contast = var1.readByte() * 5;
          } else if(var2 == 115) {
             this.field2948 = var1.readUnsignedByte();
          } else if(var2 == 139) {
@@ -510,7 +512,7 @@ public class ItemComposition extends CacheableNode {
                }
             }
 
-            var6 = var5.method1534(64 + this.field2952, 768 + this.field2995, -50, -10, -50);
+            var6 = var5.method1534(64 + this.ambient, 768 + this.contast, -50, -10, -50);
             var6.field1402 = true;
             itemModelCache.put(var6, (long)this.id);
             return var6;

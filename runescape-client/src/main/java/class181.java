@@ -34,7 +34,7 @@ public class class181 extends CacheableNode {
          var4 = class32.field747[--class103.field1686];
          var3 = class179.method3296(var4);
       } else {
-         var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+         var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
       if(var0 == 1100) {
@@ -119,7 +119,7 @@ public class class181 extends CacheableNode {
             class174.method3276(var3);
             return 1;
          } else if(var0 == 1112) {
-            String var7 = class32.field748[--class32.field749];
+            String var7 = class32.chatboxSegments[--class32.field749];
             if(!var7.equals(var3.text)) {
                var3.text = var7;
                class174.method3276(var3);

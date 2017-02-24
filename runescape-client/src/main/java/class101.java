@@ -29,7 +29,7 @@ public class class101 extends RuntimeException {
       garbageValue = "18380328"
    )
    static int method2019(int var0, class48 var1, boolean var2) {
-      Widget var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+      Widget var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       if(var0 == 1600) {
          class32.field747[++class103.field1686 - 1] = var3.scrollX;
          return 1;
@@ -37,7 +37,7 @@ public class class101 extends RuntimeException {
          class32.field747[++class103.field1686 - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 1602) {
-         class32.field748[++class32.field749 - 1] = var3.text;
+         class32.chatboxSegments[++class32.field749 - 1] = var3.text;
          return 1;
       } else if(var0 == 1603) {
          class32.field747[++class103.field1686 - 1] = var3.scrollWidth;
@@ -97,14 +97,14 @@ public class class101 extends RuntimeException {
 
          for(var6 = 0; var6 < var5.field2858; ++var6) {
             if(var5.field2862[var6] == var4) {
-               class32.field748[++class32.field749 - 1] = var5.field2860[var6];
+               class32.chatboxSegments[++class32.field749 - 1] = var5.field2860[var6];
                var5 = null;
                break;
             }
          }
 
          if(var5 != null) {
-            class32.field748[++class32.field749 - 1] = var5.field2861;
+            class32.chatboxSegments[++class32.field749 - 1] = var5.field2861;
          }
 
          return 1;
@@ -121,7 +121,7 @@ public class class101 extends RuntimeException {
             for(int var8 = 0; var8 < var7.field2858; ++var8) {
                if(var6 == var7.field2862[var8]) {
                   if(var4 == 115) {
-                     class32.field748[++class32.field749 - 1] = var7.field2860[var8];
+                     class32.chatboxSegments[++class32.field749 - 1] = var7.field2860[var8];
                   } else {
                      class32.field747[++class103.field1686 - 1] = var7.field2865[var8];
                   }
@@ -133,7 +133,7 @@ public class class101 extends RuntimeException {
 
             if(null != var7) {
                if(var4 == 115) {
-                  class32.field748[++class32.field749 - 1] = var7.field2861;
+                  class32.chatboxSegments[++class32.field749 - 1] = var7.field2861;
                } else {
                   class32.field747[++class103.field1686 - 1] = var7.field2863;
                }
@@ -142,7 +142,7 @@ public class class101 extends RuntimeException {
             return 1;
          } else {
             if(var4 == 115) {
-               class32.field748[++class32.field749 - 1] = "null";
+               class32.chatboxSegments[++class32.field749 - 1] = "null";
             } else {
                class32.field747[++class103.field1686 - 1] = 0;
             }

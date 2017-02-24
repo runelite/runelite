@@ -8,14 +8,16 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Friend")
 public class Friend {
    @ObfuscatedName("d")
-   String field160;
+   @Export("previousName")
+   String previousName;
    @ObfuscatedName("j")
    boolean field161;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = 2072170955
    )
-   int field162;
+   @Export("rank")
+   int rank;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 495814735

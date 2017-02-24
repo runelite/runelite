@@ -115,9 +115,9 @@ public class class154 {
          var2.overhead = var0.method2868();
          if(var2.overhead.charAt(0) == 126) {
             var2.overhead = var2.overhead.substring(1);
-            class16.method186(2, var2.name, var2.overhead);
+            class16.sendGameMessage(2, var2.name, var2.overhead);
          } else if(class36.localPlayer == var2) {
-            class16.method186(2, var2.name, var2.overhead);
+            class16.sendGameMessage(2, var2.name, var2.overhead);
          }
 
          var2.field626 = false;
@@ -213,9 +213,9 @@ public class class154 {
                if(var19.field2669 != -1) {
                   int var15 = var19.field2669;
                   String var14 = "<img=" + var15 + ">";
-                  class16.method186(var12, var14 + var2.name, var18);
+                  class16.sendGameMessage(var12, var14 + var2.name, var18);
                } else {
-                  class16.method186(var12, var2.name, var18);
+                  class16.sendGameMessage(var12, var2.name, var18);
                }
             }
          }

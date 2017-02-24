@@ -78,7 +78,7 @@ public class class171 {
          Client.field348.method3073(83);
          Client.field348.method2865(class5.baseX + var0);
          Client.field348.method2831(var3 >> 14 & 32767);
-         Client.field348.method2831(var1 + class24.baseY);
+         Client.field348.method2831(var1 + XClanMember.baseY);
          Client.field348.method2856(class105.field1713[82]?1:0);
       }
 
@@ -93,7 +93,7 @@ public class class171 {
          Client.field348.method2856(class105.field1713[82]?1:0);
          Client.field348.method2864(var3 >> 14 & 32767);
          Client.field348.method2862(class5.baseX + var0);
-         Client.field348.method2865(class24.baseY + var1);
+         Client.field348.method2865(XClanMember.baseY + var1);
       }
 
       if(var2 == 43) {
@@ -114,7 +114,7 @@ public class class171 {
          Client.flagX = var0;
          Client.flagY = var1;
          Client.field348.method3073(107);
-         Client.field348.method2831(var1 + class24.baseY);
+         Client.field348.method2831(var1 + XClanMember.baseY);
          Client.field348.method2857(class105.field1713[82]?1:0);
          Client.field348.method2862(ChatLineBuffer.field986);
          Client.field348.method2864(var0 + class5.baseX);
@@ -149,7 +149,7 @@ public class class171 {
          Client.field348.method2918(class105.field1713[82]?1:0);
          Client.field348.method2864(class5.baseX + var0);
          Client.field348.method2865(var3);
-         Client.field348.method2864(var1 + class24.baseY);
+         Client.field348.method2864(var1 + XClanMember.baseY);
       }
 
       if(var2 == 39) {
@@ -215,7 +215,7 @@ public class class171 {
          Client.field348.method2857(class105.field1713[82]?1:0);
          Client.field348.method2831(var3 >> 14 & 32767);
          Client.field348.method2864(class33.field770);
-         Client.field348.method2831(class24.baseY + var1);
+         Client.field348.method2831(XClanMember.baseY + var1);
          Client.field348.method2864(class5.baseX + var0);
          Client.field348.method2972(class99.field1645);
          Client.field348.method2865(ChatLineBuffer.field986);
@@ -388,7 +388,7 @@ public class class171 {
       if(var2 == 1005) {
          var15 = class179.method3296(var1);
          if(var15 != null && var15.itemQuantities[var0] >= 100000) {
-            class16.method186(27, "", var15.itemQuantities[var0] + " x " + class103.getItemDefinition(var3).name);
+            class16.sendGameMessage(27, "", var15.itemQuantities[var0] + " x " + class103.getItemDefinition(var3).name);
          } else {
             Client.field348.method3073(133);
             Client.field348.method2864(var3);
@@ -408,7 +408,7 @@ public class class171 {
          Client.flagY = var1;
          Client.field348.method3073(189);
          Client.field348.method2865(var3);
-         Client.field348.method2864(class24.baseY + var1);
+         Client.field348.method2864(XClanMember.baseY + var1);
          Client.field348.method2857(class105.field1713[82]?1:0);
          Client.field348.method3019(Friend.field166);
          Client.field348.method2865(var0 + class5.baseX);
@@ -489,7 +489,7 @@ public class class171 {
          Client.field348.method3073(158);
          Client.field348.method2935(class105.field1713[82]?1:0);
          Client.field348.method2864(class5.baseX + var0);
-         Client.field348.method2862(class24.baseY + var1);
+         Client.field348.method2862(XClanMember.baseY + var1);
          Client.field348.method2831(var3 >> 14 & 32767);
       }
 
@@ -548,7 +548,7 @@ public class class171 {
             Client.field348.method3073(78);
             Client.field348.method2864(class5.baseX + var0);
             Client.field348.method2862(var3 >> 14 & 32767);
-            Client.field348.method2831(class24.baseY + var1);
+            Client.field348.method2831(XClanMember.baseY + var1);
             Client.field348.method2857(class105.field1713[82]?1:0);
          }
 
@@ -608,7 +608,7 @@ public class class171 {
             Client.field348.method3073(86);
             Client.field348.method2831(var3);
             Client.field348.method2918(class105.field1713[82]?1:0);
-            Client.field348.method2864(class24.baseY + var1);
+            Client.field348.method2864(XClanMember.baseY + var1);
             Client.field348.method2862(class5.baseX + var0);
          }
 
@@ -625,7 +625,7 @@ public class class171 {
             Client.field348.method2862(var3 >> 14 & 32767);
             Client.field348.method2821(Friend.field166);
             Client.field348.method2864(class5.baseX + var0);
-            Client.field348.method2862(var1 + class24.baseY);
+            Client.field348.method2862(var1 + XClanMember.baseY);
          }
 
          if(var2 == 47) {
@@ -693,7 +693,7 @@ public class class171 {
             Client.field348.method3073(248);
             Client.field348.method2918(class105.field1713[82]?1:0);
             Client.field348.method2862(var3);
-            Client.field348.method2864(class24.baseY + var1);
+            Client.field348.method2864(XClanMember.baseY + var1);
             Client.field348.method2864(class5.baseX + var0);
          }
 
@@ -742,7 +742,7 @@ public class class171 {
                Client.field348.method2831(var3);
                Client.field348.method2857(class105.field1713[82]?1:0);
                Client.field348.method2865(var0 + class5.baseX);
-               Client.field348.method2864(var1 + class24.baseY);
+               Client.field348.method2864(var1 + XClanMember.baseY);
             }
 
             if(var2 == 13) {
@@ -771,7 +771,7 @@ public class class171 {
                Client.field348.method2865(var3 >> 14 & 32767);
                Client.field348.method2856(class105.field1713[82]?1:0);
                Client.field348.method2862(class5.baseX + var0);
-               Client.field348.method2862(class24.baseY + var1);
+               Client.field348.method2862(XClanMember.baseY + var1);
             }
 
             if(var2 == 40) {
@@ -849,7 +849,7 @@ public class class171 {
                Client.flagX = var0;
                Client.flagY = var1;
                Client.field348.method3073(138);
-               Client.field348.method2862(class24.baseY + var1);
+               Client.field348.method2862(XClanMember.baseY + var1);
                Client.field348.method2865(class5.baseX + var0);
                Client.field348.method2857(class105.field1713[82]?1:0);
                Client.field348.method2865(var3);

@@ -55,7 +55,7 @@ public final class class85 {
          var0 -= 1000;
          var3 = class179.method3296(class32.field747[--class103.field1686]);
       } else {
-         var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+         var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
       if(var0 == 1927) {

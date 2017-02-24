@@ -131,7 +131,7 @@ public class class11 {
                Client.field348.method2918(18);
                Client.field348.method2865(class5.baseX + var11);
                Client.field348.method2918(class105.field1713[82]?(class105.field1713[81]?2:1):0);
-               Client.field348.method2864(var12 + class24.baseY);
+               Client.field348.method2864(var12 + XClanMember.baseY);
                Client.field348.method2918(var4);
                Client.field348.method2918(var5);
                Client.field348.method2831(Client.mapAngle);

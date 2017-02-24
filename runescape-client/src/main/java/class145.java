@@ -491,13 +491,13 @@ public class class145 {
          class8.setGameState(25);
          Ignore.method203("Loading - please wait.", true);
          int var2 = class5.baseX;
-         int var3 = class24.baseY;
+         int var3 = XClanMember.baseY;
          class5.baseX = (var0 - 6) * 8;
-         class24.baseY = (var1 - 6) * 8;
+         XClanMember.baseY = (var1 - 6) * 8;
          int var4 = class5.baseX - var2;
-         int var5 = class24.baseY - var3;
+         int var5 = XClanMember.baseY - var3;
          var2 = class5.baseX;
-         var3 = class24.baseY;
+         var3 = XClanMember.baseY;
 
          int var6;
          int var8;

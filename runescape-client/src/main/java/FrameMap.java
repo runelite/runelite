@@ -5,7 +5,6 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("cj")
 @Implements("FrameMap")
-@Implements("XClanMember")
 public class FrameMap extends Node {
    @ObfuscatedName("d")
    @ObfuscatedGetter(

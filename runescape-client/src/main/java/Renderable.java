@@ -213,11 +213,11 @@ public abstract class Renderable extends CacheableNode {
             if(Client.packetOpcode == 245) {
                var1 = Client.field350.readUnsignedByte();
                if(Client.field350.readUnsignedByte() == 0) {
-                  Client.field581[var1] = new XGrandExchangeOffer();
+                  Client.grandExchangeOffers[var1] = new XGrandExchangeOffer();
                   Client.field350.offset += 18;
                } else {
                   --Client.field350.offset;
-                  Client.field581[var1] = new XGrandExchangeOffer(Client.field350, false);
+                  Client.grandExchangeOffers[var1] = new XGrandExchangeOffer(Client.field350, false);
                }
 
                Client.field500 = Client.field490;
@@ -227,7 +227,7 @@ public abstract class Renderable extends CacheableNode {
 
             if(Client.packetOpcode == 76) {
                Client.method601();
-               Client.field470 = Client.field350.readUnsignedByte();
+               Client.energy = Client.field350.readUnsignedByte();
                Client.field502 = Client.field490;
                Client.packetOpcode = -1;
                return true;
@@ -307,7 +307,7 @@ public abstract class Renderable extends CacheableNode {
                   Client.field350.method2868();
 
                   for(var29 = 0; var29 < Client.ignoreCount; ++var29) {
-                     Ignore var104 = Client.field504[var29];
+                     Ignore var104 = Client.ignores[var29];
                      if(var63) {
                         if(var91.equals(var104.name)) {
                            var104.name = var27;
@@ -325,7 +325,7 @@ public abstract class Renderable extends CacheableNode {
 
                   if(var27 != null && Client.ignoreCount < 400) {
                      Ignore var74 = new Ignore();
-                     Client.field504[Client.ignoreCount] = var74;
+                     Client.ignores[Client.ignoreCount] = var74;
                      var74.name = var27;
                      var74.previousName = var91;
                      ++Client.ignoreCount;
@@ -602,9 +602,9 @@ public abstract class Renderable extends CacheableNode {
                   if(var98.field2669 != -1) {
                      var14 = var98.field2669;
                      var13 = "<img=" + var14 + ">";
-                     class16.method186(var81, var13 + var21, var108);
+                     class16.sendGameMessage(var81, var13 + var21, var108);
                   } else {
-                     class16.method186(var81, var21, var108);
+                     class16.sendGameMessage(var81, var21, var108);
                   }
                }
 
@@ -876,32 +876,32 @@ public abstract class Renderable extends CacheableNode {
 
                   boolean var109 = false;
 
-                  for(var29 = 0; var29 < Player.clanChatCount && (!class72.field1204[var29].field295.equals(var21) || class72.field1204[var29].field290 != var2); ++var29) {
+                  for(var29 = 0; var29 < Player.clanChatCount && (!class72.clanMembers[var29].username.equals(var21) || class72.clanMembers[var29].world != var2); ++var29) {
                      ;
                   }
 
                   if(var29 < Player.clanChatCount) {
                      while(var29 < Player.clanChatCount - 1) {
-                        class72.field1204[var29] = class72.field1204[1 + var29];
+                        class72.clanMembers[var29] = class72.clanMembers[1 + var29];
                         ++var29;
                      }
 
                      --Player.clanChatCount;
-                     class72.field1204[Player.clanChatCount] = null;
+                     class72.clanMembers[Player.clanChatCount] = null;
                   }
                } else {
                   Client.field350.method2868();
-                  class24 var72 = new class24();
-                  var72.field295 = var21;
-                  var72.field288 = GroundObject.method1594(var72.field295, MessageNode.field244);
-                  var72.field290 = var2;
-                  var72.field298 = var77;
+                  XClanMember var72 = new XClanMember();
+                  var72.username = var21;
+                  var72.field288 = GroundObject.method1594(var72.username, MessageNode.field244);
+                  var72.world = var2;
+                  var72.rank = var77;
 
                   for(var31 = Player.clanChatCount - 1; var31 >= 0; --var31) {
-                     var42 = class72.field1204[var31].field288.compareTo(var72.field288);
+                     var42 = class72.clanMembers[var31].field288.compareTo(var72.field288);
                      if(var42 == 0) {
-                        class72.field1204[var31].field290 = var2;
-                        class72.field1204[var31].field298 = var77;
+                        class72.clanMembers[var31].world = var2;
+                        class72.clanMembers[var31].rank = var77;
                         if(var21.equals(class36.localPlayer.name)) {
                            ObjectComposition.field2942 = var77;
                         }
@@ -916,20 +916,20 @@ public abstract class Renderable extends CacheableNode {
                      }
                   }
 
-                  if(Player.clanChatCount >= class72.field1204.length) {
+                  if(Player.clanChatCount >= class72.clanMembers.length) {
                      Client.packetOpcode = -1;
                      return true;
                   }
 
                   for(var42 = Player.clanChatCount - 1; var42 > var31; --var42) {
-                     class72.field1204[1 + var42] = class72.field1204[var42];
+                     class72.clanMembers[1 + var42] = class72.clanMembers[var42];
                   }
 
                   if(Player.clanChatCount == 0) {
-                     class72.field1204 = new class24[100];
+                     class72.clanMembers = new XClanMember[100];
                   }
 
-                  class72.field1204[var31 + 1] = var72;
+                  class72.clanMembers[var31 + 1] = var72;
                   ++Player.clanChatCount;
                   if(var21.equals(class36.localPlayer.name)) {
                      ObjectComposition.field2942 = var77;
@@ -943,8 +943,8 @@ public abstract class Renderable extends CacheableNode {
 
             if(Client.packetOpcode == 49) {
                for(var1 = 0; var1 < class165.widgetSettings.length; ++var1) {
-                  if(class165.widgetSettings[var1] != class165.field2161[var1]) {
-                     class165.widgetSettings[var1] = class165.field2161[var1];
+                  if(class165.widgetSettings[var1] != class165.settings[var1]) {
+                     class165.widgetSettings[var1] = class165.settings[var1];
                      class145.method2760(var1);
                      Client.field445[++Client.field535 - 1 & 31] = var1;
                   }
@@ -1037,7 +1037,7 @@ public abstract class Renderable extends CacheableNode {
 
             if(Client.packetOpcode == 211) {
                Client.method601();
-               Client.field471 = Client.field350.readShort();
+               Client.weight = Client.field350.readShort();
                Client.field502 = Client.field490;
                Client.packetOpcode = -1;
                return true;
@@ -1058,7 +1058,7 @@ public abstract class Renderable extends CacheableNode {
 
                var68 = Client.field350.method2868();
                if(!var79) {
-                  class16.method186(var1, var27, var68);
+                  class16.sendGameMessage(var1, var27, var68);
                }
 
                Client.packetOpcode = -1;
@@ -1127,7 +1127,7 @@ public abstract class Renderable extends CacheableNode {
             if(Client.packetOpcode == 98) {
                var21 = Client.field350.method2868();
                var112 = FontTypeFace.method3958(class32.method775(ItemLayer.method1511(Client.field350)));
-               class16.method186(6, var21, var112);
+               class16.sendGameMessage(6, var21, var112);
                Client.packetOpcode = -1;
                return true;
             }
@@ -1136,7 +1136,7 @@ public abstract class Renderable extends CacheableNode {
                for(var1 = 0; var1 < class187.field2782; ++var1) {
                   class187 var113 = class182.method3356(var1);
                   if(var113 != null) {
-                     class165.field2161[var1] = 0;
+                     class165.settings[var1] = 0;
                      class165.widgetSettings[var1] = 0;
                   }
                }
@@ -1284,7 +1284,7 @@ public abstract class Renderable extends CacheableNode {
             if(Client.packetOpcode == 251) {
                var1 = Client.field350.method2867();
                byte var78 = Client.field350.method3015();
-               class165.field2161[var1] = var78;
+               class165.settings[var1] = var78;
                if(var78 != class165.widgetSettings[var1]) {
                   class165.widgetSettings[var1] = var78;
                }
@@ -1539,7 +1539,7 @@ public abstract class Renderable extends CacheableNode {
             if(Client.packetOpcode == 8) {
                var1 = Client.field350.method2878();
                var2 = Client.field350.readUnsignedShort();
-               class165.field2161[var2] = var1;
+               class165.settings[var2] = var1;
                if(var1 != class165.widgetSettings[var2]) {
                   class165.widgetSettings[var2] = var1;
                }
@@ -1625,7 +1625,7 @@ public abstract class Renderable extends CacheableNode {
                   Client.field350.method2868();
 
                   for(var40 = 0; var40 < Client.friendCount; ++var40) {
-                     Friend var106 = Client.field422[var40];
+                     Friend var106 = Client.friends[var40];
                      if(!var67) {
                         if(var112.equals(var106.name)) {
                            if(var106.world != var4) {
@@ -1650,8 +1650,8 @@ public abstract class Renderable extends CacheableNode {
                               var106.world = var4;
                            }
 
-                           var106.field160 = var27;
-                           var106.field162 = var29;
+                           var106.previousName = var27;
+                           var106.rank = var29;
                            var106.field161 = var114;
                            var106.field164 = var97;
                            var112 = null;
@@ -1659,7 +1659,7 @@ public abstract class Renderable extends CacheableNode {
                         }
                      } else if(var27.equals(var106.name)) {
                         var106.name = var112;
-                        var106.field160 = var27;
+                        var106.previousName = var27;
                         var112 = null;
                         break;
                      }
@@ -1667,11 +1667,11 @@ public abstract class Renderable extends CacheableNode {
 
                   if(var112 != null && Client.friendCount < 400) {
                      Friend var103 = new Friend();
-                     Client.field422[Client.friendCount] = var103;
+                     Client.friends[Client.friendCount] = var103;
                      var103.name = var112;
-                     var103.field160 = var27;
+                     var103.previousName = var27;
                      var103.world = var4;
-                     var103.field162 = var29;
+                     var103.rank = var29;
                      var103.field161 = var114;
                      var103.field164 = var97;
                      ++Client.friendCount;
@@ -1689,8 +1689,8 @@ public abstract class Renderable extends CacheableNode {
 
                   for(var3 = 0; var3 < var2; ++var3) {
                      var79 = false;
-                     Friend var5 = Client.field422[var3];
-                     Friend var93 = Client.field422[var3 + 1];
+                     Friend var5 = Client.friends[var3];
+                     Friend var93 = Client.friends[var3 + 1];
                      if(var5.world != Client.world && Client.world == var93.world) {
                         var79 = true;
                      }
@@ -1708,9 +1708,9 @@ public abstract class Renderable extends CacheableNode {
                      }
 
                      if(var79) {
-                        Friend var75 = Client.field422[var3];
-                        Client.field422[var3] = Client.field422[1 + var3];
-                        Client.field422[var3 + 1] = var75;
+                        Friend var75 = Client.friends[var3];
+                        Client.friends[var3] = Client.friends[1 + var3];
+                        Client.friends[var3 + 1] = var75;
                         var67 = false;
                      }
                   }
@@ -2109,14 +2109,14 @@ public abstract class Renderable extends CacheableNode {
                Client.field499 = Client.field490;
                if(Client.field351 == 0) {
                   Client.field532 = null;
-                  Client.field533 = null;
+                  Client.clanChatOwner = null;
                   Player.clanChatCount = 0;
-                  class72.field1204 = null;
+                  class72.clanMembers = null;
                   Client.packetOpcode = -1;
                   return true;
                }
 
-               Client.field533 = Client.field350.method2868();
+               Client.clanChatOwner = Client.field350.method2868();
                long var50 = Client.field350.method2819();
                var24 = var50;
                if(var50 > 0L && var50 < 6582952005840035281L) {
@@ -2152,17 +2152,17 @@ public abstract class Renderable extends CacheableNode {
                }
 
                Player.clanChatCount = var31;
-               class24[] var70 = new class24[100];
+               XClanMember[] var70 = new XClanMember[100];
 
                for(var32 = 0; var32 < Player.clanChatCount; ++var32) {
-                  var70[var32] = new class24();
-                  var70[var32].field295 = Client.field350.method2868();
-                  var70[var32].field288 = GroundObject.method1594(var70[var32].field295, MessageNode.field244);
-                  var70[var32].field290 = Client.field350.readUnsignedShort();
-                  var70[var32].field298 = Client.field350.readByte();
+                  var70[var32] = new XClanMember();
+                  var70[var32].username = Client.field350.method2868();
+                  var70[var32].field288 = GroundObject.method1594(var70[var32].username, MessageNode.field244);
+                  var70[var32].world = Client.field350.readUnsignedShort();
+                  var70[var32].rank = Client.field350.readByte();
                   Client.field350.method2868();
-                  if(var70[var32].field295.equals(class36.localPlayer.name)) {
-                     ObjectComposition.field2942 = var70[var32].field298;
+                  if(var70[var32].username.equals(class36.localPlayer.name)) {
+                     ObjectComposition.field2942 = var70[var32].rank;
                   }
                }
 
@@ -2175,7 +2175,7 @@ public abstract class Renderable extends CacheableNode {
 
                   for(var11 = 0; var11 < var10; ++var11) {
                      if(var70[var11].field288.compareTo(var70[1 + var11].field288) > 0) {
-                        class24 var99 = var70[var11];
+                        XClanMember var99 = var70[var11];
                         var70[var11] = var70[1 + var11];
                         var70[var11 + 1] = var99;
                         var97 = false;
@@ -2187,7 +2187,7 @@ public abstract class Renderable extends CacheableNode {
                   }
                }
 
-               class72.field1204 = var70;
+               class72.clanMembers = var70;
                Client.packetOpcode = -1;
                return true;
             }
@@ -2197,8 +2197,8 @@ public abstract class Renderable extends CacheableNode {
                var1 = Client.field350.method2878();
                var2 = Client.field350.method2859();
                var3 = Client.field350.readUnsignedByte();
-               Client.field441[var2] = var1;
-               Client.field384[var2] = var3;
+               Client.skillExperiences[var2] = var1;
+               Client.boostedSkillLevels[var2] = var3;
                Client.realSkillLevels[var2] = 1;
 
                for(var4 = 0; var4 < 98; ++var4) {
@@ -2259,7 +2259,7 @@ public abstract class Renderable extends CacheableNode {
                class149.field2036 = null;
             }
          } catch (Exception var62) {
-            var21 = "" + Client.packetOpcode + "," + Client.field356 + "," + Client.field574 + "," + Client.field351 + "," + (class5.baseX + class36.localPlayer.pathX[0]) + "," + (class24.baseY + class36.localPlayer.pathY[0]) + ",";
+            var21 = "" + Client.packetOpcode + "," + Client.field356 + "," + Client.field574 + "," + Client.field351 + "," + (class5.baseX + class36.localPlayer.pathX[0]) + "," + (XClanMember.baseY + class36.localPlayer.pathY[0]) + ",";
 
             for(var2 = 0; var2 < Client.field351 && var2 < 50; ++var2) {
                var21 = var21 + Client.field350.payload[var2] + ",";

@@ -1134,7 +1134,7 @@ public class Widget extends Node {
                   return null;
                }
 
-               var7 = var8.method1534(var9.field2952 + 64, var9.field2995 + 768, -50, -10, -50);
+               var7 = var8.method1534(var9.ambient + 64, var9.contast + 768, -50, -10, -50);
             }
 
             field2300.put(var7, (long)((var5 << 16) + var6));

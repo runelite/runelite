@@ -481,7 +481,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    static final void method2252(boolean var0) {
       Client.field428 = 0;
       Client.field346 = 0;
-      class24.method255();
+      XClanMember.method255();
 
       int var1;
       NPC var3;
@@ -682,7 +682,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
             var5 = Client.field350.method2867();
             var6 = Client.field350.method2869();
             var7 = var3.x - 64 * (var5 - class5.baseX - class5.baseX);
-            var8 = var3.y - (var6 - class24.baseY - class24.baseY) * 64;
+            var8 = var3.y - (var6 - XClanMember.baseY - XClanMember.baseY) * 64;
             if(var7 != 0 || var8 != 0) {
                var3.field651 = (int)(Math.atan2((double)var7, (double)var8) * 325.949D) & 2047;
             }

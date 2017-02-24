@@ -369,14 +369,14 @@ public class WidgetNode extends Node {
          var0 -= 1000;
          var3 = class179.method3296(class32.field747[--class103.field1686]);
       } else {
-         var3 = var2?XGrandExchangeOffer.field58:class24.field297;
+         var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
       int var4;
       if(var0 == 1300) {
          var4 = class32.field747[--class103.field1686] - 1;
          if(var4 >= 0 && var4 <= 9) {
-            var3.method3220(var4, class32.field748[--class32.field749]);
+            var3.method3220(var4, class32.chatboxSegments[--class32.field749]);
             return 1;
          } else {
             --class32.field749;
@@ -398,10 +398,10 @@ public class WidgetNode extends Node {
          var3.field2236 = class32.field747[--class103.field1686];
          return 1;
       } else if(var0 == 1305) {
-         var3.name = class32.field748[--class32.field749];
+         var3.name = class32.chatboxSegments[--class32.field749];
          return 1;
       } else if(var0 == 1306) {
-         var3.field2306 = class32.field748[--class32.field749];
+         var3.field2306 = class32.chatboxSegments[--class32.field749];
          return 1;
       } else if(var0 == 1307) {
          var3.actions = null;
