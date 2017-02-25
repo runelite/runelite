@@ -283,7 +283,7 @@ public class ItemComposition extends CacheableNode {
       if(var2 == 1) {
          this.inventoryModel = var1.readUnsignedShort();
       } else if(var2 == 2) {
-         this.name = var1.method2868();
+         this.name = var1.readString();
       } else if(var2 == 4) {
          this.zoom2d = var1.readUnsignedShort();
       } else if(var2 == 5) {
@@ -303,7 +303,7 @@ public class ItemComposition extends CacheableNode {
       } else if(var2 == 11) {
          this.isStackable = 1;
       } else if(var2 == 12) {
-         this.price = var1.method2965();
+         this.price = var1.readInt();
       } else if(var2 == 16) {
          this.isMembers = true;
       } else if(var2 == 23) {
@@ -317,12 +317,12 @@ public class ItemComposition extends CacheableNode {
       } else if(var2 == 26) {
          this.femaleModel1 = var1.readUnsignedShort();
       } else if(var2 >= 30 && var2 < 35) {
-         this.groundActions[var2 - 30] = var1.method2868();
+         this.groundActions[var2 - 30] = var1.readString();
          if(this.groundActions[var2 - 30].equalsIgnoreCase("Hidden")) {
             this.groundActions[var2 - 30] = null;
          }
       } else if(var2 >= 35 && var2 < 40) {
-         this.inventoryActions[var2 - 35] = var1.method2868();
+         this.inventoryActions[var2 - 35] = var1.readString();
       } else {
          int var3;
          int var4;

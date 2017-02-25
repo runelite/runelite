@@ -70,7 +70,7 @@ public class class155 {
                if(null != var5.model && Client.gameCycle >= var5.totalLevel && Client.gameCycle < var5.field265) {
                   var5.field274 = false;
                   var5.field263 = class2.method19(var5.x, var5.y, WallObject.plane);
-                  class48.region.method1759(WallObject.plane, var5.x, var5.y, var5.field263, 60, var5, var5.angle, var6, var5.field270, var5.field282, var5.field271, var5.field273);
+                  Script.region.method1759(WallObject.plane, var5.x, var5.y, var5.field263, 60, var5, var5.angle, var6, var5.field270, var5.field282, var5.field271, var5.field273);
                } else {
                   if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
                      if(Client.field408[var7][var8] == Client.field409) {
@@ -81,7 +81,7 @@ public class class155 {
                   }
 
                   var5.field263 = class2.method19(var5.x, var5.y, WallObject.plane);
-                  class48.region.method1758(WallObject.plane, var5.x, var5.y, var5.field263, 60, var5, var5.angle, var6, var5.field627);
+                  Script.region.method1758(WallObject.plane, var5.x, var5.y, var5.field263, 60, var5, var5.angle, var6, var5.field627);
                }
             }
          }

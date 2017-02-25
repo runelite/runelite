@@ -119,16 +119,16 @@ public class class54 extends Node {
    @ObfuscatedName("j")
    void method1052(byte[] var1) {
       Buffer var2 = new Buffer(var1);
-      this.field1010 = var2.method2965();
-      this.field1037 = var2.method2965();
-      this.field1012 = var2.method2965();
-      this.field1013 = var2.method2965();
+      this.field1010 = var2.readInt();
+      this.field1037 = var2.readInt();
+      this.field1012 = var2.readInt();
+      this.field1013 = var2.readInt();
       if(this.field1013 < 0) {
          this.field1013 = ~this.field1013;
          this.field1024 = true;
       }
 
-      int var3 = var2.method2965();
+      int var3 = var2.readInt();
       this.field1035 = new byte[var3][];
 
       for(int var4 = 0; var4 < var3; ++var4) {

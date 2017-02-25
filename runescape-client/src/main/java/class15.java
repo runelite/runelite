@@ -28,7 +28,7 @@ public class class15 {
       signature = "(ILclass48;ZB)I",
       garbageValue = "82"
    )
-   static int method180(int var0, class48 var1, boolean var2) {
+   static int method180(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
          if(Client.field573 == 0) {
             class32.field747[++class103.field1686 - 1] = -2;

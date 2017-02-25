@@ -34,7 +34,7 @@ final class class6 implements Comparator {
       }
 
       class182.method3325();
-      class48.region.method1748();
+      Script.region.method1748();
 
       for(int var0 = 0; var0 < 4; ++var0) {
          Client.collisionMaps[var0].method2306();

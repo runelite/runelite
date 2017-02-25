@@ -22,7 +22,7 @@ public class class88 {
    static final void groundItemSpawned(int var0, int var1) {
       Deque var2 = Client.groundItemDeque[WallObject.plane][var0][var1];
       if(null == var2) {
-         class48.region.method1768(WallObject.plane, var0, var1);
+         Script.region.method1768(WallObject.plane, var0, var1);
       } else {
          long var3 = -99999999L;
          Item var5 = null;
@@ -42,7 +42,7 @@ public class class88 {
          }
 
          if(var5 == null) {
-            class48.region.method1768(WallObject.plane, var0, var1);
+            Script.region.method1768(WallObject.plane, var0, var1);
          } else {
             var2.method2454(var5);
             Item var11 = null;
@@ -61,7 +61,7 @@ public class class88 {
             }
 
             int var9 = 1610612736 + var0 + (var1 << 7);
-            class48.region.method1754(WallObject.plane, var0, var1, class2.method19(var0 * 128 + 64, var1 * 128 + 64, WallObject.plane), var5, var9, var11, var10);
+            Script.region.method1754(WallObject.plane, var0, var1, class2.method19(var0 * 128 + 64, var1 * 128 + 64, WallObject.plane), var5, var9, var11, var10);
          }
       }
    }

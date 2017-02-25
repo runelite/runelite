@@ -28,8 +28,8 @@ public class class58 {
    @ObfuscatedName("q")
    final void method1161(Buffer var1) {
       this.field1088 = var1.readUnsignedByte();
-      this.field1086 = var1.method2965();
-      this.field1087 = var1.method2965();
+      this.field1086 = var1.readInt();
+      this.field1087 = var1.readInt();
       this.method1172(var1);
    }
 

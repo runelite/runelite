@@ -146,7 +146,7 @@ public class class184 extends class182 {
 
          int var8 = 0;
          if(var7 >= 6) {
-            var8 = var6.method2965();
+            var8 = var6.readInt();
          }
 
          if(this.field2738 != var5 || this.field2742 != var8) {
@@ -301,8 +301,8 @@ public class class184 extends class182 {
       int var8 = this.field2736;
       if(class185.field2761 != null) {
          class185.field2761.offset = var8 * 8 + 5;
-         int var9 = class185.field2761.method2965();
-         int var10 = class185.field2761.method2965();
+         int var9 = class185.field2761.readInt();
+         int var10 = class185.field2761.readInt();
          this.method3395(var9, var10);
       } else {
          MessageNode.method211((class184)null, 255, 255, 0, (byte)0, true);

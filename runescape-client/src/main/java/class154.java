@@ -112,7 +112,7 @@ public class class154 {
       }
 
       if((var3 & 8) != 0) {
-         var2.overhead = var0.method2868();
+         var2.overhead = var0.readString();
          if(var2.overhead.charAt(0) == 126) {
             var2.overhead = var2.overhead.substring(1);
             class16.sendGameMessage(2, var2.name, var2.overhead);
@@ -225,7 +225,7 @@ public class class154 {
 
       if((var3 & 4096) != 0) {
          var2.graphic = var0.readUnsignedShort();
-         var5 = var0.method2965();
+         var5 = var0.readInt();
          var2.field664 = var5 >> 16;
          var2.field639 = (var5 & '\uffff') + Client.gameCycle;
          var2.field661 = 0;
@@ -274,7 +274,7 @@ public class class154 {
 
       if((var3 & 512) != 0) {
          for(var5 = 0; var5 < 3; ++var5) {
-            var2.actions[var5] = var0.method2868();
+            var2.actions[var5] = var0.readString();
          }
       }
 

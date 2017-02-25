@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("s")
 public class class11 {
    @ObfuscatedName("q")
-   class48 field121;
+   Script field121;
    @ObfuscatedName("p")
    String[] field123;
    @ObfuscatedName("d")

@@ -56,7 +56,7 @@ public class class79 extends Node {
          this.field1330 = new int[var2];
 
          for(var3 = 0; var3 < var2; ++var3) {
-            this.field1330[var3] = var1.method2965();
+            this.field1330[var3] = var1.readInt();
          }
 
          this.field1331 = var1.readUnsignedByte();

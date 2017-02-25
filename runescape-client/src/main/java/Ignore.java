@@ -478,9 +478,9 @@ public class Ignore {
                   Client.field350.offset = 0;
                   class149.field2036.method2117(Client.field350.payload, 0, class99.field1648);
                   Client.field350.offset = 0;
-                  String var18 = Client.field350.method2868();
-                  String var10 = Client.field350.method2868();
-                  String var9 = Client.field350.method2868();
+                  String var18 = Client.field350.readString();
+                  String var10 = Client.field350.readString();
+                  String var9 = Client.field350.readString();
                   class138.method2536(var18, var10, var9);
                   class8.setGameState(10);
                }

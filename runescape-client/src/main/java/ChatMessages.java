@@ -201,7 +201,7 @@ public class ChatMessages {
          int var9;
          for(var7 = 0; var7 < var15; ++var7) {
             var8 = var13.readUnsignedShort();
-            var9 = var13.method2965();
+            var9 = var13.readInt();
             if(this.field943[var8]) {
                this.field938[var8] = var9;
             }
@@ -211,7 +211,7 @@ public class ChatMessages {
 
          for(var8 = 0; var8 < var7; ++var8) {
             var9 = var13.readUnsignedShort();
-            String var10 = var13.method2868();
+            String var10 = var13.readString();
             if(this.field937[var9]) {
                this.messages[var9] = var10;
             }

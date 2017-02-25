@@ -202,8 +202,8 @@ public class class30 {
                int var3 = var1.readUnsignedByte();
 
                for(int var4 = 0; var4 < var3; ++var4) {
-                  int var5 = var1.method2965();
-                  int var6 = var1.method2965();
+                  int var5 = var1.readInt();
+                  int var6 = var1.readInt();
                   this.field717.put(Integer.valueOf(var5), Integer.valueOf(var6));
                }
             }

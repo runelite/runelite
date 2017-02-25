@@ -46,8 +46,8 @@ public class class141 {
       int var3;
       int var5;
       for(var3 = 0; var3 < var2; this.field1989.offset += var5) {
-         int var4 = this.field1989.method2965();
-         var5 = this.field1989.method2965();
+         int var4 = this.field1989.readInt();
+         var5 = this.field1989.readInt();
          if(var4 == 1297379947) {
             this.field1982[var3] = this.field1989.offset;
             ++var3;

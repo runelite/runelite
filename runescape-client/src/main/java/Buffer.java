@@ -28,8 +28,8 @@ public class Buffer extends Node {
       garbageValue = "64"
    )
    public long method2819() {
-      long var1 = (long)this.method2965() & 4294967295L;
-      long var3 = (long)this.method2965() & 4294967295L;
+      long var1 = (long)this.readInt() & 4294967295L;
+      long var3 = (long)this.readInt() & 4294967295L;
       return (var1 << 32) + var3;
    }
 
@@ -318,7 +318,7 @@ public class Buffer extends Node {
       garbageValue = "512"
    )
    public int method2847() {
-      return this.payload[this.offset] < 0?this.method2965() & Integer.MAX_VALUE:this.readUnsignedShort();
+      return this.payload[this.offset] < 0?this.readInt() & Integer.MAX_VALUE:this.readUnsignedShort();
    }
 
    @ObfuscatedName("bu")
@@ -362,8 +362,8 @@ public class Buffer extends Node {
       this.offset = 0;
 
       for(int var3 = 0; var3 < var2; ++var3) {
-         int var4 = this.method2965();
-         int var5 = this.method2965();
+         int var4 = this.readInt();
+         int var5 = this.readInt();
          int var6 = -957401312;
          int var7 = -1640531527;
 
@@ -390,8 +390,8 @@ public class Buffer extends Node {
       int var5 = (var3 - var2) / 8;
 
       for(int var6 = 0; var6 < var5; ++var6) {
-         int var7 = this.method2965();
-         int var8 = this.method2965();
+         int var7 = this.readInt();
+         int var8 = this.readInt();
          int var9 = 0;
          int var10 = -1640531527;
 
@@ -419,8 +419,8 @@ public class Buffer extends Node {
       int var5 = (var3 - var2) / 8;
 
       for(int var6 = 0; var6 < var5; ++var6) {
-         int var7 = this.method2965();
-         int var8 = this.method2965();
+         int var7 = this.readInt();
+         int var8 = this.readInt();
          int var9 = -957401312;
          int var10 = -1640531527;
 
@@ -478,7 +478,7 @@ public class Buffer extends Node {
       }
 
       var4 = ~var4;
-      var5 = this.method2965();
+      var5 = this.readInt();
       return var5 == var4;
    }
 
@@ -563,7 +563,8 @@ public class Buffer extends Node {
       signature = "(I)Ljava/lang/String;",
       garbageValue = "136719104"
    )
-   public String method2868() {
+   @Export("readString")
+   public String readString() {
       int var1 = this.offset;
 
       while(this.payload[++this.offset - 1] != 0) {
@@ -696,7 +697,7 @@ public class Buffer extends Node {
          ++this.offset;
          return null;
       } else {
-         return this.method2868();
+         return this.readString();
       }
    }
 
@@ -778,7 +779,8 @@ public class Buffer extends Node {
       signature = "(B)I",
       garbageValue = "7"
    )
-   public int method2965() {
+   @Export("readInt")
+   public int readInt() {
       this.offset += 4;
       return (this.payload[this.offset - 1] & 255) + ((this.payload[this.offset - 4] & 255) << 24) + ((this.payload[this.offset - 3] & 255) << 16) + ((this.payload[this.offset - 2] & 255) << 8);
    }
@@ -805,8 +807,8 @@ public class Buffer extends Node {
       this.offset = 0;
 
       for(int var3 = 0; var3 < var2; ++var3) {
-         int var4 = this.method2965();
-         int var5 = this.method2965();
+         int var4 = this.readInt();
+         int var5 = this.readInt();
          int var6 = 0;
          int var7 = -1640531527;
 
@@ -905,7 +907,7 @@ public class Buffer extends Node {
    )
    public int method3029() {
       if(this.payload[this.offset] < 0) {
-         return this.method2965() & Integer.MAX_VALUE;
+         return this.readInt() & Integer.MAX_VALUE;
       } else {
          int var1 = this.readUnsignedShort();
          return var1 == 32767?-1:var1;

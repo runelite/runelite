@@ -128,7 +128,7 @@ public final class class31 extends Node {
       signature = "(ILclass48;ZI)I",
       garbageValue = "1997750473"
    )
-   static int method708(int var0, class48 var1, boolean var2) {
+   static int method708(int var0, Script var1, boolean var2) {
       int var3 = -1;
       Widget var4;
       if(var0 >= 2000) {

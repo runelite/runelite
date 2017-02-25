@@ -484,7 +484,7 @@ public class ModelData extends Renderable {
          var2.readUnsignedShort();
          var2.readUnsignedShort();
          var2.readUnsignedShort();
-         var2.method2965();
+         var2.readInt();
       }
 
    }

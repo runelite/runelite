@@ -857,9 +857,9 @@ public class class171 {
 
             if(var2 == 23) {
                if(Client.isMenuOpen) {
-                  class48.region.method1832();
+                  Script.region.method1832();
                } else {
-                  class48.region.method1871(WallObject.plane, var0, var1, true);
+                  Script.region.method1871(WallObject.plane, var0, var1, true);
                }
             }
 

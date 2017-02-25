@@ -57,12 +57,12 @@ public class class2 {
    }
 
    class2(Buffer var1, byte var2, int var3) {
-      this.field32 = var1.method2868();
-      this.field27 = var1.method2868();
+      this.field32 = var1.readString();
+      this.field27 = var1.readString();
       this.field30 = var1.readUnsignedShort();
       this.field25 = var1.method2819();
-      int var4 = var1.method2965();
-      int var5 = var1.method2965();
+      int var4 = var1.readInt();
+      int var5 = var1.readInt();
       this.field26 = new XGrandExchangeOffer();
       this.field26.method44(2);
       this.field26.method45(var2);
@@ -87,7 +87,7 @@ public class class2 {
       signature = "(ILclass48;ZI)I",
       garbageValue = "112666264"
    )
-   static int method30(int var0, class48 var1, boolean var2) {
+   static int method30(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 3903) {
          var3 = class32.field747[--class103.field1686];

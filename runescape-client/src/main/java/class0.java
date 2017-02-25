@@ -115,7 +115,7 @@ final class class0 implements Comparator {
       signature = "(ILclass48;ZI)I",
       garbageValue = "1507671869"
    )
-   static int method2(int var0, class48 var1, boolean var2) {
+   static int method2(int var0, Script var1, boolean var2) {
       Widget var3 = class179.method3296(class32.field747[--class103.field1686]);
       if(var0 == 2500) {
          class32.field747[++class103.field1686 - 1] = var3.relativeX;

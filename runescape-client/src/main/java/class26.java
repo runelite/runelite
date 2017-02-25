@@ -94,7 +94,7 @@ public class class26 {
 
                this.field617 += this.field611.read(this.field612, this.field617, var1);
                if(this.field617 == 4) {
-                  int var2 = (new Buffer(this.field612)).method2965();
+                  int var2 = (new Buffer(this.field612)).readInt();
                   this.field614 = new byte[var2];
                   this.field618 = 2;
                }

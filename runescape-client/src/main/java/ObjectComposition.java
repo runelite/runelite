@@ -237,7 +237,7 @@ public class ObjectComposition extends CacheableNode {
             }
          }
       } else if(var2 == 2) {
-         this.name = var1.method2868();
+         this.name = var1.readString();
       } else if(var2 == 5) {
          var3 = var1.readUnsignedByte();
          if(var3 > 0) {
@@ -283,7 +283,7 @@ public class ObjectComposition extends CacheableNode {
       } else if(var2 == 39) {
          this.contrast = var1.readByte() * 25;
       } else if(var2 >= 30 && var2 < 35) {
-         this.actions[var2 - 30] = var1.method2868();
+         this.actions[var2 - 30] = var1.readString();
          if(this.actions[var2 - 30].equalsIgnoreCase("Hidden")) {
             this.actions[var2 - 30] = null;
          }

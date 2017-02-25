@@ -257,7 +257,7 @@ public class class37 {
          int var11 = var7 >> 14 & 32767;
          if(var7 != var5) {
             var5 = var7;
-            if(var10 == 2 && class48.region.method1777(WallObject.plane, var8, var9, var7) >= 0) {
+            if(var10 == 2 && Script.region.method1777(WallObject.plane, var8, var9, var7) >= 0) {
                ObjectComposition var12 = class187.getObjectDefinition(var11);
                if(null != var12.impostorIds) {
                   var12 = var12.getImpostor();
