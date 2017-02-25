@@ -161,7 +161,7 @@ public class class165 {
             class7.method91();
             class182.method3325();
             class7.method91();
-            class48.region.method1748();
+            Script.region.method1748();
             class7.method91();
             System.gc();
 
@@ -230,7 +230,7 @@ public class class165 {
                      var4 = (class119.mapRegions[var49] >> 8) * 64 - class5.baseX;
                      var5 = 64 * (class119.mapRegions[var49] & 255) - XClanMember.baseY;
                      class7.method91();
-                     Region var53 = class48.region;
+                     Region var53 = Script.region;
                      CollisionData[] var58 = Client.collisionMaps;
                      var8 = new Buffer(var52);
                      var9 = -1;
@@ -404,7 +404,7 @@ public class class165 {
                                  var14 = 8 * var4;
                                  var15 = (var48 & 7) * 8;
                                  var16 = 8 * (var9 & 7);
-                                 Region var50 = class48.region;
+                                 Region var50 = Script.region;
                                  var18 = Client.collisionMaps;
                                  var71 = new Buffer(var59);
                                  var47 = -1;
@@ -483,7 +483,7 @@ public class class165 {
             Actor.method632(true);
             class182.method3325();
             class7.method91();
-            Region var66 = class48.region;
+            Region var66 = Script.region;
             CollisionData[] var80 = Client.collisionMaps;
 
             for(var4 = 0; var4 < 4; ++var4) {
@@ -962,9 +962,9 @@ public class class165 {
             }
 
             if(Client.field308) {
-               class48.region.method1749(class10.field95);
+               Script.region.method1749(class10.field95);
             } else {
-               class48.region.method1749(0);
+               Script.region.method1749(0);
             }
 
             for(var5 = 0; var5 < 104; ++var5) {
@@ -1129,7 +1129,7 @@ public class class165 {
                         var7 = class185.field2758.readUnsignedByte();
                         var8 = class185.field2758.readUnsignedShort();
                         int var9 = class185.field2758.readUnsignedByte();
-                        var10 = class185.field2758.method2965();
+                        var10 = class185.field2758.readInt();
                         long var11 = (long)(var8 + (var7 << 16));
                         class181 var13 = (class181)class185.field2756.method2399(var11);
                         class85.field1475 = true;
@@ -1185,8 +1185,8 @@ public class class165 {
                               class184 var17 = class185.field2746[var8];
                               if(var17 != null) {
                                  class185.field2761.offset = 5 + 8 * var8;
-                                 var10 = class185.field2761.method2965();
-                                 int var18 = class185.field2761.method2965();
+                                 var10 = class185.field2761.readInt();
+                                 int var18 = class185.field2761.readInt();
                                  var17.method3395(var10, var18);
                               }
                            }
@@ -1266,7 +1266,7 @@ public class class165 {
       signature = "(ILclass48;ZI)I",
       garbageValue = "894990248"
    )
-   static int method3167(int var0, class48 var1, boolean var2) {
+   static int method3167(int var0, Script var1, boolean var2) {
       Widget var3 = class179.method3296(class32.field747[--class103.field1686]);
       if(var0 == 2600) {
          class32.field747[++class103.field1686 - 1] = var3.scrollX;

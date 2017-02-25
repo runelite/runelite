@@ -67,7 +67,7 @@ public final class WallObject {
    static void method1954() {
       int var0;
       if(Client.field333 == 0) {
-         class48.region = new Region(4, 104, 104, class10.tileHeights);
+         Script.region = new Region(4, 104, 104, class10.tileHeights);
 
          for(var0 = 0; var0 < 4; ++var0) {
             Client.collisionMaps[var0] = new CollisionData(104, 104);

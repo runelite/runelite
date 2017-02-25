@@ -1,36 +1,45 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("ay")
-public class class48 extends CacheableNode {
+@Implements("Script")
+public class Script extends CacheableNode {
    @ObfuscatedName("d")
-   int[] field959;
+   @Export("instructions")
+   int[] instructions;
    @ObfuscatedName("h")
-   int[] field960;
+   @Export("intOperands")
+   int[] intOperands;
    @ObfuscatedName("n")
    @ObfuscatedGetter(
       intValue = 1977718259
    )
-   int field961;
+   @Export("localStringCount")
+   int localStringCount;
    @ObfuscatedName("c")
    @ObfuscatedGetter(
       intValue = 22353007
    )
-   int field963;
+   @Export("stringStackCount")
+   int stringStackCount;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = -1721726273
    )
-   int field964;
+   @Export("localIntCount")
+   int localIntCount;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 369322755
    )
-   int field965;
+   @Export("intStackCount")
+   int intStackCount;
    @ObfuscatedName("p")
-   String[] field968;
+   @Export("stringOperands")
+   String[] stringOperands;
    @ObfuscatedName("do")
    @Export("region")
    static Region region;

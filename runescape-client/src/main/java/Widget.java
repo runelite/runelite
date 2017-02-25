@@ -665,7 +665,7 @@ public class Widget extends Node {
             if(var11 == 1) {
                this.field2273[var8] = var1.readShort();
                this.field2258[var8] = var1.readShort();
-               this.field2275[var8] = var1.method2965();
+               this.field2275[var8] = var1.readInt();
             } else {
                this.field2275[var8] = -1;
             }
@@ -674,7 +674,7 @@ public class Widget extends Node {
          this.field2276 = new String[5];
 
          for(var8 = 0; var8 < 5; ++var8) {
-            String var9 = var1.method2868();
+            String var9 = var1.readString();
             if(var9.length() > 0) {
                this.field2276[var8] = var9;
                this.field2277 |= 1 << var8 + 23;
@@ -699,23 +699,23 @@ public class Widget extends Node {
       }
 
       if(this.type == 4) {
-         this.text = var1.method2868();
-         this.field2221 = var1.method2868();
+         this.text = var1.readString();
+         this.field2221 = var1.readString();
       }
 
       if(this.type == 1 || this.type == 3 || this.type == 4) {
-         this.textColor = var1.method2965();
+         this.textColor = var1.readInt();
       }
 
       if(this.type == 3 || this.type == 4) {
-         this.field2313 = var1.method2965();
-         this.field2249 = var1.method2965();
-         this.field2321 = var1.method2965();
+         this.field2313 = var1.readInt();
+         this.field2249 = var1.readInt();
+         this.field2321 = var1.readInt();
       }
 
       if(this.type == 5) {
-         this.textureId = var1.method2965();
-         this.field2338 = var1.method2965();
+         this.textureId = var1.readInt();
+         this.field2338 = var1.readInt();
       }
 
       if(this.type == 6) {
@@ -756,7 +756,7 @@ public class Widget extends Node {
          }
 
          this.field2270 = var1.readUnsignedByte() == 1;
-         this.textColor = var1.method2965();
+         this.textColor = var1.readInt();
          this.field2339 = var1.readShort();
          this.field2272 = var1.readShort();
          var4 = var1.readUnsignedByte();
@@ -767,7 +767,7 @@ public class Widget extends Node {
          this.field2276 = new String[5];
 
          for(var5 = 0; var5 < 5; ++var5) {
-            String var10 = var1.method2868();
+            String var10 = var1.readString();
             if(var10.length() > 0) {
                this.field2276[var5] = var10;
                this.field2277 |= 1 << var5 + 23;
@@ -776,18 +776,18 @@ public class Widget extends Node {
       }
 
       if(this.type == 8) {
-         this.text = var1.method2868();
+         this.text = var1.readString();
       }
 
       if(this.field2212 == 2 || this.type == 2) {
-         this.field2306 = var1.method2868();
-         this.field2308 = var1.method2868();
+         this.field2306 = var1.readString();
+         this.field2308 = var1.readString();
          var4 = var1.readUnsignedShort() & 63;
          this.field2277 |= var4 << 11;
       }
 
       if(this.field2212 == 1 || this.field2212 == 4 || this.field2212 == 5 || this.field2212 == 6) {
-         this.tooltip = var1.method2868();
+         this.tooltip = var1.readString();
          if(this.tooltip.length() == 0) {
             if(this.field2212 == 1) {
                this.tooltip = "Ok";
@@ -855,12 +855,12 @@ public class Widget extends Node {
       }
 
       if(this.type == 5) {
-         this.textureId = var1.method2965();
+         this.textureId = var1.readInt();
          this.field2242 = var1.readUnsignedShort();
          this.field2243 = var1.readUnsignedByte() == 1;
          this.opacity = var1.readUnsignedByte();
          this.borderThickness = var1.readUnsignedByte();
-         this.sprite2 = var1.method2965();
+         this.sprite2 = var1.readInt();
          this.flippedVertically = var1.readUnsignedByte() == 1;
          this.flippedHorizontally = var1.readUnsignedByte() == 1;
       }
@@ -900,41 +900,41 @@ public class Widget extends Node {
             this.fontId = -1;
          }
 
-         this.text = var1.method2868();
+         this.text = var1.readString();
          this.field2267 = var1.readUnsignedByte();
          this.field2268 = var1.readUnsignedByte();
          this.field2269 = var1.readUnsignedByte();
          this.field2270 = var1.readUnsignedByte() == 1;
-         this.textColor = var1.method2965();
+         this.textColor = var1.readInt();
       }
 
       if(this.type == 3) {
-         this.textColor = var1.method2965();
+         this.textColor = var1.readInt();
          this.field2234 = var1.readUnsignedByte() == 1;
          this.opacity = var1.readUnsignedByte();
       }
 
       if(this.type == 9) {
          this.field2289 = var1.readUnsignedByte();
-         this.textColor = var1.method2965();
+         this.textColor = var1.readInt();
          this.field2239 = var1.readUnsignedByte() == 1;
       }
 
       this.field2277 = var1.read24BitInt();
-      this.name = var1.method2868();
+      this.name = var1.readString();
       int var2 = var1.readUnsignedByte();
       if(var2 > 0) {
          this.actions = new String[var2];
 
          for(int var3 = 0; var3 < var2; ++var3) {
-            this.actions[var3] = var1.method2868();
+            this.actions[var3] = var1.readString();
          }
       }
 
       this.field2281 = var1.readUnsignedByte();
       this.field2236 = var1.readUnsignedByte();
       this.field2283 = var1.readUnsignedByte() == 1;
-      this.field2306 = var1.method2868();
+      this.field2306 = var1.readString();
       this.field2331 = this.method3212(var1);
       this.field2266 = this.method3212(var1);
       this.field2293 = this.method3212(var1);
@@ -973,9 +973,9 @@ public class Widget extends Node {
          for(int var4 = 0; var4 < var2; ++var4) {
             int var5 = var1.readUnsignedByte();
             if(var5 == 0) {
-               var3[var4] = new Integer(var1.method2965());
+               var3[var4] = new Integer(var1.readInt());
             } else if(var5 == 1) {
-               var3[var4] = var1.method2868();
+               var3[var4] = var1.readString();
             }
          }
 
@@ -1270,7 +1270,7 @@ public class Widget extends Node {
          int[] var3 = new int[var2];
 
          for(int var4 = 0; var4 < var2; ++var4) {
-            var3[var4] = var1.method2965();
+            var3[var4] = var1.readInt();
          }
 
          return var3;

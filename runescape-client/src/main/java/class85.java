@@ -49,7 +49,7 @@ public final class class85 {
       signature = "(ILclass48;ZS)I",
       garbageValue = "-17684"
    )
-   static int method1744(int var0, class48 var1, boolean var2) {
+   static int method1744(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;

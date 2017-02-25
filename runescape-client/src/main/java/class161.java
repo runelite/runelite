@@ -20,7 +20,7 @@ public class class161 {
       signature = "(ILclass48;ZI)I",
       garbageValue = "-962381574"
    )
-   static int method3114(int var0, class48 var1, boolean var2) {
+   static int method3114(int var0, Script var1, boolean var2) {
       if(var0 == 3200) {
          class103.field1686 -= 3;
          VertexNormal.method1684(class32.field747[class103.field1686], class32.field747[1 + class103.field1686], class32.field747[2 + class103.field1686]);

@@ -18,7 +18,7 @@ public class class8 {
       signature = "(ILclass48;ZB)I",
       garbageValue = "-3"
    )
-   static int method94(int var0, class48 var1, boolean var2) {
+   static int method94(int var0, Script var1, boolean var2) {
       if(var0 == 5000) {
          class32.field747[++class103.field1686 - 1] = Client.field588;
          return 1;
@@ -294,7 +294,7 @@ public class class8 {
       signature = "(ILclass48;ZI)I",
       garbageValue = "-655991608"
    )
-   static int method95(int var0, class48 var1, boolean var2) {
+   static int method95(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;

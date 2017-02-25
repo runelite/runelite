@@ -15,21 +15,21 @@ public class class174 {
    static void method3275(class18 var0, int var1) {
       Object[] var2 = var0.field209;
       int var3 = ((Integer)var2[0]).intValue();
-      class48 var4 = class182.method3378(var3);
+      Script var4 = class182.method3378(var3);
       if(var4 != null) {
          class103.field1686 = 0;
          class32.field749 = 0;
          int var5 = -1;
-         int[] var6 = var4.field959;
-         int[] var7 = var4.field960;
+         int[] var6 = var4.instructions;
+         int[] var7 = var4.intOperands;
          byte var8 = -1;
          class32.field750 = 0;
 
          int var11;
          try {
-            class3.field37 = new int[var4.field964];
+            class3.field37 = new int[var4.localIntCount];
             int var9 = 0;
-            class32.field757 = new String[var4.field961];
+            class32.field757 = new String[var4.localStringCount];
             int var10 = 0;
 
             int var12;
@@ -211,20 +211,20 @@ public class class174 {
                                                                                                                                                                }
                                                                                                                                                             } else {
                                                                                                                                                                var12 = var7[var5];
-                                                                                                                                                               class48 var33 = class182.method3378(var12);
-                                                                                                                                                               int[] var32 = new int[var33.field964];
-                                                                                                                                                               String[] var25 = new String[var33.field961];
+                                                                                                                                                               Script var33 = class182.method3378(var12);
+                                                                                                                                                               int[] var32 = new int[var33.localIntCount];
+                                                                                                                                                               String[] var25 = new String[var33.localStringCount];
 
-                                                                                                                                                               for(var22 = 0; var22 < var33.field965; ++var22) {
-                                                                                                                                                                  var32[var22] = class32.field747[class103.field1686 - var33.field965 + var22];
+                                                                                                                                                               for(var22 = 0; var22 < var33.intStackCount; ++var22) {
+                                                                                                                                                                  var32[var22] = class32.field747[class103.field1686 - var33.intStackCount + var22];
                                                                                                                                                                }
 
-                                                                                                                                                               for(var22 = 0; var22 < var33.field963; ++var22) {
-                                                                                                                                                                  var25[var22] = class32.chatboxSegments[class32.field749 - var33.field963 + var22];
+                                                                                                                                                               for(var22 = 0; var22 < var33.stringStackCount; ++var22) {
+                                                                                                                                                                  var25[var22] = class32.chatboxSegments[class32.field749 - var33.stringStackCount + var22];
                                                                                                                                                                }
 
-                                                                                                                                                               class103.field1686 -= var33.field965;
-                                                                                                                                                               class32.field749 -= var33.field963;
+                                                                                                                                                               class103.field1686 -= var33.intStackCount;
+                                                                                                                                                               class32.field749 -= var33.stringStackCount;
                                                                                                                                                                class11 var35 = new class11();
                                                                                                                                                                var35.field121 = var4;
                                                                                                                                                                var35.field124 = var5;
@@ -232,8 +232,8 @@ public class class174 {
                                                                                                                                                                var35.field123 = class32.field757;
                                                                                                                                                                class32.field751[++class32.field750 - 1] = var35;
                                                                                                                                                                var4 = var33;
-                                                                                                                                                               var6 = var33.field959;
-                                                                                                                                                               var7 = var33.field960;
+                                                                                                                                                               var6 = var33.instructions;
+                                                                                                                                                               var7 = var33.intOperands;
                                                                                                                                                                var5 = -1;
                                                                                                                                                                class3.field37 = var32;
                                                                                                                                                                class32.field757 = var25;
@@ -327,8 +327,8 @@ public class class174 {
 
                                                                                                                            class11 var37 = class32.field751[--class32.field750];
                                                                                                                            var4 = var37.field121;
-                                                                                                                           var6 = var4.field959;
-                                                                                                                           var7 = var4.field960;
+                                                                                                                           var6 = var4.instructions;
+                                                                                                                           var7 = var4.intOperands;
                                                                                                                            var5 = var37.field124;
                                                                                                                            class3.field37 = var37.field134;
                                                                                                                            class32.field757 = var37.field123;
@@ -361,7 +361,7 @@ public class class174 {
                                                                                                             var5 += var7[var5];
                                                                                                          }
                                                                                                       } else {
-                                                                                                         class32.chatboxSegments[++class32.field749 - 1] = var4.field968[var5];
+                                                                                                         class32.chatboxSegments[++class32.field749 - 1] = var4.stringOperands[var5];
                                                                                                       }
                                                                                                    } else {
                                                                                                       var12 = var7[var5];
@@ -377,7 +377,7 @@ public class class174 {
                                                                                              }
                                                                                           } else {
                                                                                              boolean var36;
-                                                                                             if(var4.field960[var5] == 1) {
+                                                                                             if(var4.intOperands[var5] == 1) {
                                                                                                 var36 = true;
                                                                                              } else {
                                                                                                 var36 = false;

@@ -61,10 +61,10 @@ public class XGrandExchangeOffer {
    public XGrandExchangeOffer(Buffer var1, boolean var2) {
       this.progress = var1.readByte();
       this.itemId = var1.readUnsignedShort();
-      this.price = var1.method2965();
-      this.totalQuantity = var1.method2965();
-      this.quantitySold = var1.method2965();
-      this.spent = var1.method2965();
+      this.price = var1.readInt();
+      this.totalQuantity = var1.readInt();
+      this.quantitySold = var1.readInt();
+      this.spent = var1.readInt();
    }
 
    @ObfuscatedName("h")

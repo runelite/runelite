@@ -118,23 +118,23 @@ public final class class105 implements KeyListener, FocusListener {
       int var3 = 0;
       int var4 = 0;
       if(var0.field593 == 0) {
-         var1 = class48.region.method1773(var0.field594, var0.field598, var0.field595);
+         var1 = Script.region.method1773(var0.field594, var0.field598, var0.field595);
       }
 
       if(var0.field593 == 1) {
-         var1 = class48.region.method1811(var0.field594, var0.field598, var0.field595);
+         var1 = Script.region.method1811(var0.field594, var0.field598, var0.field595);
       }
 
       if(var0.field593 == 2) {
-         var1 = class48.region.method1878(var0.field594, var0.field598, var0.field595);
+         var1 = Script.region.method1878(var0.field594, var0.field598, var0.field595);
       }
 
       if(var0.field593 == 3) {
-         var1 = class48.region.method1776(var0.field594, var0.field598, var0.field595);
+         var1 = Script.region.method1776(var0.field594, var0.field598, var0.field595);
       }
 
       if(var1 != 0) {
-         int var5 = class48.region.method1777(var0.field594, var0.field598, var0.field595, var1);
+         int var5 = Script.region.method1777(var0.field594, var0.field598, var0.field595, var1);
          var2 = var1 >> 14 & 32767;
          var3 = var5 & 31;
          var4 = var5 >> 6 & 3;

@@ -560,7 +560,7 @@ public class XClanMember extends Node {
       signature = "(ILclass48;ZB)I",
       garbageValue = "-34"
    )
-   static int method254(int var0, class48 var1, boolean var2) {
+   static int method254(int var0, Script var1, boolean var2) {
       byte var3;
       int var4;
       int var6;
@@ -1519,7 +1519,7 @@ public class XClanMember extends Node {
       signature = "(ILclass48;ZI)I",
       garbageValue = "-1297033578"
    )
-   static int method256(int var0, class48 var1, boolean var2) {
+   static int method256(int var0, Script var1, boolean var2) {
       Widget var3 = var2?XGrandExchangeOffer.field58:field297;
       if(var0 == 1700) {
          class32.field747[++class103.field1686 - 1] = var3.item;

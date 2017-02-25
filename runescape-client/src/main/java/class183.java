@@ -366,7 +366,7 @@ public class class183 implements Runnable {
                                  if(var81.field768) {
                                     var81.unlink();
                                  } else {
-                                    class48.region.method1758(var81.field773, var81.field764, var81.field765, var81.field771, 60, var81, 0, -1, false);
+                                    Script.region.method1758(var81.field773, var81.field764, var81.field765, var81.field771, 60, var81, 0, -1, false);
                                  }
                               }
                            } else {
@@ -461,10 +461,10 @@ public class class183 implements Runnable {
                         class7.method91();
                         var32 = class84.field1445;
                         class84.field1445 = Client.scale;
-                        class48.region.method1788(VertexNormal.cameraX, class36.cameraZ, class37.cameraY, Actor.cameraPitch, class26.cameraYaw, var24);
+                        Script.region.method1788(VertexNormal.cameraX, class36.cameraZ, class37.cameraY, Actor.cameraPitch, class26.cameraYaw, var24);
                         class84.field1445 = var32;
                         class7.method91();
-                        class48.region.method1761();
+                        Script.region.method1761();
                         Client.field398 = 0;
                         boolean var69 = false;
                         var34 = -1;

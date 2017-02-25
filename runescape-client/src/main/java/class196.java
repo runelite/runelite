@@ -350,7 +350,7 @@ public class class196 extends CacheableNode {
          var2 = this.field2887[this.field2887.length - 1];
       }
 
-      return var2 != -1?class48.method970(var2):null;
+      return var2 != -1?Script.method970(var2):null;
    }
 
    @ObfuscatedName("ek")
