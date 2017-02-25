@@ -63,9 +63,9 @@ public class class189 extends CacheableNode {
                for(int var2 = 0; var2 < World.field703; var3.index = var2++) {
                   var3 = World.worldList[var2] = new World();
                   var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.method2965();
-                  var3.address = var1.method2868();
-                  var3.activity = var1.method2868();
+                  var3.mask = var1.readInt();
+                  var3.address = var1.readString();
+                  var3.activity = var1.readString();
                   var3.location = var1.readUnsignedByte();
                   var3.playerCount = var1.readShort();
                }

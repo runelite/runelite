@@ -42,7 +42,7 @@ final class class5 implements Comparator {
       signature = "(ILclass48;ZI)I",
       garbageValue = "-1676378254"
    )
-   static int method64(int var0, class48 var1, boolean var2) {
+   static int method64(int var0, Script var1, boolean var2) {
       String var3;
       if(var0 == 3100) {
          var3 = class32.chatboxSegments[--class32.field749];
@@ -515,7 +515,7 @@ final class class5 implements Comparator {
             var7 = Client.field350.readUnsignedShort();
             if(var1 >= 0 && var36 >= 0 && var1 < 103 && var36 < 103) {
                if(var38 == 0) {
-                  WallObject var32 = class48.region.method1769(WallObject.plane, var1, var36);
+                  WallObject var32 = Script.region.method1769(WallObject.plane, var1, var36);
                   if(var32 != null) {
                      var9 = var32.hash >> 14 & 32767;
                      if(var37 == 2) {
@@ -528,7 +528,7 @@ final class class5 implements Comparator {
                }
 
                if(var38 == 1) {
-                  DecorativeObject var40 = class48.region.method1927(WallObject.plane, var1, var36);
+                  DecorativeObject var40 = Script.region.method1927(WallObject.plane, var1, var36);
                   if(null != var40) {
                      var9 = var40.hash >> 14 & 32767;
                      if(var37 != 4 && var37 != 5) {
@@ -547,7 +547,7 @@ final class class5 implements Comparator {
                }
 
                if(var38 == 2) {
-                  GameObject var41 = class48.region.method1854(WallObject.plane, var1, var36);
+                  GameObject var41 = Script.region.method1854(WallObject.plane, var1, var36);
                   if(var37 == 11) {
                      var37 = 10;
                   }
@@ -558,7 +558,7 @@ final class class5 implements Comparator {
                }
 
                if(var38 == 3) {
-                  GroundObject var42 = class48.region.method1772(WallObject.plane, var1, var36);
+                  GroundObject var42 = Script.region.method1772(WallObject.plane, var1, var36);
                   if(null != var42) {
                      var42.renderable = new class49(var42.hash >> 14 & 32767, 22, var5, WallObject.plane, var1, var36, var7, false, var42.renderable);
                   }

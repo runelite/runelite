@@ -257,7 +257,7 @@ public class class103 implements Runnable {
       signature = "(ILclass48;ZI)I",
       garbageValue = "474794473"
    )
-   static int method2043(int var0, class48 var1, boolean var2) {
+   static int method2043(int var0, Script var1, boolean var2) {
       String var3;
       int var4;
       if(var0 == 4100) {

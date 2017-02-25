@@ -22,7 +22,7 @@ public final class RSCanvas extends Canvas {
       signature = "(ILclass48;ZI)I",
       garbageValue = "1354352096"
    )
-   static int method2139(int var0, class48 var1, boolean var2) {
+   static int method2139(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;

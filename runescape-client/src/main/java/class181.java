@@ -26,7 +26,7 @@ public class class181 extends CacheableNode {
       signature = "(ILclass48;ZI)I",
       garbageValue = "-482208937"
    )
-   static int method3299(int var0, class48 var1, boolean var2) {
+   static int method3299(int var0, Script var1, boolean var2) {
       int var4 = -1;
       Widget var3;
       if(var0 >= 2000) {

@@ -30,11 +30,11 @@ public class class39 {
 
          for(var5 = 1; var5 < 103; ++var5) {
             if((class10.tileSettings[var0][var5][var3] & 24) == 0) {
-               class48.region.method1781(var1, var4, 512, var0, var5, var3);
+               Script.region.method1781(var1, var4, 512, var0, var5, var3);
             }
 
             if(var0 < 3 && (class10.tileSettings[1 + var0][var5][var3] & 8) != 0) {
-               class48.region.method1781(var1, var4, 512, var0 + 1, var5, var3);
+               Script.region.method1781(var1, var4, 512, var0 + 1, var5, var3);
             }
 
             var4 += 4;
@@ -62,7 +62,7 @@ public class class39 {
 
       for(var5 = 0; var5 < 104; ++var5) {
          for(var6 = 0; var6 < 104; ++var6) {
-            int var7 = class48.region.method1776(WallObject.plane, var5, var6);
+            int var7 = Script.region.method1776(WallObject.plane, var5, var6);
             if(var7 != 0) {
                var7 = var7 >> 14 & 32767;
                int var8 = class187.getObjectDefinition(var7).mapIconId;

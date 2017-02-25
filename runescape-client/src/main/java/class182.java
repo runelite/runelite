@@ -69,7 +69,7 @@ public abstract class class182 {
       var5 = var4.readUnsignedByte();
       if(var5 >= 5 && var5 <= 7) {
          if(var5 >= 6) {
-            var4.method2965();
+            var4.readInt();
          }
 
          var6 = var4.readUnsignedByte();
@@ -109,18 +109,18 @@ public abstract class class182 {
             this.field2709 = new int[var8 + 1];
 
             for(var9 = 0; var9 < this.field2722; ++var9) {
-               this.field2709[this.field2725[var9]] = var4.method2965();
+               this.field2709[this.field2725[var9]] = var4.readInt();
             }
 
             this.field2711 = new class122(this.field2709);
          }
 
          for(var9 = 0; var9 < this.field2722; ++var9) {
-            this.field2712[this.field2725[var9]] = var4.method2965();
+            this.field2712[this.field2725[var9]] = var4.readInt();
          }
 
          for(var9 = 0; var9 < this.field2722; ++var9) {
-            this.field2713[this.field2725[var9]] = var4.method2965();
+            this.field2713[this.field2725[var9]] = var4.readInt();
          }
 
          for(var9 = 0; var9 < this.field2722; ++var9) {
@@ -178,7 +178,7 @@ public abstract class class182 {
                this.field2710[var10] = new int[this.field2719[var10].length];
 
                for(var12 = 0; var12 < var11; ++var12) {
-                  this.field2710[var10][this.field2715[var10][var12]] = var4.method2965();
+                  this.field2710[var10][this.field2715[var10][var12]] = var4.readInt();
                }
 
                this.field2708[var10] = new class122(this.field2710[var10]);
@@ -388,7 +388,7 @@ public abstract class class182 {
                   var14 = 0;
 
                   for(var15 = 0; var15 < var3; ++var15) {
-                     var14 += var11.method2965();
+                     var14 += var11.readInt();
                      var12[var15] += var14;
                   }
                }
@@ -407,7 +407,7 @@ public abstract class class182 {
                   int var16 = 0;
 
                   for(int var17 = 0; var17 < var3; ++var17) {
-                     var16 += var11.method2965();
+                     var16 += var11.readInt();
                      System.arraycopy(var20, var14, var19[var17], var12[var17], var16);
                      var12[var17] += var16;
                      var14 += var16;
@@ -512,7 +512,7 @@ public abstract class class182 {
       Ignore.method208();
       GameEngine.method2231();
       ((TextureProvider)class84.field1465).method1491();
-      class48.field970.reset();
+      Script.field970.reset();
       class20.field228.method3316();
       class1.field23.method3316();
       class116.field1819.method3316();
@@ -734,8 +734,8 @@ public abstract class class182 {
       signature = "(IB)Lclass48;",
       garbageValue = "24"
    )
-   static class48 method3378(int var0) {
-      class48 var1 = (class48)class48.field970.get((long)var0);
+   static Script method3378(int var0) {
+      Script var1 = (Script)Script.field970.get((long)var0);
       if(var1 != null) {
          return var1;
       } else {
@@ -743,33 +743,33 @@ public abstract class class182 {
          if(var2 == null) {
             return null;
          } else {
-            var1 = new class48();
+            var1 = new Script();
             Buffer var3 = new Buffer(var2);
             var3.offset = var3.payload.length - 12;
-            int var4 = var3.method2965();
-            var1.field964 = var3.readUnsignedShort();
-            var1.field961 = var3.readUnsignedShort();
-            var1.field965 = var3.readUnsignedShort();
-            var1.field963 = var3.readUnsignedShort();
+            int var4 = var3.readInt();
+            var1.localIntCount = var3.readUnsignedShort();
+            var1.localStringCount = var3.readUnsignedShort();
+            var1.intStackCount = var3.readUnsignedShort();
+            var1.stringStackCount = var3.readUnsignedShort();
             var3.offset = 0;
             var3.method2884();
-            var1.field959 = new int[var4];
-            var1.field960 = new int[var4];
-            var1.field968 = new String[var4];
+            var1.instructions = new int[var4];
+            var1.intOperands = new int[var4];
+            var1.stringOperands = new String[var4];
 
             int var6;
-            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.field959[var5++] = var6) {
+            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.instructions[var5++] = var6) {
                var6 = var3.readUnsignedShort();
                if(var6 == 3) {
-                  var1.field968[var5] = var3.method2868();
+                  var1.stringOperands[var5] = var3.readString();
                } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
-                  var1.field960[var5] = var3.method2965();
+                  var1.intOperands[var5] = var3.readInt();
                } else {
-                  var1.field960[var5] = var3.readUnsignedByte();
+                  var1.intOperands[var5] = var3.readUnsignedByte();
                }
             }
 
-            class48.field970.put(var1, (long)var0);
+            Script.field970.put(var1, (long)var0);
             return var1;
          }
       }

@@ -226,7 +226,7 @@ public final class Player extends Actor {
          super.field679 = -1;
       }
 
-      this.name = var1.method2868();
+      this.name = var1.readString();
       if(this == class36.localPlayer) {
          class101.field1660 = this.name;
       }
@@ -516,7 +516,7 @@ public final class Player extends Actor {
 
          for(var4 = 0; var4 < var3; ++var4) {
             for(var5 = 0; var5 < 4; ++var5) {
-               class104.xteaKeys[var4][var5] = Client.field350.method2965();
+               class104.xteaKeys[var4][var5] = Client.field350.readInt();
             }
          }
 
@@ -573,7 +573,7 @@ public final class Player extends Actor {
 
          for(var4 = 0; var4 < var3; ++var4) {
             for(var5 = 0; var5 < 4; ++var5) {
-               class104.xteaKeys[var4][var5] = Client.field350.method2965();
+               class104.xteaKeys[var4][var5] = Client.field350.readInt();
             }
          }
 

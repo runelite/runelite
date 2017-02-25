@@ -9,7 +9,7 @@ public abstract class class112 {
       signature = "(ILclass48;ZI)I",
       garbageValue = "1798624574"
    )
-   static int method2145(int var0, class48 var1, boolean var2) {
+   static int method2145(int var0, Script var1, boolean var2) {
       if(var0 == 6200) {
          class103.field1686 -= 2;
          Client.field385 = (short)class32.field747[class103.field1686];

@@ -42,7 +42,7 @@ public class class162 {
                   var3 -= Integer.MIN_VALUE;
                }
 
-               class48.region.method1758(WallObject.plane, var2.x, var2.y, class2.method19(var2.field657 * 64 - 64 + var2.x, var2.y + (var2.field657 * 64 - 64), WallObject.plane), var2.field657 * 64 - 64 + 60, var2, var2.angle, var3, var2.field627);
+               Script.region.method1758(WallObject.plane, var2.x, var2.y, class2.method19(var2.field657 * 64 - 64 + var2.x, var2.y + (var2.field657 * 64 - 64), WallObject.plane), var2.field657 * 64 - 64 + 60, var2, var2.angle, var3, var2.field627);
             }
          }
       }

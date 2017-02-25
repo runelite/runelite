@@ -86,7 +86,7 @@ public class WidgetNode extends Node {
          var5 = 0;
       }
 
-      class48.region.method1871(WallObject.plane, var0, var1, false);
+      Script.region.method1871(WallObject.plane, var0, var1, false);
       Client.isMenuOpen = true;
       class6.menuX = var7;
       class10.menuY = var5;
@@ -206,7 +206,7 @@ public class WidgetNode extends Node {
       garbageValue = "535779556"
    )
    static final void method194(int var0, int var1, int var2, int var3, int var4) {
-      int var5 = class48.region.method1773(var0, var1, var2);
+      int var5 = Script.region.method1773(var0, var1, var2);
       int var6;
       int var7;
       int var8;
@@ -214,7 +214,7 @@ public class WidgetNode extends Node {
       int var11;
       int var12;
       if(var5 != 0) {
-         var6 = class48.region.method1777(var0, var1, var2, var5);
+         var6 = Script.region.method1777(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var3;
@@ -296,9 +296,9 @@ public class WidgetNode extends Node {
          }
       }
 
-      var5 = class48.region.method1878(var0, var1, var2);
+      var5 = Script.region.method1878(var0, var1, var2);
       if(var5 != 0) {
-         var6 = class48.region.method1777(var0, var1, var2, var5);
+         var6 = Script.region.method1777(var0, var1, var2, var5);
          var7 = var6 >> 6 & 3;
          var8 = var6 & 31;
          var9 = var5 >> 14 & 32767;
@@ -333,7 +333,7 @@ public class WidgetNode extends Node {
          }
       }
 
-      var5 = class48.region.method1776(var0, var1, var2);
+      var5 = Script.region.method1776(var0, var1, var2);
       if(var5 != 0) {
          var6 = var5 >> 14 & 32767;
          ObjectComposition var20 = class187.getObjectDefinition(var6);
@@ -363,7 +363,7 @@ public class WidgetNode extends Node {
       signature = "(ILclass48;ZI)I",
       garbageValue = "-487776779"
    )
-   static int method196(int var0, class48 var1, boolean var2) {
+   static int method196(int var0, Script var1, boolean var2) {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;

@@ -60,7 +60,7 @@ public class class38 {
                }
 
                var0.method868(Client.field498);
-               class48.region.method1758(WallObject.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.field882, -1, false);
+               Script.region.method1758(WallObject.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.field882, -1, false);
             }
          } else {
             var0.unlink();

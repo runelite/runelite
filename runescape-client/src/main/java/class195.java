@@ -43,9 +43,9 @@ public class class195 extends CacheableNode {
       } else if(var2 == 2) {
          this.field2857 = (char)var1.readUnsignedByte();
       } else if(var2 == 3) {
-         this.field2861 = var1.method2868();
+         this.field2861 = var1.readString();
       } else if(var2 == 4) {
-         this.field2863 = var1.method2965();
+         this.field2863 = var1.readInt();
       } else {
          int var3;
          if(var2 == 5) {
@@ -54,8 +54,8 @@ public class class195 extends CacheableNode {
             this.field2860 = new String[this.field2858];
 
             for(var3 = 0; var3 < this.field2858; ++var3) {
-               this.field2862[var3] = var1.method2965();
-               this.field2860[var3] = var1.method2868();
+               this.field2862[var3] = var1.readInt();
+               this.field2860[var3] = var1.readString();
             }
          } else if(var2 == 6) {
             this.field2858 = var1.readUnsignedShort();
@@ -63,8 +63,8 @@ public class class195 extends CacheableNode {
             this.field2865 = new int[this.field2858];
 
             for(var3 = 0; var3 < this.field2858; ++var3) {
-               this.field2862[var3] = var1.method2965();
-               this.field2865[var3] = var1.method2965();
+               this.field2862[var3] = var1.readInt();
+               this.field2865[var3] = var1.readInt();
             }
          }
       }

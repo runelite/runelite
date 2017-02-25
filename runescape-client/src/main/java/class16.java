@@ -90,30 +90,30 @@ public class class16 extends class131 {
          boolean var9 = false;
          boolean var10 = false;
          if(var1 == 0) {
-            var7 = class48.region.method1773(var0, var2, var3);
+            var7 = Script.region.method1773(var0, var2, var3);
          }
 
          if(var1 == 1) {
-            var7 = class48.region.method1811(var0, var2, var3);
+            var7 = Script.region.method1811(var0, var2, var3);
          }
 
          if(var1 == 2) {
-            var7 = class48.region.method1878(var0, var2, var3);
+            var7 = Script.region.method1878(var0, var2, var3);
          }
 
          if(var1 == 3) {
-            var7 = class48.region.method1776(var0, var2, var3);
+            var7 = Script.region.method1776(var0, var2, var3);
          }
 
          int var11;
          if(var7 != 0) {
-            var11 = class48.region.method1777(var0, var2, var3, var7);
+            var11 = Script.region.method1777(var0, var2, var3, var7);
             int var34 = var7 >> 14 & 32767;
             int var35 = var11 & 31;
             int var36 = var11 >> 6 & 3;
             ObjectComposition var12;
             if(var1 == 0) {
-               class48.region.method1764(var0, var2, var3);
+               Script.region.method1764(var0, var2, var3);
                var12 = class187.getObjectDefinition(var34);
                if(var12.field2943 != 0) {
                   Client.collisionMaps[var0].method2312(var2, var3, var35, var36, var12.field2911);
@@ -121,11 +121,11 @@ public class class16 extends class131 {
             }
 
             if(var1 == 1) {
-               class48.region.method1765(var0, var2, var3);
+               Script.region.method1765(var0, var2, var3);
             }
 
             if(var1 == 2) {
-               class48.region.method1843(var0, var2, var3);
+               Script.region.method1843(var0, var2, var3);
                var12 = class187.getObjectDefinition(var34);
                if(var12.sizeX + var2 > 103 || var12.sizeX + var3 > 103 || var2 + var12.sizeY > 103 || var3 + var12.sizeY > 103) {
                   return;
@@ -137,7 +137,7 @@ public class class16 extends class131 {
             }
 
             if(var1 == 3) {
-               class48.region.method1767(var0, var2, var3);
+               Script.region.method1767(var0, var2, var3);
                var12 = class187.getObjectDefinition(var34);
                if(var12.field2943 == 1) {
                   Client.collisionMaps[var0].method2321(var2, var3);
@@ -151,7 +151,7 @@ public class class16 extends class131 {
                var11 = var0 + 1;
             }
 
-            Region var37 = class48.region;
+            Region var37 = Script.region;
             CollisionData var13 = Client.collisionMaps[var0];
             ObjectComposition var14 = class187.getObjectDefinition(var4);
             int var15;
@@ -380,14 +380,14 @@ public class class16 extends class131 {
    static final byte[] method188(byte[] var0) {
       Buffer var1 = new Buffer(var0);
       int var2 = var1.readUnsignedByte();
-      int var3 = var1.method2965();
+      int var3 = var1.readInt();
       if(var3 >= 0 && (class182.field2726 == 0 || var3 <= class182.field2726)) {
          if(var2 == 0) {
             byte[] var6 = new byte[var3];
             var1.method3010(var6, 0, var3);
             return var6;
          } else {
-            int var4 = var1.method2965();
+            int var4 = var1.readInt();
             if(var4 < 0 || class182.field2726 != 0 && var4 > class182.field2726) {
                throw new RuntimeException();
             } else {

@@ -326,7 +326,7 @@ public abstract class Actor extends Renderable {
       int var10 = -1;
       int var11 = 0;
       if(var1 >= 0) {
-         class196 var14 = class48.method970(var1);
+         class196 var14 = Script.method970(var1);
          var10 = var14.field2885;
          var11 = var14.field2876;
       }

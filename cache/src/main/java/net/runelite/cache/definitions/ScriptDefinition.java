@@ -28,12 +28,12 @@ package net.runelite.cache.definitions;
 public class ScriptDefinition
 {
 	private int id;
-        private int anInt2269;
+        private int intStackCount;
         private int[] instructions;
         private int[] intOperands;
         private String[] stringOperands;
         private int localStringCount;
-        private int anInt2276;
+        private int stringStackCount;
         private int localIntCount;
 
 	public int getId()
@@ -46,14 +46,14 @@ public class ScriptDefinition
 		this.id = id;
 	}
 
-	public int getAnInt2269()
+	public int getIntStackCount()
 	{
-		return anInt2269;
+		return intStackCount;
 	}
 
-	public void setAnInt2269(int anInt2269)
+	public void setIntStackCount(int intStackCount)
 	{
-		this.anInt2269 = anInt2269;
+		this.intStackCount = intStackCount;
 	}
 
 	public int[] getInstructions()
@@ -96,14 +96,14 @@ public class ScriptDefinition
 		this.localStringCount = localStringCount;
 	}
 
-	public int getAnInt2276()
+	public int getStringStackCount()
 	{
-		return anInt2276;
+		return stringStackCount;
 	}
 
-	public void setAnInt2276(int anInt2276)
+	public void setStringStackCount(int stringStackCount)
 	{
-		this.anInt2276 = anInt2276;
+		this.stringStackCount = stringStackCount;
 	}
 
 	public int getLocalIntCount()

@@ -608,7 +608,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
 
          if((var4 & 2) != 0) {
             var3.graphic = Client.field350.method2867();
-            var5 = Client.field350.method2965();
+            var5 = Client.field350.readInt();
             var3.field664 = var5 >> 16;
             var3.field639 = Client.gameCycle + (var5 & '\uffff');
             var3.field661 = 0;
@@ -667,7 +667,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          }
 
          if((var4 & 32) != 0) {
-            var3.overhead = Client.field350.method2868();
+            var3.overhead = Client.field350.readString();
             var3.field638 = 100;
          }
 

@@ -205,7 +205,7 @@ public class class180 extends Node {
                   continue;
                }
 
-               var87 = class48.method970(var0.field643[var75]);
+               var87 = Script.method970(var0.field643[var75]);
                var83 = var87.field2876;
                if(var87 != null && var87.field2887 != null) {
                   var87 = var87.method3612();
@@ -221,7 +221,7 @@ public class class180 extends Node {
             var14 = var0.field646[var75];
             class196 var15 = null;
             if(var14 >= 0) {
-               var15 = class48.method970(var14);
+               var15 = Script.method970(var14);
                if(null != var15 && var15.field2887 != null) {
                   var15 = var15.method3612();
                }

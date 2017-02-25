@@ -28,7 +28,7 @@ public class class101 extends RuntimeException {
       signature = "(ILclass48;ZI)I",
       garbageValue = "18380328"
    )
-   static int method2019(int var0, class48 var1, boolean var2) {
+   static int method2019(int var0, Script var1, boolean var2) {
       Widget var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       if(var0 == 1600) {
          class32.field747[++class103.field1686 - 1] = var3.scrollX;
@@ -82,7 +82,7 @@ public class class101 extends RuntimeException {
       signature = "(ILclass48;ZI)I",
       garbageValue = "143377555"
    )
-   static int method2020(int var0, class48 var1, boolean var2) {
+   static int method2020(int var0, Script var1, boolean var2) {
       int var3;
       int var4;
       int var6;

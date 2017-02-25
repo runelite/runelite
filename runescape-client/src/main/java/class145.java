@@ -347,7 +347,7 @@ public class class145 {
                ((TextureProvider)class84.field1465).method1487(0.6D);
             }
 
-            class48.method971();
+            Script.method971();
          }
 
          if(var1 == 3) {
