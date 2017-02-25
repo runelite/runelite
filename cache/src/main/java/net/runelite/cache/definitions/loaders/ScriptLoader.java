@@ -38,13 +38,13 @@ public class ScriptLoader
 		int paramCount = in.readInt();
 		int localIntCount = in.readUnsignedShort();
 		int localStringCount = in.readUnsignedShort();
-		int anInt2269 = in.readUnsignedShort();
-		int anInt2276 = in.readUnsignedShort();
+		int intStackCount = in.readUnsignedShort();
+		int stringStackCount = in.readUnsignedShort();
 
 		def.setLocalIntCount(localIntCount);
 		def.setLocalStringCount(localStringCount);
-		def.setAnInt2269(anInt2269);
-		def.setAnInt2276(anInt2276);
+		def.setIntStackCount(intStackCount);
+		def.setStringStackCount(stringStackCount);
 
 		in.setOffset(0);
 		in.readStringOrNull();
