@@ -679,7 +679,7 @@ public class class183 implements Runnable {
                                           if(null != var60 && var60.isMinimapVisible && var60.field3035) {
                                              var26 = var79.x / 32 - class36.localPlayer.x / 32;
                                              var27 = var79.y / 32 - class36.localPlayer.y / 32;
-                                             Tile.method1610(var12, var13, var26, var27, class11.field131[1], var73);
+                                             Tile.method1610(var12, var13, var26, var27, ScriptState.field131[1], var73);
                                           }
                                        }
                                     }
@@ -712,13 +712,13 @@ public class class183 implements Runnable {
                                           }
 
                                           if(var68) {
-                                             Tile.method1610(var12, var13, var27, var52, class11.field131[3], var73);
+                                             Tile.method1610(var12, var13, var27, var52, ScriptState.field131[3], var73);
                                           } else if(var67) {
-                                             Tile.method1610(var12, var13, var27, var52, class11.field131[4], var73);
+                                             Tile.method1610(var12, var13, var27, var52, ScriptState.field131[4], var73);
                                           } else if(var66) {
-                                             Tile.method1610(var12, var13, var27, var52, class11.field131[5], var73);
+                                             Tile.method1610(var12, var13, var27, var52, ScriptState.field131[5], var73);
                                           } else {
-                                             Tile.method1610(var12, var13, var27, var52, class11.field131[2], var73);
+                                             Tile.method1610(var12, var13, var27, var52, ScriptState.field131[2], var73);
                                           }
                                        }
                                     }
@@ -766,7 +766,7 @@ public class class183 implements Runnable {
                                     if(null != var25) {
                                        var26 = 2 + var23 * 4 - class36.localPlayer.x / 32;
                                        var27 = 4 * var24 + 2 - class36.localPlayer.y / 32;
-                                       Tile.method1610(var12, var13, var26, var27, class11.field131[0], var73);
+                                       Tile.method1610(var12, var13, var26, var27, ScriptState.field131[0], var73);
                                     }
                                  }
 

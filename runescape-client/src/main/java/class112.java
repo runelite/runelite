@@ -11,51 +11,51 @@ public abstract class class112 {
    )
    static int method2145(int var0, Script var1, boolean var2) {
       if(var0 == 6200) {
-         class103.field1686 -= 2;
-         Client.field385 = (short)class32.field747[class103.field1686];
+         class103.scriptIntStackSize -= 2;
+         Client.field385 = (short)class32.scriptIntStack[class103.scriptIntStackSize];
          if(Client.field385 <= 0) {
             Client.field385 = 256;
          }
 
-         Client.field560 = (short)class32.field747[class103.field1686 + 1];
+         Client.field560 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 1];
          if(Client.field560 <= 0) {
             Client.field560 = 205;
          }
 
          return 1;
       } else if(var0 == 6201) {
-         class103.field1686 -= 2;
-         Client.field561 = (short)class32.field747[class103.field1686];
+         class103.scriptIntStackSize -= 2;
+         Client.field561 = (short)class32.scriptIntStack[class103.scriptIntStackSize];
          if(Client.field561 <= 0) {
             Client.field561 = 256;
          }
 
-         Client.field562 = (short)class32.field747[class103.field1686 + 1];
+         Client.field562 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 1];
          if(Client.field562 <= 0) {
             Client.field562 = 320;
          }
 
          return 1;
       } else if(var0 == 6202) {
-         class103.field1686 -= 4;
-         Client.field378 = (short)class32.field747[class103.field1686];
+         class103.scriptIntStackSize -= 4;
+         Client.field378 = (short)class32.scriptIntStack[class103.scriptIntStackSize];
          if(Client.field378 <= 0) {
             Client.field378 = 1;
          }
 
-         Client.field482 = (short)class32.field747[1 + class103.field1686];
+         Client.field482 = (short)class32.scriptIntStack[1 + class103.scriptIntStackSize];
          if(Client.field482 <= 0) {
             Client.field482 = 32767;
          } else if(Client.field482 < Client.field378) {
             Client.field482 = Client.field378;
          }
 
-         Client.field565 = (short)class32.field747[class103.field1686 + 2];
+         Client.field565 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 2];
          if(Client.field565 <= 0) {
             Client.field565 = 1;
          }
 
-         Client.field401 = (short)class32.field747[class103.field1686 + 3];
+         Client.field401 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 3];
          if(Client.field401 <= 0) {
             Client.field401 = 32767;
          } else if(Client.field401 < Client.field565) {
@@ -66,21 +66,21 @@ public abstract class class112 {
       } else if(var0 == 6203) {
          if(null != Client.field477) {
             FileOnDisk.method1471(0, 0, Client.field477.width, Client.field477.height, false);
-            class32.field747[++class103.field1686 - 1] = Client.camera2;
-            class32.field747[++class103.field1686 - 1] = Client.camera3;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.camera2;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.camera3;
          } else {
-            class32.field747[++class103.field1686 - 1] = -1;
-            class32.field747[++class103.field1686 - 1] = -1;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
          }
 
          return 1;
       } else if(var0 == 6204) {
-         class32.field747[++class103.field1686 - 1] = Client.field561;
-         class32.field747[++class103.field1686 - 1] = Client.field562;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field561;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field562;
          return 1;
       } else if(var0 == 6205) {
-         class32.field747[++class103.field1686 - 1] = Client.field385;
-         class32.field747[++class103.field1686 - 1] = Client.field560;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field385;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field560;
          return 1;
       } else {
          return 2;

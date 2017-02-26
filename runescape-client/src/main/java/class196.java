@@ -296,13 +296,13 @@ public class class196 extends CacheableNode {
       if(null == var0) {
          return null;
       } else {
-         Font var1 = new Font(var0, Ignore.field223, class225.field3233, class225.field3234, class41.field862, class160.field2146, class11.field129);
+         Font var1 = new Font(var0, Ignore.field223, class225.field3233, class225.field3234, class41.field862, class160.field2146, ScriptState.field129);
          Ignore.field223 = null;
          class225.field3233 = null;
          class225.field3234 = null;
          class41.field862 = null;
          class160.field2146 = null;
-         class11.field129 = null;
+         ScriptState.field129 = null;
          return var1;
       }
    }

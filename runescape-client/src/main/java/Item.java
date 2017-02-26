@@ -47,7 +47,7 @@ public final class Item extends Renderable {
       }
 
       String var4 = "runescape.com";
-      return var2 + var0 + "." + var4 + "/l=" + Client.field309 + "/a=" + class11.field133 + var3 + "/";
+      return var2 + var0 + "." + var4 + "/l=" + Client.field309 + "/a=" + ScriptState.field133 + var3 + "/";
    }
 
    @ObfuscatedName("h")

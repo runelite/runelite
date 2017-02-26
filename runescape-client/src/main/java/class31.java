@@ -133,18 +133,18 @@ public final class class31 extends Node {
       Widget var4;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class32.field747[--class103.field1686];
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
          var4 = class179.method3296(var3);
       } else {
          var4 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
 
       if(var0 == 1000) {
-         class103.field1686 -= 4;
-         var4.originalX = class32.field747[class103.field1686];
-         var4.originalY = class32.field747[class103.field1686 + 1];
-         var4.field2291 = class32.field747[class103.field1686 + 2];
-         var4.field2217 = class32.field747[class103.field1686 + 3];
+         class103.scriptIntStackSize -= 4;
+         var4.originalX = class32.scriptIntStack[class103.scriptIntStackSize];
+         var4.originalY = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+         var4.field2291 = class32.scriptIntStack[class103.scriptIntStackSize + 2];
+         var4.field2217 = class32.scriptIntStack[class103.scriptIntStackSize + 3];
          class174.method3276(var4);
          class108.method2105(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -153,11 +153,11 @@ public final class class31 extends Node {
 
          return 1;
       } else if(var0 == 1001) {
-         class103.field1686 -= 4;
-         var4.originalWidth = class32.field747[class103.field1686];
-         var4.field2297 = class32.field747[class103.field1686 + 1];
-         var4.field2215 = class32.field747[2 + class103.field1686];
-         var4.field2312 = class32.field747[3 + class103.field1686];
+         class103.scriptIntStackSize -= 4;
+         var4.originalWidth = class32.scriptIntStack[class103.scriptIntStackSize];
+         var4.field2297 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+         var4.field2215 = class32.scriptIntStack[2 + class103.scriptIntStackSize];
+         var4.field2312 = class32.scriptIntStack[3 + class103.scriptIntStackSize];
          class174.method3276(var4);
          class108.method2105(var4);
          if(var3 != -1 && var4.type == 0) {
@@ -166,7 +166,7 @@ public final class class31 extends Node {
 
          return 1;
       } else if(var0 == 1003) {
-         boolean var5 = class32.field747[--class103.field1686] == 1;
+         boolean var5 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
          if(var5 != var4.isHidden) {
             var4.isHidden = var5;
             class174.method3276(var4);
@@ -174,10 +174,10 @@ public final class class31 extends Node {
 
          return 1;
       } else if(var0 == 1005) {
-         var4.field2232 = class32.field747[--class103.field1686] == 1;
+         var4.field2232 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
          return 1;
       } else if(var0 == 1006) {
-         var4.field2199 = class32.field747[--class103.field1686] == 1;
+         var4.field2199 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
          return 1;
       } else {
          return 2;
@@ -256,7 +256,7 @@ public final class class31 extends Node {
             var9.width = class225.field3234[var8];
             var9.height = class41.field862[var8];
             int var10 = var9.width * var9.height;
-            byte[] var11 = class11.field129[var8];
+            byte[] var11 = ScriptState.field129[var8];
             var9.image = new int[var10];
 
             for(int var12 = 0; var12 < var10; ++var12) {

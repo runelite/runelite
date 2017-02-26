@@ -262,7 +262,7 @@ public class MessageNode extends CacheableNode {
          class41.field866 = true;
          class41.worldSelectShown = false;
          if(!class184.field2735.field720) {
-            XItemContainer.method167(2, class11.field127, "scape main", "", 255, false);
+            XItemContainer.method167(2, ScriptState.field127, "scape main", "", 255, false);
          } else {
             class118.method2335(2);
          }

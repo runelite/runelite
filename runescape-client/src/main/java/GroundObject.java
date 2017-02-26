@@ -165,7 +165,7 @@ public final class GroundObject {
       garbageValue = "61"
    )
    static final int method1597(int var0, int var1) {
-      int var2 = class11.method149(var0 + '넵', 91923 + var1, 4) - 128 + (class11.method149(10294 + var0, '鎽' + var1, 2) - 128 >> 1) + (class11.method149(var0, var1, 1) - 128 >> 2);
+      int var2 = ScriptState.method149(var0 + '넵', 91923 + var1, 4) - 128 + (ScriptState.method149(10294 + var0, '鎽' + var1, 2) - 128 >> 1) + (ScriptState.method149(var0, var1, 1) - 128 >> 2);
       var2 = 35 + (int)(0.3D * (double)var2);
       if(var2 < 10) {
          var2 = 10;

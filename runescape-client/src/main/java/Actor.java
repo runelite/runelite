@@ -570,6 +570,6 @@ public abstract class Actor extends Renderable {
       class225.field3234 = null;
       class41.field862 = null;
       class160.field2146 = null;
-      class11.field129 = null;
+      ScriptState.field129 = null;
    }
 }

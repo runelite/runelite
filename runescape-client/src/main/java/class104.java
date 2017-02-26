@@ -45,7 +45,7 @@ public class class104 {
          double var12 = Math.atan2((double)var10, (double)var11);
          int var14 = (int)(Math.sin(var12) * 63.0D);
          int var15 = (int)(Math.cos(var12) * 57.0D);
-         class11.field132.method4236(4 + var14 + 94 + var0 - 10, 83 + var1 - var15 - 20, 20, 20, 15, 15, var12, 256);
+         ScriptState.field132.method4236(4 + var14 + 94 + var0 - 10, 83 + var1 - var15 - 20, 20, 20, 15, 15, var12, 256);
       } else {
          Tile.method1610(var0, var1, var2, var3, var4, var5);
       }

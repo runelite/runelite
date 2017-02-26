@@ -116,24 +116,24 @@ final class class0 implements Comparator {
       garbageValue = "1507671869"
    )
    static int method2(int var0, Script var1, boolean var2) {
-      Widget var3 = class179.method3296(class32.field747[--class103.field1686]);
+      Widget var3 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
       if(var0 == 2500) {
-         class32.field747[++class103.field1686 - 1] = var3.relativeX;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.relativeX;
          return 1;
       } else if(var0 == 2501) {
-         class32.field747[++class103.field1686 - 1] = var3.relativeY;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.relativeY;
          return 1;
       } else if(var0 == 2502) {
-         class32.field747[++class103.field1686 - 1] = var3.width;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.width;
          return 1;
       } else if(var0 == 2503) {
-         class32.field747[++class103.field1686 - 1] = var3.height;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.height;
          return 1;
       } else if(var0 == 2504) {
-         class32.field747[++class103.field1686 - 1] = var3.isHidden?1:0;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.isHidden?1:0;
          return 1;
       } else if(var0 == 2505) {
-         class32.field747[++class103.field1686 - 1] = var3.parentId;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.parentId;
          return 1;
       } else {
          return 2;

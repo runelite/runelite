@@ -117,7 +117,7 @@ public class XClanMember extends Node {
             class184.field2735.field720 = !class184.field2735.field720;
             class99.method1996();
             if(!class184.field2735.field720) {
-               class184 var9 = class11.field127;
+               class184 var9 = ScriptState.field127;
                var2 = var9.method3335("scape main");
                var3 = var9.method3319(var2, "");
                class72.method1464(var9, var2, var3, 255, false);
@@ -560,7 +560,7 @@ public class XClanMember extends Node {
       signature = "(ILclass48;ZB)I",
       garbageValue = "-34"
    )
-   static int method254(int var0, Script var1, boolean var2) {
+   static int method254(int opcode, Script var1, boolean var2) {
       byte var3;
       int var4;
       int var6;
@@ -568,12 +568,12 @@ public class XClanMember extends Node {
       int var25;
       int var28;
       Widget var32;
-      if(var0 < 1000) {
-         if(var0 == 100) {
-            class103.field1686 -= 3;
-            var4 = class32.field747[class103.field1686];
-            var28 = class32.field747[class103.field1686 + 1];
-            var6 = class32.field747[2 + class103.field1686];
+      if(opcode < 1000) {
+         if(opcode == 100) {
+            class103.scriptIntStackSize -= 3;
+            var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+            var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+            var6 = class32.scriptIntStack[2 + class103.scriptIntStackSize];
             if(var28 == 0) {
                throw new RuntimeException();
             }
@@ -611,45 +611,45 @@ public class XClanMember extends Node {
 
             class174.method3276(var7);
             var3 = 1;
-         } else if(var0 == 101) {
+         } else if(opcode == 101) {
             var32 = var2?XGrandExchangeOffer.field58:field297;
             Widget var39 = class179.method3296(var32.id);
             var39.children[var32.index] = null;
             class174.method3276(var39);
             var3 = 1;
-         } else if(var0 == 102) {
-            var32 = class179.method3296(class32.field747[--class103.field1686]);
+         } else if(opcode == 102) {
+            var32 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
             var32.children = null;
             class174.method3276(var32);
             var3 = 1;
-         } else if(var0 == 200) {
-            class103.field1686 -= 2;
-            var4 = class32.field747[class103.field1686];
-            var28 = class32.field747[1 + class103.field1686];
+         } else if(opcode == 200) {
+            class103.scriptIntStackSize -= 2;
+            var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+            var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
             Widget var40 = class57.method1157(var4, var28);
             if(null != var40 && var28 != -1) {
-               class32.field747[++class103.field1686 - 1] = 1;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 1;
                if(var2) {
                   XGrandExchangeOffer.field58 = var40;
                } else {
                   field297 = var40;
                }
             } else {
-               class32.field747[++class103.field1686 - 1] = 0;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
             }
 
             var3 = 1;
-         } else if(var0 == 201) {
-            var32 = class179.method3296(class32.field747[--class103.field1686]);
+         } else if(opcode == 201) {
+            var32 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
             if(var32 != null) {
-               class32.field747[++class103.field1686 - 1] = 1;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 1;
                if(var2) {
                   XGrandExchangeOffer.field58 = var32;
                } else {
                   field297 = var32;
                }
             } else {
-               class32.field747[++class103.field1686 - 1] = 0;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
             }
 
             var3 = 1;
@@ -658,73 +658,73 @@ public class XClanMember extends Node {
          }
 
          return var3;
-      } else if(var0 < 1100) {
-         return class31.method708(var0, var1, var2);
-      } else if(var0 < 1200) {
-         return class181.method3299(var0, var1, var2);
-      } else if(var0 < 1300) {
-         return RSCanvas.method2139(var0, var1, var2);
-      } else if(var0 < 1400) {
-         return WidgetNode.method196(var0, var1, var2);
-      } else if(var0 < 1500) {
-         return class8.method95(var0, var1, var2);
-      } else if(var0 < 1600) {
+      } else if(opcode < 1100) {
+         return class31.method708(opcode, var1, var2);
+      } else if(opcode < 1200) {
+         return class181.method3299(opcode, var1, var2);
+      } else if(opcode < 1300) {
+         return RSCanvas.method2139(opcode, var1, var2);
+      } else if(opcode < 1400) {
+         return WidgetNode.method196(opcode, var1, var2);
+      } else if(opcode < 1500) {
+         return class8.method95(opcode, var1, var2);
+      } else if(opcode < 1600) {
          var7 = var2?XGrandExchangeOffer.field58:field297;
-         if(var0 == 1500) {
-            class32.field747[++class103.field1686 - 1] = var7.relativeX;
+         if(opcode == 1500) {
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var7.relativeX;
             var3 = 1;
-         } else if(var0 == 1501) {
-            class32.field747[++class103.field1686 - 1] = var7.relativeY;
+         } else if(opcode == 1501) {
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var7.relativeY;
             var3 = 1;
-         } else if(var0 == 1502) {
-            class32.field747[++class103.field1686 - 1] = var7.width;
+         } else if(opcode == 1502) {
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var7.width;
             var3 = 1;
-         } else if(var0 == 1503) {
-            class32.field747[++class103.field1686 - 1] = var7.height;
+         } else if(opcode == 1503) {
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var7.height;
             var3 = 1;
-         } else if(var0 == 1504) {
-            class32.field747[++class103.field1686 - 1] = var7.isHidden?1:0;
+         } else if(opcode == 1504) {
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var7.isHidden?1:0;
             var3 = 1;
-         } else if(var0 == 1505) {
-            class32.field747[++class103.field1686 - 1] = var7.parentId;
+         } else if(opcode == 1505) {
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var7.parentId;
             var3 = 1;
          } else {
             var3 = 2;
          }
 
          return var3;
-      } else if(var0 < 1700) {
-         return class101.method2019(var0, var1, var2);
-      } else if(var0 < 1800) {
-         return method256(var0, var1, var2);
+      } else if(opcode < 1700) {
+         return class101.method2019(opcode, var1, var2);
+      } else if(opcode < 1800) {
+         return method256(opcode, var1, var2);
       } else {
          int var24;
          int var33;
          int[] var35;
-         if(var0 < 1900) {
+         if(opcode < 1900) {
             var32 = var2?XGrandExchangeOffer.field58:field297;
-            if(var0 == 1800) {
-               var35 = class32.field747;
-               var6 = ++class103.field1686 - 1;
+            if(opcode == 1800) {
+               var35 = class32.scriptIntStack;
+               var6 = ++class103.scriptIntStackSize - 1;
                var24 = class196.method3614(var32);
                var33 = var24 >> 11 & 63;
                var35[var6] = var33;
                var3 = 1;
-            } else if(var0 == 1801) {
-               var28 = class32.field747[--class103.field1686];
+            } else if(opcode == 1801) {
+               var28 = class32.scriptIntStack[--class103.scriptIntStackSize];
                --var28;
                if(var32.actions != null && var28 < var32.actions.length && var32.actions[var28] != null) {
-                  class32.chatboxSegments[++class32.field749 - 1] = var32.actions[var28];
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var32.actions[var28];
                } else {
-                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                }
 
                var3 = 1;
-            } else if(var0 == 1802) {
+            } else if(opcode == 1802) {
                if(null == var32.name) {
-                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                } else {
-                  class32.chatboxSegments[++class32.field749 - 1] = var32.name;
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var32.name;
                }
 
                var3 = 1;
@@ -733,78 +733,78 @@ public class XClanMember extends Node {
             }
 
             return var3;
-         } else if(var0 < 2000) {
-            return class85.method1744(var0, var1, var2);
-         } else if(var0 < 2100) {
-            return class31.method708(var0, var1, var2);
-         } else if(var0 < 2200) {
-            return class181.method3299(var0, var1, var2);
-         } else if(var0 < 2300) {
-            return RSCanvas.method2139(var0, var1, var2);
-         } else if(var0 < 2400) {
-            return WidgetNode.method196(var0, var1, var2);
-         } else if(var0 < 2500) {
-            return class8.method95(var0, var1, var2);
-         } else if(var0 < 2600) {
-            return class0.method2(var0, var1, var2);
-         } else if(var0 < 2700) {
-            return class165.method3167(var0, var1, var2);
-         } else if(var0 < 2800) {
-            if(var0 == 2700) {
-               var32 = class179.method3296(class32.field747[--class103.field1686]);
-               class32.field747[++class103.field1686 - 1] = var32.item;
+         } else if(opcode < 2000) {
+            return class85.method1744(opcode, var1, var2);
+         } else if(opcode < 2100) {
+            return class31.method708(opcode, var1, var2);
+         } else if(opcode < 2200) {
+            return class181.method3299(opcode, var1, var2);
+         } else if(opcode < 2300) {
+            return RSCanvas.method2139(opcode, var1, var2);
+         } else if(opcode < 2400) {
+            return WidgetNode.method196(opcode, var1, var2);
+         } else if(opcode < 2500) {
+            return class8.method95(opcode, var1, var2);
+         } else if(opcode < 2600) {
+            return class0.method2(opcode, var1, var2);
+         } else if(opcode < 2700) {
+            return class165.method3167(opcode, var1, var2);
+         } else if(opcode < 2800) {
+            if(opcode == 2700) {
+               var32 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var32.item;
                var3 = 1;
-            } else if(var0 == 2701) {
-               var32 = class179.method3296(class32.field747[--class103.field1686]);
+            } else if(opcode == 2701) {
+               var32 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
                if(var32.item != -1) {
-                  class32.field747[++class103.field1686 - 1] = var32.stackSize;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var32.stackSize;
                } else {
-                  class32.field747[++class103.field1686 - 1] = 0;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                }
 
                var3 = 1;
-            } else if(var0 == 2702) {
-               var4 = class32.field747[--class103.field1686];
+            } else if(opcode == 2702) {
+               var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                WidgetNode var37 = (WidgetNode)Client.componentTable.method2399((long)var4);
                if(var37 != null) {
-                  class32.field747[++class103.field1686 - 1] = 1;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 1;
                } else {
-                  class32.field747[++class103.field1686 - 1] = 0;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                }
 
                var3 = 1;
-            } else if(var0 == 2706) {
-               class32.field747[++class103.field1686 - 1] = Client.widgetRoot;
+            } else if(opcode == 2706) {
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.widgetRoot;
                var3 = 1;
             } else {
                var3 = 2;
             }
 
             return var3;
-         } else if(var0 < 2900) {
-            var32 = class179.method3296(class32.field747[--class103.field1686]);
-            if(var0 == 2800) {
-               var35 = class32.field747;
-               var6 = ++class103.field1686 - 1;
+         } else if(opcode < 2900) {
+            var32 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
+            if(opcode == 2800) {
+               var35 = class32.scriptIntStack;
+               var6 = ++class103.scriptIntStackSize - 1;
                var24 = class196.method3614(var32);
                var33 = var24 >> 11 & 63;
                var35[var6] = var33;
                var3 = 1;
-            } else if(var0 == 2801) {
-               var28 = class32.field747[--class103.field1686];
+            } else if(opcode == 2801) {
+               var28 = class32.scriptIntStack[--class103.scriptIntStackSize];
                --var28;
                if(var32.actions != null && var28 < var32.actions.length && null != var32.actions[var28]) {
-                  class32.chatboxSegments[++class32.field749 - 1] = var32.actions[var28];
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var32.actions[var28];
                } else {
-                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                }
 
                var3 = 1;
-            } else if(var0 == 2802) {
+            } else if(opcode == 2802) {
                if(null == var32.name) {
-                  class32.chatboxSegments[++class32.field749 - 1] = "";
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                } else {
-                  class32.chatboxSegments[++class32.field749 - 1] = var32.name;
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var32.name;
                }
 
                var3 = 1;
@@ -813,25 +813,25 @@ public class XClanMember extends Node {
             }
 
             return var3;
-         } else if(var0 < 3000) {
-            return class85.method1744(var0, var1, var2);
-         } else if(var0 < 3200) {
-            return class5.method64(var0, var1, var2);
-         } else if(var0 < 3300) {
-            return class161.method3114(var0, var1, var2);
-         } else if(var0 < 3400) {
-            if(var0 == 3300) {
-               class32.field747[++class103.field1686 - 1] = Client.gameCycle;
+         } else if(opcode < 3000) {
+            return class85.method1744(opcode, var1, var2);
+         } else if(opcode < 3200) {
+            return class5.method64(opcode, var1, var2);
+         } else if(opcode < 3300) {
+            return class161.method3114(opcode, var1, var2);
+         } else if(opcode < 3400) {
+            if(opcode == 3300) {
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.gameCycle;
                var3 = 1;
             } else {
                XItemContainer var9;
                int[] var38;
-               if(var0 == 3301) {
-                  class103.field1686 -= 2;
-                  var4 = class32.field747[class103.field1686];
-                  var28 = class32.field747[class103.field1686 + 1];
-                  var38 = class32.field747;
-                  var33 = ++class103.field1686 - 1;
+               if(opcode == 3301) {
+                  class103.scriptIntStackSize -= 2;
+                  var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+                  var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+                  var38 = class32.scriptIntStack;
+                  var33 = ++class103.scriptIntStackSize - 1;
                   var9 = (XItemContainer)XItemContainer.itemContainers.method2399((long)var4);
                   if(var9 == null) {
                      var24 = -1;
@@ -843,61 +843,61 @@ public class XClanMember extends Node {
 
                   var38[var33] = var24;
                   var3 = 1;
-               } else if(var0 == 3302) {
-                  class103.field1686 -= 2;
-                  var4 = class32.field747[class103.field1686];
-                  var28 = class32.field747[1 + class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = TextureProvider.method1489(var4, var28);
+               } else if(opcode == 3302) {
+                  class103.scriptIntStackSize -= 2;
+                  var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+                  var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = TextureProvider.method1489(var4, var28);
                   var3 = 1;
-               } else if(var0 == 3303) {
-                  class103.field1686 -= 2;
-                  var4 = class32.field747[class103.field1686];
-                  var28 = class32.field747[class103.field1686 + 1];
-                  class32.field747[++class103.field1686 - 1] = class57.method1159(var4, var28);
+               } else if(opcode == 3303) {
+                  class103.scriptIntStackSize -= 2;
+                  var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+                  var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class57.method1159(var4, var28);
                   var3 = 1;
-               } else if(var0 == 3304) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = class183.method3389(var4).field2774;
+               } else if(opcode == 3304) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class183.method3389(var4).field2774;
                   var3 = 1;
-               } else if(var0 == 3305) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = Client.boostedSkillLevels[var4];
+               } else if(opcode == 3305) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.boostedSkillLevels[var4];
                   var3 = 1;
-               } else if(var0 == 3306) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = Client.realSkillLevels[var4];
+               } else if(opcode == 3306) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.realSkillLevels[var4];
                   var3 = 1;
-               } else if(var0 == 3307) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = Client.skillExperiences[var4];
+               } else if(opcode == 3307) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.skillExperiences[var4];
                   var3 = 1;
-               } else if(var0 == 3308) {
+               } else if(opcode == 3308) {
                   var4 = WallObject.plane;
                   var28 = class5.baseX + (class36.localPlayer.x >> 7);
                   var6 = baseY + (class36.localPlayer.y >> 7);
-                  class32.field747[++class103.field1686 - 1] = (var28 << 14) + (var4 << 28) + var6;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (var28 << 14) + (var4 << 28) + var6;
                   var3 = 1;
-               } else if(var0 == 3309) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = var4 >> 14 & 16383;
+               } else if(opcode == 3309) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 >> 14 & 16383;
                   var3 = 1;
-               } else if(var0 == 3310) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = var4 >> 28;
+               } else if(opcode == 3310) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 >> 28;
                   var3 = 1;
-               } else if(var0 == 3311) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.field747[++class103.field1686 - 1] = var4 & 16383;
+               } else if(opcode == 3311) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 & 16383;
                   var3 = 1;
-               } else if(var0 == 3312) {
-                  class32.field747[++class103.field1686 - 1] = Client.isMembers?1:0;
+               } else if(opcode == 3312) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.isMembers?1:0;
                   var3 = 1;
-               } else if(var0 == 3313) {
-                  class103.field1686 -= 2;
-                  var4 = class32.field747[class103.field1686] + '耀';
-                  var28 = class32.field747[class103.field1686 + 1];
-                  var38 = class32.field747;
-                  var33 = ++class103.field1686 - 1;
+               } else if(opcode == 3313) {
+                  class103.scriptIntStackSize -= 2;
+                  var4 = class32.scriptIntStack[class103.scriptIntStackSize] + '耀';
+                  var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+                  var38 = class32.scriptIntStack;
+                  var33 = ++class103.scriptIntStackSize - 1;
                   var9 = (XItemContainer)XItemContainer.itemContainers.method2399((long)var4);
                   if(var9 == null) {
                      var24 = -1;
@@ -909,12 +909,12 @@ public class XClanMember extends Node {
 
                   var38[var33] = var24;
                   var3 = 1;
-               } else if(var0 == 3314) {
-                  class103.field1686 -= 2;
-                  var4 = '耀' + class32.field747[class103.field1686];
-                  var28 = class32.field747[1 + class103.field1686];
-                  var38 = class32.field747;
-                  var33 = ++class103.field1686 - 1;
+               } else if(opcode == 3314) {
+                  class103.scriptIntStackSize -= 2;
+                  var4 = '耀' + class32.scriptIntStack[class103.scriptIntStackSize];
+                  var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+                  var38 = class32.scriptIntStack;
+                  var33 = ++class103.scriptIntStackSize - 1;
                   var9 = (XItemContainer)XItemContainer.itemContainers.method2399((long)var4);
                   if(null == var9) {
                      var24 = 0;
@@ -926,42 +926,42 @@ public class XClanMember extends Node {
 
                   var38[var33] = var24;
                   var3 = 1;
-               } else if(var0 == 3315) {
-                  class103.field1686 -= 2;
-                  var4 = class32.field747[class103.field1686] + '耀';
-                  var28 = class32.field747[class103.field1686 + 1];
-                  class32.field747[++class103.field1686 - 1] = class57.method1159(var4, var28);
+               } else if(opcode == 3315) {
+                  class103.scriptIntStackSize -= 2;
+                  var4 = class32.scriptIntStack[class103.scriptIntStackSize] + '耀';
+                  var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class57.method1159(var4, var28);
                   var3 = 1;
-               } else if(var0 == 3316) {
+               } else if(opcode == 3316) {
                   if(Client.field472 >= 2) {
-                     class32.field747[++class103.field1686 - 1] = Client.field472;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field472;
                   } else {
-                     class32.field747[++class103.field1686 - 1] = 0;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                   }
 
                   var3 = 1;
-               } else if(var0 == 3317) {
-                  class32.field747[++class103.field1686 - 1] = Client.field322;
+               } else if(opcode == 3317) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field322;
                   var3 = 1;
-               } else if(var0 == 3318) {
-                  class32.field747[++class103.field1686 - 1] = Client.world;
+               } else if(opcode == 3318) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.world;
                   var3 = 1;
-               } else if(var0 == 3321) {
-                  class32.field747[++class103.field1686 - 1] = Client.energy;
+               } else if(opcode == 3321) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.energy;
                   var3 = 1;
-               } else if(var0 == 3322) {
-                  class32.field747[++class103.field1686 - 1] = Client.weight;
+               } else if(opcode == 3322) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.weight;
                   var3 = 1;
-               } else if(var0 == 3323) {
+               } else if(opcode == 3323) {
                   if(Client.field474) {
-                     class32.field747[++class103.field1686 - 1] = 1;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 1;
                   } else {
-                     class32.field747[++class103.field1686 - 1] = 0;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                   }
 
                   var3 = 1;
-               } else if(var0 == 3324) {
-                  class32.field747[++class103.field1686 - 1] = Client.flags;
+               } else if(opcode == 3324) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.flags;
                   var3 = 1;
                } else {
                   var3 = 2;
@@ -969,224 +969,224 @@ public class XClanMember extends Node {
             }
 
             return var3;
-         } else if(var0 < 3500) {
-            return class101.method2020(var0, var1, var2);
-         } else if(var0 < 3700) {
-            return class15.method180(var0, var1, var2);
-         } else if(var0 < 4000) {
-            return class2.method30(var0, var1, var2);
-         } else if(var0 < 4100) {
-            if(var0 == 4000) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = var4 + var28;
+         } else if(opcode < 3500) {
+            return class101.method2020(opcode, var1, var2);
+         } else if(opcode < 3700) {
+            return class15.method180(opcode, var1, var2);
+         } else if(opcode < 4000) {
+            return class2.method30(opcode, var1, var2);
+         } else if(opcode < 4100) {
+            if(opcode == 4000) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 + var28;
                var3 = 1;
-            } else if(var0 == 4001) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[1 + class103.field1686];
-               class32.field747[++class103.field1686 - 1] = var4 - var28;
+            } else if(opcode == 4001) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 - var28;
                var3 = 1;
-            } else if(var0 == 4002) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[1 + class103.field1686];
-               class32.field747[++class103.field1686 - 1] = var28 * var4;
+            } else if(opcode == 4002) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var28 * var4;
                var3 = 1;
-            } else if(var0 == 4003) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = var4 / var28;
+            } else if(opcode == 4003) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 / var28;
                var3 = 1;
-            } else if(var0 == 4004) {
-               var4 = class32.field747[--class103.field1686];
-               class32.field747[++class103.field1686 - 1] = (int)(Math.random() * (double)var4);
+            } else if(opcode == 4004) {
+               var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (int)(Math.random() * (double)var4);
                var3 = 1;
-            } else if(var0 == 4005) {
-               var4 = class32.field747[--class103.field1686];
-               class32.field747[++class103.field1686 - 1] = (int)(Math.random() * (double)(var4 + 1));
+            } else if(opcode == 4005) {
+               var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (int)(Math.random() * (double)(var4 + 1));
                var3 = 1;
-            } else if(var0 == 4006) {
-               class103.field1686 -= 5;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               var6 = class32.field747[2 + class103.field1686];
-               var33 = class32.field747[class103.field1686 + 3];
-               var24 = class32.field747[class103.field1686 + 4];
-               class32.field747[++class103.field1686 - 1] = var4 + (var24 - var6) * (var28 - var4) / (var33 - var6);
+            } else if(opcode == 4006) {
+               class103.scriptIntStackSize -= 5;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               var6 = class32.scriptIntStack[2 + class103.scriptIntStackSize];
+               var33 = class32.scriptIntStack[class103.scriptIntStackSize + 3];
+               var24 = class32.scriptIntStack[class103.scriptIntStackSize + 4];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 + (var24 - var6) * (var28 - var4) / (var33 - var6);
                var3 = 1;
-            } else if(var0 == 4007) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = var4 * var28 / 100 + var4;
+            } else if(opcode == 4007) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 * var28 / 100 + var4;
                var3 = 1;
-            } else if(var0 == 4008) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = var4 | 1 << var28;
+            } else if(opcode == 4008) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 | 1 << var28;
                var3 = 1;
-            } else if(var0 == 4009) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[1 + class103.field1686];
-               class32.field747[++class103.field1686 - 1] = var4 & -1 - (1 << var28);
+            } else if(opcode == 4009) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 & -1 - (1 << var28);
                var3 = 1;
-            } else if(var0 == 4010) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = (var4 & 1 << var28) != 0?1:0;
+            } else if(opcode == 4010) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (var4 & 1 << var28) != 0?1:0;
                var3 = 1;
-            } else if(var0 == 4011) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = var4 % var28;
+            } else if(opcode == 4011) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 % var28;
                var3 = 1;
-            } else if(var0 == 4012) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
+            } else if(opcode == 4012) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
                if(var4 == 0) {
-                  class32.field747[++class103.field1686 - 1] = 0;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                } else {
-                  class32.field747[++class103.field1686 - 1] = (int)Math.pow((double)var4, (double)var28);
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (int)Math.pow((double)var4, (double)var28);
                }
 
                var3 = 1;
-            } else if(var0 == 4013) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[1 + class103.field1686];
+            } else if(opcode == 4013) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
                if(var4 == 0) {
-                  class32.field747[++class103.field1686 - 1] = 0;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                } else if(var28 == 0) {
-                  class32.field747[++class103.field1686 - 1] = Integer.MAX_VALUE;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Integer.MAX_VALUE;
                } else {
-                  class32.field747[++class103.field1686 - 1] = (int)Math.pow((double)var4, 1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (int)Math.pow((double)var4, 1.0D / (double)var28);
                }
 
                var3 = 1;
-            } else if(var0 == 4014) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[1 + class103.field1686];
-               class32.field747[++class103.field1686 - 1] = var4 & var28;
+            } else if(opcode == 4014) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 & var28;
                var3 = 1;
-            } else if(var0 == 4015) {
-               class103.field1686 -= 2;
-               var4 = class32.field747[class103.field1686];
-               var28 = class32.field747[class103.field1686 + 1];
-               class32.field747[++class103.field1686 - 1] = var4 | var28;
+            } else if(opcode == 4015) {
+               class103.scriptIntStackSize -= 2;
+               var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+               var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4 | var28;
                var3 = 1;
-            } else if(var0 == 4018) {
-               class103.field1686 -= 3;
-               long var18 = (long)class32.field747[class103.field1686];
-               long var22 = (long)class32.field747[class103.field1686 + 1];
-               long var20 = (long)class32.field747[2 + class103.field1686];
-               class32.field747[++class103.field1686 - 1] = (int)(var18 * var20 / var22);
+            } else if(opcode == 4018) {
+               class103.scriptIntStackSize -= 3;
+               long var18 = (long)class32.scriptIntStack[class103.scriptIntStackSize];
+               long var22 = (long)class32.scriptIntStack[class103.scriptIntStackSize + 1];
+               long var20 = (long)class32.scriptIntStack[2 + class103.scriptIntStackSize];
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = (int)(var18 * var20 / var22);
                var3 = 1;
             } else {
                var3 = 2;
             }
 
             return var3;
-         } else if(var0 < 4200) {
-            return class103.method2043(var0, var1, var2);
+         } else if(opcode < 4200) {
+            return class103.method2043(opcode, var1, var2);
          } else {
             boolean var16;
-            if(var0 < 4300) {
-               if(var0 == 4200) {
-                  var4 = class32.field747[--class103.field1686];
-                  class32.chatboxSegments[++class32.field749 - 1] = class103.getItemDefinition(var4).name;
+            if(opcode < 4300) {
+               if(opcode == 4200) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class103.getItemDefinition(var4).name;
                   var3 = 1;
                } else {
                   ItemComposition var17;
-                  if(var0 == 4201) {
-                     class103.field1686 -= 2;
-                     var4 = class32.field747[class103.field1686];
-                     var28 = class32.field747[1 + class103.field1686];
+                  if(opcode == 4201) {
+                     class103.scriptIntStackSize -= 2;
+                     var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+                     var28 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
                      var17 = class103.getItemDefinition(var4);
                      if(var28 >= 1 && var28 <= 5 && var17.groundActions[var28 - 1] != null) {
-                        class32.chatboxSegments[++class32.field749 - 1] = var17.groundActions[var28 - 1];
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var17.groundActions[var28 - 1];
                      } else {
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      var3 = 1;
-                  } else if(var0 == 4202) {
-                     class103.field1686 -= 2;
-                     var4 = class32.field747[class103.field1686];
-                     var28 = class32.field747[class103.field1686 + 1];
+                  } else if(opcode == 4202) {
+                     class103.scriptIntStackSize -= 2;
+                     var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+                     var28 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
                      var17 = class103.getItemDefinition(var4);
                      if(var28 >= 1 && var28 <= 5 && var17.inventoryActions[var28 - 1] != null) {
-                        class32.chatboxSegments[++class32.field749 - 1] = var17.inventoryActions[var28 - 1];
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var17.inventoryActions[var28 - 1];
                      } else {
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      var3 = 1;
-                  } else if(var0 == 4203) {
-                     var4 = class32.field747[--class103.field1686];
-                     class32.field747[++class103.field1686 - 1] = class103.getItemDefinition(var4).price;
+                  } else if(opcode == 4203) {
+                     var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class103.getItemDefinition(var4).price;
                      var3 = 1;
-                  } else if(var0 == 4204) {
-                     var4 = class32.field747[--class103.field1686];
-                     class32.field747[++class103.field1686 - 1] = class103.getItemDefinition(var4).isStackable == 1?1:0;
+                  } else if(opcode == 4204) {
+                     var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class103.getItemDefinition(var4).isStackable == 1?1:0;
                      var3 = 1;
                   } else {
                      ItemComposition var34;
-                     if(var0 == 4205) {
-                        var4 = class32.field747[--class103.field1686];
+                     if(opcode == 4205) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         var34 = class103.getItemDefinition(var4);
                         if(var34.notedTemplate == -1 && var34.note >= 0) {
-                           class32.field747[++class103.field1686 - 1] = var34.note;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var34.note;
                         } else {
-                           class32.field747[++class103.field1686 - 1] = var4;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4;
                         }
 
                         var3 = 1;
-                     } else if(var0 == 4206) {
-                        var4 = class32.field747[--class103.field1686];
+                     } else if(opcode == 4206) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         var34 = class103.getItemDefinition(var4);
                         if(var34.notedTemplate >= 0 && var34.note >= 0) {
-                           class32.field747[++class103.field1686 - 1] = var34.note;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var34.note;
                         } else {
-                           class32.field747[++class103.field1686 - 1] = var4;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4;
                         }
 
                         var3 = 1;
-                     } else if(var0 == 4207) {
-                        var4 = class32.field747[--class103.field1686];
-                        class32.field747[++class103.field1686 - 1] = class103.getItemDefinition(var4).isMembers?1:0;
+                     } else if(opcode == 4207) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class103.getItemDefinition(var4).isMembers?1:0;
                         var3 = 1;
-                     } else if(var0 == 4208) {
-                        var4 = class32.field747[--class103.field1686];
+                     } else if(opcode == 4208) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         var34 = class103.getItemDefinition(var4);
                         if(var34.field2976 == -1 && var34.field3000 >= 0) {
-                           class32.field747[++class103.field1686 - 1] = var34.field3000;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var34.field3000;
                         } else {
-                           class32.field747[++class103.field1686 - 1] = var4;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4;
                         }
 
                         var3 = 1;
-                     } else if(var0 == 4209) {
-                        var4 = class32.field747[--class103.field1686];
+                     } else if(opcode == 4209) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         var34 = class103.getItemDefinition(var4);
                         if(var34.field2976 >= 0 && var34.field3000 >= 0) {
-                           class32.field747[++class103.field1686 - 1] = var34.field3000;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var34.field3000;
                         } else {
-                           class32.field747[++class103.field1686 - 1] = var4;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4;
                         }
 
                         var3 = 1;
-                     } else if(var0 == 4210) {
-                        String var31 = class32.chatboxSegments[--class32.field749];
-                        var28 = class32.field747[--class103.field1686];
+                     } else if(opcode == 4210) {
+                        String var31 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                        var28 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         var16 = var28 == 1;
                         String var36 = var31.toLowerCase();
                         short[] var8 = new short[16];
@@ -1232,17 +1232,17 @@ public class XClanMember extends Node {
                            ++var10;
                         }
 
-                        class32.field747[++class103.field1686 - 1] = class18.field208;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class18.field208;
                         var3 = 1;
-                     } else if(var0 == 4211) {
+                     } else if(opcode == 4211) {
                         if(null != class1.field14 && Overlay.field3051 < class18.field208) {
-                           class32.field747[++class103.field1686 - 1] = class1.field14[++Overlay.field3051 - 1] & '\uffff';
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class1.field14[++Overlay.field3051 - 1] & '\uffff';
                         } else {
-                           class32.field747[++class103.field1686 - 1] = -1;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
                         }
 
                         var3 = 1;
-                     } else if(var0 == 4212) {
+                     } else if(opcode == 4212) {
                         Overlay.field3051 = 0;
                         var3 = 1;
                      } else {
@@ -1252,24 +1252,24 @@ public class XClanMember extends Node {
                }
 
                return var3;
-            } else if(var0 < 5100) {
-               return class8.method94(var0, var1, var2);
-            } else if(var0 < 5400) {
-               if(var0 == 5306) {
-                  class32.field747[++class103.field1686 - 1] = class8.method97();
+            } else if(opcode < 5100) {
+               return class8.method94(opcode, var1, var2);
+            } else if(opcode < 5400) {
+               if(opcode == 5306) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class8.method97();
                   var3 = 1;
-               } else if(var0 == 5307) {
-                  var4 = class32.field747[--class103.field1686];
+               } else if(opcode == 5307) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   if(var4 == 1 || var4 == 2) {
                      class47.method966(var4);
                   }
 
                   var3 = 1;
-               } else if(var0 == 5308) {
-                  class32.field747[++class103.field1686 - 1] = class184.field2735.field716;
+               } else if(opcode == 5308) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class184.field2735.field716;
                   var3 = 1;
-               } else if(var0 == 5309) {
-                  var4 = class32.field747[--class103.field1686];
+               } else if(opcode == 5309) {
+                  var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   if(var4 == 1 || var4 == 2) {
                      class184.field2735.field716 = var4;
                      class99.method1996();
@@ -1281,41 +1281,41 @@ public class XClanMember extends Node {
                }
 
                return var3;
-            } else if(var0 < 5600) {
-               if(var0 == 5504) {
-                  class103.field1686 -= 2;
-                  var33 = class32.field747[class103.field1686];
-                  var24 = class32.field747[class103.field1686 + 1];
+            } else if(opcode < 5600) {
+               if(opcode == 5504) {
+                  class103.scriptIntStackSize -= 2;
+                  var33 = class32.scriptIntStack[class103.scriptIntStackSize];
+                  var24 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
                   if(!Client.field553) {
                      Client.field541 = var33;
                      Client.mapAngle = var24;
                   }
 
                   var3 = 1;
-               } else if(var0 == 5505) {
-                  class32.field747[++class103.field1686 - 1] = Client.field541;
+               } else if(opcode == 5505) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field541;
                   var3 = 1;
-               } else if(var0 == 5506) {
-                  class32.field747[++class103.field1686 - 1] = Client.mapAngle;
+               } else if(opcode == 5506) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.mapAngle;
                   var3 = 1;
-               } else if(var0 == 5530) {
-                  var33 = class32.field747[--class103.field1686];
+               } else if(opcode == 5530) {
+                  var33 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   if(var33 < 0) {
                      var33 = 0;
                   }
 
                   Client.field394 = var33;
                   var3 = 1;
-               } else if(var0 == 5531) {
-                  class32.field747[++class103.field1686 - 1] = Client.field394;
+               } else if(opcode == 5531) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field394;
                   var3 = 1;
                } else {
                   var3 = 2;
                }
 
                return var3;
-            } else if(var0 < 5700) {
-               if(var0 == 5630) {
+            } else if(opcode < 5700) {
+               if(opcode == 5630) {
                   Client.field358 = 250;
                   var3 = 1;
                } else {
@@ -1323,59 +1323,59 @@ public class XClanMember extends Node {
                }
 
                return var3;
-            } else if(var0 < 6300) {
-               return class112.method2145(var0, var1, var2);
-            } else if(var0 >= 6600) {
+            } else if(opcode < 6300) {
+               return class112.method2145(opcode, var1, var2);
+            } else if(opcode >= 6600) {
                return 2;
             } else {
-               if(var0 == 6500) {
-                  class32.field747[++class103.field1686 - 1] = class189.loadWorlds()?1:0;
+               if(opcode == 6500) {
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class189.loadWorlds()?1:0;
                   var3 = 1;
                } else {
                   World var14;
-                  if(var0 == 6501) {
+                  if(opcode == 6501) {
                      World.field711 = 0;
-                     var14 = class11.method148();
+                     var14 = ScriptState.method148();
                      if(null != var14) {
-                        class32.field747[++class103.field1686 - 1] = var14.id;
-                        class32.field747[++class103.field1686 - 1] = var14.mask;
-                        class32.chatboxSegments[++class32.field749 - 1] = var14.activity;
-                        class32.field747[++class103.field1686 - 1] = var14.location;
-                        class32.field747[++class103.field1686 - 1] = var14.playerCount;
-                        class32.chatboxSegments[++class32.field749 - 1] = var14.address;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.id;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.mask;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var14.activity;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.location;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.playerCount;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var14.address;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = -1;
-                        class32.field747[++class103.field1686 - 1] = 0;
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
-                        class32.field747[++class103.field1686 - 1] = 0;
-                        class32.field747[++class103.field1686 - 1] = 0;
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      var3 = 1;
-                  } else if(var0 == 6502) {
-                     var14 = class11.method148();
+                  } else if(opcode == 6502) {
+                     var14 = ScriptState.method148();
                      if(null != var14) {
-                        class32.field747[++class103.field1686 - 1] = var14.id;
-                        class32.field747[++class103.field1686 - 1] = var14.mask;
-                        class32.chatboxSegments[++class32.field749 - 1] = var14.activity;
-                        class32.field747[++class103.field1686 - 1] = var14.location;
-                        class32.field747[++class103.field1686 - 1] = var14.playerCount;
-                        class32.chatboxSegments[++class32.field749 - 1] = var14.address;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.id;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.mask;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var14.activity;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.location;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var14.playerCount;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var14.address;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = -1;
-                        class32.field747[++class103.field1686 - 1] = 0;
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
-                        class32.field747[++class103.field1686 - 1] = 0;
-                        class32.field747[++class103.field1686 - 1] = 0;
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      var3 = 1;
                   } else {
                      World var15;
-                     if(var0 == 6506) {
-                        var4 = class32.field747[--class103.field1686];
+                     if(opcode == 6506) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         var15 = null;
 
                         for(var6 = 0; var6 < World.field703; ++var6) {
@@ -1386,55 +1386,55 @@ public class XClanMember extends Node {
                         }
 
                         if(null != var15) {
-                           class32.field747[++class103.field1686 - 1] = var15.id;
-                           class32.field747[++class103.field1686 - 1] = var15.mask;
-                           class32.chatboxSegments[++class32.field749 - 1] = var15.activity;
-                           class32.field747[++class103.field1686 - 1] = var15.location;
-                           class32.field747[++class103.field1686 - 1] = var15.playerCount;
-                           class32.chatboxSegments[++class32.field749 - 1] = var15.address;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.id;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.mask;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var15.activity;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.location;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.playerCount;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var15.address;
                         } else {
-                           class32.field747[++class103.field1686 - 1] = -1;
-                           class32.field747[++class103.field1686 - 1] = 0;
-                           class32.chatboxSegments[++class32.field749 - 1] = "";
-                           class32.field747[++class103.field1686 - 1] = 0;
-                           class32.field747[++class103.field1686 - 1] = 0;
-                           class32.chatboxSegments[++class32.field749 - 1] = "";
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                         }
 
                         var3 = 1;
-                     } else if(var0 == 6507) {
-                        class103.field1686 -= 4;
-                        var4 = class32.field747[class103.field1686];
-                        boolean var5 = class32.field747[1 + class103.field1686] == 1;
-                        var6 = class32.field747[2 + class103.field1686];
-                        var16 = class32.field747[3 + class103.field1686] == 1;
+                     } else if(opcode == 6507) {
+                        class103.scriptIntStackSize -= 4;
+                        var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+                        boolean var5 = class32.scriptIntStack[1 + class103.scriptIntStackSize] == 1;
+                        var6 = class32.scriptIntStack[2 + class103.scriptIntStackSize];
+                        var16 = class32.scriptIntStack[3 + class103.scriptIntStackSize] == 1;
                         if(World.worldList != null) {
                            Client.method600(0, World.worldList.length - 1, var4, var5, var6, var16);
                         }
 
                         var3 = 1;
-                     } else if(var0 == 6511) {
-                        var4 = class32.field747[--class103.field1686];
+                     } else if(opcode == 6511) {
+                        var4 = class32.scriptIntStack[--class103.scriptIntStackSize];
                         if(var4 >= 0 && var4 < World.field703) {
                            var15 = World.worldList[var4];
-                           class32.field747[++class103.field1686 - 1] = var15.id;
-                           class32.field747[++class103.field1686 - 1] = var15.mask;
-                           class32.chatboxSegments[++class32.field749 - 1] = var15.activity;
-                           class32.field747[++class103.field1686 - 1] = var15.location;
-                           class32.field747[++class103.field1686 - 1] = var15.playerCount;
-                           class32.chatboxSegments[++class32.field749 - 1] = var15.address;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.id;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.mask;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var15.activity;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.location;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var15.playerCount;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var15.address;
                         } else {
-                           class32.field747[++class103.field1686 - 1] = -1;
-                           class32.field747[++class103.field1686 - 1] = 0;
-                           class32.chatboxSegments[++class32.field749 - 1] = "";
-                           class32.field747[++class103.field1686 - 1] = 0;
-                           class32.field747[++class103.field1686 - 1] = 0;
-                           class32.chatboxSegments[++class32.field749 - 1] = "";
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                           class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                         }
 
                         var3 = 1;
-                     } else if(var0 == 6512) {
-                        Client.field314 = class32.field747[--class103.field1686] == 1;
+                     } else if(opcode == 6512) {
+                        Client.field314 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                         var3 = 1;
                      } else {
                         var3 = 2;
@@ -1522,18 +1522,18 @@ public class XClanMember extends Node {
    static int method256(int var0, Script var1, boolean var2) {
       Widget var3 = var2?XGrandExchangeOffer.field58:field297;
       if(var0 == 1700) {
-         class32.field747[++class103.field1686 - 1] = var3.item;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.item;
          return 1;
       } else if(var0 == 1701) {
          if(var3.item != -1) {
-            class32.field747[++class103.field1686 - 1] = var3.stackSize;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.stackSize;
          } else {
-            class32.field747[++class103.field1686 - 1] = 0;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
          }
 
          return 1;
       } else if(var0 == 1702) {
-         class32.field747[++class103.field1686 - 1] = var3.index;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.index;
          return 1;
       } else {
          return 2;

@@ -557,7 +557,7 @@ public final class NPC extends Actor {
 
                      if(!var28) {
                         if(Client.field542 != 0 && Client.field421 != -1) {
-                           class72.method1464(class11.field127, Client.field421, 0, Client.field542, false);
+                           class72.method1464(ScriptState.field127, Client.field421, 0, Client.field542, false);
                         }
 
                         Client.field545 = false;

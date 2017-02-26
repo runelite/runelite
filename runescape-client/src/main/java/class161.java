@@ -22,16 +22,16 @@ public class class161 {
    )
    static int method3114(int var0, Script var1, boolean var2) {
       if(var0 == 3200) {
-         class103.field1686 -= 3;
-         VertexNormal.method1684(class32.field747[class103.field1686], class32.field747[1 + class103.field1686], class32.field747[2 + class103.field1686]);
+         class103.scriptIntStackSize -= 3;
+         VertexNormal.method1684(class32.scriptIntStack[class103.scriptIntStackSize], class32.scriptIntStack[1 + class103.scriptIntStackSize], class32.scriptIntStack[2 + class103.scriptIntStackSize]);
          return 1;
       } else {
          int var3;
          if(var0 != 3201) {
             if(var0 == 3202) {
-               class103.field1686 -= 2;
-               var3 = class32.field747[class103.field1686];
-               int var4 = class32.field747[1 + class103.field1686];
+               class103.scriptIntStackSize -= 2;
+               var3 = class32.scriptIntStack[class103.scriptIntStackSize];
+               int var4 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
                if(Client.field542 != 0 && var3 != -1) {
                   class72.method1464(class150.field2044, var3, 0, Client.field542, false);
                   Client.field545 = true;
@@ -42,13 +42,13 @@ public class class161 {
                return 2;
             }
          } else {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             if(var3 == -1 && !Client.field545) {
                class138.field1916.method2620();
                class138.field1919 = 1;
                class167.field2182 = null;
             } else if(var3 != -1 && var3 != Client.field421 && Client.field542 != 0 && !Client.field545) {
-               class152.method2815(2, class11.field127, var3, 0, Client.field542, false);
+               class152.method2815(2, ScriptState.field127, var3, 0, Client.field542, false);
             }
 
             Client.field421 = var3;

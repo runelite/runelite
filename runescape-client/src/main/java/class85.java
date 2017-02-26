@@ -53,7 +53,7 @@ public final class class85 {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class179.method3296(class32.field747[--class103.field1686]);
+         var3 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
       } else {
          var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }

@@ -115,7 +115,7 @@ public final class class94 {
             var6.originalWidth = class225.field3234[var5];
             var6.height = class41.field862[var5];
             var6.palette = class160.field2146;
-            var6.pixels = class11.field129[var5];
+            var6.pixels = ScriptState.field129[var5];
          }
 
          Actor.method636();

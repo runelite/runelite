@@ -205,7 +205,7 @@ public class Ignore {
 
             var3.method2827(var4, 0, 24);
             Client.field457.method2824(Client.field310);
-            Client.field457.method2821(class11.field133);
+            Client.field457.method2821(ScriptState.field133);
             Buffer var17 = new Buffer(class116.field1825.method4300());
             class116.field1825.method4298(var17);
             Client.field457.method2827(var17.payload, 0, var17.payload.length);
@@ -217,7 +217,7 @@ public class Ignore {
             Client.field457.method2821(class116.field1819.field2721);
             Client.field457.method2821(Client.field336.field2721);
             Client.field457.method2821(Client.field337.field2721);
-            Client.field457.method2821(class11.field127.field2721);
+            Client.field457.method2821(ScriptState.field127.field2721);
             Client.field457.method2821(class10.field111.field2721);
             Client.field457.method2821(class165.field2167.field2721);
             Client.field457.method2821(class107.field1738.field2721);

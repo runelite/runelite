@@ -26,7 +26,7 @@ public final class RSCanvas extends Canvas {
       Widget var3;
       if(var0 >= 2000) {
          var0 -= 1000;
-         var3 = class179.method3296(class32.field747[--class103.field1686]);
+         var3 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
       } else {
          var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
       }
@@ -35,7 +35,7 @@ public final class RSCanvas extends Canvas {
       if(var0 != 1200 && var0 != 1205 && var0 != 1212) {
          if(var0 == 1201) {
             var3.modelType = 2;
-            var3.modelId = class32.field747[--class103.field1686];
+            var3.modelId = class32.scriptIntStack[--class103.scriptIntStackSize];
             return 1;
          } else if(var0 == 1202) {
             var3.modelType = 3;
@@ -45,9 +45,9 @@ public final class RSCanvas extends Canvas {
             return 2;
          }
       } else {
-         class103.field1686 -= 2;
-         int var4 = class32.field747[class103.field1686];
-         int var5 = class32.field747[class103.field1686 + 1];
+         class103.scriptIntStackSize -= 2;
+         int var4 = class32.scriptIntStack[class103.scriptIntStackSize];
+         int var5 = class32.scriptIntStack[class103.scriptIntStackSize + 1];
          var3.item = var4;
          var3.stackSize = var5;
          ItemComposition var6 = class103.getItemDefinition(var4);
