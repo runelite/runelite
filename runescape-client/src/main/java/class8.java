@@ -276,6 +276,7 @@ public class class8 {
                   return 2;
                }
             } else {
+		    //5015
                if(null != class36.localPlayer && null != class36.localPlayer.name) {
                   var3 = class36.localPlayer.name;
                } else {
