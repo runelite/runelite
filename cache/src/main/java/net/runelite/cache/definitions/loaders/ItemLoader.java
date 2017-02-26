@@ -30,224 +30,137 @@ import net.runelite.cache.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ItemLoader
-{
-	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
+public class ItemLoader {
+    private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
 
-	public ItemDefinition load(int id, InputStream stream)
-	{
-		ItemDefinition def = new ItemDefinition(id);
-		
-		while (true)
-		{
-			int opcode = stream.readUnsignedByte();
-			if (opcode == 0)
-			{
-				break;
-			}
+    public ItemDefinition load(int id, InputStream stream) {
+        ItemDefinition def = new ItemDefinition(id);
 
-			this.decodeValues(opcode, def, stream);
-		}
+        while (true) {
+            int opcode = stream.readUnsignedByte();
+            if (opcode == 0) {
+                break;
+            }
 
-		return def;
-	}
+            this.decodeValues(opcode, def, stream);
+        }
 
-	private void decodeValues(int opcode, ItemDefinition def, InputStream stream)
-	{
-		if (opcode == 1)
-		{
-			def.inventoryModel = stream.readUnsignedShort();
-		}
-		else if (opcode == 2)
-		{
-			def.name = stream.readString();
-		}
-		else if (opcode == 4)
-		{
-			def.zoom2d = stream.readUnsignedShort();
-		}
-		else if (opcode == 5)
-		{
-			def.xan2d = stream.readUnsignedShort();
-		}
-		else if (opcode == 6)
-		{
-			def.yan2d = stream.readUnsignedShort();
-		}
-		else if (7 == opcode)
-		{
-			def.xOffset2d = stream.readUnsignedShort();
-			if (def.xOffset2d > 32767)
-			{
-				def.xOffset2d -= 65536;
-			}
-		}
-		else if (8 == opcode)
-		{
-			def.yOffset2d = stream.readUnsignedShort();
-			if (def.yOffset2d > 32767)
-			{
-				def.yOffset2d -= 65536;
-			}
-		}
-		else if (11 == opcode)
-		{
-			def.stackable = 1;
-		}
-		else if (opcode == 12)
-		{
-			def.cost = stream.readInt();
-		}
-		else if (16 == opcode)
-		{
-			def.members = true;
-		}
-		else if (opcode == 23)
-		{
-			def.maleModel0 = stream.readUnsignedShort();
-			def.maleOffset = stream.readUnsignedByte();
-		}
-		else if (opcode == 24)
-		{
-			def.maleModel1 = stream.readUnsignedShort();
-		}
-		else if (25 == opcode)
-		{
-			def.femaleModel0 = stream.readUnsignedShort();
-			def.femaleOffset = stream.readUnsignedByte();
-		}
-		else if (26 == opcode)
-		{
-			def.femaleModel1 = stream.readUnsignedShort();
-		}
-		else if (opcode >= 30 && opcode < 35)
-		{
-			def.options[opcode - 30] = stream.readString();
-			if (def.options[opcode - 30].equalsIgnoreCase("Hidden"))
-			{
-				def.options[opcode - 30] = null;
-			}
-		}
-		else if (opcode >= 35 && opcode < 40)
-		{
-			def.interfaceOptions[opcode - 35] = stream.readString();
-		}
-		else if (opcode == 40)
-		{
-			int var5 = stream.readUnsignedByte();
-			def.colorFind = new short[var5];
-			def.colorReplace = new short[var5];
+        return def;
+    }
 
-			for (int var4 = 0; var4 < var5; ++var4)
-			{
-				def.colorFind[var4] = (short) stream.readUnsignedShort();
-				def.colorReplace[var4] = (short) stream.readUnsignedShort();
-			}
+    private void decodeValues(int opcode, ItemDefinition def, InputStream stream) {
+        if (opcode == 1) {
+            def.inventoryModel = stream.readUnsignedShort();
+        } else if (opcode == 2) {
+            def.name = stream.readString();
+        } else if (opcode == 4) {
+            def.zoom2d = stream.readUnsignedShort();
+        } else if (opcode == 5) {
+            def.xan2d = stream.readUnsignedShort();
+        } else if (opcode == 6) {
+            def.yan2d = stream.readUnsignedShort();
+        } else if (opcode == 7) {
+            def.xOffset2d = stream.readUnsignedShort();
+            if (def.xOffset2d > 32767) {
+                def.xOffset2d -= 65536;
+            }
+        } else if (opcode == 8) {
+            def.yOffset2d = stream.readUnsignedShort();
+            if (def.yOffset2d > 32767) {
+                def.yOffset2d -= 65536;
+            }
+        } else if (opcode == 11) {
+            def.stackable = 1;
+        } else if (opcode == 12) {
+            def.cost = stream.readInt();
+        } else if (opcode == 16) {
+            def.members = true;
+        } else if (opcode == 23) {
+            def.maleModel0 = stream.readUnsignedShort();
+            def.maleOffset = stream.readUnsignedByte();
+        } else if (opcode == 24) {
+            def.maleModel1 = stream.readUnsignedShort();
+        } else if (opcode == 25) {
+            def.femaleModel0 = stream.readUnsignedShort();
+            def.femaleOffset = stream.readUnsignedByte();
+        } else if (opcode == 26) {
+            def.femaleModel1 = stream.readUnsignedShort();
+        } else if (opcode >= 30 && opcode < 35) {
+            def.options[opcode - 30] = stream.readString();
+            if (def.options[opcode - 30].equalsIgnoreCase("Hidden")) {
+                def.options[opcode - 30] = null;
+            }
+        } else if (opcode >= 35 && opcode < 40) {
+            def.interfaceOptions[opcode - 35] = stream.readString();
+        } else if (opcode == 40) {
+            int var5 = stream.readUnsignedByte();
+            def.colorFind = new short[var5];
+            def.colorReplace = new short[var5];
 
-		}
-		else if (opcode == 78)
-		{
-			def.maleModel2 = stream.readUnsignedShort();
-		}
-		else if (opcode == 79)
-		{
-			def.femaleModel2 = stream.readUnsignedShort();
-		}
-		else if (90 == opcode)
-		{
-			def.maleHeadModel = stream.readUnsignedShort();
-		}
-		else if (91 == opcode)
-		{
-			def.femaleHeadModel = stream.readUnsignedShort();
-		}
-		else if (92 == opcode)
-		{
-			def.maleHeadModel2 = stream.readUnsignedShort();
-		}
-		else if (opcode == 93)
-		{
-			def.femaleHeadModel2 = stream.readUnsignedShort();
-		}
-		else if (opcode == 95)
-		{
-			def.zan2d = stream.readUnsignedShort();
-		}
-		else if (97 == opcode)
-		{
-			def.notedID = stream.readUnsignedShort();
-		}
-		else if (98 == opcode)
-		{
-			def.notedTemplate = stream.readUnsignedShort();
-		}
-		else if (opcode >= 100 && opcode < 110)
-		{
-			if (def.countObj == null)
-			{
-				def.countObj = new int[10];
-				def.countCo = new int[10];
-			}
+            for (int var4 = 0; var4 < var5; ++var4) {
+                def.colorFind[var4] = (short) stream.readUnsignedShort();
+                def.colorReplace[var4] = (short) stream.readUnsignedShort();
+            }
 
-			def.countObj[opcode - 100] = stream.readUnsignedShort();
-			def.countCo[opcode - 100] = stream.readUnsignedShort();
-		}
-		else if (110 == opcode)
-		{
-			def.resizeX = stream.readUnsignedShort();
-		}
-		else if (opcode == 111)
-		{
-			def.resizeY = stream.readUnsignedShort();
-		}
-		else if (opcode == 112)
-		{
-			def.resizeZ = stream.readUnsignedShort();
-		}
-		else if (opcode == 113)
-		{
-			def.ambient = stream.readByte();
-		}
-		else if (114 == opcode)
-		{
-			def.contrast = stream.readByte();
-		}
-		else if (115 == opcode)
-		{
-			def.team = stream.readUnsignedByte();
-		}
-		else if (opcode == 41)
-		{
-			int var5 = stream.readUnsignedByte();
-			def.textureFind = new short[var5];
-			def.textureReplace = new short[var5];
+        } else if (opcode == 78) {
+            def.maleModel2 = stream.readUnsignedShort();
+        } else if (opcode == 79) {
+            def.femaleModel2 = stream.readUnsignedShort();
+        } else if (opcode == 90) {
+            def.maleHeadModel = stream.readUnsignedShort();
+        } else if (opcode == 91) {
+            def.femaleHeadModel = stream.readUnsignedShort();
+        } else if (opcode == 92) {
+            def.maleHeadModel2 = stream.readUnsignedShort();
+        } else if (opcode == 93) {
+            def.femaleHeadModel2 = stream.readUnsignedShort();
+        } else if (opcode == 95) {
+            def.zan2d = stream.readUnsignedShort();
+        } else if (opcode == 97) {
+            def.notedID = stream.readUnsignedShort();
+        } else if (opcode == 98) {
+            def.notedTemplate = stream.readUnsignedShort();
+        } else if (opcode >= 100 && opcode < 110) {
+            if (def.countObj == null) {
+                def.countObj = new int[10];
+                def.countCo = new int[10];
+            }
 
-			for (int var4 = 0; var4 < var5; ++var4)
-			{
-				def.textureFind[var4] = (short) stream.readUnsignedShort();
-				def.textureReplace[var4] = (short) stream.readUnsignedShort();
-			}
+            def.countObj[opcode - 100] = stream.readUnsignedShort();
+            def.countCo[opcode - 100] = stream.readUnsignedShort();
+        } else if (opcode == 110) {
+            def.resizeX = stream.readUnsignedShort();
+        } else if (opcode == 111) {
+            def.resizeY = stream.readUnsignedShort();
+        } else if (opcode == 112) {
+            def.resizeZ = stream.readUnsignedShort();
+        } else if (opcode == 113) {
+            def.ambient = stream.readByte();
+        } else if (opcode == 114) {
+            def.contrast = stream.readByte();
+        } else if (opcode == 115) {
+            def.team = stream.readUnsignedByte();
+        } else if (opcode == 41) {
+            int var5 = stream.readUnsignedByte();
+            def.textureFind = new short[var5];
+            def.textureReplace = new short[var5];
 
-		}
-		else if (opcode == 148)
-		{
-			stream.readUnsignedShort();
-		}
-		else if (opcode == 65)
-		{
-			
-		}
-		else if (opcode == 139)
-		{
-			stream.readUnsignedShort();
-		}
-		else if (opcode == 140)
-		{
-			
-		}
-		else
-		{
-			logger.warn("Unrecognized opcode {}", opcode);
-		}
-	}
+            for (int var4 = 0; var4 < var5; ++var4) {
+                def.textureFind[var4] = (short) stream.readUnsignedShort();
+                def.textureReplace[var4] = (short) stream.readUnsignedShort();
+            }
+
+        } else if (opcode == 148) {
+            stream.readUnsignedShort();
+        } else if (opcode == 65) {
+        } else if (opcode == 139) {
+            stream.readUnsignedShort();
+        } else if (opcode == 140) {
+            stream.readUnsignedShort();
+        } else if (opcode == 149) {
+            stream.readUnsignedShort();
+        } else {
+            logger.warn("Unrecognized opcode {} from item {}", opcode, def.id);
+        }
+    }
 }
