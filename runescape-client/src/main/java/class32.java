@@ -11,22 +11,25 @@ public class class32 {
    @ObfuscatedName("n")
    static int[][] field746 = new int[5][5000];
    @ObfuscatedName("r")
-   static int[] field747 = new int[1000];
+   static int[] scriptIntStack = new int[1000];
    @ObfuscatedName("i")
-   @Export("chatboxSegments")
-   static String[] chatboxSegments = new String[1000];
+   @Export("scriptStringStack")
+   static String[] scriptStringStack = new String[1000];
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = 19963481
    )
-   static int field749;
+   @Export("scriptStringStackSize")
+   static int scriptStringStackSize;
    @ObfuscatedName("m")
    @ObfuscatedGetter(
       intValue = -1726422745
    )
-   static int field750 = 0;
+   @Export("scriptStackCount")
+   static int scriptStackCount = 0;
    @ObfuscatedName("s")
-   static class11[] field751 = new class11[50];
+   @Export("scriptStack")
+   static ScriptState[] scriptStack = new ScriptState[50];
    @ObfuscatedName("j")
    static int[] field752 = new int[5];
    @ObfuscatedName("f")

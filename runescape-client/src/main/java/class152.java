@@ -164,7 +164,7 @@ public final class class152 {
    public static void method2815(int var0, class182 var1, int var2, int var3, int var4, boolean var5) {
       class138.field1919 = 1;
       class167.field2182 = var1;
-      class11.field130 = var2;
+      ScriptState.field130 = var2;
       class138.field1918 = var3;
       class1.field16 = var4;
       class165.field2163 = var5;

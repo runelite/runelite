@@ -147,7 +147,7 @@ public class class180 extends Node {
                   }
 
                   if(var85.overheadIcon != -1) {
-                     class11.field125[var85.overheadIcon].method4173(var2 + Client.field410 - 12, Client.field411 + var3 - var8);
+                     ScriptState.field125[var85.overheadIcon].method4173(var2 + Client.field410 - 12, Client.field411 + var3 - var8);
                      var8 += 25;
                   }
                }
@@ -165,10 +165,10 @@ public class class180 extends Node {
                var86 = var86.method3735();
             }
 
-            if(var86.field3007 >= 0 && var86.field3007 < class11.field125.length) {
+            if(var86.field3007 >= 0 && var86.field3007 < ScriptState.field125.length) {
                MessageNode.method215(var0, var0.field629 + 15);
                if(Client.field410 > -1) {
-                  class11.field125[var86.field3007].method4173(var2 + Client.field410 - 12, Client.field411 + var3 - 30);
+                  ScriptState.field125[var86.field3007].method4173(var2 + Client.field410 - 12, Client.field411 + var3 - 30);
                }
             }
 

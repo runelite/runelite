@@ -31,7 +31,7 @@ public class class118 {
    public static void method2335(int var0) {
       class138.field1919 = 1;
       class167.field2182 = null;
-      class11.field130 = -1;
+      ScriptState.field130 = -1;
       class138.field1918 = -1;
       class1.field16 = 0;
       class165.field2163 = false;

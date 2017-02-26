@@ -374,7 +374,7 @@ public class class145 {
 
             if(Client.field542 != var3) {
                if(Client.field542 == 0 && Client.field421 != -1) {
-                  class72.method1464(class11.field127, Client.field421, 0, var3, false);
+                  class72.method1464(ScriptState.field127, Client.field421, 0, var3, false);
                   Client.field545 = false;
                } else if(var3 == 0) {
                   class138.field1916.method2620();
