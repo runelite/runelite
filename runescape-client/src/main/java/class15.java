@@ -31,50 +31,50 @@ public class class15 {
    static int method180(int var0, Script var1, boolean var2) {
       if(var0 == 3600) {
          if(Client.field573 == 0) {
-            class32.field747[++class103.field1686 - 1] = -2;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -2;
          } else if(Client.field573 == 1) {
-            class32.field747[++class103.field1686 - 1] = -1;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
          } else {
-            class32.field747[++class103.field1686 - 1] = Client.friendCount;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.friendCount;
          }
 
          return 1;
       } else {
          int var3;
          if(var0 == 3601) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             if(Client.field573 == 2 && var3 < Client.friendCount) {
-               class32.chatboxSegments[++class32.field749 - 1] = Client.friends[var3].name;
-               class32.chatboxSegments[++class32.field749 - 1] = Client.friends[var3].previousName;
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].name;
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.friends[var3].previousName;
             } else {
-               class32.chatboxSegments[++class32.field749 - 1] = "";
-               class32.chatboxSegments[++class32.field749 - 1] = "";
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
             }
 
             return 1;
          } else if(var0 == 3602) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             if(Client.field573 == 2 && var3 < Client.friendCount) {
-               class32.field747[++class103.field1686 - 1] = Client.friends[var3].world;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.friends[var3].world;
             } else {
-               class32.field747[++class103.field1686 - 1] = 0;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
             }
 
             return 1;
          } else if(var0 == 3603) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             if(Client.field573 == 2 && var3 < Client.friendCount) {
-               class32.field747[++class103.field1686 - 1] = Client.friends[var3].rank;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.friends[var3].rank;
             } else {
-               class32.field747[++class103.field1686 - 1] = 0;
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
             }
 
             return 1;
          } else {
             String var11;
             if(var0 == 3604) {
-               var11 = class32.chatboxSegments[--class32.field749];
-               int var12 = class32.field747[--class103.field1686];
+               var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
+               int var12 = class32.scriptIntStack[--class103.scriptIntStackSize];
                class172.method3273(var11, var12);
                return 1;
             } else {
@@ -85,7 +85,7 @@ public class class15 {
                Ignore var15;
                Friend var16;
                if(var0 == 3605) {
-                  var11 = class32.chatboxSegments[--class32.field749];
+                  var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                   if(null != var11) {
                      if((Client.friendCount < 200 || Client.field427 == 1) && Client.friendCount < 400) {
                         var14 = GroundObject.method1594(var11, MessageNode.field244);
@@ -149,7 +149,7 @@ public class class15 {
                   int var10;
                   boolean var17;
                   if(var0 == 3606) {
-                     var11 = class32.chatboxSegments[--class32.field749];
+                     var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      if(null != var11) {
                         var14 = GroundObject.method1594(var11, MessageNode.field244);
                         if(null != var14) {
@@ -186,7 +186,7 @@ public class class15 {
 
                      return 1;
                   } else if(var0 == 3607) {
-                     var11 = class32.chatboxSegments[--class32.field749];
+                     var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      if(var11 != null) {
                         if((Client.ignoreCount < 100 || Client.field427 == 1) && Client.ignoreCount < 400) {
                            var14 = GroundObject.method1594(var11, MessageNode.field244);
@@ -247,7 +247,7 @@ public class class15 {
 
                      return 1;
                   } else if(var0 == 3608) {
-                     var11 = class32.chatboxSegments[--class32.field749];
+                     var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      if(null != var11) {
                         var14 = GroundObject.method1594(var11, MessageNode.field244);
                         if(var14 != null) {
@@ -284,7 +284,7 @@ public class class15 {
 
                      return 1;
                   } else if(var0 == 3609) {
-                     var11 = class32.chatboxSegments[--class32.field749];
+                     var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      class177[] var4 = method179();
 
                      for(var5 = 0; var5 < var4.length; ++var5) {
@@ -299,56 +299,56 @@ public class class15 {
                         }
                      }
 
-                     class32.field747[++class103.field1686 - 1] = method183(var11, false)?1:0;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = method183(var11, false)?1:0;
                      return 1;
                   } else if(var0 == 3611) {
                      if(Client.field532 != null) {
-                        class32.chatboxSegments[++class32.field749 - 1] = class150.method2805(Client.field532);
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class150.method2805(Client.field532);
                      } else {
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      return 1;
                   } else if(var0 == 3612) {
                      if(null != Client.field532) {
-                        class32.field747[++class103.field1686 - 1] = Player.clanChatCount;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Player.clanChatCount;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = 0;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                      }
 
                      return 1;
                   } else if(var0 == 3613) {
-                     var3 = class32.field747[--class103.field1686];
+                     var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                      if(Client.field532 != null && var3 < Player.clanChatCount) {
-                        class32.chatboxSegments[++class32.field749 - 1] = class72.clanMembers[var3].username;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class72.clanMembers[var3].username;
                      } else {
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      return 1;
                   } else if(var0 == 3614) {
-                     var3 = class32.field747[--class103.field1686];
+                     var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                      if(null != Client.field532 && var3 < Player.clanChatCount) {
-                        class32.field747[++class103.field1686 - 1] = class72.clanMembers[var3].world;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class72.clanMembers[var3].world;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = 0;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                      }
 
                      return 1;
                   } else if(var0 == 3615) {
-                     var3 = class32.field747[--class103.field1686];
+                     var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                      if(null != Client.field532 && var3 < Player.clanChatCount) {
-                        class32.field747[++class103.field1686 - 1] = class72.clanMembers[var3].rank;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class72.clanMembers[var3].rank;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = 0;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                      }
 
                      return 1;
                   } else if(var0 == 3616) {
-                     class32.field747[++class103.field1686 - 1] = class115.field1805;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class115.field1805;
                      return 1;
                   } else if(var0 == 3617) {
-                     var11 = class32.chatboxSegments[--class32.field749];
+                     var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      if(null != class72.clanMembers) {
                         Client.field348.method3073(194);
                         Client.field348.method2918(class119.method2340(var11));
@@ -357,10 +357,10 @@ public class class15 {
 
                      return 1;
                   } else if(var0 == 3618) {
-                     class32.field747[++class103.field1686 - 1] = ObjectComposition.field2942;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = ObjectComposition.field2942;
                      return 1;
                   } else if(var0 == 3619) {
-                     var11 = class32.chatboxSegments[--class32.field749];
+                     var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                      if(!var11.equals("")) {
                         Client.field348.method3073(152);
                         Client.field348.method2918(class119.method2340(var11));
@@ -373,26 +373,26 @@ public class class15 {
                      return 1;
                   } else if(var0 == 3621) {
                      if(Client.field573 == 0) {
-                        class32.field747[++class103.field1686 - 1] = -1;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = Client.ignoreCount;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.ignoreCount;
                      }
 
                      return 1;
                   } else if(var0 == 3622) {
-                     var3 = class32.field747[--class103.field1686];
+                     var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                      if(Client.field573 != 0 && var3 < Client.ignoreCount) {
-                        class32.chatboxSegments[++class32.field749 - 1] = Client.ignores[var3].name;
-                        class32.chatboxSegments[++class32.field749 - 1] = Client.ignores[var3].previousName;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].name;
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = Client.ignores[var3].previousName;
                      } else {
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
-                        class32.chatboxSegments[++class32.field749 - 1] = "";
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+                        class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                      }
 
                      return 1;
                   } else if(var0 == 3623) {
                      label609: {
-                        var11 = class32.chatboxSegments[--class32.field749];
+                        var11 = class32.scriptStringStack[--class32.scriptStringStackSize];
                         String var13 = "<img=0>";
                         if(!var11.startsWith(var13)) {
                            var7 = "<img=1>";
@@ -404,14 +404,14 @@ public class class15 {
                         var11 = var11.substring(7);
                      }
 
-                     class32.field747[++class103.field1686 - 1] = Ignore.method206(var11)?1:0;
+                     class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Ignore.method206(var11)?1:0;
                      return 1;
                   } else if(var0 != 3624) {
                      if(var0 == 3625) {
                         if(null != Client.clanChatOwner) {
-                           class32.chatboxSegments[++class32.field749 - 1] = class150.method2805(Client.clanChatOwner);
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = class150.method2805(Client.clanChatOwner);
                         } else {
-                           class32.chatboxSegments[++class32.field749 - 1] = "";
+                           class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
                         }
 
                         return 1;
@@ -419,11 +419,11 @@ public class class15 {
                         return 2;
                      }
                   } else {
-                     var3 = class32.field747[--class103.field1686];
+                     var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                      if(class72.clanMembers != null && var3 < Player.clanChatCount && class72.clanMembers[var3].username.equalsIgnoreCase(class36.localPlayer.name)) {
-                        class32.field747[++class103.field1686 - 1] = 1;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 1;
                      } else {
-                        class32.field747[++class103.field1686 - 1] = 0;
+                        class32.scriptIntStack[++class103.scriptIntStackSize - 1] = 0;
                      }
 
                      return 1;

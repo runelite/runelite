@@ -1,9 +1,11 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("s")
-public class class11 {
+@Implements("ScriptState")
+public class ScriptState {
    @ObfuscatedName("q")
    Script field121;
    @ObfuscatedName("p")

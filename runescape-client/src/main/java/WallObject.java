@@ -103,7 +103,7 @@ public final class WallObject {
             class116.field1819 = class41.method865(3, false, true, true);
             Client.field336 = class41.method865(4, false, true, true);
             Client.field337 = class41.method865(5, true, true, true);
-            class11.field127 = class41.method865(6, true, true, false);
+            ScriptState.field127 = class41.method865(6, true, true, false);
             class10.field111 = class41.method865(7, false, true, true);
             class165.field2167 = class41.method865(8, false, true, true);
             class107.field1738 = class41.method865(9, false, true, true);
@@ -124,7 +124,7 @@ public final class WallObject {
             var0 += class116.field1819.method3394() * 2 / 100;
             var0 += Client.field336.method3394() * 6 / 100;
             var0 += Client.field337.method3394() * 4 / 100;
-            var0 += class11.field127.method3394() * 2 / 100;
+            var0 += ScriptState.field127.method3394() * 2 / 100;
             var0 += class10.field111.method3394() * 60 / 100;
             var0 += class165.field2167.method3394() * 2 / 100;
             var0 += class107.field1738.method3394() * 2 / 100;
@@ -317,12 +317,12 @@ public final class WallObject {
                   ++var0;
                }
 
-               if(class11.field132 == null) {
+               if(ScriptState.field132 == null) {
                   var15 = class165.field2167;
                   var3 = var15.method3335("mapedge");
                   var4 = var15.method3319(var3, "");
                   var16 = class182.method3305(var15, var3, var4);
-                  class11.field132 = var16;
+                  ScriptState.field132 = var16;
                } else {
                   ++var0;
                }
@@ -345,8 +345,8 @@ public final class WallObject {
                   ++var0;
                }
 
-               if(class11.field125 == null) {
-                  class11.field125 = class31.method711(class165.field2167, "headicons_prayer", "");
+               if(ScriptState.field125 == null) {
+                  ScriptState.field125 = class31.method711(class165.field2167, "headicons_prayer", "");
                } else {
                   ++var0;
                }
@@ -369,8 +369,8 @@ public final class WallObject {
                   ++var0;
                }
 
-               if(null == class11.field131) {
-                  class11.field131 = class31.method711(class165.field2167, "mapdots", "");
+               if(null == ScriptState.field131) {
+                  ScriptState.field131 = class31.method711(class165.field2167, "mapdots", "");
                } else {
                   ++var0;
                }
@@ -392,7 +392,7 @@ public final class WallObject {
                   class41.field851 = 70;
                } else {
                   FontTypeFace.modIcons = class18.field215;
-                  class11.field132.method4187();
+                  ScriptState.field132.method4187();
                   var1 = (int)(Math.random() * 21.0D) - 10;
                   var2 = (int)(Math.random() * 21.0D) - 10;
                   var3 = (int)(Math.random() * 21.0D) - 10;

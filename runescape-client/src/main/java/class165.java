@@ -738,7 +738,7 @@ public class class165 {
 
                                  var43 = 0;
                                  if(var42 != -2) {
-                                    var43 = class84.colorPalette[class11.method152(var42, 96)];
+                                    var43 = class84.colorPalette[ScriptState.method152(var42, 96)];
                                  }
 
                                  if(var64.field3043 != -1) {
@@ -751,10 +751,10 @@ public class class165 {
                                     }
 
                                     var42 = World.method674(var44, var64.field3048, var45);
-                                    var43 = class84.colorPalette[class11.method152(var42, 96)];
+                                    var43 = class84.colorPalette[ScriptState.method152(var42, 96)];
                                  }
 
-                                 var66.method1752(var4, var13, var55, var35, var76, var40, var24, var25, var26, var27, class114.method2256(var32, var28), class114.method2256(var32, var29), class114.method2256(var32, var30), class114.method2256(var32, var31), class11.method152(var41, var28), class11.method152(var41, var29), class11.method152(var41, var30), class11.method152(var41, var31), var34, var43);
+                                 var66.method1752(var4, var13, var55, var35, var76, var40, var24, var25, var26, var27, class114.method2256(var32, var28), class114.method2256(var32, var29), class114.method2256(var32, var30), class114.method2256(var32, var31), ScriptState.method152(var41, var28), ScriptState.method152(var41, var29), ScriptState.method152(var41, var30), ScriptState.method152(var41, var31), var34, var43);
                               }
                            }
                         }
@@ -1267,48 +1267,48 @@ public class class165 {
       garbageValue = "894990248"
    )
    static int method3167(int var0, Script var1, boolean var2) {
-      Widget var3 = class179.method3296(class32.field747[--class103.field1686]);
+      Widget var3 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
       if(var0 == 2600) {
-         class32.field747[++class103.field1686 - 1] = var3.scrollX;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.scrollX;
          return 1;
       } else if(var0 == 2601) {
-         class32.field747[++class103.field1686 - 1] = var3.scrollY;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.scrollY;
          return 1;
       } else if(var0 == 2602) {
-         class32.chatboxSegments[++class32.field749 - 1] = var3.text;
+         class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.text;
          return 1;
       } else if(var0 == 2603) {
-         class32.field747[++class103.field1686 - 1] = var3.scrollWidth;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.scrollWidth;
          return 1;
       } else if(var0 == 2604) {
-         class32.field747[++class103.field1686 - 1] = var3.scrollHeight;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.scrollHeight;
          return 1;
       } else if(var0 == 2605) {
-         class32.field747[++class103.field1686 - 1] = var3.field2259;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.field2259;
          return 1;
       } else if(var0 == 2606) {
-         class32.field747[++class103.field1686 - 1] = var3.rotationX;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.rotationX;
          return 1;
       } else if(var0 == 2607) {
-         class32.field747[++class103.field1686 - 1] = var3.rotationY;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.rotationY;
          return 1;
       } else if(var0 == 2608) {
-         class32.field747[++class103.field1686 - 1] = var3.rotationZ;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.rotationZ;
          return 1;
       } else if(var0 == 2609) {
-         class32.field747[++class103.field1686 - 1] = var3.opacity;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.opacity;
          return 1;
       } else if(var0 == 2610) {
-         class32.field747[++class103.field1686 - 1] = var3.field2237;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.field2237;
          return 1;
       } else if(var0 == 2611) {
-         class32.field747[++class103.field1686 - 1] = var3.textColor;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.textColor;
          return 1;
       } else if(var0 == 2612) {
-         class32.field747[++class103.field1686 - 1] = var3.field2313;
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.field2313;
          return 1;
       } else if(var0 == 2613) {
-         class32.field747[++class103.field1686 - 1] = var3.field2235.vmethod4101();
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var3.field2235.vmethod4101();
          return 1;
       } else {
          return 2;
@@ -1329,7 +1329,7 @@ public class class165 {
       var0.originalWidth = class225.field3234[0];
       var0.height = class41.field862[0];
       var0.palette = class160.field2146;
-      var0.pixels = class11.field129[0];
+      var0.pixels = ScriptState.field129[0];
       Actor.method636();
       return var0;
    }

@@ -45,12 +45,12 @@ final class class5 implements Comparator {
    static int method64(int var0, Script var1, boolean var2) {
       String var3;
       if(var0 == 3100) {
-         var3 = class32.chatboxSegments[--class32.field749];
+         var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
          class16.sendGameMessage(0, "", var3);
          return 1;
       } else if(var0 == 3101) {
-         class103.field1686 -= 2;
-         class47.method965(class36.localPlayer, class32.field747[class103.field1686], class32.field747[class103.field1686 + 1]);
+         class103.scriptIntStackSize -= 2;
+         class47.method965(class36.localPlayer, class32.scriptIntStack[class103.scriptIntStackSize], class32.scriptIntStack[class103.scriptIntStackSize + 1]);
          return 1;
       } else if(var0 == 3103) {
          Buffer.method3033();
@@ -58,7 +58,7 @@ final class class5 implements Comparator {
       } else {
          int var13;
          if(var0 == 3104) {
-            var3 = class32.chatboxSegments[--class32.field749];
+            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
             var13 = 0;
             if(class105.method2082(var3)) {
                var13 = class145.method2759(var3);
@@ -68,13 +68,13 @@ final class class5 implements Comparator {
             Client.field348.method2821(var13);
             return 1;
          } else if(var0 == 3105) {
-            var3 = class32.chatboxSegments[--class32.field749];
+            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
             Client.field348.method3073(191);
             Client.field348.method2918(var3.length() + 1);
             Client.field348.method2824(var3);
             return 1;
          } else if(var0 == 3106) {
-            var3 = class32.chatboxSegments[--class32.field749];
+            var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
             Client.field348.method3073(41);
             Client.field348.method2918(var3.length() + 1);
             Client.field348.method2824(var3);
@@ -85,45 +85,45 @@ final class class5 implements Comparator {
             int var12;
             if(var0 != 3107) {
                if(var0 == 3108) {
-                  class103.field1686 -= 3;
-                  var11 = class32.field747[class103.field1686];
-                  var13 = class32.field747[1 + class103.field1686];
-                  var12 = class32.field747[class103.field1686 + 2];
+                  class103.scriptIntStackSize -= 3;
+                  var11 = class32.scriptIntStack[class103.scriptIntStackSize];
+                  var13 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
+                  var12 = class32.scriptIntStack[class103.scriptIntStackSize + 2];
                   Widget var15 = class179.method3296(var12);
                   Friend.method176(var15, var11, var13);
                   return 1;
                } else if(var0 == 3109) {
-                  class103.field1686 -= 2;
-                  var11 = class32.field747[class103.field1686];
-                  var13 = class32.field747[1 + class103.field1686];
+                  class103.scriptIntStackSize -= 2;
+                  var11 = class32.scriptIntStack[class103.scriptIntStackSize];
+                  var13 = class32.scriptIntStack[1 + class103.scriptIntStackSize];
                   Widget var14 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
                   Friend.method176(var14, var11, var13);
                   return 1;
                } else if(var0 == 3110) {
-                  class15.field173 = class32.field747[--class103.field1686] == 1;
+                  class15.field173 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                   return 1;
                } else if(var0 == 3111) {
-                  class32.field747[++class103.field1686 - 1] = class184.field2735.field714?1:0;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = class184.field2735.field714?1:0;
                   return 1;
                } else if(var0 == 3112) {
-                  class184.field2735.field714 = class32.field747[--class103.field1686] == 1;
+                  class184.field2735.field714 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                   class99.method1996();
                   return 1;
                } else if(var0 == 3113) {
-                  var3 = class32.chatboxSegments[--class32.field749];
-                  boolean var4 = class32.field747[--class103.field1686] == 1;
+                  var3 = class32.scriptStringStack[--class32.scriptStringStackSize];
+                  boolean var4 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                   TextureProvider.method1507(var3, var4, "openjs", false);
                   return 1;
                } else if(var0 == 3115) {
-                  var11 = class32.field747[--class103.field1686];
+                  var11 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   Client.field348.method3073(184);
                   Client.field348.method2831(var11);
                   return 1;
                } else if(var0 == 3116) {
-                  var11 = class32.field747[--class103.field1686];
-                  class32.field749 -= 2;
-                  var10 = class32.chatboxSegments[class32.field749];
-                  String var5 = class32.chatboxSegments[class32.field749 + 1];
+                  var11 = class32.scriptIntStack[--class103.scriptIntStackSize];
+                  class32.scriptStringStackSize -= 2;
+                  var10 = class32.scriptStringStack[class32.scriptStringStackSize];
+                  String var5 = class32.scriptStringStack[class32.scriptStringStackSize + 1];
                   if(var10.length() > 500) {
                      return 1;
                   } else if(var5.length() > 500) {
@@ -137,14 +137,15 @@ final class class5 implements Comparator {
                      return 1;
                   }
                } else if(var0 == 3117) {
-                  Client.field453 = class32.field747[--class103.field1686] == 1;
+                  Client.field453 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                   return 1;
                } else {
                   return 2;
                }
             } else {
-               var11 = class32.field747[--class103.field1686];
-               var10 = class32.chatboxSegments[--class32.field749];
+		    //3107
+               var11 = class32.scriptIntStack[--class103.scriptIntStackSize];
+               var10 = class32.scriptStringStack[--class32.scriptStringStackSize];
                var12 = class45.field921;
                int[] var6 = class45.field931;
                boolean var7 = false;

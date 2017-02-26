@@ -383,7 +383,7 @@ public class class72 {
    public static void method1464(class182 var0, int var1, int var2, int var3, boolean var4) {
       class138.field1919 = 1;
       class167.field2182 = var0;
-      class11.field130 = var1;
+      ScriptState.field130 = var1;
       class138.field1918 = var2;
       class1.field16 = var3;
       class165.field2163 = var4;

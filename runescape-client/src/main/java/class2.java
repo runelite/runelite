@@ -90,134 +90,134 @@ public class class2 {
    static int method30(int var0, Script var1, boolean var2) {
       int var3;
       if(var0 == 3903) {
-         var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].method43();
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].method43();
          return 1;
       } else if(var0 == 3904) {
-         var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].itemId;
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].itemId;
          return 1;
       } else if(var0 == 3905) {
-         var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].price;
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].price;
          return 1;
       } else if(var0 == 3906) {
-         var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].totalQuantity;
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].totalQuantity;
          return 1;
       } else if(var0 == 3907) {
-         var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].quantitySold;
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].quantitySold;
          return 1;
       } else if(var0 == 3908) {
-         var3 = class32.field747[--class103.field1686];
-         class32.field747[++class103.field1686 - 1] = Client.grandExchangeOffers[var3].spent;
+         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
+         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].spent;
          return 1;
       } else {
          int var13;
          if(var0 == 3910) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             var13 = Client.grandExchangeOffers[var3].method55();
-            class32.field747[++class103.field1686 - 1] = var13 == 0?1:0;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 0?1:0;
             return 1;
          } else if(var0 == 3911) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             var13 = Client.grandExchangeOffers[var3].method55();
-            class32.field747[++class103.field1686 - 1] = var13 == 2?1:0;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 2?1:0;
             return 1;
          } else if(var0 == 3912) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             var13 = Client.grandExchangeOffers[var3].method55();
-            class32.field747[++class103.field1686 - 1] = var13 == 5?1:0;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 5?1:0;
             return 1;
          } else if(var0 == 3913) {
-            var3 = class32.field747[--class103.field1686];
+            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
             var13 = Client.grandExchangeOffers[var3].method55();
-            class32.field747[++class103.field1686 - 1] = var13 == 1?1:0;
+            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 1?1:0;
             return 1;
          } else {
             boolean var12;
             if(var0 == 3914) {
-               var12 = class32.field747[--class103.field1686] == 1;
+               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                if(null != class105.field1703) {
                   class105.field1703.method14(class1.field20, var12);
                }
 
                return 1;
             } else if(var0 == 3915) {
-               var12 = class32.field747[--class103.field1686] == 1;
+               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                if(class105.field1703 != null) {
                   class105.field1703.method14(class1.field11, var12);
                }
 
                return 1;
             } else if(var0 == 3916) {
-               class103.field1686 -= 2;
-               var12 = class32.field747[class103.field1686] == 1;
-               boolean var11 = class32.field747[class103.field1686 + 1] == 1;
+               class103.scriptIntStackSize -= 2;
+               var12 = class32.scriptIntStack[class103.scriptIntStackSize] == 1;
+               boolean var11 = class32.scriptIntStack[class103.scriptIntStackSize + 1] == 1;
                if(null != class105.field1703) {
                   class105.field1703.method14(new class44(var11), var12);
                }
 
                return 1;
             } else if(var0 == 3917) {
-               var12 = class32.field747[--class103.field1686] == 1;
+               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                if(class105.field1703 != null) {
                   class105.field1703.method14(class1.field10, var12);
                }
 
                return 1;
             } else if(var0 == 3918) {
-               var12 = class32.field747[--class103.field1686] == 1;
+               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
                if(null != class105.field1703) {
                   class105.field1703.method14(class1.field13, var12);
                }
 
                return 1;
             } else if(var0 == 3919) {
-               class32.field747[++class103.field1686 - 1] = null == class105.field1703?0:class105.field1703.field9.size();
+               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = null == class105.field1703?0:class105.field1703.field9.size();
                return 1;
             } else {
                class2 var4;
                if(var0 == 3920) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.field747[++class103.field1686 - 1] = var4.field30;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field30;
                   return 1;
                } else if(var0 == 3921) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.chatboxSegments[++class32.field749 - 1] = var4.method20();
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.method20();
                   return 1;
                } else if(var0 == 3922) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.chatboxSegments[++class32.field749 - 1] = var4.method29();
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.method29();
                   return 1;
                } else if(var0 == 3923) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
                   long var5 = class0.method11() - class33.field766 - var4.field25;
                   int var7 = (int)(var5 / 3600000L);
                   int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
                   int var9 = (int)((var5 - (long)(3600000 * var7) - (long)('\uea60' * var8)) / 1000L);
                   String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
-                  class32.chatboxSegments[++class32.field749 - 1] = var10;
+                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var10;
                   return 1;
                } else if(var0 == 3924) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.field747[++class103.field1686 - 1] = var4.field26.totalQuantity;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field26.totalQuantity;
                   return 1;
                } else if(var0 == 3925) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.field747[++class103.field1686 - 1] = var4.field26.price;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field26.price;
                   return 1;
                } else if(var0 == 3926) {
-                  var3 = class32.field747[--class103.field1686];
+                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
                   var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.field747[++class103.field1686 - 1] = var4.field26.itemId;
+                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field26.itemId;
                   return 1;
                } else {
                   return 2;

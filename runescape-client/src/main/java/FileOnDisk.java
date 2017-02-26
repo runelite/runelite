@@ -214,7 +214,7 @@ public final class FileOnDisk {
       var0.width = class225.field3234[0];
       var0.height = class41.field862[0];
       int var1 = var0.width * var0.height;
-      byte[] var2 = class11.field129[0];
+      byte[] var2 = ScriptState.field129[0];
       var0.image = new int[var1];
 
       for(int var3 = 0; var3 < var1; ++var3) {
@@ -226,7 +226,7 @@ public final class FileOnDisk {
       class225.field3234 = null;
       class41.field862 = null;
       class160.field2146 = null;
-      class11.field129 = null;
+      ScriptState.field129 = null;
       return var0;
    }
 }

@@ -518,7 +518,7 @@ public abstract class class182 {
       class116.field1819.method3316();
       Client.field336.method3316();
       Client.field337.method3316();
-      class11.field127.method3316();
+      ScriptState.field127.method3316();
       class10.field111.method3316();
       class165.field2167.method3316();
       class107.field1738.method3316();

@@ -27,7 +27,7 @@ public class class210 {
       class225.field3233 = new int[class225.field3232];
       class225.field3234 = new int[class225.field3232];
       class41.field862 = new int[class225.field3232];
-      class11.field129 = new byte[class225.field3232][];
+      ScriptState.field129 = new byte[class225.field3232][];
       var1.offset = var0.length - 7 - class225.field3232 * 8;
       class202.field3074 = var1.readUnsignedShort();
       class225.field3231 = var1.readUnsignedShort();
@@ -67,7 +67,7 @@ public class class210 {
          int var5 = class41.field862[var3];
          int var6 = var5 * var4;
          byte[] var7 = new byte[var6];
-         class11.field129[var3] = var7;
+         ScriptState.field129[var3] = var7;
          int var8 = var1.readUnsignedByte();
          int var9;
          if(var8 == 0) {

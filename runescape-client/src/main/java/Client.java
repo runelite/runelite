@@ -1192,7 +1192,7 @@ public final class Client extends GameEngine {
                   }
                   break;
                case 14:
-                  class11.field133 = Integer.parseInt(var5);
+                  ScriptState.field133 = Integer.parseInt(var5);
                   break;
                case 15:
                   field310 = var5;
@@ -1336,7 +1336,7 @@ public final class Client extends GameEngine {
          try {
             if(class138.field1919 == 2) {
                if(null == class138.field1921) {
-                  class138.field1921 = class144.method2747(class167.field2182, class11.field130, class138.field1918);
+                  class138.field1921 = class144.method2747(class167.field2182, ScriptState.field130, class138.field1918);
                   if(class138.field1921 == null) {
                      var1 = false;
                      break label269;
@@ -2158,7 +2158,7 @@ public final class Client extends GameEngine {
       class114.field1788 = class167.field2186;
       PlayerComposition.field2180 = class167.field2183;
       class47.field952 = class167.field2185;
-      class11.method150();
+      ScriptState.method150();
       Widget.method3217(GameObject.canvas);
       Canvas var1 = GameObject.canvas;
       var1.addMouseListener(class115.mouse);

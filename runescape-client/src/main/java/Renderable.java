@@ -1888,7 +1888,7 @@ public abstract class Renderable extends CacheableNode {
                   class138.field1919 = 1;
                   class167.field2182 = null;
                } else if(var1 != -1 && var1 != Client.field421 && Client.field542 != 0 && !Client.field545) {
-                  class152.method2815(2, class11.field127, var1, 0, Client.field542, false);
+                  class152.method2815(2, ScriptState.field127, var1, 0, Client.field542, false);
                }
 
                Client.field421 = var1;
