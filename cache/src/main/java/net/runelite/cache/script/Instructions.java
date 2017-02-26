@@ -305,6 +305,129 @@ public class Instructions
 		add(Opcodes.CLANMEMBER_ISME, 1, 1);
 		add(Opcodes.GET_CLANCHATOWNER, 0, 0, 0, 1);
 		// 3700-4000
+		add(3903, 1, 1);
+		add(Opcodes.GET_GRANDEXCHANGE_OFFER_ITEMID, 1, 1);
+		add(Opcodes.GET_GRANDEXCHANGE_OFFER_PRICE, 1, 1);
+		add(Opcodes.GET_GRANDEXCHANGE_OFFER_TOTALQUANTITY, 1, 1);
+		add(Opcodes.GET_GRANDEXCHANGE_OFFER_QUANTITYSOLD, 1, 1);
+		add(Opcodes.GET_GRANDEXCHANGE_OFFER_SPENT, 1, 1);
+		add(3910, 1, 1);
+		add(3911, 1, 1);
+		add(3912, 1, 1);
+		add(3913, 1, 1);
+		add(3914, 1, 0);
+		add(3915, 1, 0);
+		add(3916, 2, 0);
+		add(3917, 1, 0);
+		add(3918, 1, 0);
+		add(3919, 0, 1);
+		add(3920, 1, 1);
+		add(3921, 1, 0, 0, 1);
+		add(3922, 1, 0, 0, 1);
+		add(3923, 1, 0, 0, 1);
+		add(3924, 1, 1);
+		add(3925, 1, 1);
+		add(3926, 1, 1);
+		// 4000-4100
+		add(Opcodes.IADD, 2, 1);
+		add(Opcodes.ISUB, 2, 1);
+		add(Opcodes.IMUL, 2, 1);
+		add(Opcodes.IDIV, 2, 1);
+		add(Opcodes.RAND_EXCL, 1, 1);
+		add(Opcodes.RAND_INCL, 1, 1);
+		add(4006, 5, 1);
+		add(4007, 2, 1);
+		add(Opcodes.SET_BIT, 2, 1);
+		add(Opcodes.CLEAR_BIT, 2, 1);
+		add(Opcodes.TEST_BIT, 2, 1);
+		add(Opcodes.MODULO, 2, 1);
+		add(Opcodes.POW, 2, 1);
+		add(4013, 2, 1);
+		add(Opcodes.AND, 2, 1);
+		add(Opcodes.OR, 2, 1);
+		add(4018, 3, 1);
+		// 4100-4200
+		add(Opcodes.CONCAT_INT, 1, 0, 1, 1);
+		add(Opcodes.CONCAT_STRING, 0, 0, 2, 1);
+		add(4102, 1, 0, 1, 1);
+		add(Opcodes.TOLOWERCASE, 0, 0, 1, 1);
+		add(Opcodes.FORMAT_DATE, 1, 0, 0, 1);
+		add(Opcodes.SWITCH_MALE_OR_FEMALE, 0, 0, 2, 1);
+		add(Opcodes.INT_TO_STRING, 1, 0, 0, 1);
+		add(4107, 0, 1, 2, 0);
+		add(4108, 2, 1, 1, 0);
+		add(4109, 2, 1, 1, 0);
+		add(Opcodes.SWITCH_STRING, 1, 0, 2, 1);
+		add(4111, 0, 0, 1, 1);
+		add(Opcodes.CONCAT_CHAR, 1, 0, 1, 1);
+		add(Opcodes.CHAR_IS_PRINTABLE, 1, 1);
+		add(4114, 1, 1);
+		add(4115, 1, 1);
+		add(4116, 1, 1);
+		add(Opcodes.STRING_LENGTH, 0, 1, 1, 0);
+		add(Opcodes.STRING_SUBSTRING, 2, 0, 1, 1);
+		add(Opcodes.STRING_REMOVE_HTML, 0, 0, 1, 1);
+		add(Opcodes.STRING_INDEXOF, 1, 1, 1, 0);
+		add(Opcodes.STRING_INDEXOF_FROM, 1, 1, 2, 0);
+		// 4200-4300
+		add(Opcodes.GET_ITEM_NAME, 1, 0, 0, 1);
+		add(Opcodes.GET_ITEM_GROUND_ACTION, 2, 0, 0, 1);
+		add(Opcodes.GET_ITEM_INVENTORY_ACTION, 2, 0, 0, 1);
+		add(Opcodes.GET_ITEM_PRICE, 1, 1);
+		add(Opcodes.GET_ITEM_STACKABLE, 1, 1);
+		add(Opcodes.GET_ITEM_NOTE_1, 1, 1);
+		add(Opcodes.GET_ITEM_NOTE_2, 1, 1);
+		add(Opcodes.GET_ITEM_ISMEMBERS, 1, 1);
+		add(4208, 1, 1);
+		add(4209, 1, 1);
+		add(4210, 1, 1, 1, 0);
+		add(4211, 0, 1);
+		add(4212, 0, 0);
+		// 4300-5100
+		add(5000, 0, 1);
+		add(5001, 3, 0);
+		add(5002, 2, 0, 1, 0);
+		add(5003, 2, 2, 0, 3);
+		add(5004, 1, 2, 0, 3);
+		add(5005, 0, 1);
+		add(5008, 1, 0, 1, 0);
+		add(5009, 0, 0, 2, 0);
+		add(Opcodes.GET_LOCALPLAYER_NAME, 0, 0, 0, 1);
+		add(5016, 0, 1);
+		add(5017, 1, 1);
+		add(5018, 1, 1);
+		add(5019, 1, 1);
+		add(5020, 0, 0, 1, 0);
+		add(5021, 0, 0, 1, 0);
+		add(5022, 0, 0, 0, 1);
+		// 5100-5400
+		add(Opcodes.GET_ISRESIZED, 0, 1);
+		add(Opcodes.SET_ISRESIZED, 1, 0);
+		add(5308, 0, 1);
+		add(5308, 1, 0);
+		// 5400-5600
+		add(5504, 2, 0);
+		add(5505, 0, 1);
+		add(5506, 0, 1);
+		add(5530, 1, 0);
+		add(5531, 0, 1);
+		// 5600-5700
+		add(5630, 0, 0);
+		// 5700-6300
+		add(6200, 2, 0);
+		add(6201, 2, 0);
+		add(6202, 4, 0);
+		add(6203, 0, 2);
+		add(6204, 0, 2);
+		add(6205, 0, 2);
+		// 6300-6600
+		add(Opcodes.LOAD_WORLDS, 0, 1);
+		add(6501, 0, 4, 0, 2);
+		add(6502, 0, 4, 0, 2);
+		add(Opcodes.GET_WORLD_BY_ID, 1, 4, 0, 2);
+		add(6507, 4, 0);
+		add(Opcodes.GET_WORLD_BY_INDEX, 1, 4, 0, 2);
+		add(6512, 1, 0);
 	}
 
 	private static void add(int opcode, int ipops, int ipushes, int spops, int spushes)

@@ -542,6 +542,7 @@ public class class103 implements Runnable {
                            return 2;
                         }
                      } else {
+			     // 4113
                         var21 = class32.scriptIntStack[--scriptIntStackSize];
                         int[] var20 = class32.scriptIntStack;
                         var5 = ++scriptIntStackSize - 1;
