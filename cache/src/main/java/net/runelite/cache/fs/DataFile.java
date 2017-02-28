@@ -70,6 +70,11 @@ public class DataFile implements Closeable
 		dat.close();
 	}
 	
+	public void clear() throws IOException
+	{
+		dat.setLength(0L);
+	}
+
 	/**
 	 * 
 	 * @param indexId expected index of archive of contents being read
