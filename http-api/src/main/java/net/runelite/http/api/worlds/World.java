@@ -22,43 +22,80 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.api.worlds;
 
-import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.service.hiscore.HiscoreService;
-import net.runelite.http.service.worlds.WorldsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.servlet.SparkApplication;
-import static spark.Spark.*;
-
-public class Service implements SparkApplication
+public class World
 {
-	private static final Logger logger = LoggerFactory.getLogger(Service.class);
-
-	private final JsonTransformer transformer = new JsonTransformer();
-
-	private HiscoreService hiscores = new HiscoreService();
-	private WorldsService worlds = new WorldsService();
+	private int id;
+	private int mask;
+	private String address;
+	private String activity;
+	private int location;
+	private int players;
 
 	@Override
-	public void init()
+	public String toString()
 	{
-		get("/version", (request, response) -> RuneliteAPI.getVersion());
-		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
-		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
-
-		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
+		return "World{" + "id=" + id + ", mask=" + mask + ", address=" + address + ", activity=" + activity + ", location=" + location + ", players=" + players + '}';
 	}
 
-	public HiscoreService getHiscores()
+	public int getId()
 	{
-		return hiscores;
+		return id;
 	}
 
-	public void setHiscores(HiscoreService hiscores)
+	public void setId(int id)
 	{
-		this.hiscores = hiscores;
+		this.id = id;
 	}
 
+	public int getMask()
+	{
+		return mask;
+	}
+
+	public void setMask(int mask)
+	{
+		this.mask = mask;
+	}
+
+	public String getAddress()
+	{
+		return address;
+	}
+
+	public void setAddress(String address)
+	{
+		this.address = address;
+	}
+
+	public String getActivity()
+	{
+		return activity;
+	}
+
+	public void setActivity(String activity)
+	{
+		this.activity = activity;
+	}
+
+	public int getLocation()
+	{
+		return location;
+	}
+
+	public void setLocation(int location)
+	{
+		this.location = location;
+	}
+
+	public int getPlayers()
+	{
+		return players;
+	}
+
+	public void setPlayers(int players)
+	{
+		this.players = players;
+	}
 }

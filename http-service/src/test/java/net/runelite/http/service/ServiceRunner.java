@@ -24,41 +24,23 @@
  */
 package net.runelite.http.service;
 
-import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.service.hiscore.HiscoreService;
-import net.runelite.http.service.worlds.WorldsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.servlet.SparkApplication;
-import static spark.Spark.*;
+import org.junit.Test;
+import spark.Spark;
 
-public class Service implements SparkApplication
+public class ServiceRunner
 {
-	private static final Logger logger = LoggerFactory.getLogger(Service.class);
-
-	private final JsonTransformer transformer = new JsonTransformer();
-
-	private HiscoreService hiscores = new HiscoreService();
-	private WorldsService worlds = new WorldsService();
-
-	@Override
-	public void init()
+	// not a real test, runs standalone spark
+	//@Test
+	public void run() throws InterruptedException
 	{
-		get("/version", (request, response) -> RuneliteAPI.getVersion());
-		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
-		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
+		Service service = new Service();
+		service.init();
 
-		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
+		Spark.awaitInitialization();
+
+		for (;;)
+		{
+			Thread.sleep(1000L);
+		}
 	}
-
-	public HiscoreService getHiscores()
-	{
-		return hiscores;
-	}
-
-	public void setHiscores(HiscoreService hiscores)
-	{
-		this.hiscores = hiscores;
-	}
-
 }

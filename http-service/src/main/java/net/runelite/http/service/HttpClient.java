@@ -44,4 +44,15 @@ public class HttpClient
 			return EntityUtils.toString(response.getEntity());
 		}
 	}
+
+	public byte[] getBytes(URI uri) throws IOException
+	{
+		HttpGet request = new HttpGet(uri);
+
+		try (CloseableHttpClient client = HttpClients.createDefault();
+			CloseableHttpResponse response = client.execute(request))
+		{
+			return EntityUtils.toByteArray(response.getEntity());
+		}
+	}
 }

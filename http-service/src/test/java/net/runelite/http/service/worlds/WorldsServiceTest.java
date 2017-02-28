@@ -22,43 +22,44 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.service.worlds;
 
-import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.service.hiscore.HiscoreService;
-import net.runelite.http.service.worlds.WorldsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.servlet.SparkApplication;
-import static spark.Spark.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import net.runelite.http.api.worlds.WorldResult;
+import net.runelite.http.service.HttpClient;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Matchers;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import spark.utils.IOUtils;
 
-public class Service implements SparkApplication
+public class WorldsServiceTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(Service.class);
+	private byte[] worldData;
 
-	private final JsonTransformer transformer = new JsonTransformer();
-
-	private HiscoreService hiscores = new HiscoreService();
-	private WorldsService worlds = new WorldsService();
-
-	@Override
-	public void init()
+	@Before
+	public void before() throws IOException
 	{
-		get("/version", (request, response) -> RuneliteAPI.getVersion());
-		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
-		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
-
-		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
+		InputStream in = WorldsServiceTest.class.getResourceAsStream("worldlist");
+		worldData = IOUtils.toByteArray(in);
 	}
 
-	public HiscoreService getHiscores()
+	@Test
+	public void testListWorlds() throws Exception
 	{
-		return hiscores;
-	}
+		HttpClient client = mock(HttpClient.class);
+		when(client.getBytes(Matchers.any(URI.class)))
+			.thenReturn(worldData);
 
-	public void setHiscores(HiscoreService hiscores)
-	{
-		this.hiscores = hiscores;
+		WorldsService worlds = new WorldsService();
+		worlds.setClient(client);
+
+		WorldResult worldResult = worlds.listWorlds();
+		Assert.assertEquals(82, worldResult.getWorlds().size());
 	}
 
 }

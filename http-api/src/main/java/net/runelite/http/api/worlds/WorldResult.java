@@ -22,43 +22,21 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.http.service;
+package net.runelite.http.api.worlds;
 
-import net.runelite.http.api.RuneliteAPI;
-import net.runelite.http.service.hiscore.HiscoreService;
-import net.runelite.http.service.worlds.WorldsService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import spark.servlet.SparkApplication;
-import static spark.Spark.*;
+import java.util.List;
 
-public class Service implements SparkApplication
+public class WorldResult
 {
-	private static final Logger logger = LoggerFactory.getLogger(Service.class);
+	private List<World> worlds;
 
-	private final JsonTransformer transformer = new JsonTransformer();
-
-	private HiscoreService hiscores = new HiscoreService();
-	private WorldsService worlds = new WorldsService();
-
-	@Override
-	public void init()
+	public List<World> getWorlds()
 	{
-		get("/version", (request, response) -> RuneliteAPI.getVersion());
-		get("/hiscore", (request, response) -> hiscores.lookup(request.queryParams("username")), transformer);
-		get("/worlds", (request, response) -> worlds.listWorlds(), transformer);
-
-		exception(Exception.class, (exception, request, response) -> logger.warn(null, exception));
+		return worlds;
 	}
 
-	public HiscoreService getHiscores()
+	public void setWorlds(List<World> worlds)
 	{
-		return hiscores;
+		this.worlds = worlds;
 	}
-
-	public void setHiscores(HiscoreService hiscores)
-	{
-		this.hiscores = hiscores;
-	}
-
 }
