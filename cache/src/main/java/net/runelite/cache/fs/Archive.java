@@ -166,6 +166,8 @@ public class Archive
 	
 	public void loadContents(byte[] data)
 	{
+		logger.trace("Loading contents of archive {} ({} files)", archiveId, files.size());
+
 		if (this.getFiles().size() == 1)
 		{
 			this.getFiles().get(0).setContents(data);
@@ -232,6 +234,7 @@ public class Archive
 	{
 		if (data != null)
 		{
+			logger.trace("Saving contents of archive {}/{} using cached data", index.getId(), archiveId);
 			return data;
 		}
 		
@@ -248,7 +251,8 @@ public class Archive
 		{
 			for (File file : this.getFiles())
 			{
-				stream.writeBytes(file.getContents());
+				byte[] contents = file.getContents();
+				stream.writeBytes(contents);
 			}
 
 			int offset = 0;
@@ -266,6 +270,9 @@ public class Archive
 		}
 
 		byte[] fileData = stream.flip();
+
+		logger.trace("Saved contents of archive {}/{} ({} files), {} bytes", index.getId(), archiveId, files.size(), fileData.length);
+
 		return fileData;
 	}
 	

@@ -25,6 +25,7 @@
 
 package net.runelite.cache.downloader;
 
+import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -37,10 +38,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.proxy.HttpProxyHandler;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
@@ -59,7 +58,7 @@ public class CacheClient
 	private static final String HOST = "oldschool1.runescape.com";
 	private static final int PORT = 43594;
 
-	private static final int CLIENT_REVISION = 115;
+	private static final int CLIENT_REVISION = 135;
 
 	private Store store; // store cache will be written to
 	private int clientRevision;
@@ -104,18 +103,8 @@ public class CacheClient
 
 	public void stop()
 	{
-		try
-		{
-			channel.closeFuture().sync();
-		}
-		catch (InterruptedException e)
-		{
-			logger.warn(null, e);
-		}
-		finally
-		{
-			group.shutdownGracefully();
-		}
+		channel.close().syncUninterruptibly();
+		group.shutdownGracefully();
 	}
 
 	public int getClientRevision()
@@ -125,6 +114,8 @@ public class CacheClient
 
 	public void download() throws InterruptedException, ExecutionException, FileNotFoundException, IOException
 	{
+		Stopwatch stopwatch = Stopwatch.createStarted();
+
 		FileResult result = requestFile(255, 255).get();
 		result.decompress(null);
 		
@@ -187,7 +178,7 @@ public class CacheClient
 
 				if (oldArchive == null || oldArchive.getRevision() != archive.getRevision())
 				{
-					logger.info("Archive {} in index {} is out of date, downloading", archive.getArchiveId(), index.getId());
+					logger.info("Archive {}/{} in index {} is out of date, downloading", archive.getArchiveId(), index.getArchives().size(), index.getId());
 
 					FileResult archiveFileResult = requestFile(index.getId(), archive.getArchiveId()).get();
 					byte[] compressedContents = archiveFileResult.getCompressedData();
@@ -196,26 +187,26 @@ public class CacheClient
 				}
 				else
 				{
-					logger.info("Active {} in index {} is up to date", archive.getArchiveId(), index.getId());
+					logger.info("Active {}/{} in index {} is up to date", archive.getArchiveId(), index.getArchives().size(), index.getId());
 
 					// copy existing contents, this is sort of hackish.
-					byte[] contents = oldArchive.saveContents();
-					archive.loadContents(contents);
-					archive.setCompression(oldArchive.getCompression());
+					byte[] contents = oldArchive.getData();
+					if (contents != null)
+					{
+						archive.setData(contents);
+					}
+					else
+					{
+						contents = oldArchive.saveContents();
+						archive.loadContents(contents);
+						archive.setCompression(oldArchive.getCompression());
+					}
 				}
 			}
-
-			try
-			{
-				store.save(); // save up to this point to disk
-				// XXX if this save takes too long, server closes the connection
-			}
-			catch (IOException ex)
-			{
-				logger.warn("unable to save cache", ex);
-			}
-
 		}
+
+		stopwatch.stop();
+		logger.info("Download completed in {}", stopwatch);
 	}
 
 	public synchronized CompletableFuture<FileResult> requestFile(int index, int fileId)
