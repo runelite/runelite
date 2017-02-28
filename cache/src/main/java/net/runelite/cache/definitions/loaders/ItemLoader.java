@@ -74,7 +74,7 @@ public class ItemLoader
 		{
 			def.yan2d = stream.readUnsignedShort();
 		}
-		else if (7 == opcode)
+		else if (opcode == 7)
 		{
 			def.xOffset2d = stream.readUnsignedShort();
 			if (def.xOffset2d > 32767)
@@ -82,7 +82,7 @@ public class ItemLoader
 				def.xOffset2d -= 65536;
 			}
 		}
-		else if (8 == opcode)
+		else if (opcode == 8)
 		{
 			def.yOffset2d = stream.readUnsignedShort();
 			if (def.yOffset2d > 32767)
@@ -90,7 +90,7 @@ public class ItemLoader
 				def.yOffset2d -= 65536;
 			}
 		}
-		else if (11 == opcode)
+		else if (opcode == 11)
 		{
 			def.stackable = 1;
 		}
@@ -111,12 +111,12 @@ public class ItemLoader
 		{
 			def.maleModel1 = stream.readUnsignedShort();
 		}
-		else if (25 == opcode)
+		else if (opcode == 25)
 		{
 			def.femaleModel0 = stream.readUnsignedShort();
 			def.femaleOffset = stream.readUnsignedByte();
 		}
-		else if (26 == opcode)
+		else if (opcode == 26)
 		{
 			def.femaleModel1 = stream.readUnsignedShort();
 		}
@@ -145,6 +145,27 @@ public class ItemLoader
 			}
 
 		}
+		else if (opcode == 41)
+		{
+			int var5 = stream.readUnsignedByte();
+			def.textureFind = new short[var5];
+			def.textureReplace = new short[var5];
+
+			for (int var4 = 0; var4 < var5; ++var4)
+			{
+				def.textureFind[var4] = (short) stream.readUnsignedShort();
+				def.textureReplace[var4] = (short) stream.readUnsignedShort();
+			}
+
+		}
+		else if (opcode == 42)
+		{
+			def.shiftClickDropIndex = stream.readByte();
+		}
+		else if (opcode == 65)
+		{
+			def.isTradeable = true;
+		}
 		else if (opcode == 78)
 		{
 			def.maleModel2 = stream.readUnsignedShort();
@@ -153,15 +174,15 @@ public class ItemLoader
 		{
 			def.femaleModel2 = stream.readUnsignedShort();
 		}
-		else if (90 == opcode)
+		else if (opcode == 90)
 		{
 			def.maleHeadModel = stream.readUnsignedShort();
 		}
-		else if (91 == opcode)
+		else if (opcode == 91)
 		{
 			def.femaleHeadModel = stream.readUnsignedShort();
 		}
-		else if (92 == opcode)
+		else if (opcode == 92)
 		{
 			def.maleHeadModel2 = stream.readUnsignedShort();
 		}
@@ -173,11 +194,11 @@ public class ItemLoader
 		{
 			def.zan2d = stream.readUnsignedShort();
 		}
-		else if (97 == opcode)
+		else if (opcode == 97)
 		{
 			def.notedID = stream.readUnsignedShort();
 		}
-		else if (98 == opcode)
+		else if (opcode == 98)
 		{
 			def.notedTemplate = stream.readUnsignedShort();
 		}
@@ -192,7 +213,7 @@ public class ItemLoader
 			def.countObj[opcode - 100] = stream.readUnsignedShort();
 			def.countCo[opcode - 100] = stream.readUnsignedShort();
 		}
-		else if (110 == opcode)
+		else if (opcode == 110)
 		{
 			def.resizeX = stream.readUnsignedShort();
 		}
@@ -208,34 +229,13 @@ public class ItemLoader
 		{
 			def.ambient = stream.readByte();
 		}
-		else if (114 == opcode)
+		else if (opcode == 114)
 		{
 			def.contrast = stream.readByte();
 		}
-		else if (115 == opcode)
+		else if (opcode == 115)
 		{
 			def.team = stream.readUnsignedByte();
-		}
-		else if (opcode == 41)
-		{
-			int var5 = stream.readUnsignedByte();
-			def.textureFind = new short[var5];
-			def.textureReplace = new short[var5];
-
-			for (int var4 = 0; var4 < var5; ++var4)
-			{
-				def.textureFind[var4] = (short) stream.readUnsignedShort();
-				def.textureReplace[var4] = (short) stream.readUnsignedShort();
-			}
-
-		}
-		else if (opcode == 148)
-		{
-			stream.readUnsignedShort();
-		}
-		else if (opcode == 65)
-		{
-			
 		}
 		else if (opcode == 139)
 		{
@@ -243,7 +243,15 @@ public class ItemLoader
 		}
 		else if (opcode == 140)
 		{
-			
+			stream.readUnsignedShort();
+		}
+		else if (opcode == 148)
+		{
+			def.placeholderId = stream.readUnsignedShort();
+		}
+		else if (opcode == 149)
+		{
+			def.placeholderTemplateId = stream.readUnsignedShort();
 		}
 		else
 		{
