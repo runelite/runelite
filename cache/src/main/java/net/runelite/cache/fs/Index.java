@@ -28,7 +28,6 @@ package net.runelite.cache.fs;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.util.Djb2;
@@ -68,6 +67,11 @@ public class Index implements Closeable
 	public void close() throws IOException
 	{
 		index.close();
+	}
+
+	public void clear() throws IOException
+	{
+		index.clear();
 	}
 
 	@Override
@@ -182,7 +186,9 @@ public class Index implements Closeable
 	}
 	
 	public void load() throws IOException
-	{	
+	{
+		logger.trace("Loading index {}", id);
+
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
 		
@@ -324,9 +330,11 @@ public class Index implements Closeable
 				archives.remove(a); // is this the correct behavior?
 				continue;
 			}
-			
+
 			assert this.index.getIndexFileId() == this.id;
 			assert entry.getId() == a.getArchiveId();
+
+			logger.trace("Loading archive {} for index {} from sector {} length {}", a.getArchiveId(), id, entry.getSector(), entry.getLength());
 
 			byte[] archiveData = store.getData().read(this.id, entry.getId(), entry.getSector(), entry.getLength());
 			a.setData(archiveData);
@@ -344,16 +352,26 @@ public class Index implements Closeable
 	{
 		for (Archive a : archives)
 		{
-			byte[] fileData = a.saveContents();
-			
 			assert this.index.getIndexFileId() == this.id;
 			DataFile data = store.getData();
 
-			byte[] compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
+			byte[] compressedData;
+
+			if (a.getData() != null)
+			{
+				compressedData = a.getData(); // data was never decompressed or loaded
+			}
+			else
+			{
+				byte[] fileData = a.saveContents();
+				compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
+			}
 
 			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), compressedData, a.getRevision());
 			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
 			
+			logger.trace("Saved archive {}/{} at sector {}, compressed length {}", this.getId(), a.getArchiveId(), res.sector, res.compressedLength);
+
 			a.setCrc(res.crc);
 			a.setWhirlpool(res.whirlpool);
 		}

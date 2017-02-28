@@ -59,6 +59,11 @@ public class IndexFile implements Closeable
 		idx.close();
 	}
 
+	public void clear() throws IOException
+	{
+		idx.setLength(0L);
+	}
+
 	@Override
 	public int hashCode()
 	{

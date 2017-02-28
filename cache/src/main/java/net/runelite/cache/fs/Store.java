@@ -34,9 +34,13 @@ import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.IndexType;
 import net.runelite.cache.util.XteaKeyManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Store implements Closeable
 {
+	private static final Logger logger = LoggerFactory.getLogger(Store.class);
+
 	private static final String MAIN_FILE_CACHE_DAT = "main_file_cache.dat2";
 	private static final String MAIN_FILE_CACHE_IDX = "main_file_cache.idx";
 	
@@ -130,6 +134,13 @@ public class Store implements Closeable
 	
 	public void save() throws IOException
 	{
+		logger.debug("Clearing data and indexes in preparation for store save");
+
+		data.clear();
+
+		for (Index i : indexes)
+			i.clear();
+
 		for (Index i : indexes)
 			i.save();
 	}

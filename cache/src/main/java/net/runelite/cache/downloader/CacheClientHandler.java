@@ -108,8 +108,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 
 			int size = compressedFileSize
 				+ 5 // 1 byte compresion type, 4 byte compressed size
-				+ (compression != 0 ? 4 : 0) // compression has leading 4 byte decompressed length
-				;//+ (index != 255 ? 2 : 0); // for the revision
+				+ (compression != 0 ? 4 : 0); // compression has leading 4 byte decompressed length
 
 			int breaks = calculateBreaks(size);
 
