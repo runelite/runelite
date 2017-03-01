@@ -1,11 +1,98 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("es")
+@ObfuscatedName("ep")
 public class class144 extends Node {
-   @ObfuscatedName("d")
-   byte[] field2007;
-   @ObfuscatedName("q")
-   XHashTable field2008;
+   @ObfuscatedName("x")
+   XHashTable field2007;
+   @ObfuscatedName("n")
+   byte[] field2008;
+
+   @ObfuscatedName("x")
+   static class144 method2791(class182 var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      return var3 == null?null:new class144(new Buffer(var3));
+   }
+
+   @ObfuscatedName("n")
+   void method2792() {
+      if(this.field2007 == null) {
+         this.field2007 = new XHashTable(16);
+         int[] var1 = new int[16];
+         int[] var2 = new int[16];
+         var2[9] = 128;
+         var1[9] = 128;
+         class141 var4 = new class141(this.field2008);
+         int var5 = var4.method2710();
+
+         int var6;
+         for(var6 = 0; var6 < var5; ++var6) {
+            var4.method2737(var6);
+            var4.method2714(var6);
+            var4.method2712(var6);
+         }
+
+         label82:
+         do {
+            while(true) {
+               var6 = var4.method2719();
+               int var7 = var4.field1986[var6];
+
+               while(var4.field1986[var6] == var7) {
+                  var4.method2737(var6);
+                  int var8 = var4.method2745(var6);
+                  if(var8 == 1) {
+                     var4.method2713();
+                     var4.method2712(var6);
+                     continue label82;
+                  }
+
+                  int var9 = var8 & 240;
+                  int var10;
+                  int var11;
+                  int var12;
+                  if(var9 == 176) {
+                     var10 = var8 & 15;
+                     var11 = var8 >> 8 & 127;
+                     var12 = var8 >> 16 & 127;
+                     if(var11 == 0) {
+                        var1[var10] = (var1[var10] & -2080769) + (var12 << 14);
+                     }
+
+                     if(var11 == 32) {
+                        var1[var10] = (var1[var10] & -16257) + (var12 << 7);
+                     }
+                  }
+
+                  if(var9 == 192) {
+                     var10 = var8 & 15;
+                     var11 = var8 >> 8 & 127;
+                     var2[var10] = var1[var10] + var11;
+                  }
+
+                  if(var9 == 144) {
+                     var10 = var8 & 15;
+                     var11 = var8 >> 8 & 127;
+                     var12 = var8 >> 16 & 127;
+                     if(var12 > 0) {
+                        int var13 = var2[var10];
+                        class134 var14 = (class134)this.field2007.method2437((long)var13);
+                        if(var14 == null) {
+                           var14 = new class134(new byte[128]);
+                           this.field2007.method2438(var14, (long)var13);
+                        }
+
+                        var14.field1899[var11] = 1;
+                     }
+                  }
+
+                  var4.method2714(var6);
+                  var4.method2712(var6);
+               }
+            }
+         } while(!var4.method2720());
+
+      }
+   }
 
    class144(Buffer var1) {
       var1.offset = var1.payload.length - 3;
@@ -70,7 +157,7 @@ public class class144 extends Node {
       var14 = var2 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12;
 
       for(var15 = 0; var15 < var14; ++var15) {
-         var1.method2849();
+         var1.method3059();
       }
 
       var4 += var1.offset - var13;
@@ -166,13 +253,13 @@ public class class144 extends Node {
       var1.offset += var25;
       int var50 = var1.offset;
       var1.offset += var5 * 3;
-      this.field2007 = new byte[var4];
-      Buffer var51 = new Buffer(this.field2007);
-      var51.method2821(1297377380);
-      var51.method2821(6);
-      var51.method2831(var2 > 1?1:0);
-      var51.method2831(var2);
-      var51.method2831(var3);
+      this.field2008 = new byte[var4];
+      Buffer var51 = new Buffer(this.field2008);
+      var51.method2874(1297377380);
+      var51.method2874(6);
+      var51.method2872(var2 > 1?1:0);
+      var51.method2872(var2);
+      var51.method2872(var3);
       var1.offset = var13;
       int var52 = 0;
       int var53 = 0;
@@ -184,68 +271,68 @@ public class class144 extends Node {
       int[] var59 = new int[128];
       var28 = 0;
 
-      label352:
+      label370:
       for(int var60 = 0; var60 < var2; ++var60) {
-         var51.method2821(1297379947);
+         var51.method2874(1297379947);
          var51.offset += 4;
          int var61 = var51.offset;
          int var62 = -1;
 
          while(true) {
             while(true) {
-               int var63 = var1.method2849();
-               var51.method2832(var63);
+               int var63 = var1.method3059();
+               var51.method2885(var63);
                int var64 = var1.payload[var29++] & 255;
                boolean var65 = var64 != var62;
                var62 = var64 & 15;
                if(var64 == 7) {
                   if(var65) {
-                     var51.method2918(255);
+                     var51.method2873(255);
                   }
 
-                  var51.method2918(47);
-                  var51.method2918(0);
-                  var51.method3014(var51.offset - var61);
-                  continue label352;
+                  var51.method2873(47);
+                  var51.method2873(0);
+                  var51.method2886(var51.offset - var61);
+                  continue label370;
                }
 
                if(var64 == 23) {
                   if(var65) {
-                     var51.method2918(255);
+                     var51.method2873(255);
                   }
 
-                  var51.method2918(81);
-                  var51.method2918(3);
-                  var51.method2918(var1.payload[var50++]);
-                  var51.method2918(var1.payload[var50++]);
-                  var51.method2918(var1.payload[var50++]);
+                  var51.method2873(81);
+                  var51.method2873(3);
+                  var51.method2873(var1.payload[var50++]);
+                  var51.method2873(var1.payload[var50++]);
+                  var51.method2873(var1.payload[var50++]);
                } else {
                   var52 ^= var64 >> 4;
                   if(var62 == 0) {
                      if(var65) {
-                        var51.method2918(144 + var52);
+                        var51.method2873(144 + var52);
                      }
 
                      var53 += var1.payload[var37++];
                      var54 += var1.payload[var38++];
-                     var51.method2918(var53 & 127);
-                     var51.method2918(var54 & 127);
+                     var51.method2873(var53 & 127);
+                     var51.method2873(var54 & 127);
                   } else if(var62 == 1) {
                      if(var65) {
-                        var51.method2918(128 + var52);
+                        var51.method2873(128 + var52);
                      }
 
                      var53 += var1.payload[var37++];
                      var55 += var1.payload[var40++];
-                     var51.method2918(var53 & 127);
-                     var51.method2918(var55 & 127);
+                     var51.method2873(var53 & 127);
+                     var51.method2873(var55 & 127);
                   } else if(var62 == 2) {
                      if(var65) {
-                        var51.method2918(176 + var52);
+                        var51.method2873(176 + var52);
                      }
 
                      var28 = var28 + var1.payload[var15++] & 127;
-                     var51.method2918(var28);
+                     var51.method2873(var28);
                      byte var66;
                      if(var28 != 0 && var28 != 32) {
                         if(var28 == 1) {
@@ -279,42 +366,42 @@ public class class144 extends Node {
 
                      int var67 = var66 + var59[var28];
                      var59[var28] = var67;
-                     var51.method2918(var67 & 127);
+                     var51.method2873(var67 & 127);
                   } else if(var62 == 3) {
                      if(var65) {
-                        var51.method2918(224 + var52);
+                        var51.method2873(224 + var52);
                      }
 
                      var56 += var1.payload[var45++];
                      var56 += var1.payload[var33++] << 7;
-                     var51.method2918(var56 & 127);
-                     var51.method2918(var56 >> 7 & 127);
+                     var51.method2873(var56 & 127);
+                     var51.method2873(var56 >> 7 & 127);
                   } else if(var62 == 4) {
                      if(var65) {
-                        var51.method2918(208 + var52);
+                        var51.method2873(208 + var52);
                      }
 
                      var57 += var1.payload[var32++];
-                     var51.method2918(var57 & 127);
+                     var51.method2873(var57 & 127);
                   } else if(var62 == 5) {
                      if(var65) {
-                        var51.method2918(160 + var52);
+                        var51.method2873(160 + var52);
                      }
 
                      var53 += var1.payload[var37++];
                      var58 += var1.payload[var31++];
-                     var51.method2918(var53 & 127);
-                     var51.method2918(var58 & 127);
+                     var51.method2873(var53 & 127);
+                     var51.method2873(var58 & 127);
                   } else {
                      if(var62 != 6) {
                         throw new RuntimeException();
                      }
 
                      if(var65) {
-                        var51.method2918(192 + var52);
+                        var51.method2873(192 + var52);
                      }
 
-                     var51.method2918(var1.payload[var44++]);
+                     var51.method2873(var1.payload[var44++]);
                   }
                }
             }
@@ -323,95 +410,8 @@ public class class144 extends Node {
 
    }
 
-   @ObfuscatedName("d")
-   void method2741() {
-      if(this.field2008 == null) {
-         this.field2008 = new XHashTable(16);
-         int[] var1 = new int[16];
-         int[] var2 = new int[16];
-         var2[9] = 128;
-         var1[9] = 128;
-         class141 var4 = new class141(this.field2007);
-         int var5 = var4.method2673();
-
-         int var6;
-         for(var6 = 0; var6 < var5; ++var6) {
-            var4.method2674(var6);
-            var4.method2677(var6);
-            var4.method2675(var6);
-         }
-
-         label80:
-         do {
-            while(true) {
-               var6 = var4.method2682();
-               int var7 = var4.field1980[var6];
-
-               while(var4.field1980[var6] == var7) {
-                  var4.method2674(var6);
-                  int var8 = var4.method2695(var6);
-                  if(var8 == 1) {
-                     var4.method2681();
-                     var4.method2675(var6);
-                     continue label80;
-                  }
-
-                  int var9 = var8 & 240;
-                  int var10;
-                  int var11;
-                  int var12;
-                  if(var9 == 176) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var12 = var8 >> 16 & 127;
-                     if(var11 == 0) {
-                        var1[var10] = (var1[var10] & -2080769) + (var12 << 14);
-                     }
-
-                     if(var11 == 32) {
-                        var1[var10] = (var1[var10] & -16257) + (var12 << 7);
-                     }
-                  }
-
-                  if(var9 == 192) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var2[var10] = var1[var10] + var11;
-                  }
-
-                  if(var9 == 144) {
-                     var10 = var8 & 15;
-                     var11 = var8 >> 8 & 127;
-                     var12 = var8 >> 16 & 127;
-                     if(var12 > 0) {
-                        int var13 = var2[var10];
-                        class134 var14 = (class134)this.field2008.method2399((long)var13);
-                        if(var14 == null) {
-                           var14 = new class134(new byte[128]);
-                           this.field2008.method2400(var14, (long)var13);
-                        }
-
-                        var14.field1896[var11] = 1;
-                     }
-                  }
-
-                  var4.method2677(var6);
-                  var4.method2675(var6);
-               }
-            }
-         } while(!var4.method2669());
-
-      }
-   }
-
-   @ObfuscatedName("h")
-   void method2742() {
-      this.field2008 = null;
-   }
-
-   @ObfuscatedName("q")
-   public static class144 method2747(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      return var3 == null?null:new class144(new Buffer(var3));
+   @ObfuscatedName("g")
+   void method2797() {
+      this.field2007 = null;
    }
 }

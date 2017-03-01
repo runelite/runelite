@@ -1,13 +1,13 @@
-import net.runelite.mapping.ObfuscatedGetter;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("gs")
+@ObfuscatedName("gm")
 public class class202 {
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -38251947
-   )
-   static int field3074;
+   @ObfuscatedName("v")
+   @Export("underlayIds")
+   static byte[][][] underlayIds;
+   @ObfuscatedName("n")
+   public static class182 field3081;
 
    class202() throws Throwable {
       throw new Error();

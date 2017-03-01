@@ -1,37 +1,37 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bj")
+@ObfuscatedName("bi")
 public class class55 extends class71 {
-   @ObfuscatedName("p")
-   int field1043;
-   @ObfuscatedName("d")
-   public byte[] field1044;
-   @ObfuscatedName("q")
-   public int field1045;
-   @ObfuscatedName("h")
-   public int field1046;
-   @ObfuscatedName("j")
-   public boolean field1047;
+   @ObfuscatedName("v")
+   int field1033;
+   @ObfuscatedName("n")
+   public byte[] field1034;
+   @ObfuscatedName("x")
+   public int field1035;
+   @ObfuscatedName("g")
+   public int field1036;
+   @ObfuscatedName("y")
+   public boolean field1037;
 
    class55(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1045 = var1;
-      this.field1044 = var2;
-      this.field1046 = var3;
-      this.field1043 = var4;
-      this.field1047 = var5;
+      this.field1035 = var1;
+      this.field1034 = var2;
+      this.field1036 = var3;
+      this.field1033 = var4;
+      this.field1037 = var5;
    }
 
-   @ObfuscatedName("q")
-   public class55 method1084(class65 var1) {
-      this.field1044 = var1.method1220(this.field1044);
-      this.field1045 = var1.method1228(this.field1045);
-      if(this.field1046 == this.field1043) {
-         this.field1046 = this.field1043 = var1.method1219(this.field1046);
+   @ObfuscatedName("x")
+   public class55 method1097(class65 var1) {
+      this.field1034 = var1.method1248(this.field1034);
+      this.field1035 = var1.method1243(this.field1035);
+      if(this.field1036 == this.field1033) {
+         this.field1036 = this.field1033 = var1.method1245(this.field1036);
       } else {
-         this.field1046 = var1.method1219(this.field1046);
-         this.field1043 = var1.method1219(this.field1043);
-         if(this.field1046 == this.field1043) {
-            --this.field1046;
+         this.field1036 = var1.method1245(this.field1036);
+         this.field1033 = var1.method1245(this.field1033);
+         if(this.field1036 == this.field1033) {
+            --this.field1036;
          }
       }
 
@@ -39,9 +39,9 @@ public class class55 extends class71 {
    }
 
    class55(int var1, byte[] var2, int var3, int var4) {
-      this.field1045 = var1;
-      this.field1044 = var2;
-      this.field1046 = var3;
-      this.field1043 = var4;
+      this.field1035 = var1;
+      this.field1034 = var2;
+      this.field1036 = var3;
+      this.field1033 = var4;
    }
 }

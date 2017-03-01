@@ -2,94 +2,52 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ch")
+@ObfuscatedName("ca")
 public final class class85 {
    @ObfuscatedName("p")
+   boolean field1462 = true;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -448987337
+      intValue = 66063631
    )
-   int field1470;
-   @ObfuscatedName("d")
+   int field1463;
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1522748235
+      intValue = -1623364409
    )
-   int field1471;
-   @ObfuscatedName("h")
+   int field1464;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1368926825
+      intValue = 235689387
    )
-   int field1472;
-   @ObfuscatedName("fg")
+   int field1465;
+   @ObfuscatedName("an")
+   static class102 field1466;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1523123049
+      intValue = 1305653553
    )
-   static int field1473;
+   int field1467;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1071756227
+      intValue = 1457392275
    )
-   int field1474;
-   @ObfuscatedName("u")
-   static boolean field1475;
-   @ObfuscatedName("q")
+   int field1468;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 760157977
+      intValue = -1532652581
    )
-   int field1476;
-   @ObfuscatedName("n")
-   boolean field1477 = true;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 632760491
-   )
-   int field1479;
+   int field1469;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(ILclass48;ZS)I",
-      garbageValue = "-17684"
+      signature = "(ZZI)I",
+      garbageValue = "-1037981359"
    )
-   static int method1744(int var0, Script var1, boolean var2) {
-      Widget var3;
-      if(var0 >= 2000) {
-         var0 -= 1000;
-         var3 = class179.method3296(class32.scriptIntStack[--class103.scriptIntStackSize]);
-      } else {
-         var3 = var2?XGrandExchangeOffer.field58:XClanMember.field297;
-      }
-
-      if(var0 == 1927) {
-         if(class32.field754 >= 10) {
-            throw new RuntimeException();
-         } else if(var3.field2211 == null) {
-            return 0;
-         } else {
-            class18 var4 = new class18();
-            var4.field198 = var3;
-            var4.field209 = var3.field2211;
-            var4.field197 = 1 + class32.field754;
-            Client.field435.method2453(var4);
-            return 1;
-         }
-      } else {
-         return 2;
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IIIIIII)I",
-      garbageValue = "-939491741"
-   )
-   public static int method1745(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if((var5 & 1) == 1) {
-         int var6 = var3;
-         var3 = var4;
-         var4 = var6;
-      }
-
-      var2 &= 3;
-      return var2 == 0?var1:(var2 == 1?7 - var0 - (var3 - 1):(var2 == 2?7 - var1 - (var4 - 1):var0));
+   public static int method1785(boolean var0, boolean var1) {
+      byte var2 = 0;
+      int var3 = var2 + class185.field2750 + class185.field2752;
+      return var3;
    }
 
    @ObfuscatedSignature(
@@ -97,12 +55,12 @@ public final class class85 {
       garbageValue = "0"
    )
    class85(int var1, int var2, int var3, int var4, int var5, int var6, boolean var7) {
-      this.field1476 = var1;
-      this.field1471 = var2;
-      this.field1472 = var3;
-      this.field1470 = var4;
-      this.field1474 = var5;
-      this.field1479 = var6;
-      this.field1477 = var7;
+      this.field1467 = var1;
+      this.field1463 = var2;
+      this.field1469 = var3;
+      this.field1465 = var4;
+      this.field1464 = var5;
+      this.field1468 = var6;
+      this.field1462 = var7;
    }
 }

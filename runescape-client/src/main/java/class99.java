@@ -1,180 +1,172 @@
+import java.awt.datatransfer.Clipboard;
+import java.lang.management.GarbageCollectorMXBean;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cy")
 public class class99 extends class109 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -65626969
+      intValue = -1289764147
    )
    int field1644;
-   @ObfuscatedName("is")
+   @ObfuscatedName("x")
+   long[] field1645 = new long[10];
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1561238703
+      intValue = 868255537
    )
-   static int field1645;
-   @ObfuscatedName("p")
+   int field1646 = 1;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      longValue = 3595773501045279709L
+      longValue = -5872150964788914705L
    )
-   long field1646 = class0.method11();
-   @ObfuscatedName("j")
+   long field1647 = WallObject.method1985();
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = -797208685
+      intValue = -418741851
    )
-   int field1647 = 0;
-   @ObfuscatedName("bv")
+   int field1649 = 0;
+   @ObfuscatedName("px")
+   static GarbageCollectorMXBean field1652;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 792280195
+      intValue = -1712139091
    )
-   static int field1648;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1187961683
-   )
-   int field1649 = 256;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 668979971
-   )
-   int field1650 = 1;
-   @ObfuscatedName("q")
-   long[] field1653 = new long[10];
+   int field1653 = 256;
+   @ObfuscatedName("ps")
+   static Clipboard field1655;
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "-4340"
-   )
-   int vmethod2108(int var1, int var2) {
-      int var3 = this.field1649;
-      int var4 = this.field1650;
-      this.field1649 = 300;
-      this.field1650 = 1;
-      this.field1646 = class0.method11();
-      if(0L == this.field1653[this.field1644]) {
-         this.field1649 = var3;
-         this.field1650 = var4;
-      } else if(this.field1646 > this.field1653[this.field1644]) {
-         this.field1649 = (int)((long)(2560 * var1) / (this.field1646 - this.field1653[this.field1644]));
-      }
-
-      if(this.field1649 < 25) {
-         this.field1649 = 25;
-      }
-
-      if(this.field1649 > 256) {
-         this.field1649 = 256;
-         this.field1650 = (int)((long)var1 - (this.field1646 - this.field1653[this.field1644]) / 10L);
-      }
-
-      if(this.field1650 > var1) {
-         this.field1650 = var1;
-      }
-
-      this.field1653[this.field1644] = this.field1646;
-      this.field1644 = (1 + this.field1644) % 10;
-      int var5;
-      if(this.field1650 > 1) {
-         for(var5 = 0; var5 < 10; ++var5) {
-            if(0L != this.field1653[var5]) {
-               this.field1653[var5] += (long)this.field1650;
-            }
-         }
-      }
-
-      if(this.field1650 < var2) {
-         this.field1650 = var2;
-      }
-
-      class115.method2292((long)this.field1650);
-
-      for(var5 = 0; this.field1647 < 256; this.field1647 += this.field1649) {
-         ++var5;
-      }
-
-      this.field1647 &= 255;
-      return var5;
-   }
-
-   @ObfuscatedName("co")
-   @ObfuscatedSignature(
-      signature = "([LWidget;IIIZI)V",
-      garbageValue = "349310057"
-   )
-   static void method1995(Widget[] var0, int var1, int var2, int var3, boolean var4) {
-      for(int var5 = 0; var5 < var0.length; ++var5) {
-         Widget var6 = var0[var5];
-         if(var6 != null && var1 == var6.parentId) {
-            class140.method2662(var6, var2, var3, var4);
-            ObjectComposition.method3660(var6, var2, var3);
-            if(var6.scrollX > var6.scrollWidth - var6.width) {
-               var6.scrollX = var6.scrollWidth - var6.width;
-            }
-
-            if(var6.scrollX < 0) {
-               var6.scrollX = 0;
-            }
-
-            if(var6.scrollY > var6.scrollHeight - var6.height) {
-               var6.scrollY = var6.scrollHeight - var6.height;
-            }
-
-            if(var6.scrollY < 0) {
-               var6.scrollY = 0;
-            }
-
-            if(var6.type == 0) {
-               class154.method3034(var0, var6, var4);
-            }
-         }
-      }
-
-   }
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-1"
-   )
-   static void method1996() {
-      FileOnDisk var0 = null;
-
-      try {
-         var0 = class22.method220("", Client.field306.field2689, true);
-         Buffer var1 = class184.field2735.method684();
-         var0.method1469(var1.payload, 0, var1.offset);
-      } catch (Exception var3) {
-         ;
-      }
-
-      try {
-         if(var0 != null) {
-            var0.method1475();
-         }
-      } catch (Exception var2) {
-         ;
-      }
-
-   }
-
-   @ObfuscatedName("q")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "1005407619"
+      garbageValue = "558296171"
    )
-   public void vmethod2107() {
+   void vmethod2132() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field1653[var1] = 0L;
+         this.field1645[var1] = 0L;
       }
 
    }
 
    class99() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field1653[var1] = this.field1646;
+         this.field1645[var1] = this.field1647;
       }
 
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "-1258551841"
+   )
+   int vmethod2133(int var1, int var2) {
+      int var3 = this.field1653;
+      int var4 = this.field1646;
+      this.field1653 = 300;
+      this.field1646 = 1;
+      this.field1647 = WallObject.method1985();
+      if(0L == this.field1645[this.field1644]) {
+         this.field1653 = var3;
+         this.field1646 = var4;
+      } else if(this.field1647 > this.field1645[this.field1644]) {
+         this.field1653 = (int)((long)(var1 * 2560) / (this.field1647 - this.field1645[this.field1644]));
+      }
+
+      if(this.field1653 < 25) {
+         this.field1653 = 25;
+      }
+
+      if(this.field1653 > 256) {
+         this.field1653 = 256;
+         this.field1646 = (int)((long)var1 - (this.field1647 - this.field1645[this.field1644]) / 10L);
+      }
+
+      if(this.field1646 > var1) {
+         this.field1646 = var1;
+      }
+
+      this.field1645[this.field1644] = this.field1647;
+      this.field1644 = (this.field1644 + 1) % 10;
+      int var5;
+      if(this.field1646 > 1) {
+         for(var5 = 0; var5 < 10; ++var5) {
+            if(this.field1645[var5] != 0L) {
+               this.field1645[var5] += (long)this.field1646;
+            }
+         }
+      }
+
+      if(this.field1646 < var2) {
+         this.field1646 = var2;
+      }
+
+      class47.method970((long)this.field1646);
+
+      for(var5 = 0; this.field1649 < 256; this.field1649 += this.field1653) {
+         ++var5;
+      }
+
+      this.field1649 &= 255;
+      return var5;
+   }
+
+   @ObfuscatedName("x")
+   public static String method2037(long var0) {
+      if(var0 > 0L && var0 < 6582952005840035281L) {
+         if(var0 % 37L == 0L) {
+            return null;
+         } else {
+            int var2 = 0;
+
+            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
+               ++var2;
+            }
+
+            StringBuilder var5;
+            char var8;
+            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
+               long var6 = var0;
+               var0 /= 37L;
+               var8 = class205.field3095[(int)(var6 - var0 * 37L)];
+               if(var8 == 95) {
+                  int var9 = var5.length() - 1;
+                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
+                  var8 = 160;
+               }
+            }
+
+            var5.reverse();
+            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
+            return var5.toString();
+         }
+      } else {
+         return null;
+      }
+   }
+
+   @ObfuscatedName("dj")
+   @ObfuscatedSignature(
+      signature = "(LWidget;III)V",
+      garbageValue = "528136632"
+   )
+   static final void method2038(Widget var0, int var1, int var2) {
+      if(null == Client.field462 && !Client.isMenuOpen) {
+         if(null != var0 && class57.method1164(var0) != null) {
+            Client.field462 = var0;
+            Client.field463 = class57.method1164(var0);
+            Client.field464 = var1;
+            Client.field466 = var2;
+            class40.field815 = 0;
+            Client.field473 = false;
+            int var3 = class2.method23();
+            if(var3 != -1) {
+               class49.method979(var3);
+            }
+
+         }
+      }
    }
 }

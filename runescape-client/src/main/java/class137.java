@@ -2,74 +2,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("er")
 public class class137 {
+   @ObfuscatedName("n")
+   byte[] field1904;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = 542343803
-   )
-   int field1901;
-   @ObfuscatedName("d")
-   byte[] field1902;
-   @ObfuscatedName("q")
-   byte[] field1903;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1869304045
+      intValue = -2124065695
    )
    int field1905;
-   @ObfuscatedName("n")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 2010570243
+      intValue = -134517233
    )
    int field1906;
-   @ObfuscatedName("r")
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 826731951
+      intValue = 279689239
    )
    int field1907;
-   @ObfuscatedName("i")
+   @ObfuscatedName("x")
+   byte[] field1908;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1556582771
-   )
-   int field1908;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1337270891
+      intValue = 1973067111
    )
    int field1910;
-   @ObfuscatedName("h")
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1693934427
+      intValue = 27066239
+   )
+   int field1911;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = -1613662345
    )
    int field1912;
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "13"
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -1542304531
    )
-   public static String method2528(int var0) {
-      return (var0 >> 24 & 255) + "." + (var0 >> 16 & 255) + "." + (var0 >> 8 & 255) + "." + (var0 & 255);
-   }
+   int field1914;
 
-   @ObfuscatedName("cx")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1670732120"
+      signature = "(Lclass182;IIB)Z",
+      garbageValue = "-6"
    )
-   static void method2529() {
-      if(Client.field511) {
-         Widget var0 = class57.method1157(Friend.field166, Client.field461);
-         if(var0 != null && null != var0.field2206) {
-            class18 var1 = new class18();
-            var1.field198 = var0;
-            var1.field209 = var0.field2206;
-            FloorUnderlayDefinition.method3491(var1);
-         }
-
-         Client.field511 = false;
-         class174.method3276(var0);
+   static boolean method2556(class182 var0, int var1, int var2) {
+      byte[] var3 = var0.getConfigData(var1, var2);
+      if(var3 == null) {
+         return false;
+      } else {
+         class112.method2186(var3);
+         return true;
       }
    }
 }

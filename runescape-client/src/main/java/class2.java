@@ -1,229 +1,164 @@
+import java.io.File;
+import java.io.RandomAccessFile;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("h")
+@ObfuscatedName("g")
 public class class2 {
-   @ObfuscatedName("o")
-   static int[] field24;
-   @ObfuscatedName("d")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      longValue = -7253701343691459277L
+      longValue = 3706179478591958731L
    )
-   public final long field25;
-   @ObfuscatedName("h")
-   public final XGrandExchangeOffer field26;
-   @ObfuscatedName("j")
-   String field27;
-   @ObfuscatedName("q")
+   public final long field11;
+   @ObfuscatedName("g")
+   public final XGrandExchangeOffer field13;
+   @ObfuscatedName("v")
+   String field14;
+   @ObfuscatedName("y")
+   String field15;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -222202129
+      intValue = -628842743
    )
-   public final int field30;
-   @ObfuscatedName("p")
-   String field32;
+   public final int field16;
 
-   @ObfuscatedName("af")
+   @ObfuscatedName("cm")
    @ObfuscatedSignature(
-      signature = "(IIIB)I",
-      garbageValue = "95"
+      signature = "(I)I",
+      garbageValue = "-1306807261"
    )
-   static final int method19(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
-         }
-
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = class10.tileHeights[var5][var3 + 1][var4] * var6 + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
-         int var9 = (128 - var6) * class10.tileHeights[var5][var3][1 + var4] + class10.tileHeights[var5][var3 + 1][var4 + 1] * var6 >> 7;
-         return var7 * var9 + (128 - var7) * var8 >> 7;
-      } else {
-         return 0;
-      }
+   static final int method23() {
+      return Client.menuOptionCount <= 0?-1:(Client.field437 && class105.field1718[81] && Client.field436 != -1?Client.field436:Client.menuOptionCount - 1);
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(B)Ljava/lang/String;",
-      garbageValue = "1"
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "1729850710"
    )
-   public String method20() {
-      return this.field32;
+   public String method24() {
+      return this.field15;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(I)Ljava/lang/String;",
+      garbageValue = "-116946704"
+   )
+   public String method30() {
+      return this.field14;
    }
 
    class2(Buffer var1, byte var2, int var3) {
-      this.field32 = var1.readString();
-      this.field27 = var1.readString();
-      this.field30 = var1.readUnsignedShort();
-      this.field25 = var1.method2819();
+      this.field14 = var1.readString();
+      this.field15 = var1.readString();
+      this.field16 = var1.readUnsignedShort();
+      this.field11 = var1.method2892();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
-      this.field26 = new XGrandExchangeOffer();
-      this.field26.method44(2);
-      this.field26.method45(var2);
-      this.field26.price = var4;
-      this.field26.totalQuantity = var5;
-      this.field26.quantitySold = 0;
-      this.field26.spent = 0;
-      this.field26.itemId = var3;
+      this.field13 = new XGrandExchangeOffer();
+      this.field13.method51(2);
+      this.field13.method70(var2);
+      this.field13.price = var4;
+      this.field13.totalQuantity = var5;
+      this.field13.quantitySold = 0;
+      this.field13.spent = 0;
+      this.field13.itemId = var3;
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)Ljava/lang/String;",
-      garbageValue = "-1750780545"
+      signature = "(Ljava/lang/String;B)Ljava/io/File;",
+      garbageValue = "0"
    )
-   public String method29() {
-      return this.field27;
-   }
-
-   @ObfuscatedName("a")
-   @ObfuscatedSignature(
-      signature = "(ILclass48;ZI)I",
-      garbageValue = "112666264"
-   )
-   static int method30(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 3903) {
-         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].method43();
-         return 1;
-      } else if(var0 == 3904) {
-         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].itemId;
-         return 1;
-      } else if(var0 == 3905) {
-         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].price;
-         return 1;
-      } else if(var0 == 3906) {
-         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].totalQuantity;
-         return 1;
-      } else if(var0 == 3907) {
-         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].quantitySold;
-         return 1;
-      } else if(var0 == 3908) {
-         var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.grandExchangeOffers[var3].spent;
-         return 1;
+   public static File method32(String var0) {
+      if(!class107.field1734) {
+         throw new RuntimeException("");
       } else {
-         int var13;
-         if(var0 == 3910) {
-            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-            var13 = Client.grandExchangeOffers[var3].method55();
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 0?1:0;
-            return 1;
-         } else if(var0 == 3911) {
-            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-            var13 = Client.grandExchangeOffers[var3].method55();
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 2?1:0;
-            return 1;
-         } else if(var0 == 3912) {
-            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-            var13 = Client.grandExchangeOffers[var3].method55();
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 5?1:0;
-            return 1;
-         } else if(var0 == 3913) {
-            var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-            var13 = Client.grandExchangeOffers[var3].method55();
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var13 == 1?1:0;
-            return 1;
+         File var1 = (File)class107.field1736.get(var0);
+         if(null != var1) {
+            return var1;
          } else {
-            boolean var12;
-            if(var0 == 3914) {
-               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
-               if(null != class105.field1703) {
-                  class105.field1703.method14(class1.field20, var12);
-               }
+            File var2 = new File(class107.field1733, var0);
+            RandomAccessFile var3 = null;
 
-               return 1;
-            } else if(var0 == 3915) {
-               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
-               if(class105.field1703 != null) {
-                  class105.field1703.method14(class1.field11, var12);
-               }
-
-               return 1;
-            } else if(var0 == 3916) {
-               class103.scriptIntStackSize -= 2;
-               var12 = class32.scriptIntStack[class103.scriptIntStackSize] == 1;
-               boolean var11 = class32.scriptIntStack[class103.scriptIntStackSize + 1] == 1;
-               if(null != class105.field1703) {
-                  class105.field1703.method14(new class44(var11), var12);
-               }
-
-               return 1;
-            } else if(var0 == 3917) {
-               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
-               if(class105.field1703 != null) {
-                  class105.field1703.method14(class1.field10, var12);
-               }
-
-               return 1;
-            } else if(var0 == 3918) {
-               var12 = class32.scriptIntStack[--class103.scriptIntStackSize] == 1;
-               if(null != class105.field1703) {
-                  class105.field1703.method14(class1.field13, var12);
-               }
-
-               return 1;
-            } else if(var0 == 3919) {
-               class32.scriptIntStack[++class103.scriptIntStackSize - 1] = null == class105.field1703?0:class105.field1703.field9.size();
-               return 1;
-            } else {
-               class2 var4;
-               if(var0 == 3920) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field30;
-                  return 1;
-               } else if(var0 == 3921) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.method20();
-                  return 1;
-               } else if(var0 == 3922) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var4.method29();
-                  return 1;
-               } else if(var0 == 3923) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  long var5 = class0.method11() - class33.field766 - var4.field25;
-                  int var7 = (int)(var5 / 3600000L);
-                  int var8 = (int)((var5 - (long)(var7 * 3600000)) / 60000L);
-                  int var9 = (int)((var5 - (long)(3600000 * var7) - (long)('\uea60' * var8)) / 1000L);
-                  String var10 = var7 + ":" + var8 / 10 + var8 % 10 + ":" + var9 / 10 + var9 % 10;
-                  class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var10;
-                  return 1;
-               } else if(var0 == 3924) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field26.totalQuantity;
-                  return 1;
-               } else if(var0 == 3925) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field26.price;
-                  return 1;
-               } else if(var0 == 3926) {
-                  var3 = class32.scriptIntStack[--class103.scriptIntStackSize];
-                  var4 = (class2)class105.field1703.field9.get(var3);
-                  class32.scriptIntStack[++class103.scriptIntStackSize - 1] = var4.field26.itemId;
-                  return 1;
+            try {
+               File var4 = new File(var2.getParent());
+               if(!var4.exists()) {
+                  throw new RuntimeException("");
                } else {
-                  return 2;
+                  var3 = new RandomAccessFile(var2, "rw");
+                  int var5 = var3.read();
+                  var3.seek(0L);
+                  var3.write(var5);
+                  var3.seek(0L);
+                  var3.close();
+                  class107.field1736.put(var0, var2);
+                  return var2;
                }
+            } catch (Exception var8) {
+               try {
+                  if(var3 != null) {
+                     var3.close();
+                     var3 = null;
+                  }
+               } catch (Exception var7) {
+                  ;
+               }
+
+               throw new RuntimeException();
             }
          }
+      }
+   }
+
+   @ObfuscatedName("k")
+   @ObfuscatedSignature(
+      signature = "(S)Lclass112;",
+      garbageValue = "-4089"
+   )
+   public static class112 method33() {
+      try {
+         return new class106();
+      } catch (Throwable var1) {
+         return null;
+      }
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "-3"
+   )
+   static final int method34(int var0, int var1, int var2) {
+      int var3 = var0 / var2;
+      int var4 = var0 & var2 - 1;
+      int var5 = var1 / var2;
+      int var6 = var1 & var2 - 1;
+      int var7 = class189.method3526(var3, var5);
+      int var8 = class189.method3526(var3 + 1, var5);
+      int var9 = class189.method3526(var3, var5 + 1);
+      int var10 = class189.method3526(1 + var3, 1 + var5);
+      int var12 = 65536 - class84.field1446[var4 * 1024 / var2] >> 1;
+      int var11 = (var8 * var12 >> 16) + ((65536 - var12) * var7 >> 16);
+      int var14 = 65536 - class84.field1446[1024 * var4 / var2] >> 1;
+      int var13 = (var14 * var10 >> 16) + ((65536 - var14) * var9 >> 16);
+      int var16 = 65536 - class84.field1446[1024 * var6 / var2] >> 1;
+      int var15 = (var13 * var16 >> 16) + ((65536 - var16) * var11 >> 16);
+      return var15;
+   }
+
+   @ObfuscatedName("di")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-1338416716"
+   )
+   static final void method35(String var0) {
+      if(!var0.equals("")) {
+         Client.field332.method3144(194);
+         Client.field332.method2873(class165.method3233(var0));
+         Client.field332.method2915(var0);
       }
    }
 }

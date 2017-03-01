@@ -1,4 +1,3 @@
-import java.awt.datatransfer.Clipboard;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -9,107 +8,108 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dq")
+@ObfuscatedName("dk")
 public class class115 implements MouseListener, MouseMotionListener, FocusListener {
-   @ObfuscatedName("r")
+   @ObfuscatedName("p")
    @ObfuscatedGetter(
-      intValue = -1651938133
+      intValue = -1804336787
    )
-   public static int field1792 = 0;
-   @ObfuscatedName("d")
+   public static volatile int field1799 = -1;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -1004915497
+      intValue = -491023629
    )
    @Export("mouseIdleTicks")
    public static volatile int mouseIdleTicks = 0;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 1085691767
-   )
-   public static int field1794 = 0;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -1002171183
-   )
-   public static volatile int field1795 = -1;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1303006513
-   )
-   public static int field1796 = 0;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -1324229093
-   )
-   public static volatile int field1797 = 0;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1650991597
-   )
-   public static int field1799 = 0;
-   @ObfuscatedName("i")
-   @ObfuscatedGetter(
-      intValue = 1805633631
-   )
-   public static volatile int field1800 = 0;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1986849573
-   )
-   public static volatile int field1801 = 0;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1351610121
-   )
-   public static volatile int field1802 = -1;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      longValue = -2257201929765624065L
-   )
-   public static volatile long field1803 = 0L;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 511449347
-   )
-   public static int field1804 = 0;
-   @ObfuscatedName("mo")
-   static byte field1805;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 994424001
+      intValue = -952424519
    )
-   public static int field1806 = 0;
-   @ObfuscatedName("f")
+   public static volatile int field1801 = 0;
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      longValue = -5547707588586175639L
+      intValue = -1824749711
    )
-   public static long field1807 = 0L;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1376285333
-   )
-   public static volatile int field1809 = 0;
-   @ObfuscatedName("pj")
-   static Clipboard field1810;
-   @ObfuscatedName("q")
+   public static int field1802 = 0;
+   @ObfuscatedName("n")
    @Export("mouse")
    public static class115 mouse = new class115();
+   @ObfuscatedName("y")
+   @ObfuscatedGetter(
+      intValue = 573316163
+   )
+   public static volatile int field1804 = 0;
+   @ObfuscatedName("a")
+   @ObfuscatedGetter(
+      intValue = 771996831
+   )
+   public static int field1805 = 0;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -486317005
+   )
+   public static int field1806 = 0;
+   @ObfuscatedName("j")
+   @ObfuscatedGetter(
+      intValue = 1887072837
+   )
+   public static volatile int field1807 = -1;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -208068727
+   )
+   public static volatile int field1808 = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -1001291911
+   )
+   public static volatile int field1809 = 0;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      longValue = -8380702662899762015L
+   )
+   public static volatile long field1810 = 0L;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -915382315
+   )
+   public static int field1811 = 0;
+   @ObfuscatedName("o")
+   @ObfuscatedGetter(
+      intValue = 1596320571
+   )
+   public static int field1812 = 0;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = -1917643703
+   )
+   public static int field1813 = 0;
+   @ObfuscatedName("c")
+   @ObfuscatedGetter(
+      longValue = -9049085113200714445L
+   )
+   public static long field1814 = 0L;
+   @ObfuscatedName("qj")
+   @ObfuscatedGetter(
+      intValue = -1982792481
+   )
+   static int field1815;
 
    public final synchronized void mousePressed(MouseEvent var1) {
-      if(null != mouse) {
+      if(mouse != null) {
          mouseIdleTicks = 0;
-         field1801 = var1.getX();
-         field1797 = var1.getY();
-         field1803 = class0.method11();
+         field1808 = var1.getX();
+         field1809 = var1.getY();
+         field1810 = WallObject.method1985();
          if(var1.isAltDown()) {
-            field1800 = 4;
-            field1809 = 4;
+            field1804 = 4;
+            field1801 = 4;
          } else if(var1.isMetaDown()) {
-            field1800 = 2;
-            field1809 = 2;
+            field1804 = 2;
+            field1801 = 2;
          } else {
-            field1800 = 1;
-            field1809 = 1;
+            field1804 = 1;
+            field1801 = 1;
          }
       }
 
@@ -122,11 +122,45 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
    public final synchronized void mouseReleased(MouseEvent var1) {
       if(mouse != null) {
          mouseIdleTicks = 0;
-         field1809 = 0;
+         field1801 = 0;
       }
 
       if(var1.isPopupTrigger()) {
          var1.consume();
+      }
+
+   }
+
+   public final synchronized void mouseDragged(MouseEvent var1) {
+      if(null != mouse) {
+         mouseIdleTicks = 0;
+         field1799 = var1.getX();
+         field1807 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mouseMoved(MouseEvent var1) {
+      if(mouse != null) {
+         mouseIdleTicks = 0;
+         field1799 = var1.getX();
+         field1807 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void mouseEntered(MouseEvent var1) {
+      if(null != mouse) {
+         mouseIdleTicks = 0;
+         field1799 = var1.getX();
+         field1807 = var1.getY();
+      }
+
+   }
+
+   public final synchronized void focusLost(FocusEvent var1) {
+      if(null != mouse) {
+         field1801 = 0;
       }
 
    }
@@ -138,72 +172,38 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
 
    }
 
-   public final synchronized void mouseExited(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field1795 = -1;
-         field1802 = -1;
-      }
-
-   }
-
-   public final synchronized void mouseEntered(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field1795 = var1.getX();
-         field1802 = var1.getY();
-      }
-
-   }
-
-   public final synchronized void focusLost(FocusEvent var1) {
-      if(mouse != null) {
-         field1809 = 0;
-      }
-
-   }
-
    public final void focusGained(FocusEvent var1) {
    }
 
-   public final synchronized void mouseDragged(MouseEvent var1) {
-      if(mouse != null) {
+   public final synchronized void mouseExited(MouseEvent var1) {
+      if(null != mouse) {
          mouseIdleTicks = 0;
-         field1795 = var1.getX();
-         field1802 = var1.getY();
+         field1799 = -1;
+         field1807 = -1;
       }
 
    }
 
-   public final synchronized void mouseMoved(MouseEvent var1) {
-      if(mouse != null) {
-         mouseIdleTicks = 0;
-         field1795 = var1.getX();
-         field1802 = var1.getY();
-      }
-
-   }
-
-   @ObfuscatedName("cf")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;Ljava/lang/String;IIIII)V",
-      garbageValue = "14690457"
+      signature = "(III)I",
+      garbageValue = "-2034801023"
    )
-   @Export("addMenuEntry")
-   static final void addMenuEntry(String var0, String var1, int var2, int var3, int var4, int var5) {
-      GroundObject.method1595(var0, var1, var2, var3, var4, var5, false);
+   static int method2329(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method2437((long)var0);
+      return null == var2?0:(var1 >= 0 && var1 < var2.stackSizes.length?var2.stackSizes[var1]:0);
    }
 
-   @ObfuscatedName("q")
-   public static final void method2292(long var0) {
-      if(var0 > 0L) {
-         if(var0 % 10L == 0L) {
-            class112.method2147(var0 - 1L);
-            class112.method2147(1L);
-         } else {
-            class112.method2147(var0);
-         }
-
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(III)V",
+      garbageValue = "-797430407"
+   )
+   static void method2330(int var0, int var1) {
+      long var2 = (long)((var0 << 16) + var1);
+      class181 var4 = (class181)class185.field2754.method2437(var2);
+      if(null != var4) {
+         class185.field2756.method2390(var4);
       }
    }
 }

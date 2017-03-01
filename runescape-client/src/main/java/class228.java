@@ -1,49 +1,49 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hv")
 public class class228 {
-   @ObfuscatedName("q")
-   public static final class228 field3246 = new class228(3, 0, "", "");
-   @ObfuscatedName("d")
-   static final class228 field3247 = new class228(1, 1, "", "");
-   @ObfuscatedName("m")
-   final String field3248;
-   @ObfuscatedName("p")
-   static final class228 field3249 = new class228(5, 3, "", "");
-   @ObfuscatedName("h")
-   static final class228 field3250 = new class228(0, 2, "", "");
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = -406915397
-   )
-   public final int field3251;
-   @ObfuscatedName("r")
-   static final class228 field3252 = new class228(4, 6, "", "");
-   @ObfuscatedName("c")
-   static final class228 field3253 = new class228(8, 7, "", "");
-   @ObfuscatedName("i")
-   public static final class228 field3254;
-   @ObfuscatedName("j")
-   static final class228 field3255 = new class228(2, 4, "", "");
+   @ObfuscatedName("y")
+   static final class228 field3247 = new class228(5, 4, "", "");
    @ObfuscatedName("n")
-   static final class228 field3256 = new class228(7, 5, "", "");
-
-   public String toString() {
-      return this.field3248;
-   }
+   static final class228 field3248 = new class228(8, 1, "", "");
+   @ObfuscatedName("g")
+   static final class228 field3249 = new class228(1, 2, "", "");
+   @ObfuscatedName("v")
+   static final class228 field3250 = new class228(6, 3, "", "");
+   @ObfuscatedName("m")
+   static final class228 field3251 = new class228(4, 7, "", "");
+   @ObfuscatedName("p")
+   static final class228 field3252 = new class228(0, 5, "", "");
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 911128443
+   )
+   public final int field3253;
+   @ObfuscatedName("j")
+   static final class228 field3254 = new class228(2, 6, "", "");
+   @ObfuscatedName("a")
+   public static final class228 field3255;
+   @ObfuscatedName("x")
+   public static final class228 field3256 = new class228(7, 0, "", "");
+   @ObfuscatedName("s")
+   final String field3257;
 
    class228(int var1, int var2, String var3, String var4, boolean var5, class228[] var6) {
-      this.field3251 = var1;
-      this.field3248 = var4;
+      this.field3253 = var1;
+      this.field3257 = var4;
    }
 
    class228(int var1, int var2, String var3, String var4) {
-      this.field3251 = var1;
-      this.field3248 = var4;
+      this.field3253 = var1;
+      this.field3257 = var4;
+   }
+
+   public String toString() {
+      return this.field3257;
    }
 
    static {
-      field3254 = new class228(6, -1, "", "", true, new class228[]{field3246, field3247, field3250, field3255, field3249});
+      field3255 = new class228(3, -1, "", "", true, new class228[]{field3256, field3248, field3249, field3247, field3250});
    }
 }

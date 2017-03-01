@@ -2,106 +2,185 @@ import java.math.BigInteger;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aw")
+@ObfuscatedName("ag")
 public class class39 {
-   @ObfuscatedName("q")
-   static final BigInteger field825 = new BigInteger("10001", 16);
-   @ObfuscatedName("d")
-   static final BigInteger field827 = new BigInteger("b135c4e99e07ed10b5dbdf922b7f9041f9737bde40ed7e89c87b52cbe976601e579900c83be719d2edbd4487174e45253e728cfed8c2521a591ba26f5be215cd9ff51e6385401162b7b34d6b135b046f13a4ad829af055c2e26868f4741bf63df2376e095179bad8163a584ad3cf9e8c408efae18ec4e553eac79ea335300459", 16);
+   @ObfuscatedName("n")
+   static final BigInteger field803 = new BigInteger("a7da3c4d8d0472d526b2037fdc8b914254a845021e43735ed7ed3f51543484c64854755047bd4124c8376a3c1a9c4d7d5537a29a06a6d1da70c40db0f5176b257990b74422eb48ca095427f6c959385b76204e612622ac0619c3e7273b52a5db0c726a055d47305e475de4929114a51a7ad6129ec2ec40748db7b7db47312227", 16);
+   @ObfuscatedName("e")
+   public static String field804;
+   @ObfuscatedName("x")
+   static final BigInteger field805 = new BigInteger("10001", 16);
+   @ObfuscatedName("by")
+   static ModIcon[] field806;
+   @ObfuscatedName("bx")
+   static class184 field808;
 
-   @ObfuscatedName("bw")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-629153298"
+      signature = "(IIIB)I",
+      garbageValue = "0"
    )
-   static final void method824(int var0) {
-      int[] var1 = class16.field183.image;
-      int var2 = var1.length;
+   static int method821(int var0, int var1, int var2) {
+      return (class10.tileSettings[var0][var1][var2] & 8) != 0?0:(var0 > 0 && (class10.tileSettings[1][var1][var2] & 2) != 0?var0 - 1:var0);
+   }
 
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(Lclass159;I)V",
+      garbageValue = "1683176247"
+   )
+   static final void method822(class159 var0) {
+      int var1 = 0;
+      var0.method3165();
+
+      int var2;
       int var3;
-      for(var3 = 0; var3 < var2; ++var3) {
-         var1[var3] = 0;
-      }
-
       int var4;
-      int var5;
-      for(var3 = 1; var3 < 103; ++var3) {
-         var4 = 2048 * (103 - var3) + 24628;
-
-         for(var5 = 1; var5 < 103; ++var5) {
-            if((class10.tileSettings[var0][var5][var3] & 24) == 0) {
-               Script.region.method1781(var1, var4, 512, var0, var5, var3);
-            }
-
-            if(var0 < 3 && (class10.tileSettings[1 + var0][var5][var3] & 8) != 0) {
-               Script.region.method1781(var1, var4, 512, var0 + 1, var5, var3);
-            }
-
-            var4 += 4;
-         }
-      }
-
-      var3 = (238 + (int)(Math.random() * 20.0D) - 10 << 16) + (238 + (int)(Math.random() * 20.0D) - 10 << 8) + (238 + (int)(Math.random() * 20.0D) - 10);
-      var4 = 238 + (int)(Math.random() * 20.0D) - 10 << 16;
-      class16.field183.method4192();
-
-      int var6;
-      for(var5 = 1; var5 < 103; ++var5) {
-         for(var6 = 1; var6 < 103; ++var6) {
-            if((class10.tileSettings[var0][var6][var5] & 24) == 0) {
-               WidgetNode.method194(var0, var6, var5, var3, var4);
-            }
-
-            if(var0 < 3 && (class10.tileSettings[var0 + 1][var6][var5] & 8) != 0) {
-               WidgetNode.method194(var0 + 1, var6, var5, var3, var4);
-            }
-         }
-      }
-
-      Client.field512 = 0;
-
-      for(var5 = 0; var5 < 104; ++var5) {
-         for(var6 = 0; var6 < 104; ++var6) {
-            int var7 = Script.region.method1776(WallObject.plane, var5, var6);
-            if(var7 != 0) {
-               var7 = var7 >> 14 & 32767;
-               int var8 = class187.getObjectDefinition(var7).mapIconId;
-               if(var8 >= 0) {
-                  int var9 = var5;
-                  int var10 = var6;
-                  if(var8 != 22 && var8 != 29 && var8 != 34 && var8 != 36 && var8 != 46 && var8 != 47 && var8 != 48) {
-                     int[][] var13 = Client.collisionMaps[WallObject.plane].flags;
-
-                     for(int var14 = 0; var14 < 10; ++var14) {
-                        int var15 = (int)(Math.random() * 4.0D);
-                        if(var15 == 0 && var9 > 0 && var9 > var5 - 3 && (var13[var9 - 1][var10] & 19136776) == 0) {
-                           --var9;
-                        }
-
-                        if(var15 == 1 && var9 < 103 && var9 < 3 + var5 && (var13[var9 + 1][var10] & 19136896) == 0) {
-                           ++var9;
-                        }
-
-                        if(var15 == 2 && var10 > 0 && var10 > var6 - 3 && (var13[var9][var10 - 1] & 19136770) == 0) {
-                           --var10;
-                        }
-
-                        if(var15 == 3 && var10 < 103 && var10 < 3 + var6 && (var13[var9][var10 + 1] & 19136800) == 0) {
-                           ++var10;
-                        }
-                     }
-                  }
-
-                  Client.field538[Client.field512] = Tile.field1355[var8];
-                  Client.field536[Client.field512] = var9;
-                  Client.field537[Client.field512] = var10;
-                  ++Client.field512;
+      for(var2 = 0; var2 < class45.field916; ++var2) {
+         var3 = class45.field913[var2];
+         if((class45.field909[var3] & 1) == 0) {
+            if(var1 > 0) {
+               --var1;
+               class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+            } else {
+               var4 = var0.method3147(1);
+               if(var4 == 0) {
+                  var1 = class20.method208(var0);
+                  class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+               } else {
+                  MessageNode.method221(var0, var3);
                }
             }
          }
       }
 
-      CombatInfo1.bufferProvider.method4085();
+      var0.method3148();
+      if(var1 != 0) {
+         throw new RuntimeException();
+      } else {
+         var0.method3165();
+
+         for(var2 = 0; var2 < class45.field916; ++var2) {
+            var3 = class45.field913[var2];
+            if((class45.field909[var3] & 1) != 0) {
+               if(var1 > 0) {
+                  --var1;
+                  class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+               } else {
+                  var4 = var0.method3147(1);
+                  if(var4 == 0) {
+                     var1 = class20.method208(var0);
+                     class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                  } else {
+                     MessageNode.method221(var0, var3);
+                  }
+               }
+            }
+         }
+
+         var0.method3148();
+         if(var1 != 0) {
+            throw new RuntimeException();
+         } else {
+            var0.method3165();
+
+            for(var2 = 0; var2 < class45.field914; ++var2) {
+               var3 = class45.field915[var2];
+               if((class45.field909[var3] & 1) != 0) {
+                  if(var1 > 0) {
+                     --var1;
+                     class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                  } else {
+                     var4 = var0.method3147(1);
+                     if(var4 == 0) {
+                        var1 = class20.method208(var0);
+                        class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                     } else if(class8.method105(var0, var3)) {
+                        class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                     }
+                  }
+               }
+            }
+
+            var0.method3148();
+            if(var1 != 0) {
+               throw new RuntimeException();
+            } else {
+               var0.method3165();
+
+               for(var2 = 0; var2 < class45.field914; ++var2) {
+                  var3 = class45.field915[var2];
+                  if((class45.field909[var3] & 1) == 0) {
+                     if(var1 > 0) {
+                        --var1;
+                        class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                     } else {
+                        var4 = var0.method3147(1);
+                        if(var4 == 0) {
+                           var1 = class20.method208(var0);
+                           class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                        } else if(class8.method105(var0, var3)) {
+                           class45.field909[var3] = (byte)(class45.field909[var3] | 2);
+                        }
+                     }
+                  }
+               }
+
+               var0.method3148();
+               if(var1 != 0) {
+                  throw new RuntimeException();
+               } else {
+                  class45.field916 = 0;
+                  class45.field914 = 0;
+
+                  for(var2 = 1; var2 < 2048; ++var2) {
+                     class45.field909[var2] = (byte)(class45.field909[var2] >> 1);
+                     Player var5 = Client.cachedPlayers[var2];
+                     if(var5 != null) {
+                        class45.field913[++class45.field916 - 1] = var2;
+                     } else {
+                        class45.field915[++class45.field914 - 1] = var2;
+                     }
+                  }
+
+               }
+            }
+         }
+      }
+   }
+
+   @ObfuscatedName("am")
+   @ObfuscatedSignature(
+      signature = "(IIII)V",
+      garbageValue = "965864350"
+   )
+   static final void method823(int var0, int var1, int var2) {
+      if(var0 >= 128 && var1 >= 128 && var0 <= 13056 && var1 <= 13056) {
+         int var3 = class25.method615(var0, var1, CollisionData.plane) - var2;
+         var0 -= FaceNormal.cameraX;
+         var3 -= class45.cameraZ;
+         var1 -= ChatLineBuffer.cameraY;
+         int var4 = class84.field1460[class10.cameraPitch];
+         int var5 = class84.field1446[class10.cameraPitch];
+         int var6 = class84.field1460[Projectile.cameraYaw];
+         int var7 = class84.field1446[Projectile.cameraYaw];
+         int var8 = var1 * var6 + var0 * var7 >> 16;
+         var1 = var7 * var1 - var0 * var6 >> 16;
+         var0 = var8;
+         var8 = var3 * var5 - var4 * var1 >> 16;
+         var1 = var1 * var5 + var3 * var4 >> 16;
+         if(var1 >= 50) {
+            Client.field447 = Client.scale * var0 / var1 + Client.camera2 / 2;
+            Client.field469 = Client.camera3 / 2 + var8 * Client.scale / var1;
+         } else {
+            Client.field447 = -1;
+            Client.field469 = -1;
+         }
+
+      } else {
+         Client.field447 = -1;
+         Client.field469 = -1;
+      }
    }
 
    class39() throws Throwable {
