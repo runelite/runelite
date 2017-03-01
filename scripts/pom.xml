@@ -28,6 +28,7 @@
 
 	<groupId>net.runelite</groupId>
 	<artifactId>scripts</artifactId>
+	<version>1.0.0</version>
 	<name>Scripts</name>
 
 	<build>
