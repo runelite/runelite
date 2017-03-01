@@ -3,192 +3,270 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gl")
+@ObfuscatedName("ge")
 public class class185 {
-   @ObfuscatedName("a")
-   static class184[] field2746 = new class184[256];
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = -349388265
+   )
+   static int field2746 = 0;
    @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 883734745
+      intValue = 133497707
    )
    public static int field2747 = 0;
-   @ObfuscatedName("z")
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = 1130111741
+      longValue = -275350249958080207L
    )
-   public static int field2748 = 0;
-   @ObfuscatedName("p")
-   public static XHashTable field2749 = new XHashTable(4096);
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -371323499
-   )
-   public static int field2750 = 0;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 1116818527
-   )
-   public static int field2751 = 0;
-   @ObfuscatedName("r")
-   @ObfuscatedGetter(
-      intValue = 55745641
-   )
-   public static int field2752 = 0;
-   @ObfuscatedName("c")
-   public static Node2LinkedList field2753 = new Node2LinkedList();
-   @ObfuscatedName("i")
-   public static XHashTable field2754 = new XHashTable(4096);
-   @ObfuscatedName("dq")
-   static int[] field2755;
-   @ObfuscatedName("n")
-   public static XHashTable field2756 = new XHashTable(32);
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      longValue = -2498272970275941843L
-   )
-   public static long field2757;
+   static long field2748;
    @ObfuscatedName("v")
-   public static Buffer field2758 = new Buffer(8);
-   @ObfuscatedName("q")
-   public static class110 field2759;
+   static XHashTable field2749 = new XHashTable(4096);
    @ObfuscatedName("y")
-   static CRC32 field2760 = new CRC32();
-   @ObfuscatedName("w")
-   static Buffer field2761;
+   @ObfuscatedGetter(
+      intValue = -1579762079
+   )
+   static int field2750 = 0;
    @ObfuscatedName("k")
-   public static byte field2762 = 0;
+   @ObfuscatedGetter(
+      intValue = -864717679
+   )
+   static int field2751 = 0;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1014525511
+      intValue = -2120747365
    )
-   public static int field2763 = 0;
-   @ObfuscatedName("l")
+   static int field2752 = 0;
+   @ObfuscatedName("a")
+   static XHashTable field2754 = new XHashTable(4096);
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 2045420675
+      intValue = -1999959331
    )
-   public static int field2764 = 0;
+   static int field2755 = 0;
+   @ObfuscatedName("m")
+   static Node2LinkedList field2756 = new Node2LinkedList();
    @ObfuscatedName("x")
+   public static class110 field2757;
+   @ObfuscatedName("q")
+   static Buffer field2758 = new Buffer(8);
+   @ObfuscatedName("s")
+   static XHashTable field2759 = new XHashTable(4096);
+   @ObfuscatedName("u")
+   static class184[] field2760 = new class184[256];
+   @ObfuscatedName("l")
+   static CRC32 field2761 = new CRC32();
+   @ObfuscatedName("r")
+   static Buffer field2762;
+   @ObfuscatedName("e")
+   static byte field2763 = 0;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1921755079
+      intValue = 851875199
+   )
+   static int field2764 = 0;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 186250803
    )
    public static int field2765 = 0;
-   @ObfuscatedName("m")
-   public static XHashTable field2767 = new XHashTable(4096);
-   @ObfuscatedName("u")
-   static Font field2768;
-
-   @ObfuscatedName("ci")
-   @ObfuscatedSignature(
-      signature = "(IS)Ljava/lang/String;",
-      garbageValue = "500"
+   @ObfuscatedName("p")
+   static XHashTable field2766 = new XHashTable(32);
+   @ObfuscatedName("ph")
+   @ObfuscatedGetter(
+      intValue = 87211559
    )
-   static final String method3423(int var0) {
-      String var1 = Integer.toString(var0);
+   static int field2767;
+   @ObfuscatedName("z")
+   static int[] field2768;
 
-      for(int var2 = var1.length() - 3; var2 > 0; var2 -= 3) {
-         var1 = var1.substring(0, var2) + "," + var1.substring(var2);
+   @ObfuscatedName("ae")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "1754738323"
+   )
+   static final void method3482(String var0) {
+      if(var0.equalsIgnoreCase("toggleroof")) {
+         ObjectComposition.field2944.field690 = !ObjectComposition.field2944.field690;
+         class146.method2811();
+         if(ObjectComposition.field2944.field690) {
+            class88.sendGameMessage(99, "", "Roofs are now all hidden");
+         } else {
+            class88.sendGameMessage(99, "", "Roofs will only be removed selectively");
+         }
       }
 
-      return var1.length() > 9?" " + class18.method199('ﾀ') + var1.substring(0, var1.length() - 8) + "M" + " " + " (" + var1 + ")" + "</col>":(var1.length() > 6?" " + class18.method199(16777215) + var1.substring(0, var1.length() - 4) + "K" + " " + " (" + var1 + ")" + "</col>":" " + class18.method199(16776960) + var1 + "</col>");
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "693588629"
-   )
-   static void method3426(int var0) {
-      if(var0 == -3) {
-         class138.method2536("Connection timed out.", "Please try using a different world.", "");
-      } else if(var0 == -2) {
-         class138.method2536("", "Error connecting to server.", "");
-      } else if(var0 == -1) {
-         class138.method2536("No response from server.", "Please try using a different world.", "");
-      } else if(var0 == 3) {
-         class41.loginIndex = 3;
-      } else if(var0 == 4) {
-         class138.method2536("Your account has been disabled.", "Please check your message-centre for details.", "");
-      } else if(var0 == 5) {
-         class138.method2536("Your account has not logged out from its last", "session or the server is too busy right now.", "Please try again in a few minutes.");
-      } else if(var0 == 6) {
-         class138.method2536("RuneScape has been updated!", "Please reload this page.", "");
-      } else if(var0 == 7) {
-         class138.method2536("This world is full.", "Please use a different world.", "");
-      } else if(var0 == 8) {
-         class138.method2536("Unable to connect.", "Login server offline.", "");
-      } else if(var0 == 9) {
-         class138.method2536("Login limit exceeded.", "Too many connections from your address.", "");
-      } else if(var0 == 10) {
-         class138.method2536("Unable to connect.", "Bad session id.", "");
-      } else if(var0 == 11) {
-         class138.method2536("We suspect someone knows your password.", "Press \'change your password\' on front page.", "");
-      } else if(var0 == 12) {
-         class138.method2536("You need a members account to login to this world.", "Please subscribe, or use a different world.", "");
-      } else if(var0 == 13) {
-         class138.method2536("Could not complete login.", "Please try using a different world.", "");
-      } else if(var0 == 14) {
-         class138.method2536("The server is being updated.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 16) {
-         class138.method2536("Too many login attempts.", "Please wait a few minutes before trying again.", "");
-      } else if(var0 == 17) {
-         class138.method2536("You are standing in a members-only area.", "To play on this world move to a free area first", "");
-      } else if(var0 == 18) {
-         class138.method2536("Account locked as we suspect it has been stolen.", "Press \'recover a locked account\' on front page.", "");
-      } else if(var0 == 19) {
-         class138.method2536("This world is running a closed Beta.", "Sorry invited players only.", "Please use a different world.");
-      } else if(var0 == 20) {
-         class138.method2536("Invalid loginserver requested.", "Please try using a different world.", "");
-      } else if(var0 == 22) {
-         class138.method2536("Malformed login packet.", "Please try again.", "");
-      } else if(var0 == 23) {
-         class138.method2536("No reply from loginserver.", "Please wait 1 minute and try again.", "");
-      } else if(var0 == 24) {
-         class138.method2536("Error loading your profile.", "Please contact customer support.", "");
-      } else if(var0 == 25) {
-         class138.method2536("Unexpected loginserver response.", "Please try using a different world.", "");
-      } else if(var0 == 26) {
-         class138.method2536("This computers address has been blocked", "as it was used to break our rules.", "");
-      } else if(var0 == 27) {
-         class138.method2536("", "Service unavailable.", "");
-      } else if(var0 == 31) {
-         class138.method2536("Your account must have a displayname set", "in order to play the game.  Please set it", "via the website, or the main game.");
-      } else if(var0 == 32) {
-         class138.method2536("Your attempt to log into your account was", "unsuccessful.  Don\'t worry, you can sort", "this out by visiting the billing system.");
-      } else if(var0 == 37) {
-         class138.method2536("Your account is currently inaccessible.", "Please try again in a few minutes.", "");
-      } else if(var0 == 38) {
-         class138.method2536("You need to vote to play!", "Visit runescape.com and vote,", "and then come back here!");
-      } else if(var0 == 55) {
-         class138.method2536("Sorry, but your account is not eligible to", "play this version of the game.  Please try", "playing the main game instead!");
-      } else {
-         if(var0 == 56) {
-            class138.method2536("Enter the 6-digit code generated by your", "authenticator app.", "");
-            class8.setGameState(11);
-            return;
-         }
-
-         if(var0 == 57) {
-            class138.method2536("The code you entered was incorrect.", "Please try again.", "");
-            class8.setGameState(11);
-            return;
-         }
-
-         class138.method2536("Unexpected server response", "Please try using a different world.", "");
+      if(var0.equalsIgnoreCase("displayfps")) {
+         Client.field302 = !Client.field302;
       }
 
-      class8.setGameState(10);
+      if(Client.field425 >= 2) {
+         if(var0.equalsIgnoreCase("fpson")) {
+            Client.field302 = true;
+         }
+
+         if(var0.equalsIgnoreCase("fpsoff")) {
+            Client.field302 = false;
+         }
+
+         if(var0.equalsIgnoreCase("gc")) {
+            System.gc();
+         }
+
+         if(var0.equalsIgnoreCase("clientdrop")) {
+            GameObject.method2021();
+         }
+
+         if(var0.equalsIgnoreCase("errortest") && Client.field309 == 2) {
+            throw new RuntimeException();
+         }
+      }
+
+      Client.field332.method3144(13);
+      Client.field332.method2873(var0.length() + 1);
+      Client.field332.method2915(var0);
    }
 
    class185() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "0"
+      signature = "(IIB)LMessageNode;",
+      garbageValue = "2"
    )
-   static final String method3429(int var0) {
-      return var0 < 100000?"<col=ffff00>" + var0 + "</col>":(var0 < 10000000?"<col=ffffff>" + var0 / 1000 + "K" + "</col>":"<col=00ff80>" + var0 / 1000000 + "M" + "</col>");
+   static MessageNode method3490(int var0, int var1) {
+      ChatLineBuffer var2 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
+      return var2.method983(var1);
+   }
+
+   @ObfuscatedName("ag")
+   @ObfuscatedSignature(
+      signature = "(S)V",
+      garbageValue = "256"
+   )
+   static final void method3491() {
+      if(Client.widgetRoot != -1) {
+         Tile.method1642(Client.widgetRoot);
+      }
+
+      int var0;
+      for(var0 = 0; var0 < Client.field468; ++var0) {
+         if(Client.field494[var0]) {
+            Client.field495[var0] = true;
+         }
+
+         Client.field435[var0] = Client.field494[var0];
+         Client.field494[var0] = false;
+      }
+
+      Client.field493 = Client.gameCycle;
+      Client.field438 = -1;
+      Client.field465 = -1;
+      class22.field237 = null;
+      if(Client.widgetRoot != -1) {
+         Client.field468 = 0;
+         class1.method18(Client.widgetRoot, 0, 0, RSCanvas.field1756, class65.field1128, 0, 0, -1);
+      }
+
+      Rasterizer2D.method4018();
+      if(!Client.isMenuOpen) {
+         if(Client.field438 != -1) {
+            class196.method3631(Client.field438, Client.field465);
+         }
+      } else {
+         WallObject.method1981();
+      }
+
+      if(Client.field501 == 3) {
+         for(var0 = 0; var0 < Client.field468; ++var0) {
+            if(Client.field435[var0]) {
+               Rasterizer2D.method4034(Client.widgetPositionX[var0], Client.widgetPositionY[var0], Client.widgetBoundsWidth[var0], Client.widgetBoundsHeight[var0], 16711935, 128);
+            } else if(Client.field495[var0]) {
+               Rasterizer2D.method4034(Client.widgetPositionX[var0], Client.widgetPositionY[var0], Client.widgetBoundsWidth[var0], Client.widgetBoundsHeight[var0], 16711680, 128);
+            }
+         }
+      }
+
+      var0 = CollisionData.plane;
+      int var1 = WidgetNode.localPlayer.x;
+      int var2 = WidgetNode.localPlayer.y;
+      int var3 = Client.field365;
+
+      for(class31 var4 = (class31)class31.field703.method2503(); var4 != null; var4 = (class31)class31.field703.method2492()) {
+         if(var4.field708 != -1 || var4.field714 != null) {
+            int var5 = 0;
+            if(var1 > var4.field705) {
+               var5 += var1 - var4.field705;
+            } else if(var1 < var4.field704) {
+               var5 += var4.field704 - var1;
+            }
+
+            if(var2 > var4.field706) {
+               var5 += var2 - var4.field706;
+            } else if(var2 < var4.field716) {
+               var5 += var4.field716 - var2;
+            }
+
+            if(var5 - 64 <= var4.field712 && Client.field397 != 0 && var0 == var4.field702) {
+               var5 -= 64;
+               if(var5 < 0) {
+                  var5 = 0;
+               }
+
+               int var6 = (var4.field712 - var5) * Client.field397 / var4.field712;
+               Object var10000;
+               if(var4.field709 == null) {
+                  if(var4.field708 >= 0) {
+                     var10000 = null;
+                     class53 var7 = class53.method1064(class150.field2041, var4.field708, 0);
+                     if(null != var7) {
+                        class55 var8 = var7.method1058().method1097(DecorativeObject.field1602);
+                        class66 var9 = class66.method1256(var8, 100, var6);
+                        var9.method1259(-1);
+                        Client.field572.method1024(var9);
+                        var4.field709 = var9;
+                     }
+                  }
+               } else {
+                  var4.field709.method1260(var6);
+               }
+
+               if(var4.field701 == null) {
+                  if(var4.field714 != null && (var4.field713 -= var3) <= 0) {
+                     int var11 = (int)(Math.random() * (double)var4.field714.length);
+                     var10000 = null;
+                     class53 var12 = class53.method1064(class150.field2041, var4.field714[var11], 0);
+                     if(null != var12) {
+                        class55 var13 = var12.method1058().method1097(DecorativeObject.field1602);
+                        class66 var10 = class66.method1256(var13, 100, var6);
+                        var10.method1259(0);
+                        Client.field572.method1024(var10);
+                        var4.field701 = var10;
+                        var4.field713 = var4.field710 + (int)(Math.random() * (double)(var4.field711 - var4.field710));
+                     }
+                  }
+               } else {
+                  var4.field701.method1260(var6);
+                  if(!var4.field701.linked()) {
+                     var4.field701 = null;
+                  }
+               }
+            } else {
+               if(null != var4.field709) {
+                  Client.field572.method1000(var4.field709);
+                  var4.field709 = null;
+               }
+
+               if(null != var4.field701) {
+                  Client.field572.method1000(var4.field701);
+                  var4.field701 = null;
+               }
+            }
+         }
+      }
+
+      Client.field365 = 0;
    }
 }

@@ -1,137 +1,257 @@
 import java.io.File;
 import java.util.Hashtable;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dx")
+@ObfuscatedName("dj")
 public class class107 {
-   @ObfuscatedName("q")
-   static boolean field1731 = false;
-   @ObfuscatedName("d")
-   static File field1732;
-   @ObfuscatedName("h")
-   static Hashtable field1733 = new Hashtable(16);
-   @ObfuscatedName("hh")
-   @ObfuscatedGetter(
-      intValue = 740660459
-   )
-   @Export("menuWidth")
-   static int menuWidth;
-   @ObfuscatedName("bu")
-   static class184 field1738;
+   @ObfuscatedName("n")
+   public static File field1733;
+   @ObfuscatedName("x")
+   public static boolean field1734 = false;
+   @ObfuscatedName("g")
+   static Hashtable field1736 = new Hashtable(16);
 
    class107() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("au")
+   @ObfuscatedName("bi")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-122"
+      signature = "(IIIIII)V",
+      garbageValue = "-641598420"
    )
-   static final void method2099() {
-      int var0 = Client.field481 + class36.localPlayer.x;
-      int var1 = class36.localPlayer.y + Client.field371;
-      if(class85.field1473 - var0 < -500 || class85.field1473 - var0 > 500 || class180.field2698 - var1 < -500 || class180.field2698 - var1 > 500) {
-         class85.field1473 = var0;
-         class180.field2698 = var1;
-      }
-
-      if(var0 != class85.field1473) {
-         class85.field1473 += (var0 - class85.field1473) / 16;
-      }
-
-      if(var1 != class180.field2698) {
-         class180.field2698 += (var1 - class180.field2698) / 16;
-      }
-
-      int var2;
-      int var3;
-      if(class115.field1794 == 4 && class15.field173) {
-         var2 = class115.field1799 - Client.field393;
-         Client.field391 = var2 * 2;
-         Client.field393 = var2 != -1 && var2 != 1?(Client.field393 + class115.field1799) / 2:class115.field1799;
-         var3 = Client.field392 - class115.field1792;
-         Client.field390 = var3 * 2;
-         Client.field392 = var3 != -1 && var3 != 1?(class115.field1792 + Client.field392) / 2:class115.field1792;
-      } else {
-         if(class105.field1713[96]) {
-            Client.field390 += (-24 - Client.field390) / 2;
-         } else if(class105.field1713[97]) {
-            Client.field390 += (24 - Client.field390) / 2;
-         } else {
-            Client.field390 /= 2;
-         }
-
-         if(class105.field1713[98]) {
-            Client.field391 += (12 - Client.field391) / 2;
-         } else if(class105.field1713[99]) {
-            Client.field391 += (-12 - Client.field391) / 2;
-         } else {
-            Client.field391 /= 2;
-         }
-
-         Client.field393 = class115.field1799;
-         Client.field392 = class115.field1792;
-      }
-
-      Client.mapAngle = Client.field390 / 2 + Client.mapAngle & 2047;
-      Client.field541 += Client.field391 / 2;
-      if(Client.field541 < 128) {
-         Client.field541 = 128;
-      }
-
-      if(Client.field541 > 383) {
-         Client.field541 = 383;
-      }
-
-      var2 = class85.field1473 >> 7;
-      var3 = class180.field2698 >> 7;
-      int var4 = class2.method19(class85.field1473, class180.field2698, WallObject.plane);
-      int var5 = 0;
+   static final void method2125(int var0, int var1, int var2, int var3, int var4) {
+      int var5 = Friend.region.method1815(var0, var1, var2);
       int var6;
-      if(var2 > 3 && var3 > 3 && var2 < 100 && var3 < 100) {
-         for(var6 = var2 - 4; var6 <= 4 + var2; ++var6) {
-            for(int var7 = var3 - 4; var7 <= 4 + var3; ++var7) {
-               int var8 = WallObject.plane;
-               if(var8 < 3 && (class10.tileSettings[1][var6][var7] & 2) == 2) {
-                  ++var8;
-               }
+      int var7;
+      int var8;
+      int var9;
+      int var11;
+      int var17;
+      if(var5 != 0) {
+         var6 = Friend.region.method1924(var0, var1, var2, var5);
+         var7 = var6 >> 6 & 3;
+         var8 = var6 & 31;
+         var9 = var3;
+         if(var5 > 0) {
+            var9 = var4;
+         }
 
-               int var9 = var4 - class10.tileHeights[var8][var6][var7];
-               if(var9 > var5) {
-                  var5 = var9;
+         int[] var10 = class26.field595.image;
+         var11 = 2048 * (103 - var2) + 24624 + 4 * var1;
+         var17 = var5 >> 14 & 32767;
+         ObjectComposition var19 = ChatMessages.getObjectDefinition(var17);
+         if(var19.mapSceneId != -1) {
+            ModIcon var14 = class143.field2002[var19.mapSceneId];
+            if(var14 != null) {
+               int var15 = (var19.sizeX * 4 - var14.originalWidth) / 2;
+               int var16 = (var19.sizeY * 4 - var14.height) / 2;
+               var14.method4115(var15 + var1 * 4 + 48, 48 + (104 - var2 - var19.sizeY) * 4 + var16);
+            }
+         } else {
+            if(var8 == 0 || var8 == 2) {
+               if(var7 == 0) {
+                  var10[var11] = var9;
+                  var10[var11 + 512] = var9;
+                  var10[var11 + 1024] = var9;
+                  var10[1536 + var11] = var9;
+               } else if(var7 == 1) {
+                  var10[var11] = var9;
+                  var10[1 + var11] = var9;
+                  var10[var11 + 2] = var9;
+                  var10[var11 + 3] = var9;
+               } else if(var7 == 2) {
+                  var10[var11 + 3] = var9;
+                  var10[512 + 3 + var11] = var9;
+                  var10[3 + var11 + 1024] = var9;
+                  var10[var11 + 3 + 1536] = var9;
+               } else if(var7 == 3) {
+                  var10[var11 + 1536] = var9;
+                  var10[1 + 1536 + var11] = var9;
+                  var10[2 + var11 + 1536] = var9;
+                  var10[3 + 1536 + var11] = var9;
+               }
+            }
+
+            if(var8 == 3) {
+               if(var7 == 0) {
+                  var10[var11] = var9;
+               } else if(var7 == 1) {
+                  var10[var11 + 3] = var9;
+               } else if(var7 == 2) {
+                  var10[1536 + var11 + 3] = var9;
+               } else if(var7 == 3) {
+                  var10[var11 + 1536] = var9;
+               }
+            }
+
+            if(var8 == 2) {
+               if(var7 == 3) {
+                  var10[var11] = var9;
+                  var10[var11 + 512] = var9;
+                  var10[1024 + var11] = var9;
+                  var10[1536 + var11] = var9;
+               } else if(var7 == 0) {
+                  var10[var11] = var9;
+                  var10[1 + var11] = var9;
+                  var10[var11 + 2] = var9;
+                  var10[3 + var11] = var9;
+               } else if(var7 == 1) {
+                  var10[3 + var11] = var9;
+                  var10[3 + var11 + 512] = var9;
+                  var10[1024 + 3 + var11] = var9;
+                  var10[1536 + 3 + var11] = var9;
+               } else if(var7 == 2) {
+                  var10[var11 + 1536] = var9;
+                  var10[var11 + 1536 + 1] = var9;
+                  var10[var11 + 1536 + 2] = var9;
+                  var10[var11 + 1536 + 3] = var9;
                }
             }
          }
       }
 
-      var6 = var5 * 192;
-      if(var6 > 98048) {
-         var6 = 98048;
+      var5 = Friend.region.method1925(var0, var1, var2);
+      if(var5 != 0) {
+         var6 = Friend.region.method1924(var0, var1, var2, var5);
+         var7 = var6 >> 6 & 3;
+         var8 = var6 & 31;
+         var9 = var5 >> 14 & 32767;
+         ObjectComposition var23 = ChatMessages.getObjectDefinition(var9);
+         int var13;
+         if(var23.mapSceneId != -1) {
+            ModIcon var18 = class143.field2002[var23.mapSceneId];
+            if(var18 != null) {
+               var17 = (var23.sizeX * 4 - var18.originalWidth) / 2;
+               var13 = (var23.sizeY * 4 - var18.height) / 2;
+               var18.method4115(4 * var1 + 48 + var17, 48 + (104 - var2 - var23.sizeY) * 4 + var13);
+            }
+         } else if(var8 == 9) {
+            var11 = 15658734;
+            if(var5 > 0) {
+               var11 = 15597568;
+            }
+
+            int[] var12 = class26.field595.image;
+            var13 = 4 * var1 + 24624 + (103 - var2) * 2048;
+            if(var7 != 0 && var7 != 2) {
+               var12[var13] = var11;
+               var12[var13 + 512 + 1] = var11;
+               var12[2 + var13 + 1024] = var11;
+               var12[3 + 1536 + var13] = var11;
+            } else {
+               var12[1536 + var13] = var11;
+               var12[1 + var13 + 1024] = var11;
+               var12[2 + 512 + var13] = var11;
+               var12[var13 + 3] = var11;
+            }
+         }
       }
 
-      if(var6 < '耀') {
-         var6 = '耀';
-      }
-
-      if(var6 > Client.field397) {
-         Client.field397 += (var6 - Client.field397) / 24;
-      } else if(var6 < Client.field397) {
-         Client.field397 += (var6 - Client.field397) / 80;
+      var5 = Friend.region.method1831(var0, var1, var2);
+      if(var5 != 0) {
+         var6 = var5 >> 14 & 32767;
+         ObjectComposition var20 = ChatMessages.getObjectDefinition(var6);
+         if(var20.mapSceneId != -1) {
+            ModIcon var21 = class143.field2002[var20.mapSceneId];
+            if(var21 != null) {
+               var9 = (var20.sizeX * 4 - var21.originalWidth) / 2;
+               int var22 = (var20.sizeY * 4 - var21.height) / 2;
+               var21.method4115(4 * var1 + 48 + var9, var22 + 48 + (104 - var2 - var20.sizeY) * 4);
+            }
+         }
       }
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("ck")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "100"
+      signature = "(III)V",
+      garbageValue = "40561144"
    )
-   public static void method2100() {
-      Spotanim.field2803.reset();
-      Spotanim.field2798.reset();
+   static void method2127(int var0, int var1) {
+      Client.field332.method3144(2);
+      Client.field332.method2940(var1);
+      Client.field332.method2930(var0);
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(CB)C",
+      garbageValue = "-78"
+   )
+   static char method2128(char var0) {
+      switch(var0) {
+      case ' ':
+      case '-':
+      case '_':
+      case ' ':
+         return '_';
+      case '#':
+      case '[':
+      case ']':
+         return var0;
+      case 'À':
+      case 'Á':
+      case 'Â':
+      case 'Ã':
+      case 'Ä':
+      case 'à':
+      case 'á':
+      case 'â':
+      case 'ã':
+      case 'ä':
+         return 'a';
+      case 'Ç':
+      case 'ç':
+         return 'c';
+      case 'È':
+      case 'É':
+      case 'Ê':
+      case 'Ë':
+      case 'è':
+      case 'é':
+      case 'ê':
+      case 'ë':
+         return 'e';
+      case 'Í':
+      case 'Î':
+      case 'Ï':
+      case 'í':
+      case 'î':
+      case 'ï':
+         return 'i';
+      case 'Ñ':
+      case 'ñ':
+         return 'n';
+      case 'Ò':
+      case 'Ó':
+      case 'Ô':
+      case 'Õ':
+      case 'Ö':
+      case 'ò':
+      case 'ó':
+      case 'ô':
+      case 'õ':
+      case 'ö':
+         return 'o';
+      case 'Ù':
+      case 'Ú':
+      case 'Û':
+      case 'Ü':
+      case 'ù':
+      case 'ú':
+      case 'û':
+      case 'ü':
+         return 'u';
+      case 'ß':
+         return 'b';
+      case 'ÿ':
+      case 'Ÿ':
+         return 'y';
+      default:
+         return Character.toLowerCase(var0);
+      }
    }
 }

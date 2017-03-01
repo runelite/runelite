@@ -1,76 +1,52 @@
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ez")
+@ObfuscatedName("eg")
 public class class149 {
-   @ObfuscatedName("du")
-   @ObfuscatedGetter(
-      intValue = -1988940067
+   @ObfuscatedName("a")
+   public static short[] field2033;
+   @ObfuscatedName("s")
+   static class228 field2037;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LSpritePixels;",
+      garbageValue = "1429283022"
    )
-   static int field2035;
-   @ObfuscatedName("ch")
-   static class110 field2036;
+   public static SpritePixels[] method2849(class182 var0, String var1, String var2) {
+      int var3 = var0.method3426(var1);
+      int var4 = var0.method3370(var3, var2);
+      SpritePixels[] var5;
+      if(!class137.method2556(var0, var3, var4)) {
+         var5 = null;
+      } else {
+         SpritePixels[] var7 = new SpritePixels[class225.field3233];
+
+         for(int var8 = 0; var8 < class225.field3233; ++var8) {
+            SpritePixels var9 = var7[var8] = new SpritePixels();
+            var9.maxWidth = class225.field3234;
+            var9.maxHeight = class0.field2;
+            var9.offsetX = class225.field3236[var8];
+            var9.offsetY = class145.field2013[var8];
+            var9.width = class186.field2775[var8];
+            var9.height = class225.field3235[var8];
+            int var10 = var9.height * var9.width;
+            byte[] var11 = Ignore.field211[var8];
+            var9.image = new int[var10];
+
+            for(int var12 = 0; var12 < var10; ++var12) {
+               var9.image[var12] = class225.field3237[var11[var12] & 255];
+            }
+         }
+
+         WallObject.method1986();
+         var5 = var7;
+      }
+
+      return var5;
+   }
 
    class149() throws Throwable {
       throw new Error();
-   }
-
-   @ObfuscatedName("cm")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;LWidget;I)Ljava/lang/String;",
-      garbageValue = "-1992895132"
-   )
-   static String method2800(String var0, Widget var1) {
-      if(var0.indexOf("%") != -1) {
-         int var2;
-         for(var2 = 1; var2 <= 5; ++var2) {
-            while(true) {
-               int var3 = var0.indexOf("%" + var2);
-               if(var3 == -1) {
-                  break;
-               }
-
-               var0 = var0.substring(0, var3) + Item.method880(class159.method3096(var1, var2 - 1)) + var0.substring(var3 + 2);
-            }
-         }
-
-         while(true) {
-            var2 = var0.indexOf("%dns");
-            if(var2 == -1) {
-               break;
-            }
-
-            String var4 = "";
-            if(null != ChatMessages.field934) {
-               var4 = class137.method2528(ChatMessages.field934.field1667);
-               if(ChatMessages.field934.field1672 != null) {
-                  var4 = (String)ChatMessages.field934.field1672;
-               }
-            }
-
-            var0 = var0.substring(0, var2) + var4 + var0.substring(var2 + 4);
-         }
-      }
-
-      return var0;
-   }
-
-   @ObfuscatedName("bi")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "1802939812"
-   )
-   static final boolean method2801(int var0) {
-      if(var0 < 0) {
-         return false;
-      } else {
-         int var1 = Client.menuTypes[var0];
-         if(var1 >= 2000) {
-            var1 -= 2000;
-         }
-
-         return var1 == 1007;
-      }
    }
 }

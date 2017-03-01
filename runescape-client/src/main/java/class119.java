@@ -3,81 +3,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("do")
+@ObfuscatedName("dv")
 public abstract class class119 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("pn")
    @ObfuscatedGetter(
-      intValue = 1243662583
+      intValue = 552888647
    )
-   public int field1852;
-   @ObfuscatedName("h")
+   static int field1855;
+   @ObfuscatedName("v")
    @ObfuscatedGetter(
-      intValue = 1810138857
+      intValue = 1088583455
    )
-   public int field1854;
-   @ObfuscatedName("p")
+   public int field1856;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -606318035
-   )
-   public int field1855;
-   @ObfuscatedName("de")
-   @Export("mapRegions")
-   static int[] mapRegions;
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = -1512401891
+      intValue = 2055945037
    )
    public int field1857;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -584570065
+   )
+   public int field1858;
+   @ObfuscatedName("mq")
+   @ObfuscatedGetter(
+      intValue = 578203007
+   )
+   @Export("clanChatCount")
+   static int clanChatCount;
+   @ObfuscatedName("g")
+   @ObfuscatedGetter(
+      intValue = -2041675689
+   )
+   public int field1861;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(IIILCollisionData;I)Z",
-      garbageValue = "245014910"
+      garbageValue = "1832344439"
    )
-   protected abstract boolean vmethod2339(int var1, int var2, int var3, CollisionData var4);
+   public abstract boolean vmethod2386(int var1, int var2, int var3, CollisionData var4);
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;B)I",
-      garbageValue = "-121"
+      signature = "(IIII)I",
+      garbageValue = "-1228676047"
    )
-   public static int method2340(String var0) {
-      return var0.length() + 1;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "([Lclass158;II)Lclass158;",
-      garbageValue = "-1697923377"
-   )
-   public static class158 method2341(class158[] var0, int var1) {
-      class158[] var2 = var0;
-
-      for(int var3 = 0; var3 < var2.length; ++var3) {
-         class158 var4 = var2[var3];
-         if(var1 == var4.vmethod4101()) {
-            return var4;
-         }
-      }
-
-      return null;
-   }
-
-   @ObfuscatedName("dq")
-   @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;B)[Ljava/lang/String;",
-      garbageValue = "-8"
-   )
-   static final String[] method2343(String[] var0) {
-      String[] var1 = new String[5];
-
-      for(int var2 = 0; var2 < 5; ++var2) {
-         var1[var2] = var2 + ": ";
-         if(var0 != null && var0[var2] != null) {
-            var1[var2] = var1[var2] + var0[var2];
-         }
-      }
-
-      return var1;
+   public static int method2389(int var0, int var1, int var2) {
+      var2 &= 3;
+      return var2 == 0?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
    }
 }

@@ -2,166 +2,145 @@ import java.awt.Component;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dy")
+@ObfuscatedName("df")
 public abstract class class112 {
    @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(ILclass48;ZI)I",
-      garbageValue = "1798624574"
-   )
-   static int method2145(int var0, Script var1, boolean var2) {
-      if(var0 == 6200) {
-         class103.scriptIntStackSize -= 2;
-         Client.field385 = (short)class32.scriptIntStack[class103.scriptIntStackSize];
-         if(Client.field385 <= 0) {
-            Client.field385 = 256;
-         }
-
-         Client.field560 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 1];
-         if(Client.field560 <= 0) {
-            Client.field560 = 205;
-         }
-
-         return 1;
-      } else if(var0 == 6201) {
-         class103.scriptIntStackSize -= 2;
-         Client.field561 = (short)class32.scriptIntStack[class103.scriptIntStackSize];
-         if(Client.field561 <= 0) {
-            Client.field561 = 256;
-         }
-
-         Client.field562 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 1];
-         if(Client.field562 <= 0) {
-            Client.field562 = 320;
-         }
-
-         return 1;
-      } else if(var0 == 6202) {
-         class103.scriptIntStackSize -= 4;
-         Client.field378 = (short)class32.scriptIntStack[class103.scriptIntStackSize];
-         if(Client.field378 <= 0) {
-            Client.field378 = 1;
-         }
-
-         Client.field482 = (short)class32.scriptIntStack[1 + class103.scriptIntStackSize];
-         if(Client.field482 <= 0) {
-            Client.field482 = 32767;
-         } else if(Client.field482 < Client.field378) {
-            Client.field482 = Client.field378;
-         }
-
-         Client.field565 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 2];
-         if(Client.field565 <= 0) {
-            Client.field565 = 1;
-         }
-
-         Client.field401 = (short)class32.scriptIntStack[class103.scriptIntStackSize + 3];
-         if(Client.field401 <= 0) {
-            Client.field401 = 32767;
-         } else if(Client.field401 < Client.field565) {
-            Client.field401 = Client.field565;
-         }
-
-         return 1;
-      } else if(var0 == 6203) {
-         if(null != Client.field477) {
-            FileOnDisk.method1471(0, 0, Client.field477.width, Client.field477.height, false);
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.camera2;
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.camera3;
-         } else {
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
-            class32.scriptIntStack[++class103.scriptIntStackSize - 1] = -1;
-         }
-
-         return 1;
-      } else if(var0 == 6204) {
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field561;
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field562;
-         return 1;
-      } else if(var0 == 6205) {
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field385;
-         class32.scriptIntStack[++class103.scriptIntStackSize - 1] = Client.field560;
-         return 1;
-      } else {
-         return 2;
-      }
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
       signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-2048667501"
+      garbageValue = "-684605091"
    )
-   public abstract void vmethod2146(Component var1);
+   public abstract void vmethod2172(Component var1);
 
-   @ObfuscatedName("d")
-   static final void method2147(long var0) {
-      try {
-         Thread.sleep(var0);
-      } catch (InterruptedException var3) {
-         ;
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "0"
+   )
+   public abstract void vmethod2174(Component var1);
+
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-237742120"
+   )
+   static final void method2179() {
+      if(FaceNormal.field1570 != null) {
+         FaceNormal.field1570.method1123();
+      }
+
+      if(class36.field772 != null) {
+         class36.field772.method1123();
       }
 
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("k")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-997560499"
+      signature = "([BZI)Ljava/lang/Object;",
+      garbageValue = "-1850715236"
    )
-   public abstract void vmethod2149(Component var1);
-
-   @ObfuscatedName("h")
-   @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2129195278"
-   )
-   public abstract int vmethod2153();
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(I)Lclass112;",
-      garbageValue = "-252210954"
-   )
-   public static class112 method2158() {
-      try {
-         return new class106();
-      } catch (Throwable var1) {
+   public static Object method2183(byte[] var0, boolean var1) {
+      if(null == var0) {
          return null;
+      } else {
+         if(var0.length > 136 && !class156.field2111) {
+            try {
+               class151 var2 = new class151();
+               var2.vmethod3112(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class156.field2111 = true;
+            }
+         }
+
+         return var0;
       }
    }
 
-   @ObfuscatedName("d")
-   public static String method2159(long var0) {
-      if(var0 > 0L && var0 < 6582952005840035281L) {
-         if(var0 % 37L == 0L) {
-            return null;
-         } else {
-            int var2 = 0;
+   @ObfuscatedName("cr")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "192444946"
+   )
+   static final String method2184(int var0) {
+      return var0 < 999999999?Integer.toString(var0):"*";
+   }
 
-            for(long var3 = var0; var3 != 0L; var3 /= 37L) {
-               ++var2;
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-78"
+   )
+   public abstract int vmethod2185();
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "([BI)V",
+      garbageValue = "-1002898716"
+   )
+   public static void method2186(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      var1.offset = var0.length - 2;
+      class225.field3233 = var1.readUnsignedShort();
+      class225.field3236 = new int[class225.field3233];
+      class145.field2013 = new int[class225.field3233];
+      class186.field2775 = new int[class225.field3233];
+      class225.field3235 = new int[class225.field3233];
+      Ignore.field211 = new byte[class225.field3233][];
+      var1.offset = var0.length - 7 - class225.field3233 * 8;
+      class225.field3234 = var1.readUnsignedShort();
+      class0.field2 = var1.readUnsignedShort();
+      int var2 = (var1.readUnsignedByte() & 255) + 1;
+
+      int var3;
+      for(var3 = 0; var3 < class225.field3233; ++var3) {
+         class225.field3236[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3233; ++var3) {
+         class145.field2013[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3233; ++var3) {
+         class186.field2775[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3233; ++var3) {
+         class225.field3235[var3] = var1.readUnsignedShort();
+      }
+
+      var1.offset = var0.length - 7 - class225.field3233 * 8 - 3 * (var2 - 1);
+      class225.field3237 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         class225.field3237[var3] = var1.read24BitInt();
+         if(class225.field3237[var3] == 0) {
+            class225.field3237[var3] = 1;
+         }
+      }
+
+      var1.offset = 0;
+
+      for(var3 = 0; var3 < class225.field3233; ++var3) {
+         int var4 = class186.field2775[var3];
+         int var5 = class225.field3235[var3];
+         int var6 = var5 * var4;
+         byte[] var7 = new byte[var6];
+         Ignore.field211[var3] = var7;
+         int var8 = var1.readUnsignedByte();
+         int var9;
+         if(var8 == 0) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.readByte();
             }
-
-            StringBuilder var5;
-            char var8;
-            for(var5 = new StringBuilder(var2); var0 != 0L; var5.append(var8)) {
-               long var6 = var0;
-               var0 /= 37L;
-               var8 = class205.field3086[(int)(var6 - 37L * var0)];
-               if(var8 == 95) {
-                  int var9 = var5.length() - 1;
-                  var5.setCharAt(var9, Character.toUpperCase(var5.charAt(var9)));
-                  var8 = 160;
+         } else if(var8 == 1) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var4 * var10 + var9] = var1.readByte();
                }
             }
-
-            var5.reverse();
-            var5.setCharAt(0, Character.toUpperCase(var5.charAt(0)));
-            return var5.toString();
          }
-      } else {
-         return null;
       }
+
    }
 }

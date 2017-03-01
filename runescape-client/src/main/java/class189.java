@@ -1,85 +1,60 @@
-import java.net.URL;
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gz")
+@ObfuscatedName("ga")
 public class class189 extends CacheableNode {
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
+   public boolean field2787 = false;
+   @ObfuscatedName("n")
+   public static NodeCache field2788 = new NodeCache(64);
+   @ObfuscatedName("a")
+   static ModIcon[] field2789;
+   @ObfuscatedName("fl")
+   @ObfuscatedGetter(
+      intValue = 721412841
+   )
+   static int field2791;
+   @ObfuscatedName("x")
    public static class182 field2793;
-   @ObfuscatedName("h")
-   public boolean field2794 = false;
-   @ObfuscatedName("ev")
-   static SpritePixels field2795;
-   @ObfuscatedName("d")
-   static NodeCache field2796 = new NodeCache(64);
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "1685074494"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-176863128"
    )
-   void method3459(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field2794 = true;
-      }
-
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "106"
-   )
-   void method3460(Buffer var1) {
+   public void method3523(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3459(var1, var2);
+         this.method3525(var1, var2);
       }
    }
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "110"
+      signature = "(LBuffer;IB)V",
+      garbageValue = "31"
    )
-   @Export("loadWorlds")
-   static boolean loadWorlds() {
-      try {
-         if(null == Ignore.worldServersDownload) {
-            Ignore.worldServersDownload = new class26(class33.field775, new URL(class3.field34));
-         } else {
-            byte[] var0 = Ignore.worldServersDownload.method610();
-            if(null != var0) {
-               Buffer var1 = new Buffer(var0);
-               World.field703 = var1.readUnsignedShort();
-               World.worldList = new World[World.field703];
-
-               World var3;
-               for(int var2 = 0; var2 < World.field703; var3.index = var2++) {
-                  var3 = World.worldList[var2] = new World();
-                  var3.id = var1.readUnsignedShort();
-                  var3.mask = var1.readInt();
-                  var3.address = var1.readString();
-                  var3.activity = var1.readString();
-                  var3.location = var1.readUnsignedByte();
-                  var3.playerCount = var1.readShort();
-               }
-
-               class5.method66(World.worldList, 0, World.worldList.length - 1, World.field698, World.field697);
-               Ignore.worldServersDownload = null;
-               return true;
-            }
-         }
-      } catch (Exception var4) {
-         var4.printStackTrace();
-         Ignore.worldServersDownload = null;
+   void method3525(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field2787 = true;
       }
 
-      return false;
+   }
+
+   @ObfuscatedName("o")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "65536"
+   )
+   static final int method3526(int var0, int var1) {
+      int var2 = class88.method1969(var0 - 1, var1 - 1) + class88.method1969(1 + var0, var1 - 1) + class88.method1969(var0 - 1, 1 + var1) + class88.method1969(var0 + 1, 1 + var1);
+      int var3 = class88.method1969(var0 - 1, var1) + class88.method1969(1 + var0, var1) + class88.method1969(var0, var1 - 1) + class88.method1969(var0, var1 + 1);
+      int var4 = class88.method1969(var0, var1);
+      return var4 / 4 + var3 / 8 + var2 / 16;
    }
 }

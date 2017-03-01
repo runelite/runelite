@@ -7,55 +7,58 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("he")
+@ObfuscatedName("hr")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("d")
-   @Export("pixels")
-   public int[] pixels;
-   @ObfuscatedName("p")
+   @ObfuscatedName("y")
+   @Export("image")
+   public Image image;
+   @ObfuscatedName("g")
    @ObfuscatedGetter(
-      intValue = -406521835
-   )
-   @Export("height")
-   int height;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1623651349
+      intValue = 366257329
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("j")
-   @Export("image")
-   public Image image;
+   @ObfuscatedName("bt")
+   @Export("host")
+   static String host;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 980167831
+   )
+   @Export("height")
+   int height;
+   @ObfuscatedName("n")
+   @Export("pixels")
+   public int[] pixels;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-1372728796"
+      garbageValue = "73630336"
    )
-   abstract void init(int var1, int var2, Component var3);
+   public abstract void init(int var1, int var2, Component var3);
 
-   @ObfuscatedName("y")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "-529215329"
+      garbageValue = "1396617588"
    )
-   public final void method4085() {
+   public final void method4098() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
    }
 
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "-1953981379"
-   )
-   public abstract void draw(Graphics var1, int var2, int var3);
-
-   @ObfuscatedName("h")
+   @ObfuscatedName("g")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "870035480"
+      garbageValue = "891005987"
    )
    public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ljava/awt/Graphics;III)V",
+      garbageValue = "-656201964"
+   )
+   public abstract void draw(Graphics var1, int var2, int var3);
 }

@@ -5,44 +5,44 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("du")
+@ObfuscatedName("da")
 public class class106 extends class112 implements MouseWheelListener {
-   @ObfuscatedName("q")
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1413603921
+      intValue = 1418265815
    )
-   int field1730 = 0;
+   int field1731 = 0;
 
-   @ObfuscatedName("q")
+   @ObfuscatedName("g")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "-78"
+   )
+   public synchronized int vmethod2185() {
+      int var1 = this.field1731;
+      this.field1731 = 0;
+      return var1;
+   }
+
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-997560499"
+      garbageValue = "-684605091"
    )
-   public void vmethod2149(Component var1) {
+   public void vmethod2172(Component var1) {
       var1.addMouseWheelListener(this);
    }
 
    public synchronized void mouseWheelMoved(MouseWheelEvent var1) {
-      this.field1730 += var1.getWheelRotation();
+      this.field1731 += var1.getWheelRotation();
    }
 
-   @ObfuscatedName("h")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "-2129195278"
+      signature = "(Ljava/awt/Component;B)V",
+      garbageValue = "0"
    )
-   public synchronized int vmethod2153() {
-      int var1 = this.field1730;
-      this.field1730 = 0;
-      return var1;
-   }
-
-   @ObfuscatedName("d")
-   @ObfuscatedSignature(
-      signature = "(Ljava/awt/Component;I)V",
-      garbageValue = "-2048667501"
-   )
-   public void vmethod2146(Component var1) {
+   public void vmethod2174(Component var1) {
       var1.removeMouseWheelListener(this);
    }
 }

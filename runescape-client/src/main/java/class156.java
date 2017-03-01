@@ -1,94 +1,91 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fq")
+@ObfuscatedName("fu")
 public abstract class class156 {
-   @ObfuscatedName("d")
-   static boolean field2120 = false;
+   @ObfuscatedName("n")
+   static boolean field2111 = false;
 
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(B)[B",
-      garbageValue = "-26"
-   )
-   abstract byte[] vmethod3042();
-
-   @ObfuscatedName("d")
+   @ObfuscatedName("n")
    @ObfuscatedSignature(
       signature = "([BI)V",
-      garbageValue = "-1187628193"
+      garbageValue = "306247809"
    )
-   abstract void vmethod3045(byte[] var1);
+   abstract void vmethod3112(byte[] var1);
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)[B",
+      garbageValue = "89"
+   )
+   abstract byte[] vmethod3115();
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "8"
+   )
+   public static boolean method3121() {
+      try {
+         if(class138.field1921 == 2) {
+            if(DecorativeObject.field1614 == null) {
+               DecorativeObject.field1614 = class144.method2791(class138.field1924, class168.field2193, class138.field1922);
+               if(DecorativeObject.field1614 == null) {
+                  return false;
+               }
+            }
+
+            if(class30.field698 == null) {
+               class30.field698 = new class60(class138.field1916, class138.field1917);
+            }
+
+            if(class138.field1919.method2648(DecorativeObject.field1614, class138.field1918, class30.field698, 22050)) {
+               class138.field1919.method2578();
+               class138.field1919.method2575(class101.field1661);
+               class138.field1919.method2580(DecorativeObject.field1614, class138.field1923);
+               class138.field1921 = 0;
+               DecorativeObject.field1614 = null;
+               class30.field698 = null;
+               class138.field1924 = null;
+               return true;
+            }
+         }
+      } catch (Exception var1) {
+         var1.printStackTrace();
+         class138.field1919.method2672();
+         class138.field1921 = 0;
+         DecorativeObject.field1614 = null;
+         class30.field698 = null;
+         class138.field1924 = null;
+      }
+
+      return false;
+   }
 
    @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "(LGameEngine;I)V",
-      garbageValue = "956467202"
+      signature = "(IIB)I",
+      garbageValue = "-3"
    )
-   static void method3053(GameEngine var0) {
-      if(class115.field1804 == 1 || !class15.field173 && class115.field1804 == 4) {
-         int var1 = 280 + class41.field839;
-         if(class115.field1796 >= var1 && class115.field1796 <= 14 + var1 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(0, 0);
-            return;
-         }
+   public static int method3126(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var0 + var2) / var1 - var2;
+   }
 
-         if(class115.field1796 >= 15 + var1 && class115.field1796 <= 80 + var1 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(0, 1);
-            return;
-         }
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;I)Ljava/lang/String;",
+      garbageValue = "-730559286"
+   )
+   public static String method3128(CharSequence var0) {
+      int var2 = var0.length();
+      char[] var3 = new char[var2];
 
-         int var2 = class41.field839 + 390;
-         if(class115.field1796 >= var2 && class115.field1796 <= var2 + 14 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(1, 0);
-            return;
-         }
-
-         if(class115.field1796 >= var2 + 15 && class115.field1796 <= 80 + var2 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(1, 1);
-            return;
-         }
-
-         int var3 = 500 + class41.field839;
-         if(class115.field1796 >= var3 && class115.field1796 <= var3 + 14 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(2, 0);
-            return;
-         }
-
-         if(class115.field1796 >= var3 + 15 && class115.field1796 <= 80 + var3 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(2, 1);
-            return;
-         }
-
-         int var4 = 610 + class41.field839;
-         if(class115.field1796 >= var4 && class115.field1796 <= 14 + var4 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(3, 0);
-            return;
-         }
-
-         if(class115.field1796 >= 15 + var4 && class115.field1796 <= 80 + var4 && class115.field1806 >= 4 && class115.field1806 <= 18) {
-            class7.method93(3, 1);
-            return;
-         }
-
-         if(class115.field1796 >= 708 + class41.field839 && class115.field1806 >= 4 && class115.field1796 <= 50 + 708 + class41.field839 && class115.field1806 <= 20) {
-            class41.worldSelectShown = false;
-            class5.field60.method4171(class41.field839, 0);
-            XGrandExchangeOffer.field57.method4171(class41.field839 + 382, 0);
-            XGrandExchangeOffer.field46.method4122(class41.field839 + 382 - XGrandExchangeOffer.field46.originalWidth / 2, 18);
-            return;
-         }
-
-         if(class41.field868 != -1) {
-            World var5 = World.worldList[class41.field868];
-            Spotanim.method3482(var5);
-            class41.worldSelectShown = false;
-            class5.field60.method4171(class41.field839, 0);
-            XGrandExchangeOffer.field57.method4171(class41.field839 + 382, 0);
-            XGrandExchangeOffer.field46.method4122(class41.field839 + 382 - XGrandExchangeOffer.field46.originalWidth / 2, 18);
-            return;
-         }
+      for(int var4 = 0; var4 < var2; ++var4) {
+         var3[var4] = 42;
       }
 
+      String var1 = new String(var3);
+      return var1;
    }
 }
