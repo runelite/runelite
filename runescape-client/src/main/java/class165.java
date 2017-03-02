@@ -7,7 +7,8 @@ public class class165 {
    @ObfuscatedName("b")
    public static int[] field2153 = new int[32];
    @ObfuscatedName("l")
-   public static int[] field2154;
+   @Export("settings")
+   public static int[] settings;
    @ObfuscatedName("i")
    @Export("widgetSettings")
    public static int[] widgetSettings;
@@ -20,7 +21,7 @@ public class class165 {
          var0 += var0;
       }
 
-      field2154 = new int[2000];
+      settings = new int[2000];
       widgetSettings = new int[2000];
    }
 

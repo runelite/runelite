@@ -391,7 +391,7 @@ public class class137 {
                   for(var0 = 0; var0 < class187.field2768; ++var0) {
                      class187 var17 = class110.method2137(var0);
                      if(null != var17) {
-                        class165.field2154[var0] = 0;
+                        class165.settings[var0] = 0;
                         class165.widgetSettings[var0] = 0;
                      }
                   }
