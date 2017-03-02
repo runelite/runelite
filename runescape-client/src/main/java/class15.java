@@ -422,7 +422,7 @@ public class class15 {
                      if(Client.packetOpcode == 228) {
                         var61 = Client.field329.method3015();
                         var4 = Client.field329.method3057();
-                        class165.field2154[var4] = var61;
+                        class165.settings[var4] = var61;
                         if(class165.widgetSettings[var4] != var61) {
                            class165.widgetSettings[var4] = var61;
                         }
@@ -685,7 +685,7 @@ public class class15 {
                      if(Client.packetOpcode == 10) {
                         byte var87 = Client.field329.method2841();
                         var4 = Client.field329.method2894();
-                        class165.field2154[var4] = var87;
+                        class165.settings[var4] = var87;
                         if(class165.widgetSettings[var4] != var87) {
                            class165.widgetSettings[var4] = var87;
                         }
@@ -864,8 +864,8 @@ public class class15 {
 
                      if(Client.packetOpcode == 171) {
                         for(var61 = 0; var61 < class165.widgetSettings.length; ++var61) {
-                           if(class165.widgetSettings[var61] != class165.field2154[var61]) {
-                              class165.widgetSettings[var61] = class165.field2154[var61];
+                           if(class165.widgetSettings[var61] != class165.settings[var61]) {
+                              class165.widgetSettings[var61] = class165.settings[var61];
                               CombatInfoListHolder.method777(var61);
                               Client.field471[++Client.field569 - 1 & 31] = var61;
                            }
@@ -1077,7 +1077,7 @@ public class class15 {
                         for(var61 = 0; var61 < class187.field2768; ++var61) {
                            class187 var101 = class110.method2137(var61);
                            if(null != var101) {
-                              class165.field2154[var61] = 0;
+                              class165.settings[var61] = 0;
                               class165.widgetSettings[var61] = 0;
                            }
                         }
