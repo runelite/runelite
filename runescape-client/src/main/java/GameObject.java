@@ -4,158 +4,176 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ce")
+@ObfuscatedName("cg")
 @Implements("GameObject")
 public final class GameObject {
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1469480861
-   )
-   @Export("relativeX")
-   int relativeX;
-   @ObfuscatedName("y")
-   @Export("renderable")
-   public Renderable renderable;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = 658574939
-   )
-   @Export("x")
-   int x;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = -1149067973
-   )
-   @Export("y")
-   int y;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1230146569
-   )
-   @Export("plane")
-   int plane;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -92870509
-   )
-   @Export("orientation")
-   int orientation;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = -2146734301
-   )
-   int field1623;
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -535631025
-   )
-   @Export("offsetX")
-   int offsetX;
    @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -143687021
+      intValue = -1839909795
    )
    @Export("relativeY")
    int relativeY;
-   @ObfuscatedName("i")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 1311230121
-   )
-   @Export("offsetY")
-   int offsetY;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = -247070903
-   )
-   int field1628;
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -1474643199
-   )
-   @Export("hash")
-   public int hash = 0;
-   @ObfuscatedName("o")
-   @ObfuscatedGetter(
-      intValue = 105178171
-   )
-   @Export("flags")
-   int flags = 0;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -351413359
+      intValue = -47527831
    )
    @Export("height")
    int height;
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;I)I",
-      garbageValue = "1294833617"
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -143503245
    )
-   public static int method2019(CharSequence var0) {
-      return class31.method718(var0, 10, true);
-   }
-
+   @Export("x")
+   int x;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = 885586555
+   )
+   @Export("y")
+   int y;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1584812749
+   )
+   @Export("orientation")
+   int orientation;
+   @ObfuscatedName("k")
+   @Export("renderable")
+   public Renderable renderable;
    @ObfuscatedName("f")
-   @ObfuscatedSignature(
-      signature = "(IB)LFrames;",
-      garbageValue = "69"
+   @ObfuscatedGetter(
+      intValue = 1330016003
    )
-   @Export("getFrames")
-   static Frames getFrames(int var0) {
-      Frames var1 = (Frames)Sequence.field3064.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         class182 var3 = class203.field3085;
-         class182 var4 = Sequence.field3059;
-         boolean var5 = true;
-         int[] var6 = var3.method3364(var0);
+   @Export("offsetX")
+   int offsetX;
+   @ObfuscatedName("b")
+   @ObfuscatedGetter(
+      intValue = 1404469087
+   )
+   @Export("plane")
+   int plane;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -675253863
+   )
+   @Export("offsetY")
+   int offsetY;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 2007017777
+   )
+   int field1613;
+   @ObfuscatedName("z")
+   @ObfuscatedGetter(
+      intValue = 1245272705
+   )
+   int field1614;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1707721245
+   )
+   @Export("hash")
+   public int hash = 0;
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = 1063559305
+   )
+   @Export("flags")
+   int flags = 0;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 1857610387
+   )
+   @Export("relativeX")
+   int relativeX;
+   @ObfuscatedName("j")
+   static class20 field1621;
+   @ObfuscatedName("qh")
+   protected static java.awt.Font field1622;
 
-         for(int var7 = 0; var7 < var6.length; ++var7) {
-            byte[] var8 = var3.method3361(var0, var6[var7]);
-            if(null == var8) {
-               var5 = false;
-            } else {
-               int var9 = (var8[0] & 255) << 8 | var8[1] & 255;
-               byte[] var10 = var4.method3361(var9, 0);
-               if(var10 == null) {
-                  var5 = false;
-               }
-            }
-         }
-
-         Frames var2;
-         if(!var5) {
-            var2 = null;
-         } else {
-            try {
-               var2 = new Frames(var3, var4, var0, false);
-            } catch (Exception var12) {
-               var2 = null;
-            }
-         }
-
-         if(var2 != null) {
-            Sequence.field3064.put(var2, (long)var0);
-         }
-
-         return var2;
-      }
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;Lclass182;Lclass139;B)Z",
+      garbageValue = "-87"
+   )
+   public static boolean method1980(class182 var0, class182 var1, class182 var2, class139 var3) {
+      class138.field1916 = var0;
+      class138.field1913 = var1;
+      class138.field1914 = var2;
+      class39.field800 = var3;
+      return true;
    }
 
-   @ObfuscatedName("z")
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1623311979"
+      signature = "(II)V",
+      garbageValue = "-2133680974"
    )
-   static final void method2021() {
-      if(Client.field342 > 0) {
-         class33.method773();
-      } else {
-         World.setGameState(40);
-         class22.field236 = XGrandExchangeOffer.field30;
-         XGrandExchangeOffer.field30 = null;
+   @Export("setGameState")
+   static void setGameState(int var0) {
+      if(var0 != Client.gameState) {
+         if(Client.gameState == 0) {
+            class22.field233 = null;
+            field1622 = null;
+            class49.field944 = null;
+         }
+
+         if(var0 == 20 || var0 == 40 || var0 == 45) {
+            Client.field317 = 0;
+            Client.field318 = 0;
+            Client.field319 = 0;
+         }
+
+         if(var0 != 20 && var0 != 40 && class152.field2056 != null) {
+            class152.field2056.method2109();
+            class152.field2056 = null;
+         }
+
+         if(Client.gameState == 25) {
+            Client.field344 = 0;
+            Client.field340 = 0;
+            Client.field395 = 1;
+            Client.field532 = 0;
+            Client.field343 = 1;
+         }
+
+         if(var0 != 5 && var0 != 10) {
+            if(var0 == 20) {
+               class36.method799(class0.canvas, WallObject.field1545, class114.field1790, true, Client.gameState == 11?4:0);
+            } else if(var0 == 11) {
+               class36.method799(class0.canvas, WallObject.field1545, class114.field1790, false, 4);
+            } else if(class41.field819) {
+               class41.field818 = null;
+               class41.field816 = null;
+               class6.field53 = null;
+               class41.field820 = null;
+               class41.field846 = null;
+               XGrandExchangeOffer.field43 = null;
+               class7.field64 = null;
+               class41.field822 = null;
+               class41.field837 = null;
+               class25.field575 = null;
+               class16.field172 = null;
+               class116.field1817 = null;
+               class179.field2691 = null;
+               class38.field795 = null;
+               class159.field2122 = null;
+               class72.field1173 = null;
+               class36.field761 = null;
+               class150.field2037 = null;
+               Buffer.field2088 = null;
+               class13.field130 = null;
+               class41.field828 = null;
+               class5.field51 = null;
+               class33.method765(2);
+               class30.method695(true);
+               class41.field819 = false;
+            }
+         } else {
+            class36.method799(class0.canvas, WallObject.field1545, class114.field1790, true, 0);
+         }
+
+         Client.gameState = var0;
       }
    }
 }

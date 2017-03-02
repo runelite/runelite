@@ -4,81 +4,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("av")
+@ObfuscatedName("ad")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("n")
+   @ObfuscatedName("qn")
+   protected static java.awt.Frame field881;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -695882767
-   )
-   @Export("quantity")
-   int quantity;
-   @ObfuscatedName("oe")
-   @ObfuscatedGetter(
-      intValue = 461013193
-   )
-   static int field893;
-   @ObfuscatedName("m")
-   @Export("isMembersWorld")
-   public static boolean isMembersWorld;
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 847674409
+      intValue = 1233123935
    )
    @Export("id")
    int id;
-
-   @ObfuscatedName("sk")
-   @ObfuscatedSignature(
-      signature = "(S)V",
-      garbageValue = "-12924"
+   @ObfuscatedName("f")
+   static byte[][][] field884;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1162858851
    )
-   protected static final void method877() {
-      class63.field1108 = null;
-      TextureProvider.field1214 = null;
-      CombatInfo1.field663 = null;
+   @Export("quantity")
+   int quantity;
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)LModel;",
+      garbageValue = "-8"
+   )
+   protected final Model getModel() {
+      return class168.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("bo")
+   @ObfuscatedName("cn")
    @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "-1"
+      signature = "(I)V",
+      garbageValue = "-137570764"
    )
-   static final void method880(int var0, int var1, int var2, int var3) {
-      for(int var4 = 0; var4 < Client.field468; ++var4) {
-         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var2 + var0 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var1 + var3) {
-            Client.field494[var4] = true;
+   static void method871() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(class149.method2824(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
+                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[1 + var1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+               }
+            }
+
+            --Client.menuOptionCount;
          }
       }
 
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(B)LModel;",
-      garbageValue = "1"
-   )
-   protected final Model getModel() {
-      return ChatLineBuffer.getItemDefinition(this.id).getModel(this.quantity);
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-678028452"
-   )
-   static void method882() {
-      class202.underlayIds = null;
-      class10.overlayIds = null;
-      class3.overlayPaths = null;
-      class6.overlayRotations = null;
-      class159.field2122 = null;
-      class10.field83 = null;
-      class22.field230 = null;
-      class10.field89 = null;
-      class7.field56 = null;
-      class65.field1127 = null;
-      class181.field2701 = null;
-      class7.field61 = null;
    }
 }

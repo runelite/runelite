@@ -4,203 +4,161 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("al")
+@ObfuscatedName("af")
 @Implements("World")
 public class World {
-   @ObfuscatedName("s")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -2114649381
+      intValue = 1647253093
    )
-   @Export("id")
-   int id;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1183276711
-   )
-   static int field675 = 0;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -1519764421
-   )
-   static int field676 = 0;
-   @ObfuscatedName("a")
-   static int[] field678 = new int[]{0, 1, 2, 3};
+   @Export("scriptStringStackSize")
+   static int scriptStringStackSize;
    @ObfuscatedName("k")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("z")
    @ObfuscatedGetter(
-      intValue = 1219448357
+      intValue = 1584208063
    )
    @Export("mask")
    int mask;
-   @ObfuscatedName("f")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1118134913
+      intValue = -1363872097
+   )
+   static int field676 = 0;
+   @ObfuscatedName("a")
+   static int[] field677 = new int[]{0, 1, 2, 3};
+   @ObfuscatedName("f")
+   static int[] field678 = new int[]{1, 1, 1, 1};
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = 1209451173
+   )
+   @Export("id")
+   int id;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = 840728307
+   )
+   static int field681 = 0;
+   @ObfuscatedName("p")
+   @ObfuscatedGetter(
+      intValue = 1428931535
    )
    @Export("playerCount")
    int playerCount;
-   @ObfuscatedName("o")
+   @ObfuscatedName("s")
    @Export("address")
    String address;
-   @ObfuscatedName("q")
+   @ObfuscatedName("o")
    @Export("activity")
    String activity;
-   @ObfuscatedName("m")
-   static int[] field684 = new int[]{1, 1, 1, 1};
-   @ObfuscatedName("b")
+   @ObfuscatedName("y")
    @ObfuscatedGetter(
-      intValue = 1726962403
-   )
-   @Export("index")
-   int index;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 803558811
+      intValue = 1315254429
    )
    @Export("location")
    int location;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = -116701293
+   )
+   @Export("index")
+   int index;
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-1211198616"
+      garbageValue = "-2111450081"
    )
-   boolean method649() {
-      return (2 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "967826713"
-   )
-   boolean method650() {
+   boolean method648() {
       return (4 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "996588442"
-   )
-   boolean method652() {
-      return (536870912 & this.mask) != 0;
    }
 
    @ObfuscatedName("w")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "719376653"
-   )
-   boolean method653() {
-      return (33554432 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("f")
-   @ObfuscatedSignature(
       signature = "(B)Z",
-      garbageValue = "6"
+      garbageValue = "-1"
    )
-   boolean method658() {
-      return (1 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(S)Z",
-      garbageValue = "7979"
-   )
-   boolean method681() {
+   boolean method652() {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-878256816"
+      signature = "(I)Z",
+      garbageValue = "-28440887"
    )
-   static void method693() {
-      for(class31 var0 = (class31)class31.field703.method2503(); null != var0; var0 = (class31)class31.field703.method2492()) {
-         if(null != var0.field709) {
-            Client.field572.method1000(var0.field709);
-            var0.field709 = null;
-         }
+   boolean method653() {
+      return (536870912 & this.mask) != 0;
+   }
 
-         if(null != var0.field701) {
-            Client.field572.method1000(var0.field701);
-            var0.field701 = null;
-         }
-      }
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "1914309758"
+   )
+   boolean method654() {
+      return (33554432 & this.mask) != 0;
+   }
 
-      class31.field703.method2507();
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "308815239"
+   )
+   boolean method664() {
+      return (1 & this.mask) != 0;
    }
 
    @ObfuscatedName("o")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1291033081"
+      signature = "(B)Z",
+      garbageValue = "93"
    )
-   @Export("setGameState")
-   static void setGameState(int var0) {
-      if(Client.gameState != var0) {
-         if(Client.gameState == 0) {
-            Item.method877();
-         }
+   boolean method665() {
+      return (2 & this.mask) != 0;
+   }
 
-         if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.field321 = 0;
-            Client.field322 = 0;
-            Client.field323 = 0;
-         }
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-40"
+   )
+   public static void method681() {
+      class39.field800.method2668();
+      class138.field1915 = 1;
+      class138.field1918 = null;
+   }
 
-         if(var0 != 20 && var0 != 40 && null != class22.field236) {
-            class22.field236.method2139();
-            class22.field236 = null;
-         }
-
-         if(Client.gameState == 25) {
-            Client.field348 = 0;
-            Client.field387 = 0;
-            Client.field474 = 1;
-            Client.field352 = 0;
-            Client.field508 = 1;
-         }
-
-         if(var0 != 5 && var0 != 10) {
-            if(var0 == 20) {
-               class10.method130(class110.canvas, Friend.field146, class39.field808, true, Client.gameState == 11?4:0);
-            } else if(var0 == 11) {
-               class10.method130(class110.canvas, Friend.field146, class39.field808, false, 4);
-            } else if(class41.field858) {
-               class41.field821 = null;
-               class41.field826 = null;
-               ScriptState.field95 = null;
-               class41.field824 = null;
-               class41.field825 = null;
-               class168.field2191 = null;
-               class189.field2789 = null;
-               FaceNormal.field1568 = null;
-               class41.field835 = null;
-               class157.field2114 = null;
-               Script.field960 = null;
-               class39.field806 = null;
-               class139.field1955 = null;
-               class41.field852 = null;
-               class41.field830 = null;
-               NPC.field765 = null;
-               PlayerComposition.field2178 = null;
-               class211.field3132 = null;
-               class185.field2768 = null;
-               XGrandExchangeOffer.field34 = null;
-               class47.field946 = null;
-               class30.field688 = null;
-               WallObject.method1982(2);
-               class172.method3331(true);
-               class41.field858 = false;
-            }
-         } else {
-            class10.method130(class110.canvas, Friend.field146, class39.field808, true, 0);
-         }
-
-         Client.gameState = var0;
+   @ObfuscatedName("y")
+   @ObfuscatedSignature(
+      signature = "(ILScript;ZB)I",
+      garbageValue = "0"
+   )
+   static int method682(int var0, Script var1, boolean var2) {
+      Widget var3 = class140.method2681(class32.field729[--class101.field1648]);
+      if(var0 == 2500) {
+         class32.field729[++class101.field1648 - 1] = var3.relativeX;
+         return 1;
+      } else if(var0 == 2501) {
+         class32.field729[++class101.field1648 - 1] = var3.relativeY;
+         return 1;
+      } else if(var0 == 2502) {
+         class32.field729[++class101.field1648 - 1] = var3.width;
+         return 1;
+      } else if(var0 == 2503) {
+         class32.field729[++class101.field1648 - 1] = var3.height;
+         return 1;
+      } else if(var0 == 2504) {
+         class32.field729[++class101.field1648 - 1] = var3.isHidden?1:0;
+         return 1;
+      } else if(var0 == 2505) {
+         class32.field729[++class101.field1648 - 1] = var3.parentId;
+         return 1;
+      } else {
+         return 2;
       }
    }
 }

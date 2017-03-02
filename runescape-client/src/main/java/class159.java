@@ -1,153 +1,90 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ff")
+@ObfuscatedName("fx")
 public final class class159 extends Buffer {
-   @ObfuscatedName("i")
-   static final int[] field2118 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
-   @ObfuscatedName("a")
-   class160 field2119;
-   @ObfuscatedName("s")
-   @ObfuscatedGetter(
-      intValue = 175665357
-   )
-   int field2120;
+   @ObfuscatedName("r")
+   static final int[] field2120 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
+   @ObfuscatedName("ee")
+   static SpritePixels[] field2121;
    @ObfuscatedName("q")
-   static int[][][] field2122;
-
-   @ObfuscatedName("ii")
-   @ObfuscatedSignature(
-      signature = "([II)V",
-      garbageValue = "443646663"
+   static int[] field2122;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1123083917
    )
-   public void method3143(int[] var1) {
-      this.field2119 = new class160(var1);
-   }
+   int field2123;
+   @ObfuscatedName("a")
+   class160 field2124;
 
-   @ObfuscatedName("ie")
+   @ObfuscatedName("iy")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "509157833"
+      signature = "(IB)I",
+      garbageValue = "0"
    )
-   public void method3144(int var1) {
-      super.payload[++super.offset - 1] = (byte)(var1 + this.field2119.method3174());
-   }
-
-   @ObfuscatedName("ig")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "622818194"
-   )
-   public int method3147(int var1) {
-      int var2 = this.field2120 >> 3;
-      int var3 = 8 - (this.field2120 & 7);
+   public int method3119(int var1) {
+      int var2 = this.field2123 >> 3;
+      int var3 = 8 - (this.field2123 & 7);
       int var4 = 0;
 
-      for(this.field2120 += var1; var1 > var3; var3 = 8) {
-         var4 += (super.payload[var2++] & field2118[var3]) << var1 - var3;
+      for(this.field2123 += var1; var1 > var3; var3 = 8) {
+         var4 += (super.payload[var2++] & field2120[var3]) << var1 - var3;
          var1 -= var3;
       }
 
       if(var3 == var1) {
-         var4 += super.payload[var2] & field2118[var3];
+         var4 += super.payload[var2] & field2120[var3];
       } else {
-         var4 += super.payload[var2] >> var3 - var1 & field2118[var1];
+         var4 += super.payload[var2] >> var3 - var1 & field2120[var1];
       }
 
       return var4;
    }
 
-   @ObfuscatedName("iw")
+   @ObfuscatedName("ig")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1235488241"
+      signature = "([II)V",
+      garbageValue = "1801812533"
    )
-   public void method3148() {
-      super.offset = (7 + this.field2120) / 8;
+   public void method3120(int[] var1) {
+      this.field2124 = new class160(var1);
    }
 
-   @ObfuscatedName("ib")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1674328634"
-   )
-   public int method3149(int var1) {
-      return 8 * var1 - this.field2120;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-1254506332"
-   )
-   public static int method3151(int var0, int var1) {
-      int var2;
-      for(var2 = 1; var1 > 1; var1 >>= 1) {
-         if((var1 & 1) != 0) {
-            var2 *= var0;
-         }
-
-         var0 *= var0;
-      }
-
-      if(var1 == 1) {
-         return var2 * var0;
-      } else {
-         return var2;
-      }
-   }
-
-   @ObfuscatedName("il")
+   @ObfuscatedName("ia")
    @ObfuscatedSignature(
       signature = "(I)I",
-      garbageValue = "1104764304"
+      garbageValue = "-1438855367"
    )
-   public int method3158() {
-      return super.payload[++super.offset - 1] - this.field2119.method3174() & 255;
+   public int method3122() {
+      return super.payload[++super.offset - 1] - this.field2124.method3157() & 255;
    }
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("io")
    @ObfuscatedSignature(
-      signature = "(II)LNPCComposition;",
-      garbageValue = "-1304028846"
+      signature = "(II)V",
+      garbageValue = "88359010"
    )
-   @Export("getNpcDefinition")
-   public static NPCComposition getNpcDefinition(int var0) {
-      NPCComposition var1 = (NPCComposition)NPCComposition.field3008.get((long)var0);
-      if(null != var1) {
-         return var1;
-      } else {
-         byte[] var2 = NPCComposition.field3036.getConfigData(9, var0);
-         var1 = new NPCComposition();
-         var1.id = var0;
-         if(var2 != null) {
-            var1.method3799(new Buffer(var2));
-         }
-
-         var1.method3778();
-         NPCComposition.field3008.put(var1, (long)var0);
-         return var1;
-      }
+   public void method3124(int var1) {
+      super.payload[++super.offset - 1] = (byte)(var1 + this.field2124.method3157());
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("if")
    @ObfuscatedSignature(
       signature = "(B)V",
-      garbageValue = "-20"
+      garbageValue = "18"
    )
-   public static void method3164() {
-      Varbit.field2857.reset();
+   public void method3125() {
+      super.offset = (7 + this.field2123) / 8;
    }
 
-   @ObfuscatedName("ir")
+   @ObfuscatedName("iu")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1147633526"
+      signature = "(II)I",
+      garbageValue = "-174636788"
    )
-   public void method3165() {
-      this.field2120 = super.offset * 8;
+   public int method3126(int var1) {
+      return var1 * 8 - this.field2123;
    }
 
    @ObfuscatedSignature(
@@ -158,54 +95,87 @@ public final class class159 extends Buffer {
       super(var1);
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("ik")
    @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;I)I",
-      garbageValue = "382953420"
+      signature = "(I)V",
+      garbageValue = "1900835135"
    )
-   static int method3166(class182 var0, class182 var1) {
-      int var2 = 0;
-      if(var0.method3372("title.jpg", "")) {
-         ++var2;
-      }
+   public void method3141() {
+      this.field2123 = super.offset * 8;
+   }
 
-      if(var1.method3372("logo", "")) {
-         ++var2;
-      }
+   @ObfuscatedName("t")
+   @ObfuscatedSignature(
+      signature = "(IB)Z",
+      garbageValue = "31"
+   )
+   public static boolean method3142(int var0) {
+      if(Widget.validInterfaces[var0]) {
+         return true;
+      } else if(!class215.field3175.method3378(var0)) {
+         return false;
+      } else {
+         int var1 = class215.field3175.method3398(var0);
+         if(var1 == 0) {
+            Widget.validInterfaces[var0] = true;
+            return true;
+         } else {
+            if(null == Widget.widgets[var0]) {
+               Widget.widgets[var0] = new Widget[var1];
+            }
 
-      if(var1.method3372("logo_deadman_mode", "")) {
-         ++var2;
-      }
+            for(int var2 = 0; var2 < var1; ++var2) {
+               if(null == Widget.widgets[var0][var2]) {
+                  byte[] var3 = class215.field3175.getConfigData(var0, var2);
+                  if(null != var3) {
+                     Widget.widgets[var0][var2] = new Widget();
+                     Widget.widgets[var0][var2].id = var2 + (var0 << 16);
+                     if(var3[0] == -1) {
+                        Widget.widgets[var0][var2].method3262(new Buffer(var3));
+                     } else {
+                        Widget.widgets[var0][var2].method3278(new Buffer(var3));
+                     }
+                  }
+               }
+            }
 
-      if(var1.method3372("titlebox", "")) {
-         ++var2;
+            Widget.validInterfaces[var0] = true;
+            return true;
+         }
       }
+   }
 
-      if(var1.method3372("titlebutton", "")) {
-         ++var2;
+   @ObfuscatedName("ab")
+   @ObfuscatedSignature(
+      signature = "([BI)[B",
+      garbageValue = "-1006352953"
+   )
+   static final byte[] method3143(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      int var2 = var1.readUnsignedByte();
+      int var3 = var1.readInt();
+      if(var3 >= 0 && (class182.field2722 == 0 || var3 <= class182.field2722)) {
+         if(var2 == 0) {
+            byte[] var6 = new byte[var3];
+            var1.method2867(var6, 0, var3);
+            return var6;
+         } else {
+            int var4 = var1.readInt();
+            if(var4 < 0 || class182.field2722 != 0 && var4 > class182.field2722) {
+               throw new RuntimeException();
+            } else {
+               byte[] var5 = new byte[var4];
+               if(var2 == 1) {
+                  class147.method2809(var5, var4, var0, var3, 9);
+               } else {
+                  class182.field2716.method2782(var1, var5);
+               }
+
+               return var5;
+            }
+         }
+      } else {
+         throw new RuntimeException();
       }
-
-      if(var1.method3372("runes", "")) {
-         ++var2;
-      }
-
-      if(var1.method3372("title_mute", "")) {
-         ++var2;
-      }
-
-      if(var1.method3373("options_radio_buttons,0")) {
-         ++var2;
-      }
-
-      if(var1.method3373("options_radio_buttons,2")) {
-         ++var2;
-      }
-
-      var1.method3372("sl_back", "");
-      var1.method3372("sl_flags", "");
-      var1.method3372("sl_arrows", "");
-      var1.method3372("sl_stars", "");
-      var1.method3372("sl_button", "");
-      return var2;
    }
 }

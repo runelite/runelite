@@ -1,24 +1,31 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("ho")
+@ObfuscatedName("he")
 public class class225 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = -1036084203
+      intValue = -1372746175
    )
-   static int field3233;
+   static int field3226;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1643613861
+   )
+   static int field3227;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1496401337
+   )
+   static int field3228;
+   @ObfuscatedName("t")
+   static int[] field3229;
    @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -1635133385
-   )
-   public static int field3234;
-   @ObfuscatedName("j")
-   public static int[] field3235;
-   @ObfuscatedName("v")
-   public static int[] field3236;
-   @ObfuscatedName("m")
-   public static int[] field3237;
+   static int[] field3230;
+   @ObfuscatedName("f")
+   static int[] field3231;
+   @ObfuscatedName("a")
+   static byte[][] field3232;
 
    class225() throws Throwable {
       throw new Error();

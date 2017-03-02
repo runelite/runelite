@@ -2,190 +2,283 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("an")
+@ObfuscatedName("at")
 public class class38 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = -1849370889
+      intValue = 1126981497
+   )
+   int field790;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 940009959
    )
    int field791;
-   @ObfuscatedName("g")
+   @ObfuscatedName("k")
    @ObfuscatedGetter(
-      intValue = -1202189999
+      intValue = -153130005
    )
    int field792;
-   @ObfuscatedName("y")
-   String field794;
+   @ObfuscatedName("t")
+   String field793;
+   @ObfuscatedName("bg")
+   static ModIcon field795;
    @ObfuscatedName("n")
+   static class182 field796;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 1179665299
+      intValue = -1389612261
    )
-   int field795;
-   @ObfuscatedName("ey")
-   static SpritePixels field797;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1427545315
-   )
-   int field798;
-   @ObfuscatedName("ca")
-   static class102 field800;
-   @ObfuscatedName("ot")
-   @ObfuscatedGetter(
-      intValue = -1963539689
-   )
-   static int field801;
+   int field797;
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("bo")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "104"
+      signature = "(ZS)V",
+      garbageValue = "7915"
    )
-   static final void method819() {
-      short var0 = 256;
-      int var1;
-      if(class41.field831 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class41.field831 > 768) {
-               class211.field3132[var1] = class33.method769(class41.field830[var1], NPC.field765[var1], 1024 - class41.field831);
-            } else if(class41.field831 > 256) {
-               class211.field3132[var1] = NPC.field765[var1];
-            } else {
-               class211.field3132[var1] = class33.method769(NPC.field765[var1], class41.field830[var1], 256 - class41.field831);
-            }
+   static final void method808(boolean var0) {
+      Client.field408 = 0;
+      Client.field325 = 0;
+      Client.field329.method3141();
+      int var1 = Client.field329.method3119(8);
+      int var2;
+      if(var1 < Client.field323) {
+         for(var2 = var1; var2 < Client.field323; ++var2) {
+            Client.field409[++Client.field408 - 1] = Client.field324[var2];
          }
-      } else if(class41.field856 > 0) {
-         for(var1 = 0; var1 < 256; ++var1) {
-            if(class41.field856 > 768) {
-               class211.field3132[var1] = class33.method769(class41.field830[var1], PlayerComposition.field2178[var1], 1024 - class41.field856);
-            } else if(class41.field856 > 256) {
-               class211.field3132[var1] = PlayerComposition.field2178[var1];
-            } else {
-               class211.field3132[var1] = class33.method769(PlayerComposition.field2178[var1], class41.field830[var1], 256 - class41.field856);
-            }
-         }
+      }
+
+      if(var1 > Client.field323) {
+         throw new RuntimeException("");
       } else {
-         for(var1 = 0; var1 < 256; ++var1) {
-            class211.field3132[var1] = class41.field830[var1];
-         }
-      }
+         Client.field323 = 0;
 
-      Rasterizer2D.method4091(class41.field822, 9, class41.field822 + 128, 7 + var0);
-      class41.field824.method4172(class41.field822, 0);
-      Rasterizer2D.method4018();
-      var1 = 0;
-      int var2 = class57.bufferProvider.width * 9 + class41.field822;
-
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      int var8;
-      int var9;
-      int var10;
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = (var0 - var3) * class41.field829[var3] / var0;
-         var5 = 22 + var4;
-         if(var5 < 0) {
-            var5 = 0;
-         }
-
-         var1 += var5;
-
-         for(var6 = var5; var6 < 128; ++var6) {
-            var7 = class47.field946[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = class211.field3132[var7];
-               var10 = class57.bufferProvider.pixels[var2];
-               class57.bufferProvider.pixels[var2++] = ((var7 & 16711935) * var8 + var9 * (var10 & 16711935) & -16711936) + (var8 * (var7 & '\uff00') + var9 * (var10 & '\uff00') & 16711680) >> 8;
+         int var5;
+         int var6;
+         int var7;
+         int var8;
+         for(var2 = 0; var2 < var1; ++var2) {
+            int var3 = Client.field324[var2];
+            NPC var4 = Client.cachedNPCs[var3];
+            var5 = Client.field329.method3119(1);
+            if(var5 == 0) {
+               Client.field324[++Client.field323 - 1] = var3;
+               var4.field617 = Client.gameCycle;
             } else {
-               ++var2;
+               var6 = Client.field329.method3119(2);
+               if(var6 == 0) {
+                  Client.field324[++Client.field323 - 1] = var3;
+                  var4.field617 = Client.gameCycle;
+                  Client.field393[++Client.field325 - 1] = var3;
+               } else if(var6 == 1) {
+                  Client.field324[++Client.field323 - 1] = var3;
+                  var4.field617 = Client.gameCycle;
+                  var7 = Client.field329.method3119(3);
+                  var4.method789(var7, (byte)1);
+                  var8 = Client.field329.method3119(1);
+                  if(var8 == 1) {
+                     Client.field393[++Client.field325 - 1] = var3;
+                  }
+               } else if(var6 == 2) {
+                  Client.field324[++Client.field323 - 1] = var3;
+                  var4.field617 = Client.gameCycle;
+                  var7 = Client.field329.method3119(3);
+                  var4.method789(var7, (byte)2);
+                  var8 = Client.field329.method3119(3);
+                  var4.method789(var8, (byte)2);
+                  int var9 = Client.field329.method3119(1);
+                  if(var9 == 1) {
+                     Client.field393[++Client.field325 - 1] = var3;
+                  }
+               } else if(var6 == 3) {
+                  Client.field409[++Client.field408 - 1] = var3;
+               }
             }
          }
 
-         var2 += var5 + class57.bufferProvider.width - 128;
-      }
+         while(Client.field329.method3126(Client.field330) >= 27) {
+            var1 = Client.field329.method3119(15);
+            if(var1 == 32767) {
+               break;
+            }
 
-      Rasterizer2D.method4091(765 + class41.field822 - 128, 9, 765 + class41.field822, 7 + var0);
-      class41.field825.method4172(382 + class41.field822, 0);
-      Rasterizer2D.method4018();
-      var1 = 0;
-      var2 = 637 + class57.bufferProvider.width * 9 + 24 + class41.field822;
+            boolean var12 = false;
+            if(null == Client.cachedNPCs[var1]) {
+               Client.cachedNPCs[var1] = new NPC();
+               var12 = true;
+            }
 
-      for(var3 = 1; var3 < var0 - 1; ++var3) {
-         var4 = (var0 - var3) * class41.field829[var3] / var0;
-         var5 = 103 - var4;
-         var2 += var4;
+            NPC var10 = Client.cachedNPCs[var1];
+            Client.field324[++Client.field323 - 1] = var1;
+            var10.field617 = Client.gameCycle;
+            var10.composition = ChatLineBuffer.getNpcDefinition(Client.field329.method3119(14));
+            int var11 = Client.field358[Client.field329.method3119(3)];
+            if(var12) {
+               var10.field652 = var10.angle = var11;
+            }
 
-         for(var6 = 0; var6 < var5; ++var6) {
-            var7 = class47.field946[var1++];
-            if(var7 != 0) {
-               var8 = var7;
-               var9 = 256 - var7;
-               var7 = class211.field3132[var7];
-               var10 = class57.bufferProvider.pixels[var2];
-               class57.bufferProvider.pixels[var2++] = (var8 * (var7 & '\uff00') + (var10 & '\uff00') * var9 & 16711680) + (var8 * (var7 & 16711935) + (var10 & 16711935) * var9 & -16711936) >> 8;
+            var5 = Client.field329.method3119(1);
+            if(var5 == 1) {
+               Client.field393[++Client.field325 - 1] = var1;
+            }
+
+            if(var0) {
+               var6 = Client.field329.method3119(8);
+               if(var6 > 127) {
+                  var6 -= 256;
+               }
             } else {
-               ++var2;
+               var6 = Client.field329.method3119(5);
+               if(var6 > 15) {
+                  var6 -= 32;
+               }
+            }
+
+            var7 = Client.field329.method3119(1);
+            if(var0) {
+               var8 = Client.field329.method3119(8);
+               if(var8 > 127) {
+                  var8 -= 256;
+               }
+            } else {
+               var8 = Client.field329.method3119(5);
+               if(var8 > 15) {
+                  var8 -= 32;
+               }
+            }
+
+            var10.field634 = var10.composition.field3012;
+            var10.field654 = var10.composition.field3038;
+            if(var10.field654 == 0) {
+               var10.angle = 0;
+            }
+
+            var10.field627 = var10.composition.field3036;
+            var10.field624 = var10.composition.field3019;
+            var10.field611 = var10.composition.field3020;
+            var10.field612 = var10.composition.field3021;
+            var10.idlePoseAnimation = var10.composition.field3018;
+            var10.field607 = var10.composition.field3016;
+            var10.field608 = var10.composition.field3017;
+            var10.method780(var8 + class9.localPlayer.pathX[0], class9.localPlayer.pathY[0] + var6, var7 == 1);
+         }
+
+         Client.field329.method3125();
+         class206.method3924();
+
+         for(var1 = 0; var1 < Client.field408; ++var1) {
+            var2 = Client.field409[var1];
+            if(Client.cachedNPCs[var2].field617 != Client.gameCycle) {
+               Client.cachedNPCs[var2].composition = null;
+               Client.cachedNPCs[var2] = null;
             }
          }
 
-         var1 += 128 - var5;
-         var2 += class57.bufferProvider.width - var5 - var4;
-      }
+         if(Client.field329.offset != Client.field330) {
+            throw new RuntimeException(Client.field329.offset + "," + Client.field330);
+         } else {
+            for(var1 = 0; var1 < Client.field323; ++var1) {
+               if(Client.cachedNPCs[Client.field324[var1]] == null) {
+                  throw new RuntimeException(var1 + "," + Client.field323);
+               }
+            }
 
+         }
+      }
    }
 
-   @ObfuscatedName("al")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(LWidget;III)V",
-      garbageValue = "-1609223334"
+      signature = "(I)Z",
+      garbageValue = "-272655214"
    )
-   static final void method820(Widget var0, int var1, int var2) {
-      if(Client.field526 == 0 || Client.field526 == 3) {
-         if(class115.field1811 == 1 || !Client.field291 && class115.field1811 == 4) {
-            class164 var3 = var0.method3289(true);
-            if(null == var3) {
-               return;
-            }
-
-            int var4 = class115.field1812 - var1;
-            int var5 = class115.field1813 - var2;
-            if(var3.method3225(var4, var5)) {
-               var4 -= var3.field2160 / 2;
-               var5 -= var3.field2155 / 2;
-               int var6 = Client.mapAngle + Client.mapScale & 2047;
-               int var7 = class84.field1460[var6];
-               int var8 = class84.field1446[var6];
-               var7 = var7 * (256 + Client.mapScaleDelta) >> 8;
-               var8 = var8 * (Client.mapScaleDelta + 256) >> 8;
-               int var9 = var4 * var8 + var5 * var7 >> 11;
-               int var10 = var5 * var8 - var7 * var4 >> 11;
-               int var11 = var9 + WidgetNode.localPlayer.x >> 7;
-               int var12 = WidgetNode.localPlayer.y - var10 >> 7;
-               Client.field332.method3144(163);
-               Client.field332.method2873(18);
-               Client.field332.method2872(Player.baseX + var11);
-               Client.field332.method2921(SecondaryBufferProvider.baseY + var12);
-               Client.field332.method3083(class105.field1718[82]?(class105.field1718[81]?2:1):0);
-               Client.field332.method2873(var4);
-               Client.field332.method2873(var5);
-               Client.field332.method2872(Client.mapAngle);
-               Client.field332.method2873(57);
-               Client.field332.method2873(Client.mapScale);
-               Client.field332.method2873(Client.mapScaleDelta);
-               Client.field332.method2873(89);
-               Client.field332.method2872(WidgetNode.localPlayer.x);
-               Client.field332.method2872(WidgetNode.localPlayer.y);
-               Client.field332.method2873(63);
-               Client.flagX = var11;
-               Client.flagY = var12;
-            }
+   public static final boolean method809() {
+      class105 var0 = class105.keyboard;
+      synchronized(class105.keyboard) {
+         if(class105.field1693 == class105.field1708) {
+            return false;
+         } else {
+            class20.field211 = class105.field1705[class105.field1708];
+            class3.field32 = class105.field1704[class105.field1708];
+            class105.field1708 = class105.field1708 + 1 & 127;
+            return true;
          }
-
       }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/CharSequence;II[BII)I",
+      garbageValue = "-1434972745"
+   )
+   public static int method810(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
+      int var5 = var2 - var1;
+
+      for(int var6 = 0; var6 < var5; ++var6) {
+         char var7 = var0.charAt(var1 + var6);
+         if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
+            if(var7 == 8364) {
+               var3[var4 + var6] = -128;
+            } else if(var7 == 8218) {
+               var3[var6 + var4] = -126;
+            } else if(var7 == 402) {
+               var3[var6 + var4] = -125;
+            } else if(var7 == 8222) {
+               var3[var6 + var4] = -124;
+            } else if(var7 == 8230) {
+               var3[var6 + var4] = -123;
+            } else if(var7 == 8224) {
+               var3[var6 + var4] = -122;
+            } else if(var7 == 8225) {
+               var3[var4 + var6] = -121;
+            } else if(var7 == 710) {
+               var3[var6 + var4] = -120;
+            } else if(var7 == 8240) {
+               var3[var4 + var6] = -119;
+            } else if(var7 == 352) {
+               var3[var6 + var4] = -118;
+            } else if(var7 == 8249) {
+               var3[var6 + var4] = -117;
+            } else if(var7 == 338) {
+               var3[var4 + var6] = -116;
+            } else if(var7 == 381) {
+               var3[var4 + var6] = -114;
+            } else if(var7 == 8216) {
+               var3[var6 + var4] = -111;
+            } else if(var7 == 8217) {
+               var3[var6 + var4] = -110;
+            } else if(var7 == 8220) {
+               var3[var6 + var4] = -109;
+            } else if(var7 == 8221) {
+               var3[var6 + var4] = -108;
+            } else if(var7 == 8226) {
+               var3[var4 + var6] = -107;
+            } else if(var7 == 8211) {
+               var3[var6 + var4] = -106;
+            } else if(var7 == 8212) {
+               var3[var4 + var6] = -105;
+            } else if(var7 == 732) {
+               var3[var6 + var4] = -104;
+            } else if(var7 == 8482) {
+               var3[var4 + var6] = -103;
+            } else if(var7 == 353) {
+               var3[var4 + var6] = -102;
+            } else if(var7 == 8250) {
+               var3[var4 + var6] = -101;
+            } else if(var7 == 339) {
+               var3[var6 + var4] = -100;
+            } else if(var7 == 382) {
+               var3[var4 + var6] = -98;
+            } else if(var7 == 376) {
+               var3[var6 + var4] = -97;
+            } else {
+               var3[var4 + var6] = 63;
+            }
+         } else {
+            var3[var4 + var6] = (byte)var7;
+         }
+      }
+
+      return var5;
    }
 }
