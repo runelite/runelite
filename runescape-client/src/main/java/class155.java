@@ -2,83 +2,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("el")
+@ObfuscatedName("ep")
 public class class155 {
-   @ObfuscatedName("x")
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      longValue = 6093441288787933891L
+      longValue = 3839298024524576325L
    )
-   static long field2102;
-   @ObfuscatedName("p")
-   static class182 field2106;
-   @ObfuscatedName("n")
+   static long field2101;
+   @ObfuscatedName("k")
+   static int[] field2105;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      longValue = 8811431874580119745L
+      longValue = -6622524658346086891L
    )
-   static long field2107;
+   static long field2106;
+
+   @ObfuscatedName("dr")
+   @ObfuscatedSignature(
+      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
+      garbageValue = "2051528292"
+   )
+   static final String[] method3078(String[] var0) {
+      String[] var1 = new String[5];
+
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && var0[var2] != null) {
+            var1[var2] = var1[var2] + var0[var2];
+         }
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "-14"
+   )
+   static void method3080() {
+      class10.underlayIds = null;
+      class10.overlayIds = null;
+      class10.overlayPaths = null;
+      class10.overlayRotations = null;
+      class149.field2027 = null;
+      Item.field884 = null;
+      class183.field2729 = null;
+      class85.field1444 = null;
+      class142.field1996 = null;
+      class47.field928 = null;
+      class10.field95 = null;
+      class16.field175 = null;
+   }
 
    class155() throws Throwable {
       throw new Error();
-   }
-
-   @ObfuscatedName("w")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "579031530"
-   )
-   static final int method3109(int var0, int var1, int var2) {
-      if(var2 > 179) {
-         var1 /= 2;
-      }
-
-      if(var2 > 192) {
-         var1 /= 2;
-      }
-
-      if(var2 > 217) {
-         var1 /= 2;
-      }
-
-      if(var2 > 243) {
-         var1 /= 2;
-      }
-
-      int var3 = (var0 / 4 << 10) + (var1 / 32 << 7) + var2 / 2;
-      return var3;
-   }
-
-   @ObfuscatedName("v")
-   @ObfuscatedSignature(
-      signature = "(IIIB)V",
-      garbageValue = "-119"
-   )
-   static final void method3110(int var0, int var1, int var2) {
-      int var3;
-      for(var3 = 0; var3 < 8; ++var3) {
-         for(int var4 = 0; var4 < 8; ++var4) {
-            class10.tileHeights[var0][var1 + var3][var4 + var2] = 0;
-         }
-      }
-
-      if(var1 > 0) {
-         for(var3 = 1; var3 < 8; ++var3) {
-            class10.tileHeights[var0][var1][var3 + var2] = class10.tileHeights[var0][var1 - 1][var2 + var3];
-         }
-      }
-
-      if(var2 > 0) {
-         for(var3 = 1; var3 < 8; ++var3) {
-            class10.tileHeights[var0][var1 + var3][var2] = class10.tileHeights[var0][var1 + var3][var2 - 1];
-         }
-      }
-
-      if(var1 > 0 && class10.tileHeights[var0][var1 - 1][var2] != 0) {
-         class10.tileHeights[var0][var1][var2] = class10.tileHeights[var0][var1 - 1][var2];
-      } else if(var2 > 0 && class10.tileHeights[var0][var1][var2 - 1] != 0) {
-         class10.tileHeights[var0][var1][var2] = class10.tileHeights[var0][var1][var2 - 1];
-      } else if(var1 > 0 && var2 > 0 && class10.tileHeights[var0][var1 - 1][var2 - 1] != 0) {
-         class10.tileHeights[var0][var1][var2] = class10.tileHeights[var0][var1 - 1][var2 - 1];
-      }
-
    }
 }

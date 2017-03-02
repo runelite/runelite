@@ -2,20 +2,20 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dn")
+@ObfuscatedName("dz")
 @Implements("Node")
 public class Node {
-   @ObfuscatedName("cl")
-   @Export("hash")
-   public long hash;
-   @ObfuscatedName("cb")
+   @ObfuscatedName("ct")
    @Export("next")
    public Node next;
-   @ObfuscatedName("cz")
+   @ObfuscatedName("cf")
    @Export("previous")
    Node previous;
+   @ObfuscatedName("cb")
+   @Export("hash")
+   public long hash;
 
-   @ObfuscatedName("fm")
+   @ObfuscatedName("fk")
    @Export("unlink")
    public void unlink() {
       if(this.previous != null) {
@@ -26,7 +26,7 @@ public class Node {
       }
    }
 
-   @ObfuscatedName("fj")
+   @ObfuscatedName("fh")
    @Export("linked")
    public boolean linked() {
       return this.previous != null;

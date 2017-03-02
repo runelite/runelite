@@ -1,111 +1,86 @@
-import java.awt.Image;
 import java.awt.event.ActionEvent;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bb")
+@ObfuscatedName("be")
 public class class63 implements Runnable {
-   @ObfuscatedName("n")
-   volatile class57[] field1101 = new class57[2];
-   @ObfuscatedName("g")
-   volatile boolean field1102 = false;
-   @ObfuscatedName("v")
-   volatile boolean field1103 = false;
-   @ObfuscatedName("qq")
-   @ObfuscatedGetter(
-      intValue = -194361735
+   @ObfuscatedName("l")
+   volatile class57[] field1074 = new class57[2];
+   @ObfuscatedName("i")
+   volatile boolean field1075 = false;
+   @ObfuscatedName("t")
+   volatile boolean field1076 = false;
+   @ObfuscatedName("b")
+   class103 field1079;
+
+   @ObfuscatedName("p")
+   @ObfuscatedSignature(
+      signature = "(II)Z",
+      garbageValue = "-1869141698"
    )
-   protected static int field1106;
-   @ObfuscatedName("x")
-   class103 field1107;
-   @ObfuscatedName("rj")
-   static Image field1108;
+   public static boolean method1215(int var0) {
+      return (var0 >> 31 & 1) != 0;
+   }
 
    public void run() {
-      this.field1103 = true;
+      this.field1076 = true;
 
       try {
-         while(!this.field1102) {
+         while(!this.field1075) {
             class57 var2;
             for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1101[var1];
+               var2 = this.field1074[var1];
                if(var2 != null) {
-                  var2.method1123();
+                  var2.method1112();
                }
             }
 
-            class47.method970(10L);
-            class103 var5 = this.field1107;
+            class115.method2301(10L);
+            class103 var5 = this.field1079;
             var2 = null;
-            if(var5.field1679 != null) {
-               for(int var3 = 0; var3 < 50 && var5.field1679.peekEvent() != null; ++var3) {
-                  class47.method970(1L);
+            if(null != var5.field1666) {
+               for(int var3 = 0; var3 < 50 && var5.field1666.peekEvent() != null; ++var3) {
+                  class115.method2301(1L);
                }
 
-               if(var2 != null) {
-                  var5.field1679.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               if(null != var2) {
+                  var5.field1666.postEvent(new ActionEvent(var2, 1001, "dummy"));
                }
             }
          }
       } catch (Exception var8) {
-         class97.method2025((String)null, var8);
+         FaceNormal.method1950((String)null, var8);
       } finally {
-         this.field1103 = false;
+         this.field1076 = false;
       }
 
    }
 
-   @ObfuscatedName("f")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/Object;ZS)[B",
-      garbageValue = "6994"
+      signature = "(III)I",
+      garbageValue = "-468183425"
    )
-   public static byte[] method1236(Object var0, boolean var1) {
-      if(null == var0) {
-         return null;
-      } else if(var0 instanceof byte[]) {
-         byte[] var6 = (byte[])((byte[])var0);
-         if(var1) {
-            int var4 = var6.length;
-            byte[] var5 = new byte[var4];
-            System.arraycopy(var6, 0, var5, 0, var4);
-            return var5;
-         } else {
-            return var6;
+   static final int method1217(int var0, int var1) {
+      if(var0 == -2) {
+         return 12345678;
+      } else if(var0 == -1) {
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
-      } else if(var0 instanceof class156) {
-         class156 var2 = (class156)var0;
-         return var2.vmethod3115();
+
+         return var1;
       } else {
-         throw new IllegalArgumentException();
-      }
-   }
-
-   @ObfuscatedName("cp")
-   @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "178463895"
-   )
-   static void method1239() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         int var2 = Client.menuTypes[var0];
-         boolean var1 = var2 == 57 || var2 == 58 || var2 == 1007 || var2 == 25 || var2 == 30;
-         if(var1) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var3 = var0; var3 < Client.menuOptionCount - 1; ++var3) {
-                  Client.menuOptions[var3] = Client.menuOptions[1 + var3];
-                  Client.menuTargets[var3] = Client.menuTargets[var3 + 1];
-                  Client.menuTypes[var3] = Client.menuTypes[var3 + 1];
-                  Client.menuIdentifiers[var3] = Client.menuIdentifiers[1 + var3];
-                  Client.menuActionParams0[var3] = Client.menuActionParams0[1 + var3];
-                  Client.menuActionParams1[var3] = Client.menuActionParams1[1 + var3];
-               }
-            }
-
-            --Client.menuOptionCount;
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
          }
-      }
 
+         return (var0 & 'ﾀ') + var1;
+      }
    }
 }

@@ -2,150 +2,132 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("cs")
+@ObfuscatedName("cd")
 @Implements("Frames")
 public class Frames extends CacheableNode {
-   @ObfuscatedName("qh")
-   static class109 field1576;
-   @ObfuscatedName("x")
-   Frame[] field1581;
+   @ObfuscatedName("b")
+   Frame[] field1563;
+   @ObfuscatedName("s")
+   static String field1567;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(IB)Z",
-      garbageValue = "-27"
+      signature = "(II)Z",
+      garbageValue = "2134027895"
    )
-   public boolean method1990(int var1) {
-      return this.field1581[var1].field1337;
+   public boolean method1954(int var1) {
+      return this.field1563[var1].field1308;
    }
 
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;Ljava/lang/String;Ljava/lang/String;I)LFont;",
-      garbageValue = "28384996"
-   )
-   public static Font method1991(class182 var0, class182 var1, String var2, String var3) {
-      int var4 = var0.method3426(var2);
-      int var5 = var0.method3370(var4, var3);
-      return class49.method980(var0, var1, var4, var5);
-   }
-
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;IZ)V",
-      garbageValue = "0"
-   )
-   public Frames(class182 var1, class182 var2, int var3, boolean var4) {
+   Frames(class182 var1, class182 var2, int var3, boolean var4) {
       Deque var5 = new Deque();
-      int var6 = var1.method3352(var3);
-      this.field1581 = new Frame[var6];
-      int[] var7 = var1.method3364(var3);
+      int var6 = var1.method3398(var3);
+      this.field1563 = new Frame[var6];
+      int[] var7 = var1.method3357(var3);
 
       for(int var8 = 0; var8 < var7.length; ++var8) {
          byte[] var9 = var1.getConfigData(var3, var7[var8]);
          FrameMap var10 = null;
          int var11 = (var9[0] & 255) << 8 | var9[1] & 255;
 
-         for(FrameMap var12 = (FrameMap)var5.method2503(); var12 != null; var12 = (FrameMap)var5.method2492()) {
-            if(var11 == var12.field1470) {
+         for(FrameMap var12 = (FrameMap)var5.method2472(); null != var12; var12 = (FrameMap)var5.method2479()) {
+            if(var12.field1460 == var11) {
                var10 = var12;
                break;
             }
          }
 
          if(null == var10) {
-            byte[] var13 = var2.method3361(var11, 0);
-            var10 = new FrameMap(var11, var13);
-            var5.method2511(var10);
-         }
-
-         this.field1581[var7[var8]] = new Frame(var9, var10);
-      }
-
-   }
-
-   @ObfuscatedName("ap")
-   @ObfuscatedSignature(
-      signature = "(ZB)V",
-      garbageValue = "2"
-   )
-   static final void method1993(boolean var0) {
-      for(int var1 = 0; var1 < Client.field328; ++var1) {
-         NPC var2 = Client.cachedNPCs[Client.field285[var1]];
-         int var3 = (Client.field285[var1] << 14) + 536870912;
-         if(null != var2 && var2.vmethod794() && var0 == var2.composition.isVisible && var2.composition.method3784()) {
-            int var4 = var2.x >> 7;
-            int var5 = var2.y >> 7;
-            if(var4 >= 0 && var4 < 104 && var5 >= 0 && var5 < 104) {
-               if(var2.field607 == 1 && (var2.x & 127) == 64 && (var2.y & 127) == 64) {
-                  if(Client.field502 == Client.field453[var4][var5]) {
-                     continue;
-                  }
-
-                  Client.field453[var4][var5] = Client.field502;
-               }
-
-               if(!var2.composition.field3039) {
-                  var3 -= Integer.MIN_VALUE;
-               }
-
-               Friend.region.method1878(CollisionData.plane, var2.x, var2.y, class25.method615(var2.field607 * 64 - 64 + var2.x, var2.field607 * 64 - 64 + var2.y, CollisionData.plane), 60 + (var2.field607 * 64 - 64), var2, var2.angle, var3, var2.field655);
+            byte[] var13;
+            if(var4) {
+               var13 = var2.method3354(0, var11);
+            } else {
+               var13 = var2.method3354(var11, 0);
             }
+
+            var10 = new FrameMap(var11, var13);
+            var5.method2468(var10);
          }
+
+         this.field1563[var7[var8]] = new Frame(var9, var10);
       }
 
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("do")
    @ObfuscatedSignature(
-      signature = "(LWorld;I)V",
-      garbageValue = "864327586"
+      signature = "(LWidget;I)V",
+      garbageValue = "-1186916310"
    )
-   static void method1994(World var0) {
-      if(var0.method658() != Client.isMembers) {
-         Client.isMembers = var0.method658();
-         boolean var1 = var0.method658();
-         if(Item.isMembersWorld != var1) {
-            method1995();
-            Item.isMembersWorld = var1;
-         }
-      }
-
-      BufferProvider.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      class212.field3145 = Client.field309 == 0?'ꩊ':var0.id + '鱀';
-      class20.field217 = Client.field309 == 0?443:'썐' + var0.id;
-      Client.field325 = class212.field3145;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "9"
-   )
-   public static void method1995() {
-      ItemComposition.field2993.reset();
-      ItemComposition.itemModelCache.reset();
-      ItemComposition.itemSpriteCache.reset();
-   }
-
-   @ObfuscatedName("ci")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "6"
-   )
-   static void method1996() {
-      if(Client.field444) {
-         Widget var0 = class33.method774(Player.field269, Client.field529);
-         if(var0 != null && null != var0.field2298) {
-            class18 var1 = new class18();
-            var1.field188 = var0;
-            var1.field196 = var0.field2298;
-            class40.method828(var1);
+   static final void method1959(Widget var0) {
+      int var1 = var0.contentType;
+      if(var1 == 324) {
+         if(Client.field389 == -1) {
+            Client.field389 = var0.textureId;
+            Client.field299 = var0.field2232;
          }
 
-         Client.field444 = false;
-         ChatLineBuffer.method996(var0);
+         if(Client.field562.isFemale) {
+            var0.textureId = Client.field389;
+         } else {
+            var0.textureId = Client.field299;
+         }
+
+      } else if(var1 == 325) {
+         if(Client.field389 == -1) {
+            Client.field389 = var0.textureId;
+            Client.field299 = var0.field2232;
+         }
+
+         if(Client.field562.isFemale) {
+            var0.textureId = Client.field299;
+         } else {
+            var0.textureId = Client.field389;
+         }
+
+      } else if(var1 == 327) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 0;
+      } else if(var1 == 328) {
+         var0.rotationX = 150;
+         var0.rotationZ = (int)(Math.sin((double)Client.gameCycle / 40.0D) * 256.0D) & 2047;
+         var0.modelType = 5;
+         var0.modelId = 1;
       }
+   }
+
+   @ObfuscatedName("dh")
+   @ObfuscatedSignature(
+      signature = "(LWidget;I)V",
+      garbageValue = "-1424294402"
+   )
+   static void method1960(Widget var0) {
+      if(Client.field489 == var0.field2328) {
+         Client.field490[var0.boundsIndex] = true;
+      }
+
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1742192756"
+   )
+   static void method1961() {
+      class10.field109 = 99;
+      class10.underlayIds = new byte[4][104][104];
+      class10.overlayIds = new byte[4][104][104];
+      class10.overlayPaths = new byte[4][104][104];
+      class10.overlayRotations = new byte[4][104][104];
+      class149.field2027 = new int[4][105][105];
+      Item.field884 = new byte[4][105][105];
+      class183.field2729 = new int[105][105];
+      class85.field1444 = new int[104];
+      class142.field1996 = new int[104];
+      class47.field928 = new int[104];
+      class10.field95 = new int[104];
+      class16.field175 = new int[104];
    }
 }

@@ -1,56 +1,43 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("dv")
+@ObfuscatedName("ds")
 public abstract class class119 {
-   @ObfuscatedName("pn")
+   @ObfuscatedName("m")
+   public static String[] field1848;
+   @ObfuscatedName("l")
    @ObfuscatedGetter(
-      intValue = 552888647
+      intValue = -1791829665
    )
-   static int field1855;
-   @ObfuscatedName("v")
+   public int field1849;
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1088583455
+      intValue = -1382647733
    )
-   public int field1856;
-   @ObfuscatedName("n")
+   public int field1850;
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = 2055945037
+      intValue = -1173050445
    )
-   public int field1857;
-   @ObfuscatedName("x")
+   public int field1851;
+   @ObfuscatedName("px")
    @ObfuscatedGetter(
-      intValue = -584570065
+      intValue = 272300319
    )
-   public int field1858;
-   @ObfuscatedName("mq")
+   static int field1852;
+   @ObfuscatedName("nz")
+   static class65 field1853;
+   @ObfuscatedName("b")
    @ObfuscatedGetter(
-      intValue = 578203007
+      intValue = -227744089
    )
-   @Export("clanChatCount")
-   static int clanChatCount;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = -2041675689
-   )
-   public int field1861;
+   public int field1854;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
       signature = "(IIILCollisionData;I)Z",
-      garbageValue = "1832344439"
+      garbageValue = "-161234916"
    )
-   public abstract boolean vmethod2386(int var1, int var2, int var3, CollisionData var4);
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "-1228676047"
-   )
-   public static int method2389(int var0, int var1, int var2) {
-      var2 &= 3;
-      return var2 == 0?var1:(var2 == 1?7 - var0:(var2 == 2?7 - var1:var0));
-   }
+   protected abstract boolean vmethod2360(int var1, int var2, int var3, CollisionData var4);
 }

@@ -2,46 +2,46 @@ import java.applet.Applet;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
+import net.runelite.rs.Reflection;
 
-@ObfuscatedName("dr")
+@ObfuscatedName("dh")
 public class class114 {
-   @ObfuscatedName("n")
-   public static String field1786 = null;
-   @ObfuscatedName("x")
-   public static Applet field1787 = null;
+   @ObfuscatedName("b")
+   static Applet field1783 = null;
    @ObfuscatedName("l")
+   public static String field1787 = null;
+   @ObfuscatedName("nc")
    @ObfuscatedGetter(
-      intValue = -2061263707
+      intValue = -109499341
    )
-   static int field1790;
-   @ObfuscatedName("pp")
-   public static class103 field1793;
+   static int field1788;
+   @ObfuscatedName("bm")
+   static class184 field1789;
+   @ObfuscatedName("bi")
+   static class184 field1790;
 
    class114() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("t")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1931444316"
+      signature = "(Ljava/lang/String;I)Ljava/lang/Class;",
+      garbageValue = "-1030875889"
    )
-   static void method2299(int var0) {
-      if(var0 != -1) {
-         if(Projectile.method874(var0)) {
-            Widget[] var1 = class231.widgets[var0];
+   static Class method2267(String var0) throws ClassNotFoundException {
+      return var0.equals("B")?Byte.TYPE:(var0.equals("I")?Integer.TYPE:(var0.equals("S")?Short.TYPE:(var0.equals("J")?Long.TYPE:(var0.equals("Z")?Boolean.TYPE:(var0.equals("F")?Float.TYPE:(var0.equals("D")?Double.TYPE:(var0.equals("C")?Character.TYPE:(var0.equals("void")?Void.TYPE:Reflection.findClass(var0)))))))));
+   }
 
-            for(int var2 = 0; var2 < var1.length; ++var2) {
-               Widget var3 = var1[var2];
-               if(var3.field2287 != null) {
-                  class18 var4 = new class18();
-                  var4.field188 = var3;
-                  var4.field196 = var3.field2287;
-                  class203.method3853(var4, 2000000);
-               }
-            }
-
-         }
-      }
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-1356956063"
+   )
+   public static void method2269() {
+      ObjectComposition.field2899.reset();
+      ObjectComposition.field2900.reset();
+      ObjectComposition.field2934.reset();
+      ObjectComposition.field2945.reset();
    }
 }

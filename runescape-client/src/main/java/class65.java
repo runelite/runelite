@@ -2,113 +2,29 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("bb")
 public class class65 {
-   @ObfuscatedName("y")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -1773364905
+      intValue = 1680470545
    )
-   int field1117;
-   @ObfuscatedName("v")
-   @ObfuscatedGetter(
-      intValue = -1055771371
-   )
-   int field1120;
-   @ObfuscatedName("p")
-   int[][] field1122;
-   @ObfuscatedName("i")
-   public static short[][] field1124;
+   int field1090;
+   @ObfuscatedName("h")
+   int[][] field1092;
    @ObfuscatedName("k")
-   static int[] field1127;
-   @ObfuscatedName("qf")
    @ObfuscatedGetter(
-      intValue = 1702989461
+      intValue = -697074577
    )
-   protected static int field1128;
+   int field1094;
 
-   @ObfuscatedName("n")
+   @ObfuscatedName("b")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "1"
+      signature = "([BB)[B",
+      garbageValue = "-52"
    )
-   int method1243(int var1) {
-      if(this.field1122 != null) {
-         var1 = (int)((long)var1 * (long)this.field1117 / (long)this.field1120);
-      }
-
-      return var1;
-   }
-
-   public class65(int var1, int var2) {
-      if(var1 != var2) {
-         int var4 = var1;
-         int var5 = var2;
-         if(var2 > var1) {
-            var4 = var2;
-            var5 = var1;
-         }
-
-         while(var5 != 0) {
-            int var6 = var4 % var5;
-            var4 = var5;
-            var5 = var6;
-         }
-
-         var1 /= var4;
-         var2 /= var4;
-         this.field1120 = var1;
-         this.field1117 = var2;
-         this.field1122 = new int[var1][14];
-
-         for(int var7 = 0; var7 < var1; ++var7) {
-            int[] var8 = this.field1122[var7];
-            double var9 = (double)var7 / (double)var1 + 6.0D;
-            int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
-            if(var11 < 0) {
-               var11 = 0;
-            }
-
-            int var12 = (int)Math.ceil(var9 + 7.0D);
-            if(var12 > 14) {
-               var12 = 14;
-            }
-
-            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
-               double var15 = 3.141592653589793D * ((double)var11 - var9);
-               double var17 = var13;
-               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
-                  var17 = var13 * (Math.sin(var15) / var15);
-               }
-
-               var17 *= 0.54D + 0.46D * Math.cos(((double)var11 - var9) * 0.2243994752564138D);
-               var8[var11] = (int)Math.floor(0.5D + var17 * 65536.0D);
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("g")
-   @ObfuscatedSignature(
-      signature = "(II)I",
-      garbageValue = "-1370712550"
-   )
-   int method1245(int var1) {
-      if(null != this.field1122) {
-         var1 = (int)((long)this.field1117 * (long)var1 / (long)this.field1120) + 6;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "-1107038"
-   )
-   byte[] method1248(byte[] var1) {
-      if(this.field1122 != null) {
-         int var2 = 14 + (int)((long)var1.length * (long)this.field1117 / (long)this.field1120);
+   byte[] method1222(byte[] var1) {
+      if(null != this.field1092) {
+         int var2 = 14 + (int)((long)this.field1094 * (long)var1.length / (long)this.field1090);
          int[] var3 = new int[var2];
          int var4 = 0;
          int var5 = 0;
@@ -116,17 +32,17 @@ public class class65 {
          int var6;
          for(var6 = 0; var6 < var1.length; ++var6) {
             byte var7 = var1[var6];
-            int[] var8 = this.field1122[var5];
+            int[] var8 = this.field1092[var5];
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
-               var3[var4 + var9] += var8[var9] * var7;
+               var3[var9 + var4] += var8[var9] * var7;
             }
 
-            var5 += this.field1117;
-            var9 = var5 / this.field1120;
+            var5 += this.field1094;
+            var9 = var5 / this.field1090;
             var4 += var9;
-            var5 -= this.field1120 * var9;
+            var5 -= this.field1090 * var9;
          }
 
          var1 = new byte[var2];
@@ -146,24 +62,90 @@ public class class65 {
       return var1;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "99"
+      signature = "(II)I",
+      garbageValue = "1840274985"
    )
-   static void method1250() {
-      class10.field82 = 99;
-      class202.underlayIds = new byte[4][104][104];
-      class10.overlayIds = new byte[4][104][104];
-      class3.overlayPaths = new byte[4][104][104];
-      class6.overlayRotations = new byte[4][104][104];
-      class159.field2122 = new int[4][105][105];
-      class10.field83 = new byte[4][105][105];
-      class22.field230 = new int[105][105];
-      class10.field89 = new int[104];
-      class7.field56 = new int[104];
-      field1127 = new int[104];
-      class181.field2701 = new int[104];
-      class7.field61 = new int[104];
+   int method1223(int var1) {
+      if(this.field1092 != null) {
+         var1 = (int)((long)this.field1094 * (long)var1 / (long)this.field1090);
+      }
+
+      return var1;
+   }
+
+   @ObfuscatedName("bj")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "-2072506396"
+   )
+   static final int method1224(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
+            var5 = var2 + 1;
+         }
+
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = class10.tileHeights[var5][var3 + 1][var4] * var6 + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
+         int var9 = class10.tileHeights[var5][var3 + 1][var4 + 1] * var6 + (128 - var6) * class10.tileHeights[var5][var3][1 + var4] >> 7;
+         return var7 * var9 + var8 * (128 - var7) >> 7;
+      } else {
+         return 0;
+      }
+   }
+
+   public class65(int var1, int var2) {
+      if(var1 != var2) {
+         int var3 = class108.method2100(var1, var2);
+         var1 /= var3;
+         var2 /= var3;
+         this.field1090 = var1;
+         this.field1094 = var2;
+         this.field1092 = new int[var1][14];
+
+         for(int var4 = 0; var4 < var1; ++var4) {
+            int[] var5 = this.field1092[var4];
+            double var6 = (double)var4 / (double)var1 + 6.0D;
+            int var8 = (int)Math.floor(1.0D + (var6 - 7.0D));
+            if(var8 < 0) {
+               var8 = 0;
+            }
+
+            int var9 = (int)Math.ceil(7.0D + var6);
+            if(var9 > 14) {
+               var9 = 14;
+            }
+
+            for(double var10 = (double)var2 / (double)var1; var8 < var9; ++var8) {
+               double var12 = ((double)var8 - var6) * 3.141592653589793D;
+               double var14 = var10;
+               if(var12 < -1.0E-4D || var12 > 1.0E-4D) {
+                  var14 = var10 * (Math.sin(var12) / var12);
+               }
+
+               var14 *= 0.54D + 0.46D * Math.cos(((double)var8 - var6) * 0.2243994752564138D);
+               var5[var8] = (int)Math.floor(0.5D + var14 * 65536.0D);
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(II)I",
+      garbageValue = "1422660233"
+   )
+   int method1229(int var1) {
+      if(this.field1092 != null) {
+         var1 = 6 + (int)((long)var1 * (long)this.field1094 / (long)this.field1090);
+      }
+
+      return var1;
    }
 }
