@@ -33,6 +33,8 @@ public class Instructions
 
 	public static void init()
 	{
+		instructions.clear();
+
 		add(Opcodes.LOAD_INT, "load_int", 0, 1);
 		add(Opcodes.GET_SETTINGS, "get_settings", 0, 1);
 		add(Opcodes.PUT_SETTINGS, "put_settings", 0, 1);
