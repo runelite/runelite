@@ -24,8 +24,6 @@
  */
 package net.runelite.cache;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -35,6 +33,9 @@ import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.File;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
+import net.runelite.cache.script.Instruction;
+import net.runelite.cache.script.Instructions;
+import net.runelite.cache.script.Opcodes;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -45,8 +46,6 @@ public class ScriptDumperTest
 {
 	private static final Logger logger = LoggerFactory.getLogger(ScriptDumperTest.class);
 
-	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
@@ -55,6 +54,8 @@ public class ScriptDumperTest
 	{
 		java.io.File outDir = folder.newFolder();
 		int count = 0;
+
+		Instructions.init();
 
 		try (Store store = new Store(StoreLocation.LOCATION))
 		{
@@ -72,7 +73,7 @@ public class ScriptDumperTest
 
 				ScriptDefinition script = loader.load(file.getFileId(), contents);
 
-				java.io.File outFile = new java.io.File(outDir, archive.getArchiveId() + ".rs");
+				java.io.File outFile = new java.io.File(outDir, archive.getArchiveId() + ".rs2asm");
 				writeScript(outFile, script);
 
 				++count;
@@ -82,26 +83,92 @@ public class ScriptDumperTest
 		logger.info("Dumped {} scripts to {}", count, outDir);
 	}
 
+	private boolean[] needLabel(ScriptDefinition script)
+	{
+		int[] instructions = script.getInstructions();
+		int[] iop = script.getIntOperands();
+		boolean[] jumped = new boolean[instructions.length];
+
+		for (int i = 0; i < instructions.length; ++i)
+		{
+			int opcode = instructions[i];
+
+			if (opcode != Opcodes.JUMP)
+			{
+				continue;
+			}
+
+			// + 1 because the jumps go to the instructions prior to the
+			// one you really want, because the pc is incremented on the
+			// next loop
+			int to = i + iop[i] + 1;
+			assert to >= 0 && to < instructions.length;
+
+			jumped[to] = true;
+		}
+
+		return jumped;
+	}
+
 	private void writeScript(java.io.File file, ScriptDefinition script) throws IOException
 	{
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file)))
 		{
-			int length = script.getInstructions().length;
+			int[] instructions = script.getInstructions();
+			int[] iops = script.getIntOperands();
+			String[] sops = script.getStringOperands();
 
-			assert script.getIntOperands().length == length;
-			assert script.getStringOperands().length == length;
+			assert iops.length == instructions.length;
+			assert sops.length == instructions.length;
 
-			for (int i = 0; i < length; ++i)
+			boolean[] jumps = needLabel(script);
+
+			for (int i = 0; i < instructions.length; ++i)
 			{
-				int opcode = script.getInstructions()[i];
-				int iop = script.getIntOperands()[i];
-				String sop = script.getStringOperands()[i];
+				int opcode = instructions[i];
+				int iop = iops[i];
+				String sop = sops[i];
 
-				writer.write(String.format("0x%03x", opcode));
-				if (iop != 0 || sop != null)
-					writer.write(" " + iop);
+				Instruction ins = Instructions.find(opcode);
+				if (ins == null)
+				{
+					logger.warn("Unknown instruction {} in script {}", opcode, script.getId());
+				}
+
+				String name;
+				if (ins != null && ins.getName() != null)
+				{
+					name = ins.getName();
+				}
+				else
+				{
+					name = String.format("%03d", opcode);
+				}
+
+				if (jumps[i])
+				{
+					// something jumps here
+					writer.write("LABEL" + i + ":\n");
+				}
+
+				writer.write(String.format("   %-22s", name));
+
+				if (iop != 0 || opcode == Opcodes.LOAD_INT)
+				{
+					if (opcode == Opcodes.JUMP)
+					{
+						writer.write(" LABEL" + (i + iop));
+					}
+					else
+					{
+						writer.write(" " + iop);
+					}
+				}
+
 				if (sop != null)
-					writer.write(" " + sop);
+				{
+					writer.write(" \"" + sop + "\"");
+				}
 				writer.write("\n");
 			}
 		}
