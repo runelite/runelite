@@ -157,7 +157,7 @@ public class ScriptDumperTest
 				{
 					if (opcode == Opcodes.JUMP)
 					{
-						writer.write(" LABEL" + (i + iop));
+						writer.write(" LABEL" + (i + iop + 1));
 					}
 					else
 					{
