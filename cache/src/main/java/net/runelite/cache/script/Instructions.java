@@ -30,6 +30,7 @@ import java.util.Map;
 public class Instructions
 {
 	private static final Map<Integer, Instruction> instructions = new HashMap<>();
+	private static final Map<String, Instruction> instructionsByName = new HashMap<>();
 
 	public static void init()
 	{
@@ -443,6 +444,12 @@ public class Instructions
 
 		assert instructions.containsKey(opcode) == false;
 		instructions.put(opcode, i);
+
+		if (name != null)
+		{
+			assert instructionsByName.containsKey(name) == false;
+			instructionsByName.put(name, i);
+		}
 	}
 
 	private static void add(int opcode, int ipops, int ipushes)
@@ -463,5 +470,10 @@ public class Instructions
 	public static Instruction find(int opcode)
 	{
 		return instructions.get(opcode);
+	}
+
+	public static Instruction find(String name)
+	{
+		return instructionsByName.get(name);
 	}
 }
