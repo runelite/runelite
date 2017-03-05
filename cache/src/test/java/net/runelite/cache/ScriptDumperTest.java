@@ -83,6 +83,23 @@ public class ScriptDumperTest
 		logger.info("Dumped {} scripts to {}", count, outDir);
 	}
 
+	private boolean isJump(int opcode)
+	{
+		switch (opcode)
+		{
+			case Opcodes.JUMP:
+			case Opcodes.IF_ICMPEQ:
+			case Opcodes.IF_ICMPGE:
+			case Opcodes.IF_ICMPGT:
+			case Opcodes.IF_ICMPLE:
+			case Opcodes.IF_ICMPLT:
+			case Opcodes.IF_ICMPNE:
+				return true;
+			default:
+				return false;
+		}
+	}
+
 	private boolean[] needLabel(ScriptDefinition script)
 	{
 		int[] instructions = script.getInstructions();
@@ -93,7 +110,7 @@ public class ScriptDumperTest
 		{
 			int opcode = instructions[i];
 
-			if (opcode != Opcodes.JUMP)
+			if (!isJump(opcode))
 			{
 				continue;
 			}
@@ -155,7 +172,7 @@ public class ScriptDumperTest
 
 				if (iop != 0 || opcode == Opcodes.LOAD_INT)
 				{
-					if (opcode == Opcodes.JUMP)
+					if (isJump(opcode))
 					{
 						writer.write(" LABEL" + (i + iop + 1));
 					}
