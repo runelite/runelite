@@ -1,0 +1,50 @@
+   033                   
+   load_int               1
+   if_icmpne              LABEL4
+   jump                   LABEL5
+LABEL4:
+   return                
+LABEL5:
+   load_int               2871
+   load_int               1
+   load_int               0
+   3200                  
+   033                    1
+   load_int               1
+   if_icmpeq              LABEL13
+   jump                   LABEL20
+LABEL13:
+   025                    3985
+   033                    2
+   iadd                  
+   load_int               4
+   modulo                
+   027                    3985
+   jump                   LABEL41
+LABEL20:
+   033                    1
+   load_int               2
+   if_icmpeq              LABEL24
+   jump                   LABEL31
+LABEL24:
+   025                    3986
+   033                    2
+   iadd                  
+   load_int               4
+   modulo                
+   027                    3986
+   jump                   LABEL41
+LABEL31:
+   033                    1
+   load_int               3
+   if_icmpeq              LABEL35
+   jump                   LABEL41
+LABEL35:
+   025                    3987
+   033                    2
+   iadd                  
+   load_int               4
+   modulo                
+   027                    3987
+LABEL41:
+   return                
