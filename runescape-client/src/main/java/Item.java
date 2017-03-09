@@ -4,57 +4,90 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ad")
+@ObfuscatedName("ai")
 @Implements("Item")
 public final class Item extends Renderable {
-   @ObfuscatedName("qn")
-   protected static java.awt.Frame field881;
-   @ObfuscatedName("b")
+   @ObfuscatedName("av")
+   static class110 field909;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = 1233123935
+      intValue = -2079758699
    )
    @Export("id")
    int id;
-   @ObfuscatedName("f")
-   static byte[][][] field884;
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1162858851
+      intValue = -1570569195
    )
    @Export("quantity")
    int quantity;
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)LModel;",
-      garbageValue = "-8"
+      signature = "(S)LModel;",
+      garbageValue = "-10054"
    )
    protected final Model getModel() {
-      return class168.getItemDefinition(this.id).getModel(this.quantity);
+      return class154.getItemDefinition(this.id).getModel(this.quantity);
    }
 
-   @ObfuscatedName("cn")
+   @ObfuscatedName("dg")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-137570764"
+      signature = "([Ljava/lang/String;I)[Ljava/lang/String;",
+      garbageValue = "-728411423"
    )
-   static void method871() {
-      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
-         if(class149.method2824(Client.menuTypes[var0])) {
-            if(var0 < Client.menuOptionCount - 1) {
-               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
-                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
-                  Client.menuTargets[var1] = Client.menuTargets[var1 + 1];
-                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
-                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[var1 + 1];
-                  Client.menuActionParams0[var1] = Client.menuActionParams0[1 + var1];
-                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
-               }
-            }
+   static final String[] method875(String[] var0) {
+      String[] var1 = new String[5];
 
-            --Client.menuOptionCount;
+      for(int var2 = 0; var2 < 5; ++var2) {
+         var1[var2] = var2 + ": ";
+         if(var0 != null && null != var0[var2]) {
+            var1[var2] = var1[var2] + var0[var2];
          }
       }
 
+      return var1;
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "36"
+   )
+   public static boolean method880() {
+      try {
+         if(class138.field1920 == 2) {
+            if(null == class179.field2679) {
+               class179.field2679 = class144.method2751(class138.field1916, class138.field1922, class8.field86);
+               if(class179.field2679 == null) {
+                  return false;
+               }
+            }
+
+            if(class30.field721 == null) {
+               class30.field721 = new class60(class138.field1918, class138.field1917);
+            }
+
+            if(class138.field1919.method2604(class179.field2679, class138.field1924, class30.field721, 22050)) {
+               class138.field1919.method2533();
+               class138.field1919.method2566(Ignore.field245);
+               class138.field1919.method2550(class179.field2679, class138.field1923);
+               class138.field1920 = 0;
+               class179.field2679 = null;
+               class30.field721 = null;
+               class138.field1916 = null;
+               return true;
+            }
+         }
+      } catch (Exception var1) {
+         var1.printStackTrace();
+         class138.field1919.method2536();
+         class138.field1920 = 0;
+         class179.field2679 = null;
+         class30.field721 = null;
+         class138.field1916 = null;
+      }
+
+      return false;
    }
 }

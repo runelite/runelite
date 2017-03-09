@@ -1,35 +1,40 @@
-import java.awt.datatransfer.Clipboard;
 import java.util.zip.Inflater;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ef")
+@ObfuscatedName("et")
 public class class146 {
-   @ObfuscatedName("b")
-   Inflater field2012;
-   @ObfuscatedName("py")
-   static Clipboard field2014;
+   @ObfuscatedName("ai")
+   @Export("authCode")
+   static String authCode;
+   @ObfuscatedName("x")
+   Inflater field2021;
 
-   @ObfuscatedName("b")
+   public class146() {
+      this(-1, 1000000, 1000000);
+   }
+
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(LBuffer;[BB)V",
-      garbageValue = "0"
+      signature = "(LBuffer;[BI)V",
+      garbageValue = "1481917384"
    )
-   public void method2782(Buffer var1, byte[] var2) {
+   public void method2767(Buffer var1, byte[] var2) {
       if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
-         if(null == this.field2012) {
-            this.field2012 = new Inflater(true);
+         if(null == this.field2021) {
+            this.field2021 = new Inflater(true);
          }
 
          try {
-            this.field2012.setInput(var1.payload, 10 + var1.offset, var1.payload.length - (8 + 10 + var1.offset));
-            this.field2012.inflate(var2);
+            this.field2021.setInput(var1.payload, var1.offset + 10, var1.payload.length - (10 + var1.offset + 8));
+            this.field2021.inflate(var2);
          } catch (Exception var4) {
-            this.field2012.reset();
+            this.field2021.reset();
             throw new RuntimeException("");
          }
 
-         this.field2012.reset();
+         this.field2021.reset();
       } else {
          throw new RuntimeException("");
       }
@@ -40,9 +45,5 @@ public class class146 {
       garbageValue = "1000000"
    )
    class146(int var1, int var2, int var3) {
-   }
-
-   public class146() {
-      this(-1, 1000000, 1000000);
    }
 }

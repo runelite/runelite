@@ -1,44 +1,44 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bl")
+@ObfuscatedName("bt")
 public class class55 extends class71 {
-   @ObfuscatedName("t")
-   int field1008;
-   @ObfuscatedName("l")
-   public byte[] field1009;
-   @ObfuscatedName("i")
-   public int field1010;
-   @ObfuscatedName("b")
-   public int field1011;
-   @ObfuscatedName("k")
-   public boolean field1012;
+   @ObfuscatedName("c")
+   public int field1033;
+   @ObfuscatedName("w")
+   public boolean field1034;
+   @ObfuscatedName("j")
+   public byte[] field1035;
+   @ObfuscatedName("d")
+   int field1036;
+   @ObfuscatedName("x")
+   public int field1037;
 
    class55(int var1, byte[] var2, int var3, int var4, boolean var5) {
-      this.field1011 = var1;
-      this.field1009 = var2;
-      this.field1010 = var3;
-      this.field1008 = var4;
-      this.field1012 = var5;
+      this.field1037 = var1;
+      this.field1035 = var2;
+      this.field1033 = var3;
+      this.field1036 = var4;
+      this.field1034 = var5;
    }
 
    class55(int var1, byte[] var2, int var3, int var4) {
-      this.field1011 = var1;
-      this.field1009 = var2;
-      this.field1010 = var3;
-      this.field1008 = var4;
+      this.field1037 = var1;
+      this.field1035 = var2;
+      this.field1033 = var3;
+      this.field1036 = var4;
    }
 
-   @ObfuscatedName("b")
-   public class55 method1087(class65 var1) {
-      this.field1009 = var1.method1222(this.field1009);
-      this.field1011 = var1.method1223(this.field1011);
-      if(this.field1010 == this.field1008) {
-         this.field1010 = this.field1008 = var1.method1229(this.field1010);
+   @ObfuscatedName("x")
+   public class55 method1093(class65 var1) {
+      this.field1035 = var1.method1237(this.field1035);
+      this.field1037 = var1.method1238(this.field1037);
+      if(this.field1033 == this.field1036) {
+         this.field1033 = this.field1036 = var1.method1241(this.field1033);
       } else {
-         this.field1010 = var1.method1229(this.field1010);
-         this.field1008 = var1.method1229(this.field1008);
-         if(this.field1010 == this.field1008) {
-            --this.field1010;
+         this.field1033 = var1.method1241(this.field1033);
+         this.field1036 = var1.method1241(this.field1036);
+         if(this.field1033 == this.field1036) {
+            --this.field1033;
          }
       }
 

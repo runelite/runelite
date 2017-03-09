@@ -2,45 +2,45 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fc")
+@ObfuscatedName("fh")
 public class class179 implements class158 {
-   @ObfuscatedName("n")
-   public final String field2683;
-   @ObfuscatedName("l")
-   public static final class179 field2684 = new class179("stellardawn", "Stellar Dawn", 1);
-   @ObfuscatedName("i")
-   public static final class179 field2685 = new class179("game3", "Game 3", 2);
-   @ObfuscatedName("b")
-   public static final class179 field2686 = new class179("runescape", "RuneScape", 0);
-   @ObfuscatedName("t")
-   public static final class179 field2687 = new class179("game4", "Game 4", 3);
+   @ObfuscatedName("d")
+   static final class179 field2671 = new class179("game4", "Game 4", 3);
+   @ObfuscatedName("j")
+   static final class179 field2672 = new class179("stellardawn", "Stellar Dawn", 1);
+   @ObfuscatedName("x")
+   static final class179 field2673 = new class179("runescape", "RuneScape", 0);
+   @ObfuscatedName("c")
+   static final class179 field2674 = new class179("game3", "Game 3", 2);
+   @ObfuscatedName("w")
+   static final class179 field2675 = new class179("game5", "Game 5", 4);
    @ObfuscatedName("h")
-   public static final class179 field2688 = new class179("oldscape", "RuneScape 2007", 5);
-   @ObfuscatedName("f")
-   @ObfuscatedGetter(
-      intValue = -409862269
-   )
-   final int field2690;
-   @ObfuscatedName("bj")
-   static ModIcon[] field2691;
+   public static final class179 field2676 = new class179("oldscape", "RuneScape 2007", 5);
+   @ObfuscatedName("u")
+   public final String field2677;
    @ObfuscatedName("k")
-   public static final class179 field2693 = new class179("game5", "Game 5", 4);
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "0"
+   @ObfuscatedGetter(
+      intValue = 1910566553
    )
-   public int vmethod4183() {
-      return this.field2690;
-   }
+   final int field2678;
+   @ObfuscatedName("q")
+   public static class144 field2679;
 
    @ObfuscatedSignature(
       signature = "(Ljava/lang/String;Ljava/lang/String;I)V",
       garbageValue = "0"
    )
    class179(String var1, String var2, int var3) {
-      this.field2683 = var1;
-      this.field2690 = var3;
+      this.field2677 = var1;
+      this.field2678 = var3;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "127"
+   )
+   public int vmethod4085() {
+      return this.field2678;
    }
 }

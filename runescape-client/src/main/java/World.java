@@ -7,158 +7,198 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("af")
 @Implements("World")
 public class World {
-   @ObfuscatedName("r")
+   @ObfuscatedName("g")
+   static int[] field694 = new int[]{0, 1, 2, 3};
+   @ObfuscatedName("m")
    @ObfuscatedGetter(
-      intValue = 1647253093
-   )
-   @Export("scriptStringStackSize")
-   static int scriptStringStackSize;
-   @ObfuscatedName("k")
-   @Export("worldList")
-   static World[] worldList;
-   @ObfuscatedName("z")
-   @ObfuscatedGetter(
-      intValue = 1584208063
-   )
-   @Export("mask")
-   int mask;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = -1363872097
-   )
-   static int field676 = 0;
-   @ObfuscatedName("a")
-   static int[] field677 = new int[]{0, 1, 2, 3};
-   @ObfuscatedName("f")
-   static int[] field678 = new int[]{1, 1, 1, 1};
-   @ObfuscatedName("x")
-   @ObfuscatedGetter(
-      intValue = 1209451173
-   )
-   @Export("id")
-   int id;
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = 840728307
-   )
-   static int field681 = 0;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = 1428931535
-   )
-   @Export("playerCount")
-   int playerCount;
-   @ObfuscatedName("s")
-   @Export("address")
-   String address;
-   @ObfuscatedName("o")
-   @Export("activity")
-   String activity;
-   @ObfuscatedName("y")
-   @ObfuscatedGetter(
-      intValue = 1315254429
-   )
-   @Export("location")
-   int location;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -116701293
+      intValue = 364466453
    )
    @Export("index")
    int index;
-
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1901719289
+   )
+   static int field697 = 0;
+   @ObfuscatedName("q")
+   @ObfuscatedGetter(
+      intValue = 1724902261
+   )
+   @Export("mask")
+   int mask;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 257836151
+   )
+   static int field700 = 0;
    @ObfuscatedName("y")
+   @Export("worldServersDownload")
+   static class26 worldServersDownload;
+   @ObfuscatedName("e")
+   @ObfuscatedGetter(
+      intValue = 1360063007
+   )
+   @Export("id")
+   int id;
+   @ObfuscatedName("w")
+   @Export("worldList")
+   static World[] worldList;
+   @ObfuscatedName("v")
+   @ObfuscatedGetter(
+      intValue = 422148257
+   )
+   @Export("playerCount")
+   int playerCount;
+   @ObfuscatedName("l")
+   @Export("address")
+   String address;
+   @ObfuscatedName("s")
+   @Export("activity")
+   String activity;
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -60539599
+   )
+   @Export("location")
+   int location;
+   @ObfuscatedName("k")
+   static int[] field708 = new int[]{1, 1, 1, 1};
+   @ObfuscatedName("kl")
+   @ObfuscatedGetter(
+      intValue = 1295098307
+   )
+   static int field709;
+
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "-2111450081"
+      garbageValue = "-1239379816"
    )
-   boolean method648() {
+   boolean method629() {
+      return (2 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "17"
+   )
+   boolean method631() {
+      return (33554432 & this.mask) != 0;
+   }
+
+   @ObfuscatedName("v")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-99433545"
+   )
+   boolean method632() {
       return (4 & this.mask) != 0;
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "-1"
+      signature = "(I)Z",
+      garbageValue = "2023797036"
    )
-   boolean method652() {
+   boolean method638() {
       return (8 & this.mask) != 0;
    }
 
-   @ObfuscatedName("m")
+   @ObfuscatedName("cs")
    @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-28440887"
+      signature = "(II)Z",
+      garbageValue = "-414538839"
    )
-   boolean method653() {
-      return (536870912 & this.mask) != 0;
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "1914309758"
-   )
-   boolean method654() {
-      return (33554432 & this.mask) != 0;
+   static boolean method647(int var0) {
+      return var0 == 57 || var0 == 58 || var0 == 1007 || var0 == 25 || var0 == 30;
    }
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
       signature = "(I)Z",
-      garbageValue = "308815239"
+      garbageValue = "1344588821"
    )
-   boolean method664() {
-      return (1 & this.mask) != 0;
+   boolean method663() {
+      return (536870912 & this.mask) != 0;
    }
 
-   @ObfuscatedName("o")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(B)Z",
-      garbageValue = "93"
+      signature = "(I)V",
+      garbageValue = "-119166580"
    )
-   boolean method665() {
-      return (2 & this.mask) != 0;
-   }
+   static void method669() {
+      for(class31 var0 = (class31)class31.field741.method2448(); null != var0; var0 = (class31)class31.field741.method2445()) {
+         if(null != var0.field728) {
+            class195.field2863.method993(var0.field728);
+            var0.field728 = null;
+         }
 
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-40"
-   )
-   public static void method681() {
-      class39.field800.method2668();
-      class138.field1915 = 1;
-      class138.field1918 = null;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "0"
-   )
-   static int method682(int var0, Script var1, boolean var2) {
-      Widget var3 = class140.method2681(class32.field729[--class101.field1648]);
-      if(var0 == 2500) {
-         class32.field729[++class101.field1648 - 1] = var3.relativeX;
-         return 1;
-      } else if(var0 == 2501) {
-         class32.field729[++class101.field1648 - 1] = var3.relativeY;
-         return 1;
-      } else if(var0 == 2502) {
-         class32.field729[++class101.field1648 - 1] = var3.width;
-         return 1;
-      } else if(var0 == 2503) {
-         class32.field729[++class101.field1648 - 1] = var3.height;
-         return 1;
-      } else if(var0 == 2504) {
-         class32.field729[++class101.field1648 - 1] = var3.isHidden?1:0;
-         return 1;
-      } else if(var0 == 2505) {
-         class32.field729[++class101.field1648 - 1] = var3.parentId;
-         return 1;
-      } else {
-         return 2;
+         if(null != var0.field740) {
+            class195.field2863.method993(var0.field740);
+            var0.field740 = null;
+         }
       }
+
+      class31.field741.method2442();
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(IB)LWidget;",
+      garbageValue = "54"
+   )
+   public static Widget method670(int var0) {
+      int var1 = var0 >> 16;
+      int var2 = var0 & '\uffff';
+      if(Widget.widgets[var1] == null || null == Widget.widgets[var1][var2]) {
+         boolean var3 = class44.method892(var1);
+         if(!var3) {
+            return null;
+         }
+      }
+
+      return Widget.widgets[var1][var2];
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;I)V",
+      garbageValue = "-292133969"
+   )
+   public static void method671(class182 var0, class182 var1) {
+      KitDefinition.field2815 = var0;
+      KitDefinition.field2820 = var1;
+      class44.field918 = KitDefinition.field2815.method3316(3);
+   }
+
+   @ObfuscatedName("b")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1811605459"
+   )
+   static final int method672(int var0, int var1) {
+      if(var0 == -1) {
+         return 12345678;
+      } else {
+         var1 = var1 * (var0 & 127) / 128;
+         if(var1 < 2) {
+            var1 = 2;
+         } else if(var1 > 126) {
+            var1 = 126;
+         }
+
+         return var1 + (var0 & 'ﾀ');
+      }
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "(I)Z",
+      garbageValue = "-677669485"
+   )
+   boolean method673() {
+      return (1 & this.mask) != 0;
    }
 }

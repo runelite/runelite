@@ -2,43 +2,60 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gh")
+@ObfuscatedName("gz")
 public class class186 extends CacheableNode {
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 265444307
+      intValue = -715836419
    )
-   public int field2762 = 0;
-   @ObfuscatedName("l")
-   static NodeCache field2763 = new NodeCache(64);
-   @ObfuscatedName("b")
-   static class182 field2764;
+   public int field2761 = 0;
+   @ObfuscatedName("x")
+   static class182 field2762;
+   @ObfuscatedName("k")
+   static ModIcon field2763;
+   @ObfuscatedName("j")
+   static NodeCache field2764 = new NodeCache(64);
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(LBuffer;I)V",
-      garbageValue = "1169540865"
+      signature = "(LBuffer;B)V",
+      garbageValue = "10"
    )
-   void method3490(Buffer var1) {
+   void method3442(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3491(var1, var2);
+         this.method3444(var1, var2);
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
-      garbageValue = "-117"
+      signature = "(LBuffer;II)V",
+      garbageValue = "963248956"
    )
-   void method3491(Buffer var1, int var2) {
+   void method3444(Buffer var1, int var2) {
       if(var2 == 2) {
-         this.field2762 = var1.readUnsignedShort();
+         this.field2761 = var1.readUnsignedShort();
       }
 
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(CII)I",
+      garbageValue = "-1683250188"
+   )
+   public static int method3449(char var0, int var1) {
+      int var2 = var0 << 4;
+      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
+         var0 = Character.toLowerCase(var0);
+         var2 = (var0 << 4) + 1;
+      }
+
+      return var2;
    }
 }

@@ -1,179 +1,212 @@
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Random;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("z")
+@ObfuscatedName("q")
 @Implements("ScriptState")
 public class ScriptState {
-   @ObfuscatedName("t")
-   String[] field110;
-   @ObfuscatedName("i")
-   int[] field112;
-   @ObfuscatedName("l")
+   @ObfuscatedName("c")
+   int[] field133;
+   @ObfuscatedName("x")
+   Script field134;
+   @ObfuscatedName("d")
+   String[] field136;
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = -1840953173
+      intValue = -1466123699
    )
-   int field113 = -1;
-   @ObfuscatedName("ei")
-   static SpritePixels[] field115;
-   @ObfuscatedName("b")
-   Script field118;
+   int field137 = -1;
 
-   @ObfuscatedName("bb")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(IIIIIIII)V",
-      garbageValue = "-1219912189"
+      signature = "(IB)Z",
+      garbageValue = "20"
    )
-   static final void method164(int var0, int var1, int var2, int var3, int var4, int var5, int var6) {
-      if(var2 >= 1 && var3 >= 1 && var2 <= 102 && var3 <= 102) {
-         if(Client.field404 && class156.plane != var0) {
-            return;
-         }
-
-         int var7 = 0;
-         boolean var8 = true;
-         boolean var9 = false;
-         boolean var10 = false;
-         if(var1 == 0) {
-            var7 = Varbit.region.method1825(var0, var2, var3);
-         }
-
-         if(var1 == 1) {
-            var7 = Varbit.region.method1851(var0, var2, var3);
-         }
-
-         if(var1 == 2) {
-            var7 = Varbit.region.method1784(var0, var2, var3);
-         }
-
-         if(var1 == 3) {
-            var7 = Varbit.region.method1785(var0, var2, var3);
-         }
-
-         int var11;
-         if(var7 != 0) {
-            var11 = Varbit.region.method1786(var0, var2, var3, var7);
-            int var13 = var7 >> 14 & 32767;
-            int var14 = var11 & 31;
-            int var15 = var11 >> 6 & 3;
-            ObjectComposition var12;
-            if(var1 == 0) {
-               Varbit.region.method1922(var0, var2, var3);
-               var12 = class196.getObjectDefinition(var13);
-               if(var12.field2914 != 0) {
-                  Client.collisionMaps[var0].method2327(var2, var3, var14, var15, var12.field2915);
-               }
-            }
-
-            if(var1 == 1) {
-               Varbit.region.method1774(var0, var2, var3);
-            }
-
-            if(var1 == 2) {
-               Varbit.region.method1842(var0, var2, var3);
-               var12 = class196.getObjectDefinition(var13);
-               if(var12.sizeX + var2 > 103 || var12.sizeX + var3 > 103 || var12.sizeY + var2 > 103 || var3 + var12.sizeY > 103) {
-                  return;
-               }
-
-               if(var12.field2914 != 0) {
-                  Client.collisionMaps[var0].method2332(var2, var3, var12.sizeX, var12.sizeY, var15, var12.field2915);
-               }
-            }
-
-            if(var1 == 3) {
-               Varbit.region.method1776(var0, var2, var3);
-               var12 = class196.getObjectDefinition(var13);
-               if(var12.field2914 == 1) {
-                  Client.collisionMaps[var0].method2325(var2, var3);
-               }
-            }
-         }
-
-         if(var4 >= 0) {
-            var11 = var0;
-            if(var0 < 3 && (class10.tileSettings[1][var2][var3] & 2) == 2) {
-               var11 = var0 + 1;
-            }
-
-            class103.method2016(var0, var11, var2, var3, var4, var5, var6, Varbit.region, Client.collisionMaps[var0]);
-         }
-      }
-
+   public static boolean method169(int var0) {
+      return (var0 >> 20 & 1) != 0;
    }
 
-   @ObfuscatedName("k")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(I)I",
-      garbageValue = "371566406"
+      signature = "(JLjava/lang/String;I)I",
+      garbageValue = "-142990282"
    )
-   public static int method165() {
-      return class105.keyboardIdleTicks;
-   }
+   static final int method170(long var0, String var2) {
+      Random var3 = new Random();
+      Buffer var4 = new Buffer(128);
+      Buffer var5 = new Buffer(128);
+      int[] var6 = new int[]{var3.nextInt(), var3.nextInt(), (int)(var0 >> 32), (int)var0};
+      var4.method2843(10);
 
-   @ObfuscatedName("ah")
-   @ObfuscatedSignature(
-      signature = "(Lclass15;I)V",
-      garbageValue = "2115337623"
-   )
-   static final void method166(class15 var0) {
-      if(Client.flagX == class9.localPlayer.x >> 7 && class9.localPlayer.y >> 7 == Client.flagY) {
-         Client.flagX = 0;
+      int var7;
+      for(var7 = 0; var7 < 4; ++var7) {
+         var4.method2819(var3.nextInt());
       }
 
-      int var1 = class45.field907;
-      int[] var2 = class45.field900;
-      int var3 = var1;
-      if(var0 == class15.field161 || class15.field155 == var0) {
-         var3 = 1;
+      var4.method2819(var6[0]);
+      var4.method2819(var6[1]);
+      var4.method2856(var0);
+      var4.method2856(0L);
+
+      for(var7 = 0; var7 < 4; ++var7) {
+         var4.method2819(var3.nextInt());
       }
 
-      for(int var4 = 0; var4 < var3; ++var4) {
-         Player var5;
-         int var6;
-         if(var0 == class15.field161) {
-            var5 = class9.localPlayer;
-            var6 = class9.localPlayer.field261 << 14;
-         } else if(var0 == class15.field155) {
-            var5 = Client.cachedPlayers[Client.field414];
-            var6 = Client.field414 << 14;
-         } else {
-            var5 = Client.cachedPlayers[var2[var4]];
-            var6 = var2[var4] << 14;
-            if(var0 == class15.field160 && var2[var4] == Client.field414) {
-               continue;
+      var4.method2852(class36.field795, class36.field800);
+      var5.method2843(10);
+
+      for(var7 = 0; var7 < 3; ++var7) {
+         var5.method2819(var3.nextInt());
+      }
+
+      var5.method2856(var3.nextLong());
+      var5.method2820(var3.nextLong());
+      if(Client.field349 != null) {
+         var5.method2825(Client.field349, 0, Client.field349.length);
+      } else {
+         byte[] var8 = new byte[24];
+
+         try {
+            class104.field1695.method1446(0L);
+            class104.field1695.method1448(var8);
+
+            int var9;
+            for(var9 = 0; var9 < 24 && var8[var9] == 0; ++var9) {
+               ;
+            }
+
+            if(var9 >= 24) {
+               throw new IOException();
+            }
+         } catch (Exception var23) {
+            for(int var10 = 0; var10 < 24; ++var10) {
+               var8[var10] = -1;
             }
          }
 
-         if(null != var5 && var5.vmethod795() && !var5.field259) {
-            var5.field257 = false;
-            if((Client.field404 && var1 > 50 || var1 > 200) && var0 != class15.field161 && var5.poseAnimation == var5.idlePoseAnimation) {
-               var5.field257 = true;
-            }
+         var5.method2825(var8, 0, var8.length);
+      }
 
-            int var7 = var5.x >> 7;
-            int var8 = var5.y >> 7;
-            if(var7 >= 0 && var7 < 104 && var8 >= 0 && var8 < 104) {
-               if(null != var5.model && Client.gameCycle >= var5.totalLevel && Client.gameCycle < var5.field239) {
-                  var5.field257 = false;
-                  var5.field262 = class65.method1224(var5.x, var5.y, class156.plane);
-                  Varbit.region.method1847(class156.plane, var5.x, var5.y, var5.field262, 60, var5, var5.angle, var6, var5.field253, var5.field254, var5.field255, var5.field250);
+      var5.method2856(var3.nextLong());
+      var5.method2852(class36.field795, class36.field800);
+      var7 = class164.method3157(var2);
+      if(var7 % 8 != 0) {
+         var7 += 8 - var7 % 8;
+      }
+
+      Buffer var24 = new Buffer(var7);
+      var24.method2822(var2);
+      var24.offset = var7;
+      var24.method2859(var6);
+      Buffer var18 = new Buffer(var24.offset + var5.offset + 5 + var4.offset);
+      var18.method2843(2);
+      var18.method2843(var4.offset);
+      var18.method2825(var4.payload, 0, var4.offset);
+      var18.method2843(var5.offset);
+      var18.method2825(var5.payload, 0, var5.offset);
+      var18.method2817(var24.offset);
+      var18.method2825(var24.payload, 0, var24.offset);
+      byte[] var11 = var18.payload;
+      String var20 = class195.method3574(var11, 0, var11.length);
+      String var12 = var20;
+
+      try {
+         URL var13 = new URL(GroundObject.method1596("services", false) + "m=accountappeal/login.ws");
+         URLConnection var14 = var13.openConnection();
+         var14.setDoInput(true);
+         var14.setDoOutput(true);
+         var14.setConnectTimeout(5000);
+         OutputStreamWriter var15 = new OutputStreamWriter(var14.getOutputStream());
+         var15.write("data2=" + class47.method962(var12) + "&dest=" + class47.method962("passwordchoice.ws"));
+         var15.flush();
+         InputStream var16 = var14.getInputStream();
+         var18 = new Buffer(new byte[1000]);
+
+         do {
+            int var17 = var16.read(var18.payload, var18.offset, 1000 - var18.offset);
+            if(var17 == -1) {
+               var15.close();
+               var16.close();
+               String var21 = new String(var18.payload);
+               if(var21.startsWith("OFFLINE")) {
+                  return 4;
+               } else if(var21.startsWith("WRONG")) {
+                  return 7;
+               } else if(var21.startsWith("RELOAD")) {
+                  return 3;
+               } else if(var21.startsWith("Not permitted for social network accounts.")) {
+                  return 6;
                } else {
-                  if((var5.x & 127) == 64 && (var5.y & 127) == 64) {
-                     if(Client.field543 == Client.field334[var7][var8]) {
-                        continue;
-                     }
+                  var18.method2821(var6);
 
-                     Client.field334[var7][var8] = Client.field543;
+                  while(var18.offset > 0 && var18.payload[var18.offset - 1] == 0) {
+                     --var18.offset;
                   }
 
-                  var5.field262 = class65.method1224(var5.x, var5.y, class156.plane);
-                  Varbit.region.method1838(class156.plane, var5.x, var5.y, var5.field262, 60, var5, var5.angle, var6, var5.field632);
+                  var21 = new String(var18.payload, 0, var18.offset);
+                  if(class25.method598(var21)) {
+                     RSCanvas.method2137(var21, true, false);
+                     return 2;
+                  } else {
+                     return 5;
+                  }
                }
             }
+
+            var18.offset += var17;
+         } while(var18.offset < 1000);
+
+         return 5;
+      } catch (Throwable var22) {
+         var22.printStackTrace();
+         return 5;
+      }
+   }
+
+   @ObfuscatedName("cb")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-171693379"
+   )
+   static void method171() {
+      for(int var0 = 0; var0 < Client.menuOptionCount; ++var0) {
+         if(World.method647(Client.menuTypes[var0])) {
+            if(var0 < Client.menuOptionCount - 1) {
+               for(int var1 = var0; var1 < Client.menuOptionCount - 1; ++var1) {
+                  Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+                  Client.menuTargets[var1] = Client.menuTargets[1 + var1];
+                  Client.menuTypes[var1] = Client.menuTypes[var1 + 1];
+                  Client.menuIdentifiers[var1] = Client.menuIdentifiers[1 + var1];
+                  Client.menuActionParams0[var1] = Client.menuActionParams0[var1 + 1];
+                  Client.menuActionParams1[var1] = Client.menuActionParams1[var1 + 1];
+               }
+            }
+
+            --Client.menuOptionCount;
          }
       }
 
+   }
+
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(CII)Ljava/lang/String;",
+      garbageValue = "220003284"
+   )
+   public static String method172(char var0, int var1) {
+      char[] var2 = new char[var1];
+
+      for(int var3 = 0; var3 < var1; ++var3) {
+         var2[var3] = var0;
+      }
+
+      return new String(var2);
    }
 }

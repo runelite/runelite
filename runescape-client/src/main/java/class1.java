@@ -2,179 +2,96 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import net.runelite.mapping.Export;
-import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("l")
+@ObfuscatedName("j")
 public class class1 {
-   @ObfuscatedName("cz")
-   @ObfuscatedGetter(
-      longValue = -1505547449554748095L
-   )
-   static long field5;
-   @ObfuscatedName("l")
-   public static Comparator field6 = new class7();
-   @ObfuscatedName("i")
-   public static Comparator field7;
-   @ObfuscatedName("t")
-   public static Comparator field8;
-   @ObfuscatedName("oc")
-   @ObfuscatedGetter(
-      intValue = 1262684339
-   )
-   static int field10;
-   @ObfuscatedName("ma")
-   @ObfuscatedGetter(
-      intValue = 1558056607
-   )
-   @Export("clanChatCount")
-   static int clanChatCount;
-   @ObfuscatedName("b")
-   public final List field12;
-   @ObfuscatedName("bj")
-   static class184 field13;
-   @ObfuscatedName("k")
+   @ObfuscatedName("j")
+   public static Comparator field11 = new class7();
+   @ObfuscatedName("be")
+   static class184 field12;
+   @ObfuscatedName("w")
+   public static Comparator field13;
+   @ObfuscatedName("d")
    public static Comparator field14;
+   @ObfuscatedName("cc")
+   static class110 field15;
+   @ObfuscatedName("in")
+   static Widget field16;
+   @ObfuscatedName("c")
+   public static Comparator field19;
+   @ObfuscatedName("x")
+   public final List field21;
 
-   @ObfuscatedName("bu")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "-1719335023"
+      signature = "(Ljava/util/Comparator;ZI)V",
+      garbageValue = "862629919"
    )
-   static final void method14() {
-      XGrandExchangeOffer.method71();
-      if(null == class5.field50) {
-         if(null == Client.field458) {
-            int var1;
-            int var3;
-            int var4;
-            int var11;
-            label294: {
-               int var0 = class115.field1796;
-               int var2;
-               int var7;
-               if(Client.isMenuOpen) {
-                  if(var0 != 1 && (class36.field769 || var0 != 4)) {
-                     var1 = class115.field1802;
-                     var2 = class115.field1801;
-                     if(var1 < MessageNode.menuX - 10 || var1 > class36.menuWidth + MessageNode.menuX + 10 || var2 < class137.menuY - 10 || var2 > 10 + class212.menuHeight + class137.menuY) {
-                        Client.isMenuOpen = false;
-                        class105.method2076(MessageNode.menuX, class137.menuY, class36.menuWidth, class212.menuHeight);
-                     }
-                  }
+   public void method16(Comparator var1, boolean var2) {
+      if(var2) {
+         Collections.sort(this.field21, var1);
+      } else {
+         Collections.sort(this.field21, Collections.reverseOrder(var1));
+      }
 
-                  if(var0 == 1 || !class36.field769 && var0 == 4) {
-                     var1 = MessageNode.menuX;
-                     var2 = class137.menuY;
-                     var3 = class36.menuWidth;
-                     var4 = class115.field1808;
-                     int var5 = class115.field1798;
-                     var11 = -1;
+   }
 
-                     for(var7 = 0; var7 < Client.menuOptionCount; ++var7) {
-                        int var8 = var2 + 31 + 15 * (Client.menuOptionCount - 1 - var7);
-                        if(var4 > var1 && var4 < var1 + var3 && var5 > var8 - 13 && var5 < 3 + var8) {
-                           var11 = var7;
-                        }
-                     }
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(IIS)I",
+      garbageValue = "-8597"
+   )
+   static int method18(int var0, int var1) {
+      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method2405((long)var0);
+      if(null == var2) {
+         return 0;
+      } else if(var1 == -1) {
+         return 0;
+      } else {
+         int var3 = 0;
 
-                     if(var11 != -1) {
-                        class196.method3641(var11);
-                     }
-
-                     Client.isMenuOpen = false;
-                     class105.method2076(MessageNode.menuX, class137.menuY, class36.menuWidth, class212.menuHeight);
-                  }
-               } else {
-                  var1 = class7.method110();
-                  if((var0 == 1 || !class36.field769 && var0 == 4) && var1 >= 0) {
-                     var2 = Client.menuTypes[var1];
-                     if(var2 == 39 || var2 == 40 || var2 == 41 || var2 == 42 || var2 == 43 || var2 == 33 || var2 == 34 || var2 == 35 || var2 == 36 || var2 == 37 || var2 == 38 || var2 == 1005) {
-                        var3 = Client.menuActionParams0[var1];
-                        var4 = Client.menuActionParams1[var1];
-                        Widget var9 = class140.method2681(var4);
-                        if(Player.method256(class8.method112(var9))) {
-                           break label294;
-                        }
-
-                        var7 = class8.method112(var9);
-                        boolean var6 = (var7 >> 29 & 1) != 0;
-                        if(var6) {
-                           break label294;
-                        }
-                     }
-                  }
-
-                  if(var0 == 1 || !class36.field769 && var0 == 4) {
-                     label300: {
-                        label214: {
-                           if(Client.field422 == 1 && Client.menuOptionCount > 2) {
-                              boolean var10;
-                              if(Client.menuOptionCount <= 0) {
-                                 var10 = false;
-                              } else if(Client.field433 && class105.field1700[81] && Client.field432 != -1) {
-                                 var10 = true;
-                              } else {
-                                 var10 = false;
-                              }
-
-                              if(!var10) {
-                                 break label214;
-                              }
-                           }
-
-                           if(!class72.method1464(var1)) {
-                              break label300;
-                           }
-                        }
-
-                        var0 = 2;
-                     }
-                  }
-
-                  if((var0 == 1 || !class36.field769 && var0 == 4) && Client.menuOptionCount > 0) {
-                     class196.method3641(var1);
-                  }
-
-                  if(var0 == 2 && Client.menuOptionCount > 0) {
-                     class168.method3260(class115.field1808, class115.field1798);
-                  }
-               }
-
-               return;
+         for(int var4 = 0; var4 < var2.stackSizes.length; ++var4) {
+            if(var1 == var2.itemIds[var4]) {
+               var3 += var2.stackSizes[var4];
             }
+         }
 
-            if(null != class5.field50 && !Client.field402) {
-               var11 = class7.method110();
-               if(Client.field422 != 1 && !class72.method1464(var11) && Client.menuOptionCount > 0) {
-                  class60.method1205(Client.field399, Client.field491);
-               }
+         return var3;
+      }
+   }
+
+   @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "8"
+   )
+   static final void method20() {
+      int[] var0 = class45.field925;
+
+      int var1;
+      for(var1 = 0; var1 < class45.field934; ++var1) {
+         Player var2 = Client.cachedPlayers[var0[var1]];
+         if(var2 != null && var2.field641 > 0) {
+            --var2.field641;
+            if(var2.field641 == 0) {
+               var2.overhead = null;
             }
-
-            Client.field402 = false;
-            Client.field403 = 0;
-            if(null != class5.field50) {
-               Frames.method1960(class5.field50);
-            }
-
-            class5.field50 = class140.method2681(var4);
-            Client.field398 = var3;
-            Client.field399 = class115.field1808;
-            Client.field491 = class115.field1798;
-            if(var1 >= 0) {
-               class180.field2698 = new class38();
-               class180.field2698.field797 = Client.menuActionParams0[var1];
-               class180.field2698.field790 = Client.menuActionParams1[var1];
-               class180.field2698.field791 = Client.menuTypes[var1];
-               class180.field2698.field792 = Client.menuIdentifiers[var1];
-               class180.field2698.field793 = Client.menuOptions[var1];
-            }
-
-            Frames.method1960(class5.field50);
          }
       }
+
+      for(var1 = 0; var1 < Client.field351; ++var1) {
+         int var4 = Client.field570[var1];
+         NPC var3 = Client.cachedNPCs[var4];
+         if(null != var3 && var3.field641 > 0) {
+            --var3.field641;
+            if(var3.field641 == 0) {
+               var3.overhead = null;
+            }
+         }
+      }
+
    }
 
    @ObfuscatedSignature(
@@ -192,32 +109,42 @@ public class class1 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field12 = new ArrayList(var6);
+      this.field21 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field12.add(new class2(var1, var5, var3));
-      }
-
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "-685022002"
-   )
-   public void method18(Comparator var1, boolean var2) {
-      if(var2) {
-         Collections.sort(this.field12, var1);
-      } else {
-         Collections.sort(this.field12, Collections.reverseOrder(var1));
+         this.field21.add(new class2(var1, var5, var3));
       }
 
    }
 
    static {
       new class0();
-      field7 = new class5();
-      field8 = new class6();
-      field14 = new class3();
+      field19 = new class5();
+      field14 = new class6();
+      field13 = new class3();
+   }
+
+   @ObfuscatedName("bm")
+   @ObfuscatedSignature(
+      signature = "(IIII)I",
+      garbageValue = "135927553"
+   )
+   static final int method21(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
+            var5 = var2 + 1;
+         }
+
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = var6 * class10.tileHeights[var5][1 + var3][var4] + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
+         int var9 = class10.tileHeights[var5][var3][1 + var4] * (128 - var6) + var6 * class10.tileHeights[var5][1 + var3][1 + var4] >> 7;
+         return (128 - var7) * var8 + var7 * var9 >> 7;
+      } else {
+         return 0;
+      }
    }
 }

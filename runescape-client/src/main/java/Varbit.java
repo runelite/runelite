@@ -4,61 +4,125 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gr")
+@ObfuscatedName("gc")
 @Implements("Varbit")
 public class Varbit extends CacheableNode {
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 585932483
+      intValue = 1991224839
    )
    @Export("leastSignificantBit")
    public int leastSignificantBit;
-   @ObfuscatedName("l")
-   public static NodeCache field2850 = new NodeCache(64);
-   @ObfuscatedName("t")
+   @ObfuscatedName("x")
+   static class182 field2845;
+   @ObfuscatedName("j")
+   public static NodeCache field2846 = new NodeCache(64);
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -882909293
+      intValue = -1435971449
    )
    @Export("configId")
    public int configId;
-   @ObfuscatedName("b")
-   public static class182 field2853;
-   @ObfuscatedName("k")
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1776529753
+      intValue = 1592532861
    )
    @Export("mostSignificantBit")
    public int mostSignificantBit;
-   @ObfuscatedName("dl")
-   @Export("region")
-   static Region region;
-   @ObfuscatedName("ce")
-   static class102 field2856;
-   @ObfuscatedName("d")
-   static int[] field2857;
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("r")
+   @ObfuscatedSignature(
+      signature = "([BB)V",
+      garbageValue = "-47"
+   )
+   static void method3557(byte[] var0) {
+      Buffer var1 = new Buffer(var0);
+      var1.offset = var0.length - 2;
+      class225.field3235 = var1.readUnsignedShort();
+      XItemContainer.field147 = new int[class225.field3235];
+      class203.field3085 = new int[class225.field3235];
+      class225.field3233 = new int[class225.field3235];
+      class225.field3231 = new int[class225.field3235];
+      RSCanvas.field1766 = new byte[class225.field3235][];
+      var1.offset = var0.length - 7 - class225.field3235 * 8;
+      class203.field3083 = var1.readUnsignedShort();
+      class225.field3232 = var1.readUnsignedShort();
+      int var2 = (var1.readUnsignedByte() & 255) + 1;
+
+      int var3;
+      for(var3 = 0; var3 < class225.field3235; ++var3) {
+         XItemContainer.field147[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3235; ++var3) {
+         class203.field3085[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3235; ++var3) {
+         class225.field3233[var3] = var1.readUnsignedShort();
+      }
+
+      for(var3 = 0; var3 < class225.field3235; ++var3) {
+         class225.field3231[var3] = var1.readUnsignedShort();
+      }
+
+      var1.offset = var0.length - 7 - class225.field3235 * 8 - (var2 - 1) * 3;
+      class225.field3237 = new int[var2];
+
+      for(var3 = 1; var3 < var2; ++var3) {
+         class225.field3237[var3] = var1.read24BitInt();
+         if(class225.field3237[var3] == 0) {
+            class225.field3237[var3] = 1;
+         }
+      }
+
+      var1.offset = 0;
+
+      for(var3 = 0; var3 < class225.field3235; ++var3) {
+         int var4 = class225.field3233[var3];
+         int var5 = class225.field3231[var3];
+         int var6 = var5 * var4;
+         byte[] var7 = new byte[var6];
+         RSCanvas.field1766[var3] = var7;
+         int var8 = var1.readUnsignedByte();
+         int var9;
+         if(var8 == 0) {
+            for(var9 = 0; var9 < var6; ++var9) {
+               var7[var9] = var1.readByte();
+            }
+         } else if(var8 == 1) {
+            for(var9 = 0; var9 < var4; ++var9) {
+               for(int var10 = 0; var10 < var5; ++var10) {
+                  var7[var4 * var10 + var9] = var1.readByte();
+               }
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(LBuffer;I)V",
-      garbageValue = "1109716208"
+      garbageValue = "2002014101"
    )
-   public void method3617(Buffer var1) {
+   void method3558(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3623(var1, var2);
+         this.method3559(var1, var2);
       }
    }
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(LBuffer;IB)V",
-      garbageValue = "89"
+      signature = "(LBuffer;II)V",
+      garbageValue = "-604912937"
    )
-   void method3623(Buffer var1, int var2) {
+   void method3559(Buffer var1, int var2) {
       if(var2 == 1) {
          this.leastSignificantBit = var1.readUnsignedShort();
          this.configId = var1.readUnsignedByte();
@@ -67,86 +131,14 @@ public class Varbit extends CacheableNode {
 
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("e")
    @ObfuscatedSignature(
-      signature = "(CI)B",
-      garbageValue = "447913376"
+      signature = "(Lclass182;Lclass182;Ljava/lang/String;Ljava/lang/String;B)LFont;",
+      garbageValue = "1"
    )
-   public static byte method3627(char var0) {
-      byte var1;
-      if(var0 > 0 && var0 < 128 || var0 >= 160 && var0 <= 255) {
-         var1 = (byte)var0;
-      } else if(var0 == 8364) {
-         var1 = -128;
-      } else if(var0 == 8218) {
-         var1 = -126;
-      } else if(var0 == 402) {
-         var1 = -125;
-      } else if(var0 == 8222) {
-         var1 = -124;
-      } else if(var0 == 8230) {
-         var1 = -123;
-      } else if(var0 == 8224) {
-         var1 = -122;
-      } else if(var0 == 8225) {
-         var1 = -121;
-      } else if(var0 == 710) {
-         var1 = -120;
-      } else if(var0 == 8240) {
-         var1 = -119;
-      } else if(var0 == 352) {
-         var1 = -118;
-      } else if(var0 == 8249) {
-         var1 = -117;
-      } else if(var0 == 338) {
-         var1 = -116;
-      } else if(var0 == 381) {
-         var1 = -114;
-      } else if(var0 == 8216) {
-         var1 = -111;
-      } else if(var0 == 8217) {
-         var1 = -110;
-      } else if(var0 == 8220) {
-         var1 = -109;
-      } else if(var0 == 8221) {
-         var1 = -108;
-      } else if(var0 == 8226) {
-         var1 = -107;
-      } else if(var0 == 8211) {
-         var1 = -106;
-      } else if(var0 == 8212) {
-         var1 = -105;
-      } else if(var0 == 732) {
-         var1 = -104;
-      } else if(var0 == 8482) {
-         var1 = -103;
-      } else if(var0 == 353) {
-         var1 = -102;
-      } else if(var0 == 8250) {
-         var1 = -101;
-      } else if(var0 == 339) {
-         var1 = -100;
-      } else if(var0 == 382) {
-         var1 = -98;
-      } else if(var0 == 376) {
-         var1 = -97;
-      } else {
-         var1 = 63;
-      }
-
-      return var1;
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(I)Lclass112;",
-      garbageValue = "-375823926"
-   )
-   public static class112 method3628() {
-      try {
-         return new class106();
-      } catch (Throwable var1) {
-         return null;
-      }
+   public static Font method3567(class182 var0, class182 var1, String var2, String var3) {
+      int var4 = var0.method3321(var2);
+      int var5 = var0.method3322(var4, var3);
+      return TextureProvider.method1516(var0, var1, var4, var5);
    }
 }

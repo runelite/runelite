@@ -1,100 +1,99 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("go")
+@ObfuscatedName("gu")
 public class class187 extends CacheableNode {
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 186956781
-   )
-   public int field2767 = 0;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1330078133
+      intValue = 1668735407
    )
    public static int field2768;
-   @ObfuscatedName("i")
-   public static NodeCache field2769 = new NodeCache(64);
-   @ObfuscatedName("b")
-   static class182 field2770;
-   @ObfuscatedName("av")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      longValue = 7684826748558282163L
+      intValue = -1156265605
    )
-   static long field2771;
+   public int field2769 = 0;
+   @ObfuscatedName("x")
+   static class182 field2770;
+   @ObfuscatedName("c")
+   public static NodeCache field2771 = new NodeCache(64);
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(Lclass182;B)V",
-      garbageValue = "92"
+      signature = "(LBuffer;I)V",
+      garbageValue = "-1800200084"
    )
-   public static void method3501(class182 var0) {
-      FloorUnderlayDefinition.field2815 = var0;
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;IS)V",
-      garbageValue = "16384"
-   )
-   void method3502(Buffer var1, int var2) {
-      if(var2 == 5) {
-         this.field2767 = var1.readUnsignedShort();
-      }
-
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "-108"
-   )
-   void method3510(Buffer var1) {
+   void method3453(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3502(var1, var2);
+         this.method3457(var1, var2);
       }
    }
 
-   @ObfuscatedName("t")
+   @ObfuscatedName("v")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "1281638134"
+      signature = "(II)V",
+      garbageValue = "2119481572"
    )
-   public static String method3514(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var1 + var5] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class203.field3081[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
+   @Export("setGameState")
+   static void setGameState(int var0) {
+      if(var0 != Client.gameState) {
+         if(Client.gameState == 0) {
+            class150.field2042 = null;
+            class97.field1643 = null;
+            class85.field1471 = null;
          }
-      }
 
-      return new String(var3, 0, var4);
+         if(var0 == 20 || var0 == 40 || var0 == 45) {
+            Client.field571 = 0;
+            Client.field471 = 0;
+            Client.field565 = 0;
+         }
+
+         if(var0 != 20 && var0 != 40 && class8.field88 != null) {
+            class8.field88.method2115();
+            class8.field88 = null;
+         }
+
+         if(Client.gameState == 25) {
+            Client.field371 = 0;
+            Client.field389 = 0;
+            Client.field368 = 1;
+            Client.field369 = 0;
+            Client.field453 = 1;
+         }
+
+         if(var0 != 5 && var0 != 10) {
+            if(var0 == 20) {
+               class105.method2066(CollisionData.canvas, class99.field1655, class0.field2, true, Client.gameState == 11?4:0);
+            } else if(var0 == 11) {
+               class105.method2066(CollisionData.canvas, class99.field1655, class0.field2, false, 4);
+            } else {
+               class18.method213();
+            }
+         } else {
+            class105.method2066(CollisionData.canvas, class99.field1655, class0.field2, true, 0);
+         }
+
+         Client.gameState = var0;
+      }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("d")
    @ObfuscatedSignature(
-      signature = "(IB)Ljava/lang/String;",
-      garbageValue = "47"
+      signature = "(LBuffer;II)V",
+      garbageValue = "227599132"
    )
-   static String method3515(int var0) {
-      return "<col=" + Integer.toHexString(var0) + ">";
+   void method3457(Buffer var1, int var2) {
+      if(var2 == 5) {
+         this.field2769 = var1.readUnsignedShort();
+      }
+
    }
 }

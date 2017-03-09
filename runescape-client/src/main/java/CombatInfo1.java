@@ -4,95 +4,110 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ab")
+@ObfuscatedName("aa")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 1481785453
+      intValue = 1051473115
    )
    @Export("health")
    int health;
-   @ObfuscatedName("t")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1731250797
-   )
-   int field666;
-   @ObfuscatedName("b")
-   @ObfuscatedGetter(
-      intValue = -1896973849
-   )
-   int field668;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = 1062958427
+      intValue = -345249683
    )
    @Export("healthRatio")
    int healthRatio;
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(IIIIB)V",
-      garbageValue = "4"
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -1042524761
    )
-   void method643(int var1, int var2, int var3, int var4) {
-      this.field668 = var1;
-      this.healthRatio = var2;
-      this.health = var3;
-      this.field666 = var4;
-   }
+   int field689;
+   @ObfuscatedName("d")
+   @ObfuscatedGetter(
+      intValue = 1829916919
+   )
+   int field690;
 
    CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field668 = var1;
+      this.field689 = var1;
       this.healthRatio = var2;
       this.health = var3;
-      this.field666 = var4;
+      this.field690 = var4;
    }
 
-   @ObfuscatedName("cy")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([LWidget;LWidget;ZI)V",
-      garbageValue = "1209258905"
+      signature = "(IIIII)V",
+      garbageValue = "1489917738"
    )
-   static void method646(Widget[] var0, Widget var1, boolean var2) {
-      int var3 = var1.scrollWidth != 0?var1.scrollWidth:var1.width;
-      int var4 = var1.scrollHeight != 0?var1.scrollHeight:var1.height;
-      class20.method210(var0, var1.id, var3, var4, var2);
-      if(var1.children != null) {
-         class20.method210(var1.children, var1.id, var3, var4, var2);
-      }
-
-      WidgetNode var5 = (WidgetNode)Client.componentTable.method2428((long)var1.id);
-      if(var5 != null) {
-         int var6 = var5.id;
-         if(class159.method3142(var6)) {
-            class20.method210(Widget.widgets[var6], -1, var3, var4, var2);
-         }
-      }
-
-      if(var1.contentType == 1337) {
-         ;
-      }
-
+   void method623(int var1, int var2, int var3, int var4) {
+      this.field689 = var1;
+      this.healthRatio = var2;
+      this.health = var3;
+      this.field690 = var4;
    }
 
-   @ObfuscatedName("dy")
+   @ObfuscatedName("dm")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "228786306"
+      signature = "(Ljava/lang/String;I)V",
+      garbageValue = "-423303126"
    )
-   static final void method647(int var0) {
-      if(class159.method3142(var0)) {
-         Widget[] var1 = Widget.widgets[var0];
+   static final void method625(String var0) {
+      if(!var0.equals("")) {
+         Client.field309.method3076(164);
+         Client.field309.method2843(class164.method3157(var0));
+         Client.field309.method2822(var0);
+      }
+   }
 
-         for(int var2 = 0; var2 < var1.length; ++var2) {
-            Widget var3 = var1[var2];
-            if(null != var3) {
-               var3.field2318 = 0;
-               var3.field2303 = 0;
+   @ObfuscatedName("ci")
+   @ObfuscatedSignature(
+      signature = "([LWidget;II)V",
+      garbageValue = "1439824084"
+   )
+   static final void method628(Widget[] var0, int var1) {
+      for(int var2 = 0; var2 < var0.length; ++var2) {
+         Widget var3 = var0[var2];
+         if(var3 != null) {
+            if(var3.type == 0) {
+               if(null != var3.children) {
+                  method628(var3.children, var1);
+               }
+
+               WidgetNode var4 = (WidgetNode)Client.componentTable.method2405((long)var3.id);
+               if(null != var4) {
+                  int var5 = var4.id;
+                  if(class44.method892(var5)) {
+                     method628(Widget.widgets[var5], var1);
+                  }
+               }
+            }
+
+            class18 var6;
+            if(var1 == 0 && var3.field2293 != null) {
+               var6 = new class18();
+               var6.field223 = var3;
+               var6.field232 = var3.field2293;
+               Frames.method1963(var6);
+            }
+
+            if(var1 == 1 && null != var3.field2294) {
+               if(var3.index >= 0) {
+                  Widget var7 = World.method670(var3.id);
+                  if(null == var7 || var7.children == null || var3.index >= var7.children.length || var7.children[var3.index] != var3) {
+                     continue;
+                  }
+               }
+
+               var6 = new class18();
+               var6.field223 = var3;
+               var6.field232 = var3.field2294;
+               Frames.method1963(var6);
             }
          }
-
       }
+
    }
 }

@@ -1,118 +1,123 @@
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InvalidClassException;
-import java.io.ObjectInputStream;
-import java.io.OptionalDataException;
-import java.io.StreamCorruptedException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
-import net.runelite.rs.Reflection;
 
-@ObfuscatedName("gp")
+@ObfuscatedName("gi")
 public final class class207 {
    class207() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("cv")
    @ObfuscatedSignature(
-      signature = "(Lclass159;I)V",
-      garbageValue = "907411011"
+      signature = "(LNPCComposition;IIII)V",
+      garbageValue = "78734789"
    )
-   public static void method3954(class159 var0) {
-      ClassInfo var1 = (ClassInfo)class227.field3246.method2455();
-      if(var1 != null) {
-         int var2 = var0.offset;
-         var0.method2844(var1.field3240);
+   static final void method3862(NPCComposition var0, int var1, int var2, int var3) {
+      if(Client.menuOptionCount < 400) {
+         if(var0.configs != null) {
+            var0 = var0.method3719();
+         }
 
-         for(int var3 = 0; var3 < var1.field3235; ++var3) {
-            if(var1.field3236[var3] != 0) {
-               var0.method3010(var1.field3236[var3]);
-            } else {
-               try {
-                  int var4 = var1.field3237[var3];
-                  Field var5;
-                  int var6;
-                  if(var4 == 0) {
-                     var5 = var1.fields[var3];
-                     var6 = Reflection.getInt(var5, (Object)null);
-                     var0.method3010(0);
-                     var0.method2844(var6);
-                  } else if(var4 == 1) {
-                     var5 = var1.fields[var3];
-                     Reflection.setInt(var5, (Object)null, var1.field3238[var3]);
-                     var0.method3010(0);
-                  } else if(var4 == 2) {
-                     var5 = var1.fields[var3];
-                     var6 = var5.getModifiers();
-                     var0.method3010(0);
-                     var0.method2844(var6);
+         if(null != var0) {
+            if(var0.field3035) {
+               if(!var0.field3037 || var1 == Client.field481) {
+                  String var4 = var0.name;
+                  if(var0.combatLevel != 0) {
+                     var4 = var4 + class168.method3202(var0.combatLevel, class22.localPlayer.combatLevel) + " " + " (" + "level-" + var0.combatLevel + ")";
                   }
 
-                  Method var25;
-                  if(var4 != 3) {
-                     if(var4 == 4) {
-                        var25 = var1.methods[var3];
-                        var6 = var25.getModifiers();
-                        var0.method3010(0);
-                        var0.method2844(var6);
+                  if(var0.field3037 && Client.field346) {
+                     class22.addMenuEntry("Examine", class116.method2288(16776960) + var4, 1003, var1, var2, var3);
+                  }
+
+                  if(Client.field466 == 1) {
+                     class22.addMenuEntry("Use", Client.field496 + " " + "->" + " " + class116.method2288(16776960) + var4, 7, var1, var2, var3);
+                  } else if(Client.field468) {
+                     if((class7.field73 & 2) == 2) {
+                        class22.addMenuEntry(Client.field489, Client.field472 + " " + "->" + " " + class116.method2288(16776960) + var4, 8, var1, var2, var3);
                      }
                   } else {
-                     var25 = var1.methods[var3];
-                     byte[][] var10 = var1.args[var3];
-                     Object[] var7 = new Object[var10.length];
-
-                     for(int var8 = 0; var8 < var10.length; ++var8) {
-                        ObjectInputStream var9 = new ObjectInputStream(new ByteArrayInputStream(var10[var8]));
-                        var7[var8] = var9.readObject();
+                     int var5 = var0.field3037 && Client.field346?2000:0;
+                     String[] var6 = var0.actions;
+                     if(Client.field484) {
+                        var6 = Item.method875(var6);
                      }
 
-                     Object var11 = Reflection.invoke(var25, (Object)null, var7);
-                     if(null == var11) {
-                        var0.method3010(0);
-                     } else if(var11 instanceof Number) {
-                        var0.method3010(1);
-                        var0.method2845(((Number)var11).longValue());
-                     } else if(var11 instanceof String) {
-                        var0.method3010(2);
-                        var0.method2893((String)var11);
-                     } else {
-                        var0.method3010(4);
+                     int var7;
+                     int var8;
+                     if(var6 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var6[var7] != null && !var6[var7].equalsIgnoreCase("Attack")) {
+                              var8 = 0;
+                              if(var7 == 0) {
+                                 var8 = var5 + 9;
+                              }
+
+                              if(var7 == 1) {
+                                 var8 = 10 + var5;
+                              }
+
+                              if(var7 == 2) {
+                                 var8 = var5 + 11;
+                              }
+
+                              if(var7 == 3) {
+                                 var8 = var5 + 12;
+                              }
+
+                              if(var7 == 4) {
+                                 var8 = 13 + var5;
+                              }
+
+                              class22.addMenuEntry(var6[var7], class116.method2288(16776960) + var4, var8, var1, var2, var3);
+                           }
+                        }
+                     }
+
+                     if(var6 != null) {
+                        for(var7 = 4; var7 >= 0; --var7) {
+                           if(var6[var7] != null && var6[var7].equalsIgnoreCase("Attack")) {
+                              short var9 = 0;
+                              if(Client.field337 != class40.field836) {
+                                 if(class40.field835 == Client.field337 || class40.field839 == Client.field337 && var0.combatLevel > class22.localPlayer.combatLevel) {
+                                    var9 = 2000;
+                                 }
+
+                                 var8 = 0;
+                                 if(var7 == 0) {
+                                    var8 = var9 + 9;
+                                 }
+
+                                 if(var7 == 1) {
+                                    var8 = 10 + var9;
+                                 }
+
+                                 if(var7 == 2) {
+                                    var8 = 11 + var9;
+                                 }
+
+                                 if(var7 == 3) {
+                                    var8 = 12 + var9;
+                                 }
+
+                                 if(var7 == 4) {
+                                    var8 = var9 + 13;
+                                 }
+
+                                 class22.addMenuEntry(var6[var7], class116.method2288(16776960) + var4, var8, var1, var2, var3);
+                              }
+                           }
+                        }
+                     }
+
+                     if(!var0.field3037 || !Client.field346) {
+                        class22.addMenuEntry("Examine", class116.method2288(16776960) + var4, 1003, var1, var2, var3);
                      }
                   }
-               } catch (ClassNotFoundException var13) {
-                  var0.method3010(-10);
-               } catch (InvalidClassException var14) {
-                  var0.method3010(-11);
-               } catch (StreamCorruptedException var15) {
-                  var0.method3010(-12);
-               } catch (OptionalDataException var16) {
-                  var0.method3010(-13);
-               } catch (IllegalAccessException var17) {
-                  var0.method3010(-14);
-               } catch (IllegalArgumentException var18) {
-                  var0.method3010(-15);
-               } catch (InvocationTargetException var19) {
-                  var0.method3010(-16);
-               } catch (SecurityException var20) {
-                  var0.method3010(-17);
-               } catch (IOException var21) {
-                  var0.method3010(-18);
-               } catch (NullPointerException var22) {
-                  var0.method3010(-19);
-               } catch (Exception var23) {
-                  var0.method3010(-20);
-               } catch (Throwable var24) {
-                  var0.method3010(-21);
+
                }
             }
          }
-
-         var0.method2878(var2);
-         var1.unlink();
       }
    }
 }

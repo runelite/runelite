@@ -4,285 +4,158 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("co")
 public class class99 extends class109 {
-   @ObfuscatedName("k")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -346909707
+      longValue = -288363729759056265L
    )
-   int field1635 = 0;
-   @ObfuscatedName("i")
+   long field1649 = method2005();
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 428672967
+      intValue = -1045446179
    )
-   int field1637 = 1;
-   @ObfuscatedName("t")
+   int field1650 = 256;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      longValue = 7225322540378194829L
+      intValue = 411353221
    )
-   long field1638 = ChatMessages.method935();
+   int field1651 = 1;
+   @ObfuscatedName("w")
+   @ObfuscatedGetter(
+      intValue = 1225829185
+   )
+   int field1653 = 0;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1671388219
+      intValue = -1707580333
    )
-   int field1639;
-   @ObfuscatedName("ol")
-   @ObfuscatedGetter(
-      intValue = 1751684813
-   )
-   static int field1640;
-   @ObfuscatedName("l")
-   @ObfuscatedGetter(
-      intValue = -845351741
-   )
-   int field1641 = 256;
-   @ObfuscatedName("b")
-   long[] field1642 = new long[10];
+   int field1654;
+   @ObfuscatedName("bc")
+   static class184 field1655;
+   @ObfuscatedName("x")
+   long[] field1658 = new long[10];
+   @ObfuscatedName("bj")
+   static ModIcon[] field1660;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "0"
+      signature = "(Lclass182;III)LSpritePixels;",
+      garbageValue = "-1065201010"
    )
-   void vmethod2102() {
-      for(int var1 = 0; var1 < 10; ++var1) {
-         this.field1642[var1] = 0L;
-      }
-
+   public static SpritePixels method1997(class182 var0, int var1, int var2) {
+      return !class65.method1246(var0, var1, var2)?null:Actor.method611();
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(IIB)I",
-      garbageValue = "94"
+      signature = "(III)I",
+      garbageValue = "531304005"
    )
-   int vmethod2103(int var1, int var2) {
-      int var3 = this.field1641;
-      int var4 = this.field1637;
-      this.field1641 = 300;
-      this.field1637 = 1;
-      this.field1638 = ChatMessages.method935();
-      if(this.field1642[this.field1639] == 0L) {
-         this.field1641 = var3;
-         this.field1637 = var4;
-      } else if(this.field1638 > this.field1642[this.field1639]) {
-         this.field1641 = (int)((long)(var1 * 2560) / (this.field1638 - this.field1642[this.field1639]));
+   int vmethod2108(int var1, int var2) {
+      int var3 = this.field1650;
+      int var4 = this.field1651;
+      this.field1650 = 300;
+      this.field1651 = 1;
+      this.field1649 = method2005();
+      if(this.field1658[this.field1654] == 0L) {
+         this.field1650 = var3;
+         this.field1651 = var4;
+      } else if(this.field1649 > this.field1658[this.field1654]) {
+         this.field1650 = (int)((long)(var1 * 2560) / (this.field1649 - this.field1658[this.field1654]));
       }
 
-      if(this.field1641 < 25) {
-         this.field1641 = 25;
+      if(this.field1650 < 25) {
+         this.field1650 = 25;
       }
 
-      if(this.field1641 > 256) {
-         this.field1641 = 256;
-         this.field1637 = (int)((long)var1 - (this.field1638 - this.field1642[this.field1639]) / 10L);
+      if(this.field1650 > 256) {
+         this.field1650 = 256;
+         this.field1651 = (int)((long)var1 - (this.field1649 - this.field1658[this.field1654]) / 10L);
       }
 
-      if(this.field1637 > var1) {
-         this.field1637 = var1;
+      if(this.field1651 > var1) {
+         this.field1651 = var1;
       }
 
-      this.field1642[this.field1639] = this.field1638;
-      this.field1639 = (this.field1639 + 1) % 10;
+      this.field1658[this.field1654] = this.field1649;
+      this.field1654 = (this.field1654 + 1) % 10;
       int var5;
-      if(this.field1637 > 1) {
+      if(this.field1651 > 1) {
          for(var5 = 0; var5 < 10; ++var5) {
-            if(this.field1642[var5] != 0L) {
-               this.field1642[var5] += (long)this.field1637;
+            if(this.field1658[var5] != 0L) {
+               this.field1658[var5] += (long)this.field1651;
             }
          }
       }
 
-      if(this.field1637 < var2) {
-         this.field1637 = var2;
+      if(this.field1651 < var2) {
+         this.field1651 = var2;
       }
 
-      class115.method2301((long)this.field1637);
+      class140.method2660((long)this.field1651);
 
-      for(var5 = 0; this.field1635 < 256; this.field1635 += this.field1641) {
+      for(var5 = 0; this.field1653 < 256; this.field1653 += this.field1650) {
          ++var5;
       }
 
-      this.field1635 &= 255;
+      this.field1653 &= 255;
       return var5;
    }
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(CIB)C",
-      garbageValue = "1"
+      signature = "(B)V",
+      garbageValue = "-42"
    )
-   public static char method1997(char var0, int var1) {
-      if(var0 >= 192 && var0 <= 255) {
-         if(var0 >= 192 && var0 <= 198) {
-            return 'A';
-         }
-
-         if(var0 == 199) {
-            return 'C';
-         }
-
-         if(var0 >= 200 && var0 <= 203) {
-            return 'E';
-         }
-
-         if(var0 >= 204 && var0 <= 207) {
-            return 'I';
-         }
-
-         if(var0 >= 210 && var0 <= 214) {
-            return 'O';
-         }
-
-         if(var0 >= 217 && var0 <= 220) {
-            return 'U';
-         }
-
-         if(var0 == 221) {
-            return 'Y';
-         }
-
-         if(var0 == 223) {
-            return 's';
-         }
-
-         if(var0 >= 224 && var0 <= 230) {
-            return 'a';
-         }
-
-         if(var0 == 231) {
-            return 'c';
-         }
-
-         if(var0 >= 232 && var0 <= 235) {
-            return 'e';
-         }
-
-         if(var0 >= 236 && var0 <= 239) {
-            return 'i';
-         }
-
-         if(var0 >= 242 && var0 <= 246) {
-            return 'o';
-         }
-
-         if(var0 >= 249 && var0 <= 252) {
-            return 'u';
-         }
-
-         if(var0 == 253 || var0 == 255) {
-            return 'y';
-         }
+   public void vmethod2107() {
+      for(int var1 = 0; var1 < 10; ++var1) {
+         this.field1658[var1] = 0L;
       }
 
-      if(var0 == 338) {
-         return 'O';
-      } else if(var0 == 339) {
-         return 'o';
-      } else if(var0 == 376) {
-         return 'Y';
-      } else {
-         return var0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)J",
+      garbageValue = "21"
+   )
+   public static synchronized long method2005() {
+      long var0 = System.currentTimeMillis();
+      if(var0 < class155.field2102) {
+         class155.field2103 += class155.field2102 - var0;
+      }
+
+      class155.field2102 = var0;
+      return var0 + class155.field2103;
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "81449917"
+   )
+   static void method2006() {
+      Object var0 = class183.field2725;
+      synchronized(class183.field2725) {
+         if(class183.field2718 == 0) {
+            class72.field1193.method2023(new class183(), 5);
+         }
+
+         class183.field2718 = 600;
       }
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-1642443882"
+      signature = "(Lclass182;B)V",
+      garbageValue = "12"
    )
-   public static String method2000(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
-      int var5 = var1;
-
-      int var8;
-      for(int var6 = var2 + var1; var5 < var6; var3[var4++] = (char)var8) {
-         int var7 = var0[var5++] & 255;
-         if(var7 < 128) {
-            if(var7 == 0) {
-               var8 = '�';
-            } else {
-               var8 = var7;
-            }
-         } else if(var7 < 192) {
-            var8 = '�';
-         } else if(var7 < 224) {
-            if(var5 < var6 && (var0[var5] & 192) == 128) {
-               var8 = (var7 & 31) << 6 | var0[var5++] & 63;
-               if(var8 < 128) {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else if(var7 < 240) {
-            if(var5 + 1 < var6 && (var0[var5] & 192) == 128 && (var0[var5 + 1] & 192) == 128) {
-               var8 = (var7 & 15) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 < 2048) {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else if(var7 < 248) {
-            if(2 + var5 < var6 && (var0[var5] & 192) == 128 && (var0[1 + var5] & 192) == 128 && (var0[var5 + 2] & 192) == 128) {
-               var8 = (var7 & 7) << 18 | (var0[var5++] & 63) << 12 | (var0[var5++] & 63) << 6 | var0[var5++] & 63;
-               if(var8 >= 65536 && var8 <= 1114111) {
-                  var8 = '�';
-               } else {
-                  var8 = '�';
-               }
-            } else {
-               var8 = '�';
-            }
-         } else {
-            var8 = '�';
-         }
-      }
-
-      return new String(var3, 0, var4);
+   public static void method2007(class182 var0) {
+      Varbit.field2845 = var0;
    }
 
    class99() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field1642[var1] = this.field1638;
-      }
-
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(I)[Lclass216;",
-      garbageValue = "2130320052"
-   )
-   public static class216[] method2001() {
-      return new class216[]{class216.field3176, class216.field3178, class216.field3179};
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(IIIZIZI)V",
-      garbageValue = "2099719908"
-   )
-   static void method2002(int var0, int var1, int var2, boolean var3, int var4, boolean var5) {
-      if(var0 < var1) {
-         int var6 = (var1 + var0) / 2;
-         int var7 = var0;
-         World var8 = World.worldList[var6];
-         World.worldList[var6] = World.worldList[var1];
-         World.worldList[var1] = var8;
-
-         for(int var9 = var0; var9 < var1; ++var9) {
-            if(class7.method111(World.worldList[var9], var8, var2, var3, var4, var5) <= 0) {
-               World var10 = World.worldList[var9];
-               World.worldList[var9] = World.worldList[var7];
-               World.worldList[var7++] = var10;
-            }
-         }
-
-         World.worldList[var1] = World.worldList[var7];
-         World.worldList[var7] = var8;
-         method2002(var0, var7 - 1, var2, var3, var4, var5);
-         method2002(1 + var7, var1, var2, var3, var4, var5);
+         this.field1658[var1] = this.field1649;
       }
 
    }

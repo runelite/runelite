@@ -2,32 +2,41 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fo")
+@ObfuscatedName("fi")
 public class class180 extends Node {
-   @ObfuscatedName("t")
-   public class184 field2694;
-   @ObfuscatedName("l")
-   public byte[] field2695;
-   @ObfuscatedName("i")
-   public class116 field2696;
-   @ObfuscatedName("b")
+   @ObfuscatedName("j")
+   byte[] field2681;
+   @ObfuscatedName("c")
+   class116 field2683;
+   @ObfuscatedName("d")
+   class184 field2685;
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = 1682729625
+      intValue = 1598742497
    )
-   int field2697;
-   @ObfuscatedName("ik")
-   static class38 field2698;
-   @ObfuscatedName("mb")
-   static byte field2700;
+   static int field2689;
+   @ObfuscatedName("x")
+   @ObfuscatedGetter(
+      intValue = -392435981
+   )
+   int field2690;
 
-   @ObfuscatedName("ds")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(II)V",
-      garbageValue = "-1736297849"
+      signature = "(Lclass182;B)V",
+      garbageValue = "1"
    )
-   static final void method3343(int var0) {
-      if(class159.method3142(var0)) {
-         WallObject.method1949(Widget.widgets[var0], -1);
-      }
+   public static void method3298(class182 var0) {
+      class189.field2780 = var0;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;I)V",
+      garbageValue = "972237965"
+   )
+   public static void method3299(class182 var0, class182 var1) {
+      NPCComposition.field3002 = var0;
+      NPCComposition.field3003 = var1;
    }
 }
