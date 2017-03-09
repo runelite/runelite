@@ -1,259 +1,207 @@
-import java.applet.Applet;
 import java.util.Comparator;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("h")
 final class class5 implements Comparator {
-   @ObfuscatedName("cn")
-   static class110 field46;
-   @ObfuscatedName("ek")
-   static ModIcon[] field47;
-   @ObfuscatedName("gs")
-   static Widget field50;
-   @ObfuscatedName("aj")
-   static int[] field51;
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Lclass2;Lclass2;I)I",
-      garbageValue = "310111899"
+   @ObfuscatedName("qh")
+   @ObfuscatedGetter(
+      intValue = -532571113
    )
-   int method72(class2 var1, class2 var2) {
-      return var1.field17.price < var2.field17.price?-1:(var2.field17.price == var1.field17.price?0:1);
-   }
-
-   public int compare(Object var1, Object var2) {
-      return this.method72((class2)var1, (class2)var2);
-   }
+   static int field58;
 
    public boolean equals(Object var1) {
       return super.equals(var1);
    }
 
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Ljava/applet/Applet;Ljava/lang/String;I)V",
-      garbageValue = "285687313"
-   )
-   public static void method79(Applet var0, String var1) {
-      class114.field1783 = var0;
-      class114.field1787 = var1;
+   public int compare(Object var1, Object var2) {
+      return this.method79((class2)var1, (class2)var2);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("y")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "1427107361"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "-1453130922"
    )
-   public static void method81() {
-      if(null != class105.keyboard) {
-         class105 var0 = class105.keyboard;
-         synchronized(class105.keyboard) {
-            class105.keyboard = null;
+   static void method67(String var0, String var1, String var2) {
+      class41.loginMessage1 = var0;
+      class41.loginMessage2 = var1;
+      class41.loginMessage3 = var2;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IIB)I",
+      garbageValue = "38"
+   )
+   static final int method75(int var0, int var1) {
+      int var2 = class0.method14(var0 - 1, var1 - 1) + class0.method14(1 + var0, var1 - 1) + class0.method14(var0 - 1, var1 + 1) + class0.method14(var0 + 1, 1 + var1);
+      int var3 = class0.method14(var0 - 1, var1) + class0.method14(var0 + 1, var1) + class0.method14(var0, var1 - 1) + class0.method14(var0, var1 + 1);
+      int var4 = class0.method14(var0, var1);
+      return var2 / 16 + var3 / 8 + var4 / 4;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "([Lclass158;IB)Lclass158;",
+      garbageValue = "0"
+   )
+   public static class158 method77(class158[] var0, int var1) {
+      class158[] var2 = var0;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class158 var4 = var2[var3];
+         if(var1 == var4.vmethod4085()) {
+            return var4;
          }
       }
 
+      return null;
    }
 
-   @ObfuscatedName("dp")
+   @ObfuscatedName("bj")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)Z",
-      garbageValue = "1366556029"
+      signature = "(I)I",
+      garbageValue = "2079291205"
    )
-   static boolean method82(String var0) {
-      if(null == var0) {
-         return false;
+   static final int method78() {
+      if(class8.field84.field717) {
+         return class31.plane;
       } else {
-         String var1 = class9.method122(var0, Client.field286);
-
-         for(int var2 = 0; var2 < Client.ignoreCount; ++var2) {
-            Ignore var3 = Client.ignores[var2];
-            if(var1.equalsIgnoreCase(class9.method122(var3.name, Client.field286))) {
-               return true;
+         int var0 = 3;
+         if(class25.cameraPitch < 310) {
+            int var1 = class65.cameraX >> 7;
+            int var2 = CombatInfoListHolder.cameraY >> 7;
+            int var3 = class22.localPlayer.x >> 7;
+            int var4 = class22.localPlayer.y >> 7;
+            if(var1 < 0 || var2 < 0 || var1 >= 104 || var2 >= 104) {
+               return class31.plane;
             }
 
-            if(var1.equalsIgnoreCase(class9.method122(var3.previousName, Client.field286))) {
-               return true;
-            }
-         }
-
-         return false;
-      }
-   }
-
-   @ObfuscatedName("an")
-   @ObfuscatedSignature(
-      signature = "(LActor;II)V",
-      garbageValue = "2031211692"
-   )
-   static final void method83(Actor var0, int var1) {
-      int var2;
-      int var3;
-      int var4;
-      if(var0.field647 > Client.gameCycle) {
-         var2 = var0.field647 - Client.gameCycle;
-         var3 = var0.field634 * 64 + var0.field643 * 128;
-         var4 = var0.field634 * 64 + var0.field645 * 128;
-         var0.x += (var3 - var0.x) / var2;
-         var0.y += (var4 - var0.y) / var2;
-         var0.field601 = 0;
-         var0.field652 = var0.field649;
-      } else if(var0.field633 >= Client.gameCycle) {
-         WidgetNode.method204(var0);
-      } else {
-         ItemComposition.method3742(var0);
-      }
-
-      if(var0.x < 128 || var0.y < 128 || var0.x >= 13184 || var0.y >= 13184) {
-         var0.animation = -1;
-         var0.graphic = -1;
-         var0.field647 = 0;
-         var0.field633 = 0;
-         var0.x = var0.field634 * 64 + 128 * var0.pathX[0];
-         var0.y = var0.field634 * 64 + 128 * var0.pathY[0];
-         var0.method622();
-      }
-
-      if(var0 == class9.localPlayer && (var0.x < 1536 || var0.y < 1536 || var0.x >= 11776 || var0.y >= 11776)) {
-         var0.animation = -1;
-         var0.graphic = -1;
-         var0.field647 = 0;
-         var0.field633 = 0;
-         var0.x = var0.field634 * 64 + var0.pathX[0] * 128;
-         var0.y = var0.field634 * 64 + var0.pathY[0] * 128;
-         var0.method622();
-      }
-
-      if(var0.field654 != 0) {
-         if(var0.interacting != -1) {
-            Object var5 = null;
-            if(var0.interacting < '耀') {
-               var5 = Client.cachedNPCs[var0.interacting];
-            } else if(var0.interacting >= '耀') {
-               var5 = Client.cachedPlayers[var0.interacting - '耀'];
+            if((class10.tileSettings[class31.plane][var1][var2] & 4) != 0) {
+               var0 = class31.plane;
             }
 
-            if(null != var5) {
-               var3 = var0.x - ((Actor)var5).x;
-               var4 = var0.y - ((Actor)var5).y;
-               if(var3 != 0 || var4 != 0) {
-                  var0.field652 = (int)(Math.atan2((double)var3, (double)var4) * 325.949D) & 2047;
-               }
-            } else if(var0.field650) {
-               var0.interacting = -1;
-               var0.field650 = false;
+            int var5;
+            if(var3 > var1) {
+               var5 = var3 - var1;
+            } else {
+               var5 = var1 - var3;
             }
-         }
 
-         if(var0.field610 != -1 && (var0.field655 == 0 || var0.field601 > 0)) {
-            var0.field652 = var0.field610;
-            var0.field610 = -1;
-         }
+            int var6;
+            if(var4 > var2) {
+               var6 = var4 - var2;
+            } else {
+               var6 = var2 - var4;
+            }
 
-         var2 = var0.field652 - var0.angle & 2047;
-         if(var2 == 0 && var0.field650) {
-            var0.interacting = -1;
-            var0.field650 = false;
-         }
+            int var7;
+            int var8;
+            if(var5 > var6) {
+               var7 = var6 * 65536 / var5;
+               var8 = '耀';
 
-         if(var2 != 0) {
-            ++var0.field659;
-            boolean var7;
-            if(var2 > 1024) {
-               var0.angle -= var0.field654;
-               var7 = true;
-               if(var2 < var0.field654 || var2 > 2048 - var0.field654) {
-                  var0.angle = var0.field652;
-                  var7 = false;
-               }
+               while(var1 != var3) {
+                  if(var1 < var3) {
+                     ++var1;
+                  } else if(var1 > var3) {
+                     --var1;
+                  }
 
-               if(var0.poseAnimation == var0.idlePoseAnimation && (var0.field659 > 25 || var7)) {
-                  if(var0.field607 != -1) {
-                     var0.poseAnimation = var0.field607;
-                  } else {
-                     var0.poseAnimation = var0.field627;
+                  if((class10.tileSettings[class31.plane][var1][var2] & 4) != 0) {
+                     var0 = class31.plane;
+                  }
+
+                  var8 += var7;
+                  if(var8 >= 65536) {
+                     var8 -= 65536;
+                     if(var2 < var4) {
+                        ++var2;
+                     } else if(var2 > var4) {
+                        --var2;
+                     }
+
+                     if((class10.tileSettings[class31.plane][var1][var2] & 4) != 0) {
+                        var0 = class31.plane;
+                     }
                   }
                }
             } else {
-               var0.angle += var0.field654;
-               var7 = true;
-               if(var2 < var0.field654 || var2 > 2048 - var0.field654) {
-                  var0.angle = var0.field652;
-                  var7 = false;
-               }
+               var7 = 65536 * var5 / var6;
+               var8 = '耀';
 
-               if(var0.idlePoseAnimation == var0.poseAnimation && (var0.field659 > 25 || var7)) {
-                  if(var0.field608 != -1) {
-                     var0.poseAnimation = var0.field608;
-                  } else {
-                     var0.poseAnimation = var0.field627;
+               while(var2 != var4) {
+                  if(var2 < var4) {
+                     ++var2;
+                  } else if(var2 > var4) {
+                     --var2;
+                  }
+
+                  if((class10.tileSettings[class31.plane][var1][var2] & 4) != 0) {
+                     var0 = class31.plane;
+                  }
+
+                  var8 += var7;
+                  if(var8 >= 65536) {
+                     var8 -= 65536;
+                     if(var1 < var3) {
+                        ++var1;
+                     } else if(var1 > var3) {
+                        --var1;
+                     }
+
+                     if((class10.tileSettings[class31.plane][var1][var2] & 4) != 0) {
+                        var0 = class31.plane;
+                     }
                   }
                }
             }
+         }
 
-            var0.angle &= 2047;
+         if(class22.localPlayer.x >= 0 && class22.localPlayer.y >= 0 && class22.localPlayer.x < 13312 && class22.localPlayer.y < 13312) {
+            if((class10.tileSettings[class31.plane][class22.localPlayer.x >> 7][class22.localPlayer.y >> 7] & 4) != 0) {
+               var0 = class31.plane;
+            }
+
+            return var0;
          } else {
-            var0.field659 = 0;
+            return class31.plane;
          }
       }
-
-      class44.method884(var0);
    }
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;IB)Z",
-      garbageValue = "-51"
+      signature = "(Lclass2;Lclass2;I)I",
+      garbageValue = "1371655328"
    )
-   public static boolean method84(String var0, int var1) {
-      return ChatMessages.method934(var0, var1, "openjs");
+   int method79(class2 var1, class2 var2) {
+      return var1.field25.price < var2.field25.price?-1:(var2.field25.price == var1.field25.price?0:1);
    }
 
-   @ObfuscatedName("aw")
+   @ObfuscatedName("cw")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;S)V",
-      garbageValue = "-10640"
+      signature = "(Ljava/lang/String;Ljava/lang/String;IIIIZB)V",
+      garbageValue = "34"
    )
-   static final void method85(String var0) {
-      if(var0.equalsIgnoreCase("toggleroof")) {
-         WallObject.field1551.field689 = !WallObject.field1551.field689;
-         DecorativeObject.method1977();
-         if(WallObject.field1551.field689) {
-            class140.sendGameMessage(99, "", "Roofs are now all hidden");
-         } else {
-            class140.sendGameMessage(99, "", "Roofs will only be removed selectively");
+   static final void method80(String var0, String var1, int var2, int var3, int var4, int var5, boolean var6) {
+      if(!Client.isMenuOpen) {
+         if(Client.menuOptionCount < 500) {
+            Client.menuOptions[Client.menuOptionCount] = var0;
+            Client.menuTargets[Client.menuOptionCount] = var1;
+            Client.menuTypes[Client.menuOptionCount] = var2;
+            Client.menuIdentifiers[Client.menuOptionCount] = var3;
+            Client.menuActionParams0[Client.menuOptionCount] = var4;
+            Client.menuActionParams1[Client.menuOptionCount] = var5;
+            if(var6) {
+               Client.field391 = Client.menuOptionCount;
+            }
+
+            ++Client.menuOptionCount;
          }
+
       }
-
-      if(var0.equalsIgnoreCase("displayfps")) {
-         Client.field298 = !Client.field298;
-      }
-
-      if(Client.field370 >= 2) {
-         if(var0.equalsIgnoreCase("fpson")) {
-            Client.field298 = true;
-         }
-
-         if(var0.equalsIgnoreCase("fpsoff")) {
-            Client.field298 = false;
-         }
-
-         if(var0.equalsIgnoreCase("gc")) {
-            System.gc();
-         }
-
-         if(var0.equalsIgnoreCase("clientdrop")) {
-            class7.method109();
-         }
-
-         if(var0.equalsIgnoreCase("errortest") && Client.field295 == 2) {
-            throw new RuntimeException();
-         }
-      }
-
-      Client.field327.method3124(87);
-      Client.field327.method3010(var0.length() + 1);
-      Client.field327.method2893(var0);
    }
 }

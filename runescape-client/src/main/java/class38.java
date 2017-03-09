@@ -2,283 +2,159 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("at")
+@ObfuscatedName("ak")
 public class class38 {
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedGetter(
-      intValue = 1126981497
+      intValue = 1178134225
    )
-   int field790;
-   @ObfuscatedName("i")
+   int field822;
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 940009959
+      intValue = 1308363655
    )
-   int field791;
-   @ObfuscatedName("k")
+   int field823;
+   @ObfuscatedName("w")
+   String field825;
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = -153130005
+      intValue = -1011784871
    )
-   int field792;
-   @ObfuscatedName("t")
-   String field793;
-   @ObfuscatedName("bg")
-   static ModIcon field795;
-   @ObfuscatedName("n")
-   static class182 field796;
-   @ObfuscatedName("b")
+   int field830;
+   @ObfuscatedName("x")
    @ObfuscatedGetter(
-      intValue = -1389612261
+      intValue = -1799779351
    )
-   int field797;
+   int field831;
 
-   @ObfuscatedName("bo")
+   @ObfuscatedName("dc")
    @ObfuscatedSignature(
-      signature = "(ZS)V",
-      garbageValue = "7915"
+      signature = "(II)V",
+      garbageValue = "1864990935"
    )
-   static final void method808(boolean var0) {
-      Client.field408 = 0;
-      Client.field325 = 0;
-      Client.field329.method3141();
-      int var1 = Client.field329.method3119(8);
-      int var2;
-      if(var1 < Client.field323) {
-         for(var2 = var1; var2 < Client.field323; ++var2) {
-            Client.field409[++Client.field408 - 1] = Client.field324[var2];
+   static final void method811(int var0) {
+      if(class44.method892(var0)) {
+         class6.method92(Widget.widgets[var0], -1);
+      }
+   }
+
+   @ObfuscatedName("ak")
+   @ObfuscatedSignature(
+      signature = "(LActor;B)V",
+      garbageValue = "40"
+   )
+   static final void method812(Actor var0) {
+      var0.field628 = false;
+      Sequence var1;
+      if(var0.poseAnimation != -1) {
+         var1 = class168.getAnimation(var0.poseAnimation);
+         if(null != var1 && null != var1.frameIDs) {
+            ++var0.field656;
+            if(var0.poseFrame < var1.frameIDs.length && var0.field656 > var1.frameLenghts[var0.poseFrame]) {
+               var0.field656 = 1;
+               ++var0.poseFrame;
+               class149.method2796(var1, var0.poseFrame, var0.x, var0.y);
+            }
+
+            if(var0.poseFrame >= var1.frameIDs.length) {
+               var0.field656 = 0;
+               var0.poseFrame = 0;
+               class149.method2796(var1, var0.poseFrame, var0.x, var0.y);
+            }
+         } else {
+            var0.poseAnimation = -1;
          }
       }
 
-      if(var1 > Client.field323) {
-         throw new RuntimeException("");
+      if(var0.graphic != -1 && Client.gameCycle >= var0.field665) {
+         if(var0.field662 < 0) {
+            var0.field662 = 0;
+         }
+
+         int var3 = Widget.method3245(var0.graphic).field2792;
+         if(var3 != -1) {
+            Sequence var2 = class168.getAnimation(var3);
+            if(var2 != null && null != var2.frameIDs) {
+               ++var0.field664;
+               if(var0.field662 < var2.frameIDs.length && var0.field664 > var2.frameLenghts[var0.field662]) {
+                  var0.field664 = 1;
+                  ++var0.field662;
+                  class149.method2796(var2, var0.field662, var0.x, var0.y);
+               }
+
+               if(var0.field662 >= var2.frameIDs.length && (var0.field662 < 0 || var0.field662 >= var2.frameIDs.length)) {
+                  var0.graphic = -1;
+               }
+            } else {
+               var0.graphic = -1;
+            }
+         } else {
+            var0.graphic = -1;
+         }
+      }
+
+      if(var0.animation != -1 && var0.actionAnimationDisable <= 1) {
+         var1 = class168.getAnimation(var0.animation);
+         if(var1.precedenceAnimating == 1 && var0.field636 > 0 && var0.field671 <= Client.gameCycle && var0.field647 < Client.gameCycle) {
+            var0.actionAnimationDisable = 1;
+            return;
+         }
+      }
+
+      if(var0.animation != -1 && var0.actionAnimationDisable == 0) {
+         var1 = class168.getAnimation(var0.animation);
+         if(var1 != null && null != var1.frameIDs) {
+            ++var0.field659;
+            if(var0.actionFrame < var1.frameIDs.length && var0.field659 > var1.frameLenghts[var0.actionFrame]) {
+               var0.field659 = 1;
+               ++var0.actionFrame;
+               class149.method2796(var1, var0.actionFrame, var0.x, var0.y);
+            }
+
+            if(var0.actionFrame >= var1.frameIDs.length) {
+               var0.actionFrame -= var1.frameStep;
+               ++var0.field629;
+               if(var0.field629 >= var1.maxLoops) {
+                  var0.animation = -1;
+               } else if(var0.actionFrame >= 0 && var0.actionFrame < var1.frameIDs.length) {
+                  class149.method2796(var1, var0.actionFrame, var0.x, var0.y);
+               } else {
+                  var0.animation = -1;
+               }
+            }
+
+            var0.field628 = var1.stretches;
+         } else {
+            var0.animation = -1;
+         }
+      }
+
+      if(var0.actionAnimationDisable > 0) {
+         --var0.actionAnimationDisable;
+      }
+
+   }
+
+   @ObfuscatedName("e")
+   @ObfuscatedSignature(
+      signature = "([BZB)Ljava/lang/Object;",
+      garbageValue = "-27"
+   )
+   public static Object method813(byte[] var0, boolean var1) {
+      if(var0 == null) {
+         return null;
       } else {
-         Client.field323 = 0;
-
-         int var5;
-         int var6;
-         int var7;
-         int var8;
-         for(var2 = 0; var2 < var1; ++var2) {
-            int var3 = Client.field324[var2];
-            NPC var4 = Client.cachedNPCs[var3];
-            var5 = Client.field329.method3119(1);
-            if(var5 == 0) {
-               Client.field324[++Client.field323 - 1] = var3;
-               var4.field617 = Client.gameCycle;
-            } else {
-               var6 = Client.field329.method3119(2);
-               if(var6 == 0) {
-                  Client.field324[++Client.field323 - 1] = var3;
-                  var4.field617 = Client.gameCycle;
-                  Client.field393[++Client.field325 - 1] = var3;
-               } else if(var6 == 1) {
-                  Client.field324[++Client.field323 - 1] = var3;
-                  var4.field617 = Client.gameCycle;
-                  var7 = Client.field329.method3119(3);
-                  var4.method789(var7, (byte)1);
-                  var8 = Client.field329.method3119(1);
-                  if(var8 == 1) {
-                     Client.field393[++Client.field325 - 1] = var3;
-                  }
-               } else if(var6 == 2) {
-                  Client.field324[++Client.field323 - 1] = var3;
-                  var4.field617 = Client.gameCycle;
-                  var7 = Client.field329.method3119(3);
-                  var4.method789(var7, (byte)2);
-                  var8 = Client.field329.method3119(3);
-                  var4.method789(var8, (byte)2);
-                  int var9 = Client.field329.method3119(1);
-                  if(var9 == 1) {
-                     Client.field393[++Client.field325 - 1] = var3;
-                  }
-               } else if(var6 == 3) {
-                  Client.field409[++Client.field408 - 1] = var3;
-               }
+         if(var0.length > 136 && !class156.field2106) {
+            try {
+               class151 var2 = new class151();
+               var2.vmethod3049(var0);
+               return var2;
+            } catch (Throwable var3) {
+               class156.field2106 = true;
             }
          }
 
-         while(Client.field329.method3126(Client.field330) >= 27) {
-            var1 = Client.field329.method3119(15);
-            if(var1 == 32767) {
-               break;
-            }
-
-            boolean var12 = false;
-            if(null == Client.cachedNPCs[var1]) {
-               Client.cachedNPCs[var1] = new NPC();
-               var12 = true;
-            }
-
-            NPC var10 = Client.cachedNPCs[var1];
-            Client.field324[++Client.field323 - 1] = var1;
-            var10.field617 = Client.gameCycle;
-            var10.composition = ChatLineBuffer.getNpcDefinition(Client.field329.method3119(14));
-            int var11 = Client.field358[Client.field329.method3119(3)];
-            if(var12) {
-               var10.field652 = var10.angle = var11;
-            }
-
-            var5 = Client.field329.method3119(1);
-            if(var5 == 1) {
-               Client.field393[++Client.field325 - 1] = var1;
-            }
-
-            if(var0) {
-               var6 = Client.field329.method3119(8);
-               if(var6 > 127) {
-                  var6 -= 256;
-               }
-            } else {
-               var6 = Client.field329.method3119(5);
-               if(var6 > 15) {
-                  var6 -= 32;
-               }
-            }
-
-            var7 = Client.field329.method3119(1);
-            if(var0) {
-               var8 = Client.field329.method3119(8);
-               if(var8 > 127) {
-                  var8 -= 256;
-               }
-            } else {
-               var8 = Client.field329.method3119(5);
-               if(var8 > 15) {
-                  var8 -= 32;
-               }
-            }
-
-            var10.field634 = var10.composition.field3012;
-            var10.field654 = var10.composition.field3038;
-            if(var10.field654 == 0) {
-               var10.angle = 0;
-            }
-
-            var10.field627 = var10.composition.field3036;
-            var10.field624 = var10.composition.field3019;
-            var10.field611 = var10.composition.field3020;
-            var10.field612 = var10.composition.field3021;
-            var10.idlePoseAnimation = var10.composition.field3018;
-            var10.field607 = var10.composition.field3016;
-            var10.field608 = var10.composition.field3017;
-            var10.method780(var8 + class9.localPlayer.pathX[0], class9.localPlayer.pathY[0] + var6, var7 == 1);
-         }
-
-         Client.field329.method3125();
-         class206.method3924();
-
-         for(var1 = 0; var1 < Client.field408; ++var1) {
-            var2 = Client.field409[var1];
-            if(Client.cachedNPCs[var2].field617 != Client.gameCycle) {
-               Client.cachedNPCs[var2].composition = null;
-               Client.cachedNPCs[var2] = null;
-            }
-         }
-
-         if(Client.field329.offset != Client.field330) {
-            throw new RuntimeException(Client.field329.offset + "," + Client.field330);
-         } else {
-            for(var1 = 0; var1 < Client.field323; ++var1) {
-               if(Client.cachedNPCs[Client.field324[var1]] == null) {
-                  throw new RuntimeException(var1 + "," + Client.field323);
-               }
-            }
-
-         }
+         return var0;
       }
-   }
-
-   @ObfuscatedName("t")
-   @ObfuscatedSignature(
-      signature = "(I)Z",
-      garbageValue = "-272655214"
-   )
-   public static final boolean method809() {
-      class105 var0 = class105.keyboard;
-      synchronized(class105.keyboard) {
-         if(class105.field1693 == class105.field1708) {
-            return false;
-         } else {
-            class20.field211 = class105.field1705[class105.field1708];
-            class3.field32 = class105.field1704[class105.field1708];
-            class105.field1708 = class105.field1708 + 1 & 127;
-            return true;
-         }
-      }
-   }
-
-   @ObfuscatedName("i")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/CharSequence;II[BII)I",
-      garbageValue = "-1434972745"
-   )
-   public static int method810(CharSequence var0, int var1, int var2, byte[] var3, int var4) {
-      int var5 = var2 - var1;
-
-      for(int var6 = 0; var6 < var5; ++var6) {
-         char var7 = var0.charAt(var1 + var6);
-         if((var7 <= 0 || var7 >= 128) && (var7 < 160 || var7 > 255)) {
-            if(var7 == 8364) {
-               var3[var4 + var6] = -128;
-            } else if(var7 == 8218) {
-               var3[var6 + var4] = -126;
-            } else if(var7 == 402) {
-               var3[var6 + var4] = -125;
-            } else if(var7 == 8222) {
-               var3[var6 + var4] = -124;
-            } else if(var7 == 8230) {
-               var3[var6 + var4] = -123;
-            } else if(var7 == 8224) {
-               var3[var6 + var4] = -122;
-            } else if(var7 == 8225) {
-               var3[var4 + var6] = -121;
-            } else if(var7 == 710) {
-               var3[var6 + var4] = -120;
-            } else if(var7 == 8240) {
-               var3[var4 + var6] = -119;
-            } else if(var7 == 352) {
-               var3[var6 + var4] = -118;
-            } else if(var7 == 8249) {
-               var3[var6 + var4] = -117;
-            } else if(var7 == 338) {
-               var3[var4 + var6] = -116;
-            } else if(var7 == 381) {
-               var3[var4 + var6] = -114;
-            } else if(var7 == 8216) {
-               var3[var6 + var4] = -111;
-            } else if(var7 == 8217) {
-               var3[var6 + var4] = -110;
-            } else if(var7 == 8220) {
-               var3[var6 + var4] = -109;
-            } else if(var7 == 8221) {
-               var3[var6 + var4] = -108;
-            } else if(var7 == 8226) {
-               var3[var4 + var6] = -107;
-            } else if(var7 == 8211) {
-               var3[var6 + var4] = -106;
-            } else if(var7 == 8212) {
-               var3[var4 + var6] = -105;
-            } else if(var7 == 732) {
-               var3[var6 + var4] = -104;
-            } else if(var7 == 8482) {
-               var3[var4 + var6] = -103;
-            } else if(var7 == 353) {
-               var3[var4 + var6] = -102;
-            } else if(var7 == 8250) {
-               var3[var4 + var6] = -101;
-            } else if(var7 == 339) {
-               var3[var6 + var4] = -100;
-            } else if(var7 == 382) {
-               var3[var4 + var6] = -98;
-            } else if(var7 == 376) {
-               var3[var6 + var4] = -97;
-            } else {
-               var3[var4 + var6] = 63;
-            }
-         } else {
-            var3[var4 + var6] = (byte)var7;
-         }
-      }
-
-      return var5;
    }
 }

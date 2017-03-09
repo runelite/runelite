@@ -7,55 +7,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hm")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedGetter(
-      intValue = 642884911
+      intValue = -1471451735
    )
    @Export("width")
    public int width;
-   @ObfuscatedName("k")
-   @Export("image")
-   public Image image;
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("t")
+   @ObfuscatedName("d")
    @ObfuscatedGetter(
-      intValue = 735009983
+      intValue = -1966302835
    )
    @Export("height")
    int height;
+   @ObfuscatedName("w")
+   @Export("image")
+   public Image image;
+   @ObfuscatedName("ca")
+   static Font field3198;
 
-   @ObfuscatedName("b")
+   @ObfuscatedName("x")
    @ObfuscatedSignature(
       signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-636025927"
+      garbageValue = "-975875046"
    )
    abstract void init(int var1, int var2, Component var3);
 
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;III)V",
-      garbageValue = "1899256578"
+      signature = "(Ljava/awt/Graphics;IIB)V",
+      garbageValue = "-63"
    )
    public abstract void draw(Graphics var1, int var2, int var3);
 
-   @ObfuscatedName("i")
+   @ObfuscatedName("c")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "454515581"
+      garbageValue = "-550155191"
    )
    public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "127"
+      signature = "(I)V",
+      garbageValue = "923656862"
    )
-   public final void method4171() {
+   public final void method4084() {
       Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
    }
 }

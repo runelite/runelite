@@ -1,214 +1,150 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("aq")
 public class class40 implements class158 {
-   @ObfuscatedName("i")
-   static final class40 field805 = new class40(2);
-   @ObfuscatedName("qi")
+   @ObfuscatedName("j")
+   static final class40 field835 = new class40(1);
+   @ObfuscatedName("d")
+   static final class40 field836 = new class40(3);
+   @ObfuscatedName("c")
+   static final class40 field837 = new class40(2);
+   @ObfuscatedName("x")
+   static final class40 field839 = new class40(0);
+   @ObfuscatedName("fj")
    @ObfuscatedGetter(
-      intValue = -2707681
+      intValue = 53582625
    )
-   static int field806;
-   @ObfuscatedName("b")
-   static final class40 field807 = new class40(0);
-   @ObfuscatedName("t")
-   static final class40 field808 = new class40(3);
-   @ObfuscatedName("k")
+   static int field842;
+   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 579175071
+      intValue = 1315604895
    )
-   final int field809;
-   @ObfuscatedName("l")
-   static final class40 field810 = new class40(1);
-   @ObfuscatedName("ft")
-   @ObfuscatedGetter(
-      intValue = 1392398467
-   )
-   static int field812;
-   @ObfuscatedName("kc")
-   @ObfuscatedGetter(
-      intValue = 751344499
-   )
-   static int field813;
-   @ObfuscatedName("bd")
-   static class184 field814;
-
-   @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(B)I",
-      garbageValue = "0"
-   )
-   public int vmethod4183() {
-      return this.field809;
-   }
-
-   @ObfuscatedName("b")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;IZI)LFrames;",
-      garbageValue = "1816530750"
-   )
-   public static Frames method818(class182 var0, class182 var1, int var2, boolean var3) {
-      boolean var4 = true;
-      int[] var5 = var0.method3357(var2);
-
-      for(int var6 = 0; var6 < var5.length; ++var6) {
-         byte[] var7 = var0.method3354(var2, var5[var6]);
-         if(null == var7) {
-            var4 = false;
-         } else {
-            int var8 = (var7[0] & 255) << 8 | var7[1] & 255;
-            byte[] var9 = var1.method3354(var8, 0);
-            if(null == var9) {
-               var4 = false;
-            }
-         }
-      }
-
-      if(!var4) {
-         return null;
-      } else {
-         try {
-            return new Frames(var0, var1, var2, var3);
-         } catch (Exception var11) {
-            return null;
-         }
-      }
-   }
-
-   @ObfuscatedName("bl")
-   @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "-152267005"
-   )
-   @Export("xteaChanged")
-   static final void xteaChanged(boolean var0) {
-      Client.isDynamicRegion = var0;
-      int var1;
-      int var2;
-      int var3;
-      int var4;
-      int var5;
-      int var6;
-      int var7;
-      if(!Client.isDynamicRegion) {
-         var1 = Client.field329.method2894();
-         var2 = Client.field329.method3057();
-         var3 = Client.field329.readUnsignedShort();
-         XItemContainer.xteaKeys = new int[var3][4];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            for(var5 = 0; var5 < 4; ++var5) {
-               XItemContainer.xteaKeys[var4][var5] = Client.field329.readInt();
-            }
-         }
-
-         class3.mapRegions = new int[var3];
-         class104.field1687 = new int[var3];
-         class6.field52 = new int[var3];
-         class105.field1711 = new byte[var3][];
-         GameEngine.field1779 = new byte[var3][];
-         boolean var13 = false;
-         if((var2 / 8 == 48 || var2 / 8 == 49) && var1 / 8 == 48) {
-            var13 = true;
-         }
-
-         if(var2 / 8 == 48 && var1 / 8 == 148) {
-            var13 = true;
-         }
-
-         var3 = 0;
-
-         for(var5 = (var2 - 6) / 8; var5 <= (var2 + 6) / 8; ++var5) {
-            for(var6 = (var1 - 6) / 8; var6 <= (var1 + 6) / 8; ++var6) {
-               var7 = var6 + (var5 << 8);
-               if(!var13 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
-                  class3.mapRegions[var3] = var7;
-                  class104.field1687[var3] = class26.field588.method3363("m" + var5 + "_" + var6);
-                  class6.field52[var3] = class26.field588.method3363("l" + var5 + "_" + var6);
-                  ++var3;
-               }
-            }
-         }
-
-         ItemLayer.method1519(var2, var1);
-      } else {
-         var1 = Client.field329.method2894();
-         var2 = Client.field329.method2894();
-         var3 = Client.field329.readUnsignedShort();
-         Client.field329.method3141();
-
-         for(var4 = 0; var4 < 4; ++var4) {
-            for(var5 = 0; var5 < 13; ++var5) {
-               for(var6 = 0; var6 < 13; ++var6) {
-                  var7 = Client.field329.method3119(1);
-                  if(var7 == 1) {
-                     Client.field347[var4][var5][var6] = Client.field329.method3119(26);
-                  } else {
-                     Client.field347[var4][var5][var6] = -1;
-                  }
-               }
-            }
-         }
-
-         Client.field329.method3125();
-         XItemContainer.xteaKeys = new int[var3][4];
-
-         for(var4 = 0; var4 < var3; ++var4) {
-            for(var5 = 0; var5 < 4; ++var5) {
-               XItemContainer.xteaKeys[var4][var5] = Client.field329.readInt();
-            }
-         }
-
-         class3.mapRegions = new int[var3];
-         class104.field1687 = new int[var3];
-         class6.field52 = new int[var3];
-         class105.field1711 = new byte[var3][];
-         GameEngine.field1779 = new byte[var3][];
-         var3 = 0;
-
-         for(var4 = 0; var4 < 4; ++var4) {
-            for(var5 = 0; var5 < 13; ++var5) {
-               for(var6 = 0; var6 < 13; ++var6) {
-                  var7 = Client.field347[var4][var5][var6];
-                  if(var7 != -1) {
-                     int var8 = var7 >> 14 & 1023;
-                     int var9 = var7 >> 3 & 2047;
-                     int var10 = (var8 / 8 << 8) + var9 / 8;
-
-                     int var11;
-                     for(var11 = 0; var11 < var3; ++var11) {
-                        if(var10 == class3.mapRegions[var11]) {
-                           var10 = -1;
-                           break;
-                        }
-                     }
-
-                     if(var10 != -1) {
-                        class3.mapRegions[var3] = var10;
-                        var11 = var10 >> 8 & 255;
-                        int var12 = var10 & 255;
-                        class104.field1687[var3] = class26.field588.method3363("m" + var11 + "_" + var12);
-                        class6.field52[var3] = class26.field588.method3363("l" + var11 + "_" + var12);
-                        ++var3;
-                     }
-                  }
-               }
-            }
-         }
-
-         ItemLayer.method1519(var2, var1);
-      }
-
-   }
+   final int field843;
+   @ObfuscatedName("pw")
+   static short[] field844;
 
    @ObfuscatedSignature(
       signature = "(I)V",
       garbageValue = "0"
    )
    class40(int var1) {
-      this.field809 = var1;
+      this.field843 = var1;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;IIIZB)V",
+      garbageValue = "91"
+   )
+   public static void method821(class182 var0, int var1, int var2, int var3, boolean var4) {
+      class138.field1920 = 1;
+      class138.field1916 = var0;
+      class138.field1922 = var1;
+      class8.field86 = var2;
+      Ignore.field245 = var3;
+      class138.field1923 = var4;
+      XClanMember.field302 = 10000;
+   }
+
+   @ObfuscatedName("x")
+   @ObfuscatedSignature(
+      signature = "(B)I",
+      garbageValue = "127"
+   )
+   public int vmethod4085() {
+      return this.field843;
+   }
+
+   @ObfuscatedName("al")
+   @ObfuscatedSignature(
+      signature = "(IIIIZB)V",
+      garbageValue = "-43"
+   )
+   static final void method824(int var0, int var1, int var2, int var3, boolean var4) {
+      if(var2 < 1) {
+         var2 = 1;
+      }
+
+      if(var3 < 1) {
+         var3 = 1;
+      }
+
+      int var5 = var3 - 334;
+      if(var5 < 0) {
+         var5 = 0;
+      } else if(var5 > 100) {
+         var5 = 100;
+      }
+
+      int var6 = var5 * (Client.field568 - Client.field567) / 100 + Client.field567;
+      int var7 = var6 * var3 * 512 / (334 * var2);
+      int var8;
+      int var9;
+      short var15;
+      if(var7 < Client.field573) {
+         var15 = Client.field573;
+         var6 = 334 * var2 * var15 / (var3 * 512);
+         if(var6 > Client.field572) {
+            var6 = Client.field572;
+            var8 = var6 * var3 * 512 / (var15 * 334);
+            var9 = (var2 - var8) / 2;
+            if(var4) {
+               Rasterizer2D.method3997();
+               Rasterizer2D.method4028(var0, var1, var9, var3, -16777216);
+               Rasterizer2D.method4028(var2 + var0 - var9, var1, var9, var3, -16777216);
+            }
+
+            var0 += var9;
+            var2 -= 2 * var9;
+         }
+      } else if(var7 > Client.field574) {
+         var15 = Client.field574;
+         var6 = 334 * var15 * var2 / (512 * var3);
+         if(var6 < Client.field324) {
+            var6 = Client.field324;
+            var8 = var2 * var15 * 334 / (var6 * 512);
+            var9 = (var3 - var8) / 2;
+            if(var4) {
+               Rasterizer2D.method3997();
+               Rasterizer2D.method4028(var0, var1, var2, var9, -16777216);
+               Rasterizer2D.method4028(var0, var1 + var3 - var9, var2, var9, -16777216);
+            }
+
+            var1 += var9;
+            var3 -= var9 * 2;
+         }
+      }
+
+      var8 = (Client.field522 - Client.field569) * var5 / 100 + Client.field569;
+      Client.scale = var6 * var3 * var8 / 85504 << 1;
+      if(Client.camera2 != var2 || Client.camera3 != var3) {
+         int[] var14 = new int[9];
+
+         for(int var10 = 0; var10 < 9; ++var10) {
+            int var11 = 15 + 128 + var10 * 32;
+            int var12 = 600 + var11 * 3;
+            int var13 = class84.field1441[var11];
+            var14[var10] = var13 * var12 >> 16;
+         }
+
+         Region.method1788(var14, 500, 800, var2, var3);
+      }
+
+      Client.field575 = var0;
+      Client.field456 = var1;
+      Client.camera2 = var2;
+      Client.camera3 = var3;
+   }
+
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(III)LWidget;",
+      garbageValue = "-401868729"
+   )
+   public static Widget method826(int var0, int var1) {
+      Widget var2 = World.method670(var0);
+      return var1 == -1?var2:(null != var2 && var2.children != null && var1 < var2.children.length?var2.children[var1]:null);
    }
 }

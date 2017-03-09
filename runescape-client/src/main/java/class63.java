@@ -1,86 +1,48 @@
 import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("be")
+@ObfuscatedName("bp")
 public class class63 implements Runnable {
-   @ObfuscatedName("l")
-   volatile class57[] field1074 = new class57[2];
-   @ObfuscatedName("i")
-   volatile boolean field1075 = false;
-   @ObfuscatedName("t")
-   volatile boolean field1076 = false;
-   @ObfuscatedName("b")
-   class103 field1079;
-
-   @ObfuscatedName("p")
-   @ObfuscatedSignature(
-      signature = "(II)Z",
-      garbageValue = "-1869141698"
-   )
-   public static boolean method1215(int var0) {
-      return (var0 >> 31 & 1) != 0;
-   }
+   @ObfuscatedName("c")
+   volatile boolean field1095 = false;
+   @ObfuscatedName("j")
+   volatile class57[] field1096 = new class57[2];
+   @ObfuscatedName("d")
+   volatile boolean field1098 = false;
+   @ObfuscatedName("x")
+   class103 field1100;
 
    public void run() {
-      this.field1076 = true;
+      this.field1098 = true;
 
       try {
-         while(!this.field1075) {
+         while(!this.field1095) {
             class57 var2;
             for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1074[var1];
-               if(var2 != null) {
-                  var2.method1112();
+               var2 = this.field1096[var1];
+               if(null != var2) {
+                  var2.method1122();
                }
             }
 
-            class115.method2301(10L);
-            class103 var5 = this.field1079;
+            class140.method2660(10L);
+            class103 var5 = this.field1100;
             var2 = null;
-            if(null != var5.field1666) {
-               for(int var3 = 0; var3 < 50 && var5.field1666.peekEvent() != null; ++var3) {
-                  class115.method2301(1L);
+            if(var5.field1679 != null) {
+               for(int var3 = 0; var3 < 50 && var5.field1679.peekEvent() != null; ++var3) {
+                  class140.method2660(1L);
                }
 
-               if(null != var2) {
-                  var5.field1666.postEvent(new ActionEvent(var2, 1001, "dummy"));
+               if(var2 != null) {
+                  var5.field1679.postEvent(new ActionEvent(var2, 1001, "dummy"));
                }
             }
          }
       } catch (Exception var8) {
-         FaceNormal.method1950((String)null, var8);
+         class31.method703((String)null, var8);
       } finally {
-         this.field1076 = false;
+         this.field1098 = false;
       }
 
-   }
-
-   @ObfuscatedName("q")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "-468183425"
-   )
-   static final int method1217(int var0, int var1) {
-      if(var0 == -2) {
-         return 12345678;
-      } else if(var0 == -1) {
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return var1;
-      } else {
-         var1 = var1 * (var0 & 127) / 128;
-         if(var1 < 2) {
-            var1 = 2;
-         } else if(var1 > 126) {
-            var1 = 126;
-         }
-
-         return (var0 & 'ﾀ') + var1;
-      }
    }
 }

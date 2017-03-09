@@ -2,18 +2,18 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("dp")
+@ObfuscatedName("df")
 @Implements("CacheableNode")
 public class CacheableNode extends Node {
-   @ObfuscatedName("cd")
+   @ObfuscatedName("cy")
    @Export("previous")
    public CacheableNode previous;
-   @ObfuscatedName("cq")
+   @ObfuscatedName("cz")
    @Export("next")
    public CacheableNode next;
 
    @ObfuscatedName("cc")
-   public void method2497() {
+   public void method2476() {
       if(this.next != null) {
          this.next.previous = this.previous;
          this.previous.next = this.next;

@@ -2,36 +2,36 @@ import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("hu")
+@ObfuscatedName("hv")
 @Implements("ModIcon")
 public final class ModIcon extends Rasterizer2D {
-   @ObfuscatedName("t")
-   @Export("height")
-   public int height;
-   @ObfuscatedName("n")
+   @ObfuscatedName("u")
    @Export("width")
    public int width;
-   @ObfuscatedName("i")
-   @Export("originalWidth")
-   public int originalWidth;
-   @ObfuscatedName("l")
+   @ObfuscatedName("j")
    @Export("palette")
    public int[] palette;
+   @ObfuscatedName("c")
+   @Export("originalWidth")
+   public int originalWidth;
+   @ObfuscatedName("d")
+   @Export("height")
+   public int height;
+   @ObfuscatedName("x")
+   @Export("pixels")
+   public byte[] pixels;
    @ObfuscatedName("k")
-   @Export("offsetX")
-   public int offsetX;
+   @Export("originalHeight")
+   public int originalHeight;
    @ObfuscatedName("h")
    @Export("offsetY")
    public int offsetY;
-   @ObfuscatedName("b")
-   @Export("pixels")
-   public byte[] pixels;
-   @ObfuscatedName("f")
-   @Export("originalHeight")
-   public int originalHeight;
+   @ObfuscatedName("w")
+   @Export("offsetX")
+   public int offsetX;
 
-   @ObfuscatedName("b")
-   public void method4187() {
+   @ObfuscatedName("x")
+   public void method4088() {
       if(this.originalWidth != this.width || this.height != this.originalHeight) {
          byte[] var1 = new byte[this.width * this.originalHeight];
          int var2 = 0;
@@ -50,8 +50,8 @@ public final class ModIcon extends Rasterizer2D {
       }
    }
 
-   @ObfuscatedName("l")
-   public void method4188(int var1, int var2, int var3) {
+   @ObfuscatedName("j")
+   public void method4089(int var1, int var2, int var3) {
       for(int var4 = 0; var4 < this.palette.length; ++var4) {
          int var5 = this.palette[var4] >> 16 & 255;
          var5 += var1;
@@ -82,8 +82,53 @@ public final class ModIcon extends Rasterizer2D {
 
    }
 
-   @ObfuscatedName("t")
-   static void method4190(int[] var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
+   @ObfuscatedName("c")
+   public void method4090(int var1, int var2) {
+      var1 += this.offsetX;
+      var2 += this.offsetY;
+      int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
+      int var4 = 0;
+      int var5 = this.height;
+      int var6 = this.originalWidth;
+      int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
+      int var8 = 0;
+      int var9;
+      if(var2 < Rasterizer2D.field3191) {
+         var9 = Rasterizer2D.field3191 - var2;
+         var5 -= var9;
+         var2 = Rasterizer2D.field3191;
+         var4 += var9 * var6;
+         var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
+      }
+
+      if(var2 + var5 > Rasterizer2D.field3187) {
+         var5 -= var2 + var5 - Rasterizer2D.field3187;
+      }
+
+      if(var1 < Rasterizer2D.field3192) {
+         var9 = Rasterizer2D.field3192 - var1;
+         var6 -= var9;
+         var1 = Rasterizer2D.field3192;
+         var4 += var9;
+         var3 += var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var1 + var6 > Rasterizer2D.field3190) {
+         var9 = var1 + var6 - Rasterizer2D.field3190;
+         var6 -= var9;
+         var8 += var9;
+         var7 += var9;
+      }
+
+      if(var6 > 0 && var5 > 0) {
+         method4096(Rasterizer2D.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
+      }
+   }
+
+   @ObfuscatedName("d")
+   static void method4096(int[] var0, byte[] var1, int[] var2, int var3, int var4, int var5, int var6, int var7, int var8) {
       int var9 = -(var5 >> 2);
       var5 = -(var5 & 3);
 
@@ -133,50 +178,5 @@ public final class ModIcon extends Rasterizer2D {
          var3 += var8;
       }
 
-   }
-
-   @ObfuscatedName("i")
-   public void method4191(int var1, int var2) {
-      var1 += this.offsetX;
-      var2 += this.offsetY;
-      int var3 = var1 + var2 * Rasterizer2D.graphicsPixelsWidth;
-      int var4 = 0;
-      int var5 = this.height;
-      int var6 = this.originalWidth;
-      int var7 = Rasterizer2D.graphicsPixelsWidth - var6;
-      int var8 = 0;
-      int var9;
-      if(var2 < Rasterizer2D.field3187) {
-         var9 = Rasterizer2D.field3187 - var2;
-         var5 -= var9;
-         var2 = Rasterizer2D.field3187;
-         var4 += var9 * var6;
-         var3 += var9 * Rasterizer2D.graphicsPixelsWidth;
-      }
-
-      if(var2 + var5 > Rasterizer2D.field3182) {
-         var5 -= var2 + var5 - Rasterizer2D.field3182;
-      }
-
-      if(var1 < Rasterizer2D.field3186) {
-         var9 = Rasterizer2D.field3186 - var1;
-         var6 -= var9;
-         var1 = Rasterizer2D.field3186;
-         var4 += var9;
-         var3 += var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var1 + var6 > Rasterizer2D.field3185) {
-         var9 = var1 + var6 - Rasterizer2D.field3185;
-         var6 -= var9;
-         var8 += var9;
-         var7 += var9;
-      }
-
-      if(var6 > 0 && var5 > 0) {
-         method4190(Rasterizer2D.graphicsPixels, this.pixels, this.palette, var4, var3, var6, var5, var7, var8);
-      }
    }
 }
