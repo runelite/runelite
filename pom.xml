@@ -49,7 +49,7 @@
 	<distributionManagement>
 		<repository>
 			<id>runelite</id>
-			<url>${runelite.repository.url}</url>
+			<url>dav:http://repo.runelite.net</url>
 		</repository>
 	</distributionManagement>
 
@@ -95,8 +95,8 @@
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
-				<artifactId>wagon-ssh</artifactId>
-				<version>2.10</version>
+				<artifactId>wagon-webdav-jackrabbit</artifactId>
+				<version>2.12</version>
 			</extension>
 		</extensions>
 	</build>
