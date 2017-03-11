@@ -1,15 +1,16 @@
-package net.runelite.rsmv;
+package net.runelite.rsmv.ui;
 
 import javax.swing.AbstractListModel;
+import net.runelite.rsmv.Main;
 
-final class class6 extends AbstractListModel {
+public final class RSMVAbstractListModel extends AbstractListModel {
    private String[] field24;
    // $FF: synthetic field
    private int field25;
    // $FF: synthetic field
    private String[] field26;
 
-   class6(Main var1, int var2, String[] var3) {
+   public RSMVAbstractListModel(Main var1, int var2, String[] var3) {
       this.field25 = var2;
       this.field26 = var3;
       this.field24 = this.field26;

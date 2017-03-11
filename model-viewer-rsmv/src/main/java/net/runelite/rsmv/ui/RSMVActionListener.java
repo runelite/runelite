@@ -1,17 +1,18 @@
-package net.runelite.rsmv;
+package net.runelite.rsmv.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import net.runelite.rsmv.Main;
 
-final class class9 implements ActionListener {
+public final class RSMVActionListener implements ActionListener {
    // $FF: synthetic field
    private Main field28;
 
-   class9(Main var1) {
+   public RSMVActionListener(Main var1) {
       this.field28 = var1;
    }
 
    public final void actionPerformed(ActionEvent var1) {
-      Main.method20(this.field28, var1);
+      Main.actionListenerCallback(this.field28, var1);
    }
 }

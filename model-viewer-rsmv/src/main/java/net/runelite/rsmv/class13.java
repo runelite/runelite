@@ -102,7 +102,7 @@ public final class class13 implements ImageObserver, ImageProducer {
       return true;
    }
 
-   public final void method25(class19 var1, int var2, int var3, int var4, int var5, int var6) {
+   public final void method25(Model var1, int var2, int var3, int var4, int var5, int var6) {
       this.method22();
       class5.field18 = this.field53;
       var2 = class5.field12;

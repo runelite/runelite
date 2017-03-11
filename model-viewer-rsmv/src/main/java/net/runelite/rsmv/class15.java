@@ -3,9 +3,9 @@ package net.runelite.rsmv;
 
 final class class15 {
    public byte[] field66;
-   public int field67;
-   public int field68;
-   public int field69;
+   public int vertexCount;
+   public int triangleFaceCount;
+   public int texTriangleCount;
    public int field70;
    public int field71;
    public int field72;

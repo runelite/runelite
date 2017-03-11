@@ -20,7 +20,7 @@ public class ModelDefinition
 	public byte[] faceRenderType;
 	public short[] faceTextures;
 	public byte priority;
-	public int anInt2569;
+	public int texTriangleCount;
 	public byte[] textureRenderTypes;
 	public short[] texTriangleY;
 	public short[] texTriangleZ;

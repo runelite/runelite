@@ -1,5 +1,17 @@
 package net.runelite.rsmv;
 
+import net.runelite.rsmv.ui.RSMVListSelectionListener;
+import net.runelite.rsmv.ui.RSMVMouseMotionAdapter;
+import net.runelite.rsmv.ui.RSMVActionListener3;
+import net.runelite.rsmv.ui.RSMVMouseWheelListener;
+import net.runelite.rsmv.ui.RSMVWindowAdapter;
+import net.runelite.rsmv.ui.RSMVAbstractListModel2;
+import net.runelite.rsmv.ui.RSMVComponentAdapter;
+import net.runelite.rsmv.ui.RSMVMouseAdapter;
+import net.runelite.rsmv.ui.RSMVAbstractListModel;
+import net.runelite.rsmv.ui.RSMVActionListener2;
+import net.runelite.rsmv.ui.class8;
+import net.runelite.rsmv.ui.RSMVActionListener;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -39,7 +51,7 @@ public class Main extends JFrame implements Runnable {
    private int field37 = -1;
    private String field38 = "";
    private static long field39 = 0L;
-   private class19 field40;
+   private Model field40;
    private JFileChooser field41;
    private JFileChooser field42;
    private static class13 field43;
@@ -73,26 +85,26 @@ public class Main extends JFrame implements Runnable {
       this.field47 = new JMenuItem();
       this.setDefaultCloseOperation(3);
       this.setTitle("Runescape Model Viewer");
-      this.addWindowListener(new class12(this));
+      this.addWindowListener(new RSMVWindowAdapter(this));
       this.field52.setBackground(new Color(0, 0, 0));
-      this.field52.addMouseWheelListener(new class11(this));
-      this.field52.addMouseListener(new class4(this));
-      this.field52.addComponentListener(new class3(this));
-      this.field52.addMouseMotionListener(new class1(this));
+      this.field52.addMouseWheelListener(new RSMVMouseWheelListener(this));
+      this.field52.addMouseListener(new RSMVMouseAdapter(this));
+      this.field52.addComponentListener(new RSMVComponentAdapter(this));
+      this.field52.addMouseMotionListener(new RSMVMouseMotionAdapter(this));
       GroupLayout var2 = new GroupLayout(this.field52);
       this.field52.setLayout(var2);
       var2.setHorizontalGroup(var2.createParallelGroup(Alignment.LEADING).addGap(0, 536, 32767));
       var2.setVerticalGroup(var2.createParallelGroup(Alignment.LEADING).addGap(0, 318, 32767));
-      this.field44.addListSelectionListener(new class0(this));
+      this.field44.addListSelectionListener(new RSMVListSelectionListener(this));
       this.field48.setViewportView(this.field44);
       this.field51.setText("Optimized Rendering");
-      this.field51.addActionListener(new class10(this));
+      this.field51.addActionListener(new RSMVActionListener3(this));
       this.field45.setText("File");
       this.field50.setText("Load");
-      this.field50.addActionListener(new class9(this));
+      this.field50.addActionListener(new RSMVActionListener(this));
       this.field45.add(this.field50);
       this.field49.setText("Load Folder");
-      this.field49.addActionListener(new class7(this));
+      this.field49.addActionListener(new RSMVActionListener2(this));
       this.field45.add(this.field49);
       this.field47.setText("Exit");
       this.field45.add(this.field47);
@@ -176,7 +188,7 @@ public class Main extends JFrame implements Runnable {
                   var4[var5] = var10[var5].getName();
                }
 
-               this.field44.setModel(new class2(this, var6, var4));
+               this.field44.setModel(new RSMVAbstractListModel2(this, var6, var4));
             }
 
             var1.close();
@@ -211,30 +223,30 @@ public class Main extends JFrame implements Runnable {
    }
 
    // $FF: synthetic method
-   static void method13(Main var0, WindowEvent var1) {
+   public static void windowClosingCallback(Main var0, WindowEvent var1) {
       var0.method11();
    }
 
    // $FF: synthetic method
-   static void method14(Main var0, MouseWheelEvent var1) {
+   public static void mouseWheelMoved(Main var0, MouseWheelEvent var1) {
       int var2 = var1.getWheelRotation();
       var0.field35 += var2 * 10;
    }
 
    // $FF: synthetic method
-   static void method15(Main var0, MouseEvent var1) {
+   public static void mouseReleasedCallback(Main var0, MouseEvent var1) {
       var0.field37 = var0.field36 = -1;
    }
 
    // $FF: synthetic method
-   static void method16(Main var0, ComponentEvent var1) {
+   public static void componentResizedCallback(Main var0, ComponentEvent var1) {
       if(var0.field52.getWidth() > 0 && var0.field52.getHeight() > 0) {
          var0.method9();
       }
    }
 
    // $FF: synthetic method
-   static void method17(Main var0, MouseEvent var1) {
+   public static void mouseDragged(Main var0, MouseEvent var1) {
       int var2 = var1.getX();
       int var3 = var1.getY();
       if(var0.field36 != -1 || var0.field37 != -1) {
@@ -258,18 +270,18 @@ public class Main extends JFrame implements Runnable {
    }
 
    // $FF: synthetic method
-   static void method18(Main var0, ListSelectionEvent var1) {
+   public static void listSelectionValueChanged(Main var0, ListSelectionEvent var1) {
       if(!var1.getValueIsAdjusting()) {
          String var2 = var0.field44.getModel().getElementAt(var0.field44.getAnchorSelectionIndex()).toString();
          byte[] var3;
-         class19 var4;
+         Model var4;
          if((var3 = method12(var0.field38 + System.getProperty("file.separator") + var2))[var3.length - 1] == -1 && var3[var3.length - 2] == -1) {
-            if((var4 = class19.method36(var3)).field91) {
+            if((var4 = Model.method36(var3)).field91) {
                var4.method37(4);
             }
          } else {
-            class19.method34(var3, 0);
-            var4 = class19.method35(0);
+            Model.method34(var3, 0);
+            var4 = Model.method35(0);
          }
 
          var4.method38(64, 768, -50, -10, -50, true);
@@ -279,24 +291,24 @@ public class Main extends JFrame implements Runnable {
    }
 
    // $FF: synthetic method
-   static void method19(Main var0, ActionEvent var1) {
+   public static void actionListenerCallback3(Main var0, ActionEvent var1) {
       field32 = var0.field51.isSelected();
    }
 
    // $FF: synthetic method
-   static void method20(Main var0, ActionEvent var1) {
+   public static void actionListenerCallback(Main var0, ActionEvent var1) {
       var0.field41.setFileSelectionMode(0);
       File var2;
       if(var0.field41.showOpenDialog(var0) == 0 && (var2 = var0.field41.getSelectedFile()).isFile()) {
          byte[] var3;
-         class19 var4;
+         Model var4;
          if((var3 = method12(var2.getAbsolutePath()))[var3.length - 1] == -1 && var3[var3.length - 2] == -1) {
-            if((var4 = class19.method36(var3)).field91) {
+            if((var4 = Model.method36(var3)).field91) {
                var4.method37(4);
             }
          } else {
-            class19.method34(var3, 0);
-            var4 = class19.method35(0);
+            Model.method34(var3, 0);
+            var4 = Model.method35(0);
          }
 
          var4.method38(64, 768, -50, -10, -50, true);
@@ -306,7 +318,7 @@ public class Main extends JFrame implements Runnable {
    }
 
    // $FF: synthetic method
-   static void method21(Main var0, ActionEvent var1) {
+   public static void actionListenerCallback2(Main var0, ActionEvent var1) {
       var0.field42.setFileSelectionMode(1);
       File var5;
       if(var0.field42.showOpenDialog(var0) == 0 && (var5 = var0.field42.getSelectedFile()).isDirectory()) {
@@ -320,7 +332,7 @@ public class Main extends JFrame implements Runnable {
             var3[var4] = var6[var4].getName();
          }
 
-         var0.field44.setModel(new class6(var0, var2, var3));
+         var0.field44.setModel(new RSMVAbstractListModel(var0, var2, var3));
          var0.method11();
       }
 
