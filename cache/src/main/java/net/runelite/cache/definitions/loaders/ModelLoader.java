@@ -141,7 +141,7 @@ public class ModelLoader
 		position += var7 * 2 + var29 * 2;
 		model.vertexCount = verticeCount;
 		model.triangleFaceCount = triangleCount;
-		model.anInt2569 = textureTriangleCount;
+		model.texTriangleCount = textureTriangleCount;
 		model.vertexX = new int[verticeCount];
 		model.vertexY = new int[verticeCount];
 		model.vertexZ = new int[verticeCount];
@@ -492,7 +492,7 @@ public class ModelLoader
 		int var10000 = var46 + var36;
 		model.vertexCount = var10;
 		model.triangleFaceCount = var11;
-		model.anInt2569 = var12;
+		model.texTriangleCount = var12;
 		model.vertexX = new int[var10];
 		model.vertexY = new int[var10];
 		model.vertexZ = new int[var10];

@@ -1,17 +1,18 @@
-package net.runelite.rsmv;
+package net.runelite.rsmv.ui;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import net.runelite.rsmv.Main;
 
-final class class12 extends WindowAdapter {
+public final class RSMVWindowAdapter extends WindowAdapter {
    // $FF: synthetic field
    private Main field31;
 
-   class12(Main var1) {
+   public RSMVWindowAdapter(Main var1) {
       this.field31 = var1;
    }
 
    public final void windowClosing(WindowEvent var1) {
-      Main.method13(this.field31, var1);
+      Main.windowClosingCallback(this.field31, var1);
    }
 }

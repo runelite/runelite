@@ -1,17 +1,18 @@
-package net.runelite.rsmv;
+package net.runelite.rsmv.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import net.runelite.rsmv.Main;
 
-final class class1 extends MouseMotionAdapter {
+public final class RSMVMouseMotionAdapter extends MouseMotionAdapter {
    // $FF: synthetic field
    private Main field1;
 
-   class1(Main var1) {
+   public RSMVMouseMotionAdapter(Main var1) {
       this.field1 = var1;
    }
 
    public final void mouseDragged(MouseEvent var1) {
-      Main.method17(this.field1, var1);
+      Main.mouseDragged(this.field1, var1);
    }
 }
