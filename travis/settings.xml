@@ -134,8 +134,8 @@ under the License.
 
     <server>
       <id>runelite</id>
-      <username>runelite</username>
-      <privateKey>${user.home}/.ssh/runelite</privateKey>
+      <username>repo</username>
+      <password>${env.REPO_PASSWORD}</password>
     </server>
     <server>
       <id>runelite-tomcat</id>
@@ -262,7 +262,6 @@ under the License.
       <id>runelite</id>
 
       <properties>
-        <runelite.repository.url>${env.RUNELITE_REPOSITORY_URL}</runelite.repository.url>
         <runelite.tomcat.url>http://api.runelite.net/manager/text</runelite.tomcat.url>
       </properties>
     </profile>
