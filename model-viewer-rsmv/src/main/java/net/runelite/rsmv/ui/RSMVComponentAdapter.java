@@ -1,17 +1,18 @@
-package net.runelite.rsmv;
+package net.runelite.rsmv.ui;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import net.runelite.rsmv.Main;
 
-final class class3 extends ComponentAdapter {
+public final class RSMVComponentAdapter extends ComponentAdapter {
    // $FF: synthetic field
    private Main field5;
 
-   class3(Main var1) {
+   public RSMVComponentAdapter(Main var1) {
       this.field5 = var1;
    }
 
    public final void componentResized(ComponentEvent var1) {
-      Main.method16(this.field5, var1);
+      Main.componentResizedCallback(this.field5, var1);
    }
 }
