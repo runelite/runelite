@@ -26,7 +26,6 @@ package net.runelite.cache.fs;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import net.runelite.cache.StoreLocation;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -56,6 +55,8 @@ public class DataFileTest
 			byte[] buf = res2.data;
 			String str = new String(buf);
 			Assert.assertEquals("test", str);
+
+			Assert.assertEquals(res.crc, res2.crc);
 		}
 	}
 

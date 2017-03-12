@@ -211,7 +211,7 @@ public class Index implements Closeable
 	
 	public void save() throws IOException
 	{
-		saveFiles();
+		saveArchives();
 		
 		byte[] data = this.writeIndexData();
 
@@ -348,26 +348,29 @@ public class Index implements Closeable
 		}
 	}
 	
-	public void saveFiles() throws IOException
+	public void saveArchives() throws IOException
 	{
 		for (Archive a : archives)
 		{
 			assert this.index.getIndexFileId() == this.id;
 			DataFile data = store.getData();
 
+			int rev; // used for determining what part of compressedData to crc
 			byte[] compressedData;
 
 			if (a.getData() != null)
 			{
 				compressedData = a.getData(); // data was never decompressed or loaded
+				rev = -1; // assume that this data has no revision?
 			}
 			else
 			{
 				byte[] fileData = a.saveContents();
+				rev = a.getRevision();
 				compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
 			}
 
-			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), compressedData, a.getRevision());
+			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), compressedData, rev);
 			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
 			
 			logger.trace("Saved archive {}/{} at sector {}, compressed length {}", this.getId(), a.getArchiveId(), res.sector, res.compressedLength);

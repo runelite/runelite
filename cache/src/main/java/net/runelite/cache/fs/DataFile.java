@@ -377,7 +377,7 @@ public class DataFile implements Closeable
 		DataFileReadResult res = new DataFileReadResult();
 		res.data = data;
 		res.revision = revision;
-		int length = revision != -1 ? b.length - 2 : b.length;;
+		int length = revision != -1 ? b.length - 2 : b.length;
 		res.crc = crc32.getHash();
 		res.whirlpool = Whirlpool.getHash(b, length);
 		res.compression = compression;
