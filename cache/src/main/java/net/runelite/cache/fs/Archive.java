@@ -153,8 +153,9 @@ public class Archive
 			logger.warn("whirlpool mismatch for archive {}", this);
 		}
 
-		if (this.getRevision() != res.revision)
+		if (res.revision != -1 && this.getRevision() != res.revision)
 		{
+			// compressed data doesn't always include a revision, but check it if it does
 			logger.warn("revision mismatch for archive {}", this);
 		}
 
