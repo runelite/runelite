@@ -22,18 +22,23 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.downloader;
 
 import java.io.File;
+import java.util.concurrent.CompletableFuture;
 import net.runelite.cache.fs.Store;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.impl.SimpleLogger;
 
 public class CacheClientTest
 {
+	private static final Logger logger = LoggerFactory.getLogger(CacheClientTest.class);
+
 	@Before
 	public void before()
 	{
@@ -49,24 +54,16 @@ public class CacheClientTest
 
 		CacheClient c = new CacheClient(store);
 		c.connect();
+		CompletableFuture<Integer> handshake = c.handshake();
 
-//		c.requestFile(0, 205).get();
-//		c.requestFile(3, 278).get();
-//		c.requestFile(3, 127).get();
-//		c.requestFile(0, 1210).get();
+		Integer result = handshake.get();
+		logger.info("Handshake result: {}", result);
 
-//		c.requestFile(255, 255).get();
-//		c.requestFile(255, 2).get();
-
-//		c.requestFile(4, 2047);
-
-//		c.requestFile(6, 546);
-
-//		c.requestFile(255, 6).get();
+		Assert.assertEquals(0, (int) result);
 
 		c.download();
 
-		c.stop();
+		c.close();
 
 		store.save();
 	}

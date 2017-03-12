@@ -30,7 +30,6 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
-import net.runelite.cache.downloader.requests.ConnectionInfo;
 import net.runelite.cache.downloader.requests.HelloHandshake;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +38,8 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 {
 	private static final Logger logger = LoggerFactory.getLogger(CacheClientHandler.class);
 
-	private CacheClient client;
-	private ClientState state;
-	private ByteBuf buffer = Unpooled.buffer(512);
+	private final CacheClient client;
+	private final ByteBuf buffer = Unpooled.buffer(512);
 
 	public CacheClientHandler(CacheClient client)
 	{
@@ -49,27 +47,12 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 	}
 
 	@Override
-	public void channelActive(ChannelHandlerContext ctx)
-	{
-		HelloHandshake msg = new HelloHandshake();
-		msg.setRevision(client.getClientRevision());
-
-		ByteBuf message = Unpooled.buffer(5);
-		message.writeByte(msg.getType()); // handshake type
-		message.writeInt(msg.getRevision()); // client revision
-
-		ctx.writeAndFlush(message);
-
-		logger.info("Sent handshake with revision {}", msg.getRevision());
-
-		state = ClientState.HANDSHAKING;
-	}
-
-	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 	{
 		ByteBuf inbuf = (ByteBuf) msg;
 		buffer.writeBytes(inbuf);
+
+		ClientState state = client.getState();
 
 		if (state == ClientState.HANDSHAKING)
 		{
@@ -83,18 +66,9 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 					logger.warn("Client version is outdated");
 				else
 					logger.warn("Handshake response error {}", response);
-
-				ctx.close();
-				return;
 			}
 
-			ConnectionInfo cinfo = new ConnectionInfo();
-			ByteBuf outbuf = Unpooled.buffer(4);
-			outbuf.writeByte(cinfo.getType());
-			outbuf.writeMedium(cinfo.getPadding());
-
-			ctx.writeAndFlush(outbuf);
-			state = ClientState.CONNECTED;
+			client.onHandshake(response);
 		}
 		else if (state == ClientState.CONNECTED)
 		{
@@ -210,7 +184,7 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 	{
 		// Close the connection when an exception is raised.
-		cause.printStackTrace();
+		logger.warn(null, cause);
 		ctx.close();
 	}
 }

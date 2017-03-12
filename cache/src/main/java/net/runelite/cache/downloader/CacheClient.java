@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.downloader;
 
 import com.google.common.base.Stopwatch;
@@ -44,7 +43,9 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import net.runelite.cache.downloader.requests.ConnectionInfo;
 import net.runelite.cache.downloader.requests.FileRequest;
+import net.runelite.cache.downloader.requests.HelloHandshake;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
@@ -58,14 +59,17 @@ public class CacheClient
 	private static final String HOST = "oldschool1.runescape.com";
 	private static final int PORT = 43594;
 
-	private static final int CLIENT_REVISION = 135;
+	private static final int CLIENT_REVISION = 138;
 
-	private Store store; // store cache will be written to
-	private int clientRevision;
+	private final Store store; // store cache will be written to
+	private final int clientRevision;
+
+	private ClientState state;
 
 	private EventLoopGroup group = new NioEventLoopGroup(1);
 	private Channel channel;
 
+	private CompletableFuture<Integer> handshakeFuture;
 	private Queue<PendingFileRequest> requests = new ArrayDeque<>();
 
 	public CacheClient(Store store)
@@ -101,7 +105,52 @@ public class CacheClient
 		channel = f.channel();
 	}
 
-	public void stop()
+	public CompletableFuture<Integer> handshake()
+	{
+		HelloHandshake msg = new HelloHandshake();
+		msg.setRevision(getClientRevision());
+
+		ByteBuf message = Unpooled.buffer(5);
+		message.writeByte(msg.getType()); // handshake type
+		message.writeInt(msg.getRevision()); // client revision
+
+		state = ClientState.HANDSHAKING;
+		channel.writeAndFlush(message);
+
+		logger.info("Sent handshake with revision {}", msg.getRevision());
+
+		assert handshakeFuture == null;
+		handshakeFuture = new CompletableFuture<>();
+
+		return handshakeFuture;
+	}
+
+	public void onHandshake(int response)
+	{
+		assert handshakeFuture != null;
+
+		handshakeFuture.complete(response);
+
+		if (response != HelloHandshake.RESPONSE_OK)
+		{
+			close();
+			return;
+		}
+
+		// Send connection info
+		ConnectionInfo cinfo = new ConnectionInfo();
+		ByteBuf outbuf = Unpooled.buffer(4);
+		outbuf.writeByte(cinfo.getType());
+		outbuf.writeMedium(cinfo.getPadding());
+
+		channel.writeAndFlush(outbuf);
+
+		state = ClientState.CONNECTED;
+
+		logger.info("Client is now connected!");
+	}
+
+	public void close()
 	{
 		channel.close().syncUninterruptibly();
 		group.shutdownGracefully();
@@ -112,13 +161,18 @@ public class CacheClient
 		return clientRevision;
 	}
 
+	public ClientState getState()
+	{
+		return state;
+	}
+
 	public void download() throws InterruptedException, ExecutionException, FileNotFoundException, IOException
 	{
 		Stopwatch stopwatch = Stopwatch.createStarted();
 
 		FileResult result = requestFile(255, 255).get();
 		result.decompress(null);
-		
+
 		ByteBuf buffer = Unpooled.wrappedBuffer(result.getContents());
 
 		int indexCount = result.getContents().length / 8;
@@ -211,6 +265,11 @@ public class CacheClient
 
 	public synchronized CompletableFuture<FileResult> requestFile(int index, int fileId)
 	{
+		if (state != ClientState.CONNECTED)
+		{
+			throw new IllegalStateException("Can't request files until connected!");
+		}
+
 		ByteBuf buf = Unpooled.buffer(4);
 		FileRequest request = new FileRequest(index, fileId);
 		CompletableFuture<FileResult> future = new CompletableFuture<>();
