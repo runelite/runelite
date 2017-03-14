@@ -22,14 +22,13 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
 import com.google.common.io.Files;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -55,7 +54,9 @@ public class StoreLoadTest
 
 		java.io.File testStoreFile = folder.newFolder();
 		for (java.io.File f : StoreLocation.LOCATION.listFiles())
+		{
 			Files.copy(f, new java.io.File(testStoreFile, f.getName()));
+		}
 
 		Store testStore = new Store(testStoreFile);
 		testStore.load();
@@ -68,7 +69,8 @@ public class StoreLoadTest
 		Assert.assertTrue(store.equals(testStore));
 	}
 
-	//@Test
+	@Test
+	@Ignore
 	public void unpackStore() throws IOException
 	{
 		java.io.File base = StoreLocation.LOCATION;
@@ -76,29 +78,22 @@ public class StoreLoadTest
 		{
 			store.load();
 
-			for (Index i : store.getIndexes())
-			{
-				java.io.File ifile = new java.io.File(folder.newFolder(), "" + i.getId());
-				ifile.mkdir();
+			store.saveTree(folder.newFolder());
+		}
+	}
 
-				for (Archive a : i.getArchives())
-				{
-					java.io.File afile = new java.io.File(ifile, "" + a.getArchiveId());
-					afile.mkdir();
+	@Test
+	@Ignore
+	public void loadTree() throws IOException
+	{
+		Store store = new Store(folder.newFolder());
+		store.loadTree(new java.io.File("C:\\rs\\temp\\tree"));
 
-					for (File f : a.getFiles())
-					{
-						java.io.File ffile = new java.io.File(afile, "" + f.getFileId());
-						try (FileOutputStream fout = new FileOutputStream(ffile))
-						{
-							if (f.getContents() != null)
-							{
-								fout.write(f.getContents());
-							}
-						}
-					}
-				}
-			}
+		try (Store store2 = new Store(StoreLocation.LOCATION))
+		{
+			store2.load();
+
+			Assert.assertEquals(store, store2);
 		}
 	}
 }
