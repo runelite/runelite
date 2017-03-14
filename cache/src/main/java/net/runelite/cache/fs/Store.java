@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
 import java.io.Closeable;
@@ -30,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.IndexType;
@@ -43,19 +43,19 @@ public class Store implements Closeable
 
 	private static final String MAIN_FILE_CACHE_DAT = "main_file_cache.dat2";
 	private static final String MAIN_FILE_CACHE_IDX = "main_file_cache.idx";
-	
+
 	private final File folder;
 	private final DataFile data;
 	private final IndexFile index255;
 	private final List<Index> indexes = new ArrayList<>();
-	
+
 	public Store(File folder) throws IOException
 	{
 		this.folder = folder;
-		
+
 		data = new DataFile(this, new File(folder, MAIN_FILE_CACHE_DAT));
 		index255 = new IndexFile(this, 255, new File(folder, MAIN_FILE_CACHE_IDX + "255"));
-		
+
 		for (int i = 0; i < index255.getIndexCount(); ++i)
 		{
 			this.addIndex(i);
@@ -76,7 +76,9 @@ public class Store implements Closeable
 		data.close();
 		index255.close();
 		for (Index i : indexes)
+		{
 			i.close();
+		}
 	}
 
 	@Override
@@ -105,18 +107,22 @@ public class Store implements Closeable
 		}
 		return true;
 	}
-	
+
 	public final Index addIndex(int id) throws FileNotFoundException
 	{
 		for (Index i : indexes)
+		{
 			if (i.getIndex().getIndexFileId() == id)
+			{
 				throw new IllegalArgumentException("index " + id + " already exists");
-		
+			}
+		}
+
 		IndexFile indexFile = new IndexFile(this, id, new File(folder, MAIN_FILE_CACHE_IDX + id));
 		Index index = new Index(this, indexFile, id);
-		
+
 		this.indexes.add(index);
-		
+
 		return index;
 	}
 
@@ -125,13 +131,15 @@ public class Store implements Closeable
 		assert indexes.contains(index);
 		indexes.remove(index);
 	}
-	
+
 	public void load() throws IOException
 	{
 		for (Index i : indexes)
+		{
 			i.load();
+		}
 	}
-	
+
 	public void save() throws IOException
 	{
 		logger.debug("Clearing data and indexes in preparation for store save");
@@ -139,10 +147,41 @@ public class Store implements Closeable
 		data.clear();
 
 		for (Index i : indexes)
+		{
 			i.clear();
+		}
 
 		for (Index i : indexes)
+		{
 			i.save();
+		}
+	}
+
+	public void saveTree(java.io.File to) throws IOException
+	{
+		for (Index i : indexes)
+		{
+			i.saveTree(to);
+		}
+	}
+
+	public void loadTree(java.io.File from) throws IOException
+	{
+		for (java.io.File idx : from.listFiles())
+		{
+			if (!idx.isDirectory())
+			{
+				continue;
+			}
+
+			int id = Integer.parseInt(idx.getName());
+			IndexFile indexFile = new IndexFile(this, id, new File(folder, MAIN_FILE_CACHE_IDX + id));
+			Index index = new Index(this, indexFile, id);
+			index.loadTree(from, idx);
+			indexes.add(index);
+		}
+
+		Collections.sort(indexes, (idx1, idx2) -> Integer.compare(idx1.getId(), idx2.getId()));
 	}
 
 	public DataFile getData()
@@ -159,7 +198,7 @@ public class Store implements Closeable
 	{
 		return indexes;
 	}
-	
+
 	public Index getIndex(IndexType type)
 	{
 		return indexes.get(type.getNumber());
@@ -168,8 +207,12 @@ public class Store implements Closeable
 	public final Index findIndex(int id)
 	{
 		for (Index i : indexes)
+		{
 			if (i.getId() == id)
+			{
 				return i;
+			}
+		}
 		return null;
 	}
 }

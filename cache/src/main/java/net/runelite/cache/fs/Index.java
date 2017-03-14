@@ -22,12 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
+import com.google.common.io.Files;
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.util.Djb2;
@@ -40,11 +42,11 @@ import org.slf4j.LoggerFactory;
 public class Index implements Closeable
 {
 	private static final Logger logger = LoggerFactory.getLogger(Index.class);
-	
+
 	private final Store store;
 	private final IndexFile index;
 	private final int id;
-	
+
 	private XteaKeyManager xteaManager;
 
 	private int protocol = 7;
@@ -55,14 +57,14 @@ public class Index implements Closeable
 	private int compression; // compression method of this index's data in 255
 
 	private final List<Archive> archives = new ArrayList<>();
-	
+
 	public Index(Store store, IndexFile index, int id)
 	{
 		this.store = store;
 		this.index = index;
 		this.id = id;
 	}
-	
+
 	@Override
 	public void close() throws IOException
 	{
@@ -160,19 +162,23 @@ public class Index implements Closeable
 	{
 		return archives;
 	}
-	
+
 	public Archive addArchive(int id)
 	{
 		Archive archive = new Archive(this, id);
 		this.archives.add(archive);
 		return archive;
 	}
-	
+
 	public Archive getArchive(int id)
 	{
 		for (Archive a : archives)
+		{
 			if (a.getArchiveId() == id)
+			{
 				return a;
+			}
+		}
 		return null;
 	}
 
@@ -180,25 +186,29 @@ public class Index implements Closeable
 	{
 		int hash = Djb2.hash(name);
 		for (Archive a : archives)
+		{
 			if (a.getNameHash() == hash)
+			{
 				return a;
+			}
+		}
 		return null;
 	}
-	
+
 	public void load() throws IOException
 	{
 		logger.trace("Loading index {}", id);
 
 		DataFile dataFile = store.getData();
 		IndexFile index255 = store.getIndex255();
-		
+
 		IndexEntry entry = index255.read(id);
 		byte[] indexData = dataFile.read(index255.getIndexFileId(), entry.getId(), entry.getSector(), entry.getLength());
 		DataFileReadResult res = DataFile.decompress(indexData, null);
 		byte[] data = res.data;
 
 		archives.clear();
-		
+
 		readIndexData(data);
 
 		this.crc = res.crc;
@@ -208,11 +218,11 @@ public class Index implements Closeable
 
 		this.loadArchives();
 	}
-	
+
 	public void save() throws IOException
 	{
 		saveArchives();
-		
+
 		byte[] data = this.writeIndexData();
 
 		DataFile dataFile = store.getData();
@@ -226,7 +236,63 @@ public class Index implements Closeable
 		this.crc = res.crc;
 		this.whirlpool = res.whirlpool;
 	}
-	
+
+	public void saveTree(java.io.File to) throws IOException
+	{
+		java.io.File idx = new java.io.File(to, "" + this.getId());
+		idx.mkdirs();
+
+		for (Archive a : archives)
+		{
+			a.saveTree(idx);
+		}
+
+		java.io.File rev = new java.io.File(to, this.getId() + ".rev");
+		Files.write("" + this.getRevision(), rev, Charset.defaultCharset());
+	}
+
+	public void loadTree(java.io.File parent, java.io.File to) throws IOException
+	{
+		for (java.io.File f : to.listFiles())
+		{
+			if (f.isDirectory())
+			{
+				int id = Integer.parseInt(f.getName());
+
+				Archive archive = new Archive(this, id);
+				archive.loadTree(to, f);
+				archives.add(archive);
+			}
+			else if (f.getName().endsWith(".dat"))
+			{
+				// one file. archiveId-fileId-name
+				String[] parts = Files.getNameWithoutExtension(f.getName()).split("-");
+
+				int id = Integer.parseInt(parts[0]);
+
+				Archive archive = new Archive(this, id);
+				archive.loadTreeSingleFile(to, f);
+				archives.add(archive);
+			}
+			else if (f.getName().endsWith(".datc"))
+			{
+				// packed data
+				String[] parts = Files.getNameWithoutExtension(f.getName()).split("-");
+
+				int id = Integer.parseInt(parts[0]);
+
+				Archive archive = new Archive(this, id);
+				archive.loadTreeData(to, f);
+				archives.add(archive);
+			}
+		}
+
+		String str = Files.readFirstLine(new java.io.File(parent, this.getId() + ".rev"), Charset.defaultCharset());
+		revision = Integer.parseInt(str);
+
+		Collections.sort(archives, (ar1, ar2) -> Integer.compare(ar1.getArchiveId(), ar2.getArchiveId()));
+	}
+
 	public void readIndexData(byte[] data)
 	{
 		InputStream stream = new InputStream(data);
@@ -304,7 +370,7 @@ public class Index implements Closeable
 				archive = 0;
 
 				Archive a = this.archives.get(index);
-				a.load(stream, numberOfFiles[index], protocol);
+				a.loadFiles(stream, numberOfFiles[index], protocol);
 			}
 
 			if (named)
@@ -317,7 +383,7 @@ public class Index implements Closeable
 			}
 		}
 	}
-	
+
 	private void loadArchives() throws IOException
 	{
 		// get data from index file
@@ -347,7 +413,7 @@ public class Index implements Closeable
 			a.decompressAndLoad(null);
 		}
 	}
-	
+
 	public void saveArchives() throws IOException
 	{
 		for (Archive a : archives)
@@ -372,14 +438,14 @@ public class Index implements Closeable
 
 			DataFileWriteResult res = data.write(this.id, a.getArchiveId(), compressedData, rev);
 			this.index.write(new IndexEntry(this.index, a.getArchiveId(), res.sector, res.compressedLength));
-			
+
 			logger.trace("Saved archive {}/{} at sector {}, compressed length {}", this.getId(), a.getArchiveId(), res.sector, res.compressedLength);
 
 			a.setCrc(res.crc);
 			a.setWhirlpool(res.whirlpool);
 		}
 	}
-	
+
 	public byte[] writeIndexData()
 	{
 		OutputStream stream = new OutputStream();
@@ -454,7 +520,7 @@ public class Index implements Closeable
 		for (data = 0; data < this.archives.size(); ++data)
 		{
 			Archive a = this.archives.get(data);
-			
+
 			int len = a.getFiles().size();
 
 			if (protocol >= 7)

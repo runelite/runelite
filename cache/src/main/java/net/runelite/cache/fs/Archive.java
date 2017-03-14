@@ -22,12 +22,14 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
+import com.google.common.io.Files;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import net.runelite.cache.io.InputStream;
@@ -38,9 +40,9 @@ import org.slf4j.LoggerFactory;
 public class Archive
 {
 	private static final Logger logger = LoggerFactory.getLogger(Archive.class);
-	
+
 	private Index index; // member of this index
-	
+
 	private byte[] data; // raw data from the datafile, compressed/encrypted
 
 	private int archiveId;
@@ -51,7 +53,7 @@ public class Archive
 	private int compression;
 
 	private List<File> files = new ArrayList<>();
-	
+
 	public Archive(Index index, int id)
 	{
 		this.index = index;
@@ -109,18 +111,18 @@ public class Archive
 	{
 		this.data = data;
 	}
-	
+
 	public File addFile(int id)
 	{
 		File file = new File(this, id);
 		this.files.add(file);
 		return file;
 	}
-	
-	public void load(InputStream stream, int numberOfFiles, int protocol)
+
+	public void loadFiles(InputStream stream, int numberOfFiles, int protocol)
 	{
 		int archive = 0;
-		
+
 		for (int i = 0; i < numberOfFiles; ++i)
 		{
 			int fileId = archive += protocol >= 7 ? stream.readBigSmart() : stream.readUnsignedShort();
@@ -140,7 +142,7 @@ public class Archive
 			logger.warn("Unable to decrypt archive {}", this);
 			return;
 		}
-		
+
 		byte[] decompressedData = res.data;
 
 		if (this.crc != res.crc)
@@ -164,7 +166,7 @@ public class Archive
 		loadContents(decompressedData);
 		this.setData(null); // now that we've loaded it, clean it so it doesn't get written back
 	}
-	
+
 	public void loadContents(byte[] data)
 	{
 		logger.trace("Loading contents of archive {} ({} files)", archiveId, files.size());
@@ -217,9 +219,9 @@ public class Archive
 			for (int id = 0; id < filesCount; ++id)
 			{
 				int chunkSize = chunkSizes[id][chunk];
-				
+
 				stream.readBytes(fileContents[id], fileOffsets[id], chunkSize);
-				
+
 				fileOffsets[id] += chunkSize;
 			}
 		}
@@ -238,7 +240,7 @@ public class Archive
 			logger.trace("Saving contents of archive {}/{} using cached data", index.getId(), archiveId);
 			return data;
 		}
-		
+
 		OutputStream stream = new OutputStream();
 
 		int filesCount = this.getFiles().size();
@@ -276,7 +278,143 @@ public class Archive
 
 		return fileData;
 	}
-	
+
+	public void saveTree(java.io.File to) throws IOException
+	{
+		if (data != null)
+		{
+			assert files.size() == 1; // this is the maps
+
+			File file = files.get(0);
+
+			java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + "-" + file.getFileId() + "-" + file.getNameHash() + ".datc");
+			Files.write(data, archiveFile);
+
+			archiveFile = new java.io.File(to, this.getArchiveId() + ".rev");
+			Files.write("" + this.getRevision(), archiveFile, Charset.defaultCharset());
+
+			archiveFile = new java.io.File(to, this.getArchiveId() + ".name");
+			Files.write("" + this.getNameHash(), archiveFile, Charset.defaultCharset());
+			return;
+		}
+
+		if (files.size() == 1)
+		{
+			File file = this.getFiles().get(0);
+
+			java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + "-" + file.getFileId() + "-" + file.getNameHash() + ".dat");
+			byte[] contents = file.getContents();
+
+			Files.write(contents, archiveFile);
+
+			archiveFile = new java.io.File(to, this.getArchiveId() + ".rev");
+			Files.write("" + this.getRevision(), archiveFile, Charset.defaultCharset());
+
+			archiveFile = new java.io.File(to, this.getArchiveId() + ".name");
+			Files.write("" + this.getNameHash(), archiveFile, Charset.defaultCharset());
+			return;
+		}
+
+		java.io.File archiveFile = new java.io.File(to, this.getArchiveId() + ".rev");
+		Files.write("" + this.getRevision(), archiveFile, Charset.defaultCharset());
+
+		archiveFile = new java.io.File(to, this.getArchiveId() + ".name");
+		Files.write("" + this.getNameHash(), archiveFile, Charset.defaultCharset());
+
+		java.io.File archiveFolder = new java.io.File(to, "" + this.getArchiveId());
+		archiveFolder.mkdirs();
+
+		for (File file : files)
+		{
+			archiveFile = new java.io.File(archiveFolder, file.getFileId() + "-" + file.getNameHash() + ".dat");
+			byte[] contents = file.getContents();
+			Files.write(contents, archiveFile);
+		}
+	}
+
+	public void loadTreeData(java.io.File parent, java.io.File from) throws IOException
+	{
+		//archiveId-fileId-fileName - assumes name isn't negative
+		String[] parts = Files.getNameWithoutExtension(from.getName()).split("-");
+		int archiveId = Integer.parseInt(parts[0]);
+		int fileId = Integer.parseInt(parts[1]);
+		int nameHash = Integer.parseInt(parts[2]);
+
+		assert archiveId == this.getArchiveId();
+
+		data = Files.toByteArray(from);
+
+		File file = new File(this, fileId);
+		file.setNameHash(nameHash);
+
+		files.add(file);
+
+		java.io.File archiveFile = new java.io.File(parent, this.getArchiveId() + ".rev");
+		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
+		this.setRevision(rev);
+
+		archiveFile = new java.io.File(parent, this.getArchiveId() + ".name");
+		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
+		this.setNameHash(name);
+	}
+
+	public void loadTreeSingleFile(java.io.File parent, java.io.File from) throws IOException
+	{
+		//archiveId-fileId-fileName
+		String[] parts = Files.getNameWithoutExtension(from.getName()).split("-");
+		int archiveId = Integer.parseInt(parts[0]);
+		int fileId = Integer.parseInt(parts[1]);
+		int nameHash = Integer.parseInt(parts[2]);
+
+		assert archiveId == this.getArchiveId();
+
+		File file = new File(this, fileId);
+		file.setNameHash(nameHash);
+
+		byte[] contents = Files.toByteArray(from);
+		file.setContents(contents);
+
+		files.add(file);
+
+		java.io.File archiveFile = new java.io.File(parent, this.getArchiveId() + ".rev");
+		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
+		this.setRevision(rev);
+
+		archiveFile = new java.io.File(parent, this.getArchiveId() + ".name");
+		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
+		this.setNameHash(name);
+	}
+
+	public void loadTree(java.io.File parent, java.io.File from) throws IOException
+	{
+		for (java.io.File file : from.listFiles())
+		{
+			//fileId-fileName.dat
+			String[] split = Files.getNameWithoutExtension(file.getName()).split("-");
+			int fileId = Integer.parseInt(split[0]);
+			int fileName = Integer.parseInt(split[1]);
+
+			File f = new File(this, fileId);
+			f.setNameHash(fileName);
+
+			byte[] contents = Files.toByteArray(file);
+			f.setContents(contents);
+
+			files.add(f);
+		}
+
+		java.io.File archiveFile = new java.io.File(parent, this.getArchiveId() + ".rev");
+		int rev = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
+		this.setRevision(rev);
+
+		archiveFile = new java.io.File(parent, this.getArchiveId() + ".name");
+		int name = Integer.parseInt(Files.readFirstLine(archiveFile, Charset.defaultCharset()));
+		this.setNameHash(name);
+
+		// the filesystem may order these differently (eg, 1, 10, 2)
+		Collections.sort(files, (f1, f2) -> Integer.compare(f1.getFileId(), f2.getFileId()));
+	}
+
 	public void loadNames(InputStream stream, int numberOfFiles)
 	{
 		for (int i = 0; i < numberOfFiles; ++i)
