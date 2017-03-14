@@ -22,7 +22,6 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache.fs;
 
 import java.io.IOException;
@@ -35,9 +34,11 @@ import org.junit.rules.TemporaryFolder;
 
 public class StoreTest
 {
+	private static final int NUMBER_OF_FILES = 1024;
+
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-	
+
 	@Test
 	public void testOneFile() throws IOException
 	{
@@ -50,29 +51,28 @@ public class StoreTest
 			file.setContents("test".getBytes());
 
 			store.save();
-		
+
 			try (Store store2 = new Store(folder.getRoot()))
 			{
 				store2.load();
-				
+
 				Assert.assertEquals(store, store2);
 			}
 		}
 	}
-	
-	private static final int NUMBER_OF_FILES = 1024;
-	
+
 	@Test
 	public void testManyFiles() throws IOException
 	{
 		Random random = new Random(42L);
+		java.io.File root = folder.newFolder();
 
-		try (Store store = new Store(folder.getRoot()))
+		try (Store store = new Store(root))
 		{
 			Index index = store.addIndex(0);
 			Archive archive = index.addArchive(0);
 			archive.setNameHash(random.nextInt());
-			
+
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive.addFile(i);
@@ -81,69 +81,79 @@ public class StoreTest
 				random.nextBytes(data);
 				file.setContents(data);
 			}
-			
+
 			store.save();
-			
-			try (Store store2 = new Store(folder.getRoot()))
+
+			try (Store store2 = new Store(root))
 			{
 				store2.load();
-				
+
 				Assert.assertEquals(store, store2);
 			}
 		}
 	}
-	
+
 	@Test
 	public void testMultipleArchives() throws IOException
 	{
 		Random random = new Random(43L);
+		java.io.File root = folder.newFolder();
 
-		try (Store store = new Store(folder.getRoot()))
+		try (Store store = new Store(root))
 		{
 			Index index = store.addIndex(0);
 			Index index2 = store.addIndex(1);
-			
+
 			Archive archive = index.addArchive(0);
-			archive.setNameHash(random.nextInt());
-			
+			archive.setNameHash(random.nextInt(Integer.MAX_VALUE));
+
 			Archive archive2 = index.addArchive(1);
-			
+
 			Archive archive3 = index2.addArchive(0);
-			
+
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive.addFile(i);
-				file.setNameHash(random.nextInt());
+				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
 			}
-			
+
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive2.addFile(i);
-				file.setNameHash(random.nextInt());
+				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
 			}
-			
+
 			for (int i = 0; i < NUMBER_OF_FILES; ++i)
 			{
 				File file = archive3.addFile(i);
-				file.setNameHash(random.nextInt());
+				file.setNameHash(random.nextInt(Integer.MAX_VALUE));
 				byte[] data = new byte[random.nextInt(1024)];
 				random.nextBytes(data);
 				file.setContents(data);
 			}
-			
+
 			store.save();
-			
-			try (Store store2 = new Store(folder.getRoot()))
+
+			try (Store store2 = new Store(root))
 			{
 				store2.load();
-				
+
 				Assert.assertEquals(store, store2);
+			}
+
+			// Test tree save/load
+			java.io.File tree = folder.newFolder();
+			store.saveTree(tree);
+
+			try (Store store2 = new Store(folder.newFolder()))
+			{
+				store2.loadTree(tree);
 			}
 		}
 	}
