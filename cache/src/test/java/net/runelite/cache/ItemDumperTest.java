@@ -27,6 +27,7 @@ package net.runelite.cache;
 
 import java.io.File;
 import java.io.IOException;
+import net.runelite.cache.fs.Store;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -45,9 +46,12 @@ public class ItemDumperTest
 	{
 		File dumpDir = folder.newFolder(),
 			javaDir = folder.newFolder();
+		
+		Store store = new Store(StoreLocation.LOCATION);
+		store.load();
 
 		ItemDumper dumper = new ItemDumper(
-			StoreLocation.LOCATION,
+			store,
 			dumpDir,
 			javaDir
 		);
