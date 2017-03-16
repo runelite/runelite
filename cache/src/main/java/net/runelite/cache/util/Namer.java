@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,43 +22,59 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.cache.util;
 
-import java.io.File;
-import java.io.IOException;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.HashSet;
+import java.util.Set;
 
-public class NpcDumperTest
+public class Namer
 {
-	private static final Logger logger = LoggerFactory.getLogger(NpcDumperTest.class);
+	private final Set<String> used = new HashSet<>();
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void test() throws IOException
+	public String name(String name)
 	{
-		File dumpDir = folder.newFolder(),
-			javaDir = folder.newFolder();
+		name = sanitize(name);
 
-		Store store = new Store(StoreLocation.LOCATION);
-		store.load();
+		if (name == null)
+		{
+			return null;
+		}
 
-		NpcDumper dumper = new NpcDumper(
-			store,
-			dumpDir,
-			javaDir
-		);
-		dumper.load();
-		dumper.dump();
-		dumper.java();
+		String suffix = "";
+		while (used.contains(name + suffix))
+		{
+			if (suffix.isEmpty())
+			{
+				suffix = "_2";
+			}
+			else
+			{
+				suffix = "_" + (Integer.parseInt(suffix.substring(1)) + 1);
+			}
+		}
 
-		logger.info("Dumped to {}, java {}", dumpDir, javaDir);
+		name += suffix;
+		used.add(name);
+
+		return name;
 	}
 
+	private static String sanitize(String in)
+	{
+		String s = in.toUpperCase()
+			.replace(' ', '_')
+			.replaceAll("[^a-zA-Z0-9_]", "");
+		if (s.isEmpty())
+		{
+			return null;
+		}
+		if (Character.isDigit(s.charAt(0)))
+		{
+			return "_" + s;
+		}
+		else
+		{
+			return s;
+		}
+	}
 }
