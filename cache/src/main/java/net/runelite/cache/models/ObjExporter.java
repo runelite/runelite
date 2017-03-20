@@ -25,7 +25,6 @@
 package net.runelite.cache.models;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.io.PrintWriter;
 import net.runelite.cache.definitions.ModelDefinition;
 
@@ -38,7 +37,7 @@ public class ObjExporter
 		this.model = model;
 	}
 
-	public void export(PrintWriter objWriter, PrintWriter mtlWriter) throws IOException
+	public void export(PrintWriter objWriter, PrintWriter mtlWriter)
 	{
 		model.computeNormals();
 
@@ -75,7 +74,7 @@ public class ObjExporter
 
 			mtlWriter.println("     Kd " + r + " " + g + " " + b);
 
-			if (model.faceAlphas != null)
+			if (model.faceAlphas != null && model.faceAlphas[i] != 0)
 			{
 				mtlWriter.println("     d " + (model.faceAlphas[i] & 0xFF) / 255.0);
 			}
