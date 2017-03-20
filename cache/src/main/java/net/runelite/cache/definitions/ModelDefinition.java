@@ -5,6 +5,7 @@ import net.runelite.cache.models.VertexNormal;
 
 public class ModelDefinition
 {
+	public int id;
 	public short[] texTriangleX;
 	public int[] vertexX;
 	public byte[] faceRenderPriorities;
@@ -44,8 +45,8 @@ public class ModelDefinition
 	public int anInt2595;
 	public int vertexCount = 0;
 	public short[] texturePrimaryColor;
-	public VertexNormal[] normals;
-	public FaceNormal[] faceNormals;
+	public transient VertexNormal[] normals;
+	public transient FaceNormal[] faceNormals;
 
 	public void computeNormals()
 	{

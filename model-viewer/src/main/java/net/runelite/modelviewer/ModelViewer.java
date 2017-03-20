@@ -558,7 +558,7 @@ public class ModelViewer
 		{
 			ModelLoader loader = new ModelLoader();
 			byte[] b = Files.readAllBytes(new File("models/" + id + ".model").toPath());
-			md = loader.load(b);
+			md = loader.load(id, b);
 			models[id] = md;
 			return md;
 		}
