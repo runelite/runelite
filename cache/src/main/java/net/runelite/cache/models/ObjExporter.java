@@ -26,6 +26,8 @@ package net.runelite.cache.models;
 
 import java.awt.Color;
 import java.io.PrintWriter;
+import java.util.HashSet;
+import java.util.Set;
 import net.runelite.cache.definitions.ModelDefinition;
 
 public class ObjExporter
@@ -55,18 +57,32 @@ public class ObjExporter
 			objWriter.println("     vn " + normal.x + " " + normal.y + " " + normal.z);
 		}
 
+		Set<Integer> usedMaterials = new HashSet<>();
+
 		for (int i = 0; i < model.triangleFaceCount; ++i)
 		{
-			objWriter.println("     usemtl color" + model.faceColor[i]);
+			Color color = rs2hsbToColor(model.faceColor[i]);
+
+			int alpha = 0;
+
+			if (model.faceAlphas != null)
+			{
+				alpha = model.faceAlphas[i] & 0xFF;
+			}
+
+			int rgba = color.getRGB() << 8 | alpha;
+			
+			objWriter.println("     usemtl color" + rgba);
 			objWriter.println("             f " + (model.trianglePointsX[i] + 1) + " " + (model.trianglePointsY[i] + 1) + " " + (model.trianglePointsZ[i] + 1));
 			objWriter.println("");
-		}
 
-		for (int i = 0; i < model.faceColor.length; ++i)
-		{
-			mtlWriter.println("newmtl color" + model.faceColor[i]);
+			// Write material
+			
+			if (usedMaterials.contains(rgba))
+				continue;
+			usedMaterials.add(rgba);
 
-			Color color = rs2hsbToColor(model.faceColor[i]);
+			mtlWriter.println("newmtl color" + rgba);
 
 			double r = color.getRed() / 255.0;
 			double g = color.getGreen() / 255.0;
@@ -74,9 +90,9 @@ public class ObjExporter
 
 			mtlWriter.println("     Kd " + r + " " + g + " " + b);
 
-			if (model.faceAlphas != null && model.faceAlphas[i] != 0)
+			if (alpha != 0)
 			{
-				mtlWriter.println("     d " + (model.faceAlphas[i] & 0xFF) / 255.0);
+				mtlWriter.println("     d " + (alpha / 255.0));
 			}
 		}
 	}
