@@ -5,9 +5,10 @@ import net.runelite.cache.io.InputStream;
 
 public class ModelLoader
 {
-	public ModelDefinition load(byte[] var1)
+	public ModelDefinition load(int modelId, byte[] var1)
 	{
 		ModelDefinition def = new ModelDefinition();
+		def.id = modelId;
 
 		if (var1[var1.length - 1] == -1 && var1[var1.length - 2] == -1)
 		{
