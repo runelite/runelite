@@ -69,7 +69,7 @@ public class ModelDumperTest
 				byte[] contents = file.getContents();
 
 				ModelLoader loader = new ModelLoader();
-				loader.load(contents);
+				loader.load(archive.getArchiveId(), contents);
 
 				Files.write(contents, new java.io.File(modelDir, archive.getArchiveId() + ".model"));
 				//Files.write(gson.toJson(loader), new java.io.File(modelDir, archive.getArchiveId() + ".json"), Charset.defaultCharset());
