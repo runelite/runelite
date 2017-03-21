@@ -63,7 +63,7 @@ public class PlayerComposition {
                }
 
                var4 = class181.getKitDefinition(var3);
-            } while(null == var4 || var4.field2822 || var4.field2821 != var1 + (this.isFemale?7:0));
+            } while(null == var4 || var4.nonSelectable || var4.bodyPartId != var1 + (this.isFemale?7:0));
 
             this.equipmentIds[field2165[var1]] = var3 + 256;
             this.method3165();
@@ -376,7 +376,7 @@ public class PlayerComposition {
          for(int var5 = 0; var5 < 7; ++var5) {
             for(int var6 = 0; var6 < class44.field918; ++var6) {
                KitDefinition var7 = class181.getKitDefinition(var6);
-               if(null != var7 && !var7.field2822 && var7.field2821 == (var3?7:0) + var5) {
+               if(null != var7 && !var7.nonSelectable && var7.bodyPartId == (var3?7:0) + var5) {
                   var1[field2165[var5]] = 256 + var6;
                   break;
                }
