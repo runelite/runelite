@@ -8,30 +8,38 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("KitDefinition")
 public class KitDefinition extends CacheableNode {
    @ObfuscatedName("y")
-   short[] field2812;
+   @Export("retextureToReplace")
+   short[] retextureToReplace;
    @ObfuscatedName("g")
-   short[] field2813;
+   @Export("retextureToFind")
+   short[] retextureToFind;
    @ObfuscatedName("d")
    static NodeCache field2814 = new NodeCache(64);
    @ObfuscatedName("x")
    static class182 field2815;
    @ObfuscatedName("h")
-   int[] field2816;
+   @Export("modelIds")
+   int[] modelIds;
    @ObfuscatedName("u")
-   short[] field2817;
+   @Export("recolorToFind")
+   short[] recolorToFind;
    @ObfuscatedName("k")
-   short[] field2818;
+   @Export("recolorToReplace")
+   short[] recolorToReplace;
    @ObfuscatedName("j")
    static class182 field2820;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
       intValue = 1118180789
    )
-   public int field2821 = -1;
+   @Export("bodyPartId")
+   public int bodyPartId = -1;
    @ObfuscatedName("q")
-   public boolean field2822 = false;
+   @Export("nonSelectable")
+   public boolean nonSelectable = false;
    @ObfuscatedName("e")
-   int[] field2823 = new int[]{-1, -1, -1, -1, -1};
+   @Export("models")
+   int[] models = new int[]{-1, -1, -1, -1, -1};
    @ObfuscatedName("bm")
    static class184 field2825;
 
@@ -60,7 +68,7 @@ public class KitDefinition extends CacheableNode {
       boolean var1 = true;
 
       for(int var2 = 0; var2 < 5; ++var2) {
-         if(this.field2823[var2] != -1 && !field2820.method3374(this.field2823[var2], 0)) {
+         if(this.models[var2] != -1 && !field2820.method3374(this.models[var2], 0)) {
             var1 = false;
          }
       }
@@ -75,13 +83,13 @@ public class KitDefinition extends CacheableNode {
    )
    @Export("ready")
    public boolean ready() {
-      if(null == this.field2816) {
+      if(null == this.modelIds) {
          return true;
       } else {
          boolean var1 = true;
 
-         for(int var2 = 0; var2 < this.field2816.length; ++var2) {
-            if(!field2820.method3374(this.field2816[var2], 0)) {
+         for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
+            if(!field2820.method3374(this.modelIds[var2], 0)) {
                var1 = false;
             }
          }
@@ -97,13 +105,13 @@ public class KitDefinition extends CacheableNode {
    )
    @Export("getModelData")
    public ModelData getModelData() {
-      if(this.field2816 == null) {
+      if(this.modelIds == null) {
          return null;
       } else {
-         ModelData[] var1 = new ModelData[this.field2816.length];
+         ModelData[] var1 = new ModelData[this.modelIds.length];
 
-         for(int var2 = 0; var2 < this.field2816.length; ++var2) {
-            var1[var2] = ModelData.method1522(field2820, this.field2816[var2], 0);
+         for(int var2 = 0; var2 < this.modelIds.length; ++var2) {
+            var1[var2] = ModelData.method1522(field2820, this.modelIds[var2], 0);
          }
 
          ModelData var4;
@@ -114,15 +122,15 @@ public class KitDefinition extends CacheableNode {
          }
 
          int var3;
-         if(this.field2817 != null) {
-            for(var3 = 0; var3 < this.field2817.length; ++var3) {
-               var4.method1555(this.field2817[var3], this.field2818[var3]);
+         if(this.recolorToFind != null) {
+            for(var3 = 0; var3 < this.recolorToFind.length; ++var3) {
+               var4.method1555(this.recolorToFind[var3], this.recolorToReplace[var3]);
             }
          }
 
-         if(this.field2813 != null) {
-            for(var3 = 0; var3 < this.field2813.length; ++var3) {
-               var4.method1536(this.field2813[var3], this.field2812[var3]);
+         if(this.retextureToFind != null) {
+            for(var3 = 0; var3 < this.retextureToFind.length; ++var3) {
+               var4.method1536(this.retextureToFind[var3], this.retextureToReplace[var3]);
             }
          }
 
@@ -137,39 +145,39 @@ public class KitDefinition extends CacheableNode {
    )
    void method3512(Buffer var1, int var2) {
       if(var2 == 1) {
-         this.field2821 = var1.readUnsignedByte();
+         this.bodyPartId = var1.readUnsignedByte();
       } else {
          int var3;
          int var4;
          if(var2 == 2) {
             var3 = var1.readUnsignedByte();
-            this.field2816 = new int[var3];
+            this.modelIds = new int[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2816[var4] = var1.readUnsignedShort();
+               this.modelIds[var4] = var1.readUnsignedShort();
             }
          } else if(var2 == 3) {
-            this.field2822 = true;
+            this.nonSelectable = true;
          } else if(var2 == 40) {
             var3 = var1.readUnsignedByte();
-            this.field2817 = new short[var3];
-            this.field2818 = new short[var3];
+            this.recolorToFind = new short[var3];
+            this.recolorToReplace = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2817[var4] = (short)var1.readUnsignedShort();
-               this.field2818[var4] = (short)var1.readUnsignedShort();
+               this.recolorToFind[var4] = (short)var1.readUnsignedShort();
+               this.recolorToReplace[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 == 41) {
             var3 = var1.readUnsignedByte();
-            this.field2813 = new short[var3];
-            this.field2812 = new short[var3];
+            this.retextureToFind = new short[var3];
+            this.retextureToReplace = new short[var3];
 
             for(var4 = 0; var4 < var3; ++var4) {
-               this.field2813[var4] = (short)var1.readUnsignedShort();
-               this.field2812[var4] = (short)var1.readUnsignedShort();
+               this.retextureToFind[var4] = (short)var1.readUnsignedShort();
+               this.retextureToReplace[var4] = (short)var1.readUnsignedShort();
             }
          } else if(var2 >= 60 && var2 < 70) {
-            this.field2823[var2 - 60] = var1.readUnsignedShort();
+            this.models[var2 - 60] = var1.readUnsignedShort();
          }
       }
 
@@ -185,22 +193,22 @@ public class KitDefinition extends CacheableNode {
       int var2 = 0;
 
       for(int var5 = 0; var5 < 5; ++var5) {
-         if(this.field2823[var5] != -1) {
-            var1[var2++] = ModelData.method1522(field2820, this.field2823[var5], 0);
+         if(this.models[var5] != -1) {
+            var1[var2++] = ModelData.method1522(field2820, this.models[var5], 0);
          }
       }
 
       ModelData var3 = new ModelData(var1, var2);
       int var4;
-      if(null != this.field2817) {
-         for(var4 = 0; var4 < this.field2817.length; ++var4) {
-            var3.method1555(this.field2817[var4], this.field2818[var4]);
+      if(null != this.recolorToFind) {
+         for(var4 = 0; var4 < this.recolorToFind.length; ++var4) {
+            var3.method1555(this.recolorToFind[var4], this.recolorToReplace[var4]);
          }
       }
 
-      if(null != this.field2813) {
-         for(var4 = 0; var4 < this.field2813.length; ++var4) {
-            var3.method1536(this.field2813[var4], this.field2812[var4]);
+      if(null != this.retextureToFind) {
+         for(var4 = 0; var4 < this.retextureToFind.length; ++var4) {
+            var3.method1536(this.retextureToFind[var4], this.retextureToReplace[var4]);
          }
       }
 
