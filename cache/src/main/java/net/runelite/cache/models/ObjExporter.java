@@ -73,7 +73,9 @@ public class ObjExporter
 			int rgba = color.getRGB() << 8 | alpha;
 			
 			objWriter.println("     usemtl color" + rgba);
-			objWriter.println("             f " + (model.trianglePointsX[i] + 1) + " " + (model.trianglePointsY[i] + 1) + " " + (model.trianglePointsZ[i] + 1));
+			objWriter.println("             f " + (model.trianglePointsX[i] + 1) + "//" + (model.trianglePointsX[i] + 1) +
+				" " + (model.trianglePointsY[i] + 1) + "//" + (model.trianglePointsY[i] + 1) +
+				" " + (model.trianglePointsZ[i] + 1) + "//" + (model.trianglePointsZ[i] + 1));
 			objWriter.println("");
 
 			// Write material
