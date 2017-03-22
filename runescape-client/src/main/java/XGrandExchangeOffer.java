@@ -157,7 +157,7 @@ public class XGrandExchangeOffer {
       signature = "(Lclass159;B)V",
       garbageValue = "42"
    )
-   static final void method58(class159 var0) {
+   static final void method58(CipherBuffer var0) {
       int var1 = 0;
       var0.method3085();
 
@@ -362,7 +362,7 @@ public class XGrandExchangeOffer {
          }
       }
 
-      class159.method3081(var2);
+      CipherBuffer.method3081(var2);
       Widget var6 = World.method670(var3);
       if(null != var6) {
          class2.method36(var6);

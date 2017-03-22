@@ -1,9 +1,12 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fu")
-public final class class159 extends Buffer {
+@Implements("CipherBuffer")
+public final class CipherBuffer extends Buffer {
    @ObfuscatedName("y")
    static final int[] field2111 = new int[]{0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, '\uffff', 131071, 262143, 524287, 1048575, 2097151, 4194303, 8388607, 16777215, 33554431, 67108863, 134217727, 268435455, 536870911, 1073741823, Integer.MAX_VALUE, -1};
    @ObfuscatedName("e")
@@ -17,15 +20,17 @@ public final class class159 extends Buffer {
    )
    static int field2114;
    @ObfuscatedName("g")
-   class160 field2115;
+   @Export("cipher")
+   ISAACCipher cipher;
 
    @ObfuscatedName("hy")
    @ObfuscatedSignature(
       signature = "(IB)V",
       garbageValue = "-29"
    )
-   public void method3076(int var1) {
-      super.payload[++super.offset - 1] = (byte)(var1 + this.field2115.method3099());
+   @Export("putOpcode")
+   public void putOpcode(int var1) {
+      super.payload[++super.offset - 1] = (byte)(var1 + this.cipher.nextInt());
    }
 
    @ObfuscatedName("hx")
@@ -33,8 +38,9 @@ public final class class159 extends Buffer {
       signature = "(B)I",
       garbageValue = "-35"
    )
-   public int method3079() {
-      return super.payload[++super.offset - 1] - this.field2115.method3099() & 255;
+   @Export("readOpcode")
+   public int readOpcode() {
+      return super.payload[++super.offset - 1] - this.cipher.nextInt() & 255;
    }
 
    @ObfuscatedName("ih")
@@ -83,8 +89,9 @@ public final class class159 extends Buffer {
       signature = "([IB)V",
       garbageValue = "0"
    )
-   public void method3090(int[] var1) {
-      this.field2115 = new class160(var1);
+   @Export("seed")
+   public void seed(int[] var1) {
+      this.cipher = new ISAACCipher(var1);
    }
 
    @ObfuscatedName("il")
@@ -115,7 +122,7 @@ public final class class159 extends Buffer {
       signature = "(I)V",
       garbageValue = "5000"
    )
-   public class159(int var1) {
+   public CipherBuffer(int var1) {
       super(var1);
    }
 

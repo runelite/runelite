@@ -56,7 +56,7 @@ public class CombatInfo1 extends Node {
    )
    static final void method625(String var0) {
       if(!var0.equals("")) {
-         Client.field309.method3076(164);
+         Client.field309.putOpcode(164);
          Client.field309.putByte(class164.method3157(var0));
          Client.field309.method2822(var0);
       }

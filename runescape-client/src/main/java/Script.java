@@ -59,7 +59,7 @@ public class Script extends CacheableNode {
       signature = "(Lclass159;B)V",
       garbageValue = "1"
    )
-   public static void method971(class159 var0) {
+   public static void method971(CipherBuffer var0) {
       ClassInfo var1 = (ClassInfo)class227.field3248.method2411();
       if(null != var1) {
          int var2 = var0.offset;

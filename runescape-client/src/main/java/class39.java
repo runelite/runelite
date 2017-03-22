@@ -396,7 +396,7 @@ public class class39 {
       signature = "(Lclass159;I)V",
       garbageValue = "1829937943"
    )
-   static final void method819(class159 var0) {
+   static final void method819(CipherBuffer var0) {
       for(int var1 = 0; var1 < class45.field919; ++var1) {
          int var2 = class45.field932[var1];
          Player var3 = Client.cachedPlayers[var2];

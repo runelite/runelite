@@ -1,16 +1,20 @@
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fd")
-public final class class160 {
+@Implements("ISAACCipher")
+public final class ISAACCipher {
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1599076157
    )
    int field2116;
    @ObfuscatedName("u")
-   int[] field2120 = new int[256];
+   @Export("mm")
+   int[] mm = new int[256];
    @ObfuscatedName("k")
    @ObfuscatedGetter(
       intValue = 117178623
@@ -25,13 +29,15 @@ public final class class160 {
    @ObfuscatedGetter(
       intValue = -1381468155
    )
-   int field2125;
+   @Export("valuesRemaining")
+   int valuesRemaining;
    @ObfuscatedName("h")
-   int[] field2127 = new int[256];
+   @Export("randResult")
+   int[] randResult = new int[256];
 
-   class160(int[] var1) {
+   ISAACCipher(int[] var1) {
       for(int var2 = 0; var2 < var1.length; ++var2) {
-         this.field2127[var2] = var1[var2];
+         this.randResult[var2] = var1[var2];
       }
 
       this.method3102();
@@ -42,13 +48,14 @@ public final class class160 {
       signature = "(I)I",
       garbageValue = "-1428614722"
    )
-   final int method3099() {
-      if(--this.field2125 + 1 == 0) {
-         this.method3100();
-         this.field2125 = 255;
+   @Export("nextInt")
+   final int nextInt() {
+      if(--this.valuesRemaining + 1 == 0) {
+         this.generateMoreResults();
+         this.valuesRemaining = 255;
       }
 
-      return this.field2127[this.field2125];
+      return this.randResult[this.valuesRemaining];
    }
 
    @ObfuscatedName("j")
@@ -56,11 +63,12 @@ public final class class160 {
       signature = "(I)V",
       garbageValue = "33053233"
    )
-   final void method3100() {
+   @Export("generateMoreResults")
+   final void generateMoreResults() {
       this.field2116 += ++this.field2123;
 
       for(int var1 = 0; var1 < 256; ++var1) {
-         int var2 = this.field2120[var1];
+         int var2 = this.mm[var1];
          if((var1 & 2) == 0) {
             if((var1 & 1) == 0) {
                this.field2121 ^= this.field2121 << 13;
@@ -73,10 +81,10 @@ public final class class160 {
             this.field2121 ^= this.field2121 >>> 16;
          }
 
-         this.field2121 += this.field2120[128 + var1 & 255];
+         this.field2121 += this.mm[128 + var1 & 255];
          int var3;
-         this.field2120[var1] = var3 = this.field2116 + this.field2121 + this.field2120[(var2 & 1020) >> 2];
-         this.field2127[var1] = this.field2116 = this.field2120[(var3 >> 8 & 1020) >> 2] + var2;
+         this.mm[var1] = var3 = this.field2116 + this.field2121 + this.mm[(var2 & 1020) >> 2];
+         this.randResult[var1] = this.field2116 = this.mm[(var3 >> 8 & 1020) >> 2] + var2;
       }
 
    }
@@ -134,14 +142,14 @@ public final class class160 {
       }
 
       for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2127[var1];
-         var3 += this.field2127[var1 + 1];
-         var4 += this.field2127[var1 + 2];
-         var5 += this.field2127[3 + var1];
-         var6 += this.field2127[var1 + 4];
-         var7 += this.field2127[5 + var1];
-         var8 += this.field2127[var1 + 6];
-         var9 += this.field2127[var1 + 7];
+         var2 += this.randResult[var1];
+         var3 += this.randResult[var1 + 1];
+         var4 += this.randResult[var1 + 2];
+         var5 += this.randResult[3 + var1];
+         var6 += this.randResult[var1 + 4];
+         var7 += this.randResult[5 + var1];
+         var8 += this.randResult[var1 + 6];
+         var9 += this.randResult[var1 + 7];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -166,25 +174,25 @@ public final class class160 {
          var9 ^= var2 >>> 9;
          var4 += var9;
          var2 += var3;
-         this.field2120[var1] = var2;
-         this.field2120[var1 + 1] = var3;
-         this.field2120[var1 + 2] = var4;
-         this.field2120[var1 + 3] = var5;
-         this.field2120[4 + var1] = var6;
-         this.field2120[var1 + 5] = var7;
-         this.field2120[6 + var1] = var8;
-         this.field2120[var1 + 7] = var9;
+         this.mm[var1] = var2;
+         this.mm[var1 + 1] = var3;
+         this.mm[var1 + 2] = var4;
+         this.mm[var1 + 3] = var5;
+         this.mm[4 + var1] = var6;
+         this.mm[var1 + 5] = var7;
+         this.mm[6 + var1] = var8;
+         this.mm[var1 + 7] = var9;
       }
 
       for(var1 = 0; var1 < 256; var1 += 8) {
-         var2 += this.field2120[var1];
-         var3 += this.field2120[1 + var1];
-         var4 += this.field2120[var1 + 2];
-         var5 += this.field2120[3 + var1];
-         var6 += this.field2120[var1 + 4];
-         var7 += this.field2120[var1 + 5];
-         var8 += this.field2120[6 + var1];
-         var9 += this.field2120[var1 + 7];
+         var2 += this.mm[var1];
+         var3 += this.mm[1 + var1];
+         var4 += this.mm[var1 + 2];
+         var5 += this.mm[3 + var1];
+         var6 += this.mm[var1 + 4];
+         var7 += this.mm[var1 + 5];
+         var8 += this.mm[6 + var1];
+         var9 += this.mm[var1 + 7];
          var2 ^= var3 << 11;
          var5 += var2;
          var3 += var4;
@@ -209,18 +217,18 @@ public final class class160 {
          var9 ^= var2 >>> 9;
          var4 += var9;
          var2 += var3;
-         this.field2120[var1] = var2;
-         this.field2120[var1 + 1] = var3;
-         this.field2120[2 + var1] = var4;
-         this.field2120[var1 + 3] = var5;
-         this.field2120[4 + var1] = var6;
-         this.field2120[var1 + 5] = var7;
-         this.field2120[var1 + 6] = var8;
-         this.field2120[7 + var1] = var9;
+         this.mm[var1] = var2;
+         this.mm[var1 + 1] = var3;
+         this.mm[2 + var1] = var4;
+         this.mm[var1 + 3] = var5;
+         this.mm[4 + var1] = var6;
+         this.mm[var1 + 5] = var7;
+         this.mm[var1 + 6] = var8;
+         this.mm[7 + var1] = var9;
       }
 
-      this.method3100();
-      this.field2125 = 256;
+      this.generateMoreResults();
+      this.valuesRemaining = 256;
    }
 
    @ObfuscatedName("bl")

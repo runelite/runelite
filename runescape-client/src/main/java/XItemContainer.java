@@ -40,19 +40,19 @@ public class XItemContainer extends Node {
          Player var6 = Client.cachedPlayers[var3[var5]];
          if(null != var6 && var6 != class22.localPlayer && null != var6.name && var6.name.equalsIgnoreCase(var1)) {
             if(var0 == 1) {
-               Client.field309.method3076(197);
+               Client.field309.putOpcode(197);
                Client.field309.method2864(var3[var5]);
                Client.field309.method2855(0);
             } else if(var0 == 4) {
-               Client.field309.method3076(98);
+               Client.field309.putOpcode(98);
                Client.field309.method2855(0);
                Client.field309.method2909(var3[var5]);
             } else if(var0 == 6) {
-               Client.field309.method3076(240);
+               Client.field309.putOpcode(240);
                Client.field309.method2855(0);
                Client.field309.method2864(var3[var5]);
             } else if(var0 == 7) {
-               Client.field309.method3076(101);
+               Client.field309.putOpcode(101);
                Client.field309.method2864(var3[var5]);
                Client.field309.putByte(0);
             }
@@ -434,70 +434,70 @@ public class XItemContainer extends Node {
          if(var6) {
             if(class97.method1989(class174.method3271(var5), var0 - 1)) {
                if(var0 == 1) {
-                  Client.field309.method3076(168);
+                  Client.field309.putOpcode(168);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 2) {
-                  Client.field309.method3076(34);
+                  Client.field309.putOpcode(34);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 3) {
-                  Client.field309.method3076(86);
+                  Client.field309.putOpcode(86);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 4) {
-                  Client.field309.method3076(186);
+                  Client.field309.putOpcode(186);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 5) {
-                  Client.field309.method3076(103);
+                  Client.field309.putOpcode(103);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 6) {
-                  Client.field309.method3076(76);
+                  Client.field309.putOpcode(76);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 7) {
-                  Client.field309.method3076(185);
+                  Client.field309.putOpcode(185);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 8) {
-                  Client.field309.method3076(63);
+                  Client.field309.putOpcode(63);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 9) {
-                  Client.field309.method3076(148);
+                  Client.field309.putOpcode(148);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);
                }
 
                if(var0 == 10) {
-                  Client.field309.method3076(204);
+                  Client.field309.putOpcode(204);
                   Client.field309.putInt(var1);
                   Client.field309.putShort(var2);
                   Client.field309.putShort(var3);

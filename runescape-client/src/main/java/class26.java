@@ -193,7 +193,7 @@ public class class26 {
                               int var25 = var23 * var35 - var19 * var22 >> 11;
                               int var26 = var24 + class22.localPlayer.x >> 7;
                               int var27 = class22.localPlayer.y - var25 >> 7;
-                              Client.field309.method3076(95);
+                              Client.field309.putOpcode(95);
                               Client.field309.putByte(18);
                               Client.field309.method2855(class105.field1725[82]?(class105.field1725[81]?2:1):0);
                               Client.field309.method2909(var27 + class3.baseY);

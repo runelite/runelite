@@ -24,7 +24,7 @@ public class class148 {
       signature = "(Lclass159;ILPlayer;II)V",
       garbageValue = "1808648014"
    )
-   static final void method2792(class159 var0, int var1, Player var2, int var3) {
+   static final void method2792(CipherBuffer var0, int var1, Player var2, int var3) {
       byte var4 = -1;
       int var5;
       if((var3 & 128) != 0) {
@@ -308,7 +308,7 @@ public class class148 {
 
             String var7 = "";
             if(null != class105.field1733) {
-               var7 = class160.method3111(class105.field1733.field1671);
+               var7 = ISAACCipher.method3111(class105.field1733.field1671);
                if(null != class105.field1733.field1677) {
                   var7 = (String)class105.field1733.field1677;
                }

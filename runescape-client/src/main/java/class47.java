@@ -53,7 +53,7 @@ public class class47 {
       signature = "(Lclass159;I)I",
       garbageValue = "1790967084"
    )
-   static int method954(class159 var0) {
+   static int method954(CipherBuffer var0) {
       int var1 = var0.method3097(2);
       int var2;
       if(var1 == 0) {
@@ -200,7 +200,7 @@ public class class47 {
                   }
 
                   if(var15 != null) {
-                     Client.field309.method3076(157);
+                     Client.field309.putOpcode(157);
                      Client.field309.method2864(Client.field490.item);
                      Client.field309.method2864(Client.field486.index);
                      Client.field309.method2865(Client.field490.index);
@@ -391,7 +391,7 @@ public class class47 {
             Client.field356.putByte((Client.isResized?1:0) << 1 | (Client.field439?1:0));
             Client.field356.putShort(class108.field1748);
             Client.field356.putShort(class145.field2018);
-            class159 var3 = Client.field356;
+            CipherBuffer var3 = Client.field356;
             if(Client.field349 != null) {
                var3.putBytes(Client.field349, 0, Client.field349.length);
             } else {
@@ -444,13 +444,13 @@ public class class47 {
             Client.field356.encryptXtea(var8, var2, Client.field356.offset);
             Client.field356.method2945(Client.field356.offset - var1);
             class1.field15.method2117(Client.field356.payload, 0, Client.field356.offset);
-            Client.field309.method3090(var8);
+            Client.field309.seed(var8);
 
             for(int var10 = 0; var10 < 4; ++var10) {
                var8[var10] += 50;
             }
 
-            Client.field357.method3090(var8);
+            Client.field357.seed(var8);
             Client.field571 = 6;
          }
 
@@ -495,10 +495,10 @@ public class class47 {
                Client.field357.offset = 0;
                boolean var16 = false;
                if(var17) {
-                  var1 = Client.field357.method3079() << 24;
-                  var1 |= Client.field357.method3079() << 16;
-                  var1 |= Client.field357.method3079() << 8;
-                  var1 |= Client.field357.method3079();
+                  var1 = Client.field357.readOpcode() << 24;
+                  var1 |= Client.field357.readOpcode() << 16;
+                  var1 |= Client.field357.readOpcode() << 8;
+                  var1 |= Client.field357.readOpcode();
                   var2 = class152.method2814(class41.username);
                   if(class8.field84.field722.size() >= 10 && !class8.field84.field722.containsKey(Integer.valueOf(var2))) {
                      Iterator var18 = class8.field84.field722.entrySet().iterator();
@@ -518,7 +518,7 @@ public class class47 {
                Client.field529 = class1.field15.method2118();
                class1.field15.method2119(Client.field357.payload, 0, 1);
                Client.field357.offset = 0;
-               Client.packetOpcode = Client.field357.method3079();
+               Client.packetOpcode = Client.field357.readOpcode();
                class1.field15.method2119(Client.field357.payload, 0, 2);
                Client.field357.offset = 0;
                Client.field358 = Client.field357.readUnsignedShort();

@@ -98,7 +98,7 @@ public class ChatMessages {
       this.field943 = new boolean[this.messages.length];
 
       for(var1 = 0; var1 < this.messages.length; ++var1) {
-         class189 var5 = class159.method3098(var1);
+         class189 var5 = CipherBuffer.method3098(var1);
          this.field943[var1] = var5.field2782;
       }
 
@@ -303,7 +303,7 @@ public class ChatMessages {
       if(Client.field497 >= 50 || var0) {
          Client.field497 = 0;
          if(!Client.field587 && null != class1.field15) {
-            Client.field309.method3076(184);
+            Client.field309.putOpcode(184);
 
             try {
                class1.field15.method2117(Client.field309.payload, 0, Client.field309.offset);
