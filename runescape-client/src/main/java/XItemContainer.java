@@ -54,7 +54,7 @@ public class XItemContainer extends Node {
             } else if(var0 == 7) {
                Client.field309.method3076(101);
                Client.field309.method2864(var3[var5]);
-               Client.field309.method2843(0);
+               Client.field309.putByte(0);
             }
 
             var4 = true;
@@ -116,10 +116,10 @@ public class XItemContainer extends Node {
       int var32;
       if(Client.packetOpcode == 97) {
          var0 = Client.field357.method2869();
-         var1 = Client.field357.method2867();
+         var1 = Client.field357.readLittleEndianShort();
          var2 = Client.field357.readUnsignedShort();
          byte var3 = Client.field357.method2863();
-         var4 = Client.field357.method2867();
+         var4 = Client.field357.readLittleEndianShort();
          byte var5 = Client.field357.method2897();
          byte var29 = Client.field357.method2897();
          byte var30 = Client.field357.method2861();
@@ -192,7 +192,7 @@ public class XItemContainer extends Node {
       int var41;
       int var42;
       if(Client.packetOpcode == 29) {
-         var0 = Client.field357.method2867();
+         var0 = Client.field357.readLittleEndianShort();
          var1 = Client.field357.readUnsignedByte();
          var2 = var1 >> 2;
          var35 = var1 & 3;
@@ -300,7 +300,7 @@ public class XItemContainer extends Node {
       } else {
          Item var31;
          if(Client.packetOpcode == 143) {
-            var0 = Client.field357.method2867();
+            var0 = Client.field357.readLittleEndianShort();
             var1 = Client.field357.method2869();
             var2 = Client.field357.method2997();
             var35 = (var2 >> 4 & 7) + class172.field2337;
@@ -385,7 +385,7 @@ public class XItemContainer extends Node {
                var0 = Client.field357.method2860();
                var1 = class172.field2337 + (var0 >> 4 & 7);
                var2 = (var0 & 7) + MessageNode.field261;
-               var35 = Client.field357.method2867();
+               var35 = Client.field357.readLittleEndianShort();
                if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                   Deque var34 = Client.groundItemDeque[class31.plane][var1][var2];
                   if(var34 != null) {
@@ -435,72 +435,72 @@ public class XItemContainer extends Node {
             if(class97.method1989(class174.method3271(var5), var0 - 1)) {
                if(var0 == 1) {
                   Client.field309.method3076(168);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 2) {
                   Client.field309.method3076(34);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 3) {
                   Client.field309.method3076(86);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 4) {
                   Client.field309.method3076(186);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 5) {
                   Client.field309.method3076(103);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 6) {
                   Client.field309.method3076(76);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 7) {
                   Client.field309.method3076(185);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 8) {
                   Client.field309.method3076(63);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 9) {
                   Client.field309.method3076(148);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
                if(var0 == 10) {
                   Client.field309.method3076(204);
-                  Client.field309.method2819(var1);
-                  Client.field309.method2817(var2);
-                  Client.field309.method2817(var3);
+                  Client.field309.putInt(var1);
+                  Client.field309.putShort(var2);
+                  Client.field309.putShort(var3);
                }
 
             }

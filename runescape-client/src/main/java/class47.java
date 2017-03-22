@@ -206,7 +206,7 @@ public class class47 {
                      Client.field309.method2865(Client.field490.index);
                      Client.field309.method2909(Client.field486.item);
                      Client.field309.method2873(Client.field490.id);
-                     Client.field309.method2819(Client.field486.id);
+                     Client.field309.putInt(Client.field486.id);
                   }
                }
             } else {
@@ -294,7 +294,7 @@ public class class47 {
 
          if(Client.field571 == 2) {
             Client.field309.offset = 0;
-            Client.field309.method2843(14);
+            Client.field309.putByte(14);
             class1.field15.method2117(Client.field309.payload, 0, 1);
             Client.field357.offset = 0;
             Client.field571 = 3;
@@ -343,7 +343,7 @@ public class class47 {
 
             if(Client.field357.offset == 8) {
                Client.field357.offset = 0;
-               WidgetNode.field216 = Client.field357.method2837();
+               WidgetNode.field216 = Client.field357.readLong();
                Client.field571 = 5;
             }
          }
@@ -353,20 +353,20 @@ public class class47 {
          if(Client.field571 == 5) {
             int[] var8 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(WidgetNode.field216 >> 32), (int)(WidgetNode.field216 & -1L)};
             Client.field309.offset = 0;
-            Client.field309.method2843(1);
-            Client.field309.method2843(class41.field874.vmethod4085());
-            Client.field309.method2819(var8[0]);
-            Client.field309.method2819(var8[1]);
-            Client.field309.method2819(var8[2]);
-            Client.field309.method2819(var8[3]);
+            Client.field309.putByte(1);
+            Client.field309.putByte(class41.field874.vmethod4085());
+            Client.field309.putInt(var8[0]);
+            Client.field309.putInt(var8[1]);
+            Client.field309.putInt(var8[2]);
+            Client.field309.putInt(var8[3]);
             switch(class41.field874.field1642) {
             case 0:
-               Client.field309.method2819(((Integer)class8.field84.field722.get(Integer.valueOf(class152.method2814(class41.username)))).intValue());
+               Client.field309.putInt(((Integer)class8.field84.field722.get(Integer.valueOf(class152.method2814(class41.username)))).intValue());
                Client.field309.offset += 4;
                break;
             case 1:
             case 2:
-               Client.field309.method2818(CombatInfoListHolder.field781);
+               Client.field309.put24bitInt(CombatInfoListHolder.field781);
                Client.field309.offset += 5;
                break;
             case 3:
@@ -377,23 +377,23 @@ public class class47 {
             Client.field309.method2852(class39.field833, class39.field834);
             Client.field356.offset = 0;
             if(Client.gameState == 40) {
-               Client.field356.method2843(18);
+               Client.field356.putByte(18);
             } else {
-               Client.field356.method2843(16);
+               Client.field356.putByte(16);
             }
 
-            Client.field356.method2817(0);
+            Client.field356.putShort(0);
             var1 = Client.field356.offset;
-            Client.field356.method2819(138);
-            Client.field356.method2825(Client.field309.payload, 0, Client.field309.offset);
+            Client.field356.putInt(138);
+            Client.field356.putBytes(Client.field309.payload, 0, Client.field309.offset);
             var2 = Client.field356.offset;
             Client.field356.method2822(class41.username);
-            Client.field356.method2843((Client.isResized?1:0) << 1 | (Client.field439?1:0));
-            Client.field356.method2817(class108.field1748);
-            Client.field356.method2817(class145.field2018);
+            Client.field356.putByte((Client.isResized?1:0) << 1 | (Client.field439?1:0));
+            Client.field356.putShort(class108.field1748);
+            Client.field356.putShort(class145.field2018);
             class159 var3 = Client.field356;
             if(Client.field349 != null) {
-               var3.method2825(Client.field349, 0, Client.field349.length);
+               var3.putBytes(Client.field349, 0, Client.field349.length);
             } else {
                byte[] var5 = new byte[24];
 
@@ -415,33 +415,33 @@ public class class47 {
                   }
                }
 
-               var3.method2825(var5, 0, var5.length);
+               var3.putBytes(var5, 0, var5.length);
             }
 
             Client.field356.method2822(class178.field2666);
-            Client.field356.method2819(Client.field316);
+            Client.field356.putInt(Client.field316);
             Buffer var4 = new Buffer(class7.field75.method4293());
             class7.field75.method4292(var4);
-            Client.field356.method2825(var4.payload, 0, var4.payload.length);
-            Client.field356.method2843(class25.field611);
-            Client.field356.method2819(0);
-            Client.field356.method2819(Client.field341.field2711);
-            Client.field356.method2819(FloorUnderlayDefinition.field2811.field2711);
-            Client.field356.method2819(class2.field27.field2711);
-            Client.field356.method2819(RSCanvas.field1765.field2711);
-            Client.field356.method2819(class188.field2778.field2711);
-            Client.field356.method2819(class33.field778.field2711);
-            Client.field356.method2819(class3.field39.field2711);
-            Client.field356.method2819(class195.field2859.field2711);
-            Client.field356.method2819(class0.field2.field2711);
-            Client.field356.method2819(KitDefinition.field2825.field2711);
-            Client.field356.method2819(class99.field1655.field2711);
-            Client.field356.method2819(class1.field12.field2711);
-            Client.field356.method2819(class110.field1763.field2711);
-            Client.field356.method2819(class140.field1965.field2711);
-            Client.field356.method2819(class37.field820.field2711);
-            Client.field356.method2819(Client.field460.field2711);
-            Client.field356.method2850(var8, var2, Client.field356.offset);
+            Client.field356.putBytes(var4.payload, 0, var4.payload.length);
+            Client.field356.putByte(class25.field611);
+            Client.field356.putInt(0);
+            Client.field356.putInt(Client.field341.field2711);
+            Client.field356.putInt(FloorUnderlayDefinition.field2811.field2711);
+            Client.field356.putInt(class2.field27.field2711);
+            Client.field356.putInt(RSCanvas.field1765.field2711);
+            Client.field356.putInt(class188.field2778.field2711);
+            Client.field356.putInt(class33.field778.field2711);
+            Client.field356.putInt(class3.field39.field2711);
+            Client.field356.putInt(class195.field2859.field2711);
+            Client.field356.putInt(class0.field2.field2711);
+            Client.field356.putInt(KitDefinition.field2825.field2711);
+            Client.field356.putInt(class99.field1655.field2711);
+            Client.field356.putInt(class1.field12.field2711);
+            Client.field356.putInt(class110.field1763.field2711);
+            Client.field356.putInt(class140.field1965.field2711);
+            Client.field356.putInt(class37.field820.field2711);
+            Client.field356.putInt(Client.field460.field2711);
+            Client.field356.encryptXtea(var8, var2, Client.field356.offset);
             Client.field356.method2945(Client.field356.offset - var1);
             class1.field15.method2117(Client.field356.payload, 0, Client.field356.offset);
             Client.field309.method3090(var8);

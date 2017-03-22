@@ -34,7 +34,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "721983960"
    )
-   public void method2817(int var1) {
+   @Export("putShort")
+   public void putShort(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)var1;
    }
@@ -44,7 +45,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "-1921302271"
    )
-   public void method2818(int var1) {
+   @Export("put24bitInt")
+   public void put24bitInt(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
       this.payload[++this.offset - 1] = (byte)var1;
@@ -55,7 +57,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "955424733"
    )
-   public void method2819(int var1) {
+   @Export("putInt")
+   public void putInt(int var1) {
       this.payload[++this.offset - 1] = (byte)(var1 >> 24);
       this.payload[++this.offset - 1] = (byte)(var1 >> 16);
       this.payload[++this.offset - 1] = (byte)(var1 >> 8);
@@ -63,7 +66,8 @@ public class Buffer extends Node {
    }
 
    @ObfuscatedName("u")
-   public void method2820(long var1) {
+   @Export("put48bitLong")
+   public void put48bitLong(long var1) {
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 40));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 32));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 24));
@@ -77,7 +81,8 @@ public class Buffer extends Node {
       signature = "([II)V",
       garbageValue = "-90903788"
    )
-   public void method2821(int[] var1) {
+   @Export("decryptXtea")
+   public void decryptXtea(int[] var1) {
       int var2 = this.offset / 8;
       this.offset = 0;
 
@@ -93,8 +98,8 @@ public class Buffer extends Node {
          }
 
          this.offset -= 8;
-         this.method2819(var4);
-         this.method2819(var5);
+         this.putInt(var4);
+         this.putInt(var5);
       }
 
    }
@@ -160,7 +165,8 @@ public class Buffer extends Node {
       signature = "([BIIB)V",
       garbageValue = "16"
    )
-   public void method2825(byte[] var1, int var2, int var3) {
+   @Export("putBytes")
+   public void putBytes(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var3 + var2; ++var4) {
          this.payload[++this.offset - 1] = var1[var4];
       }
@@ -183,9 +189,9 @@ public class Buffer extends Node {
    )
    public void method2829(int var1) {
       if(var1 >= 0 && var1 < 128) {
-         this.method2843(var1);
+         this.putByte(var1);
       } else if(var1 >= 0 && var1 < '耀') {
-         this.method2817('耀' + var1);
+         this.putShort('耀' + var1);
       } else {
          throw new IllegalArgumentException();
       }
@@ -201,19 +207,19 @@ public class Buffer extends Node {
          if((var1 & -16384) != 0) {
             if((var1 & -2097152) != 0) {
                if((var1 & -268435456) != 0) {
-                  this.method2843(var1 >>> 28 | 128);
+                  this.putByte(var1 >>> 28 | 128);
                }
 
-               this.method2843(var1 >>> 21 | 128);
+               this.putByte(var1 >>> 21 | 128);
             }
 
-            this.method2843(var1 >>> 14 | 128);
+            this.putByte(var1 >>> 14 | 128);
          }
 
-         this.method2843(var1 >>> 7 | 128);
+         this.putByte(var1 >>> 7 | 128);
       }
 
-      this.method2843(var1 & 127);
+      this.putByte(var1 & 127);
    }
 
    @ObfuscatedName("p")
@@ -253,7 +259,8 @@ public class Buffer extends Node {
       signature = "(I)J",
       garbageValue = "1019333440"
    )
-   public long method2837() {
+   @Export("readLong")
+   public long readLong() {
       long var1 = (long)this.readInt() & 4294967295L;
       long var3 = (long)this.readInt() & 4294967295L;
       return (var1 << 32) + var3;
@@ -278,7 +285,8 @@ public class Buffer extends Node {
       signature = "([BIII)V",
       garbageValue = "1846294793"
    )
-   public void method2842(byte[] var1, int var2, int var3) {
+   @Export("readBytes")
+   public void readBytes(byte[] var1, int var2, int var3) {
       for(int var4 = var2; var4 < var3 + var2; ++var4) {
          var1[var4] = this.payload[++this.offset - 1];
       }
@@ -290,7 +298,8 @@ public class Buffer extends Node {
       signature = "(IB)V",
       garbageValue = "-82"
    )
-   public void method2843(int var1) {
+   @Export("putByte")
+   public void putByte(int var1) {
       this.payload[++this.offset - 1] = (byte)var1;
    }
 
@@ -419,7 +428,8 @@ public class Buffer extends Node {
       signature = "([IIII)V",
       garbageValue = "841940402"
    )
-   public void method2850(int[] var1, int var2, int var3) {
+   @Export("encryptXtea")
+   public void encryptXtea(int[] var1, int var2, int var3) {
       int var4 = this.offset;
       this.offset = var2;
       int var5 = (var3 - var2) / 8;
@@ -436,8 +446,8 @@ public class Buffer extends Node {
          }
 
          this.offset -= 8;
-         this.method2819(var7);
-         this.method2819(var8);
+         this.putInt(var7);
+         this.putInt(var8);
       }
 
       this.offset = var4;
@@ -452,13 +462,13 @@ public class Buffer extends Node {
       int var3 = this.offset;
       this.offset = 0;
       byte[] var4 = new byte[var3];
-      this.method2842(var4, 0, var3);
+      this.readBytes(var4, 0, var3);
       BigInteger var5 = new BigInteger(var4);
       BigInteger var6 = var5.modPow(var1, var2);
       byte[] var7 = var6.toByteArray();
       this.offset = 0;
-      this.method2817(var7.length);
-      this.method2825(var7, 0, var7.length);
+      this.putShort(var7.length);
+      this.putBytes(var7, 0, var7.length);
    }
 
    @ObfuscatedName("av")
@@ -471,7 +481,8 @@ public class Buffer extends Node {
    }
 
    @ObfuscatedName("y")
-   public void method2856(long var1) {
+   @Export("putLong")
+   public void putLong(long var1) {
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 56));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 48));
       this.payload[++this.offset - 1] = (byte)((int)(var1 >> 40));
@@ -505,7 +516,8 @@ public class Buffer extends Node {
       signature = "([II)V",
       garbageValue = "-1441173887"
    )
-   public void method2859(int[] var1) {
+   @Export("encryptXtea2")
+   public void encryptXtea2(int[] var1) {
       int var2 = this.offset / 8;
       this.offset = 0;
 
@@ -521,8 +533,8 @@ public class Buffer extends Node {
          }
 
          this.offset -= 8;
-         this.method2819(var4);
-         this.method2819(var5);
+         this.putInt(var4);
+         this.putInt(var5);
       }
 
    }
@@ -579,7 +591,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1494210710"
    )
-   public int method2867() {
+   @Export("readLittleEndianShort")
+   public int readLittleEndianShort() {
       this.offset += 2;
       return (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 1] & 255) << 8);
    }
@@ -953,7 +966,7 @@ public class Buffer extends Node {
       }
 
       var5 = ~var5;
-      this.method2819(var5);
+      this.putInt(var5);
       return var5;
    }
 
@@ -1042,8 +1055,8 @@ public class Buffer extends Node {
          }
 
          this.offset -= 8;
-         this.method2819(var7);
-         this.method2819(var8);
+         this.putInt(var7);
+         this.putInt(var8);
       }
 
       this.offset = var4;

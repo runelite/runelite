@@ -73,17 +73,17 @@ public class class30 {
    )
    Buffer method676() {
       Buffer var1 = new Buffer(100);
-      var1.method2843(field714);
-      var1.method2843(this.field717?1:0);
-      var1.method2843(this.field712?1:0);
-      var1.method2843(this.field715);
-      var1.method2843(this.field722.size());
+      var1.putByte(field714);
+      var1.putByte(this.field717?1:0);
+      var1.putByte(this.field712?1:0);
+      var1.putByte(this.field715);
+      var1.putByte(this.field722.size());
       Iterator var2 = this.field722.entrySet().iterator();
 
       while(var2.hasNext()) {
          Entry var3 = (Entry)var2.next();
-         var1.method2819(((Integer)var3.getKey()).intValue());
-         var1.method2819(((Integer)var3.getValue()).intValue());
+         var1.putInt(((Integer)var3.getKey()).intValue());
+         var1.putInt(((Integer)var3.getValue()).intValue());
       }
 
       return var1;

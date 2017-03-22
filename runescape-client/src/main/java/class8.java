@@ -258,7 +258,7 @@ public class class8 {
             int var5 = var3.read(var4.payload, var4.offset, 1000 - var4.offset);
             if(var5 == -1) {
                var4.offset = 0;
-               long var7 = var4.method2837();
+               long var7 = var4.readLong();
                return var7;
             }
 

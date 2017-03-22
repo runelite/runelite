@@ -31,7 +31,7 @@ final class class7 implements Comparator {
       if(var3 >= 0 && (class182.field2708 == 0 || var3 <= class182.field2708)) {
          if(var2 == 0) {
             byte[] var4 = new byte[var3];
-            var1.method2842(var4, 0, var3);
+            var1.readBytes(var4, 0, var3);
             return var4;
          } else {
             int var6 = var1.readInt();

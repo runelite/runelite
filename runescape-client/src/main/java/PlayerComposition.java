@@ -346,20 +346,20 @@ public class PlayerComposition {
       garbageValue = "377685174"
    )
    public void method3174(Buffer var1) {
-      var1.method2843(this.isFemale?1:0);
+      var1.putByte(this.isFemale?1:0);
 
       int var2;
       for(var2 = 0; var2 < 7; ++var2) {
          int var3 = this.equipmentIds[field2165[var2]];
          if(var3 == 0) {
-            var1.method2843(-1);
+            var1.putByte(-1);
          } else {
-            var1.method2843(var3 - 256);
+            var1.putByte(var3 - 256);
          }
       }
 
       for(var2 = 0; var2 < 5; ++var2) {
-         var1.method2843(this.bodyPartColours[var2]);
+         var1.putByte(this.bodyPartColours[var2]);
       }
 
    }

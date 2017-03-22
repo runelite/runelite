@@ -260,11 +260,11 @@ public class class144 extends Node {
       var1.offset += var5 * 3;
       this.field2012 = new byte[var4];
       Buffer var51 = new Buffer(this.field2012);
-      var51.method2819(1297377380);
-      var51.method2819(6);
-      var51.method2817(var2 > 1?1:0);
-      var51.method2817(var2);
-      var51.method2817(var3);
+      var51.putInt(1297377380);
+      var51.putInt(6);
+      var51.putShort(var2 > 1?1:0);
+      var51.putShort(var2);
+      var51.putShort(var3);
       var1.offset = var13;
       int var52 = 0;
       int var53 = 0;
@@ -278,7 +278,7 @@ public class class144 extends Node {
 
       label357:
       for(int var60 = 0; var60 < var2; ++var60) {
-         var51.method2819(1297379947);
+         var51.putInt(1297379947);
          var51.offset += 4;
          int var61 = var51.offset;
          int var62 = -1;
@@ -292,52 +292,52 @@ public class class144 extends Node {
                var62 = var64 & 15;
                if(var64 == 7) {
                   if(var65) {
-                     var51.method2843(255);
+                     var51.putByte(255);
                   }
 
-                  var51.method2843(47);
-                  var51.method2843(0);
+                  var51.putByte(47);
+                  var51.putByte(0);
                   var51.method2992(var51.offset - var61);
                   continue label357;
                }
 
                if(var64 == 23) {
                   if(var65) {
-                     var51.method2843(255);
+                     var51.putByte(255);
                   }
 
-                  var51.method2843(81);
-                  var51.method2843(3);
-                  var51.method2843(var1.payload[var50++]);
-                  var51.method2843(var1.payload[var50++]);
-                  var51.method2843(var1.payload[var50++]);
+                  var51.putByte(81);
+                  var51.putByte(3);
+                  var51.putByte(var1.payload[var50++]);
+                  var51.putByte(var1.payload[var50++]);
+                  var51.putByte(var1.payload[var50++]);
                } else {
                   var52 ^= var64 >> 4;
                   if(var62 == 0) {
                      if(var65) {
-                        var51.method2843(144 + var52);
+                        var51.putByte(144 + var52);
                      }
 
                      var53 += var1.payload[var37++];
                      var54 += var1.payload[var38++];
-                     var51.method2843(var53 & 127);
-                     var51.method2843(var54 & 127);
+                     var51.putByte(var53 & 127);
+                     var51.putByte(var54 & 127);
                   } else if(var62 == 1) {
                      if(var65) {
-                        var51.method2843(128 + var52);
+                        var51.putByte(128 + var52);
                      }
 
                      var53 += var1.payload[var37++];
                      var55 += var1.payload[var40++];
-                     var51.method2843(var53 & 127);
-                     var51.method2843(var55 & 127);
+                     var51.putByte(var53 & 127);
+                     var51.putByte(var55 & 127);
                   } else if(var62 == 2) {
                      if(var65) {
-                        var51.method2843(176 + var52);
+                        var51.putByte(176 + var52);
                      }
 
                      var28 = var28 + var1.payload[var15++] & 127;
-                     var51.method2843(var28);
+                     var51.putByte(var28);
                      byte var66;
                      if(var28 != 0 && var28 != 32) {
                         if(var28 == 1) {
@@ -371,42 +371,42 @@ public class class144 extends Node {
 
                      int var67 = var66 + var59[var28];
                      var59[var28] = var67;
-                     var51.method2843(var67 & 127);
+                     var51.putByte(var67 & 127);
                   } else if(var62 == 3) {
                      if(var65) {
-                        var51.method2843(224 + var52);
+                        var51.putByte(224 + var52);
                      }
 
                      var56 += var1.payload[var45++];
                      var56 += var1.payload[var33++] << 7;
-                     var51.method2843(var56 & 127);
-                     var51.method2843(var56 >> 7 & 127);
+                     var51.putByte(var56 & 127);
+                     var51.putByte(var56 >> 7 & 127);
                   } else if(var62 == 4) {
                      if(var65) {
-                        var51.method2843(208 + var52);
+                        var51.putByte(208 + var52);
                      }
 
                      var57 += var1.payload[var32++];
-                     var51.method2843(var57 & 127);
+                     var51.putByte(var57 & 127);
                   } else if(var62 == 5) {
                      if(var65) {
-                        var51.method2843(160 + var52);
+                        var51.putByte(160 + var52);
                      }
 
                      var53 += var1.payload[var37++];
                      var58 += var1.payload[var31++];
-                     var51.method2843(var53 & 127);
-                     var51.method2843(var58 & 127);
+                     var51.putByte(var53 & 127);
+                     var51.putByte(var58 & 127);
                   } else {
                      if(var62 != 6) {
                         throw new RuntimeException();
                      }
 
                      if(var65) {
-                        var51.method2843(192 + var52);
+                        var51.putByte(192 + var52);
                      }
 
-                     var51.method2843(var1.payload[var44++]);
+                     var51.putByte(var1.payload[var44++]);
                   }
                }
             }

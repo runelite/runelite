@@ -104,35 +104,35 @@ public class class230 extends Node {
       garbageValue = "1571447101"
    )
    public void method4292(Buffer var1) {
-      var1.method2843(6);
-      var1.method2843(this.field3269);
-      var1.method2843(this.field3270?1:0);
-      var1.method2843(this.field3275);
-      var1.method2843(this.field3290);
-      var1.method2843(this.field3291);
-      var1.method2843(this.field3278);
-      var1.method2843(this.field3279);
-      var1.method2843(this.field3280?1:0);
-      var1.method2817(this.field3282);
-      var1.method2843(this.field3288);
-      var1.method2818(this.field3283);
-      var1.method2817(this.field3284);
+      var1.putByte(6);
+      var1.putByte(this.field3269);
+      var1.putByte(this.field3270?1:0);
+      var1.putByte(this.field3275);
+      var1.putByte(this.field3290);
+      var1.putByte(this.field3291);
+      var1.putByte(this.field3278);
+      var1.putByte(this.field3279);
+      var1.putByte(this.field3280?1:0);
+      var1.putShort(this.field3282);
+      var1.putByte(this.field3288);
+      var1.put24bitInt(this.field3283);
+      var1.putShort(this.field3284);
       var1.method2823(this.field3296);
       var1.method2823(this.field3286);
       var1.method2823(this.field3287);
       var1.method2823(this.field3285);
-      var1.method2843(this.field3277);
-      var1.method2817(this.field3276);
+      var1.putByte(this.field3277);
+      var1.putShort(this.field3276);
       var1.method2823(this.field3293);
       var1.method2823(this.field3294);
-      var1.method2843(this.field3289);
-      var1.method2843(this.field3292);
+      var1.putByte(this.field3289);
+      var1.putByte(this.field3292);
 
       for(int var2 = 0; var2 < this.field3295.length; ++var2) {
-         var1.method2819(this.field3295[var2]);
+         var1.putInt(this.field3295[var2]);
       }
 
-      var1.method2819(this.field3272);
+      var1.putInt(this.field3272);
    }
 
    @ObfuscatedName("c")
