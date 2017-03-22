@@ -516,7 +516,7 @@ public class class54 extends Node {
          } while(var7 >= 255);
 
          byte[] var6 = new byte[var5];
-         var2.method2842(var6, 0, var5);
+         var2.readBytes(var6, 0, var5);
          this.field1017[var4] = var6;
       }
 

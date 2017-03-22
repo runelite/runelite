@@ -63,11 +63,11 @@ public class Script extends CacheableNode {
       ClassInfo var1 = (ClassInfo)class227.field3248.method2411();
       if(null != var1) {
          int var2 = var0.offset;
-         var0.method2819(var1.field3238);
+         var0.putInt(var1.field3238);
 
          for(int var3 = 0; var3 < var1.field3240; ++var3) {
             if(var1.field3241[var3] != 0) {
-               var0.method2843(var1.field3241[var3]);
+               var0.putByte(var1.field3241[var3]);
             } else {
                try {
                   int var4 = var1.field3239[var3];
@@ -76,17 +76,17 @@ public class Script extends CacheableNode {
                   if(var4 == 0) {
                      var5 = var1.fields[var3];
                      var6 = Reflection.getInt(var5, (Object)null);
-                     var0.method2843(0);
-                     var0.method2819(var6);
+                     var0.putByte(0);
+                     var0.putInt(var6);
                   } else if(var4 == 1) {
                      var5 = var1.fields[var3];
                      Reflection.setInt(var5, (Object)null, var1.field3243[var3]);
-                     var0.method2843(0);
+                     var0.putByte(0);
                   } else if(var4 == 2) {
                      var5 = var1.fields[var3];
                      var6 = var5.getModifiers();
-                     var0.method2843(0);
-                     var0.method2819(var6);
+                     var0.putByte(0);
+                     var0.putInt(var6);
                   }
 
                   Method var25;
@@ -94,8 +94,8 @@ public class Script extends CacheableNode {
                      if(var4 == 4) {
                         var25 = var1.methods[var3];
                         var6 = var25.getModifiers();
-                        var0.method2843(0);
-                        var0.method2819(var6);
+                        var0.putByte(0);
+                        var0.putInt(var6);
                      }
                   } else {
                      var25 = var1.methods[var3];
@@ -109,41 +109,41 @@ public class Script extends CacheableNode {
 
                      Object var11 = Reflection.invoke(var25, (Object)null, var7);
                      if(null == var11) {
-                        var0.method2843(0);
+                        var0.putByte(0);
                      } else if(var11 instanceof Number) {
-                        var0.method2843(1);
-                        var0.method2856(((Number)var11).longValue());
+                        var0.putByte(1);
+                        var0.putLong(((Number)var11).longValue());
                      } else if(var11 instanceof String) {
-                        var0.method2843(2);
+                        var0.putByte(2);
                         var0.method2822((String)var11);
                      } else {
-                        var0.method2843(4);
+                        var0.putByte(4);
                      }
                   }
                } catch (ClassNotFoundException var13) {
-                  var0.method2843(-10);
+                  var0.putByte(-10);
                } catch (InvalidClassException var14) {
-                  var0.method2843(-11);
+                  var0.putByte(-11);
                } catch (StreamCorruptedException var15) {
-                  var0.method2843(-12);
+                  var0.putByte(-12);
                } catch (OptionalDataException var16) {
-                  var0.method2843(-13);
+                  var0.putByte(-13);
                } catch (IllegalAccessException var17) {
-                  var0.method2843(-14);
+                  var0.putByte(-14);
                } catch (IllegalArgumentException var18) {
-                  var0.method2843(-15);
+                  var0.putByte(-15);
                } catch (InvocationTargetException var19) {
-                  var0.method2843(-16);
+                  var0.putByte(-16);
                } catch (SecurityException var20) {
-                  var0.method2843(-17);
+                  var0.putByte(-17);
                } catch (IOException var21) {
-                  var0.method2843(-18);
+                  var0.putByte(-18);
                } catch (NullPointerException var22) {
-                  var0.method2843(-19);
+                  var0.putByte(-19);
                } catch (Exception var23) {
-                  var0.method2843(-20);
+                  var0.putByte(-20);
                } catch (Throwable var24) {
-                  var0.method2843(-21);
+                  var0.putByte(-21);
                }
             }
          }
@@ -162,8 +162,8 @@ public class Script extends CacheableNode {
       try {
          FileOnDisk var2 = new FileOnDisk(class104.field1697, "rw", 10000L);
          Buffer var3 = new Buffer(500);
-         var3.method2843(3);
-         var3.method2843(null != var1?1:0);
+         var3.putByte(3);
+         var3.putByte(null != var1?1:0);
          var3.method2824(var0.getPath());
          if(var1 != null) {
             var3.method2824("");

@@ -31,7 +31,7 @@ public class class148 {
          var5 = var0.readUnsignedByte();
          byte[] var6 = new byte[var5];
          Buffer var7 = new Buffer(var6);
-         var0.method2842(var6, 0, var5);
+         var0.readBytes(var6, 0, var5);
          class45.field923[var1] = var7;
          var2.method244(var7);
       }
@@ -138,7 +138,7 @@ public class class148 {
 
             if(!var21 && Client.field432 == 0 && !var2.field290) {
                class45.field933.offset = 0;
-               var0.method2842(class45.field933.payload, 0, var9);
+               var0.readBytes(class45.field933.payload, 0, var9);
                class45.field933.offset = 0;
                String var12 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(class45.field933)));
                var2.overhead = var12.trim();

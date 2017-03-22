@@ -1574,7 +1574,7 @@ public final class Client extends GameEngine {
                   ObjectComposition.field2897.reset();
                   if(null != class16.field206) {
                      field309.method3076(137);
-                     field309.method2819(1057001181);
+                     field309.putInt(1057001181);
                   }
 
                   if(!isDynamicRegion) {
@@ -1703,8 +1703,8 @@ public final class Client extends GameEngine {
                   while(class185.field2759 < 20 && class185.field2744 > 0) {
                      var5 = (class181)class185.field2743.method2391();
                      var6 = new Buffer(4);
-                     var6.method2843(1);
-                     var6.method2818((int)var5.hash);
+                     var6.putByte(1);
+                     var6.put24bitInt((int)var5.hash);
                      class185.field2748.method2117(var6.payload, 0, 4);
                      class185.field2745.method2403(var5, var5.hash);
                      --class185.field2744;
@@ -1714,8 +1714,8 @@ public final class Client extends GameEngine {
                   while(class185.field2751 < 20 && class185.field2749 > 0) {
                      var5 = (class181)class185.field2747.method2334();
                      var6 = new Buffer(4);
-                     var6.method2843(0);
-                     var6.method2818((int)var5.hash);
+                     var6.putByte(0);
+                     var6.put24bitInt((int)var5.hash);
                      class185.field2748.method2117(var6.payload, 0, 4);
                      var5.method2476();
                      class185.field2750.method2403(var5, var5.hash);
@@ -1784,8 +1784,8 @@ public final class Client extends GameEngine {
                            int var16 = var11 == 0?5:9;
                            FloorUnderlayDefinition.field2808 = var15;
                            class72.field1196 = new Buffer(var16 + var12 + FloorUnderlayDefinition.field2808.field2694);
-                           class72.field1196.method2843(var11);
-                           class72.field1196.method2819(var12);
+                           class72.field1196.putByte(var11);
+                           class72.field1196.putInt(var12);
                            class185.field2753 = 8;
                            class185.field2752.offset = 0;
                         } else if(class185.field2753 == 0) {
@@ -2698,8 +2698,8 @@ public final class Client extends GameEngine {
                if(field492 == 2) {
                   Item.field909 = new class110((Socket)FileOnDisk.field1200.field1677, class72.field1193);
                   Buffer var1 = new Buffer(5);
-                  var1.method2843(15);
-                  var1.method2819(138);
+                  var1.putByte(15);
+                  var1.putInt(138);
                   Item.field909.method2117(var1.payload, 0, 5);
                   ++field492;
                   class6.field63 = class99.method2005();

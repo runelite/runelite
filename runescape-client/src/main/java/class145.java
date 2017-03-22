@@ -101,9 +101,9 @@ public class class145 {
                   if(class185.field2756 != 0) {
                      try {
                         Buffer var7 = new Buffer(4);
-                        var7.method2843(4);
-                        var7.method2843(class185.field2756);
-                        var7.method2817(0);
+                        var7.putByte(4);
+                        var7.putByte(class185.field2756);
+                        var7.putShort(0);
                         class185.field2748.method2117(var7.payload, 0, 4);
                      } catch (IOException var5) {
                         try {

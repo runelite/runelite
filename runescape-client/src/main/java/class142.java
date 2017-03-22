@@ -238,7 +238,7 @@ public class class142 extends Node {
             if(Client.packetOpcode == 80) {
                var75 = Client.field357.readUnsignedByte() == 1;
                if(var75) {
-                  class177.field2662 = class99.method2005() - Client.field357.method2837();
+                  class177.field2662 = class99.method2005() - Client.field357.readLong();
                   class104.field1702 = new class1(Client.field357, true);
                } else {
                   class104.field1702 = null;
@@ -250,7 +250,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 41) {
-               var1 = Client.field357.method2867();
+               var1 = Client.field357.readLittleEndianShort();
                var2 = Client.field357.readInt();
                class165.settings[var1] = var2;
                if(class165.widgetSettings[var1] != var2) {
@@ -524,7 +524,7 @@ public class class142 extends Node {
                      var6 = Client.field357.readInt();
                   }
 
-                  var7 = Client.field357.method2867();
+                  var7 = Client.field357.readLittleEndianShort();
                   if(null != var3 && var5 < var3.itemIds.length) {
                      var3.itemIds[var5] = var7;
                      var3.itemQuantities[var5] = var6;
@@ -828,7 +828,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 195) {
-               var1 = Client.field357.method2867();
+               var1 = Client.field357.readLittleEndianShort();
                if(var1 == '\uffff') {
                   var1 = -1;
                }
@@ -914,7 +914,7 @@ public class class142 extends Node {
             if(Client.packetOpcode == 217) {
                var1 = Client.field357.method2869();
                var2 = Client.field357.method2869();
-               var21 = Client.field357.method2867();
+               var21 = Client.field357.readLittleEndianShort();
                var4 = Client.field357.method2876();
                var107 = World.method670(var4);
                if(var107.rotationX != var1 || var107.rotationZ != var2 || var107.field2240 != var21) {
@@ -1209,7 +1209,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 122) {
-               var1 = Client.field357.method2867();
+               var1 = Client.field357.readLittleEndianShort();
                byte var69 = Client.field357.method2897();
                class165.settings[var1] = var69;
                if(var69 != class165.widgetSettings[var1]) {
@@ -1305,7 +1305,7 @@ public class class142 extends Node {
                }
 
                Client.field309.method3076(178);
-               Client.field309.method2819(var1);
+               Client.field309.putInt(var1);
                Client.field309.method2874(var2);
                Client.field309.method2962(GameEngine.FPS);
                Client.field309.method2962(var5);
@@ -1482,7 +1482,7 @@ public class class142 extends Node {
             int var13;
             if(Client.packetOpcode == 238) {
                var25 = Client.field357.readString();
-               var26 = Client.field357.method2837();
+               var26 = Client.field357.readLong();
                var28 = (long)Client.field357.readUnsignedShort();
                var41 = (long)Client.field357.read24BitInt();
                class177[] var111 = new class177[]{class177.field2655, class177.field2659, class177.field2653, class177.field2652, class177.field2657, class177.field2654};
@@ -1540,7 +1540,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 140) {
-               var1 = Client.field357.method2867();
+               var1 = Client.field357.readLittleEndianShort();
                if(var1 == '\uffff') {
                   var1 = -1;
                }
@@ -1659,7 +1659,7 @@ public class class142 extends Node {
                }
 
                Client.clanChatOwner = Client.field357.readString();
-               long var47 = Client.field357.method2837();
+               long var47 = Client.field357.readLong();
                Client.field540 = ChatLineBuffer.method980(var47);
                class107.field1746 = Client.field357.readByte();
                var21 = Client.field357.readUnsignedByte();
@@ -1803,7 +1803,7 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 2) {
                var1 = Client.field357.method2868();
-               var2 = Client.field357.method2867();
+               var2 = Client.field357.readLittleEndianShort();
                if(var2 == '\uffff') {
                   var2 = -1;
                }
@@ -1901,7 +1901,7 @@ public class class142 extends Node {
                               for(int var12 = 0; var12 < var8; ++var12) {
                                  var13 = var87.readInt();
                                  var33[var12] = new byte[var13];
-                                 var87.method2842(var33[var12], 0, var13);
+                                 var87.readBytes(var33[var12], 0, var13);
                               }
                            }
 

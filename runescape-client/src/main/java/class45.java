@@ -51,9 +51,9 @@ public class class45 {
    )
    static void method910() {
       Client.field309.method3076(230);
-      Client.field309.method2843(class13.method196());
-      Client.field309.method2817(class108.field1748);
-      Client.field309.method2817(class145.field2018);
+      Client.field309.putByte(class13.method196());
+      Client.field309.putShort(class108.field1748);
+      Client.field309.putShort(class145.field2018);
    }
 
    @ObfuscatedName("aw")

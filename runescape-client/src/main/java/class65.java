@@ -198,10 +198,10 @@ public class class65 {
             Client.flagX = var0;
             Client.flagY = var1;
             Client.field309.method3076(146);
-            Client.field309.method2843(class105.field1725[82]?1:0);
-            Client.field309.method2817(class8.field82);
+            Client.field309.putByte(class105.field1725[82]?1:0);
+            Client.field309.putShort(class8.field82);
             Client.field309.method2865(class107.field1744);
-            Client.field309.method2817(var3);
+            Client.field309.putShort(var3);
             Client.field309.method2874(class49.field967);
          }
       }
@@ -247,14 +247,14 @@ public class class65 {
 
          if(var9) {
             Client.field309.method3076(62);
-            Client.field309.method2819(var1);
+            Client.field309.putInt(var1);
          }
       }
 
       if(var2 == 30 && null == Client.field477) {
          Client.field309.method3076(171);
          Client.field309.method2864(var0);
-         Client.field309.method2819(var1);
+         Client.field309.putInt(var1);
          Client.field477 = class40.method826(var1, var0);
          class2.method36(Client.field477);
       }
@@ -269,7 +269,7 @@ public class class65 {
             Client.flagX = var0;
             Client.flagY = var1;
             Client.field309.method3076(99);
-            Client.field309.method2817(var3);
+            Client.field309.putShort(var3);
             Client.field309.method2857(class105.field1725[82]?1:0);
          }
       }
@@ -296,7 +296,7 @@ public class class65 {
       int var21;
       if(var2 == 29) {
          Client.field309.method3076(62);
-         Client.field309.method2819(var1);
+         Client.field309.putInt(var1);
          var20 = World.method670(var1);
          if(var20.dynamicValues != null && var20.dynamicValues[0][0] == 5) {
             var21 = var20.dynamicValues[0][1];
@@ -317,10 +317,10 @@ public class class65 {
             Client.flagX = var0;
             Client.flagY = var1;
             Client.field309.method3076(30);
-            Client.field309.method2817(Client.field469);
+            Client.field309.putShort(Client.field469);
             Client.field309.method2909(var3);
             Client.field309.method2873(class26.field621);
-            Client.field309.method2843(class105.field1725[82]?1:0);
+            Client.field309.putByte(class105.field1725[82]?1:0);
          }
       }
 
@@ -368,7 +368,7 @@ public class class65 {
             Client.flagY = var1;
             Client.field309.method3076(241);
             Client.field309.method2909(Client.field469);
-            Client.field309.method2817(var3);
+            Client.field309.putShort(var3);
             Client.field309.method2962(class105.field1725[82]?1:0);
             Client.field309.method2873(class26.field621);
          }
@@ -414,11 +414,11 @@ public class class65 {
          Client.flagY = var1;
          Client.field309.method3076(159);
          Client.field309.method2909(class107.field1744);
-         Client.field309.method2843(class105.field1725[82]?1:0);
+         Client.field309.putByte(class105.field1725[82]?1:0);
          Client.field309.method2909(class3.baseY + var1);
          Client.field309.method2874(class49.field967);
-         Client.field309.method2817(var0 + CombatInfoListHolder.baseX);
-         Client.field309.method2817(class8.field82);
+         Client.field309.putShort(var0 + CombatInfoListHolder.baseX);
+         Client.field309.putShort(class8.field82);
          Client.field309.method2864(var3);
       }
 
@@ -460,12 +460,12 @@ public class class65 {
          Client.field309.method2864(var3);
          Client.field309.method2865(class3.baseY + var1);
          Client.field309.method2865(var0 + CombatInfoListHolder.baseX);
-         Client.field309.method2843(class105.field1725[82]?1:0);
+         Client.field309.putByte(class105.field1725[82]?1:0);
       }
 
       if(var2 == 37) {
          Client.field309.method3076(251);
-         Client.field309.method2819(var1);
+         Client.field309.putInt(var1);
          Client.field309.method2909(var0);
          Client.field309.method2864(var3);
          Client.field425 = 0;
@@ -565,7 +565,7 @@ public class class65 {
             Client.field309.method3076(94);
             Client.field309.method2864(var3);
             Client.field309.method2865(var0);
-            Client.field309.method2819(var1);
+            Client.field309.putInt(var1);
             Client.field425 = 0;
             Tile.field1363 = World.method670(var1);
             Client.field406 = var0;
@@ -581,7 +581,7 @@ public class class65 {
                Client.flagX = var0;
                Client.flagY = var1;
                Client.field309.method3076(100);
-               Client.field309.method2817(var3);
+               Client.field309.putShort(var3);
                Client.field309.method2962(class105.field1725[82]?1:0);
             }
          }
@@ -626,7 +626,7 @@ public class class65 {
                Client.flagY = var1;
                Client.field309.method3076(216);
                Client.field309.method2864(var3);
-               Client.field309.method2843(class105.field1725[82]?1:0);
+               Client.field309.putByte(class105.field1725[82]?1:0);
             }
          }
 
@@ -649,7 +649,7 @@ public class class65 {
 
          if(var2 == 33) {
             Client.field309.method3076(132);
-            Client.field309.method2817(var3);
+            Client.field309.putShort(var3);
             Client.field309.method2865(var0);
             Client.field309.method2874(var1);
             Client.field425 = 0;
@@ -682,9 +682,9 @@ public class class65 {
             Client.field309.method3076(67);
             Client.field309.method2909(Client.field469);
             Client.field309.method2857(class105.field1725[82]?1:0);
-            Client.field309.method2817(var0 + CombatInfoListHolder.baseX);
+            Client.field309.putShort(var0 + CombatInfoListHolder.baseX);
             Client.field309.method2864(var3);
-            Client.field309.method2817(var1 + class3.baseY);
+            Client.field309.putShort(var1 + class3.baseY);
             Client.field309.method2874(class26.field621);
          }
 
@@ -730,7 +730,7 @@ public class class65 {
          if(var2 == 40) {
             Client.field309.method3076(167);
             Client.field309.method2909(var3);
-            Client.field309.method2819(var1);
+            Client.field309.putInt(var1);
             Client.field309.method2865(var0);
             Client.field425 = 0;
             Tile.field1363 = World.method670(var1);
@@ -793,7 +793,7 @@ public class class65 {
                Client.field309.method2962(class105.field1725[82]?1:0);
                Client.field309.method2865(CombatInfoListHolder.baseX + var0);
                Client.field309.method2909(class107.field1744);
-               Client.field309.method2817(class8.field82);
+               Client.field309.putShort(class8.field82);
                Client.field309.method2864(var3 >> 14 & 32767);
             }
 
@@ -808,15 +808,15 @@ public class class65 {
                   Client.flagY = var1;
                   Client.field309.method3076(101);
                   Client.field309.method2864(var3);
-                  Client.field309.method2843(class105.field1725[82]?1:0);
+                  Client.field309.putByte(class105.field1725[82]?1:0);
                }
             }
 
             if(var2 == 34) {
                Client.field309.method3076(207);
-               Client.field309.method2819(var1);
+               Client.field309.putInt(var1);
                Client.field309.method2909(var3);
-               Client.field309.method2817(var0);
+               Client.field309.putShort(var0);
                Client.field425 = 0;
                Tile.field1363 = World.method670(var1);
                Client.field406 = var0;
@@ -830,10 +830,10 @@ public class class65 {
                Client.flagX = var0;
                Client.flagY = var1;
                Client.field309.method3076(219);
-               Client.field309.method2817(var0 + CombatInfoListHolder.baseX);
+               Client.field309.putShort(var0 + CombatInfoListHolder.baseX);
                Client.field309.method2864(var1 + class3.baseY);
                Client.field309.method2962(class105.field1725[82]?1:0);
-               Client.field309.method2817(var3 >> 14 & 32767);
+               Client.field309.putShort(var3 >> 14 & 32767);
             }
 
             if(var2 == 26) {
@@ -851,7 +851,7 @@ public class class65 {
                Client.field309.method2909(CombatInfoListHolder.baseX + var0);
                Client.field309.method2909(var1 + class3.baseY);
                Client.field309.method2962(class105.field1725[82]?1:0);
-               Client.field309.method2817(var3 >> 14 & 32767);
+               Client.field309.putShort(var3 >> 14 & 32767);
             }
 
             if(var2 == 4) {
@@ -862,10 +862,10 @@ public class class65 {
                Client.flagX = var0;
                Client.flagY = var1;
                Client.field309.method3076(26);
-               Client.field309.method2817(class3.baseY + var1);
+               Client.field309.putShort(class3.baseY + var1);
                Client.field309.method2865(var3 >> 14 & 32767);
                Client.field309.method2857(class105.field1725[82]?1:0);
-               Client.field309.method2817(var0 + CombatInfoListHolder.baseX);
+               Client.field309.putShort(var0 + CombatInfoListHolder.baseX);
             }
 
             if(var2 == 19) {
@@ -876,17 +876,17 @@ public class class65 {
                Client.flagX = var0;
                Client.flagY = var1;
                Client.field309.method3076(93);
-               Client.field309.method2817(CombatInfoListHolder.baseX + var0);
+               Client.field309.putShort(CombatInfoListHolder.baseX + var0);
                Client.field309.method2855(class105.field1725[82]?1:0);
                Client.field309.method2865(var3);
-               Client.field309.method2817(var1 + class3.baseY);
+               Client.field309.putShort(var1 + class3.baseY);
             }
 
             if(var2 == 43) {
                Client.field309.method3076(153);
-               Client.field309.method2817(var0);
+               Client.field309.putShort(var0);
                Client.field309.method2909(var3);
-               Client.field309.method2819(var1);
+               Client.field309.putInt(var1);
                Client.field425 = 0;
                Tile.field1363 = World.method670(var1);
                Client.field406 = var0;
@@ -903,7 +903,7 @@ public class class65 {
 
             if(var2 == 28) {
                Client.field309.method3076(62);
-               Client.field309.method2819(var1);
+               Client.field309.putInt(var1);
                var20 = World.method670(var1);
                if(null != var20.dynamicValues && var20.dynamicValues[0][0] == 5) {
                   var21 = var20.dynamicValues[0][1];
@@ -925,7 +925,7 @@ public class class65 {
                   Client.field309.method2909(class8.field82);
                   Client.field309.method2875(class49.field967);
                   Client.field309.method2864(class107.field1744);
-                  Client.field309.method2817(var3);
+                  Client.field309.putShort(var3);
                   Client.field309.method2857(class105.field1725[82]?1:0);
                }
             }
@@ -938,7 +938,7 @@ public class class65 {
                Client.flagX = var0;
                Client.flagY = var1;
                Client.field309.method3076(254);
-               Client.field309.method2843(class105.field1725[82]?1:0);
+               Client.field309.putByte(class105.field1725[82]?1:0);
                Client.field309.method2864(var1 + class3.baseY);
                Client.field309.method2864(CombatInfoListHolder.baseX + var0);
                Client.field309.method2864(var3);
@@ -955,7 +955,7 @@ public class class65 {
                   Client.flagY = var1;
                   Client.field309.method3076(160);
                   Client.field309.method2909(var3);
-                  Client.field309.method2843(class105.field1725[82]?1:0);
+                  Client.field309.putByte(class105.field1725[82]?1:0);
                }
             }
 
@@ -969,8 +969,8 @@ public class class65 {
                   Client.flagX = var0;
                   Client.flagY = var1;
                   Client.field309.method3076(110);
-                  Client.field309.method2817(var3);
-                  Client.field309.method2843(class105.field1725[82]?1:0);
+                  Client.field309.putShort(var3);
+                  Client.field309.putByte(class105.field1725[82]?1:0);
                }
             }
 

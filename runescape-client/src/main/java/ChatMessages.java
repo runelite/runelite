@@ -149,22 +149,22 @@ public class ChatMessages {
          }
 
          Buffer var9 = new Buffer(var2);
-         var9.method2843(1);
-         var9.method2817(var3);
+         var9.putByte(1);
+         var9.putShort(var3);
 
          int var6;
          for(var6 = 0; var6 < this.field942.length; ++var6) {
             if(this.field940[var6] && this.field942[var6] != -1) {
-               var9.method2817(var6);
-               var9.method2819(this.field942[var6]);
+               var9.putShort(var6);
+               var9.putInt(this.field942[var6]);
             }
          }
 
-         var9.method2817(var4);
+         var9.putShort(var4);
 
          for(var6 = 0; var6 < this.messages.length; ++var6) {
             if(this.field943[var6] && null != this.messages[var6]) {
-               var9.method2817(var6);
+               var9.putShort(var6);
                var9.method2822(this.messages[var6]);
             }
          }

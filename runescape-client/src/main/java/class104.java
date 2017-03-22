@@ -91,7 +91,7 @@ public class class104 {
                         Client.field321.field254 = 0;
                      } else if(class115.field1813 != 0 || Client.field321.field254 >= 40) {
                         Client.field309.method3076(252);
-                        Client.field309.method2843(0);
+                        Client.field309.putByte(0);
                         var16 = Client.field309.offset;
                         var2 = 0;
 
@@ -130,13 +130,13 @@ public class class104 {
                               if(Client.field314 < 8 && var7 >= -32 && var7 <= 31 && var8 >= -32 && var8 <= 31) {
                                  var7 += 32;
                                  var8 += 32;
-                                 Client.field309.method2817(var8 + (Client.field314 << 12) + (var7 << 6));
+                                 Client.field309.putShort(var8 + (Client.field314 << 12) + (var7 << 6));
                                  Client.field314 = 0;
                               } else if(Client.field314 < 8) {
-                                 Client.field309.method2818(8388608 + (Client.field314 << 19) + var6);
+                                 Client.field309.put24bitInt(8388608 + (Client.field314 << 19) + var6);
                                  Client.field314 = 0;
                               } else {
-                                 Client.field309.method2819(-1073741824 + (Client.field314 << 19) + var6);
+                                 Client.field309.putInt(-1073741824 + (Client.field314 << 19) + var6);
                                  Client.field314 = 0;
                               }
                            }
@@ -179,14 +179,14 @@ public class class104 {
 
                      var4 = (int)var18;
                      Client.field309.method3076(152);
-                     Client.field309.method2817((class115.field1813 == 2?1:0) + (var4 << 1));
-                     Client.field309.method2817(var3);
-                     Client.field309.method2817(var2);
+                     Client.field309.putShort((class115.field1813 == 2?1:0) + (var4 << 1));
+                     Client.field309.putShort(var3);
+                     Client.field309.putShort(var2);
                   }
 
                   if(class105.field1716 > 0) {
                      Client.field309.method3076(217);
-                     Client.field309.method2817(0);
+                     Client.field309.putShort(0);
                      var0 = Client.field309.offset;
                      long var20 = class99.method2005();
 
@@ -198,7 +198,7 @@ public class class104 {
 
                         Client.field539 = var20;
                         Client.field309.method2871((int)var22);
-                        Client.field309.method2843(class105.field1735[var3]);
+                        Client.field309.putByte(class105.field1735[var3]);
                      }
 
                      Client.field309.method2945(Client.field309.offset - var0);
@@ -223,13 +223,13 @@ public class class104 {
                   if(class101.field1661 && !Client.field581) {
                      Client.field581 = true;
                      Client.field309.method3076(124);
-                     Client.field309.method2843(1);
+                     Client.field309.putByte(1);
                   }
 
                   if(!class101.field1661 && Client.field581) {
                      Client.field581 = false;
                      Client.field309.method3076(124);
-                     Client.field309.method2843(0);
+                     Client.field309.putByte(0);
                   }
 
                   int var10;
@@ -642,8 +642,8 @@ public class class104 {
 
                                                          Client.field309.method3076(151);
                                                          Client.field309.method2864(Client.field310);
-                                                         Client.field309.method2817(Client.field408);
-                                                         Client.field309.method2843(var40);
+                                                         Client.field309.putShort(Client.field408);
+                                                         Client.field309.putByte(var40);
                                                          Client.field309.method2874(CombatInfoListHolder.field784.id);
                                                       }
                                                    } else {
@@ -693,7 +693,7 @@ public class class104 {
                                                 var2 = Region.field1521;
                                                 var3 = Region.field1522;
                                                 Client.field309.method3076(147);
-                                                Client.field309.method2843(5);
+                                                Client.field309.putByte(5);
                                                 Client.field309.method2855(class105.field1725[82]?(class105.field1725[81]?2:1):0);
                                                 Client.field309.method2909(var3 + class3.baseY);
                                                 Client.field309.method2909(var2 + CombatInfoListHolder.baseX);
@@ -981,7 +981,7 @@ public class class104 {
                }
 
                Client.field309.method3076(52);
-               Client.field309.method2843(0);
+               Client.field309.putByte(0);
                var16 = Client.field309.offset;
                Script.method971(Client.field309);
                Client.field309.method2828(Client.field309.offset - var16);

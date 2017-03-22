@@ -194,7 +194,7 @@ public class class2 {
             int var6 = var3.index;
             Client.field309.method3076(171);
             Client.field309.method2864(var6);
-            Client.field309.method2819(var5);
+            Client.field309.putInt(var5);
             Client.field477 = var3;
             method36(var3);
             return 1;
@@ -230,7 +230,7 @@ public class class2 {
       this.field28 = var1.readString();
       this.field23 = var1.readString();
       this.field26 = var1.readUnsignedShort();
-      this.field24 = var1.method2837();
+      this.field24 = var1.readLong();
       int var4 = var1.readInt();
       int var5 = var1.readInt();
       this.field25 = new XGrandExchangeOffer();

@@ -43,33 +43,33 @@ public class ScriptState {
       Buffer var4 = new Buffer(128);
       Buffer var5 = new Buffer(128);
       int[] var6 = new int[]{var3.nextInt(), var3.nextInt(), (int)(var0 >> 32), (int)var0};
-      var4.method2843(10);
+      var4.putByte(10);
 
       int var7;
       for(var7 = 0; var7 < 4; ++var7) {
-         var4.method2819(var3.nextInt());
+         var4.putInt(var3.nextInt());
       }
 
-      var4.method2819(var6[0]);
-      var4.method2819(var6[1]);
-      var4.method2856(var0);
-      var4.method2856(0L);
+      var4.putInt(var6[0]);
+      var4.putInt(var6[1]);
+      var4.putLong(var0);
+      var4.putLong(0L);
 
       for(var7 = 0; var7 < 4; ++var7) {
-         var4.method2819(var3.nextInt());
+         var4.putInt(var3.nextInt());
       }
 
       var4.method2852(class36.field795, class36.field800);
-      var5.method2843(10);
+      var5.putByte(10);
 
       for(var7 = 0; var7 < 3; ++var7) {
-         var5.method2819(var3.nextInt());
+         var5.putInt(var3.nextInt());
       }
 
-      var5.method2856(var3.nextLong());
-      var5.method2820(var3.nextLong());
+      var5.putLong(var3.nextLong());
+      var5.put48bitLong(var3.nextLong());
       if(Client.field349 != null) {
-         var5.method2825(Client.field349, 0, Client.field349.length);
+         var5.putBytes(Client.field349, 0, Client.field349.length);
       } else {
          byte[] var8 = new byte[24];
 
@@ -91,10 +91,10 @@ public class ScriptState {
             }
          }
 
-         var5.method2825(var8, 0, var8.length);
+         var5.putBytes(var8, 0, var8.length);
       }
 
-      var5.method2856(var3.nextLong());
+      var5.putLong(var3.nextLong());
       var5.method2852(class36.field795, class36.field800);
       var7 = class164.method3157(var2);
       if(var7 % 8 != 0) {
@@ -104,15 +104,15 @@ public class ScriptState {
       Buffer var24 = new Buffer(var7);
       var24.method2822(var2);
       var24.offset = var7;
-      var24.method2859(var6);
+      var24.encryptXtea2(var6);
       Buffer var18 = new Buffer(var24.offset + var5.offset + 5 + var4.offset);
-      var18.method2843(2);
-      var18.method2843(var4.offset);
-      var18.method2825(var4.payload, 0, var4.offset);
-      var18.method2843(var5.offset);
-      var18.method2825(var5.payload, 0, var5.offset);
-      var18.method2817(var24.offset);
-      var18.method2825(var24.payload, 0, var24.offset);
+      var18.putByte(2);
+      var18.putByte(var4.offset);
+      var18.putBytes(var4.payload, 0, var4.offset);
+      var18.putByte(var5.offset);
+      var18.putBytes(var5.payload, 0, var5.offset);
+      var18.putShort(var24.offset);
+      var18.putBytes(var24.payload, 0, var24.offset);
       byte[] var11 = var18.payload;
       String var20 = class195.method3574(var11, 0, var11.length);
       String var12 = var20;
@@ -144,7 +144,7 @@ public class ScriptState {
                } else if(var21.startsWith("Not permitted for social network accounts.")) {
                   return 6;
                } else {
-                  var18.method2821(var6);
+                  var18.decryptXtea(var6);
 
                   while(var18.offset > 0 && var18.payload[var18.offset - 1] == 0) {
                      --var18.offset;

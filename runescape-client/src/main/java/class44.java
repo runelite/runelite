@@ -58,8 +58,8 @@ final class class44 implements Comparator {
       if(null != class185.field2748) {
          try {
             Buffer var1 = new Buffer(4);
-            var1.method2843(var0?2:3);
-            var1.method2818(0);
+            var1.putByte(var0?2:3);
+            var1.put24bitInt(0);
             class185.field2748.method2117(var1.payload, 0, 4);
          } catch (IOException var4) {
             try {
