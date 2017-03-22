@@ -282,18 +282,18 @@ public class MessageNode extends CacheableNode {
                         var23 = class196.method3599(var22);
                      }
 
-                     Client.field309.method3076(189);
+                     Client.field309.putOpcode(189);
                      Client.field309.putInt(var23);
                      var3 = 1;
                   } else if(var0 == 3105) {
                      var22 = class32.scriptStringStack[--class9.scriptStringStackSize];
-                     Client.field309.method3076(37);
+                     Client.field309.putOpcode(37);
                      Client.field309.putByte(var22.length() + 1);
                      Client.field309.method2822(var22);
                      var3 = 1;
                   } else if(var0 == 3106) {
                      var22 = class32.scriptStringStack[--class9.scriptStringStackSize];
-                     Client.field309.method3076(128);
+                     Client.field309.putOpcode(128);
                      Client.field309.putByte(var22.length() + 1);
                      Client.field309.method2822(var22);
                      var3 = 1;
@@ -334,7 +334,7 @@ public class MessageNode extends CacheableNode {
                      var3 = 1;
                   } else if(var0 == 3115) {
                      var15 = class32.field756[--class32.field752];
-                     Client.field309.method3076(92);
+                     Client.field309.putOpcode(92);
                      Client.field309.putShort(var15);
                      var3 = 1;
                   } else if(var0 == 3116) {
@@ -347,7 +347,7 @@ public class MessageNode extends CacheableNode {
                      } else if(var31.length() > 500) {
                         var3 = 1;
                      } else {
-                        Client.field309.method3076(136);
+                        Client.field309.putOpcode(136);
                         Client.field309.putShort(1 + class164.method3157(var38) + class164.method3157(var31));
                         Client.field309.method2822(var31);
                         Client.field309.method2855(var15);
@@ -644,7 +644,7 @@ public class MessageNode extends CacheableNode {
                            }
 
                            Client.field532 = class32.field756[2 + class32.field752];
-                           Client.field309.method3076(2);
+                           Client.field309.putOpcode(2);
                            Client.field309.putByte(Client.field307);
                            Client.field309.putByte(class107.field1740.field3180);
                            Client.field309.putByte(Client.field532);
@@ -654,7 +654,7 @@ public class MessageNode extends CacheableNode {
                            class32.field752 -= 2;
                            var23 = class32.field756[class32.field752];
                            var6 = class32.field756[class32.field752 + 1];
-                           Client.field309.method3076(195);
+                           Client.field309.putOpcode(195);
                            Client.field309.putByte(class164.method3157(var22) + 2);
                            Client.field309.method2822(var22);
                            Client.field309.putByte(var23 - 1);
@@ -823,13 +823,13 @@ public class MessageNode extends CacheableNode {
                               }
                            }
 
-                           Client.field309.method3076(79);
+                           Client.field309.putOpcode(79);
                            Client.field309.putByte(0);
                            var20 = Client.field309.offset;
                            Client.field309.putByte(var23);
                            Client.field309.putByte(var24);
                            Client.field309.putByte(var8);
-                           class159 var10 = Client.field309;
+                           CipherBuffer var10 = Client.field309;
                            var21 = var10.offset;
                            byte[] var12 = class22.method241(var22);
                            var10.method2829(var12.length);
@@ -840,11 +840,11 @@ public class MessageNode extends CacheableNode {
                            class9.scriptStringStackSize -= 2;
                            var22 = class32.scriptStringStack[class9.scriptStringStackSize];
                            var38 = class32.scriptStringStack[class9.scriptStringStackSize + 1];
-                           Client.field309.method3076(169);
+                           Client.field309.putOpcode(169);
                            Client.field309.putShort(0);
                            var6 = Client.field309.offset;
                            Client.field309.method2822(var22);
-                           class159 var17 = Client.field309;
+                           CipherBuffer var17 = Client.field309;
                            var29 = var17.offset;
                            byte[] var9 = class22.method241(var38);
                            var17.method2829(var9.length);

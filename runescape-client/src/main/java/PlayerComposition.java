@@ -84,14 +84,14 @@ public class PlayerComposition {
             if(var3 < 0) {
                var3 = class6.field62[var1].length - 1;
             }
-         } while(!class160.method3101(var1, var3));
+         } while(!ISAACCipher.method3101(var1, var3));
       } else {
          do {
             ++var3;
             if(var3 >= class6.field62[var1].length) {
                var3 = 0;
             }
-         } while(!class160.method3101(var1, var3));
+         } while(!ISAACCipher.method3101(var1, var3));
       }
 
       this.bodyPartColours[var1] = var3;
@@ -416,7 +416,7 @@ public class PlayerComposition {
          int var21;
          int var22;
          if(!var0.combatInfoList.method2414()) {
-            class160.method3110(var0, var0.field654 + 15);
+            ISAACCipher.method3110(var0, var0.field654 + 15);
 
             for(CombatInfoListHolder var9 = (CombatInfoListHolder)var0.combatInfoList.method2411(); var9 != null; var9 = (CombatInfoListHolder)var0.combatInfoList.method2423()) {
                CombatInfo1 var10 = var9.method767(Client.gameCycle);
@@ -508,7 +508,7 @@ public class PlayerComposition {
             }
 
             if(var85.skullIcon != -1 || var85.overheadIcon != -1) {
-               class160.method3110(var0, var0.field654 + 15);
+               ISAACCipher.method3110(var0, var0.field654 + 15);
                if(Client.field355 > -1) {
                   if(var85.skullIcon != -1) {
                      class15.field194[var85.skullIcon].method4149(Client.field355 + var2 - 12, var3 + Client.field339 - var8);
@@ -523,7 +523,7 @@ public class PlayerComposition {
             }
 
             if(var1 >= 0 && Client.field458 == 10 && Client.field362 == var7[var1]) {
-               class160.method3110(var0, var0.field654 + 15);
+               ISAACCipher.method3110(var0, var0.field654 + 15);
                if(Client.field355 > -1) {
                   class15.field189[1].method4149(var2 + Client.field355 - 12, Client.field339 + var3 - var8);
                }
@@ -535,14 +535,14 @@ public class PlayerComposition {
             }
 
             if(var86.field3030 >= 0 && var86.field3030 < class149.field2037.length) {
-               class160.method3110(var0, 15 + var0.field654);
+               ISAACCipher.method3110(var0, 15 + var0.field654);
                if(Client.field355 > -1) {
                   class149.field2037[var86.field3030].method4149(Client.field355 + var2 - 12, Client.field339 + var3 - 30);
                }
             }
 
             if(Client.field458 == 1 && Client.field570[var1 - var74] == Client.field329 && Client.gameCycle % 20 < 10) {
-               class160.method3110(var0, var0.field654 + 15);
+               ISAACCipher.method3110(var0, var0.field654 + 15);
                if(Client.field355 > -1) {
                   class15.field189[0].method4149(var2 + Client.field355 - 12, Client.field339 + var3 - 28);
                }
@@ -550,7 +550,7 @@ public class PlayerComposition {
          }
 
          if(null != var0.overhead && (var1 >= var74 || !var0.inSequence && (Client.field307 == 4 || !var0.field639 && (Client.field307 == 0 || Client.field307 == 3 || Client.field307 == 1 && MessageNode.method228(((Player)var0).name, false))))) {
-            class160.method3110(var0, var0.field654);
+            ISAACCipher.method3110(var0, var0.field654);
             if(Client.field355 > -1 && Client.field352 < Client.field326) {
                Client.field370[Client.field352] = BufferProvider.field3198.method3876(var0.overhead) / 2;
                Client.field410[Client.field352] = BufferProvider.field3198.field3120;
@@ -600,7 +600,7 @@ public class PlayerComposition {
                if(null == var87) {
                   var0.field677[var77] = -1;
                } else {
-                  class160.method3110(var0, var0.field654 / 2);
+                  ISAACCipher.method3110(var0, var0.field654 / 2);
                   if(Client.field355 > -1) {
                      if(var77 == 1) {
                         Client.field339 -= 20;

@@ -36,7 +36,7 @@ public class Ignore {
       signature = "(Lclass159;I)V",
       garbageValue = "1957983815"
    )
-   static final void method216(class159 var0) {
+   static final void method216(CipherBuffer var0) {
       var0.method3085();
       int var1 = Client.localInteractingIndex;
       Player var2 = class22.localPlayer = Client.cachedPlayers[var1] = new Player();

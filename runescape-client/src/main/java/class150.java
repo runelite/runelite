@@ -171,7 +171,7 @@ public class class150 {
             if(var0 == 3604) {
                var11 = class32.scriptStringStack[--class9.scriptStringStackSize];
                int var12 = class32.field756[--class32.field752];
-               Client.field309.method3076(22);
+               Client.field309.putOpcode(22);
                Client.field309.putByte(class164.method3157(var11) + 1);
                Client.field309.method2857(var12);
                Client.field309.method2822(var11);
@@ -213,7 +213,7 @@ public class class150 {
                                  if(GroundObject.method1598(class22.localPlayer.name, class165.field2155).equals(var15)) {
                                     class30.sendGameMessage(30, "", "You can\'t add yourself to your own friend list");
                                  } else {
-                                    Client.field309.method3076(36);
+                                    Client.field309.putOpcode(36);
                                     Client.field309.putByte(class164.method3157(var11));
                                     Client.field309.method2822(var11);
                                  }
@@ -272,7 +272,7 @@ public class class150 {
                               }
 
                               Client.field506 = Client.field498;
-                              Client.field309.method3076(196);
+                              Client.field309.putOpcode(196);
                               Client.field309.putByte(class164.method3157(var11));
                               Client.field309.method2822(var11);
                               break;
@@ -312,7 +312,7 @@ public class class150 {
                                  if(GroundObject.method1598(class22.localPlayer.name, class165.field2155).equals(var15)) {
                                     class30.sendGameMessage(31, "", "You can\'t add yourself to your own ignore list");
                                  } else {
-                                    Client.field309.method3076(190);
+                                    Client.field309.putOpcode(190);
                                     Client.field309.putByte(class164.method3157(var11));
                                     Client.field309.method2822(var11);
                                  }
@@ -420,7 +420,7 @@ public class class150 {
                   CombatInfo1.method625(var11);
                   return 1;
                } else if(var0 == 3620) {
-                  Client.field309.method3076(164);
+                  Client.field309.putOpcode(164);
                   Client.field309.putByte(0);
                   return 1;
                } else if(var0 == 3621) {

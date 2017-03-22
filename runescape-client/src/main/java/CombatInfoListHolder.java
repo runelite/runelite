@@ -151,7 +151,7 @@ public class CombatInfoListHolder extends Node {
          }
 
          if(var1 == 326) {
-            Client.field309.method3076(23);
+            Client.field309.putOpcode(23);
             Client.field576.method3174(Client.field309);
             return true;
          } else {

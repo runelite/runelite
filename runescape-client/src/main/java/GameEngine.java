@@ -208,9 +208,9 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
    void method2157() {
       Container var1 = this.method2169();
       long var2 = class99.method2005();
-      long var4 = field1783[class159.field2114];
-      field1783[class159.field2114] = var2;
-      class159.field2114 = 1 + class159.field2114 & 31;
+      long var4 = field1783[CipherBuffer.field2114];
+      field1783[CipherBuffer.field2114] = var2;
+      CipherBuffer.field2114 = 1 + CipherBuffer.field2114 & 31;
       if(var4 != 0L && var2 > var4) {
          int var6 = (int)(var2 - var4);
          FPS = ((var6 >> 1) + 32000) / var6;

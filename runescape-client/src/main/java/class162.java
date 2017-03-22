@@ -52,7 +52,7 @@ public class class162 {
       signature = "(Lclass159;II)V",
       garbageValue = "17691664"
    )
-   static void method3123(class159 var0, int var1) {
+   static void method3123(CipherBuffer var0, int var1) {
       boolean var2 = var0.method3097(1) == 1;
       if(var2) {
          class45.field932[++class45.field919 - 1] = var1;

@@ -55,7 +55,7 @@ public class class18 extends Node {
       signature = "(Lclass159;II)V",
       garbageValue = "-1146944482"
    )
-   static final void method209(class159 var0, int var1) {
+   static final void method209(CipherBuffer var0, int var1) {
       int var2 = var0.offset;
       class45.field919 = 0;
       XGrandExchangeOffer.method58(var0);
@@ -145,7 +145,7 @@ public class class18 extends Node {
    )
    static final void method212(String var0) {
       if(null != class137.clanMembers) {
-         Client.field309.method3076(214);
+         Client.field309.putOpcode(214);
          Client.field309.putByte(class164.method3157(var0));
          Client.field309.method2822(var0);
       }

@@ -90,7 +90,7 @@ public class class104 {
                      if(!Client.field586) {
                         Client.field321.field254 = 0;
                      } else if(class115.field1813 != 0 || Client.field321.field254 >= 40) {
-                        Client.field309.method3076(252);
+                        Client.field309.putOpcode(252);
                         Client.field309.putByte(0);
                         var16 = Client.field309.offset;
                         var2 = 0;
@@ -178,14 +178,14 @@ public class class104 {
                      }
 
                      var4 = (int)var18;
-                     Client.field309.method3076(152);
+                     Client.field309.putOpcode(152);
                      Client.field309.putShort((class115.field1813 == 2?1:0) + (var4 << 1));
                      Client.field309.putShort(var3);
                      Client.field309.putShort(var2);
                   }
 
                   if(class105.field1716 > 0) {
-                     Client.field309.method3076(217);
+                     Client.field309.putOpcode(217);
                      Client.field309.putShort(0);
                      var0 = Client.field309.offset;
                      long var20 = class99.method2005();
@@ -215,20 +215,20 @@ public class class104 {
                   if(Client.field404 && Client.field403 <= 0) {
                      Client.field403 = 20;
                      Client.field404 = false;
-                     Client.field309.method3076(213);
+                     Client.field309.putOpcode(213);
                      Client.field309.method2909(Client.field396);
                      Client.field309.method2909(Client.mapAngle);
                   }
 
                   if(class101.field1661 && !Client.field581) {
                      Client.field581 = true;
-                     Client.field309.method3076(124);
+                     Client.field309.putOpcode(124);
                      Client.field309.putByte(1);
                   }
 
                   if(!class101.field1661 && Client.field581) {
                      Client.field581 = false;
-                     Client.field309.method3076(124);
+                     Client.field309.putOpcode(124);
                      Client.field309.putByte(0);
                   }
 
@@ -640,7 +640,7 @@ public class class104 {
                                                             var49.method3209(Client.field408, Client.field310);
                                                          }
 
-                                                         Client.field309.method3076(151);
+                                                         Client.field309.putOpcode(151);
                                                          Client.field309.method2864(Client.field310);
                                                          Client.field309.putShort(Client.field408);
                                                          Client.field309.putByte(var40);
@@ -692,7 +692,7 @@ public class class104 {
                                              if(Region.method1933()) {
                                                 var2 = Region.field1521;
                                                 var3 = Region.field1522;
-                                                Client.field309.method3076(147);
+                                                Client.field309.putOpcode(147);
                                                 Client.field309.putByte(5);
                                                 Client.field309.method2855(class105.field1725[82]?(class105.field1725[81]?2:1):0);
                                                 Client.field309.method2909(var3 + class3.baseY);
@@ -839,7 +839,7 @@ public class class104 {
                                              if(var2 > 15000 && var3 > 15000) {
                                                 Client.field365 = 250;
                                                 class115.mouseIdleTicks = 14500;
-                                                Client.field309.method3076(255);
+                                                Client.field309.putOpcode(255);
                                              }
 
                                              ++Client.field382;
@@ -928,7 +928,7 @@ public class class104 {
 
                                              ++Client.field497;
                                              if(Client.field497 > 50) {
-                                                Client.field309.method3076(184);
+                                                Client.field309.putOpcode(184);
                                              }
 
                                              try {
@@ -980,7 +980,7 @@ public class class104 {
                   }
                }
 
-               Client.field309.method3076(52);
+               Client.field309.putOpcode(52);
                Client.field309.putByte(0);
                var16 = Client.field309.offset;
                Script.method971(Client.field309);

@@ -24,7 +24,7 @@ public final class Client extends GameEngine {
    @ObfuscatedName("c")
    static Client field308;
    @ObfuscatedName("cx")
-   static class159 field309;
+   static CipherBuffer field309;
    @ObfuscatedName("gh")
    @ObfuscatedGetter(
       intValue = -461626957
@@ -218,9 +218,9 @@ public final class Client extends GameEngine {
    )
    static int field355;
    @ObfuscatedName("cn")
-   static class159 field356;
+   static CipherBuffer field356;
    @ObfuscatedName("cl")
-   static class159 field357;
+   static CipherBuffer field357;
    @ObfuscatedName("cy")
    @ObfuscatedGetter(
       intValue = 1755325733
@@ -1573,7 +1573,7 @@ public final class Client extends GameEngine {
 
                   ObjectComposition.field2897.reset();
                   if(null != class16.field206) {
-                     field309.method3076(137);
+                     field309.putOpcode(137);
                      field309.putInt(1057001181);
                   }
 
@@ -1596,7 +1596,7 @@ public final class Client extends GameEngine {
                   class187.setGameState(30);
                   class47.method950();
                   class167.method3192();
-                  field309.method3076(60);
+                  field309.putOpcode(60);
                   class103.method2046();
                }
             }
@@ -1948,9 +1948,9 @@ public final class Client extends GameEngine {
       field570 = new int['耀'];
       field353 = 0;
       field430 = new int[250];
-      field309 = new class159(5000);
-      field356 = new class159(5000);
-      field357 = new class159(15000);
+      field309 = new CipherBuffer(5000);
+      field356 = new CipherBuffer(5000);
+      field357 = new CipherBuffer(15000);
       field358 = 0;
       packetOpcode = 0;
       field360 = 0;

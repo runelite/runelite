@@ -131,7 +131,7 @@ public class class142 extends Node {
             if(Client.packetOpcode == -1) {
                class1.field15.method2119(Client.field357.payload, 0, 1);
                Client.field357.offset = 0;
-               Client.packetOpcode = Client.field357.method3079();
+               Client.packetOpcode = Client.field357.readOpcode();
                Client.field358 = class212.field3135[Client.packetOpcode];
                --var0;
             }
@@ -1304,7 +1304,7 @@ public class class142 extends Node {
                   Client.field591 = var39;
                }
 
-               Client.field309.method3076(178);
+               Client.field309.putOpcode(178);
                Client.field309.putInt(var1);
                Client.field309.method2874(var2);
                Client.field309.method2962(GameEngine.FPS);
@@ -1332,7 +1332,7 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 167) {
                FrameMap.xteaChanged(false);
-               Client.field357.method3079();
+               Client.field357.readOpcode();
                var1 = Client.field357.readUnsignedShort();
                class18.method209(Client.field357, var1);
                Client.packetOpcode = -1;
@@ -1568,7 +1568,7 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 77) {
                FrameMap.xteaChanged(true);
-               Client.field357.method3079();
+               Client.field357.readOpcode();
                var1 = Client.field357.readUnsignedShort();
                class18.method209(Client.field357, var1);
                Client.packetOpcode = -1;
@@ -1867,7 +1867,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 158) {
-               class159 var87 = Client.field357;
+               CipherBuffer var87 = Client.field357;
                var2 = Client.field358;
                ClassInfo var58 = new ClassInfo();
                var58.field3240 = var87.readUnsignedByte();

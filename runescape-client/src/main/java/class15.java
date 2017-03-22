@@ -48,7 +48,7 @@ public class class15 {
       signature = "(Lclass159;IB)Z",
       garbageValue = "-81"
    )
-   static boolean method201(class159 var0, int var1) {
+   static boolean method201(CipherBuffer var0, int var1) {
       int var2 = var0.method3097(2);
       int var3;
       int var4;

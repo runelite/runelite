@@ -102,7 +102,7 @@ public final class RSCanvas extends Canvas {
          }
       }
 
-      Client.field309.method3076(13);
+      Client.field309.putOpcode(13);
       Client.field309.putByte(var0.length() + 1);
       Client.field309.method2822(var0);
    }
