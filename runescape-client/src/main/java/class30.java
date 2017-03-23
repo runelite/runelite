@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -8,7 +9,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ag")
 public class class30 {
    @ObfuscatedName("aa")
-   static RSSocket field710;
+   @Export("rssocket")
+   static RSSocket rssocket;
    @ObfuscatedName("j")
    static int[] field712;
    @ObfuscatedName("n")

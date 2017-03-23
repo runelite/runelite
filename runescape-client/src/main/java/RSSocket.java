@@ -124,7 +124,8 @@ public final class RSSocket implements Runnable {
       signature = "([BIIB)V",
       garbageValue = "-85"
    )
-   public void method2105(byte[] var1, int var2, int var3) throws IOException {
+   @Export("queueForWrite")
+   public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field1765) {
          if(this.field1771) {
             this.field1771 = false;

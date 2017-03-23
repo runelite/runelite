@@ -46,7 +46,7 @@ public class class171 {
                         var7.putByte(4);
                         var7.putByte(class185.field2780);
                         var7.putShort(0);
-                        class185.field2770.method2105(var7.payload, 0, 4);
+                        class185.field2770.queueForWrite(var7.payload, 0, 4);
                      } catch (IOException var5) {
                         try {
                            class185.field2770.method2113();
