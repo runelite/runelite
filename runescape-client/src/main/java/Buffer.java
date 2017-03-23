@@ -591,7 +591,7 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "1494210710"
    )
-   @Export("readLittleEndianShort")
+   //@Export("readLittleEndianShort")
    public int readLittleEndianShort() {
       this.offset += 2;
       return (this.payload[this.offset - 2] & 255) + ((this.payload[this.offset - 1] & 255) << 8);
