@@ -1,49 +1,59 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ge")
+@ObfuscatedName("gk")
 public class class202 {
-   @ObfuscatedName("ay")
-   static boolean field3076;
-
    class202() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("u")
+   @ObfuscatedName("ab")
    @ObfuscatedSignature(
-      signature = "([BIII)Ljava/lang/String;",
-      garbageValue = "-825837590"
+      signature = "(B)V",
+      garbageValue = "10"
    )
-   public static String method3802(byte[] var0, int var1, int var2) {
-      char[] var3 = new char[var2];
-      int var4 = 0;
+   static final void method3823() {
+      int var0 = class45.field923;
+      int[] var1 = class45.field918;
 
-      for(int var5 = 0; var5 < var2; ++var5) {
-         int var6 = var0[var1 + var5] & 255;
-         if(var6 != 0) {
-            if(var6 >= 128 && var6 < 160) {
-               char var7 = class203.field3080[var6 - 128];
-               if(var7 == 0) {
-                  var7 = 63;
-               }
-
-               var6 = var7;
-            }
-
-            var3[var4++] = (char)var6;
+      for(int var2 = 0; var2 < var0; ++var2) {
+         Player var3 = Client.cachedPlayers[var1[var2]];
+         if(null != var3) {
+            Client.method555(var3, 1);
          }
       }
 
-      return new String(var3, 0, var4);
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("s")
    @ObfuscatedSignature(
-      signature = "(B)[Lclass179;",
-      garbageValue = "15"
+      signature = "(ILScript;ZI)I",
+      garbageValue = "-946262286"
    )
-   public static class179[] method3803() {
-      return new class179[]{class179.field2675, class179.field2671, class179.field2674, class179.field2673, class179.field2676, class179.field2672};
+   static int method3824(int var0, Script var1, boolean var2) {
+      Widget var3;
+      if(var0 >= 2000) {
+         var0 -= 1000;
+         var3 = FaceNormal.method1932(class32.field743[--class30.field713]);
+      } else {
+         var3 = var2?class154.field2123:class32.field746;
+      }
+
+      if(var0 == 1927) {
+         if(class32.field751 >= 10) {
+            throw new RuntimeException();
+         } else if(null == var3.field2341) {
+            return 0;
+         } else {
+            class18 var4 = new class18();
+            var4.field207 = var3;
+            var4.field199 = var3.field2341;
+            var4.field208 = 1 + class32.field751;
+            Client.field502.method2459(var4);
+            return 1;
+         }
+      } else {
+         return 2;
+      }
    }
 }

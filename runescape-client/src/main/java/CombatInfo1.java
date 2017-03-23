@@ -4,110 +4,136 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aa")
+@ObfuscatedName("aq")
 @Implements("CombatInfo1")
 public class CombatInfo1 extends Node {
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = 1051473115
-   )
-   @Export("health")
-   int health;
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -345249683
+      intValue = 165766523
    )
    @Export("healthRatio")
    int healthRatio;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1042524761
+      intValue = 1394771333
    )
-   int field689;
-   @ObfuscatedName("d")
+   @Export("health")
+   int health;
+   @ObfuscatedName("qx")
    @ObfuscatedGetter(
-      intValue = 1829916919
+      intValue = 1543925975
+   )
+   protected static int field682;
+   @ObfuscatedName("av")
+   @ObfuscatedGetter(
+      intValue = 1395825023
+   )
+   static int field683;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1626461009
+   )
+   int field684;
+   @ObfuscatedName("mb")
+   static SpritePixels field686;
+   @ObfuscatedName("dx")
+   @Export("region")
+   static Region region;
+   @ObfuscatedName("m")
+   static int[][] field688;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = -1430906969
    )
    int field690;
 
-   CombatInfo1(int var1, int var2, int var3, int var4) {
-      this.field689 = var1;
-      this.healthRatio = var2;
-      this.health = var3;
-      this.field690 = var4;
-   }
-
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(IIIII)V",
-      garbageValue = "1489917738"
+      garbageValue = "-1462660177"
    )
-   void method623(int var1, int var2, int var3, int var4) {
-      this.field689 = var1;
+   void method591(int var1, int var2, int var3, int var4) {
+      this.field684 = var1;
       this.healthRatio = var2;
       this.health = var3;
       this.field690 = var4;
    }
 
-   @ObfuscatedName("dm")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-423303126"
+      signature = "(II)LScript;",
+      garbageValue = "1031029287"
    )
-   static final void method625(String var0) {
-      if(!var0.equals("")) {
-         Client.secretCipherBuffer1.putOpcode(164);
-         Client.secretCipherBuffer1.putByte(class164.method3157(var0));
-         Client.secretCipherBuffer1.method2822(var0);
+   static Script method593(int var0) {
+      Script var1 = (Script)Script.field968.get((long)var0);
+      if(null != var1) {
+         return var1;
+      } else {
+         byte[] var2 = Projectile.field877.getConfigData(var0, 0);
+         if(null == var2) {
+            return null;
+         } else {
+            var1 = new Script();
+            Buffer var3 = new Buffer(var2);
+            var3.offset = var3.payload.length - 12;
+            int var4 = var3.readInt();
+            var1.localIntCount = var3.readUnsignedShort();
+            var1.localStringCount = var3.readUnsignedShort();
+            var1.intStackCount = var3.readUnsignedShort();
+            var1.stringStackCount = var3.readUnsignedShort();
+            var3.offset = 0;
+            var3.method2922();
+            var1.instructions = new int[var4];
+            var1.intOperands = new int[var4];
+            var1.stringOperands = new String[var4];
+
+            int var6;
+            for(int var5 = 0; var3.offset < var3.payload.length - 12; var1.instructions[var5++] = var6) {
+               var6 = var3.readUnsignedShort();
+               if(var6 == 3) {
+                  var1.stringOperands[var5] = var3.readString();
+               } else if(var6 < 100 && var6 != 21 && var6 != 38 && var6 != 39) {
+                  var1.intOperands[var5] = var3.readInt();
+               } else {
+                  var1.intOperands[var5] = var3.readUnsignedByte();
+               }
+            }
+
+            Script.field968.put(var1, (long)var0);
+            return var1;
+         }
       }
    }
 
-   @ObfuscatedName("ci")
+   @ObfuscatedName("l")
    @ObfuscatedSignature(
-      signature = "([LWidget;II)V",
-      garbageValue = "1439824084"
+      signature = "(LWorld;LWorld;IZI)I",
+      garbageValue = "682289264"
    )
-   static final void method628(Widget[] var0, int var1) {
-      for(int var2 = 0; var2 < var0.length; ++var2) {
-         Widget var3 = var0[var2];
-         if(var3 != null) {
-            if(var3.type == 0) {
-               if(null != var3.children) {
-                  method628(var3.children, var1);
-               }
-
-               WidgetNode var4 = (WidgetNode)Client.componentTable.method2405((long)var3.id);
-               if(null != var4) {
-                  int var5 = var4.id;
-                  if(class44.method892(var5)) {
-                     method628(Widget.widgets[var5], var1);
-                  }
-               }
+   static int method594(World var0, World var1, int var2, boolean var3) {
+      if(var2 == 1) {
+         int var4 = var0.playerCount;
+         int var5 = var1.playerCount;
+         if(!var3) {
+            if(var4 == -1) {
+               var4 = 2001;
             }
 
-            class18 var6;
-            if(var1 == 0 && var3.field2293 != null) {
-               var6 = new class18();
-               var6.field223 = var3;
-               var6.field232 = var3.field2293;
-               Frames.method1963(var6);
-            }
-
-            if(var1 == 1 && null != var3.field2294) {
-               if(var3.index >= 0) {
-                  Widget var7 = World.method670(var3.id);
-                  if(null == var7 || var7.children == null || var3.index >= var7.children.length || var7.children[var3.index] != var3) {
-                     continue;
-                  }
-               }
-
-               var6 = new class18();
-               var6.field223 = var3;
-               var6.field232 = var3.field2294;
-               Frames.method1963(var6);
+            if(var5 == -1) {
+               var5 = 2001;
             }
          }
-      }
 
+         return var4 - var5;
+      } else {
+         return var2 == 2?var0.location - var1.location:(var2 == 3?(var0.activity.equals("-")?(var1.activity.equals("-")?0:(var3?-1:1)):(var1.activity.equals("-")?(var3?1:-1):var0.activity.compareTo(var1.activity))):(var2 == 4?(var0.method599()?(var1.method599()?0:1):(var1.method599()?-1:0)):(var2 == 5?(var0.method597()?(var1.method597()?0:1):(var1.method597()?-1:0)):(var2 == 6?(var0.method598()?(var1.method598()?0:1):(var1.method598()?-1:0)):(var2 == 7?(var0.method632()?(var1.method632()?0:1):(var1.method632()?-1:0)):var0.id - var1.id)))));
+      }
+   }
+
+   CombatInfo1(int var1, int var2, int var3, int var4) {
+      this.field684 = var1;
+      this.healthRatio = var2;
+      this.health = var3;
+      this.field690 = var4;
    }
 }

@@ -1,90 +1,30 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bw")
+@ObfuscatedName("be")
 public class class65 {
-   @ObfuscatedName("fv")
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 561396627
+      intValue = 494577367
    )
-   @Export("cameraX")
-   static int cameraX;
-   @ObfuscatedName("d")
-   @ObfuscatedGetter(
-      intValue = -1256115607
-   )
-   int field1111;
+   int field1131;
+   @ObfuscatedName("o")
+   int[][] field1135;
    @ObfuscatedName("h")
-   int[][] field1112;
-   @ObfuscatedName("ie")
-   static class38 field1115;
-   @ObfuscatedName("eo")
-   static ModIcon[] field1116;
-   @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -335262277
+      intValue = -1953926715
    )
-   int field1118;
+   int field1136;
 
-   public class65(int var1, int var2) {
-      if(var1 != var2) {
-         int var4 = var1;
-         int var5 = var2;
-         if(var2 > var1) {
-            var4 = var2;
-            var5 = var1;
-         }
-
-         while(var5 != 0) {
-            int var6 = var4 % var5;
-            var4 = var5;
-            var5 = var6;
-         }
-
-         var1 /= var4;
-         var2 /= var4;
-         this.field1111 = var1;
-         this.field1118 = var2;
-         this.field1112 = new int[var1][14];
-
-         for(int var7 = 0; var7 < var1; ++var7) {
-            int[] var8 = this.field1112[var7];
-            double var9 = (double)var7 / (double)var1 + 6.0D;
-            int var11 = (int)Math.floor(var9 - 7.0D + 1.0D);
-            if(var11 < 0) {
-               var11 = 0;
-            }
-
-            int var12 = (int)Math.ceil(7.0D + var9);
-            if(var12 > 14) {
-               var12 = 14;
-            }
-
-            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
-               double var15 = 3.141592653589793D * ((double)var11 - var9);
-               double var17 = var13;
-               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
-                  var17 = var13 * (Math.sin(var15) / var15);
-               }
-
-               var17 *= 0.54D + 0.46D * Math.cos(((double)var11 - var9) * 0.2243994752564138D);
-               var8[var11] = (int)Math.floor(var17 * 65536.0D + 0.5D);
-            }
-         }
-
-      }
-   }
-
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "([BB)[B",
-      garbageValue = "40"
+      garbageValue = "-47"
    )
-   byte[] method1237(byte[] var1) {
-      if(null != this.field1112) {
-         int var2 = 14 + (int)((long)var1.length * (long)this.field1118 / (long)this.field1111);
+   byte[] method1194(byte[] var1) {
+      if(null != this.field1135) {
+         int var2 = (int)((long)var1.length * (long)this.field1131 / (long)this.field1136) + 14;
          int[] var3 = new int[var2];
          int var4 = 0;
          int var5 = 0;
@@ -92,17 +32,17 @@ public class class65 {
          int var6;
          for(var6 = 0; var6 < var1.length; ++var6) {
             byte var7 = var1[var6];
-            int[] var8 = this.field1112[var5];
+            int[] var8 = this.field1135[var5];
 
             int var9;
             for(var9 = 0; var9 < 14; ++var9) {
                var3[var9 + var4] += var7 * var8[var9];
             }
 
-            var5 += this.field1118;
-            var9 = var5 / this.field1111;
+            var5 += this.field1131;
+            var9 = var5 / this.field1136;
             var4 += var9;
-            var5 -= this.field1111 * var9;
+            var5 -= this.field1136 * var9;
          }
 
          var1 = new byte[var2];
@@ -122,881 +62,124 @@ public class class65 {
       return var1;
    }
 
-   @ObfuscatedName("j")
+   public class65(int var1, int var2) {
+      if(var1 != var2) {
+         int var4 = var1;
+         int var5 = var2;
+         if(var2 > var1) {
+            var4 = var2;
+            var5 = var1;
+         }
+
+         while(var5 != 0) {
+            int var6 = var4 % var5;
+            var4 = var5;
+            var5 = var6;
+         }
+
+         var1 /= var4;
+         var2 /= var4;
+         this.field1136 = var1;
+         this.field1131 = var2;
+         this.field1135 = new int[var1][14];
+
+         for(int var7 = 0; var7 < var1; ++var7) {
+            int[] var8 = this.field1135[var7];
+            double var9 = 6.0D + (double)var7 / (double)var1;
+            int var11 = (int)Math.floor(1.0D + (var9 - 7.0D));
+            if(var11 < 0) {
+               var11 = 0;
+            }
+
+            int var12 = (int)Math.ceil(var9 + 7.0D);
+            if(var12 > 14) {
+               var12 = 14;
+            }
+
+            for(double var13 = (double)var2 / (double)var1; var11 < var12; ++var11) {
+               double var15 = ((double)var11 - var9) * 3.141592653589793D;
+               double var17 = var13;
+               if(var15 < -1.0E-4D || var15 > 1.0E-4D) {
+                  var17 = var13 * (Math.sin(var15) / var15);
+               }
+
+               var17 *= 0.54D + 0.46D * Math.cos(0.2243994752564138D * ((double)var11 - var9));
+               var8[var11] = (int)Math.floor(0.5D + 65536.0D * var17);
+            }
+         }
+
+      }
+   }
+
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(IB)I",
-      garbageValue = "9"
+      signature = "(II)I",
+      garbageValue = "-91042756"
    )
-   int method1238(int var1) {
-      if(this.field1112 != null) {
-         var1 = (int)((long)var1 * (long)this.field1118 / (long)this.field1111);
+   int method1195(int var1) {
+      if(this.field1135 != null) {
+         var1 = 6 + (int)((long)this.field1131 * (long)var1 / (long)this.field1136);
       }
 
       return var1;
    }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
       signature = "(IB)I",
-      garbageValue = "3"
+      garbageValue = "-67"
    )
-   int method1241(int var1) {
-      if(null != this.field1112) {
-         var1 = (int)((long)var1 * (long)this.field1118 / (long)this.field1111) + 6;
+   int method1198(int var1) {
+      if(this.field1135 != null) {
+         var1 = (int)((long)this.field1131 * (long)var1 / (long)this.field1136);
       }
 
       return var1;
    }
 
-   @ObfuscatedName("s")
+   @ObfuscatedName("m")
    @ObfuscatedSignature(
-      signature = "(Lclass182;III)Z",
-      garbageValue = "-334754811"
+      signature = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+      garbageValue = "221274543"
    )
-   static boolean method1246(class182 var0, int var1, int var2) {
-      byte[] var3 = var0.getConfigData(var1, var2);
-      if(var3 == null) {
-         return false;
-      } else {
-         Varbit.method3557(var3);
-         return true;
-      }
+   static void method1204(String var0, String var1, String var2) {
+      class41.loginMessage1 = var0;
+      class41.loginMessage2 = var1;
+      class41.loginMessage3 = var2;
    }
 
-   @ObfuscatedName("bz")
+   @ObfuscatedName("cc")
    @ObfuscatedSignature(
-      signature = "(IIIILjava/lang/String;Ljava/lang/String;III)V",
-      garbageValue = "-1304617129"
+      signature = "([LWidget;IIIZI)V",
+      garbageValue = "1728413861"
    )
-   @Export("menuAction")
-   static final void menuAction(int var0, int var1, int var2, int var3, String var4, String var5, int var6, int var7) {
-      if(var2 >= 2000) {
-         var2 -= 2000;
-      }
+   static void method1205(Widget[] var0, int var1, int var2, int var3, boolean var4) {
+      for(int var5 = 0; var5 < var0.length; ++var5) {
+         Widget var6 = var0[var5];
+         if(null != var6 && var1 == var6.parentId) {
+            ScriptState.method143(var6, var2, var3, var4);
+            class16.method170(var6, var2, var3);
+            if(var6.scrollX > var6.scrollWidth - var6.width) {
+               var6.scrollX = var6.scrollWidth - var6.width;
+            }
 
-      if(var2 == 31) {
-         Client.secretCipherBuffer1.putOpcode(233);
-         Client.secretCipherBuffer1.method2873(var1);
-         Client.secretCipherBuffer1.method2909(class107.field1744);
-         Client.secretCipherBuffer1.method2864(class8.field82);
-         Client.secretCipherBuffer1.method2874(class49.field967);
-         Client.secretCipherBuffer1.method2865(var0);
-         Client.secretCipherBuffer1.method2864(var3);
-         Client.field425 = 0;
-         Tile.field1363 = World.method670(var1);
-         Client.field406 = var0;
-      }
+            if(var6.scrollX < 0) {
+               var6.scrollX = 0;
+            }
 
-      Player var8;
-      if(var2 == 14) {
-         var8 = Client.cachedPlayers[var3];
-         if(var8 != null) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(146);
-            Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.putShort(class8.field82);
-            Client.secretCipherBuffer1.method2865(class107.field1744);
-            Client.secretCipherBuffer1.putShort(var3);
-            Client.secretCipherBuffer1.method2874(class49.field967);
-         }
-      }
+            if(var6.scrollY > var6.scrollHeight - var6.height) {
+               var6.scrollY = var6.scrollHeight - var6.height;
+            }
 
-      NPC var19;
-      if(var2 == 12) {
-         var19 = Client.cachedNPCs[var3];
-         if(var19 != null) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(199);
-            Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.method2865(var3);
-         }
-      }
+            if(var6.scrollY < 0) {
+               var6.scrollY = 0;
+            }
 
-      if(var2 == 11) {
-         var19 = Client.cachedNPCs[var3];
-         if(null != var19) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(45);
-            Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.method2865(var3);
-         }
-      }
-
-      Widget var20;
-      if(var2 == 24) {
-         var20 = World.method670(var1);
-         boolean var9 = true;
-         if(var20.contentType > 0) {
-            var9 = CombatInfoListHolder.method776(var20);
-         }
-
-         if(var9) {
-            Client.secretCipherBuffer1.putOpcode(62);
-            Client.secretCipherBuffer1.putInt(var1);
-         }
-      }
-
-      if(var2 == 30 && null == Client.field477) {
-         Client.secretCipherBuffer1.putOpcode(171);
-         Client.secretCipherBuffer1.method2864(var0);
-         Client.secretCipherBuffer1.putInt(var1);
-         Client.field477 = class40.method826(var1, var0);
-         class2.method36(Client.field477);
-      }
-
-      if(var2 == 48) {
-         var8 = Client.cachedPlayers[var3];
-         if(null != var8) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(99);
-            Client.secretCipherBuffer1.putShort(var3);
-            Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-         }
-      }
-
-      if(var2 == 1002) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         Client.secretCipherBuffer1.putOpcode(88);
-         Client.secretCipherBuffer1.method2909(var3 >> 14 & 32767);
-      }
-
-      if(var2 == 39) {
-         Client.secretCipherBuffer1.putOpcode(29);
-         Client.secretCipherBuffer1.method2909(var0);
-         Client.secretCipherBuffer1.method2909(var3);
-         Client.secretCipherBuffer1.method2874(var1);
-         Client.field425 = 0;
-         Tile.field1363 = World.method670(var1);
-         Client.field406 = var0;
-      }
-
-      int var21;
-      if(var2 == 29) {
-         Client.secretCipherBuffer1.putOpcode(62);
-         Client.secretCipherBuffer1.putInt(var1);
-         var20 = World.method670(var1);
-         if(var20.dynamicValues != null && var20.dynamicValues[0][0] == 5) {
-            var21 = var20.dynamicValues[0][1];
-            if(var20.field2210[0] != class165.widgetSettings[var21]) {
-               class165.widgetSettings[var21] = var20.field2210[0];
-               Player.method263(var21);
+            if(var6.type == 0) {
+               class2.method16(var0, var6, var4);
             }
          }
       }
 
-      if(var2 == 15) {
-         var8 = Client.cachedPlayers[var3];
-         if(null != var8) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(30);
-            Client.secretCipherBuffer1.putShort(Client.field469);
-            Client.secretCipherBuffer1.method2909(var3);
-            Client.secretCipherBuffer1.method2873(class26.field621);
-            Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-         }
-      }
-
-      if(var2 == 23) {
-         if(Client.isMenuOpen) {
-            Friend.region.method1791();
-         } else {
-            Friend.region.method1790(class31.plane, var0, var1, true);
-         }
-      }
-
-      if(var2 == 49) {
-         var8 = Client.cachedPlayers[var3];
-         if(var8 != null) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(240);
-            Client.secretCipherBuffer1.method2855(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.method2864(var3);
-         }
-      }
-
-      if(var2 == 36) {
-         Client.secretCipherBuffer1.putOpcode(249);
-         Client.secretCipherBuffer1.method2909(var0);
-         Client.secretCipherBuffer1.method2909(var3);
-         Client.secretCipherBuffer1.method2875(var1);
-         Client.field425 = 0;
-         Tile.field1363 = World.method670(var1);
-         Client.field406 = var0;
-      }
-
-      if(var2 == 8) {
-         var19 = Client.cachedNPCs[var3];
-         if(null != var19) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(241);
-            Client.secretCipherBuffer1.method2909(Client.field469);
-            Client.secretCipherBuffer1.putShort(var3);
-            Client.secretCipherBuffer1.method2962(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.method2873(class26.field621);
-         }
-      }
-
-      if(var2 == 32) {
-         Client.secretCipherBuffer1.putOpcode(19);
-         Client.secretCipherBuffer1.method2873(class26.field621);
-         Client.secretCipherBuffer1.method2909(var3);
-         Client.secretCipherBuffer1.method2909(Client.field469);
-         Client.secretCipherBuffer1.method2873(var1);
-         Client.secretCipherBuffer1.method2865(var0);
-         Client.field425 = 0;
-         Tile.field1363 = World.method670(var1);
-         Client.field406 = var0;
-      }
-
-      if(var2 == 1003) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         var19 = Client.cachedNPCs[var3];
-         if(var19 != null) {
-            NPCComposition var16 = var19.composition;
-            if(null != var16.configs) {
-               var16 = var16.method3719();
-            }
-
-            if(var16 != null) {
-               Client.secretCipherBuffer1.putOpcode(229);
-               Client.secretCipherBuffer1.method2865(var16.id);
-            }
-         }
-      }
-
-      if(var2 == 16) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.secretCipherBuffer1.putOpcode(159);
-         Client.secretCipherBuffer1.method2909(class107.field1744);
-         Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-         Client.secretCipherBuffer1.method2909(class3.baseY + var1);
-         Client.secretCipherBuffer1.method2874(class49.field967);
-         Client.secretCipherBuffer1.putShort(var0 + CombatInfoListHolder.baseX);
-         Client.secretCipherBuffer1.putShort(class8.field82);
-         Client.secretCipherBuffer1.method2864(var3);
-      }
-
-      if(var2 == 58) {
-         var20 = class40.method826(var1, var0);
-         if(var20 != null) {
-            Client.secretCipherBuffer1.putOpcode(91);
-            Client.secretCipherBuffer1.method2864(Client.field405);
-            Client.secretCipherBuffer1.method2873(class26.field621);
-            Client.secretCipherBuffer1.method2909(Client.field469);
-            Client.secretCipherBuffer1.method2864(var0);
-            Client.secretCipherBuffer1.method2874(var1);
-            Client.secretCipherBuffer1.method2865(var20.item);
-         }
-      }
-
-      if(var2 == 22) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.secretCipherBuffer1.putOpcode(238);
-         Client.secretCipherBuffer1.method2865(var3);
-         Client.secretCipherBuffer1.method2865(CombatInfoListHolder.baseX + var0);
-         Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-         Client.secretCipherBuffer1.method2864(var1 + class3.baseY);
-      }
-
-      if(var2 == 20) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.secretCipherBuffer1.putOpcode(27);
-         Client.secretCipherBuffer1.method2864(var3);
-         Client.secretCipherBuffer1.method2865(class3.baseY + var1);
-         Client.secretCipherBuffer1.method2865(var0 + CombatInfoListHolder.baseX);
-         Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-      }
-
-      if(var2 == 37) {
-         Client.secretCipherBuffer1.putOpcode(251);
-         Client.secretCipherBuffer1.putInt(var1);
-         Client.secretCipherBuffer1.method2909(var0);
-         Client.secretCipherBuffer1.method2864(var3);
-         Client.field425 = 0;
-         Tile.field1363 = World.method670(var1);
-         Client.field406 = var0;
-      }
-
-      if(var2 == 2) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.secretCipherBuffer1.putOpcode(54);
-         Client.secretCipherBuffer1.method2865(var0 + CombatInfoListHolder.baseX);
-         Client.secretCipherBuffer1.method2855(class105.field1725[82]?1:0);
-         Client.secretCipherBuffer1.method2865(var3 >> 14 & 32767);
-         Client.secretCipherBuffer1.method2873(class26.field621);
-         Client.secretCipherBuffer1.method2865(Client.field469);
-         Client.secretCipherBuffer1.method2865(class3.baseY + var1);
-      }
-
-      if(var2 == 21) {
-         Client.field422 = var6;
-         Client.field421 = var7;
-         Client.field423 = 2;
-         Client.field548 = 0;
-         Client.flagX = var0;
-         Client.flagY = var1;
-         Client.secretCipherBuffer1.putOpcode(28);
-         Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-         Client.secretCipherBuffer1.method2865(var3);
-         Client.secretCipherBuffer1.method2909(var1 + class3.baseY);
-         Client.secretCipherBuffer1.method2909(CombatInfoListHolder.baseX + var0);
-      }
-
-      if(var2 == 25) {
-         var20 = class40.method826(var1, var0);
-         if(var20 != null) {
-            if(Client.field468) {
-               Widget var24 = class40.method826(class26.field621, Client.field469);
-               if(var24 != null && var24.field2278 != null) {
-                  class18 var17 = new class18();
-                  var17.field223 = var24;
-                  var17.field232 = var24.field2278;
-                  Frames.method1963(var17);
-               }
-
-               Client.field468 = false;
-               class2.method36(var24);
-            }
-
-            int var10 = class174.method3271(var20);
-            var21 = var10 >> 11 & 63;
-            int var12 = var20.item;
-            Widget var13 = class40.method826(var1, var0);
-            if(var13 != null && var13.field2277 != null) {
-               class18 var14 = new class18();
-               var14.field223 = var13;
-               var14.field232 = var13.field2277;
-               Frames.method1963(var14);
-            }
-
-            Client.field405 = var12;
-            Client.field468 = true;
-            class26.field621 = var1;
-            Client.field469 = var0;
-            class7.field73 = var21;
-            class2.method36(var13);
-            Client.field466 = 0;
-            int var15 = class174.method3271(var20);
-            int var18 = var15 >> 11 & 63;
-            String var22;
-            if(var18 == 0) {
-               var22 = null;
-            } else if(null != var20.field2265 && var20.field2265.trim().length() != 0) {
-               var22 = var20.field2265;
-            } else {
-               var22 = null;
-            }
-
-            Client.field489 = var22;
-            if(null == Client.field489) {
-               Client.field489 = "Null";
-            }
-
-            if(var20.hasScript) {
-               Client.field472 = var20.name + class116.method2288(16777215);
-            } else {
-               Client.field472 = class116.method2288('\uff00') + var20.field2282 + class116.method2288(16777215);
-            }
-         }
-
-      } else {
-         if(var2 == 35) {
-            Client.secretCipherBuffer1.putOpcode(94);
-            Client.secretCipherBuffer1.method2864(var3);
-            Client.secretCipherBuffer1.method2865(var0);
-            Client.secretCipherBuffer1.putInt(var1);
-            Client.field425 = 0;
-            Tile.field1363 = World.method670(var1);
-            Client.field406 = var0;
-         }
-
-         if(var2 == 10) {
-            var19 = Client.cachedNPCs[var3];
-            if(var19 != null) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(100);
-               Client.secretCipherBuffer1.putShort(var3);
-               Client.secretCipherBuffer1.method2962(class105.field1725[82]?1:0);
-            }
-         }
-
-         if(var2 == 51) {
-            var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(131);
-               Client.secretCipherBuffer1.method2865(var3);
-               Client.secretCipherBuffer1.method2962(class105.field1725[82]?1:0);
-            }
-         }
-
-         if(var2 == 1001) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(130);
-            Client.secretCipherBuffer1.method2909(var0 + CombatInfoListHolder.baseX);
-            Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.method2865(class3.baseY + var1);
-            Client.secretCipherBuffer1.method2865(var3 >> 14 & 32767);
-         }
-
-         if(var2 == 46) {
-            var8 = Client.cachedPlayers[var3];
-            if(var8 != null) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(216);
-               Client.secretCipherBuffer1.method2864(var3);
-               Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-            }
-         }
-
-         if(var2 == 57 || var2 == 1007) {
-            var20 = class40.method826(var1, var0);
-            if(var20 != null) {
-               XItemContainer.method191(var3, var1, var0, var20.item, var5);
-            }
-         }
-
-         if(var2 == 42) {
-            Client.secretCipherBuffer1.putOpcode(58);
-            Client.secretCipherBuffer1.method2909(var3);
-            Client.secretCipherBuffer1.method2875(var1);
-            Client.secretCipherBuffer1.method2864(var0);
-            Client.field425 = 0;
-            Tile.field1363 = World.method670(var1);
-            Client.field406 = var0;
-         }
-
-         if(var2 == 33) {
-            Client.secretCipherBuffer1.putOpcode(132);
-            Client.secretCipherBuffer1.putShort(var3);
-            Client.secretCipherBuffer1.method2865(var0);
-            Client.secretCipherBuffer1.method2874(var1);
-            Client.field425 = 0;
-            Tile.field1363 = World.method670(var1);
-            Client.field406 = var0;
-         }
-
-         if(var2 == 44) {
-            var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(197);
-               Client.secretCipherBuffer1.method2864(var3);
-               Client.secretCipherBuffer1.method2855(class105.field1725[82]?1:0);
-            }
-         }
-
-         if(var2 == 17) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(67);
-            Client.secretCipherBuffer1.method2909(Client.field469);
-            Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.putShort(var0 + CombatInfoListHolder.baseX);
-            Client.secretCipherBuffer1.method2864(var3);
-            Client.secretCipherBuffer1.putShort(var1 + class3.baseY);
-            Client.secretCipherBuffer1.method2874(class26.field621);
-         }
-
-         if(var2 == 41) {
-            Client.secretCipherBuffer1.putOpcode(161);
-            Client.secretCipherBuffer1.method2873(var1);
-            Client.secretCipherBuffer1.method2864(var3);
-            Client.secretCipherBuffer1.method2864(var0);
-            Client.field425 = 0;
-            Tile.field1363 = World.method670(var1);
-            Client.field406 = var0;
-         }
-
-         if(var2 == 1005) {
-            var20 = World.method670(var1);
-            if(null != var20 && var20.itemQuantities[var0] >= 100000) {
-               class30.sendGameMessage(27, "", var20.itemQuantities[var0] + " x " + class154.getItemDefinition(var3).name);
-            } else {
-               Client.secretCipherBuffer1.putOpcode(59);
-               Client.secretCipherBuffer1.method2864(var3);
-            }
-
-            Client.field425 = 0;
-            Tile.field1363 = World.method670(var1);
-            Client.field406 = var0;
-         }
-
-         if(var2 == 47) {
-            var8 = Client.cachedPlayers[var3];
-            if(null != var8) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(98);
-               Client.secretCipherBuffer1.method2855(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.method2909(var3);
-            }
-         }
-
-         if(var2 == 40) {
-            Client.secretCipherBuffer1.putOpcode(167);
-            Client.secretCipherBuffer1.method2909(var3);
-            Client.secretCipherBuffer1.putInt(var1);
-            Client.secretCipherBuffer1.method2865(var0);
-            Client.field425 = 0;
-            Tile.field1363 = World.method670(var1);
-            Client.field406 = var0;
-         }
-
-         if(var2 == 3) {
-            Client.field422 = var6;
-            Client.field421 = var7;
-            Client.field423 = 2;
-            Client.field548 = 0;
-            Client.flagX = var0;
-            Client.flagY = var1;
-            Client.secretCipherBuffer1.putOpcode(221);
-            Client.secretCipherBuffer1.method2865(CombatInfoListHolder.baseX + var0);
-            Client.secretCipherBuffer1.method2864(var1 + class3.baseY);
-            Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-            Client.secretCipherBuffer1.method2865(var3 >> 14 & 32767);
-         }
-
-         if(var2 == 9) {
-            var19 = Client.cachedNPCs[var3];
-            if(var19 != null) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(39);
-               Client.secretCipherBuffer1.method2864(var3);
-               Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-            }
-         }
-
-         if(var2 == 38) {
-            class173.method3269();
-            var20 = World.method670(var1);
-            Client.field466 = 1;
-            class107.field1744 = var0;
-            class49.field967 = var1;
-            class8.field82 = var3;
-            class2.method36(var20);
-            Client.field496 = class116.method2288(16748608) + class154.getItemDefinition(var3).name + class116.method2288(16777215);
-            if(null == Client.field496) {
-               Client.field496 = "null";
-            }
-
-         } else {
-            if(var2 == 1) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(82);
-               Client.secretCipherBuffer1.method2864(class3.baseY + var1);
-               Client.secretCipherBuffer1.method2875(class49.field967);
-               Client.secretCipherBuffer1.method2962(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.method2865(CombatInfoListHolder.baseX + var0);
-               Client.secretCipherBuffer1.method2909(class107.field1744);
-               Client.secretCipherBuffer1.putShort(class8.field82);
-               Client.secretCipherBuffer1.method2864(var3 >> 14 & 32767);
-            }
-
-            if(var2 == 50) {
-               var8 = Client.cachedPlayers[var3];
-               if(null != var8) {
-                  Client.field422 = var6;
-                  Client.field421 = var7;
-                  Client.field423 = 2;
-                  Client.field548 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(101);
-                  Client.secretCipherBuffer1.method2864(var3);
-                  Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-               }
-            }
-
-            if(var2 == 34) {
-               Client.secretCipherBuffer1.putOpcode(207);
-               Client.secretCipherBuffer1.putInt(var1);
-               Client.secretCipherBuffer1.method2909(var3);
-               Client.secretCipherBuffer1.putShort(var0);
-               Client.field425 = 0;
-               Tile.field1363 = World.method670(var1);
-               Client.field406 = var0;
-            }
-
-            if(var2 == 6) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(219);
-               Client.secretCipherBuffer1.putShort(var0 + CombatInfoListHolder.baseX);
-               Client.secretCipherBuffer1.method2864(var1 + class3.baseY);
-               Client.secretCipherBuffer1.method2962(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.putShort(var3 >> 14 & 32767);
-            }
-
-            if(var2 == 26) {
-               class108.method2104();
-            }
-
-            if(var2 == 5) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(119);
-               Client.secretCipherBuffer1.method2909(CombatInfoListHolder.baseX + var0);
-               Client.secretCipherBuffer1.method2909(var1 + class3.baseY);
-               Client.secretCipherBuffer1.method2962(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.putShort(var3 >> 14 & 32767);
-            }
-
-            if(var2 == 4) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(26);
-               Client.secretCipherBuffer1.putShort(class3.baseY + var1);
-               Client.secretCipherBuffer1.method2865(var3 >> 14 & 32767);
-               Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.putShort(var0 + CombatInfoListHolder.baseX);
-            }
-
-            if(var2 == 19) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(93);
-               Client.secretCipherBuffer1.putShort(CombatInfoListHolder.baseX + var0);
-               Client.secretCipherBuffer1.method2855(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.method2865(var3);
-               Client.secretCipherBuffer1.putShort(var1 + class3.baseY);
-            }
-
-            if(var2 == 43) {
-               Client.secretCipherBuffer1.putOpcode(153);
-               Client.secretCipherBuffer1.putShort(var0);
-               Client.secretCipherBuffer1.method2909(var3);
-               Client.secretCipherBuffer1.putInt(var1);
-               Client.field425 = 0;
-               Tile.field1363 = World.method670(var1);
-               Client.field406 = var0;
-            }
-
-            if(var2 == 1004) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.secretCipherBuffer1.putOpcode(59);
-               Client.secretCipherBuffer1.method2864(var3);
-            }
-
-            if(var2 == 28) {
-               Client.secretCipherBuffer1.putOpcode(62);
-               Client.secretCipherBuffer1.putInt(var1);
-               var20 = World.method670(var1);
-               if(null != var20.dynamicValues && var20.dynamicValues[0][0] == 5) {
-                  var21 = var20.dynamicValues[0][1];
-                  class165.widgetSettings[var21] = 1 - class165.widgetSettings[var21];
-                  Player.method263(var21);
-               }
-            }
-
-            if(var2 == 7) {
-               var19 = Client.cachedNPCs[var3];
-               if(null != var19) {
-                  Client.field422 = var6;
-                  Client.field421 = var7;
-                  Client.field423 = 2;
-                  Client.field548 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(222);
-                  Client.secretCipherBuffer1.method2909(class8.field82);
-                  Client.secretCipherBuffer1.method2875(class49.field967);
-                  Client.secretCipherBuffer1.method2864(class107.field1744);
-                  Client.secretCipherBuffer1.putShort(var3);
-                  Client.secretCipherBuffer1.method2857(class105.field1725[82]?1:0);
-               }
-            }
-
-            if(var2 == 18) {
-               Client.field422 = var6;
-               Client.field421 = var7;
-               Client.field423 = 2;
-               Client.field548 = 0;
-               Client.flagX = var0;
-               Client.flagY = var1;
-               Client.secretCipherBuffer1.putOpcode(254);
-               Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-               Client.secretCipherBuffer1.method2864(var1 + class3.baseY);
-               Client.secretCipherBuffer1.method2864(CombatInfoListHolder.baseX + var0);
-               Client.secretCipherBuffer1.method2864(var3);
-            }
-
-            if(var2 == 45) {
-               var8 = Client.cachedPlayers[var3];
-               if(var8 != null) {
-                  Client.field422 = var6;
-                  Client.field421 = var7;
-                  Client.field423 = 2;
-                  Client.field548 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(160);
-                  Client.secretCipherBuffer1.method2909(var3);
-                  Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-               }
-            }
-
-            if(var2 == 13) {
-               var19 = Client.cachedNPCs[var3];
-               if(var19 != null) {
-                  Client.field422 = var6;
-                  Client.field421 = var7;
-                  Client.field423 = 2;
-                  Client.field548 = 0;
-                  Client.flagX = var0;
-                  Client.flagY = var1;
-                  Client.secretCipherBuffer1.putOpcode(110);
-                  Client.secretCipherBuffer1.putShort(var3);
-                  Client.secretCipherBuffer1.putByte(class105.field1725[82]?1:0);
-               }
-            }
-
-            if(Client.field466 != 0) {
-               Client.field466 = 0;
-               class2.method36(World.method670(class49.field967));
-            }
-
-            if(Client.field468 && Client.field468) {
-               var20 = class40.method826(class26.field621, Client.field469);
-               if(null != var20 && null != var20.field2278) {
-                  class18 var23 = new class18();
-                  var23.field223 = var20;
-                  var23.field232 = var20.field2278;
-                  Frames.method1963(var23);
-               }
-
-               Client.field468 = false;
-               class2.method36(var20);
-            }
-
-            if(null != Tile.field1363 && Client.field425 == 0) {
-               class2.method36(Tile.field1363);
-            }
-
-         }
-      }
    }
 }

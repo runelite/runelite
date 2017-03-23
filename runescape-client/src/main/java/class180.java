@@ -1,42 +1,26 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
-import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fi")
+@ObfuscatedName("fn")
 public class class180 extends Node {
-   @ObfuscatedName("j")
-   byte[] field2681;
-   @ObfuscatedName("c")
-   class116 field2683;
-   @ObfuscatedName("d")
-   class184 field2685;
    @ObfuscatedName("h")
+   public class184 field2714;
+   @ObfuscatedName("i")
+   public byte[] field2715;
+   @ObfuscatedName("u")
+   public class116 field2716;
+   @ObfuscatedName("co")
+   static Font field2717;
+   @ObfuscatedName("em")
+   static SpritePixels field2718;
+   @ObfuscatedName("f")
    @ObfuscatedGetter(
-      intValue = 1598742497
+      intValue = -1940106303
    )
-   static int field2689;
-   @ObfuscatedName("x")
+   int field2719;
+   @ObfuscatedName("fw")
    @ObfuscatedGetter(
-      intValue = -392435981
+      intValue = 658163967
    )
-   int field2690;
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;B)V",
-      garbageValue = "1"
-   )
-   public static void method3298(class182 var0) {
-      class189.field2780 = var0;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;Lclass182;I)V",
-      garbageValue = "972237965"
-   )
-   public static void method3299(class182 var0, class182 var1) {
-      NPCComposition.field3002 = var0;
-      NPCComposition.field3003 = var1;
-   }
+   static int field2720;
 }

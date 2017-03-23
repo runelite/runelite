@@ -7,57 +7,57 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hm")
+@ObfuscatedName("hj")
 @Implements("BufferProvider")
 public abstract class BufferProvider {
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = -1471451735
-   )
-   @Export("width")
-   public int width;
-   @ObfuscatedName("j")
+   @ObfuscatedName("r")
+   @Export("image")
+   public Image image;
+   @ObfuscatedName("i")
    @Export("pixels")
    public int[] pixels;
-   @ObfuscatedName("d")
+   @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1966302835
+      intValue = -247355405
    )
    @Export("height")
    int height;
-   @ObfuscatedName("w")
-   @Export("image")
-   public Image image;
-   @ObfuscatedName("ca")
-   static Font field3198;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = -911386969
+   )
+   @Export("width")
+   public int width;
+   @ObfuscatedName("m")
+   static byte[][] field3199;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(IILjava/awt/Component;I)V",
-      garbageValue = "-975875046"
+      signature = "(IILjava/awt/Component;B)V",
+      garbageValue = "-15"
    )
    abstract void init(int var1, int var2, Component var3);
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(Ljava/awt/Graphics;IIB)V",
-      garbageValue = "-63"
+      signature = "(I)V",
+      garbageValue = "1744897673"
    )
-   public abstract void draw(Graphics var1, int var2, int var3);
+   public final void method4072() {
+      Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
+   }
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
       signature = "(Ljava/awt/Graphics;IIIII)V",
-      garbageValue = "-550155191"
+      garbageValue = "6166627"
    )
    public abstract void drawSub(Graphics var1, int var2, int var3, int var4, int var5);
 
-   @ObfuscatedName("r")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(I)V",
-      garbageValue = "923656862"
+      signature = "(Ljava/awt/Graphics;IIB)V",
+      garbageValue = "106"
    )
-   public final void method4084() {
-      Rasterizer2D.setRasterBuffer(this.pixels, this.width, this.height);
-   }
+   public abstract void draw(Graphics var1, int var2, int var3);
 }

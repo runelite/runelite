@@ -1,51 +1,54 @@
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ax")
+@ObfuscatedName("ag")
 public class class30 {
-   @ObfuscatedName("d")
-   boolean field712;
-   @ObfuscatedName("x")
+   @ObfuscatedName("aa")
+   static RSSocket field710;
+   @ObfuscatedName("j")
+   static int[] field712;
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = 1222693907
+      intValue = 1205752505
    )
-   static int field714 = 4;
-   @ObfuscatedName("w")
+   static int field713;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1028895165
+      intValue = -458774779
    )
-   int field715 = 1;
-   @ObfuscatedName("c")
-   boolean field717;
-   @ObfuscatedName("dk")
-   @Export("mapRegions")
-   static int[] mapRegions;
-   @ObfuscatedName("v")
-   public static class60 field721;
+   int field714 = 1;
+   @ObfuscatedName("o")
+   LinkedHashMap field715 = new LinkedHashMap();
+   @ObfuscatedName("u")
+   boolean field716;
+   @ObfuscatedName("af")
+   static ModIcon[] field718;
    @ObfuscatedName("h")
-   LinkedHashMap field722 = new LinkedHashMap();
-   @ObfuscatedName("p")
-   public static String field724;
+   boolean field719;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = -1943098523
+   )
+   static int field720 = 4;
 
    class30(Buffer var1) {
-      if(null != var1 && null != var1.payload) {
+      if(var1 != null && var1.payload != null) {
          int var2 = var1.readUnsignedByte();
-         if(var2 >= 0 && var2 <= field714) {
+         if(var2 >= 0 && var2 <= field720) {
             if(var1.readUnsignedByte() == 1) {
-               this.field717 = true;
+               this.field716 = true;
             }
 
             if(var2 > 1) {
-               this.field712 = var1.readUnsignedByte() == 1;
+               this.field719 = var1.readUnsignedByte() == 1;
             }
 
             if(var2 > 3) {
-               this.field715 = var1.readUnsignedByte();
+               this.field714 = var1.readUnsignedByte();
             }
 
             if(var2 > 2) {
@@ -54,31 +57,149 @@ public class class30 {
                for(int var4 = 0; var4 < var3; ++var4) {
                   int var5 = var1.readInt();
                   int var6 = var1.readInt();
-                  this.field722.put(Integer.valueOf(var5), Integer.valueOf(var6));
+                  this.field715.put(Integer.valueOf(var5), Integer.valueOf(var6));
                }
             }
          } else {
-            this.method681(true);
+            this.method639(true);
          }
       } else {
-         this.method681(true);
+         this.method639(true);
       }
 
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(I)LBuffer;",
-      garbageValue = "491852297"
+      signature = "(ZI)V",
+      garbageValue = "-806770170"
    )
-   Buffer method676() {
+   void method639(boolean var1) {
+   }
+
+   class30() {
+      this.method639(true);
+   }
+
+   @ObfuscatedName("dd")
+   @ObfuscatedSignature(
+      signature = "(I)V",
+      garbageValue = "-14932502"
+   )
+   static void method640() {
+      for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2420(); null != var0; var0 = (WidgetNode)Client.componentTable.method2422()) {
+         int var1 = var0.id;
+         if(Ignore.method178(var1)) {
+            boolean var2 = true;
+            Widget[] var3 = Widget.widgets[var1];
+
+            int var4;
+            for(var4 = 0; var4 < var3.length; ++var4) {
+               if(var3[var4] != null) {
+                  var2 = var3[var4].hasScript;
+                  break;
+               }
+            }
+
+            if(!var2) {
+               var4 = (int)var0.hash;
+               Widget var5 = FaceNormal.method1932(var4);
+               if(null != var5) {
+                  class22.method197(var5);
+               }
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("bp")
+   @ObfuscatedSignature(
+      signature = "(B)V",
+      garbageValue = "25"
+   )
+   static final void method643() {
+      boolean var0 = false;
+
+      while(!var0) {
+         var0 = true;
+
+         for(int var1 = 0; var1 < Client.menuOptionCount - 1; ++var1) {
+            if(Client.menuTypes[var1] < 1000 && Client.menuTypes[var1 + 1] > 1000) {
+               String var2 = Client.menuTargets[var1];
+               Client.menuTargets[var1] = Client.menuTargets[1 + var1];
+               Client.menuTargets[1 + var1] = var2;
+               String var3 = Client.menuOptions[var1];
+               Client.menuOptions[var1] = Client.menuOptions[var1 + 1];
+               Client.menuOptions[1 + var1] = var3;
+               int var4 = Client.menuTypes[var1];
+               Client.menuTypes[var1] = Client.menuTypes[1 + var1];
+               Client.menuTypes[1 + var1] = var4;
+               var4 = Client.menuActionParams0[var1];
+               Client.menuActionParams0[var1] = Client.menuActionParams0[1 + var1];
+               Client.menuActionParams0[1 + var1] = var4;
+               var4 = Client.menuActionParams1[var1];
+               Client.menuActionParams1[var1] = Client.menuActionParams1[1 + var1];
+               Client.menuActionParams1[var1 + 1] = var4;
+               var4 = Client.menuIdentifiers[var1];
+               Client.menuIdentifiers[var1] = Client.menuIdentifiers[1 + var1];
+               Client.menuIdentifiers[1 + var1] = var4;
+               if(Client.field449 != -1) {
+                  if(Client.field449 == var1) {
+                     Client.field449 = var1 + 1;
+                  } else if(1 + var1 == Client.field449) {
+                     Client.field449 = var1;
+                  }
+               }
+
+               var0 = false;
+            }
+         }
+      }
+
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;I)V",
+      garbageValue = "1036067138"
+   )
+   public static void method644(class182 var0) {
+      class186.field2783 = var0;
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(II)Ljava/lang/String;",
+      garbageValue = "359815462"
+   )
+   static String method648(int var0) {
+      return "<img=" + var0 + ">";
+   }
+
+   @ObfuscatedName("s")
+   @ObfuscatedSignature(
+      signature = "(IIIII)I",
+      garbageValue = "-876591792"
+   )
+   static final int method649(int var0, int var1, int var2, int var3) {
+      int var4 = 65536 - class84.field1469[var2 * 1024 / var3] >> 1;
+      return ((65536 - var4) * var0 >> 16) + (var1 * var4 >> 16);
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(B)LBuffer;",
+      garbageValue = "-27"
+   )
+   Buffer method650() {
       Buffer var1 = new Buffer(100);
-      var1.putByte(field714);
-      var1.putByte(this.field717?1:0);
-      var1.putByte(this.field712?1:0);
-      var1.putByte(this.field715);
-      var1.putByte(this.field722.size());
-      Iterator var2 = this.field722.entrySet().iterator();
+      var1.putByte(field720);
+      var1.putByte(this.field716?1:0);
+      var1.putByte(this.field719?1:0);
+      var1.putByte(this.field714);
+      var1.putByte(this.field715.size());
+      Iterator var2 = this.field715.entrySet().iterator();
 
       while(var2.hasNext()) {
          Entry var3 = (Entry)var2.next();
@@ -89,121 +210,24 @@ public class class30 {
       return var1;
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("q")
    @ObfuscatedSignature(
-      signature = "(ZI)V",
-      garbageValue = "326883359"
+      signature = "(III)I",
+      garbageValue = "-304378835"
    )
-   void method681(boolean var1) {
+   static final int method651(int var0, int var1) {
+      int var2 = TextureProvider.method1488(var0 - 1, var1 - 1) + TextureProvider.method1488(var0 + 1, var1 - 1) + TextureProvider.method1488(var0 - 1, var1 + 1) + TextureProvider.method1488(1 + var0, 1 + var1);
+      int var3 = TextureProvider.method1488(var0 - 1, var1) + TextureProvider.method1488(var0 + 1, var1) + TextureProvider.method1488(var0, var1 - 1) + TextureProvider.method1488(var0, 1 + var1);
+      int var4 = TextureProvider.method1488(var0, var1);
+      return var3 / 8 + var2 / 16 + var4 / 4;
    }
 
-   class30() {
-      this.method681(true);
-   }
-
-   @ObfuscatedName("j")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(ILjava/lang/String;Ljava/lang/String;I)V",
-      garbageValue = "1065563985"
+      signature = "(I)I",
+      garbageValue = "-2029415455"
    )
-   @Export("sendGameMessage")
-   static void sendGameMessage(int var0, String var1, String var2) {
-      class8.addChatMessage(var0, var1, var2, (String)null);
-   }
-
-   @ObfuscatedName("bi")
-   @ObfuscatedSignature(
-      signature = "(III)V",
-      garbageValue = "1176677105"
-   )
-   static final void method687(int var0, int var1) {
-      int var2 = BufferProvider.field3198.method3876("Choose Option");
-
-      int var3;
-      int var4;
-      for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
-         var4 = BufferProvider.field3198.method3876(Player.method269(var3));
-         if(var4 > var2) {
-            var2 = var4;
-         }
-      }
-
-      var2 += 8;
-      var3 = Client.menuOptionCount * 15 + 22;
-      var4 = var0 - var2 / 2;
-      if(var2 + var4 > class108.field1748) {
-         var4 = class108.field1748 - var2;
-      }
-
-      if(var4 < 0) {
-         var4 = 0;
-      }
-
-      int var5 = var1;
-      if(var3 + var1 > class145.field2018) {
-         var5 = class145.field2018 - var3;
-      }
-
-      if(var5 < 0) {
-         var5 = 0;
-      }
-
-      Friend.region.method1790(class31.plane, var0, var1, false);
-      Client.isMenuOpen = true;
-      class0.menuX = var4;
-      XItemContainer.menuY = var5;
-      class105.menuWidth = var2;
-      NPCComposition.menuHeight = Client.menuOptionCount * 15 + 22;
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(LModIcon;I)V",
-      garbageValue = "1712068550"
-   )
-   static final void method688(ModIcon var0) {
-      short var1 = 256;
-
-      int var2;
-      for(var2 = 0; var2 < class36.field807.length; ++var2) {
-         class36.field807[var2] = 0;
-      }
-
-      int var3;
-      for(var2 = 0; var2 < 5000; ++var2) {
-         var3 = (int)(Math.random() * 128.0D * (double)var1);
-         class36.field807[var3] = (int)(Math.random() * 256.0D);
-      }
-
-      int var4;
-      int var5;
-      for(var2 = 0; var2 < 20; ++var2) {
-         for(var3 = 1; var3 < var1 - 1; ++var3) {
-            for(var4 = 1; var4 < 127; ++var4) {
-               var5 = var4 + (var3 << 7);
-               class41.field860[var5] = (class36.field807[var5 + 128] + class36.field807[var5 - 128] + class36.field807[var5 - 1] + class36.field807[var5 + 1]) / 4;
-            }
-         }
-
-         int[] var8 = class36.field807;
-         class36.field807 = class41.field860;
-         class41.field860 = var8;
-      }
-
-      if(var0 != null) {
-         var2 = 0;
-
-         for(var3 = 0; var3 < var0.height; ++var3) {
-            for(var4 = 0; var4 < var0.originalWidth; ++var4) {
-               if(var0.pixels[var2++] != 0) {
-                  var5 = var4 + 16 + var0.offsetX;
-                  int var6 = var0.offsetY + 16 + var3;
-                  int var7 = (var6 << 7) + var5;
-                  class36.field807[var7] = 0;
-               }
-            }
-         }
-      }
-
+   static int method652() {
+      return 9;
    }
 }

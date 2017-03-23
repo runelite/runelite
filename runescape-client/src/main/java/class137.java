@@ -1,51 +1,64 @@
-import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ei")
+@ObfuscatedName("ej")
 public class class137 {
-   @ObfuscatedName("j")
-   byte[] field1904;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 1645319397
-   )
-   int field1905;
-   @ObfuscatedName("g")
-   @ObfuscatedGetter(
-      intValue = 228201651
-   )
-   int field1906;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = -1618759327
-   )
-   int field1907;
-   @ObfuscatedName("h")
-   @ObfuscatedGetter(
-      intValue = 1846971545
-   )
-   int field1908;
+   @ObfuscatedName("f")
+   byte[] field1924;
+   @ObfuscatedName("i")
+   byte[] field1925;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -18275829
+      intValue = 452405767
    )
-   int field1909;
-   @ObfuscatedName("x")
-   byte[] field1910;
-   @ObfuscatedName("k")
+   int field1926;
+   @ObfuscatedName("nk")
+   static class57 field1927;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1929043803
+      intValue = -1531869561
    )
-   int field1911;
-   @ObfuscatedName("a")
-   static int[] field1912;
-   @ObfuscatedName("d")
+   int field1928;
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      intValue = 473600975
+      intValue = -2035069465
    )
-   int field1914;
-   @ObfuscatedName("ms")
-   @Export("clanMembers")
-   static XClanMember[] clanMembers;
+   int field1929;
+   @ObfuscatedName("h")
+   @ObfuscatedGetter(
+      intValue = 237927359
+   )
+   int field1930;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -766460095
+   )
+   int field1931;
+   @ObfuscatedName("m")
+   @ObfuscatedGetter(
+      intValue = -1045772107
+   )
+   int field1932;
+   @ObfuscatedName("z")
+   static int[] field1933;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1964326491
+   )
+   int field1934;
+
+   @ObfuscatedName("bd")
+   @ObfuscatedSignature(
+      signature = "(IIIIB)V",
+      garbageValue = "0"
+   )
+   static final void method2541(int var0, int var1, int var2, int var3) {
+      for(int var4 = 0; var4 < Client.field506; ++var4) {
+         if(Client.widgetBoundsWidth[var4] + Client.widgetPositionX[var4] > var0 && Client.widgetPositionX[var4] < var0 + var2 && Client.widgetPositionY[var4] + Client.widgetBoundsHeight[var4] > var1 && Client.widgetPositionY[var4] < var1 + var3) {
+            Client.field508[var4] = true;
+         }
+      }
+
+   }
 }

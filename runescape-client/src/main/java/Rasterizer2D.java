@@ -3,107 +3,101 @@ import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hh")
+@ObfuscatedName("hm")
 @Implements("Rasterizer2D")
 public class Rasterizer2D extends CacheableNode {
-   @ObfuscatedName("af")
-   public static int field3187 = 0;
-   @ObfuscatedName("o")
+   @ObfuscatedName("e")
    @Export("graphicsPixels")
    public static int[] graphicsPixels;
-   @ObfuscatedName("ar")
+   @ObfuscatedName("ah")
+   public static int field3189 = 0;
+   @ObfuscatedName("an")
    @Export("graphicsPixelsHeight")
    public static int graphicsPixelsHeight;
-   @ObfuscatedName("ah")
-   protected static int field3190 = 0;
-   @ObfuscatedName("aa")
+   @ObfuscatedName("aq")
    public static int field3191 = 0;
-   @ObfuscatedName("ax")
-   protected static int field3192 = 0;
-   @ObfuscatedName("an")
+   @ObfuscatedName("am")
    @Export("graphicsPixelsWidth")
    public static int graphicsPixelsWidth;
+   @ObfuscatedName("ag")
+   protected static int field3193 = 0;
+   @ObfuscatedName("ab")
+   protected static int field3194 = 0;
 
-   @ObfuscatedName("dc")
+   @ObfuscatedName("ca")
    @Export("setRasterBuffer")
    public static void setRasterBuffer(int[] var0, int var1, int var2) {
       graphicsPixels = var0;
       graphicsPixelsWidth = var1;
       graphicsPixelsHeight = var2;
-      method4016(0, 0, var1, var2);
+      method4001(0, 0, var1, var2);
    }
 
-   @ObfuscatedName("dj")
-   public static void method3997() {
-      field3192 = 0;
+   @ObfuscatedName("cc")
+   public static void method4000() {
+      field3193 = 0;
       field3191 = 0;
-      field3190 = graphicsPixelsWidth;
-      field3187 = graphicsPixelsHeight;
+      field3194 = graphicsPixelsWidth;
+      field3189 = graphicsPixelsHeight;
    }
 
-   @ObfuscatedName("dx")
-   public static void method3999(int var0, int var1, int var2, int var3) {
-      if(field3192 < var0) {
-         field3192 = var0;
+   @ObfuscatedName("cq")
+   public static void method4001(int var0, int var1, int var2, int var3) {
+      if(var0 < 0) {
+         var0 = 0;
+      }
+
+      if(var1 < 0) {
+         var1 = 0;
+      }
+
+      if(var2 > graphicsPixelsWidth) {
+         var2 = graphicsPixelsWidth;
+      }
+
+      if(var3 > graphicsPixelsHeight) {
+         var3 = graphicsPixelsHeight;
+      }
+
+      field3193 = var0;
+      field3191 = var1;
+      field3194 = var2;
+      field3189 = var3;
+   }
+
+   @ObfuscatedName("cm")
+   public static void method4002(int var0, int var1, int var2, int var3) {
+      if(field3193 < var0) {
+         field3193 = var0;
       }
 
       if(field3191 < var1) {
          field3191 = var1;
       }
 
-      if(field3190 > var2) {
-         field3190 = var2;
+      if(field3194 > var2) {
+         field3194 = var2;
       }
 
-      if(field3187 > var3) {
-         field3187 = var3;
+      if(field3189 > var3) {
+         field3189 = var3;
       }
 
    }
 
-   @ObfuscatedName("dq")
-   public static void method4000(int[] var0) {
-      var0[0] = field3192;
+   @ObfuscatedName("ct")
+   public static void method4003(int[] var0) {
+      var0[0] = field3193;
       var0[1] = field3191;
-      var0[2] = field3190;
-      var0[3] = field3187;
+      var0[2] = field3194;
+      var0[3] = field3189;
    }
 
-   @ObfuscatedName("df")
-   static void method4002(int var0, int var1, int var2, int var3, int var4) {
-      if(var0 >= field3192 && var0 < field3190) {
-         if(var1 < field3191) {
-            var2 -= field3191 - var1;
-            var1 = field3191;
-         }
-
-         if(var1 + var2 > field3187) {
-            var2 = field3187 - var1;
-         }
-
-         int var5 = 256 - var4;
-         int var6 = (var3 >> 16 & 255) * var4;
-         int var7 = (var3 >> 8 & 255) * var4;
-         int var8 = (var3 & 255) * var4;
-         int var12 = var0 + var1 * graphicsPixelsWidth;
-
-         for(int var13 = 0; var13 < var2; ++var13) {
-            int var9 = (graphicsPixels[var12] >> 16 & 255) * var5;
-            int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
-            int var11 = (graphicsPixels[var12] & 255) * var5;
-            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
-            graphicsPixels[var12] = var14;
-            var12 += graphicsPixelsWidth;
-         }
-
-      }
-   }
-
-   @ObfuscatedName("dt")
-   public static void method4003(int var0, int var1, int var2, int var3, int var4, int var5) {
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
+   @ObfuscatedName("cu")
+   public static void method4006(int var0, int var1, int var2, int var3, int var4, int var5) {
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
       }
 
       if(var1 < field3191) {
@@ -111,12 +105,12 @@ public class Rasterizer2D extends CacheableNode {
          var1 = field3191;
       }
 
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
       }
 
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
       }
 
       var4 = ((var4 & 16711935) * var5 >> 8 & 16711935) + ((var4 & '\uff00') * var5 >> 8 & '\uff00');
@@ -136,16 +130,49 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("dn")
-   public static void method4005(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("cy")
+   public static void method4007(int var0, int var1, int var2, int var3, int var4) {
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
+      }
+
+      if(var1 < field3191) {
+         var3 -= field3191 - var1;
+         var1 = field3191;
+      }
+
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
+      }
+
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
+      }
+
+      int var5 = graphicsPixelsWidth - var2;
+      int var6 = var0 + var1 * graphicsPixelsWidth;
+
+      for(int var7 = -var3; var7 < 0; ++var7) {
+         for(int var8 = -var2; var8 < 0; ++var8) {
+            graphicsPixels[var6++] = var4;
+         }
+
+         var6 += var5;
+      }
+
+   }
+
+   @ObfuscatedName("cj")
+   public static void method4008(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = var4 == var5 && var6 == var7?-1:65536 / var3;
       int var10 = var6;
       int var11 = 256 - var6;
       int var12 = var4;
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
       }
 
       if(var1 < field3191) {
@@ -154,12 +181,12 @@ public class Rasterizer2D extends CacheableNode {
          var1 = field3191;
       }
 
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
       }
 
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
       }
 
       int var13 = graphicsPixelsWidth - var2;
@@ -200,15 +227,15 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("du")
-   public static void method4006(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("co")
+   public static void method4009(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = var4 == var5 && var6 == var7?-1:65536 / var3;
       int var10 = var6;
       int var11 = 256 - var6;
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
       }
 
       if(var1 < field3191) {
@@ -217,12 +244,12 @@ public class Rasterizer2D extends CacheableNode {
          var1 = field3191;
       }
 
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
       }
 
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
       }
 
       int var12 = var4 >> 16;
@@ -278,15 +305,15 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("de")
-   public static void method4007(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("cw")
+   public static void method4010(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = 65536 / var3;
       int var10 = var6;
       int var11 = 256 - var6;
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
       }
 
       if(var1 < field3191) {
@@ -295,12 +322,12 @@ public class Rasterizer2D extends CacheableNode {
          var1 = field3191;
       }
 
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
       }
 
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
       }
 
       int var12 = var4 & 16711680;
@@ -352,15 +379,79 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("do")
-   public static void method4008(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
+   @ObfuscatedName("dd")
+   @ObfuscatedSignature(
+      signature = "(IIIIII)V",
+      garbageValue = "9135624"
+   )
+   public static void method4012(int var0, int var1, int var2, int var3, int var4, int var5) {
+      int var6 = 0;
+      int var7 = 65536 / var3;
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
+      }
+
+      if(var1 < field3191) {
+         var6 += (field3191 - var1) * var7;
+         var3 -= field3191 - var1;
+         var1 = field3191;
+      }
+
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
+      }
+
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
+      }
+
+      int var8 = graphicsPixelsWidth - var2;
+      int var9 = var0 + var1 * graphicsPixelsWidth;
+
+      for(int var10 = -var3; var10 < 0; ++var10) {
+         int var11 = 65536 - var6 >> 8;
+         int var12 = var6 >> 8;
+         int var13 = ((var4 & 16711935) * var11 + (var5 & 16711935) * var12 & -16711936) + ((var4 & '\uff00') * var11 + (var5 & '\uff00') * var12 & 16711680) >>> 8;
+
+         for(int var14 = -var2; var14 < 0; ++var14) {
+            graphicsPixels[var9++] = var13;
+         }
+
+         var9 += var8;
+         var6 += var7;
+      }
+
+   }
+
+   @ObfuscatedName("dh")
+   public static void method4013(int var0, int var1, int var2, int var3, int var4) {
+      method4027(var0, var1, var2, var4);
+      method4027(var0, var1 + var3 - 1, var2, var4);
+      method4017(var0, var1, var3, var4);
+      method4017(var0 + var2 - 1, var1, var3, var4);
+   }
+
+   @ObfuscatedName("da")
+   public static void method4014(int var0, int var1, int var2, int var3, int var4, int var5) {
+      method4016(var0, var1, var2, var4, var5);
+      method4016(var0, var1 + var3 - 1, var2, var4, var5);
+      if(var3 >= 3) {
+         method4020(var0, var1 + 1, var3 - 2, var4, var5);
+         method4020(var0 + var2 - 1, var1 + 1, var3 - 2, var4, var5);
+      }
+
+   }
+
+   @ObfuscatedName("cd")
+   public static void method4015(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7) {
       int var8 = 0;
       int var9 = 65536 / var3;
       int var10 = var6;
       int var11 = 256 - var6;
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
+      if(var0 < field3193) {
+         var2 -= field3193 - var0;
+         var0 = field3193;
       }
 
       if(var1 < field3191) {
@@ -369,12 +460,12 @@ public class Rasterizer2D extends CacheableNode {
          var1 = field3191;
       }
 
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
+      if(var0 + var2 > field3194) {
+         var2 = field3194 - var0;
       }
 
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
+      if(var1 + var3 > field3189) {
+         var3 = field3189 - var1;
       }
 
       int var12 = var4 & 16711680;
@@ -426,101 +517,16 @@ public class Rasterizer2D extends CacheableNode {
 
    }
 
-   @ObfuscatedName("dr")
-   @ObfuscatedSignature(
-      signature = "(IIIIII)V",
-      garbageValue = "9135624"
-   )
-   public static void method4009(int var0, int var1, int var2, int var3, int var4, int var5) {
-      int var6 = 0;
-      int var7 = 65536 / var3;
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
-      }
-
-      if(var1 < field3191) {
-         var6 += (field3191 - var1) * var7;
-         var3 -= field3191 - var1;
-         var1 = field3191;
-      }
-
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
-      }
-
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
-      }
-
-      int var8 = graphicsPixelsWidth - var2;
-      int var9 = var0 + var1 * graphicsPixelsWidth;
-
-      for(int var10 = -var3; var10 < 0; ++var10) {
-         int var11 = 65536 - var6 >> 8;
-         int var12 = var6 >> 8;
-         int var13 = ((var4 & 16711935) * var11 + (var5 & 16711935) * var12 & -16711936) + ((var4 & '\uff00') * var11 + (var5 & '\uff00') * var12 & 16711680) >>> 8;
-
-         for(int var14 = -var2; var14 < 0; ++var14) {
-            graphicsPixels[var9++] = var13;
+   @ObfuscatedName("dj")
+   static void method4016(int var0, int var1, int var2, int var3, int var4) {
+      if(var1 >= field3191 && var1 < field3189) {
+         if(var0 < field3193) {
+            var2 -= field3193 - var0;
+            var0 = field3193;
          }
 
-         var9 += var8;
-         var6 += var7;
-      }
-
-   }
-
-   @ObfuscatedName("dm")
-   public static void method4010(int var0, int var1, int var2, int var3, int var4) {
-      method4012(var0, var1, var2, var4);
-      method4012(var0, var1 + var3 - 1, var2, var4);
-      method4014(var0, var1, var3, var4);
-      method4014(var0 + var2 - 1, var1, var3, var4);
-   }
-
-   @ObfuscatedName("da")
-   public static void method4011(int var0, int var1, int var2, int var3, int var4, int var5) {
-      method4013(var0, var1, var2, var4, var5);
-      method4013(var0, var1 + var3 - 1, var2, var4, var5);
-      if(var3 >= 3) {
-         method4002(var0, var1 + 1, var3 - 2, var4, var5);
-         method4002(var0 + var2 - 1, var1 + 1, var3 - 2, var4, var5);
-      }
-
-   }
-
-   @ObfuscatedName("dh")
-   public static void method4012(int var0, int var1, int var2, int var3) {
-      if(var1 >= field3191 && var1 < field3187) {
-         if(var0 < field3192) {
-            var2 -= field3192 - var0;
-            var0 = field3192;
-         }
-
-         if(var0 + var2 > field3190) {
-            var2 = field3190 - var0;
-         }
-
-         int var4 = var0 + var1 * graphicsPixelsWidth;
-
-         for(int var5 = 0; var5 < var2; ++var5) {
-            graphicsPixels[var4 + var5] = var3;
-         }
-
-      }
-   }
-
-   @ObfuscatedName("dp")
-   static void method4013(int var0, int var1, int var2, int var3, int var4) {
-      if(var1 >= field3191 && var1 < field3187) {
-         if(var0 < field3192) {
-            var2 -= field3192 - var0;
-            var0 = field3192;
-         }
-
-         if(var0 + var2 > field3190) {
-            var2 = field3190 - var0;
+         if(var0 + var2 > field3194) {
+            var2 = field3194 - var0;
          }
 
          int var5 = 256 - var4;
@@ -540,16 +546,16 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("dv")
-   public static void method4014(int var0, int var1, int var2, int var3) {
-      if(var0 >= field3192 && var0 < field3190) {
+   @ObfuscatedName("dq")
+   public static void method4017(int var0, int var1, int var2, int var3) {
+      if(var0 >= field3193 && var0 < field3194) {
          if(var1 < field3191) {
             var2 -= field3191 - var1;
             var1 = field3191;
          }
 
-         if(var1 + var2 > field3187) {
-            var2 = field3187 - var1;
+         if(var1 + var2 > field3189) {
+            var2 = field3189 - var1;
          }
 
          int var4 = var0 + var1 * graphicsPixelsWidth;
@@ -561,46 +567,30 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("di")
-   public static void method4016(int var0, int var1, int var2, int var3) {
-      if(var0 < 0) {
-         var0 = 0;
-      }
-
-      if(var1 < 0) {
-         var1 = 0;
-      }
-
-      if(var2 > graphicsPixelsWidth) {
-         var2 = graphicsPixelsWidth;
-      }
-
-      if(var3 > graphicsPixelsHeight) {
-         var3 = graphicsPixelsHeight;
-      }
-
-      field3192 = var0;
-      field3191 = var1;
-      field3190 = var2;
-      field3187 = var3;
+   @ObfuscatedName("cb")
+   public static void method4018(int[] var0) {
+      field3193 = var0[0];
+      field3191 = var0[1];
+      field3194 = var0[2];
+      field3189 = var0[3];
    }
 
-   @ObfuscatedName("eb")
-   public static void method4025(int var0, int var1, int var2, int var3, int var4) {
+   @ObfuscatedName("ds")
+   public static void method4019(int var0, int var1, int var2, int var3, int var4) {
       var2 -= var0;
       var3 -= var1;
       if(var3 == 0) {
          if(var2 >= 0) {
-            method4012(var0, var1, var2 + 1, var4);
+            method4027(var0, var1, var2 + 1, var4);
          } else {
-            method4012(var0 + var2, var1, -var2 + 1, var4);
+            method4027(var0 + var2, var1, -var2 + 1, var4);
          }
 
       } else if(var2 == 0) {
          if(var3 >= 0) {
-            method4014(var0, var1, var3 + 1, var4);
+            method4017(var0, var1, var3 + 1, var4);
          } else {
-            method4014(var0, var1 + var3, -var3 + 1, var4);
+            method4017(var0, var1 + var3, -var3 + 1, var4);
          }
 
       } else {
@@ -619,18 +609,18 @@ public class Rasterizer2D extends CacheableNode {
             var3 <<= 16;
             var5 = (int)Math.floor((double)var3 / (double)var2 + 0.5D);
             var2 += var0;
-            if(var0 < field3192) {
-               var1 += var5 * (field3192 - var0);
-               var0 = field3192;
+            if(var0 < field3193) {
+               var1 += var5 * (field3193 - var0);
+               var0 = field3193;
             }
 
-            if(var2 >= field3190) {
-               var2 = field3190 - 1;
+            if(var2 >= field3194) {
+               var2 = field3194 - 1;
             }
 
             while(var0 <= var2) {
                var6 = var1 >> 16;
-               if(var6 >= field3191 && var6 < field3187) {
+               if(var6 >= field3191 && var6 < field3189) {
                   graphicsPixels[var0 + var6 * graphicsPixelsWidth] = var4;
                }
 
@@ -648,13 +638,13 @@ public class Rasterizer2D extends CacheableNode {
                var1 = field3191;
             }
 
-            if(var3 >= field3187) {
-               var3 = field3187 - 1;
+            if(var3 >= field3189) {
+               var3 = field3189 - 1;
             }
 
             while(var1 <= var3) {
                var6 = var0 >> 16;
-               if(var6 >= field3192 && var6 < field3190) {
+               if(var6 >= field3193 && var6 < field3194) {
                   graphicsPixels[var6 + var1 * graphicsPixelsWidth] = var4;
                }
 
@@ -666,41 +656,75 @@ public class Rasterizer2D extends CacheableNode {
       }
    }
 
-   @ObfuscatedName("dz")
-   public static void method4028(int var0, int var1, int var2, int var3, int var4) {
-      if(var0 < field3192) {
-         var2 -= field3192 - var0;
-         var0 = field3192;
-      }
-
-      if(var1 < field3191) {
-         var3 -= field3191 - var1;
-         var1 = field3191;
-      }
-
-      if(var0 + var2 > field3190) {
-         var2 = field3190 - var0;
-      }
-
-      if(var1 + var3 > field3187) {
-         var3 = field3187 - var1;
-      }
-
-      int var5 = graphicsPixelsWidth - var2;
-      int var6 = var0 + var1 * graphicsPixelsWidth;
-
-      for(int var7 = -var3; var7 < 0; ++var7) {
-         for(int var8 = -var2; var8 < 0; ++var8) {
-            graphicsPixels[var6++] = var4;
+   @ObfuscatedName("dr")
+   static void method4020(int var0, int var1, int var2, int var3, int var4) {
+      if(var0 >= field3193 && var0 < field3194) {
+         if(var1 < field3191) {
+            var2 -= field3191 - var1;
+            var1 = field3191;
          }
 
-         var6 += var5;
+         if(var1 + var2 > field3189) {
+            var2 = field3189 - var1;
+         }
+
+         int var5 = 256 - var4;
+         int var6 = (var3 >> 16 & 255) * var4;
+         int var7 = (var3 >> 8 & 255) * var4;
+         int var8 = (var3 & 255) * var4;
+         int var12 = var0 + var1 * graphicsPixelsWidth;
+
+         for(int var13 = 0; var13 < var2; ++var13) {
+            int var9 = (graphicsPixels[var12] >> 16 & 255) * var5;
+            int var10 = (graphicsPixels[var12] >> 8 & 255) * var5;
+            int var11 = (graphicsPixels[var12] & 255) * var5;
+            int var14 = (var6 + var9 >> 8 << 16) + (var7 + var10 >> 8 << 8) + (var8 + var11 >> 8);
+            graphicsPixels[var12] = var14;
+            var12 += graphicsPixelsWidth;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("dk")
+   public static void method4027(int var0, int var1, int var2, int var3) {
+      if(var1 >= field3191 && var1 < field3189) {
+         if(var0 < field3193) {
+            var2 -= field3193 - var0;
+            var0 = field3193;
+         }
+
+         if(var0 + var2 > field3194) {
+            var2 = field3194 - var0;
+         }
+
+         int var4 = var0 + var1 * graphicsPixelsWidth;
+
+         for(int var5 = 0; var5 < var2; ++var5) {
+            graphicsPixels[var4 + var5] = var3;
+         }
+
+      }
+   }
+
+   @ObfuscatedName("dy")
+   public static void method4030(int var0, int var1, int var2, int[] var3, int[] var4) {
+      int var5 = var0 + var1 * graphicsPixelsWidth;
+
+      for(var1 = 0; var1 < var3.length; ++var1) {
+         int var6 = var5 + var3[var1];
+
+         for(var0 = -var4[var1]; var0 < 0; ++var0) {
+            graphicsPixels[var6++] = var2;
+         }
+
+         var5 += graphicsPixelsWidth;
       }
 
    }
 
-   @ObfuscatedName("dd")
-   public static void method4030() {
+   @ObfuscatedName("cz")
+   public static void method4057() {
       int var0 = 0;
 
       int var1;
@@ -716,30 +740,6 @@ public class Rasterizer2D extends CacheableNode {
 
       for(var1 += 7; var0 < var1; graphicsPixels[var0++] = 0) {
          ;
-      }
-
-   }
-
-   @ObfuscatedName("dk")
-   public static void method4044(int[] var0) {
-      field3192 = var0[0];
-      field3191 = var0[1];
-      field3190 = var0[2];
-      field3187 = var0[3];
-   }
-
-   @ObfuscatedName("ea")
-   public static void method4063(int var0, int var1, int var2, int[] var3, int[] var4) {
-      int var5 = var0 + var1 * graphicsPixelsWidth;
-
-      for(var1 = 0; var1 < var3.length; ++var1) {
-         int var6 = var5 + var3[var1];
-
-         for(var0 = -var4[var1]; var0 < 0; ++var0) {
-            graphicsPixels[var6++] = var2;
-         }
-
-         var5 += graphicsPixelsWidth;
       }
 
    }

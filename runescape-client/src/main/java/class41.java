@@ -1,213 +1,253 @@
+import java.io.IOException;
 import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("aj")
+@ObfuscatedName("ad")
 public class class41 {
-   @ObfuscatedName("n")
+   @ObfuscatedName("qj")
    @ObfuscatedGetter(
-      intValue = -2047806507
+      intValue = -145904815
+   )
+   static int field834;
+   @ObfuscatedName("u")
+   static ModIcon field836;
+   @ObfuscatedName("r")
+   static ModIcon[] field837;
+   @ObfuscatedName("o")
+   static SpritePixels field838;
+   @ObfuscatedName("n")
+   static ModIcon field839;
+   @ObfuscatedName("m")
+   static ModIcon[] field840;
+   @ObfuscatedName("v")
+   static int[] field843;
+   @ObfuscatedName("ah")
+   @ObfuscatedGetter(
+      intValue = -1184643091
+   )
+   static int field844;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = -1701645463
    )
    static int field845;
-   @ObfuscatedName("j")
+   @ObfuscatedName("t")
    @ObfuscatedGetter(
-      intValue = -564104197
+      intValue = 1818796025
    )
-   static int field846 = 0;
-   @ObfuscatedName("d")
-   static ModIcon field847;
-   @ObfuscatedName("bt")
-   @ObfuscatedGetter(
-      intValue = 1727605419
-   )
-   static int field848;
-   @ObfuscatedName("aw")
-   @Export("worldSelectShown")
-   static boolean worldSelectShown;
-   @ObfuscatedName("u")
-   static SpritePixels field850;
+   static int field846;
    @ObfuscatedName("y")
-   static ModIcon field851;
-   @ObfuscatedName("e")
-   static ModIcon field852;
-   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = -1388417139
+      intValue = -156416559
    )
    @Export("loginWindowX")
    static int loginWindowX;
-   @ObfuscatedName("am")
+   @ObfuscatedName("ag")
+   @ObfuscatedGetter(
+      intValue = -82542839
+   )
+   static int field849;
+   @ObfuscatedName("ab")
+   @ObfuscatedGetter(
+      intValue = -788203553
+   )
+   static int field850;
+   @ObfuscatedName("aw")
+   @ObfuscatedGetter(
+      intValue = 765839835
+   )
+   static int field851;
+   @ObfuscatedName("ax")
+   static String field852;
+   @ObfuscatedName("ar")
+   @ObfuscatedGetter(
+      intValue = -945652867
+   )
+   @Export("loginIndex")
+   static int loginIndex;
+   @ObfuscatedName("ak")
+   static String field854;
+   @ObfuscatedName("ai")
+   @Export("loginMessage1")
+   static String loginMessage1;
+   @ObfuscatedName("aq")
+   @ObfuscatedGetter(
+      intValue = 385641765
+   )
+   static int field856;
+   @ObfuscatedName("au")
+   @Export("loginMessage3")
+   static String loginMessage3;
+   @ObfuscatedName("ad")
+   static class97 field858;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = 756595681
+   )
+   static int field859 = 0;
+   @ObfuscatedName("f")
+   static boolean field860;
+   @ObfuscatedName("ae")
+   static boolean field861;
+   @ObfuscatedName("ap")
    @Export("loginMessage2")
    static String loginMessage2;
-   @ObfuscatedName("z")
-   static int[] field857;
-   @ObfuscatedName("p")
-   @ObfuscatedGetter(
-      intValue = -2075647713
-   )
-   static int field858;
-   @ObfuscatedName("i")
-   static int[] field859;
-   @ObfuscatedName("o")
-   static int[] field860;
-   @ObfuscatedName("aa")
-   @ObfuscatedGetter(
-      intValue = 1737133199
-   )
-   static int field861;
-   @ObfuscatedName("ah")
-   @ObfuscatedGetter(
-      intValue = 902248849
-   )
-   static int field862;
-   @ObfuscatedName("ax")
-   @ObfuscatedGetter(
-      intValue = 1595822077
-   )
-   static int field863;
-   @ObfuscatedName("ay")
+   @ObfuscatedName("aj")
    @Export(
       value = "username",
       setter = true
    )
    static String username;
-   @ObfuscatedName("ab")
+   @ObfuscatedName("ay")
+   @Export("worldSelectShown")
+   static boolean worldSelectShown;
+   @ObfuscatedName("br")
    @ObfuscatedGetter(
-      intValue = 1836993881
+      intValue = 598659993
    )
-   @Export("loginIndex")
-   static int loginIndex;
+   static int field866;
+   @ObfuscatedName("b")
+   static int[] field867;
    @ObfuscatedName("at")
-   static String field866;
-   @ObfuscatedName("x")
-   static boolean field868;
-   @ObfuscatedName("ao")
-   @Export("loginMessage1")
-   static String loginMessage1;
-   @ObfuscatedName("ae")
-   static String field870;
-   @ObfuscatedName("ak")
-   @Export("loginMessage3")
-   static String loginMessage3;
-   @ObfuscatedName("az")
-   @ObfuscatedGetter(
-      intValue = -1441362941
-   )
-   static int field872;
-   @ObfuscatedName("aq")
    @Export("password")
    static String password;
-   @ObfuscatedName("aj")
-   static class97 field874;
-   @ObfuscatedName("ac")
-   static boolean field875;
-   @ObfuscatedName("av")
+   @ObfuscatedName("dz")
+   @Export("xteaKeys")
+   static int[][] xteaKeys;
+   @ObfuscatedName("aa")
    @ObfuscatedGetter(
-      intValue = -516507145
+      intValue = -1724044623
    )
    @Export("loginIndex2")
    static int loginIndex2;
-   @ObfuscatedName("af")
-   @ObfuscatedGetter(
-      intValue = -1111277645
-   )
-   static int field879;
-   @ObfuscatedName("h")
-   static SpritePixels field880;
-   @ObfuscatedName("c")
-   static ModIcon field882;
-
-   static {
-      loginWindowX = 202 + field846;
-      field859 = new int[256];
-      field858 = 0;
-      field845 = 0;
-      field861 = 0;
-      field879 = 0;
-      field863 = 0;
-      field862 = 0;
-      field872 = 10;
-      field866 = "";
-      loginIndex = 0;
-      field870 = "";
-      loginMessage1 = "";
-      loginMessage2 = "";
-      loginMessage3 = "";
-      username = "";
-      password = "";
-      field874 = class97.field1640;
-      field875 = true;
-      loginIndex2 = 0;
-      worldSelectShown = false;
-      field848 = -1;
-   }
 
    class41() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("s")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-78"
-   )
-   public static void method837() {
-      ObjectComposition.field2937.reset();
-      ObjectComposition.field2897.reset();
-      ObjectComposition.field2898.reset();
-      ObjectComposition.field2899.reset();
+   static {
+      loginWindowX = 202 + field859;
+      field843 = new int[256];
+      field845 = 0;
+      field846 = 0;
+      field856 = 0;
+      field844 = 0;
+      field849 = 0;
+      field850 = 0;
+      field851 = 10;
+      field852 = "";
+      loginIndex = 0;
+      field854 = "";
+      loginMessage1 = "";
+      loginMessage2 = "";
+      loginMessage3 = "";
+      username = "";
+      password = "";
+      field858 = class97.field1651;
+      field861 = true;
+      loginIndex2 = 0;
+      worldSelectShown = false;
+      field866 = -1;
    }
 
-   @ObfuscatedName("ad")
+   @ObfuscatedName("br")
    @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "58"
+      signature = "(ZI)V",
+      garbageValue = "1678269181"
    )
-   static final void method852() {
-      for(Projectile var0 = (Projectile)Client.projectiles.method2448(); var0 != null; var0 = (Projectile)Client.projectiles.method2445()) {
-         if(var0.floor == class31.plane && Client.gameCycle <= var0.field890) {
-            if(Client.gameCycle >= var0.startTime) {
-               if(var0.interacting > 0) {
-                  NPC var1 = Client.cachedNPCs[var0.interacting - 1];
-                  if(null != var1 && var1.x >= 0 && var1.x < 13312 && var1.y >= 0 && var1.y < 13312) {
-                     var0.method862(var1.x, var1.y, class1.method21(var1.x, var1.y, var0.floor) - var0.field894, Client.gameCycle);
-                  }
-               }
+   static final void method812(boolean var0) {
+      World.method596();
+      ++Client.field436;
+      if(Client.field436 >= 50 || var0) {
+         Client.field436 = 0;
+         if(!Client.field517 && null != class20.field233) {
+            Client.secretCipherBuffer1.putOpcode(210);
 
-               if(var0.interacting < 0) {
-                  int var2 = -var0.interacting - 1;
-                  Player var3;
-                  if(var2 == Client.localInteractingIndex) {
-                     var3 = class22.localPlayer;
-                  } else {
-                     var3 = Client.cachedPlayers[var2];
-                  }
-
-                  if(null != var3 && var3.x >= 0 && var3.x < 13312 && var3.y >= 0 && var3.y < 13312) {
-                     var0.method862(var3.x, var3.y, class1.method21(var3.x, var3.y, var0.floor) - var0.field894, Client.gameCycle);
-                  }
-               }
-
-               var0.method861(Client.field328);
-               Friend.region.method1765(class31.plane, (int)var0.x, (int)var0.velocityZ, (int)var0.z, 60, var0, var0.field887, -1, false);
+            try {
+               class20.field233.method2105(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
+               Client.secretCipherBuffer1.offset = 0;
+            } catch (IOException var2) {
+               Client.field517 = true;
             }
-         } else {
-            var0.unlink();
          }
-      }
 
+      }
    }
 
-   @ObfuscatedName("v")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "([BI)[B",
-      garbageValue = "-1950384954"
+      signature = "(Ljava/lang/String;IB)Z",
+      garbageValue = "0"
    )
-   static byte[] method856(byte[] var0) {
+   static boolean method813(String var0, int var1) {
+      return class112.method2141(var0, var1, "openjs");
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "([BS)[B",
+      garbageValue = "-1305"
+   )
+   static byte[] method814(byte[] var0) {
       int var1 = var0.length;
       byte[] var2 = new byte[var1];
       System.arraycopy(var0, 0, var2, 0, var1);
       return var2;
+   }
+
+   @ObfuscatedName("bi")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "54"
+   )
+   static final void method815(int var0, int var1) {
+      int var2 = class63.field1119.method3897("Choose Option");
+
+      int var3;
+      for(var3 = 0; var3 < Client.menuOptionCount; ++var3) {
+         Font var7 = class63.field1119;
+         String var8;
+         if(var3 < 0) {
+            var8 = "";
+         } else if(Client.menuTargets[var3].length() > 0) {
+            var8 = Client.menuOptions[var3] + " " + Client.menuTargets[var3];
+         } else {
+            var8 = Client.menuOptions[var3];
+         }
+
+         int var6 = var7.method3897(var8);
+         if(var6 > var2) {
+            var2 = var6;
+         }
+      }
+
+      var2 += 8;
+      var3 = 22 + Client.menuOptionCount * 15;
+      int var4 = var0 - var2 / 2;
+      if(var4 + var2 > class32.field755) {
+         var4 = class32.field755 - var2;
+      }
+
+      if(var4 < 0) {
+         var4 = 0;
+      }
+
+      int var5 = var1;
+      if(var3 + var1 > class168.field2207) {
+         var5 = class168.field2207 - var3;
+      }
+
+      if(var5 < 0) {
+         var5 = 0;
+      }
+
+      CombatInfo1.region.method1773(Sequence.plane, var0, var1, false);
+      Client.isMenuOpen = true;
+      World.menuX = var4;
+      class104.menuY = var5;
+      Widget.menuWidth = var2;
+      class97.menuHeight = Client.menuOptionCount * 15 + 22;
    }
 }

@@ -1,109 +1,111 @@
 import java.awt.Canvas;
 import java.awt.Component;
 import java.awt.Graphics;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.Implements;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 import net.runelite.mapping.Replace;
 
-@ObfuscatedName("dj")
+@ObfuscatedName("ds")
 @Implements("RSCanvas")
 @Replace("net.runelite.inject.RSCanvas")
 public final class RSCanvas extends Canvas {
-   @ObfuscatedName("j")
-   Component field1764;
-   @ObfuscatedName("bj")
-   static class184 field1765;
-   @ObfuscatedName("g")
-   static byte[][] field1766;
-
-   RSCanvas(Component var1) {
-      this.field1764 = var1;
-   }
+   @ObfuscatedName("f")
+   Component field1775;
+   @ObfuscatedName("n")
+   @ObfuscatedGetter(
+      intValue = -1365185117
+   )
+   public static int field1777;
 
    public final void paint(Graphics var1) {
-      this.field1764.paint(var1);
+      this.field1775.paint(var1);
    }
 
    public final void update(Graphics var1) {
-      this.field1764.update(var1);
+      this.field1775.update(var1);
    }
 
-   @ObfuscatedName("j")
+   @ObfuscatedName("u")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;ZZB)V",
-      garbageValue = "53"
+      signature = "(III)I",
+      garbageValue = "1965013775"
    )
-   public static void method2137(String var0, boolean var1, boolean var2) {
-      class171.method3267(var0, var1, "openjs", var2);
+   public static int method2123(int var0, int var1) {
+      int var2 = var0 >>> 31;
+      return (var2 + var0) / var1 - var2;
    }
 
-   @ObfuscatedName("ao")
+   @ObfuscatedName("cn")
    @ObfuscatedSignature(
-      signature = "(LActor;B)V",
-      garbageValue = "8"
+      signature = "(III)Ljava/lang/String;",
+      garbageValue = "-28010194"
    )
-   static final void method2138(Actor var0) {
-      if(Client.gameCycle == var0.field647 || var0.animation == -1 || var0.actionAnimationDisable != 0 || 1 + var0.field659 > class168.getAnimation(var0.animation).frameLenghts[var0.actionFrame]) {
-         int var1 = var0.field647 - var0.field671;
-         int var2 = Client.gameCycle - var0.field671;
-         int var3 = var0.field672 * 64 + var0.field650 * 128;
-         int var4 = var0.field672 * 64 + var0.field669 * 128;
-         int var5 = var0.field672 * 64 + var0.field663 * 128;
-         int var6 = var0.field672 * 64 + var0.field670 * 128;
-         var0.x = (var2 * var5 + (var1 - var2) * var3) / var1;
-         var0.y = (var6 * var2 + var4 * (var1 - var2)) / var1;
-      }
-
-      var0.field683 = 0;
-      var0.field676 = var0.field673;
-      var0.angle = var0.field676;
+   static final String method2130(int var0, int var1) {
+      int var2 = var1 - var0;
+      return var2 < -9?XItemContainer.method153(16711680):(var2 < -6?XItemContainer.method153(16723968):(var2 < -3?XItemContainer.method153(16740352):(var2 < 0?XItemContainer.method153(16756736):(var2 > 9?XItemContainer.method153('\uff00'):(var2 > 6?XItemContainer.method153(4259584):(var2 > 3?XItemContainer.method153(8453888):(var2 > 0?XItemContainer.method153(12648192):XItemContainer.method153(16776960))))))));
    }
 
-   @ObfuscatedName("ax")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;I)V",
-      garbageValue = "-1292896618"
+      signature = "(IB)I",
+      garbageValue = "-49"
    )
-   static final void method2139(String var0) {
-      if(var0.equalsIgnoreCase("toggleroof")) {
-         class8.field84.field717 = !class8.field84.field717;
-         class0.method10();
-         if(class8.field84.field717) {
-            class30.sendGameMessage(99, "", "Roofs are now all hidden");
-         } else {
-            class30.sendGameMessage(99, "", "Roofs will only be removed selectively");
-         }
+   public static int method2131(int var0) {
+      int var1 = 0;
+      if(var0 < 0 || var0 >= 65536) {
+         var0 >>>= 16;
+         var1 += 16;
       }
 
-      if(var0.equalsIgnoreCase("displayfps")) {
-         Client.field392 = !Client.field392;
+      if(var0 >= 256) {
+         var0 >>>= 8;
+         var1 += 8;
       }
 
-      if(Client.field480 >= 2) {
-         if(var0.equalsIgnoreCase("fpson")) {
-            Client.field392 = true;
-         }
-
-         if(var0.equalsIgnoreCase("fpsoff")) {
-            Client.field392 = false;
-         }
-
-         if(var0.equalsIgnoreCase("gc")) {
-            System.gc();
-         }
-
-         if(var0.equalsIgnoreCase("clientdrop")) {
-            class16.method203();
-         }
-
-         if(var0.equalsIgnoreCase("errortest") && Client.field381 == 2) {
-            throw new RuntimeException();
-         }
+      if(var0 >= 16) {
+         var0 >>>= 4;
+         var1 += 4;
       }
 
-      Client.secretCipherBuffer1.putOpcode(13);
-      Client.secretCipherBuffer1.putByte(var0.length() + 1);
-      Client.secretCipherBuffer1.method2822(var0);
+      if(var0 >= 4) {
+         var0 >>>= 2;
+         var1 += 2;
+      }
+
+      if(var0 >= 1) {
+         var0 >>>= 1;
+         ++var1;
+      }
+
+      return var0 + var1;
+   }
+
+   RSCanvas(Component var1) {
+      this.field1775 = var1;
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(IB)LKitDefinition;",
+      garbageValue = "1"
+   )
+   @Export("getKitDefinition")
+   public static KitDefinition getKitDefinition(int var0) {
+      KitDefinition var1 = (KitDefinition)KitDefinition.field2830.get((long)var0);
+      if(var1 != null) {
+         return var1;
+      } else {
+         byte[] var2 = KitDefinition.field2834.getConfigData(3, var0);
+         var1 = new KitDefinition();
+         if(var2 != null) {
+            var1.method3556(new Buffer(var2));
+         }
+
+         KitDefinition.field2830.put(var1, (long)var0);
+         return var1;
+      }
    }
 }

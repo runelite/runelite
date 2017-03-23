@@ -2,161 +2,124 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("co")
+@ObfuscatedName("cy")
 public class class99 extends class109 {
-   @ObfuscatedName("d")
+   @ObfuscatedName("o")
    @ObfuscatedGetter(
-      longValue = -288363729759056265L
+      intValue = -1242809013
    )
-   long field1649 = method2005();
-   @ObfuscatedName("j")
+   int field1664;
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -1045446179
+      intValue = -1322001661
    )
-   int field1650 = 256;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      intValue = 411353221
-   )
-   int field1651 = 1;
-   @ObfuscatedName("w")
-   @ObfuscatedGetter(
-      intValue = 1225829185
-   )
-   int field1653 = 0;
+   int field1665 = 1;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
-      intValue = -1707580333
+      longValue = -2053663086758900979L
    )
-   int field1654;
-   @ObfuscatedName("bc")
-   static class184 field1655;
-   @ObfuscatedName("x")
-   long[] field1658 = new long[10];
-   @ObfuscatedName("bj")
-   static ModIcon[] field1660;
-
-   @ObfuscatedName("c")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;III)LSpritePixels;",
-      garbageValue = "-1065201010"
+   long field1666 = class45.method867();
+   @ObfuscatedName("r")
+   @ObfuscatedGetter(
+      intValue = -842700415
    )
-   public static SpritePixels method1997(class182 var0, int var1, int var2) {
-      return !class65.method1246(var0, var1, var2)?null:Actor.method611();
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(III)I",
-      garbageValue = "531304005"
+   int field1667 = 0;
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -946972249
    )
-   int vmethod2108(int var1, int var2) {
-      int var3 = this.field1650;
-      int var4 = this.field1651;
-      this.field1650 = 300;
-      this.field1651 = 1;
-      this.field1649 = method2005();
-      if(this.field1658[this.field1654] == 0L) {
-         this.field1650 = var3;
-         this.field1651 = var4;
-      } else if(this.field1649 > this.field1658[this.field1654]) {
-         this.field1650 = (int)((long)(var1 * 2560) / (this.field1649 - this.field1658[this.field1654]));
-      }
-
-      if(this.field1650 < 25) {
-         this.field1650 = 25;
-      }
-
-      if(this.field1650 > 256) {
-         this.field1650 = 256;
-         this.field1651 = (int)((long)var1 - (this.field1649 - this.field1658[this.field1654]) / 10L);
-      }
-
-      if(this.field1651 > var1) {
-         this.field1651 = var1;
-      }
-
-      this.field1658[this.field1654] = this.field1649;
-      this.field1654 = (this.field1654 + 1) % 10;
-      int var5;
-      if(this.field1651 > 1) {
-         for(var5 = 0; var5 < 10; ++var5) {
-            if(this.field1658[var5] != 0L) {
-               this.field1658[var5] += (long)this.field1651;
-            }
-         }
-      }
-
-      if(this.field1651 < var2) {
-         this.field1651 = var2;
-      }
-
-      class140.method2660((long)this.field1651);
-
-      for(var5 = 0; this.field1653 < 256; this.field1653 += this.field1650) {
-         ++var5;
-      }
-
-      this.field1653 &= 255;
-      return var5;
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-42"
+   int field1670 = 256;
+   @ObfuscatedName("bi")
+   @ObfuscatedGetter(
+      intValue = -1328794889
    )
-   public void vmethod2107() {
-      for(int var1 = 0; var1 < 10; ++var1) {
-         this.field1658[var1] = 0L;
-      }
+   static int field1671;
+   @ObfuscatedName("f")
+   long[] field1672 = new long[10];
 
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(B)J",
-      garbageValue = "21"
-   )
-   public static synchronized long method2005() {
-      long var0 = System.currentTimeMillis();
-      if(var0 < class155.field2102) {
-         class155.field2103 += class155.field2102 - var0;
-      }
-
-      class155.field2102 = var0;
-      return var0 + class155.field2103;
-   }
-
-   @ObfuscatedName("u")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "81449917"
+      garbageValue = "299182090"
    )
-   static void method2006() {
-      Object var0 = class183.field2725;
-      synchronized(class183.field2725) {
-         if(class183.field2718 == 0) {
-            class72.field1193.method2023(new class183(), 5);
-         }
-
-         class183.field2718 = 600;
+   void vmethod2090() {
+      for(int var1 = 0; var1 < 10; ++var1) {
+         this.field1672[var1] = 0L;
       }
-   }
 
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(Lclass182;B)V",
-      garbageValue = "12"
-   )
-   public static void method2007(class182 var0) {
-      Varbit.field2845 = var0;
    }
 
    class99() {
       for(int var1 = 0; var1 < 10; ++var1) {
-         this.field1658[var1] = this.field1649;
+         this.field1672[var1] = this.field1666;
       }
 
+   }
+
+   @ObfuscatedName("i")
+   @ObfuscatedSignature(
+      signature = "(III)I",
+      garbageValue = "1101349845"
+   )
+   int vmethod2091(int var1, int var2) {
+      int var3 = this.field1670;
+      int var4 = this.field1665;
+      this.field1670 = 300;
+      this.field1665 = 1;
+      this.field1666 = class45.method867();
+      if(0L == this.field1672[this.field1664]) {
+         this.field1670 = var3;
+         this.field1665 = var4;
+      } else if(this.field1666 > this.field1672[this.field1664]) {
+         this.field1670 = (int)((long)(2560 * var1) / (this.field1666 - this.field1672[this.field1664]));
+      }
+
+      if(this.field1670 < 25) {
+         this.field1670 = 25;
+      }
+
+      if(this.field1670 > 256) {
+         this.field1670 = 256;
+         this.field1665 = (int)((long)var1 - (this.field1666 - this.field1672[this.field1664]) / 10L);
+      }
+
+      if(this.field1665 > var1) {
+         this.field1665 = var1;
+      }
+
+      this.field1672[this.field1664] = this.field1666;
+      this.field1664 = (1 + this.field1664) % 10;
+      int var5;
+      if(this.field1665 > 1) {
+         for(var5 = 0; var5 < 10; ++var5) {
+            if(0L != this.field1672[var5]) {
+               this.field1672[var5] += (long)this.field1665;
+            }
+         }
+      }
+
+      if(this.field1665 < var2) {
+         this.field1665 = var2;
+      }
+
+      class115.method2300((long)this.field1665);
+
+      for(var5 = 0; this.field1667 < 256; this.field1667 += this.field1670) {
+         ++var5;
+      }
+
+      this.field1667 &= 255;
+      return var5;
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LSpritePixels;",
+      garbageValue = "1040416138"
+   )
+   public static SpritePixels[] method1981(class182 var0, String var1, String var2) {
+      int var3 = var0.method3351(var1);
+      int var4 = var0.method3352(var3, var2);
+      return class103.method2027(var0, var3, var4);
    }
 }

@@ -1,49 +1,55 @@
 import java.util.zip.Inflater;
-import net.runelite.mapping.Export;
+import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("et")
+@ObfuscatedName("es")
 public class class146 {
-   @ObfuscatedName("ai")
-   @Export("authCode")
-   static String authCode;
-   @ObfuscatedName("x")
-   Inflater field2021;
-
-   public class146() {
-      this(-1, 1000000, 1000000);
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(LBuffer;[BI)V",
-      garbageValue = "1481917384"
+   @ObfuscatedName("i")
+   public static class182 field2037;
+   @ObfuscatedName("u")
+   @ObfuscatedGetter(
+      intValue = 280560221
    )
-   public void method2767(Buffer var1, byte[] var2) {
-      if(var1.payload[var1.offset] == 31 && var1.payload[var1.offset + 1] == -117) {
-         if(null == this.field2021) {
-            this.field2021 = new Inflater(true);
-         }
-
-         try {
-            this.field2021.setInput(var1.payload, var1.offset + 10, var1.payload.length - (10 + var1.offset + 8));
-            this.field2021.inflate(var2);
-         } catch (Exception var4) {
-            this.field2021.reset();
-            throw new RuntimeException("");
-         }
-
-         this.field2021.reset();
-      } else {
-         throw new RuntimeException("");
-      }
-   }
+   static int field2038;
+   @ObfuscatedName("f")
+   Inflater field2039;
+   @ObfuscatedName("lv")
+   static class216 field2041;
 
    @ObfuscatedSignature(
       signature = "(III)V",
       garbageValue = "1000000"
    )
    class146(int var1, int var2, int var3) {
+   }
+
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;[BB)V",
+      garbageValue = "-97"
+   )
+   public void method2803(Buffer var1, byte[] var2) {
+      if(var1.payload[var1.offset] == 31 && var1.payload[1 + var1.offset] == -117) {
+         if(null == this.field2039) {
+            this.field2039 = new Inflater(true);
+         }
+
+         try {
+            this.field2039.setInput(var1.payload, var1.offset + 10, var1.payload.length - (var1.offset + 10 + 8));
+            this.field2039.inflate(var2);
+         } catch (Exception var4) {
+            this.field2039.reset();
+            throw new RuntimeException("");
+         }
+
+         this.field2039.reset();
+      } else {
+         throw new RuntimeException("");
+      }
+   }
+
+   public class146() {
+      this(-1, 1000000, 1000000);
    }
 }

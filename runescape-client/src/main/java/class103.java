@@ -8,41 +8,54 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("ca")
+@ObfuscatedName("cd")
 public class class103 implements Runnable {
-   @ObfuscatedName("x")
-   static String field1678;
+   @ObfuscatedName("o")
+   boolean field1691 = false;
+   @ObfuscatedName("i")
+   static String field1692;
    @ObfuscatedName("u")
-   public EventQueue field1679;
-   @ObfuscatedName("c")
-   class102 field1680 = null;
-   @ObfuscatedName("d")
-   class102 field1681 = null;
-   @ObfuscatedName("w")
-   Thread field1682;
+   class102 field1693 = null;
    @ObfuscatedName("h")
-   boolean field1683 = false;
-   @ObfuscatedName("nl")
+   class102 field1694 = null;
+   @ObfuscatedName("r")
+   Thread field1695;
+   @ObfuscatedName("l")
+   EventQueue field1696;
+   @ObfuscatedName("py")
    @ObfuscatedGetter(
-      intValue = -917235917
+      longValue = -7226480058837029831L
    )
-   static int field1685;
-   @ObfuscatedName("j")
-   static String field1687;
+   static long field1698;
+   @ObfuscatedName("f")
+   static String field1700;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(IIB)V",
+      garbageValue = "102"
+   )
+   static void method2000(int var0, int var1) {
+      long var2 = (long)(var1 + (var0 << 16));
+      class181 var4 = (class181)class185.field2762.method2417(var2);
+      if(var4 != null) {
+         class185.field2768.method2364(var4);
+      }
+   }
+
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
       signature = "(I)V",
-      garbageValue = "854137622"
+      garbageValue = "-838048203"
    )
-   final void method2020() {
+   final void method2001() {
       synchronized(this) {
-         this.field1683 = true;
+         this.field1691 = true;
          this.notifyAll();
       }
 
       try {
-         this.field1682.join();
+         this.field1695.join();
       } catch (InterruptedException var3) {
          ;
       }
@@ -54,15 +67,15 @@ public class class103 implements Runnable {
          class102 var1;
          synchronized(this) {
             while(true) {
-               if(this.field1683) {
+               if(this.field1691) {
                   return;
                }
 
-               if(null != this.field1680) {
-                  var1 = this.field1680;
-                  this.field1680 = this.field1680.field1675;
-                  if(this.field1680 == null) {
-                     this.field1681 = null;
+               if(null != this.field1693) {
+                  var1 = this.field1693;
+                  this.field1693 = this.field1693.field1682;
+                  if(this.field1693 == null) {
+                     this.field1694 = null;
                   }
                   break;
                }
@@ -76,47 +89,131 @@ public class class103 implements Runnable {
          }
 
          try {
-            int var5 = var1.field1674;
+            int var5 = var1.field1687;
             if(var5 == 1) {
-               var1.field1677 = new Socket(InetAddress.getByName((String)var1.field1670), var1.field1671);
+               var1.field1690 = new Socket(InetAddress.getByName((String)var1.field1689), var1.field1688);
             } else if(var5 == 2) {
-               Thread var3 = new Thread((Runnable)var1.field1670);
+               Thread var3 = new Thread((Runnable)var1.field1689);
                var3.setDaemon(true);
                var3.start();
-               var3.setPriority(var1.field1671);
-               var1.field1677 = var3;
+               var3.setPriority(var1.field1688);
+               var1.field1690 = var3;
             } else if(var5 == 4) {
-               var1.field1677 = new DataInputStream(((URL)var1.field1670).openStream());
+               var1.field1690 = new DataInputStream(((URL)var1.field1689).openStream());
             } else if(var5 == 3) {
-               String var10 = (var1.field1671 >> 24 & 255) + "." + (var1.field1671 >> 16 & 255) + "." + (var1.field1671 >> 8 & 255) + "." + (var1.field1671 & 255);
-               var1.field1677 = InetAddress.getByName(var10).getHostName();
+               String var10 = (var1.field1688 >> 24 & 255) + "." + (var1.field1688 >> 16 & 255) + "." + (var1.field1688 >> 8 & 255) + "." + (var1.field1688 & 255);
+               var1.field1690 = InetAddress.getByName(var10).getHostName();
             }
 
-            var1.field1673 = 1;
+            var1.field1686 = 1;
          } catch (ThreadDeath var6) {
             throw var6;
          } catch (Throwable var7) {
-            var1.field1673 = 2;
+            var1.field1686 = 2;
          }
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("l")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/String;IS)Lclass102;",
+      garbageValue = "5401"
+   )
+   public final class102 method2003(String var1, int var2) {
+      return this.method2026(1, var2, 0, var1);
+   }
+
+   @ObfuscatedName("n")
+   @ObfuscatedSignature(
+      signature = "(Ljava/lang/Runnable;II)Lclass102;",
+      garbageValue = "-761277578"
+   )
+   public final class102 method2004(Runnable var1, int var2) {
+      return this.method2026(2, var2, 0, var1);
+   }
+
+   @ObfuscatedName("w")
+   @ObfuscatedSignature(
+      signature = "(Ljava/net/URL;I)Lclass102;",
+      garbageValue = "-651703766"
+   )
+   public final class102 method2006(URL var1) {
+      return this.method2026(4, 0, 0, var1);
+   }
+
+   class103() {
+      field1700 = "Unknown";
+      field1692 = "1.1";
+
+      try {
+         field1700 = System.getProperty("java.vendor");
+         field1692 = System.getProperty("java.version");
+      } catch (Exception var3) {
+         ;
+      }
+
+      try {
+         this.field1696 = Toolkit.getDefaultToolkit().getSystemEventQueue();
+      } catch (Throwable var2) {
+         ;
+      }
+
+      this.field1691 = false;
+      this.field1695 = new Thread(this);
+      this.field1695.setPriority(10);
+      this.field1695.setDaemon(true);
+      this.field1695.start();
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(II)Lclass102;",
+      garbageValue = "-782590900"
+   )
+   public final class102 method2011(int var1) {
+      return this.method2026(3, var1, 0, (Object)null);
+   }
+
+   @ObfuscatedName("af")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "20"
+   )
+   static final int method2025(int var0, int var1, int var2) {
+      int var3 = var0 >> 7;
+      int var4 = var1 >> 7;
+      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
+         int var5 = var2;
+         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
+            var5 = var2 + 1;
+         }
+
+         int var6 = var0 & 127;
+         int var7 = var1 & 127;
+         int var8 = var6 * class10.tileHeights[var5][var3 + 1][var4] + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
+         int var9 = class10.tileHeights[var5][var3][1 + var4] * (128 - var6) + var6 * class10.tileHeights[var5][var3 + 1][var4 + 1] >> 7;
+         return (128 - var7) * var8 + var7 * var9 >> 7;
+      } else {
+         return 0;
+      }
+   }
+
+   @ObfuscatedName("o")
    @ObfuscatedSignature(
       signature = "(IIILjava/lang/Object;I)Lclass102;",
-      garbageValue = "1988747726"
+      garbageValue = "-588180165"
    )
-   final class102 method2021(int var1, int var2, int var3, Object var4) {
+   final class102 method2026(int var1, int var2, int var3, Object var4) {
       class102 var5 = new class102();
-      var5.field1674 = var1;
-      var5.field1671 = var2;
-      var5.field1670 = var4;
+      var5.field1687 = var1;
+      var5.field1688 = var2;
+      var5.field1689 = var4;
       synchronized(this) {
-         if(this.field1681 != null) {
-            this.field1681.field1675 = var5;
-            this.field1681 = var5;
+         if(this.field1694 != null) {
+            this.field1694.field1682 = var5;
+            this.field1694 = var5;
          } else {
-            this.field1681 = this.field1680 = var5;
+            this.field1694 = this.field1693 = var5;
          }
 
          this.notify();
@@ -124,83 +221,12 @@ public class class103 implements Runnable {
       }
    }
 
-   @ObfuscatedName("w")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(Ljava/lang/String;II)Lclass102;",
-      garbageValue = "-977224098"
+      signature = "(Lclass182;III)[LSpritePixels;",
+      garbageValue = "-963029477"
    )
-   public final class102 method2022(String var1, int var2) {
-      return this.method2021(1, var2, 0, var1);
-   }
-
-   @ObfuscatedName("u")
-   @ObfuscatedSignature(
-      signature = "(Ljava/lang/Runnable;II)Lclass102;",
-      garbageValue = "-172835214"
-   )
-   public final class102 method2023(Runnable var1, int var2) {
-      return this.method2021(2, var2, 0, var1);
-   }
-
-   @ObfuscatedName("y")
-   @ObfuscatedSignature(
-      signature = "(IB)Lclass102;",
-      garbageValue = "23"
-   )
-   public final class102 method2024(int var1) {
-      return this.method2021(3, var1, 0, (Object)null);
-   }
-
-   class103() {
-      field1678 = "Unknown";
-      field1687 = "1.1";
-
-      try {
-         field1678 = System.getProperty("java.vendor");
-         field1687 = System.getProperty("java.version");
-      } catch (Exception var3) {
-         ;
-      }
-
-      try {
-         this.field1679 = Toolkit.getDefaultToolkit().getSystemEventQueue();
-      } catch (Throwable var2) {
-         ;
-      }
-
-      this.field1683 = false;
-      this.field1682 = new Thread(this);
-      this.field1682.setPriority(10);
-      this.field1682.setDaemon(true);
-      this.field1682.start();
-   }
-
-   @ObfuscatedName("e")
-   @ObfuscatedSignature(
-      signature = "(Ljava/net/URL;I)Lclass102;",
-      garbageValue = "-2097271957"
-   )
-   public final class102 method2036(URL var1) {
-      return this.method2021(4, 0, 0, var1);
-   }
-
-   @ObfuscatedName("qu")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "-105"
-   )
-   protected static final void method2046() {
-      class161.field2129.vmethod2107();
-
-      int var0;
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field1783[var0] = 0L;
-      }
-
-      for(var0 = 0; var0 < 32; ++var0) {
-         GameEngine.field1784[var0] = 0L;
-      }
-
-      ItemLayer.field1226 = 0;
+   static SpritePixels[] method2027(class182 var0, int var1, int var2) {
+      return !VertexNormal.method1667(var0, var1, var2)?null:class38.method767();
    }
 }

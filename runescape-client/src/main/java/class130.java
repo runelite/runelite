@@ -1,49 +1,49 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eb")
+@ObfuscatedName("en")
 public class class130 {
-   @ObfuscatedName("x")
-   class131 field1889 = new class131();
-   @ObfuscatedName("j")
-   class131 field1890;
+   @ObfuscatedName("i")
+   class131 field1910;
+   @ObfuscatedName("f")
+   class131 field1911 = new class131();
 
    public class130() {
-      this.field1889.field1891 = this.field1889;
-      this.field1889.field1892 = this.field1889;
+      this.field1911.field1912 = this.field1911;
+      this.field1911.field1913 = this.field1911;
    }
 
-   @ObfuscatedName("j")
-   public class131 method2479() {
-      class131 var1 = this.field1889.field1891;
-      if(var1 == this.field1889) {
-         this.field1890 = null;
+   @ObfuscatedName("f")
+   public void method2498(class131 var1) {
+      if(var1.field1913 != null) {
+         var1.method2511();
+      }
+
+      var1.field1913 = this.field1911.field1913;
+      var1.field1912 = this.field1911;
+      var1.field1913.field1912 = var1;
+      var1.field1912.field1913 = var1;
+   }
+
+   @ObfuscatedName("i")
+   public class131 method2499() {
+      class131 var1 = this.field1911.field1912;
+      if(var1 == this.field1911) {
+         this.field1910 = null;
          return null;
       } else {
-         this.field1890 = var1.field1891;
+         this.field1910 = var1.field1912;
          return var1;
       }
    }
 
-   @ObfuscatedName("x")
-   public void method2480(class131 var1) {
-      if(var1.field1892 != null) {
-         var1.method2491();
-      }
-
-      var1.field1892 = this.field1889.field1892;
-      var1.field1891 = this.field1889;
-      var1.field1892.field1891 = var1;
-      var1.field1891.field1892 = var1;
-   }
-
-   @ObfuscatedName("c")
-   public class131 method2481() {
-      class131 var1 = this.field1890;
-      if(var1 == this.field1889) {
-         this.field1890 = null;
+   @ObfuscatedName("u")
+   public class131 method2500() {
+      class131 var1 = this.field1910;
+      if(var1 == this.field1911) {
+         this.field1910 = null;
          return null;
       } else {
-         this.field1890 = var1.field1891;
+         this.field1910 = var1.field1912;
          return var1;
       }
    }

@@ -1,32 +1,35 @@
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("eh")
+@ObfuscatedName("ea")
 public class class138 {
-   @ObfuscatedName("h")
-   public static class182 field1916;
-   @ObfuscatedName("j")
-   public static class182 field1917;
-   @ObfuscatedName("c")
-   public static class182 field1918;
-   @ObfuscatedName("d")
-   public static class139 field1919;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = -893191303
+      intValue = 600907051
    )
-   public static int field1920 = 0;
-   @ObfuscatedName("y")
-   public static short[][] field1921;
-   @ObfuscatedName("u")
+   public static int field1937;
+   @ObfuscatedName("j")
+   public static boolean field1938;
+   @ObfuscatedName("h")
+   public static class139 field1939;
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 1393354015
+      intValue = -532595207
    )
-   public static int field1922;
-   @ObfuscatedName("e")
-   public static boolean field1923;
-   @ObfuscatedName("x")
-   public static class182 field1924;
+   public static int field1940 = 0;
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = 1514832749
+   )
+   public static int field1941;
+   @ObfuscatedName("u")
+   public static class182 field1942;
+   @ObfuscatedName("i")
+   static class182 field1943;
+   @ObfuscatedName("s")
+   public static class144 field1944;
+   @ObfuscatedName("f")
+   public static class182 field1945;
 
    class138() throws Throwable {
       throw new Error();

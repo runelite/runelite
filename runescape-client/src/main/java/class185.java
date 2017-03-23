@@ -1,76 +1,90 @@
 import java.util.zip.CRC32;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gd")
+@ObfuscatedName("gg")
 public class class185 {
+   @ObfuscatedName("m")
+   static XHashTable field2762 = new XHashTable(4096);
+   @ObfuscatedName("i")
+   @ObfuscatedGetter(
+      intValue = -1483565649
+   )
+   static int field2763 = 0;
+   @ObfuscatedName("z")
+   static CRC32 field2764 = new CRC32();
+   @ObfuscatedName("h")
+   static XHashTable field2765 = new XHashTable(4096);
+   @ObfuscatedName("l")
+   @ObfuscatedGetter(
+      intValue = -1915685947
+   )
+   static int field2766 = 0;
+   @ObfuscatedName("o")
+   static XHashTable field2767 = new XHashTable(32);
+   @ObfuscatedName("n")
+   static Node2LinkedList field2768 = new Node2LinkedList();
+   @ObfuscatedName("s")
+   @ObfuscatedGetter(
+      intValue = -897860333
+   )
+   static int field2769 = 0;
    @ObfuscatedName("f")
-   public static CRC32 field2740 = new CRC32();
-   @ObfuscatedName("j")
-   @ObfuscatedGetter(
-      intValue = -918597657
-   )
-   public static int field2741 = 0;
-   @ObfuscatedName("c")
-   @ObfuscatedGetter(
-      longValue = 4809587999402957453L
-   )
-   public static long field2742;
-   @ObfuscatedName("d")
-   public static XHashTable field2743 = new XHashTable(4096);
+   static RSSocket field2770;
    @ObfuscatedName("w")
    @ObfuscatedGetter(
-      intValue = 1776425891
+      intValue = 1003377013
    )
-   public static int field2744 = 0;
-   @ObfuscatedName("h")
-   public static XHashTable field2745 = new XHashTable(32);
+   static int field2771 = 0;
+   @ObfuscatedName("j")
+   static XHashTable field2772 = new XHashTable(4096);
    @ObfuscatedName("p")
+   static Buffer field2773 = new Buffer(8);
+   @ObfuscatedName("r")
    @ObfuscatedGetter(
-      intValue = 507692923
+      intValue = 312074237
    )
-   public static int field2746 = 0;
-   @ObfuscatedName("k")
-   public static Node2LinkedList field2747 = new Node2LinkedList();
-   @ObfuscatedName("x")
-   public static RSSocket field2748;
+   static int field2774 = 0;
    @ObfuscatedName("y")
+   static Buffer field2775;
+   @ObfuscatedName("a")
    @ObfuscatedGetter(
-      intValue = -1780096971
+      intValue = -334935227
    )
-   public static int field2749 = 0;
-   @ObfuscatedName("e")
-   public static XHashTable field2750 = new XHashTable(4096);
-   @ObfuscatedName("q")
-   @ObfuscatedGetter(
-      intValue = 960359993
-   )
-   public static int field2751 = 0;
-   @ObfuscatedName("s")
-   public static Buffer field2752 = new Buffer(8);
-   @ObfuscatedName("m")
-   @ObfuscatedGetter(
-      intValue = -641885279
-   )
-   public static int field2753 = 0;
-   @ObfuscatedName("t")
-   public static class184[] field2755 = new class184[256];
-   @ObfuscatedName("z")
-   public static byte field2756 = 0;
-   @ObfuscatedName("g")
-   static XHashTable field2757 = new XHashTable(4096);
-   @ObfuscatedName("n")
-   @ObfuscatedGetter(
-      intValue = -102376549
-   )
-   public static int field2758 = 0;
+   static int field2776 = 0;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 250972469
+      longValue = -5683698152026548367L
    )
-   public static int field2759 = 0;
+   static long field2778;
+   @ObfuscatedName("g")
+   static class184[] field2779 = new class184[256];
+   @ObfuscatedName("b")
+   static byte field2780 = 0;
+   @ObfuscatedName("k")
+   @ObfuscatedGetter(
+      intValue = 1294097427
+   )
+   public static int field2781 = 0;
+   @ObfuscatedName("t")
+   @ObfuscatedGetter(
+      intValue = -274442051
+   )
+   public static int field2782 = 0;
 
    class185() throws Throwable {
       throw new Error();
+   }
+
+   @ObfuscatedName("m")
+   @ObfuscatedSignature(
+      signature = "(Lclass182;Lclass182;Ljava/lang/String;Ljava/lang/String;S)LFont;",
+      garbageValue = "5600"
+   )
+   public static Font method3473(class182 var0, class182 var1, String var2, String var3) {
+      int var4 = var0.method3351(var2);
+      int var5 = var0.method3352(var4, var3);
+      return XItemContainer.method157(var0, var1, var4, var5);
    }
 }

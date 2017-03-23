@@ -1,48 +1,67 @@
-import java.awt.event.ActionEvent;
 import net.runelite.mapping.ObfuscatedName;
+import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("bp")
+@ObfuscatedName("bf")
 public class class63 implements Runnable {
-   @ObfuscatedName("c")
-   volatile boolean field1095 = false;
-   @ObfuscatedName("j")
-   volatile class57[] field1096 = new class57[2];
-   @ObfuscatedName("d")
-   volatile boolean field1098 = false;
+   @ObfuscatedName("u")
+   volatile boolean field1113 = false;
+   @ObfuscatedName("i")
+   volatile class57[] field1114 = new class57[2];
+   @ObfuscatedName("f")
+   class103 field1115;
+   @ObfuscatedName("h")
+   volatile boolean field1116 = false;
+   @ObfuscatedName("cd")
+   static Font field1119;
    @ObfuscatedName("x")
-   class103 field1100;
+   static int[] field1122;
 
    public void run() {
-      this.field1098 = true;
+      this.field1116 = true;
 
       try {
-         while(!this.field1095) {
-            class57 var2;
+         while(!this.field1113) {
             for(int var1 = 0; var1 < 2; ++var1) {
-               var2 = this.field1096[var1];
-               if(null != var2) {
-                  var2.method1122();
-               }
-            }
-
-            class140.method2660(10L);
-            class103 var5 = this.field1100;
-            var2 = null;
-            if(var5.field1679 != null) {
-               for(int var3 = 0; var3 < 50 && var5.field1679.peekEvent() != null; ++var3) {
-                  class140.method2660(1L);
-               }
-
+               class57 var2 = this.field1114[var1];
                if(var2 != null) {
-                  var5.field1679.postEvent(new ActionEvent(var2, 1001, "dummy"));
+                  var2.method1082();
                }
             }
+
+            class115.method2300(10L);
+            class183.method3415(this.field1115, (Object)null);
          }
-      } catch (Exception var8) {
-         class31.method703((String)null, var8);
+      } catch (Exception var7) {
+         GameObject.method1958((String)null, var7);
       } finally {
-         this.field1098 = false;
+         this.field1116 = false;
       }
 
+   }
+
+   @ObfuscatedName("a")
+   @ObfuscatedSignature(
+      signature = "(IIIB)I",
+      garbageValue = "36"
+   )
+   static final int method1187(int var0, int var1, int var2) {
+      if(var2 > 179) {
+         var1 /= 2;
+      }
+
+      if(var2 > 192) {
+         var1 /= 2;
+      }
+
+      if(var2 > 217) {
+         var1 /= 2;
+      }
+
+      if(var2 > 243) {
+         var1 /= 2;
+      }
+
+      int var3 = (var1 / 32 << 7) + (var0 / 4 << 10) + var2 / 2;
+      return var3;
    }
 }
