@@ -282,20 +282,20 @@ public class MessageNode extends CacheableNode {
                         var23 = class196.method3599(var22);
                      }
 
-                     Client.field309.putOpcode(189);
-                     Client.field309.putInt(var23);
+                     Client.secretCipherBuffer1.putOpcode(189);
+                     Client.secretCipherBuffer1.putInt(var23);
                      var3 = 1;
                   } else if(var0 == 3105) {
                      var22 = class32.scriptStringStack[--class9.scriptStringStackSize];
-                     Client.field309.putOpcode(37);
-                     Client.field309.putByte(var22.length() + 1);
-                     Client.field309.method2822(var22);
+                     Client.secretCipherBuffer1.putOpcode(37);
+                     Client.secretCipherBuffer1.putByte(var22.length() + 1);
+                     Client.secretCipherBuffer1.method2822(var22);
                      var3 = 1;
                   } else if(var0 == 3106) {
                      var22 = class32.scriptStringStack[--class9.scriptStringStackSize];
-                     Client.field309.putOpcode(128);
-                     Client.field309.putByte(var22.length() + 1);
-                     Client.field309.method2822(var22);
+                     Client.secretCipherBuffer1.putOpcode(128);
+                     Client.secretCipherBuffer1.putByte(var22.length() + 1);
+                     Client.secretCipherBuffer1.method2822(var22);
                      var3 = 1;
                   } else if(var0 == 3107) {
                      var15 = class32.field756[--class32.field752];
@@ -334,8 +334,8 @@ public class MessageNode extends CacheableNode {
                      var3 = 1;
                   } else if(var0 == 3115) {
                      var15 = class32.field756[--class32.field752];
-                     Client.field309.putOpcode(92);
-                     Client.field309.putShort(var15);
+                     Client.secretCipherBuffer1.putOpcode(92);
+                     Client.secretCipherBuffer1.putShort(var15);
                      var3 = 1;
                   } else if(var0 == 3116) {
                      var15 = class32.field756[--class32.field752];
@@ -347,11 +347,11 @@ public class MessageNode extends CacheableNode {
                      } else if(var31.length() > 500) {
                         var3 = 1;
                      } else {
-                        Client.field309.putOpcode(136);
-                        Client.field309.putShort(1 + class164.method3157(var38) + class164.method3157(var31));
-                        Client.field309.method2822(var31);
-                        Client.field309.method2855(var15);
-                        Client.field309.method2822(var38);
+                        Client.secretCipherBuffer1.putOpcode(136);
+                        Client.secretCipherBuffer1.putShort(1 + class164.method3157(var38) + class164.method3157(var31));
+                        Client.secretCipherBuffer1.method2822(var31);
+                        Client.secretCipherBuffer1.method2855(var15);
+                        Client.secretCipherBuffer1.method2822(var38);
                         var3 = 1;
                      }
                   } else if(var0 == 3117) {
@@ -644,21 +644,21 @@ public class MessageNode extends CacheableNode {
                            }
 
                            Client.field532 = class32.field756[2 + class32.field752];
-                           Client.field309.putOpcode(2);
-                           Client.field309.putByte(Client.field307);
-                           Client.field309.putByte(class107.field1740.field3180);
-                           Client.field309.putByte(Client.field532);
+                           Client.secretCipherBuffer1.putOpcode(2);
+                           Client.secretCipherBuffer1.putByte(Client.field307);
+                           Client.secretCipherBuffer1.putByte(class107.field1740.field3180);
+                           Client.secretCipherBuffer1.putByte(Client.field532);
                            var3 = 1;
                         } else if(var0 == 5002) {
                            var22 = class32.scriptStringStack[--class9.scriptStringStackSize];
                            class32.field752 -= 2;
                            var23 = class32.field756[class32.field752];
                            var6 = class32.field756[class32.field752 + 1];
-                           Client.field309.putOpcode(195);
-                           Client.field309.putByte(class164.method3157(var22) + 2);
-                           Client.field309.method2822(var22);
-                           Client.field309.putByte(var23 - 1);
-                           Client.field309.putByte(var6);
+                           Client.secretCipherBuffer1.putOpcode(195);
+                           Client.secretCipherBuffer1.putByte(class164.method3157(var22) + 2);
+                           Client.secretCipherBuffer1.method2822(var22);
+                           Client.secretCipherBuffer1.putByte(var23 - 1);
+                           Client.secretCipherBuffer1.putByte(var6);
                            var3 = 1;
                         } else if(var0 == 5003) {
                            class32.field752 -= 2;
@@ -823,33 +823,33 @@ public class MessageNode extends CacheableNode {
                               }
                            }
 
-                           Client.field309.putOpcode(79);
-                           Client.field309.putByte(0);
-                           var20 = Client.field309.offset;
-                           Client.field309.putByte(var23);
-                           Client.field309.putByte(var24);
-                           Client.field309.putByte(var8);
-                           CipherBuffer var10 = Client.field309;
+                           Client.secretCipherBuffer1.putOpcode(79);
+                           Client.secretCipherBuffer1.putByte(0);
+                           var20 = Client.secretCipherBuffer1.offset;
+                           Client.secretCipherBuffer1.putByte(var23);
+                           Client.secretCipherBuffer1.putByte(var24);
+                           Client.secretCipherBuffer1.putByte(var8);
+                           CipherBuffer var10 = Client.secretCipherBuffer1;
                            var21 = var10.offset;
                            byte[] var12 = class22.method241(var22);
                            var10.method2829(var12.length);
                            var10.offset += class210.field3130.method2759(var12, 0, var12.length, var10.payload, var10.offset);
-                           Client.field309.method2828(Client.field309.offset - var20);
+                           Client.secretCipherBuffer1.method2828(Client.secretCipherBuffer1.offset - var20);
                            var3 = 1;
                         } else if(var0 == 5009) {
                            class9.scriptStringStackSize -= 2;
                            var22 = class32.scriptStringStack[class9.scriptStringStackSize];
                            var38 = class32.scriptStringStack[class9.scriptStringStackSize + 1];
-                           Client.field309.putOpcode(169);
-                           Client.field309.putShort(0);
-                           var6 = Client.field309.offset;
-                           Client.field309.method2822(var22);
-                           CipherBuffer var17 = Client.field309;
+                           Client.secretCipherBuffer1.putOpcode(169);
+                           Client.secretCipherBuffer1.putShort(0);
+                           var6 = Client.secretCipherBuffer1.offset;
+                           Client.secretCipherBuffer1.method2822(var22);
+                           CipherBuffer var17 = Client.secretCipherBuffer1;
                            var29 = var17.offset;
                            byte[] var9 = class22.method241(var38);
                            var17.method2829(var9.length);
                            var17.offset += class210.field3130.method2759(var9, 0, var9.length, var17.payload, var17.offset);
-                           Client.field309.method2945(Client.field309.offset - var6);
+                           Client.secretCipherBuffer1.method2945(Client.secretCipherBuffer1.offset - var6);
                            var3 = 1;
                         } else if(var0 == 5015) {
                            if(class22.localPlayer != null && null != class22.localPlayer.name) {

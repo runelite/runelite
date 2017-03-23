@@ -40,21 +40,21 @@ public class XItemContainer extends Node {
          Player var6 = Client.cachedPlayers[var3[var5]];
          if(null != var6 && var6 != class22.localPlayer && null != var6.name && var6.name.equalsIgnoreCase(var1)) {
             if(var0 == 1) {
-               Client.field309.putOpcode(197);
-               Client.field309.method2864(var3[var5]);
-               Client.field309.method2855(0);
+               Client.secretCipherBuffer1.putOpcode(197);
+               Client.secretCipherBuffer1.method2864(var3[var5]);
+               Client.secretCipherBuffer1.method2855(0);
             } else if(var0 == 4) {
-               Client.field309.putOpcode(98);
-               Client.field309.method2855(0);
-               Client.field309.method2909(var3[var5]);
+               Client.secretCipherBuffer1.putOpcode(98);
+               Client.secretCipherBuffer1.method2855(0);
+               Client.secretCipherBuffer1.method2909(var3[var5]);
             } else if(var0 == 6) {
-               Client.field309.putOpcode(240);
-               Client.field309.method2855(0);
-               Client.field309.method2864(var3[var5]);
+               Client.secretCipherBuffer1.putOpcode(240);
+               Client.secretCipherBuffer1.method2855(0);
+               Client.secretCipherBuffer1.method2864(var3[var5]);
             } else if(var0 == 7) {
-               Client.field309.putOpcode(101);
-               Client.field309.method2864(var3[var5]);
-               Client.field309.putByte(0);
+               Client.secretCipherBuffer1.putOpcode(101);
+               Client.secretCipherBuffer1.method2864(var3[var5]);
+               Client.secretCipherBuffer1.putByte(0);
             }
 
             var4 = true;
@@ -115,18 +115,18 @@ public class XItemContainer extends Node {
       int var12;
       int var32;
       if(Client.packetOpcode == 97) {
-         var0 = Client.field357.method2869();
-         var1 = Client.field357.readLittleEndianShort();
-         var2 = Client.field357.readUnsignedShort();
-         byte var3 = Client.field357.method2863();
-         var4 = Client.field357.readLittleEndianShort();
-         byte var5 = Client.field357.method2897();
-         byte var29 = Client.field357.method2897();
-         byte var30 = Client.field357.method2861();
-         var32 = Client.field357.method2858();
+         var0 = Client.secretCipherBuffer2.method2869();
+         var1 = Client.secretCipherBuffer2.readLittleEndianShort();
+         var2 = Client.secretCipherBuffer2.readUnsignedShort();
+         byte var3 = Client.secretCipherBuffer2.method2863();
+         var4 = Client.secretCipherBuffer2.readLittleEndianShort();
+         byte var5 = Client.secretCipherBuffer2.method2897();
+         byte var29 = Client.secretCipherBuffer2.method2897();
+         byte var30 = Client.secretCipherBuffer2.method2861();
+         var32 = Client.secretCipherBuffer2.method2858();
          var9 = class172.field2337 + (var32 >> 4 & 7);
          var10 = (var32 & 7) + MessageNode.field261;
-         var11 = Client.field357.method2997();
+         var11 = Client.secretCipherBuffer2.method2997();
          var12 = var11 >> 2;
          int var13 = var11 & 3;
          int var14 = Client.field361[var12];
@@ -192,12 +192,12 @@ public class XItemContainer extends Node {
       int var41;
       int var42;
       if(Client.packetOpcode == 29) {
-         var0 = Client.field357.readLittleEndianShort();
-         var1 = Client.field357.readUnsignedByte();
+         var0 = Client.secretCipherBuffer2.readLittleEndianShort();
+         var1 = Client.secretCipherBuffer2.readUnsignedByte();
          var2 = var1 >> 2;
          var35 = var1 & 3;
          var4 = Client.field361[var2];
-         var36 = Client.field357.readUnsignedByte();
+         var36 = Client.secretCipherBuffer2.readUnsignedByte();
          var41 = (var36 >> 4 & 7) + class172.field2337;
          var42 = MessageNode.field261 + (var36 & 7);
          if(var41 >= 0 && var42 >= 0 && var41 < 103 && var42 < 103) {
@@ -253,12 +253,12 @@ public class XItemContainer extends Node {
          }
 
       } else if(Client.packetOpcode == 23) {
-         var0 = Client.field357.readUnsignedByte();
+         var0 = Client.secretCipherBuffer2.readUnsignedByte();
          var1 = class172.field2337 + (var0 >> 4 & 7);
          var2 = MessageNode.field261 + (var0 & 7);
-         var35 = Client.field357.readUnsignedShort();
-         var4 = Client.field357.readUnsignedShort();
-         var36 = Client.field357.readUnsignedShort();
+         var35 = Client.secretCipherBuffer2.readUnsignedShort();
+         var4 = Client.secretCipherBuffer2.readUnsignedShort();
+         var36 = Client.secretCipherBuffer2.readUnsignedShort();
          if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
             Deque var37 = Client.groundItemDeque[class31.plane][var1][var2];
             if(var37 != null) {
@@ -274,19 +274,19 @@ public class XItemContainer extends Node {
          }
 
       } else if(Client.packetOpcode == 73) {
-         var0 = Client.field357.readUnsignedByte();
+         var0 = Client.secretCipherBuffer2.readUnsignedByte();
          var1 = (var0 >> 4 & 7) + class172.field2337;
          var2 = (var0 & 7) + MessageNode.field261;
-         var35 = var1 + Client.field357.readByte();
-         var4 = var2 + Client.field357.readByte();
-         var36 = Client.field357.readShort();
-         var41 = Client.field357.readUnsignedShort();
-         var42 = Client.field357.readUnsignedByte() * 4;
-         var32 = Client.field357.readUnsignedByte() * 4;
-         var9 = Client.field357.readUnsignedShort();
-         var10 = Client.field357.readUnsignedShort();
-         var11 = Client.field357.readUnsignedByte();
-         var12 = Client.field357.readUnsignedByte();
+         var35 = var1 + Client.secretCipherBuffer2.readByte();
+         var4 = var2 + Client.secretCipherBuffer2.readByte();
+         var36 = Client.secretCipherBuffer2.readShort();
+         var41 = Client.secretCipherBuffer2.readUnsignedShort();
+         var42 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
+         var32 = Client.secretCipherBuffer2.readUnsignedByte() * 4;
+         var9 = Client.secretCipherBuffer2.readUnsignedShort();
+         var10 = Client.secretCipherBuffer2.readUnsignedShort();
+         var11 = Client.secretCipherBuffer2.readUnsignedByte();
+         var12 = Client.secretCipherBuffer2.readUnsignedByte();
          if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104 && var35 >= 0 && var4 >= 0 && var35 < 104 && var4 < 104 && var41 != '\uffff') {
             var1 = 128 * var1 + 64;
             var2 = 128 * var2 + 64;
@@ -300,9 +300,9 @@ public class XItemContainer extends Node {
       } else {
          Item var31;
          if(Client.packetOpcode == 143) {
-            var0 = Client.field357.readLittleEndianShort();
-            var1 = Client.field357.method2869();
-            var2 = Client.field357.method2997();
+            var0 = Client.secretCipherBuffer2.readLittleEndianShort();
+            var1 = Client.secretCipherBuffer2.method2869();
+            var2 = Client.secretCipherBuffer2.method2997();
             var35 = (var2 >> 4 & 7) + class172.field2337;
             var4 = (var2 & 7) + MessageNode.field261;
             if(var35 >= 0 && var4 >= 0 && var35 < 104 && var4 < 104) {
@@ -318,12 +318,12 @@ public class XItemContainer extends Node {
             }
 
          } else if(Client.packetOpcode == 117) {
-            var0 = Client.field357.method2997();
+            var0 = Client.secretCipherBuffer2.method2997();
             var1 = var0 >> 2;
             var2 = var0 & 3;
             var35 = Client.field361[var1];
-            var4 = Client.field357.method2869();
-            var36 = Client.field357.method2997();
+            var4 = Client.secretCipherBuffer2.method2869();
+            var36 = Client.secretCipherBuffer2.method2997();
             var41 = (var36 >> 4 & 7) + class172.field2337;
             var42 = MessageNode.field261 + (var36 & 7);
             if(var41 >= 0 && var42 >= 0 && var41 < 104 && var42 < 104) {
@@ -332,14 +332,14 @@ public class XItemContainer extends Node {
 
          } else {
             if(Client.packetOpcode == 168) {
-               var0 = Client.field357.readUnsignedByte();
+               var0 = Client.secretCipherBuffer2.readUnsignedByte();
                var1 = class172.field2337 + (var0 >> 4 & 7);
                var2 = MessageNode.field261 + (var0 & 7);
-               var35 = Client.field357.readUnsignedShort();
-               var4 = Client.field357.readUnsignedByte();
+               var35 = Client.secretCipherBuffer2.readUnsignedShort();
+               var4 = Client.secretCipherBuffer2.readUnsignedByte();
                var36 = var4 >> 4 & 15;
                var41 = var4 & 7;
-               var42 = Client.field357.readUnsignedByte();
+               var42 = Client.secretCipherBuffer2.readUnsignedByte();
                if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                   var32 = 1 + var36;
                   if(class22.localPlayer.pathX[0] >= var1 - var32 && class22.localPlayer.pathX[0] <= var32 + var1 && class22.localPlayer.pathY[0] >= var2 - var32 && class22.localPlayer.pathY[0] <= var32 + var2 && Client.field554 != 0 && var41 > 0 && Client.field419 < 50) {
@@ -355,12 +355,12 @@ public class XItemContainer extends Node {
 
             if(Client.packetOpcode != 251) {
                if(Client.packetOpcode == 232) {
-                  var0 = Client.field357.readUnsignedByte();
+                  var0 = Client.secretCipherBuffer2.readUnsignedByte();
                   var1 = class172.field2337 + (var0 >> 4 & 7);
                   var2 = MessageNode.field261 + (var0 & 7);
-                  var35 = Client.field357.readUnsignedShort();
-                  var4 = Client.field357.readUnsignedByte();
-                  var36 = Client.field357.readUnsignedShort();
+                  var35 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var4 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var36 = Client.secretCipherBuffer2.readUnsignedShort();
                   if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                      var1 = 64 + var1 * 128;
                      var2 = 128 * var2 + 64;
@@ -369,10 +369,10 @@ public class XItemContainer extends Node {
                   }
 
                } else if(Client.packetOpcode == 186) {
-                  var0 = Client.field357.method2997();
+                  var0 = Client.secretCipherBuffer2.method2997();
                   var1 = class172.field2337 + (var0 >> 4 & 7);
                   var2 = (var0 & 7) + MessageNode.field261;
-                  var35 = Client.field357.method2997();
+                  var35 = Client.secretCipherBuffer2.method2997();
                   var4 = var35 >> 2;
                   var36 = var35 & 3;
                   var41 = Client.field361[var4];
@@ -382,10 +382,10 @@ public class XItemContainer extends Node {
 
                }
             } else {
-               var0 = Client.field357.method2860();
+               var0 = Client.secretCipherBuffer2.method2860();
                var1 = class172.field2337 + (var0 >> 4 & 7);
                var2 = (var0 & 7) + MessageNode.field261;
-               var35 = Client.field357.readLittleEndianShort();
+               var35 = Client.secretCipherBuffer2.readLittleEndianShort();
                if(var1 >= 0 && var2 >= 0 && var1 < 104 && var2 < 104) {
                   Deque var34 = Client.groundItemDeque[class31.plane][var1][var2];
                   if(var34 != null) {
@@ -434,73 +434,73 @@ public class XItemContainer extends Node {
          if(var6) {
             if(class97.method1989(class174.method3271(var5), var0 - 1)) {
                if(var0 == 1) {
-                  Client.field309.putOpcode(168);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(168);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 2) {
-                  Client.field309.putOpcode(34);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(34);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 3) {
-                  Client.field309.putOpcode(86);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(86);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 4) {
-                  Client.field309.putOpcode(186);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(186);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 5) {
-                  Client.field309.putOpcode(103);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(103);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 6) {
-                  Client.field309.putOpcode(76);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(76);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 7) {
-                  Client.field309.putOpcode(185);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(185);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 8) {
-                  Client.field309.putOpcode(63);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(63);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 9) {
-                  Client.field309.putOpcode(148);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(148);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
                if(var0 == 10) {
-                  Client.field309.putOpcode(204);
-                  Client.field309.putInt(var1);
-                  Client.field309.putShort(var2);
-                  Client.field309.putShort(var3);
+                  Client.secretCipherBuffer1.putOpcode(204);
+                  Client.secretCipherBuffer1.putInt(var1);
+                  Client.secretCipherBuffer1.putShort(var2);
+                  Client.secretCipherBuffer1.putShort(var3);
                }
 
             }

@@ -50,10 +50,10 @@ public class class45 {
       garbageValue = "-1280360851"
    )
    static void method910() {
-      Client.field309.putOpcode(230);
-      Client.field309.putByte(class13.method196());
-      Client.field309.putShort(class108.field1748);
-      Client.field309.putShort(class145.field2018);
+      Client.secretCipherBuffer1.putOpcode(230);
+      Client.secretCipherBuffer1.putByte(class13.method196());
+      Client.secretCipherBuffer1.putShort(class108.field1748);
+      Client.secretCipherBuffer1.putShort(class145.field2018);
    }
 
    @ObfuscatedName("aw")

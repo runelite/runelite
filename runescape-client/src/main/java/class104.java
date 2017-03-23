@@ -90,12 +90,12 @@ public class class104 {
                      if(!Client.field586) {
                         Client.field321.field254 = 0;
                      } else if(class115.field1813 != 0 || Client.field321.field254 >= 40) {
-                        Client.field309.putOpcode(252);
-                        Client.field309.putByte(0);
-                        var16 = Client.field309.offset;
+                        Client.secretCipherBuffer1.putOpcode(252);
+                        Client.secretCipherBuffer1.putByte(0);
+                        var16 = Client.secretCipherBuffer1.offset;
                         var2 = 0;
 
-                        for(var3 = 0; var3 < Client.field321.field254 && Client.field309.offset - var16 < 240; ++var3) {
+                        for(var3 = 0; var3 < Client.field321.field254 && Client.secretCipherBuffer1.offset - var16 < 240; ++var3) {
                            ++var2;
                            var4 = Client.field321.field250[var3];
                            if(var4 < 0) {
@@ -130,19 +130,19 @@ public class class104 {
                               if(Client.field314 < 8 && var7 >= -32 && var7 <= 31 && var8 >= -32 && var8 <= 31) {
                                  var7 += 32;
                                  var8 += 32;
-                                 Client.field309.putShort(var8 + (Client.field314 << 12) + (var7 << 6));
+                                 Client.secretCipherBuffer1.putShort(var8 + (Client.field314 << 12) + (var7 << 6));
                                  Client.field314 = 0;
                               } else if(Client.field314 < 8) {
-                                 Client.field309.put24bitInt(8388608 + (Client.field314 << 19) + var6);
+                                 Client.secretCipherBuffer1.put24bitInt(8388608 + (Client.field314 << 19) + var6);
                                  Client.field314 = 0;
                               } else {
-                                 Client.field309.putInt(-1073741824 + (Client.field314 << 19) + var6);
+                                 Client.secretCipherBuffer1.putInt(-1073741824 + (Client.field314 << 19) + var6);
                                  Client.field314 = 0;
                               }
                            }
                         }
 
-                        Client.field309.method2828(Client.field309.offset - var16);
+                        Client.secretCipherBuffer1.method2828(Client.secretCipherBuffer1.offset - var16);
                         if(var2 >= Client.field321.field254) {
                            Client.field321.field254 = 0;
                         } else {
@@ -178,16 +178,16 @@ public class class104 {
                      }
 
                      var4 = (int)var18;
-                     Client.field309.putOpcode(152);
-                     Client.field309.putShort((class115.field1813 == 2?1:0) + (var4 << 1));
-                     Client.field309.putShort(var3);
-                     Client.field309.putShort(var2);
+                     Client.secretCipherBuffer1.putOpcode(152);
+                     Client.secretCipherBuffer1.putShort((class115.field1813 == 2?1:0) + (var4 << 1));
+                     Client.secretCipherBuffer1.putShort(var3);
+                     Client.secretCipherBuffer1.putShort(var2);
                   }
 
                   if(class105.field1716 > 0) {
-                     Client.field309.putOpcode(217);
-                     Client.field309.putShort(0);
-                     var0 = Client.field309.offset;
+                     Client.secretCipherBuffer1.putOpcode(217);
+                     Client.secretCipherBuffer1.putShort(0);
+                     var0 = Client.secretCipherBuffer1.offset;
                      long var20 = class99.method2005();
 
                      for(var3 = 0; var3 < class105.field1716; ++var3) {
@@ -197,11 +197,11 @@ public class class104 {
                         }
 
                         Client.field539 = var20;
-                        Client.field309.method2871((int)var22);
-                        Client.field309.putByte(class105.field1735[var3]);
+                        Client.secretCipherBuffer1.method2871((int)var22);
+                        Client.secretCipherBuffer1.putByte(class105.field1735[var3]);
                      }
 
-                     Client.field309.method2945(Client.field309.offset - var0);
+                     Client.secretCipherBuffer1.method2945(Client.secretCipherBuffer1.offset - var0);
                   }
 
                   if(Client.field403 > 0) {
@@ -215,21 +215,21 @@ public class class104 {
                   if(Client.field404 && Client.field403 <= 0) {
                      Client.field403 = 20;
                      Client.field404 = false;
-                     Client.field309.putOpcode(213);
-                     Client.field309.method2909(Client.field396);
-                     Client.field309.method2909(Client.mapAngle);
+                     Client.secretCipherBuffer1.putOpcode(213);
+                     Client.secretCipherBuffer1.method2909(Client.field396);
+                     Client.secretCipherBuffer1.method2909(Client.mapAngle);
                   }
 
                   if(class101.field1661 && !Client.field581) {
                      Client.field581 = true;
-                     Client.field309.putOpcode(124);
-                     Client.field309.putByte(1);
+                     Client.secretCipherBuffer1.putOpcode(124);
+                     Client.secretCipherBuffer1.putByte(1);
                   }
 
                   if(!class101.field1661 && Client.field581) {
                      Client.field581 = false;
-                     Client.field309.putOpcode(124);
-                     Client.field309.putByte(0);
+                     Client.secretCipherBuffer1.putOpcode(124);
+                     Client.secretCipherBuffer1.putByte(0);
                   }
 
                   int var10;
@@ -640,11 +640,11 @@ public class class104 {
                                                             var49.method3209(Client.field408, Client.field310);
                                                          }
 
-                                                         Client.field309.putOpcode(151);
-                                                         Client.field309.method2864(Client.field310);
-                                                         Client.field309.putShort(Client.field408);
-                                                         Client.field309.putByte(var40);
-                                                         Client.field309.method2874(CombatInfoListHolder.field784.id);
+                                                         Client.secretCipherBuffer1.putOpcode(151);
+                                                         Client.secretCipherBuffer1.method2864(Client.field310);
+                                                         Client.secretCipherBuffer1.putShort(Client.field408);
+                                                         Client.secretCipherBuffer1.putByte(var40);
+                                                         Client.secretCipherBuffer1.method2874(CombatInfoListHolder.field784.id);
                                                       }
                                                    } else {
                                                       label1491: {
@@ -692,11 +692,11 @@ public class class104 {
                                              if(Region.method1933()) {
                                                 var2 = Region.field1521;
                                                 var3 = Region.field1522;
-                                                Client.field309.putOpcode(147);
-                                                Client.field309.putByte(5);
-                                                Client.field309.method2855(class105.field1725[82]?(class105.field1725[81]?2:1):0);
-                                                Client.field309.method2909(var3 + class3.baseY);
-                                                Client.field309.method2909(var2 + CombatInfoListHolder.baseX);
+                                                Client.secretCipherBuffer1.putOpcode(147);
+                                                Client.secretCipherBuffer1.putByte(5);
+                                                Client.secretCipherBuffer1.method2855(class105.field1725[82]?(class105.field1725[81]?2:1):0);
+                                                Client.secretCipherBuffer1.method2909(var3 + class3.baseY);
+                                                Client.secretCipherBuffer1.method2909(var2 + CombatInfoListHolder.baseX);
                                                 Region.method1793();
                                                 Client.field422 = class115.field1814;
                                                 Client.field421 = class115.field1815;
@@ -839,7 +839,7 @@ public class class104 {
                                              if(var2 > 15000 && var3 > 15000) {
                                                 Client.field365 = 250;
                                                 class115.mouseIdleTicks = 14500;
-                                                Client.field309.putOpcode(255);
+                                                Client.secretCipherBuffer1.putOpcode(255);
                                              }
 
                                              ++Client.field382;
@@ -928,13 +928,13 @@ public class class104 {
 
                                              ++Client.field497;
                                              if(Client.field497 > 50) {
-                                                Client.field309.putOpcode(184);
+                                                Client.secretCipherBuffer1.putOpcode(184);
                                              }
 
                                              try {
-                                                if(null != class1.field15 && Client.field309.offset > 0) {
-                                                   class1.field15.method2117(Client.field309.payload, 0, Client.field309.offset);
-                                                   Client.field309.offset = 0;
+                                                if(null != class1.field15 && Client.secretCipherBuffer1.offset > 0) {
+                                                   class1.field15.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
+                                                   Client.secretCipherBuffer1.offset = 0;
                                                    Client.field497 = 0;
                                                 }
                                              } catch (IOException var32) {
@@ -980,11 +980,11 @@ public class class104 {
                   }
                }
 
-               Client.field309.putOpcode(52);
-               Client.field309.putByte(0);
-               var16 = Client.field309.offset;
-               Script.method971(Client.field309);
-               Client.field309.method2828(Client.field309.offset - var16);
+               Client.secretCipherBuffer1.putOpcode(52);
+               Client.secretCipherBuffer1.putByte(0);
+               var16 = Client.secretCipherBuffer1.offset;
+               Script.method971(Client.secretCipherBuffer1);
+               Client.secretCipherBuffer1.method2828(Client.secretCipherBuffer1.offset - var16);
             }
          }
       }

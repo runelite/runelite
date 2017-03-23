@@ -705,7 +705,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                               return;
                            }
 
-                           if(class41.field873.length() == 0) {
+                           if(class41.password.length() == 0) {
                               class5.method67("", "Please enter your password.", "");
                               return;
                            }
@@ -720,7 +720,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                         if(var1 == 1 && var2 >= var5 - 75 && var2 <= var5 + 75 && var3 >= var6 - 20 && var3 <= 20 + var6) {
                            class41.loginIndex = 0;
                            class41.username = "";
-                           class41.field873 = "";
+                           class41.password = "";
                            CombatInfoListHolder.field781 = 0;
                            class146.authCode = "";
                            class41.field875 = true;
@@ -740,7 +740,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                               if(FileOnDisk.field1202 == 13) {
                                  class41.loginIndex = 0;
                                  class41.username = "";
-                                 class41.field873 = "";
+                                 class41.password = "";
                                  CombatInfoListHolder.field781 = 0;
                                  class146.authCode = "";
                                  class41.field875 = true;
@@ -757,8 +757,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                                     class41.username = class41.username + class157.field2108;
                                  }
                               } else if(class41.loginIndex2 == 1) {
-                                 if(FileOnDisk.field1202 == 85 && class41.field873.length() > 0) {
-                                    class41.field873 = class41.field873.substring(0, class41.field873.length() - 1);
+                                 if(FileOnDisk.field1202 == 85 && class41.password.length() > 0) {
+                                    class41.password = class41.password.substring(0, class41.password.length() - 1);
                                  }
 
                                  if(FileOnDisk.field1202 == 84 || FileOnDisk.field1202 == 80) {
@@ -772,7 +772,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                                        return;
                                     }
 
-                                    if(class41.field873.length() == 0) {
+                                    if(class41.password.length() == 0) {
                                        class5.method67("", "Please enter your password.", "");
                                        return;
                                     }
@@ -783,8 +783,8 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                                     return;
                                  }
 
-                                 if(var7 && class41.field873.length() < 20) {
-                                    class41.field873 = class41.field873 + class157.field2108;
+                                 if(var7 && class41.password.length() < 20) {
+                                    class41.password = class41.password + class157.field2108;
                                  }
                               }
                            }
@@ -842,7 +842,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                            if(var1 == 1 && var2 >= var14 - 75 && var2 <= var14 + 75 && var3 >= var16 - 20 && var3 <= 20 + var16) {
                               class41.loginIndex = 0;
                               class41.username = "";
-                              class41.field873 = "";
+                              class41.password = "";
                               CombatInfoListHolder.field781 = 0;
                               class146.authCode = "";
                            }
@@ -860,7 +860,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                               if(FileOnDisk.field1202 == 13) {
                                  class41.loginIndex = 0;
                                  class41.username = "";
-                                 class41.field873 = "";
+                                 class41.password = "";
                                  CombatInfoListHolder.field781 = 0;
                                  class146.authCode = "";
                               } else {
@@ -903,7 +903,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                               class41.loginMessage3 = "";
                               class41.loginIndex = 2;
                               class41.loginIndex2 = 0;
-                              class41.field873 = "";
+                              class41.password = "";
                            }
 
                            while(GroundObject.method1593()) {
@@ -922,7 +922,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                                  class41.loginMessage3 = "";
                                  class41.loginIndex = 2;
                                  class41.loginIndex2 = 0;
-                                 class41.field873 = "";
+                                 class41.password = "";
                               } else {
                                  if(FileOnDisk.field1202 == 85 && class41.username.length() > 0) {
                                     class41.username = class41.username.substring(0, class41.username.length() - 1);
@@ -949,7 +949,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                                        class41.loginMessage3 = "";
                                        class41.loginIndex = 2;
                                        class41.loginIndex2 = 0;
-                                       class41.field873 = "";
+                                       class41.password = "";
                                     }
 
                                     return;
@@ -961,7 +961,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
                               class41.loginMessage3 = "";
                               class41.loginIndex = 2;
                               class41.loginIndex2 = 0;
-                              class41.field873 = "";
+                              class41.password = "";
                            }
                         }
                      }

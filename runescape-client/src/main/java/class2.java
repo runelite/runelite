@@ -192,9 +192,9 @@ public class class2 {
          } else if(var0 == 1121) {
             var5 = var3.id;
             int var6 = var3.index;
-            Client.field309.putOpcode(171);
-            Client.field309.method2864(var6);
-            Client.field309.putInt(var5);
+            Client.secretCipherBuffer1.putOpcode(171);
+            Client.secretCipherBuffer1.method2864(var6);
+            Client.secretCipherBuffer1.putInt(var5);
             Client.field477 = var3;
             method36(var3);
             return 1;

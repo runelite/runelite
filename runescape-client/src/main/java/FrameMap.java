@@ -66,14 +66,14 @@ public class FrameMap extends Node {
       int var6;
       int var7;
       if(!Client.isDynamicRegion) {
-         var1 = Client.field357.method2949();
-         var2 = Client.field357.method2869();
-         var3 = Client.field357.readUnsignedShort();
+         var1 = Client.secretCipherBuffer2.method2949();
+         var2 = Client.secretCipherBuffer2.method2869();
+         var3 = Client.secretCipherBuffer2.readUnsignedShort();
          XGrandExchangeOffer.xteaKeys = new int[var3][4];
 
          for(var4 = 0; var4 < var3; ++var4) {
             for(var5 = 0; var5 < 4; ++var5) {
-               XGrandExchangeOffer.xteaKeys[var4][var5] = Client.field357.readInt();
+               XGrandExchangeOffer.xteaKeys[var4][var5] = Client.secretCipherBuffer2.readInt();
             }
          }
 
@@ -107,17 +107,17 @@ public class FrameMap extends Node {
 
          class174.method3274(var2, var1);
       } else {
-         var1 = Client.field357.method2869();
-         var2 = Client.field357.readUnsignedShort();
-         var3 = Client.field357.readUnsignedShort();
-         Client.field357.method3085();
+         var1 = Client.secretCipherBuffer2.method2869();
+         var2 = Client.secretCipherBuffer2.readUnsignedShort();
+         var3 = Client.secretCipherBuffer2.readUnsignedShort();
+         Client.secretCipherBuffer2.method3085();
 
          for(var4 = 0; var4 < 4; ++var4) {
             for(var5 = 0; var5 < 13; ++var5) {
                for(var6 = 0; var6 < 13; ++var6) {
-                  var7 = Client.field357.method3097(1);
+                  var7 = Client.secretCipherBuffer2.method3097(1);
                   if(var7 == 1) {
-                     Client.field312[var4][var5][var6] = Client.field357.method3097(26);
+                     Client.field312[var4][var5][var6] = Client.secretCipherBuffer2.method3097(26);
                   } else {
                      Client.field312[var4][var5][var6] = -1;
                   }
@@ -125,12 +125,12 @@ public class FrameMap extends Node {
             }
          }
 
-         Client.field357.method3082();
+         Client.secretCipherBuffer2.method3082();
          XGrandExchangeOffer.xteaKeys = new int[var3][4];
 
          for(var4 = 0; var4 < var3; ++var4) {
             for(var5 = 0; var5 < 4; ++var5) {
-               XGrandExchangeOffer.xteaKeys[var4][var5] = Client.field357.readInt();
+               XGrandExchangeOffer.xteaKeys[var4][var5] = Client.secretCipherBuffer2.readInt();
             }
          }
 

@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Item")
 public final class Item extends Renderable {
    @ObfuscatedName("av")
-   static class110 field909;
+   static RSSocket field909;
    @ObfuscatedName("x")
    @ObfuscatedGetter(
       intValue = -2079758699

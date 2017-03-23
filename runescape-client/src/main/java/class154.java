@@ -44,8 +44,8 @@ public class class154 {
       Client.field581 = true;
       Client.field539 = -1L;
       class57.method1152();
-      Client.field309.offset = 0;
-      Client.field357.offset = 0;
+      Client.secretCipherBuffer1.offset = 0;
+      Client.secretCipherBuffer2.offset = 0;
       Client.packetOpcode = -1;
       Client.field483 = -1;
       Client.field363 = -1;

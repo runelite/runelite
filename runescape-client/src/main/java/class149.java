@@ -75,6 +75,6 @@ public class class149 {
       KitDefinition.field2825.method3340();
       class99.field1655.method3340();
       class1.field12.method3340();
-      class110.field1763.method3340();
+      RSSocket.field1763.method3340();
    }
 }

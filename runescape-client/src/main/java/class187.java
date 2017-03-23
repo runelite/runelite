@@ -51,7 +51,7 @@ public class class187 extends CacheableNode {
          }
 
          if(var0 == 20 || var0 == 40 || var0 == 45) {
-            Client.field571 = 0;
+            Client.loginState = 0;
             Client.field471 = 0;
             Client.field565 = 0;
          }
