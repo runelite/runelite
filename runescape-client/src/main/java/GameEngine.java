@@ -109,7 +109,7 @@ public abstract class GameEngine extends Applet implements Runnable, FocusListen
          field1785 = this;
          class32.field755 = var1;
          class168.field2207 = var2;
-         class101.field1681 = var3;
+         class101.revision = var3;
          class101.field1680 = this;
          if(class108.field1755 == null) {
             class108.field1755 = new class103();

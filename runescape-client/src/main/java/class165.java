@@ -58,7 +58,7 @@ public class class165 {
                   var4 = new Buffer(4);
                   var4.putByte(1);
                   var4.put24bitInt((int)var3.hash);
-                  class185.field2770.method2105(var4.payload, 0, 4);
+                  class185.field2770.queueForWrite(var4.payload, 0, 4);
                   class185.field2767.method2418(var3, var3.hash);
                   --class185.field2774;
                   ++class185.field2766;
@@ -69,7 +69,7 @@ public class class165 {
                   var4 = new Buffer(4);
                   var4.putByte(0);
                   var4.put24bitInt((int)var3.hash);
-                  class185.field2770.method2105(var4.payload, 0, 4);
+                  class185.field2770.queueForWrite(var4.payload, 0, 4);
                   var3.method2495();
                   class185.field2772.method2418(var3, var3.hash);
                   --class185.field2771;

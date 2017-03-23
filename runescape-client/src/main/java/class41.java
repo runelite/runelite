@@ -166,7 +166,7 @@ public class class41 {
             Client.secretCipherBuffer1.putOpcode(210);
 
             try {
-               class20.field233.method2105(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
+               class20.field233.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
                Client.secretCipherBuffer1.offset = 0;
             } catch (IOException var2) {
                Client.field517 = true;

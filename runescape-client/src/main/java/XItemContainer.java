@@ -187,7 +187,7 @@ public class XItemContainer extends Node {
          if(Client.field406 == 2) {
             Client.secretCipherBuffer1.offset = 0;
             Client.secretCipherBuffer1.putByte(14);
-            class20.field233.method2105(Client.secretCipherBuffer1.payload, 0, 1);
+            class20.field233.queueForWrite(Client.secretCipherBuffer1.payload, 0, 1);
             Client.secretCipherBuffer2.offset = 0;
             Client.field406 = 3;
          }
@@ -309,7 +309,7 @@ public class XItemContainer extends Node {
             Client.field346.putInt(Ignore.field215.field2737);
             Client.field346.encryptXtea(var5, var2, Client.field346.offset);
             Client.field346.method3048(Client.field346.offset - var1);
-            class20.field233.method2105(Client.field346.payload, 0, Client.field346.offset);
+            class20.field233.queueForWrite(Client.field346.payload, 0, Client.field346.offset);
             Client.secretCipherBuffer1.seed(var5);
 
             for(int var4 = 0; var4 < 4; ++var4) {

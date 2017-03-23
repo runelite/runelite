@@ -1,4 +1,5 @@
 import java.applet.Applet;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -17,7 +18,8 @@ public class class101 extends RuntimeException {
    @ObfuscatedGetter(
       intValue = 72842679
    )
-   static int field1681;
+   @Export("revision")
+   static int revision;
 
    @ObfuscatedName("p")
    @ObfuscatedSignature(

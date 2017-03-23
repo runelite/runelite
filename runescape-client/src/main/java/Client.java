@@ -1449,23 +1449,23 @@ public final class Client extends GameEngine {
                }
 
                if(field303 == 2) {
-                  class30.field710 = new RSSocket((Socket)class175.field2662.field1690, class108.field1755);
+                  class30.rssocket = new RSSocket((Socket)class175.field2662.field1690, class108.field1755);
                   Buffer var1 = new Buffer(5);
                   var1.putByte(15);
                   var1.putInt(139);
-                  class30.field710.method2105(var1.payload, 0, 5);
+                  class30.rssocket.queueForWrite(var1.payload, 0, 5);
                   ++field303;
                   XGrandExchangeOffer.field40 = class45.method867();
                }
 
                if(field303 == 3) {
-                  if(gameState > 5 && class30.field710.method2108() <= 0) {
+                  if(gameState > 5 && class30.rssocket.method2108() <= 0) {
                      if(class45.method867() - XGrandExchangeOffer.field40 > 30000L) {
                         this.method246(-2);
                         return;
                      }
                   } else {
-                     int var2 = class30.field710.method2102();
+                     int var2 = class30.rssocket.method2102();
                      if(var2 != 0) {
                         this.method246(var2);
                         return;
@@ -1476,9 +1476,9 @@ public final class Client extends GameEngine {
                }
 
                if(field303 == 4) {
-                  class171.method3304(class30.field710, gameState > 20);
+                  class171.method3304(class30.rssocket, gameState > 20);
                   class175.field2662 = null;
-                  class30.field710 = null;
+                  class30.rssocket = null;
                   field303 = 0;
                   field333 = 0;
                }
@@ -1497,7 +1497,7 @@ public final class Client extends GameEngine {
    )
    void method246(int var1) {
       class175.field2662 = null;
-      class30.field710 = null;
+      class30.rssocket = null;
       field303 = 0;
       if(class99.field1671 == field431) {
          field431 = class0.field4;
@@ -3401,7 +3401,7 @@ public final class Client extends GameEngine {
 
                                                                try {
                                                                   if(null != class20.field233 && secretCipherBuffer1.offset > 0) {
-                                                                     class20.field233.method2105(secretCipherBuffer1.payload, 0, secretCipherBuffer1.offset);
+                                                                     class20.field233.queueForWrite(secretCipherBuffer1.payload, 0, secretCipherBuffer1.offset);
                                                                      secretCipherBuffer1.offset = 0;
                                                                      field436 = 0;
                                                                      return;
