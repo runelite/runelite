@@ -24,7 +24,8 @@ public final class Client extends GameEngine {
    @ObfuscatedName("c")
    static Client field308;
    @ObfuscatedName("cx")
-   static CipherBuffer field309;
+   @Export("secretCipherBuffer1")
+   static CipherBuffer secretCipherBuffer1;
    @ObfuscatedName("gh")
    @ObfuscatedGetter(
       intValue = -461626957
@@ -220,7 +221,8 @@ public final class Client extends GameEngine {
    @ObfuscatedName("cn")
    static CipherBuffer field356;
    @ObfuscatedName("cl")
-   static CipherBuffer field357;
+   @Export("secretCipherBuffer2")
+   static CipherBuffer secretCipherBuffer2;
    @ObfuscatedName("cy")
    @ObfuscatedGetter(
       intValue = 1755325733
@@ -1031,7 +1033,7 @@ public final class Client extends GameEngine {
    @ObfuscatedGetter(
       intValue = -432793345
    )
-   static int field571;
+   static int loginState;
    @ObfuscatedName("ou")
    static short field572;
    @ObfuscatedName("ob")
@@ -1288,7 +1290,7 @@ public final class Client extends GameEngine {
       } else if(gameState != 10 && gameState != 11) {
          if(gameState == 20) {
             GameEngine.method2240(this);
-            class47.method965();
+            class47.processLoginState();
          } else if(gameState == 25) {
             ChatMessages.method942(false);
             field389 = 0;
@@ -1573,8 +1575,8 @@ public final class Client extends GameEngine {
 
                   ObjectComposition.field2897.reset();
                   if(null != class16.field206) {
-                     field309.putOpcode(137);
-                     field309.putInt(1057001181);
+                     secretCipherBuffer1.putOpcode(137);
+                     secretCipherBuffer1.putInt(1057001181);
                   }
 
                   if(!isDynamicRegion) {
@@ -1596,7 +1598,7 @@ public final class Client extends GameEngine {
                   class187.setGameState(30);
                   class47.method950();
                   class167.method3192();
-                  field309.putOpcode(60);
+                  secretCipherBuffer1.putOpcode(60);
                   class103.method2046();
                }
             }
@@ -1608,7 +1610,7 @@ public final class Client extends GameEngine {
       if(gameState == 30) {
          class104.method2054();
       } else if(gameState == 40 || gameState == 45) {
-         class47.method965();
+         class47.processLoginState();
       }
 
    }
@@ -1705,7 +1707,7 @@ public final class Client extends GameEngine {
                      var6 = new Buffer(4);
                      var6.putByte(1);
                      var6.put24bitInt((int)var5.hash);
-                     class185.field2748.method2117(var6.payload, 0, 4);
+                     class185.field2748.queueForWrite(var6.payload, 0, 4);
                      class185.field2745.method2403(var5, var5.hash);
                      --class185.field2744;
                      ++class185.field2759;
@@ -1716,7 +1718,7 @@ public final class Client extends GameEngine {
                      var6 = new Buffer(4);
                      var6.putByte(0);
                      var6.put24bitInt((int)var5.hash);
-                     class185.field2748.method2117(var6.payload, 0, 4);
+                     class185.field2748.queueForWrite(var6.payload, 0, 4);
                      var5.method2476();
                      class185.field2750.method2403(var5, var5.hash);
                      --class185.field2749;
@@ -1938,7 +1940,7 @@ public final class Client extends GameEngine {
       field492 = 0;
       field340 = 0;
       field343 = 0;
-      field571 = 0;
+      loginState = 0;
       field471 = 0;
       field565 = 0;
       field347 = 0;
@@ -1948,9 +1950,9 @@ public final class Client extends GameEngine {
       field570 = new int['耀'];
       field353 = 0;
       field430 = new int[250];
-      field309 = new CipherBuffer(5000);
+      secretCipherBuffer1 = new CipherBuffer(5000);
       field356 = new CipherBuffer(5000);
-      field357 = new CipherBuffer(15000);
+      secretCipherBuffer2 = new CipherBuffer(15000);
       field358 = 0;
       packetOpcode = 0;
       field360 = 0;
@@ -2696,11 +2698,11 @@ public final class Client extends GameEngine {
                }
 
                if(field492 == 2) {
-                  Item.field909 = new class110((Socket)FileOnDisk.field1200.field1677, class72.field1193);
+                  Item.field909 = new RSSocket((Socket)FileOnDisk.field1200.field1677, class72.field1193);
                   Buffer var1 = new Buffer(5);
                   var1.putByte(15);
                   var1.putInt(138);
-                  Item.field909.method2117(var1.payload, 0, 5);
+                  Item.field909.queueForWrite(var1.payload, 0, 5);
                   ++field492;
                   class6.field63 = class99.method2005();
                }

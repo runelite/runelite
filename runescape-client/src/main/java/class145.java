@@ -74,7 +74,7 @@ public class class145 {
       signature = "(Lclass110;ZI)V",
       garbageValue = "-1658850232"
    )
-   public static void method2760(class110 var0, boolean var1) {
+   public static void method2760(RSSocket var0, boolean var1) {
       if(null != class185.field2748) {
          try {
             class185.field2748.method2115();
@@ -104,7 +104,7 @@ public class class145 {
                         var7.putByte(4);
                         var7.putByte(class185.field2756);
                         var7.putShort(0);
-                        class185.field2748.method2117(var7.payload, 0, 4);
+                        class185.field2748.queueForWrite(var7.payload, 0, 4);
                      } catch (IOException var5) {
                         try {
                            class185.field2748.method2115();

@@ -157,7 +157,7 @@ public final class class152 {
       if(var1 != null) {
          return var1;
       } else {
-         byte[] var2 = class110.field1763.getConfigData(var0, 0);
+         byte[] var2 = RSSocket.field1763.getConfigData(var0, 0);
          if(var2 == null) {
             return null;
          } else {

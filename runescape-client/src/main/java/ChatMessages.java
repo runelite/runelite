@@ -303,11 +303,11 @@ public class ChatMessages {
       if(Client.field497 >= 50 || var0) {
          Client.field497 = 0;
          if(!Client.field587 && null != class1.field15) {
-            Client.field309.putOpcode(184);
+            Client.secretCipherBuffer1.putOpcode(184);
 
             try {
-               class1.field15.method2117(Client.field309.payload, 0, Client.field309.offset);
-               Client.field309.offset = 0;
+               class1.field15.queueForWrite(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
+               Client.secretCipherBuffer1.offset = 0;
             } catch (IOException var2) {
                Client.field587 = true;
             }

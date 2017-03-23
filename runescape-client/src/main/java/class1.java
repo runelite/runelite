@@ -16,7 +16,7 @@ public class class1 {
    @ObfuscatedName("d")
    public static Comparator field14;
    @ObfuscatedName("cc")
-   static class110 field15;
+   static RSSocket field15;
    @ObfuscatedName("in")
    static Widget field16;
    @ObfuscatedName("c")

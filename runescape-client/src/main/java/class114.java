@@ -286,7 +286,7 @@ public class class114 {
                var0.method3881(FontTypeFace.method3880(var24), class41.loginWindowX + 180 - 70, var34, 16777215, 0);
                var34 += 15;
                var26 = "Password: ";
-               var27 = class41.field873;
+               var27 = class41.password;
                var28 = ScriptState.method172('*', var27.length());
                var0.method3881(var26 + var28, class41.loginWindowX + 180 - 108, var34, 16777215, 0);
                var34 += 15;
@@ -342,7 +342,7 @@ public class class114 {
                var0.method3881(FontTypeFace.method3880(var24) + (class41.loginIndex2 == 0 & Client.gameCycle % 40 < 20?class116.method2288(16776960) + "|":""), 180 + class41.loginWindowX - 70, var34, 16777215, 0);
                var34 += 15;
                var26 = "Password: ";
-               var27 = class41.field873;
+               var27 = class41.password;
                var28 = ScriptState.method172('*', var27.length());
                var0.method3881(var26 + var28 + (class41.loginIndex2 == 1 & Client.gameCycle % 40 < 20?class116.method2288(16776960) + "|":""), class41.loginWindowX + 180 - 108, var34, 16777215, 0);
                var34 += 15;

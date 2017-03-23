@@ -266,7 +266,7 @@ public final class class105 implements KeyListener, FocusListener {
          class161.field2130 = new int['耀'];
          if(var3) {
             class41.username = "";
-            class41.field873 = "";
+            class41.password = "";
          }
 
          CombatInfoListHolder.field781 = 0;

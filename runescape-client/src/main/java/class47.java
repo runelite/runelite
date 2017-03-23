@@ -200,13 +200,13 @@ public class class47 {
                   }
 
                   if(var15 != null) {
-                     Client.field309.putOpcode(157);
-                     Client.field309.method2864(Client.field490.item);
-                     Client.field309.method2864(Client.field486.index);
-                     Client.field309.method2865(Client.field490.index);
-                     Client.field309.method2909(Client.field486.item);
-                     Client.field309.method2873(Client.field490.id);
-                     Client.field309.putInt(Client.field486.id);
+                     Client.secretCipherBuffer1.putOpcode(157);
+                     Client.secretCipherBuffer1.method2864(Client.field490.item);
+                     Client.secretCipherBuffer1.method2864(Client.field486.index);
+                     Client.secretCipherBuffer1.method2865(Client.field490.index);
+                     Client.secretCipherBuffer1.method2909(Client.field486.item);
+                     Client.secretCipherBuffer1.method2873(Client.field490.id);
+                     Client.secretCipherBuffer1.putInt(Client.field486.id);
                   }
                }
             } else {
@@ -262,9 +262,9 @@ public class class47 {
       signature = "(I)V",
       garbageValue = "-1854459198"
    )
-   static final void method965() {
+   static final void processLoginState() {
       try {
-         if(Client.field571 == 0) {
+         if(Client.loginState == 0) {
             if(null != class1.field15) {
                class1.field15.method2115();
                class1.field15 = null;
@@ -273,10 +273,10 @@ public class class47 {
             WidgetNode.field213 = null;
             Client.field587 = false;
             Client.field471 = 0;
-            Client.field571 = 1;
+            Client.loginState = 1;
          }
 
-         if(Client.field571 == 1) {
+         if(Client.loginState == 1) {
             if(null == WidgetNode.field213) {
                WidgetNode.field213 = class72.field1193.method2022(WallObject.host, GameObject.field1636);
             }
@@ -286,22 +286,22 @@ public class class47 {
             }
 
             if(WidgetNode.field213.field1673 == 1) {
-               class1.field15 = new class110((Socket)WidgetNode.field213.field1677, class72.field1193);
+               class1.field15 = new RSSocket((Socket)WidgetNode.field213.field1677, class72.field1193);
                WidgetNode.field213 = null;
-               Client.field571 = 2;
+               Client.loginState = 2;
             }
          }
 
-         if(Client.field571 == 2) {
-            Client.field309.offset = 0;
-            Client.field309.putByte(14);
-            class1.field15.method2117(Client.field309.payload, 0, 1);
-            Client.field357.offset = 0;
-            Client.field571 = 3;
+         if(Client.loginState == 2) {
+            Client.secretCipherBuffer1.offset = 0;
+            Client.secretCipherBuffer1.putByte(14);
+            class1.field15.queueForWrite(Client.secretCipherBuffer1.payload, 0, 1);
+            Client.secretCipherBuffer2.offset = 0;
+            Client.loginState = 3;
          }
 
          int var0;
-         if(Client.field571 == 3) {
+         if(Client.loginState == 3) {
             if(Buffer.field2089 != null) {
                Buffer.field2089.method1123();
             }
@@ -324,57 +324,57 @@ public class class47 {
                return;
             }
 
-            Client.field357.offset = 0;
-            Client.field571 = 4;
+            Client.secretCipherBuffer2.offset = 0;
+            Client.loginState = 4;
          }
 
-         if(Client.field571 == 4) {
-            if(Client.field357.offset < 8) {
+         if(Client.loginState == 4) {
+            if(Client.secretCipherBuffer2.offset < 8) {
                var0 = class1.field15.method2116();
-               if(var0 > 8 - Client.field357.offset) {
-                  var0 = 8 - Client.field357.offset;
+               if(var0 > 8 - Client.secretCipherBuffer2.offset) {
+                  var0 = 8 - Client.secretCipherBuffer2.offset;
                }
 
                if(var0 > 0) {
-                  class1.field15.method2119(Client.field357.payload, Client.field357.offset, var0);
-                  Client.field357.offset += var0;
+                  class1.field15.method2119(Client.secretCipherBuffer2.payload, Client.secretCipherBuffer2.offset, var0);
+                  Client.secretCipherBuffer2.offset += var0;
                }
             }
 
-            if(Client.field357.offset == 8) {
-               Client.field357.offset = 0;
-               WidgetNode.field216 = Client.field357.readLong();
-               Client.field571 = 5;
+            if(Client.secretCipherBuffer2.offset == 8) {
+               Client.secretCipherBuffer2.offset = 0;
+               WidgetNode.field216 = Client.secretCipherBuffer2.readLong();
+               Client.loginState = 5;
             }
          }
 
          int var1;
          int var2;
-         if(Client.field571 == 5) {
-            int[] var8 = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(WidgetNode.field216 >> 32), (int)(WidgetNode.field216 & -1L)};
-            Client.field309.offset = 0;
-            Client.field309.putByte(1);
-            Client.field309.putByte(class41.field874.vmethod4085());
-            Client.field309.putInt(var8[0]);
-            Client.field309.putInt(var8[1]);
-            Client.field309.putInt(var8[2]);
-            Client.field309.putInt(var8[3]);
+         if(Client.loginState == 5) {
+            int[] secret = new int[]{(int)(Math.random() * 9.9999999E7D), (int)(Math.random() * 9.9999999E7D), (int)(WidgetNode.field216 >> 32), (int)(WidgetNode.field216 & -1L)};
+            Client.secretCipherBuffer1.offset = 0;
+            Client.secretCipherBuffer1.putByte(1);
+            Client.secretCipherBuffer1.putByte(class41.field874.vmethod4085());
+            Client.secretCipherBuffer1.putInt(secret[0]);
+            Client.secretCipherBuffer1.putInt(secret[1]);
+            Client.secretCipherBuffer1.putInt(secret[2]);
+            Client.secretCipherBuffer1.putInt(secret[3]);
             switch(class41.field874.field1642) {
             case 0:
-               Client.field309.putInt(((Integer)class8.field84.field722.get(Integer.valueOf(class152.method2814(class41.username)))).intValue());
-               Client.field309.offset += 4;
+               Client.secretCipherBuffer1.putInt(((Integer)class8.field84.field722.get(Integer.valueOf(class152.method2814(class41.username)))).intValue());
+               Client.secretCipherBuffer1.offset += 4;
                break;
             case 1:
             case 2:
-               Client.field309.put24bitInt(CombatInfoListHolder.field781);
-               Client.field309.offset += 5;
+               Client.secretCipherBuffer1.put24bitInt(CombatInfoListHolder.field781);
+               Client.secretCipherBuffer1.offset += 5;
                break;
             case 3:
-               Client.field309.offset += 8;
+               Client.secretCipherBuffer1.offset += 8;
             }
 
-            Client.field309.method2822(class41.field873);
-            Client.field309.method2852(class39.field833, class39.field834);
+            Client.secretCipherBuffer1.method2822(class41.password);
+            Client.secretCipherBuffer1.method2852(class39.field833, class39.field834);
             Client.field356.offset = 0;
             if(Client.gameState == 40) {
                Client.field356.putByte(18);
@@ -385,7 +385,7 @@ public class class47 {
             Client.field356.putShort(0);
             var1 = Client.field356.offset;
             Client.field356.putInt(138);
-            Client.field356.putBytes(Client.field309.payload, 0, Client.field309.offset);
+            Client.field356.putBytes(Client.secretCipherBuffer1.payload, 0, Client.secretCipherBuffer1.offset);
             var2 = Client.field356.offset;
             Client.field356.method2822(class41.username);
             Client.field356.putByte((Client.isResized?1:0) << 1 | (Client.field439?1:0));
@@ -437,68 +437,68 @@ public class class47 {
             Client.field356.putInt(KitDefinition.field2825.field2711);
             Client.field356.putInt(class99.field1655.field2711);
             Client.field356.putInt(class1.field12.field2711);
-            Client.field356.putInt(class110.field1763.field2711);
+            Client.field356.putInt(RSSocket.field1763.field2711);
             Client.field356.putInt(class140.field1965.field2711);
             Client.field356.putInt(class37.field820.field2711);
             Client.field356.putInt(Client.field460.field2711);
-            Client.field356.encryptXtea(var8, var2, Client.field356.offset);
+            Client.field356.encryptXtea(secret, var2, Client.field356.offset);
             Client.field356.method2945(Client.field356.offset - var1);
-            class1.field15.method2117(Client.field356.payload, 0, Client.field356.offset);
-            Client.field309.seed(var8);
+            class1.field15.queueForWrite(Client.field356.payload, 0, Client.field356.offset);
+            Client.secretCipherBuffer1.seed(secret);
 
             for(int var10 = 0; var10 < 4; ++var10) {
-               var8[var10] += 50;
+               secret[var10] += 50;
             }
 
-            Client.field357.seed(var8);
-            Client.field571 = 6;
+            Client.secretCipherBuffer2.seed(secret);
+            Client.loginState = 6;
          }
 
-         if(Client.field571 == 6 && class1.field15.method2116() > 0) {
+         if(Client.loginState == 6 && class1.field15.method2116() > 0) {
             var0 = class1.field15.method2118();
             if(var0 == 21 && Client.gameState == 20) {
-               Client.field571 = 7;
+               Client.loginState = 7;
             } else if(var0 == 2) {
-               Client.field571 = 9;
+               Client.loginState = 9;
             } else if(var0 == 15 && Client.gameState == 40) {
                Client.field358 = -1;
-               Client.field571 = 13;
+               Client.loginState = 13;
             } else if(var0 == 23 && Client.field565 < 1) {
                ++Client.field565;
-               Client.field571 = 0;
+               Client.loginState = 0;
             } else {
                if(var0 != 29) {
                   class8.method105(var0);
                   return;
                }
 
-               Client.field571 = 11;
+               Client.loginState = 11;
             }
          }
 
-         if(Client.field571 == 7 && class1.field15.method2116() > 0) {
+         if(Client.loginState == 7 && class1.field15.method2116() > 0) {
             Client.field347 = (class1.field15.method2118() + 3) * 60;
-            Client.field571 = 8;
+            Client.loginState = 8;
          }
 
-         if(Client.field571 == 8) {
+         if(Client.loginState == 8) {
             Client.field471 = 0;
             class5.method67("You have only just left another world.", "Your profile will be transferred in:", Client.field347 / 60 + " seconds.");
             if(--Client.field347 <= 0) {
-               Client.field571 = 0;
+               Client.loginState = 0;
             }
 
          } else {
-            if(Client.field571 == 9 && class1.field15.method2116() >= 13) {
+            if(Client.loginState == 9 && class1.field15.method2116() >= 13) {
                boolean var17 = class1.field15.method2118() == 1;
-               class1.field15.method2119(Client.field357.payload, 0, 4);
-               Client.field357.offset = 0;
+               class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 4);
+               Client.secretCipherBuffer2.offset = 0;
                boolean var16 = false;
                if(var17) {
-                  var1 = Client.field357.readOpcode() << 24;
-                  var1 |= Client.field357.readOpcode() << 16;
-                  var1 |= Client.field357.readOpcode() << 8;
-                  var1 |= Client.field357.readOpcode();
+                  var1 = Client.secretCipherBuffer2.readOpcode() << 24;
+                  var1 |= Client.secretCipherBuffer2.readOpcode() << 16;
+                  var1 |= Client.secretCipherBuffer2.readOpcode() << 8;
+                  var1 |= Client.secretCipherBuffer2.readOpcode();
                   var2 = class152.method2814(class41.username);
                   if(class8.field84.field722.size() >= 10 && !class8.field84.field722.containsKey(Integer.valueOf(var2))) {
                      Iterator var18 = class8.field84.field722.entrySet().iterator();
@@ -516,12 +516,12 @@ public class class47 {
                Client.localInteractingIndex <<= 8;
                Client.localInteractingIndex += class1.field15.method2118();
                Client.field529 = class1.field15.method2118();
-               class1.field15.method2119(Client.field357.payload, 0, 1);
-               Client.field357.offset = 0;
-               Client.packetOpcode = Client.field357.readOpcode();
-               class1.field15.method2119(Client.field357.payload, 0, 2);
-               Client.field357.offset = 0;
-               Client.field358 = Client.field357.readUnsignedShort();
+               class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 1);
+               Client.secretCipherBuffer2.offset = 0;
+               Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
+               class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 2);
+               Client.secretCipherBuffer2.offset = 0;
+               Client.field358 = Client.secretCipherBuffer2.readUnsignedShort();
 
                try {
                   Client var11 = Client.field308;
@@ -530,41 +530,41 @@ public class class47 {
                   ;
                }
 
-               Client.field571 = 10;
+               Client.loginState = 10;
             }
 
-            if(Client.field571 == 10) {
+            if(Client.loginState == 10) {
                if(class1.field15.method2116() >= Client.field358) {
-                  Client.field357.offset = 0;
-                  class1.field15.method2119(Client.field357.payload, 0, Client.field358);
+                  Client.secretCipherBuffer2.offset = 0;
+                  class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, Client.field358);
                   class154.method3038();
-                  Ignore.method216(Client.field357);
+                  Ignore.method216(Client.secretCipherBuffer2);
                   FileOnDisk.field1203 = -1;
                   FrameMap.xteaChanged(false);
                   Client.packetOpcode = -1;
                }
 
             } else {
-               if(Client.field571 == 11 && class1.field15.method2116() >= 2) {
-                  Client.field357.offset = 0;
-                  class1.field15.method2119(Client.field357.payload, 0, 2);
-                  Client.field357.offset = 0;
-                  FileOnDisk.field1201 = Client.field357.readUnsignedShort();
-                  Client.field571 = 12;
+               if(Client.loginState == 11 && class1.field15.method2116() >= 2) {
+                  Client.secretCipherBuffer2.offset = 0;
+                  class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 2);
+                  Client.secretCipherBuffer2.offset = 0;
+                  FileOnDisk.field1201 = Client.secretCipherBuffer2.readUnsignedShort();
+                  Client.loginState = 12;
                }
 
-               if(Client.field571 == 12 && class1.field15.method2116() >= FileOnDisk.field1201) {
-                  Client.field357.offset = 0;
-                  class1.field15.method2119(Client.field357.payload, 0, FileOnDisk.field1201);
-                  Client.field357.offset = 0;
-                  String var19 = Client.field357.readString();
-                  String var12 = Client.field357.readString();
-                  String var20 = Client.field357.readString();
+               if(Client.loginState == 12 && class1.field15.method2116() >= FileOnDisk.field1201) {
+                  Client.secretCipherBuffer2.offset = 0;
+                  class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, FileOnDisk.field1201);
+                  Client.secretCipherBuffer2.offset = 0;
+                  String var19 = Client.secretCipherBuffer2.readString();
+                  String var12 = Client.secretCipherBuffer2.readString();
+                  String var20 = Client.secretCipherBuffer2.readString();
                   class5.method67(var19, var12, var20);
                   class187.setGameState(10);
                }
 
-               if(Client.field571 != 13) {
+               if(Client.loginState != 13) {
                   ++Client.field471;
                   if(Client.field471 > 2000) {
                      if(Client.field565 < 1) {
@@ -575,7 +575,7 @@ public class class47 {
                         }
 
                         ++Client.field565;
-                        Client.field571 = 0;
+                        Client.loginState = 0;
                      } else {
                         class8.method105(-3);
                      }
@@ -586,17 +586,17 @@ public class class47 {
                         return;
                      }
 
-                     class1.field15.method2119(Client.field357.payload, 0, 2);
-                     Client.field357.offset = 0;
-                     Client.field358 = Client.field357.readUnsignedShort();
+                     class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 2);
+                     Client.secretCipherBuffer2.offset = 0;
+                     Client.field358 = Client.secretCipherBuffer2.readUnsignedShort();
                   }
 
                   if(class1.field15.method2116() >= Client.field358) {
-                     class1.field15.method2119(Client.field357.payload, 0, Client.field358);
-                     Client.field357.offset = 0;
+                     class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, Client.field358);
+                     Client.secretCipherBuffer2.offset = 0;
                      var0 = Client.field358;
-                     Client.field309.offset = 0;
-                     Client.field357.offset = 0;
+                     Client.secretCipherBuffer1.offset = 0;
+                     Client.secretCipherBuffer2.offset = 0;
                      Client.packetOpcode = -1;
                      Client.field483 = -1;
                      Client.field363 = -1;
@@ -632,8 +632,8 @@ public class class47 {
                      }
 
                      class45.method910();
-                     Ignore.method216(Client.field357);
-                     if(var0 != Client.field357.offset) {
+                     Ignore.method216(Client.secretCipherBuffer2);
+                     if(var0 != Client.secretCipherBuffer2.offset) {
                         throw new RuntimeException();
                      }
                   }
@@ -649,7 +649,7 @@ public class class47 {
             }
 
             ++Client.field565;
-            Client.field571 = 0;
+            Client.loginState = 0;
          } else {
             class8.method105(-2);
          }

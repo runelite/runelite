@@ -129,9 +129,9 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == -1) {
-               class1.field15.method2119(Client.field357.payload, 0, 1);
-               Client.field357.offset = 0;
-               Client.packetOpcode = Client.field357.readOpcode();
+               class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 1);
+               Client.secretCipherBuffer2.offset = 0;
+               Client.packetOpcode = Client.secretCipherBuffer2.readOpcode();
                Client.field358 = class212.field3135[Client.packetOpcode];
                --var0;
             }
@@ -141,8 +141,8 @@ public class class142 extends Node {
                   return false;
                }
 
-               class1.field15.method2119(Client.field357.payload, 0, 1);
-               Client.field358 = Client.field357.payload[0] & 255;
+               class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 1);
+               Client.field358 = Client.secretCipherBuffer2.payload[0] & 255;
                --var0;
             }
 
@@ -151,9 +151,9 @@ public class class142 extends Node {
                   return false;
                }
 
-               class1.field15.method2119(Client.field357.payload, 0, 2);
-               Client.field357.offset = 0;
-               Client.field358 = Client.field357.readUnsignedShort();
+               class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, 2);
+               Client.secretCipherBuffer2.offset = 0;
+               Client.field358 = Client.secretCipherBuffer2.readUnsignedShort();
                var0 -= 2;
             }
 
@@ -161,15 +161,15 @@ public class class142 extends Node {
                return false;
             }
 
-            Client.field357.offset = 0;
-            class1.field15.method2119(Client.field357.payload, 0, Client.field358);
+            Client.secretCipherBuffer2.offset = 0;
+            class1.field15.method2119(Client.secretCipherBuffer2.payload, 0, Client.field358);
             Client.field360 = 0;
             Client.field364 = Client.field363;
             Client.field363 = Client.field483;
             Client.field483 = Client.packetOpcode;
             if(Client.packetOpcode == 209) {
-               MessageNode.field261 = Client.field357.method2860();
-               class172.field2337 = Client.field357.method2860();
+               MessageNode.field261 = Client.secretCipherBuffer2.method2860();
+               class172.field2337 = Client.secretCipherBuffer2.method2860();
                Client.packetOpcode = -1;
                return true;
             }
@@ -177,8 +177,8 @@ public class class142 extends Node {
             int var1;
             Widget var3;
             if(Client.packetOpcode == 21) {
-               var1 = Client.field357.method3006();
-               var2 = Client.field357.method2869();
+               var1 = Client.secretCipherBuffer2.method3006();
+               var2 = Client.secretCipherBuffer2.method2869();
                var3 = World.method670(var1);
                if(var3.modelType != 1 || var3.modelId != var2) {
                   var3.modelType = 1;
@@ -197,11 +197,11 @@ public class class142 extends Node {
             int var21;
             if(Client.packetOpcode == 25) {
                Client.field440 = true;
-               class104.field1701 = Client.field357.readUnsignedByte();
-               FaceNormal.field1578 = Client.field357.readUnsignedByte();
-               Ignore.field240 = Client.field357.readUnsignedShort();
-               class97.field1646 = Client.field357.readUnsignedByte();
-               XGrandExchangeOffer.field47 = Client.field357.readUnsignedByte();
+               class104.field1701 = Client.secretCipherBuffer2.readUnsignedByte();
+               FaceNormal.field1578 = Client.secretCipherBuffer2.readUnsignedByte();
+               Ignore.field240 = Client.secretCipherBuffer2.readUnsignedShort();
+               class97.field1646 = Client.secretCipherBuffer2.readUnsignedByte();
+               XGrandExchangeOffer.field47 = Client.secretCipherBuffer2.readUnsignedByte();
                if(XGrandExchangeOffer.field47 >= 100) {
                   var1 = 64 + class104.field1701 * 128;
                   var2 = FaceNormal.field1578 * 128 + 64;
@@ -226,9 +226,9 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 88) {
-               var1 = Client.field357.readUnsignedShort();
-               var2 = Client.field357.readUnsignedByte();
-               var21 = Client.field357.readUnsignedShort();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
+               var2 = Client.secretCipherBuffer2.readUnsignedByte();
+               var21 = Client.secretCipherBuffer2.readUnsignedShort();
                method2719(var1, var2, var21);
                Client.packetOpcode = -1;
                return true;
@@ -236,10 +236,10 @@ public class class142 extends Node {
 
             boolean var75;
             if(Client.packetOpcode == 80) {
-               var75 = Client.field357.readUnsignedByte() == 1;
+               var75 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
                if(var75) {
-                  class177.field2662 = class99.method2005() - Client.field357.readLong();
-                  class104.field1702 = new class1(Client.field357, true);
+                  class177.field2662 = class99.method2005() - Client.secretCipherBuffer2.readLong();
+                  class104.field1702 = new class1(Client.secretCipherBuffer2, true);
                } else {
                   class104.field1702 = null;
                }
@@ -250,8 +250,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 41) {
-               var1 = Client.field357.readLittleEndianShort();
-               var2 = Client.field357.readInt();
+               var1 = Client.secretCipherBuffer2.readLittleEndianShort();
+               var2 = Client.secretCipherBuffer2.readInt();
                class165.settings[var1] = var2;
                if(class165.widgetSettings[var1] != var2) {
                   class165.widgetSettings[var1] = var2;
@@ -265,9 +265,9 @@ public class class142 extends Node {
 
             Widget var22;
             if(Client.packetOpcode == 68) {
-               var1 = Client.field357.readUnsignedShort();
-               var2 = Client.field357.readUnsignedShort();
-               var21 = Client.field357.method3006();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
+               var21 = Client.secretCipherBuffer2.method3006();
                var22 = World.method670(var21);
                var22.field2242 = var1 + (var2 << 16);
                Client.packetOpcode = -1;
@@ -277,9 +277,9 @@ public class class142 extends Node {
             int var8;
             WidgetNode var77;
             if(Client.packetOpcode == 24) {
-               var1 = Client.field358 + Client.field357.offset;
-               var2 = Client.field357.readUnsignedShort();
-               var21 = Client.field357.readUnsignedShort();
+               var1 = Client.field358 + Client.secretCipherBuffer2.offset;
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
+               var21 = Client.secretCipherBuffer2.readUnsignedShort();
                if(var2 != Client.widgetRoot) {
                   Client.widgetRoot = var2;
                   class94.method1978(false);
@@ -293,9 +293,9 @@ public class class142 extends Node {
 
                WidgetNode var84;
                for(; var21-- > 0; var84.field211 = true) {
-                  var4 = Client.field357.readInt();
-                  var5 = Client.field357.readUnsignedShort();
-                  var6 = Client.field357.readUnsignedByte();
+                  var4 = Client.secretCipherBuffer2.readInt();
+                  var5 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var6 = Client.secretCipherBuffer2.readUnsignedByte();
                   var84 = (WidgetNode)Client.componentTable.method2405((long)var4);
                   if(var84 != null && var84.id != var5) {
                      XGrandExchangeOffer.method65(var84, true);
@@ -317,11 +317,11 @@ public class class142 extends Node {
 
                Client.widgetFlags = new XHashTable(512);
 
-               while(Client.field357.offset < var1) {
-                  var4 = Client.field357.readInt();
-                  var5 = Client.field357.readUnsignedShort();
-                  var6 = Client.field357.readUnsignedShort();
-                  var7 = Client.field357.readInt();
+               while(Client.secretCipherBuffer2.offset < var1) {
+                  var4 = Client.secretCipherBuffer2.readInt();
+                  var5 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var6 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var7 = Client.secretCipherBuffer2.readInt();
 
                   for(var8 = var5; var8 <= var6; ++var8) {
                      long var9 = (long)var8 + ((long)var4 << 32);
@@ -340,8 +340,8 @@ public class class142 extends Node {
             if(Client.packetOpcode == 210) {
                Client.field436 = 0;
                Client.field353 = 0;
-               Client.field357.method3085();
-               var1 = Client.field357.method3097(8);
+               Client.secretCipherBuffer2.method3085();
+               var1 = Client.secretCipherBuffer2.method3097(8);
                if(var1 < Client.field351) {
                   for(var2 = var1; var2 < Client.field351; ++var2) {
                      Client.field437[++Client.field436 - 1] = Client.field570[var2];
@@ -357,12 +357,12 @@ public class class142 extends Node {
                for(var2 = 0; var2 < var1; ++var2) {
                   var21 = Client.field570[var2];
                   var83 = Client.cachedNPCs[var21];
-                  var5 = Client.field357.method3097(1);
+                  var5 = Client.secretCipherBuffer2.method3097(1);
                   if(var5 == 0) {
                      Client.field570[++Client.field351 - 1] = var21;
                      var83.field648 = Client.gameCycle;
                   } else {
-                     var6 = Client.field357.method3097(2);
+                     var6 = Client.secretCipherBuffer2.method3097(2);
                      if(var6 == 0) {
                         Client.field570[++Client.field351 - 1] = var21;
                         var83.field648 = Client.gameCycle;
@@ -370,20 +370,20 @@ public class class142 extends Node {
                      } else if(var6 == 1) {
                         Client.field570[++Client.field351 - 1] = var21;
                         var83.field648 = Client.gameCycle;
-                        var7 = Client.field357.method3097(3);
+                        var7 = Client.secretCipherBuffer2.method3097(3);
                         var83.method779(var7, (byte)1);
-                        var8 = Client.field357.method3097(1);
+                        var8 = Client.secretCipherBuffer2.method3097(1);
                         if(var8 == 1) {
                            Client.field430[++Client.field353 - 1] = var21;
                         }
                      } else if(var6 == 2) {
                         Client.field570[++Client.field351 - 1] = var21;
                         var83.field648 = Client.gameCycle;
-                        var7 = Client.field357.method3097(3);
+                        var7 = Client.secretCipherBuffer2.method3097(3);
                         var83.method779(var7, (byte)2);
-                        var8 = Client.field357.method3097(3);
+                        var8 = Client.secretCipherBuffer2.method3097(3);
                         var83.method779(var8, (byte)2);
-                        var24 = Client.field357.method3097(1);
+                        var24 = Client.secretCipherBuffer2.method3097(1);
                         if(var24 == 1) {
                            Client.field430[++Client.field353 - 1] = var21;
                         }
@@ -393,8 +393,8 @@ public class class142 extends Node {
                   }
                }
 
-               while(Client.field357.method3080(Client.field358) >= 27) {
-                  var1 = Client.field357.method3097(15);
+               while(Client.secretCipherBuffer2.method3080(Client.field358) >= 27) {
+                  var1 = Client.secretCipherBuffer2.method3097(15);
                   if(var1 == 32767) {
                      break;
                   }
@@ -408,28 +408,28 @@ public class class142 extends Node {
                   var66 = Client.cachedNPCs[var1];
                   Client.field570[++Client.field351 - 1] = var1;
                   var66.field648 = Client.gameCycle;
-                  var4 = Client.field357.method3097(5);
+                  var4 = Client.secretCipherBuffer2.method3097(5);
                   if(var4 > 15) {
                      var4 -= 32;
                   }
 
-                  var5 = Client.field441[Client.field357.method3097(3)];
+                  var5 = Client.field441[Client.secretCipherBuffer2.method3097(3)];
                   if(var59) {
                      var66.field676 = var66.angle = var5;
                   }
 
-                  var66.composition = VertexNormal.getNpcDefinition(Client.field357.method3097(14));
-                  var6 = Client.field357.method3097(5);
+                  var66.composition = VertexNormal.getNpcDefinition(Client.secretCipherBuffer2.method3097(14));
+                  var6 = Client.secretCipherBuffer2.method3097(5);
                   if(var6 > 15) {
                      var6 -= 32;
                   }
 
-                  var7 = Client.field357.method3097(1);
+                  var7 = Client.secretCipherBuffer2.method3097(1);
                   if(var7 == 1) {
                      Client.field430[++Client.field353 - 1] = var1;
                   }
 
-                  var8 = Client.field357.method3097(1);
+                  var8 = Client.secretCipherBuffer2.method3097(1);
                   var66.field672 = var66.composition.field3008;
                   var66.field678 = var66.composition.field3031;
                   if(var66.field678 == 0) {
@@ -446,7 +446,7 @@ public class class142 extends Node {
                   var66.method783(var4 + class22.localPlayer.pathX[0], class22.localPlayer.pathY[0] + var6, var8 == 1);
                }
 
-               Client.field357.method3082();
+               Client.secretCipherBuffer2.method3082();
                CombatInfo2.method3555();
 
                for(var1 = 0; var1 < Client.field436; ++var1) {
@@ -457,8 +457,8 @@ public class class142 extends Node {
                   }
                }
 
-               if(Client.field358 != Client.field357.offset) {
-                  throw new RuntimeException(Client.field357.offset + "," + Client.field358);
+               if(Client.field358 != Client.secretCipherBuffer2.offset) {
+                  throw new RuntimeException(Client.secretCipherBuffer2.offset + "," + Client.field358);
                }
 
                for(var1 = 0; var1 < Client.field351; ++var1) {
@@ -472,9 +472,9 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 118) {
-               Client.field357.offset += 28;
-               if(Client.field357.method2885()) {
-                  class22.method237(Client.field357, Client.field357.offset - 28);
+               Client.secretCipherBuffer2.offset += 28;
+               if(Client.secretCipherBuffer2.method2885()) {
+                  class22.method237(Client.secretCipherBuffer2, Client.secretCipherBuffer2.offset - 28);
                }
 
                Client.packetOpcode = -1;
@@ -482,22 +482,22 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 14) {
-               Client.field549 = Client.field357.readUnsignedByte();
+               Client.field549 = Client.secretCipherBuffer2.readUnsignedByte();
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 223) {
                class13.method198();
-               Client.weight = Client.field357.readShort();
+               Client.weight = Client.secretCipherBuffer2.readShort();
                Client.field510 = Client.field498;
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 156) {
-               var1 = Client.field357.readInt();
-               var2 = Client.field357.readUnsignedShort();
+               var1 = Client.secretCipherBuffer2.readInt();
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
                if(var1 < -70000) {
                   var2 += '耀';
                }
@@ -516,15 +516,15 @@ public class class142 extends Node {
                }
 
                class155.method3046(var2);
-               var4 = Client.field357.readUnsignedShort();
+               var4 = Client.secretCipherBuffer2.readUnsignedShort();
 
                for(var5 = 0; var5 < var4; ++var5) {
-                  var6 = Client.field357.method2858();
+                  var6 = Client.secretCipherBuffer2.method2858();
                   if(var6 == 255) {
-                     var6 = Client.field357.readInt();
+                     var6 = Client.secretCipherBuffer2.readInt();
                   }
 
-                  var7 = Client.field357.readLittleEndianShort();
+                  var7 = Client.secretCipherBuffer2.readLittleEndianShort();
                   if(null != var3 && var5 < var3.itemIds.length) {
                      var3.itemIds[var5] = var7;
                      var3.itemQuantities[var5] = var6;
@@ -544,7 +544,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 47) {
-               var1 = Client.field357.method2869();
+               var1 = Client.secretCipherBuffer2.method2869();
                CombatInfoListHolder.method775(var1);
                Client.interfaceItemTriggers[++Client.field502 - 1 & 31] = var1 & 32767;
                Client.packetOpcode = -1;
@@ -568,11 +568,11 @@ public class class142 extends Node {
             long var28;
             long var31;
             if(Client.packetOpcode == 237) {
-               var25 = Client.field357.readString();
-               var26 = (long)Client.field357.readUnsignedShort();
-               var28 = (long)Client.field357.read24BitInt();
+               var25 = Client.secretCipherBuffer2.readString();
+               var26 = (long)Client.secretCipherBuffer2.readUnsignedShort();
+               var28 = (long)Client.secretCipherBuffer2.read24BitInt();
                class177[] var95 = new class177[]{class177.field2655, class177.field2659, class177.field2653, class177.field2652, class177.field2657, class177.field2654};
-               class177 var82 = (class177)class5.method77(var95, Client.field357.readUnsignedByte());
+               class177 var82 = (class177)class5.method77(var95, Client.secretCipherBuffer2.readUnsignedByte());
                var31 = var28 + (var26 << 32);
                boolean var70 = false;
 
@@ -590,7 +590,7 @@ public class class142 extends Node {
                if(!var70 && Client.field432 == 0) {
                   Client.field555[Client.field535] = var31;
                   Client.field535 = (Client.field535 + 1) % 100;
-                  String var96 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(Client.field357)));
+                  String var96 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(Client.secretCipherBuffer2)));
                   byte var74;
                   if(var82.field2661) {
                      var74 = 7;
@@ -610,8 +610,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 201) {
-               var1 = Client.field357.readUnsignedShort();
-               var2 = Client.field357.method3006();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
+               var2 = Client.secretCipherBuffer2.method3006();
                var3 = World.method670(var2);
                if(null != var3 && var3.type == 0) {
                   if(var1 > var3.scrollHeight - var3.height) {
@@ -636,22 +636,22 @@ public class class142 extends Node {
             boolean var62;
             String var98;
             if(Client.packetOpcode == 221) {
-               while(Client.field357.offset < Client.field358) {
-                  var75 = Client.field357.readUnsignedByte() == 1;
-                  var98 = Client.field357.readString();
-                  var60 = Client.field357.readString();
-                  var4 = Client.field357.readUnsignedShort();
-                  var5 = Client.field357.readUnsignedByte();
-                  var6 = Client.field357.readUnsignedByte();
+               while(Client.secretCipherBuffer2.offset < Client.field358) {
+                  var75 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
+                  var98 = Client.secretCipherBuffer2.readString();
+                  var60 = Client.secretCipherBuffer2.readString();
+                  var4 = Client.secretCipherBuffer2.readUnsignedShort();
+                  var5 = Client.secretCipherBuffer2.readUnsignedByte();
+                  var6 = Client.secretCipherBuffer2.readUnsignedByte();
                   boolean var67 = (var6 & 2) != 0;
                   boolean var71 = (var6 & 1) != 0;
                   if(var4 > 0) {
-                     Client.field357.readString();
-                     Client.field357.readUnsignedByte();
-                     Client.field357.readInt();
+                     Client.secretCipherBuffer2.readString();
+                     Client.secretCipherBuffer2.readUnsignedByte();
+                     Client.secretCipherBuffer2.readInt();
                   }
 
-                  Client.field357.readString();
+                  Client.secretCipherBuffer2.readString();
 
                   for(var24 = 0; var24 < Client.friendCount; ++var24) {
                      Friend var99 = Client.friends[var24];
@@ -755,9 +755,9 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 208) {
                World var90 = new World();
-               var90.address = Client.field357.readString();
-               var90.id = Client.field357.readUnsignedShort();
-               var2 = Client.field357.readInt();
+               var90.address = Client.secretCipherBuffer2.readString();
+               var90.id = Client.secretCipherBuffer2.readUnsignedShort();
+               var2 = Client.secretCipherBuffer2.readInt();
                var90.mask = var2;
                class187.setGameState(45);
                class1.field15.method2115();
@@ -768,14 +768,14 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 49) {
-               Client.field307 = Client.field357.readUnsignedByte();
-               Client.field532 = Client.field357.readUnsignedByte();
+               Client.field307 = Client.secretCipherBuffer2.readUnsignedByte();
+               Client.field532 = Client.secretCipherBuffer2.readUnsignedByte();
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 28) {
-               var1 = Client.field357.readUnsignedShort();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
                Client.widgetRoot = var1;
                class94.method1978(false);
                class195.method3577(var1);
@@ -801,7 +801,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 92) {
-               var2 = Client.field357.readUnsignedByte();
+               var2 = Client.secretCipherBuffer2.readUnsignedByte();
                class216[] var68 = new class216[]{class216.field3178, class216.field3181, class216.field3179};
                class216[] var85 = var68;
                var5 = 0;
@@ -828,7 +828,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 195) {
-               var1 = Client.field357.readLittleEndianShort();
+               var1 = Client.secretCipherBuffer2.readLittleEndianShort();
                if(var1 == '\uffff') {
                   var1 = -1;
                }
@@ -855,8 +855,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 60) {
-               var1 = Client.field357.method2872();
-               var2 = Client.field357.readUnsignedShort();
+               var1 = Client.secretCipherBuffer2.method2872();
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
                if(var2 == '\uffff') {
                   var2 = -1;
                }
@@ -877,9 +877,9 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 61) {
-               var1 = Client.field357.method2997();
-               var98 = Client.field357.readString();
-               var21 = Client.field357.readUnsignedByte();
+               var1 = Client.secretCipherBuffer2.method2997();
+               var98 = Client.secretCipherBuffer2.readString();
+               var21 = Client.secretCipherBuffer2.readUnsignedByte();
                if(var21 >= 1 && var21 <= 8) {
                   if(var98.equalsIgnoreCase("null")) {
                      var98 = null;
@@ -895,11 +895,11 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 129) {
                Client.field440 = true;
-               class103.field1685 = Client.field357.readUnsignedByte();
-               class204.field3090 = Client.field357.readUnsignedByte();
-               ObjectComposition.field2945 = Client.field357.readUnsignedShort();
-               class47.field950 = Client.field357.readUnsignedByte();
-               class9.field100 = Client.field357.readUnsignedByte();
+               class103.field1685 = Client.secretCipherBuffer2.readUnsignedByte();
+               class204.field3090 = Client.secretCipherBuffer2.readUnsignedByte();
+               ObjectComposition.field2945 = Client.secretCipherBuffer2.readUnsignedShort();
+               class47.field950 = Client.secretCipherBuffer2.readUnsignedByte();
+               class9.field100 = Client.secretCipherBuffer2.readUnsignedByte();
                if(class9.field100 >= 100) {
                   class65.cameraX = 64 + class103.field1685 * 128;
                   CombatInfoListHolder.cameraY = class204.field3090 * 128 + 64;
@@ -912,10 +912,10 @@ public class class142 extends Node {
 
             Widget var107;
             if(Client.packetOpcode == 217) {
-               var1 = Client.field357.method2869();
-               var2 = Client.field357.method2869();
-               var21 = Client.field357.readLittleEndianShort();
-               var4 = Client.field357.method2876();
+               var1 = Client.secretCipherBuffer2.method2869();
+               var2 = Client.secretCipherBuffer2.method2869();
+               var21 = Client.secretCipherBuffer2.readLittleEndianShort();
+               var4 = Client.secretCipherBuffer2.method2876();
                var107 = World.method670(var4);
                if(var107.rotationX != var1 || var107.rotationZ != var2 || var107.field2240 != var21) {
                   var107.rotationX = var1;
@@ -931,8 +931,8 @@ public class class142 extends Node {
             if(Client.packetOpcode == 43) {
                Client.field436 = 0;
                Client.field353 = 0;
-               Client.field357.method3085();
-               var1 = Client.field357.method3097(8);
+               Client.secretCipherBuffer2.method3085();
+               var1 = Client.secretCipherBuffer2.method3097(8);
                if(var1 < Client.field351) {
                   for(var2 = var1; var2 < Client.field351; ++var2) {
                      Client.field437[++Client.field436 - 1] = Client.field570[var2];
@@ -948,12 +948,12 @@ public class class142 extends Node {
                for(var2 = 0; var2 < var1; ++var2) {
                   var21 = Client.field570[var2];
                   var83 = Client.cachedNPCs[var21];
-                  var5 = Client.field357.method3097(1);
+                  var5 = Client.secretCipherBuffer2.method3097(1);
                   if(var5 == 0) {
                      Client.field570[++Client.field351 - 1] = var21;
                      var83.field648 = Client.gameCycle;
                   } else {
-                     var6 = Client.field357.method3097(2);
+                     var6 = Client.secretCipherBuffer2.method3097(2);
                      if(var6 == 0) {
                         Client.field570[++Client.field351 - 1] = var21;
                         var83.field648 = Client.gameCycle;
@@ -961,20 +961,20 @@ public class class142 extends Node {
                      } else if(var6 == 1) {
                         Client.field570[++Client.field351 - 1] = var21;
                         var83.field648 = Client.gameCycle;
-                        var7 = Client.field357.method3097(3);
+                        var7 = Client.secretCipherBuffer2.method3097(3);
                         var83.method779(var7, (byte)1);
-                        var8 = Client.field357.method3097(1);
+                        var8 = Client.secretCipherBuffer2.method3097(1);
                         if(var8 == 1) {
                            Client.field430[++Client.field353 - 1] = var21;
                         }
                      } else if(var6 == 2) {
                         Client.field570[++Client.field351 - 1] = var21;
                         var83.field648 = Client.gameCycle;
-                        var7 = Client.field357.method3097(3);
+                        var7 = Client.secretCipherBuffer2.method3097(3);
                         var83.method779(var7, (byte)2);
-                        var8 = Client.field357.method3097(3);
+                        var8 = Client.secretCipherBuffer2.method3097(3);
                         var83.method779(var8, (byte)2);
-                        var24 = Client.field357.method3097(1);
+                        var24 = Client.secretCipherBuffer2.method3097(1);
                         if(var24 == 1) {
                            Client.field430[++Client.field353 - 1] = var21;
                         }
@@ -984,8 +984,8 @@ public class class142 extends Node {
                   }
                }
 
-               while(Client.field357.method3080(Client.field358) >= 27) {
-                  var1 = Client.field357.method3097(15);
+               while(Client.secretCipherBuffer2.method3080(Client.field358) >= 27) {
+                  var1 = Client.secretCipherBuffer2.method3097(15);
                   if(var1 == 32767) {
                      break;
                   }
@@ -999,28 +999,28 @@ public class class142 extends Node {
                   var66 = Client.cachedNPCs[var1];
                   Client.field570[++Client.field351 - 1] = var1;
                   var66.field648 = Client.gameCycle;
-                  var4 = Client.field357.method3097(8);
+                  var4 = Client.secretCipherBuffer2.method3097(8);
                   if(var4 > 127) {
                      var4 -= 256;
                   }
 
-                  var5 = Client.field441[Client.field357.method3097(3)];
+                  var5 = Client.field441[Client.secretCipherBuffer2.method3097(3)];
                   if(var59) {
                      var66.field676 = var66.angle = var5;
                   }
 
-                  var66.composition = VertexNormal.getNpcDefinition(Client.field357.method3097(14));
-                  var6 = Client.field357.method3097(8);
+                  var66.composition = VertexNormal.getNpcDefinition(Client.secretCipherBuffer2.method3097(14));
+                  var6 = Client.secretCipherBuffer2.method3097(8);
                   if(var6 > 127) {
                      var6 -= 256;
                   }
 
-                  var7 = Client.field357.method3097(1);
+                  var7 = Client.secretCipherBuffer2.method3097(1);
                   if(var7 == 1) {
                      Client.field430[++Client.field353 - 1] = var1;
                   }
 
-                  var8 = Client.field357.method3097(1);
+                  var8 = Client.secretCipherBuffer2.method3097(1);
                   var66.field672 = var66.composition.field3008;
                   var66.field678 = var66.composition.field3031;
                   if(var66.field678 == 0) {
@@ -1037,7 +1037,7 @@ public class class142 extends Node {
                   var66.method783(class22.localPlayer.pathX[0] + var4, class22.localPlayer.pathY[0] + var6, var8 == 1);
                }
 
-               Client.field357.method3082();
+               Client.secretCipherBuffer2.method3082();
                CombatInfo2.method3555();
 
                for(var1 = 0; var1 < Client.field436; ++var1) {
@@ -1048,8 +1048,8 @@ public class class142 extends Node {
                   }
                }
 
-               if(Client.field357.offset != Client.field358) {
-                  throw new RuntimeException(Client.field357.offset + "," + Client.field358);
+               if(Client.secretCipherBuffer2.offset != Client.field358) {
+                  throw new RuntimeException(Client.secretCipherBuffer2.offset + "," + Client.field358);
                }
 
                for(var1 = 0; var1 < Client.field351; ++var1) {
@@ -1063,10 +1063,10 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 202) {
-               var1 = Client.field357.readUnsignedByte();
-               var2 = Client.field357.readUnsignedByte();
-               var21 = Client.field357.readUnsignedByte();
-               var4 = Client.field357.readUnsignedByte();
+               var1 = Client.secretCipherBuffer2.readUnsignedByte();
+               var2 = Client.secretCipherBuffer2.readUnsignedByte();
+               var21 = Client.secretCipherBuffer2.readUnsignedByte();
+               var4 = Client.secretCipherBuffer2.readUnsignedByte();
                Client.field508[var1] = true;
                Client.field563[var1] = var2;
                Client.field564[var1] = var21;
@@ -1078,9 +1078,9 @@ public class class142 extends Node {
 
             boolean var61;
             if(Client.packetOpcode == 155) {
-               var25 = Client.field357.readString();
-               var2 = Client.field357.readUnsignedShort();
-               byte var86 = Client.field357.readByte();
+               var25 = Client.secretCipherBuffer2.readString();
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
+               byte var86 = Client.secretCipherBuffer2.readByte();
                var62 = false;
                if(var86 == -128) {
                   var62 = true;
@@ -1108,7 +1108,7 @@ public class class142 extends Node {
                      class137.clanMembers[class9.clanChatCount] = null;
                   }
                } else {
-                  Client.field357.readString();
+                  Client.secretCipherBuffer2.readString();
                   XClanMember var109 = new XClanMember();
                   var109.username = var25;
                   var109.field304 = GroundObject.method1598(var109.username, class165.field2155);
@@ -1166,8 +1166,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 170) {
-               class172.field2337 = Client.field357.readUnsignedByte();
-               MessageNode.field261 = Client.field357.readUnsignedByte();
+               class172.field2337 = Client.secretCipherBuffer2.readUnsignedByte();
+               MessageNode.field261 = Client.secretCipherBuffer2.readUnsignedByte();
 
                for(var1 = class172.field2337; var1 < 8 + class172.field2337; ++var1) {
                   for(var2 = MessageNode.field261; var2 < MessageNode.field261 + 8; ++var2) {
@@ -1189,18 +1189,18 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 247) {
-               var25 = Client.field357.readString();
+               var25 = Client.secretCipherBuffer2.readString();
                Object[] var101 = new Object[var25.length() + 1];
 
                for(var21 = var25.length() - 1; var21 >= 0; --var21) {
                   if(var25.charAt(var21) == 115) {
-                     var101[1 + var21] = Client.field357.readString();
+                     var101[1 + var21] = Client.secretCipherBuffer2.readString();
                   } else {
-                     var101[var21 + 1] = new Integer(Client.field357.readInt());
+                     var101[var21 + 1] = new Integer(Client.secretCipherBuffer2.readInt());
                   }
                }
 
-               var101[0] = new Integer(Client.field357.readInt());
+               var101[0] = new Integer(Client.secretCipherBuffer2.readInt());
                class18 var65 = new class18();
                var65.field232 = var101;
                Frames.method1963(var65);
@@ -1209,8 +1209,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 122) {
-               var1 = Client.field357.readLittleEndianShort();
-               byte var69 = Client.field357.method2897();
+               var1 = Client.secretCipherBuffer2.readLittleEndianShort();
+               byte var69 = Client.secretCipherBuffer2.method2897();
                class165.settings[var1] = var69;
                if(var69 != class165.widgetSettings[var1]) {
                   class165.widgetSettings[var1] = var69;
@@ -1223,18 +1223,18 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 179) {
-               var1 = Client.field357.method3013();
-               var59 = Client.field357.readUnsignedByte() == 1;
+               var1 = Client.secretCipherBuffer2.method3013();
+               var59 = Client.secretCipherBuffer2.readUnsignedByte() == 1;
                var60 = "";
                var62 = false;
                if(var59) {
-                  var60 = Client.field357.readString();
+                  var60 = Client.secretCipherBuffer2.readString();
                   if(GameEngine.method2242(var60)) {
                      var62 = true;
                   }
                }
 
-               String var108 = Client.field357.readString();
+               String var108 = Client.secretCipherBuffer2.readString();
                if(!var62) {
                   class30.sendGameMessage(var1, var60, var108);
                }
@@ -1244,16 +1244,16 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 72) {
-               var25 = Client.field357.readString();
-               var98 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(Client.field357)));
+               var25 = Client.secretCipherBuffer2.readString();
+               var98 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(Client.secretCipherBuffer2)));
                class30.sendGameMessage(6, var25, var98);
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 242) {
-               var1 = Client.field357.method2868();
-               var2 = Client.field357.method2870();
+               var1 = Client.secretCipherBuffer2.method2868();
+               var2 = Client.secretCipherBuffer2.method2870();
                var3 = World.method670(var1);
                if(var3.field2233 != var2 || var2 == -1) {
                   var3.field2233 = var2;
@@ -1269,8 +1269,8 @@ public class class142 extends Node {
             long var41;
             long var43;
             if(Client.packetOpcode == 65) {
-               var1 = Client.field357.readInt();
-               var2 = Client.field357.readInt();
+               var1 = Client.secretCipherBuffer2.readInt();
+               var2 = Client.secretCipherBuffer2.readInt();
                if(class39.field832 == null || !class39.field832.isValid()) {
                   try {
                      Iterator var64 = ManagementFactory.getGarbageCollectorMXBeans().iterator();
@@ -1304,11 +1304,11 @@ public class class142 extends Node {
                   Client.field591 = var39;
                }
 
-               Client.field309.putOpcode(178);
-               Client.field309.putInt(var1);
-               Client.field309.method2874(var2);
-               Client.field309.method2962(GameEngine.FPS);
-               Client.field309.method2962(var5);
+               Client.secretCipherBuffer1.putOpcode(178);
+               Client.secretCipherBuffer1.putInt(var1);
+               Client.secretCipherBuffer1.method2874(var2);
+               Client.secretCipherBuffer1.method2962(GameEngine.FPS);
+               Client.secretCipherBuffer1.method2962(var5);
                Client.packetOpcode = -1;
                return true;
             }
@@ -1332,16 +1332,16 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 167) {
                FrameMap.xteaChanged(false);
-               Client.field357.readOpcode();
-               var1 = Client.field357.readUnsignedShort();
-               class18.method209(Client.field357, var1);
+               Client.secretCipherBuffer2.readOpcode();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
+               class18.method209(Client.secretCipherBuffer2, var1);
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 119) {
-               var1 = Client.field357.readInt();
-               var2 = Client.field357.method3006();
+               var1 = Client.secretCipherBuffer2.readInt();
+               var2 = Client.secretCipherBuffer2.method3006();
                WidgetNode var63 = (WidgetNode)Client.componentTable.method2405((long)var2);
                var77 = (WidgetNode)Client.componentTable.method2405((long)var1);
                if(var77 != null) {
@@ -1392,7 +1392,7 @@ public class class142 extends Node {
 
             Widget var97;
             if(Client.packetOpcode == 133) {
-               var1 = Client.field357.readInt();
+               var1 = Client.secretCipherBuffer2.readInt();
                var97 = World.method670(var1);
 
                for(var21 = 0; var21 < var97.itemIds.length; ++var21) {
@@ -1406,13 +1406,13 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 86) {
-               var1 = Client.field357.readUnsignedByte();
-               if(Client.field357.readUnsignedByte() == 0) {
+               var1 = Client.secretCipherBuffer2.readUnsignedByte();
+               if(Client.secretCipherBuffer2.readUnsignedByte() == 0) {
                   Client.grandExchangeOffers[var1] = new XGrandExchangeOffer();
-                  Client.field357.offset += 18;
+                  Client.secretCipherBuffer2.offset += 18;
                } else {
-                  --Client.field357.offset;
-                  Client.grandExchangeOffers[var1] = new XGrandExchangeOffer(Client.field357, false);
+                  --Client.secretCipherBuffer2.offset;
+                  Client.grandExchangeOffers[var1] = new XGrandExchangeOffer(Client.secretCipherBuffer2, false);
                }
 
                Client.field545 = Client.field498;
@@ -1422,7 +1422,7 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 151) {
                class13.method198();
-               Client.energy = Client.field357.readUnsignedByte();
+               Client.energy = Client.secretCipherBuffer2.readUnsignedByte();
                Client.field510 = Client.field498;
                Client.packetOpcode = -1;
                return true;
@@ -1435,18 +1435,18 @@ public class class142 extends Node {
                   Client.cachedPlayers[var1] = null;
                }
 
-               Ignore.method216(Client.field357);
+               Ignore.method216(Client.secretCipherBuffer2);
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 166) {
-               while(Client.field357.offset < Client.field358) {
-                  var1 = Client.field357.readUnsignedByte();
+               while(Client.secretCipherBuffer2.offset < Client.field358) {
+                  var1 = Client.secretCipherBuffer2.readUnsignedByte();
                   var59 = (var1 & 1) == 1;
-                  var60 = Client.field357.readString();
-                  String var78 = Client.field357.readString();
-                  Client.field357.readString();
+                  var60 = Client.secretCipherBuffer2.readString();
+                  String var78 = Client.secretCipherBuffer2.readString();
+                  Client.secretCipherBuffer2.readString();
 
                   for(var5 = 0; var5 < Client.ignoreCount; ++var5) {
                      Ignore var92 = Client.ignores[var5];
@@ -1481,12 +1481,12 @@ public class class142 extends Node {
 
             int var13;
             if(Client.packetOpcode == 238) {
-               var25 = Client.field357.readString();
-               var26 = Client.field357.readLong();
-               var28 = (long)Client.field357.readUnsignedShort();
-               var41 = (long)Client.field357.read24BitInt();
+               var25 = Client.secretCipherBuffer2.readString();
+               var26 = Client.secretCipherBuffer2.readLong();
+               var28 = (long)Client.secretCipherBuffer2.readUnsignedShort();
+               var41 = (long)Client.secretCipherBuffer2.read24BitInt();
                class177[] var111 = new class177[]{class177.field2655, class177.field2659, class177.field2653, class177.field2652, class177.field2657, class177.field2654};
-               class177 var104 = (class177)class5.method77(var111, Client.field357.readUnsignedByte());
+               class177 var104 = (class177)class5.method77(var111, Client.secretCipherBuffer2.readUnsignedByte());
                var43 = (var28 << 32) + var41;
                boolean var73 = false;
 
@@ -1504,7 +1504,7 @@ public class class142 extends Node {
                if(!var73 && Client.field432 == 0) {
                   Client.field555[Client.field535] = var43;
                   Client.field535 = (Client.field535 + 1) % 100;
-                  String var112 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(Client.field357)));
+                  String var112 = FontTypeFace.method3880(XGrandExchangeOffer.method64(class174.method3270(Client.secretCipherBuffer2)));
                   if(var104.field2658 != -1) {
                      class8.addChatMessage(9, class112.method2140(var104.field2658) + var25, var112, class167.method3196(var26));
                   } else {
@@ -1517,8 +1517,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 51) {
-               var1 = Client.field357.method2868();
-               var98 = Client.field357.readString();
+               var1 = Client.secretCipherBuffer2.method2868();
+               var98 = Client.secretCipherBuffer2.readString();
                var3 = World.method670(var1);
                if(!var98.equals(var3.text)) {
                   var3.text = var98;
@@ -1530,7 +1530,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 204) {
-               var1 = Client.field357.method2876();
+               var1 = Client.secretCipherBuffer2.method2876();
                var97 = World.method670(var1);
                var97.modelType = 3;
                var97.modelId = class22.localPlayer.composition.method3168();
@@ -1540,14 +1540,14 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 140) {
-               var1 = Client.field357.readLittleEndianShort();
+               var1 = Client.secretCipherBuffer2.readLittleEndianShort();
                if(var1 == '\uffff') {
                   var1 = -1;
                }
 
-               var2 = Client.field357.method2876();
-               var21 = Client.field357.readInt();
-               var4 = Client.field357.readUnsignedShort();
+               var2 = Client.secretCipherBuffer2.method2876();
+               var21 = Client.secretCipherBuffer2.readInt();
+               var4 = Client.secretCipherBuffer2.readUnsignedShort();
                if(var4 == '\uffff') {
                   var4 = -1;
                }
@@ -1568,15 +1568,15 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 77) {
                FrameMap.xteaChanged(true);
-               Client.field357.readOpcode();
-               var1 = Client.field357.readUnsignedShort();
-               class18.method209(Client.field357, var1);
+               Client.secretCipherBuffer2.readOpcode();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
+               class18.method209(Client.secretCipherBuffer2, var1);
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 176) {
-               var1 = Client.field357.readInt();
+               var1 = Client.secretCipherBuffer2.readInt();
                WidgetNode var34 = (WidgetNode)Client.componentTable.method2405((long)var1);
                if(var34 != null) {
                   XGrandExchangeOffer.method65(var34, true);
@@ -1599,12 +1599,12 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 99) {
-               Client.flagX = Client.field357.readUnsignedByte();
+               Client.flagX = Client.secretCipherBuffer2.readUnsignedByte();
                if(Client.flagX == 255) {
                   Client.flagX = 0;
                }
 
-               Client.flagY = Client.field357.readUnsignedByte();
+               Client.flagY = Client.secretCipherBuffer2.readUnsignedByte();
                if(Client.flagY == 255) {
                   Client.flagY = 0;
                }
@@ -1615,9 +1615,9 @@ public class class142 extends Node {
 
             if(Client.packetOpcode == 190) {
                class13.method198();
-               var1 = Client.field357.method3006();
-               var2 = Client.field357.method2860();
-               var21 = Client.field357.method2858();
+               var1 = Client.secretCipherBuffer2.method3006();
+               var2 = Client.secretCipherBuffer2.method2860();
+               var21 = Client.secretCipherBuffer2.method2858();
                Client.skillExperiences[var21] = var1;
                Client.boostedSkillLevels[var21] = var2;
                Client.realSkillLevels[var21] = 1;
@@ -1634,9 +1634,9 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 76) {
-               var1 = Client.field357.readUnsignedShort();
-               var2 = Client.field357.readUnsignedByte();
-               var21 = Client.field357.method2868();
+               var1 = Client.secretCipherBuffer2.readUnsignedShort();
+               var2 = Client.secretCipherBuffer2.readUnsignedByte();
+               var21 = Client.secretCipherBuffer2.method2868();
                var77 = (WidgetNode)Client.componentTable.method2405((long)var21);
                if(var77 != null) {
                   XGrandExchangeOffer.method65(var77, var77.id != var1);
@@ -1658,11 +1658,11 @@ public class class142 extends Node {
                   return true;
                }
 
-               Client.clanChatOwner = Client.field357.readString();
-               long var47 = Client.field357.readLong();
+               Client.clanChatOwner = Client.secretCipherBuffer2.readString();
+               long var47 = Client.secretCipherBuffer2.readLong();
                Client.field540 = ChatLineBuffer.method980(var47);
-               class107.field1746 = Client.field357.readByte();
-               var21 = Client.field357.readUnsignedByte();
+               class107.field1746 = Client.secretCipherBuffer2.readByte();
+               var21 = Client.secretCipherBuffer2.readUnsignedByte();
                if(var21 == 255) {
                   Client.packetOpcode = -1;
                   return true;
@@ -1673,11 +1673,11 @@ public class class142 extends Node {
 
                for(var5 = 0; var5 < class9.clanChatCount; ++var5) {
                   var76[var5] = new XClanMember();
-                  var76[var5].username = Client.field357.readString();
+                  var76[var5].username = Client.secretCipherBuffer2.readString();
                   var76[var5].field304 = GroundObject.method1598(var76[var5].username, class165.field2155);
-                  var76[var5].world = Client.field357.readUnsignedShort();
-                  var76[var5].rank = Client.field357.readByte();
-                  Client.field357.readString();
+                  var76[var5].world = Client.secretCipherBuffer2.readUnsignedShort();
+                  var76[var5].rank = Client.secretCipherBuffer2.readByte();
+                  Client.secretCipherBuffer2.readString();
                   if(var76[var5].username.equals(class22.localPlayer.name)) {
                      class9.field103 = var76[var5].rank;
                   }
@@ -1710,11 +1710,11 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 8) {
-               class172.field2337 = Client.field357.method2860();
-               MessageNode.field261 = Client.field357.method2858();
+               class172.field2337 = Client.secretCipherBuffer2.method2860();
+               MessageNode.field261 = Client.secretCipherBuffer2.method2858();
 
-               while(Client.field357.offset < Client.field358) {
-                  Client.packetOpcode = Client.field357.readUnsignedByte();
+               while(Client.secretCipherBuffer2.offset < Client.field358) {
+                  Client.packetOpcode = Client.secretCipherBuffer2.readUnsignedByte();
                   XItemContainer.method189();
                }
 
@@ -1723,14 +1723,14 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 89) {
-               class18.method209(Client.field357, Client.field358);
+               class18.method209(Client.secretCipherBuffer2, Client.field358);
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 132) {
-               var1 = Client.field357.method2949();
-               var2 = Client.field357.method2876();
+               var1 = Client.secretCipherBuffer2.method2949();
+               var2 = Client.secretCipherBuffer2.method2876();
                var3 = World.method670(var2);
                if(var3.modelType != 2 || var3.modelId != var1) {
                   var3.modelType = 2;
@@ -1743,15 +1743,15 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 127) {
-               Player.method274(Client.field357.readString());
+               Player.method274(Client.secretCipherBuffer2.readString());
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 161) {
-               Client.field458 = Client.field357.readUnsignedByte();
+               Client.field458 = Client.secretCipherBuffer2.readUnsignedByte();
                if(Client.field458 == 1) {
-                  Client.field329 = Client.field357.readUnsignedShort();
+                  Client.field329 = Client.secretCipherBuffer2.readUnsignedShort();
                }
 
                if(Client.field458 >= 2 && Client.field458 <= 6) {
@@ -1781,13 +1781,13 @@ public class class142 extends Node {
                   }
 
                   Client.field458 = 2;
-                  Client.field331 = Client.field357.readUnsignedShort();
-                  Client.field332 = Client.field357.readUnsignedShort();
-                  Client.field333 = Client.field357.readUnsignedByte();
+                  Client.field331 = Client.secretCipherBuffer2.readUnsignedShort();
+                  Client.field332 = Client.secretCipherBuffer2.readUnsignedShort();
+                  Client.field333 = Client.secretCipherBuffer2.readUnsignedByte();
                }
 
                if(Client.field458 == 10) {
-                  Client.field362 = Client.field357.readUnsignedShort();
+                  Client.field362 = Client.secretCipherBuffer2.readUnsignedShort();
                }
 
                Client.packetOpcode = -1;
@@ -1795,20 +1795,20 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 178) {
-               var1 = Client.field357.method2868();
+               var1 = Client.secretCipherBuffer2.method2868();
                class105.field1733 = class72.field1193.method2024(var1);
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 2) {
-               var1 = Client.field357.method2868();
-               var2 = Client.field357.readLittleEndianShort();
+               var1 = Client.secretCipherBuffer2.method2868();
+               var2 = Client.secretCipherBuffer2.readLittleEndianShort();
                if(var2 == '\uffff') {
                   var2 = -1;
                }
 
-               var21 = Client.field357.method3006();
+               var21 = Client.secretCipherBuffer2.method3006();
                var22 = World.method670(var1);
                ItemComposition var38;
                if(!var22.hasScript) {
@@ -1867,7 +1867,7 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 158) {
-               CipherBuffer var87 = Client.field357;
+               CipherBuffer var87 = Client.secretCipherBuffer2;
                var2 = Client.field358;
                ClassInfo var58 = new ClassInfo();
                var58.field3240 = var87.readUnsignedByte();
@@ -1978,15 +1978,15 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 31) {
-               Client.field327 = Client.field357.readUnsignedShort() * 30;
+               Client.field327 = Client.secretCipherBuffer2.readUnsignedShort() * 30;
                Client.field510 = Client.field498;
                Client.packetOpcode = -1;
                return true;
             }
 
             if(Client.packetOpcode == 194) {
-               var1 = Client.field357.method3006();
-               var59 = Client.field357.method2997() == 1;
+               var1 = Client.secretCipherBuffer2.method3006();
+               var59 = Client.secretCipherBuffer2.method2997() == 1;
                var3 = World.method670(var1);
                if(var59 != var3.isHidden) {
                   var3.isHidden = var59;
@@ -1998,8 +1998,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 123) {
-               var1 = Client.field357.readInt();
-               var2 = Client.field357.method2869();
+               var1 = Client.secretCipherBuffer2.readInt();
+               var2 = Client.secretCipherBuffer2.method2869();
                var21 = var2 >> 10 & 31;
                var4 = var2 >> 5 & 31;
                var5 = var2 & 31;
@@ -2015,8 +2015,8 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 79) {
-               var1 = Client.field357.readInt();
-               var2 = Client.field357.readUnsignedShort();
+               var1 = Client.secretCipherBuffer2.readInt();
+               var2 = Client.secretCipherBuffer2.readUnsignedShort();
                if(var1 < -70000) {
                   var2 += '耀';
                }
@@ -2027,14 +2027,14 @@ public class class142 extends Node {
                   var3 = null;
                }
 
-               for(; Client.field357.offset < Client.field358; class101.method2017(var2, var4, var5 - 1, var6)) {
-                  var4 = Client.field357.method3013();
-                  var5 = Client.field357.readUnsignedShort();
+               for(; Client.secretCipherBuffer2.offset < Client.field358; class101.method2017(var2, var4, var5 - 1, var6)) {
+                  var4 = Client.secretCipherBuffer2.method3013();
+                  var5 = Client.secretCipherBuffer2.readUnsignedShort();
                   var6 = 0;
                   if(var5 != 0) {
-                     var6 = Client.field357.readUnsignedByte();
+                     var6 = Client.secretCipherBuffer2.readUnsignedByte();
                      if(var6 == 255) {
-                        var6 = Client.field357.readInt();
+                        var6 = Client.secretCipherBuffer2.readInt();
                      }
                   }
 
@@ -2055,9 +2055,9 @@ public class class142 extends Node {
             }
 
             if(Client.packetOpcode == 56) {
-               var1 = Client.field357.method2868();
-               var2 = Client.field357.readShort();
-               var21 = Client.field357.readShort();
+               var1 = Client.secretCipherBuffer2.method2868();
+               var2 = Client.secretCipherBuffer2.readShort();
+               var21 = Client.secretCipherBuffer2.readShort();
                var22 = World.method670(var1);
                if(var22.originalX != var21 || var22.originalY != var2 || var22.field2191 != 0 || var22.field2192 != 0) {
                   var22.originalX = var21;
@@ -2083,7 +2083,7 @@ public class class142 extends Node {
             var25 = "" + Client.packetOpcode + "," + Client.field363 + "," + Client.field364 + "," + Client.field358 + "," + (class22.localPlayer.pathX[0] + CombatInfoListHolder.baseX) + "," + (class3.baseY + class22.localPlayer.pathY[0]) + ",";
 
             for(var2 = 0; var2 < Client.field358 && var2 < 50; ++var2) {
-               var25 = var25 + Client.field357.payload[var2] + ",";
+               var25 = var25 + Client.secretCipherBuffer2.payload[var2] + ",";
             }
 
             class31.method703(var25, var57);

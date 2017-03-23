@@ -145,9 +145,9 @@ public class class18 extends Node {
    )
    static final void method212(String var0) {
       if(null != class137.clanMembers) {
-         Client.field309.putOpcode(214);
-         Client.field309.putByte(class164.method3157(var0));
-         Client.field309.method2822(var0);
+         Client.secretCipherBuffer1.putOpcode(214);
+         Client.secretCipherBuffer1.putByte(class164.method3157(var0));
+         Client.secretCipherBuffer1.method2822(var0);
       }
    }
 

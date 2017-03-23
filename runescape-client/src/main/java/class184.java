@@ -298,9 +298,9 @@ public class class184 extends class182 {
                   }
 
                   Client.field506 = Client.field498;
-                  Client.field309.putOpcode(237);
-                  Client.field309.putByte(class164.method3157(var0));
-                  Client.field309.method2822(var0);
+                  Client.secretCipherBuffer1.putOpcode(237);
+                  Client.secretCipherBuffer1.putByte(class164.method3157(var0));
+                  Client.secretCipherBuffer1.method2822(var0);
                   break;
                }
             }

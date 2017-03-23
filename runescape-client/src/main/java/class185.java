@@ -33,7 +33,7 @@ public class class185 {
    @ObfuscatedName("k")
    public static Node2LinkedList field2747 = new Node2LinkedList();
    @ObfuscatedName("x")
-   public static class110 field2748;
+   public static RSSocket field2748;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -1780096971

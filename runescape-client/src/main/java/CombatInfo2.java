@@ -188,11 +188,11 @@ public class CombatInfo2 extends CacheableNode {
       for(int var0 = 0; var0 < Client.field353; ++var0) {
          int var1 = Client.field430[var0];
          NPC var2 = Client.cachedNPCs[var1];
-         int var3 = Client.field357.readUnsignedByte();
+         int var3 = Client.secretCipherBuffer2.readUnsignedByte();
          int var4;
          if((var3 & 32) != 0) {
-            var2.graphic = Client.field357.method2869();
-            var4 = Client.field357.method2876();
+            var2.graphic = Client.secretCipherBuffer2.method2869();
+            var4 = Client.secretCipherBuffer2.method2876();
             var2.field666 = var4 >> 16;
             var2.field665 = Client.gameCycle + (var4 & '\uffff');
             var2.field662 = 0;
@@ -210,7 +210,7 @@ public class CombatInfo2 extends CacheableNode {
          int var6;
          int var7;
          if((var3 & 4) != 0) {
-            var4 = Client.field357.method2860();
+            var4 = Client.secretCipherBuffer2.method2860();
             int var8;
             int var9;
             int var10;
@@ -219,32 +219,32 @@ public class CombatInfo2 extends CacheableNode {
                   var7 = -1;
                   var8 = -1;
                   var9 = -1;
-                  var6 = Client.field357.method3013();
+                  var6 = Client.secretCipherBuffer2.method3013();
                   if(var6 == 32767) {
-                     var6 = Client.field357.method3013();
-                     var8 = Client.field357.method3013();
-                     var7 = Client.field357.method3013();
-                     var9 = Client.field357.method3013();
+                     var6 = Client.secretCipherBuffer2.method3013();
+                     var8 = Client.secretCipherBuffer2.method3013();
+                     var7 = Client.secretCipherBuffer2.method3013();
+                     var9 = Client.secretCipherBuffer2.method3013();
                   } else if(var6 != 32766) {
-                     var8 = Client.field357.method3013();
+                     var8 = Client.secretCipherBuffer2.method3013();
                   } else {
                      var6 = -1;
                   }
 
-                  var10 = Client.field357.method3013();
+                  var10 = Client.secretCipherBuffer2.method3013();
                   var2.method609(var6, var8, var7, var9, Client.gameCycle, var10);
                }
             }
 
-            var5 = Client.field357.method2860();
+            var5 = Client.secretCipherBuffer2.method2860();
             if(var5 > 0) {
                for(var6 = 0; var6 < var5; ++var6) {
-                  var7 = Client.field357.method3013();
-                  var8 = Client.field357.method3013();
+                  var7 = Client.secretCipherBuffer2.method3013();
+                  var8 = Client.secretCipherBuffer2.method3013();
                   if(var8 != 32767) {
-                     var9 = Client.field357.method3013();
-                     var10 = Client.field357.readUnsignedByte();
-                     int var11 = var8 > 0?Client.field357.method2858():var10;
+                     var9 = Client.secretCipherBuffer2.method3013();
+                     var10 = Client.secretCipherBuffer2.readUnsignedByte();
+                     int var11 = var8 > 0?Client.secretCipherBuffer2.method2858():var10;
                      var2.method607(var7, Client.gameCycle, var8, var9, var10, var11);
                   } else {
                      var2.method606(var7);
@@ -254,7 +254,7 @@ public class CombatInfo2 extends CacheableNode {
          }
 
          if((var3 & 1) != 0) {
-            var2.composition = VertexNormal.getNpcDefinition(Client.field357.method2949());
+            var2.composition = VertexNormal.getNpcDefinition(Client.secretCipherBuffer2.method2949());
             var2.field672 = var2.composition.field3008;
             var2.field678 = var2.composition.field3031;
             var2.field667 = var2.composition.field3033;
@@ -267,12 +267,12 @@ public class CombatInfo2 extends CacheableNode {
          }
 
          if((var3 & 64) != 0) {
-            var4 = Client.field357.method2869();
+            var4 = Client.secretCipherBuffer2.method2869();
             if(var4 == '\uffff') {
                var4 = -1;
             }
 
-            var5 = Client.field357.method2997();
+            var5 = Client.secretCipherBuffer2.method2997();
             if(var2.animation == var4 && var4 != -1) {
                var6 = class168.getAnimation(var4).replyMode;
                if(var6 == 1) {
@@ -296,8 +296,8 @@ public class CombatInfo2 extends CacheableNode {
          }
 
          if((var3 & 2) != 0) {
-            var4 = Client.field357.method2869();
-            var5 = Client.field357.method2869();
+            var4 = Client.secretCipherBuffer2.method2869();
+            var5 = Client.secretCipherBuffer2.method2869();
             var6 = var2.x - 64 * (var4 - CombatInfoListHolder.baseX - CombatInfoListHolder.baseX);
             var7 = var2.y - (var5 - class3.baseY - class3.baseY) * 64;
             if(var6 != 0 || var7 != 0) {
@@ -306,14 +306,14 @@ public class CombatInfo2 extends CacheableNode {
          }
 
          if((var3 & 16) != 0) {
-            var2.interacting = Client.field357.readUnsignedShort();
+            var2.interacting = Client.secretCipherBuffer2.readUnsignedShort();
             if(var2.interacting == '\uffff') {
                var2.interacting = -1;
             }
          }
 
          if((var3 & 8) != 0) {
-            var2.overhead = Client.field357.readString();
+            var2.overhead = Client.secretCipherBuffer2.readString();
             var2.field641 = 100;
          }
       }

@@ -220,7 +220,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
             KitDefinition.field2825 = class170.method3264(9, false, true, true);
             class99.field1655 = class170.method3264(10, false, true, true);
             class1.field12 = class170.method3264(11, false, true, true);
-            class110.field1763 = class170.method3264(12, false, true, true);
+            RSSocket.field1763 = class170.method3264(12, false, true, true);
             class140.field1965 = class170.method3264(13, true, false, true);
             class37.field820 = class170.method3264(14, false, true, false);
             Client.field460 = class170.method3264(15, false, true, true);
@@ -241,7 +241,7 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
             var0 += KitDefinition.field2825.method3406() * 2 / 100;
             var0 += class99.field1655.method3406() * 2 / 100;
             var0 += class1.field12.method3406() * 2 / 100;
-            var0 += class110.field1763.method3406() * 2 / 100;
+            var0 += RSSocket.field1763.method3406() * 2 / 100;
             var0 += class140.field1965.method3406() * 2 / 100;
             var0 += class37.field820.method3406() * 2 / 100;
             var0 += Client.field460.method3406() * 2 / 100;
@@ -409,8 +409,8 @@ public class class115 implements MouseListener, MouseMotionListener, FocusListen
                   if(!RSCanvas.field1765.method3310()) {
                      class41.field866 = "Loading interfaces - " + RSCanvas.field1765.method3419() * 4 / 5 + "%";
                      class41.field872 = 100;
-                  } else if(!class110.field1763.method3310()) {
-                     class41.field866 = "Loading interfaces - " + (80 + class110.field1763.method3419() / 6) + "%";
+                  } else if(!RSSocket.field1763.method3310()) {
+                     class41.field866 = "Loading interfaces - " + (80 + RSSocket.field1763.method3419() / 6) + "%";
                      class41.field872 = 100;
                   } else if(!class140.field1965.method3310()) {
                      class41.field866 = "Loading interfaces - " + (96 + class140.field1965.method3419() / 20) + "%";

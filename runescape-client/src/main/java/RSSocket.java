@@ -3,21 +3,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("dc")
-public final class class110 implements Runnable {
+@Implements("RSSocket")
+public final class RSSocket implements Runnable {
    @ObfuscatedName("g")
    @ObfuscatedGetter(
       intValue = 1265743587
    )
-   int field1753 = 0;
+   @Export("outbufLen")
+   int outbufLen = 0;
    @ObfuscatedName("j")
-   OutputStream field1754;
+   @Export("outputStream")
+   OutputStream outputStream;
    @ObfuscatedName("x")
-   InputStream field1755;
+   @Export("inputStream")
+   InputStream inputStream;
    @ObfuscatedName("d")
    boolean field1756 = false;
    @ObfuscatedName("w")
@@ -32,9 +38,11 @@ public final class class110 implements Runnable {
    )
    int field1760 = 0;
    @ObfuscatedName("u")
-   byte[] field1761;
+   @Export("outbuffer")
+   byte[] outbuffer;
    @ObfuscatedName("c")
-   Socket field1762;
+   @Export("socket")
+   Socket socket;
    @ObfuscatedName("bk")
    static class184 field1763;
 
@@ -45,7 +53,7 @@ public final class class110 implements Runnable {
                int var1;
                int var2;
                synchronized(this) {
-                  if(this.field1760 == this.field1753) {
+                  if(this.field1760 == this.outbufLen) {
                      if(this.field1756) {
                         break label84;
                      }
@@ -58,8 +66,8 @@ public final class class110 implements Runnable {
                   }
 
                   var2 = this.field1760;
-                  if(this.field1753 >= this.field1760) {
-                     var1 = this.field1753 - this.field1760;
+                  if(this.outbufLen >= this.field1760) {
+                     var1 = this.outbufLen - this.field1760;
                   } else {
                      var1 = 5000 - this.field1760;
                   }
@@ -70,7 +78,7 @@ public final class class110 implements Runnable {
                }
 
                try {
-                  this.field1754.write(this.field1761, var2, var1);
+                  this.outputStream.write(this.outbuffer, var2, var1);
                } catch (IOException var9) {
                   this.field1759 = true;
                }
@@ -78,8 +86,8 @@ public final class class110 implements Runnable {
                this.field1760 = (this.field1760 + var1) % 5000;
 
                try {
-                  if(this.field1760 == this.field1753) {
-                     this.field1754.flush();
+                  if(this.field1760 == this.outbufLen) {
+                     this.outputStream.flush();
                   }
                } catch (IOException var8) {
                   this.field1759 = true;
@@ -88,22 +96,22 @@ public final class class110 implements Runnable {
             }
 
             try {
-               if(null != this.field1755) {
-                  this.field1755.close();
+               if(null != this.inputStream) {
+                  this.inputStream.close();
                }
 
-               if(this.field1754 != null) {
-                  this.field1754.close();
+               if(this.outputStream != null) {
+                  this.outputStream.close();
                }
 
-               if(null != this.field1762) {
-                  this.field1762.close();
+               if(null != this.socket) {
+                  this.socket.close();
                }
             } catch (IOException var7) {
                ;
             }
 
-            this.field1761 = null;
+            this.outbuffer = null;
             break;
          }
       } catch (Exception var12) {
@@ -146,15 +154,15 @@ public final class class110 implements Runnable {
       this.method2115();
    }
 
-   public class110(Socket var1, class103 var2) throws IOException {
+   public RSSocket(Socket var1, class103 var2) throws IOException {
       this.field1757 = var2;
-      this.field1762 = var1;
-      this.field1762.setSoTimeout(30000);
-      this.field1762.setTcpNoDelay(true);
-      this.field1762.setReceiveBufferSize(16384);
-      this.field1762.setSendBufferSize(16384);
-      this.field1755 = this.field1762.getInputStream();
-      this.field1754 = this.field1762.getOutputStream();
+      this.socket = var1;
+      this.socket.setSoTimeout(30000);
+      this.socket.setTcpNoDelay(true);
+      this.socket.setReceiveBufferSize(16384);
+      this.socket.setSendBufferSize(16384);
+      this.inputStream = this.socket.getInputStream();
+      this.outputStream = this.socket.getOutputStream();
    }
 
    @ObfuscatedName("w")
@@ -163,7 +171,7 @@ public final class class110 implements Runnable {
       garbageValue = "0"
    )
    public int method2116() throws IOException {
-      return this.field1756?0:this.field1755.available();
+      return this.field1756?0:this.inputStream.available();
    }
 
    @ObfuscatedName("y")
@@ -171,21 +179,21 @@ public final class class110 implements Runnable {
       signature = "([BIII)V",
       garbageValue = "1155935127"
    )
-   public void method2117(byte[] var1, int var2, int var3) throws IOException {
+   public void queueForWrite(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field1756) {
          if(this.field1759) {
             this.field1759 = false;
             throw new IOException();
          } else {
-            if(null == this.field1761) {
-               this.field1761 = new byte[5000];
+            if(null == this.outbuffer) {
+               this.outbuffer = new byte[5000];
             }
 
             synchronized(this) {
                for(int var5 = 0; var5 < var3; ++var5) {
-                  this.field1761[this.field1753] = var1[var5 + var2];
-                  this.field1753 = (this.field1753 + 1) % 5000;
-                  if(this.field1753 == (4900 + this.field1760) % 5000) {
+                  this.outbuffer[this.outbufLen] = var1[var5 + var2];
+                  this.outbufLen = (this.outbufLen + 1) % 5000;
+                  if(this.outbufLen == (4900 + this.field1760) % 5000) {
                      throw new IOException();
                   }
                }
@@ -206,7 +214,7 @@ public final class class110 implements Runnable {
       garbageValue = "2041487990"
    )
    public int method2118() throws IOException {
-      return this.field1756?0:this.field1755.read();
+      return this.field1756?0:this.inputStream.read();
    }
 
    @ObfuscatedName("u")
@@ -217,7 +225,7 @@ public final class class110 implements Runnable {
    public void method2119(byte[] var1, int var2, int var3) throws IOException {
       if(!this.field1756) {
          while(var3 > 0) {
-            int var4 = this.field1755.read(var1, var2, var3);
+            int var4 = this.inputStream.read(var1, var2, var3);
             if(var4 <= 0) {
                throw new EOFException();
             }

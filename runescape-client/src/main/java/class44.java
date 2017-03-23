@@ -60,7 +60,7 @@ final class class44 implements Comparator {
             Buffer var1 = new Buffer(4);
             var1.putByte(var0?2:3);
             var1.put24bitInt(0);
-            class185.field2748.method2117(var1.payload, 0, 4);
+            class185.field2748.queueForWrite(var1.payload, 0, 4);
          } catch (IOException var4) {
             try {
                class185.field2748.method2115();

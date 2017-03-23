@@ -604,7 +604,7 @@ public class FaceNormal {
                      }
 
                      if(var10.contentType == 1339) {
-                        class110.method2133(var10, var12, var13, var11);
+                        RSSocket.method2133(var10, var12, var13, var11);
                         Rasterizer2D.method4016(var2, var3, var4, var5);
                         continue;
                      }

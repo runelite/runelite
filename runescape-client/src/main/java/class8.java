@@ -32,7 +32,7 @@ public class class8 {
    )
    public static int field86;
    @ObfuscatedName("cd")
-   static class110 field88;
+   static RSSocket field88;
    @ObfuscatedName("d")
    public static class182 field90;
 

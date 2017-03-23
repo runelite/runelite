@@ -151,8 +151,8 @@ public class CombatInfoListHolder extends Node {
          }
 
          if(var1 == 326) {
-            Client.field309.putOpcode(23);
-            Client.field576.method3174(Client.field309);
+            Client.secretCipherBuffer1.putOpcode(23);
+            Client.field576.method3174(Client.secretCipherBuffer1);
             return true;
          } else {
             return false;

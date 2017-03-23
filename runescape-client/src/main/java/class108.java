@@ -49,7 +49,7 @@ public class class108 {
       garbageValue = "870149933"
    )
    static final void method2104() {
-      Client.field309.putOpcode(66);
+      Client.secretCipherBuffer1.putOpcode(66);
 
       for(WidgetNode var0 = (WidgetNode)Client.componentTable.method2391(); var0 != null; var0 = (WidgetNode)Client.componentTable.method2392()) {
          if(var0.field212 == 0 || var0.field212 == 3) {

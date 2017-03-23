@@ -96,7 +96,8 @@ public class class41 {
    )
    static int field872;
    @ObfuscatedName("aq")
-   static String field873;
+   @Export("password")
+   static String password;
    @ObfuscatedName("aj")
    static class97 field874;
    @ObfuscatedName("ac")
@@ -134,7 +135,7 @@ public class class41 {
       loginMessage2 = "";
       loginMessage3 = "";
       username = "";
-      field873 = "";
+      password = "";
       field874 = class97.field1640;
       field875 = true;
       loginIndex2 = 0;
