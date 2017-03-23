@@ -2,60 +2,69 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("gz")
+@ObfuscatedName("gr")
 public class class186 extends CacheableNode {
-   @ObfuscatedName("c")
+   @ObfuscatedName("f")
+   static class182 field2783;
+   @ObfuscatedName("i")
+   static NodeCache field2784 = new NodeCache(64);
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = -715836419
+      intValue = -2008732671
    )
-   public int field2761 = 0;
-   @ObfuscatedName("x")
-   static class182 field2762;
-   @ObfuscatedName("k")
-   static ModIcon field2763;
-   @ObfuscatedName("j")
-   static NodeCache field2764 = new NodeCache(64);
+   public int field2785 = 0;
 
-   @ObfuscatedName("c")
+   @ObfuscatedName("r")
    @ObfuscatedSignature(
-      signature = "(LBuffer;B)V",
-      garbageValue = "10"
+      signature = "(LBuffer;II)V",
+      garbageValue = "-349523322"
    )
-   void method3442(Buffer var1) {
+   void method3474(Buffer var1, int var2) {
+      if(var2 == 2) {
+         this.field2785 = var1.readUnsignedShort();
+      }
+
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(LBuffer;S)V",
+      garbageValue = "9005"
+   )
+   void method3478(Buffer var1) {
       while(true) {
          int var2 = var1.readUnsignedByte();
          if(var2 == 0) {
             return;
          }
 
-         this.method3444(var1, var2);
+         this.method3474(var1, var2);
       }
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(LBuffer;II)V",
-      garbageValue = "963248956"
+      signature = "([BILjava/lang/CharSequence;I)I",
+      garbageValue = "-303716585"
    )
-   void method3444(Buffer var1, int var2) {
-      if(var2 == 2) {
-         this.field2761 = var1.readUnsignedShort();
+   public static int method3481(byte[] var0, int var1, CharSequence var2) {
+      int var3 = var2.length();
+      int var4 = var1;
+
+      for(int var5 = 0; var5 < var3; ++var5) {
+         char var6 = var2.charAt(var5);
+         if(var6 <= 127) {
+            var0[var4++] = (byte)var6;
+         } else if(var6 <= 2047) {
+            var0[var4++] = (byte)(192 | var6 >> 6);
+            var0[var4++] = (byte)(128 | var6 & 63);
+         } else {
+            var0[var4++] = (byte)(224 | var6 >> 12);
+            var0[var4++] = (byte)(128 | var6 >> 6 & 63);
+            var0[var4++] = (byte)(128 | var6 & 63);
+         }
       }
 
-   }
-
-   @ObfuscatedName("j")
-   @ObfuscatedSignature(
-      signature = "(CII)I",
-      garbageValue = "-1683250188"
-   )
-   public static int method3449(char var0, int var1) {
-      int var2 = var0 << 4;
-      if(Character.isUpperCase(var0) || Character.isTitleCase(var0)) {
-         var0 = Character.toLowerCase(var0);
-         var2 = (var0 << 4) + 1;
-      }
-
-      return var2;
+      return var4 - var1;
    }
 }

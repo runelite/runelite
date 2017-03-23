@@ -1,7 +1,7 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("fm")
+@ObfuscatedName("ft")
 public class class170 {
    class170() throws Throwable {
       throw new Error();
@@ -9,15 +9,40 @@ public class class170 {
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
-      signature = "(IZZZI)Lclass184;",
-      garbageValue = "829210934"
+      signature = "([Ljava/lang/CharSequence;IIB)Ljava/lang/String;",
+      garbageValue = "-89"
    )
-   static class184 method3264(int var0, boolean var1, boolean var2, boolean var3) {
-      class116 var4 = null;
-      if(class104.field1696 != null) {
-         var4 = new class116(var0, class104.field1696, class104.field1698[var0], 1000000);
-      }
+   public static String method3303(CharSequence[] var0, int var1, int var2) {
+      if(var2 == 0) {
+         return "";
+      } else if(var2 == 1) {
+         CharSequence var3 = var0[var1];
+         return var3 == null?"null":var3.toString();
+      } else {
+         int var8 = var2 + var1;
+         int var4 = 0;
 
-      return new class184(var4, class15.field190, var0, var1, var2, var3);
+         for(int var5 = var1; var5 < var8; ++var5) {
+            CharSequence var9 = var0[var5];
+            if(null == var9) {
+               var4 += 4;
+            } else {
+               var4 += var9.length();
+            }
+         }
+
+         StringBuilder var10 = new StringBuilder(var4);
+
+         for(int var6 = var1; var6 < var8; ++var6) {
+            CharSequence var7 = var0[var6];
+            if(var7 == null) {
+               var10.append("null");
+            } else {
+               var10.append(var7);
+            }
+         }
+
+         return var10.toString();
+      }
    }
 }

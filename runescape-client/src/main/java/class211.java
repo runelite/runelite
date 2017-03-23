@@ -1,19 +1,19 @@
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("hn")
+@ObfuscatedName("hd")
 public class class211 {
    class211() throws Throwable {
       throw new Error();
    }
 
-   @ObfuscatedName("d")
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
-      signature = "(III)LMessageNode;",
-      garbageValue = "470030471"
+      signature = "(Lclass182;Lclass182;B)V",
+      garbageValue = "49"
    )
-   static MessageNode method3982(int var0, int var1) {
-      ChatLineBuffer var2 = (ChatLineBuffer)class47.chatLineMap.get(Integer.valueOf(var0));
-      return var2.method982(var1);
+   public static void method3982(class182 var0, class182 var1) {
+      Spotanim.field2805 = var0;
+      Spotanim.field2803 = var1;
    }
 }

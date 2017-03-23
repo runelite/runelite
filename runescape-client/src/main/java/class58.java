@@ -1,83 +1,83 @@
 import net.runelite.mapping.ObfuscatedName;
 
-@ObfuscatedName("bm")
+@ObfuscatedName("by")
 public class class58 {
+   @ObfuscatedName("n")
+   int field1085;
+   @ObfuscatedName("i")
+   int[] field1086 = new int[2];
+   @ObfuscatedName("o")
+   int field1087;
    @ObfuscatedName("h")
-   int field1071;
-   @ObfuscatedName("c")
-   int[] field1072 = new int[2];
-   @ObfuscatedName("d")
-   int[] field1073 = new int[2];
-   @ObfuscatedName("e")
-   int field1074;
-   @ObfuscatedName("w")
-   int field1075;
-   @ObfuscatedName("g")
-   int field1076;
-   @ObfuscatedName("k")
-   int field1077;
+   int field1088;
+   @ObfuscatedName("r")
+   int field1089;
    @ObfuscatedName("u")
-   int field1078;
+   int[] field1090 = new int[2];
+   @ObfuscatedName("l")
+   int field1091;
+   @ObfuscatedName("f")
+   int field1092 = 2;
+   @ObfuscatedName("m")
+   int field1093;
+   @ObfuscatedName("w")
+   int field1094;
    @ObfuscatedName("j")
-   int field1079 = 2;
-   @ObfuscatedName("q")
-   int field1080;
-   @ObfuscatedName("y")
-   int field1081;
+   int field1095;
 
-   @ObfuscatedName("j")
-   final void method1180(Buffer var1) {
-      this.field1079 = var1.readUnsignedByte();
-      this.field1072 = new int[this.field1079];
-      this.field1073 = new int[this.field1079];
-
-      for(int var2 = 0; var2 < this.field1079; ++var2) {
-         this.field1072[var2] = var1.readUnsignedShort();
-         this.field1073[var2] = var1.readUnsignedShort();
-      }
-
+   @ObfuscatedName("f")
+   final void method1138(Buffer var1) {
+      this.field1087 = var1.readUnsignedByte();
+      this.field1088 = var1.readInt();
+      this.field1089 = var1.readInt();
+      this.method1144(var1);
    }
 
-   @ObfuscatedName("d")
-   final int method1182(int var1) {
-      if(this.field1081 >= this.field1077) {
-         this.field1080 = this.field1073[this.field1076++] << 15;
-         if(this.field1076 >= this.field1079) {
-            this.field1076 = this.field1079 - 1;
+   @ObfuscatedName("u")
+   final void method1140() {
+      this.field1091 = 0;
+      this.field1085 = 0;
+      this.field1093 = 0;
+      this.field1094 = 0;
+      this.field1095 = 0;
+   }
+
+   @ObfuscatedName("r")
+   final int method1141(int var1) {
+      if(this.field1095 >= this.field1091) {
+         this.field1094 = this.field1090[this.field1085++] << 15;
+         if(this.field1085 >= this.field1092) {
+            this.field1085 = this.field1092 - 1;
          }
 
-         this.field1077 = (int)((double)this.field1072[this.field1076] / 65536.0D * (double)var1);
-         if(this.field1077 > this.field1081) {
-            this.field1074 = ((this.field1073[this.field1076] << 15) - this.field1080) / (this.field1077 - this.field1081);
+         this.field1091 = (int)((double)this.field1086[this.field1085] / 65536.0D * (double)var1);
+         if(this.field1091 > this.field1095) {
+            this.field1093 = ((this.field1090[this.field1085] << 15) - this.field1094) / (this.field1091 - this.field1095);
          }
       }
 
-      this.field1080 += this.field1074;
-      ++this.field1081;
-      return this.field1080 - this.field1074 >> 15;
+      this.field1094 += this.field1093;
+      ++this.field1095;
+      return this.field1094 - this.field1093 >> 15;
    }
 
-   @ObfuscatedName("x")
-   final void method1184(Buffer var1) {
-      this.field1078 = var1.readUnsignedByte();
-      this.field1075 = var1.readInt();
-      this.field1071 = var1.readInt();
-      this.method1180(var1);
-   }
+   @ObfuscatedName("i")
+   final void method1144(Buffer var1) {
+      this.field1092 = var1.readUnsignedByte();
+      this.field1086 = new int[this.field1092];
+      this.field1090 = new int[this.field1092];
 
-   @ObfuscatedName("c")
-   final void method1187() {
-      this.field1077 = 0;
-      this.field1076 = 0;
-      this.field1074 = 0;
-      this.field1080 = 0;
-      this.field1081 = 0;
+      for(int var2 = 0; var2 < this.field1092; ++var2) {
+         this.field1086[var2] = var1.readUnsignedShort();
+         this.field1090[var2] = var1.readUnsignedShort();
+      }
+
    }
 
    class58() {
-      this.field1072[0] = 0;
-      this.field1072[1] = '\uffff';
-      this.field1073[0] = 0;
-      this.field1073[1] = '\uffff';
+      this.field1086[0] = 0;
+      this.field1086[1] = '\uffff';
+      this.field1090[0] = 0;
+      this.field1090[1] = '\uffff';
    }
 }

@@ -5,91 +5,74 @@ import java.util.List;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("j")
+@ObfuscatedName("i")
 public class class1 {
-   @ObfuscatedName("j")
-   public static Comparator field11 = new class7();
-   @ObfuscatedName("be")
-   static class184 field12;
-   @ObfuscatedName("w")
-   public static Comparator field13;
+   @ObfuscatedName("l")
+   static SpritePixels field7;
+   @ObfuscatedName("i")
+   public static Comparator field8 = new class7();
+   @ObfuscatedName("s")
+   static int[] field9;
+   @ObfuscatedName("h")
+   public static Comparator field10;
+   @ObfuscatedName("r")
+   public static Comparator field11;
+   @ObfuscatedName("f")
+   public final List field13;
    @ObfuscatedName("d")
-   public static Comparator field14;
-   @ObfuscatedName("cc")
-   static RSSocket field15;
-   @ObfuscatedName("in")
-   static Widget field16;
-   @ObfuscatedName("c")
-   public static Comparator field19;
-   @ObfuscatedName("x")
-   public final List field21;
+   static class181 field14;
+   @ObfuscatedName("u")
+   public static Comparator field16;
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("j")
+   @ObfuscatedSignature(
+      signature = "(ILScript;ZB)I",
+      garbageValue = "19"
+   )
+   static int method4(int var0, Script var1, boolean var2) {
+      Widget var3 = var2?class154.field2123:class32.field746;
+      if(var0 == 1800) {
+         int[] var4 = class32.field743;
+         int var5 = ++class30.field713 - 1;
+         int var7 = FloorUnderlayDefinition.method3533(var3);
+         int var6 = var7 >> 11 & 63;
+         var4[var5] = var6;
+         return 1;
+      } else if(var0 != 1801) {
+         if(var0 == 1802) {
+            if(var3.name == null) {
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+            } else {
+               class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.name;
+            }
+
+            return 1;
+         } else {
+            return 2;
+         }
+      } else {
+         int var8 = class32.field743[--class30.field713];
+         --var8;
+         if(null != var3.actions && var8 < var3.actions.length && var3.actions[var8] != null) {
+            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = var3.actions[var8];
+         } else {
+            class32.scriptStringStack[++class32.scriptStringStackSize - 1] = "";
+         }
+
+         return 1;
+      }
+   }
+
+   @ObfuscatedName("f")
    @ObfuscatedSignature(
       signature = "(Ljava/util/Comparator;ZI)V",
-      garbageValue = "862629919"
+      garbageValue = "79976678"
    )
-   public void method16(Comparator var1, boolean var2) {
+   public void method5(Comparator var1, boolean var2) {
       if(var2) {
-         Collections.sort(this.field21, var1);
+         Collections.sort(this.field13, var1);
       } else {
-         Collections.sort(this.field21, Collections.reverseOrder(var1));
-      }
-
-   }
-
-   @ObfuscatedName("x")
-   @ObfuscatedSignature(
-      signature = "(IIS)I",
-      garbageValue = "-8597"
-   )
-   static int method18(int var0, int var1) {
-      XItemContainer var2 = (XItemContainer)XItemContainer.itemContainers.method2405((long)var0);
-      if(null == var2) {
-         return 0;
-      } else if(var1 == -1) {
-         return 0;
-      } else {
-         int var3 = 0;
-
-         for(int var4 = 0; var4 < var2.stackSizes.length; ++var4) {
-            if(var1 == var2.itemIds[var4]) {
-               var3 += var2.stackSizes[var4];
-            }
-         }
-
-         return var3;
-      }
-   }
-
-   @ObfuscatedName("af")
-   @ObfuscatedSignature(
-      signature = "(B)V",
-      garbageValue = "8"
-   )
-   static final void method20() {
-      int[] var0 = class45.field925;
-
-      int var1;
-      for(var1 = 0; var1 < class45.field934; ++var1) {
-         Player var2 = Client.cachedPlayers[var0[var1]];
-         if(var2 != null && var2.field641 > 0) {
-            --var2.field641;
-            if(var2.field641 == 0) {
-               var2.overhead = null;
-            }
-         }
-      }
-
-      for(var1 = 0; var1 < Client.field351; ++var1) {
-         int var4 = Client.field570[var1];
-         NPC var3 = Client.cachedNPCs[var4];
-         if(null != var3 && var3.field641 > 0) {
-            --var3.field641;
-            if(var3.field641 == 0) {
-               var3.overhead = null;
-            }
-         }
+         Collections.sort(this.field13, Collections.reverseOrder(var1));
       }
 
    }
@@ -109,42 +92,79 @@ public class class1 {
       }
 
       int var6 = var1.readUnsignedShort();
-      this.field21 = new ArrayList(var6);
+      this.field13 = new ArrayList(var6);
 
       for(int var7 = 0; var7 < var6; ++var7) {
-         this.field21.add(new class2(var1, var5, var3));
+         this.field13.add(new class2(var1, var5, var3));
       }
 
    }
 
-   static {
-      new class0();
-      field19 = new class5();
-      field14 = new class6();
-      field13 = new class3();
-   }
-
-   @ObfuscatedName("bm")
+   @ObfuscatedName("ci")
    @ObfuscatedSignature(
-      signature = "(IIII)I",
-      garbageValue = "135927553"
+      signature = "(Ljava/lang/String;LWidget;I)Ljava/lang/String;",
+      garbageValue = "-2034248195"
    )
-   static final int method21(int var0, int var1, int var2) {
-      int var3 = var0 >> 7;
-      int var4 = var1 >> 7;
-      if(var3 >= 0 && var4 >= 0 && var3 <= 103 && var4 <= 103) {
-         int var5 = var2;
-         if(var2 < 3 && (class10.tileSettings[1][var3][var4] & 2) == 2) {
-            var5 = var2 + 1;
+   static String method7(String var0, Widget var1) {
+      if(var0.indexOf("%") != -1) {
+         int var2;
+         for(var2 = 1; var2 <= 5; ++var2) {
+            while(true) {
+               int var3 = var0.indexOf("%" + var2);
+               if(var3 == -1) {
+                  break;
+               }
+
+               String var4 = var0.substring(0, var3);
+               int var6 = NPC.method748(var1, var2 - 1);
+               String var5;
+               if(var6 < 999999999) {
+                  var5 = Integer.toString(var6);
+               } else {
+                  var5 = "*";
+               }
+
+               var0 = var4 + var5 + var0.substring(2 + var3);
+            }
          }
 
-         int var6 = var0 & 127;
-         int var7 = var1 & 127;
-         int var8 = var6 * class10.tileHeights[var5][1 + var3][var4] + (128 - var6) * class10.tileHeights[var5][var3][var4] >> 7;
-         int var9 = class10.tileHeights[var5][var3][1 + var4] * (128 - var6) + var6 * class10.tileHeights[var5][1 + var3][1 + var4] >> 7;
-         return (128 - var7) * var8 + var7 * var9 >> 7;
-      } else {
-         return 0;
+         while(true) {
+            var2 = var0.indexOf("%dns");
+            if(var2 == -1) {
+               break;
+            }
+
+            String var7 = "";
+            if(null != class36.field795) {
+               var7 = class172.method3307(class36.field795.field1688);
+               if(null != class36.field795.field1690) {
+                  var7 = (String)class36.field795.field1690;
+               }
+            }
+
+            var0 = var0.substring(0, var2) + var7 + var0.substring(4 + var2);
+         }
+      }
+
+      return var0;
+   }
+
+   static {
+      new class0();
+      field16 = new class5();
+      field10 = new class6();
+      field11 = new class3();
+   }
+
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(IB)V",
+      garbageValue = "20"
+   )
+   static void method8(int var0) {
+      XItemContainer var1 = (XItemContainer)XItemContainer.itemContainers.method2417((long)var0);
+      if(var1 != null) {
+         var1.unlink();
       }
    }
 }

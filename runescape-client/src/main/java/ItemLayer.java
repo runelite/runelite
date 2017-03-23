@@ -4,154 +4,93 @@ import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
-@ObfuscatedName("br")
+@ObfuscatedName("bt")
 @Implements("ItemLayer")
 public final class ItemLayer {
-   @ObfuscatedName("c")
+   @ObfuscatedName("i")
    @ObfuscatedGetter(
-      intValue = -244477191
+      intValue = -366104387
    )
    @Export("x")
    int x;
-   @ObfuscatedName("x")
+   @ObfuscatedName("u")
    @ObfuscatedGetter(
-      intValue = 1696256757
+      intValue = 1189537009
    )
    @Export("y")
    int y;
-   @ObfuscatedName("d")
+   @ObfuscatedName("h")
    @Export("bottom")
    Renderable bottom;
-   @ObfuscatedName("j")
+   @ObfuscatedName("n")
    @ObfuscatedGetter(
-      intValue = -2146674531
-   )
-   @Export("hash")
-   int hash;
-   @ObfuscatedName("h")
-   @Export("top")
-   Renderable top;
-   @ObfuscatedName("u")
-   @ObfuscatedGetter(
-      intValue = 1542042207
-   )
-   @Export("flags")
-   int flags;
-   @ObfuscatedName("er")
-   static SpritePixels[] field1223;
-   @ObfuscatedName("nk")
-   static class65 field1224;
-   @ObfuscatedName("w")
-   @Export("middle")
-   Renderable middle;
-   @ObfuscatedName("qv")
-   @ObfuscatedGetter(
-      intValue = -349757003
-   )
-   protected static int field1226;
-   @ObfuscatedName("k")
-   @ObfuscatedGetter(
-      intValue = 1321913185
+      intValue = 399561179
    )
    @Export("height")
    int height;
-
+   @ObfuscatedName("o")
+   @Export("top")
+   Renderable top;
    @ObfuscatedName("l")
-   @ObfuscatedSignature(
-      signature = "(LWorld;I)V",
-      garbageValue = "-1575304801"
+   @ObfuscatedGetter(
+      intValue = -1842905521
    )
-   static void method1518(World var0) {
-      if(var0.method673() != Client.isMembers) {
-         Client.isMembers = var0.method673();
-         boolean var1 = var0.method673();
-         if(var1 != class47.isMembersWorld) {
-            class39.method814();
-            class47.isMembersWorld = var1;
-         }
-      }
-
-      WallObject.host = var0.address;
-      Client.world = var0.id;
-      Client.flags = var0.mask;
-      Ignore.field238 = Client.field381 == 0?'ꩊ':var0.id + '鱀';
-      Client.field446 = Client.field381 == 0?443:var0.id + '썐';
-      GameObject.field1636 = Ignore.field238;
-   }
-
-   @ObfuscatedName("n")
-   @ObfuscatedSignature(
-      signature = "(ILScript;ZB)I",
-      garbageValue = "50"
+   @Export("flags")
+   int flags;
+   @ObfuscatedName("r")
+   @Export("middle")
+   Renderable middle;
+   @ObfuscatedName("f")
+   @ObfuscatedGetter(
+      intValue = 1506530959
    )
-   static int method1519(int var0, Script var1, boolean var2) {
-      int var3;
-      if(var0 == 5504) {
-         class32.field752 -= 2;
-         var3 = class32.field756[class32.field752];
-         int var4 = class32.field756[class32.field752 + 1];
-         if(!Client.field440) {
-            Client.field396 = var3;
-            Client.mapAngle = var4;
-         }
+   @Export("hash")
+   int hash;
 
-         return 1;
-      } else if(var0 == 5505) {
-         class32.field756[++class32.field752 - 1] = Client.field396;
-         return 1;
-      } else if(var0 == 5506) {
-         class32.field756[++class32.field752 - 1] = Client.mapAngle;
-         return 1;
-      } else if(var0 == 5530) {
-         var3 = class32.field756[--class32.field752];
-         if(var3 < 0) {
-            var3 = 0;
+   @ObfuscatedName("u")
+   @ObfuscatedSignature(
+      signature = "(B)Z",
+      garbageValue = "-10"
+   )
+   public static final boolean method1491() {
+      class105 var0 = class105.keyboard;
+      synchronized(class105.keyboard) {
+         if(class105.field1726 == class105.field1742) {
+            return false;
+         } else {
+            class203.field3084 = class105.field1739[class105.field1742];
+            class37.field810 = class105.field1738[class105.field1742];
+            class105.field1742 = class105.field1742 + 1 & 127;
+            return true;
          }
-
-         Client.field402 = var3;
-         return 1;
-      } else if(var0 == 5531) {
-         class32.field756[++class32.field752 - 1] = Client.field402;
-         return 1;
-      } else {
-         return 2;
       }
    }
 
-   @ObfuscatedName("x")
+   @ObfuscatedName("j")
    @ObfuscatedSignature(
-      signature = "([Ljava/lang/String;[SIII)V",
-      garbageValue = "-1343424480"
+      signature = "(I)V",
+      garbageValue = "959481574"
    )
-   public static void method1520(String[] var0, short[] var1, int var2, int var3) {
-      if(var2 < var3) {
-         int var4 = (var2 + var3) / 2;
-         int var5 = var2;
-         String var6 = var0[var4];
-         var0[var4] = var0[var3];
-         var0[var3] = var6;
-         short var7 = var1[var4];
-         var1[var4] = var1[var3];
-         var1[var3] = var7;
+   public static void method1492() {
+      PlayerComposition.field2193.reset();
+   }
 
-         for(int var8 = var2; var8 < var3; ++var8) {
-            if(null == var6 || var0[var8] != null && var0[var8].compareTo(var6) < (var8 & 1)) {
-               String var9 = var0[var8];
-               var0[var8] = var0[var5];
-               var0[var5] = var9;
-               short var10 = var1[var8];
-               var1[var8] = var1[var5];
-               var1[var5++] = var10;
-            }
+   @ObfuscatedName("f")
+   @ObfuscatedSignature(
+      signature = "(IB)Lclass216;",
+      garbageValue = "1"
+   )
+   public static class216 method1493(int var0) {
+      class216[] var1 = new class216[]{class216.field3182, class216.field3184, class216.field3183};
+      class216[] var2 = var1;
+
+      for(int var3 = 0; var3 < var2.length; ++var3) {
+         class216 var4 = var2[var3];
+         if(var4.field3181 == var0) {
+            return var4;
          }
-
-         var0[var3] = var0[var5];
-         var0[var5] = var6;
-         var1[var3] = var1[var5];
-         var1[var5] = var7;
-         method1520(var0, var1, var2, var5 - 1);
-         method1520(var0, var1, 1 + var5, var3);
       }
 
+      return null;
    }
 }
