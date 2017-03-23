@@ -43,6 +43,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import net.runelite.cache.IndexType;
 import net.runelite.cache.downloader.requests.ConnectionInfo;
 import net.runelite.cache.downloader.requests.FileRequest;
 import net.runelite.cache.downloader.requests.HelloHandshake;
@@ -59,7 +60,7 @@ public class CacheClient
 	private static final String HOST = "oldschool1.runescape.com";
 	private static final int PORT = 43594;
 
-	private static final int CLIENT_REVISION = 138;
+	private static final int CLIENT_REVISION = 139;
 
 	private final Store store; // store cache will be written to
 	private final int clientRevision;
@@ -190,7 +191,14 @@ public class CacheClient
 			}
 			else if (index.getRevision() != revision)
 			{
-				logger.info("Index {} has the wrong revision (our revision {}, their revision {}", index.getId(), index.getRevision(), revision);
+				if (revision < index.getRevision())
+				{
+					logger.warn("Index {} revision is going BACKWARDS! (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
+				}
+				else
+				{
+					logger.info("Index {} has the wrong revision (our revision {}, their revision {})", index.getId(), index.getRevision(), revision);
+				}
 			}
 			else
 			{
@@ -207,7 +215,7 @@ public class CacheClient
 
 			if (indexFileResult.getCrc() != crc)
 			{
-				logger.info("Corrupted download for index {}", i);
+				logger.warn("Corrupted download for index {}", i);
 				continue;
 			}
 
@@ -232,12 +240,31 @@ public class CacheClient
 
 				if (oldArchive == null || oldArchive.getRevision() != archive.getRevision())
 				{
-					logger.info("Archive {}/{} in index {} is out of date, downloading", archive.getArchiveId(), index.getArchives().size(), index.getId());
+					if (oldArchive == null)
+					{
+						logger.info("Archive {}/{} in index {} is out of date, downloading", archive.getArchiveId(), index.getArchives().size(), index.getId());
+					}
+					else if (archive.getRevision() < oldArchive.getRevision())
+					{
+						logger.warn("Archive {}/{} in index {} revision is going BACKWARDS! (our revision {}, their revision {})",
+							archive.getArchiveId(), index.getArchives().size(), index.getId(),
+							oldArchive.getRevision(), archive.getRevision());
+					}
+					else
+					{
+						logger.info("Archive {}/{} in index {} is out of date ({} != {}), downloading",
+							archive.getArchiveId(), index.getArchives().size(), index.getId(),
+							oldArchive.getRevision(), archive.getRevision());
+					}
 
 					FileResult archiveFileResult = requestFile(index.getId(), archive.getArchiveId()).get();
 					byte[] compressedContents = archiveFileResult.getCompressedData();
 
 					archive.setData(compressedContents);
+					if (index.getId() != IndexType.MAPS.getNumber())
+					{
+						archive.decompressAndLoad(null);
+					}
 				}
 				else
 				{
