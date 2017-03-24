@@ -155,30 +155,40 @@ public class ModelDefinition
 	/**
 	 * Computes the UV coordinates for every three-vertex face that has a texture.
 	 */
-	public void computeTextureUVCoordinates() {
+	public void computeTextureUVCoordinates()
+	{
 		this.faceTextureUCoordinates = new float[faceCount][];
 		this.faceTextureVCoordinates = new float[faceCount][];
 
-		for (int i = 0; i < faceCount; i++) {
+		for (int i = 0; i < faceCount; i++)
+		{
 			int textureCoordinate;
-			if (textureCoordinates == null) {
+			if (textureCoordinates == null)
+			{
 				textureCoordinate = -1;
-			} else {
+			}
+			else
+			{
 				textureCoordinate = textureCoordinates[i];
 			}
 
 			int textureIdx;
-			if (faceTextures == null) {
+			if (faceTextures == null)
+			{
 				textureIdx = -1;
-			} else {
+			}
+			else
+			{
 				textureIdx = faceTextures[i] & 0xFFFF;
 			}
 
-			if (textureIdx != -1) {
+			if (textureIdx != -1)
+			{
 				float[] u = new float[3];
 				float[] v = new float[3];
 
-				if (textureCoordinate == -1) {
+				if (textureCoordinate == -1)
+				{
 					u[0] = 0.0F;
 					v[0] = 1.0F;
 
@@ -187,15 +197,19 @@ public class ModelDefinition
 
 					u[2] = 0.0F;
 					v[2] = 0.0F;
-				} else {
+				}
+				else
+				{
 					textureCoordinate &= 0xFF;
 
 					byte textureRenderType = 0;
-					if (textureRenderTypes != null) {
+					if (textureRenderTypes != null)
+					{
 						textureRenderType = textureRenderTypes[textureCoordinate];
 					}
 
-					if (textureRenderType == 0) {
+					if (textureRenderType == 0)
+					{
 						int faceVertexIdx1 = faceVertexIndices1[i];
 						int faceVertexIdx2 = faceVertexIndices2[i];
 						int faceVertexIdx3 = faceVertexIndices3[i];
@@ -230,34 +244,20 @@ public class ModelDefinition
 						float f_900_ = f_886_ * f_899_ - f_887_ * f_898_;
 						float f_901_ = f_887_ * f_897_ - f_885_ * f_899_;
 						float f_902_ = f_885_ * f_898_ - f_886_ * f_897_;
-						float f_903_ = 1.0F / (f_900_ * f_882_ + f_901_
-								* f_883_ + f_902_ * f_884_);
+						float f_903_ = 1.0F / (f_900_ * f_882_ + f_901_ * f_883_ + f_902_ * f_884_);
 
-						u[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_
-								* f_890_)
-								* f_903_;
-						u[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_
-								* f_893_)
-								* f_903_;
-						u[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_
-								* f_896_)
-								* f_903_;
+						u[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_ * f_890_) * f_903_;
+						u[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_ * f_893_) * f_903_;
+						u[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_ * f_896_) * f_903_;
 
 						f_900_ = f_883_ * f_899_ - f_884_ * f_898_;
 						f_901_ = f_884_ * f_897_ - f_882_ * f_899_;
 						f_902_ = f_882_ * f_898_ - f_883_ * f_897_;
-						f_903_ = 1.0F / (f_900_ * f_885_ + f_901_ * f_886_ + f_902_
-								* f_887_);
+						f_903_ = 1.0F / (f_900_ * f_885_ + f_901_ * f_886_ + f_902_ * f_887_);
 
-						v[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_
-								* f_890_)
-								* f_903_;
-						v[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_
-								* f_893_)
-								* f_903_;
-						v[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_
-								* f_896_)
-								* f_903_;
+						v[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_ * f_890_) * f_903_;
+						v[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_ * f_893_) * f_903_;
+						v[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_ * f_896_) * f_903_;
 					}
 				}
 
