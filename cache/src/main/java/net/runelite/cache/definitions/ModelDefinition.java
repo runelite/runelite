@@ -6,76 +6,82 @@ import net.runelite.cache.models.VertexNormal;
 public class ModelDefinition
 {
 	public int id;
-	public short[] texTriangleX;
-	public int[] vertexX;
-	public byte[] faceRenderPriorities;
-	public int[] vertexY;
-	public int triangleFaceCount;
-	public int[] trianglePointsX;
-	public int[] vertexSkins;
-	public int[] trianglePointsZ;
-	public int anInt2562;
-	public int[] trianglePointsY;
+
+	public int vertexCount = 0;
+	public int[] vertexPositionsX;
+	public int[] vertexPositionsY;
+	public int[] vertexPositionsZ;
+	public transient VertexNormal[] vertexNormals;
+
+	public int faceCount;
+	public int[] faceVertexIndices1;
+	public int[] faceVertexIndices2;
+	public int[] faceVertexIndices3;
 	public byte[] faceAlphas;
-	public short aShort2565;
-	public byte[] faceRenderType;
+	public short[] faceColors;
+	public byte[] faceRenderPriorities;
+	public byte[] faceRenderTypes;
+	public transient FaceNormal[] faceNormals;
+
+	public int textureTriangleCount;
+	public short[] textureTriangleVertexIndices1;
+	public short[] textureTriangleVertexIndices2;
+	public short[] textureTriangleVertexIndices3;
+	public short[] texturePrimaryColors;
 	public short[] faceTextures;
-	public byte priority;
-	public int texTriangleCount;
+	public byte[] textureCoordinates;
 	public byte[] textureRenderTypes;
-	public short[] texTriangleY;
-	public short[] texTriangleZ;
+
+	public int[] vertexSkins;
+	public int[] triangleSkinValues;
+
+	public byte priority;
+	public int shadowIntensity;
+
+	public int anInt2562;
+	public short aShort2565;
+	boolean aBool2579;
 	public short[] aShortArray2574;
 	public short[] aShortArray2575;
 	public short[] aShortArray2577;
 	public short[] aShortArray2578;
-	boolean aBool2579;
 	public byte[] aByteArray2580;
-	public byte[] textureCoords;
-	public int[] triangleSkinValues;
 	public int[][] anIntArrayArray2583;
 	public int[][] anIntArrayArray2584;
 	public short[] aShortArray2586;
 	public short aShort2589;
-	public short[] faceColor;
-	public int shadowIntensity;
 	public int anInt2592;
 	public int anInt2593;
-	public int[] vertexZ;
 	public int anInt2595;
-	public int vertexCount = 0;
-	public short[] texturePrimaryColor;
-	public transient VertexNormal[] normals;
-	public transient FaceNormal[] faceNormals;
 
 	public void computeNormals()
 	{
-		if (this.normals != null)
+		if (this.vertexNormals != null)
 		{
 			return;
 		}
 
-		this.normals = new VertexNormal[this.vertexCount];
+		this.vertexNormals = new VertexNormal[this.vertexCount];
 
 		int var1;
 		for (var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			this.normals[var1] = new VertexNormal();
+			this.vertexNormals[var1] = new VertexNormal();
 		}
 
-		for (var1 = 0; var1 < this.triangleFaceCount; ++var1)
+		for (var1 = 0; var1 < this.faceCount; ++var1)
 		{
-			int vertexA = this.trianglePointsX[var1];
-			int vertexB = this.trianglePointsY[var1];
-			int vertexC = this.trianglePointsZ[var1];
+			int vertexA = this.faceVertexIndices1[var1];
+			int vertexB = this.faceVertexIndices2[var1];
+			int vertexC = this.faceVertexIndices3[var1];
 
-			int xA = this.vertexX[vertexB] - this.vertexX[vertexA];
-			int yA = this.vertexY[vertexB] - this.vertexY[vertexA];
-			int zA = this.vertexZ[vertexB] - this.vertexZ[vertexA];
+			int xA = this.vertexPositionsX[vertexB] - this.vertexPositionsX[vertexA];
+			int yA = this.vertexPositionsY[vertexB] - this.vertexPositionsY[vertexA];
+			int zA = this.vertexPositionsZ[vertexB] - this.vertexPositionsZ[vertexA];
 
-			int xB = this.vertexX[vertexC] - this.vertexX[vertexA];
-			int yB = this.vertexY[vertexC] - this.vertexY[vertexA];
-			int zB = this.vertexZ[vertexC] - this.vertexZ[vertexA];
+			int xB = this.vertexPositionsX[vertexC] - this.vertexPositionsX[vertexA];
+			int yB = this.vertexPositionsY[vertexC] - this.vertexPositionsY[vertexA];
+			int zB = this.vertexPositionsZ[vertexC] - this.vertexPositionsZ[vertexA];
 
 			// Compute cross product
 			int var11 = yA * zB - yB * zA;
@@ -100,30 +106,30 @@ public class ModelDefinition
 			var13 = var13 * 256 / length;
 
 			byte var15;
-			if (this.faceRenderType == null)
+			if (this.faceRenderTypes == null)
 			{
 				var15 = 0;
 			}
 			else
 			{
-				var15 = this.faceRenderType[var1];
+				var15 = this.faceRenderTypes[var1];
 			}
 
 			if (var15 == 0)
 			{
-				VertexNormal var16 = this.normals[vertexA];
+				VertexNormal var16 = this.vertexNormals[vertexA];
 				var16.x += var11;
 				var16.y += var12;
 				var16.z += var13;
 				++var16.magnitude;
 
-				var16 = this.normals[vertexB];
+				var16 = this.vertexNormals[vertexB];
 				var16.x += var11;
 				var16.y += var12;
 				var16.z += var13;
 				++var16.magnitude;
 
-				var16 = this.normals[vertexC];
+				var16 = this.vertexNormals[vertexC];
 				var16.x += var11;
 				var16.y += var12;
 				var16.z += var13;
@@ -133,7 +139,7 @@ public class ModelDefinition
 			{
 				if (this.faceNormals == null)
 				{
-					this.faceNormals = new FaceNormal[this.triangleFaceCount];
+					this.faceNormals = new FaceNormal[this.faceCount];
 				}
 
 				FaceNormal var17 = this.faceNormals[var1] = new FaceNormal();
