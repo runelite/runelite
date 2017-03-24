@@ -240,11 +240,11 @@ public class ItemLoader
 		}
 		else if (opcode == 139)
 		{
-			stream.readUnsignedShort();
+			def.boughtId = stream.readUnsignedShort();
 		}
 		else if (opcode == 140)
 		{
-			stream.readUnsignedShort();
+			def.boughtTemplateId = stream.readUnsignedShort();
 		}
 		else if (opcode == 148)
 		{
