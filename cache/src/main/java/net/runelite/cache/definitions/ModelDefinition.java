@@ -35,7 +35,7 @@ public class ModelDefinition
 	public byte[] textureRenderTypes;
 
 	public int[] vertexSkins;
-	public int[] triangleSkinValues;
+	public int[] faceSkins;
 
 	public byte priority;
 	public int shadowIntensity;

@@ -175,7 +175,7 @@ public class ModelLoader
 
 		if (var17 == 1)
 		{
-			model.triangleSkinValues = new int[triangleCount];
+			model.faceSkins = new int[triangleCount];
 		}
 
 		if (modelTexture == 1)
@@ -285,7 +285,7 @@ public class ModelLoader
 
 			if (var17 == 1)
 			{
-				model.triangleSkinValues[point] = var6.readUnsignedByte();
+				model.faceSkins[point] = var6.readUnsignedByte();
 			}
 
 			if (modelTexture == 1)
@@ -536,7 +536,7 @@ public class ModelLoader
 
 		if (var15 == 1)
 		{
-			model.triangleSkinValues = new int[var11];
+			model.faceSkins = new int[var11];
 		}
 
 		model.faceColors = new short[var11];
@@ -638,7 +638,7 @@ public class ModelLoader
 
 			if (var15 == 1)
 			{
-				model.triangleSkinValues[var18] = var3.readUnsignedByte();
+				model.faceSkins[var18] = var3.readUnsignedByte();
 			}
 		}
 
