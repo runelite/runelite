@@ -49,19 +49,19 @@ public class ObjExporter
 
 		for (int i = 0; i < model.vertexCount; ++i)
 		{
-			objWriter.println("     v " + model.vertexX[i] + " " + model.vertexY[i] + " " + model.vertexZ[i]);
+			objWriter.println("     v " + model.vertexPositionsX[i] + " " + model.vertexPositionsY[i] + " " + model.vertexPositionsZ[i]);
 		}
 
-		for (VertexNormal normal : model.normals)
+		for (VertexNormal normal : model.vertexNormals)
 		{
 			objWriter.println("     vn " + normal.x + " " + normal.y + " " + normal.z);
 		}
 
 		Set<Integer> usedMaterials = new HashSet<>();
 
-		for (int i = 0; i < model.triangleFaceCount; ++i)
+		for (int i = 0; i < model.faceCount; ++i)
 		{
-			Color color = rs2hsbToColor(model.faceColor[i]);
+			Color color = rs2hsbToColor(model.faceColors[i]);
 
 			int alpha = 0;
 
@@ -73,9 +73,9 @@ public class ObjExporter
 			int rgba = color.getRGB() << 8 | alpha;
 			
 			objWriter.println("     usemtl color" + rgba);
-			objWriter.println("             f " + (model.trianglePointsX[i] + 1) + "//" + (model.trianglePointsX[i] + 1) +
-				" " + (model.trianglePointsY[i] + 1) + "//" + (model.trianglePointsY[i] + 1) +
-				" " + (model.trianglePointsZ[i] + 1) + "//" + (model.trianglePointsZ[i] + 1));
+			objWriter.println("             f " + (model.faceVertexIndices1[i] + 1) + "//" + (model.faceVertexIndices1[i] + 1) +
+				" " + (model.faceVertexIndices2[i] + 1) + "//" + (model.faceVertexIndices2[i] + 1) +
+				" " + (model.faceVertexIndices3[i] + 1) + "//" + (model.faceVertexIndices3[i] + 1));
 			objWriter.println("");
 
 			// Write material

@@ -89,6 +89,9 @@ public class ItemDefinition
 	public int team;
 
 	public int shiftClickDropIndex = -2;
+
+	public int boughtId = -1;
+	public int boughtTemplateId = -1;
 	
 	public int placeholderId = -1;
 	public int placeholderTemplateId = -1;

@@ -74,7 +74,7 @@ public class SpriteDumperTest
 				byte[] contents = file.getContents();
 				
 				SpriteLoader loader = new SpriteLoader();
-				SpriteDefinition[] sprites = loader.load(a.getArchiveId(), new InputStream(contents));
+				SpriteDefinition[] sprites = loader.load(a.getArchiveId(), contents);
 
 				for (SpriteDefinition def : sprites)
 				{

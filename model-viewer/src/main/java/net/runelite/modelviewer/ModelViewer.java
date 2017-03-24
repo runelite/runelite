@@ -247,15 +247,15 @@ public class ModelViewer
 
 	private static void drawModel(ModelDefinition md, short[] recolourToFind, short[] recolourToReplace)
 	{
-		for (int i = 0; i < md.triangleFaceCount; ++i)
+		for (int i = 0; i < md.faceCount; ++i)
 		{
-			int vertexA = md.trianglePointsX[i];
-			int vertexB = md.trianglePointsY[i];
-			int vertexC = md.trianglePointsZ[i];
+			int vertexA = md.faceVertexIndices1[i];
+			int vertexB = md.faceVertexIndices2[i];
+			int vertexC = md.faceVertexIndices3[i];
 
-			VertexNormal normalVertexA = md.normals[vertexA];
-			VertexNormal normalVertexB = md.normals[vertexB];
-			VertexNormal normalVertexC = md.normals[vertexC];
+			VertexNormal normalVertexA = md.vertexNormals[vertexA];
+			VertexNormal normalVertexB = md.vertexNormals[vertexB];
+			VertexNormal normalVertexC = md.vertexNormals[vertexC];
 
 			Vector3f nA = normalVertexA.normalize();
 			Vector3f nB = normalVertexB.normalize();
@@ -266,19 +266,19 @@ public class ModelViewer
 			nB.y = -nB.y;
 			nC.y = -nC.y;
 
-			int vertexAx = md.vertexX[vertexA];
-			int vertexAy = md.vertexY[vertexA];
-			int vertexAz = md.vertexZ[vertexA];
+			int vertexAx = md.vertexPositionsX[vertexA];
+			int vertexAy = md.vertexPositionsY[vertexA];
+			int vertexAz = md.vertexPositionsZ[vertexA];
 
-			int vertexBx = md.vertexX[vertexB];
-			int vertexBy = md.vertexY[vertexB];
-			int vertexBz = md.vertexZ[vertexB];
+			int vertexBx = md.vertexPositionsX[vertexB];
+			int vertexBy = md.vertexPositionsY[vertexB];
+			int vertexBz = md.vertexPositionsZ[vertexB];
 
-			int vertexCx = md.vertexX[vertexC];
-			int vertexCy = md.vertexY[vertexC];
-			int vertexCz = md.vertexZ[vertexC];
+			int vertexCx = md.vertexPositionsX[vertexC];
+			int vertexCy = md.vertexPositionsY[vertexC];
+			int vertexCz = md.vertexPositionsZ[vertexC];
 
-			short hsb = md.faceColor[i];
+			short hsb = md.faceColors[i];
 
 			// Check recolor
 			if (recolourToFind != null)
