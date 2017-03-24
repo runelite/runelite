@@ -6,76 +6,84 @@ import net.runelite.cache.models.VertexNormal;
 public class ModelDefinition
 {
 	public int id;
-	public short[] texTriangleX;
-	public int[] vertexX;
-	public byte[] faceRenderPriorities;
-	public int[] vertexY;
-	public int triangleFaceCount;
-	public int[] trianglePointsX;
-	public int[] vertexSkins;
-	public int[] trianglePointsZ;
-	public int anInt2562;
-	public int[] trianglePointsY;
+
+	public int vertexCount = 0;
+	public int[] vertexPositionsX;
+	public int[] vertexPositionsY;
+	public int[] vertexPositionsZ;
+	public transient VertexNormal[] vertexNormals;
+
+	public int faceCount;
+	public int[] faceVertexIndices1;
+	public int[] faceVertexIndices2;
+	public int[] faceVertexIndices3;
 	public byte[] faceAlphas;
-	public short aShort2565;
-	public byte[] faceRenderType;
+	public short[] faceColors;
+	public byte[] faceRenderPriorities;
+	public byte[] faceRenderTypes;
+	public transient FaceNormal[] faceNormals;
+
+	public int textureTriangleCount;
+	public short[] textureTriangleVertexIndices1;
+	public short[] textureTriangleVertexIndices2;
+	public short[] textureTriangleVertexIndices3;
+	public transient float[][] faceTextureUCoordinates;
+	public transient float[][] faceTextureVCoordinates;
+	public short[] texturePrimaryColors;
 	public short[] faceTextures;
-	public byte priority;
-	public int texTriangleCount;
+	public byte[] textureCoordinates;
 	public byte[] textureRenderTypes;
-	public short[] texTriangleY;
-	public short[] texTriangleZ;
+
+	public int[] vertexSkins;
+	public int[] faceSkins;
+
+	public byte priority;
+	public int shadowIntensity;
+
+	public int anInt2562;
+	public short aShort2565;
+	boolean aBool2579;
 	public short[] aShortArray2574;
 	public short[] aShortArray2575;
 	public short[] aShortArray2577;
 	public short[] aShortArray2578;
-	boolean aBool2579;
 	public byte[] aByteArray2580;
-	public byte[] textureCoords;
-	public int[] triangleSkinValues;
 	public int[][] anIntArrayArray2583;
 	public int[][] anIntArrayArray2584;
 	public short[] aShortArray2586;
 	public short aShort2589;
-	public short[] faceColor;
-	public int shadowIntensity;
 	public int anInt2592;
 	public int anInt2593;
-	public int[] vertexZ;
 	public int anInt2595;
-	public int vertexCount = 0;
-	public short[] texturePrimaryColor;
-	public transient VertexNormal[] normals;
-	public transient FaceNormal[] faceNormals;
 
 	public void computeNormals()
 	{
-		if (this.normals != null)
+		if (this.vertexNormals != null)
 		{
 			return;
 		}
 
-		this.normals = new VertexNormal[this.vertexCount];
+		this.vertexNormals = new VertexNormal[this.vertexCount];
 
 		int var1;
 		for (var1 = 0; var1 < this.vertexCount; ++var1)
 		{
-			this.normals[var1] = new VertexNormal();
+			this.vertexNormals[var1] = new VertexNormal();
 		}
 
-		for (var1 = 0; var1 < this.triangleFaceCount; ++var1)
+		for (var1 = 0; var1 < this.faceCount; ++var1)
 		{
-			int vertexA = this.trianglePointsX[var1];
-			int vertexB = this.trianglePointsY[var1];
-			int vertexC = this.trianglePointsZ[var1];
+			int vertexA = this.faceVertexIndices1[var1];
+			int vertexB = this.faceVertexIndices2[var1];
+			int vertexC = this.faceVertexIndices3[var1];
 
-			int xA = this.vertexX[vertexB] - this.vertexX[vertexA];
-			int yA = this.vertexY[vertexB] - this.vertexY[vertexA];
-			int zA = this.vertexZ[vertexB] - this.vertexZ[vertexA];
+			int xA = this.vertexPositionsX[vertexB] - this.vertexPositionsX[vertexA];
+			int yA = this.vertexPositionsY[vertexB] - this.vertexPositionsY[vertexA];
+			int zA = this.vertexPositionsZ[vertexB] - this.vertexPositionsZ[vertexA];
 
-			int xB = this.vertexX[vertexC] - this.vertexX[vertexA];
-			int yB = this.vertexY[vertexC] - this.vertexY[vertexA];
-			int zB = this.vertexZ[vertexC] - this.vertexZ[vertexA];
+			int xB = this.vertexPositionsX[vertexC] - this.vertexPositionsX[vertexA];
+			int yB = this.vertexPositionsY[vertexC] - this.vertexPositionsY[vertexA];
+			int zB = this.vertexPositionsZ[vertexC] - this.vertexPositionsZ[vertexA];
 
 			// Compute cross product
 			int var11 = yA * zB - yB * zA;
@@ -100,30 +108,30 @@ public class ModelDefinition
 			var13 = var13 * 256 / length;
 
 			byte var15;
-			if (this.faceRenderType == null)
+			if (this.faceRenderTypes == null)
 			{
 				var15 = 0;
 			}
 			else
 			{
-				var15 = this.faceRenderType[var1];
+				var15 = this.faceRenderTypes[var1];
 			}
 
 			if (var15 == 0)
 			{
-				VertexNormal var16 = this.normals[vertexA];
+				VertexNormal var16 = this.vertexNormals[vertexA];
 				var16.x += var11;
 				var16.y += var12;
 				var16.z += var13;
 				++var16.magnitude;
 
-				var16 = this.normals[vertexB];
+				var16 = this.vertexNormals[vertexB];
 				var16.x += var11;
 				var16.y += var12;
 				var16.z += var13;
 				++var16.magnitude;
 
-				var16 = this.normals[vertexC];
+				var16 = this.vertexNormals[vertexC];
 				var16.x += var11;
 				var16.y += var12;
 				var16.z += var13;
@@ -133,7 +141,7 @@ public class ModelDefinition
 			{
 				if (this.faceNormals == null)
 				{
-					this.faceNormals = new FaceNormal[this.triangleFaceCount];
+					this.faceNormals = new FaceNormal[this.faceCount];
 				}
 
 				FaceNormal var17 = this.faceNormals[var1] = new FaceNormal();
@@ -144,4 +152,118 @@ public class ModelDefinition
 		}
 	}
 
+	/**
+	 * Computes the UV coordinates for every three-vertex face that has a texture.
+	 */
+	public void computeTextureUVCoordinates()
+	{
+		this.faceTextureUCoordinates = new float[faceCount][];
+		this.faceTextureVCoordinates = new float[faceCount][];
+
+		for (int i = 0; i < faceCount; i++)
+		{
+			int textureCoordinate;
+			if (textureCoordinates == null)
+			{
+				textureCoordinate = -1;
+			}
+			else
+			{
+				textureCoordinate = textureCoordinates[i];
+			}
+
+			int textureIdx;
+			if (faceTextures == null)
+			{
+				textureIdx = -1;
+			}
+			else
+			{
+				textureIdx = faceTextures[i] & 0xFFFF;
+			}
+
+			if (textureIdx != -1)
+			{
+				float[] u = new float[3];
+				float[] v = new float[3];
+
+				if (textureCoordinate == -1)
+				{
+					u[0] = 0.0F;
+					v[0] = 1.0F;
+
+					u[1] = 1.0F;
+					v[1] = 1.0F;
+
+					u[2] = 0.0F;
+					v[2] = 0.0F;
+				}
+				else
+				{
+					textureCoordinate &= 0xFF;
+
+					byte textureRenderType = 0;
+					if (textureRenderTypes != null)
+					{
+						textureRenderType = textureRenderTypes[textureCoordinate];
+					}
+
+					if (textureRenderType == 0)
+					{
+						int faceVertexIdx1 = faceVertexIndices1[i];
+						int faceVertexIdx2 = faceVertexIndices2[i];
+						int faceVertexIdx3 = faceVertexIndices3[i];
+
+						short triangleVertexIdx1 = textureTriangleVertexIndices1[textureCoordinate];
+						short triangleVertexIdx2 = textureTriangleVertexIndices2[textureCoordinate];
+						short triangleVertexIdx3 = textureTriangleVertexIndices3[textureCoordinate];
+
+						float triangleX = (float) vertexPositionsX[triangleVertexIdx1];
+						float triangleY = (float) vertexPositionsY[triangleVertexIdx1];
+						float triangleZ = (float) vertexPositionsZ[triangleVertexIdx1];
+
+						float f_882_ = (float) vertexPositionsX[triangleVertexIdx2] - triangleX;
+						float f_883_ = (float) vertexPositionsY[triangleVertexIdx2] - triangleY;
+						float f_884_ = (float) vertexPositionsZ[triangleVertexIdx2] - triangleZ;
+						float f_885_ = (float) vertexPositionsX[triangleVertexIdx3] - triangleX;
+						float f_886_ = (float) vertexPositionsY[triangleVertexIdx3] - triangleY;
+						float f_887_ = (float) vertexPositionsZ[triangleVertexIdx3] - triangleZ;
+						float f_888_ = (float) vertexPositionsX[faceVertexIdx1] - triangleX;
+						float f_889_ = (float) vertexPositionsY[faceVertexIdx1] - triangleY;
+						float f_890_ = (float) vertexPositionsZ[faceVertexIdx1] - triangleZ;
+						float f_891_ = (float) vertexPositionsX[faceVertexIdx2] - triangleX;
+						float f_892_ = (float) vertexPositionsY[faceVertexIdx2] - triangleY;
+						float f_893_ = (float) vertexPositionsZ[faceVertexIdx2] - triangleZ;
+						float f_894_ = (float) vertexPositionsX[faceVertexIdx3] - triangleX;
+						float f_895_ = (float) vertexPositionsY[faceVertexIdx3] - triangleY;
+						float f_896_ = (float) vertexPositionsZ[faceVertexIdx3] - triangleZ;
+
+						float f_897_ = f_883_ * f_887_ - f_884_ * f_886_;
+						float f_898_ = f_884_ * f_885_ - f_882_ * f_887_;
+						float f_899_ = f_882_ * f_886_ - f_883_ * f_885_;
+						float f_900_ = f_886_ * f_899_ - f_887_ * f_898_;
+						float f_901_ = f_887_ * f_897_ - f_885_ * f_899_;
+						float f_902_ = f_885_ * f_898_ - f_886_ * f_897_;
+						float f_903_ = 1.0F / (f_900_ * f_882_ + f_901_ * f_883_ + f_902_ * f_884_);
+
+						u[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_ * f_890_) * f_903_;
+						u[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_ * f_893_) * f_903_;
+						u[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_ * f_896_) * f_903_;
+
+						f_900_ = f_883_ * f_899_ - f_884_ * f_898_;
+						f_901_ = f_884_ * f_897_ - f_882_ * f_899_;
+						f_902_ = f_882_ * f_898_ - f_883_ * f_897_;
+						f_903_ = 1.0F / (f_900_ * f_885_ + f_901_ * f_886_ + f_902_ * f_887_);
+
+						v[0] = (f_900_ * f_888_ + f_901_ * f_889_ + f_902_ * f_890_) * f_903_;
+						v[1] = (f_900_ * f_891_ + f_901_ * f_892_ + f_902_ * f_893_) * f_903_;
+						v[2] = (f_900_ * f_894_ + f_901_ * f_895_ + f_902_ * f_896_) * f_903_;
+					}
+				}
+
+				this.faceTextureUCoordinates[i] = u;
+				this.faceTextureVCoordinates[i] = v;
+			}
+		}
+	}
 }

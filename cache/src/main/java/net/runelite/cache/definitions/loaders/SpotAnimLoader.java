@@ -33,20 +33,21 @@ public class SpotAnimLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(SpotAnimLoader.class);
 
-	public SpotAnimDefinition load(int id, InputStream stream)
+	public SpotAnimDefinition load(int id, byte[] b)
 	{
 		SpotAnimDefinition def = new SpotAnimDefinition();
+		InputStream is = new InputStream(b);
 		def.id = id;
 
 		while (true)
 		{
-			int opcode = stream.readUnsignedByte();
+			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
 			{
 				break;
 			}
 
-			this.decodeValues(opcode, def, stream);
+			this.decodeValues(opcode, def, is);
 		}
 
 		return def;

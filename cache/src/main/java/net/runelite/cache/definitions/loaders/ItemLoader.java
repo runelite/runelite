@@ -34,19 +34,20 @@ public class ItemLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(ItemLoader.class);
 
-	public ItemDefinition load(int id, InputStream stream)
+	public ItemDefinition load(int id, byte[] b)
 	{
 		ItemDefinition def = new ItemDefinition(id);
+		InputStream is = new InputStream(b);
 		
 		while (true)
 		{
-			int opcode = stream.readUnsignedByte();
+			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
 			{
 				break;
 			}
 
-			this.decodeValues(opcode, def, stream);
+			this.decodeValues(opcode, def, is);
 		}
 
 		return def;
@@ -239,11 +240,11 @@ public class ItemLoader
 		}
 		else if (opcode == 139)
 		{
-			stream.readUnsignedShort();
+			def.boughtId = stream.readUnsignedShort();
 		}
 		else if (opcode == 140)
 		{
-			stream.readUnsignedShort();
+			def.boughtTemplateId = stream.readUnsignedShort();
 		}
 		else if (opcode == 148)
 		{

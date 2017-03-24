@@ -68,7 +68,7 @@ public class NpcDumper
 
 		for (net.runelite.cache.fs.File f : archive.getFiles())
 		{
-			NpcDefinition npc = loader.load(f.getFileId(), new InputStream(f.getContents()));
+			NpcDefinition npc = loader.load(f.getFileId(), f.getContents());
 			npcs.add(npc);
 		}
 	}
