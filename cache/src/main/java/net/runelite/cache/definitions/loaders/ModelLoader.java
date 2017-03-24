@@ -5,18 +5,18 @@ import net.runelite.cache.io.InputStream;
 
 public class ModelLoader
 {
-	public ModelDefinition load(int modelId, byte[] var1)
+	public ModelDefinition load(int modelId, byte[] b)
 	{
 		ModelDefinition def = new ModelDefinition();
 		def.id = modelId;
 
-		if (var1[var1.length - 1] == -1 && var1[var1.length - 2] == -1)
+		if (b[b.length - 1] == -1 && b[b.length - 2] == -1)
 		{
-			this.load1(def, var1);
+			this.load1(def, b);
 		}
 		else
 		{
-			this.load2(def, var1);
+			this.load2(def, b);
 		}
 
 		def.computeNormals();

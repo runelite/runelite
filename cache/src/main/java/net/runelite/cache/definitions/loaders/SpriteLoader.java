@@ -33,22 +33,24 @@ public class SpriteLoader
 	public static final int FLAG_VERTICAL = 0b01;
 	public static final int FLAG_ALPHA    = 0b10;
 
-	public SpriteDefinition[] load(int id, InputStream stream)
+	public SpriteDefinition[] load(int id, byte[] b)
 	{
-		stream.setOffset(stream.getLength() - 2);
-		int spriteCount = stream.readUnsignedShort();
+		InputStream is = new InputStream(b);
+
+		is.setOffset(is.getLength() - 2);
+		int spriteCount = is.readUnsignedShort();
 
 		SpriteDefinition[] sprites = new SpriteDefinition[spriteCount];
 
 		// 2 for size
 		// 5 for width, height, palette length
 		// + 8 bytes per sprite for offset x/y, width, and height
-		stream.setOffset(stream.getLength() - 7 - spriteCount * 8);
+		is.setOffset(is.getLength() - 7 - spriteCount * 8);
 
 		// max width and height
-		int width = stream.readUnsignedShort();
-		int height = stream.readUnsignedShort();
-		int paletteLength = stream.readUnsignedByte() + 1;
+		int width = is.readUnsignedShort();
+		int height = is.readUnsignedShort();
+		int paletteLength = is.readUnsignedByte() + 1;
 
 		for (int i = 0; i < spriteCount; ++i)
 		{
@@ -61,31 +63,31 @@ public class SpriteLoader
 
 		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[i].setOffsetX(stream.readUnsignedShort());
+			sprites[i].setOffsetX(is.readUnsignedShort());
 		}
 
 		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[i].setOffsetY(stream.readUnsignedShort());
+			sprites[i].setOffsetY(is.readUnsignedShort());
 		}
 
 		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[i].setWidth(stream.readUnsignedShort());
+			sprites[i].setWidth(is.readUnsignedShort());
 		}
 
 		for (int i = 0; i < spriteCount; ++i)
 		{
-			sprites[i].setHeight(stream.readUnsignedShort());
+			sprites[i].setHeight(is.readUnsignedShort());
 		}
 
 		// same as above + 3 bytes for each palette entry, except for the first one (which is transparent)
-		stream.setOffset(stream.getLength() - 7 - spriteCount * 8 - (paletteLength - 1) * 3);
+		is.setOffset(is.getLength() - 7 - spriteCount * 8 - (paletteLength - 1) * 3);
 		int[] palette = new int[paletteLength];
 
 		for (int i = 1; i < paletteLength; ++i)
 		{
-			palette[i] = stream.read24BitInt();
+			palette[i] = is.read24BitInt();
 
 			if (palette[i] == 0)
 			{
@@ -93,7 +95,7 @@ public class SpriteLoader
 			}
 		}
 
-		stream.setOffset(0);
+		is.setOffset(0);
 
 		for (int i = 0; i < spriteCount; ++i)
 		{
@@ -104,14 +106,14 @@ public class SpriteLoader
 			byte[] pixelPaletteIndicies = new byte[dimension];
 			byte[] pixelAlphas = new byte[dimension];
 
-			int flags = stream.readUnsignedByte();
+			int flags = is.readUnsignedByte();
 
 			if ((flags & FLAG_VERTICAL) == 0)
 			{
 				// read horizontally
 				for (int j = 0; j < dimension; ++j)
 				{
-					pixelPaletteIndicies[j] = stream.readByte();
+					pixelPaletteIndicies[j] = is.readByte();
 				}
 			}
 			else
@@ -121,7 +123,7 @@ public class SpriteLoader
 				{
 					for (int k = 0; k < spriteHeight; ++k)
 					{
-						pixelPaletteIndicies[spriteWidth * k + j] = stream.readByte();
+						pixelPaletteIndicies[spriteWidth * k + j] = is.readByte();
 					}
 				}
 			}
@@ -134,7 +136,7 @@ public class SpriteLoader
 					// read horizontally
 					for (int j = 0; j < dimension; ++j)
 					{
-						pixelAlphas[j] = stream.readByte();
+						pixelAlphas[j] = is.readByte();
 					}
 				}
 				else
@@ -144,7 +146,7 @@ public class SpriteLoader
 					{
 						for (int k = 0; k < spriteHeight; ++k)
 						{
-							pixelAlphas[spriteWidth * k + j] = stream.readByte();
+							pixelAlphas[spriteWidth * k + j] = is.readByte();
 						}
 					}
 				}

@@ -33,19 +33,20 @@ public class SequenceLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(SequenceLoader.class);
 
-	public SequenceDefinition load(int id, InputStream stream)
+	public SequenceDefinition load(int id, byte[] b)
 	{
 		SequenceDefinition def = new SequenceDefinition(id);
+		InputStream is = new InputStream(b);
 
 		while (true)
 		{
-			int opcode = stream.readUnsignedByte();
+			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
 			{
 				break;
 			}
 
-			this.decodeValues(opcode, def, stream);
+			this.decodeValues(opcode, def, is);
 		}
 
 		return def;

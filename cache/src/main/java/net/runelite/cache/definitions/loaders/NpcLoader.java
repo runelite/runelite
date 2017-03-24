@@ -33,19 +33,20 @@ public class NpcLoader
 {
 	private static final Logger logger = LoggerFactory.getLogger(NpcLoader.class);
 
-	public NpcDefinition load(int id, InputStream stream)
+	public NpcDefinition load(int id, byte[] b)
 	{
 		NpcDefinition def = new NpcDefinition(id);
+		InputStream is = new InputStream(b);
 
 		while (true)
 		{
-			int opcode = stream.readUnsignedByte();
+			int opcode = is.readUnsignedByte();
 			if (opcode == 0)
 			{
 				break;
 			}
 
-			this.decodeValues(opcode, def, stream);
+			this.decodeValues(opcode, def, is);
 		}
 
 		return def;
