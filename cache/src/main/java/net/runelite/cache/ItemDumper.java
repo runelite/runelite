@@ -68,7 +68,7 @@ public class ItemDumper
 
 		for (net.runelite.cache.fs.File f : archive.getFiles())
 		{
-			ItemDefinition def = loader.load(f.getFileId(), new InputStream(f.getContents()));
+			ItemDefinition def = loader.load(f.getFileId(), f.getContents());
 			items.add(def);
 		}
 	}
