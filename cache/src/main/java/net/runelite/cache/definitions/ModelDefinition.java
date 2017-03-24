@@ -27,8 +27,8 @@ public class ModelDefinition
 	public short[] textureTriangleVertexIndices1;
 	public short[] textureTriangleVertexIndices2;
 	public short[] textureTriangleVertexIndices3;
-	public float[][] faceTextureUCoordinates;
-	public float[][] faceTextureVCoordinates;
+	public transient float[][] faceTextureUCoordinates;
+	public transient float[][] faceTextureVCoordinates;
 	public short[] texturePrimaryColors;
 	public short[] faceTextures;
 	public byte[] textureCoordinates;
