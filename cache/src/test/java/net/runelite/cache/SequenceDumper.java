@@ -69,7 +69,7 @@ public class SequenceDumper
 			for (File file : archive.getFiles())
 			{
 				SequenceLoader loader = new SequenceLoader();
-				SequenceDefinition seq = loader.load(file.getFileId(), new InputStream(file.getContents()));
+				SequenceDefinition seq = loader.load(file.getFileId(), file.getContents());
 
 				Files.write(gson.toJson(seq), new java.io.File(outDir, file.getFileId() + ".json"), Charset.defaultCharset());
 				++count;
