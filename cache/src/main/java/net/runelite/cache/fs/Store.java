@@ -132,6 +132,16 @@ public class Store implements Closeable
 		indexes.remove(index);
 	}
 
+	/*
+	 * we rebuild data differently, so the CRCs aren't right.
+	 * rebuild them.
+	 */
+	public void rebuildCrc() throws IOException
+	{
+		for (Index i : indexes)
+			i.rebuildCrc();
+	}
+
 	public void load() throws IOException
 	{
 		for (Index i : indexes)

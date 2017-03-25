@@ -72,6 +72,12 @@ public class CacheClientHandler extends ChannelInboundHandlerAdapter
 		}
 		else if (state == ClientState.CONNECTED)
 		{
+			if (buffer.readableBytes() < 8)
+			{
+				logger.trace("Connected, but not enough data yet to read header");
+				return;
+			}
+
 			ByteBuf copy = buffer.slice();
 
 			int index = copy.readUnsignedByte();

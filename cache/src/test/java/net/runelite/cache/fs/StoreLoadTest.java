@@ -41,9 +41,12 @@ public class StoreLoadTest
 	@Test
 	public void testLoad() throws IOException
 	{
-		Store store = new Store(StoreLocation.LOCATION);
-		store.load();
-		System.out.println(store);
+		try (Store store = new Store(StoreLocation.LOCATION))
+		{
+			store.load();
+
+			System.out.println(store);
+		}
 	}
 
 	@Test
