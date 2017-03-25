@@ -147,7 +147,7 @@ public class Archive
 
 		if (this.crc != res.crc)
 		{
-			logger.warn("crc mismatch for archive {}", this);
+			logger.warn("crc mismatch for archive {}", this.getArchiveId());
 		}
 
 		if (this.getWhirlpool() != null && !Arrays.equals(this.getWhirlpool(), res.whirlpool))

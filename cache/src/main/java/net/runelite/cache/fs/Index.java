@@ -25,6 +25,8 @@
 package net.runelite.cache.fs;
 
 import com.google.common.io.Files;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -35,6 +37,8 @@ import java.util.Objects;
 import net.runelite.cache.util.Djb2;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
+import net.runelite.cache.util.Crc32;
+import net.runelite.cache.util.Whirlpool;
 import net.runelite.cache.util.XteaKeyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -195,6 +199,52 @@ public class Index implements Closeable
 		return null;
 	}
 
+	public void rebuildCrc() throws IOException
+	{
+		for (Archive a : archives)
+		{
+			assert this.index.getIndexFileId() == this.id;
+
+			int rev; // used for determining what part of compressedData to crc
+			byte[] compressedData;
+
+			if (a.getData() != null)
+			{
+				compressedData = a.getData(); // data was never decompressed or loaded
+				rev = -1; // assume that this data has no revision?
+			}
+			else
+			{
+				byte[] fileData = a.saveContents();
+				rev = a.getRevision();
+				compressedData = DataFile.compress(fileData, a.getCompression(), a.getRevision(), null);
+			}
+
+			int length = rev != -1 ? compressedData.length - 2 : compressedData.length;
+			Crc32 crc32 = new Crc32();
+			crc32.update(compressedData, 0, length);
+
+			int crc = crc32.getHash();
+			byte[] whirlpool = Whirlpool.getHash(compressedData, length);
+
+			a.setCrc(crc);
+			a.setWhirlpool(whirlpool);
+		}
+
+		Crc32 crc = new Crc32();
+		byte[] indexData = this.writeIndexData();
+
+		ByteBuf b = Unpooled.buffer(5, 5);
+		b.writeByte((byte) CompressionType.NONE);
+		b.writeInt(indexData.length);
+
+		crc.update(b.array(), 0, 5); // crc includes compression type and length
+		crc.update(indexData, 0, indexData.length);
+
+		int hash = crc.getHash();
+		this.setCrc(hash);
+	}
+
 	public void load() throws IOException
 	{
 		logger.trace("Loading index {}", id);
@@ -221,6 +271,7 @@ public class Index implements Closeable
 
 	public void save() throws IOException
 	{
+		// This updates archive CRCs for writeIndexData
 		saveArchives();
 
 		byte[] data = this.writeIndexData();
