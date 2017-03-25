@@ -67,4 +67,27 @@ public class CacheClientTest
 
 		store.save();
 	}
+
+	@Test
+	@Ignore
+	public void testTree() throws Exception
+	{
+		Store store = new Store(new File("C:\\rs\\temp"));
+		store.loadTree(new File("C:\\rs\\runescape-data\\cache"));
+
+		CacheClient c = new CacheClient(store);
+		c.connect();
+		CompletableFuture<Integer> handshake = c.handshake();
+
+		Integer result = handshake.get();
+		logger.info("Handshake result: {}", result);
+
+		Assert.assertEquals(0, (int) result);
+
+		c.download();
+
+		c.close();
+
+		store.saveTree(new File("C:\\rs\\temp\\t"));
+	}
 }

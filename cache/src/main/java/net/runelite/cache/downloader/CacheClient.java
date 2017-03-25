@@ -53,7 +53,7 @@ import net.runelite.cache.fs.Store;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CacheClient
+public class CacheClient implements AutoCloseable
 {
 	private static final Logger logger = LoggerFactory.getLogger(CacheClient.class);
 
@@ -63,28 +63,30 @@ public class CacheClient
 	private static final int CLIENT_REVISION = 139;
 
 	private final Store store; // store cache will be written to
+	private final String host;
 	private final int clientRevision;
 
 	private ClientState state;
 
-	private EventLoopGroup group = new NioEventLoopGroup(1);
+	private final EventLoopGroup group = new NioEventLoopGroup(1);
 	private Channel channel;
 
 	private CompletableFuture<Integer> handshakeFuture;
-	private Queue<PendingFileRequest> requests = new ArrayDeque<>();
+	private final Queue<PendingFileRequest> requests = new ArrayDeque<>();
 
 	public CacheClient(Store store)
 	{
-		this(store, CLIENT_REVISION);
+		this(store, HOST, CLIENT_REVISION);
 	}
 
-	public CacheClient(Store store, int clientRevision)
+	public CacheClient(Store store, String host, int clientRevision)
 	{
 		this.store = store;
+		this.host = host;
 		this.clientRevision = clientRevision;
 	}
 
-	public void connect() throws InterruptedException
+	public void connect()
 	{
 		Bootstrap b = new Bootstrap();
 		b.group(group)
@@ -102,7 +104,7 @@ public class CacheClient
 			});
 
 		// Start the client.
-		ChannelFuture f = b.connect(HOST, PORT).sync();
+		ChannelFuture f = b.connect(host, PORT).syncUninterruptibly();
 		channel = f.channel();
 	}
 
@@ -151,6 +153,7 @@ public class CacheClient
 		logger.info("Client is now connected!");
 	}
 
+	@Override
 	public void close()
 	{
 		channel.close().syncUninterruptibly();
