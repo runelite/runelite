@@ -204,10 +204,10 @@ public class Cache
 
 	private static void dumpObjects(Store store, File objectdir) throws IOException
 	{
-		ObjectDumper dumper = new ObjectDumper(store, objectdir, objectdir);
+		ObjectManager dumper = new ObjectManager(store);
 		dumper.load();
-		dumper.dump();
-		dumper.java();
+		dumper.dump(objectdir);
+		dumper.java(objectdir);
 	}
 
 	private static void dumpSprites(Store store, File spritedir) throws IOException
