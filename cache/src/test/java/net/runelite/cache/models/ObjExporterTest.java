@@ -28,8 +28,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import net.runelite.cache.StoreLocation;
+import net.runelite.cache.TextureManager;
 import net.runelite.cache.definitions.ModelDefinition;
 import net.runelite.cache.definitions.loaders.ModelLoader;
+import net.runelite.cache.fs.Store;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -39,14 +42,22 @@ public class ObjExporterTest
 	@Ignore
 	public void testExport() throws Exception
 	{
-		ModelLoader loader = new ModelLoader();
-		ModelDefinition model = loader.load(11048, Files.readAllBytes(new File("D:\\rs\\07\\cache\\models\\11048.model").toPath()));
-
-		ObjExporter exporter = new ObjExporter(model);
-		try (PrintWriter objWriter = new PrintWriter(new FileWriter(new File("C:\\rs\\temp\\11048.obj")));
-			PrintWriter mtlWriter = new PrintWriter(new FileWriter(new File("C:\\rs\\temp\\11048.mtl"))))
+		try (Store store = new Store(StoreLocation.LOCATION))
 		{
-			exporter.export(objWriter, mtlWriter);
+			store.load();
+
+			TextureManager tm = new TextureManager(store);
+			tm.load();
+
+			ModelLoader loader = new ModelLoader();
+			ModelDefinition model = loader.load(9638, Files.readAllBytes(new File("D:\\rs\\07\\cache\\models\\9638.model").toPath()));
+
+			ObjExporter exporter = new ObjExporter(tm, model);
+			try (PrintWriter objWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.obj")));
+				PrintWriter mtlWriter = new PrintWriter(new FileWriter(new File("D:\\rs\\07\\temp\\9638.mtl"))))
+			{
+				exporter.export(objWriter, mtlWriter);
+			}
 		}
 	}
 }
