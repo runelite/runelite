@@ -29,7 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import net.runelite.cache.StoreLocation;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -40,14 +39,16 @@ public class IndexFileTest
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 	
 	@Test
-	public void test1() throws IOException
+	public void test() throws IOException
 	{
 		File file = folder.newFile();
-		Store store = new Store(folder.getRoot());
-		IndexFile index = new IndexFile(store, 5, file);
-		IndexEntry entry = new IndexEntry(index, 7, 8, 9);
-		index.write(entry);
-		IndexEntry entry2 = index.read(7);
-		Assert.assertEquals(entry, entry2);
+		try (Store store = new Store(folder.getRoot()))
+		{
+			IndexFile index = new IndexFile(store, 5, file);
+			IndexEntry entry = new IndexEntry(index, 7, 8, 9);
+			index.write(entry);
+			IndexEntry entry2 = index.read(7);
+			Assert.assertEquals(entry, entry2);
+		}
 	}
 }
