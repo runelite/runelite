@@ -49,6 +49,7 @@ public class CacheServerHandler extends SimpleChannelInboundHandler<ByteBuf>
 	private final Store store;
 
 	private ClientState state = ClientState.HANDSHAKING;
+	private final ByteBuf buffer = Unpooled.buffer();
 
 	public CacheServerHandler(CacheServer server)
 	{
@@ -61,22 +62,37 @@ public class CacheServerHandler extends SimpleChannelInboundHandler<ByteBuf>
 	{
 		System.out.println(ByteBufUtil.prettyHexDump(buf));
 
-		switch (state)
+		buffer.writeBytes(buf);
+
+		int last = -1;
+		while (buffer.readableBytes() != last)
 		{
-			case HANDSHAKING:
-				handshake(ctx, buf);
-				break;
-			case CONNECTING:
-				connecting(ctx, buf);
-				break;
-			case CONNECTED:
-				connected(ctx, buf);
-				break;
+			last = buffer.readableBytes();
+
+			switch (state)
+			{
+				case HANDSHAKING:
+					handshake(ctx, buffer);
+					break;
+				case CONNECTING:
+					connecting(ctx, buffer);
+					break;
+				case CONNECTED:
+					connected(ctx, buffer);
+					break;
+			}
 		}
+
+		buffer.discardReadBytes();
 	}
 
 	private void handshake(ChannelHandlerContext ctx, ByteBuf buf)
 	{
+		if (buf.readableBytes() < 5)
+		{
+			return;
+		}
+
 		byte type = buf.readByte();
 		if (type != 15)
 		{
@@ -105,6 +121,11 @@ public class CacheServerHandler extends SimpleChannelInboundHandler<ByteBuf>
 
 	private void connecting(ChannelHandlerContext ctx, ByteBuf buf)
 	{
+		if (buf.readableBytes() < 4)
+		{
+			return;
+		}
+
 		ConnectionInfo cinfo = new ConnectionInfo();
 		cinfo.setType(buf.readByte());
 		cinfo.setPadding(buf.readMedium());
@@ -121,13 +142,18 @@ public class CacheServerHandler extends SimpleChannelInboundHandler<ByteBuf>
 		// byte[1] = index
 		// byte[2-3] = archive id
 
+		if (buf.readableBytes() < 4)
+		{
+			return;
+		}
+
 		byte requesting255 = buf.readByte();
 		int index = buf.readByte() & 0xFF;
 		int archiveId = buf.readShort() & 0xFFFF;
 
-		if (requesting255 != 0)
+		if (index == 255)
 		{
-			handle255(ctx, index, archiveId);
+			handle255(ctx, requesting255, index, archiveId);
 		}
 		else
 		{
@@ -135,9 +161,9 @@ public class CacheServerHandler extends SimpleChannelInboundHandler<ByteBuf>
 		}
 	}
 
-	private void handle255(ChannelHandlerContext ctx, int index, int archiveId)
+	private void handle255(ChannelHandlerContext ctx, byte requesting255, int index, int archiveId)
 	{
-		logger.info("Client {} requests 255, index {}, archive {}", ctx.channel().remoteAddress(), index, archiveId);
+		logger.info("Client {} requests 255 {}, index {}, archive {}", ctx.channel().remoteAddress(), requesting255, index, archiveId);
 
 		if (archiveId == 255)
 		{

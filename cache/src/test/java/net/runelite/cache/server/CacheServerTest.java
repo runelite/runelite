@@ -47,6 +47,21 @@ public class CacheServerTest
 
 	@Test
 	@Ignore
+	public void run() throws Exception
+	{
+		try (Store store = new Store(new java.io.File("D:\\rs\\07\\temp\\cache139"));
+			CacheServer server = new CacheServer(store, REVISION))
+		{
+			store.load();
+			store.rebuildCrc();
+
+			server.start();
+			server.waitForClose();
+		}
+	}
+
+	@Test
+	@Ignore
 	public void testDownload() throws Exception
 	{
 		try (Store store = new Store(StoreLocation.LOCATION);

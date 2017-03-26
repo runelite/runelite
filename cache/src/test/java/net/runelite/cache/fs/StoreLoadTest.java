@@ -89,14 +89,27 @@ public class StoreLoadTest
 	@Ignore
 	public void loadTree() throws IOException
 	{
-		Store store = new Store(folder.newFolder());
-		store.loadTree(new java.io.File("C:\\rs\\temp\\tree"));
-
-		try (Store store2 = new Store(StoreLocation.LOCATION))
+		try (Store store = new Store(folder.newFolder()))
 		{
-			store2.load();
+			store.loadTree(new java.io.File("C:\\rs\\temp\\tree"));
+			
+			try (Store store2 = new Store(StoreLocation.LOCATION))
+			{
+				store2.load();
 
-			Assert.assertEquals(store, store2);
+				Assert.assertEquals(store, store2);
+			}
+		}
+	}
+
+	@Test
+	@Ignore
+	public void saveTree() throws IOException
+	{
+		try (Store store = new Store(new java.io.File("d:/rs/07/temp/cache")))
+		{
+			store.load();
+			store.saveTree(new java.io.File("d:/rs/07/temp/tree"));
 		}
 	}
 }
