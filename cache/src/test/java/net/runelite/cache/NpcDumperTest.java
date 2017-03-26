@@ -46,17 +46,19 @@ public class NpcDumperTest
 		File dumpDir = folder.newFolder(),
 			javaDir = folder.newFolder();
 
-		Store store = new Store(StoreLocation.LOCATION);
-		store.load();
+		try (Store store = new Store(StoreLocation.LOCATION))
+		{
+			store.load();
 
-		NpcDumper dumper = new NpcDumper(
-			store,
-			dumpDir,
-			javaDir
-		);
-		dumper.load();
-		dumper.dump();
-		dumper.java();
+			NpcDumper dumper = new NpcDumper(
+				store,
+				dumpDir,
+				javaDir
+			);
+			dumper.load();
+			dumper.dump();
+			dumper.java();
+		}
 
 		logger.info("Dumped to {}, java {}", dumpDir, javaDir);
 	}
