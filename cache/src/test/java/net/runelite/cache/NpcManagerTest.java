@@ -33,9 +33,9 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NpcDumperTest
+public class NpcManagerTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(NpcDumperTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(NpcManagerTest.class);
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
@@ -50,14 +50,12 @@ public class NpcDumperTest
 		{
 			store.load();
 
-			NpcDumper dumper = new NpcDumper(
-				store,
-				dumpDir,
-				javaDir
+			NpcManager dumper = new NpcManager(
+				store
 			);
 			dumper.load();
-			dumper.dump();
-			dumper.java();
+			dumper.dump(dumpDir);
+			dumper.java(javaDir);
 		}
 
 		logger.info("Dumped to {}, java {}", dumpDir, javaDir);

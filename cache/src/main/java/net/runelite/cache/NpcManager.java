@@ -24,39 +24,28 @@
  */
 package net.runelite.cache;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.definitions.NpcDefinition;
+import net.runelite.cache.definitions.exporters.NpcExporter;
 import net.runelite.cache.definitions.loaders.NpcLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.Namer;
 
-public class NpcDumper
+public class NpcManager
 {
 	private final Store store;
-	private final File out, java;
-	private final Gson gson;
 	private final List<NpcDefinition> npcs = new ArrayList<>();
 	private final Namer namer = new Namer();
 
-	public NpcDumper(Store store, File out, File java)
+	public NpcManager(Store store)
 	{
 		this.store = store;
-		this.out = out;
-		this.java = java;
-
-		GsonBuilder builder = new GsonBuilder()
-			.setPrettyPrinting();
-		gson = builder.create();
 	}
 
 	public void load() throws IOException
@@ -73,20 +62,20 @@ public class NpcDumper
 		}
 	}
 
-	public void dump() throws IOException
+	public void dump(File out) throws IOException
 	{
+		out.mkdirs();
+
 		for (NpcDefinition def : npcs)
 		{
-			out.mkdirs();
-			java.io.File targ = new java.io.File(out, def.id + ".json");
-			try (FileWriter fw = new FileWriter(targ))
-			{
-				fw.write(gson.toJson(def));
-			}
+			NpcExporter exporter = new NpcExporter(def);
+
+			File targ = new File(out, def.id + ".json");
+			exporter.exportTo(targ);
 		}
 	}
 
-	public void java() throws IOException
+	public void java(File java) throws IOException
 	{
 		java.mkdirs();
 		java.io.File targ = new java.io.File(java, "NpcID.java");
