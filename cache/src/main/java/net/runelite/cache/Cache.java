@@ -196,10 +196,10 @@ public class Cache
 
 	private static void dumpNpcs(Store store, File npcdir) throws IOException
 	{
-		NpcDumper dumper = new NpcDumper(store, npcdir, npcdir);
+		NpcManager dumper = new NpcManager(store);
 		dumper.load();
-		dumper.dump();
-		dumper.java();
+		dumper.dump(npcdir);
+		dumper.java(npcdir);
 	}
 
 	private static void dumpObjects(Store store, File objectdir) throws IOException
