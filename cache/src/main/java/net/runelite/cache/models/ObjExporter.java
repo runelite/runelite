@@ -26,22 +26,25 @@ package net.runelite.cache.models;
 
 import java.awt.Color;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.Set;
+import net.runelite.cache.TextureManager;
 import net.runelite.cache.definitions.ModelDefinition;
+import net.runelite.cache.definitions.TextureDefinition;
 
 public class ObjExporter
 {
+	private final TextureManager textureManager;
 	private final ModelDefinition model;
 
-	public ObjExporter(ModelDefinition model)
+	public ObjExporter(TextureManager textureManager, ModelDefinition model)
 	{
+		this.textureManager = textureManager;
 		this.model = model;
 	}
 
 	public void export(PrintWriter objWriter, PrintWriter mtlWriter)
 	{
 		model.computeNormals();
+		model.computeTextureUVCoordinates();
 
 		objWriter.println("mtllib " + model.id + ".mtl");
 
@@ -49,19 +52,80 @@ public class ObjExporter
 
 		for (int i = 0; i < model.vertexCount; ++i)
 		{
-			objWriter.println("     v " + model.vertexPositionsX[i] + " " + model.vertexPositionsY[i] + " " + model.vertexPositionsZ[i]);
+			objWriter.println("v " + model.vertexPositionsX[i] + " "
+				+ model.vertexPositionsY[i] * -1 + " "
+				+ model.vertexPositionsZ[i] * -1);
+		}
+
+		if (model.faceTextures != null)
+		{
+			float[][] u = model.faceTextureUCoordinates;
+			float[][] v = model.faceTextureVCoordinates;
+
+			for (int i = 0; i < model.faceCount; ++i)
+			{
+				objWriter.println("vt " + u[i][0] + " " + v[i][0]);
+				objWriter.println("vt " + u[i][1] + " " + v[i][1]);
+				objWriter.println("vt " + u[i][2] + " " + v[i][2]);
+			}
 		}
 
 		for (VertexNormal normal : model.vertexNormals)
 		{
-			objWriter.println("     vn " + normal.x + " " + normal.y + " " + normal.z);
+			objWriter.println("vn " + normal.x + " " + normal.y + " " + normal.z);
 		}
-
-		Set<Integer> usedMaterials = new HashSet<>();
 
 		for (int i = 0; i < model.faceCount; ++i)
 		{
-			Color color = rs2hsbToColor(model.faceColors[i]);
+			int x = model.faceVertexIndices1[i] + 1;
+			int y = model.faceVertexIndices2[i] + 1;
+			int z = model.faceVertexIndices3[i] + 1;
+
+			objWriter.println("usemtl m" + i);
+			if (model.faceTextures != null)
+			{
+				objWriter.println("f "
+					+ x + "/" + (i * 3 + 1) + " "
+					+ y + "/" + (i * 3 + 2) + " "
+					+ z + "/" + (i * 3 + 3));
+
+			}
+			else
+			{
+				objWriter.println("f " + x + " " + y + " " + z);
+			}
+			objWriter.println("");
+		}
+
+		// Write material
+		for (int i = 0; i < model.faceCount; ++i)
+		{
+			short textureId = -1;
+
+			if (model.faceTextures != null)
+			{
+				textureId = model.faceTextures[i];
+			}
+
+			mtlWriter.println("newmtl m" + i);
+
+			if (textureId == -1)
+			{
+				Color color = rs2hsbToColor(model.faceColors[i]);
+
+				double r = color.getRed() / 255.0;
+				double g = color.getGreen() / 255.0;
+				double b = color.getBlue() / 255.0;
+
+				mtlWriter.println("Kd " + r + " " + g + " " + b);
+			}
+			else
+			{
+				TextureDefinition texture = textureManager.findTexture(textureId);
+				assert texture != null;
+
+				mtlWriter.println("map_Kd sprite/" + texture.getFileIds()[0] + "-0.png");
+			}
 
 			int alpha = 0;
 
@@ -70,31 +134,9 @@ public class ObjExporter
 				alpha = model.faceAlphas[i] & 0xFF;
 			}
 
-			int rgba = color.getRGB() << 8 | alpha;
-			
-			objWriter.println("     usemtl color" + rgba);
-			objWriter.println("             f " + (model.faceVertexIndices1[i] + 1) + "//" + (model.faceVertexIndices1[i] + 1) +
-				" " + (model.faceVertexIndices2[i] + 1) + "//" + (model.faceVertexIndices2[i] + 1) +
-				" " + (model.faceVertexIndices3[i] + 1) + "//" + (model.faceVertexIndices3[i] + 1));
-			objWriter.println("");
-
-			// Write material
-			
-			if (usedMaterials.contains(rgba))
-				continue;
-			usedMaterials.add(rgba);
-
-			mtlWriter.println("newmtl color" + rgba);
-
-			double r = color.getRed() / 255.0;
-			double g = color.getGreen() / 255.0;
-			double b = color.getBlue() / 255.0;
-
-			mtlWriter.println("     Kd " + r + " " + g + " " + b);
-
 			if (alpha != 0)
 			{
-				mtlWriter.println("     d " + (alpha / 255.0));
+				mtlWriter.println("d " + (alpha / 255.0));
 			}
 		}
 	}
