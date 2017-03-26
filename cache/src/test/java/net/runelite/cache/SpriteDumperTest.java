@@ -22,21 +22,11 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package net.runelite.cache;
 
-import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import javax.imageio.ImageIO;
-import net.runelite.cache.definitions.SpriteDefinition;
-import net.runelite.cache.definitions.loaders.SpriteLoader;
-import net.runelite.cache.fs.Archive;
-import net.runelite.cache.fs.File;
-import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.io.InputStream;
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -51,56 +41,22 @@ public class SpriteDumperTest
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
 	@Test
-	public void extract() throws IOException
+	public void test() throws IOException
 	{
-		java.io.File base = StoreLocation.LOCATION,
-			outDir = folder.newFolder();
+		File dumpDir = folder.newFolder();
 
-		int count = 0;
-
-		try (Store store = new Store(base))
+		try (Store store = new Store(StoreLocation.LOCATION))
 		{
 			store.load();
-			
-			Index index = store.getIndex(IndexType.SPRITES);
-			
-			for (Archive a : index.getArchives())
-			{
-				List<File> files = a.getFiles();
-				
-				Assert.assertEquals(1, files.size());
-				
-				File file = files.get(0);
-				byte[] contents = file.getContents();
-				
-				SpriteLoader loader = new SpriteLoader();
-				SpriteDefinition[] sprites = loader.load(a.getArchiveId(), contents);
 
-				for (SpriteDefinition def : sprites)
-				{
-					// I don't know why this happens
-					if (def.getHeight() <= 0 || def.getWidth() <= 0)
-						continue;
-
-					BufferedImage image = getBufferedImage(def);
-					java.io.File targ = new java.io.File(outDir, def.getId() + "-" + def.getFrame() + ".png");
-					targ.mkdirs();
-					ImageIO.write(image, "png", targ);
-
-					++count;
-				}
-			}
+			SpriteDumper dumper = new SpriteDumper(
+				store,
+				dumpDir
+			);
+			dumper.load();
+			dumper.dump();
 		}
 
-		Assert.assertTrue(count > 3000);
-
-		logger.info("Dumped {} sprites to {}", count, outDir);
-	}
-
-	private BufferedImage getBufferedImage(SpriteDefinition def)
-	{
-		BufferedImage bi = new BufferedImage(def.getWidth(), def.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		bi.setRGB(0, 0, def.getWidth(), def.getHeight(), def.getPixels(), 0, def.getWidth());
-		return bi;
+		logger.info("Dumped to {}", dumpDir);
 	}
 }
