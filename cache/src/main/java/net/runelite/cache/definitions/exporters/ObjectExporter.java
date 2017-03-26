@@ -22,45 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.cache.definitions.exporters;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.runelite.cache.definitions.ObjectDefinition;
 
-public class ObjectDumperTest
+public class ObjectExporter
 {
-	private static final Logger logger = LoggerFactory.getLogger(ObjectDumperTest.class);
+	private final ObjectDefinition object;
+	private final Gson gson;
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void test() throws IOException
+	public ObjectExporter(ObjectDefinition object)
 	{
-		File dumpDir = folder.newFolder(),
-			javaDir = folder.newFolder();
+		this.object = object;
 
-		try (Store store = new Store(StoreLocation.LOCATION))
-		{
-			store.load();
-
-			ObjectDumper dumper = new ObjectDumper(
-				store,
-				dumpDir,
-				javaDir
-			);
-			dumper.load();
-			dumper.dump();
-			dumper.java();
-		}
-
-		logger.info("Dumped to {}, java {}", dumpDir, javaDir);
+		GsonBuilder builder = new GsonBuilder()
+			.setPrettyPrinting();
+		gson = builder.create();
 	}
 
+	public String export()
+	{
+		return gson.toJson(object);
+	}
+
+	public void exportTo(File file) throws IOException
+	{
+		try (FileWriter fw = new FileWriter(file))
+		{
+			fw.write(export());
+		}
+	}
 }
