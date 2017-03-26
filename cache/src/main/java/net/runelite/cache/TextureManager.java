@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,50 +24,53 @@
  */
 package net.runelite.cache;
 
-import com.google.common.io.Files;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.IOException;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 import net.runelite.cache.definitions.TextureDefinition;
+import net.runelite.cache.definitions.loaders.TextureLoader;
+import net.runelite.cache.fs.Archive;
+import net.runelite.cache.fs.File;
+import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class TextureDumper
+public class TextureManager
 {
-	private static final Logger logger = LoggerFactory.getLogger(TextureDumper.class);
+	private final Store store;
+	private final List<TextureDefinition> textures = new ArrayList<>();
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-	@Test
-	public void extract() throws IOException
+	public TextureManager(Store store)
 	{
-		java.io.File base = StoreLocation.LOCATION,
-			outDir = folder.newFile();
+		this.store = store;
+	}
 
-		int count = 0;
+	public void load()
+	{
+		Index index = store.getIndex(IndexType.TEXTURES);
+		Archive archive = index.getArchive(0);
 
-		try (Store store = new Store(base))
+		TextureLoader loader = new TextureLoader();
+
+		for (File file : archive.getFiles())
 		{
-			store.load();
+			TextureDefinition texture = loader.load(file.getFileId(), file.getContents());
+			textures.add(texture);
+		}
+	}
 
-			TextureManager tm = new TextureManager(store);
-			tm.load();
+	public List<TextureDefinition> getTextures()
+	{
+		return textures;
+	}
 
-			for (TextureDefinition texture : tm.getTextures())
+	public TextureDefinition findTexture(int id)
+	{
+		for (TextureDefinition td : textures)
+		{
+			if (td.getId() == id)
 			{
-				Files.write(gson.toJson(texture), new java.io.File(outDir, texture.getId() + ".json"), Charset.defaultCharset());
-				++count;
+				return td;
 			}
 		}
-
-		logger.info("Dumped {} textures to {}", count, outDir);
+		return null;
 	}
 }
