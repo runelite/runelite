@@ -24,39 +24,28 @@
  */
 package net.runelite.cache;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import net.runelite.cache.definitions.ItemDefinition;
+import net.runelite.cache.definitions.exporters.ItemExporter;
 import net.runelite.cache.definitions.loaders.ItemLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
-import net.runelite.cache.io.InputStream;
 import net.runelite.cache.util.Namer;
 
-public class ItemDumper
+public class ItemManager
 {
 	private final Store store;
-	private final File out, java;
-	private final Gson gson;
 	private final List<ItemDefinition> items = new ArrayList<>();
 	private final Namer namer = new Namer();
 
-	public ItemDumper(Store store, File out, File java)
+	public ItemManager(Store store)
 	{
 		this.store = store;
-		this.out = out;
-		this.java = java;
-
-		GsonBuilder builder = new GsonBuilder()
-			.setPrettyPrinting();
-		gson = builder.create();
 	}
 
 	public void load()
@@ -73,20 +62,25 @@ public class ItemDumper
 		}
 	}
 
-	public void dump() throws IOException
+	public List<ItemDefinition> getItems()
 	{
+		return items;
+	}
+
+	public void export(File out) throws IOException
+	{
+		out.mkdirs();
+
 		for (ItemDefinition def : items)
 		{
-			out.mkdirs();
-			java.io.File targ = new java.io.File(out, def.id + ".json");
-			try (FileWriter fw = new FileWriter(targ))
-			{
-				fw.write(gson.toJson(def));
-			}
+			ItemExporter exporter = new ItemExporter(def);
+			
+			File targ = new File(out, def.id + ".json");
+			exporter.exportTo(targ);
 		}
 	}
 
-	public void java() throws IOException
+	public void java(File java) throws IOException
 	{
 		java.mkdirs();
 		java.io.File targ = new java.io.File(java, "ItemID.java");

@@ -188,10 +188,10 @@ public class Cache
 
 	private static void dumpItems(Store store, File itemdir) throws IOException
 	{
-		ItemDumper dumper = new ItemDumper(store, itemdir, itemdir);
+		ItemManager dumper = new ItemManager(store);
 		dumper.load();
-		dumper.dump();
-		dumper.java();
+		dumper.export(itemdir);
+		dumper.java(itemdir);
 	}
 
 	private static void dumpNpcs(Store store, File npcdir) throws IOException
