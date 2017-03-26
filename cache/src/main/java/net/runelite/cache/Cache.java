@@ -48,6 +48,7 @@ public class Cache
 		options.addOption(null, "items", true, "directory to dump items to");
 		options.addOption(null, "npcs", true, "directory to dump npcs to");
 		options.addOption(null, "objects", true, "directory to dump objects to");
+		options.addOption(null, "sprites", true, "directory to dump sprites to");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine cmd;
@@ -117,6 +118,7 @@ public class Cache
 			if (itemdir == null)
 			{
 				System.err.println("Item directory must be specified");
+				return;
 			}
 
 			System.out.println("Dumping items to " + itemdir);
@@ -129,6 +131,7 @@ public class Cache
 			if (npcdir == null)
 			{
 				System.err.println("NPC directory must be specified");
+				return;
 			}
 
 			System.out.println("Dumping npcs to " + npcdir);
@@ -141,10 +144,24 @@ public class Cache
 			if (objectdir == null)
 			{
 				System.err.println("Object directory must be specified");
+				return;
 			}
 
 			System.out.println("Dumping objects to " + objectdir);
 			dumpObjects(store, new File(objectdir));
+		}
+		else if (cmd.hasOption("sprites"))
+		{
+			String spritedir = cmd.getOptionValue("sprites");
+
+			if (spritedir == null)
+			{
+				System.err.println("Sprite directory must be specified");
+				return;
+			}
+
+			System.out.println("Dumping sprites to " + spritedir);
+			dumpSprites(store, new File(spritedir));
 		}
 		else
 		{
@@ -191,5 +208,12 @@ public class Cache
 		dumper.load();
 		dumper.dump();
 		dumper.java();
+	}
+
+	private static void dumpSprites(Store store, File spritedir) throws IOException
+	{
+		SpriteDumper dumper = new SpriteDumper(store, spritedir);
+		dumper.load();
+		dumper.dump();
 	}
 }
