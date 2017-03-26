@@ -24,29 +24,26 @@
  */
 package net.runelite.cache;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.imageio.ImageIO;
 import net.runelite.cache.definitions.SpriteDefinition;
+import net.runelite.cache.definitions.exporters.SpriteExporter;
 import net.runelite.cache.definitions.loaders.SpriteLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
 
-public class SpriteDumper
+public class SpriteManager
 {
 	private final Store store;
-	private final File outDir;
 	private final List<SpriteDefinition> sprites = new ArrayList<>();
 
-	public SpriteDumper(Store store, File outDir)
+	public SpriteManager(Store store)
 	{
 		this.store = store;
-		this.outDir = outDir;
 	}
 
 	public void load()
@@ -69,32 +66,25 @@ public class SpriteDumper
 		}
 	}
 
-	public void dump() throws IOException
+	public List<SpriteDefinition> getSprites()
 	{
-		for (SpriteDefinition def : sprites)
+		return sprites;
+	}
+
+	public void export(File outDir) throws IOException
+	{
+		for (SpriteDefinition sprite : sprites)
 		{
 			// I don't know why this happens
-			if (def.getHeight() <= 0 || def.getWidth() <= 0)
+			if (sprite.getHeight() <= 0 || sprite.getWidth() <= 0)
 			{
 				continue;
 			}
 
-			dump(def, outDir);
+			SpriteExporter exporter = new SpriteExporter(sprite);
+			File png = new File(outDir, sprite.getId() + "-" + sprite.getFrame() + ".png");
+
+			exporter.exportTo(png);
 		}
-	}
-
-	public static void dump(SpriteDefinition sprite, File outDir) throws IOException
-	{
-		BufferedImage image = getBufferedImage(sprite);
-		File targ = new File(outDir, sprite.getId() + "-" + sprite.getFrame() + ".png");
-		targ.mkdirs();
-		ImageIO.write(image, "png", targ);
-	}
-
-	private static BufferedImage getBufferedImage(SpriteDefinition def)
-	{
-		BufferedImage bi = new BufferedImage(def.getWidth(), def.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		bi.setRGB(0, 0, def.getWidth(), def.getHeight(), def.getPixels(), 0, def.getWidth());
-		return bi;
 	}
 }
