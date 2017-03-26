@@ -22,41 +22,33 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.cache;
+package net.runelite.cache.definitions.exporters;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import net.runelite.cache.fs.Store;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.imageio.ImageIO;
+import net.runelite.cache.definitions.SpriteDefinition;
 
-public class SpriteDumperTest
+public class SpriteExporter
 {
-	private static final Logger logger = LoggerFactory.getLogger(SpriteDumperTest.class);
+	private final SpriteDefinition sprite;
 
-	@Rule
-	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
-
-	@Test
-	public void test() throws IOException
+	public SpriteExporter(SpriteDefinition sprite)
 	{
-		File dumpDir = folder.newFolder();
+		this.sprite = sprite;
+	}
 
-		try (Store store = new Store(StoreLocation.LOCATION))
-		{
-			store.load();
+	public BufferedImage export()
+	{
+		BufferedImage bi = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		bi.setRGB(0, 0, sprite.getWidth(), sprite.getHeight(), sprite.getPixels(), 0, sprite.getWidth());
+		return bi;
+	}
 
-			SpriteDumper dumper = new SpriteDumper(
-				store,
-				dumpDir
-			);
-			dumper.load();
-			dumper.dump();
-		}
-
-		logger.info("Dumped to {}", dumpDir);
+	public void exportTo(File file) throws IOException
+	{
+		BufferedImage image = export();
+		ImageIO.write(image, "png", file);
 	}
 }
