@@ -212,8 +212,8 @@ public class Cache
 
 	private static void dumpSprites(Store store, File spritedir) throws IOException
 	{
-		SpriteDumper dumper = new SpriteDumper(store, spritedir);
+		SpriteManager dumper = new SpriteManager(store);
 		dumper.load();
-		dumper.dump();
+		dumper.export(spritedir);
 	}
 }
