@@ -235,12 +235,6 @@ public class Archive
 
 	public byte[] saveContents()
 	{
-		if (data != null)
-		{
-			logger.trace("Saving contents of archive {}/{} using cached data", index.getId(), archiveId);
-			return data;
-		}
-
 		OutputStream stream = new OutputStream();
 
 		int filesCount = this.getFiles().size();
