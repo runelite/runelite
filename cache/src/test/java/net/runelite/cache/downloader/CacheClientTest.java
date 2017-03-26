@@ -49,45 +49,49 @@ public class CacheClientTest
 	@Ignore
 	public void test() throws Exception
 	{
-		Store store = new Store(new File("d:/temp"));
-		store.load();
+		try (Store store = new Store(new File("d:/temp")))
+		{
+			store.load();
+			
+			CacheClient c = new CacheClient(store);
+			c.connect();
+			CompletableFuture<Integer> handshake = c.handshake();
 
-		CacheClient c = new CacheClient(store);
-		c.connect();
-		CompletableFuture<Integer> handshake = c.handshake();
+			Integer result = handshake.get();
+			logger.info("Handshake result: {}", result);
 
-		Integer result = handshake.get();
-		logger.info("Handshake result: {}", result);
+			Assert.assertEquals(0, (int) result);
+			
+			c.download();
 
-		Assert.assertEquals(0, (int) result);
-
-		c.download();
-
-		c.close();
-
-		store.save();
+			c.close();
+			
+			store.save();
+		}
 	}
 
 	@Test
 	@Ignore
 	public void testTree() throws Exception
 	{
-		Store store = new Store(new File("C:\\rs\\temp"));
-		store.loadTree(new File("C:\\rs\\runescape-data\\cache"));
+		try (Store store = new Store(new File("C:\\rs\\temp")))
+		{
+			store.loadTree(new File("C:\\rs\\runescape-data\\cache"));
+			
+			CacheClient c = new CacheClient(store);
+			c.connect();
+			CompletableFuture<Integer> handshake = c.handshake();
 
-		CacheClient c = new CacheClient(store);
-		c.connect();
-		CompletableFuture<Integer> handshake = c.handshake();
+			Integer result = handshake.get();
+			logger.info("Handshake result: {}", result);
 
-		Integer result = handshake.get();
-		logger.info("Handshake result: {}", result);
+			Assert.assertEquals(0, (int) result);
+			
+			c.download();
 
-		Assert.assertEquals(0, (int) result);
-
-		c.download();
-
-		c.close();
-
-		store.saveTree(new File("C:\\rs\\temp\\t"));
+			c.close();
+			
+			store.saveTree(new File("C:\\rs\\temp\\t"));
+		}
 	}
 }

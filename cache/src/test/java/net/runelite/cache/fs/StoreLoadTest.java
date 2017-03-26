@@ -52,24 +52,28 @@ public class StoreLoadTest
 	@Test
 	public void testSave() throws IOException
 	{
-		Store store = new Store(StoreLocation.LOCATION);
-		store.load();
-
-		java.io.File testStoreFile = folder.newFolder();
-		for (java.io.File f : StoreLocation.LOCATION.listFiles())
+		try (Store store = new Store(StoreLocation.LOCATION))
 		{
-			Files.copy(f, new java.io.File(testStoreFile, f.getName()));
+			store.load();
+
+			java.io.File testStoreFile = folder.newFolder();
+			for (java.io.File f : StoreLocation.LOCATION.listFiles())
+			{
+				Files.copy(f, new java.io.File(testStoreFile, f.getName()));
+			}
+
+			try (Store testStore = new Store(testStoreFile))
+			{
+				testStore.load();
+
+				Assert.assertTrue(store.equals(testStore));
+
+				testStore.save();
+				testStore.load();
+
+				Assert.assertTrue(store.equals(testStore));
+			}
 		}
-
-		Store testStore = new Store(testStoreFile);
-		testStore.load();
-
-		Assert.assertTrue(store.equals(testStore));
-
-		testStore.save();
-		testStore.load();
-
-		Assert.assertTrue(store.equals(testStore));
 	}
 
 	@Test

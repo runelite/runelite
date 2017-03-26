@@ -46,17 +46,19 @@ public class ObjectDumperTest
 		File dumpDir = folder.newFolder(),
 			javaDir = folder.newFolder();
 
-		Store store = new Store(StoreLocation.LOCATION);
-		store.load();
+		try (Store store = new Store(StoreLocation.LOCATION))
+		{
+			store.load();
 
-		ObjectDumper dumper = new ObjectDumper(
-			store,
-			dumpDir,
-			javaDir
-		);
-		dumper.load();
-		dumper.dump();
-		dumper.java();
+			ObjectDumper dumper = new ObjectDumper(
+				store,
+				dumpDir,
+				javaDir
+			);
+			dumper.load();
+			dumper.dump();
+			dumper.java();
+		}
 
 		logger.info("Dumped to {}, java {}", dumpDir, javaDir);
 	}
