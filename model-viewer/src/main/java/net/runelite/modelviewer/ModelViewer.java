@@ -278,27 +278,51 @@ public class ModelViewer
 			int vertexCy = md.vertexPositionsY[vertexC];
 			int vertexCz = md.vertexPositionsZ[vertexC];
 
-			short hsb = md.faceColors[i];
+			short textureId = md.faceTextures[i];
+			Color color;
 
-			// Check recolor
-			if (recolourToFind != null)
+			float[] u = null;
+			float[] v = null;
+
+			if (textureId != -1)
 			{
-				for (int j = 0; j < recolourToFind.length; ++j)
+				color = Color.WHITE;
+
+				Texture texture = getTexture(textureId);
+				assert texture != null;
+
+				u = md.faceTextureUCoordinates[i];
+				v = md.faceTextureVCoordinates[i];
+
+				int glTexture = texture.getOpenglId();
+
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, glTexture);
+			}
+			else
+			{
+				short hsb = md.faceColors[i];
+
+				// Check recolor
+				if (recolourToFind != null)
 				{
-					if (recolourToFind[j] == hsb)
+					for (int j = 0; j < recolourToFind.length; ++j)
 					{
-						hsb = recolourToReplace[j];
+						if (recolourToFind[j] == hsb)
+						{
+							hsb = recolourToReplace[j];
+						}
 					}
 				}
+
+				int rgb = RS2HSB_to_RGB(hsb);
+				color = new Color(rgb);
 			}
 
-			int rgb = RS2HSB_to_RGB(hsb);
-			Color c = new Color(rgb);
-
 			// convert to range of 0-1
-			float rf = (float) c.getRed() / 255f;
-			float gf = (float) c.getGreen() / 255f;
-			float bf = (float) c.getBlue() / 255f;
+			float rf = (float) color.getRed() / 255f;
+			float gf = (float) color.getGreen() / 255f;
+			float bf = (float) color.getBlue() / 255f;
 
 			GL11.glBegin(GL11.GL_TRIANGLES);
 
@@ -308,15 +332,32 @@ public class ModelViewer
 			// inverting y instead of A -> B -> C, or else with cull
 			// face will cull the wrong side
 			GL11.glNormal3f(nA.x, nA.y, nA.z);
+			if (textureId != -1)
+			{
+				GL11.glTexCoord2f(u[0], v[0]);
+			}
 			GL11.glVertex3i(vertexAx, -vertexAy, vertexAz);
 
 			GL11.glNormal3f(nC.x, nC.y, nC.z);
+			if (textureId != -1)
+			{
+				GL11.glTexCoord2f(u[2], v[2]);
+			}
 			GL11.glVertex3i(vertexCx, -vertexCy, vertexCz);
 
 			GL11.glNormal3f(nB.x, nB.y, nB.z);
+			if (textureId != -1)
+			{
+				GL11.glTexCoord2f(u[1], v[1]);
+			}
 			GL11.glVertex3i(vertexBx, -vertexBy, vertexBz);
 
 			GL11.glEnd();
+
+			if (textureId != -1)
+			{
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+			}
 		}
 	}
 
@@ -463,19 +504,22 @@ public class ModelViewer
 			ObjectDefinition object = getObject(id);
 
 			if (object == null || object.getObjectModels() == null)
+			{
 				continue;
+			}
 
 			Position objectPos = location.getPosition();
 
 			if (location.getPosition().getZ() != 0)
+			{
 				continue;
+			}
 
 			int regionX = objectPos.getX() - region.getBaseX();
 			int regionY = objectPos.getY() - region.getBaseY();
 			int height = -region.getTileHeight(objectPos.getZ(), regionX, regionY) / HEIGHT_MOD;
 
 			//byte overlayRotation = region.getOverlayRotation(objectPos.getZ(), regionX, regionY);
-
 			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
 			// TILE_SCALE/2 to draw the object from the center of the tile it is on
@@ -488,7 +532,9 @@ public class ModelViewer
 				if (object.getObjectTypes() != null)
 				{
 					if (object.getObjectTypes()[i] != location.getType())
+					{
 						continue;
+					}
 				}
 
 				drawModel(md, object.getRecolorToFind(), object.getRecolorToReplace());
@@ -533,7 +579,9 @@ public class ModelViewer
 	{
 		ObjectDefinition object = objects[id];
 		if (object != null)
+		{
 			return object;
+		}
 
 		try (FileInputStream fin = new FileInputStream("objects/" + id + ".json"))
 		{
@@ -552,13 +600,20 @@ public class ModelViewer
 	{
 		ModelDefinition md = models[id];
 		if (md != null)
+		{
 			return md;
+		}
 
 		try
 		{
-			ModelLoader loader = new ModelLoader();
 			byte[] b = Files.readAllBytes(new File("models/" + id + ".model").toPath());
+
+			ModelLoader loader = new ModelLoader();
 			md = loader.load(id, b);
+
+			md.computeNormals();
+			md.computeTextureUVCoordinates();
+
 			models[id] = md;
 			return md;
 		}
