@@ -20,6 +20,7 @@ public class ModelLoader
 		}
 
 		def.computeNormals();
+		def.computeTextureUVCoordinates();
 
 		return def;
 	}
