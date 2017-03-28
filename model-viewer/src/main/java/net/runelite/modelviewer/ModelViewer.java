@@ -249,6 +249,11 @@ public class ModelViewer
 	{
 		for (int i = 0; i < md.faceCount; ++i)
 		{
+			byte faceRenderType = md.faceRenderTypes[i];
+
+			if ((faceRenderType & 2) != 0)
+				continue; // what is this?
+
 			int vertexA = md.faceVertexIndices1[i];
 			int vertexB = md.faceVertexIndices2[i];
 			int vertexC = md.faceVertexIndices3[i];
@@ -278,7 +283,7 @@ public class ModelViewer
 			int vertexCy = md.vertexPositionsY[vertexC];
 			int vertexCz = md.vertexPositionsZ[vertexC];
 
-			short textureId = md.faceTextures[i];
+			short textureId = md.faceTextures != null ? md.faceTextures[i] : -1;
 			Color color;
 
 			float[] u = null;
@@ -610,9 +615,6 @@ public class ModelViewer
 
 			ModelLoader loader = new ModelLoader();
 			md = loader.load(id, b);
-
-			md.computeNormals();
-			md.computeTextureUVCoordinates();
 
 			models[id] = md;
 			return md;
