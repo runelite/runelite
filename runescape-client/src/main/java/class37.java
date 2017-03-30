@@ -1,3 +1,4 @@
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
@@ -5,7 +6,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ap")
 public class class37 {
    @ObfuscatedName("bc")
-   static IndexData field805;
+   @Export("indexInterfaces")
+   static IndexData indexInterfaces;
    @ObfuscatedName("cf")
    public static char field810;
    @ObfuscatedName("op")

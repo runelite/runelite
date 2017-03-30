@@ -211,7 +211,7 @@ public class class20 implements Runnable {
       Script.field968.reset();
       class157.field2137.method3349();
       ChatLineBuffer.indexConfigs.method3349();
-      class37.field805.method3349();
+      class37.indexInterfaces.method3349();
       IndexFile.field1830.method3349();
       class205.indexMaps.method3349();
       Client.field586.method3349();
