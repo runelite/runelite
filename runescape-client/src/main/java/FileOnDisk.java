@@ -21,7 +21,8 @@ public final class FileOnDisk {
    @Export("position")
    long position;
    @ObfuscatedName("bu")
-   static class184 field1217;
+   @Export("indexSprites")
+   static IndexData indexSprites;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       longValue = 1387621246430742515L

@@ -19,7 +19,7 @@ final class class5 implements Comparator {
    @ObfuscatedName("u")
    static class182 field55;
    @ObfuscatedName("bq")
-   static class184 field56;
+   static IndexData field56;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -194,18 +194,18 @@ final class class5 implements Comparator {
             Client.field330 = 30;
          } else if(Client.field330 == 30) {
             class157.field2137 = class9.method98(0, false, true, true);
-            ChatLineBuffer.field988 = class9.method98(1, false, true, true);
+            ChatLineBuffer.indexConfigs = class9.method98(1, false, true, true);
             ChatLineBuffer.field990 = class9.method98(2, true, false, true);
             class37.field805 = class9.method98(3, false, true, true);
-            class116.field1830 = class9.method98(4, false, true, true);
-            class205.field3096 = class9.method98(5, true, true, true);
+            IndexFile.field1830 = class9.method98(4, false, true, true);
+            class205.indexMaps = class9.method98(5, true, true, true);
             Client.field586 = class9.method98(6, true, true, false);
-            CollisionData.field1857 = class9.method98(7, false, true, true);
-            FileOnDisk.field1217 = class9.method98(8, false, true, true);
-            class171.field2367 = class9.method98(9, false, true, true);
+            CollisionData.indexModels = class9.method98(7, false, true, true);
+            FileOnDisk.indexSprites = class9.method98(8, false, true, true);
+            class171.indexTextures = class9.method98(9, false, true, true);
             WallObject.field1581 = class9.method98(10, false, true, true);
             Friend.field162 = class9.method98(11, false, true, true);
-            Projectile.field877 = class9.method98(12, false, true, true);
+            Projectile.indexScripts = class9.method98(12, false, true, true);
             field56 = class9.method98(13, true, false, true);
             class57.field1083 = class9.method98(14, false, true, false);
             Ignore.field215 = class9.method98(15, false, true, true);
@@ -215,18 +215,18 @@ final class class5 implements Comparator {
          } else if(Client.field330 == 40) {
             byte var31 = 0;
             var0 = var31 + class157.field2137.method3425() * 4 / 100;
-            var0 += ChatLineBuffer.field988.method3425() * 4 / 100;
+            var0 += ChatLineBuffer.indexConfigs.method3425() * 4 / 100;
             var0 += ChatLineBuffer.field990.method3425() * 2 / 100;
             var0 += class37.field805.method3425() * 2 / 100;
-            var0 += class116.field1830.method3425() * 6 / 100;
-            var0 += class205.field3096.method3425() * 4 / 100;
+            var0 += IndexFile.field1830.method3425() * 6 / 100;
+            var0 += class205.indexMaps.method3425() * 4 / 100;
             var0 += Client.field586.method3425() * 2 / 100;
-            var0 += CollisionData.field1857.method3425() * 60 / 100;
-            var0 += FileOnDisk.field1217.method3425() * 2 / 100;
-            var0 += class171.field2367.method3425() * 2 / 100;
+            var0 += CollisionData.indexModels.method3425() * 60 / 100;
+            var0 += FileOnDisk.indexSprites.method3425() * 2 / 100;
+            var0 += class171.indexTextures.method3425() * 2 / 100;
             var0 += WallObject.field1581.method3425() * 2 / 100;
             var0 += Friend.field162.method3425() * 2 / 100;
-            var0 += Projectile.field877.method3425() * 2 / 100;
+            var0 += Projectile.indexScripts.method3425() * 2 / 100;
             var0 += field56.method3425() * 2 / 100;
             var0 += class57.field1083.method3425() * 2 / 100;
             var0 += Ignore.field215.method3425() * 2 / 100;
@@ -242,8 +242,8 @@ final class class5 implements Comparator {
                Client.field330 = 45;
             }
          } else {
-            class184 var25;
-            class184 var26;
+            IndexData var25;
+            IndexData var26;
             if(Client.field330 == 45) {
                boolean var30 = !Client.field306;
                class57.field1077 = 22050;
@@ -254,8 +254,8 @@ final class class5 implements Comparator {
                class2.field23 = RSSocket.method2120(class108.field1755, Projectile.canvas, 0, 22050);
                class2.field23.method1081(var36);
                var25 = Ignore.field215;
-               class184 var27 = class57.field1083;
-               var26 = class116.field1830;
+               IndexData var27 = class57.field1083;
+               var26 = IndexFile.field1830;
                class138.field1945 = var25;
                class146.field2037 = var27;
                class138.field1942 = var26;
@@ -270,19 +270,19 @@ final class class5 implements Comparator {
             } else if(Client.field330 == 50) {
                var0 = 0;
                if(class180.field2717 == null) {
-                  class180.field2717 = class185.method3473(FileOnDisk.field1217, field56, "p11_full", "");
+                  class180.field2717 = class185.method3473(FileOnDisk.indexSprites, field56, "p11_full", "");
                } else {
                   ++var0;
                }
 
                if(Player.field282 == null) {
-                  Player.field282 = class185.method3473(FileOnDisk.field1217, field56, "p12_full", "");
+                  Player.field282 = class185.method3473(FileOnDisk.indexSprites, field56, "p12_full", "");
                } else {
                   ++var0;
                }
 
                if(class63.field1119 == null) {
-                  class63.field1119 = class185.method3473(FileOnDisk.field1217, field56, "b12_full", "");
+                  class63.field1119 = class185.method3473(FileOnDisk.indexSprites, field56, "b12_full", "");
                } else {
                   ++var0;
                }
@@ -297,7 +297,7 @@ final class class5 implements Comparator {
                   Client.field330 = 60;
                }
             } else if(Client.field330 == 60) {
-               var0 = FileOnDisk.method1445(WallObject.field1581, FileOnDisk.field1217);
+               var0 = FileOnDisk.method1445(WallObject.field1581, FileOnDisk.indexSprites);
                var1 = class30.method652();
                if(var0 < var1) {
                   class41.field852 = "Loading title screen - " + var0 * 100 / var1 + "%";
@@ -313,22 +313,22 @@ final class class5 implements Comparator {
                   class41.field852 = "Loading config - " + ChatLineBuffer.field990.method3424() + "%";
                   class41.field851 = 60;
                } else {
-                  class184 var33 = ChatLineBuffer.field990;
+                  IndexData var33 = ChatLineBuffer.field990;
                   Overlay.field3047 = var33;
                   GameObject.method1959(ChatLineBuffer.field990);
-                  class101.method1999(ChatLineBuffer.field990, CollisionData.field1857);
-                  class184 var35 = ChatLineBuffer.field990;
-                  var25 = CollisionData.field1857;
+                  class101.method1999(ChatLineBuffer.field990, CollisionData.indexModels);
+                  IndexData var35 = ChatLineBuffer.field990;
+                  var25 = CollisionData.indexModels;
                   boolean var29 = Client.field306;
                   ObjectComposition.field2897 = var35;
                   ObjectComposition.field2898 = var25;
                   ObjectComposition.field2935 = var29;
                   var26 = ChatLineBuffer.field990;
-                  class184 var28 = CollisionData.field1857;
+                  IndexData var28 = CollisionData.indexModels;
                   NPCComposition.field3022 = var26;
                   NPCComposition.field3036 = var28;
-                  class184 var6 = ChatLineBuffer.field990;
-                  class184 var7 = CollisionData.field1857;
+                  IndexData var6 = ChatLineBuffer.field990;
+                  IndexData var7 = CollisionData.indexModels;
                   boolean var8 = Client.isMembers;
                   Font var9 = class180.field2717;
                   Frames.field1592 = var6;
@@ -336,17 +336,17 @@ final class class5 implements Comparator {
                   class109.isMembersWorld = var8;
                   ItemComposition.field3000 = Frames.field1592.method3346(10);
                   ItemComposition.field2993 = var9;
-                  class107.method2084(ChatLineBuffer.field990, class157.field2137, ChatLineBuffer.field988);
-                  class211.method3982(ChatLineBuffer.field990, CollisionData.field1857);
-                  class184 var10 = ChatLineBuffer.field990;
+                  class107.method2084(ChatLineBuffer.field990, class157.field2137, ChatLineBuffer.indexConfigs);
+                  class211.method3982(ChatLineBuffer.field990, CollisionData.indexModels);
+                  IndexData var10 = ChatLineBuffer.field990;
                   Varbit.field2857 = var10;
-                  class184 var11 = ChatLineBuffer.field990;
+                  IndexData var11 = ChatLineBuffer.field990;
                   class187.field2788 = var11;
                   class187.field2789 = class187.field2788.method3346(16);
-                  class184 var12 = class37.field805;
-                  class184 var13 = CollisionData.field1857;
-                  class184 var14 = FileOnDisk.field1217;
-                  class184 var15 = field56;
+                  IndexData var12 = class37.field805;
+                  IndexData var13 = CollisionData.indexModels;
+                  IndexData var14 = FileOnDisk.indexSprites;
+                  IndexData var15 = field56;
                   Widget.field2301 = var12;
                   Widget.field2211 = var13;
                   Widget.field2317 = var14;
@@ -354,20 +354,20 @@ final class class5 implements Comparator {
                   Widget.widgets = new Widget[Widget.field2301.method3357()][];
                   class6.validInterfaces = new boolean[Widget.field2301.method3357()];
                   class30.method644(ChatLineBuffer.field990);
-                  class184 var16 = ChatLineBuffer.field990;
+                  IndexData var16 = ChatLineBuffer.field990;
                   class195.field2867 = var16;
-                  class184 var17 = ChatLineBuffer.field990;
+                  IndexData var17 = ChatLineBuffer.field990;
                   class188.field2797 = var17;
                   Client.method557(ChatLineBuffer.field990);
                   class9.chatMessages = new ChatMessages();
-                  class184 var18 = ChatLineBuffer.field990;
-                  class184 var19 = FileOnDisk.field1217;
-                  class184 var20 = field56;
+                  IndexData var18 = ChatLineBuffer.field990;
+                  IndexData var19 = FileOnDisk.indexSprites;
+                  IndexData var20 = field56;
                   class196.field2885 = var18;
                   class196.field2883 = var19;
                   class0.field5 = var20;
-                  class184 var21 = ChatLineBuffer.field990;
-                  class184 var22 = FileOnDisk.field1217;
+                  IndexData var21 = ChatLineBuffer.field990;
+                  IndexData var22 = FileOnDisk.indexSprites;
                   CombatInfo2.field2852 = var21;
                   CombatInfo2.field2842 = var22;
                   class41.field852 = "Loaded config";
@@ -376,11 +376,11 @@ final class class5 implements Comparator {
                }
             } else if(Client.field330 != 80) {
                if(Client.field330 == 90) {
-                  if(!class171.field2367.method3358()) {
-                     class41.field852 = "Loading textures - " + class171.field2367.method3424() + "%";
+                  if(!class171.indexTextures.method3358()) {
+                     class41.field852 = "Loading textures - " + class171.indexTextures.method3424() + "%";
                      class41.field851 = 90;
                   } else {
-                     TextureProvider var32 = new TextureProvider(class171.field2367, FileOnDisk.field1217, 20, 0.8D, Client.field306?64:128);
+                     TextureProvider var32 = new TextureProvider(class171.indexTextures, FileOnDisk.indexSprites, 20, 0.8D, Client.field306?64:128);
                      class84.method1675(var32);
                      class84.method1680(0.8D);
                      class41.field852 = "Loaded textures";
@@ -408,8 +408,8 @@ final class class5 implements Comparator {
                   if(!class37.field805.method3358()) {
                      class41.field852 = "Loading interfaces - " + class37.field805.method3424() * 4 / 5 + "%";
                      class41.field851 = 100;
-                  } else if(!Projectile.field877.method3358()) {
-                     class41.field852 = "Loading interfaces - " + (80 + Projectile.field877.method3424() / 6) + "%";
+                  } else if(!Projectile.indexScripts.method3358()) {
+                     class41.field852 = "Loading interfaces - " + (80 + Projectile.indexScripts.method3424() / 6) + "%";
                      class41.field851 = 100;
                   } else if(!field56.method3358()) {
                      class41.field852 = "Loading interfaces - " + (96 + field56.method3424() / 20) + "%";
@@ -426,7 +426,7 @@ final class class5 implements Comparator {
                var0 = 0;
                SpritePixels var24;
                if(XGrandExchangeOffer.field39 == null) {
-                  var25 = FileOnDisk.field1217;
+                  var25 = FileOnDisk.indexSprites;
                   var3 = var25.method3351("compass");
                   var4 = var25.method3352(var3, "");
                   var24 = class26.method564(var25, var3, var4);
@@ -436,7 +436,7 @@ final class class5 implements Comparator {
                }
 
                if(null == class180.field2718) {
-                  var25 = FileOnDisk.field1217;
+                  var25 = FileOnDisk.indexSprites;
                   var3 = var25.method3351("mapedge");
                   var4 = var25.method3352(var3, "");
                   var24 = class26.method564(var25, var3, var4);
@@ -446,61 +446,61 @@ final class class5 implements Comparator {
                }
 
                if(null == field47) {
-                  field47 = ItemComposition.method3719(FileOnDisk.field1217, "mapscene", "");
+                  field47 = ItemComposition.method3719(FileOnDisk.indexSprites, "mapscene", "");
                } else {
                   ++var0;
                }
 
                if(class15.field171 == null) {
-                  class15.field171 = class99.method1981(FileOnDisk.field1217, "mapfunction", "");
+                  class15.field171 = class99.method1981(FileOnDisk.indexSprites, "mapfunction", "");
                } else {
                   ++var0;
                }
 
                if(class57.field1082 == null) {
-                  class57.field1082 = class99.method1981(FileOnDisk.field1217, "headicons_pk", "");
+                  class57.field1082 = class99.method1981(FileOnDisk.indexSprites, "headicons_pk", "");
                } else {
                   ++var0;
                }
 
                if(null == ScriptState.field108) {
-                  ScriptState.field108 = class99.method1981(FileOnDisk.field1217, "headicons_prayer", "");
+                  ScriptState.field108 = class99.method1981(FileOnDisk.indexSprites, "headicons_prayer", "");
                } else {
                   ++var0;
                }
 
                if(class15.field170 == null) {
-                  class15.field170 = class99.method1981(FileOnDisk.field1217, "headicons_hint", "");
+                  class15.field170 = class99.method1981(FileOnDisk.indexSprites, "headicons_hint", "");
                } else {
                   ++var0;
                }
 
                if(PlayerComposition.field2194 == null) {
-                  PlayerComposition.field2194 = class99.method1981(FileOnDisk.field1217, "mapmarker", "");
+                  PlayerComposition.field2194 = class99.method1981(FileOnDisk.indexSprites, "mapmarker", "");
                } else {
                   ++var0;
                }
 
                if(class33.field771 == null) {
-                  class33.field771 = class99.method1981(FileOnDisk.field1217, "cross", "");
+                  class33.field771 = class99.method1981(FileOnDisk.indexSprites, "cross", "");
                } else {
                   ++var0;
                }
 
                if(MessageNode.field251 == null) {
-                  MessageNode.field251 = class99.method1981(FileOnDisk.field1217, "mapdots", "");
+                  MessageNode.field251 = class99.method1981(FileOnDisk.indexSprites, "mapdots", "");
                } else {
                   ++var0;
                }
 
                if(null == Tile.field1372) {
-                  Tile.field1372 = ItemComposition.method3719(FileOnDisk.field1217, "scrollbar", "");
+                  Tile.field1372 = ItemComposition.method3719(FileOnDisk.indexSprites, "scrollbar", "");
                } else {
                   ++var0;
                }
 
                if(Tile.field1373 == null) {
-                  Tile.field1373 = ItemComposition.method3719(FileOnDisk.field1217, "mod_icons", "");
+                  Tile.field1373 = ItemComposition.method3719(FileOnDisk.indexSprites, "mod_icons", "");
                } else {
                   ++var0;
                }

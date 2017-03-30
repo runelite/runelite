@@ -75,7 +75,7 @@ public class class57 {
    @ObfuscatedName("ed")
    static SpritePixels[] field1082;
    @ObfuscatedName("bw")
-   static class184 field1083;
+   static IndexData field1083;
    @ObfuscatedName("j")
    @ObfuscatedGetter(
       intValue = 232491255

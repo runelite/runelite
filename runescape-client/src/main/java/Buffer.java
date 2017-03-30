@@ -895,7 +895,7 @@ public class Buffer extends Node {
             class148.field2058.field719 = !class148.field2058.field719;
             class150.method2839();
             if(!class148.field2058.field719) {
-               class184 var9 = Client.field586;
+               IndexData var9 = Client.field586;
                var2 = var9.method3351("scape main");
                var3 = var9.method3352(var2, "");
                TextureProvider.method1487(var9, var2, var3, 255, false);

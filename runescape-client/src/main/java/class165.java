@@ -174,7 +174,7 @@ public class class165 {
                            class149.field2064 = class185.field2775;
 
                            for(var8 = 0; var8 < 256; ++var8) {
-                              class184 var17 = class185.field2779[var8];
+                              IndexData var17 = class185.field2779[var8];
                               if(var17 != null) {
                                  class149.field2064.offset = var8 * 8 + 5;
                                  var10 = class149.field2064.readInt();

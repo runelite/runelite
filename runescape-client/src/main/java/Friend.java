@@ -30,7 +30,7 @@ public class Friend {
    )
    static int field161;
    @ObfuscatedName("bv")
-   static class184 field162;
+   static IndexData field162;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 1782080583

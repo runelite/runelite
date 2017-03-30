@@ -435,7 +435,7 @@ final class class3 implements Comparator {
       if(null == var2) {
          return false;
       } else {
-         class184.method3451(var2);
+         IndexData.method3451(var2);
          return true;
       }
    }

@@ -12,7 +12,7 @@ public class class181 extends CacheableNode {
    )
    int field2722;
    @ObfuscatedName("f")
-   class184 field2723;
+   IndexData field2723;
 
    @ObfuscatedName("dv")
    @ObfuscatedSignature(

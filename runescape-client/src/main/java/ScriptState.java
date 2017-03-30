@@ -104,7 +104,7 @@ public class ScriptState {
             class53 var9 = Client.field550[var0];
             if(null == var9) {
                Object var10000 = null;
-               var9 = class53.method1013(class116.field1830, Client.field546[var0], 0);
+               var9 = class53.method1013(IndexFile.field1830, Client.field546[var0], 0);
                if(null == var9) {
                   continue;
                }
@@ -1249,7 +1249,7 @@ public class ScriptState {
                if(var1 == -1 && !Client.field542) {
                   TextureProvider.method1486();
                } else if(var1 != -1 && var1 != Client.field541 && Client.field540 != 0 && !Client.field542) {
-                  class184 var102 = Client.field586;
+                  IndexData var102 = Client.field586;
                   var26 = Client.field540;
                   class138.field1940 = 1;
                   class149.field2061 = var102;
@@ -1425,7 +1425,7 @@ public class ScriptState {
             if(Client.packetOpcode == 62) {
                var21 = Client.secretCipherBuffer2.readString();
                CipherBuffer var62 = Client.secretCipherBuffer2;
-               var39 = class116.method2305(var62, 32767);
+               var39 = IndexFile.method2305(var62, 32767);
                var90 = FontTypeFace.method3900(class94.method1954(var39));
                Player.sendGameMessage(6, var21, var90);
                Client.packetOpcode = -1;
@@ -1512,7 +1512,7 @@ public class ScriptState {
                   Client.field524[Client.field525] = var7;
                   Client.field525 = (Client.field525 + 1) % 100;
                   CipherBuffer var42 = Client.secretCipherBuffer2;
-                  var100 = class116.method2305(var42, 32767);
+                  var100 = IndexFile.method2305(var42, 32767);
                   var43 = FontTypeFace.method3900(class94.method1954(var100));
                   byte var13;
                   if(var96.field2690) {
@@ -1648,13 +1648,13 @@ public class ScriptState {
 
             if(Client.packetOpcode == 146) {
                Client.field446 = true;
-               class116.field1839 = Client.secretCipherBuffer2.readUnsignedByte();
+               IndexFile.field1839 = Client.secretCipherBuffer2.readUnsignedByte();
                Projectile.field900 = Client.secretCipherBuffer2.readUnsignedByte();
                class145.field2033 = Client.secretCipherBuffer2.readUnsignedShort();
                PlayerComposition.field2195 = Client.secretCipherBuffer2.readUnsignedByte();
                class37.field813 = Client.secretCipherBuffer2.readUnsignedByte();
                if(class37.field813 >= 100) {
-                  var1 = class116.field1839 * 128 + 64;
+                  var1 = IndexFile.field1839 * 128 + 64;
                   var2 = 64 + Projectile.field900 * 128;
                   var26 = class103.method2025(var1, var2, Sequence.plane) - class145.field2033;
                   var27 = var1 - MessageNode.cameraX;
@@ -1917,7 +1917,7 @@ public class ScriptState {
                   Client.field524[Client.field525] = var37;
                   Client.field525 = (Client.field525 + 1) % 100;
                   CipherBuffer var44 = Client.secretCipherBuffer2;
-                  var43 = class116.method2305(var44, 32767);
+                  var43 = IndexFile.method2305(var44, 32767);
                   String var14 = FontTypeFace.method3900(class94.method1954(var43));
                   if(var48.field2695 != -1) {
                      class216.addChatMessage(9, class30.method648(var48.field2695) + var21, var14, class7.method80(var45));

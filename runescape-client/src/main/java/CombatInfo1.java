@@ -69,7 +69,7 @@ public class CombatInfo1 extends Node {
       if(null != var1) {
          return var1;
       } else {
-         byte[] var2 = Projectile.field877.getConfigData(var0, 0);
+         byte[] var2 = Projectile.indexScripts.getConfigData(var0, 0);
          if(null == var2) {
             return null;
          } else {

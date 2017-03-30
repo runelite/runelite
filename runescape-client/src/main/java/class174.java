@@ -44,19 +44,19 @@ public class class174 {
       int var41;
       if(class41.worldSelectShown) {
          if(null == class8.field73) {
-            class8.field73 = class99.method1981(FileOnDisk.field1217, "sl_back", "");
+            class8.field73 = class99.method1981(FileOnDisk.indexSprites, "sl_back", "");
          }
 
          if(null == class30.field718) {
-            class30.field718 = ItemComposition.method3719(FileOnDisk.field1217, "sl_flags", "");
+            class30.field718 = ItemComposition.method3719(FileOnDisk.indexSprites, "sl_flags", "");
          }
 
          if(null == class36.field789) {
-            class36.field789 = ItemComposition.method3719(FileOnDisk.field1217, "sl_arrows", "");
+            class36.field789 = ItemComposition.method3719(FileOnDisk.indexSprites, "sl_arrows", "");
          }
 
          if(null == XGrandExchangeOffer.field45) {
-            XGrandExchangeOffer.field45 = ItemComposition.method3719(FileOnDisk.field1217, "sl_stars", "");
+            XGrandExchangeOffer.field45 = ItemComposition.method3719(FileOnDisk.indexSprites, "sl_stars", "");
          }
 
          Rasterizer2D.method4007(class41.field859, 23, 765, 480, 0);
@@ -561,7 +561,7 @@ public class class174 {
                   var1.method3963("Click to switch", var34 + var39 / 2, var38 / 2 + var35 + 12, 16777215, 0);
                }
             } else {
-               CollisionData.field1858 = XGrandExchangeOffer.method30(FileOnDisk.field1217, "sl_button", "");
+               CollisionData.field1858 = XGrandExchangeOffer.method30(FileOnDisk.indexSprites, "sl_button", "");
             }
          }
 

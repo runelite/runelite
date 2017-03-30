@@ -621,8 +621,8 @@ public abstract class class182 {
                var7 = var6 + (var5 << 8);
                if(!var13 || var6 != 49 && var6 != 149 && var6 != 147 && var5 != 50 && (var5 != 49 || var6 != 47)) {
                   class25.mapRegions[var3] = var7;
-                  class44.field915[var3] = class205.field3096.method3351("m" + var5 + "_" + var6);
-                  XClanMember.field296[var3] = class205.field3096.method3351("l" + var5 + "_" + var6);
+                  class44.field915[var3] = class205.indexMaps.method3351("m" + var5 + "_" + var6);
+                  XClanMember.field296[var3] = class205.indexMaps.method3351("l" + var5 + "_" + var6);
                   ++var3;
                }
             }
@@ -685,8 +685,8 @@ public abstract class class182 {
                         class25.mapRegions[var3] = var10;
                         var11 = var10 >> 8 & 255;
                         int var12 = var10 & 255;
-                        class44.field915[var3] = class205.field3096.method3351("m" + var11 + "_" + var12);
-                        XClanMember.field296[var3] = class205.field3096.method3351("l" + var11 + "_" + var12);
+                        class44.field915[var3] = class205.indexMaps.method3351("m" + var11 + "_" + var12);
+                        XClanMember.field296[var3] = class205.indexMaps.method3351("l" + var11 + "_" + var12);
                         ++var3;
                      }
                   }
