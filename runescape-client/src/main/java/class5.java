@@ -196,7 +196,7 @@ final class class5 implements Comparator {
             class157.field2137 = class9.method98(0, false, true, true);
             ChatLineBuffer.indexConfigs = class9.method98(1, false, true, true);
             ChatLineBuffer.field990 = class9.method98(2, true, false, true);
-            class37.field805 = class9.method98(3, false, true, true);
+            class37.indexInterfaces = class9.method98(3, false, true, true);
             IndexFile.field1830 = class9.method98(4, false, true, true);
             class205.indexMaps = class9.method98(5, true, true, true);
             Client.field586 = class9.method98(6, true, true, false);
@@ -217,7 +217,7 @@ final class class5 implements Comparator {
             var0 = var31 + class157.field2137.method3425() * 4 / 100;
             var0 += ChatLineBuffer.indexConfigs.method3425() * 4 / 100;
             var0 += ChatLineBuffer.field990.method3425() * 2 / 100;
-            var0 += class37.field805.method3425() * 2 / 100;
+            var0 += class37.indexInterfaces.method3425() * 2 / 100;
             var0 += IndexFile.field1830.method3425() * 6 / 100;
             var0 += class205.indexMaps.method3425() * 4 / 100;
             var0 += Client.field586.method3425() * 2 / 100;
@@ -343,7 +343,7 @@ final class class5 implements Comparator {
                   IndexData var11 = ChatLineBuffer.field990;
                   class187.field2788 = var11;
                   class187.field2789 = class187.field2788.method3346(16);
-                  IndexData var12 = class37.field805;
+                  IndexData var12 = class37.indexInterfaces;
                   IndexData var13 = CollisionData.indexModels;
                   IndexData var14 = FileOnDisk.indexSprites;
                   IndexData var15 = field56;
@@ -405,8 +405,8 @@ final class class5 implements Comparator {
                      Client.field330 = 130;
                   }
                } else if(Client.field330 == 130) {
-                  if(!class37.field805.method3358()) {
-                     class41.field852 = "Loading interfaces - " + class37.field805.method3424() * 4 / 5 + "%";
+                  if(!class37.indexInterfaces.method3358()) {
+                     class41.field852 = "Loading interfaces - " + class37.indexInterfaces.method3424() * 4 / 5 + "%";
                      class41.field851 = 100;
                   } else if(!Projectile.indexScripts.method3358()) {
                      class41.field852 = "Loading interfaces - " + (80 + Projectile.indexScripts.method3424() / 6) + "%";
