@@ -68,7 +68,7 @@ public class VertexNormal {
       if(var3 == null) {
          return false;
       } else {
-         class184.method3451(var3);
+         IndexData.method3451(var3);
          return true;
       }
    }

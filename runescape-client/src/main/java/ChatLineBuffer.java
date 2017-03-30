@@ -17,9 +17,10 @@ public class ChatLineBuffer {
    @Export("length")
    int length;
    @ObfuscatedName("ac")
-   static class184 field988;
+   @Export("indexConfigs")
+   static IndexData indexConfigs;
    @ObfuscatedName("af")
-   static class184 field990;
+   static IndexData field990;
    @ObfuscatedName("l")
    static int[] field994;
 

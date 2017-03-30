@@ -5,7 +5,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ap")
 public class class37 {
    @ObfuscatedName("bc")
-   static class184 field805;
+   static IndexData field805;
    @ObfuscatedName("cf")
    public static char field810;
    @ObfuscatedName("op")

@@ -1,11 +1,13 @@
 import java.io.IOException;
+import net.runelite.mapping.Export;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("fw")
 public class class171 {
    @ObfuscatedName("by")
-   static class184 field2367;
+   @Export("indexTextures")
+   static IndexData indexTextures;
 
    class171() throws Throwable {
       throw new Error();

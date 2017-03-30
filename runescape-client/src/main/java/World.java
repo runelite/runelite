@@ -14,7 +14,7 @@ public class World {
    @Export("mask")
    int mask;
    @ObfuscatedName("pb")
-   static class116 field695;
+   static IndexFile field695;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1652434179

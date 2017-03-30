@@ -30,7 +30,8 @@ public final class Projectile extends Renderable {
    @Export("x1")
    int x1;
    @ObfuscatedName("bb")
-   static class184 field877;
+   @Export("indexScripts")
+   static IndexData indexScripts;
    @ObfuscatedName("o")
    @ObfuscatedGetter(
       intValue = -807588315

@@ -469,14 +469,14 @@ public class class173 {
       signature = "(Lclass184;II)V",
       garbageValue = "-1471370695"
    )
-   static void method3311(class184 var0, int var1) {
+   static void method3311(IndexData var0, int var1) {
       if(null != class149.field2064) {
          class149.field2064.offset = 5 + var1 * 8;
          int var2 = class149.field2064.readInt();
          int var3 = class149.field2064.readInt();
          var0.method3420(var2, var3);
       } else {
-         class205.method3844((class184)null, 255, 255, 0, (byte)0, true);
+         class205.method3844((IndexData)null, 255, 255, 0, (byte)0, true);
          class185.field2779[var1] = var0;
       }
    }

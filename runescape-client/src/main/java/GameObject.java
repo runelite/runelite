@@ -124,14 +124,14 @@ public final class GameObject {
 
          if(var0 != 5 && var0 != 10) {
             if(var0 == 20) {
-               class31.method654(Projectile.canvas, WallObject.field1581, FileOnDisk.field1217, true, Client.gameState == 11?4:0);
+               class31.method654(Projectile.canvas, WallObject.field1581, FileOnDisk.indexSprites, true, Client.gameState == 11?4:0);
             } else if(var0 == 11) {
-               class31.method654(Projectile.canvas, WallObject.field1581, FileOnDisk.field1217, false, 4);
+               class31.method654(Projectile.canvas, WallObject.field1581, FileOnDisk.indexSprites, false, 4);
             } else {
                class165.method3198();
             }
          } else {
-            class31.method654(Projectile.canvas, WallObject.field1581, FileOnDisk.field1217, true, 0);
+            class31.method654(Projectile.canvas, WallObject.field1581, FileOnDisk.indexSprites, true, 0);
          }
 
          Client.gameState = var0;

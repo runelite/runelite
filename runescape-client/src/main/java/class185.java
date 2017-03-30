@@ -59,7 +59,7 @@ public class class185 {
    )
    static long field2778;
    @ObfuscatedName("g")
-   static class184[] field2779 = new class184[256];
+   static IndexData[] field2779 = new IndexData[256];
    @ObfuscatedName("b")
    static byte field2780 = 0;
    @ObfuscatedName("k")

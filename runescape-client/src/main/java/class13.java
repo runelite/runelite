@@ -269,7 +269,7 @@ public class class13 {
                   } else if(var0 < 3000) {
                      return class202.method3824(var0, var1, var2);
                   } else if(var0 < 3200) {
-                     return class116.method2301(var0, var1, var2);
+                     return IndexFile.method2301(var0, var1, var2);
                   } else if(var0 < 3300) {
                      if(var0 == 3200) {
                         class30.field713 -= 3;
@@ -291,7 +291,7 @@ public class class13 {
                         if(var4 == -1 && !Client.field542) {
                            TextureProvider.method1486();
                         } else if(var4 != -1 && var4 != Client.field541 && Client.field540 != 0 && !Client.field542) {
-                           class184 var37 = Client.field586;
+                           IndexData var37 = Client.field586;
                            var6 = Client.field540;
                            class138.field1940 = 1;
                            class149.field2061 = var37;
@@ -861,7 +861,7 @@ public class class13 {
                            return class152.method2850(var0, var1, var2);
                         } else if(var0 >= 4300) {
                            if(var0 < 5100) {
-                              return class184.method3450(var0, var1, var2);
+                              return IndexData.method3450(var0, var1, var2);
                            } else if(var0 < 5400) {
                               return class10.method140(var0, var1, var2);
                            } else if(var0 < 5600) {

@@ -1124,7 +1124,7 @@ public final class Client extends GameEngine {
    @Export("projectiles")
    static Deque projectiles;
    @ObfuscatedName("br")
-   static class184 field586;
+   static IndexData field586;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -1158,9 +1158,9 @@ public final class Client extends GameEngine {
          WallObject.field1574.vmethod2134(Projectile.canvas);
       }
 
-      World.field695 = new class116(255, class104.field1713, class104.field1714, 500000);
+      World.field695 = new IndexFile(255, class104.field1713, class104.field1714, 500000);
       class148.field2058 = class7.method86();
-      class184.field2749 = this.getToolkit().getSystemClipboard();
+      IndexData.field2749 = this.getToolkit().getSystemClipboard();
       String var4 = FrameMap.field1495;
       class114.field1804 = this;
       class114.field1810 = var4;
@@ -1540,7 +1540,7 @@ public final class Client extends GameEngine {
       int var1;
       for(var1 = 0; var1 < class85.field1484.length; ++var1) {
          if(class44.field915[var1] != -1 && class85.field1484[var1] == null) {
-            class85.field1484[var1] = class205.field3096.getConfigData(class44.field915[var1], 0);
+            class85.field1484[var1] = class205.indexMaps.getConfigData(class44.field915[var1], 0);
             if(null == class85.field1484[var1]) {
                var0 = false;
                ++field357;
@@ -1548,7 +1548,7 @@ public final class Client extends GameEngine {
          }
 
          if(XClanMember.field296[var1] != -1 && null == Frames.field1593[var1]) {
-            Frames.field1593[var1] = class205.field3096.getConfigData(XClanMember.field296[var1], 0, class41.xteaKeys[var1]);
+            Frames.field1593[var1] = class205.indexMaps.getConfigData(XClanMember.field296[var1], 0, class41.xteaKeys[var1]);
             if(null == Frames.field1593[var1]) {
                var0 = false;
                ++field357;
@@ -1898,8 +1898,8 @@ public final class Client extends GameEngine {
                for(var7 = var3 - 1; var7 <= var4 + 1; ++var7) {
                   for(var8 = var44 - 1; var8 <= var6 + 1; ++var8) {
                      if(var7 < var3 || var7 > var4 || var8 < var44 || var8 > var6) {
-                        class205.field3096.method3356("m" + var7 + "_" + var8);
-                        class205.field3096.method3356("l" + var7 + "_" + var8);
+                        class205.indexMaps.method3356("m" + var7 + "_" + var8);
+                        class205.indexMaps.method3356("l" + var7 + "_" + var8);
                      }
                   }
                }
@@ -2065,7 +2065,7 @@ public final class Client extends GameEngine {
                if(null == var4.field736) {
                   if(var4.field734 >= 0) {
                      var10000 = null;
-                     class53 var11 = class53.method1013(class116.field1830, var4.field734, 0);
+                     class53 var11 = class53.method1013(IndexFile.field1830, var4.field734, 0);
                      if(null != var11) {
                         class55 var8 = var11.method1008().method1054(class118.field1868);
                         class66 var9 = class66.method1211(var8, 100, var6);
@@ -2082,7 +2082,7 @@ public final class Client extends GameEngine {
                   if(null != var4.field733 && (var4.field730 -= var3) <= 0) {
                      int var7 = (int)(Math.random() * (double)var4.field733.length);
                      var10000 = null;
-                     class53 var12 = class53.method1013(class116.field1830, var4.field733[var7], 0);
+                     class53 var12 = class53.method1013(IndexFile.field1830, var4.field733[var7], 0);
                      if(null != var12) {
                         class55 var13 = var12.method1008().method1054(class118.field1868);
                         class66 var10 = class66.method1211(var13, 100, var6);
@@ -2903,7 +2903,7 @@ public final class Client extends GameEngine {
                                     while(ItemLayer.method1491() && field345 < 128) {
                                        if(field470 >= 2 && class105.field1734[82] && class203.field3084 == 66) {
                                           String var42 = class161.method3136();
-                                          class184.field2749.setContents(new StringSelection(var42), (ClipboardOwner)null);
+                                          IndexData.field2749.setContents(new StringSelection(var42), (ClipboardOwner)null);
                                        } else {
                                           field528[field345] = class203.field3084;
                                           field419[field345] = class37.field810;
@@ -3233,7 +3233,7 @@ public final class Client extends GameEngine {
                                                                      }
                                                                   }
 
-                                                                  var18 = class116.field1839 * 128 + 64;
+                                                                  var18 = IndexFile.field1839 * 128 + 64;
                                                                   var19 = 64 + Projectile.field900 * 128;
                                                                   var5 = class103.method2025(var18, var19, Sequence.plane) - class145.field2033;
                                                                   var6 = var18 - MessageNode.cameraX;

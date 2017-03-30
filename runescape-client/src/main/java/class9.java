@@ -99,12 +99,12 @@ public final class class9 {
       signature = "(IZZZI)Lclass184;",
       garbageValue = "-635142358"
    )
-   static class184 method98(int var0, boolean var1, boolean var2, boolean var3) {
-      class116 var4 = null;
+   static IndexData method98(int var0, boolean var1, boolean var2, boolean var3) {
+      IndexFile var4 = null;
       if(null != class104.field1713) {
-         var4 = new class116(var0, class104.field1713, WidgetNode.field186[var0], 1000000);
+         var4 = new IndexFile(var0, class104.field1713, WidgetNode.field186[var0], 1000000);
       }
 
-      return new class184(var4, World.field695, var0, var1, var2, var3);
+      return new IndexData(var4, World.field695, var0, var1, var2, var3);
    }
 }

@@ -26,7 +26,8 @@ public class CollisionData {
    @Export("height")
    int height;
    @ObfuscatedName("bk")
-   static class184 field1857;
+   @Export("indexModels")
+   static IndexData indexModels;
    @ObfuscatedName("bj")
    static ModIcon field1858;
    @ObfuscatedName("qs")

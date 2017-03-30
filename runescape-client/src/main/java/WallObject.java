@@ -57,7 +57,7 @@ public final class WallObject {
    @Export("floor")
    int floor;
    @ObfuscatedName("bl")
-   static class184 field1581;
+   static IndexData field1581;
 
    @ObfuscatedName("g")
    @ObfuscatedSignature(

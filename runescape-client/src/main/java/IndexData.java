@@ -1,11 +1,14 @@
 import java.awt.datatransfer.Clipboard;
 import java.util.zip.CRC32;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gp")
-public class class184 extends class182 {
+@Implements("IndexData")
+public class IndexData extends class182 {
    @ObfuscatedName("pf")
    static Clipboard field2749;
    @ObfuscatedName("c")
@@ -14,13 +17,14 @@ public class class184 extends class182 {
    @ObfuscatedGetter(
       intValue = -714583921
    )
-   int field2751;
+   @Export("index")
+   int index;
    @ObfuscatedName("k")
    volatile boolean field2752 = false;
    @ObfuscatedName("t")
    boolean field2753 = false;
    @ObfuscatedName("x")
-   class116 field2755;
+   IndexFile field2755;
    @ObfuscatedName("am")
    @ObfuscatedGetter(
       intValue = 979742619
@@ -39,7 +43,7 @@ public class class184 extends class182 {
    @ObfuscatedName("e")
    static CRC32 field2759 = new CRC32();
    @ObfuscatedName("g")
-   class116 field2761;
+   IndexFile field2761;
 
    @ObfuscatedName("s")
    @ObfuscatedSignature(
@@ -50,7 +54,7 @@ public class class184 extends class182 {
       if(null != this.field2755 && null != this.field2750 && this.field2750[var1]) {
          class172.method3305(var1, this.field2755, this);
       } else {
-         class205.method3844(this, this.field2751, var1, super.field2724[var1], (byte)2, true);
+         class205.method3844(this, this.index, var1, super.field2724[var1], (byte)2, true);
       }
 
    }
@@ -64,9 +68,9 @@ public class class184 extends class182 {
       this.field2756 = var1;
       this.field2757 = var2;
       if(null != this.field2761) {
-         class172.method3305(this.field2751, this.field2761, this);
+         class172.method3305(this.index, this.field2761, this);
       } else {
-         class205.method3844(this, 255, this.field2751, this.field2756, (byte)0, true);
+         class205.method3844(this, 255, this.index, this.field2756, (byte)0, true);
       }
 
    }
@@ -77,16 +81,16 @@ public class class184 extends class182 {
       garbageValue = "0"
    )
    void vmethod3422(int var1) {
-      class103.method2000(this.field2751, var1);
+      class103.method2000(this.index, var1);
    }
 
-   public class184(class116 var1, class116 var2, int var3, boolean var4, boolean var5, boolean var6) {
+   public IndexData(IndexFile var1, IndexFile var2, int var3, boolean var4, boolean var5, boolean var6) {
       super(var4, var5);
       this.field2755 = var1;
       this.field2761 = var2;
-      this.field2751 = var3;
+      this.index = var3;
       this.field2753 = var6;
-      class173.method3311(this, this.field2751);
+      class173.method3311(this, this.index);
    }
 
    @ObfuscatedName("cv")
@@ -100,7 +104,7 @@ public class class184 extends class182 {
       } else if(this.field2750[var1]) {
          return 100;
       } else {
-         int var3 = this.field2751;
+         int var3 = this.index;
          long var4 = (long)(var1 + (var3 << 16));
          int var2;
          if(null != class1.field14 && class1.field14.hash == var4) {
@@ -149,7 +153,7 @@ public class class184 extends class182 {
       } else if(null != super.field2734) {
          return 99;
       } else {
-         int var2 = this.field2751;
+         int var2 = this.index;
          long var3 = (long)(var2 + 16711680);
          int var1;
          if(class1.field14 != null && class1.field14.hash == var3) {
@@ -172,7 +176,7 @@ public class class184 extends class182 {
       signature = "(Lclass116;I[BZI)V",
       garbageValue = "159024505"
    )
-   public void method3426(class116 var1, int var2, byte[] var3, boolean var4) {
+   public void method3426(IndexFile var1, int var2, byte[] var3, boolean var4) {
       int var5;
       if(var1 == this.field2761) {
          if(this.field2752) {
@@ -180,7 +184,7 @@ public class class184 extends class182 {
          }
 
          if(null == var3) {
-            class205.method3844(this, 255, this.field2751, this.field2756, (byte)0, true);
+            class205.method3844(this, 255, this.index, this.field2756, (byte)0, true);
             return;
          }
 
@@ -190,7 +194,7 @@ public class class184 extends class182 {
          Buffer var6 = new Buffer(class49.method924(var3));
          int var7 = var6.readUnsignedByte();
          if(var7 != 5 && var7 != 6) {
-            throw new RuntimeException(var7 + "," + this.field2751 + "," + var2);
+            throw new RuntimeException(var7 + "," + this.index + "," + var2);
          }
 
          int var8 = 0;
@@ -199,7 +203,7 @@ public class class184 extends class182 {
          }
 
          if(this.field2756 != var5 || this.field2757 != var8) {
-            class205.method3844(this, 255, this.field2751, this.field2756, (byte)0, true);
+            class205.method3844(this, 255, this.index, this.field2756, (byte)0, true);
             return;
          }
 
@@ -213,7 +217,7 @@ public class class184 extends class182 {
          if(null == var3 || var3.length <= 2) {
             this.field2750[var2] = false;
             if(this.field2753 || var4) {
-               class205.method3844(this, this.field2751, var2, super.field2724[var2], (byte)2, var4);
+               class205.method3844(this, this.index, var2, super.field2724[var2], (byte)2, var4);
             }
 
             return;
@@ -226,7 +230,7 @@ public class class184 extends class182 {
          if(var5 != super.field2724[var2] || var9 != super.field2726[var2]) {
             this.field2750[var2] = false;
             if(this.field2753 || var4) {
-               class205.method3844(this, this.field2751, var2, super.field2724[var2], (byte)2, var4);
+               class205.method3844(this, this.index, var2, super.field2724[var2], (byte)2, var4);
             }
 
             return;
@@ -260,7 +264,7 @@ public class class184 extends class182 {
 
          for(var1 = 0; var1 < this.field2750.length; ++var1) {
             if(super.field2730[var1] > 0) {
-               class116 var2 = this.field2755;
+               IndexFile var2 = this.field2755;
                class180 var4 = new class180();
                var4.field2719 = 1;
                var4.hash = (long)var1;
@@ -303,8 +307,8 @@ public class class184 extends class182 {
          }
 
          if(null != this.field2761) {
-            int var5 = this.field2751;
-            class116 var6 = this.field2761;
+            int var5 = this.index;
+            IndexFile var6 = this.field2761;
             class180 var7 = new class180();
             var7.field2719 = 0;
             var7.hash = (long)var5;
@@ -331,7 +335,7 @@ public class class184 extends class182 {
          var2[var2.length - 2] = (byte)(super.field2726[var1] >> 8);
          var2[var2.length - 1] = (byte)super.field2726[var1];
          if(null != this.field2755) {
-            class116 var13 = this.field2755;
+            IndexFile var13 = this.field2755;
             class180 var18 = new class180();
             var18.field2719 = 0;
             var18.hash = (long)var1;

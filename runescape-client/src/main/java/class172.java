@@ -15,7 +15,7 @@ public class class172 {
       signature = "(ILclass116;Lclass184;B)V",
       garbageValue = "98"
    )
-   static void method3305(int var0, class116 var1, class184 var2) {
+   static void method3305(int var0, IndexFile var1, IndexData var2) {
       byte[] var3 = null;
       Deque var4 = class183.field2746;
       synchronized(class183.field2746) {

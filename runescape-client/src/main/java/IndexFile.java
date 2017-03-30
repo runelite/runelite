@@ -1,13 +1,16 @@
 import java.io.EOFException;
 import java.io.IOException;
+import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("db")
-public final class class116 {
+@Implements("IndexFile")
+public final class IndexFile {
    @ObfuscatedName("bh")
-   static class184 field1830;
+   static IndexData field1830;
    @ObfuscatedName("h")
    class72 field1833 = null;
    @ObfuscatedName("r")
@@ -23,7 +26,8 @@ public final class class116 {
    @ObfuscatedGetter(
       intValue = -2062101945
    )
-   int field1837;
+   @Export("index")
+   int index;
    @ObfuscatedName("no")
    @ObfuscatedGetter(
       intValue = 297093831
@@ -267,7 +271,7 @@ public final class class116 {
                      int var10 = ((field1835[2] & 255) << 8) + (field1835[3] & 255);
                      int var11 = (field1835[6] & 255) + ((field1835[4] & 255) << 16) + ((field1835[5] & 255) << 8);
                      int var12 = field1835[7] & 255;
-                     if(var9 == var1 && var7 == var10 && this.field1837 == var12) {
+                     if(var9 == var1 && var7 == var10 && this.index == var12) {
                         if(var11 >= 0 && (long)var11 <= this.field1836.method1414() / 520L) {
                            for(int var13 = 0; var13 < var8; ++var13) {
                               var5[var6++] = field1835[var13 + 8];
@@ -300,8 +304,8 @@ public final class class116 {
       signature = "(ILclass72;Lclass72;I)V",
       garbageValue = "500000"
    )
-   public class116(int var1, class72 var2, class72 var3, int var4) {
-      this.field1837 = var1;
+   public IndexFile(int var1, class72 var2, class72 var3, int var4) {
+      this.index = var1;
       this.field1836 = var2;
       this.field1833 = var3;
       this.field1834 = var4;
@@ -377,7 +381,7 @@ public final class class116 {
                         int var11 = (field1835[3] & 255) + ((field1835[2] & 255) << 8);
                         var9 = ((field1835[4] & 255) << 16) + ((field1835[5] & 255) << 8) + (field1835[6] & 255);
                         int var12 = field1835[7] & 255;
-                        if(var1 != var14 || var8 != var11 || var12 != this.field1837) {
+                        if(var1 != var14 || var8 != var11 || var12 != this.index) {
                            var10000 = false;
                            return var10000;
                         }
@@ -411,7 +415,7 @@ public final class class116 {
                      field1835[4] = (byte)(var9 >> 16);
                      field1835[5] = (byte)(var9 >> 8);
                      field1835[6] = (byte)var9;
-                     field1835[7] = (byte)this.field1837;
+                     field1835[7] = (byte)this.index;
                      this.field1836.method1437((long)(var6 * 520));
                      this.field1836.method1443(field1835, 0, 8);
                      var14 = var3 - var7;

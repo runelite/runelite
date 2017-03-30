@@ -10,7 +10,7 @@ public class Ignore {
    @ObfuscatedName("m")
    static class228 field214;
    @ObfuscatedName("be")
-   static class184 field215;
+   static IndexData field215;
    @ObfuscatedName("na")
    @ObfuscatedGetter(
       intValue = -1681682811
@@ -101,7 +101,7 @@ public class Ignore {
                      var16 = 7 - var18;
                   }
 
-                  TextureProvider.method1489(var20, var1, var16 + var2, var3 + class116.method2313(var11 & 7, var12 & 7, var7), 0, 0, var7);
+                  TextureProvider.method1489(var20, var1, var16 + var2, var3 + IndexFile.method2313(var11 & 7, var12 & 7, var7), 0, 0, var7);
                } else {
                   TextureProvider.method1489(var20, 0, -1, -1, 0, 0, 0);
                }

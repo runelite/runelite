@@ -166,7 +166,7 @@ public final class class31 extends Node {
          class41.field861 = true;
          class41.worldSelectShown = false;
          if(!class148.field2058.field719) {
-            class184 var9 = Client.field586;
+            IndexData var9 = Client.field586;
             int var7 = var9.method3351("scape main");
             int var8 = var9.method3352(var7, "");
             class138.field1940 = 1;
@@ -367,7 +367,7 @@ public final class class31 extends Node {
                   var0.readBytes(class45.field932.payload, 0, var9);
                   class45.field932.offset = 0;
                   Buffer var13 = class45.field932;
-                  String var12 = class116.method2305(var13, 32767);
+                  String var12 = IndexFile.method2305(var13, 32767);
                   String var14 = FontTypeFace.method3900(class94.method1954(var12));
                   var3.overhead = var14.trim();
                   var3.field635 = var6 >> 8;

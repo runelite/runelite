@@ -210,16 +210,16 @@ public class class20 implements Runnable {
       ((TextureProvider)class84.field1472).method1467();
       Script.field968.reset();
       class157.field2137.method3349();
-      ChatLineBuffer.field988.method3349();
+      ChatLineBuffer.indexConfigs.method3349();
       class37.field805.method3349();
-      class116.field1830.method3349();
-      class205.field3096.method3349();
+      IndexFile.field1830.method3349();
+      class205.indexMaps.method3349();
       Client.field586.method3349();
-      CollisionData.field1857.method3349();
-      FileOnDisk.field1217.method3349();
-      class171.field2367.method3349();
+      CollisionData.indexModels.method3349();
+      FileOnDisk.indexSprites.method3349();
+      class171.indexTextures.method3349();
       WallObject.field1581.method3349();
       Friend.field162.method3349();
-      Projectile.field877.method3349();
+      Projectile.indexScripts.method3349();
    }
 }
