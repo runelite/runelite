@@ -152,13 +152,13 @@ public class Archive
 
 		if (this.getWhirlpool() != null && !Arrays.equals(this.getWhirlpool(), res.whirlpool))
 		{
-			logger.warn("whirlpool mismatch for archive {}", this);
+			logger.warn("whirlpool mismatch for archive {}", this.getArchiveId());
 		}
 
 		if (res.revision != -1 && this.getRevision() != res.revision)
 		{
 			// compressed data doesn't always include a revision, but check it if it does
-			logger.warn("revision mismatch for archive {}", this);
+			logger.warn("revision mismatch for archive {}", this.getArchiveId());
 		}
 
 		setCompression(res.compression);
