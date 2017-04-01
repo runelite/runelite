@@ -295,7 +295,7 @@ public class XItemContainer extends Node {
             Client.field346.putInt(ChatLineBuffer.indexConfigs.field2737);
             Client.field346.putInt(ChatLineBuffer.field990.field2737);
             Client.field346.putInt(class37.indexInterfaces.field2737);
-            Client.field346.putInt(IndexFile.field1830.field2737);
+            Client.field346.putInt(IndexFile.indexSoundEffects.field2737);
             Client.field346.putInt(class205.indexMaps.field2737);
             Client.field346.putInt(Client.field586.field2737);
             Client.field346.putInt(CollisionData.indexModels.field2737);

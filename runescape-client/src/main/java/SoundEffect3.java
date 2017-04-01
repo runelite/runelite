@@ -1,7 +1,9 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("bz")
-public class class67 {
+@Implements("SoundEffect3")
+public class SoundEffect3 {
    @ObfuscatedName("u")
    int[][][] field1154 = new int[2][2][4];
    @ObfuscatedName("f")
@@ -20,7 +22,7 @@ public class class67 {
    static float field1162;
 
    @ObfuscatedName("o")
-   final void method1362(Buffer var1, class58 var2) {
+   final void method1362(Buffer var1, SoundEffect2 var2) {
       int var3 = var1.readUnsignedByte();
       this.field1155[0] = var3 >> 4;
       this.field1155[1] = var3 & 15;
