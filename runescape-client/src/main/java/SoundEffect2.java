@@ -1,7 +1,9 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("by")
-public class class58 {
+@Implements("SoundEffect2")
+public class SoundEffect2 {
    @ObfuscatedName("n")
    int field1085;
    @ObfuscatedName("i")
@@ -74,7 +76,7 @@ public class class58 {
 
    }
 
-   class58() {
+   SoundEffect2() {
       this.field1086[0] = 0;
       this.field1086[1] = '\uffff';
       this.field1090[0] = 0;

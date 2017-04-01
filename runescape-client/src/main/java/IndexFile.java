@@ -10,7 +10,8 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("IndexFile")
 public final class IndexFile {
    @ObfuscatedName("bh")
-   static IndexData field1830;
+   @Export("indexSoundEffects")
+   static IndexData indexSoundEffects;
    @ObfuscatedName("h")
    class72 field1833 = null;
    @ObfuscatedName("r")

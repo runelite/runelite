@@ -996,7 +996,7 @@ public final class Client extends GameEngine {
    )
    static int field549;
    @ObfuscatedName("nw")
-   static class53[] field550;
+   static SoundEffect[] field550;
    @ObfuscatedName("u")
    static boolean field551 = true;
    @ObfuscatedName("oa")
@@ -2065,7 +2065,7 @@ public final class Client extends GameEngine {
                if(null == var4.field736) {
                   if(var4.field734 >= 0) {
                      var10000 = null;
-                     class53 var11 = class53.method1013(IndexFile.field1830, var4.field734, 0);
+                     SoundEffect var11 = SoundEffect.method1013(IndexFile.indexSoundEffects, var4.field734, 0);
                      if(null != var11) {
                         class55 var8 = var11.method1008().method1054(class118.field1868);
                         class66 var9 = class66.method1211(var8, 100, var6);
@@ -2082,7 +2082,7 @@ public final class Client extends GameEngine {
                   if(null != var4.field733 && (var4.field730 -= var3) <= 0) {
                      int var7 = (int)(Math.random() * (double)var4.field733.length);
                      var10000 = null;
-                     class53 var12 = class53.method1013(IndexFile.field1830, var4.field733[var7], 0);
+                     SoundEffect var12 = SoundEffect.method1013(IndexFile.indexSoundEffects, var4.field733[var7], 0);
                      if(null != var12) {
                         class55 var13 = var12.method1008().method1054(class118.field1868);
                         class66 var10 = class66.method1211(var13, 100, var6);
@@ -2455,7 +2455,7 @@ public final class Client extends GameEngine {
       field547 = new int[50];
       field334 = new int[50];
       field464 = new int[50];
-      field550 = new class53[50];
+      field550 = new SoundEffect[50];
       field446 = false;
       field552 = new boolean[5];
       field482 = new int[5];

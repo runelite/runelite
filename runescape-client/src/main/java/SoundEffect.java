@@ -1,20 +1,22 @@
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("bh")
-public class class53 {
+@Implements("SoundEffect")
+public class SoundEffect {
    @ObfuscatedName("u")
    int field1006;
    @ObfuscatedName("i")
-   class70[] field1008 = new class70[10];
+   SoundEffect1[] field1008 = new SoundEffect1[10];
    @ObfuscatedName("h")
    int field1009;
 
-   class53(Buffer var1) {
+   SoundEffect(Buffer var1) {
       for(int var2 = 0; var2 < 10; ++var2) {
          int var3 = var1.readUnsignedByte();
          if(var3 != 0) {
             --var1.offset;
-            this.field1008[var2] = new class70();
+            this.field1008[var2] = new SoundEffect1();
             this.field1008[var2].method1408(var1);
          }
       }
@@ -101,8 +103,8 @@ public class class53 {
    }
 
    @ObfuscatedName("f")
-   public static class53 method1013(class182 var0, int var1, int var2) {
+   public static SoundEffect method1013(class182 var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
-      return var3 == null?null:new class53(new Buffer(var3));
+      return var3 == null?null:new SoundEffect(new Buffer(var3));
    }
 }

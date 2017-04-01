@@ -101,10 +101,10 @@ public class ScriptState {
       for(int var0 = 0; var0 < Client.field545; ++var0) {
          --Client.field334[var0];
          if(Client.field334[var0] >= -10) {
-            class53 var9 = Client.field550[var0];
+            SoundEffect var9 = Client.field550[var0];
             if(null == var9) {
                Object var10000 = null;
-               var9 = class53.method1013(IndexFile.field1830, Client.field546[var0], 0);
+               var9 = SoundEffect.method1013(IndexFile.indexSoundEffects, Client.field546[var0], 0);
                if(null == var9) {
                   continue;
                }

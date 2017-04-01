@@ -197,7 +197,7 @@ final class class5 implements Comparator {
             ChatLineBuffer.indexConfigs = class9.method98(1, false, true, true);
             ChatLineBuffer.field990 = class9.method98(2, true, false, true);
             class37.indexInterfaces = class9.method98(3, false, true, true);
-            IndexFile.field1830 = class9.method98(4, false, true, true);
+            IndexFile.indexSoundEffects = class9.method98(4, false, true, true);
             class205.indexMaps = class9.method98(5, true, true, true);
             Client.field586 = class9.method98(6, true, true, false);
             CollisionData.indexModels = class9.method98(7, false, true, true);
@@ -218,7 +218,7 @@ final class class5 implements Comparator {
             var0 += ChatLineBuffer.indexConfigs.method3425() * 4 / 100;
             var0 += ChatLineBuffer.field990.method3425() * 2 / 100;
             var0 += class37.indexInterfaces.method3425() * 2 / 100;
-            var0 += IndexFile.field1830.method3425() * 6 / 100;
+            var0 += IndexFile.indexSoundEffects.method3425() * 6 / 100;
             var0 += class205.indexMaps.method3425() * 4 / 100;
             var0 += Client.field586.method3425() * 2 / 100;
             var0 += CollisionData.indexModels.method3425() * 60 / 100;
@@ -255,7 +255,7 @@ final class class5 implements Comparator {
                class2.field23.method1081(var36);
                var25 = Ignore.field215;
                IndexData var27 = class57.field1083;
-               var26 = IndexFile.field1830;
+               var26 = IndexFile.indexSoundEffects;
                class138.field1945 = var25;
                class146.field2037 = var27;
                class138.field1942 = var26;

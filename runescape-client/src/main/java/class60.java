@@ -35,7 +35,7 @@ public class class60 {
       } else if(null != var3 && var3[0] <= 0) {
          return null;
       } else {
-         class53 var8 = class53.method1013(this.field1108, var1, var2);
+         SoundEffect var8 = SoundEffect.method1013(this.field1108, var1, var2);
          if(null == var8) {
             return null;
          } else {

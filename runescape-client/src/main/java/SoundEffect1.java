@@ -1,36 +1,38 @@
 import java.util.Random;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("bd")
-public class class70 {
+@Implements("SoundEffect1")
+public class SoundEffect1 {
    @ObfuscatedName("i")
-   class58 field1173;
+   SoundEffect2 field1173;
    @ObfuscatedName("u")
-   class58 field1174;
+   SoundEffect2 field1174;
    @ObfuscatedName("n")
-   class58 field1175;
+   SoundEffect2 field1175;
    @ObfuscatedName("y")
    int field1176 = 500;
    @ObfuscatedName("j")
    int[] field1177 = new int[]{0, 0, 0, 0, 0};
    @ObfuscatedName("l")
-   class58 field1178;
+   SoundEffect2 field1178;
    @ObfuscatedName("w")
    int[] field1179 = new int[]{0, 0, 0, 0, 0};
    @ObfuscatedName("m")
    int[] field1180 = new int[]{0, 0, 0, 0, 0};
    @ObfuscatedName("f")
-   class58 field1181;
+   SoundEffect2 field1181;
    @ObfuscatedName("d")
-   class67 field1182;
+   SoundEffect3 field1182;
    @ObfuscatedName("r")
-   class58 field1183;
+   SoundEffect2 field1183;
    @ObfuscatedName("q")
    int field1184 = 100;
    @ObfuscatedName("e")
    static int[] field1185;
    @ObfuscatedName("p")
-   class58 field1186;
+   SoundEffect2 field1186;
    @ObfuscatedName("s")
    int field1187 = 0;
    @ObfuscatedName("a")
@@ -42,9 +44,9 @@ public class class70 {
    @ObfuscatedName("x")
    static int[] field1191;
    @ObfuscatedName("o")
-   class58 field1192;
+   SoundEffect2 field1192;
    @ObfuscatedName("h")
-   class58 field1193;
+   SoundEffect2 field1193;
    @ObfuscatedName("k")
    static int[] field1194;
    @ObfuscatedName("t")
@@ -177,14 +179,14 @@ public class class70 {
 
                int var17;
                while(var14 < var15) {
-                  var16 = (int)((long)field1189[var14 + var12] * (long)class67.field1160 >> 16);
+                  var16 = (int)((long)field1189[var14 + var12] * (long)SoundEffect3.field1160 >> 16);
 
                   for(var17 = 0; var17 < var12; ++var17) {
-                     var16 += (int)((long)field1189[var14 + var12 - 1 - var17] * (long)class67.field1158[0][var17] >> 16);
+                     var16 += (int)((long)field1189[var14 + var12 - 1 - var17] * (long)SoundEffect3.field1158[0][var17] >> 16);
                   }
 
                   for(var17 = 0; var17 < var14; ++var17) {
-                     var16 -= (int)((long)field1189[var14 - 1 - var17] * (long)class67.field1158[1][var17] >> 16);
+                     var16 -= (int)((long)field1189[var14 - 1 - var17] * (long)SoundEffect3.field1158[1][var17] >> 16);
                   }
 
                   field1189[var14] = var16;
@@ -201,14 +203,14 @@ public class class70 {
 
                   int var18;
                   while(var14 < var15) {
-                     var17 = (int)((long)field1189[var14 + var12] * (long)class67.field1160 >> 16);
+                     var17 = (int)((long)field1189[var14 + var12] * (long)SoundEffect3.field1160 >> 16);
 
                      for(var18 = 0; var18 < var12; ++var18) {
-                        var17 += (int)((long)field1189[var14 + var12 - 1 - var18] * (long)class67.field1158[0][var18] >> 16);
+                        var17 += (int)((long)field1189[var14 + var12 - 1 - var18] * (long)SoundEffect3.field1158[0][var18] >> 16);
                      }
 
                      for(var18 = 0; var18 < var13; ++var18) {
-                        var17 -= (int)((long)field1189[var14 - 1 - var18] * (long)class67.field1158[1][var18] >> 16);
+                        var17 -= (int)((long)field1189[var14 - 1 - var18] * (long)SoundEffect3.field1158[1][var18] >> 16);
                      }
 
                      field1189[var14] = var17;
@@ -221,11 +223,11 @@ public class class70 {
                         var17 = 0;
 
                         for(var18 = var14 + var12 - var1; var18 < var12; ++var18) {
-                           var17 += (int)((long)field1189[var14 + var12 - 1 - var18] * (long)class67.field1158[0][var18] >> 16);
+                           var17 += (int)((long)field1189[var14 + var12 - 1 - var18] * (long)SoundEffect3.field1158[0][var18] >> 16);
                         }
 
                         for(var18 = 0; var18 < var13; ++var18) {
-                           var17 -= (int)((long)field1189[var14 - 1 - var18] * (long)class67.field1158[1][var18] >> 16);
+                           var17 -= (int)((long)field1189[var14 - 1 - var18] * (long)SoundEffect3.field1158[1][var18] >> 16);
                         }
 
                         field1189[var14] = var17;
@@ -285,34 +287,34 @@ public class class70 {
 
    @ObfuscatedName("u")
    final void method1408(Buffer var1) {
-      this.field1181 = new class58();
+      this.field1181 = new SoundEffect2();
       this.field1181.method1138(var1);
-      this.field1173 = new class58();
+      this.field1173 = new SoundEffect2();
       this.field1173.method1138(var1);
       int var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
-         this.field1174 = new class58();
+         this.field1174 = new SoundEffect2();
          this.field1174.method1138(var1);
-         this.field1193 = new class58();
+         this.field1193 = new SoundEffect2();
          this.field1193.method1138(var1);
       }
 
       var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
-         this.field1183 = new class58();
+         this.field1183 = new SoundEffect2();
          this.field1183.method1138(var1);
-         this.field1192 = new class58();
+         this.field1192 = new SoundEffect2();
          this.field1192.method1138(var1);
       }
 
       var2 = var1.readUnsignedByte();
       if(var2 != 0) {
          --var1.offset;
-         this.field1178 = new class58();
+         this.field1178 = new SoundEffect2();
          this.field1178.method1138(var1);
-         this.field1175 = new class58();
+         this.field1175 = new SoundEffect2();
          this.field1175.method1138(var1);
       }
 
@@ -331,8 +333,8 @@ public class class70 {
       this.field1184 = var1.method2880();
       this.field1176 = var1.readUnsignedShort();
       this.field1188 = var1.readUnsignedShort();
-      this.field1182 = new class67();
-      this.field1186 = new class58();
+      this.field1182 = new SoundEffect3();
+      this.field1186 = new SoundEffect2();
       this.field1182.method1362(var1, this.field1186);
    }
 }
