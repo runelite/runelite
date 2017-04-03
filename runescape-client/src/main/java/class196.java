@@ -43,14 +43,14 @@ public class class196 extends CacheableNode {
    )
    public int field2882 = 16777215;
    @ObfuscatedName("i")
-   public static class182 field2883;
+   public static IndexDataBase field2883;
    @ObfuscatedName("v")
    @ObfuscatedGetter(
       intValue = 2082642831
    )
    int field2884 = -1;
    @ObfuscatedName("f")
-   public static class182 field2885;
+   public static IndexDataBase field2885;
    @ObfuscatedName("z")
    @ObfuscatedGetter(
       intValue = -1046639183

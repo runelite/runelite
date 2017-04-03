@@ -111,7 +111,7 @@ public class class38 {
       signature = "(Lclass182;III)[LModIcon;",
       garbageValue = "-1937019263"
    )
-   static ModIcon[] method766(class182 var0, int var1, int var2) {
+   static ModIcon[] method766(IndexDataBase var0, int var1, int var2) {
       if(!VertexNormal.method1667(var0, var1, var2)) {
          return null;
       } else {

@@ -430,7 +430,7 @@ final class class3 implements Comparator {
       signature = "(Lclass182;II)Z",
       garbageValue = "1591255650"
    )
-   static boolean method27(class182 var0, int var1) {
+   static boolean method27(IndexDataBase var0, int var1) {
       byte[] var2 = var0.method3389(var1);
       if(null == var2) {
          return false;

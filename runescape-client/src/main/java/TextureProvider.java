@@ -29,7 +29,7 @@ public class TextureProvider implements class93 {
    @ObfuscatedName("f")
    class79[] field1229;
    @ObfuscatedName("l")
-   class182 field1230;
+   IndexDataBase field1230;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -87,7 +87,7 @@ public class TextureProvider implements class93 {
       signature = "(Lclass182;II)LModIcon;",
       garbageValue = "-1325752410"
    )
-   public static ModIcon method1472(class182 var0, int var1) {
+   public static ModIcon method1472(IndexDataBase var0, int var1) {
       if(!class3.method27(var0, var1)) {
          return null;
       } else {
@@ -181,7 +181,7 @@ public class TextureProvider implements class93 {
       signature = "(Lclass182;IIIZI)V",
       garbageValue = "1437163348"
    )
-   public static void method1487(class182 var0, int var1, int var2, int var3, boolean var4) {
+   public static void method1487(IndexDataBase var0, int var1, int var2, int var3, boolean var4) {
       class138.field1940 = 1;
       class149.field2061 = var0;
       class138.field1941 = var1;
@@ -207,7 +207,7 @@ public class TextureProvider implements class93 {
       signature = "(Lclass182;Lclass182;IDI)V",
       garbageValue = "64"
    )
-   public TextureProvider(class182 var1, class182 var2, int var3, double var4, int var6) {
+   public TextureProvider(IndexDataBase var1, IndexDataBase var2, int var3, double var4, int var6) {
       this.field1230 = var2;
       this.field1227 = var3;
       this.field1222 = this.field1227;

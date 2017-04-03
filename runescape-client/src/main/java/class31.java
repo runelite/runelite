@@ -71,7 +71,7 @@ public final class class31 extends Node {
       signature = "(Ljava/awt/Component;Lclass182;Lclass182;ZIB)V",
       garbageValue = "-19"
    )
-   static void method654(Component var0, class182 var1, class182 var2, boolean var3, int var4) {
+   static void method654(Component var0, IndexDataBase var1, IndexDataBase var2, boolean var3, int var4) {
       if(class41.field860) {
          if(var4 == 4) {
             class41.loginIndex = 4;
@@ -166,7 +166,7 @@ public final class class31 extends Node {
          class41.field861 = true;
          class41.worldSelectShown = false;
          if(!class148.field2058.field719) {
-            IndexData var9 = Client.field586;
+            IndexData var9 = Client.indexTrack1;
             int var7 = var9.method3351("scape main");
             int var8 = var9.method3352(var7, "");
             class138.field1940 = 1;

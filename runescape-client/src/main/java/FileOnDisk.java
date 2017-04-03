@@ -35,7 +35,7 @@ public final class FileOnDisk {
       signature = "(Lclass182;Lclass182;B)I",
       garbageValue = "-27"
    )
-   static int method1445(class182 var0, class182 var1) {
+   static int method1445(IndexDataBase var0, IndexDataBase var1) {
       int var2 = 0;
       if(var0.method3354("title.jpg", "")) {
          ++var2;

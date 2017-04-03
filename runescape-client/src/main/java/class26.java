@@ -83,7 +83,7 @@ public class class26 {
       signature = "(Lclass182;III)LSpritePixels;",
       garbageValue = "132730859"
    )
-   public static SpritePixels method564(class182 var0, int var1, int var2) {
+   public static SpritePixels method564(IndexDataBase var0, int var1, int var2) {
       if(!VertexNormal.method1667(var0, var1, var2)) {
          return null;
       } else {

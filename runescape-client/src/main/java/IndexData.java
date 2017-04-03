@@ -8,7 +8,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gp")
 @Implements("IndexData")
-public class IndexData extends class182 {
+public class IndexData extends IndexDataBase {
    @ObfuscatedName("pf")
    static Clipboard field2749;
    @ObfuscatedName("c")

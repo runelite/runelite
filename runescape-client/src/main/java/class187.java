@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("ga")
 public class class187 extends CacheableNode {
    @ObfuscatedName("f")
-   public static class182 field2788;
+   public static IndexDataBase field2788;
    @ObfuscatedName("i")
    @ObfuscatedGetter(
       intValue = 766932495

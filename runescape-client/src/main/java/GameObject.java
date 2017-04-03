@@ -152,7 +152,7 @@ public final class GameObject {
       signature = "(Lclass182;I)V",
       garbageValue = "713584469"
    )
-   public static void method1959(class182 var0) {
+   public static void method1959(IndexDataBase var0) {
       FloorUnderlayDefinition.field2822 = var0;
    }
 }

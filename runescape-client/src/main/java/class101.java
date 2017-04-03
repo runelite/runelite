@@ -439,7 +439,7 @@ public class class101 extends RuntimeException {
       signature = "(Lclass182;Lclass182;I)V",
       garbageValue = "1548125708"
    )
-   public static void method1999(class182 var0, class182 var1) {
+   public static void method1999(IndexDataBase var0, IndexDataBase var1) {
       KitDefinition.field2834 = var0;
       class138.field1943 = var1;
       KitDefinition.field2831 = KitDefinition.field2834.method3346(3);

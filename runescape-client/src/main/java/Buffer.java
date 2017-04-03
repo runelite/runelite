@@ -104,7 +104,7 @@ public class Buffer extends Node {
       if(var1 != 0) {
          throw new IllegalStateException("");
       } else {
-         int var2 = this.method2883();
+         int var2 = this.readVarInt();
          if(var2 + this.offset > this.payload.length) {
             throw new IllegalStateException("");
          } else {
@@ -123,7 +123,7 @@ public class Buffer extends Node {
    public void method2860(CharSequence var1) {
       int var2 = class15.method168(var1);
       this.payload[++this.offset - 1] = 0;
-      this.method2910(var2);
+      this.putVarInt(var2);
       this.offset += class186.method3481(this.payload, this.offset, var1);
    }
 
@@ -324,7 +324,8 @@ public class Buffer extends Node {
       signature = "(I)I",
       garbageValue = "2013894330"
    )
-   public int method2883() {
+   @Export("readVarInt")
+   public int readVarInt() {
       byte var1 = this.payload[++this.offset - 1];
 
       int var2;
@@ -538,7 +539,8 @@ public class Buffer extends Node {
       signature = "(II)V",
       garbageValue = "1347076710"
    )
-   public void method2910(int var1) {
+   @Export("putVarInt")
+   public void putVarInt(int var1) {
       if((var1 & -128) != 0) {
          if((var1 & -16384) != 0) {
             if((var1 & -2097152) != 0) {
@@ -895,7 +897,7 @@ public class Buffer extends Node {
             class148.field2058.field719 = !class148.field2058.field719;
             class150.method2839();
             if(!class148.field2058.field719) {
-               IndexData var9 = Client.field586;
+               IndexData var9 = Client.indexTrack1;
                var2 = var9.method3351("scape main");
                var3 = var9.method3352(var2, "");
                TextureProvider.method1487(var9, var2, var3, 255, false);

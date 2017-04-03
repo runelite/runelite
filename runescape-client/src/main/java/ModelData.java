@@ -141,7 +141,7 @@ public class ModelData extends Renderable {
       signature = "(Lclass182;II)LModelData;",
       garbageValue = "0"
    )
-   public static ModelData method1495(class182 var0, int var1, int var2) {
+   public static ModelData method1495(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new ModelData(var3);
    }

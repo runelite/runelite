@@ -20,7 +20,7 @@ public class CombatInfo2 extends CacheableNode {
    @ObfuscatedName("u")
    public static NodeCache field2841 = new NodeCache(64);
    @ObfuscatedName("i")
-   public static class182 field2842;
+   public static IndexDataBase field2842;
    @ObfuscatedName("p")
    @ObfuscatedGetter(
       intValue = -1953350061
@@ -58,7 +58,7 @@ public class CombatInfo2 extends CacheableNode {
    )
    int field2851 = -1;
    @ObfuscatedName("f")
-   public static class182 field2852;
+   public static IndexDataBase field2852;
    @ObfuscatedName("y")
    @ObfuscatedGetter(
       intValue = -508738477

@@ -117,7 +117,7 @@ public class class99 extends class109 {
       signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LSpritePixels;",
       garbageValue = "1040416138"
    )
-   public static SpritePixels[] method1981(class182 var0, String var1, String var2) {
+   public static SpritePixels[] method1981(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.method3351(var1);
       int var4 = var0.method3352(var3, var2);
       return class103.method2027(var0, var3, var4);

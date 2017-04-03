@@ -16,7 +16,7 @@ public class Widget extends Node {
    @ObfuscatedName("er")
    public boolean field2210;
    @ObfuscatedName("h")
-   public static class182 field2211;
+   public static IndexDataBase field2211;
    @ObfuscatedName("bs")
    @ObfuscatedGetter(
       intValue = 828962953
@@ -390,7 +390,7 @@ public class Widget extends Node {
    @ObfuscatedName("co")
    public Object[] field2300;
    @ObfuscatedName("u")
-   public static class182 field2301;
+   public static IndexDataBase field2301;
    @ObfuscatedName("cf")
    @Export("parent")
    public Widget parent;
@@ -432,7 +432,7 @@ public class Widget extends Node {
    @ObfuscatedName("dy")
    public Object[] field2316;
    @ObfuscatedName("r")
-   public static class182 field2317;
+   public static IndexDataBase field2317;
    @ObfuscatedName("dp")
    public Object[] field2318;
    @ObfuscatedName("dc")

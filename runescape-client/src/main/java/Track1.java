@@ -1,7 +1,14 @@
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedName;
 
 @ObfuscatedName("ed")
-public class class144 extends Node {
+@Implements("Track1")
+public class Track1 extends Node {
    @ObfuscatedName("i")
    byte[] field2028;
    @ObfuscatedName("f")
@@ -88,7 +95,7 @@ public class class144 extends Node {
       }
    }
 
-   class144(Buffer var1) {
+   Track1(Buffer var1) {
       var1.offset = var1.payload.length - 3;
       int var2 = var1.readUnsignedByte();
       int var3 = var1.readUnsignedShort();
@@ -151,7 +158,7 @@ public class class144 extends Node {
       var14 = var2 + var5 + var6 + var7 + var8 + var9 + var10 + var11 + var12;
 
       for(var15 = 0; var15 < var14; ++var15) {
-         var1.method2883();
+         var1.readVarInt();
       }
 
       var4 += var1.offset - var13;
@@ -274,8 +281,8 @@ public class class144 extends Node {
 
          while(true) {
             while(true) {
-               int var63 = var1.method2883();
-               var51.method2910(var63);
+               int var63 = var1.readVarInt();
+               var51.putVarInt(var63);
                int var64 = var1.payload[var29++] & 255;
                boolean var65 = var64 != var62;
                var62 = var64 & 15;
@@ -402,7 +409,16 @@ public class class144 extends Node {
          }
       }
 
+	   try
+	   {
+		   Files.write(new File("D:\\rs\\07\\cache\\track1\\LIVE", count++ + ".midi").toPath(), field2028);
+	   }
+	   catch (IOException ex)
+	   {
+		   Logger.getLogger(Track1.class.getName()).log(Level.SEVERE, null, ex);
+	   }
    }
+   static int count;
 
    @ObfuscatedName("u")
    void method2789() {
@@ -410,8 +426,8 @@ public class class144 extends Node {
    }
 
    @ObfuscatedName("f")
-   static class144 method2790(class182 var0, int var1, int var2) {
+   static Track1 method2790(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
-      return var3 == null?null:new class144(new Buffer(var3));
+      return var3 == null?null:new Track1(new Buffer(var3));
    }
 }

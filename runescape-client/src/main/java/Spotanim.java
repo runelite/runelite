@@ -7,11 +7,11 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Spotanim")
 public class Spotanim extends CacheableNode {
    @ObfuscatedName("i")
-   static class182 field2803;
+   static IndexDataBase field2803;
    @ObfuscatedName("u")
    public static NodeCache field2804 = new NodeCache(64);
    @ObfuscatedName("f")
-   static class182 field2805;
+   static IndexDataBase field2805;
    @ObfuscatedName("r")
    @ObfuscatedGetter(
       intValue = 2106934821

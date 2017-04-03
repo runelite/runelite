@@ -291,7 +291,7 @@ public class class13 {
                         if(var4 == -1 && !Client.field542) {
                            TextureProvider.method1486();
                         } else if(var4 != -1 && var4 != Client.field541 && Client.field540 != 0 && !Client.field542) {
-                           IndexData var37 = Client.field586;
+                           IndexData var37 = Client.indexTrack1;
                            var6 = Client.field540;
                            class138.field1940 = 1;
                            class149.field2061 = var37;

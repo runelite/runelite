@@ -8,7 +8,7 @@ public class class189 extends CacheableNode {
    @ObfuscatedName("u")
    public boolean field2800 = false;
    @ObfuscatedName("f")
-   static class182 field2801;
+   static IndexDataBase field2801;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(

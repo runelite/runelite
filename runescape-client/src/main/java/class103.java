@@ -226,7 +226,7 @@ public class class103 implements Runnable {
       signature = "(Lclass182;III)[LSpritePixels;",
       garbageValue = "-963029477"
    )
-   static SpritePixels[] method2027(class182 var0, int var1, int var2) {
+   static SpritePixels[] method2027(IndexDataBase var0, int var1, int var2) {
       return !VertexNormal.method1667(var0, var1, var2)?null:class38.method767();
    }
 }

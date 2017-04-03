@@ -269,8 +269,8 @@ public final class GroundObject {
       if(var1 != null) {
          return var1;
       } else {
-         class182 var3 = Sequence.field3078;
-         class182 var4 = class5.field55;
+         IndexDataBase var3 = Sequence.field3078;
+         IndexDataBase var4 = class5.field55;
          boolean var5 = true;
          int[] var6 = var3.method3345(var0);
 

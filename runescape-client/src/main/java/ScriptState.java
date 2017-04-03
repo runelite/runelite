@@ -178,7 +178,7 @@ public class ScriptState {
 
          if(!var12) {
             if(Client.field540 != 0 && Client.field541 != -1) {
-               TextureProvider.method1487(Client.field586, Client.field541, 0, Client.field540, false);
+               TextureProvider.method1487(Client.indexTrack1, Client.field541, 0, Client.field540, false);
             }
 
             Client.field542 = false;
@@ -651,7 +651,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 41) {
-               class182.xteaChanged(true);
+               IndexDataBase.xteaChanged(true);
                Client.secretCipherBuffer2.readOpcode();
                var1 = Client.secretCipherBuffer2.readUnsignedShort();
                Actor.method572(Client.secretCipherBuffer2, var1);
@@ -1249,7 +1249,7 @@ public class ScriptState {
                if(var1 == -1 && !Client.field542) {
                   TextureProvider.method1486();
                } else if(var1 != -1 && var1 != Client.field541 && Client.field540 != 0 && !Client.field542) {
-                  IndexData var102 = Client.field586;
+                  IndexData var102 = Client.indexTrack1;
                   var26 = Client.field540;
                   class138.field1940 = 1;
                   class149.field2061 = var102;
@@ -1331,7 +1331,7 @@ public class ScriptState {
             }
 
             if(Client.packetOpcode == 135) {
-               class182.xteaChanged(false);
+               IndexDataBase.xteaChanged(false);
                Client.secretCipherBuffer2.readOpcode();
                var1 = Client.secretCipherBuffer2.readUnsignedShort();
                Actor.method572(Client.secretCipherBuffer2, var1);

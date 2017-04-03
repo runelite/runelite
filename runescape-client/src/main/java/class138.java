@@ -23,13 +23,13 @@ public class class138 {
    )
    public static int field1941;
    @ObfuscatedName("u")
-   public static class182 field1942;
+   public static IndexDataBase field1942;
    @ObfuscatedName("i")
-   static class182 field1943;
+   static IndexDataBase field1943;
    @ObfuscatedName("s")
-   public static class144 field1944;
+   public static Track1 field1944;
    @ObfuscatedName("f")
-   public static class182 field1945;
+   public static IndexDataBase field1945;
 
    class138() throws Throwable {
       throw new Error();

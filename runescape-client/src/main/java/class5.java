@@ -17,7 +17,7 @@ final class class5 implements Comparator {
    )
    static int field54;
    @ObfuscatedName("u")
-   static class182 field55;
+   static IndexDataBase field55;
    @ObfuscatedName("bq")
    static IndexData field56;
 
@@ -199,7 +199,7 @@ final class class5 implements Comparator {
             class37.indexInterfaces = class9.method98(3, false, true, true);
             IndexFile.indexSoundEffects = class9.method98(4, false, true, true);
             class205.indexMaps = class9.method98(5, true, true, true);
-            Client.field586 = class9.method98(6, true, true, false);
+            Client.indexTrack1 = class9.method98(6, true, true, false);
             CollisionData.indexModels = class9.method98(7, false, true, true);
             FileOnDisk.indexSprites = class9.method98(8, false, true, true);
             class171.indexTextures = class9.method98(9, false, true, true);
@@ -220,7 +220,7 @@ final class class5 implements Comparator {
             var0 += class37.indexInterfaces.method3425() * 2 / 100;
             var0 += IndexFile.indexSoundEffects.method3425() * 6 / 100;
             var0 += class205.indexMaps.method3425() * 4 / 100;
-            var0 += Client.field586.method3425() * 2 / 100;
+            var0 += Client.indexTrack1.method3425() * 2 / 100;
             var0 += CollisionData.indexModels.method3425() * 60 / 100;
             var0 += FileOnDisk.indexSprites.method3425() * 2 / 100;
             var0 += class171.indexTextures.method3425() * 2 / 100;

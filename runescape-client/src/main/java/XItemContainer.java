@@ -297,7 +297,7 @@ public class XItemContainer extends Node {
             Client.field346.putInt(class37.indexInterfaces.field2737);
             Client.field346.putInt(IndexFile.indexSoundEffects.field2737);
             Client.field346.putInt(class205.indexMaps.field2737);
-            Client.field346.putInt(Client.field586.field2737);
+            Client.field346.putInt(Client.indexTrack1.field2737);
             Client.field346.putInt(CollisionData.indexModels.field2737);
             Client.field346.putInt(FileOnDisk.indexSprites.field2737);
             Client.field346.putInt(class171.indexTextures.field2737);
@@ -405,7 +405,7 @@ public class XItemContainer extends Node {
                   method148();
                   RSSocket.method2100(Client.secretCipherBuffer2);
                   Friend.field161 = -1;
-                  class182.xteaChanged(false);
+                  IndexDataBase.xteaChanged(false);
                   Client.packetOpcode = -1;
                }
 
@@ -628,7 +628,7 @@ public class XItemContainer extends Node {
       signature = "(Lclass182;Lclass182;IIB)LFont;",
       garbageValue = "-1"
    )
-   public static Font method157(class182 var0, class182 var1, int var2, int var3) {
+   public static Font method157(IndexDataBase var0, IndexDataBase var1, int var2, int var3) {
       return !VertexNormal.method1667(var0, var2, var3)?null:CombatInfoListHolder.method728(var1.getConfigData(var2, var3));
    }
 }
