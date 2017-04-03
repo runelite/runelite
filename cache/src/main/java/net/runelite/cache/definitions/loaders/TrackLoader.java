@@ -24,20 +24,20 @@
  */
 package net.runelite.cache.definitions.loaders;
 
-import net.runelite.cache.definitions.Track1Definition;
+import net.runelite.cache.definitions.TrackDefinition;
 import net.runelite.cache.io.InputStream;
 import net.runelite.cache.io.OutputStream;
 
-public class Track1Loader
+public class TrackLoader
 {
-	public Track1Definition load(byte[] b)
+	public TrackDefinition load(byte[] b)
 	{
-		Track1Definition def = new Track1Definition();
+		TrackDefinition def = new TrackDefinition();
 		load(def, new InputStream(b));
 		return def;
 	}
 
-	private void load(Track1Definition def, InputStream var1)
+	private void load(TrackDefinition def, InputStream var1)
 	{
 		// Some of the names are from https://www.rune-server.ee/runescape-development/rs-503-client-server/snippets/311669-rs-music-file-structure-conversion.html
 		var1.setOffset(var1.getLength() - 3);
