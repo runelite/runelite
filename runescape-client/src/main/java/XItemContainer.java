@@ -302,7 +302,7 @@ public class XItemContainer extends Node {
             Client.field346.putInt(FileOnDisk.indexSprites.field2737);
             Client.field346.putInt(class171.indexTextures.field2737);
             Client.field346.putInt(WallObject.field1581.field2737);
-            Client.field346.putInt(Friend.field162.field2737);
+            Client.field346.putInt(Friend.indexTrack2.field2737);
             Client.field346.putInt(Projectile.indexScripts.field2737);
             Client.field346.putInt(class5.field56.field2737);
             Client.field346.putInt(class57.field1083.field2737);

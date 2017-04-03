@@ -219,7 +219,7 @@ public class class20 implements Runnable {
       FileOnDisk.indexSprites.method3349();
       class171.indexTextures.method3349();
       WallObject.field1581.method3349();
-      Friend.field162.method3349();
+      Friend.indexTrack2.method3349();
       Projectile.indexScripts.method3349();
    }
 }
