@@ -14,9 +14,9 @@ public class ObjectComposition extends CacheableNode {
    @Export("offsetY")
    int offsetY = 0;
    @ObfuscatedName("i")
-   public static class182 field2897;
+   public static IndexDataBase field2897;
    @ObfuscatedName("u")
-   public static class182 field2898;
+   public static IndexDataBase field2898;
    @ObfuscatedName("e")
    @ObfuscatedGetter(
       intValue = -890257311

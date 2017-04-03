@@ -58,19 +58,19 @@ public class class49 extends Renderable {
       Buffer var1 = new Buffer(var0);
       int var2 = var1.readUnsignedByte();
       int var3 = var1.readInt();
-      if(var3 >= 0 && (class182.field2740 == 0 || var3 <= class182.field2740)) {
+      if(var3 >= 0 && (IndexDataBase.field2740 == 0 || var3 <= IndexDataBase.field2740)) {
          if(var2 == 0) {
             byte[] var4 = new byte[var3];
             var1.readBytes(var4, 0, var3);
             return var4;
          } else {
             int var6 = var1.readInt();
-            if(var6 >= 0 && (class182.field2740 == 0 || var6 <= class182.field2740)) {
+            if(var6 >= 0 && (IndexDataBase.field2740 == 0 || var6 <= IndexDataBase.field2740)) {
                byte[] var5 = new byte[var6];
                if(var2 == 1) {
                   class147.method2806(var5, var6, var0, var3, 9);
                } else {
-                  class182.field2736.method2803(var1, var5);
+                  IndexDataBase.field2736.method2803(var1, var5);
                }
 
                return var5;

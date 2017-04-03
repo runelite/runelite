@@ -166,7 +166,7 @@ public class class30 {
       signature = "(Lclass182;I)V",
       garbageValue = "1036067138"
    )
-   public static void method644(class182 var0) {
+   public static void method644(IndexDataBase var0) {
       class186.field2783 = var0;
    }
 

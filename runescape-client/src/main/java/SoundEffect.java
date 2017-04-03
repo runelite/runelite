@@ -103,7 +103,7 @@ public class SoundEffect {
    }
 
    @ObfuscatedName("f")
-   public static SoundEffect method1013(class182 var0, int var1, int var2) {
+   public static SoundEffect method1013(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       return var3 == null?null:new SoundEffect(new Buffer(var3));
    }

@@ -68,7 +68,7 @@ public class NPCComposition extends CacheableNode {
    @ObfuscatedName("a")
    short[] field3021;
    @ObfuscatedName("f")
-   public static class182 field3022;
+   public static IndexDataBase field3022;
    @ObfuscatedName("z")
    short[] field3023;
    @ObfuscatedName("x")
@@ -121,7 +121,7 @@ public class NPCComposition extends CacheableNode {
    @Export("configs")
    public int[] configs;
    @ObfuscatedName("i")
-   public static class182 field3036;
+   public static IndexDataBase field3036;
    @ObfuscatedName("aw")
    @ObfuscatedGetter(
       intValue = 2104058915

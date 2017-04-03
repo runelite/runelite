@@ -14,7 +14,7 @@ public class FloorUnderlayDefinition extends CacheableNode {
    @ObfuscatedName("i")
    public static NodeCache field2821 = new NodeCache(64);
    @ObfuscatedName("f")
-   static class182 field2822;
+   static IndexDataBase field2822;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = -2088441921

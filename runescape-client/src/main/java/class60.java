@@ -7,7 +7,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("bv")
 public class class60 {
    @ObfuscatedName("i")
-   class182 field1101;
+   IndexDataBase field1101;
    @ObfuscatedName("u")
    XHashTable field1102 = new XHashTable(256);
    @ObfuscatedName("h")
@@ -18,7 +18,7 @@ public class class60 {
    )
    static int field1104;
    @ObfuscatedName("f")
-   class182 field1108;
+   IndexDataBase field1108;
 
    @ObfuscatedName("f")
    @ObfuscatedSignature(
@@ -50,7 +50,7 @@ public class class60 {
       }
    }
 
-   public class60(class182 var1, class182 var2) {
+   public class60(IndexDataBase var1, IndexDataBase var2) {
       this.field1108 = var1;
       this.field1101 = var2;
    }
@@ -461,7 +461,7 @@ public class class60 {
       try {
          if(class138.field1940 == 2) {
             if(class138.field1944 == null) {
-               class138.field1944 = class144.method2790(class149.field2061, class138.field1941, RSCanvas.field1777);
+               class138.field1944 = Track1.method2790(class149.field2061, class138.field1941, RSCanvas.field1777);
                if(class138.field1944 == null) {
                   return false;
                }

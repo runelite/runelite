@@ -15,7 +15,7 @@ public class class195 extends CacheableNode {
    @ObfuscatedName("r")
    public String field2866 = "null";
    @ObfuscatedName("f")
-   public static class182 field2867;
+   public static IndexDataBase field2867;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1238019017

@@ -16,7 +16,7 @@ public class Varbit extends CacheableNode {
    @ObfuscatedName("i")
    public static NodeCache field2856 = new NodeCache(64);
    @ObfuscatedName("f")
-   public static class182 field2857;
+   public static IndexDataBase field2857;
    @ObfuscatedName("h")
    @ObfuscatedGetter(
       intValue = 883867267

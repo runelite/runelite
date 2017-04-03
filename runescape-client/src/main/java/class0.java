@@ -22,7 +22,7 @@ final class class0 implements Comparator {
    )
    static int field4;
    @ObfuscatedName("u")
-   public static class182 field5;
+   public static IndexDataBase field5;
 
    public boolean equals(Object var1) {
       return super.equals(var1);

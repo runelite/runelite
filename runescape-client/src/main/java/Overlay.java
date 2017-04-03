@@ -24,7 +24,7 @@ public class Overlay extends CacheableNode {
    @Export("texture")
    public int texture = -1;
    @ObfuscatedName("f")
-   public static class182 field3047;
+   public static IndexDataBase field3047;
    @ObfuscatedName("l")
    @ObfuscatedGetter(
       intValue = -1691153859

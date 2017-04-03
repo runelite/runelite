@@ -20,7 +20,7 @@ public class class20 implements Runnable {
    )
    int field234 = 0;
    @ObfuscatedName("o")
-   public static class182 field235;
+   public static IndexDataBase field235;
 
    @ObfuscatedName("i")
    @ObfuscatedSignature(
@@ -214,7 +214,7 @@ public class class20 implements Runnable {
       class37.indexInterfaces.method3349();
       IndexFile.indexSoundEffects.method3349();
       class205.indexMaps.method3349();
-      Client.field586.method3349();
+      Client.indexTrack1.method3349();
       CollisionData.indexModels.method3349();
       FileOnDisk.indexSprites.method3349();
       class171.indexTextures.method3349();

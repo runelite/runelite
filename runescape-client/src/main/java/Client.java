@@ -1124,7 +1124,8 @@ public final class Client extends GameEngine {
    @Export("projectiles")
    static Deque projectiles;
    @ObfuscatedName("br")
-   static IndexData field586;
+   @Export("indexTrack1")
+   static IndexData indexTrack1;
 
    @ObfuscatedName("n")
    @ObfuscatedSignature(
@@ -3537,7 +3538,7 @@ public final class Client extends GameEngine {
 
             if(field540 != var3) {
                if(field540 == 0 && field541 != -1) {
-                  TextureProvider.method1487(field586, field541, 0, var3, false);
+                  TextureProvider.method1487(indexTrack1, field541, 0, var3, false);
                   field542 = false;
                } else if(var3 == 0) {
                   TextureProvider.method1486();
@@ -3921,7 +3922,7 @@ public final class Client extends GameEngine {
       signature = "(Lclass182;I)V",
       garbageValue = "1602656377"
    )
-   public static void method557(class182 var0) {
+   public static void method557(IndexDataBase var0) {
       class189.field2801 = var0;
    }
 }

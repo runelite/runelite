@@ -26,7 +26,7 @@ public class class79 extends Node {
    static int[] field1337;
 
    @ObfuscatedName("f")
-   boolean method1571(double var1, int var3, class182 var4) {
+   boolean method1571(double var1, int var3, IndexDataBase var4) {
       int var5;
       for(var5 = 0; var5 < this.field1323.length; ++var5) {
          if(var4.method3337(this.field1323[var5]) == null) {

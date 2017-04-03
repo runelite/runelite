@@ -21,7 +21,7 @@ public class Sequence extends CacheableNode {
    @Export("frameIDs")
    public int[] frameIDs;
    @ObfuscatedName("f")
-   static class182 field3061;
+   static IndexDataBase field3061;
    @ObfuscatedName("gq")
    @ObfuscatedGetter(
       intValue = -114464503
@@ -86,7 +86,7 @@ public class Sequence extends CacheableNode {
    @Export("interleaveLeave")
    int[] interleaveLeave;
    @ObfuscatedName("i")
-   static class182 field3078;
+   static IndexDataBase field3078;
 
    @ObfuscatedName("u")
    @ObfuscatedSignature(

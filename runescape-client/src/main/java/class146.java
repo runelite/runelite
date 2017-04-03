@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @ObfuscatedName("es")
 public class class146 {
    @ObfuscatedName("i")
-   public static class182 field2037;
+   public static IndexDataBase field2037;
    @ObfuscatedName("u")
    @ObfuscatedGetter(
       intValue = 280560221

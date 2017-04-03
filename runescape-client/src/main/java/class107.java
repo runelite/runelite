@@ -514,7 +514,7 @@ public class class107 {
       signature = "(Lclass182;Lclass182;Lclass182;B)V",
       garbageValue = "127"
    )
-   public static void method2084(class182 var0, class182 var1, class182 var2) {
+   public static void method2084(IndexDataBase var0, IndexDataBase var1, IndexDataBase var2) {
       Sequence.field3061 = var0;
       Sequence.field3078 = var1;
       class5.field55 = var2;

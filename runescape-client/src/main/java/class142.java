@@ -164,7 +164,7 @@ public class class142 extends Node {
                var20 = -1;
             }
 
-            var22 = var2.method2883();
+            var22 = var2.readVarInt();
          }
 
          this.field2013[var23] = (short)(this.field2013[var23] + ((var22 - 1 & 2) << 14));

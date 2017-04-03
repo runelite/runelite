@@ -82,7 +82,7 @@ public class class185 {
       signature = "(Lclass182;Lclass182;Ljava/lang/String;Ljava/lang/String;S)LFont;",
       garbageValue = "5600"
    )
-   public static Font method3473(class182 var0, class182 var1, String var2, String var3) {
+   public static Font method3473(IndexDataBase var0, IndexDataBase var1, String var2, String var3) {
       int var4 = var0.method3351(var2);
       int var5 = var0.method3352(var4, var3);
       return XItemContainer.method157(var0, var1, var4, var5);

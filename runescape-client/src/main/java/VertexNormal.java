@@ -63,7 +63,7 @@ public class VertexNormal {
       signature = "(Lclass182;III)Z",
       garbageValue = "1197921335"
    )
-   static boolean method1667(class182 var0, int var1, int var2) {
+   static boolean method1667(IndexDataBase var0, int var1, int var2) {
       byte[] var3 = var0.getConfigData(var1, var2);
       if(var3 == null) {
          return false;

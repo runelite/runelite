@@ -30,7 +30,7 @@ public class KitDefinition extends CacheableNode {
    @Export("recolorToFind")
    short[] recolorToFind;
    @ObfuscatedName("f")
-   static class182 field2834;
+   static IndexDataBase field2834;
    @ObfuscatedName("m")
    @Export("retextureToFind")
    short[] retextureToFind;

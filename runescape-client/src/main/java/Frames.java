@@ -6,7 +6,7 @@ import net.runelite.mapping.ObfuscatedSignature;
 @Implements("Frames")
 public class Frames extends CacheableNode {
    @ObfuscatedName("o")
-   public static class182 field1592;
+   public static IndexDataBase field1592;
    @ObfuscatedName("dw")
    static byte[][] field1593;
    @ObfuscatedName("a")
@@ -126,7 +126,7 @@ public class Frames extends CacheableNode {
       signature = "(Lclass182;Lclass182;IZ)V",
       garbageValue = "0"
    )
-   public Frames(class182 var1, class182 var2, int var3, boolean var4) {
+   public Frames(IndexDataBase var1, IndexDataBase var2, int var3, boolean var4) {
       Deque var5 = new Deque();
       int var6 = var1.method3346(var3);
       this.field1595 = new Frame[var6];

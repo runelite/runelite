@@ -263,7 +263,7 @@ public class class54 extends Node {
    }
 
    @ObfuscatedName("m")
-   static boolean method1025(class182 var0) {
+   static boolean method1025(IndexDataBase var0) {
       if(!field1027) {
          byte[] var1 = var0.getConfigData(0, 0);
          if(var1 == null) {
@@ -278,7 +278,7 @@ public class class54 extends Node {
    }
 
    @ObfuscatedName("w")
-   static class54 method1026(class182 var0, int var1, int var2) {
+   static class54 method1026(IndexDataBase var0, int var1, int var2) {
       if(!method1025(var0)) {
          var0.method3338(var1, var2);
          return null;

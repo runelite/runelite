@@ -12,7 +12,7 @@ public class class211 {
       signature = "(Lclass182;Lclass182;B)V",
       garbageValue = "49"
    )
-   public static void method3982(class182 var0, class182 var1) {
+   public static void method3982(IndexDataBase var0, IndexDataBase var1) {
       Spotanim.field2805 = var0;
       Spotanim.field2803 = var1;
    }

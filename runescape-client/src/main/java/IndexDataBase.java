@@ -1,10 +1,12 @@
 import net.runelite.mapping.Export;
+import net.runelite.mapping.Implements;
 import net.runelite.mapping.ObfuscatedGetter;
 import net.runelite.mapping.ObfuscatedName;
 import net.runelite.mapping.ObfuscatedSignature;
 
 @ObfuscatedName("gb")
-public abstract class class182 {
+@Implements("IndexDataBase")
+public abstract class IndexDataBase {
    @ObfuscatedName("r")
    int[] field2724;
    @ObfuscatedName("i")
@@ -300,7 +302,7 @@ public abstract class class182 {
       }
    }
 
-   class182(boolean var1, boolean var2) {
+   IndexDataBase(boolean var1, boolean var2) {
       this.field2729 = var1;
       this.field2739 = var2;
    }

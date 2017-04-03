@@ -806,7 +806,7 @@ public class ItemComposition extends CacheableNode {
       signature = "(Lclass182;Ljava/lang/String;Ljava/lang/String;I)[LModIcon;",
       garbageValue = "1264267997"
    )
-   public static ModIcon[] method3719(class182 var0, String var1, String var2) {
+   public static ModIcon[] method3719(IndexDataBase var0, String var1, String var2) {
       int var3 = var0.method3351(var1);
       int var4 = var0.method3352(var3, var2);
       return class38.method766(var0, var3, var4);

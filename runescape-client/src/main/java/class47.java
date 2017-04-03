@@ -19,7 +19,7 @@ public class class47 {
    )
    static int field953 = 0;
    @ObfuscatedName("l")
-   public static class182 field956;
+   public static IndexDataBase field956;
    @ObfuscatedName("is")
    @ObfuscatedGetter(
       intValue = -792964549

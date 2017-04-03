@@ -64,7 +64,7 @@ public class class141 {
 
    @ObfuscatedName("m")
    void method2694(int var1) {
-      int var2 = this.field2010.method2883();
+      int var2 = this.field2010.readVarInt();
       this.field1997[var1] += var2;
    }
 
@@ -89,7 +89,7 @@ public class class141 {
       if(var5 != 240 && var5 != 247) {
          return this.method2697(var1, var5);
       } else {
-         int var3 = this.field2010.method2883();
+         int var3 = this.field2010.readVarInt();
          if(var5 == 247 && var3 > 0) {
             int var4 = this.field2010.payload[this.field2010.offset] & 255;
             if(var4 >= 241 && var4 <= 243 || var4 == 246 || var4 == 248 || var4 >= 250 && var4 <= 252 || var4 == 254) {
@@ -109,7 +109,7 @@ public class class141 {
       int var4;
       if(var2 == 255) {
          int var7 = this.field2010.readUnsignedByte();
-         var4 = this.field2010.method2883();
+         var4 = this.field2010.readVarInt();
          if(var7 == 47) {
             this.field2010.offset += var4;
             return 1;

@@ -131,7 +131,7 @@ public class class139 extends class68 {
       signature = "(Lclass144;ZB)V",
       garbageValue = "27"
    )
-   synchronized void method2558(class144 var1, boolean var2) {
+   synchronized void method2558(Track1 var1, boolean var2) {
       this.method2591();
       this.field1966.method2687(var1.field2028);
       this.field1967 = var2;
@@ -946,7 +946,7 @@ public class class139 extends class68 {
       signature = "(Lclass144;Lclass182;Lclass60;II)Z",
       garbageValue = "381584175"
    )
-   synchronized boolean method2638(class144 var1, class182 var2, class60 var3, int var4) {
+   synchronized boolean method2638(Track1 var1, IndexDataBase var2, class60 var3, int var4) {
       var1.method2785();
       boolean var5 = true;
       Object var6 = null;
