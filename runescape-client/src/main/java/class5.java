@@ -204,7 +204,7 @@ final class class5 implements Comparator {
             FileOnDisk.indexSprites = class9.method98(8, false, true, true);
             class171.indexTextures = class9.method98(9, false, true, true);
             WallObject.field1581 = class9.method98(10, false, true, true);
-            Friend.field162 = class9.method98(11, false, true, true);
+            Friend.indexTrack2 = class9.method98(11, false, true, true);
             Projectile.indexScripts = class9.method98(12, false, true, true);
             field56 = class9.method98(13, true, false, true);
             class57.field1083 = class9.method98(14, false, true, false);
@@ -225,7 +225,7 @@ final class class5 implements Comparator {
             var0 += FileOnDisk.indexSprites.method3425() * 2 / 100;
             var0 += class171.indexTextures.method3425() * 2 / 100;
             var0 += WallObject.field1581.method3425() * 2 / 100;
-            var0 += Friend.field162.method3425() * 2 / 100;
+            var0 += Friend.indexTrack2.method3425() * 2 / 100;
             var0 += Projectile.indexScripts.method3425() * 2 / 100;
             var0 += field56.method3425() * 2 / 100;
             var0 += class57.field1083.method3425() * 2 / 100;

@@ -1273,7 +1273,7 @@ public class ScriptState {
                }
 
                if(Client.field540 != 0 && var2 != -1) {
-                  TextureProvider.method1487(Friend.field162, var2, 0, Client.field540, false);
+                  TextureProvider.method1487(Friend.indexTrack2, var2, 0, Client.field540, false);
                   Client.field542 = true;
                }
 

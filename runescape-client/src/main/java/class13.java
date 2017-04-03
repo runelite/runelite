@@ -309,7 +309,7 @@ public class class13 {
                         var4 = class32.field743[class30.field713];
                         var5 = class32.field743[1 + class30.field713];
                         if(Client.field540 != 0 && var4 != -1) {
-                           TextureProvider.method1487(Friend.field162, var4, 0, Client.field540, false);
+                           TextureProvider.method1487(Friend.indexTrack2, var4, 0, Client.field540, false);
                            Client.field542 = true;
                         }
 
