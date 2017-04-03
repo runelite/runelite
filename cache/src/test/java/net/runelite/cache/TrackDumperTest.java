@@ -30,8 +30,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
-import net.runelite.cache.definitions.Track1Definition;
-import net.runelite.cache.definitions.loaders.Track1Loader;
+import net.runelite.cache.definitions.TrackDefinition;
+import net.runelite.cache.definitions.loaders.TrackLoader;
 import net.runelite.cache.fs.Archive;
 import net.runelite.cache.fs.Index;
 import net.runelite.cache.fs.Store;
@@ -43,20 +43,22 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Track1DumperTest
+public class TrackDumperTest
 {
-	private static final Logger logger = LoggerFactory.getLogger(Track1DumperTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(TrackDumperTest.class);
 
 	@Rule
 	public TemporaryFolder folder = StoreLocation.getTemporaryFolder();
 
+	private final Djb2Manager djb2 = new Djb2Manager();
+
 	@Test
 	public void test() throws IOException
 	{
-		File dumpDir = folder.newFolder();
-		int count = 0;
+		File dumpDir1 = folder.newFolder(),
+			dumpDir2 = folder.newFolder();
+		int idx1 = 0, idx2 = 0;
 
-		Djb2Manager djb2 = new Djb2Manager();
 		djb2.load();
 
 		try (Store store = new Store(StoreLocation.LOCATION))
@@ -64,29 +66,51 @@ public class Track1DumperTest
 			store.load();
 
 			Index index = store.getIndex(IndexType.TRACK1);
+			Index index2 = store.getIndex(IndexType.TRACK2);
 
 			for (Archive archive : index.getArchives())
 			{
-				assert archive.getFiles().size() == 1;
+				dumpTrackArchive(dumpDir1, archive);
+				++idx1;
+			}
 
-				net.runelite.cache.fs.File file = archive.getFiles().get(0);
-
-				Track1Loader loader = new Track1Loader();
-				Track1Definition def = loader.load(file.getContents());
-
-				String name = djb2.getName(archive.getNameHash());
-				if (name == null)
-				{
-					name = "" + archive.getNameHash();
-				}
-
-				Files.write(def.midi, new File(dumpDir, name + ".midi"));
-
-				++count;
+			for (Archive archive : index2.getArchives())
+			{
+				dumpTrackArchive(dumpDir2, archive);
+				++idx2;
 			}
 		}
 
-		logger.info("Dumped {} sound tracks to {}", count, dumpDir);
+		logger.info("Dumped {} sound tracks ({} idx1, {} idx2) to {} and {}", idx1 + idx2, idx1, idx2, dumpDir1, dumpDir2);
+	}
+
+	private void dumpTrackArchive(File dumpDir, Archive archive) throws IOException
+	{
+		assert archive.getFiles().size() == 1;
+
+		net.runelite.cache.fs.File file = archive.getFiles().get(0);
+
+		TrackLoader loader = new TrackLoader();
+		TrackDefinition def = loader.load(file.getContents());
+
+		String name;
+		if (archive.getNameHash() > 0)
+		{
+			name = djb2.getName(archive.getNameHash());
+			if (name == null)
+			{
+				name = "name-" + archive.getNameHash();
+			}
+		}
+		else
+		{
+			name = "archive-" + archive.getArchiveId();
+		}
+
+		File dest = new File(dumpDir, name + ".midi");
+		assert !dest.exists();
+
+		Files.write(def.midi, dest);
 	}
 
 	@Test
@@ -103,7 +127,7 @@ public class Track1DumperTest
 		try
 		{
 			// create a stream from a file
-			java.io.InputStream is = new FileInputStream(new File("C:\\rs\\cache\\track1\\scape main.midi"));
+			java.io.InputStream is = new FileInputStream(new File("D:\\rs\\07\\cache\\track1\\name-687938017.midi"));
 
 			// Sets the current sequence on which the sequencer operates.
 			// The stream must point to MIDI file data.

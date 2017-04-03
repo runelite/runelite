@@ -24,7 +24,7 @@
  */
 package net.runelite.cache.definitions;
 
-public class Track1Definition
+public class TrackDefinition
 {
 	public byte[] midi; // midi file contents
 }
