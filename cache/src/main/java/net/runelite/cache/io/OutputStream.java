@@ -30,7 +30,7 @@ import java.nio.ByteBuffer;
 public final class OutputStream extends java.io.OutputStream
 {
 	private ByteBuffer buffer;
-	
+
 	public OutputStream(int capacity)
 	{
 		buffer = ByteBuffer.allocate(capacity);
@@ -39,6 +39,17 @@ public final class OutputStream extends java.io.OutputStream
 	public OutputStream()
 	{
 		this(16);
+	}
+
+	public OutputStream(byte[] b)
+	{
+		buffer = ByteBuffer.wrap(b);
+	}
+
+	public byte[] getArray()
+	{
+		assert buffer.hasArray();
+		return buffer.array();
 	}
 
 	private void ensureRemaining(int remaining)
@@ -63,6 +74,11 @@ public final class OutputStream extends java.io.OutputStream
 		buffer.position(pos);
 	}
 
+	public int getOffset()
+	{
+		return buffer.position();
+	}
+
 	public void setOffset(int offset)
 	{
 		buffer.position(offset);
@@ -78,7 +94,7 @@ public final class OutputStream extends java.io.OutputStream
 		ensureRemaining(length);
 		buffer.put(b, offset, length);
 	}
-	
+
 	public void writeByte(int i)
 	{
 		ensureRemaining(1);
@@ -110,6 +126,39 @@ public final class OutputStream extends java.io.OutputStream
 	{
 		ensureRemaining(4);
 		buffer.putInt(i);
+	}
+
+	public void writeVarInt(int var1)
+	{
+		if ((var1 & -128) != 0)
+		{
+			if ((var1 & -16384) != 0)
+			{
+				if ((var1 & -2097152) != 0)
+				{
+					if ((var1 & -268435456) != 0)
+					{
+						this.writeByte(var1 >>> 28 | 128);
+					}
+
+					this.writeByte(var1 >>> 21 | 128);
+				}
+
+				this.writeByte(var1 >>> 14 | 128);
+			}
+
+			this.writeByte(var1 >>> 7 | 128);
+		}
+
+		this.writeByte(var1 & 127);
+	}
+
+	public void writeLengthFromMark(int var1)
+	{
+		this.getArray()[this.getOffset() - var1 - 4] = (byte) (var1 >> 24);
+		this.getArray()[this.getOffset() - var1 - 3] = (byte) (var1 >> 16);
+		this.getArray()[this.getOffset() - var1 - 2] = (byte) (var1 >> 8);
+		this.getArray()[this.getOffset() - var1 - 1] = (byte) var1;
 	}
 
 	public byte[] flip()
