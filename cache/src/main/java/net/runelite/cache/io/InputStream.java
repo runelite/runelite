@@ -46,6 +46,12 @@ public class InputStream extends java.io.InputStream
 		this.buffer = ByteBuffer.wrap(buffer);
 	}
 
+	public byte[] getArray()
+	{
+		assert buffer.hasArray();
+		return buffer.array();
+	}
+
 	@Override
 	public String toString()
 	{
@@ -150,7 +156,9 @@ public class InputStream extends java.io.InputStream
 			int ch = this.readByte();
 
 			if (ch == 0)
+			{
 				break;
+			}
 
 			if (ch >= 128 && ch < 160)
 			{
@@ -168,7 +176,6 @@ public class InputStream extends java.io.InputStream
 		return sb.toString();
 	}
 
-
 	public String readStringOrNull()
 	{
 		if (this.peek() != 0)
@@ -180,6 +187,19 @@ public class InputStream extends java.io.InputStream
 			this.readByte(); // discard
 			return null;
 		}
+	}
+
+	public int readVarInt()
+	{
+		byte var1 = this.readByte();
+
+		int var2;
+		for (var2 = 0; var1 < 0; var1 = this.readByte())
+		{
+			var2 = (var2 | var1 & 127) << 7;
+		}
+
+		return var2 | var1;
 	}
 
 	public byte[] getRemaining()
